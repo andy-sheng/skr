@@ -22,7 +22,6 @@ public class AnimationGift extends BaseGift {
     public void parseFromJson(String extra) {
         AnimationPrams animationPrams = JSON.parseObject(extra, AnimationPrams.class);
         setAnimationPrams(animationPrams);
-        super.parseFromJson(extra);
     }
 
     static class AnimationPrams {

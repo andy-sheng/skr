@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
+import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
@@ -56,7 +57,12 @@ public class GiftContinueViewGroup extends RelativeLayout {
             if (giftContinuousView != null) {
                 // 播放动画
                 giftContinuousView.play(model);
-                if (model.getAnimGiftParamModel().isPlay()) {
+
+                BaseGift baseGift = model.getGift();
+                /**
+                 * 一般为中礼物，播放到x几时，开始播放中礼物动画
+                 */
+                if (baseGift != null && baseGift.isPlay()) {
                     EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(model));
                 }
             }

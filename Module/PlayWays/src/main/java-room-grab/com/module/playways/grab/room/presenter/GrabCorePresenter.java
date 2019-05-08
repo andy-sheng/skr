@@ -809,7 +809,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
                         @Override
                         public void onSuccess(String url) {
-                            MyLog.d(TAG, "uploadRes1ForAi 上传成功 url=" + url);
+                            MyLog.w(TAG, "uploadRes1ForAi 上传成功 url=" + url);
                             sendUploadRequest(roundInfoModel, url);
                         }
 

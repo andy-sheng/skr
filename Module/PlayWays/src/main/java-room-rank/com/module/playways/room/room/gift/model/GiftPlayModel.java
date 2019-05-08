@@ -3,6 +3,7 @@ package com.module.playways.room.room.gift.model;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.gift.model.AnimGiftParamModel;
+import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
@@ -18,8 +19,7 @@ public class GiftPlayModel {
     String action;
     int beginCount;
     int endCount;
-    String giftIconUrl;
-    AnimGiftParamModel mAnimGiftParamModel;
+    BaseGift mBaseGift;
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
@@ -47,6 +47,8 @@ public class GiftPlayModel {
 
     public static GiftPlayModel parseFromEvent(GPrensentGiftMsg gPrensentGiftMsg, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
+        giftPlayModel.mEGiftType = EGiftType.GIFT;
+
         giftPlayModel.setContinueId(gPrensentGiftMsg.getContinueID());
         giftPlayModel.setEmojiType(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN);
         giftPlayModel.setRoomID(gPrensentGiftMsg.getRoomID());
@@ -54,33 +56,16 @@ public class GiftPlayModel {
         giftPlayModel.setBeginCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setEndCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setTimeMs(System.currentTimeMillis());
-        giftPlayModel.mEGiftType = EGiftType.GIFT;
         UserInfoModel userInfoModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getSendUserInfo());
         giftPlayModel.setSender(userInfoModel);
         UserInfoModel receiverModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getReceiveUserInfo());
         giftPlayModel.setReceiver(receiverModel);
-        giftPlayModel.setGiftIconUrl(gPrensentGiftMsg.getGiftInfo().getGiftURL());
 
-        AnimGiftParamModel animGiftParamModel = new AnimGiftParamModel();
-        animGiftParamModel.setBottom(gPrensentGiftMsg.getGiftInfo().getExtra().getBottom());
-        animGiftParamModel.setLeft(gPrensentGiftMsg.getGiftInfo().getExtra().getLeft());
-        animGiftParamModel.setRight(gPrensentGiftMsg.getGiftInfo().getExtra().getRight());
-        animGiftParamModel.setTop(gPrensentGiftMsg.getGiftInfo().getExtra().getTop());
-        animGiftParamModel.setDuration(gPrensentGiftMsg.getGiftInfo().getExtra().getDuration());
-        animGiftParamModel.setWidth(gPrensentGiftMsg.getGiftInfo().getExtra().getWidth());
-        animGiftParamModel.setHeight(gPrensentGiftMsg.getGiftInfo().getExtra().getHeight());
-        animGiftParamModel.setPlay(gPrensentGiftMsg.getGiftInfo().getPlay());
-        animGiftParamModel.setTextContinueCount(gPrensentGiftMsg.getGiftInfo().getTextContinueCount());
-        animGiftParamModel.setResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
-        animGiftParamModel.setDisplayType(gPrensentGiftMsg.getGiftInfo().getDisplayType());
+        BaseGift baseGift = BaseGift.parse(gPrensentGiftMsg.getGiftInfo());
 
-        giftPlayModel.mAnimGiftParamModel = animGiftParamModel;
+        giftPlayModel.setGift(baseGift);
 
         return giftPlayModel;
-    }
-
-    public AnimGiftParamModel getAnimGiftParamModel() {
-        return mAnimGiftParamModel;
     }
 
     public long getTimeMs() {
@@ -160,12 +145,12 @@ public class GiftPlayModel {
         return mEGiftType;
     }
 
-    public String getGiftIconUrl() {
-        return giftIconUrl;
+    public BaseGift getGift() {
+        return mBaseGift;
     }
 
-    public void setGiftIconUrl(String giftIconUrl) {
-        this.giftIconUrl = giftIconUrl;
+    public void setGift(BaseGift baseGift) {
+        mBaseGift = baseGift;
     }
 
     public enum EGiftType {

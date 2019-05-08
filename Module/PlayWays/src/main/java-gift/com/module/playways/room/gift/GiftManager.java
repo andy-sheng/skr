@@ -16,11 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class GiftManager {
@@ -112,7 +107,11 @@ public class GiftManager {
 
     private void toLocalGiftModel(List<GiftServerModel> giftServerModelList) {
         mBaseGiftList.clear();
-        mBaseGiftList.addAll(BaseGift.parse(giftServerModelList));
+        for(GiftServerModel giftServerModel:giftServerModelList){
+            BaseGift baseGift = BaseGift.parse(giftServerModel);
+            mBaseGiftList.add(baseGift);
+        }
+
     }
 
     public BaseGift getGiftById(int giftId) {

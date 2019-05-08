@@ -1,15 +1,18 @@
 package com.module.playways.room.gift.model;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.module.playways.room.gift.GiftDB;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.zq.live.proto.Common.EGiftDisplayType;
+import com.zq.live.proto.Common.GiftExtraInfo;
+import com.zq.live.proto.Common.GiftInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseGift {
+public abstract class BaseGift {
 
     /**
      * canContinue : true
@@ -40,7 +43,7 @@ public class BaseGift {
     //展示方式，有免费礼物展示，小礼物，中礼物，大礼物四种（0， 1， 2， 3）
     private int displayType;
     //附加信息
-    private String extra;
+//    private String extra;
 
     public float getRealPrice() {
         return realPrice;
@@ -121,14 +124,14 @@ public class BaseGift {
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
     }
-
-    public String getExtra() {
-        return extra;
-    }
-
-    public void setExtra(String extra) {
-        this.extra = extra;
-    }
+//
+//    public String getExtra() {
+//        return extra;
+//    }
+//
+//    public void setExtra(String extra) {
+//        this.extra = extra;
+//    }
 
     public boolean isPlay() {
         return play;
@@ -154,33 +157,12 @@ public class BaseGift {
         this.displayType = displayType;
     }
 
-
-    public static <T extends BaseGift> List<T> parseFromGiftDB(List<GiftDB> giftDBList) {
-        ArrayList<T> list = new ArrayList<>();
-        if (giftDBList == null) {
-            return list;
-        }
-
-        for (GiftDB giftDB : giftDBList) {
-            list.add(parse(giftDB));
-        }
-
-        return list;
-    }
-
-    public static <T extends BaseGift> List<T> parse(List<GiftServerModel> giftServerModelList) {
-        ArrayList<T> list = new ArrayList<>();
-        if (giftServerModelList == null) {
-            return list;
-        }
-
-        for (GiftServerModel giftServerModel : giftServerModelList) {
-            list.add(parse(giftServerModel));
-        }
-
-        return list;
-    }
-
+    /**
+     * 从服务器api解析
+     * @param giftServerModel
+     * @param <T>
+     * @return
+     */
     public static <T extends BaseGift> T parse(GiftServerModel giftServerModel) {
         if (giftServerModel.isPlay()) {
             AnimationGift animationGift = new AnimationGift();
@@ -193,7 +175,43 @@ public class BaseGift {
         }
     }
 
-    public void parseFromSever(GiftServerModel giftServerModel) {
+    /**
+     * 数据库解析
+     * @param giftDB
+     * @param <T>
+     * @return
+     */
+    public static <T extends BaseGift> T parse(GiftDB giftDB) {
+        if (giftDB.getPlay()) {
+            AnimationGift animationGift = new AnimationGift();
+            animationGift.parseFromDB(giftDB);
+            return (T) animationGift;
+        } else {
+            NormalGift normalGift = new NormalGift();
+            normalGift.parseFromDB(giftDB);
+            return (T) normalGift;
+        }
+    }
+
+
+    /**
+     * 从服务器Push PB解析
+     * @param <T>
+     * @return
+     */
+    public static <T extends BaseGift> T parse(GiftInfo giftPb) {
+        if (giftPb.getPlay()) {
+            AnimationGift animationGift = new AnimationGift();
+            animationGift.parseFromPB(giftPb);
+            return (T) animationGift;
+        } else {
+            NormalGift normalGift = new NormalGift();
+            normalGift.parseFromPB(giftPb);
+            return (T) normalGift;
+        }
+    }
+
+    void parseFromSever(GiftServerModel giftServerModel) {
         setGiftID(giftServerModel.getGiftID());
         setGiftName(giftServerModel.getGiftName());
         setGiftType(giftServerModel.getGiftType());
@@ -207,8 +225,6 @@ public class BaseGift {
         setSourceURL(giftServerModel.getSourceURL());
         setPlay(giftServerModel.isPlay());
         setDisplayType(giftServerModel.getDisplayType());
-        setExtra(giftServerModel.getExtra());
-
         // 解析
         parseFromJson(giftServerModel.getExtra());
     }
@@ -232,20 +248,40 @@ public class BaseGift {
         parseFromJson(giftDB.getExtra());
     }
 
-    public static <T extends BaseGift> T parse(GiftDB giftDB) {
-        if (giftDB.getPlay()) {
-            AnimationGift animationGift = new AnimationGift();
-            animationGift.parseFromDB(giftDB);
-            return (T) animationGift;
-        } else {
-            NormalGift normalGift = new NormalGift();
-            normalGift.parseFromDB(giftDB);
-            return (T) normalGift;
+    public void parseFromPB(GiftInfo giftPB) {
+        setGiftID(giftPB.getGiftID());
+        setGiftName(giftPB.getGiftName());
+        setGiftType(giftPB.getGiftType().getValue());
+        setCanContinue(giftPB.getCanContinue());
+        setTextContinueCount(giftPB.getTextContinueCount());
+        setGiftURL(giftPB.getGiftURL());
+        setPrice(giftPB.getPrice().intValue());
+        setRealPrice(giftPB.getRealPrice());
+        setSortID(giftPB.getSortID());
+        setDescription(giftPB.getDescription());
+        setSourceURL(giftPB.getSourceURL());
+        setPlay(giftPB.getPlay());
+        setDisplayType(giftPB.getDisplayType().getValue());
+
+        // 解析
+        GiftExtraInfo extraInfo = giftPB.getExtra();
+        if (extraInfo != null) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("left",extraInfo.getLeft());
+            jsonObject.put("top",extraInfo.getTop());
+            jsonObject.put("right",extraInfo.getRight());
+            jsonObject.put("bottom",extraInfo.getBottom());
+            jsonObject.put("width",extraInfo.getWidth());
+            jsonObject.put("height",extraInfo.getHeight());
+            jsonObject.put("duration",extraInfo.getDuration());
+            parseFromJson(jsonObject.toJSONString());
         }
-    }
-
-
-    protected void parseFromJson(String extra) {
 
     }
+
+    /**
+     * 被子类复写
+     * @param extra
+     */
+    protected  abstract void parseFromJson(String extra);
 }
