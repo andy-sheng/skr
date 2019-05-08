@@ -7,7 +7,7 @@ import com.common.rxretrofit.ApiManager;
 import com.module.playways.room.gift.GiftManager;
 import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.event.GiftReadyEvent;
-import com.module.playways.room.gift.inter.IGiftView;
+import com.module.playways.room.gift.inter.IGiftDisplayView;
 import com.module.playways.room.gift.model.BaseGift;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,13 +25,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class GiftViewPresenter extends RxLifeCyclePresenter {
-    IGiftView mIGiftView;
+    IGiftDisplayView mIGiftView;
 
     Disposable mGiftDisposable;
 
     GiftServerApi mGiftServerApi;
 
-    public GiftViewPresenter(IGiftView iGiftView) {
+    public GiftViewPresenter(IGiftDisplayView iGiftView) {
         mIGiftView = iGiftView;
         mGiftServerApi = ApiManager.getInstance().createService(GiftServerApi.class);
         addToLifeCycle();

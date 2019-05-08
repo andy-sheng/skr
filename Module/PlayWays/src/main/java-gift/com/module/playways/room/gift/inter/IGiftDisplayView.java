@@ -5,7 +5,7 @@ import com.module.playways.room.gift.model.BaseGift;
 import java.util.HashMap;
 import java.util.List;
 
-public interface IGiftView {
+public interface IGiftDisplayView {
     void showGift(HashMap<Integer, List<BaseGift>> baseGiftCollection);
 
     void getGiftListFaild();

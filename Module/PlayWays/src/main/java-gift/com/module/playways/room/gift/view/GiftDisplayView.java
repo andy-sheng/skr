@@ -15,7 +15,7 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.room.gift.adapter.GiftAdapter;
 import com.module.playways.room.gift.adapter.GiftViewPagerAdapter;
-import com.module.playways.room.gift.inter.IGiftView;
+import com.module.playways.room.gift.inter.IGiftDisplayView;
 import com.module.playways.room.gift.loadsir.GiftEmptyCallback;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.presenter.GiftViewPresenter;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * 礼物橱窗view
  */
-public class GiftDisplayView extends ExFrameLayout implements IGiftView {
+public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
     ViewPager mViewpager;
 
     GiftViewPagerAdapter mGiftViewPagerAdapter;
