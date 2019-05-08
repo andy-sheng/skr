@@ -1,14 +1,11 @@
 package com.module.playways.room.gift;
 
-import android.support.annotation.NonNull;
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
 
 import java.io.Serializable;
-
 import org.greenrobot.greendao.annotation.Generated;
+
 
 @Entity(
 )
@@ -26,10 +23,16 @@ public class GiftDB implements Serializable {
     private Integer sortID = 0;
     private String sourceURL;
     private Float realPrice;
-    @Generated(hash = 1604501295)
+    private Boolean play;
+    private Integer textContinueCount;
+    private Integer displayType;
+    private String extra;
+
+    @Generated(hash = 92592788)
     public GiftDB(Long giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
-            Integer sortID, String sourceURL, Float realPrice) {
+            Integer sortID, String sourceURL, Float realPrice, Boolean play,
+            Integer textContinueCount, Integer displayType, String extra) {
         this.giftID = giftID;
         this.canContinue = canContinue;
         this.description = description;
@@ -40,6 +43,10 @@ public class GiftDB implements Serializable {
         this.sortID = sortID;
         this.sourceURL = sourceURL;
         this.realPrice = realPrice;
+        this.play = play;
+        this.textContinueCount = textContinueCount;
+        this.displayType = displayType;
+        this.extra = extra;
     }
     @Generated(hash = 2046579016)
     public GiftDB() {
@@ -104,9 +111,29 @@ public class GiftDB implements Serializable {
     public void setRealPrice(Float realPrice) {
         this.realPrice = realPrice;
     }
-
-    
-    
-
+    public Boolean getPlay() {
+        return this.play;
+    }
+    public void setPlay(Boolean play) {
+        this.play = play;
+    }
+    public Integer getTextContinueCount() {
+        return this.textContinueCount;
+    }
+    public void setTextContinueCount(Integer textContinueCount) {
+        this.textContinueCount = textContinueCount;
+    }
+    public Integer getDisplayType() {
+        return this.displayType;
+    }
+    public void setDisplayType(Integer displayType) {
+        this.displayType = displayType;
+    }
+    public String getExtra() {
+        return this.extra;
+    }
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
 }
 

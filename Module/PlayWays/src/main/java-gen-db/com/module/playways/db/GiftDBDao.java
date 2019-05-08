@@ -34,6 +34,10 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         public final static Property SortID = new Property(7, Integer.class, "sortID", false, "SORT_ID");
         public final static Property SourceURL = new Property(8, String.class, "sourceURL", false, "SOURCE_URL");
         public final static Property RealPrice = new Property(9, Float.class, "realPrice", false, "REAL_PRICE");
+        public final static Property Play = new Property(10, Boolean.class, "play", false, "PLAY");
+        public final static Property TextContinueCount = new Property(11, Integer.class, "textContinueCount", false, "TEXT_CONTINUE_COUNT");
+        public final static Property DisplayType = new Property(12, Integer.class, "displayType", false, "DISPLAY_TYPE");
+        public final static Property Extra = new Property(13, String.class, "extra", false, "EXTRA");
     }
 
 
@@ -58,7 +62,11 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
                 "\"PRICE\" INTEGER," + // 6: price
                 "\"SORT_ID\" INTEGER," + // 7: sortID
                 "\"SOURCE_URL\" TEXT," + // 8: sourceURL
-                "\"REAL_PRICE\" REAL);"); // 9: realPrice
+                "\"REAL_PRICE\" REAL," + // 9: realPrice
+                "\"PLAY\" INTEGER," + // 10: play
+                "\"TEXT_CONTINUE_COUNT\" INTEGER," + // 11: textContinueCount
+                "\"DISPLAY_TYPE\" INTEGER," + // 12: displayType
+                "\"EXTRA\" TEXT);"); // 13: extra
     }
 
     /** Drops the underlying database table. */
@@ -120,6 +128,26 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         if (realPrice != null) {
             stmt.bindDouble(10, realPrice);
         }
+ 
+        Boolean play = entity.getPlay();
+        if (play != null) {
+            stmt.bindLong(11, play ? 1L: 0L);
+        }
+ 
+        Integer textContinueCount = entity.getTextContinueCount();
+        if (textContinueCount != null) {
+            stmt.bindLong(12, textContinueCount);
+        }
+ 
+        Integer displayType = entity.getDisplayType();
+        if (displayType != null) {
+            stmt.bindLong(13, displayType);
+        }
+ 
+        String extra = entity.getExtra();
+        if (extra != null) {
+            stmt.bindString(14, extra);
+        }
     }
 
     @Override
@@ -175,6 +203,26 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         if (realPrice != null) {
             stmt.bindDouble(10, realPrice);
         }
+ 
+        Boolean play = entity.getPlay();
+        if (play != null) {
+            stmt.bindLong(11, play ? 1L: 0L);
+        }
+ 
+        Integer textContinueCount = entity.getTextContinueCount();
+        if (textContinueCount != null) {
+            stmt.bindLong(12, textContinueCount);
+        }
+ 
+        Integer displayType = entity.getDisplayType();
+        if (displayType != null) {
+            stmt.bindLong(13, displayType);
+        }
+ 
+        String extra = entity.getExtra();
+        if (extra != null) {
+            stmt.bindString(14, extra);
+        }
     }
 
     @Override
@@ -194,7 +242,11 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // price
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // sortID
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // sourceURL
-            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9) // realPrice
+            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9), // realPrice
+            cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0, // play
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // textContinueCount
+            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // displayType
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // extra
         );
         return entity;
     }
@@ -211,6 +263,10 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
         entity.setSortID(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setSourceURL(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setRealPrice(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
+        entity.setPlay(cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0);
+        entity.setTextContinueCount(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setDisplayType(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
+        entity.setExtra(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     @Override

@@ -1,7 +1,10 @@
 package com.module.playways.room.gift.model;
 
+import com.alibaba.fastjson.JSONObject;
 import com.module.playways.room.gift.GiftDB;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
+import com.module.playways.room.room.gift.model.GiftPlayModel;
+import com.zq.live.proto.Common.EGiftDisplayType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +33,14 @@ public class BaseGift {
     private float realPrice;
     private int sortID;
     private String sourceURL;
-    //附加信息
-    private String extra;
-    //要不要播放
+    //有没有动画
     private boolean play;
     //连送展示几个，0为不展示，-1，为一直展示，
     private int textContinueCount;
     //展示方式，有免费礼物展示，小礼物，中礼物，大礼物四种（0， 1， 2， 3）
     private int displayType;
+    //附加信息
+    private String extra;
 
     public float getRealPrice() {
         return realPrice;
@@ -117,7 +120,38 @@ public class BaseGift {
 
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
+    }
 
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
+    public boolean isPlay() {
+        return play;
+    }
+
+    public void setPlay(boolean play) {
+        this.play = play;
+    }
+
+    public int getTextContinueCount() {
+        return textContinueCount;
+    }
+
+    public void setTextContinueCount(int textContinueCount) {
+        this.textContinueCount = textContinueCount;
+    }
+
+    public int getDisplayType() {
+        return displayType;
+    }
+
+    public void setDisplayType(int displayType) {
+        this.displayType = displayType;
     }
 
 
@@ -148,33 +182,70 @@ public class BaseGift {
     }
 
     public static <T extends BaseGift> T parse(GiftServerModel giftServerModel) {
-        NormalGift normalGift = new NormalGift();
-        normalGift.setGiftID(giftServerModel.getGiftID());
-        normalGift.setGiftName(giftServerModel.getGiftName());
-        normalGift.setGiftURL(giftServerModel.getGiftURL());
-        normalGift.setPrice(giftServerModel.getPrice());
-        normalGift.setCanContinue(giftServerModel.isCanContinue());
-        normalGift.setDescription(giftServerModel.getDescription());
-        normalGift.setGiftType(giftServerModel.getGiftType());
-        normalGift.setSortID(giftServerModel.getSortID());
-        normalGift.setSourceURL(giftServerModel.getSourceURL());
-        normalGift.setRealPrice(giftServerModel.getRealPrice());
+        if (giftServerModel.isPlay()) {
+            AnimationGift animationGift = new AnimationGift();
+            animationGift.parseFromSever(giftServerModel);
+            return (T) animationGift;
+        } else {
+            NormalGift normalGift = new NormalGift();
+            normalGift.parseFromSever(giftServerModel);
+            return (T) normalGift;
+        }
+    }
 
-        return (T) normalGift;
+    public void parseFromSever(GiftServerModel giftServerModel) {
+        setGiftID(giftServerModel.getGiftID());
+        setGiftName(giftServerModel.getGiftName());
+        setGiftType(giftServerModel.getGiftType());
+        setCanContinue(giftServerModel.isCanContinue());
+        setTextContinueCount(giftServerModel.getTextContinueCount());
+        setGiftURL(giftServerModel.getGiftURL());
+        setPrice(giftServerModel.getPrice());
+        setRealPrice(giftServerModel.getRealPrice());
+        setSortID(giftServerModel.getSortID());
+        setDescription(giftServerModel.getDescription());
+        setSourceURL(giftServerModel.getSourceURL());
+        setPlay(giftServerModel.isPlay());
+        setDisplayType(giftServerModel.getDisplayType());
+        setExtra(giftServerModel.getExtra());
+
+        // 解析
+        parseFromJson(giftServerModel.getExtra());
+    }
+
+    public void parseFromDB(GiftDB giftDB) {
+        setGiftID(giftDB.getGiftID());
+        setGiftName(giftDB.getGiftName());
+        setGiftType(giftDB.getGiftType());
+        setCanContinue(giftDB.getCanContinue());
+        setTextContinueCount(giftDB.getTextContinueCount());
+        setGiftURL(giftDB.getGiftURL());
+        setPrice(giftDB.getPrice());
+        setRealPrice(giftDB.getRealPrice());
+        setSortID(giftDB.getSortID());
+        setDescription(giftDB.getDescription());
+        setSourceURL(giftDB.getSourceURL());
+        setPlay(giftDB.getPlay());
+        setDisplayType(giftDB.getDisplayType());
+
+        // 解析
+        parseFromJson(giftDB.getExtra());
     }
 
     public static <T extends BaseGift> T parse(GiftDB giftDB) {
-        NormalGift normalGift = new NormalGift();
-        normalGift.setGiftID(giftDB.getGiftID());
-        normalGift.setGiftName(giftDB.getGiftName());
-        normalGift.setGiftURL(giftDB.getGiftURL());
-        normalGift.setPrice(giftDB.getPrice());
-        normalGift.setCanContinue(giftDB.getCanContinue());
-        normalGift.setDescription(giftDB.getDescription());
-        normalGift.setGiftType(giftDB.getGiftType());
-        normalGift.setSortID(giftDB.getSortID());
-        normalGift.setSourceURL(giftDB.getSourceURL());
-        normalGift.setRealPrice(giftDB.getRealPrice());
-        return (T) normalGift;
+        if (giftDB.getPlay()) {
+            AnimationGift animationGift = new AnimationGift();
+            animationGift.parseFromDB(giftDB);
+            return (T) animationGift;
+        } else {
+            NormalGift normalGift = new NormalGift();
+            normalGift.parseFromDB(giftDB);
+            return (T) normalGift;
+        }
+    }
+
+
+    public void parseFromJson(String extra) {
+
     }
 }

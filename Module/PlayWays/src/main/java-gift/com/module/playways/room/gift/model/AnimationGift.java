@@ -1,67 +1,93 @@
 package com.module.playways.room.gift.model;
+import com.alibaba.fastjson.JSON;
 
 public class AnimationGift extends BaseGift {
-    long duration;
-    int width;
-    int height;
-    int left;
-    int right;
-    int top;
-    int bottom;
 
-    public long getDuration() {
-        return duration;
+    AnimationPrams mAnimationPrams;
+
+    public AnimationPrams getAnimationPrams() {
+        return mAnimationPrams;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
+    public void setAnimationPrams(AnimationPrams animationPrams) {
+        mAnimationPrams = animationPrams;
     }
 
-    public int getWidth() {
-        return width;
+//    @Override
+//    public String packetToJson() {
+//        return JSON.toJSONString(mAnimationPrams);
+//    }
+
+    @Override
+    public void parseFromJson(String extra) {
+        AnimationPrams animationPrams = JSON.parseObject(extra, AnimationPrams.class);
+        setAnimationPrams(animationPrams);
+        super.parseFromJson(extra);
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
+    class AnimationPrams {
+        long duration;
+        int width;
+        int height;
+        int left;
+        int right;
+        int top;
+        int bottom;
 
-    public int getHeight() {
-        return height;
-    }
+        public long getDuration() {
+            return duration;
+        }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
+        public void setDuration(long duration) {
+            this.duration = duration;
+        }
 
-    public int getLeft() {
-        return left;
-    }
+        public int getWidth() {
+            return width;
+        }
 
-    public void setLeft(int left) {
-        this.left = left;
-    }
+        public void setWidth(int width) {
+            this.width = width;
+        }
 
-    public int getRight() {
-        return right;
-    }
+        public int getHeight() {
+            return height;
+        }
 
-    public void setRight(int right) {
-        this.right = right;
-    }
+        public void setHeight(int height) {
+            this.height = height;
+        }
 
-    public int getTop() {
-        return top;
-    }
+        public int getLeft() {
+            return left;
+        }
 
-    public void setTop(int top) {
-        this.top = top;
-    }
+        public void setLeft(int left) {
+            this.left = left;
+        }
 
-    public int getBottom() {
-        return bottom;
-    }
+        public int getRight() {
+            return right;
+        }
 
-    public void setBottom(int bottom) {
-        this.bottom = bottom;
+        public void setRight(int right) {
+            this.right = right;
+        }
+
+        public int getTop() {
+            return top;
+        }
+
+        public void setTop(int top) {
+            this.top = top;
+        }
+
+        public int getBottom() {
+            return bottom;
+        }
+
+        public void setBottom(int bottom) {
+            this.bottom = bottom;
+        }
     }
 }

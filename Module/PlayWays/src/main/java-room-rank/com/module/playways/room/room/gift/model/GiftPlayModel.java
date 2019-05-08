@@ -1,17 +1,11 @@
 package com.module.playways.room.room.gift.model;
 
-import android.text.TextUtils;
-
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.gift.model.AnimGiftParamModel;
-import com.module.playways.room.gift.model.BaseGift;
-import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
-
-import static com.module.playways.BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
 
 public class GiftPlayModel {
     private EGiftType mEGiftType = EGiftType.EMOJI;
