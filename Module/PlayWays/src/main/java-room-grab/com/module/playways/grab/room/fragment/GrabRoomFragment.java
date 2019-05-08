@@ -197,7 +197,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     ImageView mIvChanllengeTipView;
 
     int mShowOwnerTipTimes = 0;
-    int mOwnerKickTimes = 0;  // 房主踢人的次数
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -905,7 +904,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
                                 //充值成功
-                                if(requestCode == 100 && resultCode == 0){
+                                if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS();
                                 }
                             }
@@ -1241,7 +1240,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mGiftPanelView.destroy();
         }
 
-        mOwnerKickTimes = 0;
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }
@@ -1400,13 +1398,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         int type;
         if (mRoomData.isOwner()) {
-            if (mOwnerKickTimes < 2) {
+            if (mRoomData.getOwnerKickTimes() > 0) {
                 type = ConfirmDialog.TYPE_OWNER_KICK_CONFIRM;
             } else {
                 type = ConfirmDialog.TYPE_KICK_CONFIRM;
             }
         } else {
-            mOwnerKickTimes = 0;
             type = ConfirmDialog.TYPE_KICK_CONFIRM;
         }
 
@@ -1482,11 +1479,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();
         }
-    }
-
-    @Override
-    public void addKickTimes() {
-        mOwnerKickTimes++;
     }
 
     @Override

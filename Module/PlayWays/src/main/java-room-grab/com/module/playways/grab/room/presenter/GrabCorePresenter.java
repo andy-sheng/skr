@@ -1026,7 +1026,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     if (mRoomData.isOwner()) {
-                        mIGrabView.addKickTimes();
+                        int kickTimes = result.getData().getIntValue("resKickUserTimes");
+                        // TODO: 2019/5/8 更新剩余次数
+                        mRoomData.setOwnerKickTimes(kickTimes);
                         U.getToastUtil().showShort("踢人成功");
                     } else {
                         U.getToastUtil().showShort("发起踢人请求成功");

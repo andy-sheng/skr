@@ -39,6 +39,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private boolean mSpeaking; // 是否正在抢麦说话，一般用于主播控场
     private boolean mChallengeAvailable;
     private String roomName;  // 房间名称
+    int mOwnerKickTimes = 100;  // 房主剩余踢人的次数,默认为100
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -292,6 +293,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setSongLineNum(Integer songLineNum) {
         mSongLineNum = songLineNum;
+    }
+
+    public int getOwnerKickTimes() {
+        return mOwnerKickTimes;
+    }
+
+    public void setOwnerKickTimes(int ownerKickTimes) {
+        mOwnerKickTimes = ownerKickTimes;
     }
 
     @Override
