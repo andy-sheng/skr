@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
@@ -55,6 +57,8 @@ import com.module.playways.room.room.gift.GiftContinueViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -131,7 +135,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
     GrabScoreTipsView mGrabScoreTipsView;
 
-//    DialogPlus mQuitTipsDialog;
+    DialogPlus mQuitTipsDialog;
 
 //    PersonInfoDialog mPersonInfoDialog;
 
@@ -798,6 +802,42 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
     private void quitGame() {
         dismissDialog();
+        if (mQuitTipsDialog == null) {
+            String msg = "还未完成新手引导\n确定退出么？";
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                    .setMessageTip(msg)
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mQuitTipsDialog != null) {
+                                mQuitTipsDialog.dismiss(false);
+                            }
+                            mCorePresenter.exitRoom();
+                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                    "game_exit", null);
+                        }
+                    })
+                    .setCancelBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mQuitTipsDialog != null) {
+                                mQuitTipsDialog.dismiss();
+                            }
+                        }
+                    })
+                    .build();
+
+            mQuitTipsDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+        mQuitTipsDialog.show();
     }
 
     @Override
@@ -824,13 +864,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
     @Override
     public void onGetGameResult(boolean success) {
-//        if (success) {
         onGrabGameOver("onGetGameResultSuccess");
-//        } else {
-//            if (getActivity() != null) {
-//                getActivity().finish();
-//            }
-//        }
     }
 
     @Override

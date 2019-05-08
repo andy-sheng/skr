@@ -113,7 +113,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     //只有轮次切换的时候调用
     private void initData() {
-        if (mRoomData!=null && !mRoomData.hasGameBegin()) {
+        if (!mRoomData.hasGameBegin()) {
             MyLog.d(TAG, "游戏未开始，不能用轮次信息里更新头像");
             resetAllGrabTopItemView();
             List<GrabPlayerInfoModel> list = mRoomData.getPlayerInfoList();

@@ -165,7 +165,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mTaskIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-//                U.getToastUtil().showShort("点击了做任务");
+                if(MyLog.isDebugLogOpen()){
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
+                            .navigation();
+                    return;
+                }
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
                         .navigation();

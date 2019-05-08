@@ -540,6 +540,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
      */
     public void exitRoom() {
         //TODO 自动退出房间，切换到毕业了结果页
+        mIGrabView.onGetGameResult(true);
     }
 
 
