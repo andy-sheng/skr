@@ -2,10 +2,10 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 
-public class BigGiftBrushMsgEvent {
+public class OverlayGiftBrushMsgEvent {
     GiftPlayModel mGiftPlayModel;
 
-    public BigGiftBrushMsgEvent(GiftPlayModel giftPlayModel) {
+    public OverlayGiftBrushMsgEvent(GiftPlayModel giftPlayModel) {
         mGiftPlayModel = giftPlayModel;
     }
 

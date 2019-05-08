@@ -31,8 +31,9 @@ import com.common.utils.HandlerTaskTimer;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
-import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
+import com.module.playways.room.msg.event.BigGiftMsgEvent;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
+import com.zq.live.proto.Common.EGiftDisplayType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -2349,7 +2350,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GiftPresentEvent giftPresentEvent) {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
-            EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
+            if (giftPresentEvent.mGPrensentGiftMsg.getGiftInfo().getDisplayType() == EGiftDisplayType.EGDT_Big) {
+                EventBus.getDefault().post(new BigGiftMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
+            } else {
+                EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
+            }
         }
     }
 

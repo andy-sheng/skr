@@ -77,6 +77,7 @@ import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
+import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
@@ -799,7 +800,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     private void initGiftDisplayView() {
         GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
         giftContinueViewGroup.setRoomData(mRoomData);
-        GiftOverlayAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        GiftOverlayAnimationViewGroup giftOverlayAnimationViewGroup = mRootView.findViewById(R.id.gift_overlay_animation_vg);
+        giftOverlayAnimationViewGroup.setRoomData(mRoomData);
+        GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);

@@ -157,7 +157,7 @@
         android:paddingLeft="@dimen/view_16_dp" />
 
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
-        android:id="@+id/gift_big_animation_vg"
+        android:id="@+id/gift_overlay_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -208,4 +208,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_trans_80" />
+
+    <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
+        android:id="@+id/gift_big_animation_vg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.module.playways.room.room.gift.GiftBigAnimationViewGroup>
 </RelativeLayout>

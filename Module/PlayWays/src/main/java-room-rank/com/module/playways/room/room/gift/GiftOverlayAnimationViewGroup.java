@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.ObjectPlayControlTemplate;
-import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
+import com.module.playways.room.msg.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
@@ -70,7 +70,7 @@ public class GiftOverlayAnimationViewGroup extends RelativeLayout {
     };
 
     public void init(Context context) {
-        inflate(context, R.layout.gift_big_animation_view_group_layout, this);
+        inflate(context, R.layout.gift_overlay_animation_view_group_layout, this);
         bindView();
     }
 
@@ -119,7 +119,7 @@ public class GiftOverlayAnimationViewGroup extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(BigGiftBrushMsgEvent giftPresentEvent) {
+    public void onEvent(OverlayGiftBrushMsgEvent giftPresentEvent) {
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             return;
         }

@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -50,7 +49,6 @@ import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.msg.BasePushInfo;
-import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftPresentEvent;
