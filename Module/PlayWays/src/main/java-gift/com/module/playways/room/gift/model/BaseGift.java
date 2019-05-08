@@ -31,11 +31,11 @@ public abstract class BaseGift {
     private long giftID;
     private String giftName;
     private int giftType;
-    private String giftURL;
+    private String giftURL;// 礼物图片
     private int price;
     private float realPrice;
     private int sortID;
-    private String sourceURL;
+    private String sourceURL;// 礼物动画资源
     //有没有动画
     private boolean play;
     //连送展示几个，0为不展示，-1，为一直展示，

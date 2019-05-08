@@ -24,7 +24,7 @@ public class AnimationGift extends BaseGift {
         setAnimationPrams(animationPrams);
     }
 
-    static class AnimationPrams {
+    public static class AnimationPrams {
         long duration;
         int width;
         int height;

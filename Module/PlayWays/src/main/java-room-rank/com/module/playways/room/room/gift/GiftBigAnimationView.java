@@ -10,7 +10,8 @@ import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.utils.U;
-import com.module.playways.room.gift.model.AnimGiftParamModel;
+import com.module.playways.room.gift.model.AnimationGift;
+import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -52,18 +53,24 @@ public class GiftBigAnimationView {
     public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
         // TODO: 2019/5/8  播放动画 差个偏移量
         mGiftPlayModel = giftPlayModel;
-        AnimGiftParamModel giftParamModel = mGiftPlayModel.getAnimGiftParamModel();
-        if (parent.indexOfChild(mSVGAImageView) < 0) {
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(giftParamModel.getWidth(), giftParamModel.getHeight());
-            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-            parent.addView(mSVGAImageView, lp);
-        }
-        mStatus = STATUS_PLAYING;
-        load(giftParamModel.getResUrl());
+        BaseGift baseGift = mGiftPlayModel.getGift();
+        if(baseGift instanceof AnimationGift){
+            AnimationGift animationGift = (AnimationGift) baseGift;
+            AnimationGift.AnimationPrams giftParamModel = animationGift.getAnimationPrams();
 
-        mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
-        // TODO: 2019/5/8 时间可以根据动画加上一点做保护
-        mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, giftParamModel.getDuration() + 5000);
+            if (parent.indexOfChild(mSVGAImageView) < 0) {
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(giftParamModel.getWidth(), giftParamModel.getHeight());
+                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                parent.addView(mSVGAImageView, lp);
+            }
+            mStatus = STATUS_PLAYING;
+            load(animationGift.getSourceURL());
+
+            mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
+            // TODO: 2019/5/8 时间可以根据动画加上一点做保护
+            mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, giftParamModel.getDuration() + 5000);
+        }
+
     }
 
     private void load(String url) {

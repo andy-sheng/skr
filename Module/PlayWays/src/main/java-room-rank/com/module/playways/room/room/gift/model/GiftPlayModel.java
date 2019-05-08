@@ -2,7 +2,6 @@ package com.module.playways.room.room.gift.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
-import com.module.playways.room.gift.model.AnimGiftParamModel;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.GPrensentGiftMsg;
@@ -151,6 +150,20 @@ public class GiftPlayModel {
 
     public void setGift(BaseGift baseGift) {
         mBaseGift = baseGift;
+    }
+
+    public String getGiftIconUrl() {
+        if (mBaseGift != null) {
+            return mBaseGift.getGiftURL();
+        }
+        return "";
+    }
+
+    public String getGiftAnimationUrl() {
+        if (mBaseGift != null) {
+            return mBaseGift.getSourceURL();
+        }
+        return "";
     }
 
     public enum EGiftType {
