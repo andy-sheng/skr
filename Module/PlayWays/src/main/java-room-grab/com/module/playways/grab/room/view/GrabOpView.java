@@ -97,9 +97,13 @@ public class GrabOpView extends RelativeLayout {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
-                    hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
-                    if (mListener != null) {
-                        mListener.grabCountDownOver();
+                    if(mGrabRoomData.getGrabGuideInfoModel()==null){
+                        hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
+                        if (mListener != null) {
+                            mListener.grabCountDownOver();
+                        }
+                    }else{
+                        MyLog.d(TAG,"新手引导不隐藏抢唱按钮");
                     }
                     break;
                 case MSG_HIDE:
@@ -493,9 +497,6 @@ public class GrabOpView extends RelativeLayout {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        if (mListener != null) {
-                            mListener.countDownOver();
-                        }
 
                         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                                 Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);

@@ -166,8 +166,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void click(View view) {
                 if(MyLog.isDebugLogOpen()){
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
-                            .navigation();
+                    IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                    if (iRankingModeService != null) {
+                        iRankingModeService.tryGoGrabGuide();
+                    }
                     return;
                 }
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)

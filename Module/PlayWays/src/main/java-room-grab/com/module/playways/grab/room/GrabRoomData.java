@@ -11,6 +11,7 @@ import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
+import com.module.playways.grab.room.guide.model.GrabGuideInfoModel;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -321,5 +322,16 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public boolean isSpeaking() {
         return mSpeaking;
+    }
+
+
+    GrabGuideInfoModel mGrabGuideInfoModel;
+
+    public void setGrabGuideInfoModel(GrabGuideInfoModel grabGuideInfoModel) {
+        mGrabGuideInfoModel = grabGuideInfoModel;
+    }
+
+    public GrabGuideInfoModel getGrabGuideInfoModel() {
+        return mGrabGuideInfoModel;
     }
 }

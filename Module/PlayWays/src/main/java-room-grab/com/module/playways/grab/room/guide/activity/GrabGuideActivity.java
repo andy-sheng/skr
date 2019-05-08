@@ -27,12 +27,14 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.guide.fragment.GrabGuideFragment;
+import com.module.playways.grab.room.guide.model.GrabGuideInfoModel;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EQUserRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +59,9 @@ public class GrabGuideActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        //TODO 这里请求下服务器，然后造个假数据
+        GrabGuideInfoModel grabGuideInfoModel = (GrabGuideInfoModel) getIntent().getSerializableExtra("guide_data");
+        mRoomData.setGrabGuideInfoModel(grabGuideInfoModel);
+
         mRoomData.setGameId((int) MyUserInfoManager.getInstance().getUid());
         mRoomData.setCoin(10);
 
@@ -65,37 +69,7 @@ public class GrabGuideActivity extends BaseActivity {
         grabConfigModel.setTotalGameRoundSeq(2);
         mRoomData.setGrabConfigModel(grabConfigModel);
 
-        GrabRoundInfoModel grabRoundInfoModel = new GrabRoundInfoModel();
-        List<GrabPlayerInfoModel> playerInfoModelList = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            GrabPlayerInfoModel playerInfoModel = new GrabPlayerInfoModel();
-            UserInfoModel userInfoModel = new UserInfoModel();
-            if (i == 0) {
-                userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
-                userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
-                userInfoModel.setNickname("用户：" + i);
-                playerInfoModel.setUserID((int) MyUserInfoManager.getInstance().getUid());
-            } else {
-                userInfoModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
-                userInfoModel.setUserId(1 + i * 2);
-                userInfoModel.setNickname("用户：" + i);
-                playerInfoModel.setUserID(1 + i * 2);
-            }
-
-            playerInfoModel.setUserInfo(userInfoModel);
-            playerInfoModelList.add(playerInfoModel);
-        }
-        grabRoundInfoModel.updatePlayUsers(playerInfoModelList);
-
-        grabRoundInfoModel.setStatus(EQRoundStatus.QRS_INTRO.getValue());
-        grabRoundInfoModel.setParticipant(true);
-        grabRoundInfoModel.setElapsedTimeMs(0);
-
-        SongModel songModel = new SongModel();
-        songModel.setItemName("歌曲22");
-        grabRoundInfoModel.setMusic(songModel);
-        grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
-        mRoomData.setExpectRoundInfo(grabRoundInfoModel);
+        mRoomData.setExpectRoundInfo(grabGuideInfoModel.createARoundInfo());
 
         if (mRoomData.getGameStartTs() == 0) {
             mRoomData.setGameStartTs(System.currentTimeMillis());
@@ -109,7 +83,6 @@ public class GrabGuideActivity extends BaseActivity {
 
         mRoomData.setChallengeAvailable(false);
         mRoomData.setRoomName("新手引导房间");
-
         go();
         U.getStatusBarUtil().setTransparentBar(this, false);
     }

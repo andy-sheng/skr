@@ -412,7 +412,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             @Override
             public void clickGrabBtn(int seq, boolean challenge) {
                 U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
-                mCorePresenter.grabThisRound(seq, challenge);
+                mCorePresenter.grabThisRound((int) MyUserInfoManager.getInstance().getUid(),seq, challenge);
             }
 
             @Override
@@ -428,7 +428,12 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
             @Override
             public void countDownOver() {
-
+                GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+                if(now!=null){
+                    if(now.getRoundSeq()==2){
+                        mCorePresenter.grabThisRound(mRoomData.getGrabGuideInfoModel().getbRoundUserID(),now.getRoundSeq(),false);
+                    }
+                }
             }
 
             @Override

@@ -15,8 +15,10 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.event.GrabChangeRoomEvent;
+import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
+import com.module.playways.grab.room.guide.model.GrabGuideInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -56,7 +58,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     Disposable mJoinRoomDisposable;
 
     @Override
-    public void tryGoGrabRoom(int roomID,int inviteType) {
+    public void tryGoGrabRoom(int roomID, int inviteType) {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
@@ -112,7 +114,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
             return;
         }
-        if(U.getActivityUtils().getTopActivity() instanceof GrabRoomActivity){
+        if (U.getActivityUtils().getTopActivity() instanceof GrabRoomActivity) {
             MyLog.d(TAG, "tryGoCreateRoom 顶部一唱到底房间，cancel");
             return;
         }
@@ -124,6 +126,23 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public void tryGoGrabMatch(int tagId) {
         // 拉取音乐不是关键路径，不block进入匹配
         goGrabMatch(tagId, null);
+    }
+
+    @Override
+    public void tryGoGrabGuide() {
+        GrabGuideServerApi grabGuideServerApi = ApiManager.getInstance().createService(GrabGuideServerApi.class);
+        if (grabGuideServerApi != null) {
+            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(),GrabGuideInfoModel.class);
+
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
+                            .withSerializable("guide_data",grabGuideInfoModel)
+                            .navigation();
+                }
+            }, new ApiMethods.RequestControl("getGuideRes", ApiMethods.ControlType.CancelThis));
+        }
     }
 
     private void goGrabMatch(int tagId, List<String> musicURLs) {

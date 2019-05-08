@@ -82,7 +82,9 @@ import com.zq.live.proto.Room.EQGameOverReason;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EQUserRole;
 import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.ERoundOverReason;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
@@ -95,6 +97,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.agora.rtc.Constants;
@@ -347,23 +350,27 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
     /**
      * 抢唱歌权
      */
-    public void grabThisRound(int seq, boolean challenge) {
+    public void grabThisRound(int userId, int seq, boolean challenge) {
         MyLog.d(TAG, "grabThisRound" + " seq=" + seq + " challenge=" + challenge + " accenable=" + mRoomData.isAccEnable());
-
         //抢成功了
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        WantSingerInfo wantSingerInfo = new WantSingerInfo();
-        wantSingerInfo.setWantSingType(EWantSingType.EWST_DEFAULT.getValue());
-        wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
-        wantSingerInfo.setTimeMs(System.currentTimeMillis());
-        now.addGrabUid(true, wantSingerInfo);
-        // TODO 这里自动触发轮次内状态切换
-        mUiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        if (now != null) {
+            WantSingerInfo wantSingerInfo = new WantSingerInfo();
+            wantSingerInfo.setWantSingType(EWantSingType.EWST_DEFAULT.getValue());
+            wantSingerInfo.setUserID(userId);
+            wantSingerInfo.setTimeMs(System.currentTimeMillis());
+            now.addGrabUid(true, wantSingerInfo);
 
-            }
-        },1000);
+            // 第一轮，按剧本自己唱，直接触发轮次变化
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    now.setHasSing(true);
+                    now.setUserID(userId);
+                    now.updateStatus(true, EQRoundStatus.QRS_SING.getValue());
+                }
+            }, 1000);
+        }
     }
 
     /**
@@ -482,7 +489,6 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         }
     }
 
-
     @Override
     public void destroy() {
         MyLog.d(TAG, "destroy begin");
@@ -515,6 +521,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
      */
     public void sendMyGrabOver() {
         //TODO 轮次悬停住，让用户可以一直抢
+
     }
 
     /**
@@ -523,15 +530,27 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
     public void sendRoundOverInfo() {
         MyLog.w(TAG, "上报我的演唱结束");
         //TODO 自动切换轮次，我的轮次结束
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            now.setOverReason(EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue());
+        }
+        GrabRoundInfoModel bRoundInfo = mRoomData.getGrabGuideInfoModel().createBRoundInfo();
+        mRoomData.setExpectRoundInfo(bRoundInfo);
+        mRoomData.checkRoundInEachMode();
     }
-
 
     /**
      * 放弃演唱接口
      */
     public void giveUpSing() {
         MyLog.w(TAG, "我放弃演唱");
-        //TODO 自动切换轮次，我的轮次结束
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            now.setOverReason(EQRoundOverReason.ROR_SELF_GIVE_UP.getValue());
+        }
+        GrabRoundInfoModel bRoundInfo = mRoomData.getGrabGuideInfoModel().createBRoundInfo();
+        mRoomData.setExpectRoundInfo(bRoundInfo);
+        mRoomData.checkRoundInEachMode();
     }
 
 
