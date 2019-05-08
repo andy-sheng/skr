@@ -323,7 +323,7 @@ public class LyricAndAccMatchManager {
     public void onEvent(LrcEvent.LyricStartEvent event) {
         MyLog.d(TAG, "onEvent LineStartEvent");
         mLastLineNum = -1;
-        Params params = EngineManager.getInstance().getParams();
+        Params params = ZqEngineKit.getInstance().getParams();
         if (params != null) {
             params.setLrcHasStart(true);
         }
