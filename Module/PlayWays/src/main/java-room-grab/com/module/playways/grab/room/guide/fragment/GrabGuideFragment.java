@@ -475,7 +475,6 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
         mGrabGiveupView.hideWithAnimation(false);
     }
 
-
     private void tryShowGrabTipView() {
         if (mGrabBtnTipIv == null) {
             mGrabBtnTipIv = new ImageView(getContext());
@@ -483,12 +482,12 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             mGrabBtnTipIv.setLayoutParams(layoutParams);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
             int[] location = new int[2] ;
             mGrabOpBtn.getGrabBtn().getLocationInWindow(location);
             layoutParams.rightMargin = U.getDisplayUtils().dip2px(14);
-            layoutParams.bottomMargin = U.getDisplayUtils().getScreenHeight() - location[1] - mGrabOpBtn.getGrabBtn().getHeight();
+            layoutParams.topMargin = location[1] + mGrabOpBtn.getGrabBtn().getHeight();
             ((ViewGroup) mRankingContainer).addView(mGrabBtnTipIv);
             mGrabBtnTipIv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
