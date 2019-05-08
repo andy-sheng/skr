@@ -32,7 +32,6 @@ import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.guide.presenter.GrabGuidePresenter;
 import com.module.playways.grab.room.inter.IGrabGuideView;
-import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.top.GrabTopContainerView;
@@ -52,7 +51,7 @@ import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.comment.CommentView;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
-import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
+import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.room.room.view.InputContainerView;
@@ -395,7 +394,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
     private void initGiftDisplayView() {
         GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
         giftContinueViewGroup.setRoomData(mRoomData);
-        GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        GiftOverlayAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);

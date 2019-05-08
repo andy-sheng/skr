@@ -19,11 +19,9 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Random;
 
-public class GiftBigAnimationView {
+public class GiftOverlayAnimationView {
     static final int MSG_ENSURE_FINISH = 91;
 
     static final int STATUS_IDLE = 1;
@@ -46,7 +44,7 @@ public class GiftBigAnimationView {
         }
     };
 
-    public GiftBigAnimationView(Context context) {
+    public GiftOverlayAnimationView(Context context) {
         init();
     }
 
@@ -121,12 +119,12 @@ public class GiftBigAnimationView {
 
             @Override
             public void onFinished() {
-                GiftBigAnimationView.this.onFinish();
+                GiftOverlayAnimationView.this.onFinish();
             }
 
             @Override
             public void onRepeat() {
-                GiftBigAnimationView.this.onFinish();
+                GiftOverlayAnimationView.this.onFinish();
             }
 
             @Override
@@ -143,7 +141,7 @@ public class GiftBigAnimationView {
                 @Override
                 public void run() {
                     if (mListener != null) {
-                        mListener.onFinished(GiftBigAnimationView.this, mGiftPlayModel);
+                        mListener.onFinished(GiftOverlayAnimationView.this, mGiftPlayModel);
                     }
                     mStatus = STATUS_IDLE;
                     ViewGroup vg = (ViewGroup) mSVGAImageView.getParent();
@@ -174,7 +172,7 @@ public class GiftBigAnimationView {
 
 
     public interface Listener {
-        void onFinished(GiftBigAnimationView animationView, GiftPlayModel giftPlayModel);
+        void onFinished(GiftOverlayAnimationView animationView, GiftPlayModel giftPlayModel);
     }
 
     public static class SLocation {

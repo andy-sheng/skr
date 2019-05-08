@@ -41,7 +41,7 @@ import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
 import com.module.playways.room.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent;
-import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
+import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
 import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.room.presenter.DownLoadScoreFilePresenter;
@@ -645,7 +645,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void initGiftDisplayView() {
         GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
         giftContinueViewGroup.setRoomData(mRoomData);
-        GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        GiftOverlayAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
