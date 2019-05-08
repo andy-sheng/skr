@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.common.log.MyLog;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.view.GiftOnePageView;
-import com.module.playways.room.gift.view.GiftView;
+import com.module.playways.room.gift.view.GiftDisplayView;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,9 +21,9 @@ public class GiftViewPagerAdapter extends PagerAdapter {
     HashMap<Integer, GiftOnePageView> mGiftOnePageViewHashMap = new HashMap<>();
     HashMap<Integer, List<BaseGift>> mGiftDataHashMap = new HashMap<>();
     Context mContext;
-    GiftView.IGiftOpListener mIGiftOpListener;
+    GiftDisplayView.IGiftOpListener mIGiftOpListener;
 
-    public GiftViewPagerAdapter(Context context, GiftView.IGiftOpListener iGiftOpListener) {
+    public GiftViewPagerAdapter(Context context, GiftDisplayView.IGiftOpListener iGiftOpListener) {
         mContext = context;
         mIGiftOpListener = iGiftOpListener;
     }

@@ -1,4 +1,4 @@
-package com.module.playways.room.gift.loadsircallcack;
+package com.module.playways.room.gift.loadsir;
 
 
 import com.kingja.loadsir.callback.Callback;

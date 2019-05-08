@@ -19,7 +19,7 @@ public class GiftOnePageView extends ExFrameLayout {
 
     GiftAdapter mGiftAdapter;
 
-    GiftView.IGiftOpListener mIGiftOpListener;
+    GiftDisplayView.IGiftOpListener mIGiftOpListener;
 
     public GiftOnePageView(Context context) {
         super(context);
@@ -45,7 +45,7 @@ public class GiftOnePageView extends ExFrameLayout {
         mRecyclerView.setAdapter(mGiftAdapter);
     }
 
-    public void setIGiftOpListener(GiftView.IGiftOpListener IGiftOpListener) {
+    public void setIGiftOpListener(GiftDisplayView.IGiftOpListener IGiftOpListener) {
         mIGiftOpListener = IGiftOpListener;
         mGiftAdapter.setIGiftOpListener(mIGiftOpListener);
     }

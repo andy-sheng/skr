@@ -16,12 +16,12 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 import com.module.playways.room.gift.model.BaseGift;
-import com.module.playways.room.gift.view.GiftView;
+import com.module.playways.room.gift.view.GiftDisplayView;
 import com.zq.live.proto.Common.EGiftType;
 
 public class GiftAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> {
 
-    GiftView.IGiftOpListener mIGiftOpListener;
+    GiftDisplayView.IGiftOpListener mIGiftOpListener;
 
     @NonNull
     @Override
@@ -39,7 +39,7 @@ public class GiftAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> 
         reportItemHolder.bind(model);
     }
 
-    public void setIGiftOpListener(GiftView.IGiftOpListener IGiftOpListener) {
+    public void setIGiftOpListener(GiftDisplayView.IGiftOpListener IGiftOpListener) {
         mIGiftOpListener = IGiftOpListener;
     }
 

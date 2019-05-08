@@ -15,7 +15,7 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 
-public class GiftAllManAdapter extends DiffAdapter<GrabPlayerInfoModel, RecyclerView.ViewHolder> {
+public class GiftAllPlayersAdapter extends DiffAdapter<GrabPlayerInfoModel, RecyclerView.ViewHolder> {
     GrabPlayerInfoModel mSelectedGrabPlayerInfoModel;
 
     OnClickPlayerListener mOnClickPlayerListener;

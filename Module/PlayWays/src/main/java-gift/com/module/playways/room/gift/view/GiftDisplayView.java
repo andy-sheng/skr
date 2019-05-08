@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExFrameLayout;
 import com.common.view.ex.drawable.DrawableCreator;
@@ -17,16 +16,17 @@ import com.module.playways.R;
 import com.module.playways.room.gift.adapter.GiftAdapter;
 import com.module.playways.room.gift.adapter.GiftViewPagerAdapter;
 import com.module.playways.room.gift.inter.IGiftView;
-import com.module.playways.room.gift.loadsircallcack.GiftEmptyCallback;
+import com.module.playways.room.gift.loadsir.GiftEmptyCallback;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.presenter.GiftViewPresenter;
-import com.zq.relation.callback.FansEmptyCallback;
-import com.zq.relation.callback.FriendsEmptyCallback;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class GiftView extends ExFrameLayout implements IGiftView {
+/**
+ * 礼物橱窗view
+ */
+public class GiftDisplayView extends ExFrameLayout implements IGiftView {
     ViewPager mViewpager;
 
     GiftViewPagerAdapter mGiftViewPagerAdapter;
@@ -39,17 +39,17 @@ public class GiftView extends ExFrameLayout implements IGiftView {
 
     LoadService mLoadService;
 
-    public GiftView(Context context) {
+    public GiftDisplayView(Context context) {
         super(context);
         init();
     }
 
-    public GiftView(Context context, AttributeSet attrs) {
+    public GiftDisplayView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GiftView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GiftDisplayView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

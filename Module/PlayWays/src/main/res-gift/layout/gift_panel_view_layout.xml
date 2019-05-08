@@ -49,16 +49,16 @@
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
+                android:id="@+id/all_players_rv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/tv_all_man"
+                android:layout_toLeftOf="@+id/all_players_tv"
                 android:orientation="horizontal"
                 android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/tv_all_man"
+                android:id="@+id/all_players_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -71,7 +71,7 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
-        <com.module.playways.room.gift.view.GiftView
+        <com.module.playways.room.gift.view.GiftDisplayView
             android:id="@+id/gift_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_190_dp"
