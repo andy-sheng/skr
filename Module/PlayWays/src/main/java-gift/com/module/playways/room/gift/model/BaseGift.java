@@ -245,7 +245,7 @@ public class BaseGift {
     }
 
 
-    public void parseFromJson(String extra) {
+    protected void parseFromJson(String extra) {
 
     }
 }

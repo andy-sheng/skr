@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.module.playways.room.msg.event.OverlayGiftBrushMsgEvent;
-import com.module.playways.room.msg.event.GiftBrushMsgEvent;
+import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
+import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.room.room.gift.model.GiftPlayModel;

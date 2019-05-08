@@ -1,11 +1,14 @@
-package com.module.playways.room.msg.event;
+package com.module.playways.room.gift.event;
 
 import com.zq.live.proto.Room.GPrensentGiftMsg;
 
-public class GiftBrushMsgEvent {
+/**
+ * 一般为大礼物
+ */
+public class BigGiftMsgEvent {
     GPrensentGiftMsg mGPrensentGiftMsg;
 
-    public GiftBrushMsgEvent(GPrensentGiftMsg gPrensentGiftMsg) {
+    public BigGiftMsgEvent(GPrensentGiftMsg gPrensentGiftMsg) {
         this.mGPrensentGiftMsg = gPrensentGiftMsg;
     }
 

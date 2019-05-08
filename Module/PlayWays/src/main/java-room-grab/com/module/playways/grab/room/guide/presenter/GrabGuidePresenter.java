@@ -50,7 +50,7 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
-import com.module.playways.room.msg.event.GiftBrushMsgEvent;
+import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
 import com.module.playways.room.msg.event.QChoGiveUpEvent;
@@ -80,9 +80,7 @@ import com.zq.live.proto.Room.EQGameOverReason;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.live.proto.Room.EQUserRole;
 import com.zq.live.proto.Room.ERoomMsgType;
-import com.zq.live.proto.Room.ERoundOverReason;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
@@ -95,7 +93,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.agora.rtc.Constants;

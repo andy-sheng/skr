@@ -8,7 +8,7 @@ import com.common.anim.ObjectPlayControlTemplate;
 import com.module.playways.BaseRoomData;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.room.msg.event.BigGiftMsgEvent;
+import com.module.playways.room.gift.event.BigGiftMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 
 import org.greenrobot.eventbus.EventBus;

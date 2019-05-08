@@ -25,7 +25,7 @@ public class AnimationGift extends BaseGift {
         super.parseFromJson(extra);
     }
 
-    class AnimationPrams {
+    static class AnimationPrams {
         long duration;
         int width;
         int height;

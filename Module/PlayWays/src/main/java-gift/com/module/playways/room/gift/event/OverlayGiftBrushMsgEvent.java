@@ -1,7 +1,10 @@
-package com.module.playways.room.msg.event;
+package com.module.playways.room.gift.event;
 
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 
+/**
+ * 一般为中礼物
+ */
 public class OverlayGiftBrushMsgEvent {
     GiftPlayModel mGiftPlayModel;
 

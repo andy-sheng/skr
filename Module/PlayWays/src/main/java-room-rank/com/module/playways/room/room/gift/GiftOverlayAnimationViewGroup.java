@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.ObjectPlayControlTemplate;
-import com.module.playways.room.msg.event.OverlayGiftBrushMsgEvent;
+import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
