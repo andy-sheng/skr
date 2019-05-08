@@ -1,17 +1,18 @@
 package com.module.playways.grab.room.event;
 
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 
 public class GrabSomeOneLightBurstEvent {
-    public BaseRoundInfoModel roundInfo;
+    public GrabRoundInfoModel roundInfo;
     public int uid;
 
-    public GrabSomeOneLightBurstEvent(int uid, BaseRoundInfoModel newRoundInfo) {
+    public GrabSomeOneLightBurstEvent(int uid, GrabRoundInfoModel newRoundInfo) {
         this.uid = uid;
         this.roundInfo = newRoundInfo;
     }
 
-    public BaseRoundInfoModel getRoundInfo() {
+    public GrabRoundInfoModel getRoundInfo() {
         return roundInfo;
     }
 }

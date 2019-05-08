@@ -273,6 +273,15 @@ public interface GrabRoomServerApi {
     Observable<ApiResult> delMusic(@Body RequestBody body);
 
     /**
+     * 修改房间名
+     * @param body    "roomID": 0,
+     *                "roomName": "string"
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v2/room/update-name")
+    Observable<ApiResult> updateRoomName(@Body RequestBody body);
+
+    /**
      * 得到专场列表
      *
      * @param offset
@@ -290,6 +299,15 @@ public interface GrabRoomServerApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/mate/room-friends")
     Observable<ApiResult> getRoomFriendList(@Query("offset") int offset, @Query("cnt") int count);
+
+    /**
+     * 获取粉丝列表
+     * @param offset
+     * @param count
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/mate/room-fans")
+    Observable<ApiResult> getRoomFansList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
      * 邀请好友
@@ -339,4 +357,24 @@ public interface GrabRoomServerApi {
      */
     @PUT("http://dev.api.inframe.mobi/v1/redbag/trigger-newbie-task")
     Observable<ApiResult> triggerNewBieTask(@Body RequestBody body);
+
+
+    /*
+     // 提交单句反馈请求
+message STCommitSegmentResultReq
+{
+    uint32 userID    = 1; // [必传]演唱者
+    uint32 itemID    = 2; // [必传]演唱曲目
+    uint32 score     = 3; // [必传]机器分数
+    uint32 no        = 4; // [必传]对应截断后的歌词行号,从0开始为第一行
+    uint32 gameID    = 5; // [必传]游戏ID
+    uint32 mainLevel = 6; // [忽略]主段位
+    uint32 singSecond= 7; // [忽略]已唱秒数
+    uint32 roundSeq  = 8; // [必传]轮次顺序
+    sint64 timeMs    = 9; //[必传] 当前毫秒时间戳
+    string sign      = 10; //[必传]签名 md5(skrer|userID|itemID|score|no|gameID|mainLevel|singSecond|roundSeq|timeMs)
+}
+      */
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/pk-commit-segment-result")
+    Observable<ApiResult> sendPkPerSegmentResult(@Body RequestBody body);
 }

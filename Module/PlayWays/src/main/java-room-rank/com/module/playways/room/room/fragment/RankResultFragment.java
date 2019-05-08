@@ -23,7 +23,7 @@ import com.common.view.ex.ExRelativeLayout;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.view.RankResultView2;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Room.EWinType;

@@ -46,7 +46,7 @@ public class GiftBigAnimationView {
         }
     };
 
-    public GiftBigAnimationView( Context context) {
+    public GiftBigAnimationView(Context context) {
         init();
     }
 
@@ -73,14 +73,20 @@ public class GiftBigAnimationView {
         mStatus = STATUS_PLAYING;
         mGiftPlayModel = giftPlayModel;
         String url = null;
-        switch (giftPlayModel.getEmojiType()) {
-            case SP_EMOJI_TYPE_UNLIKE:
-                url = BaseRoomData.ROOM_SPECAIL_EMOJI_DABIAN;
-                break;
-            case SP_EMOJI_TYPE_LIKE:
-                url = BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
-                break;
+
+        if (giftPlayModel.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
+            switch (giftPlayModel.getEmojiType()) {
+                case SP_EMOJI_TYPE_UNLIKE:
+                    url = BaseRoomData.ROOM_SPECAIL_EMOJI_DABIAN;
+                    break;
+                case SP_EMOJI_TYPE_LIKE:
+                    url = BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
+                    break;
+            }
+        } else {
+            url = giftPlayModel.getBigGiftResUrl();
         }
+
         load(url);
         mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
         mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, 5000);
@@ -91,7 +97,7 @@ public class GiftBigAnimationView {
             onFinish();
             return;
         }
-        SvgaParserAdapter.parse( url, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(url, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(SVGAVideoEntity videoItem) {
                 onLoadComplete(videoItem);

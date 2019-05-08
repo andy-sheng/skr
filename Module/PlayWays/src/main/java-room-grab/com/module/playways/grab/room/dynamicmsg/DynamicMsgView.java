@@ -17,7 +17,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.room.msg.event.EventHelper;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.HashMap;
 import java.util.List;

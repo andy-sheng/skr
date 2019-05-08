@@ -19,7 +19,7 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.voice.activity.VoiceRoomActivity;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.msg.event.EventHelper;
 import com.module.playways.room.room.RankRoomServerApi;
 import com.module.playways.BaseRoomData;

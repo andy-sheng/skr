@@ -4,10 +4,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.oss.IOssParam;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.image.model.oss.OssImgResize;
 import com.common.utils.ImageUtils;
+
+import java.io.File;
 
 /**
  * Created by lan on 15-12-14.
@@ -35,10 +38,18 @@ public class HttpImage extends BaseImage {
             if (mLowImageUri == null) {
                 //低分辨率的没有
                 if (canHasLowUri) {
-                    String lowUrl = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
-                            .setW(ImageUtils.SIZE.SIZE_160.getW())
+                    String lowUrl_320 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                            .setW(ImageUtils.SIZE.SIZE_320.getW())
                             .build());
-                    mLowImageUri = Uri.parse(lowUrl);
+                    File file = FrescoWorker.getCacheFileFromFrescoDiskCache(lowUrl_320);
+                    if (file != null && file.exists()) {
+                        mLowImageUri = Uri.parse(lowUrl_320);
+                    } else {
+                        String lowUrl_160 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                                .setW(ImageUtils.SIZE.SIZE_160.getW())
+                                .build());
+                        mLowImageUri = Uri.parse(lowUrl_160);
+                    }
                 }
             }
         } else {
@@ -75,7 +86,7 @@ public class HttpImage extends BaseImage {
             for (IOssParam ossParam : ossProcessors) {
                 if (ossParam instanceof OssImgResize) {
                     OssImgResize ossImgResize = (OssImgResize) ossParam;
-                    if (ossImgResize.getW() == ImageUtils.SIZE.SIZE_160.getW()) {
+                    if (ossImgResize.getW() <= ImageUtils.SIZE.SIZE_320.getW()) {
                         canHasLowUri = false;
                     }
                 }

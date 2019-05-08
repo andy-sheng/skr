@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.module.playways.room.room.view.BottomContainerView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class RankBottomContainerView extends BottomContainerView {
     public RankBottomContainerView(Context context) {

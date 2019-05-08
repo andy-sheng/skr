@@ -24,7 +24,6 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
@@ -33,12 +32,11 @@ import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.score.ScoreStateModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.level.view.LevelStarProgressBar;
 import com.zq.level.view.NormalLevelView2;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 一唱到底结果页面

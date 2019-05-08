@@ -13,11 +13,11 @@ import com.common.core.permission.SkrAudioPermission;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.floatwindow.FloatWindow;
 import com.common.floatwindow.MoveType;
 import com.common.floatwindow.Screen;
-import com.common.floatwindow.ViewStateListener;
 import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
@@ -31,7 +31,7 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.rank.IRankingModeService;
+import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
@@ -42,9 +42,6 @@ import com.zq.notification.FollowNotifyView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import static com.component.busilib.manager.WeakRedDotManager.SP_KEY_NEW_FANS;
-import static com.component.busilib.manager.WeakRedDotManager.SP_KEY_NEW_FRIEND;
 
 public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
@@ -145,7 +142,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
                                 }
-                                tryGoGrabRoom(event.roomId);
+                                tryGoGrabRoom(event.roomId, 2);
                             }
                         });
                         confirmDialog.show();
@@ -155,7 +152,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             // 不需要直接进
-            tryGoGrabRoom(event.roomId);
+            tryGoGrabRoom(event.roomId, 2);
         }
     }
 
@@ -220,14 +217,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         });
     }
 
-    void tryGoGrabRoom(int roomID) {
+    void tryGoGrabRoom(int roomID, int inviteType) {
         if (mSkrAudioPermission != null) {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
-                    IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                    IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                     if (iRankingModeService != null) {
-                        iRankingModeService.tryGoGrabRoom(roomID);
+                        iRankingModeService.tryGoGrabRoom(roomID, inviteType);
                     }
                 }
             }, true);
@@ -240,14 +237,16 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         floatWindowData.setUserInfoModel(event.mUserInfoModel);
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
 
-        if (event.mUserInfoModel.isFriend()) {
-            // 好友
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2, true);
-        } else {
-            // 粉丝
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2, true);
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 2, true);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RelationChangeEvent event) {
+        if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 2, true);
         }
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabInviteNotifyEvent event) {
@@ -283,7 +282,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onAgree() {
-                tryGoGrabRoom(roomID);
+                tryGoGrabRoom(roomID, 1);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
             }

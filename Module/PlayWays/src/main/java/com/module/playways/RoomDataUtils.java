@@ -4,7 +4,10 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.RankRoomData;
@@ -176,6 +179,9 @@ public class RoomDataUtils {
     }
 
     public static <T extends BaseRoundInfoModel> boolean isMyRound(T infoModel) {
+        if (infoModel instanceof GrabRoundInfoModel) {
+            return ((GrabRoundInfoModel) infoModel).singBySelf();
+        }
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 
@@ -288,7 +294,57 @@ public class RoomDataUtils {
                 return roundInfo;
             }
         }
-
         return null;
+    }
+
+    public static boolean isChorusRound(GrabRoomData roomData) {
+        if (roomData != null) {
+            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
+            if (infoModel != null) {
+                return infoModel.isChorusRound();
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPKRound(GrabRoomData roomData) {
+        if (roomData != null) {
+            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
+            if (infoModel != null) {
+                return infoModel.isPKRound();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 这个轮次的演唱者
+     *
+     * @param now
+     * @param uid
+     * @return
+     */
+    public static boolean isRoundSinger(GrabRoundInfoModel now, long uid) {
+        if (now == null) {
+            return false;
+        }
+        {
+            List<SPkRoundInfoModel> list = now.getsPkRoundInfoModels();
+            for (SPkRoundInfoModel infoModel : list) {
+                if (infoModel.getUserID() == uid) {
+                    return true;
+                }
+            }
+        }
+        {
+            List<ChorusRoundInfoModel> list = now.getChorusRoundInfoModels();
+            for (ChorusRoundInfoModel infoModel : list) {
+                if (infoModel.getUserID() == uid) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
     }
 }

@@ -37,16 +37,17 @@ public interface WalletServerApi {
      */
     @GET("/v1/wallet/money-records")
     Observable<ApiResult> getWalletRecord(@Query("offset") int offset,
-                                             @Query("limit") int limit,
-                                             @Query("action") int action);
+                                          @Query("limit") int limit,
+                                          @Query("action") int action);
 
 
     /**
      * 绑定微信
      * {
-     *   "openID": "string",
-     *   "unionID": "string"
+     * "openID": "string",
+     * "unionID": "string"
      * }
+     *
      * @param body
      * @return
      */
@@ -56,9 +57,10 @@ public interface WalletServerApi {
     /**
      * 检测短信验证码是否正确+手机号是否绑定
      * {
-     *   "code": "string",
-     *   "phone": "string"
+     * "code": "string",
+     * "phone": "string"
      * }
+     *
      * @param body
      * @return
      */
@@ -68,10 +70,11 @@ public interface WalletServerApi {
     /**
      * 发送短信验证
      * {
-     *   "phone": "string",
-     *   "sign": "string",
-     *   "timeMs": 0
+     * "phone": "string",
+     * "sign": "string",
+     * "timeMs": 0
      * }
+     *
      * @param body
      * @return
      */
@@ -81,10 +84,11 @@ public interface WalletServerApi {
     /**
      * 提现认证
      * {
-     *   "bizNo": "string",
-     *   "iDCard": "string",
-     *   "name": "string"
+     * "bizNo": "string",
+     * "iDCard": "string",
+     * "name": "string"
      * }
+     *
      * @param body
      * @return
      */
@@ -94,9 +98,10 @@ public interface WalletServerApi {
     /**
      * 提现
      * {
-     *   "action": "EW_UNKNOWN",
-     *   "amount": "string"
+     * "action": "EW_UNKNOWN",
+     * "amount": "string"
      * }
+     *
      * @param body
      * @return
      */
@@ -105,6 +110,7 @@ public interface WalletServerApi {
 
     /**
      * 提现页面信息
+     *
      * @return
      */
     @GET("/v1/wallet/withdraw-info")
@@ -112,9 +118,122 @@ public interface WalletServerApi {
 
     /**
      * 提现流水
+     *
      * @return
      */
     @GET("/v1/wallet/withdraw-records")
     Observable<ApiResult> getListWithdraw(@Query("offset") int offset,
                                           @Query("limit") int limit);
+
+
+    /**
+     * 微信充值订单创建
+     *
+     * @return
+     */
+    @PUT("/v1/xpay/wx-order")
+    Observable<ApiResult> wxOrder(@Body RequestBody body);
+
+    /**
+     * 阿里充值订单创建
+     *
+     * @return
+     */
+    @PUT("/v1/xpay/ali-order")
+    Observable<ApiResult> aliOrder(@Body RequestBody body);
+
+    /**
+     * 获取商品列表
+     *
+     * @return
+     */
+    @GET("/v1/xpay/goods-list")
+    Observable<ApiResult> getGoodsList(@Query("platform") String platform);
+
+    /**
+     * 微信订单检查
+     * {
+     * "orderID": "string"
+     * }
+     *
+     * @return
+     */
+    @PUT("/v1/xpay/wx-query")
+    Observable<ApiResult> wxOrderCheck(@Body RequestBody body);
+
+    /**
+     * 阿里订单检查
+     * {
+     * "orderID": "string",
+     * "tradeNo": "string"
+     * }
+     *
+     * @return
+     */
+    @PUT("/v1/xpay/ali-query")
+    Observable<ApiResult> aliOrderCheck(@Body RequestBody body);
+
+    /**
+     * 获取钻石余额
+     *
+     * @return
+     */
+    @GET("/v1/wallet/zs-balance")
+    Observable<ApiResult> getZSBalance();
+
+    /**
+     * 获取点券余额
+     *
+     * @return
+     */
+    @GET("/v1/wallet/dq-balance")
+    Observable<ApiResult> getDQBalance();
+
+    /**
+     * 点卷兑换钻石
+     * {
+     * "amount": long
+     * }
+     *
+     * @return
+     */
+    @PUT("/v1/wallet/dq-zs")
+    Observable<ApiResult> exChangeDiamond(@Body RequestBody body);
+
+    /**
+     * 点卷兑换现金
+     * {
+     * "amount": long
+     * }
+     *
+     * @return
+     */
+    @PUT("/v1/wallet/dq-zs")
+    Observable<ApiResult> exChangeCash(@Body RequestBody body);
+
+    /**
+     * 兑换信息
+     *
+     * @return
+     */
+    @GET("/v1/wallet/exchange-info")
+    Observable<ApiResult> getExChangeInfo();
+
+    /**
+     * 点券明细
+     *
+     * @return
+     */
+    @GET("/v1/wallet/dq-list")
+    Observable<ApiResult> getDqList(@Query("offset") int offset,
+                                    @Query("cnt") int cnt);
+
+    /**
+     * 点券明细
+     *
+     * @return
+     */
+    @GET("/v1/wallet/zs-list")
+    Observable<ApiResult> getRechargeList(@Query("offset") int offset,
+                                    @Query("cnt") int cnt);
 }

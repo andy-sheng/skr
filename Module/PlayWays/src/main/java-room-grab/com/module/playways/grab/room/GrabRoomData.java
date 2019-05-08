@@ -15,6 +15,7 @@ import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,7 +28,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     protected int mTagId;//一场到底歌曲分类
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
-    private boolean mIsAccEnable = false;// 是否开启伴奏
+    private boolean mIsAccEnable = false;// 是否开启伴奏,只代表设置里伴奏开关
     private Integer mSongLineNum;// 歌词总行数
     private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
     private int ownerId;// 房主id
@@ -37,6 +38,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     GrabResultData mGrabResultData;    // 游戏结果
     private boolean mSpeaking; // 是否正在抢麦说话，一般用于主播控场
     private boolean mChallengeAvailable;
+    private String roomName;  // 房间名称
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -108,7 +110,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             // 结束状态了
             if (mRealRoundInfo != null) {
                 GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
-                lastRoundInfoModel.updateStatus(false, GrabRoundInfoModel.STATUS_OVER);
+                lastRoundInfoModel.updateStatus(false, EQRoundStatus.QRS_END.getValue());
                 mRealRoundInfo = null;
 //                if (lastRoundInfoModel != null
 //                        && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
@@ -125,11 +127,11 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             // 轮次大于，才切换
             GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
             if (lastRoundInfoModel != null) {
-                lastRoundInfoModel.updateStatus(false, GrabRoundInfoModel.STATUS_OVER);
+                lastRoundInfoModel.updateStatus(false, EQRoundStatus.QRS_END.getValue());
             }
             mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo != null) {
-                ((GrabRoundInfoModel) mRealRoundInfo).updateStatus(false, GrabRoundInfoModel.STATUS_GRAB);
+                ((GrabRoundInfoModel) mRealRoundInfo).updateStatus(false, EQRoundStatus.QRS_INTRO.getValue());
             }
             // 告知切换到新的轮次了
 //            if (lastRoundInfoModel != null
@@ -265,6 +267,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         // 游戏未开始
         this.setHasGameBegin(rsp.hasGameBegin());
         this.setChallengeAvailable(rsp.isChallengeAvailable());
+        this.setRoomName(rsp.getRoomName());
     }
 
     public boolean isChallengeAvailable() {
@@ -273,6 +276,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setChallengeAvailable(boolean challengeAvailable) {
         mChallengeAvailable = challengeAvailable;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public Integer getSongLineNum() {

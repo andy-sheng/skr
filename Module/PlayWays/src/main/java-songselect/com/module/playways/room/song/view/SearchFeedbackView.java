@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class SearchFeedbackView extends RelativeLayout {
 

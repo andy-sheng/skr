@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class QuickMsgHolder extends RecyclerView.ViewHolder {
     ExTextView mCommentTv;

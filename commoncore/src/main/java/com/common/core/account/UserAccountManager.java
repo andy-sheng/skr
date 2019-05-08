@@ -18,13 +18,13 @@ import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.UmengStatistics;
-import com.common.umeng.UmengPush;
 import com.common.umeng.UmengPushRegisterSuccessEvent;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
@@ -392,7 +392,8 @@ public class UserAccountManager {
                     U.getPreferenceUtils().clearPreference();
                     UserInfoLocalApi.deleteAll();
                     UmengStatistics.onProfileSignOff();
-                    UmengPush.clearAlias(userId);
+                    //com.common.umeng.UmengPush.UmengPush.clearAlias(userId);
+                    com.common.jiguang.JiGuangPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
@@ -565,7 +566,8 @@ public class UserAccountManager {
      */
     void trySetUmengPushAlias() {
         if (UserAccountManager.getInstance().hasAccount()) {
-            UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
+            //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
+            com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
         }
     }
 }

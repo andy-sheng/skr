@@ -7,7 +7,6 @@ import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
-import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -30,8 +29,9 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,7 +118,7 @@ public class GrabRoomActivity extends BaseActivity {
                 mRoomData.setGameId(1);
                 GrabConfigModel grabConfigModel = new GrabConfigModel();
                 grabConfigModel.setTotalGameRoundSeq(88);
-                grabRoundInfoModel.setStatus(GrabRoundInfoModel.STATUS_GRAB);
+                grabRoundInfoModel.setStatus(EQRoundStatus.QRS_INTRO.getValue());
                 grabRoundInfoModel.setParticipant(false);
                 grabRoundInfoModel.setElapsedTimeMs(5000);
                 mRoomData.setGrabConfigModel(grabConfigModel);

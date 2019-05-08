@@ -14,7 +14,7 @@
         android:paddingRight="@dimen/view_32_dp"
         android:singleLine="true"
         android:textSize="@dimen/textsize_15_dp"
-        app:bl_selected_textColor="#0C2275"
-        app:bl_unSelected_textColor="#800C2275"/>
+        app:bl_selected_textColor="@color/white"
+        app:bl_unSelected_textColor="@color/white_trans_50"/>
 
 </RelativeLayout>

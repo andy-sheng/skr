@@ -54,28 +54,32 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         this.mFriendRoomModel = friendRoomModel;
         this.position = position;
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(friendRoomModel.getUserInfo().getAvatar())
-                        .setCircle(true)
-                        .build());
-        mNicknameTv.setText(friendRoomModel.getUserInfo().getNickname());
+        if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv,
+                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getUserInfo().getAvatar())
+                            .setCircle(true)
+                            .build());
 
-        if (friendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
-            mRecommendTv.setVisibility(View.VISIBLE);
-            mFollowTv.setVisibility(View.GONE);
-            mFriendTv.setVisibility(View.GONE);
-        } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
-            mRecommendTv.setVisibility(View.GONE);
-            mFollowTv.setVisibility(View.VISIBLE);
-            mFriendTv.setVisibility(View.GONE);
-        } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
-            mRecommendTv.setVisibility(View.GONE);
-            mFollowTv.setVisibility(View.GONE);
-            mFriendTv.setVisibility(View.VISIBLE);
-        } else {
-            mRecommendTv.setVisibility(View.GONE);
-            mFollowTv.setVisibility(View.GONE);
-            mFriendTv.setVisibility(View.GONE);
+            if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
+                mRecommendTv.setVisibility(View.VISIBLE);
+                mFollowTv.setVisibility(View.GONE);
+                mFriendTv.setVisibility(View.GONE);
+                mNicknameTv.setText(mFriendRoomModel.getRoomInfo().getRoomName());
+            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
+                mRecommendTv.setVisibility(View.GONE);
+                mFollowTv.setVisibility(View.VISIBLE);
+                mFriendTv.setVisibility(View.GONE);
+                mNicknameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
+            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
+                mRecommendTv.setVisibility(View.GONE);
+                mFollowTv.setVisibility(View.GONE);
+                mFriendTv.setVisibility(View.VISIBLE);
+                mNicknameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
+            } else {
+                mRecommendTv.setVisibility(View.GONE);
+                mFollowTv.setVisibility(View.GONE);
+                mFriendTv.setVisibility(View.GONE);
+            }
         }
     }
 }

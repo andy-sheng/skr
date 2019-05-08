@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_18_dp"
+        android:text="邀请好友一起玩"
+        android:textColor="@color/white_trans_70"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/share_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_80_dp"
+        android:layout_below="@id/text_title" />
+
+</merge>

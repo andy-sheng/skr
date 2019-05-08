@@ -6,14 +6,13 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.view.VoiceControlPanelView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class GrabVoiceControlPanelView extends VoiceControlPanelView {
     public final static String TAG = "VoiceControlPanelView";
@@ -70,7 +69,7 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
-                if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                if (infoModel != null && infoModel.singBySelf()) {
                     U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式");
                     if(mGrabRoomData!=null){
                         mSbAcc.setChecked(!mGrabRoomData.isAccEnable());

@@ -33,6 +33,24 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name=".activity.BalanceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".activity.DiamondBallanceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".activity.InComeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name=".activity.WithDrawActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

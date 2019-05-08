@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import com.common.utils.U;
-import com.module.rank.R;
+import com.module.playways.R;
 
 
 public class EnergySlotView extends View {

@@ -36,7 +36,27 @@ public enum EQRoundOverReason implements WireEnum {
   /**
    * 自己放弃演唱
    */
-  ROR_SELF_GIVE_UP(5);
+  ROR_SELF_GIVE_UP(5),
+
+  /**
+   * 合唱成功
+   */
+  ROR_CHO_SUCCESS(6),
+
+  /**
+   * 合唱失败
+   */
+  ROR_CHO_FAILED(7),
+
+  /**
+   * 合唱人数不够
+   */
+  ROR_CHO_NOT_ENOUTH_PLAYER(8),
+
+  /**
+   * SPK人数不够
+   */
+  ROR_SPK_NOT_ENOUTH_PLAYER(9);
 
   public static final ProtoAdapter<EQRoundOverReason> ADAPTER = new ProtoAdapter_EQRoundOverReason();
 
@@ -57,6 +77,10 @@ public enum EQRoundOverReason implements WireEnum {
       case 3: return ROR_IN_ROUND_PLAYER_EXIT;
       case 4: return ROR_MULTI_NO_PASS;
       case 5: return ROR_SELF_GIVE_UP;
+      case 6: return ROR_CHO_SUCCESS;
+      case 7: return ROR_CHO_FAILED;
+      case 8: return ROR_CHO_NOT_ENOUTH_PLAYER;
+      case 9: return ROR_SPK_NOT_ENOUTH_PLAYER;
       default: return null;
     }
   }

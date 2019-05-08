@@ -71,19 +71,21 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                             .setCircle(true)
                             .build());
 
-            mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
-            if (friendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
+            if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
                 mRecommendTv.setVisibility(View.VISIBLE);
                 mFollowTv.setVisibility(View.GONE);
                 mFriendTv.setVisibility(View.GONE);
-            } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
+                mNameTv.setText(mFriendRoomModel.getRoomInfo().getRoomName());
+            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
                 mRecommendTv.setVisibility(View.GONE);
                 mFollowTv.setVisibility(View.VISIBLE);
                 mFriendTv.setVisibility(View.GONE);
-            } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
+                mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
+            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
                 mRecommendTv.setVisibility(View.GONE);
                 mFollowTv.setVisibility(View.GONE);
                 mFriendTv.setVisibility(View.VISIBLE);
+                mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
             } else {
                 mRecommendTv.setVisibility(View.GONE);
                 mFollowTv.setVisibility(View.GONE);

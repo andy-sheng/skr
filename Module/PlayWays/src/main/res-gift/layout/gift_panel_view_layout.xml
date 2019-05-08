@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/gift_panel_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_297_dp"
+        android:layout_gravity="bottom"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_solid_color="#576FE3">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_48_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginTop="@dimen/view_2_dp"
+            android:layout_marginRight="@dimen/view_36_dp">
+
+            <LinearLayout
+                android:id="@+id/ll_selected_man"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <com.common.image.fresco.BaseImageView
+                    android:id="@+id/iv_selected_icon"
+                    android:layout_width="@dimen/view_30_dp"
+                    android:layout_height="@dimen/view_30_dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/view_8_dp" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/tv_selected_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/view_10_dp"
+                    android:layout_toRightOf="@+id/iv_selected_icon"
+                    android:text="送你 呼啦啦"
+                    android:textColor="#ffffffff"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/tv_all_man"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_all_man"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:drawablePadding="@dimen/view_6_dp"
+                android:gravity="center"
+                android:text="所有人"
+                android:textColor="#ffffffff"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <com.module.playways.room.gift.view.GiftView
+            android:id="@+id/gift_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_190_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginTop="@dimen/view_49_dp"
+            android:layout_marginRight="@dimen/view_16_dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_58_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginRight="@dimen/view_16_dp">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/iv_recharge"
+                android:layout_width="@dimen/view_92_dp"
+                android:layout_height="@dimen/view_38_dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/fangzhushijiao_chongzhianniu" />
+
+            <ImageView
+                android:id="@+id/iv_diamond_icon"
+                android:layout_width="@dimen/view_26_dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_toRightOf="@+id/iv_recharge"
+                android:background="@drawable/diamond_icon" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_diamond"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_27_dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_d_13_dp"
+                android:layout_toRightOf="@+id/iv_diamond_icon"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/view_16_dp"
+                android:paddingRight="@dimen/view_10_dp"
+                android:text="158"
+                android:textColor="#D0EFFF"
+                android:textSize="@dimen/textsize_18_dp"
+                app:bl_corners_radius="@dimen/view_14_dp"
+                app:bl_solid_color="@color/black_trans_20" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/iv_send"
+                android:layout_width="@dimen/view_92_dp"
+                android:layout_height="@dimen/view_38_dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@drawable/fangzhushijiao_fasonganniu" />
+        </RelativeLayout>
+    </com.common.view.ex.ExRelativeLayout>
+</merge>

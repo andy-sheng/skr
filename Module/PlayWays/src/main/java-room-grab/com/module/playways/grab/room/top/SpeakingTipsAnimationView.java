@@ -7,8 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
-import com.common.utils.HandlerTaskTimer;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 房主说话时底部 点点点 动画view
@@ -64,6 +63,10 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         mUiHandler.sendEmptyMessageDelayed(MSG_HIDE,duration);
     }
 
+    public void hide() {
+        mUiHandler.removeCallbacksAndMessages(null);
+        setVisibility(GONE);
+    }
 
     @Override
     protected void onDetachedFromWindow() {

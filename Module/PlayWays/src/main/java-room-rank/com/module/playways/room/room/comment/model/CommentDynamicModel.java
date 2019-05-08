@@ -16,7 +16,7 @@ public class CommentDynamicModel extends CommentModel {
         setCommentType(TYPE_DYNAMIC);
     }
 
-    // 处理真的消息，即聊天消息
+    // 动态表情消息
     public static CommentDynamicModel parseFromEvent(DynamicEmojiMsgEvent event, BaseRoomData roomData) {
         CommentDynamicModel commentModel = new CommentDynamicModel();
         commentModel.setUserId(event.info.getSender().getUserID());

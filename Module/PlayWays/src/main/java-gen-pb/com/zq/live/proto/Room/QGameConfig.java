@@ -88,15 +88,27 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
   )
   private final Integer KickUserConsumCoinCnt;
 
+  /**
+   * 反馈分提示语
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.zq.live.proto.Room.PKScoreTipMsg#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<PKScoreTipMsg> qPKScoreTipMsg;
+
   public QGameConfig(Integer TotalGameRoundSeq, Integer EnableShowBLightWaitTimeMs,
       Integer EnableShowMLightWaitTimeMs, Integer WantSingDelayTimeMs,
-      List<QScoreTipMsg> qScoreTipMsg, Integer KickUserConsumCoinCnt) {
-    this(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, ByteString.EMPTY);
+      List<QScoreTipMsg> qScoreTipMsg, Integer KickUserConsumCoinCnt,
+      List<PKScoreTipMsg> qPKScoreTipMsg) {
+    this(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, qPKScoreTipMsg, ByteString.EMPTY);
   }
 
   public QGameConfig(Integer TotalGameRoundSeq, Integer EnableShowBLightWaitTimeMs,
       Integer EnableShowMLightWaitTimeMs, Integer WantSingDelayTimeMs,
-      List<QScoreTipMsg> qScoreTipMsg, Integer KickUserConsumCoinCnt, ByteString unknownFields) {
+      List<QScoreTipMsg> qScoreTipMsg, Integer KickUserConsumCoinCnt,
+      List<PKScoreTipMsg> qPKScoreTipMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.TotalGameRoundSeq = TotalGameRoundSeq;
     this.EnableShowBLightWaitTimeMs = EnableShowBLightWaitTimeMs;
@@ -104,6 +116,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     this.WantSingDelayTimeMs = WantSingDelayTimeMs;
     this.qScoreTipMsg = Internal.immutableCopyOf("qScoreTipMsg", qScoreTipMsg);
     this.KickUserConsumCoinCnt = KickUserConsumCoinCnt;
+    this.qPKScoreTipMsg = Internal.immutableCopyOf("qPKScoreTipMsg", qPKScoreTipMsg);
   }
 
   @Override
@@ -115,6 +128,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     builder.WantSingDelayTimeMs = WantSingDelayTimeMs;
     builder.qScoreTipMsg = Internal.copyOf("qScoreTipMsg", qScoreTipMsg);
     builder.KickUserConsumCoinCnt = KickUserConsumCoinCnt;
+    builder.qPKScoreTipMsg = Internal.copyOf("qPKScoreTipMsg", qPKScoreTipMsg);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -130,7 +144,8 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
         && Internal.equals(EnableShowMLightWaitTimeMs, o.EnableShowMLightWaitTimeMs)
         && Internal.equals(WantSingDelayTimeMs, o.WantSingDelayTimeMs)
         && qScoreTipMsg.equals(o.qScoreTipMsg)
-        && Internal.equals(KickUserConsumCoinCnt, o.KickUserConsumCoinCnt);
+        && Internal.equals(KickUserConsumCoinCnt, o.KickUserConsumCoinCnt)
+        && qPKScoreTipMsg.equals(o.qPKScoreTipMsg);
   }
 
   @Override
@@ -144,6 +159,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       result = result * 37 + (WantSingDelayTimeMs != null ? WantSingDelayTimeMs.hashCode() : 0);
       result = result * 37 + qScoreTipMsg.hashCode();
       result = result * 37 + (KickUserConsumCoinCnt != null ? KickUserConsumCoinCnt.hashCode() : 0);
+      result = result * 37 + qPKScoreTipMsg.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -158,6 +174,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     if (WantSingDelayTimeMs != null) builder.append(", WantSingDelayTimeMs=").append(WantSingDelayTimeMs);
     if (!qScoreTipMsg.isEmpty()) builder.append(", qScoreTipMsg=").append(qScoreTipMsg);
     if (KickUserConsumCoinCnt != null) builder.append(", KickUserConsumCoinCnt=").append(KickUserConsumCoinCnt);
+    if (!qPKScoreTipMsg.isEmpty()) builder.append(", qPKScoreTipMsg=").append(qPKScoreTipMsg);
     return builder.replace(0, 2, "QGameConfig{").append('}').toString();
   }
 
@@ -232,6 +249,16 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
   }
 
   /**
+   * 反馈分提示语
+   */
+  public List<PKScoreTipMsg> getQPKScoreTipMsgList() {
+    if(qPKScoreTipMsg==null){
+        return new java.util.ArrayList<PKScoreTipMsg>();
+    }
+    return qPKScoreTipMsg;
+  }
+
+  /**
    * 轮次总数
    */
   public boolean hasTotalGameRoundSeq() {
@@ -273,6 +300,13 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     return KickUserConsumCoinCnt!=null;
   }
 
+  /**
+   * 反馈分提示语
+   */
+  public boolean hasQPKScoreTipMsgList() {
+    return qPKScoreTipMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<QGameConfig, Builder> {
     private Integer TotalGameRoundSeq;
 
@@ -286,8 +320,11 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
 
     private Integer KickUserConsumCoinCnt;
 
+    private List<PKScoreTipMsg> qPKScoreTipMsg;
+
     public Builder() {
       qScoreTipMsg = Internal.newMutableList();
+      qPKScoreTipMsg = Internal.newMutableList();
     }
 
     /**
@@ -339,9 +376,18 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       return this;
     }
 
+    /**
+     * 反馈分提示语
+     */
+    public Builder addAllQPKScoreTipMsg(List<PKScoreTipMsg> qPKScoreTipMsg) {
+      Internal.checkElementsNotNull(qPKScoreTipMsg);
+      this.qPKScoreTipMsg = qPKScoreTipMsg;
+      return this;
+    }
+
     @Override
     public QGameConfig build() {
-      return new QGameConfig(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, super.buildUnknownFields());
+      return new QGameConfig(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, qScoreTipMsg, KickUserConsumCoinCnt, qPKScoreTipMsg, super.buildUnknownFields());
     }
   }
 
@@ -358,6 +404,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.WantSingDelayTimeMs)
           + QScoreTipMsg.ADAPTER.asRepeated().encodedSizeWithTag(5, value.qScoreTipMsg)
           + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.KickUserConsumCoinCnt)
+          + PKScoreTipMsg.ADAPTER.asRepeated().encodedSizeWithTag(7, value.qPKScoreTipMsg)
           + value.unknownFields().size();
     }
 
@@ -369,6 +416,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.WantSingDelayTimeMs);
       QScoreTipMsg.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.qScoreTipMsg);
       ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.KickUserConsumCoinCnt);
+      PKScoreTipMsg.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.qPKScoreTipMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -384,6 +432,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
           case 4: builder.setWantSingDelayTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.qScoreTipMsg.add(QScoreTipMsg.ADAPTER.decode(reader)); break;
           case 6: builder.setKickUserConsumCoinCnt(ProtoAdapter.UINT32.decode(reader)); break;
+          case 7: builder.qPKScoreTipMsg.add(PKScoreTipMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -399,6 +448,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     public QGameConfig redact(QGameConfig value) {
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.qScoreTipMsg, QScoreTipMsg.ADAPTER);
+      Internal.redactElements(builder.qPKScoreTipMsg, PKScoreTipMsg.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

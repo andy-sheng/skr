@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -18,13 +17,11 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.floatwindow.FloatWindow;
-import com.common.floatwindow.MoveType;
-import com.common.floatwindow.Screen;
-import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
+import com.common.rxretrofit.ApiManager;
+import com.common.statistics.StatisticsAdapter;
+import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -43,7 +40,7 @@ import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
-import com.module.rank.IRankingModeService;
+import com.module.playways.IPlaywaysModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -62,12 +59,13 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     SmartRefreshLayout mRefreshLayout;
     ClassicsHeader mClassicsHeader;
     CommonTitleBar mTitlebar;
-    ExImageView mCreateRoom;
+    ExImageView mTaskIv;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     BitmapTextView mCoinNum;
     SmartRefreshLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
+    ExImageView mIvRedDot;
 
     BaseImageView mIvRedPkg;
 
@@ -90,13 +88,14 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mCreateRoom = (ExImageView) mRootView.findViewById(R.id.create_room);
+        mTaskIv = (ExImageView) mRootView.findViewById(R.id.task_iv);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mCoinNum = (BitmapTextView) mRootView.findViewById(R.id.coin_num);
         mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mIvRedPkg = (BaseImageView) mRootView.findViewById(R.id.iv_red_pkg);
+        mIvRedDot = (ExImageView) mRootView.findViewById(R.id.iv_red_dot);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -125,6 +124,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 mGamePresenter.initOperationArea(true);
                 mGamePresenter.initQuickRoom(true);
                 mGamePresenter.initRecommendRoom(mRecommendInterval);
+                mGamePresenter.checkTaskRedDot();
 
 
 //                for(int i=0;i<1000;i++)
@@ -152,13 +152,23 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRecyclerLayout.setEnableLoadMoreWhenContentNotFull(false);
         mRecyclerLayout.setEnableOverScrollDrag(true);
 
-        mCreateRoom.setOnClickListener(new AnimateClickListener() {
+//        mCreateRoom.setOnClickListener(new AnimateClickListener() {
+//            @Override
+//            public void click(View view) {
+//                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+//                if (iRankingModeService != null) {
+//                    iRankingModeService.tryGoCreateRoom();
+//                }
+//            }
+//        });
+
+        mTaskIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                if (iRankingModeService != null) {
-                    iRankingModeService.tryGoCreateRoom();
-                }
+//                U.getToastUtil().showShort("点击了做任务");
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
+                        .navigation();
             }
         });
 
@@ -166,10 +176,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void createRoom() {
                 MyLog.d(TAG, "createRoom");
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                 if (iRankingModeService != null) {
                     iRankingModeService.tryGoCreateRoom();
                 }
+                StatisticsAdapter.recordCountEvent("grab", "room_create", null);
             }
 
             @Override
@@ -180,7 +191,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                     mSkrAudioPermission.ensurePermission(new Runnable() {
                         @Override
                         public void run() {
-                            IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
                                 iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
                             }
@@ -189,6 +200,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
+                StatisticsAdapter.recordCountEvent("grab", "room_click", null);
             }
 
             @Override
@@ -198,9 +210,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                     mSkrAudioPermission.ensurePermission(new Runnable() {
                         @Override
                         public void run() {
-                            IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID());
+                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(),0);
                             }
                         }
                     }, true);
@@ -208,6 +220,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
+                StatisticsAdapter.recordCountEvent("grab", "categoryall", null);
             }
 
             @Override
@@ -224,25 +237,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
         initBaseInfo();
-
-//        HandlerTaskTimer.newBuilder().interval(10000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        TextView textView = new TextView(getContext());
-//                        textView.setText("阿斯顿健康垃圾堆里卡就睡了多久了 ");
-//                        FloatWindow.with(U.app())
-//                                .setView(textView)
-//                                .setMoveType(MoveType.canRemove)
-//                                .setWidth(Screen.width, 1f)                               //设置控件宽高
-//                                .setHeight(Screen.height, 0.2f)
-//                                .setDesktopShow(false)                        //桌面显示
-//                                .setCancelIfExist(false)
-//                                .setReqPermissionIfNeed(false)
-//                                .build();
-//                    }
-//                });
-
     }
 
     private void initBaseInfo() {
@@ -273,6 +267,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
         mGamePresenter.initCoinNum(false);
+        mGamePresenter.checkTaskRedDot();
     }
 
     @Override
@@ -339,7 +334,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     }
 
     @Override
-    public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean) {
+    public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean
+                                             homepagesitefirstBean) {
         AvatarUtils.loadAvatarByUrl(mIvRedPkg,
                 AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
                         .setWidth(U.getDisplayUtils().dip2px(48f))
@@ -359,6 +355,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void hideRedOperationView() {
         mIvRedPkg.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showTaskRedDot(boolean show) {
+        mIvRedDot.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     // TODO: 2019/4/3 这都是第一次拉数据

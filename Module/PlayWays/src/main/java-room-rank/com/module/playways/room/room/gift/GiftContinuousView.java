@@ -22,7 +22,7 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.module.playways.room.room.gift.model.GiftDataUtils;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * Created by yangjiawei on 2017/8/7.

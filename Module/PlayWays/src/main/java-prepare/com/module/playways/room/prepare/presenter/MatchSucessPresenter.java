@@ -8,7 +8,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
-import com.common.utils.SongResUtils;
+import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.module.playways.room.msg.event.ExitGameEvent;
 import com.module.playways.room.msg.event.ReadyNoticeEvent;

@@ -21,7 +21,7 @@ import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.voice.fragment.VoiceRoomFragment;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.ArrayList;
 import java.util.List;

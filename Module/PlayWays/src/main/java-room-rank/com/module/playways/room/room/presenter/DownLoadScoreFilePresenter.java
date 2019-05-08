@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.utils.HttpUtils;
-import com.common.utils.SongResUtils;
+import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.module.playways.room.prepare.model.ResourceInfoModel;
 import com.module.playways.room.room.model.RankPlayerInfoModel;

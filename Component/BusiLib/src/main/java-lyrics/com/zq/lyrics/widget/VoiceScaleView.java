@@ -223,4 +223,8 @@ public class VoiceScaleView extends View {
         super.onDetachedFromWindow();
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+    }
 }

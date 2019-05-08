@@ -37,7 +37,7 @@ import com.module.playways.room.prepare.model.ReadyInfoModel;
 import com.module.playways.room.prepare.presenter.MatchSucessPresenter;
 import com.module.playways.room.prepare.view.IMatchSucessView;
 
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;

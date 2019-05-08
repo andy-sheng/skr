@@ -28,7 +28,9 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
-import com.module.rank.R;
+import com.module.playways.room.song.model.SongModel;
+import com.module.playways.R;
+import com.zq.live.proto.Common.StandPlayType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -88,7 +90,7 @@ public class GrabOpView extends RelativeLayout {
 
     Animation mExitAnimation;
 
-    boolean mIsSupportChallenge = false;
+    SongModel mSongModel;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -225,13 +227,16 @@ public class GrabOpView extends RelativeLayout {
     }
 
     /**
-     * @param num     倒计时时间，倒计时结束后变成想唱
-     * @param waitNum 等待想唱时间
+     * @param num 倒计时时间，倒计时结束后变成想唱
      */
-    public void playCountDown(int seq, int num, int waitNum, boolean supportChallenge) {
-        // 播放 3 2 1 导唱倒计时
+    public void playCountDown(int seq, int num, SongModel songModel) {
+        if (songModel == null) {
+            return;
+        }
+        mSongModel = songModel;
+        //等待想唱时间
+        int waitNum = songModel.getStandIntroEndT() - songModel.getStandIntroBeginT();
         MyLog.d(TAG, "playCountDown" + " seq=" + seq + " num=" + num + " waitNum=" + waitNum);
-        mIsSupportChallenge = supportChallenge;
         mSeq = seq;
         mStatus = STATUS_COUNT_DOWN;
         onChangeState();
@@ -246,6 +251,7 @@ public class GrabOpView extends RelativeLayout {
         startAnimation(animation);
 
         cancelCountDownTask();
+        // 播放 3 2 1 导唱倒计时
         long interval = 1000;
         if (mGrabPreRound) {
             GrabConfigModel grabConfigModel = mGrabRoomData.getGrabConfigModel();
@@ -324,7 +330,7 @@ public class GrabOpView extends RelativeLayout {
                 mGrabIv.setImageDrawable(null);
                 mGrabIv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
 
-                if (mGrabRoomData.isChallengeAvailable() && mIsSupportChallenge) {
+                if (mGrabRoomData.isChallengeAvailable() && mSongModel.isChallengeAvailable()) {
                     mGrab2Container.setVisibility(VISIBLE);
                     mGrab2Iv.setEnabled(false);
                     mGrab2Iv.setImageDrawable(null);
@@ -349,11 +355,28 @@ public class GrabOpView extends RelativeLayout {
                 mGrabContainer.setVisibility(VISIBLE);
                 mGrabIv.setEnabled(true);
                 mGrabIv.setImageDrawable(null);
-                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
-                        .setShape(DrawableCreator.Shape.Rectangle)
-                        .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang_anxia))
-                        .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
-                        .build();
+                Drawable drawable = null;
+                if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+                    // 合唱
+                    drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.ycdd_chorus_pressed))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_chorus_normal))
+                            .build();
+                } else if (mSongModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+                    // pk
+                    drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.ycdd_pk_pressed))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_pk_normal))
+                            .build();
+                } else {
+                    drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang_anxia))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
+                            .build();
+                }
                 mGrabIv.setBackground(drawable);
                 mGrabIv.setOnTouchListener(new OnTouchListener() {
                     @Override
@@ -369,7 +392,7 @@ public class GrabOpView extends RelativeLayout {
                 });
             }
             {
-                if (mGrabRoomData.isChallengeAvailable() && mIsSupportChallenge) {
+                if (mGrabRoomData.isChallengeAvailable() && mSongModel.isChallengeAvailable()) {
                     mGrab2Container.setVisibility(VISIBLE);
                     mGrab2Iv.setEnabled(true);
                     mGrab2Iv.setImageDrawable(null);

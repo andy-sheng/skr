@@ -31,4 +31,9 @@ public class SettingActivity extends BaseActivity {
     public boolean useEventBus() {
         return false;
     }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return true;
+    }
 }

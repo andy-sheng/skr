@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.room.song.model.SongCardModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 
 import static com.umeng.socialize.utils.ContextUtil.getContext;

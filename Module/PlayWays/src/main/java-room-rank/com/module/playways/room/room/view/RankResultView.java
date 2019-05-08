@@ -19,7 +19,7 @@ import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.AudienceScoreModel;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.room.model.UserGameResultModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.live.proto.Room.ELightType;
 import com.zq.live.proto.Room.EWinType;
 

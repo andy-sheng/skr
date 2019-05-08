@@ -34,6 +34,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
@@ -46,6 +47,8 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.zq.dialog.InviteFriendDialog;
+import com.zq.dialog.InviteFriendDialogView;
 import com.zq.relation.activity.RelationActivity;
 import com.zq.relation.view.RelationView;
 
@@ -67,17 +70,16 @@ public class RelationFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
     LinearLayout mContainer;
     SlidingTabLayout mRelationTab;
-    View mSplitLine;
     NestViewPager mRelationVp;
 
     RelativeLayout mFriendArea;
-    TextView mFriend;
+    ExTextView mFriend;
     ExImageView mFriendRedDot;
     RelativeLayout mFansArea;
-    TextView mFans;
+    ExTextView mFans;
     ExImageView mFansRedDot;
     RelativeLayout mFollowArea;
-    TextView mFollow;
+    ExTextView mFollow;
 
     PopupWindow mPopupWindow;  // 弹窗
     RelativeLayout mSearchArea;
@@ -89,9 +91,7 @@ public class RelationFragment extends BaseFragment {
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
 
-    DialogPlus mShareDialog;
-    TextView mTvWeixinShare;
-    TextView mTvQqShare;
+    InviteFriendDialog mInviteFriendDialog;
 
     HashMap<Integer, RelationView> mTitleAndViewMap = new HashMap<>();
 
@@ -105,17 +105,16 @@ public class RelationFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
         mRelationTab = (SlidingTabLayout) mRootView.findViewById(R.id.relation_tab);
-        mSplitLine = (View) mRootView.findViewById(R.id.split_line);
         mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
 
         mFriendArea = (RelativeLayout) mRootView.findViewById(R.id.friend_area);
-        mFriend = (TextView) mRootView.findViewById(R.id.friend);
+        mFriend = (ExTextView) mRootView.findViewById(R.id.friend);
         mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
         mFansArea = (RelativeLayout) mRootView.findViewById(R.id.fans_area);
-        mFans = (TextView) mRootView.findViewById(R.id.fans);
+        mFans = (ExTextView) mRootView.findViewById(R.id.fans);
         mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
         mFollowArea = (RelativeLayout) mRootView.findViewById(R.id.follow_area);
-        mFollow = (TextView) mRootView.findViewById(R.id.follow);
+        mFollow = (ExTextView) mRootView.findViewById(R.id.follow);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.add_friend_pop_window_layout, null);
         mSearchArea = (RelativeLayout) linearLayout.findViewById(R.id.search_area);
@@ -174,12 +173,13 @@ public class RelationFragment extends BaseFragment {
         mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION_FANS));
 
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
-        mRelationTab.setSelectedIndicatorColors(Color.parseColor("#FE8400"));
+        mRelationTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         mRelationTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
-        mRelationTab.setIndicatorWidth(U.getDisplayUtils().dip2px(27));
-        mRelationTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(5));
-        mRelationTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4));
-        mRelationTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2));
+        mRelationTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
+        mRelationTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
+        mRelationTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(12));
+        mRelationTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
+        mRelationTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
         mTabPagerAdapter = new PagerAdapter() {
 
@@ -229,6 +229,7 @@ public class RelationFragment extends BaseFragment {
                 } else if (position == 1) {
                     mFansRedDot.setVisibility(View.GONE);
                 }
+                selectPosition(position);
             }
 
             @Override
@@ -247,88 +248,50 @@ public class RelationFragment extends BaseFragment {
             mFriendNum = bundle.getInt(RelationActivity.FRIEND_NUM_KEY);
             mFansNum = bundle.getInt(RelationActivity.FANS_NUM_KEY);
             mFocusNum = bundle.getInt(RelationActivity.FOLLOW_NUM_KEY);
-            if (relation == UserInfoManager.RELATION_FRIENDS) {
-                mRelationVp.setCurrentItem(0);
-            } else if (relation == UserInfoManager.RELATION_FOLLOW) {
-                mRelationVp.setCurrentItem(1);
-            } else if (relation == UserInfoManager.RELATION_FANS) {
-                mRelationVp.setCurrentItem(2);
+            if (relation == UserInfoManager.RA_UNKNOWN) {
+                getRelationNums();
+                selectPosition(0);
+            } else {
+                if (relation == UserInfoManager.RELATION_FRIENDS) {
+                    mRelationVp.setCurrentItem(0);
+                    selectPosition(0);
+                } else if (relation == UserInfoManager.RELATION_FOLLOW) {
+                    mRelationVp.setCurrentItem(1);
+                    selectPosition(1);
+                } else if (relation == UserInfoManager.RELATION_FANS) {
+                    mRelationVp.setCurrentItem(2);
+                    selectPosition(2);
+                }
+                refreshRelationNums();
             }
-            refreshRelationNums();
         } else {
-            getRelationNums();
+            MyLog.w(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
         }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
+    private void selectPosition(int position) {
+        if (position == 0) {
+            mFriend.setSelected(true);
+            mFollow.setSelected(false);
+            mFans.setSelected(false);
+        } else if (position == 1) {
+            mFriend.setSelected(false);
+            mFollow.setSelected(true);
+            mFans.setSelected(false);
+        } else if (position == 2) {
+            mFriend.setSelected(false);
+            mFollow.setSelected(false);
+            mFans.setSelected(true);
+        }
+    }
+
     private void showShareDialog() {
-        if (mShareDialog == null) {
-            mShareDialog = DialogPlus.newDialog(getActivity())
-                    .setContentHolder(new ViewHolder(R.layout.invite_friend_panel))
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_50)
-                    .setExpanded(false)
-                    .setGravity(Gravity.BOTTOM)
-                    .create();
-
-            mTvWeixinShare = (TextView) mShareDialog.findViewById(R.id.tv_weixin_share);
-            mTvQqShare = (TextView) mShareDialog.findViewById(R.id.tv_qq_share);
-            mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-                }
-            });
-
-            mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    // TODO: 2019/3/24 邀请好友
-                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-                }
-            });
+        if (mInviteFriendDialog == null) {
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0, null);
         }
-
-        if (!mShareDialog.isShowing()) {
-            mShareDialog.show();
-        }
+        mInviteFriendDialog.show();
     }
 
     private void getRelationNums() {
@@ -386,8 +349,8 @@ public class RelationFragment extends BaseFragment {
             mPopupWindow.dismiss();
         }
 
-        if (mShareDialog != null) {
-            mShareDialog.dismiss();
+        if (mInviteFriendDialog != null) {
+            mInviteFriendDialog.dismiss(false);
         }
 
         U.getSoundUtils().release(TAG);

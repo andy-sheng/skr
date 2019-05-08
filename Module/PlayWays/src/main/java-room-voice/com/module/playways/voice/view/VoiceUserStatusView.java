@@ -11,13 +11,12 @@ import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;

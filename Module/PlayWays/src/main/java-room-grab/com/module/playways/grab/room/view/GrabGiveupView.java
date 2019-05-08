@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 不唱了界面
@@ -74,7 +74,7 @@ public class GrabGiveupView extends RelativeLayout {
         });
     }
 
-    public void delayShowPassView() {
+    public void delayShowGiveUpView() {
         hideWithAnimation(false);
         mUiHandler.removeMessages(MSG_ANIMATION_SHOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW,5000);

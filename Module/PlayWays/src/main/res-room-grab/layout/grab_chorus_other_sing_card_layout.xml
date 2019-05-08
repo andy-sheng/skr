@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_194_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_125_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/grab_chorus_bg" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/left_sing_svga"
+        android:layout_width="@dimen/view_360_dp"
+        android:layout_height="@dimen/view_360_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_22_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="0" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/right_sing_svga"
+        android:layout_width="@dimen/view_360_dp"
+        android:layout_height="@dimen/view_360_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_22_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="0" />
+
+    <LinearLayout
+        android:id="@+id/chorus_other_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_194_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_125_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/left_iv"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_90_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_32_dp" />
+
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/left_status_area"
+                android:layout_width="@dimen/view_86_dp"
+                android:layout_height="@dimen/view_86_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_34_dp"
+                android:visibility="gone"
+                app:bl_shape="oval"
+                app:bl_solid_color="@color/black_trans_50" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/left_name"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_24_dp"
+                android:layout_below="@id/left_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/view_10_dp"
+                android:paddingRight="@dimen/view_10_dp"
+                android:singleLine="true"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                app:bl_corners_radius="@dimen/view_12_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="@color/black_trans_20" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/left_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_88_dp"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/right_iv"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_90_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_32_dp" />
+
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/right_status_area"
+                android:layout_width="@dimen/view_86_dp"
+                android:layout_height="@dimen/view_86_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_34_dp"
+                android:visibility="gone"
+                app:bl_shape="oval"
+                app:bl_solid_color="@color/black_trans_50" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/right_name"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_24_dp"
+                android:layout_below="@id/right_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/view_10_dp"
+                android:paddingRight="@dimen/view_10_dp"
+                android:singleLine="true"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                app:bl_corners_radius="@dimen/view_12_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="@color/black_trans_20" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/right_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_88_dp"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.module.playways.grab.room.view.normal.view.SingCountDownView
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/chorus_other_area"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="-34dp" />
+
+</merge>

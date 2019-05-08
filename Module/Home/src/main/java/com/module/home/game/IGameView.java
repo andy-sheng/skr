@@ -23,4 +23,6 @@ public interface IGameView {
     void showRedOperationView(GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean);
 
     void hideRedOperationView();
+
+    void showTaskRedDot(boolean show);
 }

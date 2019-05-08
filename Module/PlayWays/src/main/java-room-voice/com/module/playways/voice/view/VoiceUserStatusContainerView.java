@@ -13,7 +13,7 @@ import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,6 +48,14 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.voice_user_status_view_container, this);
         mUserStatusContainer = (ExLinearLayout) this.findViewById(R.id.user_status_container);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

@@ -12,7 +12,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
     public final static String TAG = "SpecialCardViewHolder";

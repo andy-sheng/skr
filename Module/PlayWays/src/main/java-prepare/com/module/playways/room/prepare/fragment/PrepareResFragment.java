@@ -30,7 +30,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.prepare.presenter.PrepareSongPresenter;
 import com.module.playways.room.prepare.view.IPrepareResView;

@@ -14,7 +14,7 @@ import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
 import com.module.playways.room.song.fragment.SongSelectFragment;
-import com.module.rank.R;
+import com.module.playways.R;
 
 @Route(path = RouterConstants.ACTIVITY_PLAY_WAYS)
 public class PlayWaysActivity extends BaseActivity {

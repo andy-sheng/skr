@@ -17,7 +17,7 @@ import com.common.view.ex.ExTextView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.quickmsg.QuickMsgView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
 import org.greenrobot.eventbus.EventBus;
@@ -114,6 +114,14 @@ public class VoiceBottomContainerView extends RelativeLayout {
     public void dismissPopWindow() {
         if (mQuickMsgPopWindow != null) {
             mQuickMsgPopWindow.dismiss();
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 

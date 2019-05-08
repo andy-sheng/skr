@@ -5,24 +5,42 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/view_16_dp"
     android:layout_marginRight="@dimen/view_16_dp"
-    android:orientation="vertical"
-    app:bl_corners_topLeftRadius="@dimen/view_10_dp"
-    app:bl_corners_topRightRadius="@dimen/view_10_dp"
-    app:bl_solid_color="#EBEBEB"
-    app:bl_stroke_color="#ACACAC"
-    app:bl_stroke_width="@dimen/view_1_dp">
+    android:layout_marginBottom="@dimen/view_8_dp"
+    android:background="@drawable/common_dialog_bg"
+    android:orientation="vertical">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:text="这是你的邀请暗号"
+        android:textColor="#993B4E79"
+        android:textSize="@dimen/textsize_18_dp" />
+
+    <TextView
+        android:id="@+id/tv_kouling"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/view_18_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tv_kouling"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_26_dp"
-        android:gravity="center"
-        android:drawablePadding="@dimen/view_7_dp"
         android:drawableRight="@drawable/yaoqingkouling_btn"
+        android:drawablePadding="@dimen/view_7_dp"
+        android:gravity="center"
         android:lineSpacingExtra="@dimen/textsize_6_dp"
-        android:text="邀请口令已经生成"
+        android:text="暗号已经复制好了"
         android:textColor="@color/black_trans_60"
         android:textSize="@dimen/textsize_16_dp" />
 
@@ -47,25 +65,27 @@
         android:layout_marginBottom="@dimen/view_24_dp">
 
         <TextView
-            android:id="@+id/tv_weixin_share"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_80_dp"
-            android:layout_centerVertical="true"
-            android:drawableTop="@drawable/share_weixin"
-            android:gravity="center_horizontal|bottom"
-            android:text="微信好友"
-            android:textSize="@dimen/textsize_12_dp" />
-
-        <TextView
             android:id="@+id/tv_qq_share"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_80_dp"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:drawableTop="@drawable/qq"
             android:gravity="center_horizontal|bottom"
             android:text="QQ"
             android:textSize="@dimen/textsize_12_dp" />
+
+        <TextView
+            android:id="@+id/tv_weixin_share"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_80_dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:drawableTop="@drawable/share_weixin"
+            android:gravity="center_horizontal|bottom"
+            android:text="微信好友"
+            android:textSize="@dimen/textsize_12_dp" />
+
+
     </RelativeLayout>
 
 </com.common.view.ex.ExRelativeLayout>

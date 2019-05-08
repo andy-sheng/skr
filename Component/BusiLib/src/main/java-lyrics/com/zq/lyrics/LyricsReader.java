@@ -22,7 +22,7 @@ import java.util.TreeMap;
  * Created by zhangliangming on 2018-02-25.
  */
 
-public class LyricsReader {
+public class LyricsReader implements Cloneable {
 
     public final static String TAG = "LyricsReader";
 
@@ -67,6 +67,19 @@ public class LyricsReader {
 
     public LyricsReader() {
 
+    }
+
+    @Override
+    protected LyricsReader clone() {
+        try {
+            LyricsReader lyricsReader = (LyricsReader) super.clone();
+            lyricsReader.mLyricsInfo = mLyricsInfo;
+            return lyricsReader;
+        } catch (CloneNotSupportedException e) {
+            MyLog.e(TAG, e);
+        }
+
+        return null;
     }
 
     /**
@@ -127,7 +140,7 @@ public class LyricsReader {
         }
         //默认歌词行
         mLrcLineInfos = lyricsInfo.getLyricsLineInfoTreeMap();
-        if(mLrcLineInfos == null){
+        if (mLrcLineInfos == null) {
             MyLog.e(TAG, "mLrcLineInfos 为null");
         }
         //翻译歌词集合
@@ -140,7 +153,7 @@ public class LyricsReader {
     }
 
     public void cut(long startTs, long endTs) {
-        if(startTs >= endTs){
+        if (startTs >= endTs) {
             MyLog.d(TAG, "歌词开始时间大于结束时间，不截取:" + "cut" + " startTs=" + startTs + " endTs=" + endTs);
             return;
         }
@@ -149,17 +162,17 @@ public class LyricsReader {
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
 
-            if(entry.getValue().getEndTime() >= endTs && entry.getValue().getStartTime() < endTs){
+            if (entry.getValue().getEndTime() >= endTs && entry.getValue().getStartTime() < endTs) {
 
                 continue;
             }
 
-            if(entry.getValue().getEndTime() > endTs){
+            if (entry.getValue().getEndTime() > endTs) {
                 it.remove();
                 continue;
             }
 
-            if(entry.getValue().getEndTime() <= startTs){
+            if (entry.getValue().getEndTime() <= startTs) {
                 it.remove();
                 continue;
             }
@@ -178,9 +191,9 @@ public class LyricsReader {
         }
     }
 
-    public String getTwoLineGuideLyric(long guideStart){
+    public String getTwoLineGuideLyric(long guideStart) {
         List<LyricsLineInfo> lyricsLineInfoList = getLyricsLineInfoList();
-        if(lyricsLineInfoList == null || lyricsLineInfoList.size() == 0){
+        if (lyricsLineInfoList == null || lyricsLineInfoList.size() == 0) {
             MyLog.d(TAG, "getTwoLineGuideLyric lyricsLineInfoList error");
             return "";
         }
@@ -188,13 +201,13 @@ public class LyricsReader {
         int lastGuideLyricLineNum = 0;
         for (int i = 0; i < lyricsLineInfoList.size(); i++) {
             LyricsLineInfo info = lyricsLineInfoList.get(i);
-            if(info.getStartTime() == guideStart || (guideStart > info.getStartTime() && guideStart < info.getEndTime())){
+            if (info.getStartTime() == guideStart || (guideStart > info.getStartTime() && guideStart < info.getEndTime())) {
                 lastGuideLyricLineNum = i - 1;
                 break;
             }
         }
 
-        if(lastGuideLyricLineNum > 0){
+        if (lastGuideLyricLineNum > 0) {
             String lyric = lyricsLineInfoList.get(lastGuideLyricLineNum - 1).getLineLyrics() + "\n"
                     + lyricsLineInfoList.get(lastGuideLyricLineNum).getLineLyrics();
             return lyric;
@@ -203,7 +216,7 @@ public class LyricsReader {
         return "";
     }
 
-    public List<LyricsLineInfo> getLyricsLineInfoList(){
+    public List<LyricsLineInfo> getLyricsLineInfoList() {
         ArrayList<LyricsLineInfo> mLyricsLineInfoList = new ArrayList<>();
 
         Iterator<Map.Entry<Integer, LyricsLineInfo>> newIt = mLrcLineInfos.entrySet().iterator();
@@ -220,7 +233,7 @@ public class LyricsReader {
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
-            if(entry.getValue().getEndTime() > startTs){
+            if (entry.getValue().getEndTime() > startTs) {
                 return entry.getKey();
             }
         }

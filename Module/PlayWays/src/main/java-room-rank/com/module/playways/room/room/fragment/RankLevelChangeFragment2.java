@@ -43,7 +43,7 @@ import com.module.playways.room.room.model.VoteInfoModel;
 import com.module.playways.room.room.model.score.ScoreItemModel;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.score.ScoreStateModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
@@ -57,7 +57,6 @@ import com.zq.live.proto.Room.EWinType;
 
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 import static android.view.View.ALPHA;

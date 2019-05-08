@@ -27,7 +27,7 @@ import com.module.msg.IMsgService;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.RoomDataUtils;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.room.quickmsg.QuickMsgView;
@@ -156,6 +156,7 @@ public abstract class BottomContainerView extends RelativeLayout {
                 }
             }
         });
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -276,6 +277,14 @@ public abstract class BottomContainerView extends RelativeLayout {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         MyLog.d("BottomContainerView", "onDetachedFromWindow");
@@ -306,6 +315,10 @@ public abstract class BottomContainerView extends RelativeLayout {
         public abstract void showInputBtnClick();
 
         public void clickRoomManagerBtn() {
+        }
+
+        public void showGiftPanel(){
+
         }
     }
 

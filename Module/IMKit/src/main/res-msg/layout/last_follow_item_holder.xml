@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp">
+
+    <ImageView
+        android:id="@+id/avatar_bg"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_53_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:background="@drawable/s_touxiang" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignLeft="@id/avatar_bg"
+        android:layout_alignTop="@id/avatar_bg"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_5_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_alignTop="@+id/avatar_iv"
+        android:layout_marginLeft="@dimen/view_9_dp"
+        android:layout_toRightOf="@+id/avatar_iv"
+        android:paddingRight="@dimen/view_120_dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/status_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_17_dp"
+        android:layout_below="@+id/name_tv"
+        android:layout_alignLeft="@+id/name_tv"
+        android:gravity="center"
+        android:textColor="#800C2275"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <ImageView
+        android:id="@+id/sex_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_alignTop="@id/name_tv"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:layout_marginLeft="-116dp"
+        android:layout_toRightOf="@id/name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/follow_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_7_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:paddingBottom="@dimen/view_3_dp"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFF7BB"
+        app:bl_stroke_color="#0C2275"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_alignParentBottom="true"
+        android:background="#333E5181" />
+
+</RelativeLayout>

@@ -7,9 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -36,9 +37,13 @@ import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.songmanager.tags.GrabTagsAdapter;
+import com.module.playways.grab.room.songmanager.view.GrabEditView;
 import com.module.playways.room.song.fragment.GrabSearchSongFragment;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -53,6 +58,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     ExTextView mSearchSongIv;
 
     ExTextView mTvSelectedSong;
+
+    ExTextView mEditRoomName;
 
     ExLinearLayout mFlSongListContainer;
 
@@ -76,6 +83,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     RelativeLayout mRlContent;
 
+    DialogPlus mEditRoomDialog;
+
     Handler mUiHandler = new Handler();
 
     int mSpecialModelId;
@@ -90,9 +99,10 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mGrabSongManagePresenter = new GrabSongManagePresenter(this, mRoomData);
         addPresent(mGrabSongManagePresenter);
 
-        mIvArrow = (ImageView)mRootView.findViewById(R.id.iv_arrow);
+        mIvArrow = (ImageView) mRootView.findViewById(R.id.iv_arrow);
         mSearchSongIv = mRootView.findViewById(R.id.search_song_iv);
         mTvSelectedSong = (ExTextView) mRootView.findViewById(R.id.tv_selected_song);
+        mEditRoomName = (ExTextView) mRootView.findViewById(R.id.edit_room_name);
         mFlSongListContainer = (ExLinearLayout) mRootView.findViewById(R.id.fl_song_list_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
@@ -131,6 +141,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         if (mRoomData.getSpecialModel() != null) {
             setTagTv(mRoomData.getSpecialModel());
         }
+        mEditRoomName.setText(mRoomData.getRoomName());
 
         mUiHandler.postDelayed(() -> {
             TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
@@ -174,6 +185,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     @Override
+    public void updateRoomNameSuccess() {
+        mEditRoomName.setText(mRoomData.getRoomName());
+    }
+
+    @Override
     public void hasMoreSongList(boolean hasMore) {
         mRefreshLayout.setEnableLoadMore(hasMore);
         mRefreshLayout.finishLoadMore();
@@ -200,6 +216,13 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     private void initListener() {
+        mEditRoomName.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                showEditRoomDialog();
+            }
+        });
+
         mSearchSongIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -232,7 +255,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
                     @Override
                     public void dismissDialog() {
-                        if(mPopupWindow != null){
+                        if (mPopupWindow != null) {
                             mPopupWindow.dismiss();
                         }
                     }
@@ -278,10 +301,53 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mManageSongAdapter.setGrabRoomData(mRoomData);
     }
 
+    private void showEditRoomDialog() {
+        GrabEditView grabEditView = new GrabEditView(getContext(), mRoomData.getRoomName());
+        grabEditView.setListener(new GrabEditView.Listener() {
+            @Override
+            public void onClickCancel() {
+                if (mEditRoomDialog != null) {
+                    mEditRoomDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onClickSave(String roomName) {
+                if (!TextUtils.isEmpty(roomName)) {
+                    // TODO: 2019/4/18 修改房间名
+                    mEditRoomDialog.dismiss(false);
+                    mGrabSongManagePresenter.updateRoomName(mRoomData.getGameId(), roomName);
+                } else {
+                    // TODO: 2019/4/18 房间名为空
+                    U.getToastUtil().showShort("输入的房间名为空");
+                }
+            }
+        });
+
+        mEditRoomDialog = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(grabEditView))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    }
+                })
+                .create();
+        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+        mEditRoomDialog.show();
+    }
+
     @Override
     public void destroy() {
         super.destroy();
         mRlContent.clearAnimation();
+        if (mEditRoomDialog != null) {
+            mEditRoomDialog.dismiss(false);
+        }
     }
 
     @Override

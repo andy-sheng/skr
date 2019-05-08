@@ -16,6 +16,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 /**
@@ -77,6 +78,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   public static final Integer DEFAULT_STANDTOTALMS = 0;
 
   public static final Boolean DEFAULT_CHALLENGEAVAILABLE = false;
+
+  public static final StandPlayType DEFAULT_PLAYTYPE = StandPlayType.PT_INVALID_TYPE;
 
   /**
    * 音乐条目标识
@@ -312,13 +315,33 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   private final Boolean challengeAvailable;
 
+  /**
+   * 一唱到底演唱类型
+   */
+  @WireField(
+      tag = 27,
+      adapter = "com.zq.live.proto.Common.StandPlayType#ADAPTER"
+  )
+  private final StandPlayType playType;
+
+  /**
+   * 一唱到底模式下spk歌曲信息
+   */
+  @WireField(
+      tag = 28,
+      adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<MusicInfo> SPKMusic;
+
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
       Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
-      Integer standTotalMs, Boolean challengeAvailable) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, ByteString.EMPTY);
+      Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
+      List<MusicInfo> SPKMusic) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
@@ -326,7 +349,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
-      Integer standTotalMs, Boolean challengeAvailable, ByteString unknownFields) {
+      Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
+      List<MusicInfo> SPKMusic, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -354,6 +378,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.task = task;
     this.standTotalMs = standTotalMs;
     this.challengeAvailable = challengeAvailable;
+    this.playType = playType;
+    this.SPKMusic = Internal.immutableCopyOf("SPKMusic", SPKMusic);
   }
 
   @Override
@@ -385,6 +411,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.task = task;
     builder.standTotalMs = standTotalMs;
     builder.challengeAvailable = challengeAvailable;
+    builder.playType = playType;
+    builder.SPKMusic = Internal.copyOf("SPKMusic", SPKMusic);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -420,7 +448,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(rankLrcEndT, o.rankLrcEndT)
         && Internal.equals(task, o.task)
         && Internal.equals(standTotalMs, o.standTotalMs)
-        && Internal.equals(challengeAvailable, o.challengeAvailable);
+        && Internal.equals(challengeAvailable, o.challengeAvailable)
+        && Internal.equals(playType, o.playType)
+        && SPKMusic.equals(o.SPKMusic);
   }
 
   @Override
@@ -454,6 +484,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (task != null ? task.hashCode() : 0);
       result = result * 37 + (standTotalMs != null ? standTotalMs.hashCode() : 0);
       result = result * 37 + (challengeAvailable != null ? challengeAvailable.hashCode() : 0);
+      result = result * 37 + (playType != null ? playType.hashCode() : 0);
+      result = result * 37 + SPKMusic.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -488,6 +520,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (task != null) builder.append(", task=").append(task);
     if (standTotalMs != null) builder.append(", standTotalMs=").append(standTotalMs);
     if (challengeAvailable != null) builder.append(", challengeAvailable=").append(challengeAvailable);
+    if (playType != null) builder.append(", playType=").append(playType);
+    if (!SPKMusic.isEmpty()) builder.append(", SPKMusic=").append(SPKMusic);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -762,6 +796,26 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 一唱到底演唱类型
+   */
+  public StandPlayType getPlayType() {
+    if(playType==null){
+        return new StandPlayType.Builder().build();
+    }
+    return playType;
+  }
+
+  /**
+   * 一唱到底模式下spk歌曲信息
+   */
+  public List<MusicInfo> getSPKMusicList() {
+    if(SPKMusic==null){
+        return new java.util.ArrayList<MusicInfo>();
+    }
+    return SPKMusic;
+  }
+
+  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -943,6 +997,20 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return challengeAvailable!=null;
   }
 
+  /**
+   * 一唱到底演唱类型
+   */
+  public boolean hasPlayType() {
+    return playType!=null;
+  }
+
+  /**
+   * 一唱到底模式下spk歌曲信息
+   */
+  public boolean hasSPKMusicList() {
+    return SPKMusic!=null;
+  }
+
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     private Integer itemID;
 
@@ -996,7 +1064,12 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
     private Boolean challengeAvailable;
 
+    private StandPlayType playType;
+
+    private List<MusicInfo> SPKMusic;
+
     public Builder() {
+      SPKMusic = Internal.newMutableList();
     }
 
     /**
@@ -1207,9 +1280,26 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
+    /**
+     * 一唱到底演唱类型
+     */
+    public Builder setPlayType(StandPlayType playType) {
+      this.playType = playType;
+      return this;
+    }
+
+    /**
+     * 一唱到底模式下spk歌曲信息
+     */
+    public Builder addAllSPKMusic(List<MusicInfo> SPKMusic) {
+      Internal.checkElementsNotNull(SPKMusic);
+      this.SPKMusic = SPKMusic;
+      return this;
+    }
+
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, super.buildUnknownFields());
     }
   }
 
@@ -1246,6 +1336,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(24, value.task)
           + ProtoAdapter.UINT32.encodedSizeWithTag(25, value.standTotalMs)
           + ProtoAdapter.BOOL.encodedSizeWithTag(26, value.challengeAvailable)
+          + StandPlayType.ADAPTER.encodedSizeWithTag(27, value.playType)
+          + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(28, value.SPKMusic)
           + value.unknownFields().size();
     }
 
@@ -1277,6 +1369,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 24, value.task);
       ProtoAdapter.UINT32.encodeWithTag(writer, 25, value.standTotalMs);
       ProtoAdapter.BOOL.encodeWithTag(writer, 26, value.challengeAvailable);
+      StandPlayType.ADAPTER.encodeWithTag(writer, 27, value.playType);
+      MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 28, value.SPKMusic);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1312,6 +1406,15 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 24: builder.setTask(ProtoAdapter.UINT32.decode(reader)); break;
           case 25: builder.setStandTotalMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 26: builder.setChallengeAvailable(ProtoAdapter.BOOL.decode(reader)); break;
+          case 27: {
+            try {
+              builder.setPlayType(StandPlayType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 28: builder.SPKMusic.add(MusicInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1326,6 +1429,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     @Override
     public MusicInfo redact(MusicInfo value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.SPKMusic, MusicInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -28,12 +28,13 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.audition.AudioRoomActivity;
+import com.module.playways.audition.fragment.AuditionPrepareResFragment;
 import com.module.playways.room.prepare.fragment.PrepareResFragment;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.room.song.view.SearchFeedbackView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -107,8 +108,8 @@ public class SearchSongFragment extends BaseFragment {
                 if (getActivity() instanceof PlayWaysActivity) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                             .setAddToBackStack(true)
-                            .setNotifyHideFragment(SongSelectFragment.class)
                             .setHasAnimation(true)
+                            .setNotifyHideFragment(SongSelectFragment.class)
                             .addDataBeforeAdd(0, songModel)
                             .addDataBeforeAdd(1, mGameType)
                             .addDataBeforeAdd(2, true)
@@ -118,6 +119,12 @@ public class SearchSongFragment extends BaseFragment {
 
                                 }
                             })
+                            .build());
+                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                            .setPopFragment(SearchSongFragment.this)
+                            .setHasAnimation(true)
+                            .setPopAbove(false)
+                            .setExitAnim(R.anim.slide_left_out)
                             .build());
                 }
             }
@@ -311,6 +318,7 @@ public class SearchSongFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
         }

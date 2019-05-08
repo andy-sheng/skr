@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_64_dp"
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp">
+
+    <TextView
+        android:id="@+id/record_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/view_13_dp"
+        android:text="段位奖金"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/record_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/record_desc_tv"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/view_2_dp"
+        android:text="2019-02-04"
+        android:textSize="@dimen/textsize_10_dp" />
+
+
+    <TextView
+        android:id="@+id/record_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="+1.00"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black_trans_10" />
+
+</RelativeLayout>

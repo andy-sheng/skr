@@ -1,9 +1,9 @@
 package com.module.playways.grab.room.model;
 
-import android.text.TextUtils;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
@@ -16,10 +16,14 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.Room.QCHOInnerRoundInfo;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QRoundInfo;
+import com.zq.live.proto.Room.QSPKInnerRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,18 +33,9 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GrabRoundInfoModel extends BaseRoundInfoModel {
-    public static final int STATUS_INIT = 1;
-    public static final int STATUS_GRAB = 2;
-    public static final int STATUS_SING = 3;
-    public static final int STATUS_OVER = 4;
-
-    public static final int EWST_DEFAULT = 0; //默认抢唱类型：普通
-    public static final int EWST_ACCOMPANY = 1; //带伴奏抢唱
-    public static final int EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
-    public static final int EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
 
     /* 一唱到底使用 */
-    private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
+    private int status = EQRoundStatus.QRS_UNKNOWN.getValue();// 轮次状态，在一唱到底中使用
 
     private HashSet<BLightInfoModel> bLightInfos = new HashSet<>();//已经爆灯的人, 一唱到底
 
@@ -69,13 +64,18 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     private int enterStatus;//你进入这个轮次处于的状态
 
     /**
-     * {@link GrabRoundInfoModel.EWST_DEFAULT}
      * EWST_DEFAULT = 0; //默认抢唱类型：普通
      * EWST_ACCOMPANY = 1; //带伴奏抢唱
      * EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
      * EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
      */
-    private int wantSingType;
+    private int wantSingType = EWantSingType.EWST_DEFAULT.getValue();
+
+    @JSONField(name = "CHORoundInfos")
+    List<ChorusRoundInfoModel> chorusRoundInfoModels = new ArrayList<>();
+
+    @JSONField(name = "SPKRoundInfos")
+    List<SPkRoundInfoModel> sPkRoundInfoModels = new ArrayList<>();
 
     public GrabRoundInfoModel() {
 
@@ -168,12 +168,26 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public void updateStatus(boolean notify, int statusGrab) {
-        if (status < statusGrab) {
+        if (getStatusPriority(status) < getStatusPriority(statusGrab)) {
             int old = status;
             status = statusGrab;
             if (notify) {
                 EventBus.getDefault().post(new GrabRoundStatusChangeEvent(this, old));
             }
+        }
+    }
+
+    /**
+     * 重排一下状态机的优先级
+     *
+     * @param status
+     * @return
+     */
+    int getStatusPriority(int status) {
+        if (status == EQRoundStatus.QRS_END.getValue()) {
+            return 1000;
+        } else {
+            return status;
         }
     }
 
@@ -194,6 +208,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      * 一唱到底使用 灭灯
      */
     public boolean addLightOffUid(boolean notify, MLightInfoModel noPassingInfo) {
+        if (status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(0).addLightOffUid(notify, noPassingInfo, this);
+        }
+        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(1).addLightOffUid(notify, noPassingInfo, this);
+        }
         if (!mLightInfos.contains(noPassingInfo)) {
             mLightInfos.add(noPassingInfo);
             if (notify) {
@@ -202,6 +222,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             }
             return true;
         }
+
         return false;
     }
 
@@ -209,6 +230,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      * 一唱到底使用 爆灯
      */
     public boolean addLightBurstUid(boolean notify, BLightInfoModel bLightInfoModel) {
+        if (status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(0).addLightBurstUid(notify, bLightInfoModel, this);
+        }
+        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(1).addLightBurstUid(notify, bLightInfoModel, this);
+        }
         if (!bLightInfos.contains(bLightInfoModel)) {
             bLightInfos.add(bLightInfoModel);
             if (notify) {
@@ -331,11 +358,57 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             this.setResultType(roundInfo.getResultType());
         }
         this.setWantSingType(roundInfo.getWantSingType());
-        updateStatus(notify, roundInfo.getStatus());
 
+        // 更新合唱信息
+        if (wantSingType == EWantSingType.EWST_CHORUS.getValue()) {
+            if (this.getChorusRoundInfoModels().size() <= 1) {
+                // 不满足两人通知全量更新
+                this.getChorusRoundInfoModels().clear();
+                this.getChorusRoundInfoModels().addAll(roundInfo.getChorusRoundInfoModels());
+            } else {
+                for (int i = 0; i < this.getChorusRoundInfoModels().size() && i < roundInfo.getChorusRoundInfoModels().size(); i++) {
+                    ChorusRoundInfoModel chorusRoundInfoModel1 = this.getChorusRoundInfoModels().get(i);
+                    ChorusRoundInfoModel chorusRoundInfoModel2 = roundInfo.getChorusRoundInfoModels().get(i);
+                    chorusRoundInfoModel1.tryUpdateRoundInfoModel(chorusRoundInfoModel2);
+                }
+            }
+        }
+
+        // 更新pk信息
+        if (wantSingType == EWantSingType.EWST_SPK.getValue()) {
+            // pk房间
+            if (this.getsPkRoundInfoModels().size() <= 1) {
+                // 不满足两人通知全量更新
+                this.getsPkRoundInfoModels().clear();
+                this.getsPkRoundInfoModels().addAll(roundInfo.getsPkRoundInfoModels());
+            } else {
+                for (int i = 0; i < this.getsPkRoundInfoModels().size() && i < roundInfo.getsPkRoundInfoModels().size(); i++) {
+                    SPkRoundInfoModel sPkRoundInfoModel1 = this.getsPkRoundInfoModels().get(i);
+                    SPkRoundInfoModel sPkRoundInfoModel2 = roundInfo.getsPkRoundInfoModels().get(i);
+                    sPkRoundInfoModel1.tryUpdateRoundInfoModel(sPkRoundInfoModel2, notify, this);
+                }
+            }
+        }
+        updateStatus(notify, roundInfo.getStatus());
         return;
     }
 
+    /**
+     * 一唱到底合唱某人放弃了演唱
+     *
+     * @param userID
+     */
+    public void giveUpInChorus(int userID) {
+        for (int i = 0; i < this.getChorusRoundInfoModels().size(); i++) {
+            ChorusRoundInfoModel chorusRoundInfoModel = this.getChorusRoundInfoModels().get(i);
+            if (chorusRoundInfoModel.getUserID() == userID) {
+                if (!chorusRoundInfoModel.isHasGiveUp()) {
+                    chorusRoundInfoModel.setHasGiveUp(true);
+                    EventBus.getDefault().post(new GrabChorusUserStatusChangeEvent(chorusRoundInfoModel));
+                }
+            }
+        }
+    }
 
     public static GrabRoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
         GrabRoundInfoModel roundInfoModel = new GrabRoundInfoModel();
@@ -346,6 +419,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
 
+        // 轮次状态
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
 
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
@@ -381,8 +455,18 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             GrabPlayerInfoModel grabPlayerInfoModel = GrabPlayerInfoModel.parse(m);
             roundInfoModel.addPlayUser(false, grabPlayerInfoModel);
         }
-
+        // 想唱类型
         roundInfoModel.setWantSingType(roundInfo.getWantSingType().getValue());
+
+        for (QCHOInnerRoundInfo qchoInnerRoundInfo : roundInfo.getCHORoundInfosList()) {
+            ChorusRoundInfoModel chorusRoundInfoModel = ChorusRoundInfoModel.parse(qchoInnerRoundInfo);
+            roundInfoModel.getChorusRoundInfoModels().add(chorusRoundInfoModel);
+        }
+
+        for (QSPKInnerRoundInfo qspkInnerRoundInfo : roundInfo.getSPKRoundInfosList()) {
+            SPkRoundInfoModel pkRoundInfoModel = SPkRoundInfoModel.parse(qspkInnerRoundInfo);
+            roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel);
+        }
         return roundInfoModel;
     }
 
@@ -447,6 +531,14 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return enterStatus;
     }
 
+    public boolean isEnterInSingStatus() {
+        return enterStatus == EQRoundStatus.QRS_SING.getValue()
+                || enterStatus == EQRoundStatus.QRS_CHO_SING.getValue()
+                || enterStatus == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                || enterStatus == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
+                ;
+    }
+
     public void setEnterStatus(int enterStatus) {
         this.enterStatus = enterStatus;
     }
@@ -456,15 +548,191 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public boolean isChallengeRound() {
-        return wantSingType == EWST_COMMON_OVER_TIME || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+        return wantSingType == EWantSingType.EWST_COMMON_OVER_TIME.getValue() || wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue();
     }
 
     public boolean isAccRound() {
-        return wantSingType == EWST_ACCOMPANY || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+        return wantSingType == EWantSingType.EWST_ACCOMPANY.getValue() || wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue();
     }
 
     public void setWantSingType(int wantSingType) {
         this.wantSingType = wantSingType;
+    }
+
+    public List<ChorusRoundInfoModel> getChorusRoundInfoModels() {
+        return chorusRoundInfoModels;
+    }
+
+    public void setChorusRoundInfoModels(List<ChorusRoundInfoModel> chorusRoundInfoModels) {
+        this.chorusRoundInfoModels = chorusRoundInfoModels;
+    }
+
+    public List<SPkRoundInfoModel> getsPkRoundInfoModels() {
+        return sPkRoundInfoModels;
+    }
+
+    public void setsPkRoundInfoModels(List<SPkRoundInfoModel> sPkRoundInfoModels) {
+        this.sPkRoundInfoModels = sPkRoundInfoModels;
+    }
+
+    /**
+     * 判断当前是否是自己的演唱轮次
+     *
+     * @return
+     */
+    public boolean singBySelf() {
+        if (getStatus() == EQRoundStatus.QRS_SING.getValue()) {
+            return getUserID() == MyUserInfoManager.getInstance().getUid();
+        } else if (getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
+            for (ChorusRoundInfoModel roundInfoModel : chorusRoundInfoModels) {
+                if (roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid() && isParticipant()) {
+                    return true;
+                }
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            if (getsPkRoundInfoModels().size() > 0) {
+                return getsPkRoundInfoModels().get(0).getUserID() == MyUserInfoManager.getInstance().getUid();
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            if (getsPkRoundInfoModels().size() > 1) {
+                return getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid();
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_END.getValue()) {
+            // 如果轮次都结束了 还要判断出这个轮次是不是自己唱的
+            if (getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return true;
+            }
+            for (ChorusRoundInfoModel roundInfoModel : chorusRoundInfoModels) {
+                if (roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid() && isParticipant()) {
+                    return true;
+                }
+            }
+            if (getsPkRoundInfoModels().size() > 0) {
+                if (getsPkRoundInfoModels().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    return true;
+                }
+            }
+            if (getsPkRoundInfoModels().size() > 1) {
+                if (getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 当前轮次当前阶段是否由 userId 演唱
+     *
+     * @param userId
+     * @return
+     */
+    public boolean singByUserId(int userId) {
+        if (getStatus() == EQRoundStatus.QRS_SING.getValue()) {
+            return getUserID() == userId;
+        } else if (getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
+            for (ChorusRoundInfoModel roundInfoModel : chorusRoundInfoModels) {
+                if (roundInfoModel.getUserID() == userId) {
+                    return true;
+                }
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            if (getsPkRoundInfoModels().size() > 0) {
+                return getsPkRoundInfoModels().get(0).getUserID() == userId;
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            if (getsPkRoundInfoModels().size() > 1) {
+                return getsPkRoundInfoModels().get(1).getUserID() == userId;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断是各种演唱阶段
+     *
+     * @return
+     */
+    public boolean isSingStatus() {
+        if (status == EQRoundStatus.QRS_SING.getValue()
+                || status == EQRoundStatus.QRS_CHO_SING.getValue()
+                || status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否是合唱轮次
+     *
+     * @return
+     */
+    public boolean isChorusRound() {
+        return status == EQRoundStatus.QRS_CHO_SING.getValue();
+    }
+
+    /**
+     * 是否是pk轮次
+     *
+     * @return
+     */
+    public boolean isPKRound() {
+        return status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue();
+    }
+
+    /**
+     * 返回当前演唱者的id信息
+     *
+     * @return
+     */
+    public List<Integer> getSingUserIds() {
+        List<Integer> singerUserIds = new ArrayList<>();
+        if (isPKRound()) {
+            for (SPkRoundInfoModel infoModel : getsPkRoundInfoModels()) {
+                singerUserIds.add(infoModel.getUserID());
+            }
+        } else if (isChorusRound()) {
+            for (ChorusRoundInfoModel infoModel : getChorusRoundInfoModels()) {
+                singerUserIds.add(infoModel.getUserID());
+            }
+        } else {
+            singerUserIds.add(getUserID());
+        }
+        return singerUserIds;
+    }
+
+    public int getSingTotalMs() {
+        /**
+         * 该轮次的总时间，之前用的是歌曲内的总时间，但是不灵活，现在都放在服务器的轮次信息的 begin 和 end 里
+         *
+         */
+        int totalTs = 0;
+        /**
+         * pk第一轮和第二轮的演唱时间 和 歌曲截取的部位不一样
+         */
+        if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            totalTs = getsPkRoundInfoModels().get(1).getSingEndMs() - getsPkRoundInfoModels().get(1).getSingBeginMs();
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 0) {
+            totalTs = getsPkRoundInfoModels().get(0).getSingEndMs() - getsPkRoundInfoModels().get(0).getSingBeginMs();
+        } else {
+            totalTs = getSingEndMs() - getSingBeginMs();
+        }
+        if (totalTs <= 0) {
+            MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正");
+            if (getWantSingType() == 0) {
+                totalTs = 20 * 1000;
+            } else if (getWantSingType() == 1) {
+                totalTs = 30 * 1000;
+            } else if (getWantSingType() == 2) {
+                totalTs = 40 * 1000;
+            } else if (getWantSingType() == 3) {
+                totalTs = 50 * 1000;
+            }
+        }
+        return totalTs;
     }
 
     @Override
@@ -473,6 +741,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 "roundSeq=" + roundSeq +
                 ", status=" + status +
                 ", userID=" + userID +
+                ", wantSingType=" + wantSingType +
                 ", playbookID=" + playbookID +
                 ", songModel=" + (music == null ? "" : music.toSimpleString()) +
                 ", singBeginMs=" + singBeginMs +
@@ -492,6 +761,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", isParticipant=" + isParticipant +
                 ", elapsedTimeMs=" + elapsedTimeMs +
                 ", enterStatus=" + enterStatus +
+                ",chorusRoundInfoModels=" + chorusRoundInfoModels +
+                ", sPkRoundInfoModels=" + sPkRoundInfoModels +
                 '}';
     }
+
+
 }

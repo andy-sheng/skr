@@ -3,105 +3,122 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9F4F1">
+    android:background="@color/colorPrimary">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
         app:centerText="意见反馈"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
-        app:showBottomLine="true"
-        app:bottomLineColor="#0C2275"
-        app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
 
-    <RadioGroup
-        android:id="@+id/button_area"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/titlebar"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/error_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_17_dp"
-            android:button="@drawable/radiobutton_default"
-            android:checked="true"
-            android:paddingLeft="@dimen/view_8_dp"
-            android:text="遇到问题"
-            android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_16_dp" />
-
-        <RadioButton
-            android:id="@+id/feed_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_40_dp"
-            android:button="@drawable/radiobutton_default"
-            android:paddingLeft="@dimen/view_8_dp"
-            android:text="新功能建议"
-            android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_16_dp" />
-    </RadioGroup>
-
-
-    <com.common.view.ex.NoLeakEditText
-        android:id="@+id/feedback_content"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_128_dp"
-        android:layout_below="@+id/button_area"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/yijianfankui_bj"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="left|top"
-        android:hint="有什么想要吐槽给撕歌的呢"
-        android:lineSpacingExtra="@dimen/view_10_dp"
-        android:maxLength="200"
-        android:paddingLeft="@dimen/view_17_dp"
-        android:paddingTop="@dimen/view_10_dp"
-        android:paddingRight="@dimen/view_17_dp"
-        android:paddingBottom="@dimen/view_10_dp"
-        android:textColor="#0C2275"
-        android:textColorHint="#800C2275"
-        android:textSize="@dimen/view_16_dp" />
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:background="@drawable/common_dialog_bg"
+        android:paddingLeft="@dimen/view_3_dp"
+        android:paddingTop="@dimen/view_3_dp"
+        android:paddingRight="@dimen/view_3_dp"
+        android:paddingBottom="@dimen/view_5_dp">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/content_text_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/feedback_content"
-        android:layout_alignLeft="@+id/feedback_content"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:layout_marginBottom="@dimen/view_8_dp"
-        android:text="0/200"
-        android:textColor="#800C2275"
-        android:textSize="@dimen/textsize_16_dp" />
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/feedback_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_162_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_marginTop="@dimen/view_30_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:background="@drawable/common_edit_no_stroke_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="left|top"
+            android:hint="有什么想要吐槽给撕歌的呢"
+            android:lineSpacingExtra="@dimen/view_10_dp"
+            android:maxLength="200"
+            android:paddingLeft="@dimen/view_15_dp"
+            android:paddingTop="@dimen/view_15_dp"
+            android:paddingRight="@dimen/view_15_dp"
+            android:paddingBottom="@dimen/view_30_dp"
+            android:textColor="@color/textColorPrimary"
+            android:textColorHint="#663B4E79"
+            android:textSize="@dimen/view_16_dp"
+            android:textStyle="bold" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/submit_tv"
-        android:layout_width="@dimen/view_206_dp"
-        android:layout_height="@dimen/view_54_dp"
-        android:layout_below="@+id/feedback_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_25_dp"
-        android:background="@drawable/img_btn_bg_yellow"
-        android:gravity="center"
-        android:paddingBottom="@dimen/view_6_dp"
-        android:text="提交"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_20_dp"
-        android:textStyle="bold" />
+        <com.common.view.ex.ExTextView
+            android:id="@+id/content_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/feedback_content"
+            android:layout_alignBottom="@id/feedback_content"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:layout_marginBottom="@dimen/view_10_dp"
+            android:text="0/200"
+            android:textColor="#663B4E79"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/button_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/feedback_content"
+            android:layout_marginTop="@dimen/view_14_dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/error_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_17_dp"
+                android:button="@drawable/radiobutton_default"
+                android:checked="true"
+                android:paddingLeft="@dimen/view_8_dp"
+                android:text="遇到问题"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/textsize_16_dp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/feed_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_40_dp"
+                android:button="@drawable/radiobutton_default"
+                android:paddingLeft="@dimen/view_8_dp"
+                android:text="新功能建议"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/textsize_16_dp"
+                android:textStyle="bold" />
+        </RadioGroup>
+
+        <com.dialog.view.StrokeTextView
+            android:id="@+id/submit_tv"
+            android:layout_width="@dimen/view_132_dp"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_below="@+id/button_area"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:background="@drawable/red_button_icon"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_6_dp"
+            android:text="提交"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/upload_progress_bar"

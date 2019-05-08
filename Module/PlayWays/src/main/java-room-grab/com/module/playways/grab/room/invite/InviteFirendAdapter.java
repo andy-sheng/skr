@@ -16,10 +16,14 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.grab.room.model.GrabFriendModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerView.ViewHolder> {
     OnInviteClickListener mOnInviteClickListener;
+
+    public InviteFirendAdapter(OnInviteClickListener onInviteClickListener){
+        this.mOnInviteClickListener = onInviteClickListener;
+    }
 
     @NonNull
     @Override
@@ -35,10 +39,6 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model);
-    }
-
-    public void setOnInviteClickListener(OnInviteClickListener onInviteClickListener) {
-        mOnInviteClickListener = onInviteClickListener;
     }
 
     @Override

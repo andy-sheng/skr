@@ -15,7 +15,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.fragment.OtherPersonFragment2;

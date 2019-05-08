@@ -55,7 +55,7 @@ import com.module.playways.room.room.view.RankTopContainerView1;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.room.view.TurnChangeCardView;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -1072,6 +1072,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void onLyricEventPost(int eventNum) {
                 mRoomData.setSongLineNum(eventNum);
+                /**
+                 * 更新本地总分
+                 */
+                updateScrollBarProgress(999,0,eventNum);
+                /**
+                 * 通知远端更新总分
+                 */
                 mCorePresenter.sendTotalScoreToOthers(eventNum);
             }
         });

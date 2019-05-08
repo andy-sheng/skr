@@ -65,18 +65,21 @@ public final class ManifestParser {
             if (appInfo.metaData != null) {
                 Log.d(TAG, "appInfo.metaData != null");
                 for (String key : appInfo.metaData.keySet()) {
-                    Log.w(TAG, "key:" + key);
-                    String value = (String) appInfo.metaData.get(key);
-                    if (!TextUtils.isEmpty(value)) {
-                        if (value.equals(MODULE_VALUE)
-                                || value.startsWith(MODULE_VALUE + "_")) {
-                            ConfigModule configModule = parseModule(key);
-                            ConfigModuleWrapForSort configModuleWrapForSort = new ConfigModuleWrapForSort(configModule);
-                            String t[] = value.split("_");
-                            if (t.length == 2) {
-                                configModuleWrapForSort.index = Integer.parseInt(t[1]);
+                    Object valueO =  appInfo.metaData.get(key);
+                    Log.w(TAG, "key:" + key+" value:"+valueO);
+                    if(valueO instanceof String){
+                        String value = (String)valueO;
+                        if (!TextUtils.isEmpty(value)) {
+                            if (value.equals(MODULE_VALUE)
+                                    || value.startsWith(MODULE_VALUE + "_")) {
+                                ConfigModule configModule = parseModule(key);
+                                ConfigModuleWrapForSort configModuleWrapForSort = new ConfigModuleWrapForSort(configModule);
+                                String t[] = value.split("_");
+                                if (t.length == 2) {
+                                    configModuleWrapForSort.index = Integer.parseInt(t[1]);
+                                }
+                                modules.add(configModuleWrapForSort);
                             }
-                            modules.add(configModuleWrapForSort);
                         }
                     }
                 }

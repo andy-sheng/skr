@@ -23,19 +23,24 @@ public abstract class SkrBasePermission {
     String mPermissionStr;
     String mGoPermissionManagerTips;
     boolean mCannable = true;
+    Activity mActivity;
 
     public SkrBasePermission(String permissionStr, String goPermissionManagerTips, boolean cannable) {
+        this(null, permissionStr, goPermissionManagerTips, cannable);
+    }
+
+    public SkrBasePermission(Activity activity, String permissionStr, String goPermissionManagerTips, boolean cannable) {
+        mActivity = activity;
         mPermissionStr = permissionStr;
         mGoPermissionManagerTips = goPermissionManagerTips;
         mCannable = cannable;
     }
 
     public void ensurePermission(final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
-        final Activity activity = U.getActivityUtils().getTopActivity();
-        ensurePermission(activity,ifAgreeAction,goSettingIfRefuse);
+        ensurePermission(getActivity(), ifAgreeAction, goSettingIfRefuse);
     }
 
-    public void ensurePermission(Activity activity ,final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
+    public void ensurePermission(Activity activity, final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
         if (!U.getPermissionUtils().checkPermission(activity, mPermissionStr)) {
             MyLog.d(TAG, "ensurePhoneStatePermission false");
             // 这里会起个 Activity 判断权限，会回调 activity 的 onResume 方法
@@ -128,4 +133,10 @@ public abstract class SkrBasePermission {
         return false;
     }
 
+    Activity getActivity() {
+        if (mActivity == null) {
+            return U.getActivityUtils().getTopActivity();
+        }
+        return mActivity;
+    }
 }

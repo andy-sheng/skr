@@ -1,17 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/sing_begin_svga"
-        android:layout_width="@dimen/view_375_dp"
-        android:layout_height="@dimen/view_181_dp"
+    <com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView
+        android:id="@+id/normla_sing_beign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:loopCount="1" />
+        android:layout_marginTop="@dimen/view_175_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.chorus.ChorusSingBeginTipsCardView
+        android:id="@+id/chorus_sing_begin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_175_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.pk.PKSingBeginTipsCardView
+        android:id="@+id/pk_sing_begin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_175_dp"
+        android:visibility="gone" />
+
 </merge>

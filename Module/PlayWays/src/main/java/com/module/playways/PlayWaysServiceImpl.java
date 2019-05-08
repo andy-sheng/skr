@@ -20,8 +20,7 @@ import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
-import com.module.rank.IRankingModeService;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,7 +35,7 @@ import okhttp3.RequestBody;
 import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 @Route(path = RouterConstants.SERVICE_RANKINGMODE, name = "测试服务")
-public class PlayWaysServiceImpl implements IRankingModeService {
+public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public final static String TAG = "ChannelServiceImpl";
 
     /**
@@ -57,10 +56,11 @@ public class PlayWaysServiceImpl implements IRankingModeService {
     Disposable mJoinRoomDisposable;
 
     @Override
-    public void tryGoGrabRoom(int roomID) {
+    public void tryGoGrabRoom(int roomID,int inviteType) {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
+        map.put("inviteType", inviteType);
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         mJoinRoomDisposable = ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
@@ -74,6 +74,7 @@ public class PlayWaysServiceImpl implements IRankingModeService {
                             return;
                         }
                     }
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
                     // 页面不存在 跳转 到一唱到底页面
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                             .withSerializable("prepare_data", grabCurGameStateModel)

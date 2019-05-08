@@ -70,13 +70,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.common.core.scheme.UmengThirdPushActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:theme="@style/TransparentTheme" />
 
         <!-- milinkservice -->
         <!--<service-->
@@ -158,6 +151,12 @@
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <!-- 微信支付 -->
+        <activity
+            android:name="com.zq.live.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -175,11 +174,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 
-        <activity
-            android:name="com.common.webview.CameraAdapWebActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

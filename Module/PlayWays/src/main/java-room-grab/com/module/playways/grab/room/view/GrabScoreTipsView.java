@@ -4,14 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.GrabScoreTipMsgModel;
 import com.module.playways.room.room.score.bar.ScoreTipsView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.List;
 
@@ -110,7 +109,7 @@ public class GrabScoreTipsView extends RelativeLayout {
             }
             mLastItem = item;
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-            if (now != null && now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (now != null && now.singBySelf()) {
                 ScoreTipsView.play(this, item, 1);
             } else {
                 ScoreTipsView.play(this, item,1);

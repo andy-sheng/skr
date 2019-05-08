@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.module.playways.grab.room.view.normal.NormalSelfSingCardView
+        android:id="@+id/self_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_container_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.chorus.ChorusSelfSingCardView
+        android:id="@+id/chorus_self_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_container_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.pk.PKSelfSingCardView
+        android:id="@+id/pk_self_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_container_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:visibility="gone" />
+</merge>

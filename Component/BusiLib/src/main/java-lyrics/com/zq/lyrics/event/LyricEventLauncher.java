@@ -48,8 +48,8 @@ public class LyricEventLauncher {
     }
 
     public int postLyricEvent(LyricsReader lyricsReader, int accBeginTs, int accEndTs, Object extra) {
-        MyLog.d(TAG,"postLyricEvent" + " lyricsReader=" + lyricsReader + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs + " extra=" + extra);
-        if(lyricsReader == null){
+        MyLog.d(TAG, "postLyricEvent" + " lyricsReader=" + lyricsReader + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs + " extra=" + extra);
+        if (lyricsReader == null) {
             MyLog.d(TAG, "postLyricEvent lyricsReader is null");
             return 0;
         }
@@ -58,6 +58,7 @@ public class LyricEventLauncher {
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
         mUiHandler.removeCallbacksAndMessages(null);
         int eventNum = 0;
+        boolean hasSendLast = false;
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
             int lineNum = entry.getKey();
@@ -89,9 +90,14 @@ public class LyricEventLauncher {
                 Message msg = mUiHandler.obtainMessage(MSG_LYRIC_LINE_END_EVENT);
                 msg.arg1 = lineNum;
                 msg.obj = extra;
+                //
                 if (entry.getValue().getEndTime() > accEndTs) {
                     //dev 环境会一下把所有都发出来
-                    mUiHandler.sendMessageDelayed(msg, accEndTs - accBeginTs);
+                    // 这个 只要发一句就行了，保证最后一句歌词能打出分来
+                    if (!hasSendLast) {
+                        mUiHandler.sendMessageDelayed(msg, accEndTs - accBeginTs);
+                        hasSendLast = true;
+                    }
                 } else {
                     int t = entry.getValue().getEndTime() - accBeginTs;
                     if (t > 0) {

@@ -18,7 +18,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class MoreOpView extends RelativeLayout {
 

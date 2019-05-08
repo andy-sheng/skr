@@ -1,6 +1,7 @@
 package com.module.home.updateinfo.fragment;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -75,7 +76,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
         mYear = (SeparatedEditText) mRootView.findViewById(R.id.year);
         mMonth = (SeparatedEditText) mRootView.findViewById(R.id.month);
         mDay = (SeparatedEditText) mRootView.findViewById(R.id.day);
-        mErrorHint = (ExTextView)mRootView.findViewById(R.id.error_hint);
+        mErrorHint = (ExTextView) mRootView.findViewById(R.id.error_hint);
         mAgeTv = (ExTextView) mRootView.findViewById(R.id.age_tv);
         mDivider = (View) mRootView.findViewById(R.id.divider);
         mConTv = (ExTextView) mRootView.findViewById(R.id.con_tv);
@@ -92,6 +93,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 // 修改个人信息
+                ensureBirthdayLegal();
                 String bir = mYearDate + "-" + mMonthDate + "-" + mDayDate;
                 if (bir.equals(MyUserInfoManager.getInstance().getBirthday())) {
                     // 无任何变化
@@ -105,7 +107,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                         mYear.setText("");
                         mYear.requestFocus();
                         mErrorHint.setVisibility(View.VISIBLE);
-                        mErrorHint.setText("输入的出生日期不合法");
+                        mErrorHint.setText("输入有误\n日期示例 2005年09月09日");
                     }
                 }
             }
@@ -114,6 +116,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
         mCompleteIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                ensureBirthdayLegal();
                 String bir = mYearDate + "-" + mMonthDate + "-" + mDayDate;
                 if (checkBirthDay(mYearDate + mMonthDate + mDayDate)) {
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
@@ -138,7 +141,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                     mYear.setText("");
                     mYear.requestFocus();
                     mErrorHint.setVisibility(View.VISIBLE);
-                    mErrorHint.setText("输入的出生日期不合法");
+                    mErrorHint.setText("输入有误\n日期示例 2005年09月09日");
                 }
 
             }
@@ -146,13 +149,9 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mMainActContainer.setBackgroundColor(Color.parseColor("#7187FF"));
-
             mTitlebar.getRightTextView().setText("2/2");
             mTitlebar.getCenterTextView().setText("完善个人信息");
-            mTitlebar.setStatusBarColor(Color.parseColor("#7187FF"));
-            mTitlebar.setTitleBarColor(Color.parseColor("#7187FF"));
-            mTitlebar.setBottomLineColor(Color.parseColor("#7187FF"));
+            mTitlebar.getCenterTextView().setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             mTitlebar.getRightTextView().setTextSize(16);
             mTitlebar.getRightTextView().setClickable(false);
 
@@ -160,10 +159,6 @@ public class EditInfoAgeFragment2 extends BaseFragment {
             mIsUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
             mUploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
             mUploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
-
-            mDivider.setBackgroundColor(Color.WHITE);
-            mAgeTv.setTextColor(Color.WHITE);
-            mConTv.setTextColor(Color.WHITE);
         }
 
         mYear.setTextChangedListener(new SeparatedEditText.TextChangedListener() {
@@ -289,7 +284,34 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 //            }
 //        } else {
         mYear.requestFocus();
+    }
 
+    void ensureBirthdayLegal(){
+        mYearDate = mYear.getText().toString();
+        mMonthDate = mMonth.getText().toString();
+        mDayDate = mDay.getText().toString();
+
+        // TODO: 2019/4/26 补全年月日信息，防止过不了验证
+        if (!TextUtils.isEmpty(mYearDate) && mYearDate.length() < 4) {
+            int length = mYearDate.length();
+            for (int i = length; i < 4; i++) {
+                mYearDate = "0" + mYearDate;
+            }
+        }
+
+        if (!TextUtils.isEmpty(mMonthDate) && mMonthDate.length() < 2) {
+            int length = mMonthDate.length();
+            for (int i = length; i < 2; i++) {
+                mMonthDate = "0" + mMonthDate;
+            }
+        }
+
+        if (!TextUtils.isEmpty(mDayDate) && mDayDate.length() < 2) {
+            int length = mDayDate.length();
+            for (int i = length; i < 2; i++) {
+                mDayDate = "0" + mDayDate;
+            }
+        }
     }
 
     @Override

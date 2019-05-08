@@ -1,11 +1,12 @@
 package com.module.playways.grab.room.event;
 
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 
 public class GrabSomeOneLightOffEvent {
-    public BaseRoundInfoModel roundInfo;
+    public GrabRoundInfoModel roundInfo;
     public int uid;
-    public GrabSomeOneLightOffEvent(int uid, BaseRoundInfoModel newRoundInfo) {
+    public GrabSomeOneLightOffEvent(int uid, GrabRoundInfoModel newRoundInfo) {
         this.uid = uid;
         this.roundInfo = newRoundInfo;
     }
@@ -14,7 +15,7 @@ public class GrabSomeOneLightOffEvent {
         return uid;
     }
 
-    public BaseRoundInfoModel getRoundInfo() {
+    public GrabRoundInfoModel getRoundInfo() {
         return roundInfo;
     }
 

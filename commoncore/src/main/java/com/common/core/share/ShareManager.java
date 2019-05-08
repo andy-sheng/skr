@@ -11,10 +11,12 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 public class ShareManager {
     static boolean hasInit = false;
 
+    public static final String WX_APP_ID = "wxf88af8c2cd665bc4";
+
     public static void init() {
         if (!hasInit) {
             //ge各个平台注册的key
-            PlatformConfig.setWeixin("wxf88af8c2cd665bc4", "4a4930544a8fdbeb94b4dad5f5fb87c0");
+            PlatformConfig.setWeixin(WX_APP_ID, "4a4930544a8fdbeb94b4dad5f5fb87c0");
 //            PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
             PlatformConfig.setQQZone("101548016", "684f0e15ac56eba34b6eb742c63fce52");
 //        PlatformConfig.setYixin("yxc0614e80c9304c11b0391514d09f13bf");

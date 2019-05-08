@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <!--演唱时两个主场景view-->
+    <com.module.playways.grab.room.view.normal.NormalOthersSingCardView
+        android:id="@+id/other_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.chorus.ChorusOthersSingCardView
+        android:id="@+id/chorus_other_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/top_container_view"
+        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:visibility="gone"/>
+
+
+    <com.module.playways.grab.room.view.pk.PKOthersSingCardView
+        android:id="@+id/pk_other_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/top_container_view"
+        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:visibility="gone"/>
+
+</merge>

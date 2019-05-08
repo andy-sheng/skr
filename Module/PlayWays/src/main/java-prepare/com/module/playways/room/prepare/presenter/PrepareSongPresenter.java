@@ -6,7 +6,7 @@ import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.utils.HttpUtils;
-import com.common.utils.SongResUtils;
+import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.module.playways.room.prepare.view.IPrepareResView;
 import com.module.playways.room.song.model.SongModel;
@@ -111,9 +111,9 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                     public void accept(LyricsReader lyricsReader) throws Exception {
                         TreeMap<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
 
-                        for (int i = 0; i < lyricsLineInfos.size(); i++){
+                        for (int i = 0; i < lyricsLineInfos.size(); i++) {
                             LyricsLineInfo lyricsLineInfo = lyricsLineInfos.get(i);
-                            if(lyricsLineInfo.getStartTime() >= mSongModel.getRankLrcBeginT()){
+                            if (lyricsLineInfo.getStartTime() >= mSongModel.getRankLrcBeginT()) {
                                 String l = lyricsLineInfo.getLineLyrics();
                                 l = l + "\n" + lyricsLineInfos.get(i + 1).getLineLyrics();
                                 l = l + "\n" + lyricsLineInfos.get(i + 2).getLineLyrics();
@@ -122,7 +122,12 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                             }
                         }
                     }
-                }, throwable -> MyLog.e(TAG, throwable));
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
     }
 
     public void cancelTask(){

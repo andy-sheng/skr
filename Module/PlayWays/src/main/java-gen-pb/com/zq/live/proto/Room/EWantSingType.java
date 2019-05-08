@@ -9,7 +9,7 @@ import java.lang.Override;
 
 public enum EWantSingType implements WireEnum {
   /**
-   * 默认抢唱类型：普通
+   * QSyncStatusMsg默认抢唱类型：普通
    */
   EWST_DEFAULT(0),
 
@@ -26,7 +26,17 @@ public enum EWantSingType implements WireEnum {
   /**
    * 带伴奏加时抢唱
    */
-  EWST_ACCOMPANY_OVER_TIME(3);
+  EWST_ACCOMPANY_OVER_TIME(3),
+
+  /**
+   * 合唱模式
+   */
+  EWST_CHORUS(4),
+
+  /**
+   * 一唱到底spk模式
+   */
+  EWST_SPK(5);
 
   public static final ProtoAdapter<EWantSingType> ADAPTER = new ProtoAdapter_EWantSingType();
 
@@ -45,6 +55,8 @@ public enum EWantSingType implements WireEnum {
       case 1: return EWST_ACCOMPANY;
       case 2: return EWST_COMMON_OVER_TIME;
       case 3: return EWST_ACCOMPANY_OVER_TIME;
+      case 4: return EWST_CHORUS;
+      case 5: return EWST_SPK;
       default: return null;
     }
   }

@@ -2,18 +2,27 @@ package com.module.playways.room.room.gift.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
+import com.module.playways.room.gift.model.BaseGift;
+import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
+import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
+import static com.module.playways.BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
+
 public class GiftPlayModel {
+    private EGiftType mEGiftType = EGiftType.EMOJI;
     private long continueId;//continueId相等的代表是同一次连送
     private long timeMs;          //房间消息产生时间，单位毫秒
     private int roomID;           //房间ID
     private UserInfoModel sender;      //发送者简要信息
+    private UserInfoModel receiver;      //发送者简要信息
     SpecialEmojiMsgType emojiType = SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN;
     String action;
     int beginCount;
     int endCount;
+    String giftIconUrl;
+    String bigGiftResUrl;
 
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
@@ -36,6 +45,26 @@ public class GiftPlayModel {
             userInfoModel = UserInfoModel.parseFromPB(event.info.getSender());
         }
         giftPlayModel.setSender(userInfoModel);
+        return giftPlayModel;
+    }
+
+
+    public static GiftPlayModel parseFromEvent(GPrensentGiftMsg gPrensentGiftMsg, BaseRoomData roomData) {
+        GiftPlayModel giftPlayModel = new GiftPlayModel();
+        giftPlayModel.setContinueId(gPrensentGiftMsg.getContinueID());
+        giftPlayModel.setEmojiType(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN);
+        giftPlayModel.setRoomID(gPrensentGiftMsg.getRoomID());
+        giftPlayModel.setAction("");
+        giftPlayModel.setBeginCount(gPrensentGiftMsg.getContinueCnt());
+        giftPlayModel.setEndCount(gPrensentGiftMsg.getContinueCnt());
+        giftPlayModel.setTimeMs(System.currentTimeMillis());
+        giftPlayModel.mEGiftType = EGiftType.GIFT;
+        UserInfoModel userInfoModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getSendUserInfo());
+        giftPlayModel.setSender(userInfoModel);
+        UserInfoModel receiverModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getReceiveUserInfo());
+        giftPlayModel.setReceiver(receiverModel);
+        giftPlayModel.setGiftIconUrl(gPrensentGiftMsg.getGiftInfo().getGiftURL());
+        giftPlayModel.setBigGiftResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
         return giftPlayModel;
     }
 
@@ -102,5 +131,37 @@ public class GiftPlayModel {
 
     public void setEndCount(int endCount) {
         this.endCount = endCount;
+    }
+
+    public UserInfoModel getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(UserInfoModel receiver) {
+        this.receiver = receiver;
+    }
+
+    public EGiftType getEGiftType() {
+        return mEGiftType;
+    }
+
+    public String getGiftIconUrl() {
+        return giftIconUrl;
+    }
+
+    public void setGiftIconUrl(String giftIconUrl) {
+        this.giftIconUrl = giftIconUrl;
+    }
+
+    public String getBigGiftResUrl() {
+        return bigGiftResUrl;
+    }
+
+    public void setBigGiftResUrl(String bigGiftResUrl) {
+        this.bigGiftResUrl = bigGiftResUrl;
+    }
+
+    public enum EGiftType {
+        EMOJI, GIFT
     }
 }

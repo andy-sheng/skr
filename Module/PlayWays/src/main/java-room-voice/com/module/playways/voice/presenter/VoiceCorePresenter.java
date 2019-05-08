@@ -14,7 +14,6 @@ import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.utils.SpanUtils;
-import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
@@ -29,14 +28,11 @@ import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.voice.inter.IVoiceView;
-import com.module.rank.R;
-import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Room.RoomMsg;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.HashMap;
 
@@ -71,7 +67,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public VoiceCorePresenter(@NotNull IVoiceView iVoiceView, @NotNull RankRoomData roomData) {
+    public VoiceCorePresenter( IVoiceView iVoiceView,  RankRoomData roomData) {
         mIVoiceView = iVoiceView;
         mRoomData = roomData;
         TAG = "VoiceCorePresenter";

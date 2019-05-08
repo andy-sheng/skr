@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
+import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.Params;
@@ -76,7 +77,7 @@ public class LyricAndAccMatchManager {
                 break;
                 default:
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
-                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo+" mLastLineNum="+mLastLineNum);
+                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo + " mLastLineNum=" + mLastLineNum);
                     if (lineNo > mLastLineNum) {
                         mAcrScore = -2;
                         if (ScoreConfig.isMelp2Enable()) {
@@ -107,6 +108,7 @@ public class LyricAndAccMatchManager {
                         int accBeginTs,
                         int accEndTs
     ) {
+        MyLog.d(TAG,"setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
         mManyLyricsView = manyLyricsView;
         mVoiceScaleView = voiceScaleView;
         mLyricUrl = lyricUrl;
@@ -123,7 +125,7 @@ public class LyricAndAccMatchManager {
     }
 
     public void start(Listener l) {
-        MyLog.d(TAG,"start" + " l=" + l);
+        MyLog.d(TAG, "start" + " l=" + l);
         mUiHandler.removeCallbacksAndMessages(null);
         mLastLineNum = -1;
         mListener = l;
@@ -131,7 +133,7 @@ public class LyricAndAccMatchManager {
     }
 
     public void stop() {
-        MyLog.d(TAG,"stop" );
+        MyLog.d(TAG, "stop");
         EventBus.getDefault().unregister(this);
         mUiHandler.removeCallbacksAndMessages(null);
         mLyricEventLauncher.destroy();
@@ -142,7 +144,6 @@ public class LyricAndAccMatchManager {
         mListener = null;
     }
 
-
     private void parseLyric() {
         if (mDisposable != null) {
             mDisposable.dispose();
@@ -151,6 +152,7 @@ public class LyricAndAccMatchManager {
                 .fetchAndLoadLyrics(mLyricUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(new RxRetryAssist(3, ""))
                 .subscribe(new Consumer<LyricsReader>() {
                     @Override
                     public void accept(LyricsReader lyricsReader) throws Exception {
@@ -255,7 +257,7 @@ public class LyricAndAccMatchManager {
 
 
     public void onAcrResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-        MyLog.d(TAG,"onAcrResult" + " result=" + result + " list=" + list + " targetSongInfo=" + targetSongInfo + " lineNo=" + lineNo+" mLastLineNum="+mLastLineNum);
+        MyLog.d(TAG, "onAcrResult" + " result=" + result + " list=" + list + " targetSongInfo=" + targetSongInfo + " lineNo=" + lineNo + " mLastLineNum=" + mLastLineNum);
         mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
         if (lineNo > mLastLineNum) {
             mAcrScore = 0;
@@ -284,15 +286,15 @@ public class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "LineLineEndEvent" + " event=" + event);
         if (ScoreConfig.isMelp2Enable()) {
             ZqEngineKit.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
                 @Override
                 public void onGetScore(int lineNum, int score) {
-                    MyLog.d(TAG,"melp2 onGetScore" + " lineNum=" + lineNum + " score=" + score);
+                    MyLog.d(TAG, "melp2 onGetScore" + " lineNum=" + lineNum + " score=" + score);
                     mMelp2Score = score;
                     if (ScoreConfig.isAcrEnable()) {
-                        if (mAcrScore >= 0||mAcrScore==-2) {
+                        if (mAcrScore >= 0 || mAcrScore == -2) {
                             processScore("mMelp2Score", mMelp2Score, mAcrScore, event.lineNum);
                         } else {
                             // 没返回
@@ -321,10 +323,14 @@ public class LyricAndAccMatchManager {
     public void onEvent(LrcEvent.LyricStartEvent event) {
         MyLog.d(TAG, "onEvent LineStartEvent");
         mLastLineNum = -1;
+        Params params = EngineManager.getInstance().getParams();
+        if (params != null) {
+            params.setLrcHasStart(true);
+        }
     }
 
     private void processScore(String from, int melpScore, int acrScore, int line) {
-        MyLog.d(TAG, "processScore" + " from=" + from + " melpScore=" + melpScore + " acrScore=" + acrScore + " line=" + line+" mLastLineNum="+mLastLineNum);
+        MyLog.d(TAG, "processScore" + " from=" + from + " melpScore=" + melpScore + " acrScore=" + acrScore + " line=" + line + " mLastLineNum=" + mLastLineNum);
         if (line <= mLastLineNum) {
             return;
         }

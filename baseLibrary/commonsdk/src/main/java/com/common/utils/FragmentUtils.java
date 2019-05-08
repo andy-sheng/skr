@@ -347,6 +347,14 @@ public class FragmentUtils {
             this.backToFragment = backToFragment;
         }
 
+        public int getExitAnim() {
+            return exitAnim;
+        }
+
+        public void setExitAnim(int exitAnim) {
+            this.exitAnim = exitAnim;
+        }
+
         public static class Builder {
             PopParams mParams = new PopParams();
 
@@ -375,6 +383,11 @@ public class FragmentUtils {
 
             public Builder setHasAnimation(boolean hasAnimation) {
                 mParams.hasAnimation = hasAnimation;
+                return this;
+            }
+
+            public Builder setExitAnim(int exitAnim) {
+                mParams.setExitAnim(exitAnim);
                 return this;
             }
 

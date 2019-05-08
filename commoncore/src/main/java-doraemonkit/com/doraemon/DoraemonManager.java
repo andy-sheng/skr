@@ -1,7 +1,6 @@
 package com.doraemon;
 
 import com.common.core.R;
-import com.common.umeng.UmengPush;
 import com.common.utils.U;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
@@ -31,7 +30,7 @@ public class DoraemonManager {
             @Override
             public List<SysInfoItem> getExtraInfo() {
                 List<SysInfoItem> extras = new ArrayList<>();
-                extras.add(new SysInfoItem("友盟push DeviceToken", UmengPush.getDeviceToken()));
+                //extras.add(new SysInfoItem("友盟push DeviceToken", com.common.umeng.UmengPush.getDeviceToken()));
                 extras.add(new SysInfoItem("translucent_no_bug", U.app().getResources().getBoolean(R.bool.translucent_no_bug) + ""));
                 return extras;
             }

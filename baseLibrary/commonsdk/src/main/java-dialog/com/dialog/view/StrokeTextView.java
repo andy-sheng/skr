@@ -13,10 +13,11 @@ import android.widget.TextView;
 
 import com.common.base.R;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 
 import java.lang.reflect.Field;
 
-public class StrokeTextView extends TextView {
+public class StrokeTextView extends ExTextView {
 
     private TextPaint textPaint;
 
@@ -78,6 +79,7 @@ public class StrokeTextView extends TextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         if (textColor == borderColor) {
             borderColor = U.getColorUtils().toDarkenColor(borderColor, 0.7f);
         }

@@ -14,10 +14,12 @@ public class WeakRedDotManager {
     public final static String TAG = "WeakRedDotManager";
 
     public final static String SP_KEY_NEW_FRIEND = "SP_KEY_NEW_FRIEND";  //从外到内 个人中心icon2 个人中心好友1
-    public final static String SP_KEY_NEW_FANS = "SP_KEY_NEW_FANS";    //从外到内 个人中心icon2 个人中心粉丝1
+    public final static String SP_KEY_NEW_FANS = "SP_KEY_NEW_FANS";      //从外到内 个人中心icon2 个人中心粉丝1
+    public final static String SP_KEY_NEW_MESSAGE_FOLLOW = "SP_KEY_NEW_FOLLOW";  //关注，包含自己关注和别人关注,消息页面使用 消息2 最新关注1
 
     public static final int FANS_RED_ROD_TYPE = 1;
     public static final int FRIEND_RED_ROD_TYPE = 2;
+    public static final int MESSAGE_FOLLOW_RED_ROD_TYPE = 3;
 
     HashMap<Integer, HashSet<WeakRedDotListener>> mMap = new HashMap<>();
 
@@ -74,6 +76,14 @@ public class WeakRedDotManager {
                 return;
             } else {
                 U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FRIEND, value);
+            }
+        }
+
+        if (type == MESSAGE_FOLLOW_RED_ROD_TYPE) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_MESSAGE_FOLLOW, 0) < value && !isFlag) {
+                return;
+            } else {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_MESSAGE_FOLLOW, value);
             }
         }
 

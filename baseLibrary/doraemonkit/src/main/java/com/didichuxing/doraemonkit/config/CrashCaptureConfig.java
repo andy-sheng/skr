@@ -9,7 +9,8 @@ import com.didichuxing.doraemonkit.util.SharedPrefsUtil;
 public class CrashCaptureConfig {
 
     public static boolean isCrashCaptureOpen(Context context) {
-        return SharedPrefsUtil.getBoolean(context, SharedPrefsKey.CRASH_OPEN, MyLog.isDebugLogOpen());
+//        return SharedPrefsUtil.getBoolean(context, SharedPrefsKey.CRASH_OPEN, MyLog.isDebugLogOpen());
+        return SharedPrefsUtil.getBoolean(context, SharedPrefsKey.CRASH_OPEN, true);
     }
 
     public static void setCrashCaptureOpen(Context context, boolean open) {

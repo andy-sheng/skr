@@ -251,7 +251,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mSexIv = (ImageView)mRootView.findViewById(R.id.sex_iv);
+        mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
         mGameLayout = (ExRelativeLayout) mRootView.findViewById(R.id.game_layout);
@@ -389,10 +389,13 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                     return;
                 }
                 if (mUserInfoModel != null) {
-                    if ((int) mFollowIv.getTag() == RELATION_FOLLOWED) {
-                        unFollow(mUserInfoModel);
-                    } else if ((int) mFollowIv.getTag() == RELATION_UN_FOLLOW) {
-                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
+                    Integer tag = (Integer) mFollowIv.getTag();
+                    if (tag != null) {
+                        if (tag == RELATION_FOLLOWED) {
+                            unFollow(mUserInfoModel);
+                        } else if (tag == RELATION_UN_FOLLOW) {
+                            UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
+                        }
                     }
                 }
             }
@@ -407,7 +410,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                             mUserInfoModel.getNickname(),
                             mUserInfoModel.isFriend()
                     );
-                    if(needPop){
+                    if (needPop) {
                         U.getFragmentUtils().popFragment(OtherPersonFragment2.this);
                     }
                 }

@@ -9,7 +9,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.model.CommentModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class CommentHolder extends RecyclerView.ViewHolder {
     public final static String TAG = "CommentHolder";

@@ -30,7 +30,6 @@ import com.common.base.ConfigModule;
 import com.common.base.delegate.IActivity;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
-import com.umeng.message.PushAgent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -96,7 +95,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
             U.getActivityUtils().addActivity(activity);
 
         registerFragmentCallbacks(activity);
-        PushAgent.getInstance(U.app()).onAppStart();
+        //PushAgent.getInstance(U.app()).onAppStart();
     }
 
     @Override

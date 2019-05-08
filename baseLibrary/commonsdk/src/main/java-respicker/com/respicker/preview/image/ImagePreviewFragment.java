@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.base.R;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
@@ -155,9 +156,14 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
             }
         });
         // 初始化 check 按钮
-        ImageItem item = mImageItems.get(mCurrentPosition);
-        boolean isSelected = mImagePicker.getSelectedResList().contains(item);
-        mCbCheck.setChecked(isSelected);
+        if (mCurrentPosition < mImageItems.size() && mCurrentPosition >= 0) {
+            ImageItem item = mImageItems.get(mCurrentPosition);
+            boolean isSelected = mImagePicker.getSelectedResList().contains(item);
+            mCbCheck.setChecked(isSelected);
+        } else {
+            MyLog.d(TAG, "initData 出错了 mCurrentPosition<mImageItems.size() == false");
+            deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
+        }
 
         mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mImageItems.size()));
 

@@ -17,4 +17,6 @@ public interface IGrabSongManageView {
     void showNum(int num);
 
     void deleteSong(GrabRoomSongModel grabRoomSongModel);
+
+    void updateRoomNameSuccess();
 }

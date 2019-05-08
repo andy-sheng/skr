@@ -22,7 +22,8 @@ import com.module.playways.room.prepare.model.PlayerInfoModel;
 
 import com.common.view.ex.ExTextView;
 
-import com.module.rank.R;
+import com.module.playways.R;
+import com.zq.live.proto.Room.EWantSingType;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -238,13 +239,23 @@ public class GrabTopItemView extends RelativeLayout {
         stopEvasive();
     }
 
-    public void setGrap(boolean isChallenge) {
+    public void setGrap(int wantSingType) {
 //        MyLog.d(TAG, "setGrap" + " grap=" + grap);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
         lp.topMargin = -U.getDisplayUtils().dip2px(10);
         mFlagIv.setLayoutParams(lp);
-        mFlagIv.setImageResource(isChallenge ? R.drawable.ycdd_biaoqian_tiaozhan : R.drawable.ycdd_biaoqian_qiangchang);
+        if (wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()
+                || wantSingType == EWantSingType.EWST_COMMON_OVER_TIME.getValue()) {
+            mFlagIv.setImageResource(R.drawable.ycdd_biaoqian_tiaozhan);
+        } else if (wantSingType == EWantSingType.EWST_CHORUS.getValue()) {
+            mFlagIv.setImageResource(R.drawable.ycdd_biaoqian_hechang);
+        } else if (wantSingType == EWantSingType.EWST_SPK.getValue()) {
+            mFlagIv.setImageResource(R.drawable.ycdd_biaoqian_pk);
+        } else {
+            mFlagIv.setImageResource(R.drawable.ycdd_biaoqian_qiangchang);
+        }
+
     }
 
     public void hideGrabIcon() {
@@ -266,6 +277,10 @@ public class GrabTopItemView extends RelativeLayout {
 
     public void showSpeakingAnimation() {
         mSpeakingTipsAnimationView.show(1000);
+    }
+
+    public void hideSpeakingAnimation() {
+        mSpeakingTipsAnimationView.hide();
     }
 
     public void setGetSingChance() {

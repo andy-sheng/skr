@@ -83,6 +83,7 @@ public class DialogPlus {
 
     private final Animation outAnim;
     private final Animation inAnim;
+    private int mDialogPriority;
 
     Handler mHandler;
 
@@ -109,9 +110,10 @@ public class DialogPlus {
         rootView = (ViewGroup) layoutInflater.inflate(R.layout.base_container, decorView, false);
         rootView.setLayoutParams(builder.getOutmostLayoutParams());
 
-        View outmostView = rootView.findViewById(R.id.dialogplus_outmost_container);
-        outmostView.setBackgroundResource(builder.getOverlayBackgroundResource());
+//        View outmostView = rootView.findViewById(R.id.dialogplus_outmost_container);
+        rootView.setBackgroundResource(builder.getOverlayBackgroundResource());
 
+        rootView.setTag(R.id.attach_dialog_ref, this);
         contentContainer = rootView.findViewById(R.id.dialogplus_content_container);
         contentContainer.setLayoutParams(builder.getContentParams());
 
@@ -133,15 +135,16 @@ public class DialogPlus {
         if (builder.isExpanded()) {
             initExpandAnimator(activity, builder.getDefaultContentHeight(), builder.getContentParams().gravity);
         }
-        mHandler = new Handler(Looper.getMainLooper()){
+        mHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                if(msg.what == MSG_ENSURE_DISMISS){
+                if (msg.what == MSG_ENSURE_DISMISS) {
                     dismissInner(false);
                 }
             }
         };
+        mDialogPriority = builder.getPriority();
     }
 
     /**
@@ -156,9 +159,25 @@ public class DialogPlus {
      */
     public void show() {
         if (isShowing()) {
+            View view = decorView.findViewById(R.id.dialogplus_outmost_container);
+            if (view != null) {
+                DialogPlus otherDialogPlus = (DialogPlus) view.getTag(R.id.attach_dialog_ref);
+                if (otherDialogPlus != null) {
+                    if (mDialogPriority > otherDialogPlus.getDialogPriority()) {
+                        MyLog.d(TAG, "当前要显示的dialog 优先级较高 mDialogPriority=" + mDialogPriority);
+                        otherDialogPlus.dismiss(false);
+                        onAttached(rootView);
+                    }
+                }
+            }
             return;
+        } else {
+            onAttached(rootView);
         }
-        onAttached(rootView);
+    }
+
+    private int getDialogPriority() {
+        return mDialogPriority;
     }
 
     /**
@@ -166,7 +185,15 @@ public class DialogPlus {
      */
     public boolean isShowing() {
         View view = decorView.findViewById(R.id.dialogplus_outmost_container);
-        return view != null;
+        // 并且activity 没有销毁才算显示
+        boolean destroyed = false;
+        if (decorView.getContext() instanceof Activity) {
+            Activity activity = (Activity) decorView.getContext();
+            if (activity != null) {
+                destroyed = activity.isDestroyed();
+            }
+        }
+        return view != null && !destroyed;
     }
 
     /**
@@ -177,19 +204,19 @@ public class DialogPlus {
     }
 
     public void dismiss(boolean useAnimation) {
-        MyLog.d(TAG, "dismiss" + " useAnimation=" + useAnimation + " isDismissing=" + isDismissing+" isShowing="+isShowing());
+        MyLog.d(TAG, "dismiss" + " useAnimation=" + useAnimation + " isDismissing=" + isDismissing + " isShowing=" + isShowing());
 
         if (isDismissing) {
             return;
         }
 
-        if(!isShowing()){
+        if (!isShowing()) {
             return;
         }
         dismissInner(useAnimation);
     }
 
-    void dismissInner(boolean useAnimation){
+    void dismissInner(boolean useAnimation) {
         if (useAnimation) {
             // 如果View 不显示，动画是不会走的
             outAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -225,7 +252,7 @@ public class DialogPlus {
             isDismissing = true;
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_ENSURE_DISMISS);
-                mHandler.sendEmptyMessageDelayed(MSG_ENSURE_DISMISS,outAnim.getDuration() > 1000 ? outAnim.getDuration() : 1000);
+                mHandler.sendEmptyMessageDelayed(MSG_ENSURE_DISMISS, outAnim.getDuration() > 1000 ? outAnim.getDuration() : 1000);
             }
         } else {
             if (mHandler != null) {

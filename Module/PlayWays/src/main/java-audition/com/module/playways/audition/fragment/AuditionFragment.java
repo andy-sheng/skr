@@ -23,11 +23,10 @@ import com.common.clipboard.ClipboardUtils;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
-import com.common.utils.SongResUtils;
+import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -37,15 +36,13 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
-import com.engine.score.Score2Callback;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.view.VoiceControlPanelView;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.mediaengine.kit.ZqEngineKit;
@@ -504,14 +501,6 @@ public class AuditionFragment extends BaseFragment {
             U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc + "得分记录已在剪贴板中");
         }
         MyLog.d(TAG, "平均分:" + pj + " 方差:" + fc);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LyricStartEvent event) {
-        Params params = ZqEngineKit.getInstance().getParams();
-        if (params != null) {
-            params.setLrcHasStart(true);
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -144,6 +144,15 @@ android {
             // svga
             java.srcDirs += 'src/main/java-svga'
             res.srcDirs += 'src/main/res-svga'
+
+            if(UmengPushEnable.toBoolean()) {
+                // umengpush
+                java.srcDirs += 'src/main/java-push-umeng'
+            }
+            if(JPushEnable.toBoolean()) {
+                // 极光push
+                java.srcDirs += 'src/main/java-push-jiguang'
+            }
         }
 
 //        release {
@@ -247,20 +256,38 @@ dependencies {
     // 友盟统计
     api rootProject.ext.dependencies['umeng-common']
     api rootProject.ext.dependencies['umeng-analytics']
-//     友盟push
-    api rootProject.ext.dependencies['umeng-push']
-    api rootProject.ext.dependencies['umeng-utdid']
+
+    // 友盟push
+    if(UmengPushEnable.toBoolean()){
+        api rootProject.ext.dependencies['umeng-push']
+        api rootProject.ext.dependencies['umeng-utdid']
 //
 //    // 友盟push 集成小米push
-    api rootProject.ext.dependencies['umeng-xiaomi-push']
-    api rootProject.ext.dependencies['umeng-xiaomi-umengaccs']
+        api rootProject.ext.dependencies['umeng-xiaomi-push']
+        api rootProject.ext.dependencies['umeng-xiaomi-umengaccs']
 //
 //    // 友盟push 集成华为push
-    api rootProject.ext.dependencies['umeng-huawei-basetb']
-    api rootProject.ext.dependencies['umeng-huawei-pushtb']
-    api rootProject.ext.dependencies['umeng-huawei-umengaccs']
+        api rootProject.ext.dependencies['umeng-huawei-basetb']
+        api rootProject.ext.dependencies['umeng-huawei-pushtb']
+        api rootProject.ext.dependencies['umeng-huawei-umengaccs']
 
-//    debugApi rootProject.ext.dependencies["stetho"]
+        // 友盟push 集成魅族push
+        api rootProject.ext.dependencies['umeng-meizu-push']
+        api rootProject.ext.dependencies['umeng-meizu-umengaccs']
+    }
+
+    // 极光推送
+    if(JPushEnable.toBoolean()){
+        api 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
+        api 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
+        api 'cn.jiguang.sdk.plugin:xiaomi:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        api 'cn.jiguang.sdk.plugin:huawei:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        api 'cn.jiguang.sdk.plugin:meizu:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        api 'cn.jiguang.sdk.plugin:oppo:3.1.8'//此版本插件仅支持JPushSDK3.1.8及以上版本
+        api 'cn.jiguang.sdk.plugin:vivo:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+    }
+
+//  debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库
     //api rootProject.ext.dependencies["lottie"]
@@ -298,9 +325,11 @@ dependencies {
 
     api files('libs/BaiduLBS_Android.jar')
 
-//    api files('libs/alipay-sdk-java-3.6.0.ALL.jar')
+    // 阿里支付
+    api files("libs/alipaySdk-20170922.jar")
 
-    compileOnly files("libs/alipaySdk-20170922.jar")
+    // 微信支付
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
