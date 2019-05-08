@@ -1,5 +1,7 @@
 package com.module.playways.room.gift.model;
 
+import com.zq.live.proto.Common.EGiftDisplayType;
+
 public class AnimGiftParamModel {
     long duration;
     int width;
@@ -8,7 +10,7 @@ public class AnimGiftParamModel {
     int right;
     int top;
     int bottom;
-    int displayType;
+    EGiftDisplayType displayType;
     boolean play;
     int textContinueCount;
     String resUrl;
@@ -37,11 +39,11 @@ public class AnimGiftParamModel {
         this.play = play;
     }
 
-    public int getDisplayType() {
+    public EGiftDisplayType getDisplayType() {
         return displayType;
     }
 
-    public void setDisplayType(int displayType) {
+    public void setDisplayType(EGiftDisplayType displayType) {
         this.displayType = displayType;
     }
 

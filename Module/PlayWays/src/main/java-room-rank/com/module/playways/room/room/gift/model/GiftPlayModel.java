@@ -68,22 +68,18 @@ public class GiftPlayModel {
         giftPlayModel.setGiftIconUrl(gPrensentGiftMsg.getGiftInfo().getGiftURL());
 
         AnimGiftParamModel animGiftParamModel = new AnimGiftParamModel();
+        animGiftParamModel.setBottom(gPrensentGiftMsg.getGiftInfo().getExtra().getBottom());
+        animGiftParamModel.setLeft(gPrensentGiftMsg.getGiftInfo().getExtra().getLeft());
+        animGiftParamModel.setRight(gPrensentGiftMsg.getGiftInfo().getExtra().getRight());
+        animGiftParamModel.setTop(gPrensentGiftMsg.getGiftInfo().getExtra().getTop());
+        animGiftParamModel.setDuration(gPrensentGiftMsg.getGiftInfo().getExtra().getDuration());
+        animGiftParamModel.setWidth(gPrensentGiftMsg.getGiftInfo().getExtra().getWidth());
+        animGiftParamModel.setHeight(gPrensentGiftMsg.getGiftInfo().getExtra().getHeight());
+        animGiftParamModel.setPlay(gPrensentGiftMsg.getGiftInfo().getPlay());
+        animGiftParamModel.setTextContinueCount(gPrensentGiftMsg.getGiftInfo().getTextContinueCount());
+        animGiftParamModel.setResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
+        animGiftParamModel.setDisplayType(gPrensentGiftMsg.getGiftInfo().getDisplayType());
 
-        // TODO: 2019-05-08 假数据
-        if (!TextUtils.isEmpty(gPrensentGiftMsg.getGiftInfo().getSourceURL())) {
-            animGiftParamModel.setBottom(-1);
-            animGiftParamModel.setLeft(-1);
-            animGiftParamModel.setRight(-1);
-            animGiftParamModel.setTop(-1);
-            animGiftParamModel.setDuration(3000);
-            animGiftParamModel.setWidth(1080);
-            animGiftParamModel.setHeight(1920);
-            animGiftParamModel.setPlay(true);
-            animGiftParamModel.setTextContinueCount(3);
-            animGiftParamModel.setResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
-        }
-
-        animGiftParamModel.setDisplayType(2);
         giftPlayModel.mAnimGiftParamModel = animGiftParamModel;
 
         return giftPlayModel;

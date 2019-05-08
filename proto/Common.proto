@@ -64,7 +64,34 @@ message GiftInfo
     bool canContinue   = 8; //是否可以连击
     string description = 9; //礼物描述
     float realPrice    = 10; //真实价格
+    bool play                    = 11; //是否需要播放
+    sint32 textContinueCount     = 12;
+    EGiftDisplayType displayType = 13;
+    GiftExtraInfo extra          = 14;
 }
+
+
+message GiftExtraInfo
+{
+    sint64 duration = 1;
+    sint32 width    = 2;
+    sint32 height   = 3;
+    sint32 left     = 4;
+    sint32 right    = 5;
+    sint32 top      = 6;
+    sint32 bottom   = 7;
+}
+
+// 礼物展示类型
+enum EGiftDisplayType {
+    EGDT_Unknown = 0;
+    EGDT_Big     = 1;
+    EGDT_Medium  = 2;
+    EGDT_Small   = 3;
+    EGDT_Free    = 4;
+}
+
+
 
 // 礼物类型
 enum EGiftType {

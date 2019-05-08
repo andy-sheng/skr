@@ -45,6 +45,12 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
 
   public static final Float DEFAULT_REALPRICE = 0.0f;
 
+  public static final Boolean DEFAULT_PLAY = false;
+
+  public static final Integer DEFAULT_TEXTCONTINUECOUNT = 0;
+
+  public static final EGiftDisplayType DEFAULT_DISPLAYTYPE = EGiftDisplayType.EGDT_Unknown;
+
   /**
    * 礼物id
    */
@@ -135,14 +141,42 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   )
   private final Float realPrice;
 
+  /**
+   * 是否需要播放
+   */
+  @WireField(
+      tag = 11,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean play;
+
+  @WireField(
+      tag = 12,
+      adapter = "com.squareup.wire.ProtoAdapter#SINT32"
+  )
+  private final Integer textContinueCount;
+
+  @WireField(
+      tag = 13,
+      adapter = "com.zq.live.proto.Common.EGiftDisplayType#ADAPTER"
+  )
+  private final EGiftDisplayType displayType;
+
+  @WireField(
+      tag = 14,
+      adapter = "com.zq.live.proto.Common.GiftExtraInfo#ADAPTER"
+  )
+  private final GiftExtraInfo extra;
+
   public GiftInfo(Integer giftID, String giftName, String giftURL, Long price, String sourceURL,
-      Integer sortID, EGiftType giftType, Boolean canContinue, String description,
-      Float realPrice) {
-    this(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, ByteString.EMPTY);
+      Integer sortID, EGiftType giftType, Boolean canContinue, String description, Float realPrice,
+      Boolean play, Integer textContinueCount, EGiftDisplayType displayType, GiftExtraInfo extra) {
+    this(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, play, textContinueCount, displayType, extra, ByteString.EMPTY);
   }
 
   public GiftInfo(Integer giftID, String giftName, String giftURL, Long price, String sourceURL,
       Integer sortID, EGiftType giftType, Boolean canContinue, String description, Float realPrice,
+      Boolean play, Integer textContinueCount, EGiftDisplayType displayType, GiftExtraInfo extra,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.giftID = giftID;
@@ -155,6 +189,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     this.canContinue = canContinue;
     this.description = description;
     this.realPrice = realPrice;
+    this.play = play;
+    this.textContinueCount = textContinueCount;
+    this.displayType = displayType;
+    this.extra = extra;
   }
 
   @Override
@@ -170,6 +208,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     builder.canContinue = canContinue;
     builder.description = description;
     builder.realPrice = realPrice;
+    builder.play = play;
+    builder.textContinueCount = textContinueCount;
+    builder.displayType = displayType;
+    builder.extra = extra;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -189,7 +231,11 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
         && Internal.equals(giftType, o.giftType)
         && Internal.equals(canContinue, o.canContinue)
         && Internal.equals(description, o.description)
-        && Internal.equals(realPrice, o.realPrice);
+        && Internal.equals(realPrice, o.realPrice)
+        && Internal.equals(play, o.play)
+        && Internal.equals(textContinueCount, o.textContinueCount)
+        && Internal.equals(displayType, o.displayType)
+        && Internal.equals(extra, o.extra);
   }
 
   @Override
@@ -207,6 +253,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       result = result * 37 + (canContinue != null ? canContinue.hashCode() : 0);
       result = result * 37 + (description != null ? description.hashCode() : 0);
       result = result * 37 + (realPrice != null ? realPrice.hashCode() : 0);
+      result = result * 37 + (play != null ? play.hashCode() : 0);
+      result = result * 37 + (textContinueCount != null ? textContinueCount.hashCode() : 0);
+      result = result * 37 + (displayType != null ? displayType.hashCode() : 0);
+      result = result * 37 + (extra != null ? extra.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -225,6 +275,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     if (canContinue != null) builder.append(", canContinue=").append(canContinue);
     if (description != null) builder.append(", description=").append(description);
     if (realPrice != null) builder.append(", realPrice=").append(realPrice);
+    if (play != null) builder.append(", play=").append(play);
+    if (textContinueCount != null) builder.append(", textContinueCount=").append(textContinueCount);
+    if (displayType != null) builder.append(", displayType=").append(displayType);
+    if (extra != null) builder.append(", extra=").append(extra);
     return builder.replace(0, 2, "GiftInfo{").append('}').toString();
   }
 
@@ -339,6 +393,37 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   }
 
   /**
+   * 是否需要播放
+   */
+  public Boolean getPlay() {
+    if(play==null){
+        return DEFAULT_PLAY;
+    }
+    return play;
+  }
+
+  public Integer getTextContinueCount() {
+    if(textContinueCount==null){
+        return DEFAULT_TEXTCONTINUECOUNT;
+    }
+    return textContinueCount;
+  }
+
+  public EGiftDisplayType getDisplayType() {
+    if(displayType==null){
+        return new EGiftDisplayType.Builder().build();
+    }
+    return displayType;
+  }
+
+  public GiftExtraInfo getExtra() {
+    if(extra==null){
+        return new GiftExtraInfo.Builder().build();
+    }
+    return extra;
+  }
+
+  /**
    * 礼物id
    */
   public boolean hasGiftID() {
@@ -408,6 +493,25 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     return realPrice!=null;
   }
 
+  /**
+   * 是否需要播放
+   */
+  public boolean hasPlay() {
+    return play!=null;
+  }
+
+  public boolean hasTextContinueCount() {
+    return textContinueCount!=null;
+  }
+
+  public boolean hasDisplayType() {
+    return displayType!=null;
+  }
+
+  public boolean hasExtra() {
+    return extra!=null;
+  }
+
   public static final class Builder extends Message.Builder<GiftInfo, Builder> {
     private Integer giftID;
 
@@ -428,6 +532,14 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     private String description;
 
     private Float realPrice;
+
+    private Boolean play;
+
+    private Integer textContinueCount;
+
+    private EGiftDisplayType displayType;
+
+    private GiftExtraInfo extra;
 
     public Builder() {
     }
@@ -512,9 +624,32 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       return this;
     }
 
+    /**
+     * 是否需要播放
+     */
+    public Builder setPlay(Boolean play) {
+      this.play = play;
+      return this;
+    }
+
+    public Builder setTextContinueCount(Integer textContinueCount) {
+      this.textContinueCount = textContinueCount;
+      return this;
+    }
+
+    public Builder setDisplayType(EGiftDisplayType displayType) {
+      this.displayType = displayType;
+      return this;
+    }
+
+    public Builder setExtra(GiftExtraInfo extra) {
+      this.extra = extra;
+      return this;
+    }
+
     @Override
     public GiftInfo build() {
-      return new GiftInfo(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, super.buildUnknownFields());
+      return new GiftInfo(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, play, textContinueCount, displayType, extra, super.buildUnknownFields());
     }
   }
 
@@ -535,6 +670,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           + ProtoAdapter.BOOL.encodedSizeWithTag(8, value.canContinue)
           + ProtoAdapter.STRING.encodedSizeWithTag(9, value.description)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(10, value.realPrice)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(11, value.play)
+          + ProtoAdapter.SINT32.encodedSizeWithTag(12, value.textContinueCount)
+          + EGiftDisplayType.ADAPTER.encodedSizeWithTag(13, value.displayType)
+          + GiftExtraInfo.ADAPTER.encodedSizeWithTag(14, value.extra)
           + value.unknownFields().size();
     }
 
@@ -550,6 +689,10 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       ProtoAdapter.BOOL.encodeWithTag(writer, 8, value.canContinue);
       ProtoAdapter.STRING.encodeWithTag(writer, 9, value.description);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 10, value.realPrice);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 11, value.play);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 12, value.textContinueCount);
+      EGiftDisplayType.ADAPTER.encodeWithTag(writer, 13, value.displayType);
+      GiftExtraInfo.ADAPTER.encodeWithTag(writer, 14, value.extra);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -576,6 +719,17 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           case 8: builder.setCanContinue(ProtoAdapter.BOOL.decode(reader)); break;
           case 9: builder.setDescription(ProtoAdapter.STRING.decode(reader)); break;
           case 10: builder.setRealPrice(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 11: builder.setPlay(ProtoAdapter.BOOL.decode(reader)); break;
+          case 12: builder.setTextContinueCount(ProtoAdapter.SINT32.decode(reader)); break;
+          case 13: {
+            try {
+              builder.setDisplayType(EGiftDisplayType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 14: builder.setExtra(GiftExtraInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -590,6 +744,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     @Override
     public GiftInfo redact(GiftInfo value) {
       Builder builder = value.newBuilder();
+      if (builder.extra != null) builder.extra = GiftExtraInfo.ADAPTER.redact(builder.extra);
       builder.clearUnknownFields();
       return builder.build();
     }
