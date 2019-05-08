@@ -65,7 +65,6 @@ public abstract class BottomContainerView extends RelativeLayout {
     protected ExImageView mEmoji2Btn;
     protected ExImageView mEmoji1Btn;
 
-
     protected PopupWindow mQuickMsgPopWindow;  //快捷词弹出面板
 
     protected SpecialEmojiMsgType mLastSendType = null;

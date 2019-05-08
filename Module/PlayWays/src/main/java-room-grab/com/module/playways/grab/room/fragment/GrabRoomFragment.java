@@ -782,6 +782,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
             mVoiceControlDialog.show();
         }
+
+        @Override
+        public void onClickSkipGuide() {
+
+        }
     };
 
     /**

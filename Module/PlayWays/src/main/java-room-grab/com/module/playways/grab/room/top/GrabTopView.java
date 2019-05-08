@@ -34,7 +34,6 @@ public class GrabTopView extends RelativeLayout {
     ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
     ImageView mIvVoiceSetting;
-//    ImageView mIvAccDisable;
 
     Listener mOnClickChangeRoomListener;
     GrabRoomData mGrabRoomData;
@@ -172,6 +171,12 @@ public class GrabTopView extends RelativeLayout {
             } else {
                 setChangeRoomBtnVisiable(true);
             }
+        }
+
+        if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+            // 新手房
+            setChangeRoomBtnVisiable(false);
+            mIvVoiceSetting.setVisibility(GONE);
         }
     }
 

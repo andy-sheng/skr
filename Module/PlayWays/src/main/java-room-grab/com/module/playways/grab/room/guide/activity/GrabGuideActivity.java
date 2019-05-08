@@ -20,6 +20,7 @@ import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.friends.SpecialModel;
 import com.module.RouterConstants;
 import com.module.playways.R;
@@ -60,6 +61,7 @@ public class GrabGuideActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         GrabGuideInfoModel grabGuideInfoModel = (GrabGuideInfoModel) getIntent().getSerializableExtra("guide_data");
+        mRoomData.setRoomType(GrabRoomType.ROOM_TYPE_GUIDE);
         mRoomData.setGrabGuideInfoModel(grabGuideInfoModel);
 
         mRoomData.setGameId((int) MyUserInfoManager.getInstance().getUid());

@@ -17,6 +17,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
@@ -143,6 +144,10 @@ public class GrabBottomContainerView extends BottomContainerView {
                 //不是一唱到底房主
                 adjustUi(false);
             }
+
+            if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+                mEmoji2Btn.setVisibility(GONE);
+            }
         }
     }
 
@@ -190,10 +195,6 @@ public class GrabBottomContainerView extends BottomContainerView {
             });
         } else {
             mIvRoomManage.setVisibility(GONE);
-            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
-            lp.addRule(RelativeLayout.LEFT_OF, 0);
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            mEmoji2Btn.setLayoutParams(lp);
             mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
         }
     }
@@ -217,7 +218,7 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        if (mGrabRoomData!=null && mGrabRoomData.isOwner()) {
+        if (mGrabRoomData != null && mGrabRoomData.isOwner()) {
             mQuickBtn.setEnabled(true);
             if (mGrabRoomData.isSpeaking()) {
                 // 正在说话，就算了

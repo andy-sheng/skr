@@ -6,37 +6,33 @@
     <com.module.playways.grab.room.top.GrabTopView
         android:id="@+id/grab_top_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_38_dp"
-        />
+        android:layout_height="@dimen/view_38_dp" />
 
     <com.module.playways.grab.room.top.GrabPlayerRv2
-        android:layout_below="@+id/grab_top_view"
         android:id="@+id/top_content_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_below="@+id/grab_top_view" />
 
     <com.module.playways.grab.room.top.GrabAudienceView
         android:id="@+id/grab_audience_view"
-        android:layout_marginTop="@dimen/view_102_dp"
-        android:layout_marginRight="@dimen/view_24_dp"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_102_dp"
+        android:layout_marginRight="@dimen/view_24_dp" />
 
     <com.common.view.ex.ExImageView
-        android:layout_marginTop="@dimen/view_2_dp"
-        android:layout_marginRight="@dimen/view_24_dp"
-        android:visibility="visible"
         android:id="@+id/more_btn"
         android:layout_width="@dimen/view_27_dp"
         android:layout_height="@dimen/view_31_dp"
         android:layout_alignParentRight="true"
-        android:background="@drawable/ycdd_daojishi_gengduo" />
+        android:layout_marginTop="@dimen/view_2_dp"
+        android:layout_marginRight="@dimen/view_24_dp"
+        android:background="@drawable/ycdd_daojishi_gengduo"
+        android:visibility="visible" />
 
     <com.common.view.ex.ExTextView
-        android:visibility="gone"
         android:id="@+id/song_index_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,5 +40,18 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/view_12_dp"
         android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp" />
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/skip_guide_tv"
+        android:layout_width="@dimen/view_45_dp"
+        android:layout_height="@dimen/view_31_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_2_dp"
+        android:layout_marginRight="@dimen/view_24_dp"
+        android:text="跳过"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp"
+        android:visibility="gone" />
 </merge>

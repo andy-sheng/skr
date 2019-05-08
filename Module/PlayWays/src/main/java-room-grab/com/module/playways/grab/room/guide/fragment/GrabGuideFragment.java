@@ -81,11 +81,6 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
     public static final int MSG_ENSURE_BATTLE_BEGIN_OVER = 5;
 
-//    public static final int MSG_ENSURE_GAME_OVER = 6;
-
-    //自己演唱玩
-//    public static final int MSG_SEND_SELF_SING_END = 7;
-
     GrabRoomData mRoomData;
 
     RelativeLayout mRankingContainer;
@@ -98,10 +93,6 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
     BottomContainerView mBottomContainerView;
 
-//    GrabVoiceControlPanelView mVoiceControlView;
-
-//    RedPkgCountDownView mRedPkgView;
-
     CommentView mCommentView;
 
     GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
@@ -109,10 +100,6 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
     ExImageView mPracticeFlagIv; // 练习中
 
     GrabGuidePresenter mCorePresenter;
-
-//    GrabRedPkgPresenter mGrabRedPkgPresenter;
-
-//    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
     TurnInfoCardView mTurnInfoCardView; //歌曲次序 以及 对战开始卡片
 
@@ -132,40 +119,15 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
     GrabDengBigAnimationView mDengBigAnimation;
 
-//    GrabChangeRoomTransitionView mGrabChangeRoomTransitionView;
-
     GrabScoreTipsView mGrabScoreTipsView;
 
     DialogPlus mQuitTipsDialog;
-
-//    PersonInfoDialog mPersonInfoDialog;
-
-//    DialogPlus mGameRuleDialog;
-
-//    ConfirmDialog mGrabKickDialog;
-
-//    GrabVoiceControlPanelView mGrabVoiceControlPanelView;
-
-//    GiftPanelView mGiftPanelView;
-
-//    ContinueSendView mContinueSendView;
-
-//    DialogPlus mVoiceControlDialog;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
     boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
-//    long mBeginChangeRoomTs;
-
-//    ImageView mOwnerBeginGameIv;
-
     ImageView mGrabBtnTipIv;
-//    ImageView mIvManageSongTipView;
-//    ImageView mIvChanllengeTipView;
-
-//    int mShowOwnerTipTimes = 0;
-//    int mOwnerKickTimes = 0;  // 房主踢人的次数
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -378,6 +340,11 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
         public void onClickVoiceVoiceAudition() {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         }
+
+        @Override
+        public void onClickSkipGuide() {
+            quitGame();
+        }
     };
 
     /**
@@ -414,7 +381,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             @Override
             public void clickGrabBtn(int seq, boolean challenge) {
                 U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
-                mCorePresenter.grabThisRound((int) MyUserInfoManager.getInstance().getUid(),seq, challenge);
+                mCorePresenter.grabThisRound((int) MyUserInfoManager.getInstance().getUid(), seq, challenge);
                 removeGrabBtnTipView();
             }
 
@@ -432,11 +399,11 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             @Override
             public void countDownOver() {
                 GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-                if(now!=null){
-                    if(now.getRoundSeq()==2){
-                        mCorePresenter.grabThisRound(mRoomData.getGrabGuideInfoModel().getbRoundUserID(),now.getRoundSeq(),false);
+                if (now != null) {
+                    if (now.getRoundSeq() == 2) {
+                        mCorePresenter.grabThisRound(mRoomData.getGrabGuideInfoModel().getbRoundUserID(), now.getRoundSeq(), false);
                     }
-                    if(now.getRoundSeq() ==1){
+                    if (now.getRoundSeq() == 1) {
                         tryShowGrabTipView();
                     }
                 }
@@ -484,7 +451,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 //            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-            int[] location = new int[2] ;
+            int[] location = new int[2];
             mGrabOpBtn.getGrabBtn().getLocationInWindow(location);
             layoutParams.rightMargin = U.getDisplayUtils().dip2px(14);
             layoutParams.topMargin = location[1] + mGrabOpBtn.getGrabBtn().getHeight();
@@ -498,7 +465,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
         }
     }
 
-    private void removeGrabBtnTipView(){
+    private void removeGrabBtnTipView() {
         if (mGrabBtnTipIv != null) {
             mRankingContainer.removeView(mGrabBtnTipIv);
             mGrabBtnTipIv = null;
@@ -621,7 +588,6 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
         }
         mCorePresenter.playGuide();
     }
-
 
 
     @Override
@@ -929,6 +895,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
     }
 
     private void onGrabGameOver(String from) {
+        // TODO: 2019/5/8 跳到毕业页面
         MyLog.d(TAG, "onGrabGameOver " + from);
 //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
 

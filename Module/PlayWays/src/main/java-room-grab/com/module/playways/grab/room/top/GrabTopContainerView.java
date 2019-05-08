@@ -7,8 +7,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
@@ -31,9 +33,11 @@ public class GrabTopContainerView extends RelativeLayout {
     GrabTopView mGrabTopView;// 切房间按钮，金币
     RelativeLayout mRelativeLayoutIconContainer;
     MoreOpView mMoreOpView;
-    GrabPlayerRv2 mTopContentRv;
     ExImageView mMoreBtn;
     ExTextView mSongIndexTv;
+    ExTextView mSkipGuideTv;
+
+    GrabPlayerRv2 mTopContentRv;
 
     Listener mListener;
     GrabRoomData mRoomData;
@@ -73,6 +77,7 @@ public class GrabTopContainerView extends RelativeLayout {
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mSongIndexTv = (ExTextView) this.findViewById(R.id.song_index_tv);
         mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
+        mSkipGuideTv = (ExTextView) this.findViewById(R.id.skip_guide_tv);
 
 //        mTopContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 //        mGrabTopAdapter = new GrabTopAdapter();
@@ -109,6 +114,15 @@ public class GrabTopContainerView extends RelativeLayout {
                     mMoreOpView.setRoomData(mRoomData);
                 }
                 mMoreOpView.showAt(mMoreBtn);
+            }
+        });
+
+        mSkipGuideTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if(mListener!=null){
+                    mListener.onClickSkipGuide();
+                }
             }
         });
     }
@@ -203,6 +217,13 @@ public class GrabTopContainerView extends RelativeLayout {
         mTopContentRv.setRoomData(roomData);
         mGrabTopView.setRoomData(roomData);
         mGrabAudienceView.setRoomData(roomData);
+
+        if (roomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+            // 新手房
+            mMoreBtn.setVisibility(GONE);
+            mSongIndexTv.setVisibility(GONE);
+            mSkipGuideTv.setVisibility(VISIBLE);
+        }
     }
 
     public void hideWithDelay(long delay) {
@@ -225,5 +246,7 @@ public class GrabTopContainerView extends RelativeLayout {
         void onClickGameRule();
 
         void onClickVoiceVoiceAudition();
+
+        void onClickSkipGuide();
     }
 }

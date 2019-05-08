@@ -16,6 +16,7 @@ import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.component.busilib.constans.GrabRoomType;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.module.playways.RoomDataUtils;
@@ -607,11 +608,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mRoomData = roomData;
         if (mGrabTopItemViewArrayList.size() != 0) {
             VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
-//            if (mRoomData.isOwner()) {
+            if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+                // 新手房
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+            } else {
                 vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
-//            } else {
-//                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
-//            }
+            }
         }
         initData();
     }
