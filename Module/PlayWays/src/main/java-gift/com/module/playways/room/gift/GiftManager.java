@@ -56,12 +56,12 @@ public class GiftManager {
 
     public void loadGift() {
         Observable.create(emitter -> {
-            List<BaseGift> baseGiftList = GiftLocalApi.getAllGift();
-            if (baseGiftList != null && baseGiftList.size() > 0) {
-                isGiftReady = true;
-                mBaseGiftList.addAll(baseGiftList);
-                EventBus.getDefault().post(new GiftReadyEvent(true));
-            }
+//            List<BaseGift> baseGiftList = GiftLocalApi.getAllGift();
+//            if (baseGiftList != null && baseGiftList.size() > 0) {
+//                isGiftReady = true;
+//                mBaseGiftList.addAll(baseGiftList);
+//                EventBus.getDefault().post(new GiftReadyEvent(true));
+//            }
 
             fetchGift();
             emitter.onComplete();
@@ -77,7 +77,7 @@ public class GiftManager {
                 if (result.getErrno() == 0) {
                     List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
                     mGiftServerModelList.addAll(giftServerModelList);
-                    cacheToDb(giftServerModelList);
+//                    cacheToDb(giftServerModelList);
                     toLocalGiftModel(mGiftServerModelList);
                     isGiftReady = true;
                     EventBus.getDefault().post(new GiftReadyEvent(true));

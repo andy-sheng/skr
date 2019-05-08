@@ -82,7 +82,7 @@ public class GiftOverlayAnimationView {
                     break;
             }
         } else {
-            url = giftPlayModel.getBigGiftResUrl();
+            url = giftPlayModel.getAnimGiftParamModel().getResUrl();
         }
 
         load(url);

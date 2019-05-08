@@ -30,6 +30,14 @@ public class BaseGift {
     private float realPrice;
     private int sortID;
     private String sourceURL;
+    //附加信息
+    private String extra;
+    //要不要播放
+    private boolean play;
+    //连送展示几个，0为不展示，-1，为一直展示，
+    private int textContinueCount;
+    //展示方式，有免费礼物展示，小礼物，中礼物，大礼物四种（0， 1， 2， 3）
+    private int displayType;
 
     public float getRealPrice() {
         return realPrice;
@@ -109,6 +117,7 @@ public class BaseGift {
 
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
+
     }
 
 

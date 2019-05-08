@@ -59,7 +59,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
             if (giftContinuousView != null) {
                 // 播放动画
                 giftContinuousView.play(model);
-                if (!TextUtils.isEmpty(model.getBigGiftResUrl())) {
+                if (model.getAnimGiftParamModel().isPlay()) {
                     EventBus.getDefault().post(new BigGiftBrushMsgEvent(model));
                 }
             }

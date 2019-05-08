@@ -1,7 +1,10 @@
 package com.module.playways.room.room.gift.model;
 
+import android.text.TextUtils;
+
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
+import com.module.playways.room.gift.model.AnimGiftParamModel;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
@@ -22,8 +25,7 @@ public class GiftPlayModel {
     int beginCount;
     int endCount;
     String giftIconUrl;
-    String bigGiftResUrl;
-
+    AnimGiftParamModel mAnimGiftParamModel;
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
@@ -64,8 +66,31 @@ public class GiftPlayModel {
         UserInfoModel receiverModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getReceiveUserInfo());
         giftPlayModel.setReceiver(receiverModel);
         giftPlayModel.setGiftIconUrl(gPrensentGiftMsg.getGiftInfo().getGiftURL());
-        giftPlayModel.setBigGiftResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
+
+        AnimGiftParamModel animGiftParamModel = new AnimGiftParamModel();
+
+        // TODO: 2019-05-08 假数据
+        if (!TextUtils.isEmpty(gPrensentGiftMsg.getGiftInfo().getSourceURL())) {
+            animGiftParamModel.setBottom(-1);
+            animGiftParamModel.setLeft(-1);
+            animGiftParamModel.setRight(-1);
+            animGiftParamModel.setTop(-1);
+            animGiftParamModel.setDuration(3000);
+            animGiftParamModel.setWidth(1080);
+            animGiftParamModel.setHeight(1920);
+            animGiftParamModel.setPlay(true);
+            animGiftParamModel.setTextContinueCount(3);
+            animGiftParamModel.setResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
+        }
+
+        animGiftParamModel.setDisplayType(2);
+        giftPlayModel.mAnimGiftParamModel = animGiftParamModel;
+
         return giftPlayModel;
+    }
+
+    public AnimGiftParamModel getAnimGiftParamModel() {
+        return mAnimGiftParamModel;
     }
 
     public long getTimeMs() {
@@ -151,14 +176,6 @@ public class GiftPlayModel {
 
     public void setGiftIconUrl(String giftIconUrl) {
         this.giftIconUrl = giftIconUrl;
-    }
-
-    public String getBigGiftResUrl() {
-        return bigGiftResUrl;
-    }
-
-    public void setBigGiftResUrl(String bigGiftResUrl) {
-        this.bigGiftResUrl = bigGiftResUrl;
     }
 
     public enum EGiftType {

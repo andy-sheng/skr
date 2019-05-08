@@ -1,5 +1,7 @@
 package com.module.playways.room.gift.model;
 
+import android.text.TextUtils;
+
 import com.module.playways.room.gift.GiftDB;
 
 import java.io.Serializable;
@@ -29,6 +31,9 @@ public class GiftServerModel implements Serializable {
     private int sortID;
     private String sourceURL;
     private float realPrice;
+    private boolean play;
+    private int textContinueCount;
+    private int displayType;
 
     public float getRealPrice() {
         return realPrice;
@@ -108,6 +113,12 @@ public class GiftServerModel implements Serializable {
 
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
+        // TODO: 2019-05-08  假数据
+        if (!TextUtils.isEmpty(sourceURL)) {
+            this.play = true;
+            this.textContinueCount = 3;
+            this.displayType = 2;
+        }
     }
 
     public static GiftDB toGiftDB(GiftServerModel giftServerModel) {
