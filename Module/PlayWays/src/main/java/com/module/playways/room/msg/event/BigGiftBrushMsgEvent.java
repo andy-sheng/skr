@@ -1,15 +1,15 @@
 package com.module.playways.room.msg.event;
 
-import com.zq.live.proto.Room.GPrensentGiftMsg;
+import com.module.playways.room.room.gift.model.GiftPlayModel;
 
 public class BigGiftBrushMsgEvent {
-    GPrensentGiftMsg mGPrensentGiftMsg;
+    GiftPlayModel mGiftPlayModel;
 
-    public BigGiftBrushMsgEvent(GPrensentGiftMsg gPrensentGiftMsg) {
-        this.mGPrensentGiftMsg = gPrensentGiftMsg;
+    public BigGiftBrushMsgEvent(GiftPlayModel giftPlayModel) {
+        mGiftPlayModel = giftPlayModel;
     }
 
-    public GPrensentGiftMsg getGPrensentGiftMsg() {
-        return mGPrensentGiftMsg;
+    public GiftPlayModel getGiftPlayModel() {
+        return mGiftPlayModel;
     }
 }
