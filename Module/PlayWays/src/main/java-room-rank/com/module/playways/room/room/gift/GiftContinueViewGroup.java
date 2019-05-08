@@ -1,10 +1,12 @@
 package com.module.playways.room.room.gift;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
@@ -57,6 +59,9 @@ public class GiftContinueViewGroup extends RelativeLayout {
             if (giftContinuousView != null) {
                 // 播放动画
                 giftContinuousView.play(model);
+                if (!TextUtils.isEmpty(model.getBigGiftResUrl())) {
+                    EventBus.getDefault().post(new BigGiftBrushMsgEvent(model));
+                }
             }
         }
 

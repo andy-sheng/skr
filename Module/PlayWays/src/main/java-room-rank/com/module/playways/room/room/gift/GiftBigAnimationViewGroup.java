@@ -125,7 +125,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
             return;
         }
         // 收到一条礼物消息,进入生产者队列
-        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(giftPresentEvent.getGPrensentGiftMsg(), mRoomData);
+        GiftPlayModel playModel = giftPresentEvent.getGiftPlayModel();
         // 如果消息能被当前忙碌的view接受
         mGiftPlayControlTemplate.add(playModel, true);
     }
