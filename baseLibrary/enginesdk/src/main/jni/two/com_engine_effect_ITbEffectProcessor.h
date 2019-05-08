@@ -18,14 +18,12 @@ Java_com_engine_effect_ITbEffectProcessor_init
  */
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbEffectProcessor_process1
-        (JNIEnv *, jobject, jbyteArray, jint, jint, jint);
+        (JNIEnv *, jobject, jbyteArray, jobject, jint, jint, jint);
 
-
-extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject instance,
-                                                   jbyteArray samples_, jint length, jint channels,
-                                                   jint samplesPerSec);
+                                                   jbyteArray samples_, jobject byteBuffer,
+                                                   jint length, jint channels, jint samplesPerSec);
 
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbEffectProcessor_destroyEffectProcessor(JNIEnv *env, jobject instance);

@@ -3,6 +3,8 @@ package com.engine.effect;
 
 import com.common.log.MyLog;
 
+import java.nio.ByteBuffer;
+
 public class ITbEffectProcessor {
     public final static String TAG = "ITbEffectProcessor";
 
@@ -20,17 +22,27 @@ public class ITbEffectProcessor {
 
     public int process(int type, byte[] samples, int length, int channels, int samplesPerSec) {
         if (type == 1) {
-            int r = process1(samples, length, channels, samplesPerSec);
+            int r = process1(samples, null, length, channels, samplesPerSec);
             return r;
         } else {
-            int r = process2(samples, length, channels, samplesPerSec);
+            int r = process2(samples, null, length, channels, samplesPerSec);
             return r;
         }
     }
 
-    public native int process1(byte[] samples, int length, int channels, int samplesPerSec);
+    public int process(int type, ByteBuffer byteBuffer, int length, int channels, int samplesPerSec) {
+        if (type == 1) {
+            int r = process1(null, byteBuffer, length, channels, samplesPerSec);
+            return r;
+        } else {
+            int r = process2(null, byteBuffer, length, channels, samplesPerSec);
+            return r;
+        }
+    }
 
-    public native int process2(byte[] samples, int length, int channels, int samplesPerSec);
+    public native int process1(byte[] samples, ByteBuffer byteBuffer, int length, int channels, int samplesPerSec);
+
+    public native int process2(byte[] samples, ByteBuffer byteBuffer, int length, int channels, int samplesPerSec);
 
     public native int destroyEffectProcessor();
 

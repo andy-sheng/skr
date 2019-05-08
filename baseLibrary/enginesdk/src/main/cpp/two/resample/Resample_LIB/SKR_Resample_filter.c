@@ -33,7 +33,7 @@ void filterc(float *b,float *a,int n,int ns,float *x,int len,float *px,float *py
 	}
 }
 
-void filtercfix(float *b,float *a,int n,int ns,short *x,short *y,int len,short *px,float *py)//wrong:暂时不用这个
+void filtercfix(float *b,float *a,int n,int ns,short *x,short *y,int len,short *px,float *py)//wrong:鏆傛椂涓嶇敤杩欎釜
 {
 	int i,j,k,n1;
 	float xk;

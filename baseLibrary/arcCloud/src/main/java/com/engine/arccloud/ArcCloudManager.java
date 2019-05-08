@@ -53,9 +53,9 @@ public class ArcCloudManager implements IACRCloudListener {
 
     }
 
-    private static class ArcCloudManagerHolder {
-        private static final ArcCloudManager INSTANCE = new ArcCloudManager();
-    }
+//    private static class ArcCloudManagerHolder {
+//        private static final ArcCloudManager INSTANCE = new ArcCloudManager();
+//    }
 
     private ACRCloudClient mClient;
     private boolean mInited = false;

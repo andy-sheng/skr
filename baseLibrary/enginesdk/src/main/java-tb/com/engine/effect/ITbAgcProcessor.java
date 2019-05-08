@@ -3,6 +3,8 @@ package com.engine.effect;
 
 import com.common.log.MyLog;
 
+import java.nio.ByteBuffer;
+
 public class ITbAgcProcessor {
     public final static String TAG = "ITbEffectProcessor";
 
@@ -18,13 +20,15 @@ public class ITbAgcProcessor {
 
     public native int init();
 
-    public int processV1( byte[] samples, int length, int channels, int samplesPerSec) {
-         process(samples,length,channels,samplesPerSec);
-         return 0;
+    public int processV1(byte[] samples, int length, int channels, int samplesPerSec) {
+         return process(samples, null, length,channels,samplesPerSec);
     }
 
-    public native int process(byte[] samples, int length, int channels, int samplesPerSec);
+    public int processV1(ByteBuffer byteBuffer, int length, int channels, int samplesPerSec) {
+        return process(null, byteBuffer, length, channels, samplesPerSec);
+    }
 
+    private native int process(byte[] samples, ByteBuffer byteBuffer, int length, int channels, int samplesPerSec);
 
     public native int destroyAgcProcessor();
 

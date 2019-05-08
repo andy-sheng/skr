@@ -26,9 +26,10 @@ public class Params implements Serializable {
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
     @JSONField(serialize=false)
     private Scene scene = Scene.audiotest;
-    // 是否使用唱吧的引擎
     @JSONField(serialize=false)
-    private boolean useCbEngine = false;
+    private boolean useExternalAudio = false;
+    @JSONField(serialize=false)
+    private boolean useExternalVideo = true;
     @JSONField(serialize=false)
     private boolean enableVideo = false;
     @JSONField(serialize=false)
@@ -138,12 +139,20 @@ public class Params implements Serializable {
         this.channelProfile = channelProfile;
     }
 
-    public boolean isUseCbEngine() {
-        return useCbEngine;
+    public boolean isUseExternalAudio() {
+        return useExternalAudio;
     }
 
-    public void setUseCbEngine(boolean useCbEngine) {
-        this.useCbEngine = useCbEngine;
+    public void setUseExternalAudio(boolean useExternalAudio) {
+        this.useExternalAudio = useExternalAudio;
+    }
+
+    public boolean isUseExternalVideo() {
+        return useExternalVideo;
+    }
+
+    public void setUseExternalVideo(boolean useExternalVideo) {
+        this.useExternalVideo = useExternalVideo;
     }
 
     public boolean isEnableVideo() {
@@ -490,6 +499,16 @@ public class Params implements Serializable {
         return mIsAnchor;
     }
 
+    // 工具方法，获取歌曲播放的实际时间戳
+    public long getAccTs() {
+        long accTs = 0;
+        if (isMixMusicPlaying() && getLrcHasStart()) {
+            accTs = getCurrentMusicTs() + getMixMusicBeginOffset() +
+                    (System.currentTimeMillis() - getRecordCurrentMusicTsTs());
+        }
+        return accTs;
+    }
+
     public static class Builder {
         Params mParams = new Params();
 
@@ -501,8 +520,13 @@ public class Params implements Serializable {
             return this;
         }
 
-        public Builder setUseCbEngine(boolean useCbEngine) {
-            mParams.setUseCbEngine(useCbEngine);
+        public Builder setUseExternalAudio(boolean useExternalAudio) {
+            mParams.setUseExternalAudio(useExternalAudio);
+            return this;
+        }
+
+        public Builder setUseExternalVideo(boolean useExternalVideo) {
+            mParams.setUseExternalVideo(useExternalVideo);
             return this;
         }
 
@@ -664,7 +688,8 @@ public class Params implements Serializable {
             params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(false)
                     .setEnableAudio(true)
-                    .setUseCbEngine(false)
+                    .setUseExternalAudio(false)
+                    .setUseExternalVideo(true)
                     .setStyleEnum(AudioEffect.none)
                     .build();
         }

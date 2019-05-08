@@ -64,7 +64,10 @@ public class ICbScoreProcessor {
                 }
             }
         }
-        int r1 = process1(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
+        if(ScoreConfig.isMelpEnable()) {
+            // 默认关闭 melp1 方式的打分了
+            int r1 = process1(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
+        }
         if (ScoreConfig.isMelp2Enable()) {
             if (mCustomHandlerThread == null) {
                 mCustomHandlerThread = new CustomHandlerThread("getScore2") {
@@ -89,7 +92,7 @@ public class ICbScoreProcessor {
             mCustomHandlerThread.sendMessage(msg);
         }
 
-        return r1;
+        return 0;
     }
 
     public int getScoreV1() {

@@ -18,7 +18,7 @@ public class ChannelUtils {
     private static final String PREF_KEY_CHANNEL = "key_channel";
     private static final String PREF_KEY_SUB_CHANNEL = "key_sub_channel";
     private static final String PREF_KEY_DEBUG_CHANNEL = "key_debug_channel";
-    private String channelNameFromBuildConfig = "DEFAULT";
+    private String channelNameFromBuildConfig = "SANDBOX";
     private String channelNameFromPref;
     private String mSubChannel;
 

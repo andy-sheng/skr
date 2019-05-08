@@ -9,6 +9,8 @@ import com.changba.songstudio.audioeffect.AudioEffectParamController;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.changba.songstudio.audioeffect.AudioInfo;
 
+import java.nio.ByteBuffer;
+
 
 /**
  * Created by xiaokai.zhan on 2018/12/5.
@@ -31,7 +33,7 @@ public class IFAudioEffectEngine {
 
     public native void destroyAudioEffect();
 
-    public native void processAudioEffect(byte[] data, int len, int channel, int sampleRate);
+    public native void processAudioEffect(byte[] data, ByteBuffer byteBuffer, int len, int channel, int sampleRate);
 
     int mType = -1;
 
@@ -98,7 +100,16 @@ public class IFAudioEffectEngine {
             mType = type;
             load(type);
         }
-        processAudioEffect(samples, length, channels, samplesPerSec);
+        processAudioEffect(samples, null, length, channels, samplesPerSec);
+        return 0;
+    }
+
+    public int process(int type, ByteBuffer buffer, int length, int channels, int samplesPerSec) {
+        if (type != mType) {
+            mType = type;
+            load(type);
+        }
+        processAudioEffect(null, buffer, length, channels, samplesPerSec);
         return 0;
     }
 

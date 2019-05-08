@@ -2,7 +2,7 @@
 #include "SKR_Resample_functions.h"
 #include <stdlib.h>
 
-void D_ID_Linear(Resample_MEM *mem,Resample_ID *mResample, short *input, int inLen, short *output, int *outLen )//ÎÞÂË²¨
+void D_ID_Linear(Resample_MEM *mem,Resample_ID *mResample, short *input, int inLen, short *output, int *outLen )//æ— æ»¤æ³¢
 {
 	int i;
 	int index;

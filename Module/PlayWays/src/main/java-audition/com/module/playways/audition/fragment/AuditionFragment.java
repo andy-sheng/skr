@@ -32,7 +32,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
-import com.engine.EngineManager;
+//import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
@@ -48,6 +48,7 @@ import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.mediaengine.kit.ZqEngineKit;
 import com.zq.toast.NoImageCommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -125,16 +126,16 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        if (!EngineManager.getInstance().isInit()) {
+        if (!ZqEngineKit.getInstance().isInit()) {
             // 不能每次都初始化,播放伴奏
             Params params = Params.getFromPref();
             params.setScene(Params.Scene.audiotest);
-            EngineManager.getInstance().init("prepare", params);
+            ZqEngineKit.getInstance().init("prepare", params);
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
-            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
+            ZqEngineKit.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
         } else {
-            EngineManager.getInstance().resumeAudioMixing();
+            ZqEngineKit.getInstance().resumeAudioMixing();
         }
 
         mRankTopView = (RankTopContainerView2) mRootView.findViewById(R.id.rank_top_view);
@@ -191,8 +192,8 @@ public class AuditionFragment extends BaseFragment {
         mManyLyricsView.setOnLyricViewTapListener(new ManyLyricsView.OnLyricViewTapListener() {
             @Override
             public void onDoubleTap() {
-                if (EngineManager.getInstance().getParams().isMixMusicPlaying()) {
-                    EngineManager.getInstance().pauseAudioMixing();
+                if (ZqEngineKit.getInstance().getParams().isMixMusicPlaying()) {
+                    ZqEngineKit.getInstance().pauseAudioMixing();
                 }
                 mManyLyricsView.pause();
             }
@@ -201,12 +202,12 @@ public class AuditionFragment extends BaseFragment {
             public void onSigleTap(int progress) {
                 MyLog.d(TAG, "progress " + progress);
                 if (progress > 0) {
-                    EngineManager.getInstance().setAudioMixingPosition(progress - mSongModel.getBeginMs());
+                    ZqEngineKit.getInstance().setAudioMixingPosition(progress - mSongModel.getBeginMs());
                     mManyLyricsView.seekto(progress);
                 }
 
-                if (!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
-                    EngineManager.getInstance().resumeAudioMixing();
+                if (!ZqEngineKit.getInstance().getParams().isMixMusicPlaying()) {
+                    ZqEngineKit.getInstance().resumeAudioMixing();
                 }
 
                 if (mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
@@ -223,8 +224,8 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void startRecord() {
-        EngineManager.getInstance().stopAudioRecording();
-        EngineManager.getInstance().stopAudioMixing();
+        ZqEngineKit.getInstance().stopAudioRecording();
+        ZqEngineKit.getInstance().stopAudioMixing();
         mSkrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
@@ -260,9 +261,9 @@ public class AuditionFragment extends BaseFragment {
                 mStartRecordTs = System.currentTimeMillis();
                 mCbScoreList.clear();
                 if (RECORD_BY_CALLBACK) {
-                    EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
+                    ZqEngineKit.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
                 } else {
-                    EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
+                    ZqEngineKit.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
                 }
             }
         });
@@ -270,7 +271,7 @@ public class AuditionFragment extends BaseFragment {
         playMusic(mSongModel);
         mStartRecordTs = System.currentTimeMillis();
 
-        EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+        ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
                 .setMode(RecognizeConfig.MODE_MANUAL)
                 .setSongName(mSongModel.getItemName())
                 .setArtist(mSongModel.getOwner())
@@ -315,8 +316,8 @@ public class AuditionFragment extends BaseFragment {
         mLyricAndAccMatchManager.stop();
         mVoiceScaleView.setVisibility(View.GONE);
         isRecord = false;
-        EngineManager.getInstance().stopAudioRecording();
-        EngineManager.getInstance().stopAudioMixing();
+        ZqEngineKit.getInstance().stopAudioRecording();
+        ZqEngineKit.getInstance().stopAudioMixing();
 
         // TODO: 2019/3/14 原来会自动播放，现在该为跳到PlayRecordFragment中去
 //        playLyrics(mSongModel, true, false);
@@ -408,9 +409,9 @@ public class AuditionFragment extends BaseFragment {
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
             if (RECORD_BY_CALLBACK) {
-                EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
+                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
             } else {
-                EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
+                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
             }
         }
     }
@@ -507,7 +508,7 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LyricStartEvent event) {
-        Params params = EngineManager.getInstance().getParams();
+        Params params = ZqEngineKit.getInstance().getParams();
         if (params != null) {
             params.setLrcHasStart(true);
         }
@@ -517,8 +518,8 @@ public class AuditionFragment extends BaseFragment {
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
         MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
         if (!event.foreground) {
-            EngineManager.getInstance().stopAudioRecording();
-            EngineManager.getInstance().stopAudioMixing();
+            ZqEngineKit.getInstance().stopAudioRecording();
+            ZqEngineKit.getInstance().stopAudioMixing();
         } else {
             reset();
             mVoiceScaleView.setVisibility(View.GONE);
@@ -528,7 +529,7 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        Params.save2Pref(EngineManager.getInstance().getParams());
+        Params.save2Pref(ZqEngineKit.getInstance().getParams());
         Activity activity = getActivity();
         if (activity != null) {
             activity.finish();
@@ -572,7 +573,7 @@ public class AuditionFragment extends BaseFragment {
         super.destroy();
         mLyricAndAccMatchManager.stop();
         mManyLyricsView.release();
-        EngineManager.getInstance().destroy("prepare");
+        ZqEngineKit.getInstance().destroy("prepare");
         File recordFile = new File(PCM_SAVE_PATH);
         if (recordFile != null && recordFile.exists()) {
             recordFile.delete();

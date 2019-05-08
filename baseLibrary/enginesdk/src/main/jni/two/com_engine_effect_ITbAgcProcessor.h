@@ -12,10 +12,10 @@ JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbAgcProcessor_init
         (JNIEnv *, jobject);
 
-extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject instance,
-                                                   jbyteArray samples_, jint length, jint channels,
+                                                   jbyteArray samples_, jobject byteBuffer,
+                                                   jint length, jint channels,
                                                    jint samplesPerSec);
 
 JNIEXPORT jint JNICALL

@@ -21,9 +21,9 @@ public class EngineEvent {
 
     public static final int TYPE_ENGINE_DESTROY = 99;
 
-    int type;
-    UserStatus userStatus;
-    Object obj;
+    public int type;
+    public UserStatus userStatus;
+    public Object obj;
 
     public EngineEvent(int type) {
         this.type = type;

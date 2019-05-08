@@ -341,14 +341,16 @@ public class AgoraEngineAdapter {
         // 弱网环境下先尝试接收小流；若当前网络环境无法显示视频，则只接受音频
         mRtcEngine.setRemoteSubscribeFallbackOption(Constants.STREAM_FALLBACK_OPTION_AUDIO_ONLY);
 
-        if (mConfig.isUseCbEngine()) {
+        if (mConfig.isUseExternalAudio()) {
             // 音视频自采集
             mRtcEngine.setExternalAudioSource(
                     true,      // 开启外部音频源
                     44100,     // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
                     1          // 外部音源的通道数，最多2个
             );
+        }
 
+        if (mConfig.isUseExternalVideo()) {
             mRtcEngine.setExternalVideoSource(
                     true,      // 是否使用外部视频源
                     false,      // 是否使用texture作为输出
@@ -1290,8 +1292,8 @@ public class AgoraEngineAdapter {
      * @return
      */
     public int pushExternalAudioFrame(byte[] data, long ts) {
-        if (!mConfig.isUseCbEngine()) {
-            throw new IllegalStateException("usecbengine flag is false");
+        if (!mConfig.isUseExternalAudio()) {
+            throw new IllegalStateException("useExternalAudio flag is false");
         }
         tryInitRtcEngine();
         if (mRtcEngine != null) {
@@ -1307,8 +1309,8 @@ public class AgoraEngineAdapter {
      * @param textureId
      */
     public final void pushExternalVideoFrame(int textureId) {
-        if (!mConfig.isUseCbEngine()) {
-            throw new IllegalStateException("usecbengine flag is false");
+        if (!mConfig.isUseExternalVideo()) {
+            throw new IllegalStateException("useExternalVideo flag is false");
         }
         tryInitRtcEngine();
         if (mRtcEngine != null) {

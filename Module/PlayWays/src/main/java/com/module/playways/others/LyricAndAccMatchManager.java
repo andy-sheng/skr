@@ -8,7 +8,6 @@ import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.EngineEvent;
-import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.arccloud.SongInfo;
 import com.engine.score.Score2Callback;
@@ -20,6 +19,7 @@ import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,7 +86,7 @@ public class LyricAndAccMatchManager {
                                 // 这样等melp2 回调ok了还可以继续走
                             }
                         } else if (ScoreConfig.isMelpEnable()) {
-                            int melp1Score = EngineManager.getInstance().getLineScore1();
+                            int melp1Score = ZqEngineKit.getInstance().getLineScore1();
                             if (melp1Score > mAcrScore) {
                                 processScore("handleMessage", melp1Score, mAcrScore, lineNo);
                             } else {
@@ -171,7 +171,7 @@ public class LyricAndAccMatchManager {
                             mManyLyricsView.pause();
                             mLyricsReader = lyricsReader;
                             if (mAccLoadOk) {
-                                launchLyricEvent(EngineManager.getInstance().getAudioMixingCurrentPosition());
+                                launchLyricEvent(ZqEngineKit.getInstance().getAudioMixingCurrentPosition());
                             } else {
                                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY);
                             }
@@ -271,7 +271,7 @@ public class LyricAndAccMatchManager {
                 }
             } else {
                 if (ScoreConfig.isMelpEnable()) {
-                    int melp1Score = EngineManager.getInstance().getLineScore1();
+                    int melp1Score = ZqEngineKit.getInstance().getLineScore1();
                     if (melp1Score > mAcrScore) {
                         processScore("onAcrResult", melp1Score, mAcrScore, lineNo);
                     } else {
@@ -286,7 +286,7 @@ public class LyricAndAccMatchManager {
     public void onEvent(LrcEvent.LineLineEndEvent event) {
         MyLog.d(TAG,"onEvent" + " event=" + event);
         if (ScoreConfig.isMelp2Enable()) {
-            EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
+            ZqEngineKit.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
                 @Override
                 public void onGetScore(int lineNum, int score) {
                     MyLog.d(TAG,"melp2 onGetScore" + " lineNum=" + lineNum + " score=" + score);
@@ -304,13 +304,13 @@ public class LyricAndAccMatchManager {
             });
         }
         if (ScoreConfig.isAcrEnable()) {
-            EngineManager.getInstance().recognizeInManualMode(event.lineNum);
+            ZqEngineKit.getInstance().recognizeInManualMode(event.lineNum);
             Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
             mUiHandler.sendMessageDelayed(msg, 1000);
         } else {
             if (!ScoreConfig.isMelp2Enable()) {
                 if (ScoreConfig.isMelpEnable()) {
-                    int score = EngineManager.getInstance().getLineScore1();
+                    int score = ZqEngineKit.getInstance().getLineScore1();
                     processScore("mMelp1Score", score, mAcrScore, event.lineNum);
                 }
             }
