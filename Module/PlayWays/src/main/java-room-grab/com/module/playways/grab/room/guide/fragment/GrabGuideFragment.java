@@ -128,6 +128,8 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
     boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
     ImageView mGrabBtnTipIv;
+    ImageView mGrabSelfSingTipIv;
+    ImageView mGrabLightTipIv;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -412,6 +414,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             @Override
             public void clickBurst(int seq) {
                 mCorePresenter.lightsBurst();
+                removeGrabLightTipView();
             }
 
             @Override
@@ -465,6 +468,50 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
         }
     }
 
+    private void tryShowGrabLightTipView() {
+        if (mGrabLightTipIv == null) {
+            mGrabLightTipIv = new ImageView(getContext());
+            mGrabLightTipIv.setImageResource(R.drawable.xinshou_baodeng);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            int[] location = new int[2];
+            mGrabOpBtn.getBurstBtn().getLocationInWindow(location);
+            layoutParams.rightMargin = U.getDisplayUtils().dip2px(14);
+            layoutParams.topMargin = location[1] - mGrabOpBtn.getBurstBtn().getHeight();
+            mGrabLightTipIv.setLayoutParams(layoutParams);
+            ((ViewGroup) mRankingContainer).addView(mGrabLightTipIv);
+        }
+    }
+
+    private void removeGrabLightTipView() {
+        if (mGrabLightTipIv != null) {
+            mRankingContainer.removeView(mGrabLightTipIv);
+            mGrabLightTipIv = null;
+        }
+    }
+
+    private void tryShowGrabSelfSingTipView() {
+        if (mGrabSelfSingTipIv == null) {
+            mGrabSelfSingTipIv = new ImageView(getContext());
+            mGrabSelfSingTipIv.setImageResource(R.drawable.xinshou_yanchang);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            layoutParams.leftMargin = U.getDisplayUtils().dip2px(65);
+            layoutParams.topMargin = U.getDisplayUtils().dip2px(65);
+            mGrabSelfSingTipIv.setLayoutParams(layoutParams);
+            ((ViewGroup) mRankingContainer).addView(mGrabSelfSingTipIv);
+        }
+    }
+
+    private void removeGrabSelfSingTipView() {
+        if (mGrabSelfSingTipIv != null) {
+            mRankingContainer.removeView(mGrabSelfSingTipIv);
+            mGrabSelfSingTipIv = null;
+        }
+    }
+
+
     private void removeGrabBtnTipView() {
         if (mGrabBtnTipIv != null) {
             mRankingContainer.removeView(mGrabBtnTipIv);
@@ -510,12 +557,6 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
     }
-
-//    private void onReadyGoOver() {
-//        MyLog.w(TAG, "onReadyGoOver");
-//        mUiHanlder.removeMessages(MSG_ENSURE_READYGO_OVER);
-//        mCorePresenter.onOpeningAnimationOver();
-//    }
 
     private void onBattleBeginPlayOver() {
         mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
@@ -709,15 +750,22 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             if (now.singBySelf()) {
                 mGrabGiveupView.delayShowGiveUpView();
                 mCorePresenter.beginSing();
-                // 显示歌词
+                // 自己唱
                 mSelfSingCardView.setVisibility(View.VISIBLE);
                 mOthersSingCardView.setVisibility(View.GONE);
                 mSelfSingCardView.playLyric();
+
+                if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+                    tryShowGrabSelfSingTipView();
+                }
             } else {
-                // 显示收音机
+                // 别人唱
                 mSelfSingCardView.setVisibility(View.GONE);
                 mOthersSingCardView.setVisibility(View.VISIBLE);
                 mOthersSingCardView.bindData();
+                if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+                    tryShowGrabLightTipView();
+                }
             }
         }
     }
@@ -734,6 +782,8 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
     @Override
     public void roundOver(GrabRoundInfoModel lastInfoModel, boolean playNextSongInfoCard, GrabRoundInfoModel now) {
+        removeGrabLightTipView();
+        removeGrabSelfSingTipView();
         removeAllEnsureMsg();
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
