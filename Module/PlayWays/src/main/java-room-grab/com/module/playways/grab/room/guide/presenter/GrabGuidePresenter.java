@@ -344,6 +344,18 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    public void changeSong() {
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            now.setMusic(mRoomData.getGrabGuideInfoModel().getNextSongModel());
+        }
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mIGrabView.changeSong();
+            }
+        });
+    }
 
     /**
      * 抢唱歌权
@@ -543,6 +555,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel bRoundInfo = mRoomData.getGrabGuideInfoModel().createBRoundInfo();
         mRoomData.setExpectRoundInfo(bRoundInfo);
         mRoomData.checkRoundInEachMode();
+        mRoomData.setCoin(mRoomData.getCoin()+1);
     }
 
     /**
@@ -1374,5 +1387,6 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
         }
     }
+
 
 }

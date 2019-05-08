@@ -575,6 +575,10 @@ public class GrabOpView extends RelativeLayout {
         }
     }
 
+    public View getGrabBtn() {
+        return mGrabIv;
+    }
+
     public interface Listener {
         void clickGrabBtn(int seq, boolean challenge);
 

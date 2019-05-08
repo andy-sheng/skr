@@ -53,4 +53,5 @@ public interface IGrabGuideView {
 
     void showPracticeFlag(boolean flag);
 
+    void changeSong();
 }

@@ -30,6 +30,8 @@ public class GrabGuideInfoModel implements Serializable {
     @JSONField(name = "skrers")
     List<UserInfoModel> skrers = new ArrayList<>();
 
+    int mSongIndex = 0;
+
     public List<SongModel> getaRoundMusics() {
         return aRoundMusics;
     }
@@ -133,5 +135,10 @@ public class GrabGuideInfoModel implements Serializable {
             playerInfoModelList.add(playerInfoModel);
         }
         return playerInfoModelList;
+    }
+
+    public SongModel getNextSongModel() {
+        SongModel songModel = getaRoundMusics().get(++mSongIndex % getaRoundMusics().size());
+        return songModel;
     }
 }

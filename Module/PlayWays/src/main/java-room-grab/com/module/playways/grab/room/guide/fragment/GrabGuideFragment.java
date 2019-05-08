@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -19,6 +20,7 @@ import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
@@ -158,7 +160,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
 //    ImageView mOwnerBeginGameIv;
 
-//    ImageView mIvInviteTip;
+    ImageView mGrabBtnTipIv;
 //    ImageView mIvManageSongTipView;
 //    ImageView mIvChanllengeTipView;
 
@@ -413,6 +415,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             public void clickGrabBtn(int seq, boolean challenge) {
                 U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
                 mCorePresenter.grabThisRound((int) MyUserInfoManager.getInstance().getUid(),seq, challenge);
+                removeGrabBtnTipView();
             }
 
             @Override
@@ -432,6 +435,9 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
                 if(now!=null){
                     if(now.getRoundSeq()==2){
                         mCorePresenter.grabThisRound(mRoomData.getGrabGuideInfoModel().getbRoundUserID(),now.getRoundSeq(),false);
+                    }
+                    if(now.getRoundSeq() ==1){
+                        tryShowGrabTipView();
                     }
                 }
             }
@@ -467,6 +473,37 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             }
         });
         mGrabGiveupView.hideWithAnimation(false);
+    }
+
+
+    private void tryShowGrabTipView() {
+        if (mGrabBtnTipIv == null) {
+            mGrabBtnTipIv = new ImageView(getContext());
+            mGrabBtnTipIv.setImageResource(R.drawable.xinshou_huange);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mGrabBtnTipIv.setLayoutParams(layoutParams);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+            int[] location = new int[2] ;
+            mGrabOpBtn.getGrabBtn().getLocationInWindow(location);
+            layoutParams.rightMargin = U.getDisplayUtils().dip2px(14);
+            layoutParams.bottomMargin = U.getDisplayUtils().getScreenHeight() - location[1] - mGrabOpBtn.getGrabBtn().getHeight();
+            ((ViewGroup) mRankingContainer).addView(mGrabBtnTipIv);
+            mGrabBtnTipIv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    mCorePresenter.changeSong();
+                }
+            });
+        }
+    }
+
+    private void removeGrabBtnTipView(){
+        if (mGrabBtnTipIv != null) {
+            mRankingContainer.removeView(mGrabBtnTipIv);
+            mGrabBtnTipIv = null;
+        }
     }
 
     private void initSingStageView() {
@@ -582,6 +619,17 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             if (mRoomData.isInPlayerList()) {
                 mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel);
             }
+        }
+        mCorePresenter.playGuide();
+    }
+
+
+
+    @Override
+    public void changeSong() {
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            mSongInfoCardView.bindSongModel(now.getRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), now.getMusic());
         }
         mCorePresenter.playGuide();
     }

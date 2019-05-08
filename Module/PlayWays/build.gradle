@@ -86,6 +86,8 @@ android {
 
             java.srcDirs += 'src/main/java-gift'
             res.srcDirs += 'src/main/res-gift'
+
+            res.srcDirs += 'src/main/res-guide'
         }
     }
 }
