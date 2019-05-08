@@ -429,6 +429,14 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         } else {
             mExoPlayer.setVolume(1);
         }
+
+        //机器人唱完自动结束
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onGameOver("robotSingBegin",System.currentTimeMillis());
+            }
+        },23000);
     }
 
     private void tryStopRobotPlay() {
@@ -1058,7 +1066,6 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             }
         }
     }
-
 
     /**
      * 金币变化

@@ -5,6 +5,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EQUserRole;
@@ -79,7 +80,7 @@ public class GrabGuideInfoModel implements Serializable {
         grabRoundInfoModel.setParticipant(true);
         grabRoundInfoModel.setElapsedTimeMs(0);
 
-        if(getaRoundMusics().size()>0){
+        if (getaRoundMusics().size() > 0) {
             SongModel songModel = getaRoundMusics().get(0);
             grabRoundInfoModel.setMusic(songModel);
         }
@@ -97,11 +98,14 @@ public class GrabGuideInfoModel implements Serializable {
         grabRoundInfoModel.setParticipant(true);
         grabRoundInfoModel.setElapsedTimeMs(0);
 
-            grabRoundInfoModel.setMusic(getbRoundMusics());
+        grabRoundInfoModel.setMusic(getbRoundMusics());
+        GrabSkrResourceModel grabSkrResourceModel = new GrabSkrResourceModel();
+        grabSkrResourceModel.setAudioURL(getbRoundVoiceURL());
+        grabRoundInfoModel.setSkrResource(grabSkrResourceModel);
         return grabRoundInfoModel;
     }
 
-    private List<GrabPlayerInfoModel> getPlayUsers(){
+    private List<GrabPlayerInfoModel> getPlayUsers() {
         List<GrabPlayerInfoModel> playerInfoModelList = new ArrayList<>();
         {
             // 把自己添加进去
@@ -124,6 +128,7 @@ public class GrabGuideInfoModel implements Serializable {
             playerInfoModel.setUserID(userInfoModel1.getUserId());
             playerInfoModel.setRole(EQUserRole.EQUR_PLAY_USER.getValue());
             playerInfoModel.setUserInfo(userInfoModel1);
+            playerInfoModel.setSkrer(true);
 
             playerInfoModelList.add(playerInfoModel);
         }

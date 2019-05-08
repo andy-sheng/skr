@@ -182,7 +182,6 @@ public class GrabOpView extends RelativeLayout {
             });
         }
 
-
         mIvBurst = findViewById(R.id.iv_burst);
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
             @Override
