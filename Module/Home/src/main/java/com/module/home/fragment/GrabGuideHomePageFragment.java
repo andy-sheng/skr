@@ -24,7 +24,10 @@ import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.event.SkipGuideHomepageEvent;
 import com.module.playways.IPlaywaysModeService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -113,9 +116,10 @@ public class GrabGuideHomePageFragment extends BaseFragment {
         mSkipIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                // TODO: 2019/5/9  缺一个重新去拉一下数据
                 MyUserInfoManager.getInstance().setNeedBeginnerGuide(false);
                 U.getFragmentUtils().popFragment(GrabGuideHomePageFragment.this);
+                // 发事件让首页拉一下红包等数据
+                EventBus.getDefault().post(new SkipGuideHomepageEvent());
             }
         });
     }

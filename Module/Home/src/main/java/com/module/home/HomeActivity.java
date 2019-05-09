@@ -32,6 +32,7 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
+import com.module.home.event.SkipGuideHomepageEvent;
 import com.module.home.fragment.GrabGuideHomePageFragment;
 import com.module.home.fragment.PersonFragment2;
 import com.module.home.game.GameFragment2;
@@ -374,6 +375,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SkipGuideHomepageEvent event) {
+        UpgradeManager.getInstance().checkUpdate1();
+        mRedPkgPresenter.checkRedPkg();
+        mCheckInPresenter.check();
+    }
 
     @Override
     public boolean resizeLayoutSelfWhenKeybordShow() {
