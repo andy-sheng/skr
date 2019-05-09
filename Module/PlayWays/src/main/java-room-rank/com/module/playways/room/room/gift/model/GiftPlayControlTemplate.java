@@ -1,20 +1,14 @@
 package com.module.playways.room.room.gift.model;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.CustomHandlerThread;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
-import com.module.playways.room.room.gift.GiftContinuousView;
-import com.zq.live.proto.Common.EGiftDisplayType;
 
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -142,7 +136,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     @Override
     public GiftPlayModel tryGetGiftModel(GiftPlayModel giftPlayModel, int curNum, int id) {
         synchronized (mQueueLock) {
-            GiftPlayModel model = tryGetGiftModel1(giftPlayModel, curNum, id);
+            GiftPlayModel model = getNextPlayModel(giftPlayModel, curNum, id);
             if (model != null) {
                 Integer curContinue = mHasContinueCount.get(getKey(model));
                 if (curContinue != null) {
@@ -167,7 +161,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     }
 
     //获取最新的礼物数据
-    private GiftPlayModel tryGetGiftModel1(GiftPlayModel giftPlayModel, int curNum, int id) {
+    private GiftPlayModel getNextPlayModel(GiftPlayModel giftPlayModel, int curNum, int id) {
 
         if (giftPlayModel == null) {
             /**
