@@ -302,11 +302,11 @@ public class UserAccountManager {
         String sign = profileJO.getString("signature");
         Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
 
-        boolean isFirstLogin = jsonObject.getBoolean("isFirstLogin");
+        boolean isFirstLogin = jsonObject.getBooleanValue("isFirstLogin");
         if (isFirstLogin) {
             U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
         }
-        boolean needBeginnerGuide = jsonObject.getBoolean("needBeginnerGuide");
+        boolean needBeginnerGuide = jsonObject.getBooleanValue("needBeginnerGuide");
 
         // 设置个人信息
         MyUserInfo myUserInfo = new MyUserInfo();

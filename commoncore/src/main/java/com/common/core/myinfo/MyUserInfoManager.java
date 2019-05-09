@@ -87,7 +87,9 @@ public class MyUserInfoManager {
     }
 
     public boolean isNeedBeginnerGuide() {
-        return needBeginnerGuide;
+        // TODO: 2019/5/9 先下掉新手引导入口
+        return false;
+//        return needBeginnerGuide;
     }
 
     public void setNeedBeginnerGuide(boolean needBeginnerGuide) {
