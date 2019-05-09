@@ -17,6 +17,7 @@ public interface GrabGuideServerApi {
      * @return
      */
     @GET("http://dev.kconf.inframe.mobi/v1/kconf/beginner-guide-resources")
-    Observable<ApiResult> getGuideRes(@Query("tagID") int tagID);
+    Observable<ApiResult> getGuideRes(@Query("tagID") int tagID,
+                                      @Query("userID") int userID);
 
 }

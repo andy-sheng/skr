@@ -11,6 +11,7 @@ import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -37,6 +38,8 @@ public class GrabGuideHomePageFragment extends BaseFragment {
     SimpleDraweeView mSpecial3;
     SimpleDraweeView mSpecial4;
     ImageView mSkipIv;
+
+    List<SpecialModel> mSpecialModels;
 
     @Override
     public int initView() {
@@ -66,28 +69,44 @@ public class GrabGuideHomePageFragment extends BaseFragment {
         mSpecial1.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                goGuide();
+                if (mSpecialModels != null && mSpecialModels.size() > 0) {
+                    goGuide(mSpecialModels.get(0).getTagID());
+                } else {
+                    MyLog.w(TAG, "mSpecialModels 不合法");
+                }
             }
         });
 
         mSpecial2.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                goGuide();
+                if (mSpecialModels != null && mSpecialModels.size() > 1) {
+                    goGuide(mSpecialModels.get(1).getTagID());
+                } else {
+                    MyLog.w(TAG, "mSpecialModels 不合法");
+                }
             }
         });
 
         mSpecial3.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                goGuide();
+                if (mSpecialModels != null && mSpecialModels.size() > 2) {
+                    goGuide(mSpecialModels.get(2).getTagID());
+                } else {
+                    MyLog.w(TAG, "mSpecialModels 不合法");
+                }
             }
         });
 
         mSpecial4.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                goGuide();
+                if (mSpecialModels != null && mSpecialModels.size() > 3) {
+                    goGuide(mSpecialModels.get(3).getTagID());
+                } else {
+                    MyLog.w(TAG, "mSpecialModels 不合法");
+                }
             }
         });
 
@@ -103,8 +122,11 @@ public class GrabGuideHomePageFragment extends BaseFragment {
 
     private void showGuideSpecial(List<SpecialModel> list) {
         if (list == null && list.size() == 0) {
+            MyLog.w(TAG, "showGuideSpecial" + " list = null");
             return;
         }
+
+        mSpecialModels = list;
         if (list.size() > 0 && list.get(0) != null) {
             FrescoWorker.loadImage(mSpecial1, ImageFactory.newPathImage(list.get(0).getBgImage1())
                     .setLoadingDrawable(U.getDrawable(R.drawable.grab_img_btn_loading1))
@@ -139,10 +161,10 @@ public class GrabGuideHomePageFragment extends BaseFragment {
     }
 
     // 开始新手引导
-    private void goGuide() {
+    private void goGuide(int tagId) {
         IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
         if (iRankingModeService != null) {
-            iRankingModeService.tryGoGrabGuide();
+            iRankingModeService.tryGoGrabGuide(tagId);
         }
 
         MyUserInfoManager.getInstance().setNeedBeginnerGuide(false);

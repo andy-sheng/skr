@@ -36,6 +36,8 @@ public class GrabGuideActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         GrabGuideInfoModel grabGuideInfoModel = (GrabGuideInfoModel) getIntent().getSerializableExtra("guide_data");
+        int tagId = getIntent().getIntExtra("tag_id", 0);
+        mRoomData.setTagId(tagId);
         mRoomData.setRoomType(GrabRoomType.ROOM_TYPE_GUIDE);
         mRoomData.setGrabGuideInfoModel(grabGuideInfoModel);
 

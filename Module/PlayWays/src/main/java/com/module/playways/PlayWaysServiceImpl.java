@@ -6,6 +6,8 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfo;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -129,16 +131,17 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     @Override
-    public void tryGoGrabGuide() {
+    public void tryGoGrabGuide(int tagId) {
         GrabGuideServerApi grabGuideServerApi = ApiManager.getInstance().createService(GrabGuideServerApi.class);
         if (grabGuideServerApi != null) {
-            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1), new ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1, (int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult obj) {
-                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(),GrabGuideInfoModel.class);
+                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(), GrabGuideInfoModel.class);
 
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
-                            .withSerializable("guide_data",grabGuideInfoModel)
+                            .withSerializable("guide_data", grabGuideInfoModel)
+                            .withInt("tag_id", tagId)
                             .navigation();
                 }
             }, new ApiMethods.RequestControl("getGuideRes", ApiMethods.ControlType.CancelThis));

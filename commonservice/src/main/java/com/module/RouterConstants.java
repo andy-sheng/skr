@@ -19,6 +19,7 @@ public interface RouterConstants {
     String ACTIVITY_GRAB_CREATE_ROOM = "/rankingmode/GrabCreateRoomActivity";
     String ACTIVITY_GRAB_ROOM = "/rankingmode/GrabRoomActivity";
     String ACTIVITY_GRAB_GUIDE = "/rankingmode/GrabGuideActivity";
+    String ACTIVITY_GRAB_GUIDE_RESULT = "/rankingmode/GrabGuideResultActivity";
     String ACTIVITY_AUDITION_ROOM = "/rankingmode/AuditionActivity";
     String ACTIVITY_GRAB_RESULT = "/rankingmode/GrabResultActivity";
     String ACTIVITY_SHARE_WEB = "/rankingmode/ShareWebActivity";

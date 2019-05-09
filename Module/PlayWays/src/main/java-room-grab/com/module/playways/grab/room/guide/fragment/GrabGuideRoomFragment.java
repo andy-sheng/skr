@@ -165,7 +165,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
 
     @Override
     public int initView() {
-        return R.layout.grab_guide_fragment_layout;
+        return R.layout.grab_guide_room_fragment_layout;
     }
 
     @Override
@@ -947,19 +947,17 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
     private void onGrabGameOver(String from) {
         // TODO: 2019/5/8 跳到毕业页面
         MyLog.d(TAG, "onGrabGameOver " + from);
-//        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
+        //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
 
         if (getActivity() != null) {
             getActivity().finish();
         } else {
             MyLog.d(TAG, "onGrabGameOver activity==null");
         }
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_GAME_FINISH, null);
-
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE_RESULT)
                 .withSerializable("room_data", mRoomData)
                 .navigation();
+
     }
 
     private void dismissDialog() {

@@ -33,8 +33,7 @@
             android:name="com.module.playways.grab.room.activity.GrabCreateRoomActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <activity
             android:name="com.module.playways.grab.room.activity.GrabRoomActivity"
@@ -51,6 +50,15 @@
             android:windowSoftInputMode="adjustResize">
 
         </activity>
+
+        <activity
+            android:name="com.module.playways.grab.room.guide.activity.GrabGuideResultActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
 
         <activity
             android:name="com.module.playways.audition.AuditionActivity"
