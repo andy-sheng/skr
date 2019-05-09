@@ -5,6 +5,33 @@
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
 
+    <RelativeLayout
+        android:id="@+id/emoji_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:layout_centerVertical="true">
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/emoji1_btn"
+            android:layout_width="@dimen/view_38_dp"
+            android:layout_height="@dimen/view_41_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/ycdd_liaotian_biaoqing" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/emoji2_btn"
+            android:layout_width="@dimen/view_36_dp"
+            android:layout_height="@dimen/view_41_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:layout_toRightOf="@id/emoji1_btn"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/ycdd_liaotian_bixin" />
+
+    </RelativeLayout>
+
     <com.common.view.ex.ExTextView
         android:id="@+id/show_input_container_btn"
         android:layout_width="match_parent"
@@ -12,7 +39,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_d_25_dp"
         android:layout_marginRight="@dimen/view_23_dp"
-        android:layout_toLeftOf="@+id/emoji1_btn"
+        android:layout_toLeftOf="@+id/emoji_area"
         android:layout_toRightOf="@id/quick_btn"
         android:background="@drawable/ycdd_shurukuang"
         android:gravity="center_vertical"
@@ -38,26 +65,6 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:src="@drawable/ycdd_kuaijie" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/emoji2_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:scaleType="centerInside"
-        app:src_unPressed_drawable="@drawable/ycdd_liaotian_bixin" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/emoji1_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_toLeftOf="@+id/emoji2_btn"
-        android:scaleType="centerInside"
-        app:src_unPressed_drawable="@drawable/ycdd_liaotian_biaoqing" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_room_manage"

@@ -579,6 +579,10 @@ public class GrabOpView extends RelativeLayout {
         return mGrabIv;
     }
 
+    public View getBurstBtn(){
+        return mIvBurst;
+    }
+
     public interface Listener {
         void clickGrabBtn(int seq, boolean challenge);
 
