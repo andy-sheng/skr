@@ -63,9 +63,11 @@ public class GiftContinueViewGroup extends RelativeLayout {
         protected boolean isGiftModelIsPlayingExpectOwer(@NonNull GiftPlayModel giftPlayModel, int id) {
             if (giftPlayModel == null) {
                 return false;
-
             }
 
+            /**
+             * 判断当前对象是否在期望被播放
+             */
             for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
                 GiftPlayModel curModel = giftContinuousView.getCurGiftPlayModel();
                 if (curModel != null

@@ -119,6 +119,9 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
             model = (GiftPlayModel) entry.getValue();
+            /**
+             * 判断当前对象是否在被期望的在播放
+             */
             if (!isGiftModelIsPlayingExpectOwer(model, id)) {
                 return model;
             }
