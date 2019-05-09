@@ -154,10 +154,6 @@ public class GrabBottomContainerView extends BottomContainerView {
     void adjustUi(boolean grabOwner) {
         if (grabOwner) {
             mIvRoomManage.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
-            lp.addRule(RelativeLayout.LEFT_OF, mIvRoomManage.getId());
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-            mEmoji2Btn.setLayoutParams(lp);
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
             mQuickBtn.setEnabled(true);
             mQuickBtn.setOnClickListener(null);

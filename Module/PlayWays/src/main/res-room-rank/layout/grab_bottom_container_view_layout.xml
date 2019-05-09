@@ -10,13 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:gravity="right">
 
         <com.common.view.ex.ExImageView
             android:id="@+id/emoji1_btn"
             android:layout_width="@dimen/view_38_dp"
             android:layout_height="@dimen/view_41_dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:scaleType="centerInside"
             app:src_unPressed_drawable="@drawable/ycdd_liaotian_biaoqing" />
@@ -25,10 +26,21 @@
             android:id="@+id/emoji2_btn"
             android:layout_width="@dimen/view_36_dp"
             android:layout_height="@dimen/view_41_dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@id/emoji1_btn"
             android:scaleType="centerInside"
             app:src_unPressed_drawable="@drawable/ycdd_liaotian_bixin" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/iv_room_manage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:layout_toRightOf="@id/emoji2_btn"
+            android:src="@drawable/fz_kongzhichouti"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -66,13 +78,5 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:src="@drawable/ycdd_kuaijie" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_room_manage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:src="@drawable/fz_kongzhichouti"
-        android:visibility="gone" />
+
 </merge>
