@@ -2,17 +2,22 @@ package com.component.busilib.friends;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.SpanUtils;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
@@ -24,12 +29,10 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     RecommendModel mFriendRoomModel;
     int position;
 
-    RelativeLayout mBackground;
+    ExRelativeLayout mBackground;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
-    ExTextView mFriendTv;
-    ExTextView mRecommendTv;
-    ExTextView mFollowTv;
+    SimpleDraweeView mRecommendTagSdv;
     ExTextView mRoomInfoTv;
     ExImageView mEnterRoomIv;
 
@@ -37,12 +40,10 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
 
-        mBackground = (RelativeLayout) itemView.findViewById(R.id.background);
+        mBackground = (ExRelativeLayout) itemView.findViewById(R.id.background);
         mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
-        mFriendTv = (ExTextView) itemView.findViewById(R.id.friend_tv);
-        mRecommendTv = (ExTextView) itemView.findViewById(R.id.recommend_tv);
-        mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
+        mRecommendTagSdv = (SimpleDraweeView) itemView.findViewById(R.id.recommend_tag_sdv);
         mRoomInfoTv = (ExTextView) itemView.findViewById(R.id.room_info_tv);
         mEnterRoomIv = (ExImageView) itemView.findViewById(R.id.enter_room_iv);
 
@@ -67,29 +68,18 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getUserInfo().getAvatar())
+                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getDisplayAvatar())
                             .setCircle(true)
                             .build());
-
-            if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
-                mRecommendTv.setVisibility(View.VISIBLE);
-                mFollowTv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.GONE);
-                mNameTv.setText(mFriendRoomModel.getRoomInfo().getRoomName());
-            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
-                mRecommendTv.setVisibility(View.GONE);
-                mFollowTv.setVisibility(View.VISIBLE);
-                mFriendTv.setVisibility(View.GONE);
-                mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
-            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
-                mRecommendTv.setVisibility(View.GONE);
-                mFollowTv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.VISIBLE);
-                mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
+            mNameTv.setText(mFriendRoomModel.getDisplayName());
+            if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
+                mRecommendTagSdv.setVisibility(View.VISIBLE);
+                FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getDisplayURL())
+                        .setScaleType(ScalingUtils.ScaleType.CENTER)
+                        .setFitDrawable(true)
+                        .build());
             } else {
-                mRecommendTv.setVisibility(View.GONE);
-                mFollowTv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.GONE);
+                mRecommendTagSdv.setVisibility(View.GONE);
             }
 
             SpannableStringBuilder stringBuilder = new SpanUtils()
