@@ -871,7 +871,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mDestroyed = true;
         Params.save2Pref(EngineManager.getInstance().getParams());
         if (!mRoomData.isHasExitGame()) {
-            exitRoom();
+            exitRoom("destroy");
         }
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
@@ -1085,7 +1085,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 退出房间
      */
-    public void exitRoom() {
+    public void exitRoom(String from) {
+        MyLog.w(TAG,"exitRoom" + " from=" + from);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
 
@@ -1294,7 +1295,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mAbsenTimes++;
             if (System.currentTimeMillis() - mFirstKickOutTime > 15000 && mAbsenTimes > 10) {
                 MyLog.w(TAG, "超过15秒 && 缺席次数是10以上，需要退出");
-                exitRoom();
+                exitRoom("updatePlayerState");
                 return;
             }
         } else {
@@ -2075,7 +2076,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
         ensureInRcRoom();
-        MyLog.w(TAG, "收到服务器push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
+        MyLog.w(TAG, "收到服务器 sync push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
         startSyncGameStateTask(sSyncStateTaskInterval);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound(), event.getInfo().getRoomID());
 //        fetchAcc(event.getNextRound());
