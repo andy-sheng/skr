@@ -87,7 +87,7 @@ public class MyUserInfoManager {
     }
 
     public boolean isNeedBeginnerGuide() {
-        return needBeginnerGuide;
+        return true;
     }
 
     public void setNeedBeginnerGuide(boolean needBeginnerGuide) {

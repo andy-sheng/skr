@@ -360,6 +360,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         if (now != null) {
             now.setMusic(mRoomData.getGrabGuideInfoModel().getNextSongModel());
         }
+        tryStopRobotPlay();
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
