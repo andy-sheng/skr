@@ -186,6 +186,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.d(TAG, "handleMessage 长时间没收到push，重新进入融云房间容错");
                     ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(mRoomData.getGameId() + "");
                     joinRcRoom(0);
+                    ensureInRcRoom();
                     break;
                 case MSG_ROBOT_SING_BEGIN:
                     robotSingBegin();
