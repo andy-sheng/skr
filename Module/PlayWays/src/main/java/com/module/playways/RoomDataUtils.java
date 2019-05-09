@@ -344,6 +344,11 @@ public class RoomDataUtils {
                 }
             }
         }
+        {
+            if(now.getUserID() == uid){
+                return true;
+            }
+        }
         return false;
 
     }
