@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.callback.Callback;
+import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
@@ -74,10 +75,12 @@ public class GiftContinueViewGroup extends RelativeLayout {
                         && giftPlayModel.getSender().getUserId() == curModel.getSender().getUserId()
                         && giftPlayModel.getContinueId() == curModel.getContinueId()
                         && id != giftContinuousView.getId()) {
+                    MyLog.d(TAG, "isGiftModelIsPlayingExpectOwer view id is " + id + ", other view is playing gift " + giftPlayModel.getGift().getGiftID());
                     return true;
                 }
             }
 
+            MyLog.d(TAG, "isGiftModelIsPlayingExpectOwer view id is " + id  + ", gift" + giftPlayModel.getGift().getGiftID() + " is own or not playing");
             return false;
         }
     };
@@ -160,6 +163,6 @@ public class GiftContinueViewGroup extends RelativeLayout {
     }
 
     public interface GiftProvider {
-        void tryGetGiftModel(GiftPlayModel giftPlayModel, int beginNum, int id, Callback<GiftPlayModel> callback,Callback<GiftPlayModel> callbackInUiThread);
+        void tryGetGiftModel(GiftPlayModel giftPlayModel, int beginNum, int id, Callback<GiftPlayModel> callback, Callback<GiftPlayModel> callbackInUiThread);
     }
 }

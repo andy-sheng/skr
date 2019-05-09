@@ -202,14 +202,33 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
              *
              * 中礼物 小礼物 免费礼物 为什么分优先级？
              */
+            GiftPlayModel model = null;
             if (!mOwnerGiftMap.isEmpty()) {
-                return peek(mOwnerGiftMap, id);
-            } else if (!mMediumGiftMap.isEmpty()) {
-                return peek(mMediumGiftMap, id);
-            } else if (!mSmallQueueMap.isEmpty()) {
-                return peek(mSmallQueueMap, id);
-            } else if (!mFreeQueueMap.isEmpty()) {
-                return peek(mFreeQueueMap, id);
+                model = peek(mOwnerGiftMap, id);
+                if(model != null){
+                    return model;
+                }
+            }
+
+            if(!mMediumGiftMap.isEmpty()) {
+                model = peek(mMediumGiftMap, id);
+                if(model != null){
+                    return model;
+                }
+            }
+
+            if (!mSmallQueueMap.isEmpty()) {
+                model = peek(mSmallQueueMap, id);
+                if(model != null){
+                    return model;
+                }
+            }
+
+            if (!mFreeQueueMap.isEmpty()) {
+                model = peek(mFreeQueueMap, id);
+                if(model != null){
+                    return model;
+                }
             }
         } else {
             /**
