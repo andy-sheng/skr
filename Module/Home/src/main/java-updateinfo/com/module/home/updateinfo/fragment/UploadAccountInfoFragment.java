@@ -206,16 +206,32 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     if (isValid) {
                         // 昵称可用
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-                        bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, nickName);
-                        bundle.putInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX, sex);
-                        U.getFragmentUtils().addFragment(FragmentUtils
-                                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment2.class)
-                                .setBundle(bundle)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+//                        Bundle bundle = new Bundle();
+//                        bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+//                        bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, nickName);
+//                        bundle.putInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX, sex);
+//                        U.getFragmentUtils().addFragment(FragmentUtils
+//                                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment2.class)
+//                                .setBundle(bundle)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .build());
+                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                .setNickName(nickName).setSex(sex)
+                                .build(), true, true, new MyUserInfoManager.ServerCallback() {
+                            @Override
+                            public void onSucess() {
+                                if (getActivity() != null) {
+                                    getActivity().finish();
+                                }
+                                // TODO: 2019/5/9  是否需要打点
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
                     } else {
                         // 昵称不可用
                         setNicknameHintText(unValidReason, true);
@@ -238,10 +254,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
     private void setCompleteTv(boolean isClick) {
         if (isClick && sex != 0 && !TextUtils.isEmpty(mNicknameEt.getText().toString().trim())) {
             mNextIv.setClickable(true);
-            mNextIv.setBackgroundResource(R.drawable.next_normal_icon);
+            mNextIv.setBackgroundResource(R.drawable.complete_normal_icon);
         } else {
             mNextIv.setClickable(false);
-            mNextIv.setBackgroundResource(R.drawable.next_unclick_icon);
+            mNextIv.setBackgroundResource(R.drawable.complete_unclick_icon);
         }
     }
 

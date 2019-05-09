@@ -24,10 +24,6 @@
                 app:centerType="textView"
                 app:leftDrawable="@drawable/img_back"
                 app:leftType="textView"
-                app:rightText="1/2"
-                app:rightTextColor="@color/white"
-                app:rightTextSize="@dimen/textsize_16_dp"
-                app:rightType="textView"
                 app:showBottomLine="false"
                 app:statusBarColor="#7187FF"
                 app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
@@ -141,7 +137,7 @@
                 android:layout_below="@+id/nickname_et"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_120_dp"
-                android:background="@drawable/next_unclick_icon" />
+                android:background="@drawable/complete_unclick_icon" />
         </RelativeLayout>
 
     </ScrollView>

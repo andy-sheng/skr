@@ -303,11 +303,6 @@ public class MyUserInfoManager {
             return true;
         }
 
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-            MyLog.d(TAG, "isNeedCompleteInfo birthday == 0");
-            return true;
-        }
-
         return false;
     }
 
