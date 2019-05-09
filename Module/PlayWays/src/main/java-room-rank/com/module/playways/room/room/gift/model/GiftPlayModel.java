@@ -19,6 +19,7 @@ public class GiftPlayModel {
     int beginCount;
     int endCount;
     BaseGift mBaseGift;
+    boolean isPlaying;
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();

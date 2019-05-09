@@ -112,6 +112,14 @@ public class GiftContinuousView extends RelativeLayout {
         mGiftProvider.tryGetGiftModel(null, 1, mId, new Callback<GiftPlayModel>() {
             @Override
             public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                /**
+                 * 这边得在异步线程立即设值
+                 */
+                mCurGiftPlayModel = newGiftPlayModel;
+            }
+        }, new Callback<GiftPlayModel>() {
+            @Override
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
                 if (newGiftPlayModel != null) {
                     play(newGiftPlayModel);
                 }
@@ -224,7 +232,7 @@ public class GiftContinuousView extends RelativeLayout {
 //                    }
 
                     // TODO: 2019-05-08 取数据
-                    mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
+                    mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, null, new Callback<GiftPlayModel>() {
                         @Override
                         public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
                             MyLog.d(TAG, "newGiftPlayModel" + newGiftPlayModel);
@@ -254,7 +262,7 @@ public class GiftContinuousView extends RelativeLayout {
     }
 
     private void onPlayOver() {
-        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
+        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, null, new Callback<GiftPlayModel>() {
             @Override
             public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
                 if (newGiftPlayModel != null

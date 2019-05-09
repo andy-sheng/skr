@@ -158,6 +158,6 @@ public class GiftContinueViewGroup extends RelativeLayout {
     }
 
     public interface GiftProvider {
-        void tryGetGiftModel(GiftPlayModel giftPlayModel, int beginNum, int id, Callback<GiftPlayModel> callback);
+        void tryGetGiftModel(GiftPlayModel giftPlayModel, int beginNum, int id, Callback<GiftPlayModel> callback,Callback<GiftPlayModel> callbackInUiThread);
     }
 }

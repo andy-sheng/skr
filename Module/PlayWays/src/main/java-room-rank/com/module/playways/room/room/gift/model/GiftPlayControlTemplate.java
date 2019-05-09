@@ -135,12 +135,12 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     }
 
     @Override
-    public void tryGetGiftModel(GiftPlayModel giftPlayModel, int curNum, int id, Callback<GiftPlayModel> callback) {
+    public void tryGetGiftModel(GiftPlayModel giftPlayModel, int curNum, int id, Callback<GiftPlayModel> callback, Callback<GiftPlayModel> callbackInUiThread) {
         if(Looper.myLooper() != mHandlerGiftPlayModelhread.getLooper()){
             mHandlerGiftPlayModelhread.post(new Runnable() {
                 @Override
                 public void run() {
-                    tryGetGiftModel(giftPlayModel,curNum,id,callback);
+                    tryGetGiftModel(giftPlayModel,curNum,id,callback,callbackInUiThread);
                 }
             });
             return;
@@ -165,12 +165,15 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
                 model.setBeginCount(1);
             }
         }
+        if (callback != null) {
+            callback.onCallback(0,model);
+        }
         if (mUiHanlder != null) {
             mUiHanlder.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (callback != null) {
-                        callback.onCallback(0, model);
+                    if (callbackInUiThread != null) {
+                        callbackInUiThread.onCallback(0, model);
                     }
                 }
             });
