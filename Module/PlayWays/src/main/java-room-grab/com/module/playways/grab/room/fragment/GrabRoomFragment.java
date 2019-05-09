@@ -733,7 +733,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size() >= 2) {
                 quitGame();
             } else {
-                mCorePresenter.exitRoom();
+                mCorePresenter.exitRoom("closeBtnClick");
             }
         }
 
@@ -1276,7 +1276,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                             if (mQuitTipsDialog != null) {
                                 mQuitTipsDialog.dismiss(false);
                             }
-                            mCorePresenter.exitRoom();
+                            mCorePresenter.exitRoom("quitGame tipsDialog");
                             StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                                     "game_exit", null);
                         }
@@ -1318,7 +1318,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabGameOverView.starAnimation(new SVGAListener() {
             @Override
             public void onFinished() {
-                mCorePresenter.exitRoom();
+                mCorePresenter.exitRoom("gameFinish");
                 //onGrabGameOver("onFinished");
             }
         });
@@ -1453,7 +1453,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 .setImage(R.drawable.touxiangshezhishibai_icon)
                 .setText(isOwner ? "房主将你请出了房间" : "超过半数玩家请你出房间，要友好文明游戏哦~")
                 .build());
-        mCorePresenter.exitRoom();
+        mCorePresenter.exitRoom("kickBySomeOne");
     }
 
     @Override
