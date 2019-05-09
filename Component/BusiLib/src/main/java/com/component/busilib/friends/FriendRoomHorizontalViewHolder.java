@@ -65,8 +65,7 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
             if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
                 mRecommendTagSdv.setVisibility(View.VISIBLE);
                 FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getDisplayURL())
-                        .setScaleType(ScalingUtils.ScaleType.CENTER)
-                        .setFitDrawable(true)
+                        .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                         .build());
             } else {
                 mRecommendTagSdv.setVisibility(View.GONE);
