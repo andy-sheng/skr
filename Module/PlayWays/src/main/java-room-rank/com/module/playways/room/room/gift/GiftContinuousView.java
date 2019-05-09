@@ -29,6 +29,8 @@ import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 
+import static com.module.playways.room.room.gift.model.GiftPlayControlTemplate.MEDIUM_GIFT;
+
 /**
  * Created by yangjiawei on 2017/8/7.
  */
@@ -275,7 +277,7 @@ public class GiftContinuousView extends RelativeLayout {
         }
 
         mStep2Animator.start();
-        if (mCurGiftPlayModel.getGift().isPlay()) {
+        if (mCurGiftPlayModel.getGift().isPlay() && mCurGiftPlayModel.getGift().getDisplayType() == MEDIUM_GIFT) {
             EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(mCurGiftPlayModel));
         }
     }
