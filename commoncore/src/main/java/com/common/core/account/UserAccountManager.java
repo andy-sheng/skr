@@ -22,6 +22,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.statistics.UmengStatistics;
 import com.common.umeng.UmengPushRegisterSuccessEvent;
 import com.common.utils.HandlerTaskTimer;
@@ -102,6 +103,12 @@ public class UserAccountManager {
             // 用户登录成功，这里应该是要发出通知的
             setAccount(account, true);
             U.getActivityUtils().showSnackbar("登录成功", false);
+            /**
+             * 不需要完善个人资料，直接注册成功
+             */
+            if (!MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
+                StatisticsAdapter.recordCountEvent("signup", "success3", null);
+            }
         }
     }
 

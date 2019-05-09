@@ -224,7 +224,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                                 if (getActivity() != null) {
                                     getActivity().finish();
                                 }
-                                // TODO: 2019/5/9  是否需要打点
+                                StatisticsAdapter.recordCountEvent("signup", "success2", null);
                             }
 
                             @Override
