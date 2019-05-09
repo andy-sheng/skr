@@ -3,6 +3,7 @@ package com.common.player.mediaplayer;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -290,7 +291,11 @@ public class AndroidMediaPlayer implements IPlayer {
             MyLog.w(TAG, "startPlay but mPlayer === null,return");
             return;
         }
+        boolean needReset = false;
         if (path != null && !path.equals(mPath)) {
+            if (!TextUtils.isEmpty(mPath)) {
+                needReset = true;
+            }
             mPath = path;
             mUrlChange = true;
         }
@@ -299,6 +304,9 @@ public class AndroidMediaPlayer implements IPlayer {
             try {
                 String p = mPath;
                 MyLog.d(TAG, "startPlay2" + " p=" + p);
+                if (needReset) {
+                    reset();
+                }
                 mPlayer.setDataSource(p);
                 mPlayer.prepareAsync();
             } catch (IOException e) {
@@ -336,7 +344,7 @@ public class AndroidMediaPlayer implements IPlayer {
         if (mPlayer == null) {
             return;
         }
-        if(mPlayer.isPlaying()) {
+        if (mPlayer.isPlaying()) {
             mPlayer.pause();
         }
         stopMusicPlayTimeListener();
