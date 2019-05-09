@@ -70,6 +70,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                MyLog.d(TAG, "onCompletion" + " mp=" + mp);
                 if (mCallback != null) {
                     mCallback.onCompletion();
                 }
@@ -78,6 +79,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                MyLog.d(TAG, "onPrepared");
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
@@ -89,6 +91,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
+                MyLog.d(TAG, "onError" + " what=" + what + " extra=" + extra);
                 if (mCallback != null) {
                     mCallback.onError(what, extra);
                 }
@@ -98,6 +101,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
             @Override
             public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                MyLog.d(TAG, "onVideoSizeChanged" + " width=" + width + " height=" + height);
                 AndroidMediaPlayer.this.videoWidth = width;
                 AndroidMediaPlayer.this.videoHeight = height;
                 if (null != mCallback) {
@@ -108,6 +112,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
             @Override
             public void onSeekComplete(MediaPlayer mp) {
+                MyLog.d(TAG, "onSeekComplete");
                 if (null != mCallback) {
                     mCallback.onSeekComplete();
                 }
@@ -254,14 +259,14 @@ public class AndroidMediaPlayer implements IPlayer {
     }
 
     @Override
-    public void setVolume(float volume,boolean setConfig) {
+    public void setVolume(float volume, boolean setConfig) {
         if (mPlayer == null) {
             return;
         }
-        if(setConfig) {
+        if (setConfig) {
             this.mVolume = volume;
         }
-        mPlayer.setVolume(volume,volume);
+        mPlayer.setVolume(volume, volume);
     }
 
     @Override
@@ -275,6 +280,7 @@ public class AndroidMediaPlayer implements IPlayer {
 
     /**
      * 也可以播放在线的文件
+     *
      * @param path
      */
     @Override
@@ -330,7 +336,9 @@ public class AndroidMediaPlayer implements IPlayer {
         if (mPlayer == null) {
             return;
         }
-        mPlayer.pause();
+        if(mPlayer.isPlaying()) {
+            mPlayer.pause();
+        }
         stopMusicPlayTimeListener();
     }
 
