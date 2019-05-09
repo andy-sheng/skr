@@ -251,6 +251,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
 
     protected abstract void needNotify();
 
+    //判断这个礼物是不是别人在播放，如果自己在播放或者无人播放返回false, 如果别人在播放返回true
     protected abstract boolean isGiftModelIsPlayingExpectOwer(@NonNull GiftPlayModel giftPlayModel, int id);
 
     protected void processInBackGround(GiftPlayModel model) {
