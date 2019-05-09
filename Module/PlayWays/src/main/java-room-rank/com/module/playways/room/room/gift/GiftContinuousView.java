@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
@@ -21,7 +22,6 @@ import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.module.playways.room.gift.view.ContinueTextView;
-import com.module.playways.room.room.gift.model.GiftDataUtils;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.R;
 
@@ -104,15 +104,19 @@ public class GiftContinuousView extends RelativeLayout {
     }
 
     //只有在IDLE情况下才去拉数据
-    public void tryNotify() {
+    public void tryNotifyHasGiftCanPlay() {
         if (mCurStatus != STATUS_IDLE) {
             return;
         }
 
-        GiftPlayModel newGiftPlayModel = mGiftProvider.tryGetGiftModel(null, 1, mId);
-        if (newGiftPlayModel != null) {
-            play(newGiftPlayModel);
-        }
+        mGiftProvider.tryGetGiftModel(null, 1, mId, new Callback<GiftPlayModel>() {
+            @Override
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                if (newGiftPlayModel != null) {
+                    play(newGiftPlayModel);
+                }
+            }
+        });
     }
 
     public boolean play(GiftPlayModel model) {
@@ -220,18 +224,24 @@ public class GiftContinuousView extends RelativeLayout {
 //                    }
 
                     // TODO: 2019-05-08 取数据
-                    GiftPlayModel newGiftPlayModel = mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId);
-                    MyLog.d(TAG, "newGiftPlayModel" + newGiftPlayModel);
-                    if (newGiftPlayModel != null
-                            && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
-                            && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
-                            && newGiftPlayModel.getEndCount() > mCurNum) {
-                        step2(++mCurNum);
-                    } else {
-                        mCurStatus = STATUS_WAIT_OVER;
-                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
-                    }
+                    mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
+                        @Override
+                        public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                            MyLog.d(TAG, "newGiftPlayModel" + newGiftPlayModel);
+                            //TODO 这里有 bug 吧
+                            if (newGiftPlayModel != null
+                                    && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
+                                    && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
+                                    && newGiftPlayModel.getEndCount() > mCurNum) {
+                                step2(++mCurNum);
+                            } else {
+                                mCurStatus = STATUS_WAIT_OVER;
+                                mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+                                mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+                            }
+                        }
+                    });
+
                 }
             });
         }
@@ -244,24 +254,28 @@ public class GiftContinuousView extends RelativeLayout {
     }
 
     private void onPlayOver() {
-        GiftPlayModel newGiftPlayModel = mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId);
-        if (newGiftPlayModel != null
-                && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
-                && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
-                && newGiftPlayModel.getEndCount() > mCurNum) {
-            step2(++mCurNum);
-        } else {
-            mCurStatus = STATUS_IDLE;
-            mCurGiftPlayModel = null;
-            this.setVisibility(GONE);
-            if (mListener != null) {
-                mListener.onPlayOver(this, mCurGiftPlayModel);
+        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
+            @Override
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                if (newGiftPlayModel != null
+                        && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
+                        && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
+                        && newGiftPlayModel.getEndCount() > mCurNum) {
+                    step2(++mCurNum);
+                } else {
+                    mCurStatus = STATUS_IDLE;
+                    mCurGiftPlayModel = null;
+                    GiftContinuousView.this.setVisibility(GONE);
+                    if (mListener != null) {
+                        mListener.onPlayOver(GiftContinuousView.this, mCurGiftPlayModel);
+                    }
+                    mUiHandler.removeCallbacksAndMessages(null);
+                    //自己结束的时候也去查看礼物新数据
+                    tryNotifyHasGiftCanPlay();
+                }
             }
-            mUiHandler.removeCallbacksAndMessages(null);
+        });
 
-            //自己结束的时候也去查看礼物新数据
-            tryNotify();
-        }
     }
 
     public boolean isIdle() {

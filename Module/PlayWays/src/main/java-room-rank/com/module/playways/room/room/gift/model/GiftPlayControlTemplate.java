@@ -1,8 +1,11 @@
 package com.module.playways.room.room.gift.model;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 
+import com.common.callback.Callback;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.CustomHandlerThread;
@@ -26,8 +29,6 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
 
     public static final int SIZE = 100;//生产者池子里最多多少个
 
-    private Object mQueueLock = new Object();
-
     /**
      * 播放动画队列
      */
@@ -44,6 +45,8 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
 
     CustomHandlerThread mHandlerGiftPlayModelhread;// 保证++ --  都在后台线程操作
 
+    Handler mUiHanlder = new Handler(Looper.getMainLooper());
+
     public GiftPlayControlTemplate() {
         mHandlerGiftPlayModelhread = new CustomHandlerThread("my-queue-thread") {
             @Override
@@ -57,30 +60,28 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
         mHandlerGiftPlayModelhread.post(new Runnable() {
             @Override
             public void run() {
-                synchronized (mQueueLock) {
-                    MyLog.d(TAG, "add " + model);
-                    if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                        MyLog.d(TAG, "add owner");
-                        updateOrPushGiftModel(mOwnerGiftMap, model, true);
-                    } else {
-                        switch (model.getGift().getDisplayType()) {
-                            case MEDIUM_GIFT:
-                                MyLog.d(TAG, "add mMediumGiftMap");
-                                updateOrPushGiftModel(mMediumGiftMap, model, true);
-                                break;
-                            case SMALL_GIFT:
-                                MyLog.d(TAG, "add mSmallQueueMap");
-                                updateOrPushGiftModel(mSmallQueueMap, model, false);
-                                break;
-                            case FREE_GIFT:
-                                MyLog.d(TAG, "add mFreeQueueMap");
-                                updateOrPushGiftModel(mFreeQueueMap, model, false);
-                                break;
-                            default:
-                                MyLog.e(TAG, "未知类型的礼物");
-                                updateOrPushGiftModel(mFreeQueueMap, model, false);
-                                break;
-                        }
+                MyLog.d(TAG, "add " + model);
+                if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                    MyLog.d(TAG, "add owner");
+                    updateOrPushGiftModel(mOwnerGiftMap, model, true);
+                } else {
+                    switch (model.getGift().getDisplayType()) {
+                        case MEDIUM_GIFT:
+                            MyLog.d(TAG, "add mMediumGiftMap");
+                            updateOrPushGiftModel(mMediumGiftMap, model, true);
+                            break;
+                        case SMALL_GIFT:
+                            MyLog.d(TAG, "add mSmallQueueMap");
+                            updateOrPushGiftModel(mSmallQueueMap, model, false);
+                            break;
+                        case FREE_GIFT:
+                            MyLog.d(TAG, "add mFreeQueueMap");
+                            updateOrPushGiftModel(mFreeQueueMap, model, false);
+                            break;
+                        default:
+                            MyLog.e(TAG, "未知类型的礼物");
+                            updateOrPushGiftModel(mFreeQueueMap, model, false);
+                            break;
                     }
                 }
             }
@@ -134,20 +135,46 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     }
 
     @Override
-    public GiftPlayModel tryGetGiftModel(GiftPlayModel giftPlayModel, int curNum, int id) {
-        synchronized (mQueueLock) {
-            GiftPlayModel model = getNextPlayModel(giftPlayModel, curNum, id);
-            if (model != null) {
-                Integer curContinue = mHasContinueCount.get(getKey(model));
-                if (curContinue != null) {
-                    model.setBeginCount(curContinue.intValue() + 1);
-                } else {
-                    model.setBeginCount(1);
+    public void tryGetGiftModel(GiftPlayModel giftPlayModel, int curNum, int id, Callback<GiftPlayModel> callback) {
+        if(Looper.myLooper() != mHandlerGiftPlayModelhread.getLooper()){
+            mHandlerGiftPlayModelhread.post(new Runnable() {
+                @Override
+                public void run() {
+                    tryGetGiftModel(giftPlayModel,curNum,id,callback);
                 }
-            }
-            return model;
+            });
+            return;
         }
-
+        /**
+         * 保证运行在队列专有线程
+         *
+         * 假设有这样一个过程
+         * ContinueId 为 A 1-3 B 1-5 ，A为自己送的
+         * 每次发送是 存起 当前 continueId 最大 beginCount
+         * 假设 B 送到 x3 时，自己送了
+         * 这时将 B 存起
+         *
+         * 保证 所有的对 model 和 map 的操作都在一个线程里
+         */
+        GiftPlayModel model = getNextPlayModel(giftPlayModel, curNum, id);
+        if (model != null) {
+            Integer curContinue = mHasContinueCount.get(getKey(model));
+            if (curContinue != null) {
+                model.setBeginCount(curContinue.intValue() + 1);
+            } else {
+                model.setBeginCount(1);
+            }
+        }
+        if (mUiHanlder != null) {
+            mUiHanlder.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (callback != null) {
+                        callback.onCallback(0, model);
+                    }
+                }
+            });
+        }
     }
 
     private void printQueueState(String name, LinkedHashMap<String, GiftPlayModel> linkedHashMap) {
@@ -166,6 +193,8 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
         if (giftPlayModel == null) {
             /**
              * giftPlayModel == null说明是IDLE的状态，从最先优先级取一个数据
+             *
+             * 中礼物 小礼物 免费礼物 为什么分优先级？
              */
             if (!mOwnerGiftMap.isEmpty()) {
                 return peek(mOwnerGiftMap, id);
@@ -187,6 +216,9 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
                 }
             }
 
+            /**
+             * 把当前播放的次数保存起来
+             */
             mHasContinueCount.put(getKey(giftPlayModel), curNum);
 
             GiftPlayModel model = tryGetContinueGiftModel(mOwnerGiftMap, giftPlayModel, curNum, id);
@@ -232,12 +264,14 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
      * 复位
      */
     public void reset() {
-        synchronized (mQueueLock) {
-            mOwnerGiftMap.clear();
-            mMediumGiftMap.clear();
-            mSmallQueueMap.clear();
-            mFreeQueueMap.clear();
-            mHasContinueCount.clear();
+        mHandlerGiftPlayModelhread.getHandler().removeCallbacksAndMessages(null);
+        mOwnerGiftMap.clear();
+        mMediumGiftMap.clear();
+        mSmallQueueMap.clear();
+        mFreeQueueMap.clear();
+        mHasContinueCount.clear();
+        if (mUiHanlder != null) {
+            mUiHanlder.removeCallbacksAndMessages(null);
         }
     }
 

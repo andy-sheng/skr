@@ -8,9 +8,9 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.callback.Callback;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
-import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
@@ -55,14 +55,9 @@ public class GiftContinueViewGroup extends RelativeLayout {
         @Override
         protected void needNotify() {
             //通知有新的礼物
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
-                        giftContinuousView.tryNotify();
-                    }
-                }
-            });
+            for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
+                giftContinuousView.tryNotifyHasGiftCanPlay();
+            }
         }
 
         protected boolean isGiftModelIsPlayingExpectOwer(@NonNull GiftPlayModel giftPlayModel, int id) {
@@ -163,6 +158,6 @@ public class GiftContinueViewGroup extends RelativeLayout {
     }
 
     public interface GiftProvider {
-        GiftPlayModel tryGetGiftModel(GiftPlayModel giftPlayModel, int beginNum, int id);
+        void tryGetGiftModel(GiftPlayModel giftPlayModel, int beginNum, int id, Callback<GiftPlayModel> callback);
     }
 }
