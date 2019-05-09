@@ -69,7 +69,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
+public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideView {
 
     public final static String TAG = "GrabGuideFragment";
 

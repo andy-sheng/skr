@@ -16,11 +16,13 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -30,6 +32,7 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
+import com.module.home.fragment.GrabGuideHomePageFragment;
 import com.module.home.fragment.PersonFragment2;
 import com.module.home.game.GameFragment2;
 import com.module.home.fragment.PkInfoFragment;
@@ -322,9 +325,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         }
         mFromCreate = false;
-        UpgradeManager.getInstance().checkUpdate1();
-        mRedPkgPresenter.checkRedPkg();
-        mCheckInPresenter.check();
+
+        if (MyUserInfoManager.getInstance().isNeedBeginnerGuide()) {
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(this, GrabGuideHomePageFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(false)
+                            .build());
+        } else {
+            UpgradeManager.getInstance().checkUpdate1();
+            mRedPkgPresenter.checkRedPkg();
+            mCheckInPresenter.check();
+        }
     }
 
     @Override

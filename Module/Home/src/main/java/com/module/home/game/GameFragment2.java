@@ -165,13 +165,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mTaskIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                if(MyLog.isDebugLogOpen()){
-                    IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                    if (iRankingModeService != null) {
-                        iRankingModeService.tryGoGrabGuide();
-                    }
-                    return;
-                }
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
                         .navigation();

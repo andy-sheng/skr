@@ -236,7 +236,7 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum,callback);
+                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
@@ -269,7 +269,7 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), "",null);
+                            UserAccount userAccount = parseRsp(obj.getData(), "", null);
                             if (mode == 3) {
                                 UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
                             } else if (mode == 2) {
@@ -282,7 +282,7 @@ public class UserAccountManager {
                 });
     }
 
-    UserAccount parseRsp(JSONObject jsonObject, String phoneNum,Callback callback) {
+    UserAccount parseRsp(JSONObject jsonObject, String phoneNum, Callback callback) {
         String secretToken = jsonObject.getJSONObject("token").getString("T");
         String serviceToken = jsonObject.getJSONObject("token").getString("S");
         String rongToken = jsonObject.getJSONObject("token").getString("RC");
@@ -299,6 +299,7 @@ public class UserAccountManager {
         if (isFirstLogin) {
             U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
         }
+        boolean needBeginnerGuide = jsonObject.getBoolean("needBeginnerGuide");
 
         // 设置个人信息
         MyUserInfo myUserInfo = new MyUserInfo();
@@ -309,8 +310,9 @@ public class UserAccountManager {
         myUserInfo.setAvatar(avatar);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
+        MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo,true);
+        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true);
 
         UserAccount userAccount = new UserAccount();
         userAccount.setPhoneNum(phoneNum);
@@ -322,7 +324,7 @@ public class UserAccountManager {
         userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
         onLoginResult(userAccount);
         if (callback != null) {
-            callback.onCallback(1,null);
+            callback.onCallback(1, null);
         }
         return userAccount;
     }

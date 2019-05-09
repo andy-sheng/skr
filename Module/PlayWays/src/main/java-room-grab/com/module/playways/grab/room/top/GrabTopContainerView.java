@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.view.DebounceViewClickListener;
@@ -35,7 +36,7 @@ public class GrabTopContainerView extends RelativeLayout {
     MoreOpView mMoreOpView;
     ExImageView mMoreBtn;
     ExTextView mSongIndexTv;
-    ExTextView mSkipGuideTv;
+    ImageView mSkipGuideIv;
 
     GrabPlayerRv2 mTopContentRv;
 
@@ -77,7 +78,8 @@ public class GrabTopContainerView extends RelativeLayout {
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mSongIndexTv = (ExTextView) this.findViewById(R.id.song_index_tv);
         mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
-        mSkipGuideTv = (ExTextView) this.findViewById(R.id.skip_guide_tv);
+        mSkipGuideIv = (ImageView) this.findViewById(R.id.skip_guide_iv);
+
 
 //        mTopContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 //        mGrabTopAdapter = new GrabTopAdapter();
@@ -117,10 +119,10 @@ public class GrabTopContainerView extends RelativeLayout {
             }
         });
 
-        mSkipGuideTv.setOnClickListener(new DebounceViewClickListener() {
+        mSkipGuideIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mListener!=null){
+                if (mListener != null) {
                     mListener.onClickSkipGuide();
                 }
             }
@@ -222,7 +224,7 @@ public class GrabTopContainerView extends RelativeLayout {
             // 新手房
             mMoreBtn.setVisibility(GONE);
             mSongIndexTv.setVisibility(GONE);
-            mSkipGuideTv.setVisibility(VISIBLE);
+            mSkipGuideIv.setVisibility(VISIBLE);
         }
     }
 

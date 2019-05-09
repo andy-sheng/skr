@@ -51,6 +51,7 @@ public class MyUserInfoManager {
 
     private MyUserInfo mUser = new MyUserInfo();
     private boolean mUserInfoFromServer = false;
+    private boolean needBeginnerGuide = false;
 //    private boolean mHasLoadFromDB = false;
 
     public void init() {
@@ -83,6 +84,14 @@ public class MyUserInfoManager {
         })
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    public boolean isNeedBeginnerGuide() {
+        return needBeginnerGuide;
+    }
+
+    public void setNeedBeginnerGuide(boolean needBeginnerGuide) {
+        this.needBeginnerGuide = needBeginnerGuide;
     }
 
     public void logoff() {
