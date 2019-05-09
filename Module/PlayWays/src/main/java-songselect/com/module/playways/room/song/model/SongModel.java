@@ -380,6 +380,8 @@ public class SongModel implements Serializable {
                 ", rankUserVoice='" + rankUserVoice + '\'' +
                 ", rankLrcEndT=" + rankLrcEndT +
                 ", challengeAvailable=" + challengeAvailable +
+                ", playType=" + playType +
+                ", pkMusicList=" + pkMusicList +
                 '}';
     }
 
