@@ -64,6 +64,8 @@ import com.module.playways.room.msg.event.QPkInnerRoundOverEvent;
 import com.module.playways.room.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.room.msg.event.QRoundOverMsgEvent;
 import com.module.playways.room.msg.event.QWantSingChanceMsgEvent;
+import com.module.playways.room.msg.filter.PushMsgFilter;
+import com.module.playways.room.msg.manager.ChatRoomMsgManager;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.playways.room.room.comment.model.CommentLightModel;
@@ -135,10 +137,22 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         }
     };
 
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+        @Override
+        public boolean doFilter(RoomMsg msg) {
+            if (msg != null && msg.getRoomID() == mRoomData.getGameId()) {
+                return true;
+            }
+            return false;
+        }
+    };
+
+
     public GrabGuidePresenter(@NotNull IGrabGuideView iGrabView, @NotNull GrabRoomData roomData) {
         mIGrabView = iGrabView;
         mRoomData = roomData;
         TAG = "GrabCorePresenter";
+        ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         joinRoomAndInit(true);
     }
 
@@ -513,6 +527,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         if (!mRoomData.isHasExitGame()) {
             exitRoom();
         }
+        ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

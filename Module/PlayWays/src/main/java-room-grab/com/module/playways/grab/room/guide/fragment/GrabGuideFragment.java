@@ -477,7 +477,7 @@ public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
             int[] location = new int[2];
             mGrabOpBtn.getBurstBtn().getLocationInWindow(location);
             layoutParams.rightMargin = U.getDisplayUtils().dip2px(14);
-            layoutParams.topMargin = location[1] - mGrabOpBtn.getBurstBtn().getHeight();
+            layoutParams.topMargin = location[1] - U.getDisplayUtils().dip2px(70);
             mGrabLightTipIv.setLayoutParams(layoutParams);
             ((ViewGroup) mRankingContainer).addView(mGrabLightTipIv);
         }
