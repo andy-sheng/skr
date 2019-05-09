@@ -50,6 +50,8 @@ public class GiftContinuousView extends RelativeLayout {
     AnimatorSet mStep2Animator;
     ExTextView mSenderNameTv;
 
+    GiftContinueViewGroup.GiftProvider mGiftProvider;
+
     int mCurNum = 1;
 
     GiftPlayModel mCurGiftPlayModel;
@@ -87,6 +89,10 @@ public class GiftContinuousView extends RelativeLayout {
         init();
     }
 
+    public void setGiftProvider(GiftContinueViewGroup.GiftProvider giftProvider) {
+        mGiftProvider = giftProvider;
+    }
+
     private void init() {
         inflate(getContext(), R.layout.gift_continue_view_layout, this);
         mInfoContainer = (ExRelativeLayout) this.findViewById(R.id.info_container);
@@ -95,6 +101,18 @@ public class GiftContinuousView extends RelativeLayout {
         mGiftImgIv = (BaseImageView) this.findViewById(R.id.gift_img_iv);
         mGiftNumTv = (ContinueTextView) this.findViewById(R.id.gift_num_tv);
         mSenderNameTv = (ExTextView) this.findViewById(R.id.sender_name_tv);
+    }
+
+    //只有在IDLE情况下才去拉数据
+    public void tryNotify() {
+        if (mCurStatus != STATUS_IDLE) {
+            return;
+        }
+
+        GiftPlayModel newGiftPlayModel = mGiftProvider.tryGetGiftModel(null, 1, mId);
+        if (newGiftPlayModel != null) {
+            play(newGiftPlayModel);
+        }
     }
 
     public boolean play(GiftPlayModel model) {
@@ -193,42 +211,62 @@ public class GiftContinuousView extends RelativeLayout {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (mCurNum >= mCurGiftPlayModel.getEndCount()) {
+//                    if (mCurNum >= mCurGiftPlayModel.getEndCount()) {
+//                        mCurStatus = STATUS_WAIT_OVER;
+//                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+//                        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+//                    } else {
+//                        step2(mCurNum + 1);
+//                    }
+
+                    // TODO: 2019-05-08 取数据
+                    GiftPlayModel newGiftPlayModel = mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId);
+                    MyLog.d(TAG, "newGiftPlayModel" + newGiftPlayModel);
+                    if (newGiftPlayModel != null
+                            && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
+                            && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
+                            && newGiftPlayModel.getEndCount() > mCurNum) {
+                        step2(++mCurNum);
+                    } else {
                         mCurStatus = STATUS_WAIT_OVER;
                         mUiHandler.removeMessages(MSG_DISPLAY_OVER);
                         mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
-                    } else {
-                        step2(mCurNum + 1);
                     }
                 }
             });
         }
+
         mStep2Animator.start();
     }
 
+    public GiftPlayModel getCurGiftPlayModel() {
+        return mCurGiftPlayModel;
+    }
+
     private void onPlayOver() {
-        mCurStatus = STATUS_IDLE;
-        this.setVisibility(GONE);
-        if (mListener != null) {
-            mListener.onPlayOver(this, mCurGiftPlayModel);
+        GiftPlayModel newGiftPlayModel = mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId);
+        if (newGiftPlayModel != null
+                && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
+                && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
+                && newGiftPlayModel.getEndCount() > mCurNum) {
+            step2(++mCurNum);
+        } else {
+            mCurStatus = STATUS_IDLE;
+            mCurGiftPlayModel = null;
+            this.setVisibility(GONE);
+            if (mListener != null) {
+                mListener.onPlayOver(this, mCurGiftPlayModel);
+            }
+            mUiHandler.removeCallbacksAndMessages(null);
+
+            //自己结束的时候也去查看礼物新数据
+            tryNotify();
         }
-        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     public boolean isIdle() {
         MyLog.d(TAG + hashCode(), "isIdle mCurStatus=" + mCurStatus);
         return mCurStatus == STATUS_IDLE;
-    }
-
-    public boolean accept(GiftPlayModel playModel) {
-        if (GiftDataUtils.sameContinueId(mCurGiftPlayModel, playModel)) {
-            int endCount = playModel.getEndCount();
-            if (endCount > mCurGiftPlayModel.getEndCount()) {
-                mCurGiftPlayModel.setEndCount(endCount);
-                return true;
-            }
-        }
-        return false;
     }
 
     public void tryTriggerAnimation() {

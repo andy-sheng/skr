@@ -1,12 +1,13 @@
 package com.module.playways.room.room.gift;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.NonNull;
+
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-
-import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
-import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
@@ -31,6 +32,8 @@ public class GiftContinueViewGroup extends RelativeLayout {
     private List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
     private BaseRoomData mRoomData;
 
+    Handler mHandler = new Handler(Looper.myLooper());
+
     public GiftContinueViewGroup(Context context) {
         super(context);
         init(context);
@@ -48,31 +51,36 @@ public class GiftContinueViewGroup extends RelativeLayout {
 
     GiftPlayControlTemplate mGiftPlayControlTemplate = new GiftPlayControlTemplate() {
         @Override
-        protected GiftContinuousView accept(GiftPlayModel cur) {
-            return isIdle();
+        protected void needNotify() {
+            //通知有新的礼物
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
+                        giftContinuousView.tryNotify();
+                    }
+                }
+            });
         }
 
-        @Override
-        public void onStart(GiftPlayModel model, GiftContinuousView giftContinuousView) {
-            if (giftContinuousView != null) {
-                // 播放动画
-                giftContinuousView.play(model);
+        protected boolean isGiftModelIsPlayingExpectOwer(@NonNull GiftPlayModel giftPlayModel, int id) {
+            if (giftPlayModel == null) {
+                return false;
 
-                BaseGift baseGift = model.getGift();
-                /**
-                 * 一般为中礼物，播放到x几时，开始播放中礼物动画
-                 */
-                if (baseGift != null && baseGift.isPlay()) {
-                    EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(model));
+            }
+
+            for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
+                GiftPlayModel curModel = giftContinuousView.getCurGiftPlayModel();
+                if (curModel != null
+                        && giftPlayModel.getSender().getUserId() == curModel.getSender().getUserId()
+                        && giftPlayModel.getContinueId() == curModel.getContinueId()
+                        && id != giftContinuousView.getId()) {
+                    return true;
                 }
             }
+
+            return false;
         }
-
-        @Override
-        protected void onEnd(GiftPlayModel model) {
-
-        }
-
     };
 
     public void init(Context context) {
@@ -90,13 +98,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
         for (int i = 0; i < mFeedGiftContinueViews.size(); i++) {
             GiftContinuousView gv = mFeedGiftContinueViews.get(i);
             gv.setMyId(i + 1);
-            gv.setListener(new GiftContinuousView.Listener() {
-                @Override
-                public void onPlayOver(GiftContinuousView giftContinuousView, GiftPlayModel giftPlayModel) {
-                    // 动画播放结束
-                    mGiftPlayControlTemplate.endCurrent(giftPlayModel);
-                }
-            });
+            gv.setGiftProvider(mGiftPlayControlTemplate);
         }
     }
 
@@ -113,6 +115,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
         mGiftPlayControlTemplate.destroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     private GiftContinuousView isIdle() {
@@ -124,37 +127,37 @@ public class GiftContinueViewGroup extends RelativeLayout {
         return null;
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GiftBrushMsgEvent giftPresentEvent) {
         // 收到一条礼物消息,进入生产者队列
         GiftPlayModel playModel = GiftPlayModel.parseFromEvent(giftPresentEvent.getGPrensentGiftMsg(), mRoomData);
         // 如果消息能被当前忙碌的view接受
-        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
-            if (!giftContinuousView.isIdle()) {
-                if (giftContinuousView.accept(playModel)) {
-                    // 被这个view接受了
-                    giftContinuousView.tryTriggerAnimation();
-                    return;
-                }
-            }
-        }
+//        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
+//            if (!giftContinuousView.isIdle()) {
+//                if (giftContinuousView.accept(playModel)) {
+//                    // 被这个view接受了
+//                    giftContinuousView.tryTriggerAnimation();
+//                    return;
+//                }
+//            }
+//        }
         mGiftPlayControlTemplate.add(playModel, false);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SpecialEmojiMsgEvent event) {
         // 收到一条礼物消息,进入生产者队列
         GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event, mRoomData);
         // 如果消息能被当前忙碌的view接受
-        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
-            if (!giftContinuousView.isIdle()) {
-                if (giftContinuousView.accept(playModel)) {
-                    // 被这个view接受了
-                    giftContinuousView.tryTriggerAnimation();
-                    return;
-                }
-            }
-        }
+//        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
+//            if (!giftContinuousView.isIdle()) {
+//                if (giftContinuousView.accept(playModel)) {
+//                    // 被这个view接受了
+//                    giftContinuousView.tryTriggerAnimation();
+//                    return;
+//                }
+//            }
+//        }
         mGiftPlayControlTemplate.add(playModel, false);
     }
 
@@ -162,4 +165,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
         mRoomData = roomData;
     }
 
+    public interface GiftProvider {
+        GiftPlayModel tryGetGiftModel(GiftPlayModel giftPlayModel, int beginNum, int id);
+    }
 }

@@ -149,12 +149,6 @@ public class GiftServerModel implements Serializable {
 
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
-        // TODO: 2019-05-08  假数据
-        if (!TextUtils.isEmpty(sourceURL)) {
-            this.play = true;
-            this.textContinueCount = 3;
-            this.displayType = 2;
-        }
     }
 
     public static GiftDB toGiftDB(GiftServerModel giftServerModel) {

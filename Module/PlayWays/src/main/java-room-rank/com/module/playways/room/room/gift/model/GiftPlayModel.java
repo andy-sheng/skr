@@ -170,4 +170,21 @@ public class GiftPlayModel {
     public enum EGiftType {
         EMOJI, GIFT
     }
+
+    @Override
+    public String toString() {
+        return "GiftPlayModel{" +
+                "mEGiftType=" + mEGiftType +
+                ", continueId=" + continueId +
+                ", timeMs=" + timeMs +
+                ", roomID=" + roomID +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
+                ", emojiType=" + emojiType +
+                ", action='" + action + '\'' +
+                ", beginCount=" + beginCount +
+                ", endCount=" + endCount +
+                ", mBaseGift=" + mBaseGift +
+                '}';
+    }
 }
