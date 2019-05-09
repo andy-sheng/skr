@@ -277,6 +277,7 @@ public class GiftContinuousView extends RelativeLayout {
         }
 
         mStep2Animator.start();
+        // TODO: 2019/5/9 礼物弹幕
         if (mCurGiftPlayModel.getGift().isPlay() && mCurGiftPlayModel.getGift().getDisplayType() == MEDIUM_GIFT) {
             EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(mCurGiftPlayModel));
             if (mCurGiftPlayModel.getGift().getTextContinueCount() == -1) {
@@ -285,6 +286,11 @@ public class GiftContinuousView extends RelativeLayout {
                 //不发
             } else {
                 //发送限制
+                if (mCurGiftPlayModel.getGift().getTextContinueCount() > mCurNum) {
+                    // 发
+                }else {
+                    // 不发
+                }
             }
         }
     }
