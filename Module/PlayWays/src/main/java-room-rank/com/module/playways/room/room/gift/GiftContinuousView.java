@@ -115,20 +115,22 @@ public class GiftContinuousView extends RelativeLayout {
                 /**
                  * 这边得在异步线程立即设值
                  */
+                MyLog.d(TAG, "tryNotifyHasGiftCanPlay onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
                 mCurGiftPlayModel = newGiftPlayModel;
             }
         }, new Callback<GiftPlayModel>() {
             @Override
             public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                MyLog.d(TAG, "tryNotifyHasGiftCanPlay newGiftPlayModel" + newGiftPlayModel);
                 if (newGiftPlayModel != null) {
-                    play(newGiftPlayModel);
+                    play(newGiftPlayModel, false);
                 }
             }
         });
     }
 
-    public boolean play(GiftPlayModel model) {
-        if (mCurStatus != STATUS_IDLE) {
+    public boolean play(GiftPlayModel model, boolean force) {
+        if (mCurStatus != STATUS_IDLE && !force) {
             return false;
         }
         mCurGiftPlayModel = model;
@@ -232,16 +234,30 @@ public class GiftContinuousView extends RelativeLayout {
 //                    }
 
                     // TODO: 2019-05-08 取数据
-                    mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, null, new Callback<GiftPlayModel>() {
+                    GiftPlayModel giftPlayModels[] = new GiftPlayModel[1];
+                    mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
                         @Override
                         public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                            MyLog.d(TAG, "newGiftPlayModel" + newGiftPlayModel);
+                            if (newGiftPlayModel != null) {
+                                MyLog.d(TAG, "step2 onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
+                                giftPlayModels[0] = mCurGiftPlayModel;
+                                mCurGiftPlayModel = newGiftPlayModel;
+                            }
+                        }
+                    }, new Callback<GiftPlayModel>() {
+                        @Override
+                        public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                            MyLog.d(TAG, "step2 newGiftPlayModel" + newGiftPlayModel);
                             //TODO 这里有 bug 吧
-                            if (newGiftPlayModel != null
-                                    && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
-                                    && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
-                                    && newGiftPlayModel.getEndCount() > mCurNum) {
-                                step2(++mCurNum);
+                            if (newGiftPlayModel != null) {
+                                if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
+                                        && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()
+                                        && newGiftPlayModel.getEndCount() > mCurNum) {
+                                    step2(++mCurNum);
+//                                    setData(newGiftPlayModel);
+                                } else {
+                                    play(newGiftPlayModel, true);
+                                }
                             } else {
                                 mCurStatus = STATUS_WAIT_OVER;
                                 mUiHandler.removeMessages(MSG_DISPLAY_OVER);
@@ -262,14 +278,29 @@ public class GiftContinuousView extends RelativeLayout {
     }
 
     private void onPlayOver() {
-        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, null, new Callback<GiftPlayModel>() {
+        GiftPlayModel giftPlayModels[] = new GiftPlayModel[1];
+        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
             @Override
             public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                if (newGiftPlayModel != null
-                        && newGiftPlayModel.getSender().getUserId() == mCurGiftPlayModel.getSender().getUserId()
-                        && newGiftPlayModel.getContinueId() == mCurGiftPlayModel.getContinueId()
-                        && newGiftPlayModel.getEndCount() > mCurNum) {
-                    step2(++mCurNum);
+                MyLog.d(TAG, "onPlayOver onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
+                if (newGiftPlayModel != null) {
+                    giftPlayModels[0] = mCurGiftPlayModel;
+                    mCurGiftPlayModel = newGiftPlayModel;
+                }
+            }
+        }, new Callback<GiftPlayModel>() {
+            @Override
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                MyLog.d(TAG, "onPlayOver newGiftPlayModel" + newGiftPlayModel);
+                if (newGiftPlayModel != null) {
+                    if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
+                            && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()
+                            && newGiftPlayModel.getEndCount() > mCurNum) {
+                        step2(++mCurNum);
+//                        setData(newGiftPlayModel);
+                    } else {
+                        play(newGiftPlayModel, true);
+                    }
                 } else {
                     mCurStatus = STATUS_IDLE;
                     mCurGiftPlayModel = null;
@@ -284,26 +315,6 @@ public class GiftContinuousView extends RelativeLayout {
             }
         });
 
-    }
-
-    public boolean isIdle() {
-        MyLog.d(TAG + hashCode(), "isIdle mCurStatus=" + mCurStatus);
-        return mCurStatus == STATUS_IDLE;
-    }
-
-    public void tryTriggerAnimation() {
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mCurStatus == STATUS_WAIT_OVER) {
-                    //等待结束
-                    if (mCurNum < mCurGiftPlayModel.getEndCount()) {
-                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-                        step2(mCurNum + 1);
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -327,6 +338,7 @@ public class GiftContinuousView extends RelativeLayout {
 
     public void setMyId(int id) {
         mId = id;
+        TAG = "GiftContinuousView " + id;
     }
 
     public interface Listener {

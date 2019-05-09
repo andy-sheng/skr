@@ -120,17 +120,8 @@ public class GiftContinueViewGroup extends RelativeLayout {
         mHandler.removeCallbacksAndMessages(null);
     }
 
-    private GiftContinuousView isIdle() {
-        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
-            if (giftContinuousView.isIdle()) {
-                return giftContinuousView;
-            }
-        }
-        return null;
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabSwitchRoomEvent giftPresentEvent) {
+    public void onEvent(GrabSwitchRoomEvent grabSwitchRoomEvent) {
         mGiftPlayControlTemplate.reset();
     }
 
