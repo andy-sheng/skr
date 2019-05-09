@@ -279,6 +279,13 @@ public class GiftContinuousView extends RelativeLayout {
         mStep2Animator.start();
         if (mCurGiftPlayModel.getGift().isPlay() && mCurGiftPlayModel.getGift().getDisplayType() == MEDIUM_GIFT) {
             EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(mCurGiftPlayModel));
+            if (mCurGiftPlayModel.getGift().getTextContinueCount() == -1) {
+                //无限发
+            } else if (mCurGiftPlayModel.getGift().getTextContinueCount() == 0) {
+                //不发
+            } else {
+                //发送限制
+            }
         }
     }
 
