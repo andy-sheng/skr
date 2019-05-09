@@ -231,23 +231,21 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     /**
      * 复位
      */
-    public synchronized void reset() {
-        mOwnerGiftMap.clear();
-        mMediumGiftMap.clear();
-        mSmallQueueMap.clear();
-        mFreeQueueMap.clear();
-        mHasContinueCount.clear();
+    public void reset() {
+        synchronized (mQueueLock) {
+            mOwnerGiftMap.clear();
+            mMediumGiftMap.clear();
+            mSmallQueueMap.clear();
+            mFreeQueueMap.clear();
+            mHasContinueCount.clear();
+        }
     }
 
     /**
      * 复位
      */
-    public synchronized void destroy() {
-        mOwnerGiftMap.clear();
-        mMediumGiftMap.clear();
-        mSmallQueueMap.clear();
-        mFreeQueueMap.clear();
-        mHasContinueCount.clear();
+    public void destroy() {
+        reset();
         mHandlerGiftPlayModelhread.destroy();
     }
 
