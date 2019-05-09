@@ -133,7 +133,7 @@ public class BallencePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult obj) {
                 MyLog.w(TAG, "getZSBalance process" + " obj=" + obj);
                 if (obj.getErrno() == 0) {
-                    String amount = JSON.parseObject(obj.getData().getString("totalAmountStr"), String.class);
+                    String amount = obj.getData().getString("totalAmountStr");
                     mIBallanceView.showBalance(amount);
                 }
             }

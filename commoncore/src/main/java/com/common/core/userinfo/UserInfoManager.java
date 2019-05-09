@@ -140,8 +140,8 @@ public class UserInfoManager {
                                 @Override
                                 public void process(ApiResult obj) {
                                     if (obj.getErrno() == 0) {
-                                        boolean isFriend = obj.getData().getBoolean("isFriend");
-                                        boolean isFollow = obj.getData().getBoolean("isFollow");
+                                        boolean isFriend = obj.getData().getBooleanValue("isFriend");
+                                        boolean isFollow = obj.getData().getBooleanValue("isFollow");
                                         jsonUserInfo.setFollow(isFollow);
                                         jsonUserInfo.setFriend(isFriend);
                                         if (resultCallback != null) {
@@ -207,8 +207,8 @@ public class UserInfoManager {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    final boolean isFriend = obj.getData().getBoolean("isFriend");
-                    final boolean isFollow = obj.getData().getBoolean("isFollow");
+                    final boolean isFriend = obj.getData().getBooleanValue("isFriend");
+                    final boolean isFollow = obj.getData().getBooleanValue("isFollow");
                     if (responseCallBack != null) {
                         responseCallBack.onServerSucess(isFriend);
                     }
@@ -321,59 +321,6 @@ public class UserInfoManager {
 
             }
         });
-    }
-
-    public void searchFriendList(String searchContent, int offset, final int limit, final ResponseCallBack responseCallBack) {
-        if (TextUtils.isEmpty(searchContent)) {
-            MyLog.w(TAG, "SearchFriendList Illegal parameter");
-            return;
-        }
-
-        final WeakReference<ResponseCallBack> responseCallBackWeakReference = new WeakReference<>(responseCallBack);
-
-        Observable<ApiResult> apiResultObservable = userInfoServerApi.searchFriendsList(searchContent, offset, limit);
-        ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
-            @Override
-            public void process(final ApiResult obj) {
-                if (obj.getErrno() == 0) {
-                    //写入数据库
-                    Observable.create(new ObservableOnSubscribe<ApiResult>() {
-                        @Override
-                        public void subscribe(ObservableEmitter<ApiResult> emitter) throws Exception {
-                            // 写入数据库
-                            List<UserInfoModel> userInfoModels = JSON.parseArray(obj.getData().getString("accounts"), UserInfoModel.class);
-                            if (userInfoModels != null && userInfoModels.size() > 0) {
-                                UserInfoLocalApi.insertOrUpdate(userInfoModels);
-
-                                List<BuddyCache.BuddyCacheEntry> list = new ArrayList<>();
-                                for (UserInfoModel userInfoModel : userInfoModels) {
-                                    list.add(new BuddyCache.BuddyCacheEntry(userInfoModel));
-                                }
-                                BuddyCache.getInstance().putBuddyList(list);
-                            }
-                            emitter.onNext(obj);
-                            emitter.onComplete();
-                        }
-                    })
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Consumer<ApiResult>() {
-                                @Override
-                                public void accept(ApiResult userInfo) throws Exception {
-                                    if (responseCallBackWeakReference.get() != null) {
-                                        responseCallBackWeakReference.get().onServerSucess(obj);
-                                    }
-                                }
-                            });
-                } else {
-                    if (responseCallBackWeakReference.get() != null) {
-                        responseCallBackWeakReference.get().onServerFailed();
-                    }
-                }
-
-            }
-        });
-
     }
 
 }

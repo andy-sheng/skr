@@ -58,7 +58,7 @@ public class InComePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    String dq = JSON.parseObject(result.getData().getString("totalAmountStr"), String.class);
+                    String dq = result.getData().getString("totalAmountStr");
                     mIInComeView.showDq(dq);
                 }
             }

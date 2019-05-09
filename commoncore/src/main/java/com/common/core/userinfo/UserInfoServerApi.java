@@ -1,8 +1,5 @@
 package com.common.core.userinfo;
 
-import android.animation.ObjectAnimator;
-import android.support.v7.widget.RecyclerView;
-
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;

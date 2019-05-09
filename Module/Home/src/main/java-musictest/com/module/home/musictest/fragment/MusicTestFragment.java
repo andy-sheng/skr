@@ -76,7 +76,7 @@ public class MusicTestFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    boolean hasTest = result.getData().getBoolean("ok");
+                    boolean hasTest = result.getData().getBooleanValue("ok");
                     if (hasTest) {
                         mStartTv.setText("重新开始");
                     } else {

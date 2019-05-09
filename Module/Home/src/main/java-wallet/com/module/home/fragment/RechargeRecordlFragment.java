@@ -121,7 +121,7 @@ public class RechargeRecordlFragment extends BaseFragment {
 
                     mLoadService.showSuccess();
                     mRechargeRecordModels.addAll(rechargeRecordModelList);
-                    offset = JSON.parseObject(result.getData().getString("offset"), Integer.class);
+                    offset = result.getData().getIntValue("offset");
                     mWalletRecordAdapter.setDataList(mRechargeRecordModels);
                 }
 

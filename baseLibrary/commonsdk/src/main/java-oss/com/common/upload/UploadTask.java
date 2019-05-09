@@ -82,7 +82,7 @@ public class UploadTask {
                             }
                             return;
                         }
-                        int code = data.getInteger("statusCode");
+                        int code = data.getIntValue("statusCode");
                         if (code == 200) {
                             String accessKeyId = data.getString("accessKeyId");
                             String accessKeySecret = data.getString("accessKeySecret");

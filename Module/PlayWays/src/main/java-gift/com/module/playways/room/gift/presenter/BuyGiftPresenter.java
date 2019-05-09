@@ -115,8 +115,8 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     if (baseGift.isCanContinue()) {
                         mContinueSendScheduler.sendGiftSuccess();
                     }
-                    int coin = result.getData().getInteger("coinBalance");
-                    int diamond = result.getData().getInteger("zuanBalance");
+                    int coin = result.getData().getIntValue("coinBalance");
+                    int diamond = result.getData().getIntValue("zuanBalance");
                     EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
                 }
                 return result;

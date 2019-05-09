@@ -87,7 +87,7 @@ public class DiamondBallanceFragment extends BaseFragment {
             public void process(ApiResult obj) {
                 MyLog.w(TAG, "getZSBalance process" + " obj=" + obj);
                 if (obj.getErrno() == 0) {
-                    String amount = JSON.parseObject(obj.getData().getString("totalAmountStr"), String.class);
+                    String amount = obj.getData().getString("totalAmountStr");
                     mTvDiamondBalance.setText(amount);
                 }
             }

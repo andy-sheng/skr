@@ -575,7 +575,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         now.addGrabUid(true, wantSingerInfo);
 
                         if (result.getData().getBoolean("success")) {
-                            int coin = result.getData().getInteger("coin");
+                            int coin = result.getData().getIntValue("coin");
                             mRoomData.setCoin(coin);
                         }
                     } else {
@@ -673,7 +673,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
                     if (now != null && now.getRoundSeq() == roundSeq) {
-                        int coin = result.getData().getInteger("coin");
+                        int coin = result.getData().getIntValue("coin");
                         mRoomData.setCoin(coin);
                         if (result.getData().getBoolean("isBLightSuccess")) {
                             BLightInfoModel m = new BLightInfoModel();
@@ -1248,8 +1248,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         MyLog.d(TAG, "syncGameStatus gameID 不一致");
                         return;
                     }
-                    long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
-                    long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
+                    long syncStatusTimes = result.getData().getLongValue("syncStatusTimeMs");  //状态同步时的毫秒时间戳
+                    long gameOverTimeMs = result.getData().getLongValue("gameOverTimeMs");  //游戏结束时间
                     GrabRoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), GrabRoundInfoModel.class); //当前轮次信息
                     GrabRoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), GrabRoundInfoModel.class); //当前轮次信息
 

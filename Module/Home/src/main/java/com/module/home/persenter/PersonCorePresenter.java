@@ -276,7 +276,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                                     JSONArray jsonArray = obj.getData().getJSONArray("pic");
                                     if (jsonArray.size() > 0) {
                                         JSONObject jo = jsonArray.getJSONObject(0);
-                                        int picID = jo.getInteger("picID");
+                                        int picID = jo.getIntValue("picID");
                                         String url = jo.getString("picPath");
                                         photo.setPicID(picID);
                                         photo.setPicPath(url);

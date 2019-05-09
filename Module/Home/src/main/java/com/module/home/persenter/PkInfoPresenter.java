@@ -54,8 +54,8 @@ public class PkInfoPresenter extends RxLifeCyclePresenter {
 //                    List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
                     List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
                     List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
-//                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
-//                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
+//                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
+//                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
 
                     mView.showUserLevel(userLevelModels);
                     mView.showGameStatic(userGameStatisModels);

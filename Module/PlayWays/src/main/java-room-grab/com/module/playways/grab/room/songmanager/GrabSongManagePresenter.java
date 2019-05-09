@@ -135,7 +135,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
                     updateSongList();
 
-                    int total = Integer.parseInt(result.getData().getString("total"));
+                    int total = result.getData().getIntValue("total");
                     mTotalNum = total;
                     mIGrabSongManageView.showNum(total);
                 } else {
@@ -305,7 +305,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         return;
                     }
 
-                    int total = Integer.parseInt(result.getData().getString("total"));
+                    int total = result.getData().getIntValue("total");
                     mTotalNum = total;
                     mIGrabSongManageView.showNum(mTotalNum);
 

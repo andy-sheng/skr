@@ -119,7 +119,7 @@ public class EditInfoNameFragment extends BaseFragment {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        boolean isValid = result.getData().getBoolean("isValid");
+                        boolean isValid = result.getData().getBooleanValue("isValid");
                         String unValidReason = result.getData().getString("unValidReason");
                         if (isValid) {
                             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()

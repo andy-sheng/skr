@@ -81,7 +81,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                     @Override
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
-                            if (result.getData().getBoolean("has")) {
+                            if (result.getData().getBooleanValue("has")) {
                                 goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_PUBLIC);
                             } else {
                                 if (TextUtils.isEmpty(result.getData().getString("notice"))) {

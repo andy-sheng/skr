@@ -294,9 +294,9 @@ public class UserAccountManager {
         String serviceToken = jsonObject.getJSONObject("token").getString("S");
         String rongToken = jsonObject.getJSONObject("token").getString("RC");
         com.alibaba.fastjson.JSONObject profileJO = jsonObject.getJSONObject("profile");
-        long userID = profileJO.getLong("userID");
+        long userID = profileJO.getLongValue("userID");
         String nickName = profileJO.getString("nickname");
-        int sex = profileJO.getInteger("sex");
+        int sex = profileJO.getIntValue("sex");
         String birthday = profileJO.getString("birthday");
         String avatar = profileJO.getString("avatar");
         String sign = profileJO.getString("signature");
@@ -409,25 +409,6 @@ public class UserAccountManager {
                     .subscribeOn(Schedulers.io())
                     .subscribe();
         }
-    }
-
-    // todo 检查昵称是否可用
-    public void checkNickName(String nickname) {
-        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        ApiMethods.subscribe(userAccountServerApi.checkNickName(nickname), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    boolean isValid = result.getData().getBoolean("isValid");
-                    if (isValid) {
-                        // 昵称可用
-                    } else {
-                        // 昵称不可用和理由
-                        String unValidReason = result.getData().getString("unValidReason");
-                    }
-                }
-            }
-        });
     }
 
     public void tryConnectRongIM(boolean force) {

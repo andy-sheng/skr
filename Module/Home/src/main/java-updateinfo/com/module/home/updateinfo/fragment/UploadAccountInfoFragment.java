@@ -201,7 +201,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    boolean isValid = result.getData().getBoolean("isValid");
+                    boolean isValid = result.getData().getBooleanValue("isValid");
                     String unValidReason = result.getData().getString("unValidReason");
                     if (isValid) {
                         // 昵称可用
@@ -280,7 +280,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void onNext(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    boolean isValid = result.getData().getBoolean("isValid");
+                    boolean isValid = result.getData().getBooleanValue("isValid");
                     String unValidReason = result.getData().getString("unValidReason");
                     mNickName = mNicknameEt.getText().toString().trim();
                     if (!TextUtils.isEmpty(mLastName) && mLastName.equals(mNickName)) {
