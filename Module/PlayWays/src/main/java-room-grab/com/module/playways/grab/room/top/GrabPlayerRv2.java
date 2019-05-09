@@ -612,7 +612,17 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 // 新手房
                 vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
             } else {
-                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                if (mRoomData.getOwnerId() != 0) {
+                    // 房主房
+                    if (mRoomData.isOwner()) {
+                        vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                    } else {
+                        vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+                    }
+                } else {
+                    // 普通房
+                    vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                }
             }
         }
         initData();
