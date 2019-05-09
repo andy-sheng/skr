@@ -25,8 +25,6 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
     SimpleDraweeView mSongCoverIv;
     ExTextView mSongSelectTv;
     ExTextView mSongNameTv;
-    ExTextView mChorusSongTag;
-    ExTextView mPkSongTag;
     ExTextView mSongOwnerTv;
 
     public GrabSongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
@@ -35,8 +33,6 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
         mSongCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.song_cover_iv);
         mSongSelectTv = (ExTextView) itemView.findViewById(R.id.song_select_tv);
         mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
-        mChorusSongTag = (ExTextView) itemView.findViewById(R.id.chorus_song_tag);
-        mPkSongTag = (ExTextView) itemView.findViewById(R.id.pk_song_tag);
         mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
 
         mSongSelectTv.setOnClickListener(new DebounceViewClickListener() {
@@ -70,20 +66,6 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
                     .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
                     .setBorderColor(strokeColor)
                     .build());
-        }
-
-        if (mSongModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(125), 0);
-            mPkSongTag.setVisibility(View.VISIBLE);
-            mChorusSongTag.setVisibility(View.GONE);
-        } else if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(125), 0);
-            mPkSongTag.setVisibility(View.GONE);
-            mChorusSongTag.setVisibility(View.VISIBLE);
-        } else {
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(80), 0);
-            mPkSongTag.setVisibility(View.GONE);
-            mChorusSongTag.setVisibility(View.GONE);
         }
     }
 }
