@@ -13,7 +13,7 @@ import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
-import com.module.playways.room.gift.adapter.GiftAdapter;
+import com.module.playways.room.gift.adapter.GiftDisplayAdapter;
 import com.module.playways.room.gift.adapter.GiftViewPagerAdapter;
 import com.module.playways.room.gift.inter.IGiftDisplayView;
 import com.module.playways.room.gift.loadsir.GiftEmptyCallback;
@@ -35,7 +35,7 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
 
     BaseGift mSelectedGift;
 
-    GiftAdapter.GiftUpdateListner mGiftUpdateListner;
+    GiftDisplayAdapter.GiftUpdateListner mGiftUpdateListner;
 
     LoadService mLoadService;
 
@@ -61,7 +61,7 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
         }
 
         @Override
-        public void select(BaseGift baseGift, GiftAdapter.GiftUpdateListner giftUpdateListner) {
+        public void select(BaseGift baseGift, GiftDisplayAdapter.GiftUpdateListner giftUpdateListner) {
             if (mSelectedGift != null) {
                 mGiftUpdateListner.updateGift(mSelectedGift);
             }
@@ -126,6 +126,6 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
         BaseGift getCurSelectedGift();
 
         //选中礼物
-        void select(BaseGift baseGift, GiftAdapter.GiftUpdateListner giftUpdateListner);
+        void select(BaseGift baseGift, GiftDisplayAdapter.GiftUpdateListner giftUpdateListner);
     }
 }

@@ -22,6 +22,7 @@ public class GiftPlayModel {
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
+        giftPlayModel.mEGiftType = EGiftType.EMOJI;
         giftPlayModel.setContinueId(event.coutinueId);
         giftPlayModel.setEmojiType(event.emojiType);
         giftPlayModel.setRoomID(event.info.getRoomID());

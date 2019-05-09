@@ -19,7 +19,7 @@ import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.view.GiftDisplayView;
 import com.zq.live.proto.Common.EGiftType;
 
-public class GiftAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> {
+public class GiftDisplayAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> {
 
     GiftDisplayView.IGiftOpListener mIGiftOpListener;
 
