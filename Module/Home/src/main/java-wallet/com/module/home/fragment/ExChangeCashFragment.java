@@ -180,6 +180,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
     }
 
     public float hfToYuan(long hf) {
+        hf = hf - (hf % 1000);
         return (float) hf / HF;
     }
 
