@@ -190,8 +190,12 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
     private void processSendGiftInfo(BasePushInfo basePushInfo, GPrensentGiftMsg gPrensentGiftMsg) {
         if (gPrensentGiftMsg != null) {
-            GiftPresentEvent giftPresentEvent = new GiftPresentEvent(basePushInfo, gPrensentGiftMsg);
-            EventBus.getDefault().post(giftPresentEvent);
+            if (gPrensentGiftMsg.getSendUserInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
+                GiftPresentEvent giftPresentEvent = new GiftPresentEvent(basePushInfo, gPrensentGiftMsg);
+                EventBus.getDefault().post(giftPresentEvent);
+            } else {
+                MyLog.d(TAG, "processSendGiftInfo" + "自己发的，无需理会");
+            }
         } else {
             MyLog.w(TAG, "processSendGiftInfo" + " info=" + basePushInfo + " gPrensentGiftMsg = null");
         }
