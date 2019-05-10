@@ -564,7 +564,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BuyGiftEvent event) {
-        mContinueSendView.startBuy(event.getBaseGift(), event.getReceiverId());
+        mContinueSendView.startBuy(event.getBaseGift(), event.getReceiver());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

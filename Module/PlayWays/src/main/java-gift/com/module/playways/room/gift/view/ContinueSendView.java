@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.R;
@@ -52,7 +53,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 
     AnimatorSet mJumpAnimatorSet;
 
-    long mReceiverId;
+    UserInfoModel mReceiver;
 
     private long mCanContinueDuration = 3000;
 
@@ -86,17 +87,17 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         mBaseRoomData = baseRoomData;
     }
 
-    public void startBuy(BaseGift baseGift, long receiverId) {
+    public void startBuy(BaseGift baseGift, UserInfoModel receiver) {
         mBaseGift = baseGift;
-        mReceiverId = receiverId;
+        mReceiver = receiver;
         if (baseGift.isCanContinue()) {
-            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiverId);
+            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiver);
             setVisibility(VISIBLE);
 
             mHandler.removeMessages(MSG_HIDE);
             mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
         } else {
-            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiverId);
+            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiver);
         }
     }
 
@@ -112,7 +113,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBuyGiftPresenter.buyGift(mBaseGift, mBaseRoomData.getGameId(), mReceiverId);
+                mBuyGiftPresenter.buyGift(mBaseGift, mBaseRoomData.getGameId(), mReceiver);
 
                 if (mScaleAnimatorSet != null) {
                     mScaleAnimatorSet.cancel();

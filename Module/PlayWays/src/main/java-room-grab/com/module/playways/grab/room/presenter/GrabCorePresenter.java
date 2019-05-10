@@ -138,6 +138,8 @@ import io.agora.rtc.Constants;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+import static com.module.playways.room.room.gift.model.GiftPlayControlTemplate.BIG_GIFT;
+
 public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "GrabCorePresenter";
 
@@ -2352,10 +2354,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GiftPresentEvent giftPresentEvent) {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
-            if (giftPresentEvent.mGPrensentGiftMsg.getGiftInfo().getDisplayType() == EGiftDisplayType.EGDT_Big) {
-                EventBus.getDefault().post(new BigGiftMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
+            if (giftPresentEvent.mGPrensentGiftMsgModel.getGiftInfo().getDisplayType() == BIG_GIFT) {
+                EventBus.getDefault().post(new BigGiftMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
             } else {
-                EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
+                EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
             }
         }
     }

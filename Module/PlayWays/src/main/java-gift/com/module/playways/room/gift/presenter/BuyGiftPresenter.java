@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
@@ -17,7 +19,12 @@ import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
+import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
+import com.module.playways.room.msg.BasePushInfo;
+import com.module.playways.room.msg.event.GiftPresentEvent;
+import com.zq.live.proto.Common.GiftInfo;
+import com.zq.live.proto.Room.GPrensentGiftMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -60,10 +67,11 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
         addToLifeCycle();
     }
 
-    public void buyGift(BaseGift baseGift, long roomId, long userID) {
-        MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userID);
+    public void buyGift(BaseGift baseGift, long roomId, UserInfoModel userInfoModel) {
+        MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userInfoModel.getUserId());
 
         final int[] continueCount = new int[1];
+        final long[] continueId = new long[1];
 
         Observable.create(new ObservableOnSubscribe<RequestBody>() {
             @Override
@@ -71,17 +79,20 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 long ts = System.currentTimeMillis() / 1000;
                 ContinueSendScheduler.BuyGiftParam buyGiftParam = null;
                 if (baseGift.isCanContinue()) {
-                    buyGiftParam = mContinueSendScheduler.sendParam(baseGift, userID);
+                    buyGiftParam = mContinueSendScheduler.sendParam(baseGift, userInfoModel.getUserId());
                 } else {
                     buyGiftParam = new ContinueSendScheduler.BuyGiftParam(System.currentTimeMillis(), 1);
                 }
+
+                long ctId = buyGiftParam.getContinueId();
                 continueCount[0] = buyGiftParam.getContinueCount();
+                continueId[0] = ctId;
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("giftID", baseGift.getGiftID());
                 map.put("continueCnt", buyGiftParam.getContinueCount());
-                map.put("continueID", buyGiftParam.getContinueId());
+                map.put("continueID", continueId[0]);
                 map.put("count", 1);
-                map.put("receiveUserID", userID);
+                map.put("receiveUserID", userInfoModel.getUserId());
                 map.put("roomID", roomId);
                 map.put("timestamp", ts);
 
@@ -94,7 +105,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         + " continueCnt=" + continueCount[0]
                         + " continueID=" + buyGiftParam.getContinueId()
                         + " count=" + 1
-                        + " receiveUserID=" + userID
+                        + " receiveUserID=" + userInfoModel.getUserId()
                         + " roomID=" + roomId
                         + " timestamp=" + ts);
 
@@ -118,6 +129,26 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     int coin = result.getData().getIntValue("coinBalance");
                     int diamond = result.getData().getIntValue("zuanBalance");
                     EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
+
+                    UserInfoModel own = new UserInfoModel();
+                    own.setUserId((int) MyUserInfoManager.getInstance().getUid());
+                    own.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+                    own.setNickname(MyUserInfoManager.getInstance().getNickName());
+                    own.setSex(MyUserInfoManager.getInstance().getSex());
+
+                    BasePushInfo basePushInfo = new BasePushInfo();
+                    basePushInfo.setRoomID((int) roomId);
+
+                    GPrensentGiftMsgModel gPrensentGiftMsgModel = new GPrensentGiftMsgModel();
+                    gPrensentGiftMsgModel.setGiftInfo(baseGift);
+                    gPrensentGiftMsgModel.setSendUserInfo(own);
+                    gPrensentGiftMsgModel.setRoomID(roomId);
+                    gPrensentGiftMsgModel.setCount(1);
+                    gPrensentGiftMsgModel.setContinueID(continueId[0]);
+                    gPrensentGiftMsgModel.setContinueCnt(continueCount[0]);
+                    gPrensentGiftMsgModel.setReceiveUserInfo(userInfoModel);
+
+                    EventBus.getDefault().post(new GiftPresentEvent(basePushInfo, gPrensentGiftMsgModel));
                 }
                 return result;
             }

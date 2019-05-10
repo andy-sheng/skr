@@ -23,6 +23,7 @@ import java.util.Map;
 public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.GiftProvider {
     public final static String TAG = "GiftPlayControlTemplate";
 
+    public static final int BIG_GIFT = 1;
     public static final int MEDIUM_GIFT = 2;
     public static final int SMALL_GIFT = 3;
     public static final int FREE_GIFT = 4;

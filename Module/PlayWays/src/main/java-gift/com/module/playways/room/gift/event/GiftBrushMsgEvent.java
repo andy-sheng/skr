@@ -1,18 +1,18 @@
 package com.module.playways.room.gift.event;
 
-import com.zq.live.proto.Room.GPrensentGiftMsg;
+import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 
 /**
  * 一般为小礼物
  */
 public class GiftBrushMsgEvent {
-    GPrensentGiftMsg mGPrensentGiftMsg;
+    GPrensentGiftMsgModel mGPrensentGiftMsg;
 
-    public GiftBrushMsgEvent(GPrensentGiftMsg gPrensentGiftMsg) {
+    public GiftBrushMsgEvent(GPrensentGiftMsgModel gPrensentGiftMsg) {
         this.mGPrensentGiftMsg = gPrensentGiftMsg;
     }
 
-    public GPrensentGiftMsg getGPrensentGiftMsg() {
+    public GPrensentGiftMsgModel getGPrensentGiftMsg() {
         return mGPrensentGiftMsg;
     }
 }

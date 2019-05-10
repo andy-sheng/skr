@@ -164,7 +164,7 @@ public class GiftPanelView extends FrameLayout {
                 }
 
                 hide();
-                EventBus.getDefault().post(new BuyGiftEvent(mGiftView.getSelectedGift(), mCurMicroMan.getUserID()));
+                EventBus.getDefault().post(new BuyGiftEvent(mGiftView.getSelectedGift(), mCurMicroMan.getUserInfo()));
             }
         });
 

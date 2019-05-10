@@ -3,6 +3,7 @@ package com.module.playways.room.room.gift.model;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.gift.model.BaseGift;
+import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
@@ -46,23 +47,23 @@ public class GiftPlayModel {
     }
 
 
-    public static GiftPlayModel parseFromEvent(GPrensentGiftMsg gPrensentGiftMsg, BaseRoomData roomData) {
+    public static GiftPlayModel parseFromEvent(GPrensentGiftMsgModel gPrensentGiftMsg, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
         giftPlayModel.mEGiftType = EGiftType.GIFT;
 
         giftPlayModel.setContinueId(gPrensentGiftMsg.getContinueID());
         giftPlayModel.setEmojiType(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN);
-        giftPlayModel.setRoomID(gPrensentGiftMsg.getRoomID());
+        giftPlayModel.setRoomID((int) gPrensentGiftMsg.getRoomID());
         giftPlayModel.setAction("");
         giftPlayModel.setBeginCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setEndCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setTimeMs(System.currentTimeMillis());
-        UserInfoModel userInfoModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getSendUserInfo());
+        UserInfoModel userInfoModel = gPrensentGiftMsg.getSendUserInfo();
         giftPlayModel.setSender(userInfoModel);
-        UserInfoModel receiverModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getReceiveUserInfo());
+        UserInfoModel receiverModel = gPrensentGiftMsg.getReceiveUserInfo();
         giftPlayModel.setReceiver(receiverModel);
 
-        BaseGift baseGift = BaseGift.parse(gPrensentGiftMsg.getGiftInfo());
+        BaseGift baseGift = gPrensentGiftMsg.getGiftInfo();
 
         giftPlayModel.setGift(baseGift);
 
