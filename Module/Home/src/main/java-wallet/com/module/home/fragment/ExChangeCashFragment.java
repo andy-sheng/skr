@@ -173,7 +173,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
     public void showExChangeInfo(ExChangeInfoModel exChangeInfoModel) {
         mExChangeInfoModel = exChangeInfoModel;
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
-        mMaxExchangeCash = (long) (exChangeInfoModel.getToRMBRatio() * mDq);
+        mMaxExchangeCash = (long) (exChangeInfoModel.getToRMBRatio() * mDq/10);
         mTvMaxExchange.setText(String.format("账户最多可兑换%.2f元人民币", hfToYuan(mMaxExchangeCash)));
         mTvTip.setText(String.format("红钻余额%.1f，", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToRMBDesc());

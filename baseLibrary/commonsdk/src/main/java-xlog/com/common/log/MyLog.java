@@ -13,7 +13,6 @@ import com.elvishew.xlog.printer.ConsolePrinter;
 import com.elvishew.xlog.printer.Printer;
 import com.elvishew.xlog.printer.file.FilePrinter;
 import com.elvishew.xlog.printer.file.backup.FileSizeBackupStrategy;
-import com.tencent.mars.xlog.Xlog;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -90,19 +89,6 @@ public class MyLog {
 //                    ,ScreenLogPrinter.getInstance()
             );
 
-
-
-            String cachePath = U.app().getFilesDir()+"/xlog";
-            String logPath = U.getAppInfoUtils().getSubDirPath("logs");
-
-            if (BuildConfig.DEBUG) {
-                Xlog.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, "MarsSample", 0, "");
-                Xlog.setConsoleLogOpen(true);
-            } else {
-                Xlog.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, "MarsSample", 0, "");
-                Xlog.setConsoleLogOpen(false);
-            }
-            com.tencent.mars.xlog.Log.setLogImp(new Xlog());
         }
         sHasInit = true;
     }
