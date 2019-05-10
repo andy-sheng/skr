@@ -216,7 +216,7 @@ public class GiftPanelView extends FrameLayout {
                     mTvDiamond.setText(amount);
                 }
             }
-        },new ApiMethods.RequestControl("getZSBalance", ApiMethods.ControlType.CancelThis));
+        }, new ApiMethods.RequestControl("getZSBalance", ApiMethods.ControlType.CancelThis));
     }
 
     public void setGrabRoomData(GrabRoomData grabRoomData) {
@@ -282,12 +282,17 @@ public class GiftPanelView extends FrameLayout {
         } else {
             mRlPlayerSelectArea.setVisibility(VISIBLE);
 
-            if (grabPlayerInfoModel != null
-                    && grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                //自己在麦上
-                selectSendGiftPlayer(null);
+            if (grabPlayerInfoModel != null) {
+                if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    //自己在麦上
+                    selectSendGiftPlayer(null);
+                } else {
+                    //别人在麦上
+                    selectSendGiftPlayer(grabPlayerInfoModel);
+                }
             } else {
-                selectSendGiftPlayer(grabPlayerInfoModel);
+                //没人在麦上
+                selectSendGiftPlayer(null);
             }
 
             mGiftAllPlayersAdapter.setDataList(getPlayerInfoListExpectSelf());
@@ -296,11 +301,14 @@ public class GiftPanelView extends FrameLayout {
 
     /**
      * 选择送礼的人
+     *
      * @param grabPlayerInfoModel
      */
     private void selectSendGiftPlayer(GrabPlayerInfoModel grabPlayerInfoModel) {
         //麦上没有人
+        boolean isPlayerInMic = true;
         if (grabPlayerInfoModel == null) {
+            isPlayerInMic = false;
             grabPlayerInfoModel = getFirstPlayerInfo();
         }
 
@@ -317,11 +325,19 @@ public class GiftPanelView extends FrameLayout {
                             .build());
             mTvSelectedName.setText(grabPlayerInfoModel.getUserInfo().getNickname());
 
-            mAllPlayersRV.setVisibility(GONE);
-            mLlSelectedMan.setVisibility(VISIBLE);
+//            mAllPlayersRV.setVisibility(GONE);
+//            mLlSelectedMan.setVisibility(VISIBLE);
         } else {
             mGiftAllPlayersAdapter.setSelectedGrabPlayerInfoModel(null);
             mGiftAllPlayersAdapter.update(grabPlayerInfoModel);
+//            mAllPlayersRV.setVisibility(VISIBLE);
+//            mLlSelectedMan.setVisibility(GONE);
+        }
+
+        if (isPlayerInMic) {
+            mAllPlayersRV.setVisibility(GONE);
+            mLlSelectedMan.setVisibility(VISIBLE);
+        } else {
             mAllPlayersRV.setVisibility(VISIBLE);
             mLlSelectedMan.setVisibility(GONE);
         }
