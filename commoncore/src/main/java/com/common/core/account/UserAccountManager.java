@@ -29,6 +29,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -135,7 +136,7 @@ public class UserAccountManager {
                 mHasTryConnentRM = false;
             }
 
-            trySetPushAlias();
+            trySetAlias();
 //            ScreenLogView.addInfo("用户id", account.getUid());
         } else {
 
@@ -546,16 +547,17 @@ public class UserAccountManager {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(UmengPushRegisterSuccessEvent event) {
-        trySetPushAlias();
+        trySetAlias();
     }
 
     /**
      * 给Umeng的push通道设置 Alias
      */
-    void trySetPushAlias() {
+    void trySetAlias() {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
             com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
+            CrashReport.setUserId(UserAccountManager.getInstance().getUuid());
         }
     }
 }

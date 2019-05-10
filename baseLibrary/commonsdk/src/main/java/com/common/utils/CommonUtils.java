@@ -97,6 +97,7 @@ public class CommonUtils {
     }
 
     /**
+     * com.tencent.mm  微信
      * 判断用户手机是否安装了某个app
      * @param pkgName
      * @return
