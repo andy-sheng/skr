@@ -366,6 +366,13 @@ public class NewGrabMatchFragment extends BaseFragment implements IGrabMatchingV
     }
 
     @Override
+    public void channelIsOffLine() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+    }
+
+    @Override
     protected boolean onBackPressed() {
         goBack();
         return true;

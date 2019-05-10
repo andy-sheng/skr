@@ -24,6 +24,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -253,6 +254,10 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         }
     }
 
+    @Override
+    public void channelIsOffLine() {
+
+    }
 
     @Override
     public boolean useEventBus() {

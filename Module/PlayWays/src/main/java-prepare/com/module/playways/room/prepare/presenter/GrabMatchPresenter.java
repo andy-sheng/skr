@@ -112,6 +112,9 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
                 if (result.getErrno() == 0) {
 //                    U.getToastUtil().showShort("开始匹配");
+                } else if (result.getErrno() == 8344155) {
+                    //专场已下线
+                    mView.channelIsOffLine();
                 } else {
                     MyLog.e("开始匹配失败");
                 }
