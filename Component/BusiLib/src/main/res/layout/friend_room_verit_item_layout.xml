@@ -38,7 +38,7 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/recommend_tag_sdv"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_16_dp"
         android:layout_below="@id/name_tv"
         android:layout_alignLeft="@id/name_tv"
