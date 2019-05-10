@@ -367,9 +367,10 @@ public class NewGrabMatchFragment extends BaseFragment implements IGrabMatchingV
 
     @Override
     public void channelIsOffLine() {
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
+//        stopTimeTask();
+//        if (NewGrabMatchFragment.this.getActivity() != null) {
+//            NewGrabMatchFragment.this.getActivity().finish();
+//        }
     }
 
     @Override
