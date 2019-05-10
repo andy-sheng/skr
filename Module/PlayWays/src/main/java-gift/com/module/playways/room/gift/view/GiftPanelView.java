@@ -275,8 +275,8 @@ public class GiftPanelView extends FrameLayout {
     }
 
     private void setSelectArea(GrabPlayerInfoModel grabPlayerInfoModel) {
-        if (mGrabRoomData.getPlayerInfoList().size() == 1
-                && mGrabRoomData.getPlayerInfoList().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+        if (mGrabRoomData.getInSeatPlayerInfoList().size() == 1
+                && mGrabRoomData.getInSeatPlayerInfoList().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
             //只有自己
             mRlPlayerSelectArea.setVisibility(GONE);
         } else {
@@ -354,7 +354,7 @@ public class GiftPanelView extends FrameLayout {
     }
 
     private GrabPlayerInfoModel getFirstPlayerInfo() {
-        List<GrabPlayerInfoModel> grabPlayerInfoModelList = mGrabRoomData.getPlayerInfoList();
+        List<GrabPlayerInfoModel> grabPlayerInfoModelList = mGrabRoomData.getInSeatPlayerInfoList();
 
         for (GrabPlayerInfoModel grabPlayerInfoModel : grabPlayerInfoModelList) {
             if (grabPlayerInfoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
@@ -366,7 +366,7 @@ public class GiftPanelView extends FrameLayout {
     }
 
     private List<GrabPlayerInfoModel> getPlayerInfoListExpectSelf() {
-        List<GrabPlayerInfoModel> grabPlayerInfoModelList = new ArrayList<>(mGrabRoomData.getPlayerInfoList());
+        List<GrabPlayerInfoModel> grabPlayerInfoModelList = new ArrayList<>(mGrabRoomData.getInSeatPlayerInfoList());
 
         Iterator<GrabPlayerInfoModel> it = grabPlayerInfoModelList.iterator();
         while (it.hasNext()) {

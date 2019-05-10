@@ -68,6 +68,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         return l;
     }
 
+    public List<GrabPlayerInfoModel> getInSeatPlayerInfoList() {
+        List<GrabPlayerInfoModel> l = new ArrayList<>();
+        if (mExpectRoundInfo != null) {
+            l.addAll(mExpectRoundInfo.getPlayUsers());
+        }
+        return l;
+    }
+
 
     public boolean isInPlayerList() {
         if (mExpectRoundInfo == null || mExpectRoundInfo.getPlayUsers() == null) {
