@@ -80,6 +80,8 @@ message GiftExtraInfo
     sint32 right    = 5;
     sint32 top      = 6;
     sint32 bottom   = 7;
+    bool isFullScreen = 8; //是否全屏
+    bool isFullX      = 9; //true 水平平铺  false 垂直平铺
 }
 
 // 礼物展示类型

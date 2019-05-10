@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
@@ -36,6 +37,10 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
   public static final Integer DEFAULT_TOP = 0;
 
   public static final Integer DEFAULT_BOTTOM = 0;
+
+  public static final Boolean DEFAULT_ISFULLSCREEN = false;
+
+  public static final Boolean DEFAULT_ISFULLX = false;
 
   @WireField(
       tag = 1,
@@ -79,13 +84,32 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
   )
   private final Integer bottom;
 
+  /**
+   * 是否全屏
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isFullScreen;
+
+  /**
+   * true 水平平铺  false 垂直平铺
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isFullX;
+
   public GiftExtraInfo(Long duration, Integer width, Integer height, Integer left, Integer right,
-      Integer top, Integer bottom) {
-    this(duration, width, height, left, right, top, bottom, ByteString.EMPTY);
+      Integer top, Integer bottom, Boolean isFullScreen, Boolean isFullX) {
+    this(duration, width, height, left, right, top, bottom, isFullScreen, isFullX, ByteString.EMPTY);
   }
 
   public GiftExtraInfo(Long duration, Integer width, Integer height, Integer left, Integer right,
-      Integer top, Integer bottom, ByteString unknownFields) {
+      Integer top, Integer bottom, Boolean isFullScreen, Boolean isFullX,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.duration = duration;
     this.width = width;
@@ -94,6 +118,8 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
     this.right = right;
     this.top = top;
     this.bottom = bottom;
+    this.isFullScreen = isFullScreen;
+    this.isFullX = isFullX;
   }
 
   @Override
@@ -106,6 +132,8 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
     builder.right = right;
     builder.top = top;
     builder.bottom = bottom;
+    builder.isFullScreen = isFullScreen;
+    builder.isFullX = isFullX;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -122,7 +150,9 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
         && Internal.equals(left, o.left)
         && Internal.equals(right, o.right)
         && Internal.equals(top, o.top)
-        && Internal.equals(bottom, o.bottom);
+        && Internal.equals(bottom, o.bottom)
+        && Internal.equals(isFullScreen, o.isFullScreen)
+        && Internal.equals(isFullX, o.isFullX);
   }
 
   @Override
@@ -137,6 +167,8 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
       result = result * 37 + (right != null ? right.hashCode() : 0);
       result = result * 37 + (top != null ? top.hashCode() : 0);
       result = result * 37 + (bottom != null ? bottom.hashCode() : 0);
+      result = result * 37 + (isFullScreen != null ? isFullScreen.hashCode() : 0);
+      result = result * 37 + (isFullX != null ? isFullX.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -152,6 +184,8 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
     if (right != null) builder.append(", right=").append(right);
     if (top != null) builder.append(", top=").append(top);
     if (bottom != null) builder.append(", bottom=").append(bottom);
+    if (isFullScreen != null) builder.append(", isFullScreen=").append(isFullScreen);
+    if (isFullX != null) builder.append(", isFullX=").append(isFullX);
     return builder.replace(0, 2, "GiftExtraInfo{").append('}').toString();
   }
 
@@ -214,6 +248,26 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
     return bottom;
   }
 
+  /**
+   * 是否全屏
+   */
+  public Boolean getIsFullScreen() {
+    if(isFullScreen==null){
+        return DEFAULT_ISFULLSCREEN;
+    }
+    return isFullScreen;
+  }
+
+  /**
+   * true 水平平铺  false 垂直平铺
+   */
+  public Boolean getIsFullX() {
+    if(isFullX==null){
+        return DEFAULT_ISFULLX;
+    }
+    return isFullX;
+  }
+
   public boolean hasDuration() {
     return duration!=null;
   }
@@ -242,6 +296,20 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
     return bottom!=null;
   }
 
+  /**
+   * 是否全屏
+   */
+  public boolean hasIsFullScreen() {
+    return isFullScreen!=null;
+  }
+
+  /**
+   * true 水平平铺  false 垂直平铺
+   */
+  public boolean hasIsFullX() {
+    return isFullX!=null;
+  }
+
   public static final class Builder extends Message.Builder<GiftExtraInfo, Builder> {
     private Long duration;
 
@@ -256,6 +324,10 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
     private Integer top;
 
     private Integer bottom;
+
+    private Boolean isFullScreen;
+
+    private Boolean isFullX;
 
     public Builder() {
     }
@@ -295,9 +367,25 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
       return this;
     }
 
+    /**
+     * 是否全屏
+     */
+    public Builder setIsFullScreen(Boolean isFullScreen) {
+      this.isFullScreen = isFullScreen;
+      return this;
+    }
+
+    /**
+     * true 水平平铺  false 垂直平铺
+     */
+    public Builder setIsFullX(Boolean isFullX) {
+      this.isFullX = isFullX;
+      return this;
+    }
+
     @Override
     public GiftExtraInfo build() {
-      return new GiftExtraInfo(duration, width, height, left, right, top, bottom, super.buildUnknownFields());
+      return new GiftExtraInfo(duration, width, height, left, right, top, bottom, isFullScreen, isFullX, super.buildUnknownFields());
     }
   }
 
@@ -315,6 +403,8 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
           + ProtoAdapter.SINT32.encodedSizeWithTag(5, value.right)
           + ProtoAdapter.SINT32.encodedSizeWithTag(6, value.top)
           + ProtoAdapter.SINT32.encodedSizeWithTag(7, value.bottom)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(8, value.isFullScreen)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(9, value.isFullX)
           + value.unknownFields().size();
     }
 
@@ -327,6 +417,8 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
       ProtoAdapter.SINT32.encodeWithTag(writer, 5, value.right);
       ProtoAdapter.SINT32.encodeWithTag(writer, 6, value.top);
       ProtoAdapter.SINT32.encodeWithTag(writer, 7, value.bottom);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 8, value.isFullScreen);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 9, value.isFullX);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -343,6 +435,8 @@ public final class GiftExtraInfo extends Message<GiftExtraInfo, GiftExtraInfo.Bu
           case 5: builder.setRight(ProtoAdapter.SINT32.decode(reader)); break;
           case 6: builder.setTop(ProtoAdapter.SINT32.decode(reader)); break;
           case 7: builder.setBottom(ProtoAdapter.SINT32.decode(reader)); break;
+          case 8: builder.setIsFullScreen(ProtoAdapter.BOOL.decode(reader)); break;
+          case 9: builder.setIsFullX(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -159,6 +159,7 @@ public abstract class BaseGift {
 
     /**
      * 从服务器api解析
+     *
      * @param giftServerModel
      * @param <T>
      * @return
@@ -177,6 +178,7 @@ public abstract class BaseGift {
 
     /**
      * 数据库解析
+     *
      * @param giftDB
      * @param <T>
      * @return
@@ -196,6 +198,7 @@ public abstract class BaseGift {
 
     /**
      * 从服务器Push PB解析
+     *
      * @param <T>
      * @return
      */
@@ -266,22 +269,14 @@ public abstract class BaseGift {
         // 解析
         GiftExtraInfo extraInfo = giftPB.getExtra();
         if (extraInfo != null) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("left",extraInfo.getLeft());
-            jsonObject.put("top",extraInfo.getTop());
-            jsonObject.put("right",extraInfo.getRight());
-            jsonObject.put("bottom",extraInfo.getBottom());
-            jsonObject.put("width",extraInfo.getWidth());
-            jsonObject.put("height",extraInfo.getHeight());
-            jsonObject.put("duration",extraInfo.getDuration());
-            parseFromJson(jsonObject.toJSONString());
+            parseFromJson(JSON.toJSONString(extraInfo));
         }
-
     }
 
     /**
      * 被子类复写
+     *
      * @param extra
      */
-    protected  abstract void parseFromJson(String extra);
+    protected abstract void parseFromJson(String extra);
 }
