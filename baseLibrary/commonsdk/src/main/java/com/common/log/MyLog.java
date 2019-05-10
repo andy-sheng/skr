@@ -38,21 +38,21 @@ public class MyLog {
 
     public static void init() {
         if (!sHasInit) {
-            String logTag = U.getAppInfoUtils().getAppName();
             //存放的路径
-            if (isDebugLogOpen()) {
-                sFileLogLevel = LogLevel.ALL;
+            if (isDebugLogOpen()|| U.getChannelUtils().isStaging()) {
+
             } else {
 //                sCurrentLogLevel = LogLevel.WARN;
-                //这里开发中先全部放开日志
-                sFileLogLevel = LogLevel.ALL;
             }
 
             if(isDebugLogOpen() || U.getChannelUtils().isStaging()){
+                sFileLogLevel = LogLevel.ALL;
                 sConsoleLogLevel = LogLevel.ALL;
             }else{
-                MyLog.d(TAG,"外发版本不打印控制台日志");
-                sConsoleLogLevel = LogLevel.NONE;
+                //这里开发中先全部放开日志
+                MyLog.e(TAG,"外发版本打印控制台日志级别"+LogLevel.WARN);
+                sFileLogLevel = LogLevel.ALL;
+                sConsoleLogLevel = LogLevel.WARN;
             }
             LogConfiguration config = new LogConfiguration.Builder()
                     .logLevel(sFileLogLevel)            // 指定日志级别，低于该级别的日志将不会被打印，默认为 LogLevel.ALL

@@ -320,7 +320,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowInviteTipView() {
-        if (mIvInviteTip == null) {
+        Activity activity = getActivity();
+        if (mIvInviteTip == null && activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             mIvInviteTip = new ImageView(getContext());
             mIvInviteTip.setBackground(U.getDrawable(R.drawable.fz_yaoqing_tishi));
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
@@ -333,7 +334,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowManageSongTipView() {
-        if (mIvManageSongTipView == null) {
+        Activity activity = getActivity();
+        if (mIvManageSongTipView == null && activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             mIvManageSongTipView = new ImageView(getContext());
             mIvManageSongTipView.setBackground(U.getDrawable(R.drawable.fz_kongzhi_tishi));
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
@@ -347,7 +349,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowChallengeTipView() {
-        if (mIvChanllengeTipView == null) {
+        Activity activity = getActivity();
+        if (mIvChanllengeTipView == null && activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             mIvChanllengeTipView = new ImageView(getContext());
             mIvChanllengeTipView.setBackground(U.getDrawable(R.drawable.fz_tiaozhan_tishi));
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
