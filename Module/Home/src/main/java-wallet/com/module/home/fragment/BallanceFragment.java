@@ -26,12 +26,15 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.adapter.RechargeAdapter;
+import com.module.home.event.RechargeSuccessEvent;
 import com.module.home.inter.IBallanceView;
 import com.module.home.model.RechargeItemModel;
 import com.module.home.presenter.BallencePresenter;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.view.GridSpacingItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -182,6 +185,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         }
 
         mBallencePresenter.getZSBalance();
+        EventBus.getDefault().post(new RechargeSuccessEvent());
     }
 
     @Override
