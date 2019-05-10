@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,11 +28,13 @@ import com.dialog.view.StrokeTextView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.adapter.RechargeAdapter;
+import com.module.home.event.PhoneAuthSuccessEvent;
 import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IBallanceView;
 import com.module.home.inter.IInComeView;
 import com.module.home.model.ExChangeInfoModel;
 import com.module.home.model.RechargeItemModel;
+import com.module.home.model.WithDrawInfoModel;
 import com.module.home.presenter.BallencePresenter;
 import com.module.home.presenter.InComePresenter;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -61,9 +64,13 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     StrokeTextView mBtnExchangeDiamond;
     StrokeTextView mBtnExchangeCash;
 
+    WithDrawInfoModel mWithDrawInfoModel;
+
     InComePresenter mInComePresenter;
 
     DialogPlus mDqRuleDialogPlus;
+
+    float balance = 0; //可用余额
 
     FragmentDataListener mFragmentDataListener = new FragmentDataListener() {
         @Override
@@ -139,9 +146,30 @@ public class InComeFragment extends BaseFragment implements IInComeView {
         mStvWithdraw.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_WITH_DRAW)
-                        .navigation();
+                if (balance < 10) {
+                    U.getToastUtil().showShort("满10元才能提现哦～");
+                } else if (mWithDrawInfoModel == null) {
+                    U.getToastUtil().showShort("正在加载数据");
+                    mInComePresenter.getWithDrawInfo(0);
+                } else if (!mWithDrawInfoModel.isIsPhoneAuth()) {
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_SMS_AUTH)
+                            .navigation();
+                } else if (!mWithDrawInfoModel.isIsRealAuth()) {
+                    mWithDrawInfoModel = null;
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                            .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/faceauth"))
+                            .navigation();
+                } else {
+                    if (!U.getNetworkUtils().hasNetwork()) {
+                        U.getToastUtil().showShort("您网络异常！");
+                        return;
+                    }
+
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_WITH_DRAW)
+                            .navigation();
+                }
             }
         });
 
@@ -180,6 +208,15 @@ public class InComeFragment extends BaseFragment implements IInComeView {
         addPresent(mInComePresenter);
         mInComePresenter.getBalance();
         mInComePresenter.getDqBalance();
+        mInComePresenter.getWithDrawInfo(0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mWithDrawInfoModel == null) {
+            mInComePresenter.getWithDrawInfo(0);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -190,6 +227,9 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     @Override
     public void showCash(String availableBalance) {
         mTvCashNum.setText(availableBalance);
+        if (!TextUtils.isEmpty(availableBalance)) {
+            balance = Float.parseFloat(availableBalance);
+        }
     }
 
     @Override
@@ -200,14 +240,22 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     @Override
     public void showRule(ExChangeInfoModel exChangeInfoModel) {
         MyLog.d(TAG, "showRule" + " exChangeInfoModel=" + exChangeInfoModel);
-        ExTextView toHZDescTv = (ExTextView)mDqRuleDialogPlus.findViewById(R.id.toHZDescTv);
-        ExTextView toZSDescTv = (ExTextView)mDqRuleDialogPlus.findViewById(R.id.toZSDescTv);
-        ExTextView toCashDescTv = (ExTextView)mDqRuleDialogPlus.findViewById(R.id.toCashDescTv);
+        ExTextView toHZDescTv = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.toHZDescTv);
+        ExTextView toZSDescTv = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.toZSDescTv);
+        ExTextView toCashDescTv = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.toCashDescTv);
         toHZDescTv.setText("钻石红钻兑换汇率：" + exChangeInfoModel.getToDQDesc());
         toZSDescTv.setText("红钻兑换钻石汇率：" + exChangeInfoModel.getToZSDesc());
         toCashDescTv.setText("红钻兑换现金汇率：" + exChangeInfoModel.getToRMBDesc());
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PhoneAuthSuccessEvent event) {
+        mWithDrawInfoModel.setIsPhoneAuth(true);
+    }
 
+    @Override
+    public void showWithDrawInfo(WithDrawInfoModel withDrawInfoModel) {
+        mWithDrawInfoModel = withDrawInfoModel;
     }
 
     @Override

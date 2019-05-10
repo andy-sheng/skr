@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.rxretrofit.ApiManager;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -82,6 +84,16 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
             @Override
             public void clickValid(View v) {
                 finish();
+            }
+        });
+
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), WithDrawHistoryFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
             }
         });
 

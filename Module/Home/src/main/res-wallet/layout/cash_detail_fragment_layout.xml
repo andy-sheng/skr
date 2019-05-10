@@ -17,6 +17,7 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightText="提现记录"
         app:rightTextColor="@color/white"
         app:rightTextSize="@dimen/textsize_14_dp"
         app:rightType="textView"
