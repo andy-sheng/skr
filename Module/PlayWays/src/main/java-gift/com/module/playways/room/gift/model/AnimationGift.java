@@ -2,6 +2,8 @@ package com.module.playways.room.gift.model;
 
 import com.alibaba.fastjson.JSON;
 
+import java.io.Serializable;
+
 public class AnimationGift extends BaseGift {
 
     AnimationPrams mAnimationPrams;
@@ -25,7 +27,7 @@ public class AnimationGift extends BaseGift {
         setAnimationPrams(animationPrams);
     }
 
-    public static class AnimationPrams {
+    public static class AnimationPrams implements Serializable {
         boolean isFullScreen; //是否全屏
         boolean isFullX;      //true 水平平铺  false 垂直平铺
         long duration;        //播放时长
