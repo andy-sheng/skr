@@ -1,4 +1,5 @@
 package com.module.playways.room.gift.model;
+
 import com.alibaba.fastjson.JSON;
 
 public class AnimationGift extends BaseGift {
@@ -25,13 +26,32 @@ public class AnimationGift extends BaseGift {
     }
 
     public static class AnimationPrams {
-        long duration;
-        int width;
-        int height;
-        int left;
-        int right;
-        int top;
-        int bottom;
+        boolean isFullScreen; //是否全屏
+        boolean isFullX;      //true 水平平铺  false 垂直平铺
+        long duration;        //播放时长
+        int width;            //宽度
+        int height;           //高度
+        // 距离-1都为无效值
+        int left;             //距左边高度
+        int right;            //距右边高度
+        int top;              //距顶部高度
+        int bottom;           //距底部高度
+
+        public boolean isFullScreen() {
+            return isFullScreen;
+        }
+
+        public void setFullScreen(boolean fullScreen) {
+            isFullScreen = fullScreen;
+        }
+
+        public boolean isFullX() {
+            return isFullX;
+        }
+
+        public void setFullX(boolean fullX) {
+            isFullX = fullX;
+        }
 
         public long getDuration() {
             return duration;
