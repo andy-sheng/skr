@@ -57,8 +57,8 @@ android {
             res.srcDirs += 'src/main/res-titlebar'
 
             //xlog
-            java.srcDirs += 'src/main/java-xlog'
-
+            //java.srcDirs += 'src/main/java-xlog'
+            java.srcDirs += 'src/main/java-xlog-wx'
             // 使用多啦A梦的log工具了，这个可以暂时不要了
             //java.srcDirs += 'src/main/java-screenlog'
             // 直接引入支持下拉加载 recyclerView,放弃 paginate，使用SmartRefreshLayout
@@ -213,6 +213,8 @@ dependencies {
     api(rootProject.ext.dependencies["rxpermissions2"])
     // 日志 以源代码方式方式引入
     //implementation(rootProject.ext.dependencies["xlog"])
+    // 微信xlog
+    implementation 'com.tencent.mars:mars-xlog:1.0.7'
 
     // fresco图片加载
     api(rootProject.ext.dependencies["fresco"])
