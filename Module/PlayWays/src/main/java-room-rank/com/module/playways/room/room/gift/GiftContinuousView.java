@@ -289,7 +289,7 @@ public class GiftContinuousView extends RelativeLayout {
                 //不发
             } else {
                 //发送限制
-                if (mCurGiftPlayModel.getGift().getTextContinueCount() > mCurNum) {
+                if (mCurGiftPlayModel.getGift().getTextContinueCount() >= mCurNum) {
                     // 发
                     EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel)));
                 } else {
