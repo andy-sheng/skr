@@ -168,6 +168,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
                         .navigation();
+                StatisticsAdapter.recordCountEvent("grab", "task_click", null);
             }
         });
 
@@ -267,6 +268,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initGameKConfig();
         mGamePresenter.initCoinNum(false);
         mGamePresenter.checkTaskRedDot();
+        StatisticsAdapter.recordCountEvent("grab", "expose", null);
     }
 
     @Override
