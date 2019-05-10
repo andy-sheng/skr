@@ -12,6 +12,7 @@ import com.common.utils.CustomHandlerThread;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
 
 
+import java.security.spec.ECField;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -61,29 +62,34 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
         mHandlerGiftPlayModelhread.post(new Runnable() {
             @Override
             public void run() {
-                MyLog.d(TAG, "add " + model);
-                if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                    MyLog.d(TAG, "add owner");
-                    updateOrPushGiftModel(mOwnerGiftMap, model, true);
-                } else {
-                    switch (model.getGift().getDisplayType()) {
-                        case MEDIUM_GIFT:
-                            MyLog.d(TAG, "add mMediumGiftMap");
-                            updateOrPushGiftModel(mMediumGiftMap, model, true);
-                            break;
-                        case SMALL_GIFT:
-                            MyLog.d(TAG, "add mSmallQueueMap");
-                            updateOrPushGiftModel(mSmallQueueMap, model, false);
-                            break;
-                        case FREE_GIFT:
-                            MyLog.d(TAG, "add mFreeQueueMap");
-                            updateOrPushGiftModel(mFreeQueueMap, model, false);
-                            break;
-                        default:
-                            MyLog.e(TAG, "未知类型的礼物");
-                            updateOrPushGiftModel(mFreeQueueMap, model, false);
-                            break;
+                //以防崩溃
+                try {
+                    MyLog.d(TAG, "add " + model);
+                    if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                        MyLog.d(TAG, "add owner");
+                        updateOrPushGiftModel(mOwnerGiftMap, model, true);
+                    } else {
+                        switch (model.getGift().getDisplayType()) {
+                            case MEDIUM_GIFT:
+                                MyLog.d(TAG, "add mMediumGiftMap");
+                                updateOrPushGiftModel(mMediumGiftMap, model, true);
+                                break;
+                            case SMALL_GIFT:
+                                MyLog.d(TAG, "add mSmallQueueMap");
+                                updateOrPushGiftModel(mSmallQueueMap, model, false);
+                                break;
+                            case FREE_GIFT:
+                                MyLog.d(TAG, "add mFreeQueueMap");
+                                updateOrPushGiftModel(mFreeQueueMap, model, false);
+                                break;
+                            default:
+                                MyLog.e(TAG, "未知类型的礼物");
+                                updateOrPushGiftModel(mFreeQueueMap, model, false);
+                                break;
+                        }
                     }
+                } catch (Exception e) {
+                    MyLog.e(TAG, e);
                 }
             }
         });
@@ -140,11 +146,29 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
 
     @Override
     public void tryGetGiftModel(GiftPlayModel giftPlayModel, int curNum, int id, Callback<GiftPlayModel> callback, Callback<GiftPlayModel> callbackInUiThread) {
-        if(Looper.myLooper() != mHandlerGiftPlayModelhread.getLooper()){
+        if (Looper.myLooper() != mHandlerGiftPlayModelhread.getLooper()) {
             mHandlerGiftPlayModelhread.post(new Runnable() {
                 @Override
                 public void run() {
-                    tryGetGiftModel(giftPlayModel,curNum,id,callback,callbackInUiThread);
+                    try {
+                        tryGetGiftModel(giftPlayModel, curNum, id, callback, callbackInUiThread);
+                    } catch (Exception e) {
+                        MyLog.e(TAG, e);
+                        if (callback != null) {
+                            callback.onCallback(0, null);
+                        }
+
+                        if (mUiHanlder != null) {
+                            mUiHanlder.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (callbackInUiThread != null) {
+                                        callbackInUiThread.onCallback(0, null);
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
             });
             return;
@@ -170,7 +194,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
             }
         }
         if (callback != null) {
-            callback.onCallback(0,model);
+            callback.onCallback(0, model);
         }
         if (mUiHanlder != null) {
             mUiHanlder.post(new Runnable() {
@@ -206,28 +230,28 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
             GiftPlayModel model = null;
             if (!mOwnerGiftMap.isEmpty()) {
                 model = peek(mOwnerGiftMap, id);
-                if(model != null){
+                if (model != null) {
                     return model;
                 }
             }
 
-            if(!mMediumGiftMap.isEmpty()) {
+            if (!mMediumGiftMap.isEmpty()) {
                 model = peek(mMediumGiftMap, id);
-                if(model != null){
+                if (model != null) {
                     return model;
                 }
             }
 
             if (!mSmallQueueMap.isEmpty()) {
                 model = peek(mSmallQueueMap, id);
-                if(model != null){
+                if (model != null) {
                     return model;
                 }
             }
 
             if (!mFreeQueueMap.isEmpty()) {
                 model = peek(mFreeQueueMap, id);
-                if(model != null){
+                if (model != null) {
                     return model;
                 }
             }
