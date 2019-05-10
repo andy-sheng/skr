@@ -355,8 +355,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.addRule(RelativeLayout.BELOW, R.id.grab_op_btn);
             layoutParams.setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0);
-            int index = mRankingContainer.indexOfChild(mInputContainerView);
-            mRankingContainer.addView(mIvChanllengeTipView, index, layoutParams);
+            int index = mRankingContainer.indexOfChild(mGrabOpBtn);
+            mRankingContainer.addView(mIvChanllengeTipView, index+1, layoutParams);
             startChallengeTipViewAnimator(mIvChanllengeTipView);
         }
     }
