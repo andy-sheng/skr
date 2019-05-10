@@ -41,7 +41,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 
     ImageView mIvBg;
     ImageView mIvContinueText;
-    ContinueTextView mTvContinueNum;
+//    ContinueTextView mTvContinueNum;
 
     BaseGift mBaseGift;
 
@@ -106,7 +106,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 //        EventBus.getDefault().register(this);
         mIvBg = (ImageView) findViewById(R.id.iv_bg);
         mIvContinueText = (ImageView) findViewById(R.id.iv_continue_text);
-        mTvContinueNum = (ContinueTextView) findViewById(R.id.tv_continue_num);
+//        mTvContinueNum = (ContinueTextView) findViewById(R.id.tv_continue_num);
 
         mBuyGiftPresenter = new BuyGiftPresenter(this);
 
@@ -119,8 +119,8 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
                     mScaleAnimatorSet.cancel();
                 }
 
-                ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mIvContinueText, "scaleX", 1.0f, 0.8f, 1.0f);
-                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mIvContinueText, "scaleY", 1.0f, 0.8f, 1.0f);
+                ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(ContinueSendView.this, "scaleX", 1.0f, 0.8f, 1.0f);
+                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(ContinueSendView.this, "scaleY", 1.0f, 0.8f, 1.0f);
                 mScaleAnimatorSet = new AnimatorSet();
                 mScaleAnimatorSet.play(objectAnimator1).with(objectAnimator2);
                 mScaleAnimatorSet.setDuration(500);
@@ -134,18 +134,18 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 
     @Override
     public void buySuccess(BaseGift baseGift, int continueCount) {
-        mTvContinueNum.setText(String.valueOf(continueCount));
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTvContinueNum, "translationY", 0.0f, -40);
-        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mTvContinueNum, "alpha", 1.0f, 0.7f, 0.0f);
-
-        if (mJumpAnimatorSet != null) {
-            mJumpAnimatorSet.cancel();
-        }
-
-        mJumpAnimatorSet = new AnimatorSet();
-        mJumpAnimatorSet.play(objectAnimator1).with(objectAnimator2);
-        mJumpAnimatorSet.setDuration(500);
-        mJumpAnimatorSet.start();
+//        mTvContinueNum.setText(String.valueOf(continueCount));
+//        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTvContinueNum, "translationY", 0.0f, -40);
+//        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mTvContinueNum, "alpha", 1.0f, 0.7f, 0.0f);
+//
+//        if (mJumpAnimatorSet != null) {
+//            mJumpAnimatorSet.cancel();
+//        }
+//
+//        mJumpAnimatorSet = new AnimatorSet();
+//        mJumpAnimatorSet.play(objectAnimator1).with(objectAnimator2);
+//        mJumpAnimatorSet.setDuration(500);
+//        mJumpAnimatorSet.start();
     }
 
     @Override
