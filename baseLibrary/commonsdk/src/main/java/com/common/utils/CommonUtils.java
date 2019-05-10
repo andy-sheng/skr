@@ -96,6 +96,11 @@ public class CommonUtils {
         return list.size() > 0;
     }
 
+    /**
+     * 判断用户手机是否安装了某个app
+     * @param pkgName
+     * @return
+     */
     public boolean hasInstallApp(String pkgName) {
         if (pkgName == null || pkgName.isEmpty()) {
             return false;
