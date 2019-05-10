@@ -18,6 +18,7 @@ import com.common.utils.U;
 import com.module.home.WalletServerApi;
 import com.module.home.inter.IBallanceView;
 import com.module.home.inter.IInComeView;
+import com.module.home.model.ExChangeInfoModel;
 import com.module.home.model.RechargeItemModel;
 
 import java.util.HashMap;
@@ -34,9 +35,28 @@ public class InComePresenter extends RxLifeCyclePresenter {
 
     WalletServerApi mWalletServerApi;
 
+    ExChangeInfoModel mExChangeInfoModel;
+
     public InComePresenter(IInComeView iInComeView) {
         mIInComeView = iInComeView;
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
+    }
+
+    public void getRule() {
+        if (mExChangeInfoModel != null) {
+            mIInComeView.showRule(mExChangeInfoModel);
+            return;
+        }
+
+        ApiMethods.subscribe(mWalletServerApi.getExChangeInfo(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    mExChangeInfoModel = JSON.parseObject(obj.getData().toString(), ExChangeInfoModel.class);
+                    mIInComeView.showRule(mExChangeInfoModel);
+                }
+            }
+        });
     }
 
     public void getBalance() {

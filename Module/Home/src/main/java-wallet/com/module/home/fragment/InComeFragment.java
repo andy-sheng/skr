@@ -30,6 +30,7 @@ import com.module.home.adapter.RechargeAdapter;
 import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IBallanceView;
 import com.module.home.inter.IInComeView;
+import com.module.home.model.ExChangeInfoModel;
 import com.module.home.model.RechargeItemModel;
 import com.module.home.presenter.BallencePresenter;
 import com.module.home.presenter.InComePresenter;
@@ -171,6 +172,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                 }
 
                 mDqRuleDialogPlus.show();
+                mInComePresenter.getRule();
             }
         });
 
@@ -193,6 +195,19 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     @Override
     public void showDq(String dq) {
         mTvDqNum.setText(dq);
+    }
+
+    @Override
+    public void showRule(ExChangeInfoModel exChangeInfoModel) {
+        MyLog.d(TAG, "showRule" + " exChangeInfoModel=" + exChangeInfoModel);
+        ExTextView toHZDescTv = (ExTextView)mDqRuleDialogPlus.findViewById(R.id.toHZDescTv);
+        ExTextView toZSDescTv = (ExTextView)mDqRuleDialogPlus.findViewById(R.id.toZSDescTv);
+        ExTextView toCashDescTv = (ExTextView)mDqRuleDialogPlus.findViewById(R.id.toCashDescTv);
+        toHZDescTv.setText("钻石红钻兑换汇率：" + exChangeInfoModel.getToDQDesc());
+        toZSDescTv.setText("红钻兑换钻石汇率：" + exChangeInfoModel.getToZSDesc());
+        toCashDescTv.setText("红钻兑换现金汇率：" + exChangeInfoModel.getToRMBDesc());
+
+
     }
 
     @Override
