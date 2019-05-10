@@ -53,6 +53,10 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
         return mSelectedItem;
     }
 
+    public void setSelectedItem(RechargeItemModel selectedItem) {
+        mSelectedItem = selectedItem;
+    }
+
     @Override
     public int getItemCount() {
         return mDataList.size();

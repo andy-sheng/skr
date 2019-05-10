@@ -161,6 +161,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
 
     @Override
     public void showRechargeList(List<RechargeItemModel> list) {
+        mRechargeAdapter.setSelectedItem(list.get(0));
         mRechargeAdapter.setDataList(list);
     }
 
