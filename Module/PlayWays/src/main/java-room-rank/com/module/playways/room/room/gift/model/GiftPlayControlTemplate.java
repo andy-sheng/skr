@@ -68,6 +68,8 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
                     if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
                         MyLog.d(TAG, "add owner");
                         updateOrPushGiftModel(mOwnerGiftMap, model, true);
+                    } else if(model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI){
+                        updateOrPushGiftModel(mFreeQueueMap, model, true);
                     } else {
                         switch (model.getGift().getDisplayType()) {
                             case MEDIUM_GIFT:

@@ -4,6 +4,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
+import com.module.playways.room.gift.model.NormalGift;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
@@ -32,6 +33,7 @@ public class GiftPlayModel {
         giftPlayModel.setBeginCount(event.count);
         giftPlayModel.setEndCount(event.count);
         giftPlayModel.setTimeMs(event.info.getTimeMs());
+        giftPlayModel.setGift(new NormalGift());
 
         UserInfoModel userInfoModel;
         if (roomData != null) {

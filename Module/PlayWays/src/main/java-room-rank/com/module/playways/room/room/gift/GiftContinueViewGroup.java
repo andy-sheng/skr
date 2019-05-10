@@ -12,6 +12,7 @@ import com.common.callback.Callback;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
+import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
@@ -132,22 +133,13 @@ public class GiftContinueViewGroup extends RelativeLayout {
         mGiftPlayControlTemplate.add(playModel, false);
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEvent(SpecialEmojiMsgEvent event) {
-//        // 收到一条礼物消息,进入生产者队列
-//        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event, mRoomData);
-//        // 如果消息能被当前忙碌的view接受
-////        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
-////            if (!giftContinuousView.isIdle()) {
-////                if (giftContinuousView.accept(playModel)) {
-////                    // 被这个view接受了
-////                    giftContinuousView.tryTriggerAnimation();
-////                    return;
-////                }
-////            }
-////        }
-//        mGiftPlayControlTemplate.add(playModel, false);
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SpecialEmojiMsgEvent event) {
+        // 收到一条礼物消息,进入生产者队列
+        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event, mRoomData);
+        // 如果消息能被当前忙碌的view接受
+        mGiftPlayControlTemplate.add(playModel, false);
+    }
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
