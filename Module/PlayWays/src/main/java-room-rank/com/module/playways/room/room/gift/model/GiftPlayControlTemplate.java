@@ -265,6 +265,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
                 Iterator iterator = mHasContinueCount.entrySet().iterator();
                 while (iterator.hasNext()) {
                     iterator.remove();
+                    break;
                 }
             }
 
