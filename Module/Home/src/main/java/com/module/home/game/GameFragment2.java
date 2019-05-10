@@ -200,7 +200,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
-                StatisticsAdapter.recordCountEvent("grab", "categoryall", null);
+                StatisticsAdapter.recordCountEvent("grab", "categoryall2", null);
             }
 
             @Override
@@ -220,7 +220,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
-                StatisticsAdapter.recordCountEvent("grab", "room_click", null);
+                StatisticsAdapter.recordCountEvent("grab", "room_click2", null);
             }
 
             @Override
