@@ -128,6 +128,7 @@ public class HomeCorePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(NetworkUtils.NetworkChangeEvent event) {
         if (event.type == -1) {
+            mUiHandler.removeCallbacksAndMessages(mNetworkChangeRunnable);
             mUiHandler.postDelayed(mNetworkChangeRunnable, 3000);
         } else {
             mUiHandler.removeCallbacks(mNetworkChangeRunnable);
@@ -135,7 +136,10 @@ public class HomeCorePresenter {
     }
 
     private void showNetworkDisConnectDialog() {
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.app())
                 .setMessageTip("网络异常\n请检查网络连接后重试")
                 .setOkBtnTip("确认")
                 .setOkBtnClickListener(new AnimateClickListener() {
@@ -203,8 +207,8 @@ public class HomeCorePresenter {
                             // 顶层的不是这个activity
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
                                     .greenChannel().navigation();
-                        }else{
-                            MyLog.d(TAG,"顶部已经是UploadAccountInfoActivity");
+                        } else {
+                            MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
                         }
                     } else {
                         //MyUserInfoManager.getInstance().trySyncLocation();
