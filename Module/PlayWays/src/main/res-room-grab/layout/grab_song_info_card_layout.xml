@@ -44,6 +44,8 @@
             android:layout_height="@dimen/view_22_dp"
             android:layout_marginLeft="@dimen/view_10_dp"
             android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_5_dp"
+            android:layout_toLeftOf="@id/song_index_area"
             android:layout_toRightOf="@+id/song_cover_iv"
             android:ellipsize="end"
             android:gravity="center_vertical|left"
@@ -52,40 +54,6 @@
             android:singleLine="true"
             android:textColor="@color/black_trans_70"
             android:textSize="@dimen/textsize_16_dp" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/chorus_song_tag"
-            android:layout_width="@dimen/view_42_dp"
-            android:layout_height="@dimen/view_20_dp"
-            android:layout_alignTop="@id/song_name_tv"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:layout_marginTop="@dimen/view_1_dp"
-            android:layout_toRightOf="@id/song_name_tv"
-            android:gravity="center"
-            android:text="合唱"
-            android:textColor="#FFDCA2"
-            android:textSize="@dimen/textsize_14_dp"
-            android:visibility="gone"
-            app:bl_corners_radius="@dimen/view_10_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="#7088FF" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/pk_song_tag"
-            android:layout_width="@dimen/view_42_dp"
-            android:layout_height="@dimen/view_20_dp"
-            android:layout_alignTop="@id/song_name_tv"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:layout_marginTop="@dimen/view_1_dp"
-            android:layout_toRightOf="@id/song_name_tv"
-            android:gravity="center"
-            android:text="PK"
-            android:textColor="#FFDCA2"
-            android:textSize="@dimen/textsize_14_dp"
-            android:visibility="gone"
-            app:bl_corners_radius="@dimen/view_10_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="#E55088" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/song_singer_tv"
@@ -105,6 +73,7 @@
             android:textSize="@dimen/textsize_12_dp" />
 
         <LinearLayout
+            android:id="@+id/song_index_area"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_24_dp"
             android:layout_alignParentRight="true"

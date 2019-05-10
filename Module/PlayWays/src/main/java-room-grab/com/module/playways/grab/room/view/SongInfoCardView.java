@@ -53,8 +53,6 @@ public class SongInfoCardView extends RelativeLayout {
 
     SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
-    ExTextView mChorusSongTag;
-    ExTextView mPkSongTag;
     ExTextView mSongSingerTv;
     BitmapTextView mCurrentSeq;
     BitmapTextView mTotalSeq;
@@ -88,8 +86,6 @@ public class SongInfoCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_song_info_card_layout, this);
         mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
-        mChorusSongTag = (ExTextView) findViewById(R.id.chorus_song_tag);
-        mPkSongTag = (ExTextView) findViewById(R.id.pk_song_tag);
         mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
         mCurrentSeq = (BitmapTextView) findViewById(R.id.current_seq);
         mTotalSeq = (BitmapTextView) findViewById(R.id.total_seq);
@@ -132,8 +128,6 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
-            mChorusSongTag.setVisibility(VISIBLE);
-            mPkSongTag.setVisibility(GONE);
             // 入场动画
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
@@ -142,8 +136,6 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(VISIBLE);
-            mChorusSongTag.setVisibility(GONE);
-            mPkSongTag.setVisibility(VISIBLE);
             // 入场动画
             animationGo(false);
         } else {
@@ -152,8 +144,6 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(VISIBLE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(GONE);
-            mChorusSongTag.setVisibility(GONE);
-            mPkSongTag.setVisibility(GONE);
             // 入场动画
             animationGo(true);
         }
