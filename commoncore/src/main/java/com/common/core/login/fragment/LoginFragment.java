@@ -33,6 +33,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class LoginFragment extends BaseFragment {
@@ -130,6 +131,9 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
+                HashMap map = new HashMap();
+                map.put("type","Phone");
+                StatisticsAdapter.recordCountEvent("signup", "click", map);
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
@@ -143,6 +147,9 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
+                HashMap map = new HashMap();
+                map.put("type","WeiXin");
+                StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
                     U.getToastUtil().showShort("你没有安装微信");
                     return;
@@ -169,6 +176,9 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
+                HashMap map = new HashMap();
+                map.put("type","QQ");
+                StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
                     U.getToastUtil().showShort("你没有安装QQ");
                     return;

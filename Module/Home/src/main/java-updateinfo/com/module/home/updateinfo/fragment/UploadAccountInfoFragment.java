@@ -331,9 +331,14 @@ public class UploadAccountInfoFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null);
+    }
+
+    @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        StatisticsAdapter.recordCountEvent("signup", "namesex_expose", null);
     }
 
     @Override

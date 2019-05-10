@@ -260,6 +260,21 @@ public class PKSingCardView extends RelativeLayout {
         }
     }
 
+    public void playScaleWithoutAnimation(int userId) {
+        if (mLeftUserInfoModel != null && userId == mLeftUserInfoModel.getUserId()) {
+            if (!mLeftAnimationFlag && !mLeftSingSvga.isAnimating()) {
+                mLeftArea.setScaleX(1.35f);
+                mLeftArea.setScaleY(1.35f);
+            } else {
+            }
+        } else if (mRightUserInfoModel != null && userId == mRightUserInfoModel.getUserId()) {
+            if (!mRightAnimationFlag && !mRightSingSvga.isAnimating()) {
+                mRightArea.setScaleX(1.35f);
+                mRightArea.setScaleY(1.35f);
+            } else {
+            }
+        }
+    }
     /**
      * @param uid        播放谁的动画
      * @param isPlaySVGA 是否播放声纹SVGA

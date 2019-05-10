@@ -118,6 +118,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         if (!infoModel.isParticipant() && infoModel.isEnterInSingStatus()) {
             // 开始倒计时
             // 直接播放svga 保证声纹动画
+            mPkCardView.playScaleWithoutAnimation(userId);
             mPkCardView.playSingAnimation(userId);
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
             countDown("中途进来");
