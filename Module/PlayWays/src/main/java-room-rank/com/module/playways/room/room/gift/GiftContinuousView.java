@@ -24,6 +24,8 @@ import com.common.view.ex.ExTextView;
 import com.module.playways.room.gift.event.BigGiftMsgEvent;
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.view.ContinueTextView;
+import com.module.playways.room.room.comment.model.CommentGiftModel;
+import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.R;
 
@@ -282,13 +284,15 @@ public class GiftContinuousView extends RelativeLayout {
             EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(mCurGiftPlayModel));
             if (mCurGiftPlayModel.getGift().getTextContinueCount() == -1) {
                 //无限发
+                EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel)));
             } else if (mCurGiftPlayModel.getGift().getTextContinueCount() == 0) {
                 //不发
             } else {
                 //发送限制
                 if (mCurGiftPlayModel.getGift().getTextContinueCount() > mCurNum) {
                     // 发
-                }else {
+                    EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel)));
+                } else {
                     // 不发
                 }
             }

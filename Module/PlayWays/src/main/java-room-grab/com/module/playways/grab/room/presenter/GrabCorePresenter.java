@@ -33,6 +33,7 @@ import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.room.gift.event.BigGiftMsgEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
+import com.module.playways.room.room.comment.model.CommentGiftModel;
 import com.zq.live.proto.Common.EGiftDisplayType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
@@ -1089,7 +1090,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 退出房间
      */
     public void exitRoom(String from) {
-        MyLog.w(TAG,"exitRoom" + " from=" + from);
+        MyLog.w(TAG, "exitRoom" + " from=" + from);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
 
@@ -2355,6 +2356,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
             if (giftPresentEvent.mGPrensentGiftMsgModel.getGiftInfo().getDisplayType() == BIG_GIFT) {
+                EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(giftPresentEvent.mGPrensentGiftMsgModel)));
                 EventBus.getDefault().post(new BigGiftMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
             } else {
                 EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
