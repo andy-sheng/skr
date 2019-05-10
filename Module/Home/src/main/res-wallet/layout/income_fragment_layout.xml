@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_24_dp"
-                android:text="点券"
+                android:text="红钻"
                 android:textColor="#3B4E79"
                 android:textSize="@dimen/textsize_20_dp"
                 android:textStyle="bold" />
@@ -151,7 +151,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/view_26_dp"
                 android:layout_marginRight="@dimen/view_16_dp"
-                android:text="点券明细"
+                android:text="红钻明细"
                 android:textColor="#3B4E79"
                 android:textSize="@dimen/textsize_14_dp"
                 android:textStyle="bold" />

@@ -42,7 +42,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
 
     //单位为毫分
     long mMaxExchangeCash;
-    //目前的点券
+    //目前的红钻
     float mDq;
 
     ExChangeInfoModel mExChangeInfoModel;
@@ -118,17 +118,17 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
 
                     if (mExChangeInfoModel != null) {
                         if (TextUtils.isEmpty(mEditCashNum.getText().toString())) {
-                            mTvTip.setText(String.format("点券余额%.1f，", mDq));
+                            mTvTip.setText(String.format("红钻余额%.1f，", mDq));
                             mTvExchangeWhole.setVisibility(View.VISIBLE);
                             mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
                             mIvExchangeBtn.setEnabled(false);
                         } else if (cash > mMaxExchangeCash) {
-                            mTvTip.setText("已超过可兑换点券余额");
+                            mTvTip.setText("已超过可兑换红钻余额");
                             mTvTip.setTextColor(U.getColor(R.color.red));
                             mTvExchangeWhole.setVisibility(View.GONE);
                             mIvExchangeBtn.setEnabled(false);
                         } else {
-                            mTvTip.setText(String.format("点券余额%.1f，", mDq));
+                            mTvTip.setText(String.format("红钻余额%.1f，", mDq));
                             mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
                             mTvExchangeWhole.setVisibility(View.VISIBLE);
                             mIvExchangeBtn.setEnabled(true);
@@ -175,7 +175,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
         mMaxExchangeCash = (long) (600 * mDq);
         mTvMaxExchange.setText(String.format("账户最多可兑换%.2f元人民币", hfToYuan(mMaxExchangeCash)));
-        mTvTip.setText(String.format("点券余额%.1f，", mDq));
+        mTvTip.setText(String.format("红钻余额%.1f，", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToRMBDesc());
     }
 

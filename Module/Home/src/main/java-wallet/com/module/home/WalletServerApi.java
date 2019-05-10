@@ -182,7 +182,7 @@ public interface WalletServerApi {
     Observable<ApiResult> getZSBalance();
 
     /**
-     * 获取点券余额
+     * 获取红钻余额
      *
      * @return
      */
@@ -220,7 +220,7 @@ public interface WalletServerApi {
     Observable<ApiResult> getExChangeInfo();
 
     /**
-     * 点券明细
+     * 红钻明细
      *
      * @return
      */
@@ -229,7 +229,7 @@ public interface WalletServerApi {
                                     @Query("cnt") int cnt);
 
     /**
-     * 点券明细
+     * 红钻明细
      *
      * @return
      */

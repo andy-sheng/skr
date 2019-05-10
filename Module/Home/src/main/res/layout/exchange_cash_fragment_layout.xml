@@ -10,7 +10,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="点券兑换现金"
+        app:centerText="红钻兑换现金"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
@@ -58,7 +58,7 @@
             android:layout_marginLeft="@dimen/view_30_dp"
             android:layout_marginTop="@dimen/view_18_dp"
             android:gravity="center_vertical"
-            android:text="兑换汇率：100点券兑换人民币0.6元"
+            android:text="兑换汇率：100红钻兑换人民币0.6元"
             android:textColor="#7f3B4E79"
             android:textSize="@dimen/textsize_13_dp"
             android:textStyle="bold" />
@@ -111,7 +111,7 @@
                 android:id="@+id/tv_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="点券余额23.1，"
+                android:text="红钻余额23.1，"
                 android:textColor="#ff3b4e79"
                 android:textSize="@dimen/textsize_12_dp"
                 android:textStyle="bold" />

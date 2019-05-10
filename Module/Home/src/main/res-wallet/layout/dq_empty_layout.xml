@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_177_dp"
-        android:text="暂无点券明细"
+        android:text="暂无红钻明细"
         android:textColor="#ff3b4e79"
         android:textSize="@dimen/textsize_16_dp" />
 </FrameLayout>

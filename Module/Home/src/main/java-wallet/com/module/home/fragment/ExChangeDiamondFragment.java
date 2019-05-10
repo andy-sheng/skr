@@ -44,7 +44,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
 
     //能兑换的最大钻石
     long mMaxDiamond = 0;
-    //目前剩余的点券
+    //目前剩余的红钻
     float mDq = 0;
 
     @Override
@@ -103,7 +103,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                 if (TextUtils.isEmpty(editString)) {
                     mIvExchangeBtn.setEnabled(false);
                     mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                    mTvTip.setText(String.format("点券余额%.1f，", mDq));
+                    mTvTip.setText(String.format("红钻余额%.1f，", mDq));
                     mTvExchangeWhole.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -112,12 +112,12 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                 if (inputNum > mMaxDiamond) {
                     mIvExchangeBtn.setEnabled(false);
                     mTvTip.setTextColor(U.getColor(R.color.red));
-                    mTvTip.setText("已超过可兑换点券余额");
+                    mTvTip.setText("已超过可兑换红钻余额");
                     mTvExchangeWhole.setVisibility(View.GONE);
                 } else {
                     mIvExchangeBtn.setEnabled(true);
                     mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                    mTvTip.setText(String.format("点券余额%.1f，", mDq));
+                    mTvTip.setText(String.format("红钻余额%.1f，", mDq));
                     mTvExchangeWhole.setVisibility(View.VISIBLE);
                 }
             }
@@ -159,7 +159,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
         mMaxDiamond = (long) mDq * exChangeInfoModel.getToZSRatio();
         mTvMaxExchange.setText(String.format("账户最多可兑换%d钻石", mMaxDiamond));
-        mTvTip.setText(String.format("点券余额%.1f钻石，", mDq));
+        mTvTip.setText(String.format("红钻余额%.1f钻石，", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToZSDesc());
     }
 
