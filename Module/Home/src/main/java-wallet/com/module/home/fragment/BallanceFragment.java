@@ -110,7 +110,11 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
                 }
 
                 if (mEPayPlatform == EPayPlatform.WX_PAY) {
-                    mBallencePresenter.rechargeWxPay(mRechargeAdapter.getSelectedItem().getGoodsID());
+                    if (U.getCommonUtils().hasInstallApp("com.tencent.mm")) {
+                        mBallencePresenter.rechargeWxPay(mRechargeAdapter.getSelectedItem().getGoodsID());
+                    } else {
+                        U.getToastUtil().showShort("未安装微信");
+                    }
                 } else {
                     mBallencePresenter.rechargeAliPay(mRechargeAdapter.getSelectedItem().getGoodsID());
                 }

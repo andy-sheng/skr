@@ -2,6 +2,7 @@ package com.common.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
@@ -87,12 +88,29 @@ public class CommonUtils {
         }
     }
 
-
     public boolean isIntentAvailable(final Context context,
                                      final Intent intent) {
         final PackageManager packageManager = context.getPackageManager();
         final List<ResolveInfo> list = packageManager.queryIntentActivities(
                 intent, PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
+    }
+
+    public boolean hasInstallApp(String pkgName) {
+        if (pkgName == null || pkgName.isEmpty()) {
+            return false;
+        }
+        PackageInfo packageInfo;
+        try {
+            packageInfo = U.app().getPackageManager().getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
