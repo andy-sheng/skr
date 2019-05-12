@@ -128,7 +128,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", "https://api.inframe.mobi/user-agreement.html")
+                        .withString("url", "https://app.inframe.mobi/agreement/recharge")
                         .greenChannel().navigation();
             }
         });
