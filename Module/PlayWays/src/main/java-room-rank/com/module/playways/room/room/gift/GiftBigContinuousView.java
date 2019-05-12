@@ -185,11 +185,11 @@ public class GiftBigContinuousView extends RelativeLayout {
     }
 
     private void step2(int count) {
-        mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
         long delayTime = 5000;
         if (mCurGiftPlayModel.getGift() instanceof AnimationGift) {
             delayTime = ((AnimationGift) mCurGiftPlayModel.getGift()).getAnimationPrams().getDuration();
         }
+        mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
         mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_ENSUSE_OVER, delayTime + 500);
         //目前没有
         mCurStatus = STATUS_STEP2;
@@ -216,12 +216,12 @@ public class GiftBigContinuousView extends RelativeLayout {
                             && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()
                             && newGiftPlayModel.getEndCount() > mCurNum) {
                         step2(++mCurNum);
-//                                    setData(newGiftPlayModel);
                     } else {
                         play(newGiftPlayModel, true);
                     }
                 } else {
                     mCurStatus = STATUS_WAIT_OVER;
+                    mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
                     mUiHandler.removeMessages(MSG_DISPLAY_OVER);
                     long delayTime = 2000;
                     if (mCurGiftPlayModel.getGift() instanceof AnimationGift) {

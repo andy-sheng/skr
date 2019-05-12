@@ -268,6 +268,7 @@ public class GiftContinuousView extends RelativeLayout {
                                 }
                             } else {
                                 mCurStatus = STATUS_WAIT_OVER;
+                                mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
                                 mUiHandler.removeMessages(MSG_DISPLAY_OVER);
                                 mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
                             }

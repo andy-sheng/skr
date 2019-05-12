@@ -51,10 +51,6 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
 
         @Override
         public void onStart(GiftPlayModel model, GiftBigAnimationView giftBigAnimationView) {
-            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-                mGiftPlayControlTemplate.endCurrent(model);
-                return;
-            }
             giftBigAnimationView.play(GiftBigAnimationViewGroup.this, model);
         }
 
