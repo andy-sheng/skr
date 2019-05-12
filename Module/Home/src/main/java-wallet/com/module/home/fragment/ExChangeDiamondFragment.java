@@ -159,7 +159,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
         mMaxDiamond = (long) mDq * exChangeInfoModel.getToZSRatio();
         mTvMaxExchange.setText(String.format("账户最多可兑换%d钻石", mMaxDiamond));
-        mTvTip.setText(String.format("红钻余额%.1f钻石，", mDq));
+        mTvTip.setText(String.format("红钻余额%.1f，", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToZSDesc());
     }
 
