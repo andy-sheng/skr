@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_62_dp"
-        android:background="@drawable/tongxunlu_kongyemianqietu" />
+        android:background="@drawable/tongxunlu_fensikongbaiye" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,7 +18,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/view_20_dp"
         android:text="试试卖艺涨粉丝吧～"
-        android:textColor="#993B4E79"
-        android:textSize="@dimen/textsize_14_dp" />
+        android:textColor="#778FAF"
+        android:textStyle="bold"
+        android:textSize="@dimen/textsize_16_dp" />
 
 </LinearLayout>
