@@ -77,8 +77,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
                 if (curModel != null
                         && giftPlayModel.getSender().getUserId() == curModel.getSender().getUserId()
                         && giftPlayModel.getContinueId() == curModel.getContinueId()
-                        && id != giftContinuousView.getId()) {
-
+                        && id != giftContinuousView.getMyId()) {
                     return true;
                 }
             }

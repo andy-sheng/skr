@@ -60,7 +60,7 @@ public class GiftContinuousView extends RelativeLayout {
 
     int mCurNum = 1;
 
-    GiftPlayModel mCurGiftPlayModel;
+    volatile GiftPlayModel mCurGiftPlayModel;
 
     int mCurStatus = STATUS_IDLE;
 
@@ -364,6 +364,10 @@ public class GiftContinuousView extends RelativeLayout {
     public void setMyId(int id) {
         mId = id;
         TAG = "GiftContinuousView " + id;
+    }
+
+    public int getMyId() {
+        return mId;
     }
 
     public interface Listener {
