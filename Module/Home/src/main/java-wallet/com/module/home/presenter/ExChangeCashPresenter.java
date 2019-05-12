@@ -37,6 +37,10 @@ public class ExChangeCashPresenter extends RxLifeCyclePresenter {
     }
 
     public void exChange(long cashNum) {
+        if(cashNum == 0){
+            return;
+        }
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("amount", cashNum);
 

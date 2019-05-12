@@ -39,6 +39,10 @@ public class ExChangeDiamondPresenter extends RxLifeCyclePresenter {
     }
 
     public void exChange(long diamondNum) {
+        if(diamondNum == 0){
+            return;
+        }
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("amount", diamondNum);
 
