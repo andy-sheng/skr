@@ -81,6 +81,12 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
         mTvExchangeWhole.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                float f = hfToYuan(mMaxExchangeCash);
+                if(f > 10000){
+                    ToastUtils.showShort("一次最多兑换10000元");
+                    return;
+                }
+
                 mEditCashNum.setText(String.format("%.2f", hfToYuan(mMaxExchangeCash)));
                 mEditCashNum.setSelection(mEditCashNum.length());
             }
@@ -105,9 +111,10 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
 
                 if (checkInputNum(editString)) {
                     long cash = stringToHaoFen(editString);
-                    if (cash >= 10000 * HF) {
+                    if (cash > 10000 * HF) {
                         mEditCashNum.setText(beforeTextChanged);
                         mEditCashNum.setSelection(beforeTextChanged.length() - 1);
+                        ToastUtils.showShort("一次最多兑换10000元");
                         return;
                     }
 
@@ -139,10 +146,10 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
             }
         });
 
-        mUiHandler.postDelayed(()-> {
-                mEditCashNum.setFocusable(true);
-                mEditCashNum.requestFocus();
-                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity(), mEditCashNum);
+        mUiHandler.postDelayed(() -> {
+            mEditCashNum.setFocusable(true);
+            mEditCashNum.requestFocus();
+            U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity(), mEditCashNum);
         }, 500);
 
         mIvExchangeBtn.setEnabled(false);
@@ -163,7 +170,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 .setText("兑换成功")
                 .build());
         mExChangeCashPresenter.getDQBalance();
-        if(mFragmentDataListener != null){
+        if (mFragmentDataListener != null) {
             mFragmentDataListener.onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
         }
         finish();
