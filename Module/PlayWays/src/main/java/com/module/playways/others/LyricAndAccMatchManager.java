@@ -129,6 +129,7 @@ public class LyricAndAccMatchManager {
         mUiHandler.removeCallbacksAndMessages(null);
         mLastLineNum = -1;
         mListener = l;
+        mHasLauncher = false;
         parseLyric();
     }
 
@@ -141,6 +142,7 @@ public class LyricAndAccMatchManager {
             mDisposable.dispose();
         }
         mLastLineNum = -1;
+        mHasLauncher = false;
         mListener = null;
     }
 
@@ -204,6 +206,7 @@ public class LyricAndAccMatchManager {
         }
         if (mHasLauncher) {
             MyLog.d(TAG, "launchLyricEvent 事件已经发射过了，取消这次");
+            return;
         }
         mHasLauncher = true;
         mUiHandler.removeMessages(MSG_ENSURE_LAUNCHER);
@@ -244,6 +247,7 @@ public class LyricAndAccMatchManager {
                     long ts2 = in.getCurrent() + mAccBeginTs;
                     if (Math.abs(ts1 - ts2) > 500) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=" + ts1 + " 伴奏ts=" + ts2);
+
                         mManyLyricsView.seekto((int) ts2);
                     }
                 }
