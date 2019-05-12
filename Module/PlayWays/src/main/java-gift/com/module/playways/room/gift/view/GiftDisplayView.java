@@ -15,10 +15,17 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.room.gift.adapter.GiftDisplayAdapter;
 import com.module.playways.room.gift.adapter.GiftViewPagerAdapter;
+import com.module.playways.room.gift.event.BigGiftMsgEvent;
+import com.module.playways.room.gift.event.GIftNotifyEvent;
 import com.module.playways.room.gift.inter.IGiftDisplayView;
 import com.module.playways.room.gift.loadsir.GiftEmptyCallback;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.presenter.GiftViewPresenter;
+import com.module.playways.room.room.gift.model.GiftPlayModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +71,8 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
         public void select(BaseGift baseGift, GiftDisplayAdapter.GiftUpdateListner giftUpdateListner) {
             if (mGiftUpdateListner != null) {
                 mGiftUpdateListner.updateGift(mSelectedGift);
+            } else {
+                EventBus.getDefault().post(new GIftNotifyEvent());
             }
 
             mSelectedGift = baseGift;
@@ -105,7 +114,7 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
     public void showGift(HashMap<Integer, List<BaseGift>> baseGiftCollection) {
         mLoadService.showSuccess();
 
-        if (baseGiftCollection != null && baseGiftCollection.size() > 0 && baseGiftCollection.get(0).size() > 0)  {
+        if (baseGiftCollection != null && baseGiftCollection.size() > 0 && baseGiftCollection.get(0).size() > 0) {
             if (mSelectedGift == null) {
                 List<BaseGift> baseGiftList = baseGiftCollection.get(0);
                 mSelectedGift = baseGiftList.get(0);
@@ -126,6 +135,7 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
 
     public void destroy() {
         mGiftViewPresenter.destroy();
+        mGiftViewPagerAdapter.destroy();
     }
 
     public interface IGiftOpListener {

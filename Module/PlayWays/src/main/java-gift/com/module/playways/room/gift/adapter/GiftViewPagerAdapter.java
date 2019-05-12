@@ -77,6 +77,13 @@ public class GiftViewPagerAdapter extends PagerAdapter {
         return mGiftDataHashMap == null ? 0 : mGiftDataHashMap.size();
     }
 
+    public void destroy() {
+        Iterator<Map.Entry<Integer, GiftOnePageView>> integerGiftOnePageViewIterator = mGiftOnePageViewHashMap.entrySet().iterator();
+        while (integerGiftOnePageViewIterator.hasNext()) {
+            integerGiftOnePageViewIterator.next().getValue().destroy();
+        }
+    }
+
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == (object);
