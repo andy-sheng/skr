@@ -821,8 +821,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
-        GiftBigContinuousView mGiftBigContinueView = (GiftBigContinuousView) mRootView.findViewById(R.id.gift_big_continue_view);
-        giftBigAnimationViewGroup.setGiftBigContinuousView(mGiftBigContinueView);
+        GiftBigContinuousView giftBigContinueView =  mRootView.findViewById(R.id.gift_big_continue_view);
+        giftBigAnimationViewGroup.setGiftBigContinuousView(giftBigContinueView);
 
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
     }

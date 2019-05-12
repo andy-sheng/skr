@@ -121,6 +121,9 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSwitchRoomEvent grabSwitchRoomEvent) {
         mGiftPlayControlTemplate.reset();
+        for (GiftBigAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
+            giftBigAnimationView.reset();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

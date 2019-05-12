@@ -189,6 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/view_67_dp"
+        android:visibility="gone"
         android:gravity="bottom"
         android:paddingLeft="@dimen/view_16_dp" />
 

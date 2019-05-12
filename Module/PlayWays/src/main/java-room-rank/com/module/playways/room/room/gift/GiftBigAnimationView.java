@@ -219,6 +219,11 @@ public class GiftBigAnimationView {
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
+    public void reset() {
+        if (mSVGAImageView != null) {
+            mSVGAImageView.stopAnimation(true);
+        }
+    }
 
     public interface Listener {
         void onFinished(GiftBigAnimationView animationView, GiftPlayModel giftPlayModel);
