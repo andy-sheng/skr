@@ -114,7 +114,7 @@ public class GiftBigContinueViewGroup extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSwitchRoomEvent grabSwitchRoomEvent) {
-        mGiftPlayControlTemplate.reset();
+        mGiftPlayControlTemplate.clear();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

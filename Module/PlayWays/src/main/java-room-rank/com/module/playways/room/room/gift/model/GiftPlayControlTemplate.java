@@ -335,6 +335,19 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
         }
     }
 
+    public void clear() {
+        mHandlerGiftPlayModelhread.post(new Runnable() {
+            @Override
+            public void run() {
+                mOwnerGiftMap.clear();
+                mMediumGiftMap.clear();
+                mSmallQueueMap.clear();
+                mFreeQueueMap.clear();
+                mHasContinueCount.clear();
+            }
+        });
+    }
+
     /**
      * 复位
      */
@@ -357,7 +370,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
      *
      * @return
      */
-    public  boolean hasMoreData() {
+    public boolean hasMoreData() {
         return !mOwnerGiftMap.isEmpty()
                 || !mSmallQueueMap.isEmpty()
                 || !mMediumGiftMap.isEmpty()
