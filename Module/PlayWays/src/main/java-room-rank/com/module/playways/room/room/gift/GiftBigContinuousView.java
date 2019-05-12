@@ -26,8 +26,6 @@ public class GiftBigContinuousView extends RelativeLayout {
     ObjectAnimator mStep1Animator;
     ExTextView mSenderNameTv;
 
-    GiftContinueViewGroup.GiftProvider mGiftProvider;
-
     GiftPlayModel mCurGiftPlayModel;
 
     public GiftBigContinuousView(Context context) {
@@ -43,10 +41,6 @@ public class GiftBigContinuousView extends RelativeLayout {
     public GiftBigContinuousView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
-    }
-
-    public void setGiftProvider(GiftContinueViewGroup.GiftProvider giftProvider) {
-        mGiftProvider = giftProvider;
     }
 
     private void init() {
