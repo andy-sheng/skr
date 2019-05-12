@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.common.callback.Callback;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -68,7 +69,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
                     if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
                         MyLog.d(TAG, "add owner");
                         updateOrPushGiftModel(mOwnerGiftMap, model, true);
-                    } else if(model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI){
+                    } else if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
                         updateOrPushGiftModel(mFreeQueueMap, model, true);
                     } else {
                         switch (model.getGift().getDisplayType()) {
@@ -261,12 +262,18 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
             /**
              * 这是播放的状态中取数据的，从最高优先级开始往下找
              */
+
+            String key = "";
             if (mHasContinueCount.size() > 30) {
-                Iterator iterator = mHasContinueCount.entrySet().iterator();
+                Iterator<String> iterator = mHasContinueCount.keySet().iterator();
                 while (iterator.hasNext()) {
-                    iterator.remove();
+                    key = iterator.next();
                     break;
                 }
+            }
+
+            if (!TextUtils.isEmpty(key)) {
+                mHasContinueCount.remove(key);
             }
 
             /**
