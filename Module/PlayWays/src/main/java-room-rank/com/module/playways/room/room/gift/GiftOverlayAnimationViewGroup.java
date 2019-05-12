@@ -27,7 +27,7 @@ import java.util.List;
 public class GiftOverlayAnimationViewGroup extends RelativeLayout {
     public static String TAG = GiftOverlayAnimationViewGroup.class.getSimpleName();
 
-    static final int MAX_CONSUMER_NUM = 6;
+    static final int MAX_CONSUMER_NUM = 3;
 
     private List<GiftOverlayAnimationView> mFeedGiftAnimationViews = new ArrayList<>(MAX_CONSUMER_NUM);
     private BaseRoomData mRoomData;
