@@ -86,9 +86,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/view_3_dp"
                 android:background="@null"
-                android:maxLength="9"
                 android:hint="请输入兑换钻石数"
-                android:inputType="number"
+                android:inputType="numberDecimal"
+                android:maxLength="9"
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_24_dp" />
         </LinearLayout>
@@ -129,16 +129,16 @@
     </LinearLayout>
 
     <com.dialog.view.StrokeTextView
-        android:textSize="@dimen/textsize_18_dp"
-        android:textColor="@color/white"
         android:id="@+id/iv_exchange_btn"
         android:layout_width="@dimen/view_180_dp"
         android:layout_height="@dimen/view_45_dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_20_dp"
-        app:bl_unEnabled_drawable="@drawable/chongzhijiemian_bukeyidianji"
-        app:bl_enabled_drawable="@drawable/chongzuzuanshi_anniu"
         android:gravity="center"
         android:paddingBottom="@dimen/view_5_dp"
-        android:text="立即兑换" />
+        android:text="立即兑换"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        app:bl_enabled_drawable="@drawable/chongzuzuanshi_anniu"
+        app:bl_unEnabled_drawable="@drawable/chongzhijiemian_bukeyidianji" />
 </LinearLayout>

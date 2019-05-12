@@ -43,7 +43,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     ExChangeDiamondPresenter mExChangeDiamondPresenter;
 
     //能兑换的最大钻石
-    long mMaxDiamond = 0;
+    float mMaxDiamond = 0;
     //目前剩余的红钻
     float mDq = 0;
 
@@ -72,7 +72,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
         mIvExchangeBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mExChangeDiamondPresenter.exChange(Long.parseLong(mEditCashNum.getText().toString()));
+                mExChangeDiamondPresenter.exChange(Float.parseFloat(mEditCashNum.getText().toString()));
             }
         });
 
@@ -100,25 +100,27 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
             @Override
             public void afterTextChanged(Editable s) {
                 String editString = s.toString();
-                if (TextUtils.isEmpty(editString)) {
-                    mIvExchangeBtn.setEnabled(false);
-                    mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                    mTvTip.setText(String.format("红钻余额%.1f，", mDq));
-                    mTvExchangeWhole.setVisibility(View.VISIBLE);
-                    return;
-                }
+                if (checkInputNum(editString)) {
+                    if (TextUtils.isEmpty(editString)) {
+                        mIvExchangeBtn.setEnabled(false);
+                        mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
+                        mTvTip.setText(String.format("红钻余额%.1f，", mDq));
+                        mTvExchangeWhole.setVisibility(View.VISIBLE);
+                        return;
+                    }
 
-                long inputNum = Long.parseLong(editString);
-                if (inputNum > mMaxDiamond) {
-                    mIvExchangeBtn.setEnabled(false);
-                    mTvTip.setTextColor(U.getColor(R.color.red));
-                    mTvTip.setText("已超过可兑换红钻余额");
-                    mTvExchangeWhole.setVisibility(View.GONE);
-                } else {
-                    mIvExchangeBtn.setEnabled(true);
-                    mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                    mTvTip.setText(String.format("红钻余额%.1f，", mDq));
-                    mTvExchangeWhole.setVisibility(View.VISIBLE);
+                    float inputNum = Float.parseFloat(editString);
+                    if (inputNum > mMaxDiamond) {
+                        mIvExchangeBtn.setEnabled(false);
+                        mTvTip.setTextColor(U.getColor(R.color.red));
+                        mTvTip.setText("已超过可兑换红钻余额");
+                        mTvExchangeWhole.setVisibility(View.GONE);
+                    } else {
+                        mIvExchangeBtn.setEnabled(true);
+                        mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
+                        mTvTip.setText(String.format("红钻余额%.1f，", mDq));
+                        mTvExchangeWhole.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -157,8 +159,8 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     @Override
     public void showDQ(ExChangeInfoModel exChangeInfoModel) {
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
-        mMaxDiamond = (long) mDq * exChangeInfoModel.getToZSRatio();
-        mTvMaxExchange.setText(String.format("账户最多可兑换%d钻石", mMaxDiamond));
+        mMaxDiamond = mDq * exChangeInfoModel.getToZSRatio();
+        mTvMaxExchange.setText(String.format("账户最多可兑换%.1f钻石", mMaxDiamond));
         mTvTip.setText(String.format("红钻余额%.1f，", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToZSDesc());
     }
@@ -167,6 +169,44 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     public void onStop() {
         super.onStop();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+    }
+
+    /**
+     * 检查输入的数字是否合法
+     *
+     * @param editString
+     * @return
+     */
+    private boolean checkInputNum(String editString) {
+        //不可以以 . 开始
+        if (editString.startsWith(".")) {
+            mEditCashNum.setText("");
+            return false;
+        }
+
+        if (!TextUtils.isEmpty(editString)) {
+            //01 02这样的情况
+            if (editString.startsWith("0") && !editString.equals("0") && !editString.startsWith("0.")) {
+                mEditCashNum.setText("0");
+                mEditCashNum.setSelection("0".length());
+                return false;
+            }
+
+            if (editString.contains(".") && !editString.endsWith(".")) {
+                //小数点后面只能有两位
+                String floatNum = editString.split("\\.")[1];
+                String intNum = editString.split("\\.")[0];
+                if (floatNum.length() > 1) {
+                    floatNum = floatNum.substring(0, 1);
+                    String text = intNum + "." + floatNum;
+                    mEditCashNum.setText(text);
+                    mEditCashNum.setSelection(text.length());
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     @Override
