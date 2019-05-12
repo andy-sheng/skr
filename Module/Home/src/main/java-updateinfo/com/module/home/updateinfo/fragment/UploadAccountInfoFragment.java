@@ -226,7 +226,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                                             .navigation();
                                 } else {
                                 }
-                                
+
                                 if (getActivity() != null) {
                                     getActivity().finish();
                                 }
