@@ -70,13 +70,13 @@ public class HalfRechargeFragment extends BallanceFragment {
             }
         });
 
-        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                mEPayPlatform = EPayPlatform.ALI_PAY;
-                updatePlatformBg();
-            }
-        });
+//        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
+//            @Override
+//            public void clickValid(View v) {
+//                mEPayPlatform = EPayPlatform.ALI_PAY;
+//                updatePlatformBg();
+//            }
+//        });
 
         mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
             @Override

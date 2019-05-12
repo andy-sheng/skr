@@ -144,14 +144,14 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
             }
         });
 
-        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                mEPayPlatform = EPayPlatform.ALI_PAY;
-                mIvWeixinFlag.setVisibility(View.GONE);
-                mZhifubaoFlag.setVisibility(View.VISIBLE);
-            }
-        });
+//        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
+//            @Override
+//            public void clickValid(View v) {
+//                mEPayPlatform = EPayPlatform.ALI_PAY;
+//                mIvWeixinFlag.setVisibility(View.GONE);
+//                mZhifubaoFlag.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         mBallencePresenter = new BallencePresenter(getActivity(), this);
         addPresent(mBallencePresenter);

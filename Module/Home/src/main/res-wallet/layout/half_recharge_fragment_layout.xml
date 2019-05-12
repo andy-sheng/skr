@@ -71,6 +71,7 @@
                 android:layout_height="@dimen/view_2_dp" />
 
             <FrameLayout
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_45_dp"
                 android:layout_marginRight="@dimen/view_16_dp"
