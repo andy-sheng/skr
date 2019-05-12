@@ -37,6 +37,7 @@ import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.bottom.GrabBottomContainerView;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
@@ -131,7 +132,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     InputContainerView mInputContainerView;
 
     ViewGroup mBottomBgVp;
-    BottomContainerView mBottomContainerView;
+    GrabBottomContainerView mBottomContainerView;
 
 //    GrabVoiceControlPanelView mVoiceControlView;
 
@@ -484,6 +485,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGiftPanelView.setGrabRoomData(mRoomData);
         mContinueSendView = (ContinueSendView) mRootView.findViewById(R.id.continue_send_view);
         mContinueSendView.setBaseRoomData(mRoomData);
+        mContinueSendView.setObserver(new ContinueSendView.OnVisibleStateListener() {
+            @Override
+            public void onVisible(boolean isVisible) {
+                mBottomContainerView.setOpVisible(!isVisible);
+            }
+        });
     }
 
     private void initInputView() {
@@ -499,7 +506,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
          */
         lp.height = U.getDisplayUtils().getScreenHeight() * 284 / 667;
 
-        mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
+        mBottomContainerView = (GrabBottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {

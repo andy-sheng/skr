@@ -30,6 +30,8 @@ import com.module.playways.room.gift.presenter.BuyGiftPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Observer;
+
 import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrCoinNotEnough;
 import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrPresentObjLeave;
 import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrSystem;
@@ -54,6 +56,8 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
     AnimatorSet mJumpAnimatorSet;
 
     UserInfoModel mReceiver;
+
+    OnVisibleStateListener mOnVisibleStateListener;
 
     private long mCanContinueDuration = 3000;
 
@@ -85,6 +89,10 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 
     public void setBaseRoomData(GrabRoomData baseRoomData) {
         mBaseRoomData = baseRoomData;
+    }
+
+    public void setObserver(OnVisibleStateListener observer) {
+        mOnVisibleStateListener = observer;
     }
 
     public void startBuy(BaseGift baseGift, UserInfoModel receiver) {
@@ -189,6 +197,10 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
             }
 
             mIvBg.clearAnimation();
+
+            if (mOnVisibleStateListener != null) {
+                mOnVisibleStateListener.onVisible(false);
+            }
         } else {
             RotateAnimation rotate = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             LinearInterpolator lin = new LinearInterpolator();
@@ -198,6 +210,10 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
             rotate.setFillAfter(true);
             rotate.setStartOffset(10);
             mIvBg.setAnimation(rotate);
+
+            if (mOnVisibleStateListener != null) {
+                mOnVisibleStateListener.onVisible(true);
+            }
         }
     }
 
@@ -216,5 +232,9 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
     public void destroy() {
         mBuyGiftPresenter.destroy();
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    public interface OnVisibleStateListener {
+        void onVisible(boolean isVisible);
     }
 }

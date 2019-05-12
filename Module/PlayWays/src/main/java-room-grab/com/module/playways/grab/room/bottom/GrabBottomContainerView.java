@@ -49,6 +49,8 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     GrabRoomData mGrabRoomData;
 
+    RelativeLayout mEmojiArea;
+
     public GrabBottomContainerView(Context context) {
         super(context);
     }
@@ -64,6 +66,7 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     protected void init() {
         super.init();
+        mEmojiArea = this.findViewById(R.id.emoji_area);
         mIvRoomManage = this.findViewById(R.id.iv_room_manage);
         mIvRoomManage.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -123,6 +126,13 @@ public class GrabBottomContainerView extends BottomContainerView {
                 }
             }
         });
+    }
+
+    public void setOpVisible(boolean visible) {
+        mEmojiArea.setVisibility(visible ? VISIBLE : INVISIBLE);
+        mEmoji2Btn.setEnabled(visible);
+        mEmoji1Btn.setEnabled(visible);
+        mIvRoomManage.setEnabled(visible);
     }
 
     protected void onQuickMsgDialogShow(boolean show) {
