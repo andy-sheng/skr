@@ -171,12 +171,6 @@
         android:paddingBottom="@dimen/view_8_dp"
         android:visibility="gone" />
 
-    <com.module.playways.room.room.view.InputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
 
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
@@ -223,5 +217,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_trans_80" />
+
+
+    <com.module.playways.room.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
