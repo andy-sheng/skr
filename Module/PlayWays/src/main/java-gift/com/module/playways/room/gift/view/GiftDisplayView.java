@@ -15,7 +15,6 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.room.gift.adapter.GiftDisplayAdapter;
 import com.module.playways.room.gift.adapter.GiftViewPagerAdapter;
-import com.module.playways.room.gift.event.BigGiftMsgEvent;
 import com.module.playways.room.gift.event.GIftNotifyEvent;
 import com.module.playways.room.gift.inter.IGiftDisplayView;
 import com.module.playways.room.gift.loadsir.GiftEmptyCallback;

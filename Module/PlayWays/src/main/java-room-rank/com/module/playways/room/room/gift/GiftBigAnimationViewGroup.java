@@ -7,8 +7,10 @@ import android.widget.RelativeLayout;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.module.playways.BaseRoomData;
 import com.module.playways.R;
-import com.module.playways.RoomDataUtils;
-import com.module.playways.room.gift.event.BigGiftMsgEvent;
+import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.room.gift.event.GiftBrushMsgEvent;
+import com.module.playways.room.room.comment.model.CommentGiftModel;
+import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,6 +20,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.module.playways.room.room.gift.model.GiftPlayControlTemplate.BIG_GIFT;
+
 public class GiftBigAnimationViewGroup extends RelativeLayout {
 
     public final static String TAG = GiftBigAnimationViewGroup.class.getSimpleName();
@@ -26,6 +30,8 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
 
     private List<GiftBigAnimationView> mFeedGiftAnimationViews = new ArrayList<>(MAX_CONSUMER_NUM);
     private BaseRoomData mRoomData;
+
+    GiftBigContinuousView mGiftBigContinueView;
 
     public GiftBigAnimationViewGroup(Context context) {
         super(context);
@@ -52,11 +58,14 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
         @Override
         public void onStart(GiftPlayModel model, GiftBigAnimationView giftBigAnimationView) {
             giftBigAnimationView.play(GiftBigAnimationViewGroup.this, model);
+            mGiftBigContinueView.setVisibility(VISIBLE);
+            mGiftBigContinueView.play(model);
+            EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(model)));
         }
 
         @Override
         protected void onEnd(GiftPlayModel model) {
-
+            mGiftBigContinueView.setVisibility(GONE);
         }
     };
 
@@ -109,11 +118,21 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(BigGiftMsgEvent bigGiftMsgEvent) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSwitchRoomEvent grabSwitchRoomEvent) {
+        mGiftPlayControlTemplate.reset();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GiftBrushMsgEvent giftPresentEvent) {
         // 收到一条礼物消息,进入生产者队列
-        GiftPlayModel playModel = bigGiftMsgEvent.getGiftPlayModel();
-        // 如果消息能被当前忙碌的view接受
-        mGiftPlayControlTemplate.add(playModel, true);
+        if (giftPresentEvent.getGPrensentGiftMsg().getGiftInfo().getDisplayType() == BIG_GIFT) {
+            GiftPlayModel playModel = GiftPlayModel.parseFromEvent(giftPresentEvent.getGPrensentGiftMsg(), mRoomData);
+            mGiftPlayControlTemplate.add(playModel, true);
+        }
+    }
+
+    public void setGiftBigContinuousView(GiftBigContinuousView giftBigContinueView) {
+        mGiftBigContinueView = giftBigContinueView;
     }
 }

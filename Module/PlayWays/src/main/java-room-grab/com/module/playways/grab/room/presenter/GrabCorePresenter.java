@@ -31,7 +31,6 @@ import com.common.utils.HandlerTaskTimer;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
-import com.module.playways.room.gift.event.BigGiftMsgEvent;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
 import com.zq.live.proto.Common.EGiftDisplayType;

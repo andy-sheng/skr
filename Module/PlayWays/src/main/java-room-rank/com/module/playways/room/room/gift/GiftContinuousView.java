@@ -17,17 +17,15 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
-import com.module.playways.room.gift.event.BigGiftMsgEvent;
+import com.module.playways.R;
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.view.ContinueTextView;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
-import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 
