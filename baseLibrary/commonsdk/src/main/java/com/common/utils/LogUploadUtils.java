@@ -138,7 +138,8 @@ public class LogUploadUtils {
             for (int i = fileList.length - 1; i >= 0; i--) {
                 if (fileList[i].isFile()) {
                     if (fileList[i].getName().endsWith(".log")
-                            || fileList[i].getName().endsWith(".txt")) {
+                            || fileList[i].getName().endsWith(".txt")
+                            || fileList[i].getName().endsWith(".xlog")) {
                         lastThreeFiles.add(fileList[i].getAbsolutePath());
                         if (lastThreeFiles.size() >= lastNum) {
                             break;
