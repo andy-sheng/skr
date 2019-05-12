@@ -62,7 +62,7 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
 
         @Override
         public void select(BaseGift baseGift, GiftDisplayAdapter.GiftUpdateListner giftUpdateListner) {
-            if (mSelectedGift != null) {
+            if (mGiftUpdateListner != null) {
                 mGiftUpdateListner.updateGift(mSelectedGift);
             }
 
@@ -104,6 +104,13 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
     @Override
     public void showGift(HashMap<Integer, List<BaseGift>> baseGiftCollection) {
         mLoadService.showSuccess();
+
+        if (baseGiftCollection != null && baseGiftCollection.size() > 0 && baseGiftCollection.get(0).size() > 0)  {
+            if (mSelectedGift == null) {
+                List<BaseGift> baseGiftList = baseGiftCollection.get(0);
+                mSelectedGift = baseGiftList.get(0);
+            }
+        }
         mGiftViewPagerAdapter.setData(baseGiftCollection);
     }
 
