@@ -371,6 +371,15 @@ public class ActivityUtils {
         return homeExist;
     }
 
+    public boolean isHomeActivityExist() {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if(U.getActivityUtils().isHomeActivity(activity)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void safeGo(Intent intent) {
         if (U.app().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
             getTopActivity().startActivity(intent);

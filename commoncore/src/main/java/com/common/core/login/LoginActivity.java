@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity {
                         .navigation();
             } else {
                 // 必须放在这，防止当前栈中没有activity导致底部露出
-                if (!isHomeActivityExist()) {
+                if (!U.getActivityUtils().isHomeActivityExist()) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
                             .navigation();
                 } else {
@@ -95,16 +95,6 @@ public class LoginActivity extends BaseActivity {
         }
         finish();
     }
-
-    private boolean isHomeActivityExist() {
-        for (Activity activity : U.getActivityUtils().getActivityList()) {
-            if(U.getActivityUtils().isHomeActivity(activity)){
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     @Override
     protected void onStart() {

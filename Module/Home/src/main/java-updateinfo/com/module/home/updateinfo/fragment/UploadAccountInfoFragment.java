@@ -221,6 +221,12 @@ public class UploadAccountInfoFragment extends BaseFragment {
                                 .build(), true, true, new MyUserInfoManager.ServerCallback() {
                             @Override
                             public void onSucess() {
+                                if (!U.getActivityUtils().isHomeActivityExist()) {
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                                            .navigation();
+                                } else {
+                                }
+                                
                                 if (getActivity() != null) {
                                     getActivity().finish();
                                 }
