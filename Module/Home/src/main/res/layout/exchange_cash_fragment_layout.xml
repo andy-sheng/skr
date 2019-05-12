@@ -86,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/view_3_dp"
                 android:background="@null"
-                android:hint="请输入提现金额"
+                android:hint="请输入兑换现金数"
                 android:inputType="numberDecimal"
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_24_dp" />
