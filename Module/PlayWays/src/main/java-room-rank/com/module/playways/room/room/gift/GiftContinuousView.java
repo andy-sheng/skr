@@ -123,13 +123,13 @@ public class GiftContinuousView extends RelativeLayout {
                 /**
                  * 这边得在异步线程立即设值
                  */
-                MyLog.d(TAG, "tryNotifyHasGiftCanPlay onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
+
                 mCurGiftPlayModel = newGiftPlayModel;
             }
         }, new Callback<GiftPlayModel>() {
             @Override
             public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                MyLog.d(TAG, "tryNotifyHasGiftCanPlay newGiftPlayModel" + newGiftPlayModel);
+
                 if (newGiftPlayModel != null) {
                     play(newGiftPlayModel, false);
                 }
@@ -247,7 +247,7 @@ public class GiftContinuousView extends RelativeLayout {
                         @Override
                         public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
                             if (newGiftPlayModel != null) {
-                                MyLog.d(TAG, "step2 onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
+
                                 giftPlayModels[0] = mCurGiftPlayModel;
                                 mCurGiftPlayModel = newGiftPlayModel;
                             }
@@ -255,7 +255,7 @@ public class GiftContinuousView extends RelativeLayout {
                     }, new Callback<GiftPlayModel>() {
                         @Override
                         public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                            MyLog.d(TAG, "step2 newGiftPlayModel" + newGiftPlayModel);
+
                             //TODO 这里有 bug 吧
                             if (newGiftPlayModel != null) {
                                 if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
@@ -308,7 +308,7 @@ public class GiftContinuousView extends RelativeLayout {
         mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
             @Override
             public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                MyLog.d(TAG, "onPlayOver onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
+
                 if (newGiftPlayModel != null) {
                     giftPlayModels[0] = mCurGiftPlayModel;
                     mCurGiftPlayModel = newGiftPlayModel;
@@ -317,7 +317,7 @@ public class GiftContinuousView extends RelativeLayout {
         }, new Callback<GiftPlayModel>() {
             @Override
             public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                MyLog.d(TAG, "onPlayOver newGiftPlayModel" + newGiftPlayModel);
+
                 if (newGiftPlayModel != null) {
                     if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
                             && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()

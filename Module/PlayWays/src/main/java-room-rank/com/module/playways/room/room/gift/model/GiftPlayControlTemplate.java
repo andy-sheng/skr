@@ -65,28 +65,28 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
             public void run() {
                 //以防崩溃
                 try {
-                    MyLog.d(TAG, "add " + model);
+
                     if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                        MyLog.d(TAG, "add owner");
+
                         updateOrPushGiftModel(mOwnerGiftMap, model, true);
                     } else if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
                         updateOrPushGiftModel(mFreeQueueMap, model, true);
                     } else {
                         switch (model.getGift().getDisplayType()) {
                             case MEDIUM_GIFT:
-                                MyLog.d(TAG, "add mMediumGiftMap");
+
                                 updateOrPushGiftModel(mMediumGiftMap, model, true);
                                 break;
                             case SMALL_GIFT:
-                                MyLog.d(TAG, "add mSmallQueueMap");
+
                                 updateOrPushGiftModel(mSmallQueueMap, model, false);
                                 break;
                             case FREE_GIFT:
-                                MyLog.d(TAG, "add mFreeQueueMap");
+
                                 updateOrPushGiftModel(mFreeQueueMap, model, false);
                                 break;
                             default:
-                                MyLog.e(TAG, "未知类型的礼物");
+
                                 updateOrPushGiftModel(mFreeQueueMap, model, false);
                                 break;
                         }
@@ -101,21 +101,15 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     private void updateOrPushGiftModel(LinkedHashMap<String, GiftPlayModel> linkedHashMap, GiftPlayModel model, boolean must) {
         String key = getKey(model);
         GiftPlayModel giftPlayModel = linkedHashMap.get(key);
-        MyLog.d(TAG, "updateOrPushGiftModel" + " giftPlayModel=" + giftPlayModel);
         if (giftPlayModel != null) {
-            MyLog.d(TAG, "updateOrPushGiftModel 1");
             if (model.getBeginCount() < giftPlayModel.getBeginCount()) {
-                MyLog.d(TAG, "updateOrPushGiftModel 2");
                 giftPlayModel.setBeginCount(model.getBeginCount());
             }
             if (model.getEndCount() > giftPlayModel.getEndCount()) {
-                MyLog.d(TAG, "updateOrPushGiftModel 3");
                 giftPlayModel.setEndCount(model.getEndCount());
             }
         } else {
-            MyLog.d(TAG, "updateOrPushGiftModel 5");
             if (linkedHashMap.size() < SIZE || must) {
-                MyLog.d(TAG, "updateOrPushGiftModel 6");
                 linkedHashMap.put(key, model);
             }
         }
@@ -208,16 +202,6 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
                     }
                 }
             });
-        }
-    }
-
-    private void printQueueState(String name, LinkedHashMap<String, GiftPlayModel> linkedHashMap) {
-        Iterator iterator = linkedHashMap.entrySet().iterator();
-        GiftPlayModel model = null;
-        while (iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            model = (GiftPlayModel) entry.getValue();
-            MyLog.d(TAG, name + " has model " + model);
         }
     }
 
