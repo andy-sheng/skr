@@ -119,12 +119,18 @@ public class GiftOverlayAnimationView {
 
             @Override
             public void onFinished() {
+                if (mSVGAImageView != null) {
+                    mSVGAImageView.setCallback(null);
+                    mSVGAImageView.stopAnimation(true);
+                }
                 GiftOverlayAnimationView.this.onFinish();
             }
 
             @Override
             public void onRepeat() {
-                GiftOverlayAnimationView.this.onFinish();
+                if (mSVGAImageView != null && mSVGAImageView.isAnimating()) {
+                    mSVGAImageView.stopAnimation(true);
+                }
             }
 
             @Override

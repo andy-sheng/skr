@@ -162,12 +162,18 @@ public class GiftBigAnimationView {
 
             @Override
             public void onFinished() {
+                if (mSVGAImageView != null) {
+                    mSVGAImageView.setCallback(null);
+                    mSVGAImageView.stopAnimation(true);
+                }
                 GiftBigAnimationView.this.onFinish();
             }
 
             @Override
             public void onRepeat() {
-                GiftBigAnimationView.this.onFinish();
+                if (mSVGAImageView != null && mSVGAImageView.isAnimating()) {
+                    mSVGAImageView.stopAnimation(true);
+                }
             }
 
             @Override
