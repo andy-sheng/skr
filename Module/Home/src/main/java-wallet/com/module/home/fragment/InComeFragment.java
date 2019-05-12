@@ -19,6 +19,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.pay.EPayPlatform;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -134,6 +135,12 @@ public class InComeFragment extends BaseFragment implements IInComeView {
         mBtnExchangeDiamond.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                float hz = Float.parseFloat(mTvDqNum.getText().toString());
+                if(hz < 1){
+                    ToastUtils.showShort("红钻数量少于1个无法兑换哦");
+                    return;
+                }
+
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(getActivity(), ExChangeDiamondFragment.class)
                                 .setAddToBackStack(true)
@@ -176,6 +183,12 @@ public class InComeFragment extends BaseFragment implements IInComeView {
         mBtnExchangeCash.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                float hz = Float.parseFloat(mTvDqNum.getText().toString());
+                if(hz < 1){
+                    ToastUtils.showShort("红钻数量少于1个无法兑换哦");
+                    return;
+                }
+
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(getActivity(), ExChangeCashFragment.class)
                                 .setAddToBackStack(true)
