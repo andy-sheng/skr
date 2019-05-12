@@ -34,10 +34,10 @@ public class MyLog {
             String logPath = U.getAppInfoUtils().getSubDirPath("logs");
 
             if (isDebugLogOpen() || U.getChannelUtils().isStaging()) {
-                Xlog.appenderOpen(Xlog.LEVEL_ALL, Xlog.AppednerModeAsync, cachePath, logPath, U.getAppInfoUtils().getAppName(), 0, "");
+                Xlog.appenderOpen(Xlog.LEVEL_ALL, Xlog.AppednerModeAsync, cachePath, logPath, U.getAppInfoUtils().getPackageName(), 0, "");
                 Xlog.setConsoleLogOpen(true);
             } else {
-                Xlog.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, U.getAppInfoUtils().getAppName(), 0, "");
+                Xlog.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, U.getAppInfoUtils().getPackageName(), 0, "");
                 Xlog.setConsoleLogOpen(false);
             }
             com.tencent.mars.xlog.Log.setLogImp(new Xlog());

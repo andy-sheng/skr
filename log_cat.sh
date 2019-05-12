@@ -1,0 +1,1 @@
+python decode_mars_nocrypt_log_file.py $1
