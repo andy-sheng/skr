@@ -189,8 +189,6 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
             Integer curContinue = mHasContinueCount.get(getKey(model));
             if (curContinue != null) {
                 model.setBeginCount(curContinue.intValue() + 1);
-            } else {
-                model.setBeginCount(1);
             }
         }
         if (callback != null) {
