@@ -86,6 +86,11 @@ public class GiftContinueViewGroup extends RelativeLayout {
 
             return false;
         }
+
+        @Override
+        protected boolean canCutLine() {
+            return true;
+        }
     };
 
     public void init(Context context) {

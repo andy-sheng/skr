@@ -196,41 +196,41 @@ public class GiftBigContinuousView extends RelativeLayout {
         mCurNum = count;
 
         // TODO: 2019-05-08 取数据
-        GiftPlayModel giftPlayModels[] = new GiftPlayModel[1];
-        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
-            @Override
-            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                if (newGiftPlayModel != null) {
-                    MyLog.d(TAG, "step2 onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
-                    giftPlayModels[0] = mCurGiftPlayModel;
-                    mCurGiftPlayModel = newGiftPlayModel;
-                }
-            }
-        }, new Callback<GiftPlayModel>() {
-            @Override
-            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
-                MyLog.d(TAG, "step2 newGiftPlayModel" + newGiftPlayModel);
-                //TODO 这里有 bug 吧
-                if (newGiftPlayModel != null) {
-                    if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
-                            && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()
-                            && newGiftPlayModel.getEndCount() > mCurNum) {
-                        step2(++mCurNum);
-                    } else {
-                        play(newGiftPlayModel, true);
-                    }
-                } else {
-                    mCurStatus = STATUS_WAIT_OVER;
-                    mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
-                    mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-                    long delayTime = 2000;
-                    if (mCurGiftPlayModel.getGift() instanceof AnimationGift) {
-                        delayTime = ((AnimationGift) mCurGiftPlayModel.getGift()).getAnimationPrams().getDuration();
-                    }
-                    mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, delayTime);
-                }
-            }
-        });
+//        GiftPlayModel giftPlayModels[] = new GiftPlayModel[1];
+//        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
+//            @Override
+//            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+//                if (newGiftPlayModel != null) {
+//                    MyLog.d(TAG, "step2 onCallback view is " + mId + " newGiftPlayModel=" + newGiftPlayModel);
+//                    giftPlayModels[0] = mCurGiftPlayModel;
+//                    mCurGiftPlayModel = newGiftPlayModel;
+//                }
+//            }
+//        }, new Callback<GiftPlayModel>() {
+//            @Override
+//            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+//                MyLog.d(TAG, "step2 newGiftPlayModel" + newGiftPlayModel);
+//                //TODO 这里有 bug 吧
+//                if (newGiftPlayModel != null) {
+//                    if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
+//                            && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()
+//                            && newGiftPlayModel.getEndCount() > mCurNum) {
+//                        step2(++mCurNum);
+//                    } else {
+//                        play(newGiftPlayModel, true);
+//                    }
+//                } else {
+//                    mCurStatus = STATUS_WAIT_OVER;
+//                    mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
+//                    mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+//                    long delayTime = 2000;
+//                    if (mCurGiftPlayModel.getGift() instanceof AnimationGift) {
+//                        delayTime = ((AnimationGift) mCurGiftPlayModel.getGift()).getAnimationPrams().getDuration();
+//                    }
+//                    mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, delayTime);
+//                }
+//            }
+//        });
 
         // TODO: 2019/5/9 礼物弹幕和动画
         if (mCurGiftPlayModel.getGift().isPlay() && mCurGiftPlayModel.getGift().getDisplayType() == BIG_GIFT) {

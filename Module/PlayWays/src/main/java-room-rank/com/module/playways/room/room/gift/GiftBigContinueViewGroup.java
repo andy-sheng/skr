@@ -78,6 +78,11 @@ public class GiftBigContinueViewGroup extends RelativeLayout {
             MyLog.d(TAG, "isGiftModelIsPlayingExpectOwer view id is " + id + ", gift" + giftPlayModel.getGift().getGiftID() + " is own or not playing");
             return false;
         }
+
+        @Override
+        protected boolean canCutLine() {
+            return false;
+        }
     };
 
     public void init(Context context) {

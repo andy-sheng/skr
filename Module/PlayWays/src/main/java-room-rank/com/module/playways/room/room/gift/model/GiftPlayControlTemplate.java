@@ -65,31 +65,34 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
             public void run() {
                 //以防崩溃
                 try {
+                    if (canCutLine()) {
+                        if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
 
-                    if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                            updateOrPushGiftModel(mOwnerGiftMap, model, true);
+                        } else if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
+                            updateOrPushGiftModel(mFreeQueueMap, model, true);
+                        } else {
+                            switch (model.getGift().getDisplayType()) {
+                                case MEDIUM_GIFT:
 
-                        updateOrPushGiftModel(mOwnerGiftMap, model, true);
-                    } else if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
-                        updateOrPushGiftModel(mFreeQueueMap, model, true);
-                    } else {
-                        switch (model.getGift().getDisplayType()) {
-                            case MEDIUM_GIFT:
+                                    updateOrPushGiftModel(mMediumGiftMap, model, true);
+                                    break;
+                                case SMALL_GIFT:
 
-                                updateOrPushGiftModel(mMediumGiftMap, model, true);
-                                break;
-                            case SMALL_GIFT:
+                                    updateOrPushGiftModel(mSmallQueueMap, model, false);
+                                    break;
+                                case FREE_GIFT:
 
-                                updateOrPushGiftModel(mSmallQueueMap, model, false);
-                                break;
-                            case FREE_GIFT:
+                                    updateOrPushGiftModel(mFreeQueueMap, model, false);
+                                    break;
+                                default:
 
-                                updateOrPushGiftModel(mFreeQueueMap, model, false);
-                                break;
-                            default:
-
-                                updateOrPushGiftModel(mFreeQueueMap, model, false);
-                                break;
+                                    updateOrPushGiftModel(mFreeQueueMap, model, false);
+                                    break;
+                            }
                         }
+                    } else {
+                        updateOrPushGiftModel(mMediumGiftMap, model, true);
                     }
                 } catch (Exception e) {
                     MyLog.e(TAG, e);
@@ -341,6 +344,8 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     }
 
     protected abstract void needNotify();
+
+    protected abstract boolean canCutLine();
 
     //判断这个礼物是不是别人在播放，如果自己在播放或者无人播放返回false, 如果别人在播放返回true
     protected abstract boolean isGiftModelIsPlayingExpectOwer(@NonNull GiftPlayModel giftPlayModel, int id);
