@@ -78,6 +78,8 @@ import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
+import com.module.playways.room.room.gift.GiftBigContinueViewGroup;
+import com.module.playways.room.room.gift.GiftBigContinuousView;
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
@@ -359,7 +361,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             layoutParams.addRule(RelativeLayout.BELOW, R.id.grab_op_btn);
             layoutParams.setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0);
             int index = mRankingContainer.indexOfChild(mGrabOpBtn);
-            mRankingContainer.addView(mIvChanllengeTipView, index+1, layoutParams);
+            mRankingContainer.addView(mIvChanllengeTipView, index + 1, layoutParams);
             startChallengeTipViewAnimator(mIvChanllengeTipView);
         }
     }
@@ -812,6 +814,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         giftOverlayAnimationViewGroup.setRoomData(mRoomData);
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
+
+        GiftBigContinueViewGroup mGiftBigContinueVg = (GiftBigContinueViewGroup) mRootView.findViewById(R.id.gift_big_continue_vg);
+        mGiftBigContinueVg.setRoomData(mRoomData);
 
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
     }

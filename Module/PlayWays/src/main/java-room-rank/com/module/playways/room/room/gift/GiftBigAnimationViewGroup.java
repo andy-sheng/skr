@@ -116,7 +116,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(BigGiftMsgEvent bigGiftMsgEvent) {
         // 收到一条礼物消息,进入生产者队列
-        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(bigGiftMsgEvent.getGPrensentGiftMsgModel(), mRoomData);
+        GiftPlayModel playModel = bigGiftMsgEvent.getGiftPlayModel();
         // 如果消息能被当前忙碌的view接受
         mGiftPlayControlTemplate.add(playModel, true);
     }

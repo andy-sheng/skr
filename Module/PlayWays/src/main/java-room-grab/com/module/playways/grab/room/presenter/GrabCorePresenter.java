@@ -2355,12 +2355,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GiftPresentEvent giftPresentEvent) {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
-            if (giftPresentEvent.mGPrensentGiftMsgModel.getGiftInfo().getDisplayType() == BIG_GIFT) {
-                EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(giftPresentEvent.mGPrensentGiftMsgModel)));
-                EventBus.getDefault().post(new BigGiftMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
-            } else {
-                EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
-            }
+            EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
         }
     }
 

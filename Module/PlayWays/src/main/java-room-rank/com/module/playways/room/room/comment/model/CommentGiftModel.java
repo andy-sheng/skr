@@ -20,16 +20,16 @@ public class CommentGiftModel extends CommentModel {
         if (giftMsgModel.getReceiveUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(giftMsgModel.getSendUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("对 你 送出了").setForegroundColor(Color.WHITE)
+                    .append("对 你 送出了").setForegroundColor(Color.parseColor("#586D94"))
                     .append(giftMsgModel.getGiftInfo().getGiftName()).setForegroundColor(TEXT_RED)
                     .create();
             setStringBuilder(stringBuilder);
         } else {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(giftMsgModel.getSendUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("对").setForegroundColor(Color.WHITE)
+                    .append("对").setForegroundColor(Color.parseColor("#586D94"))
                     .append(" " + giftMsgModel.getReceiveUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("送出了").setForegroundColor(Color.WHITE)
+                    .append("送出了").setForegroundColor(Color.parseColor("#586D94"))
                     .append(giftMsgModel.getGiftInfo().getGiftName()).setForegroundColor(TEXT_RED)
                     .create();
             setStringBuilder(stringBuilder);
@@ -46,16 +46,16 @@ public class CommentGiftModel extends CommentModel {
         if (giftPlayModel.getReceiver().getUserId() == MyUserInfoManager.getInstance().getUid()) {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(giftPlayModel.getSender().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("对 你 送出了").setForegroundColor(Color.WHITE)
+                    .append("对 你 送出了").setForegroundColor(Color.parseColor("#586D94"))
                     .append(giftPlayModel.getGift().getGiftName()).setForegroundColor(TEXT_RED)
                     .create();
             setStringBuilder(stringBuilder);
         } else {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(giftPlayModel.getSender().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("对").setForegroundColor(Color.WHITE)
+                    .append("对").setForegroundColor(Color.parseColor("#586D94"))
                     .append(" " + giftPlayModel.getReceiver().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("送出了").setForegroundColor(Color.WHITE)
+                    .append("送出了").setForegroundColor(Color.parseColor("#586D94"))
                     .append(giftPlayModel.getGift().getGiftName()).setForegroundColor(TEXT_RED)
                     .create();
             setStringBuilder(stringBuilder);

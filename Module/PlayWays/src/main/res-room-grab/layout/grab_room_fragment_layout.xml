@@ -129,24 +129,6 @@
         android:layout_marginTop="@dimen/view_148_dp"
         android:visibility="gone" />
 
-    <!--抢按钮以及倒计时按钮-->
-    <com.module.playways.grab.room.view.GrabOpView
-        android:id="@+id/grab_op_btn"
-        android:layout_width="@dimen/view_141_dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/bottom_bg_vp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_10_dp" />
-
-    <com.module.playways.grab.room.view.GrabGiveupView
-        android:id="@+id/grab_pass_view"
-        android:layout_width="@dimen/view_97_dp"
-        android:layout_height="@dimen/view_60_dp"
-        android:layout_alignTop="@+id/bottom_bg_vp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_20_dp" />
-
     <com.module.playways.room.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
@@ -189,13 +171,6 @@
         android:paddingBottom="@dimen/view_8_dp"
         android:visibility="gone" />
 
-    <com.module.playways.room.gift.view.GiftPanelView
-        android:id="@+id/gift_panel_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone" />
-
     <com.module.playways.room.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
@@ -213,4 +188,39 @@
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.module.playways.room.room.gift.GiftBigAnimationViewGroup>
+
+    <com.module.playways.room.room.gift.GiftBigContinueViewGroup
+        android:id="@+id/gift_big_continue_vg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_67_dp"
+        android:gravity="bottom"
+        android:paddingLeft="@dimen/view_16_dp" />
+
+    <!--抢按钮以及倒计时按钮-->
+    <com.module.playways.grab.room.view.GrabOpView
+        android:id="@+id/grab_op_btn"
+        android:layout_width="@dimen/view_141_dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bottom_bg_vp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp" />
+
+    <com.module.playways.grab.room.view.GrabGiveupView
+        android:id="@+id/grab_pass_view"
+        android:layout_width="@dimen/view_97_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_alignTop="@+id/bottom_bg_vp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_20_dp" />
+
+    <com.module.playways.room.gift.view.GiftPanelView
+        android:id="@+id/gift_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+
 </RelativeLayout>
