@@ -5,8 +5,8 @@ ext {
             buildToolsVersion: "28.0.3",
             minSdkVersion    : 19,
             targetSdkVersion : 27,
-            versionCode      : 1006015,
-            versionName      : "1.6.15"
+            versionCode      : 1006016,
+            versionName      : "1.6.16"
     ]
     version = [
             androidSupportSdkVersion: "27.1.0",
