@@ -232,7 +232,6 @@ public class GiftBigContinuousView extends RelativeLayout {
             }
         });
 
-
         // TODO: 2019/5/9 礼物弹幕和动画
         if (mCurGiftPlayModel.getGift().isPlay() && mCurGiftPlayModel.getGift().getDisplayType() == BIG_GIFT) {
             EventBus.getDefault().post(new BigGiftMsgEvent(mCurGiftPlayModel));
