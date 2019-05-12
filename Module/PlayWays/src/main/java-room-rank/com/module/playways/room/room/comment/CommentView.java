@@ -208,7 +208,7 @@ public class CommentView extends RelativeLayout {
     }
 
     void processCommentModel(CommentModel commentModel) {
-        mCommentAdapter.getDataList().add(0, commentModel);
+        mCommentAdapter.addToHead(commentModel);
         if (!mOnBottom || mDraging) {
             mHasDataUpdate = true;
 //            mHasMore++;

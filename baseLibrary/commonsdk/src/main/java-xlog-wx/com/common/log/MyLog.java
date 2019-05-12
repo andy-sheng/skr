@@ -123,42 +123,42 @@ public class MyLog {
         if (!sHasInit) {
             return;
         }
-        Log.d(tag, msg, tr);
+        Log.d(tag, android.util.Log.getStackTraceString(tr));
     }
 
     public static final void d(String tag, Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        Log.d(tag, null, tr);
+        Log.d(tag, android.util.Log.getStackTraceString(tr));
     }
 
     public static final void d(Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        Log.d(TAG, "", tr);
+        Log.d(TAG, android.util.Log.getStackTraceString(tr));
     }
 
     public static final void e(String tag, String msg, Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        Log.e(tag, msg, tr);
+        Log.e(tag, android.util.Log.getStackTraceString(tr));
     }
 
     public static final void e(String tag, Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        Log.e(tag, "", tr);
+        Log.e(tag, android.util.Log.getStackTraceString(tr));
     }
 
     public static final void e(Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        Log.e(TAG, "", tr);
+        Log.e(TAG, android.util.Log.getStackTraceString(tr));
     }
 
     // ------------------------------------------------------------------------------

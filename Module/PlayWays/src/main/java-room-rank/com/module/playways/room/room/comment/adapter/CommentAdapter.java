@@ -75,4 +75,12 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
         }
         return VIEW_HOLDER_TYPE_NORMAL;
     }
+
+    public void addToHead(CommentModel commentModel) {
+        mDataList.add(0,commentModel);
+        // 移除最后一个
+        if(mDataList.size()>500){
+            mDataList.remove(mDataList.size()-1);
+        }
+    }
 }
