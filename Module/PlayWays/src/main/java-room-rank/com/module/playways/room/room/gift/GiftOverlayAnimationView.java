@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.utils.U;
+import com.module.playways.room.gift.model.AnimationGift;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
 import com.opensource.svgaplayer.SVGACallback;
@@ -53,21 +54,6 @@ public class GiftOverlayAnimationView {
     }
 
     public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
-        if (parent.indexOfChild(mSVGAImageView) < 0) {
-            int translateX = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
-            int translateY = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
-            SLocation l = new SLocation(0.67f + mRandom.nextFloat() / 3f, translateX, translateY);
-
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-            parent.addView(mSVGAImageView, lp);
-
-            // 变化一下位置
-            mSVGAImageView.setScaleX(l.scale);
-            mSVGAImageView.setScaleY(l.scale);
-            mSVGAImageView.setTranslationX(l.translateX);
-            mSVGAImageView.setTranslationY(l.translateY);
-        }
         mStatus = STATUS_PLAYING;
         mGiftPlayModel = giftPlayModel;
         String url = null;
@@ -85,12 +71,12 @@ public class GiftOverlayAnimationView {
             url = giftPlayModel.getGiftAnimationUrl();
         }
 
-        load(url);
+        load(url, parent, giftPlayModel);
         mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
         mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, 5000);
     }
 
-    private void load(String url) {
+    private void load(String url, RelativeLayout parent, GiftPlayModel giftPlayModel) {
         if (TextUtils.isEmpty(url)) {
             onFinish();
             return;
@@ -98,7 +84,7 @@ public class GiftOverlayAnimationView {
         SvgaParserAdapter.parse(url, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(SVGAVideoEntity videoItem) {
-                onLoadComplete(videoItem);
+                onLoadComplete(videoItem, parent, giftPlayModel);
             }
 
             @Override
@@ -108,8 +94,30 @@ public class GiftOverlayAnimationView {
         });
     }
 
-    private void onLoadComplete(SVGAVideoEntity videoItem) {
+    private void onLoadComplete(SVGAVideoEntity videoItem, RelativeLayout parent, GiftPlayModel giftPlayModel) {
         SVGADrawable drawable = new SVGADrawable(videoItem);
+        if (parent.indexOfChild(mSVGAImageView) < 0) {
+            int translateX = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
+            int translateY = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
+            SLocation l = new SLocation(0.67f + mRandom.nextFloat() / 3f, translateX, translateY);
+            if (giftPlayModel.getGift() instanceof AnimationGift) {
+                AnimationGift animationGift = (AnimationGift) giftPlayModel.getGift();
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(animationGift.getAnimationPrams().getWidth()),
+                        U.getDisplayUtils().dip2px(animationGift.getAnimationPrams().getHeight()));
+                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                parent.addView(mSVGAImageView, lp);
+            } else {
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) videoItem.getVideoSize().getWidth(), (int) videoItem.getVideoSize().getHeight());
+                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                parent.addView(mSVGAImageView, lp);
+            }
+
+            // 变化一下位置
+            mSVGAImageView.setScaleX(l.scale);
+            mSVGAImageView.setScaleY(l.scale);
+            mSVGAImageView.setTranslationX(l.translateX);
+            mSVGAImageView.setTranslationY(l.translateY);
+        }
         mSVGAImageView.setImageDrawable(drawable);
         mSVGAImageView.setCallback(new SVGACallback() {
             @Override
