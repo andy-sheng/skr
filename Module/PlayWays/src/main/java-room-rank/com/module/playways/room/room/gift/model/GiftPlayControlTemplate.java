@@ -357,7 +357,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
      *
      * @return
      */
-    public synchronized boolean hasMoreData() {
+    public  boolean hasMoreData() {
         return !mOwnerGiftMap.isEmpty()
                 || !mSmallQueueMap.isEmpty()
                 || !mMediumGiftMap.isEmpty()
