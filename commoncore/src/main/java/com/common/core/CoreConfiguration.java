@@ -69,14 +69,13 @@ public class CoreConfiguration implements ConfigModule {
                 Log.d(TAG, "application onCreate");
                 // todo 服务器暂时无人对接，先屏蔽
                 ApiManager.getInstance().addInterceptor(new CoreInfoInterceptor());
-                ModuleServiceManager.getInstance().getMsgService().initRongIM(application);
-                UserAccountManager.getInstance().init();
-                DoraemonManager.init();
-
                 IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
                 if (msgService != null) {
+                    msgService.initRongIM(application);
                     msgService.addMsgProcessor(new NotificationMsgProcess());
                 }
+                UserAccountManager.getInstance().init();
+                DoraemonManager.init();
             }
 
             @Override
