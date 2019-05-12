@@ -178,16 +178,10 @@
         android:layout_alignParentBottom="true" />
 
 
-    <com.module.playways.grab.room.view.GrabChangeRoomTransitionView
-        android:id="@+id/change_room_transition_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_trans_80" />
-
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.module.playways.room.room.gift.GiftBigAnimationViewGroup>
+        android:layout_height="match_parent"/>
 
     <com.module.playways.room.room.gift.GiftBigContinueViewGroup
         android:id="@+id/gift_big_continue_vg"
@@ -222,5 +216,11 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.GrabChangeRoomTransitionView
+        android:id="@+id/change_room_transition_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_trans_80" />
 
 </RelativeLayout>
