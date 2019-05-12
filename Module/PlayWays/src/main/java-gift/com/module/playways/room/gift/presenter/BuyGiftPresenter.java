@@ -127,7 +127,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         mContinueSendScheduler.sendGiftSuccess();
                     }
                     int coin = result.getData().getIntValue("coinBalance");
-                    int diamond = result.getData().getIntValue("zuanBalance");
+                    float diamond = result.getData().getFloatValue("zuanBalance");
                     EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
 
                     UserInfoModel own = new UserInfoModel();

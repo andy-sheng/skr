@@ -8,9 +8,9 @@ public class UpdateCoinAndDiamondEvent {
      */
 
     private int coinBalance;
-    private int zuanBalance;
+    private float zuanBalance;
 
-    public UpdateCoinAndDiamondEvent(int coinBalance, int zuanBalance) {
+    public UpdateCoinAndDiamondEvent(int coinBalance, float zuanBalance) {
         this.coinBalance = coinBalance;
         this.zuanBalance = zuanBalance;
     }
@@ -19,7 +19,7 @@ public class UpdateCoinAndDiamondEvent {
         return coinBalance;
     }
 
-    public int getZuanBalance() {
+    public float getZuanBalance() {
         return zuanBalance;
     }
 }

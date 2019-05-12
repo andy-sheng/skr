@@ -231,7 +231,7 @@ public class GiftPanelView extends FrameLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpdateCoinAndDiamondEvent event) {
-        mTvDiamond.setText(String.valueOf(event.getZuanBalance()));
+        mTvDiamond.setText(String.format("%.1f", event.getZuanBalance()));
     }
 
     //外面不希望用这个函数
