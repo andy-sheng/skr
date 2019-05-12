@@ -22,6 +22,7 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
 import com.module.playways.room.gift.event.BigGiftMsgEvent;
+import com.module.playways.room.gift.model.AnimationGift;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
@@ -185,7 +186,11 @@ public class GiftBigContinuousView extends RelativeLayout {
 
     private void step2(int count) {
         mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_ENSUSE_OVER, 5000);
+        long delayTime = 5000;
+        if (mCurGiftPlayModel.getGift() instanceof AnimationGift) {
+            delayTime = ((AnimationGift) mCurGiftPlayModel.getGift()).getAnimationPrams().getDuration();
+        }
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_ENSUSE_OVER, delayTime + 500);
         //目前没有
         mCurStatus = STATUS_STEP2;
         mCurNum = count;
@@ -218,7 +223,11 @@ public class GiftBigContinuousView extends RelativeLayout {
                 } else {
                     mCurStatus = STATUS_WAIT_OVER;
                     mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-                    mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+                    long delayTime = 2000;
+                    if (mCurGiftPlayModel.getGift() instanceof AnimationGift) {
+                        delayTime = ((AnimationGift) mCurGiftPlayModel.getGift()).getAnimationPrams().getDuration();
+                    }
+                    mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, delayTime);
                 }
             }
         });
