@@ -213,6 +213,9 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
     @Override
     public void destroy() {
         super.destroy();
+        if (mWaitingDialogPlus != null) {
+            mWaitingDialogPlus.dismiss();
+        }
     }
 
     @Override
