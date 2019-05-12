@@ -1229,7 +1229,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        MyLog.w(TAG, "4秒钟的 syncGameTask 去更新状态了");
+                        MyLog.w(TAG, sSyncStateTaskInterval/1000+"秒钟的 syncGameTask 去更新状态了");
                         syncGameStatus(mRoomData.getGameId());
                     }
                 });
@@ -2081,7 +2081,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QSyncStatusMsgEvent event) {
         ensureInRcRoom();
         MyLog.w(TAG, "收到服务器 sync push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
-        startSyncGameStateTask(sSyncStateTaskInterval);
+        // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
+        startSyncGameStateTask(sSyncStateTaskInterval*2);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound(), event.getInfo().getRoomID());
 //        fetchAcc(event.getNextRound());
     }
