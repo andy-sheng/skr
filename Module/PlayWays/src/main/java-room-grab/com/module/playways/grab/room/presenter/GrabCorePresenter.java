@@ -32,8 +32,7 @@ import com.component.busilib.constans.GameModeType;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
-import com.module.playways.room.room.comment.model.CommentGiftModel;
-import com.zq.live.proto.Common.EGiftDisplayType;
+import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -137,8 +136,6 @@ import java.util.List;
 import io.agora.rtc.Constants;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-
-import static com.module.playways.room.room.gift.model.GiftPlayControlTemplate.BIG_GIFT;
 
 public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "GrabCorePresenter";
@@ -1228,7 +1225,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        MyLog.w(TAG, sSyncStateTaskInterval/1000+"秒钟的 syncGameTask 去更新状态了");
+                        MyLog.w(TAG, sSyncStateTaskInterval / 1000 + "秒钟的 syncGameTask 去更新状态了");
                         syncGameStatus(mRoomData.getGameId());
                     }
                 });
@@ -2081,7 +2078,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ensureInRcRoom();
         MyLog.w(TAG, "收到服务器 sync push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
         // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
-        startSyncGameStateTask(sSyncStateTaskInterval*2);
+        startSyncGameStateTask(sSyncStateTaskInterval * 2);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound(), event.getInfo().getRoomID());
 //        fetchAcc(event.getNextRound());
     }
@@ -2356,6 +2353,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
             EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
+        }
+
+        if (giftPresentEvent.mGPrensentGiftMsgModel.getReceiveUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+            if (giftPresentEvent.mGPrensentGiftMsgModel.getReceiveUserCoin() != -1) {
+                EventBus.getDefault().post(new UpdateCoinEvent((int) giftPresentEvent.mGPrensentGiftMsgModel.getReceiveUserCoin(), giftPresentEvent.info.getTimeMs()));
+            }
         }
     }
 

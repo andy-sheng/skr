@@ -21,7 +21,7 @@ import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.R;
-import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
+import com.module.playways.room.gift.event.UpdateCoinEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +39,8 @@ public class GrabTopView extends RelativeLayout {
     GrabRoomData mGrabRoomData;
 
     int mCoin = 0;
+
+    long lastTs;
 
     AnimatorSet mAnimatorSet;  //金币加减的动画
 
@@ -69,11 +71,17 @@ public class GrabTopView extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(UpdateCoinAndDiamondEvent event) {
+    public void onEvent(UpdateCoinEvent event) {
         if (mCoin != event.getCoinBalance()) {
-            mCoin = event.getCoinBalance();
-            mTvCoin.setText(event.getCoinBalance() + "");
-//            playCoinChangeAnimation(event.getCoinBalance());
+            if (event.getTs() == 0) {
+                //从购买礼物来的
+                mCoin = event.getCoinBalance();
+                mTvCoin.setText(event.getCoinBalance() + "");
+            } else if (lastTs < event.getTs()) {
+                lastTs = event.getTs();
+                mCoin = event.getCoinBalance();
+                mTvCoin.setText(event.getCoinBalance() + "");
+            }
         }
     }
 

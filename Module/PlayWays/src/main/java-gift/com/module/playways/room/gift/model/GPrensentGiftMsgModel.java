@@ -11,6 +11,15 @@ public class GPrensentGiftMsgModel {
     long roomID;
     long continueID;
     int continueCnt;
+    float receiveUserCoin;
+
+    public float getReceiveUserCoin() {
+        return receiveUserCoin;
+    }
+
+    public void setReceiveUserCoin(float receiveUserCoin) {
+        this.receiveUserCoin = receiveUserCoin;
+    }
 
     public BaseGift getGiftInfo() {
         return giftInfo;
@@ -77,6 +86,7 @@ public class GPrensentGiftMsgModel {
         gPrensentGiftMsgModel.setRoomID(gPrensentGiftMsg.getRoomID());
         gPrensentGiftMsgModel.setReceiveUserInfo(UserInfoModel.parseFromPB(gPrensentGiftMsg.getReceiveUserInfo()));
         gPrensentGiftMsgModel.setSendUserInfo(UserInfoModel.parseFromPB(gPrensentGiftMsg.getSendUserInfo()));
+        gPrensentGiftMsgModel.setReceiveUserCoin(gPrensentGiftMsg.getReceiveUserCoin());
         return gPrensentGiftMsgModel;
     }
 }

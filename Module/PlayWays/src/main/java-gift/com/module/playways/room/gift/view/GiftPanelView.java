@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.alibaba.fastjson.JSON;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
@@ -39,7 +38,7 @@ import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.adapter.GiftAllPlayersAdapter;
 import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
-import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
+import com.module.playways.room.gift.event.UpdateDiamondEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -230,7 +229,7 @@ public class GiftPanelView extends FrameLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(UpdateCoinAndDiamondEvent event) {
+    public void onEvent(UpdateDiamondEvent event) {
         mTvDiamond.setText(String.format("%.1f", event.getZuanBalance()));
     }
 

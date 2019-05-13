@@ -10,21 +10,18 @@ import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.room.gift.GiftServerApi;
-import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
+import com.module.playways.room.gift.event.UpdateDiamondEvent;
+import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.GiftPresentEvent;
-import com.zq.live.proto.Common.GiftInfo;
-import com.zq.live.proto.Room.GPrensentGiftMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -128,7 +125,8 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     }
                     int coin = result.getData().getIntValue("coinBalance");
                     float diamond = result.getData().getFloatValue("zuanBalance");
-                    EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
+                    EventBus.getDefault().post(new UpdateDiamondEvent(diamond));
+                    EventBus.getDefault().post(new UpdateCoinEvent(coin));
 
                     UserInfoModel own = new UserInfoModel();
                     own.setUserId((int) MyUserInfoManager.getInstance().getUid());
