@@ -46,8 +46,6 @@ public class LoginFragment extends BaseFragment {
 
     RelativeLayout mMainActContainer;
     ImageView mPicture;
-    RelativeLayout mContainer;
-
 
     LinearLayout mTvUserAgree;
     ExImageView mWeixinLoginTv;
@@ -59,9 +57,6 @@ public class LoginFragment extends BaseFragment {
     ProgressBar mProgressBar;
 
     volatile boolean mIsWaitOss = false;
-
-    ViewTreeObserver mObserver;
-    boolean isMeasured = false;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -75,25 +70,6 @@ public class LoginFragment extends BaseFragment {
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
-    ViewTreeObserver.OnPreDrawListener mOnDrawListener = new ViewTreeObserver.OnPreDrawListener() {
-        @Override
-        public boolean onPreDraw() {
-            if (!isMeasured) {
-                isMeasured = true;
-                int height = mContainer.getMeasuredHeight();
-                if (height < MIN_HEIGHT) {
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
-                    layoutParams.height = MIN_HEIGHT;
-                    mContainer.setLayoutParams(layoutParams);
-                    mDengluArea.setTranslationY(height - MIN_HEIGHT);
-                    mLogoText.setTranslationY((height - MIN_HEIGHT) / 2);
-                    mPicture.setTranslationY(height - MIN_HEIGHT);
-                }
-            }
-            return true;
-        }
-    };
-
     @Override
     public int initView() {
         return R.layout.core_login_fragment_layout;
@@ -105,7 +81,6 @@ public class LoginFragment extends BaseFragment {
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mPicture = (ImageView) mRootView.findViewById(R.id.picture);
-        mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
 
         mDengluArea = (LinearLayout) mRootView.findViewById(R.id.denglu_area);
         mWeixinLoginTv = (ExImageView) mRootView.findViewById(R.id.weixin_login_tv);
@@ -114,9 +89,6 @@ public class LoginFragment extends BaseFragment {
         mLogoText = (TextView) mRootView.findViewById(R.id.logo_text);
         mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
-
-        mObserver = mContainer.getViewTreeObserver();
-        mObserver.addOnPreDrawListener(mOnDrawListener);
 
         SpannableStringBuilder stringBuilder = new SpanUtils()
                 .append("撕歌").setBold()
@@ -288,9 +260,6 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (mObserver != null && mObserver.isAlive() && mOnDrawListener != null) {
-            mObserver.removeOnPreDrawListener(mOnDrawListener);
-        }
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
         }

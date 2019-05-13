@@ -46,7 +46,7 @@ public class JsBridgeImpl {
             return;
         }
 
-        //panel/wx/qq,弹出分享弹窗还是直接指定一个平台
+        //panel/wx/icon_qq,弹出分享弹窗还是直接指定一个平台
         String param = jsonObject.getString("param");
         if (TextUtils.isEmpty(param)) {
             MyLog.w(TAG, "share" + " param=empty");
@@ -103,7 +103,7 @@ public class JsBridgeImpl {
                 } else {
                     MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
                 }
-            } else if ("qq".equals(param)) {
+            } else if ("icon_qq".equals(param)) {
                 if ("qq_friend".equals(channel)) {
                     sharePanel.share(SharePlatform.QQ, shareType);
                 } else {

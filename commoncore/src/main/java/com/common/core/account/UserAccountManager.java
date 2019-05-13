@@ -281,7 +281,7 @@ public class UserAccountManager {
                             if (mode == 3) {
                                 UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
                             } else if (mode == 2) {
-                                UmengStatistics.onProfileSignIn("qq", userAccount.getUid());
+                                UmengStatistics.onProfileSignIn("icon_qq", userAccount.getUid());
                             }
                         } else {
                             U.getToastUtil().showShort(obj.getErrmsg());

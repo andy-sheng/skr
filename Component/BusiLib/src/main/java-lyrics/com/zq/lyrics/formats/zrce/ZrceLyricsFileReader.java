@@ -49,7 +49,7 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
      */
     private final static String LEGAL_AL_PREFIX = "[al:";
     private final static String LEGAL_SIGN_PREFIX = "[sign:";
-    private final static String LEGAL_QQ_PREFIX = "[qq:";
+    private final static String LEGAL_QQ_PREFIX = "[icon_qq:";
     private final static String LEGAL_TOTAL_PREFIX = "[total:";
     private final static String LEGAL_LANGUAGE_PREFIX = "[language:";
 
