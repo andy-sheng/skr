@@ -185,7 +185,6 @@ if [[ $1 = "app" ]]; then
 	                echo "./gradlew :app:assemblechannel_testRelease"
                 	echo "只编译test release渠道"
                     ./gradlew :app:assembleReleaseChannels
-                    ./apk_canary.sh
                     findChannel TEST release
 					installApkForAllDevices $installApkPath
                     myandroidlog.sh  com.zq.live
@@ -202,7 +201,6 @@ if [[ $1 = "app" ]]; then
         	        echo "./gradlew :app:assemblechannel_sandboxRelease"
                     echo "只编译sandbox release渠道"
                     ./gradlew :app:assembleReleaseChannels
-                    ./apk_canary.sh
                     findChannel SANDBOX release
 					installApkForAllDevices $installApkPath
                     myandroidlog.sh  com.zq.live
