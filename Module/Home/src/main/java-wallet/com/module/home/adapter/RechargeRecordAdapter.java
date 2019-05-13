@@ -51,8 +51,8 @@ public class RechargeRecordAdapter extends DiffAdapter<RechargeRecordModel, Recy
 
         public void bind(RechargeRecordModel model) {
             this.mRechargeRecordModel = model;
-            mRecordDescTv.setText(model.getDesc());
-            mRecordTimeTv.setText(model.getDateTime());
+            mRecordDescTv.setText(model.getDateTime().split(" ")[0]);
+            mRecordTimeTv.setText(model.getDateTime().split(" ")[1]);
             mRecordNumTv.setText(model.getAmountStr());
         }
     }
