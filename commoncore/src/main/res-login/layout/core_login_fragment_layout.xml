@@ -66,7 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/view_64_dp"
             android:layout_weight="1"
-            android:src="@drawable/denglu_iphone" />
+            android:src="@drawable/icon_phone" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/weixin_login_tv"
