@@ -1,0 +1,86 @@
+{
+  "--apk":"./app/build/outputs/apk/release/app-release.apk",
+  "--mappingTxt":"./app/build/outputs/mapping/release/mapping.txt",
+  "--resMappingTxt":"",
+  "--output":"./publish/apk-checker-result",
+  "--format":"mm.html,mm.json",
+  "--formatConfig":
+  [
+    {
+      "name":"-countMethod",
+      "group":
+      [
+        {
+          "name":"Android System",
+          "package":"android"
+        },
+        {
+          "name":"java system",
+          "package":"java"
+        },
+        {
+          "name":"com.tencent.test.$",
+          "package":"com.tencent.test.$"
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "name":"-manifest"
+    },
+    {
+      "name":"-fileSize",
+      "--min":"10",
+      "--order":"desc",
+      "--suffix":"png, jpg, jpeg, gif, arsc"
+    },
+    {
+      "name":"-countMethod",
+      "--group":"package"
+    },
+    {
+      "name":"-checkResProguard"
+    },
+    {
+      "name":"-findNonAlphaPng",
+      "--min":"10"
+    },
+    {
+      "name":"-checkMultiLibrary"
+    },
+    {
+      "name":"-uncompressedFile",
+      "--suffix":"png, jpg, jpeg, gif, arsc"
+    },
+    {
+      "name":"-countR"
+    },
+    {
+      "name":"-duplicatedFile"
+    },
+    {
+      "name":"-checkMultiSTL",
+      "--toolnm":"$ANDROID_SDK/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm"
+    },
+    {
+      "name":"-unusedResources",
+      "--rTxt":"./app/build/intermediates/symbols/release/R.txt",
+      "--ignoreResources"
+      :["R.raw.*",
+        "R.style.*",
+        "R.attr.*",
+        "R.id.*",
+        "R.string.ignore_*"
+      ]
+    },
+    {
+      "name":"-unusedAssets",
+      "--ignoreAssets":["*.so" ]
+    },
+    {
+      "name":"-unstrippedSo",
+      "--toolnm":"$ANDROID_SDK/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm"
+    }
+  ]
+}
