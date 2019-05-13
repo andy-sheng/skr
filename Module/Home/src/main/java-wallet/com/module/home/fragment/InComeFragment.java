@@ -253,12 +253,22 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     @Override
     public void showRule(ExChangeInfoModel exChangeInfoModel) {
         MyLog.d(TAG, "showRule" + " exChangeInfoModel=" + exChangeInfoModel);
+        LinearLayout ruleOneArea = (LinearLayout) mDqRuleDialogPlus.findViewById(R.id.rule_one_area);
         ExTextView toHZDescTv = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.toHZDescTv);
+        LinearLayout ruleTwoArea = (LinearLayout) mDqRuleDialogPlus.findViewById(R.id.rule_two_area);
         ExTextView toZSDescTv = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.toZSDescTv);
+        LinearLayout ruleThreeArea = (LinearLayout) mDqRuleDialogPlus.findViewById(R.id.rule_three_area);
         ExTextView toCashDescTv = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.toCashDescTv);
-        toHZDescTv.setText("钻石红钻兑换汇率：" + exChangeInfoModel.getToDQDesc());
-        toZSDescTv.setText("红钻兑换钻石汇率：" + exChangeInfoModel.getToZSDesc());
-        toCashDescTv.setText("红钻兑换现金汇率：" + exChangeInfoModel.getToRMBDesc());
+        LinearLayout ruleFourArea = (LinearLayout) mDqRuleDialogPlus.findViewById(R.id.rule_four_area);
+        ExTextView ruleFour = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.rule_four);
+
+        LinearLayout[] linearLayouts = new LinearLayout[]{ruleOneArea, ruleTwoArea, ruleThreeArea, ruleFourArea};
+        ExTextView[] exTextViews = new ExTextView[]{toHZDescTv, toZSDescTv, toCashDescTv, ruleFour};
+
+        for (int i = 0; i < (exChangeInfoModel.getRule().size() > 4 ? 4 : exChangeInfoModel.getRule().size()); i++) {
+            linearLayouts[i].setVisibility(View.VISIBLE);
+            exTextViews[i].setText(exChangeInfoModel.getRule().get(i));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

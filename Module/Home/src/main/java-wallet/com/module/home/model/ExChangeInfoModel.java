@@ -1,6 +1,7 @@
 package com.module.home.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ExChangeInfoModel implements Serializable {
 
@@ -22,6 +23,15 @@ public class ExChangeInfoModel implements Serializable {
     private String toZSDesc;
     private int toZSRatio;
     private ZsBalanceBean zsBalance;
+    private List<String> rule;
+
+    public List<String> getRule() {
+        return rule;
+    }
+
+    public void setRule(List<String> rule) {
+        this.rule = rule;
+    }
 
     public DqBalanceBean getDqBalance() {
         return dqBalance;

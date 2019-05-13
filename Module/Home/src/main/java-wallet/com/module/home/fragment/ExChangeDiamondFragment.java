@@ -31,7 +31,7 @@ import static com.module.home.fragment.InComeFragment.DQ_EXCHANGE_REQ;
  */
 public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDiamomdView {
     CommonTitleBar mTitlebar;
-    ExTextView mTvMaxExchange;
+    //    ExTextView mTvMaxExchange;
     NoLeakEditText mEditCashNum;
     ExTextView mTvTip;
     ExTextView mTvExchangeWhole;
@@ -55,7 +55,6 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mTvMaxExchange = (ExTextView) mRootView.findViewById(R.id.tv_max_exchange);
         mEditCashNum = (NoLeakEditText) mRootView.findViewById(R.id.edit_cash_num);
         mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
         mTvExchangeWhole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_whole);
@@ -104,7 +103,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                     if (TextUtils.isEmpty(editString)) {
                         mIvExchangeBtn.setEnabled(false);
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                        mTvTip.setText(String.format("红钻余额%.1f，", mDq));
+                        mTvTip.setText(String.format("红钻余额%.1f", mDq));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         return;
                     }
@@ -118,7 +117,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                     } else {
                         mIvExchangeBtn.setEnabled(true);
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                        mTvTip.setText(String.format("红钻余额%.1f，", mDq));
+                        mTvTip.setText(String.format("红钻余额%.1f", mDq));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                     }
                 }
@@ -160,8 +159,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     public void showDQ(ExChangeInfoModel exChangeInfoModel) {
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
         mMaxDiamond = mDq * exChangeInfoModel.getToZSRatio();
-        mTvMaxExchange.setText(String.format("账户最多可兑换%.1f钻石", mMaxDiamond));
-        mTvTip.setText(String.format("红钻余额%.1f，", mDq));
+        mTvTip.setText(String.format("红钻余额%.1f", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToZSDesc());
     }
 

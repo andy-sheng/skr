@@ -36,8 +36,10 @@
         app:bl_solid_color="#576FE3">
 
         <LinearLayout
+            android:id="@+id/rule_one_area"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
@@ -55,9 +57,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/rule_two_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_20_dp">
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
@@ -75,9 +79,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/rule_three_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_20_dp">
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
@@ -86,6 +92,28 @@
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/toCashDescTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                android:text=""
+                android:textColor="@color/white_trans_80"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rule_four_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/guize_four" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/rule_four"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_5_dp"

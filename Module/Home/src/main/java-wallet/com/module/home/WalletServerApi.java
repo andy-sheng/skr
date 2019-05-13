@@ -197,7 +197,7 @@ public interface WalletServerApi {
      *
      * @return
      */
-    @PUT("/v1/wallet/dq-zs")
+    @PUT("/v2/wallet/dq-zs")
     Observable<ApiResult> exChangeDiamond(@Body RequestBody body);
 
     /**
@@ -208,7 +208,7 @@ public interface WalletServerApi {
      *
      * @return
      */
-    @PUT("/v1/wallet/dq-rmb")
+    @PUT("/v2/wallet/dq-rmb")
     Observable<ApiResult> exChangeCash(@Body RequestBody body);
 
     /**
