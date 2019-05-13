@@ -42,7 +42,7 @@
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
                 android:layout_height="@dimen/view_25_dp"
-                android:background="@drawable/dq_guize_1" />
+                android:background="@drawable/grab_guize_1" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/toHZDescTv"
@@ -62,7 +62,7 @@
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
                 android:layout_height="@dimen/view_25_dp"
-                android:background="@drawable/dq_guize_2" />
+                android:background="@drawable/grab_guize_2" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/toZSDescTv"
@@ -82,7 +82,7 @@
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
                 android:layout_height="@dimen/view_25_dp"
-                android:background="@drawable/dq_guize_3" />
+                android:background="@drawable/grab_guize_3" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/toCashDescTv"

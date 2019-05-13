@@ -44,7 +44,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_deng_big_animation_view, this);
-        U.getSoundUtils().preLoad(TAG, R.raw.grab_olight_lowervolume, R.raw.grab_olight);
+        U.getSoundUtils().preLoad(TAG, R.raw.grab_olight);
     }
 
     ObjectPlayControlTemplate<PlayData, SVGAImageViewEx> mViewObjectPlayControlTemplate = new ObjectPlayControlTemplate<PlayData, SVGAImageViewEx>() {
