@@ -164,8 +164,8 @@
                             android:layout_below="@id/userid_tv"
                             android:layout_centerHorizontal="true"
                             android:layout_marginLeft="@dimen/view_11_dp"
-                            android:layout_marginRight="@dimen/view_11_dp"
                             android:layout_marginTop="@dimen/view_10_dp"
+                            android:layout_marginRight="@dimen/view_11_dp"
                             android:layout_marginBottom="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
 
 
@@ -336,6 +336,33 @@
                             android:paddingBottom="@dimen/view_1_dp"
                             android:textColor="@color/white"
                             android:visibility="gone" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/empty_area"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/game_layout"
+                            android:layout_marginTop="@dimen/view_40_dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/empty_photo_iv"
+                                android:layout_width="@dimen/view_132_dp"
+                                android:layout_height="@dimen/view_92_dp"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/tongxunlu_fensikongbaiye" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/view_20_dp"
+                                android:layout_below="@id/empty_photo_iv"
+                                android:layout_marginTop="@dimen/view_20_dp"
+                                android:gravity="center"
+                                android:text="这个人很神秘，都没有照片"
+                                android:textColor="#993B4E79"
+                                android:textSize="@dimen/textsize_14_dp" />
+                        </RelativeLayout>
 
                     </RelativeLayout>
 

@@ -152,6 +152,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
 
     RecyclerView mPhotoView;
     ExTextView mPhotoNumTv;
+    RelativeLayout mEmptyArea;
 
     LinearLayout mFunctionArea;
     ImageView mFollowIv;
@@ -310,6 +311,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
     private void initPhotoArea() {
         mPhotoView = (RecyclerView) mRootView.findViewById(R.id.photo_view);
         mPhotoNumTv = (ExTextView) mRootView.findViewById(R.id.photo_num_tv);
+        mEmptyArea = (RelativeLayout) mRootView.findViewById(R.id.empty_area);
 
         mPhotoView.setFocusableInTouchMode(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -452,6 +454,9 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
 
         if (list != null && list.size() > 0) {
             mHasMore = true;
+            mEmptyArea.setVisibility(View.GONE);
+            mToolbar.setVisibility(View.VISIBLE);
+            mPhotoView.setVisibility(View.VISIBLE);
             setAppBarCanScroll(true);
             mSmartRefresh.setEnableLoadMore(true);
             mPhotoAdapter.getDataList().addAll(list);
@@ -461,8 +466,14 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
             mSmartRefresh.setEnableLoadMore(false);
             if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
                 // 没有更多了
+                mEmptyArea.setVisibility(View.GONE);
+                mToolbar.setVisibility(View.VISIBLE);
+                mPhotoView.setVisibility(View.VISIBLE);
             } else {
                 // 没有数据
+                mEmptyArea.setVisibility(View.VISIBLE);
+                mToolbar.setVisibility(View.GONE);
+                mPhotoView.setVisibility(View.GONE);
                 setAppBarCanScroll(false);
             }
         }
