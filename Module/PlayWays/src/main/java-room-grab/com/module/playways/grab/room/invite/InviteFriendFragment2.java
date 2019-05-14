@@ -212,7 +212,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         if (sharePlatform == SharePlatform.WEIXIN_CIRCLE) {
             web.setThumb(new UMImage(getActivity(), R.drawable.share_app_weixin_circle_icon));
         } else {
-            web.setThumb(new UMImage(getActivity(), "https://res-inframe.oss-cn-beijing.aliyuncs.com/common/app-icon.png"));
+            web.setThumb(new UMImage(getActivity(), "http://res-static.inframe.mobi/common/skr_logo2.png"));
         }
         web.setDescription("唱歌吗，超嗨的那种，房间已开，速度进来");
 
