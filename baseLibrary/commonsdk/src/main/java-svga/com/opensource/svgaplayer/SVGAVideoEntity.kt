@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
+import com.common.log.MyLog
 import com.opensource.svgaplayer.entities.SVGAAudioEntity
 import com.opensource.svgaplayer.entities.SVGAVideoSpriteEntity
 import com.opensource.svgaplayer.proto.MovieEntity
@@ -25,7 +26,13 @@ class SVGAVideoEntity {
     protected fun finalize() {
         this.soundPool?.release()
         this.soundPool = null
-        this.images.forEach { it.value.recycle() }
+        this.images.forEach {
+            try {
+                it.value.recycle()
+            } catch (e: Throwable) {
+                MyLog.e("SVGAVideoEntity", e)
+            }
+        }
         this.images.clear()
     }
 
