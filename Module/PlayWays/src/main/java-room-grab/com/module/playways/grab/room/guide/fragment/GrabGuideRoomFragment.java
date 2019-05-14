@@ -53,6 +53,7 @@ import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.comment.CommentView;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
@@ -777,6 +778,15 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
 
         } else {
             mOthersSingCardView.tryStartCountDown();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(InputBoardEvent event) {
+        if (event.show) {
+            mBottomContainerView.setVisibility(View.GONE);
+        } else {
+            mBottomContainerView.setVisibility(View.VISIBLE);
         }
     }
 

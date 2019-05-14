@@ -78,6 +78,7 @@ import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
+import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftBigContinuousView;
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
@@ -576,6 +577,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BuyGiftEvent event) {
         mContinueSendView.startBuy(event.getBaseGift(), event.getReceiver());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(InputBoardEvent event) {
+        if (event.show) {
+            mBottomContainerView.setVisibility(View.GONE);
+        } else {
+            mBottomContainerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
