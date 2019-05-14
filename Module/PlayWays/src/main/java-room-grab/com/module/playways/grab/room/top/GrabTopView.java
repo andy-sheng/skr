@@ -83,6 +83,8 @@ public class GrabTopView extends RelativeLayout {
                 mTvCoin.setText(event.getCoinBalance() + "");
             }
         }
+
+        mGrabRoomData.setCoinNoEvent(mCoin);
     }
 
     private void playCoinChangeAnimation(int coinChange) {

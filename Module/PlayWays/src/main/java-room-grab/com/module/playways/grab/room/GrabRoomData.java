@@ -173,6 +173,12 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         }
     }
 
+    public void setCoinNoEvent(int coin) {
+        if (this.mCoin != coin) {
+            this.mCoin = coin;
+        }
+    }
+
     public boolean isAccEnable() {
         return mIsAccEnable;
     }
