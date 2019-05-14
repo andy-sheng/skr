@@ -43,29 +43,40 @@
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/big_diamond_iv"
-                android:layout_width="@dimen/view_35_dp"
-                android:layout_height="@dimen/view_37_dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/duihuan_dahongzuan"
-                android:text="钻石："
                 android:textColor="#ff41547e"
                 android:textSize="@dimen/textsize_20_dp"
                 android:textStyle="bold" />
 
             <com.common.view.ex.NoLeakEditText
                 android:id="@+id/edit_cash_num"
-                android:layout_width="@dimen/view_96_dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_toLeftOf="@+id/tv_exchange_whole"
+                android:layout_marginRight="@dimen/view_100_dp"
                 android:layout_toRightOf="@+id/big_diamond_iv"
                 android:background="@null"
-                android:hint="输入红钻数量"
+                android:hint="请输红钻数量"
                 android:inputType="numberDecimal"
-                android:maxLength="9"
+                android:maxLength="11"
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_24_dp" />
+
+            <ImageView
+                android:id="@+id/clear_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_70_dp"
+                android:background="@drawable/duihuan_clear"
+                android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/tv_exchange_whole"
@@ -73,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/view_9_dp"
                 android:text="全部兑换"
                 android:textColor="#ff7187ff"
                 android:textSize="@dimen/textsize_14_dp"

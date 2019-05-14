@@ -56,24 +56,26 @@
                 android:id="@+id/edit_cash_num"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_toLeftOf="@+id/tv_exchange_whole"
+                android:layout_marginRight="@dimen/view_100_dp"
                 android:layout_toRightOf="@+id/big_diamond_iv"
                 android:background="@null"
                 android:hint="请输红钻数量"
                 android:inputType="numberDecimal"
+                android:maxLength="11"
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_24_dp" />
 
             <ImageView
-                android:layout_marginRight="@dimen/view_70_dp"
                 android:id="@+id/clear_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/dk_close_icon"
+                android:layout_marginRight="@dimen/view_70_dp"
+                android:background="@drawable/duihuan_clear"
                 android:visibility="gone" />
 
             <com.common.view.ex.ExTextView

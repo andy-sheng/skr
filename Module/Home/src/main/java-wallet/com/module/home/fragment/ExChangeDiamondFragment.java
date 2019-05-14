@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.common.base.BaseFragment;
 import com.common.utils.U;
@@ -37,6 +38,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     ExTextView mTvExchangeWhole;
     StrokeTextView mIvExchangeBtn;
     ExTextView mTvExchangeRole;
+    ImageView mClearIv;
 
     Handler mUiHandler = new Handler();
 
@@ -60,6 +62,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
         mTvExchangeWhole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_whole);
         mIvExchangeBtn = mRootView.findViewById(R.id.iv_exchange_btn);
         mTvExchangeRole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_role);
+        mClearIv = (ImageView) mRootView.findViewById(R.id.clear_iv);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -80,6 +83,13 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
             public void clickValid(View v) {
                 mEditCashNum.setText(String.valueOf(mMaxDiamond));
                 mEditCashNum.setSelection(mEditCashNum.length());
+            }
+        });
+
+        mClearIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mEditCashNum.setText("");
             }
         });
 
@@ -105,6 +115,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
                         mTvTip.setText(String.format("红钻余额%.1f", mDq));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
+                        mClearIv.setVisibility(View.GONE);
                         return;
                     }
 
@@ -113,12 +124,14 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                         mIvExchangeBtn.setEnabled(false);
                         mTvTip.setTextColor(U.getColor(R.color.red));
                         mTvTip.setText("已超过可兑换红钻余额");
-                        mTvExchangeWhole.setVisibility(View.GONE);
+                        mTvExchangeWhole.setVisibility(View.VISIBLE);
+                        mClearIv.setVisibility(View.VISIBLE);
                     } else {
                         mIvExchangeBtn.setEnabled(true);
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
                         mTvTip.setText(String.format("红钻余额%.1f", mDq));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
+                        mClearIv.setVisibility(View.VISIBLE);
                     }
                 }
             }
