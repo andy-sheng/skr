@@ -8,7 +8,7 @@ public class DynamicEmojiMsgEvent {
     public final static int MSG_TYPE_SEND = 0;
     public final static int MSG_TYPE_RECE = 1;
 
-    int type = MSG_TYPE_RECE;
+    public int type = MSG_TYPE_RECE;
     public DynamicModel mDynamicModel;
     public BasePushInfo info;
 

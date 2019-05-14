@@ -181,7 +181,7 @@ public class CommentView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
@@ -189,6 +189,9 @@ public class CommentView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " CommentMsgEvent = " + event.text);
+        if (event.type == CommentMsgEvent.MSG_TYPE_SEND) {
+            setOnBottom("CommentMsgEvent", true);
+        }
         CommentTextModel commentTextModel = CommentTextModel.parseFromEvent(event, mRoomData);
         processCommentModel(commentTextModel);
     }
@@ -202,6 +205,9 @@ public class CommentView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DynamicEmojiMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
+        if (event.type == DynamicEmojiMsgEvent.MSG_TYPE_SEND) {
+            setOnBottom("DynamicEmojiMsgEvent", true);
+        }
         // TODO: 2019/4/9 特殊图片表情
         CommentDynamicModel commentDynamicModel = CommentDynamicModel.parseFromEvent(event, mRoomData);
         processCommentModel(commentDynamicModel);

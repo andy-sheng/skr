@@ -179,27 +179,40 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
-            for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+            for (GrabPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline()) {
                     continue;
                 }
-                BasePushInfo basePushInfo = new BasePushInfo();
-                basePushInfo.setRoomID(mRoomData.getGameId());
-                basePushInfo.setSender(new UserInfo.Builder()
-                        .setUserID(playerInfoModel.getUserInfo().getUserId())
-                        .setAvatar(playerInfoModel.getUserInfo().getAvatar())
-                        .setNickName(playerInfoModel.getUserInfo().getNickname())
-                        .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
-                        .build());
-                String text = String.format("加入了房间");
-                if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
-                    text = "我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~";
-                }
-                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-                EventBus.getDefault().post(msgEvent);
+                pretendEnterRoom(playerInfoModel);
             }
             pretendRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM);
         }
+    }
+
+    private void pretendEnterRoom(GrabPlayerInfoModel playerInfoModel) {
+        CommentTextModel commentModel = new CommentTextModel();
+        commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
+        commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
+        commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+        commentModel.setAvatarColor(Color.WHITE);
+        SpannableStringBuilder stringBuilder;
+        if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
+            stringBuilder = new SpanUtils()
+                    .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                    .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(Color.parseColor("#586D94"))
+                    .create();
+        } else {
+            SpanUtils spanUtils = new SpanUtils()
+                    .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                    .append("加入了房间").setForegroundColor(Color.parseColor("#586D94"));
+            if (BuildConfig.DEBUG) {
+                spanUtils.append(" 角色为" + playerInfoModel.getRole())
+                        .append(" 在线状态为" + playerInfoModel.isOnline());
+            }
+            stringBuilder = spanUtils.create();
+        }
+        commentModel.setStringBuilder(stringBuilder);
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
     }
 
     private void pretendSystemMsg(String text) {
@@ -458,9 +471,9 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         mUiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                onGameOver("robotSingBegin",System.currentTimeMillis());
+                onGameOver("robotSingBegin", System.currentTimeMillis());
             }
-        },23000);
+        }, 23000);
     }
 
     private void tryStopRobotPlay() {
@@ -568,7 +581,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel bRoundInfo = mRoomData.getGrabGuideInfoModel().createBRoundInfo();
         mRoomData.setExpectRoundInfo(bRoundInfo);
         mRoomData.checkRoundInEachMode();
-        mRoomData.setCoin(mRoomData.getCoin()+1);
+        mRoomData.setCoin(mRoomData.getCoin() + 1);
     }
 
     /**
