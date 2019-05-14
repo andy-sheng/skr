@@ -21,7 +21,6 @@ import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
-import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;

@@ -20,7 +20,6 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.home.R;
 import com.module.home.adapter.HalfRechargeAdapter;
-import com.module.home.adapter.RechargeAdapter;
 import com.module.home.presenter.BallencePresenter;
 import com.respicker.view.GridSpacingItemDecoration;
 

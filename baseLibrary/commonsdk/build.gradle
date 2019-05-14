@@ -153,6 +153,10 @@ android {
                 // 极光push
                 java.srcDirs += 'src/main/java-push-jiguang'
             }
+            if(MatrixEnable.toBoolean()){
+                java.srcDirs += 'src/main/java-matrix'
+                res.srcDirs += 'src/main/res-matrix'
+            }
         }
 
 //        release {
@@ -335,6 +339,19 @@ dependencies {
 
     // 微信支付
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
+
+    if(MatrixEnable.toBoolean()){
+        implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-resource-canary-android", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-resource-canary-common", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-io-canary", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk", version: MATRIX_VERSION, changing: true
+
+        //releaseImplementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk-no-op", version: MATRIX_VERSION, changing: true
+    }
+
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

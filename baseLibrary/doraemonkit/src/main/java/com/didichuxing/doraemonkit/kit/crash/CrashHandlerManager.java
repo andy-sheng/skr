@@ -85,31 +85,20 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        if (!handleException(ex) && mDefaultHandler != null) {
+        if (mDefaultHandler != null) {
             mDefaultHandler.uncaughtException(thread, ex);
-        } else {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (MyLog.isDebugLogOpen()) {
-                        Toast.makeText(mContext, R.string.dk_crash_capture_tips, Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
         }
-
-
-        if (!handleException(ex) && mDefaultHandler != null) {
-            mDefaultHandler.uncaughtException(thread, ex);
-        } else {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-
-            }
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(0);
+        handleException(ex);
+        if (MyLog.isDebugLogOpen()) {
+            Toast.makeText(mContext, R.string.dk_crash_capture_tips, Toast.LENGTH_LONG).show();
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+
+        }
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
     }
 
 
@@ -201,7 +190,6 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
         } catch (Exception e) {
 
         }
-
     }
 
     public void RecursionDeleteFile(File file, int left) {

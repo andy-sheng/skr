@@ -3,6 +3,7 @@ package com.doraemon;
 import android.view.View;
 
 import com.common.core.R;
+import com.common.matrix.MatrixInit;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.didichuxing.doraemonkit.DoraemonKit;
@@ -11,9 +12,20 @@ import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
+import com.tencent.bugly.crashreport.CrashReport;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 
 public class DoraemonManager {
     public final static String TAG = "DoraemonManager";
@@ -39,6 +51,48 @@ public class DoraemonManager {
                     @Override
                     public void clickValid(View v) {
                         U.getPermissionUtils().goNotificationSettingPage();
+                    }
+                }));
+                extras.add(new SysInfoItem("模拟JAVA Crash", "开启", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        CrashReport.testJavaCrash();
+                    }
+                }));
+                extras.add(new SysInfoItem("开启Matrix", "开启", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        MatrixInit.init();
+                    }
+                }));
+                extras.add(new SysInfoItem("模拟io", "模拟", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        writeSth();
+                        try {
+                            File f = new File("/sdcard/a.txt");
+                            byte[] buf = new byte[400];
+                            FileInputStream fis = new FileInputStream(f);
+                            int count = 0;
+                            while (fis.read(buf) != -1) {
+//                MatrixLog.i(TAG, "read %d", ++count);
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //need to trigger gc to detect leak
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Runtime.getRuntime().gc();
+                                Runtime.getRuntime().runFinalization();
+                                Runtime.getRuntime().gc();
+                            }
+                        }).start();
+
                     }
                 }));
                 return extras;
@@ -68,6 +122,30 @@ public class DoraemonManager {
 
             }
         });
+    }
+
+    private static void writeSth() {
+        try {
+            File f = new File("/sdcard/a.txt");
+            if (f.exists()) {
+                f.delete();
+            }
+            byte[] data = new byte[4096];
+            for (int i = 0; i < data.length; i++) {
+                data[i] = 'a';
+            }
+            FileOutputStream fos = new FileOutputStream(f);
+            for (int i = 0; i < 10; i++) {
+                fos.write(data);
+            }
+
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void showFloatIcon() {

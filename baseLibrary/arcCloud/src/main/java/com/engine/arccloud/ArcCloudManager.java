@@ -268,6 +268,14 @@ public class ArcCloudManager implements IACRCloudListener {
                                 HashMap hashMap = new HashMap();
                                 String songName = recognizeConfig.getSongName();
                                 if (!TextUtils.isEmpty(songName)) {
+                                    int a = songName.indexOf("(");
+                                    if (a != -1) {
+                                        // 过滤掉歌曲
+                                        songName = songName.substring(0, a);
+                                    } else {
+                                        a = songName.indexOf("（");
+                                        songName = songName.substring(0, a);
+                                    }
                                     hashMap.put("title", songName);
                                 }
                                 String artist = recognizeConfig.getArtist();

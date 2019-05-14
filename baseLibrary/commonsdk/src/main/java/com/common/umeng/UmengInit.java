@@ -43,7 +43,7 @@ public class UmengInit {
              * Thread.setDefaultUncaughtExceptionHandler();
              * 是用组合的模式，不会覆盖已有的 handler
              */
-            MobclickAgent.setCatchUncaughtExceptions(true);
+            MobclickAgent.setCatchUncaughtExceptions(false);
             hasInited = true;
         }
     }

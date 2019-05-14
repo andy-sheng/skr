@@ -1,0 +1,51 @@
+[package]
+-keeppackage com/squareup/
+-keeppackage greenrobot/
+-keeppackage cn/bingoogolapple/qrcode
+-keeppackage cn/jiguang
+-keeppackage cn/jipush
+-keeppackage com/acrcloud
+-keeppackage com/alibaba
+-keeppackage com/alipay
+-keeppackage com/amitshekhar
+-keeppackage com/baidu
+-keeppackage com/cgutman
+-keeppackage com/coloros
+-keeppackage com/contrarywind
+-keeppackage com/davemorrissey
+-keeppackage com/facebook
+-keeppackage com/github
+-keeppackage com/google
+-keeppackage com/huawei
+-keeppackage com/jakewharton
+-keeppackage com/jsbridge
+-keeppackage com/jude
+-keeppackage com/just
+-keeppackage com/kingja
+-keeppackage com/kyleduo
+-keeppackage com/meituan
+-keeppackage com/orhanobut
+-keeppackage com/scottyab
+-keeppackage com/scwang
+-keeppackage com/sina
+-keeppackage com/squareup
+-keeppackage com/tbruyelle
+-keeppackage com/tencent
+-keeppackage com/trello
+-keeppackage com/umeng
+-keeppackage com/vivo
+-keeppackage com/xiaomi
+-keeppackage com/xw
+-keeppackage com/youth
+-keeppackage gnu/
+-keeppackage kotlin/
+-keeppackage okhttp3/
+-keeppackage okio/
+-keeppackage org/
+-keeppackage pl/
+-keeppackage retrofit2/
+-keeppackage top/
+
+
+
+

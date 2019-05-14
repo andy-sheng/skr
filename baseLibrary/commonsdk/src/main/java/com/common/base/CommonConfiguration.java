@@ -27,6 +27,7 @@ import com.common.bugly.BuglyInit;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
+import com.common.matrix.MatrixInit;
 import com.common.statistics.StatisticsAdapter;
 import com.common.umeng.UmengInit;
 import com.common.utils.CommonReceiver;
@@ -83,6 +84,7 @@ public class CommonConfiguration implements ConfigModule {
                 UmengInit.init();
                 JiGuangPush.init();
                 BuglyInit.init(true);
+                //MatrixInit.init();
                 //leakCanary 引用
                 LeakCanary.install(application);
             }

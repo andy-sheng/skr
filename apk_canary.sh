@@ -1,4 +1,4 @@
-echo 开始对apk进行检测
+echo 开始对apk进行检测 确保已经配置了 ANDROID_SDK $ANDROID_SDK 的环境变量
 mkdir ./publish
 java -jar matrix-apk-canary-0.5.1.jar --config ./apk_canary.json
 #./publish/apk-checker-result

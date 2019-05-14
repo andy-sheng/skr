@@ -6,6 +6,17 @@ if (walleEnable.toBoolean()) {
     apply plugin: 'walle'
 }
 
+if(MatrixEnable.toBoolean()){
+    apply plugin: 'com.tencent.matrix-plugin'
+    matrix {
+        trace {
+            enable = true	//if you don't want to use trace canary, set false
+            baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+            blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
+        }
+    }
+}
+
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]

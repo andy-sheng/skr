@@ -212,6 +212,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.common.matrix.display.IssuesListActivity" android:launchMode="singleTask"/>
         <!-- User defined.  For test only  用户自定义的广播接收器-->
         <receiver
             android:name="com.common.jiguang.MyReceiver"

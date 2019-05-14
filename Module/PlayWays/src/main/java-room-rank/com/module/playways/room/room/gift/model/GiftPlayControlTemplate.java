@@ -51,7 +51,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
     Handler mUiHanlder = new Handler(Looper.getMainLooper());
 
     public GiftPlayControlTemplate() {
-        mHandlerGiftPlayModelhread = new CustomHandlerThread("my-queue-thread") {
+        mHandlerGiftPlayModelhread = new CustomHandlerThread(TAG) {
             @Override
             protected void processMessage(Message var1) {
 

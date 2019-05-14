@@ -34,7 +34,7 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
 
 
     public ObjectPlayControlTemplate() {
-        mHandlerThread = new CustomHandlerThread("my-queue-thread") {
+        mHandlerThread = new CustomHandlerThread("ObjectPlayControlTemplate") {
             @Override
             protected void processMessage(Message var1) {
 

@@ -22,7 +22,6 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
 import com.module.home.adapter.RechargeRecordAdapter;
-import com.module.home.loadsir.BalanceEmptyCallBack;
 import com.module.home.loadsir.RechargeHistoryEmptyCallBack;
 import com.module.home.model.RechargeRecordModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
