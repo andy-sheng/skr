@@ -22,9 +22,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 import com.common.base.R;
+import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.titlebar.CommonTitleBar;
 import com.tencent.matrix.report.Issue;
 
 import java.io.BufferedReader;
@@ -49,6 +52,9 @@ public class IssuesListActivity extends BaseActivity {
 
     IssuesAdapter mIssuesAdapter;
 
+    CommonTitleBar mTitleBar;
+
+
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.activity_issue_list;
@@ -60,15 +66,17 @@ public class IssuesListActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mIssuesAdapter = new IssuesAdapter();
         mRecyclerView.setAdapter(mIssuesAdapter);
+
+        mTitleBar = (CommonTitleBar)findViewById(R.id.title_bar);
         load();
     }
 
     void load(){
-        Observable.create(new ObservableOnSubscribe<List<Issue>>() {
+        Observable.create(new ObservableOnSubscribe<List<MyIssue>>() {
 
             @Override
-            public void subscribe(ObservableEmitter<List<Issue>> emitter) throws Exception {
-                List<Issue> list = new ArrayList<>();
+            public void subscribe(ObservableEmitter<List<MyIssue>> emitter) throws Exception {
+                List<MyIssue> list = new ArrayList<>();
                 File dir = U.getAppInfoUtils().getSubDirFile("Matrix");
                 final File[] listFiles = dir.listFiles();
                 Arrays.sort(listFiles, new Comparator<File>() {
@@ -83,7 +91,7 @@ public class IssuesListActivity extends BaseActivity {
                     }
                 });
                 for(File file :listFiles){
-                    Issue issue = load(file);
+                    MyIssue issue = load(file);
                     if (issue != null) {
                         list.add(issue);
                     }
@@ -93,15 +101,15 @@ public class IssuesListActivity extends BaseActivity {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Issue>>() {
+                .subscribe(new Consumer<List<MyIssue>>() {
                     @Override
-                    public void accept(List<Issue> issues) throws Exception {
+                    public void accept(List<MyIssue> issues) throws Exception {
                         mIssuesAdapter.setDataList(issues);
                     }
                 });
     }
 
-    Issue load(File file){
+    MyIssue load(File file){
         try {
             FileInputStream fin = new FileInputStream(file);
             if (fin != null) {
@@ -113,11 +121,24 @@ public class IssuesListActivity extends BaseActivity {
                     stringBuilder.append(line);
                 }
                 inputStreamReader.close();
-                Issue issue = JSON.parseObject(stringBuilder.toString(),Issue.class);
+
+                JSONObject  jsonObject = ((JSONObject)JSON.parse(stringBuilder.toString()));
+                MyIssue issue = new MyIssue();
+                JSONObject content = jsonObject.getJSONObject("content");
+                issue.setContent(content);
+                issue.setKey(jsonObject.getString("key"));
+                issue.setTag(jsonObject.getString("tag"));
+                issue.setType(jsonObject.getIntValue("type"));
                 return issue;
             }
         } catch (Exception e) {
+            MyLog.e(e);
         }
         return null;
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
     }
 }

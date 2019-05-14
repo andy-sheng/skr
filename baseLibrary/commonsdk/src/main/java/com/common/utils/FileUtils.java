@@ -295,7 +295,7 @@ public class FileUtils {
             MyLog.w("FileUtils", "deleteAllFiles root error");
             return;
         }
-        if(root.isFile()){
+        if (root.isFile()) {
             root.delete();
             return;
         }
@@ -321,7 +321,6 @@ public class FileUtils {
     }
 
     /**
-     *
      * @param file
      * @param left
      */
@@ -344,11 +343,9 @@ public class FileUtils {
                         return -1;
                 }
             });
-            for (int i = childFile.length - 1; i >= 0; i--) {
-                if (i <= childFile.length - left) {
-                    File f = childFile[i];
-                    U.getFileUtils().deleteAllFiles(f);
-                }
+            for (int i = 0; i < childFile.length - left; i++) {
+                File f = childFile[i];
+                U.getFileUtils().deleteAllFiles(f);
             }
         }
     }

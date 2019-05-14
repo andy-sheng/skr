@@ -44,7 +44,7 @@ public class ReportPluginListener extends DefaultPluginListener {
         data.put("type", issue.getType());
         data.put("tag", issue.getTag());
         data.put("key", issue.getKey());
-        data.put("content", issue.getContent());
+        data.put("content", issue.getContent().toString());
         try {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String fileName = formatter.format(new Date()) + ".txt";

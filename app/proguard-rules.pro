@@ -347,6 +347,8 @@ public static java.lang.String TABLENAME;
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
+#腾讯matrix
+-keep public class com.tencent.matrix.**{*;}
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.

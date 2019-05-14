@@ -16,15 +16,13 @@
 
 package com.common.matrix.display;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tencent.matrix.report.Issue;
 
-import org.json.JSONObject;
-
-import java.util.Iterator;
 
 public class ParseIssueUtil {
 
-    public static String parseIssue(Issue issue, boolean onlyShowContent) {
+    public static String parseIssue(MyIssue issue, boolean onlyShowContent) {
 
         StringBuilder stringBuilder = new StringBuilder();
         if (!onlyShowContent) {
@@ -40,13 +38,10 @@ public class ParseIssueUtil {
     }
 
     public static StringBuilder pauseJsonObj(StringBuilder builder, JSONObject object) {
-        Iterator<String> iterator = object.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            String val = object.optString(key);
+        for(String key:object.keySet()){
+            String val = object.getString(key);
             builder.append("\t").append(key).append(" : ").append(val).append("\n");
         }
-
         return builder;
     }
 

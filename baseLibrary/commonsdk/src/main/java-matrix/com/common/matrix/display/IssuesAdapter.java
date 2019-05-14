@@ -8,7 +8,7 @@ import com.common.base.R;
 import com.common.view.recyclerview.DiffAdapter;
 import com.tencent.matrix.report.Issue;
 
-public class IssuesAdapter extends DiffAdapter<Issue,IssuesHolder> {
+public class IssuesAdapter extends DiffAdapter<MyIssue,IssuesHolder> {
 
     @Override
     public IssuesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -19,7 +19,7 @@ public class IssuesAdapter extends DiffAdapter<Issue,IssuesHolder> {
 
     @Override
     public void onBindViewHolder(final  IssuesHolder holder, int position) {
-        Issue is =  mDataList.get(position);
+        MyIssue is =  mDataList.get(position);
         holder.bind(mDataList.size()-position,is);
     }
 

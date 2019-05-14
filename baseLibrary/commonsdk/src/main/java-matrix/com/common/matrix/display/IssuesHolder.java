@@ -33,10 +33,10 @@ public class IssuesHolder extends RecyclerView.ViewHolder {
         tvIndex = (TextView) itemView.findViewById(R.id.item_index);
     }
 
-    public void bind(int no, Issue issue) {
+    public void bind(int no, MyIssue issue) {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss:SSS");
-        Date date = new Date(Long.parseLong(issue.getContent().optString("time")));
+        Date date = new Date(issue.getContent().getLongValue("time"));
         tvTime.setText("IssueTime -> " + simpleDateFormat.format(date));
 
         if (TextUtils.isEmpty(issue.getTag())) tvTag.setVisibility(View.GONE);
@@ -45,7 +45,7 @@ public class IssuesHolder extends RecyclerView.ViewHolder {
         if (TextUtils.isEmpty(issue.getKey())) tvKey.setVisibility(View.GONE);
         else tvKey.setText("KEY -> " + issue.getKey());
 
-        if (issue.getType() == null) tvType.setVisibility(View.GONE);
+        if (issue.getType() == 0) tvType.setVisibility(View.GONE);
         else tvType.setText("TYPE -> " + issue.getType());
 
         tvIndex.setText(no + "");
@@ -81,9 +81,9 @@ public class IssuesHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void showIssue(Issue issue) {
+    public void showIssue(MyIssue issue) {
         String key = "stack";
-        if (issue.getContent().has(key)) {
+        if (issue.getContent().containsKey(key)) {
             try {
                 String stack = issue.getContent().getString(key);
                 Map<Integer, String> map = new HashMap<>();
@@ -116,7 +116,7 @@ public class IssuesHolder extends RecyclerView.ViewHolder {
                     issue.getContent().put(key, stringBuilder.toString());
                 }
 
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         }
