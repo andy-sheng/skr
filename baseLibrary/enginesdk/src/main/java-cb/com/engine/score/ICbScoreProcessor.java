@@ -64,7 +64,7 @@ public class ICbScoreProcessor {
                 }
             }
         }
-        if(ScoreConfig.isMelpEnable()) {
+        if (ScoreConfig.isMelpEnable()) {
             // 默认关闭 melp1 方式的打分了
             int r1 = process1(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
         }
@@ -75,7 +75,11 @@ public class ICbScoreProcessor {
                     protected void processMessage(Message var1) {
                         if (var1.what == 1) {
                             Holder holder = (Holder) var1.obj;
-                            process2(holder.needScore, holder.restartEngine, holder.samples, holder.length, holder.channels, holder.samplesPerSec, holder.currentTimeMills, holder.melPath);
+                            try {
+                                process2(holder.needScore, holder.restartEngine, holder.samples, holder.length, holder.channels, holder.samplesPerSec, holder.currentTimeMills, holder.melPath);
+                            } catch (Exception e) {
+                                MyLog.e(TAG, e);
+                            }
                         } else if (var1.what == 2) {
                             Score2Callback score2Callback = (Score2Callback) var1.obj;
                             if (score2Callback != null) {
