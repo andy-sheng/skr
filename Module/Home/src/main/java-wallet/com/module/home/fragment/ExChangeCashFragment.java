@@ -158,6 +158,11 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                                 mTvExchangeWhole.setVisibility(View.VISIBLE);
                                 mIvExchangeBtn.setEnabled(true);
                                 mClearIv.setVisibility(View.VISIBLE);
+                                if (editDq == 0) {
+                                    mIvExchangeBtn.setEnabled(false);
+                                } else {
+                                    mIvExchangeBtn.setEnabled(true);
+                                }
                             }
                         }
 
