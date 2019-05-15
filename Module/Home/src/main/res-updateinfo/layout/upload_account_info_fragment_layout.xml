@@ -18,9 +18,10 @@
                 android:id="@+id/titlebar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:centerText="完善个人资料"
+                app:centerText="完善资料"
                 app:centerTextColor="@color/white"
                 app:centerTextSize="@dimen/textsize_20_dp"
+                app:centerTextStyle="BOLD"
                 app:centerType="textView"
                 app:leftDrawable="@drawable/img_back"
                 app:leftType="textView"
@@ -28,116 +29,176 @@
                 app:statusBarColor="#7187FF"
                 app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
 
-
-            <com.common.view.ex.NoLeakEditText
-                android:id="@+id/nickname_et"
+            <RelativeLayout
+                android:id="@+id/container_area"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_58_dp"
-                android:layout_marginLeft="@dimen/view_40_dp"
-                android:layout_below="@id/titlebar"
-                android:layout_marginTop="@dimen/view_60_dp"
-                android:layout_marginRight="@dimen/view_40_dp"
-                android:background="@drawable/common_edit_bg"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
-                android:hint="昵称"
-                android:inputType="text"
-                android:maxLength="20"
-                android:maxLines="1"
-                android:paddingLeft="@dimen/view_25_dp"
-                android:paddingRight="@dimen/view_25_dp"
-                android:singleLine="true"
-                android:textColor="#091E77"
-                android:textColorHint="#4c0C2275"
-                android:textSize="@dimen/view_18_dp" />
+                android:layout_height="@dimen/view_425_dp"
+                android:layout_below="@+id/titlebar"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginTop="@dimen/view_22_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@drawable/common_dialog_bg"
+                android:paddingLeft="@dimen/view_3_dp"
+                android:paddingTop="@dimen/view_3_dp"
+                android:paddingRight="@dimen/view_3_dp"
+                android:paddingBottom="@dimen/view_5_dp">
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/nickname_hint_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_20_dp"
-                android:layout_below="@+id/nickname_et"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_5_dp"
-                android:text="昵称的提示哦"
-                android:gravity="center"
-                android:textColor="#FFB1CE"
-                android:textSize="@dimen/textsize_14_dp"
-                android:visibility="gone" />
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/avatar_bg"
+                    android:layout_width="@dimen/view_98_dp"
+                    android:layout_height="@dimen/view_98_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_30_dp"
+                    app:bl_shape="oval"
+                    app:bl_solid_color="@color/white"
+                    app:bl_stroke_color="@color/textColorPrimary"
+                    app:bl_stroke_width="@dimen/view_2_dp" />
 
-            <LinearLayout
-                android:layout_width="@dimen/view_234_dp"
-                android:layout_height="@dimen/view_76_dp"
-                android:layout_below="@+id/nickname_et"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_35_dp"
-                android:orientation="horizontal">
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/avatar_iv"
+                    android:layout_width="@dimen/view_88_dp"
+                    android:layout_height="@dimen/view_88_dp"
+                    android:layout_alignLeft="@id/avatar_bg"
+                    android:layout_alignTop="@id/avatar_bg"
+                    android:layout_marginLeft="@dimen/view_5_dp"
+                    android:layout_marginTop="@dimen/view_5_dp" />
 
-                <RelativeLayout
-                    android:layout_width="@dimen/view_0_dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+                <TextView
+                    android:id="@+id/name_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_48_dp"
+                    android:layout_below="@id/avatar_iv"
+                    android:layout_marginLeft="@dimen/view_28_dp"
+                    android:layout_marginTop="@dimen/view_42_dp"
+                    android:gravity="center"
+                    android:text="昵称"
+                    android:textColor="#803B4E79"
+                    android:textSize="@dimen/textsize_18_dp" />
 
-                    <com.common.view.ex.ExImageView
+                <com.common.view.ex.ExRelativeLayout
+                    android:id="@+id/name_edit_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_48_dp"
+                    android:layout_alignTop="@id/name_tips"
+                    android:layout_marginLeft="@dimen/view_18_dp"
+                    android:layout_marginRight="@dimen/view_48_dp"
+                    android:layout_toRightOf="@id/name_tips"
+                    app:bl_corners_radius="@dimen/view_24_dp"
+                    app:bl_shape="rectangle"
+                    app:bl_solid_color="#B3DBF0">
+
+                    <com.common.view.ex.NoLeakEditText
+                        android:id="@+id/nickname_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:cursorVisible="true"
+                        android:hint="昵称"
+                        android:gravity="center_vertical"
+                        android:inputType="text"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:minWidth="@dimen/view_20_dp"
+                        android:paddingLeft="@dimen/view_16_dp"
+                        android:paddingRight="@dimen/view_25_dp"
+                        android:singleLine="true"
+                        android:textColor="@color/textColorPrimary"
+                        android:textColorHint="#993B4E79"
+                        android:textSize="@dimen/view_18_dp" />
+
+                    <ImageView
+                        android:id="@+id/edit_tips_iv"
+                        android:layout_width="@dimen/view_13_dp"
+                        android:layout_height="@dimen/view_13_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="-15dp"
+                        android:layout_toRightOf="@id/nickname_et"
+                        android:background="@drawable/wanshanziliao_bi"
+                        android:visibility="gone" />
+
+                </com.common.view.ex.ExRelativeLayout>
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/nickname_hint_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_20_dp"
+                    android:layout_below="@+id/name_edit_area"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_5_dp"
+                    android:gravity="center"
+                    android:text="昵称的提示哦"
+                    android:textColor="#FFB1CE"
+                    android:textSize="@dimen/textsize_14_dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/sex_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/name_tips"
+                    android:layout_alignLeft="@id/name_tips"
+                    android:layout_marginTop="@dimen/view_32_dp"
+                    android:gravity="center"
+                    android:text="性别"
+                    android:textColor="#803B4E79"
+                    android:textSize="@dimen/textsize_18_dp" />
+
+                <RadioGroup
+                    android:id="@+id/sex_button_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/name_edit_area"
+                    android:layout_alignLeft="@id/name_edit_area"
+                    android:layout_alignRight="@id/name_edit_area"
+                    android:layout_marginTop="@dimen/view_30_dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
                         android:id="@+id/male"
-                        android:layout_width="@dimen/view_76_dp"
-                        android:layout_height="@dimen/view_76_dp"
-                        android:layout_centerHorizontal="true"
-                        android:background="@drawable/head_man_weixuanzhong"
-                        android:scaleType="center" />
-
-                    <TextView
-                        android:id="@+id/male_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/view_22_dp"
-                        android:layout_below="@+id/male"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/view_8_dp"
-                        android:text="男"
-                        android:textColor="@color/white_trans_50"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/radiobutton_default"
+                        android:text="男生"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="@dimen/textsize_16_dp"
-                        android:visibility="gone"/>
+                        android:textStyle="bold" />
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="@dimen/view_0_dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <com.common.view.ex.ExImageView
+                    <RadioButton
                         android:id="@+id/female"
-                        android:layout_width="@dimen/view_76_dp"
-                        android:layout_height="@dimen/view_76_dp"
-                        android:layout_centerHorizontal="true"
-                        android:background="@drawable/head_woman_weixuanzhong"
-                        android:scaleType="center" />
-
-                    <TextView
-                        android:id="@+id/female_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/view_22_dp"
-                        android:layout_below="@+id/female"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/view_8_dp"
-                        android:text="女"
-                        android:textColor="@color/white_trans_50"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/view_40_dp"
+                        android:button="@drawable/radiobutton_default"
+                        android:paddingLeft="@dimen/view_8_dp"
+                        android:text="女生"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="@dimen/textsize_16_dp"
-                        android:visibility="gone"/>
+                        android:textStyle="bold" />
+                </RadioGroup>
 
-                </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/view_32_dp"
+                    android:gravity="center"
+                    android:text="完善资料获得更佳互动体验"
+                    android:textColor="#803B4E79"
+                    android:textSize="@dimen/textsize_14_dp" />
 
-            </LinearLayout>
-
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/next_iv"
                 android:layout_width="@dimen/view_176_dp"
                 android:layout_height="@dimen/view_61_dp"
-                android:layout_below="@+id/nickname_et"
+                android:layout_below="@+id/container_area"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_120_dp"
+                android:layout_marginTop="@dimen/view_30_dp"
                 android:background="@drawable/complete_unclick_icon" />
+
         </RelativeLayout>
 
     </ScrollView>

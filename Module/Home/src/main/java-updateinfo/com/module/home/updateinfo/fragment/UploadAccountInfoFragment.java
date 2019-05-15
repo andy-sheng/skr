@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.rxretrofit.ApiManager;
@@ -29,6 +32,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
@@ -50,16 +54,19 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     boolean isUpload = false; //当前是否是完善个人资料
 
-    CommonTitleBar mTitlebar;
 
     RelativeLayout mMainActContainer;
+
+    CommonTitleBar mTitlebar;
+    SimpleDraweeView mAvatarIv;
     NoLeakEditText mNicknameEt;
     ExTextView mNicknameHintTv;
 
-    ExImageView mMale;
-    TextView mMaleTv;
-    ExImageView mFemale;
-    TextView mFemaleTv;
+    ImageView mEditTipsIv;
+
+    RadioGroup mSexButtonArea;
+    RadioButton mMale;
+    RadioButton mFemale;
 
     ImageView mNextIv;
 
@@ -80,20 +87,31 @@ public class UploadAccountInfoFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNicknameEt = (NoLeakEditText) mRootView.findViewById(R.id.nickname_et);
+        mEditTipsIv = (ImageView) mRootView.findViewById(R.id.edit_tips_iv);
         mNicknameHintTv = (ExTextView) mRootView.findViewById(R.id.nickname_hint_tv);
-        mMale = (ExImageView) mRootView.findViewById(R.id.male);
-        mMaleTv = (TextView) mRootView.findViewById(R.id.male_tv);
-        mFemale = (ExImageView) mRootView.findViewById(R.id.female);
-        mFemaleTv = (TextView) mRootView.findViewById(R.id.female_tv);
 
+        mSexButtonArea = (RadioGroup) mRootView.findViewById(R.id.sex_button_area);
+        mMale = (RadioButton) mRootView.findViewById(R.id.male);
+        mFemale = (RadioButton) mRootView.findViewById(R.id.female);
         mNextIv = (ImageView) mRootView.findViewById(R.id.next_iv);
-
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
         }
+
+        mNicknameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mEditTipsIv.setVisibility(View.GONE);
+                } else {
+                    mEditTipsIv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         mNicknameEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -146,19 +164,25 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        mMale.setOnClickListener(new DebounceViewClickListener() {
+        mSexButtonArea.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void clickValid(View v) {
-                selectSex(true);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.male) {
+                    selectSex(true);
+                } else if (checkedId == R.id.female) {
+                    selectSex(false);
+                } else {
+                    // 不存在
+                }
+
+                changeFocus();
             }
         });
 
-        mFemale.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                selectSex(false);
-            }
-        });
+        AvatarUtils.loadAvatarByUrl(mAvatarIv,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .build());
 
         if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
             mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
@@ -177,11 +201,29 @@ public class UploadAccountInfoFragment extends BaseFragment {
         initPublishSubject();
     }
 
+    private void changeFocus() {
+        mNickName = mNicknameEt.getText().toString().trim();
+        if (TextUtils.isEmpty(mNickName)) {
+            if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+                mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
+                mNicknameEt.clearFocus();
+            } else {
+                mNicknameEt.requestFocus();
+            }
+        } else {
+            mNicknameEt.clearFocus();
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        mNicknameEt.requestFocus();
-        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+            mNicknameEt.requestFocus();
+            U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+        } else {
+            mNicknameEt.clearFocus();
+        }
     }
 
     private void checkNameAndSex(String nickName, int sex) {
@@ -270,14 +312,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
     // 选一个，另一个需要缩放动画
     private void selectSex(boolean isMale) {
         this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
-        mMale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_man_xuanzhong) : getResources().getDrawable(R.drawable.head_man_weixuanzhong));
-        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_woman_xuanzhong));
-
-        mMale.setClickable(isMale ? false : true);
-        mMaleTv.setTextColor(isMale ? U.getColor(R.color.white) : U.getColor(R.color.white_trans_50));
-        mFemale.setClickable(isMale ? true : false);
-        mFemaleTv.setTextColor(isMale ? U.getColor(R.color.white_trans_50) : U.getColor(R.color.white));
-
+        mMale.setChecked(isMale);
+        mFemale.setChecked(!isMale);
         setCompleteTv(true);
     }
 
