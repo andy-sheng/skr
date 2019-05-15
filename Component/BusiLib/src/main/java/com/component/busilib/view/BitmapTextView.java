@@ -3,7 +3,6 @@ package com.component.busilib.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -15,6 +14,7 @@ import android.view.View;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
+import com.glidebitmappool.GlideBitmapFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,54 +84,54 @@ public class BitmapTextView extends View {
         if (hasShadow) {
             switch (aChar) {
                 case '0':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_0);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_0);
                 case '1':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_1);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_1);
                 case '2':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_2);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_2);
                 case '3':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_3);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_3);
                 case '4':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_4);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_4);
                 case '5':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_5);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_5);
                 case '6':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_6);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_6);
                 case '7':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_7);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_7);
                 case '8':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_8);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_8);
                 case '9':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_9);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_9);
                 case '.':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_dian);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_dian);
                 default:
                     return null;
             }
         } else {
             switch (aChar) {
                 case '0':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
                 case '1':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
                 case '2':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
                 case '3':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
                 case '4':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
                 case '5':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
                 case '6':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
                 case '7':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
                 case '8':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
                 case '9':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
                 case '.':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
+                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
                 default:
                     return null;
             }

@@ -2,7 +2,6 @@ package com.module.playways.room.room.fragment;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -33,6 +32,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.glidebitmappool.GlideBitmapFactory;
 import com.module.RouterConstants;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.room.RankRoomData;
@@ -263,16 +263,16 @@ public class RankLevelChangeFragment2 extends BaseFragment {
         if (!TextUtils.isEmpty(image.getUrl())) {
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null && file.exists()) {
-                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
+                dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar");
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
             }
         }
         if (LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking()) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(U.app().getResources(), LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking())), "keyMedalNew");
+            dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeResource(U.app().getResources(), LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking())), "keyMedalNew");
         }
         if (LevelConfigUtils.getImageResoucesSubLevel(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking()) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(U.app().getResources(),
+            dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeResource(U.app().getResources(),
                     LevelConfigUtils.getImageResoucesSubLevel(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking())),
                     "keyLevelNew");
         }

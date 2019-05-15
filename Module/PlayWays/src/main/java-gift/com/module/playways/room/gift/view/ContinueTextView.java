@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 
 import com.common.log.MyLog;
 import com.component.busilib.view.BitmapTextView;
+import com.glidebitmappool.GlideBitmapFactory;
 import com.module.playways.R;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class ContinueTextView extends BitmapTextView {
 
     private void initXBitmap() {
         if (x == null) {
-            x = BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_x);
+            x = GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_x);
         }
     }
 
