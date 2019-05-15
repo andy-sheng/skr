@@ -129,7 +129,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                     } else {
                         mIvExchangeBtn.setEnabled(true);
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                        mTvTip.setText(String.format("红钻余额%.1f", mDq));
+                        mTvTip.setText(String.format("预计可兑换%.1f钻石", inputNum));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         mClearIv.setVisibility(View.VISIBLE);
                     }
