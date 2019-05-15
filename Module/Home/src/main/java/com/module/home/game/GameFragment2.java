@@ -33,6 +33,7 @@ import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.event.CheckInSuccessEvent;
 import com.module.home.game.adapter.GameAdapter;
 import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
@@ -284,6 +285,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         initBaseInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(CheckInSuccessEvent checkInSuccessEvent) {
+        mGamePresenter.checkTaskRedDot();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

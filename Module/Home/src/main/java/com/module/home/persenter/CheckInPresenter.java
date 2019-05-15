@@ -19,6 +19,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.module.home.MainPageSlideApi;
 import com.module.home.R;
+import com.module.home.event.CheckInSuccessEvent;
 import com.module.home.model.HomeGoldModel;
 import com.module.home.view.CheckInSuccessView;
 import com.module.home.view.HomeGoldCheckInView;
@@ -110,7 +111,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
                 MyLog.e(TAG, e);
             }
-        }, this,new ApiMethods.RequestControl("checkInInfo", ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("checkInInfo", ApiMethods.ControlType.CancelThis));
     }
 
     public void showCheckInView(List<HomeGoldModel> homeGoldModelList) {
@@ -147,7 +148,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                         @Override
                         public void onDismiss(@NonNull DialogPlus dialog) {
                             // 不放在api里，因为到api那层不代表已经展示了
-                            MyLog.d(TAG,"onDismiss" + " dialog=" + dialog);
+                            MyLog.d(TAG, "onDismiss" + " dialog=" + dialog);
                             U.getPreferenceUtils().setSettingLong(PREF_KEY_SHOW_CHECKIN, System.currentTimeMillis());
                             mHasShow = true;
                         }
@@ -166,6 +167,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     HomeGoldModel homeGoldModel = JSON.parseObject(result.getData().getString("curr"), HomeGoldModel.class);
                     showCheckInSuccessView(homeGoldModel);
+                    EventBus.getDefault().post(new CheckInSuccessEvent());
                 } else {
                     MyLog.w(TAG, "signIn failed, " + " result=" + result.getTraceId());
                 }
@@ -201,7 +203,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                     .setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                            MyLog.d(TAG,"onClick" + " dialog=" + dialog + " view=" + view);
+                            MyLog.d(TAG, "onClick" + " dialog=" + dialog + " view=" + view);
                             mCheckInSuccessDialog.dismiss();
                         }
                     })
