@@ -96,7 +96,7 @@ public class GrabInputContainerView extends InputContainerView {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());
                 map.put("content", content);
-                if (mGrabPlayerInfoModel.getUserInfo() != null) {
+                if (mGrabPlayerInfoModel != null && mGrabPlayerInfoModel.getUserInfo() != null) {
                     UserInfo userInfo = new UserInfo.Builder()
                             .setAvatar(mGrabPlayerInfoModel.getUserInfo().getAvatar())
                             .setUserID(mGrabPlayerInfoModel.getUserID())
@@ -117,7 +117,7 @@ public class GrabInputContainerView extends InputContainerView {
                             if (!mHasPretend && !TextUtils.isEmpty(content)) {
                                 mUiHandler.removeMessages(100);
 
-                                if (grabPlayerInfoModel.getUserInfo() != null) {
+                                if (grabPlayerInfoModel != null && grabPlayerInfoModel.getUserInfo() != null) {
                                     UserInfoModel userInfoModel = new UserInfoModel();
                                     userInfoModel.setNickname(grabPlayerInfoModel.getUserInfo().getNickname());
                                     userInfoModel.setAvatar(grabPlayerInfoModel.getUserInfo().getAvatar());
