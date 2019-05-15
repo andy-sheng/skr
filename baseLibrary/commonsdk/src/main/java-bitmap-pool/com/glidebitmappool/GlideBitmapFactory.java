@@ -310,26 +310,6 @@ public class GlideBitmapFactory {
         }
     }
 
-    public static Bitmap decodeStream(InputStream is, Rect outPadding, BitmapFactory.Options options) {
-        BitmapFactory.decodeStream(is, outPadding, options);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-            options.inMutable = true;
-            Bitmap inBitmap = GlideBitmapPool.getBitmap(options.outWidth, options.outHeight, options.inPreferredConfig);
-            if (inBitmap != null && Util.canUseForInBitmap(inBitmap, options)) {
-                options.inBitmap = inBitmap;
-            }
-        }
-        options.inJustDecodeBounds = false;
-        try {
-            return BitmapFactory.decodeStream(is, outPadding, options);
-        } catch (Exception e) {
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-                options.inBitmap = null;
-            }
-            return BitmapFactory.decodeStream(is, outPadding, options);
-        }
-    }
-
     public static Bitmap decodeFileDescriptor(FileDescriptor fd) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

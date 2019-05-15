@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.text.StaticLayout
 import android.text.TextPaint
+import com.glidebitmappool.GlideBitmapFactory
 import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.concurrent.thread
@@ -44,7 +45,7 @@ class SVGADynamicEntity {
                     it.connectTimeout = 20 * 1000
                     it.requestMethod = "GET"
                     it.connect()
-                    BitmapFactory.decodeStream(it.inputStream)?.let {
+                    GlideBitmapFactory.decodeStream(it.inputStream)?.let {
                         handler.post { setDynamicImage(it, forKey) }
                     }
                     it.inputStream.close()

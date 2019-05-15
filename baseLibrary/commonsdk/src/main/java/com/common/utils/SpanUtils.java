@@ -2,7 +2,6 @@ package com.common.utils;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -48,6 +47,8 @@ import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
 import android.text.style.UpdateAppearance;
 import android.util.Log;
+
+import com.glidebitmappool.GlideBitmapFactory;
 
 import java.io.InputStream;
 import java.lang.annotation.Retention;
@@ -1241,7 +1242,7 @@ public final class SpanUtils {
                 try {
                     InputStream is =
                             U.app().getContentResolver().openInputStream(mContentUri);
-                    bitmap = BitmapFactory.decodeStream(is);
+                    bitmap = GlideBitmapFactory.decodeStream(is);
                     drawable = new BitmapDrawable(U.app().getResources(), bitmap);
                     drawable.setBounds(
                             0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()
