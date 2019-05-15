@@ -18,9 +18,11 @@ import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.view.ContinueTextView;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
@@ -146,6 +148,13 @@ public class GiftContinuousView extends RelativeLayout {
                 .setBorderColor(Color.WHITE)
                 .build()
         );
+
+        mSendAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+            }
+        });
 
         mSenderNameTv.setText(model.getSender().getNickname());
         mDescTv.setText(model.getAction());
