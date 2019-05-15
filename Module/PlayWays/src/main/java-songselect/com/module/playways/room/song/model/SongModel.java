@@ -1,7 +1,10 @@
 package com.module.playways.room.song.model;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
+import com.zq.live.proto.Common.StandPlayType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;
 
@@ -310,7 +313,7 @@ public class SongModel implements Serializable {
     }
 
     public SongModel getPkMusic() {
-        if(pkMusicList.isEmpty()){
+        if (pkMusicList.isEmpty()) {
             return null;
         }
         return pkMusicList.get(0);
@@ -351,6 +354,19 @@ public class SongModel implements Serializable {
         }
 
         return true;
+    }
+
+    public String getDisplaySongName() {
+        if (playType == StandPlayType.PT_SPK_TYPE.getValue()) {
+            if (!TextUtils.isEmpty(itemName) && itemName.contains("（PK版）")) {
+                return itemName.substring(0, itemName.length() - 5);
+            }
+        } else if (playType == StandPlayType.PT_CHO_TYPE.getValue()) {
+            if (!TextUtils.isEmpty(itemName) && itemName.contains("（合唱版）")) {
+                return itemName.substring(0, itemName.length() - 5);
+            }
+        }
+        return itemName;
     }
 
     @Override

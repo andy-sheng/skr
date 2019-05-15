@@ -257,6 +257,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         grabRoomSongModel.setOwner(songModel.getOwner());
                         grabRoomSongModel.setItemName(songModel.getItemName());
                         grabRoomSongModel.setItemID(songModel.getItemID());
+                        grabRoomSongModel.setPlayType(songModel.getPlayType());
+                        grabRoomSongModel.setChallengeAvailable(songModel.isChallengeAvailable());
 
                         if (mGrabRoomSongModelList.size() <= 2) {
                             grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
