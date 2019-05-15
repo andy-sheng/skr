@@ -348,6 +348,11 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
         public void onClickSkipGuide() {
             quitGame();
         }
+
+        @Override
+        public void onClickFeedBack() {
+
+        }
     };
 
     /**

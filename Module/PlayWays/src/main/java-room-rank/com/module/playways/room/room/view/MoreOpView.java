@@ -32,6 +32,8 @@ public class MoreOpView extends RelativeLayout {
     RelativeLayout mGameGuideRl;
     ExTextView mGameGuideBtn;
     Listener mListener;
+    RelativeLayout mGameFeedbackRl;
+    ExTextView mGameFeedbackTv;
 
     BaseRoomData mRoomData;
 
@@ -49,8 +51,10 @@ public class MoreOpView extends RelativeLayout {
         mMenuContainer = (LinearLayout) this.findViewById(R.id.menu_container);
         mVoiceControlBtnContainer = (RelativeLayout) this.findViewById(R.id.voice_control_btn_container);
         mVoiceControlBtn = (ExTextView) this.findViewById(R.id.voice_control_btn);
-        mGameGuideRl = (RelativeLayout) findViewById(R.id.game_guide_rl);
-        mGameGuideBtn = (ExTextView) findViewById(R.id.game_guide_btn);
+        mGameGuideRl = (RelativeLayout) this.findViewById(R.id.game_guide_rl);
+        mGameGuideBtn = (ExTextView) this.findViewById(R.id.game_guide_btn);
+        mGameFeedbackRl = (RelativeLayout) this.findViewById(R.id.game_feedback_rl);
+        mGameFeedbackTv = (ExTextView) this.findViewById(R.id.game_feedback_tv);
         mQuitBtnContainer = (RelativeLayout) this.findViewById(R.id.quit_btn_container);
         mQuitBtn = (ExTextView) this.findViewById(R.id.quit_btn);
 
@@ -84,6 +88,16 @@ public class MoreOpView extends RelativeLayout {
                         mVoiceControlBtn.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                                 null, null, null);
                     }
+                }
+                mPopupWindow.dismiss();
+            }
+        });
+
+        mGameFeedbackRl.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.onClickFeedback();
                 }
                 mPopupWindow.dismiss();
             }
@@ -140,5 +154,7 @@ public class MoreOpView extends RelativeLayout {
         void onVoiceChange(boolean voiceOpen);
 
         void onClickGameRule();
+
+        void onClickFeedback();
     }
 }

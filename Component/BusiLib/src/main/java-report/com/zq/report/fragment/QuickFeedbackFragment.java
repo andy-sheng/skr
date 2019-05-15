@@ -1,9 +1,10 @@
-package com.module.home.feedback;
+package com.zq.report.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
@@ -17,11 +18,11 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.KeyboardEvent;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.titlebar.CommonTitleBar;
-import com.module.home.R;
+import com.component.busilib.R;
 import com.zq.report.FeedbackServerApi;
 import com.zq.report.view.FeedbackView;
 import com.zq.toast.CommonToastView;
@@ -38,35 +39,33 @@ import okhttp3.RequestBody;
 import static com.zq.report.view.FeedbackView.FEEDBACK_ERRO;
 import static com.zq.report.view.FeedbackView.FEEDBACK_SUGGEST;
 
-public class FeedbackFragment extends BaseFragment {
+/**
+ * 快速一键反馈
+ */
+public class QuickFeedbackFragment extends BaseFragment {
 
-    CommonTitleBar mTitlebar;
+    View mPlaceHolderView;
+    RelativeLayout mContainer;
     FeedbackView mFeedBackView;
+    View mPlaceView;
     ProgressBar mUploadProgressBar;
 
     @Override
     public int initView() {
-        return R.layout.feedback_fragment_layout;
+        return R.layout.quick_feedback_fragment_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mPlaceHolderView = (View) mRootView.findViewById(R.id.place_holder_view);
+        mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
         mFeedBackView = (FeedbackView) mRootView.findViewById(R.id.feed_back_view);
+        mPlaceView = (View) mRootView.findViewById(R.id.place_view);
         mUploadProgressBar = (ProgressBar) mRootView.findViewById(R.id.upload_progress_bar);
-
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                U.getFragmentUtils().popFragment(FeedbackFragment.this);
-            }
-        });
 
         mFeedBackView.setListener(new FeedbackView.Listener() {
             @Override
-            public void onClickSubmit(int type, String content) {
+            public void onClickSubmit(final int type, final String content) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 mUploadProgressBar.setVisibility(View.VISIBLE);
                 if (type == FEEDBACK_ERRO) {
@@ -84,7 +83,7 @@ public class FeedbackFragment extends BaseFragment {
                                     .setText("反馈失败")
                                     .build());
 
-                            U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                            U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
                         }
                     }, true);
                 } else if (type == FEEDBACK_SUGGEST) {
@@ -95,7 +94,12 @@ public class FeedbackFragment extends BaseFragment {
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        mPlaceView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
+            }
+        });
     }
 
     private void feedback(int[] type, String content, String logUrl) {
@@ -103,7 +107,7 @@ public class FeedbackFragment extends BaseFragment {
         map.put("createdAt", System.currentTimeMillis());
         map.put("appVer", U.getAppInfoUtils().getVersionName());
         map.put("channel", U.getChannelUtils().getChannel());
-        map.put("source", 2);
+        map.put("source", 1);
         map.put("type", type);
         map.put("content", content);
         map.put("appLog", logUrl);
@@ -120,7 +124,7 @@ public class FeedbackFragment extends BaseFragment {
                             .setText("反馈成功")
                             .build());
 
-                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                    U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
                 } else {
                     mUploadProgressBar.setVisibility(View.GONE);
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
@@ -128,7 +132,7 @@ public class FeedbackFragment extends BaseFragment {
                             .setText(result.getErrmsg())
                             .build());
 
-                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                    U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
                 }
             }
 
@@ -140,19 +144,31 @@ public class FeedbackFragment extends BaseFragment {
                         .setImage(R.drawable.touxiangshezhishibai_icon)
                         .setText("反馈失败！\n请检查网络之后重试")
                         .build());
+                U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
             }
         });
     }
 
     @Override
-    public void destroy() {
-        super.destroy();
-        U.getSoundUtils().release(TAG);
-    }
-
-    @Override
     public boolean useEventBus() {
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(KeyboardEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        switch (event.eventType) {
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN: {
+                mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
+                mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+                break;
+            }
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
+                mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
+                mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+                break;
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -67,6 +67,7 @@ import com.zq.dialog.PersonInfoDialog;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -627,6 +628,17 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void onVoiceChange(boolean voiceOpen) {
                 mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
+            }
+
+            @Override
+            public void onClickFeedback() {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build());
             }
         });
 

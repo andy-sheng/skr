@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
@@ -93,6 +94,8 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
 import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.report.fragment.QuickFeedbackFragment;
+import com.zq.report.fragment.ReportFragment;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -347,7 +350,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
             int index = mRankingContainer.indexOfChild(mBottomBgVp);
-            mRankingContainer.addView(mIvManageSongTipView, index+1, layoutParams);
+            mRankingContainer.addView(mIvManageSongTipView, index + 1, layoutParams);
         }
     }
 
@@ -808,6 +811,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         public void onClickSkipGuide() {
 
         }
+
+        @Override
+        public void onClickFeedBack() {
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .setEnterAnim(R.anim.slide_in_bottom)
+                            .setExitAnim(R.anim.slide_out_bottom)
+                            .build());
+        }
     };
 
     /**
@@ -831,7 +845,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
-        GiftBigContinuousView giftBigContinueView =  mRootView.findViewById(R.id.gift_big_continue_view);
+        GiftBigContinuousView giftBigContinueView = mRootView.findViewById(R.id.gift_big_continue_view);
         giftBigAnimationViewGroup.setGiftBigContinuousView(giftBigContinueView);
 
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);

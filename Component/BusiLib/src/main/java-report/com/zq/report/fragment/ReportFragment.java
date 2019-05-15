@@ -18,6 +18,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.KeyboardEvent;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
@@ -110,23 +111,19 @@ public class ReportFragment extends BaseFragment {
         mRecyclerView.setAdapter(mReportAdapter);
         mReportAdapter.notifyDataSetChanged();
 
-        RxView.clicks(mPlaceView)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().popFragment(ReportFragment.this);
-                    }
-                });
+        mPlaceView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(ReportFragment.this);
+            }
+        });
 
-        RxView.clicks(mSubmitTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        submitReport();
-                    }
-                });
+        mSubmitTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                submitReport();
+            }
+        });
 
     }
 

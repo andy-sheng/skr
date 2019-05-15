@@ -112,6 +112,13 @@ public class GrabTopContainerView extends RelativeLayout {
                                 mListener.onClickGameRule();
                             }
                         }
+
+                        @Override
+                        public void onClickFeedback() {
+                            if (mListener != null) {
+                                mListener.onClickFeedBack();
+                            }
+                        }
                     });
                     mMoreOpView.setRoomData(mRoomData);
                 }
@@ -250,5 +257,7 @@ public class GrabTopContainerView extends RelativeLayout {
         void onClickVoiceVoiceAudition();
 
         void onClickSkipGuide();
+
+        void onClickFeedBack();
     }
 }
