@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -17,7 +18,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 
-public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
+public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.ChorusLineLyricModel, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
 
     public final static String TAG = "ChorusSelfLyricAdapter";
 
@@ -42,8 +43,8 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
 
     @Override
     public void onBindViewHolder(@NonNull ChorusSelfLyricHolder holder, int position) {
-        String string = mDataList.get(position);
-        holder.bindData(string, position);
+        ChorusLineLyricModel chorusLineLyricModel = mDataList.get(position);
+        holder.bindData(chorusLineLyricModel, position);
     }
 
     @Override
@@ -81,6 +82,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
         View mBlankView;
         BaseImageView mAvatarIv;
         ExTextView mLyricLineTv;
+        ChorusLineLyricModel mChorusLineLyricModel;
 
         public ChorusSelfLyricHolder(View itemView) {
             super(itemView);
@@ -89,46 +91,30 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
             mBlankView = itemView.findViewById(R.id.blank_view);
         }
 
-        public void bindData(String text, int position) {
-            mLyricLineTv.setText(text);
+        public void bindData(ChorusLineLyricModel chorusLineLyricModel, int position) {
+            mChorusLineLyricModel = chorusLineLyricModel;
+            mLyricLineTv.setText(chorusLineLyricModel.getLyrics());
 
             if (!mLeftGiveUp && !mRightGiveUp) {
                 mBlankView.setVisibility(View.VISIBLE);
-                if (position % 2 == 0) {
-                    if (mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                        // 左边是自己
-                        mLyricLineTv.setTextColor(colorEnable);
-                    } else {
-                        mLyricLineTv.setTextColor(colorDisable);
-                    }
-                    if (mLeft.mUserInfoModel != null) {
-                        mAvatarIv.setVisibility(View.VISIBLE);
-                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.mUserInfoModel.getAvatar())
-                                .setCircle(true)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                .setBorderColor(Color.WHITE)
-                                .build());
-                    } else {
-                        mAvatarIv.setVisibility(View.GONE);
-                    }
+                if (mChorusLineLyricModel.getUserInfoModel() != null &&
+                        mChorusLineLyricModel.getUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                    // 左边是自己
+                    mLyricLineTv.setTextColor(colorEnable);
                 } else {
-                    if (mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                        // 右边是自己
-                        mLyricLineTv.setTextColor(colorEnable);
-                    } else {
-                        mLyricLineTv.setTextColor(colorDisable);
-                    }
-                    if (mRight.mUserInfoModel != null) {
-                        mAvatarIv.setVisibility(View.VISIBLE);
-                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
-                                .setCircle(true)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                .setBorderColor(Color.WHITE)
-                                .build());
-                    } else {
-                        mAvatarIv.setVisibility(View.GONE);
-                    }
+                    mLyricLineTv.setTextColor(colorDisable);
                 }
+                if (mChorusLineLyricModel.getUserInfoModel() != null) {
+                    mAvatarIv.setVisibility(View.VISIBLE);
+                    AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mChorusLineLyricModel.getUserInfoModel().getAvatar())
+                            .setCircle(true)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setBorderColor(Color.WHITE)
+                            .build());
+                } else {
+                    mAvatarIv.setVisibility(View.GONE);
+                }
+
             } else if (mLeftGiveUp) {
                 mBlankView.setVisibility(View.GONE);
                 // 左边的人不唱了
@@ -178,6 +164,24 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
                 }
             }
 
+        }
+    }
+
+    public static class ChorusLineLyricModel {
+        UserInfoModel UserInfoModel;
+        String lyrics;
+
+        public ChorusLineLyricModel(UserInfoModel userInfoModel, String lyrics) {
+            UserInfoModel = userInfoModel;
+            this.lyrics = lyrics;
+        }
+
+        public String getLyrics() {
+            return lyrics;
+        }
+
+        public com.common.core.userinfo.model.UserInfoModel getUserInfoModel() {
+            return UserInfoModel;
         }
     }
 }

@@ -11,6 +11,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.crash.IgnoreException;
 import com.common.image.fresco.FrescoWorker;
@@ -19,6 +20,7 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.ImageUtils;
+import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -216,8 +218,7 @@ public class SongInfoCardView extends RelativeLayout {
             public void subscribe(ObservableEmitter<String> emitter) {
                 if (file != null && file.exists() && file.isFile()) {
                     try (BufferedSource source = Okio.buffer(Okio.source(file))) {
-                        String lyric = source.readUtf8Line();
-                        lyric = lyric + "\n" + source.readUtf8Line();
+                        String lyric = source.readUtf8();
                         emitter.onNext(lyric);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -231,9 +232,31 @@ public class SongInfoCardView extends RelativeLayout {
                 .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
             @Override
             public void accept(String o) {
-                mSongLyrics.setText(o);
+                mSongLyrics.setText("");
+                if (isJSON2(o)) {
+                    NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
+                    for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
+                        mSongLyrics.append(newChorusLyricModel.getItems().get(i).getWords());
+                        if (i == 0) {
+                            mSongLyrics.append("\n");
+                        }
+                    }
+                } else {
+                    mSongLyrics.setText(o);
+                }
             }
         }, throwable -> MyLog.e(TAG, throwable));
+    }
+
+    public boolean isJSON2(String str) {
+        boolean result = false;
+        try {
+            Object obj = JSON.parse(str);
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
     }
 
     /**
