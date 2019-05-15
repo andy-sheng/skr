@@ -11,7 +11,12 @@ if(MatrixEnable.toBoolean()){
     matrix {
         trace {
             enable = true	//if you don't want to use trace canary, set false
-            baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+            /**
+             * 每一行的格式是：方法id，方法accessType，类名，方法名，方法描述；
+             * stack每行的格式：stack层级，方法id，方法执行次数，方法执行总耗时。
+             * 得到有意义的原始堆栈的话，可以利用插桩函数表，通过方法id找到方法信息。
+             */
+            baseMethodMapFile = "${project.buildscript}/matrixTrace/methodMapping.txt"
             blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
         }
     }

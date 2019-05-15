@@ -30,17 +30,47 @@ public class ParseIssueUtil {
             stringBuilder.append(Issue.ISSUE_REPORT_TYPE).append(" : ").append(issue.getType()).append("\n");
             stringBuilder.append("key").append(" : ").append(issue.getKey()).append("\n");
         }
-
         stringBuilder.append("content :").append("\n");
-
         return pauseJsonObj(stringBuilder, issue.getContent()).toString();
+    }
 
+    static String parseStack(String stack) {
+
+        StringBuilder stringBuilder = new StringBuilder(" ");
+
+        String[] lines = stack.split("\n");
+        for (String line : lines) {
+            String[] args = line.split(",");
+            if (args.length == 4) {
+                //stack层级，方法id，方法执行次数，方法执行总耗时。
+                stringBuilder.append("层级:").append(args[0]).append(" ");
+                int method = Integer.parseInt(args[1]);
+                args[1] = MethodMapUtils.get(method);
+                stringBuilder.append(args[1]).append(" ");
+                stringBuilder.append("次数:").append(args[2]).append(" ");
+                stringBuilder.append("耗时:").append(args[3]).append("\n");
+            } else {
+                stringBuilder.append(line).append("\n");
+            }
+        }
+
+        return stringBuilder.toString();
     }
 
     public static StringBuilder pauseJsonObj(StringBuilder builder, JSONObject object) {
-        for(String key:object.keySet()){
+        for (String key : object.keySet()) {
             String val = object.getString(key);
-            builder.append("\t").append(key).append(" : ").append(val).append("\n");
+            if ("stack".equals(key)) {
+                builder.append("\t").append(key).append(" : ").append(parseStack(val)).append("\n");
+            } else if("stackKey".equals(key)){
+                for(String args :val.split("\\|")){
+                    int method = Integer.parseInt(args);
+                    String methodStr = MethodMapUtils.get(method);
+                    builder.append("\t").append(key).append(" : ").append(methodStr).append("\n");
+                }
+            }else {
+                builder.append("\t").append(key).append(" : ").append(val).append("\n");
+            }
         }
         return builder;
     }

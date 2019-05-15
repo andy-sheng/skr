@@ -7,14 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.common.base.R;
-import com.tencent.matrix.report.Issue;
-
-import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class IssuesHolder extends RecyclerView.ViewHolder {
     TextView tvTime, tvTag, tvKey, tvType, tvContent, tvIndex, tvDesc;
@@ -69,69 +64,7 @@ public class IssuesHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void readMappingFile(Map<Integer, String> methoMap) {
-//        BufferedReader reader = null;
-//        String tempString = null;
-//        try {
-//            reader = new BufferedReader(new FileReader(methodFilePath));
-//            while ((tempString = reader.readLine()) != null) {
-//                String[] contents = tempString.split(",");
-//                methoMap.put(Integer.parseInt(contents[0]), contents[2].replace('\n', ' '));
-//            }
-//            reader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (reader != null) {
-//                try {
-//                    reader.close();
-//                } catch (IOException e1) {
-//                }
-//            }
-//        }
-    }
-
-
     public void showIssue(MyIssue issue) {
-        String key = "stack";
-        if (issue.getContent().containsKey(key)) {
-            try {
-                String stack = issue.getContent().getString(key);
-                Map<Integer, String> map = new HashMap<>();
-                readMappingFile(map);
-
-                if (map.size() > 0) {
-                    StringBuilder stringBuilder = new StringBuilder(" ");
-
-                    String[] lines = stack.split("\n");
-                    for (String line : lines) {
-                        String[] args = line.split(",");
-                        int method = Integer.parseInt(args[1]);
-                        boolean isContainKey = map.containsKey(method);
-                        if (!isContainKey) {
-                            System.out.print("error!!!");
-                            continue;
-                        }
-
-                        args[1] = map.get(method);
-                        stringBuilder.append(args[0]);
-                        stringBuilder.append(",");
-                        stringBuilder.append(args[1]);
-                        stringBuilder.append(",");
-                        stringBuilder.append(args[2]);
-                        stringBuilder.append(",");
-                        stringBuilder.append(args[3] + "\n");
-                    }
-
-                    issue.getContent().remove(key);
-                    issue.getContent().put(key, stringBuilder.toString());
-                }
-
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-
         tvContent.setText(ParseIssueUtil.parseIssue(issue, true));
         tvContent.setVisibility(View.VISIBLE);
         isShow = true;

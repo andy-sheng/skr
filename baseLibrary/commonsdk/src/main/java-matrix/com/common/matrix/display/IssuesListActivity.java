@@ -58,6 +58,7 @@ public class IssuesListActivity extends BaseActivity {
     CommonTitleBar mTitleBar;
 
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -92,6 +93,7 @@ public class IssuesListActivity extends BaseActivity {
 
             @Override
             public void subscribe(ObservableEmitter<List<MyIssue>> emitter) throws Exception {
+                MethodMapUtils.loadMethod();
                 List<MyIssue> list = new ArrayList<>();
                 File dir = U.getAppInfoUtils().getSubDirFile("Matrix");
                 final File[] listFiles = dir.listFiles();

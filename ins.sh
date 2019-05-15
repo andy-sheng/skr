@@ -75,13 +75,17 @@ installApkForAllDevices(){
     	echo "adb -s ${data} install -r $1"
     	adb -s ${data} install -r $1
 
+        if [ $matrix = true ]; then
+            echo adb push app/build/outputs/mapping/debug/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
+            adb -s ${data} push app/build/outputs/mapping/debug/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
+        fi
+
     	if [[ $testModuleEnable = true ]]; then
     		adb -s ${data} shell am start -n com.zq.live/com.wali.live.moduletest.activity.TestSdkActivity
     	else
     		adb -s ${data} shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n com.zq.live/com.module.home.HomeActivity
     	fi
-    	$testModuleEnable
-	done  
+	done
 }
 
 #遍历文件夹
@@ -232,6 +236,9 @@ if [[ $1 = "app" ]]; then
             rm -rf ./publish
             mkdir ./publish
 			walk app/build/outputs/channels
+			if [ $matrix = true ]; then
+                cp app/build/outputs/mapping/debug/methodMapping.txt ./publish/matrix_method.txt
+            fi
 			echo "拷贝完毕"
 			if [ $MatrixEnable = true ];then
 			    echo "注意在 release all 版本中开启了 Matrix，确认是否为期望的操作"

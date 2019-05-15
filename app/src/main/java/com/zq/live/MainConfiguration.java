@@ -73,8 +73,6 @@ public class MainConfiguration implements ConfigModule {
             }
         });
 
-        BlockDetectByPrinter.start();
-
     }
 
     @Override

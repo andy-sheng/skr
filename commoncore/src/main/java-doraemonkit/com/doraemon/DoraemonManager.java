@@ -1,5 +1,6 @@
 package com.doraemon;
 
+import android.os.SystemClock;
 import android.view.View;
 
 import com.common.core.R;
@@ -90,6 +91,13 @@ public class DoraemonManager {
                             }
                         }).start();
 
+                    }
+                }));
+
+                extras.add(new SysInfoItem("模拟慢函数", "模拟", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        SystemClock.sleep(3000);
                     }
                 }));
                 return extras;

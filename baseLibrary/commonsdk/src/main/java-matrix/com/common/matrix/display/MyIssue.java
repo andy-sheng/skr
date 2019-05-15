@@ -50,6 +50,8 @@ public class MyIssue {
             else if(type==4){
                 return "文件泄露，未关闭";
             }
+        }else  if("Trace_EvilMethod".startsWith(tag)){
+            return "耗时方法";
         }
         return "";
     }

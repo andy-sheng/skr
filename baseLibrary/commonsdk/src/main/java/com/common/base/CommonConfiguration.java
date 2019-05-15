@@ -17,12 +17,14 @@ package com.common.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.delegate.AppLifecycles;
+import com.common.blockmoniter.BlockDetectByPrinter;
 import com.common.bugly.BuglyInit;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.jiguang.JiGuangPush;
@@ -90,6 +92,10 @@ public class CommonConfiguration implements ConfigModule {
                 MatrixInit.init();
                 //leakCanary 引用
                 LeakCanary.install(application);
+                // 卡顿检测 ,使用matrix，能检测出帧问题
+                // BlockDetectByPrinter.start();
+                // 所有的都会过这个
+                //Debug.startMethodTracing();
             }
 
             @Override

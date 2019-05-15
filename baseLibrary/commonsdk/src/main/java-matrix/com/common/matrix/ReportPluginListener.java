@@ -28,6 +28,12 @@ public class ReportPluginListener extends DefaultPluginListener {
     public void onReportIssue(Issue issue) {
         super.onReportIssue(issue);
         //CrashReport.postCatchedException(new MatrixException(issue.toString()));
+        if(issue.getContent().has("scene")){
+            String scene = issue.getContent().optString("scene");
+            if(scene.endsWith("IssuesListActivity")){
+                return;
+            }
+        }
         /**
          * 写入本地文件
          */

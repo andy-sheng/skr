@@ -23,4 +23,5 @@ else
 	sublime $1
 fi
 
+echo 解析xlog歌词 ./logcat.sh ~/Downloads/logs  或者 ./logcat.sh 拉取sdcard中的歌词
 echo 请使用 UTF-8 的编码，打开日志文件查看

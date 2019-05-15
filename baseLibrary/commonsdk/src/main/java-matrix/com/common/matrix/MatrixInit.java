@@ -7,6 +7,8 @@ import com.common.utils.U;
 import com.tencent.matrix.Matrix;
 import com.tencent.matrix.iocanary.IOCanaryPlugin;
 import com.tencent.matrix.iocanary.config.IOConfig;
+import com.tencent.matrix.trace.TracePlugin;
+import com.tencent.matrix.trace.config.TraceConfig;
 
 public class MatrixInit {
 
@@ -52,8 +54,24 @@ public class MatrixInit {
         //add to matrix
         builder.plugin(ioCanaryPlugin);
 
+        //trace
+        TraceConfig traceConfig = new TraceConfig.Builder()
+                .dynamicConfig(dynamicConfig)
+                .enableFPS(true)
+                .enableEvilMethodTrace(true)
+                .enableAnrTrace(true)
+                .enableStartup(true)
+                .splashActivities("com.module.home.HomeActivity;")
+                .isDebug(true)
+                .isDevEnv(U.getChannelUtils().isStaging())
+                .build();
+        TracePlugin tracePlugin = (new TracePlugin(traceConfig));
+        builder.plugin(tracePlugin);
+
         //init matrix
         Matrix.init(builder.build());
+
+        tracePlugin.start();
         // start plugin
         ioCanaryPlugin.start();
     }
