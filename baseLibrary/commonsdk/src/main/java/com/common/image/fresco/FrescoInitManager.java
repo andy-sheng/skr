@@ -25,6 +25,7 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
+import com.glidebitmappool.GlideBitmapPool;
 
 import java.io.File;
 import java.io.IOException;
@@ -116,6 +117,12 @@ public class FrescoInitManager {
 
         FLog.setLoggingDelegate(new FrescoLogDelegate("FrescoLogDelegate"));
         FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.ERROR : FLog.ERROR);
+
+        /**
+         * bitmap 缓存池初始化
+         */
+        GlideBitmapPool.initialize(10 * 1024 * 1024); // 10mb max memory size
+
     }
 
 

@@ -2,7 +2,6 @@ package com.module.playways.room.room.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -18,6 +17,7 @@ import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
+import com.glidebitmappool.GlideBitmapFactory;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
@@ -225,7 +225,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 .build();
         File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
         if (file != null && file.exists()) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar128");
+            dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar128");
         } else {
             dynamicEntity.setDynamicImage(image.getUrl(), "avatar128");
         }

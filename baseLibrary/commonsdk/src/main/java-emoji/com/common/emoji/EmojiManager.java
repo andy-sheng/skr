@@ -13,6 +13,7 @@ import android.util.LruCache;
 import android.util.Xml;
 
 import com.common.utils.U;
+import com.glidebitmappool.GlideBitmapFactory;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -91,7 +92,7 @@ public class EmojiManager {
             options.inScreenDensity = resources.getDisplayMetrics().densityDpi;
             options.inTargetDensity = resources.getDisplayMetrics().densityDpi;
             is = context.getAssets().open(assetPath);
-            Bitmap bitmap = BitmapFactory.decodeStream(is, new Rect(), options);
+            Bitmap bitmap = GlideBitmapFactory.decodeStream(is, new Rect(), options);
             if (bitmap != null) {
                 mDrawableCache.put(assetPath, bitmap);
             }

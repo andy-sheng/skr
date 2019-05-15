@@ -114,6 +114,7 @@ android {
 
             // lubban 图片压缩
             java.srcDirs += 'src/main/java-luban'
+            java.srcDirs += 'src/main/java-bitmap-pool'
 
             // webview
             java.srcDirs += 'src/main/java-agentweb'
