@@ -62,11 +62,11 @@
                 android:layout_marginRight="@dimen/view_100_dp"
                 android:layout_toRightOf="@+id/big_diamond_iv"
                 android:background="@null"
-                android:hint="请输红钻数量"
+                android:hint="请输入红钻数量"
                 android:inputType="numberDecimal"
                 android:maxLength="11"
                 android:textColor="#0C2275"
-                android:textSize="@dimen/textsize_24_dp" />
+                android:textSize="@dimen/textsize_16_dp" />
 
             <ImageView
                 android:id="@+id/clear_iv"

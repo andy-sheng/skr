@@ -141,7 +141,9 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                             mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
                             mIvExchangeBtn.setEnabled(false);
                             mClearIv.setVisibility(View.GONE);
+                            mEditCashNum.setTextSize(16);
                         } else {
+                            mEditCashNum.setTextSize(24);
                             float editDq = Float.parseFloat(editString);
                             if (editDq > mDq) {
                                 mTvTip.setText("已超过可兑换红钻余额");

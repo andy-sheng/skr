@@ -116,9 +116,11 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                         mTvTip.setText(String.format("红钻余额%.1f", mDq));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         mClearIv.setVisibility(View.GONE);
+                        mEditCashNum.setTextSize(16);
                         return;
                     }
 
+                    mEditCashNum.setTextSize(24);
                     float inputNum = Float.parseFloat(editString);
                     if (inputNum > mMaxDiamond) {
                         mIvExchangeBtn.setEnabled(false);
