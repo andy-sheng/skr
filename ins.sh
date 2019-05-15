@@ -265,7 +265,7 @@ if [[ $1 = "app" ]]; then
 		        ./apk_canary.sh
 		 fi
 		    if [ $dev = true ]; then
-		        findChannel DEV deubg
+		        findChannel DEV debug
 		    elif [ $test = true ];then
 		        findChannel TEST debug
 		    elif [ $sandbox = true ];then

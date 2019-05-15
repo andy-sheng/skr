@@ -11,7 +11,7 @@ public interface FeedbackServerApi {
     /**
      * 用户反馈
      *
-     * @param body   createAt	int64 反馈时间戳(必传)
+     * @param body   createdAt	int64 反馈时间戳(必传)
      *               updatedAt	int64 服务器使用
      *               userID	uint32 用户编号
      *               nickName	string昵称

@@ -143,7 +143,7 @@ public class FeedbackFragment extends BaseFragment {
                             U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
                                 @Override
                                 public void onSuccess(String url) {
-                                    feedback(mType, url);
+                                    feedback(new int[]{mType}, url);
                                 }
 
                                 @Override
@@ -158,7 +158,7 @@ public class FeedbackFragment extends BaseFragment {
                                 }
                             }, true);
                         } else if (mType == FEEDBACK_SUGGEST) {
-                            feedback(mType, null);
+                            feedback(new int[]{mType}, null);
                         } else {
                             // donothing
                         }
@@ -168,9 +168,9 @@ public class FeedbackFragment extends BaseFragment {
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
-    private void feedback(int type, String logUrl) {
+    private void feedback(int[] type, String logUrl) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("createAt", System.currentTimeMillis());
+        map.put("createdAt", System.currentTimeMillis());
         map.put("appVer", U.getAppInfoUtils().getVersionName());
         map.put("channel", U.getChannelUtils().getChannel());
         map.put("source", 2);
