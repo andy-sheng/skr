@@ -431,6 +431,7 @@ message ReadyAndStartNoticeMsg {
 // 普通评论消息
 message CommentMsg {
     string text = 1; //发表内容
+    repeated Common.UserInfo receiver = 2; //接收者信息
 }
 
 message QJoinActionMsg {

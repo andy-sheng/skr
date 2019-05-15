@@ -11,7 +11,9 @@ import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static com.common.core.userinfo.UserInfoLocalApi.INTER_FOLLOW;
 import static com.common.core.userinfo.UserInfoLocalApi.ONE_FOLLOW;
@@ -207,6 +209,19 @@ public class UserInfoModel implements Serializable, Cloneable {
             e.printStackTrace();
         }
         return userInfoModel;
+    }
+
+    public static List<UserInfoModel> parseFromPB(List<UserInfo> userInfoList) {
+        ArrayList<UserInfoModel> modelArrayList = new ArrayList<>();
+        if (userInfoList == null) {
+            return modelArrayList;
+        }
+
+        for (int i = 0; i < userInfoList.size(); i++) {
+            modelArrayList.add(parseFromPB(userInfoList.get(i)));
+        }
+
+        return modelArrayList;
     }
 
     public static UserInfoModel parseFromPB(UserInfo model) {

@@ -43,18 +43,18 @@ import java.util.HashMap;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class InputContainerView extends RelativeLayout {
+public class InputContainerView extends RelativeLayout implements EmotionKeyboard.BoardStatusListener {
     EmotionKeyboard mEmotionKeyboard;
     LinearLayout mInputContainer;
-    NoLeakEditText mEtContent;
+    protected NoLeakEditText mEtContent;
     ImageView mIvEmo;
     EmotionLayout mElEmotion;
     ViewGroup mPlaceHolderView;
-    View mSendMsgBtn;
+    protected View mSendMsgBtn;
 
-    boolean mHasPretend = false;
+    protected boolean mHasPretend = false;
 
-    Handler mUiHandler = new Handler() {
+    protected Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -64,7 +64,7 @@ public class InputContainerView extends RelativeLayout {
             }
         }
     };
-    private BaseRoomData mRoomData;
+    protected BaseRoomData mRoomData;
 
     public InputContainerView(Context context) {
         super(context);
@@ -76,7 +76,7 @@ public class InputContainerView extends RelativeLayout {
         init();
     }
 
-    private void init() {
+    protected void init() {
         inflate(getContext(), R.layout.input_container_view_layout, this);
         initInputView();
     }
@@ -84,7 +84,7 @@ public class InputContainerView extends RelativeLayout {
     /**
      * 输入面板相关view的初始化
      */
-    private void initInputView() {
+    protected void initInputView() {
 
         LQREmotionKit.tryInit(U.app());
         mInputContainer = (LinearLayout) this.findViewById(R.id.et_container);
@@ -181,21 +181,20 @@ public class InputContainerView extends RelativeLayout {
         mEmotionKeyboard.bindToEditText(mEtContent);
         mEmotionKeyboard.setEmotionLayout(mElEmotion);
 
-        mEmotionKeyboard.setBoardStatusListener(new EmotionKeyboard.BoardStatusListener() {
-            @Override
-            public void onBoradShow() {
-                EventBus.getDefault().post(new InputBoardEvent(true));
-                mInputContainer.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onBoradHide() {
-                EventBus.getDefault().post(new InputBoardEvent(false));
-                mInputContainer.setVisibility(View.GONE);
-            }
-        });
+        mEmotionKeyboard.setBoardStatusListener(this);
     }
 
+    @Override
+    public void onBoradShow() {
+        EventBus.getDefault().post(new InputBoardEvent(true));
+        mInputContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBoradHide() {
+        EventBus.getDefault().post(new InputBoardEvent(false));
+        mInputContainer.setVisibility(View.GONE);
+    }
 
     public void showSoftInput() {
         mEmotionKeyboard.showSoftInput();

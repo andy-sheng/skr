@@ -175,7 +175,7 @@
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.module.playways.room.room.gift.GiftBigContinuousView
         android:id="@+id/gift_big_continue_view"
@@ -183,9 +183,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/view_67_dp"
-        android:visibility="gone"
         android:gravity="bottom"
-        android:paddingLeft="@dimen/view_16_dp" />
+        android:paddingLeft="@dimen/view_16_dp"
+        android:visibility="gone" />
 
     <!--抢按钮以及倒计时按钮-->
     <com.module.playways.grab.room.view.GrabOpView
@@ -219,7 +219,7 @@
         android:background="@color/black_trans_80" />
 
 
-    <com.module.playways.room.room.view.InputContainerView
+    <com.module.playways.grab.room.view.GrabInputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

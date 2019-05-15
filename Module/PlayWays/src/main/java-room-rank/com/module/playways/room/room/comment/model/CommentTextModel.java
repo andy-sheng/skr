@@ -6,8 +6,10 @@ import android.text.TextUtils;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.SpanUtils;
+import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
+import com.module.playways.R;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 
 /**
@@ -41,11 +43,21 @@ public class CommentTextModel extends CommentModel {
         }
 
         if (roomData != null && roomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-            SpannableStringBuilder ssb = new SpanUtils()
-                    .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
-                    .create();
-            commentModel.setStringBuilder(ssb);
+            if (event.mUserInfoModelList == null && event.mUserInfoModelList.size() == 0) {
+                SpannableStringBuilder ssb = new SpanUtils()
+                        .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                        .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
+                        .create();
+                commentModel.setStringBuilder(ssb);
+            } else {
+                SpannableStringBuilder ssb = new SpanUtils()
+                        .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                        .append("@ ").setForegroundColor(U.getColor(R.color.white))
+                        .append(event.mUserInfoModelList.get(0).getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                        .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
+                        .create();
+                commentModel.setStringBuilder(ssb);
+            }
         } else {
             SpannableStringBuilder ssb = new SpanUtils()
                     .append(commentModel.getUserName() + " ").setForegroundColor(TEXT_YELLOW)
