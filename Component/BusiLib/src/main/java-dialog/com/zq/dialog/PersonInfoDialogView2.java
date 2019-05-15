@@ -187,15 +187,15 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         // 多音和ai裁判
         if (mUserId == UserAccountManager.SYSTEM_GRAB_ID || mUserId == UserAccountManager.SYSTEM_RANK_AI) {
             isShowKick = false;
-            mReport.setVisibility(View.GONE);
+            showReport = false;
             mKickArea.setVisibility(GONE);
         }
 
         // 自己卡片的处理
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
             isShowKick = false;
+            showReport = false;
             mToolbar.setVisibility(GONE);
-            mReport.setVisibility(View.GONE);
             mFunctionArea.setVisibility(View.GONE);
             mSrlFollowIv.setVisibility(GONE);
             // TODO: 2019/4/8 可能需要调整布局
