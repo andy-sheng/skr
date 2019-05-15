@@ -84,7 +84,10 @@ public class CommonConfiguration implements ConfigModule {
                 UmengInit.init();
                 JiGuangPush.init();
                 BuglyInit.init(true);
-                //MatrixInit.init();
+                /**
+                 * 初始化Matrix，分debug和release
+                 */
+                MatrixInit.init();
                 //leakCanary 引用
                 LeakCanary.install(application);
             }

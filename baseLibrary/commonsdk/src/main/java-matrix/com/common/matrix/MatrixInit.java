@@ -55,5 +55,8 @@ public class MatrixInit {
         ioCanaryPlugin.start();
     }
 
+    public static boolean isOpen() {
+        return true;
+    }
 
 }

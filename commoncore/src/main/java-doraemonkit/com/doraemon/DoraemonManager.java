@@ -53,18 +53,8 @@ public class DoraemonManager {
                         U.getPermissionUtils().goNotificationSettingPage();
                     }
                 }));
-                extras.add(new SysInfoItem("模拟JAVA Crash", "开启", new DebounceViewClickListener() {
-                    @Override
-                    public void clickValid(View v) {
-                        CrashReport.testJavaCrash();
-                    }
-                }));
-                extras.add(new SysInfoItem("开启Matrix", "开启", new DebounceViewClickListener() {
-                    @Override
-                    public void clickValid(View v) {
-                        MatrixInit.init();
-                    }
-                }));
+                extras.add(new SysInfoItem("Matrix", MatrixInit.isOpen()+""));
+
                 extras.add(new SysInfoItem("模拟io", "模拟", new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {

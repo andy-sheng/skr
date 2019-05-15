@@ -33,6 +33,28 @@ getTestModuleEnable(){
 	fi
 }
 
+changeMatrixModule(){
+    echo "changeMatrixEnable $1"
+	if [[ $1 = true ]]; then
+		sed -ig 's/MatrixEnable=false/MatrixEnable=true/' gradle.properties
+		echo "sed -ig 's/MatrixEnable=true/MatrixEnable=false/' gradle.properties"
+	else
+		sed -ig 's/MatrixEnable=true/MatrixEnable=false/' gradle.properties
+		echo "sed -ig 's/MatrixEnable=false/MatrixEnable=true/' gradle.properties"
+	fi
+	rm gradle.propertiesg
+}
+
+getMatrixEnable(){
+	result=`grep MatrixEnable=true gradle.properties`
+	echo $result
+	if [[ $result = "MatrixEnable=true" ]]; then
+		MatrixEnable=true
+	else
+		MatrixEnable=false
+	fi
+}
+
 #获得设备id并保存到数组
 getDeviceId(){
 	adb devices
@@ -124,11 +146,44 @@ function findChannel()
   done  
 }
 
-echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module"
+echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module "
+echo "运行示例 ./ins.sh app release matrix 开启matrix性能监控"
+echo "运行示例 ./ins.sh app release apkcanary 开启apk包体静态检查"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
 	exit 1; 
 fi
+
+
+for p in $*               #在$*中遍历参数，此时每个参数都是独立的，会遍历$#次
+do
+    if [[ $p = release ]]; then
+        release=true;
+    elif [[ $p = all ]]; then
+        all=true
+    elif [[ $p = dev ]]; then
+        dev=true
+    elif [[ $p = test ]]; then
+        test=true
+    elif [[ $p = sandbox ]]; then
+        sandbox=true
+    elif [[ $p = matrix ]]; then
+        matrix=true
+    elif [[ $p = apkcanary ]]; then
+        apkcanary=true
+    elif [[ $p = clean ]]; then
+        clean=true
+    fi
+done
+
+echo release=$release
+echo all=$all
+echo dev=$dev
+echo test=$test
+echo sandbox=$sandbox
+echo matrix=$matrix
+echo apkcanary=$apkcanary
+echo clean=$clean
 
 getBuildModule
 
@@ -138,12 +193,23 @@ getTestModuleEnable
 
 echo testModuleEnable=$testModuleEnable
 
+if [ $matrix = true ]; then
+    changeMatrixModule true
+else
+    changeMatrixModule false
+fi
+
+getMatrixEnable
+
+echo MatrixEnable=$MatrixEnable
+
 getDeviceId
 
 echo ${devices[@]}
 
 echo rm -rf app/build/outputs/channels
 rm -rf app/build/outputs/channels
+
 
 if [[ $1 = "app" ]]; then
 	if [[ $isBuildModule = false ]]; then
@@ -154,11 +220,11 @@ if [[ $1 = "app" ]]; then
 		changeBuildModule false
 		./gradlew clean
 	fi
-	if [[ $2 = "release" ]]; then
+	if [[ $release = true ]]; then
 		echo "编译app release  加 --profile 会输出耗时报表"
 		./gradlew clean
-		if [[ $3 = "all" ]];then
-		    echo "编译release所有渠道"
+		if [[ $all = true ]];then
+		    echo "编译release所有渠道 ./gradlew :app:assembleReleaseChannels"
 		    ./gradlew :app:assembleReleaseChannels
 		    ./apk_canary.sh
             #拷贝所有包到主目录
@@ -166,60 +232,47 @@ if [[ $1 = "app" ]]; then
             mkdir ./publish
 			walk app/build/outputs/channels
 			echo "拷贝完毕"
+			if [ $MatrixEnable = true ];then
+			    echo "注意在 release all 版本中开启了 Matrix，确认是否为期望的操作"
+			fi
 		else
-		    echo "只编译release default渠道"
+		    echo "只编译release default渠道 ./gradlew :app:assembleReleaseChannels --stacktrace"
 		    ./gradlew :app:assembleReleaseChannels --stacktrace
-		    ./apk_canary.sh
-		    findChannel DEFAULT release
+		    if [ $apkcanary = true ]; then
+		        ./apk_canary.sh
+		    fi
+		    if [ $dev = true ]; then
+		        findChannel DEV release
+		    elif [ $test = true ];then
+		        findChannel TEST release
+		    elif [ $sandbox = true ];then
+		        findChannel SANDBOX release
+		    else
+		        findChannel DEFAULT release
+		    fi
 		    installApkForAllDevices $installApkPath
             myandroidlog.sh  com.zq.live
 		fi
-	elif [[ $2 = "dev" ]]; then
-        echo "./gradlew :app:assemblechannel_devDebug"
-        echo "只编译test debug渠道"
-        ./gradlew :app:assembleDebugChannels
-        findChannel DEV debug
-		installApkForAllDevices $installApkPath
-	elif [[ $2 = "test" ]]; then
-	    if [[ $3 = "release" ]];then
-	                echo "./gradlew :app:assemblechannel_testRelease"
-                	echo "只编译test release渠道"
-                    ./gradlew :app:assembleReleaseChannels
-                    findChannel TEST release
-					installApkForAllDevices $installApkPath
-                    myandroidlog.sh  com.zq.live
-	    else
-	        echo "./gradlew :app:assemblechannel_testDebug"
-        	echo "只编译test debug渠道"
-            ./gradlew :app:assembleDebugChannels
-            findChannel TEST debug
-			installApkForAllDevices $installApkPath
-            myandroidlog.sh  com.zq.live
-	    fi
-    elif [[ $2 = "sandbox" ]]; then
-        if [[ $3 = "release" ]]; then
-        	        echo "./gradlew :app:assemblechannel_sandboxRelease"
-                    echo "只编译sandbox release渠道"
-                    ./gradlew :app:assembleReleaseChannels
-                    findChannel SANDBOX release
-					installApkForAllDevices $installApkPath
-                    myandroidlog.sh  com.zq.live
-        else
-            echo "./gradlew :app:assemblechannel_sandboxDebug"
-            echo "只编译sandbox debug渠道"
-            ./gradlew :app:assembleDebugChannels
-			findChannel SANDBOX debug
-			installApkForAllDevices $installApkPath
-        fi
 	else
-		echo "./gradlew :app:assemblechannel_defaultDebug"
-		echo "只编译default debug渠道"
-		if [[ $2 = "clean" ]]; then
+		echo "编译app debug  加 --profile 会输出耗时报表 ./gradlew :app:assembleDebugChannels --stacktrace"
+		if [[ $clean = true ]]; then
 		    echo "clean一下"
 		    ./gradlew :app:clean
 		fi
 		./gradlew :app:assembleDebugChannels --stacktrace
-		findChannel DEFAULT debug
+		 if [ $apkcanary = true ]; then
+		        ./apk_canary.sh
+		 fi
+		    if [ $dev = true ]; then
+		        findChannel DEV deubg
+		    elif [ $test = true ];then
+		        findChannel TEST debug
+		    elif [ $sandbox = true ];then
+		        findChannel SANDBOX debug
+		    else
+		        findChannel DEFAULT debug
+		    fi
+
 		installApkForAllDevices $installApkPath
 		myandroidlog.sh  com.zq.live
 	fi
