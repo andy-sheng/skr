@@ -194,6 +194,7 @@ getTestModuleEnable
 echo testModuleEnable=$testModuleEnable
 
 if [ $matrix = true ]; then
+    clean=true
     changeMatrixModule true
 else
     changeMatrixModule false

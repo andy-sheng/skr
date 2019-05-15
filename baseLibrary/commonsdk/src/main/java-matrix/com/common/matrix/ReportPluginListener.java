@@ -38,7 +38,7 @@ public class ReportPluginListener extends DefaultPluginListener {
 
     private void saveMonitorInfo2File(Issue issue) {
         MyLog.e(TAG, "saveMonitorInfo2File" + " issue=" + issue);
-        U.getFileUtils().deleteEarlyFiles(U.getAppInfoUtils().getSubDirFile("Matrix"), 5);
+        U.getFileUtils().deleteEarlyFiles(U.getAppInfoUtils().getSubDirFile("Matrix"), 10);
 
         com.alibaba.fastjson.JSONObject data = new com.alibaba.fastjson.JSONObject();
         data.put("type", issue.getType());
