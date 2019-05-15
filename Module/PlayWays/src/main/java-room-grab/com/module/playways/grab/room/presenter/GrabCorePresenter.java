@@ -301,7 +301,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
                 @Override
                 public void onFailed(Object obj, int errcode, String message) {
-                    MyLog.d(TAG, "加入融云房间失败");
+                    MyLog.d(TAG, "加入融云房间失败， msg is " + message + ", errcode is " +errcode);
                     joinRcRoom(deep + 1);
                 }
             });
