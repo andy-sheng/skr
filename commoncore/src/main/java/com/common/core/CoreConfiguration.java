@@ -23,12 +23,14 @@ import android.util.Log;
 
 import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
+import com.common.base.InitManager;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.core.crash.MyCrashHandler;
 import com.common.notification.NotificationMsgProcess;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
+import com.common.utils.U;
 import com.doraemon.DoraemonManager;
 import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
@@ -71,7 +73,7 @@ public class CoreConfiguration implements ConfigModule {
                 ApiManager.getInstance().addInterceptor(new CoreInfoInterceptor());
                 IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
                 if (msgService != null) {
-                    msgService.initRongIM(application);
+                    msgService.initRongIM(U.app());
                     msgService.addMsgProcessor(new NotificationMsgProcess());
                 }
                 UserAccountManager.getInstance().init();

@@ -266,7 +266,7 @@ if [[ $1 = "app" ]]; then
 		        findChannel DEFAULT release
 		    fi
 		    installApkForAllDevices $installApkPath
-            myandroidlog.sh  com.zq.live
+            #myandroidlog.sh  com.zq.live
 		fi
 	else
 		echo "编译app debug  加 --profile 会输出耗时报表 ./gradlew :app:assembleDebugChannels --stacktrace"

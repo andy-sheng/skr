@@ -24,16 +24,14 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.statistics.UmengStatistics;
-import com.common.umeng.UmengPushRegisterSuccessEvent;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.tencent.bugly.crashreport.CrashReport;
 
+
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -81,7 +79,7 @@ public class UserAccountManager {
     }
 
     private UserAccountManager() {
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     public static final UserAccountManager getInstance() {
@@ -545,10 +543,10 @@ public class UserAccountManager {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(UmengPushRegisterSuccessEvent event) {
-        trySetAlias();
-    }
+//    @Subscribe(threadMode = ThreadMode.POSTING)
+//    public void onEvent(UmengPushRegisterSuccessEvent event) {
+//        trySetAlias();
+//    }
 
     /**
      * 给Umeng的push通道设置 Alias

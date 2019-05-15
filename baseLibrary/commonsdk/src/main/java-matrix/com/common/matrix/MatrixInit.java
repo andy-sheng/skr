@@ -57,10 +57,10 @@ public class MatrixInit {
         //trace
         TraceConfig traceConfig = new TraceConfig.Builder()
                 .dynamicConfig(dynamicConfig)
-                .enableFPS(true)
-                .enableEvilMethodTrace(true)
-                .enableAnrTrace(true)
-                .enableStartup(true)
+                .enableFPS(false)
+                .enableEvilMethodTrace(true)// 慢函数
+                .enableAnrTrace(true)//anr
+                .enableStartup(true)//启动
                 .splashActivities("com.module.home.HomeActivity;")
                 .isDebug(true)
                 .isDevEnv(U.getChannelUtils().isStaging())

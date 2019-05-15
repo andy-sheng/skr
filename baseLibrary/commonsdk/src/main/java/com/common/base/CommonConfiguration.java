@@ -81,10 +81,15 @@ public class CommonConfiguration implements ConfigModule {
                 ARouter.init(application); // 尽可能早,推荐在Application中初始化
                 MyLog.init();
                 FrescoInitManager.initFresco(U.app());
-//                PgyCrashManager.register();
+                //PgyCrashManager.register();
                 CommonReceiver.register();
                 UmengInit.init();
+
+                /**
+                 * 延迟初始化极光，极光初始化会耗时 400ms
+                 */
                 JiGuangPush.init();
+
                 BuglyInit.init(true);
                 /**
                  * 初始化Matrix，分debug和release
