@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IssuesHolder extends RecyclerView.ViewHolder {
-    TextView tvTime, tvTag, tvKey, tvType, tvContent, tvIndex;
+    TextView tvTime, tvTag, tvKey, tvType, tvContent, tvIndex, tvDesc;
 
     public int position;
 
@@ -25,12 +25,13 @@ public class IssuesHolder extends RecyclerView.ViewHolder {
 
     public IssuesHolder(View itemView) {
         super(itemView);
-        tvTime = (TextView) itemView.findViewById(R.id.item_time);
-        tvTag = (TextView) itemView.findViewById(R.id.item_tag);
-        tvKey = (TextView) itemView.findViewById(R.id.item_key);
-        tvType = (TextView) itemView.findViewById(R.id.item_type);
-        tvContent = (TextView) itemView.findViewById(R.id.item_content);
-        tvIndex = (TextView) itemView.findViewById(R.id.item_index);
+        tvTime = itemView.findViewById(R.id.item_time);
+        tvTag = itemView.findViewById(R.id.item_tag);
+        tvKey = itemView.findViewById(R.id.item_key);
+        tvType = itemView.findViewById(R.id.item_type);
+        tvContent = itemView.findViewById(R.id.item_content);
+        tvIndex = itemView.findViewById(R.id.item_index);
+        tvDesc = itemView.findViewById(R.id.item_desc);
     }
 
     public void bind(int no, MyIssue issue) {
@@ -39,14 +40,24 @@ public class IssuesHolder extends RecyclerView.ViewHolder {
         Date date = new Date(issue.getContent().getLongValue("time"));
         tvTime.setText("IssueTime -> " + simpleDateFormat.format(date));
 
-        if (TextUtils.isEmpty(issue.getTag())) tvTag.setVisibility(View.GONE);
-        else tvTag.setText("TAG -> " + issue.getTag());
+        if (TextUtils.isEmpty(issue.getTag())) {
+            tvTag.setVisibility(View.GONE);
+        } else {
+            tvTag.setText("TAG -> " + issue.getTag());
+        }
+        if (TextUtils.isEmpty(issue.getKey())) {
+            tvKey.setVisibility(View.GONE);
+        } else {
+            tvKey.setText("KEY -> " + issue.getKey());
+        }
 
-        if (TextUtils.isEmpty(issue.getKey())) tvKey.setVisibility(View.GONE);
-        else tvKey.setText("KEY -> " + issue.getKey());
-
-        if (issue.getType() == 0) tvType.setVisibility(View.GONE);
-        else tvType.setText("TYPE -> " + issue.getType());
+        if (issue.getType() == 0) {
+            tvType.setVisibility(View.GONE);
+        } else {
+            tvType.setText("TYPE -> " + issue.getType());
+        }
+        tvDesc.setVisibility(View.VISIBLE);
+        tvDesc.setText("DESC -> " + issue.getDesc());
 
         tvIndex.setText(no + "");
         tvIndex.setTextColor(getColor(position));

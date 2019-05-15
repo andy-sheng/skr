@@ -16,10 +16,12 @@
 
 package com.common.matrix.display;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -27,6 +29,7 @@ import com.common.base.BaseActivity;
 import com.common.base.R;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.tencent.matrix.report.Issue;
 
@@ -56,6 +59,12 @@ public class IssuesListActivity extends BaseActivity {
 
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        load();
+    }
+
+    @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.activity_issue_list;
     }
@@ -68,6 +77,13 @@ public class IssuesListActivity extends BaseActivity {
         mRecyclerView.setAdapter(mIssuesAdapter);
 
         mTitleBar = (CommonTitleBar)findViewById(R.id.title_bar);
+        mTitleBar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("Matrix"));
+                load();
+            }
+        });
         load();
     }
 

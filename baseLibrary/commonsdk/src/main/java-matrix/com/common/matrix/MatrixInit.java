@@ -1,5 +1,8 @@
 package com.common.matrix;
 
+import android.content.Intent;
+
+import com.common.matrix.display.IssuesListActivity;
 import com.common.utils.U;
 import com.tencent.matrix.Matrix;
 import com.tencent.matrix.iocanary.IOCanaryPlugin;
@@ -59,4 +62,7 @@ public class MatrixInit {
         return true;
     }
 
+    public static void goIssueList() {
+        U.app().startActivity(new Intent(U.app(), IssuesListActivity.class));
+    }
 }

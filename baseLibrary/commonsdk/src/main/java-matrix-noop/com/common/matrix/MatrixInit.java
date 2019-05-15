@@ -6,4 +6,7 @@ public class MatrixInit {
     public static boolean isOpen() {
         return false;
     }
+
+    public static void goIssueList() {
+    }
 }

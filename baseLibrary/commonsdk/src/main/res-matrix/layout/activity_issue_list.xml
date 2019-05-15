@@ -9,6 +9,10 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         app:centerText="Matrix性能监控"
+        app:centerTextColor="@color/black"
+        app:centerType="textView"
+        app:rightType="textView"
+        app:rightText="清空"
         android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView

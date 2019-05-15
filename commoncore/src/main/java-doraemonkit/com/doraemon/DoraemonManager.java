@@ -53,7 +53,14 @@ public class DoraemonManager {
                         U.getPermissionUtils().goNotificationSettingPage();
                     }
                 }));
-                extras.add(new SysInfoItem("Matrix", MatrixInit.isOpen()+""));
+                extras.add(new SysInfoItem("Matrix", MatrixInit.isOpen() + "", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if(MatrixInit.isOpen()){
+                            MatrixInit.goIssueList();
+                        }
+                    }
+                }));
 
                 extras.add(new SysInfoItem("模拟io", "模拟", new DebounceViewClickListener() {
                     @Override

@@ -37,6 +37,23 @@ public class MyIssue {
         return content;
     }
 
+    public String getDesc() {
+        if("io".startsWith(tag)){
+            if(type==1){
+                return "主线程io";
+            }else if(type==2){
+                return "buffer太小";
+            }
+            else if(type==3){
+                return "重复读取同一文件";
+            }
+            else if(type==4){
+                return "文件泄露，未关闭";
+            }
+        }
+        return "";
+    }
+
     public void setContent(JSONObject content) {
         this.content = content;
     }
