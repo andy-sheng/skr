@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/view_49_dp">
+    android:layout_height="@dimen/view_28_dp"
+    android:layout_marginTop="@dimen/textsize_20_dp">
 
     <CheckBox
         android:id="@+id/checkbox"
@@ -10,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_28_dp"
-        android:button="@drawable/checkbox_default"
+        android:button="@drawable/radiobutton_default"
         android:drawablePadding="@dimen/view_11_dp" />
 
     <TextView
@@ -20,7 +21,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_11_dp"
         android:layout_toRightOf="@+id/checkbox"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

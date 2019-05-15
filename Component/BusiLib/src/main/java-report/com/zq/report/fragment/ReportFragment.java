@@ -2,6 +2,7 @@ package com.zq.report.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
+import com.dialog.view.StrokeTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.zq.report.adapter.ReportAdapter;
 import com.zq.report.model.ReportModel;
@@ -48,7 +50,7 @@ public class ReportFragment extends BaseFragment {
     List<ReportModel> mReportModels = new ArrayList<>(); //数据源
     List<ReportModel> mSelectModels = new ArrayList<>(); //已选项
 
-    ExTextView mSubmitTv;
+    StrokeTextView mSubmitTv;
     NoLeakEditText mReportContent;
     RecyclerView mRecyclerView;
     RelativeLayout mContainer;
@@ -68,13 +70,13 @@ public class ReportFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
-        mSubmitTv = (ExTextView) mRootView.findViewById(R.id.submit_tv);
+        mSubmitTv = (StrokeTextView) mRootView.findViewById(R.id.submit_tv);
         mReportContent = (NoLeakEditText) mRootView.findViewById(R.id.report_content);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mPlaceView = (View) mRootView.findViewById(R.id.place_view);
         mPlaceHolderView = (View) mRootView.findViewById(R.id.place_holder_view);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mReportAdapter = new ReportAdapter(new ReportAdapter.RecyclerOnItemCheckListener() {
             @Override
             public void onCheckedChanged(boolean isCheck, ReportModel model) {
@@ -94,11 +96,11 @@ public class ReportFragment extends BaseFragment {
 
         if (mMode == FORM_GAME) {
             mReportModels = getGameReportList();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(344), U.getDisplayUtils().dip2px(467));
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            params.setMargins(0, 0, 0, U.getDisplayUtils().dip2px(17));
-            mContainer.setLayoutParams(params);
+//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(344), U.getDisplayUtils().dip2px(467));
+//            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//            params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+//            params.setMargins(0, 0, 0, U.getDisplayUtils().dip2px(17));
+//            mContainer.setLayoutParams(params);
         } else if (mMode == FORM_PERSON) {
             mReportModels = getPersonReportList();
         }
@@ -199,7 +201,7 @@ public class ReportFragment extends BaseFragment {
                 break;
             }
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
-                mPlaceHolderView.getLayoutParams().height = event.keybordHeight - U.getDisplayUtils().dip2px(118);
+                mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
                 mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
                 break;
             }
