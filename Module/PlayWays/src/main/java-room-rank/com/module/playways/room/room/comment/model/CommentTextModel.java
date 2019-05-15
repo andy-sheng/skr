@@ -43,7 +43,7 @@ public class CommentTextModel extends CommentModel {
         }
 
         if (roomData != null && roomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-            if (event.mUserInfoModelList == null && event.mUserInfoModelList.size() == 0) {
+            if (event.mUserInfoModelList == null || event.mUserInfoModelList.size() == 0) {
                 SpannableStringBuilder ssb = new SpanUtils()
                         .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                         .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
@@ -52,7 +52,7 @@ public class CommentTextModel extends CommentModel {
             } else {
                 SpannableStringBuilder ssb = new SpanUtils()
                         .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                        .append("@ ").setForegroundColor(U.getColor(R.color.white))
+                        .append("@ ").setForegroundColor(Color.parseColor("#586D94"))
                         .append(event.mUserInfoModelList.get(0).getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                         .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
                         .create();
