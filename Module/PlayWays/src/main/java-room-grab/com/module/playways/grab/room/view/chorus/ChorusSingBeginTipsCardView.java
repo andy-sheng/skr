@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.view.chorus;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -16,6 +15,7 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
+import com.glidebitmappool.GlideBitmapFactory;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -128,7 +128,7 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
                     .build();
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_1081");
+                dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_1081");
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1081");
             }
@@ -156,7 +156,7 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
                     .build();
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_1082");
+                dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_1082");
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1082");
             }

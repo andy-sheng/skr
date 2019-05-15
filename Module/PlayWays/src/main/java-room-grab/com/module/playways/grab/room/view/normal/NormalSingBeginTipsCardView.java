@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextPaint;
@@ -19,6 +18,7 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
+import com.glidebitmappool.GlideBitmapFactory;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
@@ -160,7 +160,7 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
                     .build();
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_104");
+                dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_104");
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
             }

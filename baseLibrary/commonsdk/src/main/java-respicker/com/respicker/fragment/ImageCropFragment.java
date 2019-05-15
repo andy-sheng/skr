@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.common.base.R;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.glidebitmappool.GlideBitmapFactory;
 import com.respicker.ResPicker;
 import com.respicker.model.ImageItem;
 import com.respicker.model.ResItem;
