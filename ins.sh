@@ -76,8 +76,15 @@ installApkForAllDevices(){
     	adb -s ${data} install -r $1
 
         if [ $matrix = true ]; then
-            echo adb push app/build/outputs/mapping/debug/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
-            adb -s ${data} push app/build/outputs/mapping/debug/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
+            if [ $release = true ]; then
+                echo adb push app/build/outputs/mapping/release/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
+                adb shell rm /sdcard/ZQ_LIVE/matrix_method.txt
+                adb -s ${data} push app/build/outputs/mapping/release/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
+            else
+                echo adb push app/build/outputs/mapping/debug/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
+                adb shell rm /sdcard/ZQ_LIVE/matrix_method.txt
+                adb -s ${data} push app/build/outputs/mapping/debug/methodMapping.txt /sdcard/ZQ_LIVE/matrix_method.txt
+            fi
         fi
 
     	if [[ $testModuleEnable = true ]]; then

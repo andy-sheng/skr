@@ -46,7 +46,7 @@ public class ParseIssueUtil {
                 stringBuilder.append("层级:").append(args[0]).append(" ");
                 int method = Integer.parseInt(args[1]);
                 args[1] = MethodMapUtils.get(method);
-                stringBuilder.append(args[1]).append(" ");
+                stringBuilder.append(method).append("->").append(args[1]).append(" ");
                 stringBuilder.append("次数:").append(args[2]).append(" ");
                 stringBuilder.append("耗时:").append(args[3]).append("\n");
             } else {
@@ -62,13 +62,13 @@ public class ParseIssueUtil {
             String val = object.getString(key);
             if ("stack".equals(key)) {
                 builder.append("\t").append(key).append(" : ").append(parseStack(val)).append("\n");
-            } else if("stackKey".equals(key)){
-                for(String args :val.split("\\|")){
+            } else if ("stackKey".equals(key)) {
+                for (String args : val.split("\\|")) {
                     int method = Integer.parseInt(args);
                     String methodStr = MethodMapUtils.get(method);
-                    builder.append("\t").append(key).append(" : ").append(methodStr).append("\n");
+                    builder.append("\t").append(key).append(":").append(args).append("->").append(methodStr).append("\n");
                 }
-            }else {
+            } else {
                 builder.append("\t").append(key).append(" : ").append(val).append("\n");
             }
         }
