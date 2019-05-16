@@ -18,13 +18,11 @@
                 android:id="@+id/titlebar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:centerText="完善资料"
+                app:centerText="个人名片"
                 app:centerTextColor="@color/white"
                 app:centerTextSize="@dimen/textsize_20_dp"
                 app:centerTextStyle="BOLD"
                 app:centerType="textView"
-                app:leftDrawable="@drawable/img_back"
-                app:leftType="textView"
                 app:showBottomLine="false"
                 app:statusBarColor="#7187FF"
                 app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
@@ -68,20 +66,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/view_48_dp"
                     android:layout_below="@id/avatar_iv"
-                    android:layout_marginLeft="@dimen/view_28_dp"
+                    android:layout_marginLeft="@dimen/view_20_dp"
                     android:layout_marginTop="@dimen/view_42_dp"
                     android:gravity="center"
                     android:text="昵称"
                     android:textColor="#803B4E79"
-                    android:textSize="@dimen/textsize_18_dp" />
+                    android:textSize="@dimen/textsize_14_dp" />
 
                 <com.common.view.ex.ExRelativeLayout
                     android:id="@+id/name_edit_area"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/view_48_dp"
                     android:layout_alignTop="@id/name_tips"
-                    android:layout_marginLeft="@dimen/view_18_dp"
-                    android:layout_marginRight="@dimen/view_48_dp"
+                    android:layout_marginLeft="@dimen/view_10_dp"
+                    android:layout_marginRight="@dimen/view_34_dp"
                     android:layout_toRightOf="@id/name_tips"
                     app:bl_corners_radius="@dimen/view_24_dp"
                     app:bl_shape="rectangle"
@@ -92,11 +90,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
+                        android:cursorVisible="true"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:cursorVisible="true"
-                        android:hint="昵称"
                         android:gravity="center_vertical"
+                        android:hint="昵称"
                         android:inputType="text"
                         android:maxLength="20"
                         android:maxLines="1"
@@ -143,7 +141,7 @@
                     android:gravity="center"
                     android:text="性别"
                     android:textColor="#803B4E79"
-                    android:textSize="@dimen/textsize_18_dp" />
+                    android:textSize="@dimen/textsize_14_dp" />
 
                 <RadioGroup
                     android:id="@+id/sex_button_area"
@@ -156,9 +154,21 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/male"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/secre"
+                        android:layout_width="@dimen/view_0_dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@drawable/radiobutton_default"
+                        android:text="保密"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="@dimen/textsize_16_dp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/male"
+                        android:layout_width="@dimen/view_0_dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:button="@drawable/radiobutton_default"
                         android:text="男生"
                         android:textColor="@color/textColorPrimary"
@@ -167,9 +177,9 @@
 
                     <RadioButton
                         android:id="@+id/female"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/view_0_dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/view_40_dp"
+                        android:layout_weight="1"
                         android:button="@drawable/radiobutton_default"
                         android:paddingLeft="@dimen/view_8_dp"
                         android:text="女生"
@@ -192,7 +202,7 @@
 
             <ImageView
                 android:id="@+id/next_iv"
-                android:layout_width="@dimen/view_176_dp"
+                android:layout_width="@dimen/view_238_dp"
                 android:layout_height="@dimen/view_61_dp"
                 android:layout_below="@+id/container_area"
                 android:layout_centerHorizontal="true"

@@ -42,6 +42,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private String roomName;  // 房间名称
     int mOwnerKickTimes = 100;  // 房主剩余踢人的次数,默认为100
 
+    private boolean isNewUser = false;   // 是否是新手引导房间
+
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
     }
@@ -104,6 +106,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     @Override
     public int getGameType() {
         return GameModeType.GAME_MODE_GRAB;
+    }
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
     }
 
     /**

@@ -150,7 +150,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
             addPresent(mMatchPresenter);
             mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
         } else if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-            mMatchPresenter = new GrabMatchPresenter(this);
+            mMatchPresenter = new GrabMatchPresenter(this, mPrepareData.isNewUser());
             addPresent(mMatchPresenter);
             mMatchPresenter.startLoopMatchTask(mPrepareData.getTagId(), mPrepareData.getGameType());
         }
@@ -405,6 +405,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         //先跳转
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                 .withSerializable("prepare_data", grabCurGameStateModel)
+                .withBoolean("is_new_user", mPrepareData.isNewUser())
                 .navigation();
 
         //结束当前Activity

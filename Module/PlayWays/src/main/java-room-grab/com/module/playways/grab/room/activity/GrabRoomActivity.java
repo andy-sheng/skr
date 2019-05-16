@@ -57,10 +57,12 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
+        Boolean isNewUser = getIntent().getBooleanExtra("is_new_user", false);
         SpecialModel specialModel = (SpecialModel) getIntent().getSerializableExtra("special_model");
         if (rsp != null) {
             mRoomData.loadFromRsp(rsp);
             mRoomData.setSpecialModel(specialModel);
+            mRoomData.setNewUser(isNewUser);
             go();
         } else {
             int roomID = getIntent().getIntExtra("roomID", 0);
@@ -75,6 +77,7 @@ public class GrabRoomActivity extends BaseActivity {
                         if (result.getErrno() == 0) {
                             JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
                             mRoomData.loadFromRsp(grabCurGameStateModel);
+                            mRoomData.setNewUser(isNewUser);
                             go();
                         } else {
                             U.getToastUtil().showShort(result.getErrmsg());

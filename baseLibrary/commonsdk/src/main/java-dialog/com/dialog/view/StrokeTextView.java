@@ -50,21 +50,6 @@ public class StrokeTextView extends ExTextView {
         textPaint = getPaint();
     }
 
-//    public void setStroke(boolean stroke) {
-//        isStroke = stroke;
-//        invalidate();
-//    }
-//
-//    public void setBorderWidth(int borderWidth) {
-//        this.borderWidth = borderWidth;
-//        invalidate();
-//    }
-//
-//    public void setBorderColor(@ColorInt int borderColor) {
-//        this.borderColor = borderColor;
-//        invalidate();
-//    }
-
     @Override
     public void setTextColor(@ColorInt int textColor) {
         this.textColor = textColor;
