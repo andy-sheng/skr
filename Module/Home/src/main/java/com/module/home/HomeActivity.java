@@ -2,6 +2,7 @@ package com.module.home;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -66,6 +68,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
     public final static String TAG = "HomeActivity";
+    public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
     RelativeLayout mMainActContainer;
     LinearLayout mBottomContainer;
@@ -92,6 +95,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     int mMessageFollowRedDotValue = 0;
 
+    NotificationManager mNManager;
+
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
     //SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
@@ -113,8 +118,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             finish();
         }
     }
-
-    NotificationManager mNManager;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -140,6 +143,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
         mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(NOTIFY_CHANNEL_ID, "notify", NotificationManager.IMPORTANCE_LOW);
+            mNManager.createNotificationChannel(mChannel);
+        }
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
@@ -256,6 +264,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)    //设置默认的三色灯与振动器
                 .setAutoCancel(true)                           //设置点击后取消Notification
                 .setContentIntent(pit);                        //设置PendingIntent
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mBuilder.setChannelId(NOTIFY_CHANNEL_ID);
+        }
+
         Notification notify1 = mBuilder.build();
         mNManager.notify(1, notify1);
     }
