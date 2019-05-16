@@ -24,6 +24,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.image.model.oss.format.OssImgFormat;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
@@ -202,6 +203,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     ImageView mIvInviteTip;
     ImageView mIvManageSongTipView;
     ImageView mIvChanllengeTipView;
+    ImageView mGrabTipView;
+    ImageView mBurstTipView;
+    ImageView mGrabSelfSingTipIv;
+
+    boolean mIsShowSelfSingTips = false;
 
     int mShowOwnerTipTimes = 0;
 
@@ -367,6 +373,83 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             int index = mRankingContainer.indexOfChild(mGrabOpBtn);
             mRankingContainer.addView(mIvChanllengeTipView, index + 1, layoutParams);
             startChallengeTipViewAnimator(mIvChanllengeTipView);
+        }
+    }
+
+    // 抢唱提示
+    private void tryShowGrabTipView() {
+        Activity activity = getActivity();
+        if (mGrabTipView == null && activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            mGrabTipView = new ImageView(getContext());
+            mGrabTipView.setBackground(U.getDrawable(R.drawable.grab_grab_tips_icon));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(202), U.getDisplayUtils().dip2px(91));
+            mGrabTipView.setLayoutParams(layoutParams);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.addRule(RelativeLayout.BELOW, R.id.grab_op_btn);
+            layoutParams.setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(48), 0);
+            int index = mRankingContainer.indexOfChild(mGrabOpBtn);
+            mRankingContainer.addView(mGrabTipView, index + 1, layoutParams);
+        }
+    }
+
+    // 爆灯提示
+    private void tryShowBurstTipView() {
+        Activity activity = getActivity();
+        if (mBurstTipView == null && activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            mBurstTipView = new ImageView(getContext());
+            mBurstTipView.setBackground(U.getDrawable(R.drawable.grab_burst_tips_icon));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(208), U.getDisplayUtils().dip2px(80));
+            mBurstTipView.setLayoutParams(layoutParams);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.addRule(RelativeLayout.ABOVE, R.id.grab_op_btn);
+            layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(60), U.getDisplayUtils().dip2px(2));
+            int index = mRankingContainer.indexOfChild(mGrabOpBtn);
+            mRankingContainer.addView(mBurstTipView, index + 1, layoutParams);
+        }
+    }
+
+    // 歌词提示
+    private void tryShowGrabSelfSingTipView() {
+        if (mGrabSelfSingTipIv == null) {
+            mGrabSelfSingTipIv = new ImageView(getContext());
+            mGrabSelfSingTipIv.setImageResource(R.drawable.grab_self_sing_tips_icon);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(250), U.getDisplayUtils().dip2px(96));
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            layoutParams.leftMargin = U.getDisplayUtils().dip2px(55);
+            layoutParams.topMargin = U.getDisplayUtils().dip2px(60);
+            mGrabSelfSingTipIv.setLayoutParams(layoutParams);
+            ((ViewGroup) mRankingContainer).addView(mGrabSelfSingTipIv);
+        }
+    }
+
+    private void removeGrabSelfSingTipView() {
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            if (mGrabSelfSingTipIv != null) {
+                ((ViewGroup) mRankingContainer).removeView(mGrabSelfSingTipIv);
+                mGrabSelfSingTipIv = null;
+            }
+        }
+    }
+
+    private void removeBurstTipView() {
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            if (mBurstTipView != null) {
+                ((ViewGroup) mRankingContainer).removeView(mBurstTipView);
+                mBurstTipView = null;
+            }
+        }
+    }
+
+    private void removeGrabTipView() {
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            if (mGrabTipView != null) {
+                ((ViewGroup) mRankingContainer).removeView(mGrabTipView);
+                mGrabTipView = null;
+            }
         }
     }
 
@@ -896,6 +979,26 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             public void hideChallengeTipView() {
                 removeChallengeTipView();
             }
+
+            @Override
+            public void showGrabTipView() {
+                tryShowGrabTipView();
+            }
+
+            @Override
+            public void hideGrabTipView() {
+                removeGrabTipView();
+            }
+
+            @Override
+            public void showBurstTipView() {
+                tryShowBurstTipView();
+            }
+
+            @Override
+            public void hideBurstTipView() {
+                removeBurstTipView();
+            }
         });
 
         mGrabOpBtn.hide("initGrabOpView");
@@ -922,6 +1025,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mSelfSingCardView.setListener(new SelfSingCardView.Listener() {
             @Override
             public void onSelfSingOver() {
+                removeGrabSelfSingTipView();
                 mCorePresenter.sendRoundOverInfo();
             }
         });
@@ -1174,6 +1278,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mSelfSingCardView.setVisibility(View.VISIBLE);
                 mOthersSingCardView.setVisibility(View.GONE);
                 mSelfSingCardView.playLyric();
+                if (mRoomData.isNewUser() && !mIsShowSelfSingTips) {
+                    tryShowGrabSelfSingTipView();
+                    mIsShowSelfSingTips = true;
+                }
             } else {
                 // 显示收音机
                 mSelfSingCardView.setVisibility(View.GONE);
@@ -1201,6 +1309,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
+        removeGrabSelfSingTipView();
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();

@@ -430,6 +430,26 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
             @Override
             public void hideChallengeTipView() {
             }
+
+            @Override
+            public void showGrabTipView() {
+
+            }
+
+            @Override
+            public void hideGrabTipView() {
+
+            }
+
+            @Override
+            public void showBurstTipView() {
+
+            }
+
+            @Override
+            public void hideBurstTipView() {
+
+            }
         });
 
         mGrabOpBtn.hide("initGrabOpView");
