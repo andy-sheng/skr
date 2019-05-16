@@ -38,7 +38,9 @@ public class ReportPluginListener extends DefaultPluginListener {
          * 写入本地文件
          */
         saveMonitorInfo2File(issue);
-        U.app().startActivity(new Intent(U.app(), IssuesListActivity.class));
+        Intent intent = new Intent(U.app(), IssuesListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        U.app().startActivity(intent);
     }
 
 

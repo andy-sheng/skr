@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -72,6 +74,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
     CheckInPresenter mCheckInPresenter;
+
+    Handler mUiHandler = new Handler(Looper.getMainLooper());
 
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
@@ -215,13 +219,19 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
         refreshMessageRedDot();
 
-        /**
-         * 清除启动页
-         */
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(null);
-        }
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                /**
+                 * 清除启动页
+                 */
+                Window window = getWindow();
+                if (window != null) {
+                    window.setBackgroundDrawable(null);
+                }
+            }
+        }, 5000);
+
     }
 
     private void selectTab(int tabSeq) {
@@ -360,6 +370,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mHomeDialogManager.destroy();
         }
         WeakRedDotManager.getInstance().removeListener(this);
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

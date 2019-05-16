@@ -404,7 +404,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 needAcc = false;
             } else if (mRoomData.isAccEnable()) {
                 needAcc = true;
-            }else{
+            } else {
                 if (p != null) {
                     p.setGrabSingNoAcc(true);
                 }
@@ -469,7 +469,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                 if (targetSongInfo != null) {
                                     mAcrScore = (int) (targetSongInfo.getScore() * 100);
                                 }
-                                EventBus.getDefault().post(new LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound",-1,mAcrScore,0));
+                                EventBus.getDefault().post(new LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound", -1, mAcrScore, 0));
                             }
                         })
                         .build());
@@ -2244,8 +2244,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         });
         //打分传给服务器
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if (now != null && now.isPKRound()) {
-            sendScoreToServer(score, line);
+        if (now != null) {
+            /**
+             * pk 与 普通 都发送
+             */
+            if (now.isPKRound()) {
+                sendScoreToServer(score, line);
+            } else if (now.isChorusRound()) {
+
+            } else {
+                sendScoreToServer(score, line);
+            }
         }
     }
 
