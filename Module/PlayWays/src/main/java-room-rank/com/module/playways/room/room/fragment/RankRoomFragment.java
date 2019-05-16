@@ -39,7 +39,6 @@ import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
-import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
@@ -440,7 +439,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator(int userId) {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        if (mRoomData.getUserInfo(userId) == null) {
+        if(mRoomData.getUserInfo(userId) == null){
             return;
         }
 
@@ -450,39 +449,39 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
         mStageView.setLoops(0);
         SvgaParserAdapter.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
-            @Override
-            public void onComplete(SVGAVideoEntity svgaVideoEntity) {
-                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                mStageView.setImageDrawable(drawable);
-                mStageView.startAnimation();
-                mSingAvatarView.setVisibility(View.VISIBLE);
-                mCountDownProcess.setVisibility(View.VISIBLE);
-                mCountDownProcess.restart();
-                AvatarUtils.loadAvatarByUrl(mSingAvatarView,
-                        AvatarUtils.newParamsBuilder(avatar)
-                                .setCircle(true)
-                                .build());
-                ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
-                objectAnimatorStage.setDuration(1000);
-                objectAnimatorStage.start();
-                mAnimatorList.add(objectAnimatorStage);
+                @Override
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mStageView.setImageDrawable(drawable);
+                    mStageView.startAnimation();
+                    mSingAvatarView.setVisibility(View.VISIBLE);
+                    mCountDownProcess.setVisibility(View.VISIBLE);
+                    mCountDownProcess.restart();
+                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                            AvatarUtils.newParamsBuilder(avatar)
+                                    .setCircle(true)
+                                    .build());
+                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+                    objectAnimatorStage.setDuration(1000);
+                    objectAnimatorStage.start();
+                    mAnimatorList.add(objectAnimatorStage);
 
-                ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
-                objectAnimatorAvatar.setDuration(1000);
-                objectAnimatorAvatar.start();
-                mAnimatorList.add(objectAnimatorAvatar);
+                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
+                    objectAnimatorAvatar.setDuration(1000);
+                    objectAnimatorAvatar.start();
+                    mAnimatorList.add(objectAnimatorAvatar);
 
-                ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
-                objectAnimatorTime.setDuration(1000);
-                objectAnimatorTime.start();
-                mAnimatorList.add(objectAnimatorTime);
-            }
+                    ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
+                    objectAnimatorTime.setDuration(1000);
+                    objectAnimatorTime.start();
+                    mAnimatorList.add(objectAnimatorTime);
+                }
 
-            @Override
-            public void onError() {
-                MyLog.d(TAG, "playShowMainStageAnimator onError");
-            }
-        });
+                @Override
+                public void onError() {
+                    MyLog.d(TAG, "playShowMainStageAnimator onError");
+                }
+            });
 
         RxView.clicks(mSingAvatarView)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -1050,15 +1049,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(InputBoardEvent event) {
-        if (event.show) {
-            mBottomContainerView.setVisibility(View.GONE);
-        } else {
-            mBottomContainerView.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
     public void updateScrollBarProgress(int score, int curTotalScore, int lineNum) {
         mRankTopContainerView.setScoreProgress(score, curTotalScore, lineNum);
@@ -1097,7 +1087,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 /**
                  * 更新本地总分
                  */
-                updateScrollBarProgress(999, 0, eventNum);
+                updateScrollBarProgress(999,0,eventNum);
                 /**
                  * 通知远端更新总分
                  */

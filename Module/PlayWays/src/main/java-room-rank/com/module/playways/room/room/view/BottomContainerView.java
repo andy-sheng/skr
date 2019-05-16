@@ -156,6 +156,10 @@ public abstract class BottomContainerView extends RelativeLayout {
             }
         });
 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -259,14 +263,28 @@ public abstract class BottomContainerView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         MyLog.d("BottomContainerView", "onDetachedFromWindow");
+        EventBus.getDefault().unregister(this);
         mHandler.removeCallbacksAndMessages(null);
         dismissPopWindow();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(InputBoardEvent event) {
+        if (event.show) {
+            setVisibility(GONE);
+        } else {
+            setVisibility(VISIBLE);
+        }
     }
 
     public void setListener(Listener l) {
