@@ -319,7 +319,7 @@ public class UserAccountManager {
         MyUserInfoManager.getInstance().setFirstLogin(isFirstLogin);
         MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true);
+        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true, "parseRsp");
 
         UserAccount userAccount = new UserAccount();
         userAccount.setPhoneNum(phoneNum);

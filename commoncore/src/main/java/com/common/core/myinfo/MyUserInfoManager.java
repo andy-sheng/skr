@@ -71,7 +71,7 @@ public class MyUserInfoManager {
                         MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
                         MyLog.d(TAG, "load myUserInfo=" + userInfo);
                         if (userInfo != null) {
-                            setMyUserInfo(userInfo, false);
+                            setMyUserInfo(userInfo, false, "load");
                         }
                         // 从服务器同步个人信息
                         syncMyInfoFromServer();
@@ -114,8 +114,8 @@ public class MyUserInfoManager {
         return mUser;
     }
 
-    public void setMyUserInfo(MyUserInfo myUserInfo, boolean fromServer) {
-        MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo);
+    public void setMyUserInfo(MyUserInfo myUserInfo, boolean fromServer, String from) {
+        MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo + " fromServer=" + fromServer + " from=" + from);
         if (myUserInfo != null) {
             mUser = myUserInfo;
             if (!mUserInfoFromServer) {
@@ -152,7 +152,7 @@ public class MyUserInfoManager {
                             final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                             MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                            setMyUserInfo(myUserInfo, true);
+                            setMyUserInfo(myUserInfo, true,"syncMyInfoFromServer");
                         } else if (obj.getErrno() == 107) {
                             UserAccountManager.getInstance().notifyAccountExpired();
                         }
@@ -282,7 +282,7 @@ public class MyUserInfoManager {
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(mUser, true);
+                                setMyUserInfo(mUser, true,"updateInfo");
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
