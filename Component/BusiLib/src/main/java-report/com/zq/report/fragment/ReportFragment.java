@@ -191,6 +191,8 @@ public class ReportFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(KeyboardEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
+        // 注意内容高度
+        int maxHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(357) - U.getStatusBarUtil().getStatusBarHeight(getContext());
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN: {
                 mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
@@ -198,7 +200,11 @@ public class ReportFragment extends BaseFragment {
                 break;
             }
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
-                mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
+                if (event.keybordHeight > maxHeight) {
+                    mPlaceHolderView.getLayoutParams().height = maxHeight;
+                } else {
+                    mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
+                }
                 mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
                 break;
             }
