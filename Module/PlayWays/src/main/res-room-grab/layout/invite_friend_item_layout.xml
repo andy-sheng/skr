@@ -13,14 +13,17 @@
         android:layout_marginLeft="@dimen/view_33_dp" />
 
 
-    <com.common.view.ex.ExTextView
+    <com.dialog.view.StrokeTextView
         android:id="@+id/tv_invite"
-        android:layout_width="@dimen/view_65_dp"
-        android:layout_height="@dimen/view_34_dp"
+        android:layout_width="@dimen/view_75_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_37_dp"
+        android:background="@drawable/yellow_button_icon"
         android:gravity="center"
+        android:paddingBottom="@dimen/view_3_dp"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp" />
 
     <com.common.view.ex.ExTextView
@@ -35,7 +38,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:textColor="#0C2275"
+        android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/textsize_16_dp" />
 
 
@@ -58,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_5_dp"
-            android:textColor="#7f0C2275"
+            android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/textsize_12_dp" />
     </LinearLayout>
 

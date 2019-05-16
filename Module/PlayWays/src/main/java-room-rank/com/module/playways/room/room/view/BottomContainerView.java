@@ -156,6 +156,8 @@ public abstract class BottomContainerView extends RelativeLayout {
             }
         });
 
+        
+
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
