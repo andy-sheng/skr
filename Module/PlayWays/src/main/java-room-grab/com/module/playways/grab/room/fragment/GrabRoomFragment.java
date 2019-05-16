@@ -17,14 +17,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.image.model.oss.format.OssImgFormat;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
@@ -80,7 +78,6 @@ import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
-import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftBigContinuousView;
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
@@ -663,15 +660,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BuyGiftEvent event) {
         mContinueSendView.startBuy(event.getBaseGift(), event.getReceiver());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(InputBoardEvent event) {
-        if (event.show) {
-            mBottomContainerView.setVisibility(View.GONE);
-        } else {
-            mBottomContainerView.setVisibility(View.VISIBLE);
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

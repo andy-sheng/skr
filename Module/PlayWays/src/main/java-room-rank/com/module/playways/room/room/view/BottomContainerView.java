@@ -150,13 +150,15 @@ public abstract class BottomContainerView extends RelativeLayout {
                     mQuickBtn.getLocationInWindow(l);
                     mQuickMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
                     onQuickMsgDialogShow(true);
-                }else {
+                } else {
                     mQuickMsgPopWindow.dismiss();
                 }
             }
         });
 
-        
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -261,14 +263,29 @@ public abstract class BottomContainerView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         MyLog.d("BottomContainerView", "onDetachedFromWindow");
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         mHandler.removeCallbacksAndMessages(null);
         dismissPopWindow();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(InputBoardEvent event) {
+        if (event.show) {
+            setVisibility(GONE);
+        } else {
+            setVisibility(VISIBLE);
+        }
     }
 
     public void setListener(Listener l) {
@@ -285,7 +302,7 @@ public abstract class BottomContainerView extends RelativeLayout {
         public void clickRoomManagerBtn() {
         }
 
-        public void showGiftPanel(){
+        public void showGiftPanel() {
 
         }
     }
