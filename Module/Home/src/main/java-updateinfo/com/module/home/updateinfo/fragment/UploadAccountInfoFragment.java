@@ -236,6 +236,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         // 昵称可用
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                .setAvatar(MyUserInfoManager.getInstance().getAvatar())
                                 .setNickName(nickName).setSex(mSex)
                                 .build(), true, true, new MyUserInfoManager.ServerCallback() {
                             @Override

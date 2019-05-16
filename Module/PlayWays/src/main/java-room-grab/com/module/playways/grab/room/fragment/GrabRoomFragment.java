@@ -402,7 +402,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mBurstTipView.setLayoutParams(layoutParams);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.grab_op_btn);
-            layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(60), U.getDisplayUtils().dip2px(2));
+            layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(60), -U.getDisplayUtils().dip2px(10));
             int index = mRankingContainer.indexOfChild(mGrabOpBtn);
             mRankingContainer.addView(mBurstTipView, index + 1, layoutParams);
         }
