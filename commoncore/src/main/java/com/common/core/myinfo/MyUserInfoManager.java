@@ -485,9 +485,6 @@ public class MyUserInfoManager {
             this.birthday = birthday;
         }
 
-        public String getAvatar() {
-            return avatar;
-        }
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;

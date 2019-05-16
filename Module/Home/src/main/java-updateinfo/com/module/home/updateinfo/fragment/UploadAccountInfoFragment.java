@@ -265,6 +265,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
             playwaysModeService.tryGoNewGrabMatch();
         }
 
+        MyUserInfoManager.getInstance().setFirstLogin(false);
+        
         if (getActivity() != null) {
             getActivity().finish();
         }
