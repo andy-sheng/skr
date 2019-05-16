@@ -32,7 +32,9 @@ class Engine {
         options.inSampleSize = 1;
         InputStream inputStream = srcImg.open();
         BitmapFactory.decodeStream(inputStream, null, options);
-        inputStream.close();
+        if(inputStream != null){
+            inputStream.close();
+        }
         this.srcWidth = options.outWidth;
         this.srcHeight = options.outHeight;
     }
@@ -80,7 +82,9 @@ class Engine {
         if (Checker.SINGLE.isJPG(inputStream)) {
             tagBitmap = rotatingImage(tagBitmap, Checker.SINGLE.getOrientation(inputStream));
         }
-        inputStream.close();
+        if(inputStream != null){
+            inputStream.close();
+        }
         if (tagBitmap != null) {
             tagBitmap.compress(focusAlpha ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 60, stream);
             GlideBitmapPool.putBitmap(tagBitmap);
