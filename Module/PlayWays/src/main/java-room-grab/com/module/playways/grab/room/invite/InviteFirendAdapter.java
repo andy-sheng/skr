@@ -21,7 +21,7 @@ import com.module.playways.R;
 public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerView.ViewHolder> {
     OnInviteClickListener mOnInviteClickListener;
 
-    public InviteFirendAdapter(OnInviteClickListener onInviteClickListener){
+    public InviteFirendAdapter(OnInviteClickListener onInviteClickListener) {
         this.mOnInviteClickListener = onInviteClickListener;
     }
 
@@ -57,6 +57,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
         Drawable mBusyCircleDrawable;
         Drawable mAIDLCircleDrawable;
+        Drawable mOffLineCircleDrawable;
         Drawable mGameCircleDrawable;
         Drawable mCanInviteBtnDrawable;
         Drawable mCannotInviteDrawable;
@@ -85,6 +86,11 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
             mAIDLCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                     .setSolidColor(Color.parseColor("#7ED321"))
+                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                    .build();
+
+            mOffLineCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                    .setSolidColor(Color.parseColor("#8EA0A9"))
                     .setCornersRadius(U.getDisplayUtils().dip2px(4))
                     .build();
 
@@ -124,9 +130,14 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
                 mTvInvite.setVisibility(View.GONE);
                 mTvCircleState.setBackground(mBusyCircleDrawable);
             } else if (model.getStatus() == 1) {
+                if (model.isIsOnline()) {
+                    mTvCircleState.setBackground(mAIDLCircleDrawable);
+                } else {
+                    mTvCircleState.setBackground(mOffLineCircleDrawable);
+                }
                 mTvState.setText("可邀请");
                 mTvInvite.setVisibility(View.VISIBLE);
-                mTvCircleState.setBackground(mAIDLCircleDrawable);
+
             } else if (model.getStatus() == 3) {
                 mTvState.setText("已加入游戏");
                 mTvInvite.setVisibility(View.GONE);

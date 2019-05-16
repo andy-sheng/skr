@@ -40,7 +40,7 @@ public class NotificationMsgProcess implements IPushMsgProcess {
                 return;
             }
 
-            NotificationManager.getInstance().processNotificationMsg(msg);
+            NotificationPushManager.getInstance().processNotificationMsg(msg);
         } catch (IOException e) {
             MyLog.e(e);
         }

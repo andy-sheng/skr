@@ -1,30 +1,23 @@
 package com.zq.relation.fragment;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.clipboard.ClipboardUtils;
-import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
-import com.common.notification.NotificationManager;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -39,16 +32,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
-import com.component.busilib.constans.GrabRoomType;
-import com.component.busilib.manager.WeakRedDotManager;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.common.ICallback;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zq.dialog.InviteFriendDialog;
-import com.zq.dialog.InviteFriendDialogView;
 import com.zq.relation.activity.RelationActivity;
 import com.zq.relation.view.RelationView;
 
@@ -57,9 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
 /**

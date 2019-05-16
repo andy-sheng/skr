@@ -3,7 +3,6 @@ package com.common.notification;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
-import com.common.utils.U;
 import com.zq.live.proto.Notification.ENotificationMsgType;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
@@ -14,21 +13,21 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * 通知管理器
  */
-public class NotificationManager {
+public class NotificationPushManager {
 
     public final static String TAG = "NotificationManager";
 
     private static class NotificationAdapterHolder {
-        private static final NotificationManager INSTANCE = new NotificationManager();
+        private static final NotificationPushManager INSTANCE = new NotificationPushManager();
     }
 
 
-    private NotificationManager() {
+    private NotificationPushManager() {
 
     }
 
 
-    public static final NotificationManager getInstance() {
+    public static final NotificationPushManager getInstance() {
         return NotificationAdapterHolder.INSTANCE;
     }
 

@@ -1,8 +1,11 @@
 package com.module.home.persenter;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 import android.text.SpannableStringBuilder;
 import android.view.Gravity;
 import android.view.View;
@@ -243,10 +246,19 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabInviteNotifyEvent event) {
-        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
-        floatWindowData.setUserInfoModel(event.mUserInfoModel);
-        floatWindowData.setRoomID(event.roomID);
-        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
+        // TODO: 2019/5/16 区分前台后台
+        if (U.getActivityUtils().isAppForeground()) {
+            FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
+            floatWindowData.setUserInfoModel(event.mUserInfoModel);
+            floatWindowData.setRoomID(event.roomID);
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
+        } else {
+            // 展示一个通知
+            NotificationManager notificationManager = (NotificationManager)U.app().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(U.app().getApplicationContext());
+
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
