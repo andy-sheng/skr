@@ -265,6 +265,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             playwaysModeService.tryGoNewGrabMatch();
         }
 
+        // TODO: 2019/5/16 因为fastLogin的标记为用在是否要完善资料上了
         MyUserInfoManager.getInstance().setFirstLogin(false);
         
         if (getActivity() != null) {

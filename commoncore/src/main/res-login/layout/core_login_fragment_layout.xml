@@ -47,7 +47,7 @@
         android:layout_marginBottom="@dimen/view_8_dp"
         android:gravity="center"
         android:letterSpacing="0.1"
-        android:text="很高兴，用歌声认识你"
+        android:text="年轻人都爱玩的在线KTV"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_16_dp" />
 

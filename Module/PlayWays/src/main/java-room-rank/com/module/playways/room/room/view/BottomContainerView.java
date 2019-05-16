@@ -150,7 +150,7 @@ public abstract class BottomContainerView extends RelativeLayout {
                     mQuickBtn.getLocationInWindow(l);
                     mQuickMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
                     onQuickMsgDialogShow(true);
-                }else {
+                } else {
                     mQuickMsgPopWindow.dismiss();
                 }
             }
@@ -272,7 +272,9 @@ public abstract class BottomContainerView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         MyLog.d("BottomContainerView", "onDetachedFromWindow");
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         mHandler.removeCallbacksAndMessages(null);
         //dismissPopWindow();
     }
@@ -301,7 +303,7 @@ public abstract class BottomContainerView extends RelativeLayout {
         public void clickRoomManagerBtn() {
         }
 
-        public void showGiftPanel(){
+        public void showGiftPanel() {
 
         }
     }

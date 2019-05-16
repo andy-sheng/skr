@@ -90,13 +90,6 @@ public class LoginFragment extends BaseFragment {
         mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
-        SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("撕歌").setBold()
-                .append(" | 很高兴，用歌声认识你")
-                .create();
-        mLogoText.setText(stringBuilder);
-
-
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
