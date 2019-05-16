@@ -125,6 +125,8 @@ public class Params implements Serializable {
     private String mRecordingFromCallbackSavePath;// 保存录音的路径
     @JSONField(serialize=false)
     private boolean mIsAnchor;
+    @JSONField(serialize=false)
+    private boolean mGrabSingNoAcc; // 一唱到底清唱模式
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -488,6 +490,14 @@ public class Params implements Serializable {
 
     public boolean isAnchor() {
         return mIsAnchor;
+    }
+
+    public void setGrabSingNoAcc(boolean grabSingNoAcc) {
+        mGrabSingNoAcc = grabSingNoAcc;
+    }
+
+    public boolean isGrabSingNoAcc() {
+        return mGrabSingNoAcc;
     }
 
     public static class Builder {

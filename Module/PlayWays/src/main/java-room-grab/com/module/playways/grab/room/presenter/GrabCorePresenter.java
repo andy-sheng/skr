@@ -29,6 +29,8 @@ import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.component.busilib.constans.GameModeType;
+import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.SongInfo;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
@@ -301,7 +303,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
                 @Override
                 public void onFailed(Object obj, int errcode, String message) {
-                    MyLog.d(TAG, "加入融云房间失败， msg is " + message + ", errcode is " +errcode);
+                    MyLog.d(TAG, "加入融云房间失败， msg is " + message + ", errcode is " + errcode);
                     joinRcRoom(deep + 1);
                 }
             });
@@ -392,12 +394,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         boolean needAcc = false;
         if (now != null) {
+            Params p = EngineManager.getInstance().getParams();
+            if (p != null) {
+                p.setGrabSingNoAcc(false);
+            }
             if (now.getWantSingType() == EWantSingType.EWST_SPK.getValue()) {
                 needAcc = true;
             } else if (now.getWantSingType() == EWantSingType.EWST_CHORUS.getValue()) {
                 needAcc = false;
             } else if (mRoomData.isAccEnable()) {
                 needAcc = true;
+            }else{
+                if (p != null) {
+                    p.setGrabSingNoAcc(true);
+                }
             }
         }
         if (needAcc) {
@@ -440,11 +450,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         // 开始acr打分
         if (ScoreConfig.isAcrEnable() && now != null && now.getMusic() != null) {
-            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                    .setSongName(now.getMusic().getItemName())
-                    .setArtist(now.getMusic().getOwner())
-                    .setMode(RecognizeConfig.MODE_MANUAL)
-                    .build());
+            if (needAcc) {
+                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                        .setSongName(now.getMusic().getItemName())
+                        .setArtist(now.getMusic().getOwner())
+                        .setMode(RecognizeConfig.MODE_MANUAL)
+                        .build());
+            } else {
+                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                        .setSongName(now.getMusic().getItemName())
+                        .setArtist(now.getMusic().getOwner())
+                        .setMode(RecognizeConfig.MODE_AUTO)
+                        .setAutoTimes(3)
+                        .setMResultListener(new ArcRecognizeListener() {
+                            @Override
+                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                                int mAcrScore = 0;
+                                if (targetSongInfo != null) {
+                                    mAcrScore = (int) (targetSongInfo.getScore() * 100);
+                                } else {
+                                }
+                                processScore(mAcrScore, lineNo);
+                            }
+                        })
+                        .build());
+            }
+
         }
     }
 
