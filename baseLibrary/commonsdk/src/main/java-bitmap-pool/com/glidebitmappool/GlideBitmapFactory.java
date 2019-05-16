@@ -35,8 +35,13 @@ import java.io.InputStream;
 public class GlideBitmapFactory {
 
     public static Bitmap decodeFile(String pathName) {
+        return decodeFile(pathName,Bitmap.Config.ARGB_8888);
+    }
+
+    public static Bitmap decodeFile(String pathName,Bitmap.Config inPreferredConfig) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
+        options.inPreferredConfig = inPreferredConfig;
         BitmapFactory.decodeFile(pathName, options);
         options.inSampleSize = 1;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
@@ -127,8 +132,13 @@ public class GlideBitmapFactory {
     }
 
     public static Bitmap decodeByteArray(byte[] data, int offset, int length) {
+        return decodeByteArray(data,offset,length,Bitmap.Config.ARGB_8888);
+    }
+
+    public static Bitmap decodeByteArray(byte[] data, int offset, int length,Bitmap.Config inPreferredConfig) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
+        options.inPreferredConfig = inPreferredConfig;
         BitmapFactory.decodeByteArray(data, offset, length, options);
         options.inSampleSize = 1;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {

@@ -6,6 +6,7 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import com.common.log.MyLog
+import com.glidebitmappool.GlideBitmapFactory
 import com.glidebitmappool.GlideBitmapPool
 import com.opensource.svgaplayer.entities.SVGAAudioEntity
 import com.opensource.svgaplayer.entities.SVGAVideoSpriteEntity
@@ -16,8 +17,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
-
-private val options = BitmapFactory.Options()
 
 /**
  * Created by PonyCui on 16/6/18.
@@ -97,14 +96,14 @@ class SVGAVideoEntity {
     private fun resetImages(obj: JSONObject) {
         obj.optJSONObject("images")?.let { imgObjects ->
             imgObjects.keys().forEach { imageKey ->
-                options.inPreferredConfig = Bitmap.Config.RGB_565
                 var filePath = cacheDir.absolutePath + "/" + imgObjects[imageKey]
-                var bitmap = if (File(filePath).exists()) BitmapFactory.decodeFile(filePath, options) else null
+
+                var bitmap = if (File(filePath).exists()) GlideBitmapFactory.decodeFile(filePath, Bitmap.Config.RGB_565) else null
                 if (bitmap != null) {
                     images.put(imageKey, bitmap)
                 } else {
                     (cacheDir.absolutePath + "/" + imageKey + ".png").takeIf { File(it).exists() }?.let {
-                        BitmapFactory.decodeFile(it, options)?.let {
+                        GlideBitmapFactory.decodeFile(it, Bitmap.Config.RGB_565)?.let {
                             images.put(imageKey, it)
                         }
                     }
@@ -116,7 +115,6 @@ class SVGAVideoEntity {
     private fun resetImages(obj: MovieEntity) {
         obj.images?.entries?.forEach {
             val imageKey = it.key
-            options.inPreferredConfig = Bitmap.Config.RGB_565
             val byteArray = it.value.toByteArray()
             if (byteArray.count() < 4) {
                 return@forEach
@@ -124,18 +122,18 @@ class SVGAVideoEntity {
             val fileTag = byteArray.slice(IntRange(0, 3))
             if (fileTag[0].toInt() == 73 && fileTag[1].toInt() == 68 && fileTag[2].toInt() == 51 && fileTag[3].toInt() == 3) {
             } else {
-                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.count(), options)
+                val bitmap = GlideBitmapFactory.decodeByteArray(byteArray, 0, byteArray.count(), Bitmap.Config.RGB_565)
                 if (bitmap != null) {
                     images[imageKey] = bitmap
                 } else {
                     it.value.utf8()?.let {
                         var filePath = cacheDir.absolutePath + "/" + it
-                        var bitmap = if (File(filePath).exists()) BitmapFactory.decodeFile(filePath, options) else null
+                        var bitmap = if (File(filePath).exists()) GlideBitmapFactory.decodeFile(filePath, Bitmap.Config.RGB_565) else null
                         if (bitmap != null) {
                             images.put(imageKey, bitmap)
                         } else {
                             (cacheDir.absolutePath + "/" + imageKey + ".png").takeIf { File(it).exists() }?.let {
-                                BitmapFactory.decodeFile(it, options)?.let {
+                                GlideBitmapFactory.decodeFile(it, Bitmap.Config.RGB_565)?.let {
                                     images.put(imageKey, it)
                                 }
                             }
