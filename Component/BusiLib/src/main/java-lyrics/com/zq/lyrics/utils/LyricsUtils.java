@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 
 import com.common.log.MyLog;
+import com.glidebitmappool.GlideBitmapPool;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.model.TranslateLrcLineInfo;
@@ -46,7 +47,7 @@ public class LyricsUtils {
      * @return
      */
     public static Bitmap getDynamicLyricsImage(int lyricsType, int viewWidth, int viewHeight, int textMaxWidth, float lineHeight, float paddingLeftOrRight, Paint paint, Paint paintHL, Paint paintOutline, int[] paintColor, int[] paintHLColor, TreeMap<Integer, LyricsLineInfo> defLrcLineInfos, long curPlayingTime, long playOffset) {
-        Bitmap result = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+        Bitmap result = GlideBitmapPool.getBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
 
         int textHeight = getTextHeight(paint);
@@ -215,7 +216,7 @@ public class LyricsUtils {
      * @return
      */
     public static Bitmap getDynamiAndExtraLyricsImage(int lyricsType, int viewWidth, int viewHeight, float lineHeight, float paddingLeftOrRight, Paint paint, Paint paintHL, Paint paintOutline, int[] paintColor, int[] paintHLColor, TreeMap<Integer, LyricsLineInfo> lyricsLineInfos, List<LyricsLineInfo> extraLrcLineInfos, int extraLrcType, long curPlayingTime, long playOffset) {
-        Bitmap result = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+        Bitmap result = GlideBitmapPool.getBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
 
         int textHeight = getTextHeight(paint);
