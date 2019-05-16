@@ -699,12 +699,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
             // 普通房
-            mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true);
+            mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true, mRoomData.getGameId());
         } else {
             if (mRoomData.isOwner()) {
-                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true);
+                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true, mRoomData.getGameId());
             } else {
-                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
+                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false, mRoomData.getGameId());
             }
         }
 

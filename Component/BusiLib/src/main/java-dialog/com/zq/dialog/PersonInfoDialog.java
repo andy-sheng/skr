@@ -28,13 +28,23 @@ import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 public class PersonInfoDialog {
 
     Context mContext;
+    int mRoomID;
     DialogPlus mDialogPlus;
 
     KickListener mKickListener;
 
     public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick) {
         mContext = context;
+        init(context, userId, showReport, showKick);
+    }
 
+    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick, int roomID) {
+        mContext = context;
+        mRoomID = roomID;
+        init(context, userId, showReport, showKick);
+    }
+
+    private void init(Context context, final int userId, final boolean showReport, boolean showKick) {
         PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(context, userId, showReport, showKick);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
@@ -71,8 +81,7 @@ public class PersonInfoDialog {
 //                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
 //                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                 } else {
-                    UserInfoManager.getInstance().mateRelation(userID,
-                            UserInfoManager.RA_BUILD, isFriend);
+                    UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
                 }
             }
 

@@ -191,15 +191,29 @@ public class UserInfoManager {
     }
 
     /**
-     * 处理关系
+     * 处理关系(不带房间id)
      *
      * @param userId
      * @param action
      */
     public void mateRelation(final int userId, final int action, final boolean isOldFriend, final ResponseCallBack responseCallBack) {
+        mateRelation(userId, action, isOldFriend, 0, responseCallBack);
+    }
+
+
+    /**
+     * 处理关系(带房间id)
+     *
+     * @param userId
+     * @param action
+     */
+    public void mateRelation(final int userId, final int action, final boolean isOldFriend, final int roomID, final ResponseCallBack responseCallBack) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("toUserID", userId);
         map.put("action", action);
+        if (roomID != 0) {
+            map.put("roomID", roomID);
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         Observable<ApiResult> apiResultObservable = userInfoServerApi.mateRelation(body);
@@ -231,6 +245,7 @@ public class UserInfoManager {
             }
         });
     }
+
 
     /**
      * 成为好友
