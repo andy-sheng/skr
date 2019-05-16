@@ -2,6 +2,7 @@ package com.module.home.persenter;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -13,10 +14,10 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.floatwindow.FloatWindow;
 import com.common.floatwindow.MoveType;
@@ -134,7 +135,11 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 @Override
                 public boolean onGetServer(UserInfoModel userInfoModel) {
                     if (userInfoModel != null) {
-                        ConfirmDialog confirmDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity()
+                        Activity activity = U.getActivityUtils().getTopActivity();
+                        if(activity instanceof SchemeSdkActivity){
+                            activity = U.getActivityUtils().getHomeActivity();
+                        }
+                        ConfirmDialog confirmDialog = new ConfirmDialog(activity
                                 , userInfoModel, ConfirmDialog.TYPE_INVITE_CONFIRM);
                         confirmDialog.setListener(new ConfirmDialog.Listener() {
                             @Override
@@ -177,7 +182,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             .append("" + userInfoModel.getNickname()).setForegroundColor(Color.parseColor("#F5A623"))
                             .append("成为好友？").setForegroundColor(Color.parseColor("#7F7F7F"))
                             .create();
-                    TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                    TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.app())
                             .setMessageTip(stringBuilder)
                             .setConfirmTip("确定")
                             .setCancelTip("取消")
@@ -204,7 +209,11 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             })
                             .build();
                     if (mBeFriendDialog == null) {
-                        mBeFriendDialog = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
+                        Activity activity = U.getActivityUtils().getTopActivity();
+                        if(activity instanceof SchemeSdkActivity){
+                            activity = U.getActivityUtils().getHomeActivity();
+                        }
+                        mBeFriendDialog = DialogPlus.newDialog(activity)
                                 .setContentHolder(new ViewHolder(tipsDialogView))
                                 .setGravity(Gravity.BOTTOM)
                                 .setContentBackgroundResource(R.color.transparent)

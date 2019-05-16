@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -213,6 +214,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         WeakRedDotManager.getInstance().addListener(this);
         mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
         refreshMessageRedDot();
+
+        /**
+         * 清除启动页
+         */
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(null);
+        }
     }
 
     private void selectTab(int tabSeq) {
@@ -338,6 +347,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mRedPkgPresenter.checkRedPkg();
             mCheckInPresenter.check();
         }
+
     }
 
     @Override
