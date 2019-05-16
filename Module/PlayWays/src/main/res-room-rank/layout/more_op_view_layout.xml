@@ -74,7 +74,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
-                android:drawableLeft="@drawable/grab_game_role"
+                android:drawableLeft="@drawable/grab_quick_feedback"
                 android:drawablePadding="@dimen/view_5_dp"
                 android:gravity="center"
                 android:text="一键反馈"
