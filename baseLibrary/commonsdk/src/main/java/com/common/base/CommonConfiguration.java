@@ -34,6 +34,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.umeng.UmengInit;
 import com.common.utils.CommonReceiver;
 import com.common.utils.U;
+import com.glidebitmappool.GlideBitmapPool;
 import com.kingja.loadsir.LoadSirUtil;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadSir;
@@ -120,6 +121,8 @@ public class CommonConfiguration implements ConfigModule {
             @Override
             public void onTerminate(@NonNull Application application) {
 //                PgyCrashManager.unregister();
+                GlideBitmapPool.clearMemory();
+                //GlideBitmapPool.trimMemory(level);
             }
         });
     }

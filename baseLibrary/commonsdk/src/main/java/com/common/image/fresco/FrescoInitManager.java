@@ -121,8 +121,7 @@ public class FrescoInitManager {
         /**
          * bitmap 缓存池初始化
          */
-        GlideBitmapPool.initialize(25 * 1024 * 1024); // 10mb max memory size
-
+        //GlideBitmapPool.initialize(25 * 1024 * 1024); // 10mb max memory size
     }
 
 
