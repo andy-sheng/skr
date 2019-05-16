@@ -274,7 +274,7 @@ public abstract class BottomContainerView extends RelativeLayout {
         MyLog.d("BottomContainerView", "onDetachedFromWindow");
         EventBus.getDefault().unregister(this);
         mHandler.removeCallbacksAndMessages(null);
-        dismissPopWindow();
+        //dismissPopWindow();
     }
 
 

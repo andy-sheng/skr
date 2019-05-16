@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
@@ -117,15 +118,9 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
         if (!TextUtils.isEmpty(left.getAvatar())) {
             // 填入左边头像
-            HttpImage image = ImageFactory.newPathImage(left.getAvatar())
-                    .addOssProcessors(OssImgFactory.newResizeBuilder()
-                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
-                                    .build()
-                            , OssImgFactory.newCircleBuilder()
-                                    .setR(500)
-                                    .build()
-                    )
-                    .build();
+            HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(left.getAvatar())
+                    .setCircle(true)
+                    .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
                 dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_1081");
@@ -145,15 +140,9 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
 
         if (!TextUtils.isEmpty(right.getAvatar())) {
             // 填入右边头像
-            HttpImage image = ImageFactory.newPathImage(right.getAvatar())
-                    .addOssProcessors(OssImgFactory.newResizeBuilder()
-                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
-                                    .build()
-                            , OssImgFactory.newCircleBuilder()
-                                    .setR(500)
-                                    .build()
-                    )
-                    .build();
+            HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(right.getAvatar())
+                    .setCircle(true)
+                    .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
                 dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_1082");

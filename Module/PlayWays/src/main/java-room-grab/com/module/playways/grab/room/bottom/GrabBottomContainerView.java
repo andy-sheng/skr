@@ -218,7 +218,6 @@ public class GrabBottomContainerView extends BottomContainerView {
             mSpeakingDotAnimationView.setVisibility(GONE);
             mShowInputContainerBtn.setText("夸赞是一种美德");
             EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
-
         }
     }
 

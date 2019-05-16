@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextPaint;
@@ -9,6 +10,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
@@ -76,7 +78,7 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
         try {
             SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete( SVGAVideoEntity videoItem) {
+                public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(info, songModel));
                     mSingBeginSvga.setImageDrawable(drawable);
                     mSingBeginSvga.startAnimation();
@@ -88,7 +90,7 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         mSingBeginSvga.setCallback(new SVGACallback() {
@@ -149,15 +151,9 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
 
         if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
             // 填入头像
-            HttpImage image = ImageFactory.newPathImage(userInfoModel.getAvatar())
-                    .addOssProcessors(OssImgFactory.newResizeBuilder()
-                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
-                                    .build()
-                            , OssImgFactory.newCircleBuilder()
-                                    .setR(500)
-                                    .build()
-                    )
-                    .build();
+            HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                    .setCircle(true)
+                    .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
                 dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_104");

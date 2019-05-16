@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
@@ -215,15 +216,9 @@ public class TurnChangeCardView extends RelativeLayout {
         bitmap.eraseColor(info.getUserInfo().getSex() == ESex.SX_MALE.getValue() ? U.getColor(com.common.core.R.color.color_man_stroke_color) : U.getColor(com.common.core.R.color.color_woman_stroke_color));
         dynamicEntity.setDynamicImage(bitmap, "border");
 
-        HttpImage image = ImageFactory.newPathImage(info.getUserInfo().getAvatar())
-                .addOssProcessors(OssImgFactory.newResizeBuilder()
-                                .setW(ImageUtils.SIZE.SIZE_160.getW())
-                                .build()
-                        , OssImgFactory.newCircleBuilder()
-                                .setR(500)
-                                .build()
-                )
-                .build();
+        HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(info.getUserInfo().getAvatar())
+                .setCircle(true)
+                .build());
         File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
         if (file != null && file.exists()) {
             dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar128");

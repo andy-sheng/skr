@@ -1,6 +1,7 @@
 package com.opensource.svgaplayer
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -44,8 +45,11 @@ class SVGADynamicEntity {
                     it.connectTimeout = 20 * 1000
                     it.requestMethod = "GET"
                     it.connect()
-                    GlideBitmapFactory.decodeStream(it.inputStream)?.let {
-                        handler.post { setDynamicImage(it, forKey) }
+                    // 这里不能用 GlideBitmapFactory ，可能会导致inputStream 被读掉了
+                    BitmapFactory.decodeStream(it.inputStream)?.let {
+                        handler.post {
+                            setDynamicImage(it, forKey)
+                        }
                     }
                     it.inputStream.close()
                 }
