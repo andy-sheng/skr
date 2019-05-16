@@ -205,5 +205,9 @@ public class ReportFragment extends BaseFragment {
         }
     }
 
-
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+    }
 }

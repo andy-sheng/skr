@@ -205,4 +205,11 @@ public class QuickFeedbackFragment extends BaseFragment {
             sharePanel.share(SharePlatform.WEIXIN, ShareType.URL);
         }
     }
+
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+    }
 }
