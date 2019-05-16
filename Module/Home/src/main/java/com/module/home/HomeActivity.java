@@ -1,12 +1,23 @@
 package com.module.home;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -19,9 +30,11 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
+import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
+import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -43,13 +56,14 @@ import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.view.IHomeActivity;
+import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener {
+public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
     public final static String TAG = "HomeActivity";
 
@@ -100,6 +114,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
     }
 
+    NotificationManager mNManager;
+
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.home_activity_layout;
@@ -123,6 +139,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
+        mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
@@ -203,7 +220,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mRedPkgPresenter = new RedPkgPresenter(this);
         addPresent(mRedPkgPresenter);
 
-        mNotifyCorePresenter = new NotifyCorePresenter();
+        mNotifyCorePresenter = new NotifyCorePresenter(this);
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
@@ -222,6 +239,25 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (window != null) {
             window.setBackgroundDrawable(null);
         }
+    }
+
+    @Override
+    public void showNotify(GrabInviteNotifyEvent event) {
+        Intent it = new Intent(this, SchemeSdkActivity.class);
+        it.putExtra("uri", String.format("inframeskr://room/grabjoin?owner=%d&gameId=%d&ask=1", event.mUserInfoModel.getUserId(), event.roomID));
+        PendingIntent pit = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //设置图片,通知标题,发送时间,提示方式等属性
+        Notification.Builder mBuilder = new Notification.Builder(this);
+        mBuilder.setContentTitle("@" + MyUserInfoManager.getInstance().getNickName())                        //标题
+                .setContentText("你的好友" + event.mUserInfoModel.getNickname() + "邀请你玩游戏")      //内容
+                .setWhen(System.currentTimeMillis())           //设置通知时间
+                .setSmallIcon(R.drawable.app_icon)            //设置小图标
+                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)    //设置默认的三色灯与振动器
+                .setAutoCancel(true)                           //设置点击后取消Notification
+                .setContentIntent(pit);                        //设置PendingIntent
+        Notification notify1 = mBuilder.build();
+        mNManager.notify(1, notify1);
     }
 
     private void selectTab(int tabSeq) {

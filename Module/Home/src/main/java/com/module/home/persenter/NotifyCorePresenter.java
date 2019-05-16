@@ -35,6 +35,7 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.view.INotifyView;
 import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -55,6 +56,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
 
     DialogPlus mBeFriendDialog;
+
+    INotifyView mINotifyView;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -101,7 +104,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public NotifyCorePresenter() {
+    public NotifyCorePresenter(INotifyView iNotifyView) {
+        mINotifyView = iNotifyView;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -136,7 +140,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 public boolean onGetServer(UserInfoModel userInfoModel) {
                     if (userInfoModel != null) {
                         Activity activity = U.getActivityUtils().getTopActivity();
-                        if(activity instanceof SchemeSdkActivity){
+                        if (activity instanceof SchemeSdkActivity) {
                             activity = U.getActivityUtils().getHomeActivity();
                         }
                         ConfirmDialog confirmDialog = new ConfirmDialog(activity
@@ -210,7 +214,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             .build();
                     if (mBeFriendDialog == null) {
                         Activity activity = U.getActivityUtils().getTopActivity();
-                        if(activity instanceof SchemeSdkActivity){
+                        if (activity instanceof SchemeSdkActivity) {
                             activity = U.getActivityUtils().getHomeActivity();
                         }
                         mBeFriendDialog = DialogPlus.newDialog(activity)
@@ -263,9 +267,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
         } else {
             // 展示一个通知
-            NotificationManager notificationManager = (NotificationManager)U.app().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(U.app().getApplicationContext());
-
+            mINotifyView.showNotify(event);
         }
 
     }
