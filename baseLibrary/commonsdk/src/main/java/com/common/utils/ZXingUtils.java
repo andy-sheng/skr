@@ -78,7 +78,7 @@ public class ZXingUtils {
 
             }
         }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = GlideBitmapPool.getBitmap(width, height, Bitmap.Config.ARGB_8888);
         // 通过像素数组生成bitmap
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
@@ -110,7 +110,7 @@ public class ZXingUtils {
                 }
             }
         }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = GlideBitmapPool.getBitmap((width, height, Bitmap.Config.ARGB_8888);
         //通过像素数组生成bitmap
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;

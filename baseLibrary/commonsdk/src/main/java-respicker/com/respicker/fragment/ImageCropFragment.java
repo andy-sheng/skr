@@ -12,6 +12,7 @@ import com.common.base.R;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.glidebitmappool.GlideBitmapFactory;
+import com.glidebitmappool.GlideBitmapPool;
 import com.respicker.ResPicker;
 import com.respicker.model.ImageItem;
 import com.respicker.model.ResItem;
@@ -145,7 +146,7 @@ public class ImageCropFragment extends ImageBaseFragment {
         super.destroy();
         mCropImageView.setOnBitmapSaveCompleteListener(null);
         if (null != mBitmap && !mBitmap.isRecycled()) {
-            mBitmap.recycle();
+            GlideBitmapPool.putBitmap(mBitmap);
             mBitmap = null;
         }
         U.getSoundUtils().release(TAG);

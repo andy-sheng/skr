@@ -1,7 +1,6 @@
 package com.opensource.svgaplayer
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.text.StaticLayout
 import android.text.TextPaint

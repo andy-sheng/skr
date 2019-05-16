@@ -6,6 +6,7 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import com.common.log.MyLog
+import com.glidebitmappool.GlideBitmapPool
 import com.opensource.svgaplayer.entities.SVGAAudioEntity
 import com.opensource.svgaplayer.entities.SVGAVideoSpriteEntity
 import com.opensource.svgaplayer.proto.MovieEntity
@@ -28,7 +29,7 @@ class SVGAVideoEntity {
         this.soundPool = null
         this.images.forEach {
             try {
-                it.value.recycle()
+                GlideBitmapPool.putBitmap(it.value);
             } catch (e: Throwable) {
                 MyLog.e("SVGAVideoEntity", e)
             }

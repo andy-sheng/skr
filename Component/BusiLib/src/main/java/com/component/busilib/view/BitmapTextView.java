@@ -15,6 +15,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.glidebitmappool.GlideBitmapFactory;
+import com.glidebitmappool.GlideBitmapPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +155,7 @@ public class BitmapTextView extends View {
                         matrix.postScale(scale, scale);
                         Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
                         if (!bitmap.isRecycled()) {
-                            bitmap.recycle();
+                            GlideBitmapPool.putBitmap(bitmap);
                         }
                         if (newBM != null) {
                             mWidth = mWidth + newBM.getWidth();
