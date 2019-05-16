@@ -18,4 +18,5 @@ public interface IPlaywaysModeService extends IProvider {
 
     void tryGoGrabGuide(int tagId);
 
+    void tryGoNewGrabMatch();
 }

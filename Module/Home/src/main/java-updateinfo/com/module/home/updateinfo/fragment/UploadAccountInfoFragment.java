@@ -36,6 +36,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
+import com.module.playways.IPlaywaysModeService;
 import com.zq.live.proto.Common.ESex;
 
 import java.util.concurrent.TimeUnit;
@@ -65,12 +66,13 @@ public class UploadAccountInfoFragment extends BaseFragment {
     ImageView mEditTipsIv;
 
     RadioGroup mSexButtonArea;
+    RadioButton mSecre;
     RadioButton mMale;
     RadioButton mFemale;
 
     ImageView mNextIv;
 
-    int sex = 0;// 未知、非法参数
+    int mSex = 0;// 未知、非法参数
     String mNickName = "";
     String mLastName = "";   //最后一次检查的昵称
 
@@ -93,6 +95,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mNicknameHintTv = (ExTextView) mRootView.findViewById(R.id.nickname_hint_tv);
 
         mSexButtonArea = (RadioGroup) mRootView.findViewById(R.id.sex_button_area);
+        mSecre = (RadioButton) mRootView.findViewById(R.id.secre);
         mMale = (RadioButton) mRootView.findViewById(R.id.male);
         mFemale = (RadioButton) mRootView.findViewById(R.id.female);
         mNextIv = (ImageView) mRootView.findViewById(R.id.next_iv);
@@ -143,24 +146,11 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-//                U.getSoundUtils().play(UploadAccountInfoActivity.TAG, R.raw.normal_back, 500);
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-                UserAccountManager.getInstance().logoff(true, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, false);
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
-                        .greenChannel().navigation();
-            }
-        });
-
         mNextIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 mNickName = mNicknameEt.getText().toString().trim();
-                checkNameAndSex(mNickName, sex);
+                verifyName(mNickName);
             }
         });
 
@@ -168,13 +158,12 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.male) {
-                    selectSex(true);
+                    selectSex(ESex.SX_MALE.getValue());
                 } else if (checkedId == R.id.female) {
-                    selectSex(false);
-                } else {
-                    // 不存在
+                    selectSex(ESex.SX_FEMALE.getValue());
+                } else if (checkedId == R.id.secre) {
+                    selectSex(0);
                 }
-
                 changeFocus();
             }
         });
@@ -185,6 +174,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         .build());
 
         if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+            mEditTipsIv.setVisibility(View.VISIBLE);
             mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
             mNicknameEt.setSelection(MyUserInfoManager.getInstance().getNickName().length());
             setCompleteTv(true);
@@ -192,11 +182,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             setCompleteTv(false);
         }
 
-        if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
-            selectSex(true);
-        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
-            selectSex(false);
-        }
+        selectSex(MyUserInfoManager.getInstance().getSex());
 
         initPublishSubject();
     }
@@ -226,20 +212,21 @@ public class UploadAccountInfoFragment extends BaseFragment {
         }
     }
 
-    private void checkNameAndSex(String nickName, int sex) {
+    private void verifyName(String nickName) {
         if (TextUtils.isEmpty(nickName)) {
             setNicknameHintText("昵称不能为空哦～", true);
             setCompleteTv(false);
             return;
         }
 
-        if (sex == 0) {
-            U.getToastUtil().showShort("请选择性别");
+        if (nickName.equals(MyUserInfoManager.getInstance().getNickName()) && (mSex == MyUserInfoManager.getInstance().getSex())) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+            goNewMatch();
             return;
         }
 
         MyUserInfoServerApi myUserInfoServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
-        ApiMethods.subscribe(myUserInfoServerApi.checkNickName(nickName), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(myUserInfoServerApi.verifyName(nickName), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -248,31 +235,13 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     if (isValid) {
                         // 昵称可用
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-//                        Bundle bundle = new Bundle();
-//                        bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-//                        bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, nickName);
-//                        bundle.putInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX, sex);
-//                        U.getFragmentUtils().addFragment(FragmentUtils
-//                                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment2.class)
-//                                .setBundle(bundle)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .build());
                         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                .setNickName(nickName).setSex(sex)
+                                .setNickName(nickName).setSex(mSex)
                                 .build(), true, true, new MyUserInfoManager.ServerCallback() {
                             @Override
                             public void onSucess() {
-                                if (!U.getActivityUtils().isHomeActivityExist()) {
-                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
-                                            .navigation();
-                                } else {
-                                }
-
-                                if (getActivity() != null) {
-                                    getActivity().finish();
-                                }
-                                StatisticsAdapter.recordCountEvent("signup", "success2", null);
+                                // 进入新手引导房间匹配
+                                goNewMatch();
                             }
 
                             @Override
@@ -289,6 +258,19 @@ public class UploadAccountInfoFragment extends BaseFragment {
         });
     }
 
+    private void goNewMatch() {
+        IPlaywaysModeService playwaysModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+        if (playwaysModeService != null) {
+            playwaysModeService.tryGoNewGrabMatch();
+        }
+
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+        StatisticsAdapter.recordCountEvent("signup", "success2", null);
+    }
+
+
     private void setNicknameHintText(String text, boolean isError) {
         if (isError) {
             mNicknameHintTv.setTextColor(Color.parseColor("#EDADC5"));
@@ -300,7 +282,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     }
 
     private void setCompleteTv(boolean isClick) {
-        if (isClick && sex != 0 && !TextUtils.isEmpty(mNicknameEt.getText().toString().trim())) {
+        if (isClick && !TextUtils.isEmpty(mNicknameEt.getText().toString().trim())) {
             mNextIv.setClickable(true);
             mNextIv.setBackgroundResource(R.drawable.complete_normal_icon);
         } else {
@@ -309,12 +291,21 @@ public class UploadAccountInfoFragment extends BaseFragment {
         }
     }
 
-    // 选一个，另一个需要缩放动画
-    private void selectSex(boolean isMale) {
-        this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
-        mMale.setChecked(isMale);
-        mFemale.setChecked(!isMale);
-        setCompleteTv(true);
+    private void selectSex(int sex) {
+        this.mSex = sex;
+        if (sex == ESex.SX_MALE.getValue()) {
+            mMale.setChecked(true);
+            mFemale.setChecked(false);
+            mSecre.setChecked(false);
+        } else if (sex == ESex.SX_FEMALE.getValue()) {
+            mMale.setChecked(false);
+            mFemale.setChecked(true);
+            mSecre.setChecked(false);
+        } else {
+            mMale.setChecked(false);
+            mFemale.setChecked(false);
+            mSecre.setChecked(true);
+        }
     }
 
     private void initPublishSubject() {
@@ -359,7 +350,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             public ObservableSource<ApiResult> apply(String string) throws Exception {
                 mLastName = string;
                 MyUserInfoServerApi myUserInfoServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
-                return myUserInfoServerApi.checkNickName(string).subscribeOn(Schedulers.io());
+                return myUserInfoServerApi.verifyName(string).subscribeOn(Schedulers.io());
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
         mCompositeDisposable = new CompositeDisposable();

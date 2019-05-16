@@ -316,6 +316,7 @@ public class UserAccountManager {
         myUserInfo.setAvatar(avatar);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
+        MyUserInfoManager.getInstance().setFirstLogin(isFirstLogin);
         MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
         MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true);

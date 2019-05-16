@@ -52,6 +52,7 @@ public class MyUserInfoManager {
     private MyUserInfo mUser = new MyUserInfo();
     private boolean mUserInfoFromServer = false;
     private boolean needBeginnerGuide = false;
+    private boolean mIsFirstLogin = false;    // 标记是否第一次登录
 //    private boolean mHasLoadFromDB = false;
 
     public void init() {
@@ -63,9 +64,9 @@ public class MyUserInfoManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
-                    if(mUserInfoFromServer && mUser!=null){
-                        MyLog.d(TAG,"load。 mUser 有效 来自server，取消本次");
-                    }else{
+                    if (mUserInfoFromServer && mUser != null) {
+                        MyLog.d(TAG, "load。 mUser 有效 来自server，取消本次");
+                    } else {
                         MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                         MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
                         MyLog.d(TAG, "load myUserInfo=" + userInfo);
@@ -84,6 +85,14 @@ public class MyUserInfoManager {
         })
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    public boolean isFirstLogin() {
+        return mIsFirstLogin;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        mIsFirstLogin = firstLogin;
     }
 
     public boolean isNeedBeginnerGuide() {
@@ -296,16 +305,15 @@ public class MyUserInfoManager {
 
     //是否需要完善资料
     public boolean isNeedCompleteInfo() {
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-            MyLog.d(TAG, "isNeedCompleteInfo nickName is null");
-            return true;
-        }
-        if (MyUserInfoManager.getInstance().getSex() == 0) {
-            MyLog.d(TAG, "isNeedCompleteInfo sex == 0");
-            return true;
-        }
-
-        return false;
+//        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+//            MyLog.d(TAG, "isNeedCompleteInfo nickName is null");
+//            return true;
+//        }
+//        if (MyUserInfoManager.getInstance().getSex() == 0) {
+//            MyLog.d(TAG, "isNeedCompleteInfo sex == 0");
+//            return true;
+//        }
+        return isFirstLogin();
     }
 
     public long getUid() {

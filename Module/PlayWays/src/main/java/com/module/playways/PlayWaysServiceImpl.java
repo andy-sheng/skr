@@ -130,6 +130,21 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         goGrabMatch(tagId, null);
     }
 
+    private void goGrabMatch(int tagId, List<String> musicURLs) {
+        PrepareData prepareData = new PrepareData();
+        prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+        prepareData.setTagId(tagId);
+
+        if (musicURLs != null && musicURLs.size() > 0) {
+            prepareData.setBgMusic(musicURLs.get(0));
+        }
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation();
+    }
+
     @Override
     public void tryGoGrabGuide(int tagId) {
         GrabGuideServerApi grabGuideServerApi = ApiManager.getInstance().createService(GrabGuideServerApi.class);
@@ -148,14 +163,15 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         }
     }
 
-    private void goGrabMatch(int tagId, List<String> musicURLs) {
+    /**
+     * 新手引导匹配
+     */
+    @Override
+    public void tryGoNewGrabMatch() {
         PrepareData prepareData = new PrepareData();
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
-        prepareData.setTagId(tagId);
-
-        if (musicURLs != null && musicURLs.size() > 0) {
-            prepareData.setBgMusic(musicURLs.get(0));
-        }
+        prepareData.setTagId(0);
+        prepareData.setNewUser(true);
 
         ARouter.getInstance()
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)

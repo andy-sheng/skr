@@ -26,4 +26,8 @@ public interface MyUserInfoServerApi {
      */
     @GET("v1/uprofile/nickname-verification")
     Observable<ApiResult> checkNickName(@Query("nickname") String nickname);
+
+
+    @GET("v1/uprofile/verify-sensitive-name")
+    Observable<ApiResult> verifyName(@Query("nickname") String nickname);
 }
