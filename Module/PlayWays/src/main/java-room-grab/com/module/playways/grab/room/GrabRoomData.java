@@ -30,7 +30,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
     private boolean mIsAccEnable = false;// 是否开启伴奏,只代表设置里伴奏开关
-    private Integer mSongLineNum;// 歌词总行数
+    private int mSongLineNum;// 歌词总行数
     private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
     private int ownerId;// 房主id
     private boolean hasGameBegin = true;// 游戏是否已经开始
@@ -312,11 +312,11 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         this.roomName = roomName;
     }
 
-    public Integer getSongLineNum() {
+    public int getSongLineNum() {
         return mSongLineNum;
     }
 
-    public void setSongLineNum(Integer songLineNum) {
+    public void setSongLineNum(int songLineNum) {
         mSongLineNum = songLineNum;
     }
 

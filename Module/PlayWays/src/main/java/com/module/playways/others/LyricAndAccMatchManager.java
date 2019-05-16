@@ -361,7 +361,7 @@ public class LyricAndAccMatchManager {
         //void onScoreResult(String from,int melpScore, int acrScore, int line);
     }
 
-    public class ScoreResultEvent {
+    public static class ScoreResultEvent {
         public String from;
         public int melpScore;
         public int acrScore;

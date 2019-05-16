@@ -468,9 +468,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                 int mAcrScore = 0;
                                 if (targetSongInfo != null) {
                                     mAcrScore = (int) (targetSongInfo.getScore() * 100);
-                                } else {
                                 }
-                                processScore(mAcrScore, lineNo);
+                                EventBus.getDefault().post(new LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound",-1,mAcrScore,0));
                             }
                         })
                         .build());

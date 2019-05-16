@@ -121,6 +121,7 @@ public class ArcCloudManager implements IACRCloudListener {
     public void startRecognize(RecognizeConfig recognizeConfig) {
         MyLog.d(TAG, "startCollect" + " recognizeConfig=" + recognizeConfig);
         // 开始积攒
+        mProcessing = false;
         this.mRecognizeConfig = recognizeConfig;
         // 停止积攒
         setLen(0);
@@ -141,6 +142,7 @@ public class ArcCloudManager implements IACRCloudListener {
         // 停止积攒
 //        setLen(0);
         this.mRecognizeConfig = null;
+        mProcessing = false;
     }
 
     public void putPool(byte[] buffer, int sampleRate, int nChannels) {
@@ -274,7 +276,9 @@ public class ArcCloudManager implements IACRCloudListener {
                                         songName = songName.substring(0, a);
                                     } else {
                                         a = songName.indexOf("（");
-                                        songName = songName.substring(0, a);
+                                        if (a != -1) {
+                                            songName = songName.substring(0, a);
+                                        }
                                     }
                                     hashMap.put("title", songName);
                                 }
