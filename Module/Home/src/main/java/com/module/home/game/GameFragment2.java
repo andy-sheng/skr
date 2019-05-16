@@ -18,9 +18,13 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.BaseImageView;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -342,11 +346,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean
                                              homepagesitefirstBean) {
-        AvatarUtils.loadAvatarByUrl(mIvRedPkg,
-                AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
-                        .setWidth(U.getDisplayUtils().dip2px(48f))
-                        .setHeight(U.getDisplayUtils().dip2px(53f))
-                        .build());
+        FrescoWorker.loadImage(mIvRedPkg, ImageFactory.newPathImage(homepagesitefirstBean.getPic())
+                .setWidth(U.getDisplayUtils().dip2px(48f))
+                .setHeight(U.getDisplayUtils().dip2px(53f))
+                .build()
+        );
+
         mIvRedPkg.setVisibility(View.VISIBLE);
         mIvRedPkg.setOnClickListener(new DebounceViewClickListener() {
             @Override

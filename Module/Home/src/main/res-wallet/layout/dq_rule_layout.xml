@@ -110,7 +110,7 @@
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
                 android:layout_height="@dimen/view_25_dp"
-                android:background="@drawable/guize_four" />
+                android:background="@drawable/grab_guize_4" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/rule_four"
