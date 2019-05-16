@@ -251,6 +251,7 @@ public class ResDataSource {
                 imageItem.setAddTime(imageAddTime);
                 allImages.add(imageItem);
             }
+            data.close();
         }
         return allImages;
     }
