@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jsbridge.BridgeWebView;
 import com.jsbridge.BridgeWebViewClient;
+import com.jsbridge.CallBackFunction;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebUIControllerImplBase;
 import com.just.agentweb.MiddlewareWebChromeBase;
@@ -52,6 +54,7 @@ import okhttp3.Cookie;
 import static android.os.Build.VERSION_CODES.M;
 import static com.common.core.scheme.SchemeConstants.SCHEME_INFRAMESKER;
 import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
+import static com.common.webview.JsBridgeImpl.getJsonObj;
 
 
 public class AgentWebActivity extends CameraAdapWebActivity {
@@ -73,7 +76,7 @@ public class AgentWebActivity extends CameraAdapWebActivity {
     protected WebChromeClient mWebChromeClient = mWebChromeClient = new WebChromeClient() {
         // Work on Android 4.4.2 Zenfone 5
         public void showFileChooser(ValueCallback<String[]> filePathCallback,
-                                    String acceptType, boolean paramBoolean){
+                                    String acceptType, boolean paramBoolean) {
 
 
 
@@ -133,14 +136,14 @@ public class AgentWebActivity extends CameraAdapWebActivity {
                         Log.e("TAG", "Unable to create Image File", ex);
                     }
                     //适配7.0
-                    if(Build.VERSION.SDK_INT > M) {
+                    if (Build.VERSION.SDK_INT > M) {
                         if (photoFile != null) {
                             photoURI = FileProvider.getUriForFile(AgentWebActivity.this,
-                                    BuildConfig.APPLICATION_ID+".fileprovider", photoFile);
+                                    BuildConfig.APPLICATION_ID + ".fileprovider", photoFile);
                             takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         }
-                    }else{
+                    } else {
                         if (photoFile != null) {
                             mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
@@ -321,6 +324,12 @@ public class AgentWebActivity extends CameraAdapWebActivity {
             mAgentWeb.getWebLifeCycle().onResume();
         }
         super.onResume();
+        mBridgeWebView.callHandler("callJs", getJsonObj(new Pair("opt", "pageActive")).toJSONString(), new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+
+            }
+        });
     }
 
     @Override
