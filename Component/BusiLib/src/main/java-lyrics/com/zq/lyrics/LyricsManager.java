@@ -96,7 +96,7 @@ public class LyricsManager {
                         lyricsReader = new LyricsReader();
                         try {
                             lyricsReader.loadLrc(lrcFile);
-                            mLyricsUtils.put(hash, lyricsReader);
+//                            mLyricsUtils.put(hash, lyricsReader);
                         } catch (Exception e) {
                             Log.e("LyricsManager", "" + e.toString());
                             emitter.onError(e);
@@ -105,8 +105,7 @@ public class LyricsManager {
                     }
                 }
 
-                LyricsReader reader = lyricsReader.clone();
-                emitter.onNext(reader);
+                emitter.onNext(lyricsReader);
                 emitter.onComplete();
             }
         });
