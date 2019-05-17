@@ -556,7 +556,12 @@ public class UserAccountManager {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
             com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
-            CrashReport.setUserId(UserAccountManager.getInstance().getUuid());
+            if(U.getChannelUtils().isStaging()){
+                CrashReport.setUserId("dev_"+UserAccountManager.getInstance().getUuid());
+            }else{
+                CrashReport.setUserId(UserAccountManager.getInstance().getUuid());
+            }
+
         }
     }
 }
