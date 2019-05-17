@@ -610,7 +610,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     @Override
     public void onStart() {
         super.onStart();
-        mSkrAudioPermission.ensurePermission(null, true);
+        //mSkrAudioPermission.ensurePermission(null, true);
     }
 
     private void initCountDownView() {
@@ -1000,8 +1000,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
             public void clickGrabBtn(int seq, boolean challenge) {
-                U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
-                mCorePresenter.grabThisRound(seq, challenge);
+                mSkrAudioPermission.ensurePermission(getActivity(), new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
+                        mCorePresenter.grabThisRound(seq, challenge);
+                    }
+                }, true);
             }
 
             @Override

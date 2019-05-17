@@ -1,5 +1,6 @@
 package com.common.core.login.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +21,7 @@ import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
+import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.share.ShareManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
@@ -70,6 +72,13 @@ public class LoginFragment extends BaseFragment {
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
+    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission(){
+        @Override
+        public void onRequestPermissionFailure1(Activity activity, boolean goSettingIfRefuse) {
+            // 点击拒绝但不是不再询问 不弹去设置的弹窗
+        }
+    };
+
     @Override
     public int initView() {
         return R.layout.core_login_fragment_layout;
@@ -99,10 +108,15 @@ public class LoginFragment extends BaseFragment {
                 HashMap map = new HashMap();
                 map.put("type","Phone");
                 StatisticsAdapter.recordCountEvent("signup", "click", map);
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
+                mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+                    }
+                },true);
             }
         });
 
@@ -121,16 +135,26 @@ public class LoginFragment extends BaseFragment {
                 }
                 if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
                     // 小米商店渠道，需要获取读取imei权限
-                    mSkrPermission.ensurePermission(new Runnable() {
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                        @Override
+                        public void run() {
+                            mSkrPermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showLoginingBar(true);
+                                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                                }
+                            }, true);
+                        }
+                    },true);
+                } else {
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
-                    }, true);
-                } else {
-                    showLoginingBar(true);
-                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                    },true);
                 }
             }
         });
@@ -148,19 +172,30 @@ public class LoginFragment extends BaseFragment {
                     U.getToastUtil().showShort("你没有安装QQ");
                     return;
                 }
+
                 if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
-                    mSkrPermission.ensurePermission(new Runnable() {
+                    // 小米商店渠道，需要获取读取imei权限
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                        @Override
+                        public void run() {
+                            mSkrPermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showLoginingBar(true);
+                                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                                }
+                            }, true);
+                        }
+                    },true);
+                } else {
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
-                    }, true);
-                } else {
-                    showLoginingBar(true);
-                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                    },true);
                 }
-
             }
         });
 
@@ -233,6 +268,7 @@ public class LoginFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mSkrPermission.onBackFromPermisionManagerMaybe(getActivity());
+        mSkrSdcardPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

@@ -83,14 +83,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
     PublishSubject<String> mPublishSubject = PublishSubject.create();
     DisposableObserver<ApiResult> mDisposableObserver;
 
-    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission(){
-        @Override
-        public void onRequestPermissionFailure1(Activity activity, boolean goSettingIfRefuse) {
-            // 点击拒绝但不是不再询问 不弹去设置的弹窗
-        }
-    };
-    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
-
     @Override
     public int initView() {
         return R.layout.upload_account_info_fragment_layout;
@@ -165,17 +157,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     setNicknameHintText("昵称不能为空哦～", true);
                     setCompleteTv(false);
                 } else {
-                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
-                        @Override
-                        public void run() {
-                            mSkrAudioPermission.ensurePermission(getActivity(), new Runnable() {
-                                @Override
-                                public void run() {
-                                    verifyName(mNickName);
-                                }
-                            }, true);
-                        }
-                    }, true);
+                    verifyName(mNickName);
                 }
             }
         });
@@ -391,10 +373,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null);
-        if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe(getActivity())) {
-        }
-        if (!mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity())) {
-        }
     }
 
     @Override
