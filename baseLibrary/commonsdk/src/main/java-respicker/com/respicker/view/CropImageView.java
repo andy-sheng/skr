@@ -25,7 +25,7 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 
 import com.common.base.R;
-import com.glidebitmappool.GlideBitmapPool;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -587,7 +587,7 @@ public class CropImageView extends AppCompatImageView {
             }
         }
         mSaving = false;
-        GlideBitmapPool.putBitmap(croppedImage);
+        BitmapPoolAdapter.putBitmap(croppedImage);
     }
 
     private static class InnerHandler extends Handler {

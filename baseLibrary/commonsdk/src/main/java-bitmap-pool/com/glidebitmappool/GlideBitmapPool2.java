@@ -29,13 +29,13 @@ import java.util.Set;
 /**
  * Created by amitshekhar on 17/06/16.
  */
-public class GlideBitmapPool {
+public class GlideBitmapPool2 {
 
     private static final int DEFAULT_MAX_SIZE = 6 * 1024 * 1024;
     private BitmapPool bitmapPool;
-    private static GlideBitmapPool sInstance;
+    private static GlideBitmapPool2 sInstance;
 
-    private GlideBitmapPool(int maxSize) {
+    private GlideBitmapPool2(int maxSize) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             bitmapPool = new LruBitmapPool(maxSize);
         } else {
@@ -43,7 +43,7 @@ public class GlideBitmapPool {
         }
     }
 
-    private GlideBitmapPool(int maxSize, Set<Bitmap.Config> allowedConfigs) {
+    private GlideBitmapPool2(int maxSize, Set<Bitmap.Config> allowedConfigs) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             bitmapPool = new LruBitmapPool(maxSize, allowedConfigs);
         } else {
@@ -51,19 +51,19 @@ public class GlideBitmapPool {
         }
     }
 
-    private static GlideBitmapPool getInstance() {
+    private static GlideBitmapPool2 getInstance() {
         if (sInstance == null) {
-            sInstance = new GlideBitmapPool(DEFAULT_MAX_SIZE);
+            sInstance = new GlideBitmapPool2(DEFAULT_MAX_SIZE);
         }
         return sInstance;
     }
 
     public static void initialize(int maxSize) {
-        sInstance = new GlideBitmapPool(maxSize);
+        sInstance = new GlideBitmapPool2(maxSize);
     }
 
     public static void initialize(int maxSize, Set<Bitmap.Config> allowedConfigs) {
-        sInstance = new GlideBitmapPool(maxSize, allowedConfigs);
+        sInstance = new GlideBitmapPool2(maxSize, allowedConfigs);
     }
 
     public static void putBitmap(Bitmap bitmap) {

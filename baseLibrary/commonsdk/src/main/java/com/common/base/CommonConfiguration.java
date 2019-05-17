@@ -17,32 +17,24 @@ package com.common.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.delegate.AppLifecycles;
-import com.common.blockmoniter.BlockDetectByPrinter;
 import com.common.bugly.BuglyInit;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.matrix.MatrixInit;
-import com.common.statistics.StatisticsAdapter;
 import com.common.umeng.UmengInit;
 import com.common.utils.CommonReceiver;
 import com.common.utils.U;
-import com.glidebitmappool.GlideBitmapPool;
-import com.kingja.loadsir.LoadSirUtil;
-import com.kingja.loadsir.callback.SuccessCallback;
-import com.kingja.loadsir.core.LoadSir;
+import com.glidebitmappool.BitmapPoolAdapter;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
-
-import cn.jpush.android.api.JPushInterface;
 
 
 /**
@@ -121,7 +113,7 @@ public class CommonConfiguration implements ConfigModule {
             @Override
             public void onTerminate(@NonNull Application application) {
 //                PgyCrashManager.unregister();
-                GlideBitmapPool.clearMemory();
+                BitmapPoolAdapter.clearMemory();
                 //GlideBitmapPool.trimMemory(level);
             }
         });

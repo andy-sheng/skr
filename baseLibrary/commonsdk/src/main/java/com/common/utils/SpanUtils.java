@@ -48,7 +48,7 @@ import android.text.style.UnderlineSpan;
 import android.text.style.UpdateAppearance;
 import android.util.Log;
 
-import com.glidebitmappool.GlideBitmapFactory;
+import com.glidebitmappool.BitmapFactoryAdapter;
 
 import java.io.InputStream;
 import java.lang.annotation.Retention;
@@ -1242,7 +1242,7 @@ public final class SpanUtils {
                 try {
                     InputStream is =
                             U.app().getContentResolver().openInputStream(mContentUri);
-                    bitmap = GlideBitmapFactory.decodeStream(is);
+                    bitmap = BitmapFactoryAdapter.decodeStream(is);
                     drawable = new BitmapDrawable(U.app().getResources(), bitmap);
                     drawable.setBounds(
                             0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()

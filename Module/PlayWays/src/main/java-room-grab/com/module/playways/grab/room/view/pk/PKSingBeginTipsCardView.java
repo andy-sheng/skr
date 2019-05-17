@@ -11,12 +11,9 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
-import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
-import com.common.utils.ImageUtils;
 import com.common.utils.U;
-import com.glidebitmappool.GlideBitmapFactory;
+import com.glidebitmappool.BitmapFactoryAdapter;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -126,7 +123,7 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
                     .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_1081");
+                dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar_1081");
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1081");
             }
@@ -148,7 +145,7 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
                     .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar_1082");
+                dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar_1082");
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1082");
             }

@@ -5,16 +5,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.text.StaticLayout
 import android.text.TextPaint
-import com.glidebitmappool.GlideBitmapFactory
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.concurrent.thread
 
 /**
  * Created by cuiminghui on 2017/3/30.

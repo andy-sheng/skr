@@ -2,12 +2,8 @@ package com.common.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 
-import com.glidebitmappool.GlideBitmapPool;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 public class BlurUtils {
     /**
@@ -248,7 +244,7 @@ public class BlurUtils {
         };
         int width = bmp.getWidth();
         int height = bmp.getHeight();
-        Bitmap newBmp = GlideBitmapPool.getBitmap(width, height,
+        Bitmap newBmp = BitmapPoolAdapter.getBitmap(width, height,
                 Bitmap.Config.RGB_565);
         int pixR = 0;
         int pixG = 0;
@@ -297,7 +293,7 @@ public class BlurUtils {
         int height = bmp.getHeight();
         int[] inPixels = new int[width * height];
         int[] outPixels = new int[width * height];
-        Bitmap bitmap = GlideBitmapPool.getBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = BitmapPoolAdapter.getBitmap(width, height, Bitmap.Config.ARGB_8888);
         bmp.getPixels(inPixels, 0, width, 0, 0, width, height);
         for (int i = 0; i < iterations; i++) {
             blur(inPixels, outPixels, width, height, hRadius);

@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
-import com.glidebitmappool.GlideBitmapPool;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -87,7 +87,7 @@ class Engine {
         }
         if (tagBitmap != null) {
             tagBitmap.compress(focusAlpha ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 60, stream);
-            GlideBitmapPool.putBitmap(tagBitmap);
+            BitmapPoolAdapter.putBitmap(tagBitmap);
 
             FileOutputStream fos = new FileOutputStream(tagImg);
             fos.write(stream.toByteArray());

@@ -2,15 +2,13 @@ package com.module.playways.room.gift.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.common.log.MyLog;
 import com.component.busilib.view.BitmapTextView;
-import com.glidebitmappool.GlideBitmapFactory;
+import com.glidebitmappool.BitmapFactoryAdapter;
 import com.module.playways.R;
 
 import java.util.List;
@@ -46,7 +44,7 @@ public class ContinueTextView extends BitmapTextView {
 
     private void initXBitmap() {
         if (x == null) {
-            x = GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_x);
+            x = BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_x);
         }
     }
 

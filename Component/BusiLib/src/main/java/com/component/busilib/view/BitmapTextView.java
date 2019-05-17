@@ -14,8 +14,8 @@ import android.view.View;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
-import com.glidebitmappool.GlideBitmapFactory;
-import com.glidebitmappool.GlideBitmapPool;
+import com.glidebitmappool.BitmapFactoryAdapter;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,54 +85,54 @@ public class BitmapTextView extends View {
         if (hasShadow) {
             switch (aChar) {
                 case '0':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_0);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_0);
                 case '1':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_1);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_1);
                 case '2':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_2);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_2);
                 case '3':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_3);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_3);
                 case '4':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_4);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_4);
                 case '5':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_5);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_5);
                 case '6':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_6);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_6);
                 case '7':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_7);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_7);
                 case '8':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_8);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_8);
                 case '9':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_9);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_9);
                 case '.':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.daojishi_dian);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_dian);
                 default:
                     return null;
             }
         } else {
             switch (aChar) {
                 case '0':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_0);
                 case '1':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_1);
                 case '2':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_2);
                 case '3':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_3);
                 case '4':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_4);
                 case '5':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_5);
                 case '6':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_6);
                 case '7':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_7);
                 case '8':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_8);
                 case '9':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_9);
                 case '.':
-                    return GlideBitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
                 default:
                     return null;
             }
@@ -155,7 +155,7 @@ public class BitmapTextView extends View {
                         matrix.postScale(scale, scale);
                         Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
                         if (!bitmap.isRecycled()) {
-                            GlideBitmapPool.putBitmap(bitmap);
+                            BitmapPoolAdapter.putBitmap(bitmap);
                         }
                         if (newBM != null) {
                             mWidth = mWidth + newBM.getWidth();

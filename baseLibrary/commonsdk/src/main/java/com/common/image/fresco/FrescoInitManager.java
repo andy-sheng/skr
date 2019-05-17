@@ -3,7 +3,6 @@ package com.common.image.fresco;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.http.HttpResponseCache;
 import android.os.Build;
 
 import com.common.base.BuildConfig;
@@ -25,10 +24,8 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
-import com.glidebitmappool.GlideBitmapPool;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 

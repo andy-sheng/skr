@@ -15,8 +15,8 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.common.log.MyLog;
-import com.glidebitmappool.GlideBitmapFactory;
-import com.glidebitmappool.GlideBitmapPool;
+import com.glidebitmappool.BitmapFactoryAdapter;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -71,7 +71,7 @@ public class BitmapUtils {
         // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         if (!bitmap.isRecycled()) {
-            GlideBitmapPool.putBitmap(bitmap);
+            BitmapPoolAdapter.putBitmap(bitmap);
         }
         return newBitmap;
     }
@@ -84,7 +84,7 @@ public class BitmapUtils {
      * @return 旋转后的图片
      */
     public Bitmap rotateBitmapByDegree(String path, int degree) {
-        Bitmap bitmap = GlideBitmapFactory.decodeFile(path);
+        Bitmap bitmap = BitmapFactoryAdapter.decodeFile(path);
         return rotateBitmapByDegree(bitmap, degree);
     }
 
@@ -98,7 +98,7 @@ public class BitmapUtils {
     public Uri getRotatedUri(Activity activity, String path) {
         int degree = getBitmapDegree(path);
         if (degree != 0) {
-            Bitmap bitmap = GlideBitmapFactory.decodeFile(path);
+            Bitmap bitmap = BitmapFactoryAdapter.decodeFile(path);
             Bitmap newBitmap = rotateBitmapByDegree(bitmap, degree);
             return Uri.parse(MediaStore.Images.Media.insertImage(activity.getContentResolver(), newBitmap, null, null));
         } else {
@@ -182,7 +182,7 @@ public class BitmapUtils {
         if (inBitmap == null) {
             return null;
         }
-        Bitmap outBitmap = GlideBitmapPool.getBitmap(inBitmap.getWidth(), inBitmap.getHeight(), inBitmap.getConfig());
+        Bitmap outBitmap = BitmapPoolAdapter.getBitmap(inBitmap.getWidth(), inBitmap.getHeight(), inBitmap.getConfig());
         Canvas canvas = new Canvas(outBitmap);
         Paint paint = new Paint();
         paint.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));

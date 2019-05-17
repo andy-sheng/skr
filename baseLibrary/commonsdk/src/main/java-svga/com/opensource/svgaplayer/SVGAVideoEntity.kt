@@ -1,13 +1,12 @@
 package com.opensource.svgaplayer
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import com.common.log.MyLog
-import com.glidebitmappool.GlideBitmapFactory
-import com.glidebitmappool.GlideBitmapPool
+import com.glidebitmappool.BitmapFactoryAdapter
+import com.glidebitmappool.BitmapPoolAdapter
 import com.opensource.svgaplayer.entities.SVGAAudioEntity
 import com.opensource.svgaplayer.entities.SVGAVideoSpriteEntity
 import com.opensource.svgaplayer.proto.MovieEntity
@@ -28,7 +27,7 @@ class SVGAVideoEntity {
         this.soundPool = null
         this.images.forEach {
             try {
-                GlideBitmapPool.putBitmap(it.value);
+                BitmapPoolAdapter.putBitmap(it.value);
             } catch (e: Throwable) {
                 MyLog.e("SVGAVideoEntity", e)
             }
@@ -98,12 +97,12 @@ class SVGAVideoEntity {
             imgObjects.keys().forEach { imageKey ->
                 var filePath = cacheDir.absolutePath + "/" + imgObjects[imageKey]
 
-                var bitmap = if (File(filePath).exists()) GlideBitmapFactory.decodeFile(filePath, Bitmap.Config.RGB_565) else null
+                var bitmap = if (File(filePath).exists()) BitmapFactoryAdapter.decodeFile(filePath, Bitmap.Config.RGB_565) else null
                 if (bitmap != null) {
                     images.put(imageKey, bitmap)
                 } else {
                     (cacheDir.absolutePath + "/" + imageKey + ".png").takeIf { File(it).exists() }?.let {
-                        GlideBitmapFactory.decodeFile(it, Bitmap.Config.RGB_565)?.let {
+                        BitmapFactoryAdapter.decodeFile(it, Bitmap.Config.RGB_565)?.let {
                             images.put(imageKey, it)
                         }
                     }
@@ -122,18 +121,18 @@ class SVGAVideoEntity {
             val fileTag = byteArray.slice(IntRange(0, 3))
             if (fileTag[0].toInt() == 73 && fileTag[1].toInt() == 68 && fileTag[2].toInt() == 51 && fileTag[3].toInt() == 3) {
             } else {
-                val bitmap = GlideBitmapFactory.decodeByteArray(byteArray, 0, byteArray.count(), Bitmap.Config.RGB_565)
+                val bitmap = BitmapFactoryAdapter.decodeByteArray(byteArray, 0, byteArray.count(), Bitmap.Config.RGB_565)
                 if (bitmap != null) {
                     images[imageKey] = bitmap
                 } else {
                     it.value.utf8()?.let {
                         var filePath = cacheDir.absolutePath + "/" + it
-                        var bitmap = if (File(filePath).exists()) GlideBitmapFactory.decodeFile(filePath, Bitmap.Config.RGB_565) else null
+                        var bitmap = if (File(filePath).exists()) BitmapFactoryAdapter.decodeFile(filePath, Bitmap.Config.RGB_565) else null
                         if (bitmap != null) {
                             images.put(imageKey, bitmap)
                         } else {
                             (cacheDir.absolutePath + "/" + imageKey + ".png").takeIf { File(it).exists() }?.let {
-                                GlideBitmapFactory.decodeFile(it, Bitmap.Config.RGB_565)?.let {
+                                BitmapFactoryAdapter.decodeFile(it, Bitmap.Config.RGB_565)?.let {
                                     images.put(imageKey, it)
                                 }
                             }

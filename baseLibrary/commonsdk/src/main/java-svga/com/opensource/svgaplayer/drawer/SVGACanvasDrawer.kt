@@ -3,7 +3,7 @@ package com.opensource.svgaplayer.drawer
 import android.graphics.*
 import android.text.StaticLayout
 import android.widget.ImageView
-import com.glidebitmappool.GlideBitmapPool
+import com.glidebitmappool.BitmapPoolAdapter
 import com.opensource.svgaplayer.SVGADynamicEntity
 import com.opensource.svgaplayer.SVGAVideoEntity
 import com.opensource.svgaplayer.entities.SVGAVideoShapeEntity
@@ -101,7 +101,7 @@ internal class SVGACanvasDrawer(videoItem: SVGAVideoEntity, val dynamicItem: SVG
                 drawTextCache[imageKey]?.let {
                     textBitmap = it
                 } ?: kotlin.run {
-                    textBitmap = GlideBitmapPool.getBitmap(drawingBitmap.width, drawingBitmap.height, Bitmap.Config.ARGB_8888)
+                    textBitmap = BitmapPoolAdapter.getBitmap(drawingBitmap.width, drawingBitmap.height, Bitmap.Config.ARGB_8888)
                     val textCanvas = Canvas(textBitmap)
                     drawingTextPaint.isAntiAlias = true
                     val bounds = Rect()
@@ -121,7 +121,7 @@ internal class SVGACanvasDrawer(videoItem: SVGAVideoEntity, val dynamicItem: SVG
             } ?: kotlin.run {
                 it.paint.isAntiAlias = true
                 var layout = StaticLayout(it.text, 0, it.text.length, it.paint, drawingBitmap.width, it.alignment, it.spacingMultiplier, it.spacingAdd, false)
-                textBitmap = GlideBitmapPool.getBitmap(drawingBitmap.width, drawingBitmap.height, Bitmap.Config.ARGB_8888)
+                textBitmap = BitmapPoolAdapter.getBitmap(drawingBitmap.width, drawingBitmap.height, Bitmap.Config.ARGB_8888)
                 val textCanvas = Canvas(textBitmap)
                 textCanvas.translate(0f, ((drawingBitmap.height - layout.height) / 2).toFloat())
                 layout.draw(textCanvas)

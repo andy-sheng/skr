@@ -14,12 +14,9 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
-import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
-import com.common.utils.ImageUtils;
 import com.common.utils.U;
-import com.glidebitmappool.GlideBitmapFactory;
-import com.glidebitmappool.GlideBitmapPool;
+import com.glidebitmappool.BitmapFactoryAdapter;
+import com.glidebitmappool.BitmapPoolAdapter;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
@@ -212,7 +209,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
     private SVGADynamicEntity requestDynamicItem(RankPlayerInfoModel info) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        Bitmap bitmap = GlideBitmapPool.getBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = BitmapPoolAdapter.getBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(info.getUserInfo().getSex() == ESex.SX_MALE.getValue() ? U.getColor(com.common.core.R.color.color_man_stroke_color) : U.getColor(com.common.core.R.color.color_woman_stroke_color));
         dynamicEntity.setDynamicImage(bitmap, "border");
 
@@ -221,7 +218,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 .build());
         File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
         if (file != null && file.exists()) {
-            dynamicEntity.setDynamicImage(GlideBitmapFactory.decodeFile(file.getPath()), "avatar128");
+            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar128");
         } else {
             dynamicEntity.setDynamicImage(image.getUrl(), "avatar128");
         }
