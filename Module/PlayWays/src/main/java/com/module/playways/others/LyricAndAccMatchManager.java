@@ -108,7 +108,7 @@ public class LyricAndAccMatchManager {
                         int accBeginTs,
                         int accEndTs
     ) {
-        MyLog.d(TAG,"setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
+        MyLog.w(TAG,"setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
         mManyLyricsView = manyLyricsView;
         mVoiceScaleView = voiceScaleView;
         mLyricUrl = lyricUrl;
@@ -290,7 +290,7 @@ public class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
-        MyLog.d(TAG, "LineLineEndEvent" + " event=" + event);
+        MyLog.w(TAG, "LineLineEndEvent" + " event=" + event);
         if (ScoreConfig.isMelp2Enable()) {
             EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
                 @Override
@@ -334,7 +334,7 @@ public class LyricAndAccMatchManager {
     }
 
     private void processScore(String from, int melpScore, int acrScore, int line) {
-        MyLog.d(TAG, "processScore" + " from=" + from + " melpScore=" + melpScore + " acrScore=" + acrScore + " line=" + line + " mLastLineNum=" + mLastLineNum);
+        MyLog.w(TAG, "processScore" + " from=" + from + " melpScore=" + melpScore + " acrScore=" + acrScore + " line=" + line + " mLastLineNum=" + mLastLineNum);
         if (line <= mLastLineNum) {
             return;
         }

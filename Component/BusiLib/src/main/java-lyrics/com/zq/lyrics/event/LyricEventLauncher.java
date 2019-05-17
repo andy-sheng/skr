@@ -48,7 +48,7 @@ public class LyricEventLauncher {
     }
 
     public int postLyricEvent(LyricsReader lyricsReader, int accBeginTs, int accEndTs, Object extra) {
-        MyLog.d(TAG, "postLyricEvent" + " lyricsReader=" + lyricsReader + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs + " extra=" + extra);
+        MyLog.d(TAG, "postLyricEvent accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs + " extra=" + extra);
         if (lyricsReader == null) {
             MyLog.d(TAG, "postLyricEvent lyricsReader is null");
             return 0;
