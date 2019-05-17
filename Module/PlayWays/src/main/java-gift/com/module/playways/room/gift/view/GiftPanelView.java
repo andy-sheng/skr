@@ -202,6 +202,7 @@ public class GiftPanelView extends FrameLayout {
     }
 
     public void updateZS() {
+        MyLog.d(TAG, "updateZS" );
         getZSBalance();
     }
 
@@ -230,6 +231,7 @@ public class GiftPanelView extends FrameLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpdateDiamondEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         mTvDiamond.setText(String.format("%.1f", event.getZuanBalance()));
     }
 
@@ -257,8 +259,14 @@ public class GiftPanelView extends FrameLayout {
      * @param grabPlayerInfoModel 麦上的人
      */
     public void show(GrabPlayerInfoModel grabPlayerInfoModel) {
+        MyLog.d(TAG, "show" + " grabPlayerInfoModel=" + grabPlayerInfoModel);
         if (!mHasInit) {
             inflate();
+        }
+
+        if (getVisibility() == VISIBLE) {
+            MyLog.d(TAG, "show" + " getVisibility() == VISIBLE");
+            return;
         }
 
         setSelectArea(grabPlayerInfoModel);

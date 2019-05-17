@@ -1044,6 +1044,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS();
+                                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
                                 }
                             }
                         })
