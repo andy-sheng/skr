@@ -190,7 +190,15 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setAdapter(fragmentPagerAdapter);
 
         mHomePresenter = new HomeCorePresenter(this, this);
-        mHomePresenter.checkUserInfo("HomeActivity onCreate");
+        if(mHomePresenter.checkUserInfo("HomeActivity onCreate")){
+            mMainActContainer.setVisibility(View.GONE);
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mMainActContainer.setVisibility(View.VISIBLE);
+                }
+            },3000);
+        }
         mCheckInPresenter = new CheckInPresenter(this);
         addPresent(mCheckInPresenter);
 
@@ -406,7 +414,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mRedPkgPresenter.checkRedPkg();
             mCheckInPresenter.check();
         }
-
+        if(UserAccountManager.getInstance().hasAccount()){
+            mMainActContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

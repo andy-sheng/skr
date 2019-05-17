@@ -191,13 +191,14 @@ public class HomeCorePresenter {
         BgMusicManager.getInstance().destory();
     }
 
-    public void checkUserInfo(String from) {
+    public boolean checkUserInfo(String from) {
         MyLog.d(TAG, "checkUserInfo" + " from=" + from);
         if (UserAccountManager.getInstance().hasLoadAccountFromDB()) {
             if (!UserAccountManager.getInstance().hasAccount()) {
                 // 到时会有广告页或者启动页挡一下的，先不用管
                 LoginActivity.open(mBaseActivity);
 //                ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+                return true;
             } else {
                 if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
                     // 如果有账号了
@@ -220,6 +221,7 @@ public class HomeCorePresenter {
                 }
             }
         }
+        return false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

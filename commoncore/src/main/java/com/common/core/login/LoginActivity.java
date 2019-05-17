@@ -137,6 +137,7 @@ public class LoginActivity extends BaseActivity {
     public static void open(Activity activity){
         Intent intent = new Intent(activity,LoginActivity.class);
         activity.startActivity(intent);
+        activity.overridePendingTransition(0,0);
     }
 
     @Override
