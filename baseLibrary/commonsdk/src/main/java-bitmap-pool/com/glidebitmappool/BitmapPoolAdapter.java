@@ -18,6 +18,9 @@
 package com.glidebitmappool;
 
 import android.graphics.Bitmap;
+import android.os.Build;
+
+import com.umeng.commonsdk.statistics.SdkVersion;
 
 import java.util.Set;
 
@@ -37,11 +40,17 @@ public class BitmapPoolAdapter {
     }
 
     public static void putBitmap(Bitmap bitmap) {
-        bitmap.recycle();
+        if (Build.VERSION.SDK_INT == 19) {
+            //android 4.4 有大量 recycle 造成崩溃，这里不recycle 试试
+        } else {
+            if(bitmap!=null && !bitmap.isRecycled()){
+                bitmap.recycle();
+            }
+        }
     }
 
     public static Bitmap getBitmap(int width, int height, Bitmap.Config config) {
-        return Bitmap.createBitmap(width,height,config);
+        return Bitmap.createBitmap(width, height, config);
     }
 
     public static void clearMemory() {
