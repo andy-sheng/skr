@@ -1,7 +1,9 @@
 package com.common.webview;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -11,12 +13,18 @@ import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
 import com.common.log.MyLog;
 import com.common.view.titlebar.CommonTitleBar;
+import com.jsbridge.CallBackFunction;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 import static com.common.view.titlebar.CommonTitleBar.ACTION_RIGHT_BUTTON;
+import static com.common.webview.JsBridgeImpl.getJsonObj;
 
 @Route(path = "/common/ExpendWebActivity")
 public class ExpendWebActivity extends AgentWebActivity {
+    public final static String TAG = "ExpendWebActivity";
 
     boolean mShowShareBtn = false;
 
@@ -32,13 +40,7 @@ public class ExpendWebActivity extends AgentWebActivity {
         mUrl = getIntent().getStringExtra("url");
         mShowShareBtn = getIntent().getBooleanExtra("showShare", false);
 
-        try {
-            injectObj();
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-
-        if(!mShowShareBtn){
+        if (!mShowShareBtn) {
             mTitlebar.getRightImageButton().setVisibility(View.GONE);
         }
 
@@ -60,27 +62,20 @@ public class ExpendWebActivity extends AgentWebActivity {
         });
     }
 
-    protected void pageFinished(WebView view, String url){
-        view.loadUrl("javascript:window.local_obj.showSource("
-                + "document.querySelector('meta[name=\"shareIcon\"]').getAttribute('content'),"
-                + "document.querySelector('meta[name=\"description\"]').getAttribute('content')"
-                + ");");
-    }
-
-    protected void receivedTitle(WebView view, String title){
-        mTitle = title;
-    }
-
-    public void injectObj() throws Exception {
-        mAgentWeb.getJsInterfaceHolder().addJavaObject("local_obj", new InJavaScriptLocalObj());
-    }
-
-    final class InJavaScriptLocalObj {
-        @JavascriptInterface
-        public void showSource(String shareIcon, String des) {
-            MyLog.d(TAG, "showSource" + " shareIcon=" + shareIcon + " des=" + des);
-            mDes = des;
-            mIcon = shareIcon;
-        }
+    protected void pageFinished(WebView view, String url) {
+        mBridgeWebView.callHandler("callJs", getJsonObj(new Pair("opt", "fetchPageShareInfo")).toJSONString(), new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+                MyLog.d(TAG, "onCallBack" + " data=" + data);
+                try {
+                    JSONObject jsonObject = new JSONObject(data);
+                    mTitle = jsonObject.getString("title");
+                    mDes = jsonObject.getString("description");
+                    mIcon = jsonObject.getString("icon");
+                } catch (JSONException e) {
+                    MyLog.d(TAG, e);
+                }
+            }
+        });
     }
 }
