@@ -145,6 +145,7 @@ public class GrabRoomActivity extends BaseActivity {
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
                         .setAddToBackStack(false)
+                        .setHasAnimation(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
         // 销毁其他的一唱到底页面
