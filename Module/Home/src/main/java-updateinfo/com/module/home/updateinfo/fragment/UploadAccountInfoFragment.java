@@ -20,6 +20,8 @@ import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
+import com.common.core.permission.SkrAudioPermission;
+import com.common.core.permission.SkrSdcardPermission;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -79,6 +81,9 @@ public class UploadAccountInfoFragment extends BaseFragment {
     CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject = PublishSubject.create();
     DisposableObserver<ApiResult> mDisposableObserver;
+
+    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
     public int initView() {
@@ -150,7 +155,22 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 mNickName = mNicknameEt.getText().toString().trim();
-                verifyName(mNickName);
+                if (TextUtils.isEmpty(mNickName)) {
+                    setNicknameHintText("昵称不能为空哦～", true);
+                    setCompleteTv(false);
+                } else {
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                        @Override
+                        public void run() {
+                            mSkrAudioPermission.ensurePermission(getActivity(), new Runnable() {
+                                @Override
+                                public void run() {
+                                    verifyName(mNickName);
+                                }
+                            }, true);
+                        }
+                    }, true);
+                }
             }
         });
 
@@ -212,13 +232,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
         }
     }
 
-    private void verifyName(String nickName) {
-        if (TextUtils.isEmpty(nickName)) {
-            setNicknameHintText("昵称不能为空哦～", true);
-            setCompleteTv(false);
-            return;
-        }
 
+    private void verifyName(String nickName) {
         if (nickName.equals(MyUserInfoManager.getInstance().getNickName()) && (mSex == MyUserInfoManager.getInstance().getSex())) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             goNewMatch();
@@ -267,7 +282,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
         // TODO: 2019/5/16 因为fastLogin的标记为用在是否要完善资料上了
         MyUserInfoManager.getInstance().setFirstLogin(false);
-        
+
         if (getActivity() != null) {
             getActivity().finish();
         }
@@ -371,6 +386,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null);
+        if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe(getActivity())) {
+        }
+        if (!mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity())) {
+        }
     }
 
     @Override
