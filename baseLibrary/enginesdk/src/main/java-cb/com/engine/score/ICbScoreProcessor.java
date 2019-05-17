@@ -126,9 +126,11 @@ public class ICbScoreProcessor {
         melPath = null;
         melFileExist = false;
         checkMelFileTs = 0;
-        Message msg = mCustomHandlerThread.obtainMessage();
-        msg.what = 3;
-        mCustomHandlerThread.sendMessage(msg);
+        if (mCustomHandlerThread != null) {
+            Message msg = mCustomHandlerThread.obtainMessage();
+            msg.what = 3;
+            mCustomHandlerThread.sendMessage(msg);
+        }
         return 0;
     }
 
