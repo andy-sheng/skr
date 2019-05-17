@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
+import android.os.Build
 import com.common.log.MyLog
 import com.glidebitmappool.BitmapFactoryAdapter
 import com.glidebitmappool.BitmapPoolAdapter
@@ -27,7 +28,11 @@ class SVGAVideoEntity {
         this.soundPool = null
         this.images.forEach {
             try {
-                BitmapPoolAdapter.putBitmap(it.value);
+                if (Build.VERSION.SDK_INT == 19) {
+                    //android 4.4 有大量 recycle 造成崩溃，这里不recycle 试试
+                } else {
+                    BitmapPoolAdapter.putBitmap(it.value)
+                }
             } catch (e: Throwable) {
                 MyLog.e("SVGAVideoEntity", e)
             }

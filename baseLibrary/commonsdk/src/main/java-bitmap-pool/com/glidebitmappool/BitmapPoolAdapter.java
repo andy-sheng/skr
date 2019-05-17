@@ -40,12 +40,8 @@ public class BitmapPoolAdapter {
     }
 
     public static void putBitmap(Bitmap bitmap) {
-        if (Build.VERSION.SDK_INT == 19) {
-            //android 4.4 有大量 recycle 造成崩溃，这里不recycle 试试
-        } else {
-            if(bitmap!=null && !bitmap.isRecycled()){
-                bitmap.recycle();
-            }
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
         }
     }
 
