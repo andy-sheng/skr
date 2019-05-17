@@ -271,6 +271,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 .setWhen(System.currentTimeMillis())           //设置通知时间
                 .setSmallIcon(R.drawable.app_icon)            //设置小图标
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)    //设置默认的三色灯与振动器
+//                .setPriority(Notification.PRIORITY_MAX)      //设置应用的优先级，可以用来修复在小米手机上可能显示在不重要通知中
                 .setAutoCancel(true)                           //设置点击后取消Notification
                 .setContentIntent(pit);                        //设置PendingIntent
 
