@@ -12,6 +12,9 @@ import java.io.File;
 public class ICbScoreProcessor {
 
     public final static String TAG = "ICbScoreProcessor";
+    static final int MSG_PUT_DATA = 1;
+    static final int MSG_GET_SCORE = 2;
+    static final int MSG_DESTROY = 3;
 
     static {
         try {
@@ -73,18 +76,24 @@ public class ICbScoreProcessor {
                 mCustomHandlerThread = new CustomHandlerThread("getScore2") {
                     @Override
                     protected void processMessage(Message var1) {
-                        if (var1.what == 1) {
+                        if (var1.what == MSG_PUT_DATA) {
                             Holder holder = (Holder) var1.obj;
                             try {
                                 process2(holder.needScore, holder.restartEngine, holder.samples, holder.length, holder.channels, holder.samplesPerSec, holder.currentTimeMills, holder.melPath);
                             } catch (Exception e) {
                                 MyLog.e(TAG, e);
                             }
-                        } else if (var1.what == 2) {
+                        } else if (var1.what == MSG_GET_SCORE) {
                             Score2Callback score2Callback = (Score2Callback) var1.obj;
                             if (score2Callback != null) {
                                 int score2 = getScore2();
                                 score2Callback.onGetScore(var1.arg1, score2);
+                            }
+                        }else if(var1.what ==MSG_DESTROY){
+                            destroyScoreProcessor();
+                            if (mCustomHandlerThread != null) {
+                                mCustomHandlerThread.destroy();
+                                mCustomHandlerThread = null;
                             }
                         }
                     }
@@ -117,11 +126,9 @@ public class ICbScoreProcessor {
         melPath = null;
         melFileExist = false;
         checkMelFileTs = 0;
-        destroyScoreProcessor();
-        if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.destroy();
-            mCustomHandlerThread = null;
-        }
+        Message msg = mCustomHandlerThread.obtainMessage();
+        msg.what = 3;
+        mCustomHandlerThread.sendMessage(msg);
         return 0;
     }
 

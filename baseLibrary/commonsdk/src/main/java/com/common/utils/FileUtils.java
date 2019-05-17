@@ -53,8 +53,11 @@ public class FileUtils {
                 return file.length();
             } else if (file.isDirectory()) {
                 long len = 0;
-                for (File f : file.listFiles()) {
-                    len += getDirSize(f.getAbsolutePath());
+                File[] files = file.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        len += getDirSize(f.getAbsolutePath());
+                    }
                 }
                 return len;
             }
