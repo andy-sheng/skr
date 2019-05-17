@@ -1,5 +1,6 @@
 package com.module.home.updateinfo.fragment;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -82,7 +83,12 @@ public class UploadAccountInfoFragment extends BaseFragment {
     PublishSubject<String> mPublishSubject = PublishSubject.create();
     DisposableObserver<ApiResult> mDisposableObserver;
 
-    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
+    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission(){
+        @Override
+        public void onRequestPermissionFailure1(Activity activity, boolean goSettingIfRefuse) {
+            // 点击拒绝但不是不再询问 不弹去设置的弹窗
+        }
+    };
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
