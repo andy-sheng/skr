@@ -152,6 +152,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_RECOVER_VOLUME = 22; // 房主说话后 恢复音量
 
+    static final int MSG_ENSURE_EXIT = 8; // 房主说话后 恢复音量
+
     long mFirstKickOutTime = -1; //用时间和次数来判断一个人有没有在一个房间里
 
     int mAbsenTimes = 0;
@@ -223,6 +225,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         });
                         valueAnimator.setDuration(1000);
                         valueAnimator.start();
+                    }
+                    break;
+                case MSG_ENSURE_EXIT:
+                    if (mIGrabView != null) {
+                        mIGrabView.onGetGameResult(false);
                     }
                     break;
             }
@@ -1106,11 +1113,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "exitRoom" + " from=" + from);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
-
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_EXIT,2000);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.exitRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                mUiHandler.removeMessages(MSG_ENSURE_EXIT);
                 if (result.getErrno() == 0) {
                     mRoomData.setHasExitGame(true);
                     GrabResultInfoModel grabResultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
@@ -1129,6 +1137,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onNetworkError(ErrorType errorType) {
+                mUiHandler.removeMessages(MSG_ENSURE_EXIT);
                 super.onNetworkError(errorType);
                 mIGrabView.onGetGameResult(false);
             }
