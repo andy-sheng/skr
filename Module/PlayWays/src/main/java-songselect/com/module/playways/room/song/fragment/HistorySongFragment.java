@@ -197,7 +197,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

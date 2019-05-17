@@ -459,7 +459,7 @@ public class AuditionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

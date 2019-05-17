@@ -69,7 +69,7 @@ public abstract class CameraAdapWebActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mSkrCameraPermission.onBackFromPermisionManagerMaybe();
+        mSkrCameraPermission.onBackFromPermisionManagerMaybe(getParent());
     }
 
     @Override

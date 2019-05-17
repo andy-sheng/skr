@@ -205,7 +205,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

@@ -279,7 +279,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     private void initTopView() {

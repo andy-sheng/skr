@@ -35,7 +35,9 @@ class SVGADynamicEntity {
     }
 
     fun setDynamicImage(bitmap: Bitmap, forKey: String) {
-        this.dynamicImage.put(forKey, bitmap)
+        if(bitmap!=null) {
+            this.dynamicImage.put(forKey, bitmap)
+        }
     }
 
     fun setDynamicImage(url: String, forKey: String) {

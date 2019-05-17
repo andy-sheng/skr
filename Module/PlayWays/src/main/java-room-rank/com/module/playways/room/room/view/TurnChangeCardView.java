@@ -218,7 +218,13 @@ public class TurnChangeCardView extends RelativeLayout {
                 .build());
         File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
         if (file != null && file.exists()) {
-            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar128");
+            Bitmap bitmap2 = BitmapFactoryAdapter.decodeFile(file.getPath());
+            //防止用户不给sd权限导致 bitmap为null
+            if(bitmap2!=null){
+                dynamicEntity.setDynamicImage(bitmap2, "avatar128");
+            }else{
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar128");
+            }
         } else {
             dynamicEntity.setDynamicImage(image.getUrl(), "avatar128");
         }

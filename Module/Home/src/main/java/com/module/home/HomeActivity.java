@@ -388,7 +388,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             // 获取地理位置权限
             //mSkrLocationPermission.ensurePermission(null, false);
         }
-        if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
+        if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe(this)) {
             if (mFromCreate) {
                 mSkrSdcardPermission.ensurePermission(this, null, true);
             }

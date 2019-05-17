@@ -28,7 +28,8 @@ class SVGAVideoEntity {
         this.soundPool = null
         this.images.forEach {
             try {
-                if (Build.VERSION.SDK_INT == 19) {
+                var sdk = Build.VERSION.SDK_INT
+                if (sdk >= 19 && sdk <= 21) {
                     //android 4.4 有大量 recycle 造成崩溃，这里不recycle 试试
                 } else {
                     BitmapPoolAdapter.putBitmap(it.value)

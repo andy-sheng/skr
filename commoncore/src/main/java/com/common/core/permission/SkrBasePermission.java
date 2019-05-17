@@ -35,7 +35,7 @@ public abstract class SkrBasePermission {
         ensurePermission(U.getActivityUtils().getTopActivity(), ifAgreeAction, goSettingIfRefuse);
     }
 
-    public void ensurePermission(Activity activity, final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
+    public void ensurePermission(final Activity activity, final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
         if (!U.getPermissionUtils().checkPermission(activity, mPermissionStr)) {
             MyLog.d(TAG, "ensurePhoneStatePermission false");
             // 这里会起个 Activity 判断权限，会回调 activity 的 onResume 方法
@@ -51,13 +51,13 @@ public abstract class SkrBasePermission {
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onRequestPermissionFailure1(goSettingIfRefuse);
+                    onRequestPermissionFailure1(activity,goSettingIfRefuse);
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
-                    onRequestPermissionFailureWithAskNeverAgain1(goSettingIfRefuse);
+                    onRequestPermissionFailureWithAskNeverAgain1(activity,goSettingIfRefuse);
 
                 }
             }, activity, mPermissionStr);
@@ -68,19 +68,18 @@ public abstract class SkrBasePermission {
         }
     }
 
-    public void onRequestPermissionFailure1(boolean goSettingIfRefuse) {
+    public void onRequestPermissionFailure1(Activity activity,boolean goSettingIfRefuse) {
 
     }
 
-    public void onRequestPermissionFailureWithAskNeverAgain1(boolean goSettingIfRefuse) {
+    public void onRequestPermissionFailureWithAskNeverAgain1(Activity activity,boolean goSettingIfRefuse) {
         if (goSettingIfRefuse) {
-            onReject(mGoPermissionManagerTips);
+            onReject(activity,mGoPermissionManagerTips);
         }
     }
 
-    public void onReject(String text) {
+    public void onReject(final Activity activity, String text) {
         if (mPerTipsDialogPlus == null) {
-            final Activity activity = U.getActivityUtils().getTopActivity();
             mTipsDialogView = new TipsDialogView.Builder(activity)
                     .setMessageTip(text)
                     .setOkBtnTip("去设置")
@@ -116,10 +115,9 @@ public abstract class SkrBasePermission {
         }
     }
 
-    public boolean onBackFromPermisionManagerMaybe() {
+    public boolean onBackFromPermisionManagerMaybe(Activity activity) {
         if (mHasGoPermission) {
             mHasGoPermission = false;
-            final Activity activity = U.getActivityUtils().getTopActivity();
             if (U.getPermissionUtils().checkPermission(activity, mPermissionStr)) {
                 MyLog.d(TAG, "onBack true");
                 onAgree();

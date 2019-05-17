@@ -2,6 +2,7 @@ package com.module.playways.room.room.fragment;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -263,7 +264,13 @@ public class RankLevelChangeFragment2 extends BaseFragment {
         if (!TextUtils.isEmpty(image.getUrl())) {
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null && file.exists()) {
-                dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar");
+                Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
+                //防止用户不给sd权限导致 bitmap为null
+                if(bitmap!=null){
+                    dynamicEntity.setDynamicImage(bitmap, "avatar");
+                }else{
+                    dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
+                }
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
             }

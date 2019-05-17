@@ -177,7 +177,7 @@ public class SmsAuthFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrPermission.onBackFromPermisionManagerMaybe();
+        mSkrPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

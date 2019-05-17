@@ -716,7 +716,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

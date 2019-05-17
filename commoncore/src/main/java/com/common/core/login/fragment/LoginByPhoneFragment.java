@@ -142,7 +142,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrPermission.onBackFromPermisionManagerMaybe();
+        mSkrPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.chorus;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -120,7 +121,13 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
                     .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar_1081");
+                Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
+                //防止用户不给sd权限导致 bitmap为null
+                if(bitmap!=null){
+                    dynamicEntity.setDynamicImage(bitmap, "avatar_1081");
+                }else{
+                    dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1081");
+                }
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1081");
             }
@@ -142,7 +149,13 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
                     .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar_1082");
+                Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
+                //防止用户不给sd权限导致 bitmap为null
+                if(bitmap!=null){
+                    dynamicEntity.setDynamicImage(bitmap, "avatar_1082");
+                }else{
+                    dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1082");
+                }
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1082");
             }

@@ -234,7 +234,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

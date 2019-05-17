@@ -321,7 +321,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     @Override
     public void onResume() {
         super.onResume();
-        mSkrLocationPermission.onBackFromPermisionManagerMaybe();
+        mSkrLocationPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

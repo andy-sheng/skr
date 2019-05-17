@@ -194,7 +194,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

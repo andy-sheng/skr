@@ -18,7 +18,7 @@ public class SkrNotificationPermission extends SkrBasePermission {
                 ifAgreeAction.run();
             }
         } else {
-            onRequestPermissionFailureWithAskNeverAgain1(goSettingIfRefuse);
+            onRequestPermissionFailureWithAskNeverAgain1(activity,goSettingIfRefuse);
         }
     }
 

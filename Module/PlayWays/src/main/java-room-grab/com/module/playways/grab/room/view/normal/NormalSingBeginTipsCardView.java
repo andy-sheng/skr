@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextPaint;
@@ -152,7 +153,13 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
                     .build());
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeFile(file.getPath()), "avatar_104");
+                Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
+                //防止用户不给sd权限导致 bitmap为null
+                if(bitmap!=null){
+                    dynamicEntity.setDynamicImage(bitmap, "avatar_104");
+                }else{
+                    dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
+                }
             } else {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
             }
