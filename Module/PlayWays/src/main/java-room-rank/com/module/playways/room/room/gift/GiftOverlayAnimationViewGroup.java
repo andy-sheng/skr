@@ -56,10 +56,6 @@ public class GiftOverlayAnimationViewGroup extends RelativeLayout {
 
         @Override
         public void onStart(GiftPlayModel model, GiftOverlayAnimationView giftBigAnimationView) {
-            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-                mGiftPlayControlTemplate.endCurrent(model);
-                return;
-            }
             giftBigAnimationView.play(GiftOverlayAnimationViewGroup.this, model);
         }
 
@@ -120,9 +116,6 @@ public class GiftOverlayAnimationViewGroup extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(OverlayGiftBrushMsgEvent giftPresentEvent) {
-        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            return;
-        }
         // 收到一条礼物消息,进入生产者队列
         GiftPlayModel playModel = giftPresentEvent.getGiftPlayModel();
         // 如果消息能被当前忙碌的view接受
