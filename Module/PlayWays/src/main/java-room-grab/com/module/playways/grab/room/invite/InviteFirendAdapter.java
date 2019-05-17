@@ -117,10 +117,12 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
             } else if (model.getStatus() == 1) {
                 if (model.isIsOnline()) {
                     mTvCircleState.setBackground(mAIDLCircleDrawable);
+                    mTvState.setText("在线");
                 } else {
                     mTvCircleState.setBackground(mOffLineCircleDrawable);
+                    mTvState.setText("离线");
                 }
-                mTvState.setText("可邀请");
+
                 mTvInvite.setVisibility(View.VISIBLE);
 
             } else if (model.getStatus() == 3) {
