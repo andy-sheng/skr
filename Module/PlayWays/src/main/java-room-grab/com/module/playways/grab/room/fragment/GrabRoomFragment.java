@@ -1619,13 +1619,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         Activity activity = getActivity();
         if (activity != null) {
             if (!activity.isDestroyed() && !activity.isFinishing()) {
-                getActivity().finish();
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                        StatConstants.KEY_GAME_FINISH, null);
-
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
                         .withSerializable("room_data", mRoomData)
                         .navigation();
+
+                getActivity().finish();
+                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                        StatConstants.KEY_GAME_FINISH, null);
             }
         } else {
             MyLog.d(TAG, "onGrabGameOver activity==null");
