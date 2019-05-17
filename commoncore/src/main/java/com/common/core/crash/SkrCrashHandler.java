@@ -25,39 +25,30 @@ package com.common.core.crash;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.os.Environment;
 
 import com.common.base.BuildConfig;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
-/**
- * @author Andy Zhang(zhangyong232@gmail.com)
- */
-public class MyCrashHandler implements UncaughtExceptionHandler {
+public class SkrCrashHandler implements UncaughtExceptionHandler {
 
-    private static final String TAG = "MyCrashHandler";
- 
+    private static final String TAG = "SkrCrashHandler";
+
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT1 = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    private static final MyCrashHandler sMyCrashHandler = new MyCrashHandler();
+    private static final SkrCrashHandler sMyCrashHandler = new SkrCrashHandler();
 
 
     private UncaughtExceptionHandler mOldHandler;
@@ -65,19 +56,17 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
     private Context mContext;
 
 
-    public static MyCrashHandler getInstance() {
+    public static SkrCrashHandler getInstance() {
         return sMyCrashHandler;
     }
 
     public void register(Context context) {
         if (context != null) {
             mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
-            if (mOldHandler == null) {
-                /**
-                 * 其实没什么用，handler 已经被别的sdk注册了
-                 */
-                Thread.setDefaultUncaughtExceptionHandler(this);
-            }
+            /**
+             * 其实没什么用，handler 已经被别的sdk注册了
+             */
+            Thread.setDefaultUncaughtExceptionHandler(this);
             mContext = context;
 
             //TODO 看的实现 RxJavaPlugins.onError
@@ -96,7 +85,7 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
             });
 
             try {
-                if(U.getDeviceUtils().isOppo()) {
+                if (U.getDeviceUtils().isOppo()) {
                     Class clazz = Class.forName("java.lang.Daemons$FinalizerWatchdogDaemon");
                     Method method = clazz.getSuperclass().getDeclaredMethod("stop");
                     method.setAccessible(true);
@@ -119,6 +108,9 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         MyLog.e(TAG, "uncaughtException", ex);
+        if (mOldHandler != null) {
+            mOldHandler.uncaughtException(thread,ex);
+        }
     }
 
     private String getIMEI(Context mContext) {

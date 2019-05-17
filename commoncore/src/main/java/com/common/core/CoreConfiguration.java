@@ -23,10 +23,9 @@ import android.util.Log;
 
 import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
-import com.common.base.InitManager;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
-import com.common.core.crash.MyCrashHandler;
+import com.common.core.crash.SkrCrashHandler;
 import com.common.notification.NotificationMsgProcess;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
@@ -63,7 +62,7 @@ public class CoreConfiguration implements ConfigModule {
 
             @Override
             public void attachBaseContext(@NonNull Context base) {
-                MyCrashHandler.getInstance().register(base);
+                SkrCrashHandler.getInstance().register(base);
             }
 
             @Override

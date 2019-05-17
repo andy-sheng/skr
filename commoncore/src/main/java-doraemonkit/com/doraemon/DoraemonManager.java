@@ -4,6 +4,7 @@ import android.os.SystemClock;
 import android.view.View;
 
 import com.common.core.R;
+import com.common.log.MyLog;
 import com.common.matrix.MatrixInit;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -14,6 +15,7 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,43 +65,55 @@ public class DoraemonManager {
                     }
                 }));
 
-                extras.add(new SysInfoItem("模拟io", "模拟", new DebounceViewClickListener() {
+//                extras.add(new SysInfoItem("模拟io", "模拟", new DebounceViewClickListener() {
+//                    @Override
+//                    public void clickValid(View v) {
+//                        writeSth();
+//                        try {
+//                            File f = new File("/sdcard/a.txt");
+//                            byte[] buf = new byte[400];
+//                            FileInputStream fis = new FileInputStream(f);
+//                            int count = 0;
+//                            while (fis.read(buf) != -1) {
+////                MatrixLog.i(TAG, "read %d", ++count);
+//                            }
+//                        } catch (FileNotFoundException e) {
+//                            e.printStackTrace();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        //need to trigger gc to detect leak
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Runtime.getRuntime().gc();
+//                                Runtime.getRuntime().runFinalization();
+//                                Runtime.getRuntime().gc();
+//                            }
+//                        }).start();
+//
+//                    }
+//                }));
+
+                extras.add(new SysInfoItem("模拟崩溃", "模拟", new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
-                        writeSth();
                         try {
-                            File f = new File("/sdcard/a.txt");
-                            byte[] buf = new byte[400];
-                            FileInputStream fis = new FileInputStream(f);
-                            int count = 0;
-                            while (fis.read(buf) != -1) {
-//                MatrixLog.i(TAG, "read %d", ++count);
-                            }
-                        } catch (FileNotFoundException e) {
+                            Boolean a = (Boolean) U.getReflectUtils().readField(MiPushClient.class,null,"isCrashHandlerSuggested");
+                            U.getToastUtil().showShort("MiPushClient.isCrashHandlerSuggested="+a);
+                        } catch (NoSuchFieldException e) {
                             e.printStackTrace();
-                        } catch (IOException e) {
+                        } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
 
-                        //need to trigger gc to detect leak
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Runtime.getRuntime().gc();
-                                Runtime.getRuntime().runFinalization();
-                                Runtime.getRuntime().gc();
-                            }
-                        }).start();
-
+                        v = null;
+                        int h = v.getHeight();
+                        MyLog.e(TAG,"h="+h);
                     }
                 }));
 
-                extras.add(new SysInfoItem("模拟慢函数", "模拟", new DebounceViewClickListener() {
-                    @Override
-                    public void clickValid(View v) {
-                        SystemClock.sleep(3000);
-                    }
-                }));
                 return extras;
             }
 

@@ -2,6 +2,7 @@ package com.common.jiguang;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -16,6 +17,16 @@ public class JiGuangPush {
         JPushInterface.setDebugMode(MyLog.isDebugLogOpen());
         JPushInterface.init(U.app());
         JPushInterface.stopCrashHandler(U.app());
+        try {
+            /**
+             * 强制关闭 MiPush 的日志捕获
+             */
+            U.getReflectUtils().writeField(MiPushClient.class,null,"isCrashHandlerSuggested",Boolean.valueOf(true));
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         hasInit = true;
     }
 
