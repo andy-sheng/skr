@@ -103,7 +103,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="赤-CHVANS"
                 android:textColor="#80091E77"
                 android:textSize="@dimen/textsize_16_dp"
                 android:textStyle="bold" />
@@ -243,7 +242,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/view_44_dp"
-                android:text="男"
                 android:textColor="#80091E77"
                 android:textSize="@dimen/textsize_16_dp"
                 android:textStyle="bold" />
