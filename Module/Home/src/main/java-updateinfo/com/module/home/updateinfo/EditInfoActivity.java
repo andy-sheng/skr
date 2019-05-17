@@ -144,7 +144,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             mAgeTv.setText(age + "");
         }
 
-        String sex = "未知";
+        String sex = "保密";
         if (MyUserInfoManager.getInstance().getSex() == 1) {
             sex = "男";
         } else if (MyUserInfoManager.getInstance().getSex() == 2) {
