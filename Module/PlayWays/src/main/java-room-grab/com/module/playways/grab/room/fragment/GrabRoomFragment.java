@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Bundle;
@@ -203,8 +204,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     ImageView mGrabTipView;
     ImageView mBurstTipView;
     ImageView mGrabSelfSingTipIv;
+    ImageView mNoAccSrollTipView;
 
-    boolean mIsShowSelfSingTips = false;
+    boolean mIsShowSelfSingTips = false;  //歌词一唱到底提示
+    boolean mIsShowFingerTips = false;    //清唱手势
 
     int mShowOwnerTipTimes = 0;
 
@@ -420,6 +423,35 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
     }
 
+    // 清唱手势滑动
+    private void tryShowNoAccSrollTipsView() {
+        if (mNoAccSrollTipView == null) {
+            mNoAccSrollTipView = new ImageView(getContext());
+            mNoAccSrollTipView.setImageResource(R.drawable.grab_sroll_finger_icon);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(64), U.getDisplayUtils().dip2px(54));
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            layoutParams.topMargin = U.getDisplayUtils().dip2px(285);
+            mNoAccSrollTipView.setLayoutParams(layoutParams);
+            ((ViewGroup) mRankingContainer).addView(mNoAccSrollTipView);
+            startFingerTipViewAnimator(mNoAccSrollTipView);
+        }
+    }
+
+    private void removeNoAccSrollTipsView() {
+        if (mFingerTipViewAnimator != null) {
+            mFingerTipViewAnimator.removeAllListeners();
+            mFingerTipViewAnimator.cancel();
+        }
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            if (mNoAccSrollTipView != null) {
+                ((ViewGroup) mRankingContainer).removeView(mNoAccSrollTipView);
+                mNoAccSrollTipView = null;
+            }
+        }
+    }
+
     private void removeGrabSelfSingTipView() {
         Activity activity = getActivity();
         if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
@@ -485,6 +517,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     ValueAnimator mChallengeTipViewAnimator;
 
+    ObjectAnimator mFingerTipViewAnimator;
+
     private void tipViewAnimate(View... viewList) {
         if (mTipViewAnimator != null) {
             mTipViewAnimator.removeAllUpdateListeners();
@@ -538,6 +572,39 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         });
 
         mChallengeTipViewAnimator.start();
+    }
+
+    private void startFingerTipViewAnimator(View view) {
+        if (mFingerTipViewAnimator != null) {
+            mFingerTipViewAnimator.removeAllListeners();
+            mFingerTipViewAnimator.cancel();
+        }
+        mFingerTipViewAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0, -U.getDisplayUtils().dip2px(80));
+        mFingerTipViewAnimator.setRepeatCount(2);
+        mFingerTipViewAnimator.setDuration(1500);
+        mFingerTipViewAnimator.setRepeatMode(ValueAnimator.RESTART);
+        mFingerTipViewAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                removeNoAccSrollTipsView();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        mFingerTipViewAnimator.start();
     }
 
     @Override
@@ -1013,6 +1080,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mSelfSingCardView.setListener(new SelfSingCardView.Listener() {
             @Override
             public void onSelfSingOver() {
+                removeNoAccSrollTipsView();
                 removeGrabSelfSingTipView();
                 mCorePresenter.sendRoundOverInfo();
             }
@@ -1267,9 +1335,26 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mSelfSingCardView.setVisibility(View.VISIBLE);
                 mOthersSingCardView.setVisibility(View.GONE);
                 mSelfSingCardView.playLyric();
-                if (mRoomData.isNewUser() && !mIsShowSelfSingTips) {
-                    tryShowGrabSelfSingTipView();
-                    mIsShowSelfSingTips = true;
+                if (mRoomData.isNewUser()) {
+                    if (!mIsShowSelfSingTips) {
+                        mIsShowSelfSingTips = true;
+                        tryShowGrabSelfSingTipView();
+                    }
+
+                    if (!mIsShowFingerTips) {
+                        mIsShowFingerTips = true;
+                        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+                        if (infoModel == null) {
+                            return;
+                        }
+                        boolean withAcc = false;
+                        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
+                            withAcc = true;
+                        }
+                        if (!withAcc) {
+                            tryShowNoAccSrollTipsView();
+                        }
+                    }
                 }
             } else {
                 // 显示收音机
@@ -1298,6 +1383,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
+        removeNoAccSrollTipsView();
         removeGrabSelfSingTipView();
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.hide();
@@ -1374,6 +1460,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         if (mChallengeTipViewAnimator != null) {
             mChallengeTipViewAnimator.cancel();
+        }
+
+        if (mFingerTipViewAnimator != null) {
+            mFingerTipViewAnimator.cancel();
         }
 
         if (mContinueSendView != null) {
