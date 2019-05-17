@@ -597,7 +597,15 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
             mNameTv.setText(model.getNickname());
             mSignTv.setText(model.getSignature());
-            mSexIv.setBackgroundResource(model.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+            if (model.getSex() == ESex.SX_MALE.getValue()) {
+                mSexIv.setVisibility(VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+            } else if (model.getSex() == ESex.SX_FEMALE.getValue()) {
+                mSexIv.setVisibility(VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+            } else {
+                mSexIv.setVisibility(GONE);
+            }
 
             if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
                 mHashMap.put(LOCATION_TAG, model.getLocation().getCity());

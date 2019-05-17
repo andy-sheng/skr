@@ -93,7 +93,15 @@ public class FollowNotifyView extends RelativeLayout {
                         .setCircle(true)
                         .build());
         mNameTv.setText(mUserInfoModel.getNickname());
-        mSexIv.setBackgroundResource(userInfoModel.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(GONE);
+        }
 
         if (mUserInfoModel.isFriend()) {
             // 好友怎么展示

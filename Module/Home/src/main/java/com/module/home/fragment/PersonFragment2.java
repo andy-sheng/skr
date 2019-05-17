@@ -310,7 +310,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
     private void initFunctionArea() {
         mFunctionArea = (LinearLayout) mRootView.findViewById(R.id.function_area);
         mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
-        mIncomeIv = (ExImageView)mRootView.findViewById(R.id.income_iv);
+        mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
         mMusicTestIv = (ExImageView) mRootView.findViewById(R.id.music_test_iv);
 
         mWalletIv.setOnClickListener(new DebounceViewClickListener() {
@@ -507,7 +507,15 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
                     .setCircle(true)
                     .build());
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            mSexIv.setBackgroundResource(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+            if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+                mSexIv.setVisibility(View.VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+            } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+                mSexIv.setVisibility(View.VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+            } else {
+                mSexIv.setVisibility(View.GONE);
+            }
             mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
             mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
         }
@@ -627,7 +635,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
     }
 
     @Override
-    public void deletePhoto(PhotoModel photoModel,boolean numchange) {
+    public void deletePhoto(PhotoModel photoModel, boolean numchange) {
         if (numchange) {
             mTotalPhotoNum--;
             setPhotoNum();

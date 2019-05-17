@@ -496,7 +496,16 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                         .build());
 
         mNameTv.setText(model.getNickname());
-        mSexIv.setBackgroundResource(model.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+        if (model.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(View.VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (model.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(View.VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(View.GONE);
+        }
+
         mSrlNameTv.setText(model.getNickname());
         mUseridTv.setText("撕歌号：" + model.getUserId());
 

@@ -101,7 +101,16 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
                             .build());
             mNameTv.setText(lastFollowModel.getNickname());
             mStatusDescTv.setText(lastFollowModel.getStatusDesc());
-            mSexIv.setBackgroundResource(lastFollowModel.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+            if (lastFollowModel.getSex() == ESex.SX_MALE.getValue()) {
+                mSexIv.setVisibility(View.VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+            } else if (lastFollowModel.getSex() == ESex.SX_FEMALE.getValue()) {
+                mSexIv.setVisibility(View.VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+            } else {
+                mSexIv.setVisibility(View.GONE);
+            }
+
 
             if (lastFollowModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 mFollowTv.setVisibility(View.GONE);
