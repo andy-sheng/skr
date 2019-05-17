@@ -164,6 +164,7 @@ public class SysInfoFragment extends BaseFragment {
         sysInfoItems.add(new SysInfoItem("MyLog.sForceOpenFlag", "" + MyLog.getForceOpenFlag()));
         sysInfoItems.add(new SysInfoItem("数据库调试地址", U.getAppInfoUtils().getDebugDBAddressLog()));
         sysInfoItems.add(new SysInfoItem("deviceId(参考miui唯一设备号的方法)", U.getDeviceUtils().getDeviceID()));
+        sysInfoItems.add(new SysInfoItem("手机性能级别", U.getDeviceUtils().getLevel().name()));
 
         ExtraInfoProvider extraInfoProvider = DoraemonKit.getExtraInfoProvider();
         if (extraInfoProvider != null) {
