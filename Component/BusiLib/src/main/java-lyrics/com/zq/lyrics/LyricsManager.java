@@ -142,18 +142,11 @@ public class LyricsManager {
                     return;
                 }
 
-                File tempFile = new File(SongResUtils.createTempLyricFileName(url));
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(url, tempFile, null);
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(url, newName,true, null);
 
                 if (isSuccess) {
-                    if (tempFile != null && tempFile.renameTo(newName)) {
-                        System.out.println("已重命名");
                         emitter.onNext(newName);
                         emitter.onComplete();
-                    } else {
-                        System.out.println("Error");
-                        emitter.onError(new Throwable("重命名错误"));
-                    }
                 } else {
                     emitter.onError(new Throwable("下载失败" + TAG));
                 }
@@ -169,23 +162,17 @@ public class LyricsManager {
      * @return
      */
     public Observable<String> loadGrabPlainLyric(final String url) {
-        MyLog.d(TAG, "fetchLyricTask" + " url =" + url);
+        MyLog.d(TAG,"loadGrabPlainLyric" + " url=" + url);
         return Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 File file = SongResUtils.getGrabLyricFileByUrl(url);
                 if (file == null || !file.exists()) {
-                    File tempFile = new File(SongResUtils.createStandLyricTempFileName(url));
-                    boolean isSuccess = U.getHttpUtils().downloadFileSync(url, tempFile, null);
-                    File oldName = new File(SongResUtils.createStandLyricTempFileName(url));
-                    File newName = new File(SongResUtils.createStandLyricFileName(url));
-                    if (isSuccess) {
-                        if (oldName != null && oldName.renameTo(newName)) {
-                            MyLog.w(TAG, "已重命名");
-                            emitter.onNext(newName);
-                        }
-                    } else {
-                        emitter.onError(new IgnoreException("下载失败"));
+                    boolean isSuccess = U.getHttpUtils().downloadFileSync(url, file,true, null);
+                    if(isSuccess){
+                        emitter.onNext(file);
+                    }else{
+                        MyLog.w(TAG, "loadGrabPlainLyric 下载失败");
                     }
                 } else {
                     MyLog.w(TAG, "playLyric is exist");

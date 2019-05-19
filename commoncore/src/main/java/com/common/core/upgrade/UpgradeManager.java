@@ -459,7 +459,7 @@ public class UpgradeManager {
             saveFile.delete();
         }
         UpgradeInfoModel updateInfoModel = mUpgradeData.getUpgradeInfoModel();
-        U.getHttpUtils().downloadFileAsync(updateInfoModel.getDownloadURL(), saveFile, new HttpUtils.OnDownloadProgress() {
+        U.getHttpUtils().downloadFileAsync(updateInfoModel.getDownloadURL(), saveFile,false, new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
                 DS ds = new DS();

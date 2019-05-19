@@ -306,7 +306,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             if (now != null) {
                 File midiFile = SongResUtils.getMIDIFileByUrl(now.getMusic().getMidi());
                 if (midiFile != null && !midiFile.exists()) {
-                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile, null);
+                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile,true, null);
                 }
             }
         }

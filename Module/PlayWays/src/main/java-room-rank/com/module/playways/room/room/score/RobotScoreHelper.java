@@ -74,7 +74,7 @@ public class RobotScoreHelper {
         if (file != null && file.exists() && file.length() > 10) {
             loadDataFromFile(file.getAbsolutePath());
         } else {
-            U.getHttpUtils().downloadFileSync(midiUrl, file, new HttpUtils.OnDownloadProgress() {
+            U.getHttpUtils().downloadFileSync(midiUrl, file,false, new HttpUtils.OnDownloadProgress() {
                 @Override
                 public void onDownloaded(long downloaded, long totalLength) {
 

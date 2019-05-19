@@ -81,6 +81,9 @@ public abstract class CustomHandlerThread {
 
     public void destroy() {
         hasDestroy = true;
+        if (this.mHandler != null) {
+            this.mHandler.removeCallbacksAndMessages(null);
+        }
         this.mHandlerThread.quit();
     }
 

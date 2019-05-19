@@ -191,22 +191,12 @@ public class SongInfoCardView extends RelativeLayout {
         mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
-
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), tempFile, null);
-
-                File oldName = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
                 File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), newName,true, null);
 
                 if (isSuccess) {
-                    if (oldName != null && oldName.renameTo(newName)) {
-                        MyLog.w(TAG, "已重命名");
                         emitter.onNext(newName);
                         emitter.onComplete();
-                    } else {
-                        MyLog.w(TAG, "Error");
-                        emitter.onError(new IgnoreException("重命名错误"));
-                    }
                 } else {
                     emitter.onError(new IgnoreException("下载失败" + TAG));
                 }

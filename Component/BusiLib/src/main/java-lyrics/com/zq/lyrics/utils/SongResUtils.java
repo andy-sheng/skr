@@ -125,13 +125,13 @@ public class SongResUtils {
         return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
     }
 
-    public static String createTempLyricFileName(String url) {
-        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
-    }
+//    public static String createTempLyricFileName(String url) {
+//        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
+//    }
 
-    public static String createStandLyricTempFileName(String url) {
-        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_TXT;
-    }
+//    public static String createStandLyricTempFileName(String url) {
+//        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_TXT;
+//    }
 
     public static String createStandLyricFileName(String url) {
         return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + SUFF_TXT;

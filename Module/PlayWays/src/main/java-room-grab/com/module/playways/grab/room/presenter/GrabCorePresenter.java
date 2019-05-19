@@ -70,8 +70,6 @@ import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.others.LyricAndAccMatchManager;
-import com.module.playways.room.msg.BasePushInfo;
-import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
 
@@ -245,6 +243,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return false;
         }
     };
+
+    GrabSongResPresenter mGrabSongResPresenter = new GrabSongResPresenter();
 
     public GrabCorePresenter(@NotNull IGrabRoomView iGrabView, @NotNull GrabRoomData roomData) {
         mIGrabView = iGrabView;
@@ -422,7 +422,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (now != null) {
                 File midiFile = SongResUtils.getMIDIFileByUrl(now.getMusic().getMidi());
                 if (midiFile != null && !midiFile.exists()) {
-                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile, null);
+                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile,true, null);
                 }
             }
         }
@@ -445,16 +445,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }, 500);
         }
 
-        if (needAcc) {
-            if (mRoomData.isOwner()) {
-                MyLog.d(TAG, "preOpWhenSelfRound 是主播 直接 onChangeBroadcastSuccess");
-                onChangeBroadcastSuccess();
-            } else {
-                // 如果需要播放伴奏，一定要在角色切换成功才能播
-                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
-                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000);
-            }
-        }
         // 开始acr打分
         if (ScoreConfig.isAcrEnable() && now != null && now.getMusic() != null) {
             if (needAcc) {
@@ -553,10 +543,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     "game_grab", map1);
             songModel = infoModel.getMusic();
         }
+
+        String preAccUrl = "";
+
         int wantSingType;
         // 根据玩法决定抢唱类型
         if (songModel != null && songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_SPK.getValue();
+            if(infoModel!=null && infoModel.getWantSingInfos().isEmpty()){
+                // 自己大概率第一个唱
+                if(infoModel.getMusic()!=null){
+                    preAccUrl = infoModel.getMusic().getAcc();
+                }
+            }else{
+                //  自己大概率不是第一个唱
+                if(infoModel.getMusic()!=null){
+                    SongModel pkSongModel = infoModel.getMusic().getPkMusic();
+                    if (pkSongModel != null) {
+                        preAccUrl = pkSongModel.getAcc();
+                    }
+                }
+            }
         } else if (songModel != null && songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_CHORUS.getValue();
         } else {
@@ -568,12 +575,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
                 if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
                     wantSingType = EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue();
+                    preAccUrl = songModel.getAcc();
                 } else {
                     wantSingType = EWantSingType.EWST_COMMON_OVER_TIME.getValue();
                 }
             } else {
                 if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
                     wantSingType = EWantSingType.EWST_ACCOMPANY.getValue();
+                    preAccUrl = songModel.getAcc();
                 } else {
                     wantSingType = EWantSingType.EWST_DEFAULT.getValue();
                 }
@@ -618,6 +627,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
             }
         }, this);
+
+        if(!TextUtils.isEmpty(preAccUrl)){
+            mGrabSongResPresenter.tryDownloadAcc(preAccUrl);
+        }
     }
 
     /**
@@ -894,6 +907,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         super.destroy();
         mDestroyed = true;
         Params.save2Pref(EngineManager.getInstance().getParams());
+        if (mGrabSongResPresenter != null) {
+            mGrabSongResPresenter.destroy();
+        }
         if (!mRoomData.isHasExitGame()) {
             exitRoom("destroy");
         }

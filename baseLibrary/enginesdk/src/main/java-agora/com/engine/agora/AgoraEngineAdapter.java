@@ -948,6 +948,8 @@ public class AgoraEngineAdapter {
         }
         mICbScoreProcessor.init();
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
+
+
         if (mDebugScoreIS != null) {
             try {
                 mDebugScoreIS.close();
