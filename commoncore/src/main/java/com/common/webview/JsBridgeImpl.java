@@ -103,7 +103,7 @@ public class JsBridgeImpl {
                 } else {
                     MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
                 }
-            } else if ("icon_qq".equals(param)) {
+            } else if ("qq".equals(param)) {
                 if ("qq_friend".equals(channel)) {
                     sharePanel.share(SharePlatform.QQ, shareType);
                 } else {

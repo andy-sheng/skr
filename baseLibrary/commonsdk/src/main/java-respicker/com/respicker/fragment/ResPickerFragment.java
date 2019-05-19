@@ -337,6 +337,14 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     @Override
     public void onResItemClick(View view, ResItem resItem, int position) {
         //根据是否有相机按钮确定位置
+        if (mImagePicker.getCurrentResFolderItems().size() <= position) {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+
+            return;
+        }
+
         if (resItem instanceof ImageItem) {
             position = mImagePicker.getParams().isShowCamera() ? position - 1 : position;
             if (mImagePicker.getParams().isMultiMode()) {

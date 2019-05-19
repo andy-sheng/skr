@@ -79,7 +79,7 @@
                     <RelativeLayout
                         android:id="@+id/user_info_area"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/view_448_dp"
                         android:background="@drawable/person_fragment_bg">
 
                         <!--只是做一下刘海屏幕的适配-->
