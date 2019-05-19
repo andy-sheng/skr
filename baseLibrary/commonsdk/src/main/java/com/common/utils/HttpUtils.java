@@ -443,6 +443,7 @@ public class HttpUtils {
      *
      * @param urlStr
      * @param outputFile
+     * @param needTempFile 是否生成一个下载中间temp文件，只有下载成功outputFile才有值
      * @param progress
      * @return
      */
