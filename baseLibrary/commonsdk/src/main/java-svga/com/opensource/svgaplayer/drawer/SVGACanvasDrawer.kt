@@ -211,7 +211,11 @@ internal class SVGACanvasDrawer(videoItem: SVGAVideoEntity, val dynamicItem: SVG
                             }
                         }
                         shape.styles?.miterLimit?.let {
-                            paint.strokeMiter = it.toFloat() * scale
+                            try {
+                                paint.strokeMiter = it.toFloat() * scale
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
                         shape.styles?.lineDash?.let {
                             if (it.size == 3 && (it[0] > 0 || it[1] > 0)) {
