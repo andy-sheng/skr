@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -304,9 +305,12 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         if (needAcc) {
             // 1. 开启伴奏的，预先下载 melp 资源
             if (now != null) {
-                File midiFile = SongResUtils.getMIDIFileByUrl(now.getMusic().getMidi());
-                if (midiFile != null && !midiFile.exists()) {
-                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile,true, null);
+                String midi = now.getMusic().getMidi();
+                if(!TextUtils.isEmpty(midi)){
+                    File midiFile = SongResUtils.getMIDIFileByUrl(midi);
+                    if (midiFile != null && !midiFile.exists()) {
+                        U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile,true, null);
+                    }
                 }
             }
         }

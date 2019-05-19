@@ -449,7 +449,7 @@ public class HttpUtils {
      */
     public boolean downloadFileSync(String urlStr, final File outputFile,
                                     boolean needTempFile, OnDownloadProgress progress) {
-        MyLog.d(TAG,"downloadFileSync" + " urlStr="+urlStr);
+        MyLog.d(TAG,"downloadFileSync" + " urlStr="+urlStr+" out="+outputFile.getAbsolutePath());
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
         }
@@ -508,6 +508,7 @@ public class HttpUtils {
                 if (null != progress) {
                     progress.onDownloaded(downloaded, totalLength);
                 }
+                //Thread.sleep(1000);
             }
             if (needTempFile) {
                 if (outputFile2.renameTo(outputFile)) {

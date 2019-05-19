@@ -529,11 +529,22 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void grabThisRound(int seq, boolean challenge) {
         MyLog.d(TAG, "grabThisRound" + " seq=" + seq + " challenge=" + challenge + " accenable=" + mRoomData.isAccEnable());
+
+
+
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if(infoModel!=null){
+            if(infoModel.getWantSingInfos().contains(new WantSingerInfo((int) MyUserInfoManager.getInstance().getUid()))){
+                MyLog.w(TAG,"grabThisRound cancel 想唱列表中已经有你了");
+                return;
+            }
+        }
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
 
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+
         SongModel songModel = null;
         if (infoModel != null && infoModel.getMusic() != null) {
             HashMap map1 = new HashMap();
@@ -550,7 +561,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 根据玩法决定抢唱类型
         if (songModel != null && songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_SPK.getValue();
-            if(infoModel!=null && !infoModel.getWantSingInfos().contains(new WantSingerInfo((int) MyUserInfoManager.getInstance().getUid()))){
+            if(infoModel!=null){
                 if(infoModel.getWantSingInfos().isEmpty()){
                     // 自己大概率第一个唱
                     if(infoModel.getMusic()!=null){
