@@ -17,6 +17,7 @@ import com.common.base.BaseActivity;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.log.MyLog;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -255,6 +256,11 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK && resultCode == Activity.RESULT_OK) {
             ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
+            if (imageItem == null) {
+                MyLog.e(TAG, new Throwable("选中的ImageItem为null"));
+                return;
+            }
+
             mProgressBar.setVisibility(View.VISIBLE);
             UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
                     .setNeedCompress(true)
