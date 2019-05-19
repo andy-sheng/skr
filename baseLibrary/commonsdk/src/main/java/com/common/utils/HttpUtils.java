@@ -511,7 +511,7 @@ public class HttpUtils {
             }
             if (needTempFile) {
                 if (outputFile2.renameTo(outputFile)) {
-                    //MyLog.w(TAG, "已重命名");
+                    MyLog.w(TAG, urlStr+" 下载成功");
                 } else {
                     MyLog.w(TAG, "重命名失败");
                 }

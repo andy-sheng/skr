@@ -9,6 +9,13 @@ public class WantSingerInfo implements Serializable {
     int userID;
     long timeMs;
     int wantSingType;
+    public WantSingerInfo() {
+    }
+
+
+    public WantSingerInfo(int userID) {
+        this.userID = userID;
+    }
 
     public static WantSingerInfo parse(WantSingInfo pb) {
         WantSingerInfo wantSingerInfo = new WantSingerInfo();

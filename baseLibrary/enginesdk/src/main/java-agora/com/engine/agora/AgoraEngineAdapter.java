@@ -196,6 +196,7 @@ public class AgoraEngineAdapter {
             }
         }
 
+
         // 说话者音量提示
         @Override
         public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {

@@ -550,17 +550,19 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 根据玩法决定抢唱类型
         if (songModel != null && songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_SPK.getValue();
-            if(infoModel!=null && infoModel.getWantSingInfos().isEmpty()){
-                // 自己大概率第一个唱
-                if(infoModel.getMusic()!=null){
-                    preAccUrl = infoModel.getMusic().getAcc();
-                }
-            }else{
-                //  自己大概率不是第一个唱
-                if(infoModel.getMusic()!=null){
-                    SongModel pkSongModel = infoModel.getMusic().getPkMusic();
-                    if (pkSongModel != null) {
-                        preAccUrl = pkSongModel.getAcc();
+            if(infoModel!=null && !infoModel.getWantSingInfos().contains(new WantSingerInfo((int) MyUserInfoManager.getInstance().getUid()))){
+                if(infoModel.getWantSingInfos().isEmpty()){
+                    // 自己大概率第一个唱
+                    if(infoModel.getMusic()!=null){
+                        preAccUrl = infoModel.getMusic().getAcc();
+                    }
+                }else{
+                    //  自己大概率不是第一个唱
+                    if(infoModel.getMusic()!=null){
+                        SongModel pkSongModel = infoModel.getMusic().getPkMusic();
+                        if (pkSongModel != null) {
+                            preAccUrl = pkSongModel.getAcc();
+                        }
                     }
                 }
             }
@@ -1695,6 +1697,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
                 // midi不需要在这下，只要下好，native就会解析，打分就能恢复
                 File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
+
                 if (mRoomData.isAccEnable() && infoModel.isAccRound() || infoModel.isPKRound()) {
                     int songBeginTs = songModel.getBeginMs();
                     if (accFile != null && accFile.exists()) {
