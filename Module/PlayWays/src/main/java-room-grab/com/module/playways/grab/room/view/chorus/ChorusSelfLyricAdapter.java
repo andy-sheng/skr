@@ -118,7 +118,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
             } else if (mLeftGiveUp) {
                 mBlankView.setVisibility(View.GONE);
                 // 左边的人不唱了
-                if (mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                if (mLeft.mUserInfoModel != null && mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                     // 左边是自己 ,自己放弃了,设置成灰色
                     mLyricLineTv.setTextColor(colorDisable);
                 } else {
@@ -141,7 +141,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
                 }
             } else if (mRightGiveUp) {
                 mBlankView.setVisibility(View.GONE);
-                if (mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                if (mRight.mUserInfoModel != null && mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                     // 右边是自己，自己放弃了,设置成灰色
                     mLyricLineTv.setTextColor(colorDisable);
                 } else {
