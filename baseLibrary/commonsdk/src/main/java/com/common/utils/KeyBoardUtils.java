@@ -34,11 +34,13 @@ public class KeyBoardUtils {
     }
 
     public void hideSoftInputKeyBoard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        if (view == null) {
-            view = new View(activity);
+        if (activity != null) {
+            View view = activity.getCurrentFocus();
+            if (view == null) {
+                view = new View(activity);
+            }
+            hideSoftInput(view);
         }
-        hideSoftInput(view);
     }
 
     /**

@@ -112,7 +112,9 @@ public class ResPicker {
     }
 
 
-    /**当前已选择的文件夹开始 begin**/
+    /**
+     * 当前已选择的文件夹开始 begin
+     **/
     public ArrayList<ResItem> getSelectedResList() {
         return mSelectedResList;
     }
@@ -128,6 +130,10 @@ public class ResPicker {
     }
 
     public ImageItem getSingleSelectedImage() {
+        if (getSelectedImageList().size() == 0) {
+            return null;
+        }
+
         return (ImageItem) getSelectedImageList().get(0);
     }
 
@@ -146,7 +152,9 @@ public class ResPicker {
         return (VideoItem) getSelectedVideoList().get(0);
     }
 
-    /**当前已选择的文件夹开始 end**/
+    /**
+     * 当前已选择的文件夹开始 end
+     **/
 
     public boolean isOrigin() {
         return mIsOrigin;
@@ -161,7 +169,9 @@ public class ResPicker {
     }
 
 
-    /**当前可选择的文件 begin**/
+    /**
+     * 当前可选择的文件 begin
+     **/
     public ArrayList<ResItem> getCurrentResFolderItems() {
         /**
          * 内存回收时 这里会空指针

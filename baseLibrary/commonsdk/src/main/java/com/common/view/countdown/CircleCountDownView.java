@@ -127,7 +127,7 @@ public class CircleCountDownView extends ProgressBar {
         int startD = (360 * start)/(100);
 
         mRecordAnimator = ValueAnimator.ofInt(startD, 360);
-        mRecordAnimator.setDuration(leave);
+        mRecordAnimator.setDuration(leave > 0 ? leave : 0);
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
