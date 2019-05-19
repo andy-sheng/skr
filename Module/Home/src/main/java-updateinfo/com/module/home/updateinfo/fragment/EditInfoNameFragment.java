@@ -88,7 +88,7 @@ public class EditInfoNameFragment extends BaseFragment {
                 int length = U.getStringUtils().getStringLength(editable.toString());
                 int selectionStart = mNicknameEt.getSelectionStart();
                 int selectionEnd = mNicknameEt.getSelectionEnd();
-                if (length > 14) {
+                if (length > 14 && selectionStart >= 1 && selectionEnd >= selectionStart) {
                     editable.delete(selectionStart - 1, selectionEnd);
                     mNicknameEt.setText(editable.toString());
                     int selection = editable.length();
@@ -97,8 +97,7 @@ public class EditInfoNameFragment extends BaseFragment {
                 }
             }
         });
-
-
+        
     }
 
     private void clickComplete() {
