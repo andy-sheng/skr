@@ -1054,7 +1054,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         int kickTimes = result.getData().getIntValue("resKickUserTimes");
                         // TODO: 2019/5/8 更新剩余次数
                         mRoomData.setOwnerKickTimes(kickTimes);
-                        U.getToastUtil().showShort("踢人成功");
+                        if (kickTimes > 0) {
+                            U.getToastUtil().showShort("踢人成功");
+                        } else {
+                            U.getToastUtil().showShort("发起踢人请求成功");
+                        }
                     } else {
                         U.getToastUtil().showShort("发起踢人请求成功");
                     }
@@ -1113,7 +1117,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "exitRoom" + " from=" + from);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
-        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_EXIT,2000);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_EXIT, 2000);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.exitRoom(body), new ApiObserver<ApiResult>() {
             @Override
