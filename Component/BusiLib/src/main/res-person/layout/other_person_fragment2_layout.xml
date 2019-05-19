@@ -89,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:visibility="gone"
                             app:showBottomLine="false"
-                            app:statusBarColor="@color/transparent"
+                            app:statusBarColor="@color/colorPrimary"
                             app:titleBarHeight="@dimen/view_0_dp"></com.common.view.titlebar.CommonTitleBar>
 
                         <RelativeLayout
