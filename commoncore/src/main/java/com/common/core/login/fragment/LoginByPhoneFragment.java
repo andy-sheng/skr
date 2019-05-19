@@ -136,6 +136,13 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
         mLoginIv.setClickable(false);
 
+        mLoginIv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+            }
+        },200);
+
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
@@ -148,7 +155,6 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     @Override
     public void onStart() {
         super.onStart();
-        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
