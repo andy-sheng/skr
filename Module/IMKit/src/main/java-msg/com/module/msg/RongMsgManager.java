@@ -203,7 +203,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     EventBus.getDefault().post(event);
                 }
             }
-            return false;
+
+            // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
+            return true;
         }
     };
 
