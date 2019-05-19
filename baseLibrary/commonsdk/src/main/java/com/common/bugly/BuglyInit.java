@@ -6,6 +6,9 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 public class BuglyInit {
     public static void init(boolean coreProess){
+        if(!coreProess){
+            return;
+        }
         CrashReport.setIsDevelopmentDevice(U.app(), MyLog.isDebugLogOpen());
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(U.app());
         strategy.setAppChannel(U.getChannelUtils().getChannel());  //设置渠道
