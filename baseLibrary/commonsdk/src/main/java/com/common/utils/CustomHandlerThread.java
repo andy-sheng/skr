@@ -15,6 +15,8 @@ public abstract class CustomHandlerThread {
     protected HandlerThread mHandlerThread;
     protected Handler mHandler;
 
+    boolean hasDestroy = false;
+
     public CustomHandlerThread(String name) {
         this(name, 0);
     }
@@ -22,6 +24,7 @@ public abstract class CustomHandlerThread {
     public CustomHandlerThread(String name, int priority) {
         this.mHandlerThread = new HandlerThread(name, priority);
         this.mHandlerThread.start();
+        hasDestroy = false;
         this.mHandler = new Handler(this.mHandlerThread.getLooper()) {
             public void handleMessage(Message msg) {
                 try {
@@ -39,10 +42,16 @@ public abstract class CustomHandlerThread {
     }
 
     public void sendMessage(Message msg) {
+        if(hasDestroy){
+            return ;
+        }
         this.mHandler.sendMessage(msg);
     }
 
     public void sendMessageDelayed(Message msg, long delayMillis) {
+        if(hasDestroy){
+            return ;
+        }
         this.mHandler.sendMessageDelayed(msg, delayMillis);
     }
 
@@ -55,16 +64,23 @@ public abstract class CustomHandlerThread {
     }
 
     public final boolean post(Runnable r) {
+        if(hasDestroy){
+            return false;
+        }
         return this.mHandler.post(r);
     }
 
     public final boolean postDelayed(Runnable r, long delayMillis) {
+        if(hasDestroy){
+            return false;
+        }
         return this.mHandler.postDelayed(r, delayMillis);
     }
 
     protected abstract void processMessage(Message var1);
 
     public void destroy() {
+        hasDestroy = true;
         this.mHandlerThread.quit();
     }
 
