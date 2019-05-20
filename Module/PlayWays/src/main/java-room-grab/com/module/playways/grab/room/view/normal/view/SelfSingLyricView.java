@@ -164,7 +164,7 @@ public class SelfSingLyricView extends RelativeLayout {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        MyLog.d(TAG, "accept" + " throwable=" + throwable);
+                        MyLog.e(TAG, "accept" + " throwable=" + throwable);
                     }
                 });
         mLyricAndAccMatchManager.stop();
