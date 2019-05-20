@@ -136,6 +136,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
                 mTvInvite.setEnabled(false);
                 mTvInvite.setText("已邀请");
             } else {
+                mTvInvite.setAlpha(1f);
                 mTvInvite.setEnabled(true);
                 mTvInvite.setText("邀请");
             }

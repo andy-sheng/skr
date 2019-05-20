@@ -90,7 +90,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
-                            MyLog.e(throwable);
+                            MyLog.e(TAG, throwable);
                         }
                     });
         } else {
