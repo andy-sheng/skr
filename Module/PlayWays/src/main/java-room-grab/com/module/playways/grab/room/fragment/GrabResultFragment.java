@@ -39,7 +39,7 @@ import com.zq.level.view.NormalLevelView2;
 import java.util.List;
 
 /**
- * 一唱到底结果页面
+ * 一唱到底结果页面 (无作品)
  */
 public class GrabResultFragment extends BaseFragment {
 
@@ -51,7 +51,6 @@ public class GrabResultFragment extends BaseFragment {
 
     RelativeLayout mSingEndRecord;
     ExRelativeLayout mResultArea;
-    ExRelativeLayout mGrabResultArea;
     ExTextView mLevelDescTv;
     LevelStarProgressBar mLevelProgress;
     BitmapTextView mSongNum;
@@ -74,7 +73,6 @@ public class GrabResultFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mSingEndRecord = (RelativeLayout) mRootView.findViewById(R.id.sing_end_record);
         mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
-        mGrabResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.grab_result_area);
         mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
         mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
         mSongNum = (BitmapTextView) mRootView.findViewById(R.id.song_num);

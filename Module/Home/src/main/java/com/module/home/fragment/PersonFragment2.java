@@ -127,8 +127,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
 
-    int mFansRedDotValue = 0;
-    int mFriendRedDotValue = 0;
 
     @Override
     public int initView() {
