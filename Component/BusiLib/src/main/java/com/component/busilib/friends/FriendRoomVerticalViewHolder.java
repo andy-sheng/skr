@@ -88,7 +88,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                         .create();
 
                 mRoomInfoTv.setText(stringBuilder);
-            } else if (TextUtils.isEmpty(mFriendRoomModel.getDisplayName())) {
+            } else if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayName())) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
                         .append(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum()).setBold().setFontSize(24, true)
                         .append("人  " + mFriendRoomModel.getDisplayName())
