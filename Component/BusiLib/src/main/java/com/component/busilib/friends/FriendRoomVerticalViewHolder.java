@@ -81,12 +81,24 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                 mRecommendTagSdv.setVisibility(View.GONE);
             }
 
-            SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum()).setBold().setFontSize(24, true)
-                    .append("人  " + mFriendRoomModel.getTagInfo().getTagName())
-                    .create();
+            if (mFriendRoomModel.getTagInfo() != null) {
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum()).setBold().setFontSize(24, true)
+                        .append("人  " + mFriendRoomModel.getTagInfo().getTagName())
+                        .create();
 
-            mRoomInfoTv.setText(stringBuilder);
+                mRoomInfoTv.setText(stringBuilder);
+            } else if (TextUtils.isEmpty(mFriendRoomModel.getDisplayName())) {
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum()).setBold().setFontSize(24, true)
+                        .append("人  " + mFriendRoomModel.getDisplayName())
+                        .create();
+
+                mRoomInfoTv.setText(stringBuilder);
+            } else {
+                MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
+            }
+            
         } else {
             MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);
         }
