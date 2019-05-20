@@ -34,6 +34,7 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
+import com.module.playways.grab.room.model.WonderfulMomentModel;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.zq.lyrics.utils.SongResUtils;
@@ -851,7 +852,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 // 有人爆灯了
                 String fileName = String.format("wm_%s_%s", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
                 String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
-                mRoomData.addWonderfulMomentPath(savePath);
+                SongModel songModel = roundInfoModel.getMusic();
+                if (roundInfoModel.getsPkRoundInfoModels().size() >= 1 && roundInfoModel.getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    songModel = roundInfoModel.getMusic().getPkMusic();
+                }
+                mRoomData.addWonderfulMomentPath(new WonderfulMomentModel(savePath, songModel));
             }
         }
 

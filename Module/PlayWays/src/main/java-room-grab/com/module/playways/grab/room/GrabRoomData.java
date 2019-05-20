@@ -16,6 +16,7 @@ import com.module.playways.grab.room.guide.model.GrabGuideInfoModel;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.WonderfulMomentModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 
@@ -46,7 +47,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private boolean isNewUser = false;   // 是否是新手引导房间
     private int mOpenRecording = -1; // 是否开启高光时刻
 
-    private List<String> mWonderfulMomentList = new ArrayList<>();// 高光时刻本地录音文件路径
+    private List<WonderfulMomentModel> mWonderfulMomentList = new ArrayList<>();// 高光时刻本地录音文件路径
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -375,12 +376,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         return mOpenRecording ==1;
     }
 
-    public void addWonderfulMomentPath(String savePath){
+    public void addWonderfulMomentPath(WonderfulMomentModel savePath){
         mWonderfulMomentList.add(savePath);
     }
 
-    public List<String> getWonderfulMomentList() {
+    public List<WonderfulMomentModel> getWonderfulMomentList() {
         return mWonderfulMomentList;
     }
+
+
 
 }
