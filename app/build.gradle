@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+
 if (virtualApkEnable.toBoolean()) {
     apply plugin: 'com.didi.virtualapk.host'
 }

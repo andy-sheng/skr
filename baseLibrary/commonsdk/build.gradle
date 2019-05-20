@@ -1,7 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-apply plugin: 'kotlin-android-extensions'
+
+//kotlin-android用于编译Android代码
 apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -182,7 +185,7 @@ android {
 dependencies {
     // New api keyword is exactly the same as the old compile keyword.
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // implementation 只会引入依赖的A，不会把A依赖的B也引进来
     api(rootProject.ext.dependencies["support-v4"])
     api(rootProject.ext.dependencies["appcompat-v7"])
