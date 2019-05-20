@@ -27,6 +27,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
+import com.common.utils.DeviceUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.component.busilib.constans.GameModeType;
 import com.engine.arccloud.ArcRecognizeListener;
@@ -252,6 +253,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         TAG = "GrabCorePresenter";
         ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         joinRoomAndInit(true);
+        U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("WonderfulMoment"));
     }
 
     public void setGrabRedPkgPresenter(GrabRedPkgPresenter grabRedPkgPresenter) {
@@ -422,7 +424,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (now != null) {
                 File midiFile = SongResUtils.getMIDIFileByUrl(now.getMusic().getMidi());
                 if (midiFile != null && !midiFile.exists()) {
-                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile,true, null);
+                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile, true, null);
                 }
             }
         }
@@ -471,7 +473,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         })
                         .build());
             }
-
         }
     }
 
@@ -481,17 +482,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void beginSing() {
         // 打开引擎，变为主播
         BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
-        //开始录制声音
-        if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_GRAB)) {
+        if (mRoomData.openAudioRecording()) {
             // 需要上传音频伪装成机器人
-            EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
             if (now != null) {
-                if (mRobotScoreHelper == null) {
-                    mRobotScoreHelper = new RobotScoreHelper();
-                }
-                mRobotScoreHelper.reset();
+                String fileName = String.format("wm_%s_%s", mRoomData.getGameId(), now.getRoundSeq());
+                String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
+                EngineManager.getInstance().startAudioRecording(savePath, Constants.AUDIO_RECORDING_QUALITY_HIGH);
             }
         }
+
+        /**
+         *     if (now != null) {
+         *                 if (mRobotScoreHelper == null) {
+         *                     mRobotScoreHelper = new RobotScoreHelper();
+         *                 }
+         *                 mRobotScoreHelper.reset();
+         *             }
+         */
     }
 
     /**
@@ -531,11 +538,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "grabThisRound" + " seq=" + seq + " challenge=" + challenge + " accenable=" + mRoomData.isAccEnable());
 
 
-
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if(infoModel!=null){
-            if(infoModel.getWantSingInfos().contains(new WantSingerInfo((int) MyUserInfoManager.getInstance().getUid()))){
-                MyLog.w(TAG,"grabThisRound cancel 想唱列表中已经有你了");
+        if (infoModel != null) {
+            if (infoModel.getWantSingInfos().contains(new WantSingerInfo((int) MyUserInfoManager.getInstance().getUid()))) {
+                MyLog.w(TAG, "grabThisRound cancel 想唱列表中已经有你了");
                 return;
             }
         }
@@ -561,15 +567,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 根据玩法决定抢唱类型
         if (songModel != null && songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_SPK.getValue();
-            if(infoModel!=null){
-                if(infoModel.getWantSingInfos().isEmpty()){
+            if (infoModel != null) {
+                if (infoModel.getWantSingInfos().isEmpty()) {
                     // 自己大概率第一个唱
-                    if(infoModel.getMusic()!=null){
+                    if (infoModel.getMusic() != null) {
                         preAccUrl = infoModel.getMusic().getAcc();
                     }
-                }else{
+                } else {
                     //  自己大概率不是第一个唱
-                    if(infoModel.getMusic()!=null){
+                    if (infoModel.getMusic() != null) {
                         SongModel pkSongModel = infoModel.getMusic().getPkMusic();
                         if (pkSongModel != null) {
                             preAccUrl = pkSongModel.getAcc();
@@ -641,7 +647,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         }, this);
 
-        if(!TextUtils.isEmpty(preAccUrl)){
+        if (!TextUtils.isEmpty(preAccUrl)) {
             mGrabSongResPresenter.tryDownloadAcc(preAccUrl);
         }
     }
@@ -813,32 +819,42 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private void onSelfRoundOver(GrabRoundInfoModel roundInfoModel) {
         // 上一轮演唱是自己，开始上传资源
-        if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_GRAB)) {
-            //属于需要上传音频文件的状态
-            // 上一轮是我的轮次，暂停录音
-            if (mRoomData.getGameId() > 0) {
-                EngineManager.getInstance().stopAudioRecording();
-            }
-            // 上传打分
-            if (mRobotScoreHelper != null) {
-                if (mRobotScoreHelper.isScoreEnough()) {
-                    if (roundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
-                            && roundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                        // 是一唱到底的才上传
-                        roundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
-                        uploadRes1ForAi(roundInfoModel);
-                    } else {
-                        MyLog.d(TAG, "没有唱到一唱到底不上传");
-                    }
-                } else {
-                    MyLog.d(TAG, "isScoreEnough false");
-                }
-            }
-        }
+//        if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_GRAB)) {
+//            //属于需要上传音频文件的状态
+//            // 上一轮是我的轮次，暂停录音
+//            if (mRoomData.getGameId() > 0) {
+//                EngineManager.getInstance().stopAudioRecording();
+//            }
+//            // 上传打分
+//            if (mRobotScoreHelper != null) {
+//                if (mRobotScoreHelper.isScoreEnough()) {
+//                    if (roundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
+//                            && roundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
+//                        // 是一唱到底的才上传
+//                        roundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
+//                        uploadRes1ForAi(roundInfoModel);
+//                    } else {
+//                        MyLog.d(TAG, "没有唱到一唱到底不上传");
+//                    }
+//                } else {
+//                    MyLog.d(TAG, "isScoreEnough false");
+//                }
+//            }
+//        }
 
         if (mGrabRedPkgPresenter != null && mGrabRedPkgPresenter.isCanReceive()) {
             mGrabRedPkgPresenter.getRedPkg();
         }
+
+        if (mRoomData.openAudioRecording()) {
+            if (!roundInfoModel.getbLightInfos().isEmpty()) {
+                // 有人爆灯了
+                String fileName = String.format("wm_%s_%s", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
+                String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
+                mRoomData.addWonderfulMomentPath(savePath);
+            }
+        }
+
     }
 
     /**
@@ -1584,6 +1600,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void closeEngine() {
         if (mRoomData.getGameId() > 0) {
             EngineManager.getInstance().stopAudioMixing();
+            EngineManager.getInstance().stopAudioRecording();
             if (mRoomData.isSpeaking()) {
                 MyLog.d(TAG, "closeEngine 正在抢麦说话，无需闭麦");
             } else {

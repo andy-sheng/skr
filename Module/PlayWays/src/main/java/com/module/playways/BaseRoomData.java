@@ -216,4 +216,5 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
     public String getAgoraToken() {
         return mAgoraToken;
     }
+
 }

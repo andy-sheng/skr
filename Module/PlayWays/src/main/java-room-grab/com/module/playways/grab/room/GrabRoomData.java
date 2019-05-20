@@ -3,6 +3,7 @@ package com.module.playways.grab.room;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.utils.DeviceUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
@@ -43,6 +44,9 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     int mOwnerKickTimes = 100;  // 房主剩余踢人的次数,默认为100
 
     private boolean isNewUser = false;   // 是否是新手引导房间
+    private int mOpenRecording = -1; // 是否开启高光时刻
+
+    private List<String> mWonderfulMomentList = new ArrayList<>();// 高光时刻本地录音文件路径
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -358,4 +362,25 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     public GrabGuideInfoModel getGrabGuideInfoModel() {
         return mGrabGuideInfoModel;
     }
+
+    public boolean openAudioRecording() {
+        if(mOpenRecording ==-1){
+            if(U.getDeviceUtils().getLevel().equals(DeviceUtils.LEVEL.BAD)){
+                MyLog.w(TAG,"设备太差，不开启录制");
+                mOpenRecording = 0;
+            }else{
+                mOpenRecording = 1;
+            }
+        }
+        return mOpenRecording ==1;
+    }
+
+    public void addWonderfulMomentPath(String savePath){
+        mWonderfulMomentList.add(savePath);
+    }
+
+    public List<String> getWonderfulMomentList() {
+        return mWonderfulMomentList;
+    }
+
 }
