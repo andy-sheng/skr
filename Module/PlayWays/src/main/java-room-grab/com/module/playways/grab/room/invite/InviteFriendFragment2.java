@@ -208,13 +208,13 @@ public class InviteFriendFragment2 extends BaseFragment {
         String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
 
         UMWeb web = new UMWeb(mUrl);
-        web.setTitle("房间已开,就等你来唱\n我在撕歌skr开了一个嗨唱包房，快来一起耍呀～");
+        web.setTitle("房间已开,就等你来唱");
         if (sharePlatform == SharePlatform.WEIXIN_CIRCLE) {
             web.setThumb(new UMImage(getActivity(), R.drawable.share_app_weixin_circle_icon));
         } else {
             web.setThumb(new UMImage(getActivity(), "http://res-static.inframe.mobi/common/skr_logo2.png"));
         }
-        web.setDescription("唱歌吗，超嗨的那种，房间已开，速度进来");
+        web.setDescription("我在撕歌skr开了一个嗨唱包房，快来一起耍呀～");
 
         switch (sharePlatform) {
             case QQ:
