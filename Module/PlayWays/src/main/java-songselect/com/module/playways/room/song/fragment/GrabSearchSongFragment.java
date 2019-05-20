@@ -1,12 +1,14 @@
 package com.module.playways.room.song.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
@@ -23,7 +25,11 @@ import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
+import com.module.playways.room.song.view.SearchFeedbackView;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.toast.CommonToastView;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -77,12 +83,17 @@ public class GrabSearchSongFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                if (model == null) {
+                    // 搜歌反馈
+                    showSearchFeedback();
+                    return;
+                }
                 SongModel songModel = (SongModel) model;
                 if (mFragmentDataListener != null) {
                     mFragmentDataListener.onFragmentResult(0, 0, null, songModel);
                 }
             }
-        }, false, SongSelectAdapter.GRAB_MODE);
+        }, true, SongSelectAdapter.GRAB_MODE);
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
@@ -172,6 +183,59 @@ public class GrabSearchSongFragment extends BaseFragment {
             mSongSelectAdapter.notifyDataSetChanged();
             mSearchResult.scrollToPosition(0);
         }
+    }
+
+    private void showSearchFeedback() {
+        SearchFeedbackView searchFeedbackView = new SearchFeedbackView(getContext());
+        mSearchFeedbackDialog = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(searchFeedbackView))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view.getId() == R.id.cancel_tv) {
+                            // 取消
+                            dialog.dismiss();
+                        } else if (view.getId() == R.id.confirm_tv) {
+                            // 提交
+                            String songName = searchFeedbackView.getSongName();
+                            String songSinger = searchFeedbackView.getSongSinger();
+                            if (!TextUtils.isEmpty(songName) || !TextUtils.isEmpty(songSinger)) {
+                                dialog.dismiss();
+                                reportNotExistSong(songName, songSinger);
+                            } else {
+                                U.getToastUtil().showShort("歌曲名和歌手至少输入一个哟～");
+                            }
+                        }
+                    }
+                })
+                .create();
+
+        mSearchFeedbackDialog.show();
+    }
+
+    private void reportNotExistSong(String songName, String songSinger) {
+        SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
+        ApiMethods.subscribe(songSelectServerApi.reportNotExistSong(songName, songSinger), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(R.drawable.touxiangshezhichenggong_icon)
+                            .setText("提交成功\n审核通过马上就会上架了")
+                            .build());
+                } else {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(R.drawable.touxiangshezhishibai_icon)
+                            .setText("提交缺歌上报失败了")
+                            .build());
+                }
+
+            }
+        }, this);
     }
 
 
