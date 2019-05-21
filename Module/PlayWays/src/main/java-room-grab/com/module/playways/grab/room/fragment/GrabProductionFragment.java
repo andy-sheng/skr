@@ -38,7 +38,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.WonderfulMomentModel;
-import com.module.playways.grab.room.production.ProductionAdapter;
+import com.module.playways.grab.room.production.ResultProducationAdapter;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.score.ScoreStateModel;
@@ -74,7 +74,7 @@ public class GrabProductionFragment extends BaseFragment {
 
     Handler mUiHandler = new Handler();
 
-    ProductionAdapter mAdapter;
+    ResultProducationAdapter mAdapter;
     IPlayer mIPlayer;
 
     @Override
@@ -100,7 +100,7 @@ public class GrabProductionFragment extends BaseFragment {
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
         mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
 
-        mAdapter = new ProductionAdapter(new ProductionAdapter.Listener() {
+        mAdapter = new ResultProducationAdapter(new ResultProducationAdapter.Listener() {
             @Override
             public void onClickPlay(int position, WonderfulMomentModel model) {
                 mAdapter.setSelectPosition(position);

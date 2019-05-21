@@ -10,7 +10,6 @@ import android.view.View;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.core.permission.SkrAudioPermission;
 import com.common.core.permission.SkrNotificationPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -33,9 +32,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.person.fragment.OtherPersonFragment2;
-import com.zq.relation.callback.FansEmptyCallback;
-import com.zq.relation.callback.FriendsEmptyCallback;
+import com.zq.person.fragment.OtherPersonFragment3;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -89,9 +86,9 @@ public class LastFollowFragment extends BaseFragment {
                 if (view.getId() == R.id.content) {
                     // TODO: 2019/4/24 跳到主页还是开始聊天？？？
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, model.getUserID());
+                    bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, model.getUserID());
                     U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment2.class)
+                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment3.class)
                             .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)

@@ -32,7 +32,7 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
-import com.zq.person.fragment.OtherPersonFragment2;
+import com.zq.person.fragment.OtherPersonFragment3;
 import com.zq.relation.adapter.RelationAdapter;
 
 import java.util.ArrayList;
@@ -81,9 +81,9 @@ public class BlackListFragment extends BaseFragment {
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, userInfoModel.getUserId());
+                    bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, userInfoModel.getUserId());
                     U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment2.class)
+                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment3.class)
                             .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)
