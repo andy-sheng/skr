@@ -63,7 +63,7 @@ public class UploadParams {
     }
 
     public enum FileType {
-        profilepic("profile-pic"), picture("picture"), audioAi("audio"), midiAi("midi"), log("androidLog");
+        profilepic("profile-pic"), picture("picture"), audioAi("audio"), midiAi("midi"), log("androidLog"), works("works");
 
         private String ossSavaDir;
 
