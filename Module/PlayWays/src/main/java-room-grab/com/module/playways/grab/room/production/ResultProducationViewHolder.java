@@ -18,7 +18,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.model.WonderfulMomentModel;
 
-public class ProducationViewHolder extends RecyclerView.ViewHolder {
+public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
     WonderfulMomentModel mWonderfulMomentModel;
     int position;
     boolean isPlay;
@@ -32,9 +32,9 @@ public class ProducationViewHolder extends RecyclerView.ViewHolder {
     ExTextView mSongNameTv;
     ExTextView mSongOwnerTv;
 
-    ProductionAdapter.Listener mListener;
+    ResultProducationAdapter.Listener mListener;
 
-    public ProducationViewHolder(View itemView, ProductionAdapter.Listener listener) {
+    public ResultProducationViewHolder(View itemView, ResultProducationAdapter.Listener listener) {
         super(itemView);
         this.mListener = listener;
 

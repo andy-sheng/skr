@@ -32,7 +32,7 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.person.fragment.OtherPersonFragment2;
+import com.zq.person.fragment.OtherPersonFragment3;
 import com.zq.relation.adapter.RelationAdapter;
 import com.zq.relation.callback.FansEmptyCallback;
 import com.zq.relation.callback.FollowEmptyCallback;
@@ -85,9 +85,9 @@ public class RelationView extends RelativeLayout {
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, userInfoModel.getUserId());
+                    bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, userInfoModel.getUserId());
                     U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment2.class)
+                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment3.class)
                             .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)

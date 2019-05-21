@@ -1,7 +1,5 @@
 package com.zq.person.view;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +21,6 @@ import com.respicker.model.ImageItem;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.AddPhotoModel;
 import com.zq.person.model.PhotoModel;

@@ -56,7 +56,6 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.model.PhotoModel;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
 

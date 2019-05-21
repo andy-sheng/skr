@@ -251,12 +251,12 @@ public interface UserInfoServerApi {
     Observable<ApiResult> deletePhoto(@Body RequestBody body);
 
     /**
-     *
-     * @param cnt  获取第一条传1 列表最大值100
+     * @param cnt 获取第一条传1 列表最大值100
      * @return
      */
     @GET("/v1/mate/latest-relation")
     Observable<ApiResult> getLatestRelation(@Query("cnt") int cnt);
+
 
     @GET("/v1/mate/list-follows-by-page")
     Call<ApiResult> listFollowsByPage(@Query("offset") int offset,@Query("cnt") int cnt);
@@ -276,4 +276,34 @@ public interface UserInfoServerApi {
 
     @PUT("/v1/mate/write-user-remark")
     Observable<ApiResult> writeUserRemark(@Body RequestBody body);
+
+
+    /**
+     * 新增作品
+     * @param body
+     * @return
+     */
+    @PUT("/v1/profile/add-works")
+    Observable<ApiResult> addWorks(@Body RequestBody body);
+
+    /**
+     * 删除作品
+     * @param body
+     * @return
+     */
+    @PUT("/v1/profile/del-works")
+    Observable<ApiResult> deleWorks(@Body RequestBody body);
+
+    /**
+     * 播放作品
+     * @param body
+     * @return
+     */
+    @PUT("/v1/profile/like-works")
+    Observable<ApiResult> playWorks(@Body RequestBody body);
+
+
+    @GET("/v1/profile/query-works")
+    Observable<ApiResult> getWorks();
+    
 }

@@ -8,7 +8,7 @@ import com.common.base.BaseActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.zq.person.fragment.OtherPersonFragment2;
+import com.zq.person.fragment.OtherPersonFragment3;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
@@ -29,9 +29,9 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
         if (Integer.valueOf(userInfo.getUserId()) != MyUserInfoManager.getInstance().getUid()) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             Bundle bundle = new Bundle();
-            bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
+            bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
             U.getFragmentUtils().addFragment(FragmentUtils
-                    .newAddParamsBuilder((BaseActivity) context, OtherPersonFragment2.class)
+                    .newAddParamsBuilder((BaseActivity) context, OtherPersonFragment3.class)
                     .setUseOldFragmentIfExist(false)
                     .setBundle(bundle)
                     .setAddToBackStack(true)
