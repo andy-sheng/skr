@@ -77,6 +77,13 @@
 
     </RelativeLayout>
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/blight_tips_iv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:background="@drawable/grab_works_blight_icon"
+        android:visibility="gone" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/song_name_tv"
         android:layout_width="match_parent"

@@ -27,12 +27,12 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
+
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
 import com.module.RouterConstants;
 import com.module.playways.R;
-import com.module.playways.RoomDataUtils;
+
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -101,7 +101,6 @@ public class GrabProductionFragment extends BaseFragment {
         mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
 
         mAdapter = new ProductionAdapter(new ProductionAdapter.Listener() {
-            // TODO: 2019/5/20 主要做播放键位的
             @Override
             public void onClickPlay(int position, WonderfulMomentModel model) {
                 mAdapter.setSelectPosition(position);
@@ -131,7 +130,7 @@ public class GrabProductionFragment extends BaseFragment {
 
             @Override
             public void onClickSaveAndShare(int position, WonderfulMomentModel model) {
-
+                // TODO: 2019/5/21 缺一个保存和分享
             }
         });
         mProductionView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

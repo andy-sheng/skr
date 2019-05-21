@@ -856,7 +856,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (roundInfoModel.getsPkRoundInfoModels().size() >= 1 && roundInfoModel.getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     songModel = roundInfoModel.getMusic().getPkMusic();
                 }
-                mRoomData.addWonderfulMomentPath(new WonderfulMomentModel(savePath, songModel));
+                mRoomData.addWonderfulMomentPath(new WonderfulMomentModel(savePath, songModel, true));
             }
         }
 

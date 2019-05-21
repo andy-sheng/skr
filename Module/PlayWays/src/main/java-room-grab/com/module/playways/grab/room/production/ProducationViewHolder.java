@@ -23,6 +23,7 @@ public class ProducationViewHolder extends RecyclerView.ViewHolder {
     int position;
     boolean isPlay;
 
+    ExImageView mBlightTipsIv;
     ExRelativeLayout mCoverArea;
     SimpleDraweeView mCoverIv;
     ExImageView mPlayBackIv;
@@ -37,6 +38,7 @@ public class ProducationViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.mListener = listener;
 
+        mBlightTipsIv = (ExImageView) itemView.findViewById(R.id.blight_tips_iv);
         mCoverArea = (ExRelativeLayout) itemView.findViewById(R.id.cover_area);
         mCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.cover_iv);
         mPlayBackIv = (ExImageView) itemView.findViewById(R.id.play_back_iv);
@@ -83,6 +85,13 @@ public class ProducationViewHolder extends RecyclerView.ViewHolder {
                             .setBorderColor(U.getColor(R.color.white))
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                             .build());
+            mSongNameTv.setText(mWonderfulMomentModel.getSongModel().getDisplaySongName());
+            mSongOwnerTv.setText(mWonderfulMomentModel.getSongModel().getOwner());
+            if (mWonderfulMomentModel.isBlight()) {
+                mBlightTipsIv.setVisibility(View.VISIBLE);
+            } else {
+                mBlightTipsIv.setVisibility(View.GONE);
+            }
         } else {
             FrescoWorker.loadImage(mCoverIv,
                     ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
@@ -91,13 +100,12 @@ public class ProducationViewHolder extends RecyclerView.ViewHolder {
                             .setBorderColor(U.getColor(R.color.white)).build());
         }
 
-        mSongNameTv.setText(mWonderfulMomentModel.getSongModel().getDisplaySongName());
-        mSongOwnerTv.setText(mWonderfulMomentModel.getSongModel().getOwner());
         if (isPlay) {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
         } else {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
         }
+
     }
 
 }

@@ -7,10 +7,12 @@ import java.io.Serializable;
 public class WonderfulMomentModel implements Serializable {
     String localPath;
     SongModel mSongModel;
+    boolean isBlight;
 
-    public WonderfulMomentModel(String localPath, SongModel songModel) {
+    public WonderfulMomentModel(String localPath, SongModel songModel, boolean isBlight) {
         this.localPath = localPath;
-        mSongModel = songModel;
+        this.mSongModel = songModel;
+        this.isBlight = isBlight;
     }
 
     public String getLocalPath() {
@@ -27,5 +29,13 @@ public class WonderfulMomentModel implements Serializable {
 
     public void setSongModel(SongModel songModel) {
         mSongModel = songModel;
+    }
+
+    public boolean isBlight() {
+        return isBlight;
+    }
+
+    public void setBlight(boolean blight) {
+        isBlight = blight;
     }
 }

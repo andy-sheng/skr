@@ -35,7 +35,7 @@ public class GrabResultActivity extends BaseActivity {
 //            songModel.setOwner("王力宏");
 //            songModel.setItemName("依然爱你");
 //            String url = "http://song-static.inframe.mobi/bgm/893161bbfa5a8e33fe81d2a07cfcd39a_2.mp3";
-//            WonderfulMomentModel wonderfulMomentModel = new WonderfulMomentModel(url, songModel);
+//            WonderfulMomentModel wonderfulMomentModel = new WonderfulMomentModel(url, songModel, true);
 //            mRoomData.getWonderfulMomentList().add(wonderfulMomentModel);
 //        }
         if (mRoomData.getWonderfulMomentList() != null && mRoomData.getWonderfulMomentList().size() > 0) {
