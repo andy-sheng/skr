@@ -35,6 +35,10 @@ public class RemarkLocalApi {
         getDao().insertOrReplaceInTx(list);
     }
 
+    public static void deleteAll() {
+        getDao().deleteAll();
+    }
+
     public static void deleUserInfoByUUids(List<Integer> delIds) {
         if (delIds.isEmpty()) {
             return;

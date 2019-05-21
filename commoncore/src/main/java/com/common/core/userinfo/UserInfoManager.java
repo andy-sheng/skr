@@ -46,7 +46,7 @@ public class UserInfoManager {
      */
     // 从存储的角度来说双方关注的人即会存在我关注的人之中，也会存在粉丝之中，存数据库时做个区分
 
-    public static final int  RELATION_BLACKLIST = 5;
+    public static final int RELATION_BLACKLIST = 5;
 
     public enum RELATION {
         NO_RELATION(0),           //未知
@@ -108,7 +108,7 @@ public class UserInfoManager {
             hasLoadRemarkFromDB = true;
         }
         // 从数据库加载
-        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK,false)) {
+        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK, false)) {
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
@@ -371,7 +371,7 @@ public class UserInfoManager {
                 List<UserInfoModel> userInfoModels = UserInfoLocalApi.getFollowUserInfoList();
                 resutlSet.addAll(userInfoModels);
                 if (userInfoListCallback != null) {
-                    userInfoListCallback.onSucess(FROM.DB, -1, resutlSet);
+                    userInfoListCallback.onSucess(FROM.DB, resutlSet.size(), resutlSet);
                 }
                 long followMarkerWater = U.getPreferenceUtils().getSettingLong(PREF_KEY_FOLLOW_MARKER_WATER, -1);
                 if (followMarkerWater == -1) {
@@ -384,9 +384,14 @@ public class UserInfoManager {
                         try {
                             Response<ApiResult> response = call.execute();
                             ApiResult obj = response.body();
+                            if(obj==null){
+                                break;
+                            }
                             if (offset == 0) {
                                 // offset为0是记录水位
-                                followMarkerWater = obj.getData().getLongValue("lastIndexID");
+                                if(obj.getData()!=null){
+                                    followMarkerWater = obj.getData().getLongValue("lastIndexID");
+                                }
                                 // 同步下备注名
                                 syncRemarkNames();
                             }
@@ -417,29 +422,39 @@ public class UserInfoManager {
                     try {
                         Response<ApiResult> response = call.execute();
                         ApiResult obj = response.body();
+                        if(obj!=null){
+                            List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
+                            List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
 
-                        List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
-                        List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
-                        userInfoModels2.addAll(userInfoModels3);
+                            userInfoModels2.addAll(userInfoModels3);
 
-                        UserInfoLocalApi.insertOrUpdate(userInfoModels2);
+                            boolean hasUpdate = false;
+                            if (!userInfoModels2.isEmpty()) {
+                                UserInfoLocalApi.insertOrUpdate(userInfoModels2);
+                                // 更新最终表
+                                resutlSet.addAll(userInfoModels2);
+                                hasUpdate = true;
+                            }
 
-                        List<Integer> delIds = JSON.parseArray(obj.getData().getString("dels"), Integer.class);
-                        //批量删除
-                        UserInfoLocalApi.deleUserInfoByUUids(delIds);
 
-                        // 更新最终表
-                        resutlSet.addAll(userInfoModels2);
-                        for (Integer userId : delIds) {
-                            resutlSet.remove(new UserInfoModel(userId));
+                            List<Integer> delIds = JSON.parseArray(obj.getData().getString("dels"), Integer.class);
+                            if (!delIds.isEmpty()) {
+                                //批量删除
+                                UserInfoLocalApi.deleUserInfoByUUids(delIds);
+                                for (Integer userId : delIds) {
+                                    resutlSet.remove(new UserInfoModel(userId));
+                                }
+                                hasUpdate = true;
+                            }
+
+                            followMarkerWater = obj.getData().getLongValue("lastIndexID");
+                            U.getPreferenceUtils().setSettingLong(PREF_KEY_FOLLOW_MARKER_WATER, followMarkerWater);
+
+                            if (userInfoListCallback != null && hasUpdate) {
+                                userInfoListCallback.onSucess(FROM.SERVER_INCREMENT, resutlSet.size(), resutlSet);
+                            }
                         }
 
-                        followMarkerWater = obj.getData().getLongValue("lastIndexID");
-                        U.getPreferenceUtils().setSettingLong(PREF_KEY_FOLLOW_MARKER_WATER, followMarkerWater);
-
-                        if (userInfoListCallback != null) {
-                            userInfoListCallback.onSucess(FROM.SERVER_INCREMENT, -1, resutlSet);
-                        }
                     } catch (IOException e) {
                         MyLog.e(e);
                     }
@@ -518,7 +533,7 @@ public class UserInfoManager {
      * 同步备注名
      */
     public void syncRemarkNames() {
-        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK,false)) {
+        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK, false)) {
             return;
         }
         /**
@@ -534,10 +549,13 @@ public class UserInfoManager {
             try {
                 Response<ApiResult> response = call.execute();
                 ApiResult obj = response.body();
+                if(obj==null){
+                    break;
+                }
                 offset = obj.getData().getIntValue("offset");
                 List<RemarkDB> remarks2 = JSON.parseArray(obj.getData().getString("info"), RemarkDB.class);
                 if (remarks2.isEmpty()) {
-                    U.getPreferenceUtils().setSettingBoolean(PREF_KEY_HAS_PULL_REMARK,true);
+                    U.getPreferenceUtils().setSettingBoolean(PREF_KEY_HAS_PULL_REMARK, true);
                     // 水位持久化
                     break;
                 } else {
@@ -568,19 +586,16 @@ public class UserInfoManager {
      * @param userInfoListCallback
      */
     public void getFans(final int offset, final int cnt, final UserInfoListCallback userInfoListCallback) {
-        userInfoServerApi.listFansByPage(offset, cnt)
-                .map(new Function<ApiResult, Object>() {
-                    @Override
-                    public Object apply(ApiResult obj) {
-                        List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
-                        int newOffset = obj.getData().getIntValue("offset");
-                        if (userInfoListCallback != null) {
-                            userInfoListCallback.onSucess(FROM.SERVER_PAGE, newOffset, list);
-                        }
-                        return list;
-                    }
-                }).subscribeOn(Schedulers.io())
-                .subscribe();
+        ApiMethods.subscribe(userInfoServerApi.listFansByPage(offset, cnt), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
+                int newOffset = obj.getData().getIntValue("offset");
+                if (userInfoListCallback != null) {
+                    userInfoListCallback.onSucess(FROM.SERVER_PAGE, newOffset, list);
+                }
+            }
+        });
 
     }
 

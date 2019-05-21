@@ -17,6 +17,7 @@ import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
+import com.common.core.userinfo.remark.RemarkLocalApi;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -398,6 +399,7 @@ public class UserAccountManager {
                     // 清除pref 清除数据库
                     U.getPreferenceUtils().clearPreference();
                     UserInfoLocalApi.deleteAll();
+                    RemarkLocalApi.deleteAll();
                     UmengStatistics.onProfileSignOff();
                     //com.common.umeng.UmengPush.UmengPush.clearAlias(userId);
                     com.common.jiguang.JiGuangPush.clearAlias(userId);

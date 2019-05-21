@@ -2,6 +2,7 @@ package com.zq.relation.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,14 +10,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
-import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -42,7 +41,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
+import java.util.Collection;
 
 public class RelationView extends RelativeLayout {
 
@@ -51,7 +50,6 @@ public class RelationView extends RelativeLayout {
     private int mMode = UserInfoManager.RELATION.FRIENDS.getValue();
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
-    private boolean hasMore = true; // 是否还有数据
 
     RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
@@ -61,6 +59,8 @@ public class RelationView extends RelativeLayout {
     RelationAdapter mRelationAdapter;
 
     DialogPlus mDialogPlus;
+
+    Handler mHandler = new Handler();
 
     public RelationView(Context context, int mode) {
         super(context);
@@ -118,7 +118,7 @@ public class RelationView extends RelativeLayout {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadData(mMode, mOffset, DEFAULT_COUNT);
+                loadData(mOffset);
             }
 
             @Override
@@ -136,11 +136,11 @@ public class RelationView extends RelativeLayout {
         mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                loadData(mMode, mOffset, DEFAULT_COUNT);
+                loadData(0);
             }
         });
 
-        loadData(mMode, 0, DEFAULT_COUNT);
+        loadData(0);
     }
 
     private void unFollow(final UserInfoModel userInfoModel) {
@@ -185,48 +185,94 @@ public class RelationView extends RelativeLayout {
         mDialogPlus.show();
     }
 
-    UserInfoManager.ResponseCallBack<ApiResult> mApiResultResponseCallBack = new UserInfoManager.ResponseCallBack<ApiResult>() {
-        @Override
-        public void onServerSucess(ApiResult result) {
-            if (mOffset == 0) {
-                // 第一次拉数据
-                mRelationAdapter.getData().clear();
-            }
 
-            mOffset = result.getData().getIntValue("offset");
-            List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("users"), UserInfoModel.class);
-            if (userInfoModels != null && userInfoModels.size() != 0) {
-                mRefreshLayout.finishLoadMore();
-                mLoadService.showSuccess();
-                mRelationAdapter.addData(userInfoModels);
-                mRelationAdapter.notifyDataSetChanged();
-                hasMore = true;
-            } else {
-                hasMore = false;
-                mRefreshLayout.setEnableLoadMore(false);
-                mRefreshLayout.finishLoadMore();
-                if (mRelationAdapter.getData() == null || mRelationAdapter.getData().size() == 0) {
-                    // 第一次拉数据
-                    if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
-                        mLoadService.showCallback(FriendsEmptyCallback.class);
-                    } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
-                        mLoadService.showCallback(FansEmptyCallback.class);
-                    } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
-                        mLoadService.showCallback(FollowEmptyCallback.class);
+    public void loadData(final int offset) {
+        this.mOffset = offset;
+        if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
+            UserInfoManager.getInstance().getMyFriends(new UserInfoManager.UserInfoListCallback() {
+                @Override
+                public void onSucess(UserInfoManager.FROM from, int offset, final Collection<UserInfoModel> list) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRefreshLayout.setEnableLoadMore(false);
+                            if (list != null && list.size() != 0) {
+                                mRefreshLayout.finishLoadMore();
+                                mLoadService.showSuccess();
+                                mRelationAdapter.setData(list);
+                            } else {
+                                mRefreshLayout.finishLoadMore();
+                                if (mRelationAdapter.getData() == null || mRelationAdapter.getData().size() == 0) {
+                                    // 第一次拉数据
+                                    if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                                        mLoadService.showCallback(FriendsEmptyCallback.class);
+                                    } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+                                        mLoadService.showCallback(FansEmptyCallback.class);
+                                    } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
+                                        mLoadService.showCallback(FollowEmptyCallback.class);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
+            UserInfoManager.getInstance().getMyFollow(new UserInfoManager.UserInfoListCallback() {
+                @Override
+                public void onSucess(UserInfoManager.FROM from, int offset, final Collection<UserInfoModel> list) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRefreshLayout.setEnableLoadMore(false);
+                            if (list != null && list.size() != 0) {
+                                mRefreshLayout.finishLoadMore();
+                                mLoadService.showSuccess();
+                                mRelationAdapter.setData(list);
+                            } else {
+                                mRefreshLayout.finishLoadMore();
+                                if (mRelationAdapter.getData() == null || mRelationAdapter.getData().size() == 0) {
+                                    // 第一次拉数据
+                                    if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                                        mLoadService.showCallback(FriendsEmptyCallback.class);
+                                    } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+                                        mLoadService.showCallback(FansEmptyCallback.class);
+                                    } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
+                                        mLoadService.showCallback(FollowEmptyCallback.class);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+            UserInfoManager.getInstance().getFans(offset, DEFAULT_COUNT, new UserInfoManager.UserInfoListCallback() {
+                @Override
+                public void onSucess(UserInfoManager.FROM from, final int offset, final Collection<UserInfoModel> list) {
+                    mOffset = offset;
+                    if (list != null && list.size() != 0) {
+                        mRefreshLayout.finishLoadMore();
+                        mLoadService.showSuccess();
+                        mRelationAdapter.addData(list);
+                        mRefreshLayout.setEnableLoadMore(true);
+                    } else {
+                        mRefreshLayout.setEnableLoadMore(false);
+                        mRefreshLayout.finishLoadMore();
+                        if (mRelationAdapter.getData() == null || mRelationAdapter.getData().size() == 0) {
+                            // 第一次拉数据
+                            if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                                mLoadService.showCallback(FriendsEmptyCallback.class);
+                            } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+                                mLoadService.showCallback(FansEmptyCallback.class);
+                            } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
+                                mLoadService.showCallback(FollowEmptyCallback.class);
+                            }
+                        }
                     }
                 }
-            }
+            });
         }
-
-        @Override
-        public void onServerFailed() {
-            mRefreshLayout.finishLoadMore();
-        }
-    };
-
-    public void loadData(final int mode, final int offset, int limit) {
-        this.mOffset = offset;
-        //UserInfoManager.getInstance().getRelationList(mode, offset, limit, mApiResultResponseCallBack);
     }
 
     @Override
@@ -255,7 +301,7 @@ public class RelationView extends RelativeLayout {
     public void onEvent(FollowNotifyEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         this.mOffset = 0;
-        //UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
+        loadData(0);
     }
 
     /**
@@ -267,7 +313,7 @@ public class RelationView extends RelativeLayout {
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
         this.mOffset = 0;
-        //UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
+        loadData(0);
     }
 
 }
