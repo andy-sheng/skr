@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.songmanager;
+package com.module.playways.grab.room.songmanager.model;
 
 import android.text.TextUtils;
 

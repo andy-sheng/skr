@@ -1,143 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fl_song_list_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_trans_30"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/view_2_dp"
+    app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_solid_color="#4960CF"
+    app:bl_stroke_color="#3B4E79"
+    app:bl_stroke_width="@dimen/view_2_dp">
 
-    <com.common.view.ex.ExRelativeLayout
-        android:id="@+id/rl_content"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/view_63_dp"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        app:bl_corners_bottomLeftRadius="@dimen/view_20_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_20_dp"
-        app:bl_solid_color="#7088FF"
-        app:bl_stroke_color="#3B4E79"
-        app:bl_stroke_width="@dimen/view_2_dp">
+        android:layout_height="@dimen/view_47_dp"
+        android:layout_toLeftOf="@+id/tv_finish">
 
         <com.common.view.ex.ExTextView
-            android:id="@+id/search_song_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_38_dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/view_20_dp"
-            android:layout_marginTop="@dimen/view_43_dp"
-            android:layout_marginRight="@dimen/view_50_dp"
-            android:layout_marginBottom="@dimen/view_25_dp"
-            android:layout_toLeftOf="@+id/tv_finish"
-            android:background="@drawable/ycdd_shurukuang"
-            android:drawableLeft="@drawable/common_search_icon"
-            android:drawablePadding="@dimen/view_10_dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/textsize_10_dp"
-            android:paddingTop="@dimen/view_4_dp"
-            android:text="添加歌曲"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_16_dp" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/tv_selected_song"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/fl_song_list_container"
-            android:layout_marginTop="@dimen/view_41_dp"
-            android:text=""
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_16_dp" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/edit_room_name"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_32_dp"
-            android:layout_marginLeft="@dimen/view_20_dp"
-            android:layout_marginTop="@dimen/view_40_dp"
-            android:gravity="center_vertical"
-            android:paddingRight="@dimen/view_115_dp"
-            android:paddingLeft="@dimen/view_25_dp"
-            android:text="修改房间名"
-            android:textColor="@color/white_trans_80"
-            android:textSize="@dimen/textsize_14_dp" />
-
-        <ImageView
-            android:layout_width="@dimen/view_14_dp"
-            android:layout_height="@dimen/view_12_dp"
-            android:layout_alignLeft="@id/edit_room_name"
-            android:layout_alignTop="@id/edit_room_name"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:layout_marginTop="@dimen/view_10_dp"
-            android:background="@drawable/ycdd_owner_icon" />
-        
-        <ImageView
-            android:layout_width="@dimen/view_13_dp"
-            android:layout_height="@dimen/view_13_dp"
-            android:layout_alignTop="@id/edit_room_name"
-            android:layout_toRightOf="@id/edit_room_name"
-            android:layout_marginLeft="-110dp"
-            android:layout_marginTop="@dimen/view_10_dp"
-            android:background="@drawable/ycdd_edit_roomname_icon"/>
-
-        <com.common.view.ex.ExLinearLayout
-            android:id="@+id/fl_song_list_container"
+            android:id="@+id/selected_tag"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/view_20_dp"
-            android:layout_marginTop="@dimen/view_84_dp"
-            android:layout_marginRight="@dimen/view_20_dp"
-            android:layout_marginBottom="@dimen/view_82_dp"
-            android:orientation="vertical"
-            android:padding="@dimen/view_2_dp"
-            app:bl_corners_radius="@dimen/view_16_dp"
-            app:bl_solid_color="#4960CF"
-            app:bl_stroke_color="#3B4E79"
-            app:bl_stroke_width="@dimen/view_2_dp">
+            android:layout_height="@dimen/view_47_dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/view_17_dp"
+            android:textSize="@dimen/textsize_16_dp" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_42_dp"
-                android:layout_marginLeft="@dimen/view_5_dp"
-                android:layout_marginTop="@dimen/view_5_dp"
-                android:layout_marginRight="@dimen/view_5_dp"
-                android:layout_toLeftOf="@+id/tv_finish">
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="@dimen/view_14_dp"
+            android:layout_height="@dimen/view_16_dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:background="@drawable/fz_shuxing_xia" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/selected_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_42_dp" />
-
-                <ImageView
-                    android:id="@+id/iv_arrow"
-                    android:layout_width="@dimen/view_14_dp"
-                    android:layout_height="@dimen/view_16_dp"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="@dimen/view_13_dp"
-                    android:background="@drawable/fz_shuxing_xia" />
-            </FrameLayout>
-
-            <com.scwang.smartrefresh.layout.SmartRefreshLayout
-                android:id="@+id/refreshLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-        </com.common.view.ex.ExLinearLayout>
-
-        <TextView
-            android:id="@+id/tv_finish"
-            android:layout_width="@dimen/view_44_dp"
-            android:layout_height="@dimen/view_49_dp"
-            android:layout_alignParentRight="true"
+        <View
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/view_18_dp"
-            android:layout_marginBottom="@dimen/view_20_dp"
-            android:background="@drawable/fz_shouqi" />
-    </com.common.view.ex.ExRelativeLayout>
-</FrameLayout>
+            android:background="#3B4E79" />
+    </FrameLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</com.common.view.ex.ExLinearLayout>

@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.songmanager;
+package com.module.playways.grab.room.songmanager.presenter;
 
 import android.os.Handler;
 
@@ -10,12 +10,13 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
-import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.component.busilib.friends.SpecialModel;
+import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.room.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -327,29 +328,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void updateRoomName(int roomID, String roomName) {
-        MyLog.d(TAG, "updateRoomName" + " roomID=" + roomID + " roomName=" + roomName);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", roomID);
-        map.put("roomName", roomName);
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(mGrabRoomServerApi.updateRoomName(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    U.getToastUtil().showShort("修改房间名成功");
-                    mGrabRoomData.setRoomName(roomName);
-                    mIGrabSongManageView.updateRoomNameSuccess();
-                } else {
-                    U.getToastUtil().showShort(result.getErrmsg() + "");
-                }
-
-            }
-        }, this);
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
@@ -357,6 +335,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             mIGrabSongManageView.showNum(--mTotalNum);
         }
         updateSongList();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddSongEvent event) {
+        addSong(event.getSongModel());
     }
 
     @Override

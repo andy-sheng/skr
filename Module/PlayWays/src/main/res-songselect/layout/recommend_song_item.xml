@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp"
+    android:orientation="vertical">
+
+    <com.common.view.ex.ExFrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="@dimen/view_42_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        app:bl_corners_radius="@dimen/view_7_dp"
+        app:bl_solid_color="#6EBDFF"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp">
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/singer_icon_iv"
+            android:layout_width="@dimen/view_38_dp"
+            android:layout_height="@dimen/view_38_dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/view_2_dp" />
+    </com.common.view.ex.ExFrameLayout>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/frame_layout"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_toRightOf="@+id/frame_layout"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/singer_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/song_name_tv"
+        android:layout_alignLeft="@+id/song_name_tv"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_12_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/select_tv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_14_dp"
+        android:gravity="center"
+        android:text="点歌"
+        android:textColor="#ff3b4e79"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_solid_color="#FFC15B"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black_trans_20" />
+</RelativeLayout>

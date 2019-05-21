@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -19,8 +20,8 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.constans.GrabRoomType;
 import com.dialog.view.TipsDialogView;
-import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.R;
+import com.module.playways.grab.room.GrabRoomServerApi;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
@@ -30,6 +31,8 @@ import com.orhanobut.dialogplus.ViewHolder;
 public class GrabCreateRoomFragment extends BaseFragment {
 
     public static final String KEY_ROOM_TYPE = "key_room_type";
+    public static final int ErrNoPublicRoomPermission = 8344139; //达成一唱到底60首，才能开启
+    public static final int ErrRealAuth = 8344158; //实名认证未通过
 
     ExImageView mIvBack;
     ExRelativeLayout mFriendsRoom;
@@ -81,15 +84,17 @@ public class GrabCreateRoomFragment extends BaseFragment {
                     @Override
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
-                            if (result.getData().getBooleanValue("has")) {
-                                goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_PUBLIC);
+                            goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_PUBLIC);
+                        } else if (ErrNoPublicRoomPermission == result.getErrno()) {
+                            if (TextUtils.isEmpty(result.getErrmsg())) {
+                                showErrorMsgDialog("您还没有权限创建公开房间");
                             } else {
-                                if (TextUtils.isEmpty(result.getData().getString("notice"))) {
-                                    showErrorMsgDialog("您还没有权限创建公开房间");
-                                } else {
-                                    showErrorMsgDialog(result.getData().getString("notice"));
-                                }
+                                showErrorMsgDialog("" + result.getErrmsg());
                             }
+                        } else if (ErrRealAuth == result.getErrno()) {
+                            //实人认证
+                            ToastUtils.showShort("请实人认证再开共开房");
+
                         } else {
                             if (TextUtils.isEmpty(result.getErrmsg())) {
                                 showErrorMsgDialog("您还没有权限创建公开房间");

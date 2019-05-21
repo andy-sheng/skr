@@ -23,46 +23,88 @@
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold" />
 
-    <com.common.view.ex.ExRelativeLayout
-        android:id="@+id/tv_coin_area"
+    <com.common.view.ex.ExFrameLayout
+        android:id="@+id/coin_area"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_27_dp"
+        android:layout_height="@dimen/view_32_dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_d_14_dp"
-        android:layout_toRightOf="@+id/iv_money_coin"
-        app:bl_corners_bottomRightRadius="@dimen/view_15_dp"
-        app:bl_corners_topRightRadius="@dimen/view_15_dp"
-        app:bl_solid_color="@color/black_trans_20">
+        android:layout_marginLeft="@dimen/view_7_dp"
+        android:layout_toRightOf="@+id/tv_change_room"
+        android:paddingLeft="@dimen/view_6_dp"
+        android:paddingRight="@dimen/view_6_dp"
+        BitmapTextView:bl_corners_radius="@dimen/view_16_dp"
+        BitmapTextView:bl_solid_color="@color/black_trans_20">
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/iv_money_coin"
+            android:layout_width="@dimen/view_14_dp"
+            android:layout_height="@dimen/view_16_dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ycdd_daojishi_jinbi" />
 
         <com.component.busilib.view.BitmapTextView
             android:id="@+id/tv_coin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/view_18_dp"
-            android:layout_marginRight="@dimen/view_9_dp"
             BitmapTextView:scale="0.5" />
 
-    </com.common.view.ex.ExRelativeLayout>
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_coin_change"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_22_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:gravity="center"
+            android:textColor="#B2B6D6"
+            android:textSize="@dimen/textsize_16_dp"
+            android:visibility="gone" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/conin_change_iv"
-        android:layout_width="@dimen/view_40_dp"
-        android:layout_height="@dimen/view_40_dp"
+    </com.common.view.ex.ExFrameLayout>
+
+    <com.common.view.ex.ExFrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_32_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_7_dp"
-        android:layout_toRightOf="@+id/tv_change_room"
-        android:background="@drawable/jb_guangmang"
-        android:visibility="gone" />
+        android:layout_toRightOf="@+id/coin_area"
+        android:paddingLeft="@dimen/view_6_dp"
+        android:paddingRight="@dimen/view_6_dp"
+        BitmapTextView:bl_corners_radius="@dimen/view_16_dp"
+        BitmapTextView:bl_solid_color="@color/black_trans_20">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_money_coin"
-        android:layout_width="@dimen/view_27_dp"
-        android:layout_height="@dimen/view_31_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_12_dp"
-        android:layout_toRightOf="@+id/tv_change_room"
-        android:src="@drawable/ycdd_daojishi_jinbi" />
+        <com.common.view.ex.ExImageView
+            android:id="@+id/iv_hz_icon"
+            android:layout_width="@dimen/view_14_dp"
+            android:layout_height="@dimen/view_16_dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/top_xiaohongzuan" />
+
+        <com.component.busilib.view.BitmapTextView
+            android:id="@+id/tv_hz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/view_18_dp"
+            android:layout_toRightOf="@+id/tv_coin"
+            BitmapTextView:scale="0.5" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_hz_change"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_22_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:gravity="center"
+            android:textColor="#B2B6D6"
+            android:textSize="@dimen/textsize_16_dp"
+            android:visibility="gone" />
+    </com.common.view.ex.ExFrameLayout>
 
     <!--<ImageView-->
     <!--android:id="@+id/iv_acc_disable"-->
@@ -71,18 +113,6 @@
     <!--android:layout_alignLeft="@+id/tv_acc"-->
     <!--android:layout_alignBottom="@+id/tv_acc"-->
     <!--android:background="@drawable/wubanzou" />-->
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_coin_change"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_22_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@id/tv_coin_area"
-        android:gravity="center"
-        android:textColor="#B2B6D6"
-        android:textSize="@dimen/textsize_16_dp"
-        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_voice_setting"

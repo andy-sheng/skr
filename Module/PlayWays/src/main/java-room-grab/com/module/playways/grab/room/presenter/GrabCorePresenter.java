@@ -37,6 +37,9 @@ import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.WonderfulMomentModel;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
+import com.module.playways.room.gift.event.UpdateHZEvent;
+import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
+import com.zq.live.proto.Room.Property;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -2450,9 +2453,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
         }
 
-        if (giftPresentEvent.mGPrensentGiftMsgModel.getReceiveUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
-            if (giftPresentEvent.mGPrensentGiftMsgModel.getReceiveUserCoin() != -1) {
-                EventBus.getDefault().post(new UpdateCoinEvent((int) giftPresentEvent.mGPrensentGiftMsgModel.getReceiveUserCoin(), giftPresentEvent.info.getTimeMs()));
+        for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
+            if (property.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                if (property.getCoinBalance() != -1) {
+                    EventBus.getDefault().post(new UpdateCoinEvent((int) property.getCoinBalance(), property.getLastChangeMs()));
+                }
+
+                if (property.getHongZuanBalance() != -1) {
+                    mRoomData.setHzCount(property.getHongZuanBalance(), property.getLastChangeMs());
+                }
+
+                break;
             }
         }
     }

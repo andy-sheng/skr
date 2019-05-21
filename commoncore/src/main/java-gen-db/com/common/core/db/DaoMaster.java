@@ -21,22 +21,16 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
-        UserInfoDBDao.createTable(db, ifNotExists);
-<<<<<<< HEAD
-        UserAccountDao.createTable(db, ifNotExists);
-=======
         RemarkDBDao.createTable(db, ifNotExists);
->>>>>>> 重构拉取个人关系模块
+        UserInfoDBDao.createTable(db, ifNotExists);
+        UserAccountDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
-        UserInfoDBDao.dropTable(db, ifExists);
-<<<<<<< HEAD
-        UserAccountDao.dropTable(db, ifExists);
-=======
         RemarkDBDao.dropTable(db, ifExists);
->>>>>>> 重构拉取个人关系模块
+        UserInfoDBDao.dropTable(db, ifExists);
+        UserAccountDao.dropTable(db, ifExists);
     }
 
     /**
@@ -55,12 +49,9 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(UserInfoDBDao.class);
-<<<<<<< HEAD
-        registerDaoClass(UserAccountDao.class);
-=======
         registerDaoClass(RemarkDBDao.class);
->>>>>>> 重构拉取个人关系模块
+        registerDaoClass(UserInfoDBDao.class);
+        registerDaoClass(UserAccountDao.class);
     }
 
     public DaoSession newSession() {

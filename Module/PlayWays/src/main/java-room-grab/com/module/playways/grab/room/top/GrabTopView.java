@@ -22,6 +22,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.R;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
+import com.module.playways.room.gift.event.UpdateHZEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,16 +32,23 @@ public class GrabTopView extends RelativeLayout {
 
     ExTextView mTvChangeRoom;
     BitmapTextView mTvCoin;
-    ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
     ImageView mIvVoiceSetting;
+    ExTextView mTvHzChange;
+    BitmapTextView mTvHz;
 
     Listener mOnClickChangeRoomListener;
     GrabRoomData mGrabRoomData;
 
+    ExImageView mIvHzIcon;
+
     int mCoin = 0;
 
+    float mHz = 0;
+
     long lastTs;
+
+    long lastHzTs;
 
     AnimatorSet mAnimatorSet;  //金币加减的动画
 
@@ -87,9 +95,19 @@ public class GrabTopView extends RelativeLayout {
         mGrabRoomData.setCoinNoEvent(mCoin);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateHZEvent event) {
+        if (mHz != event.getHz()) {
+            if (lastHzTs < event.getTs()) {
+                lastHzTs = event.getTs();
+                mHz = event.getHz();
+                mTvHz.setText(String.format("%.1f", event.getHz()));
+            }
+        }
+    }
+
     private void playCoinChangeAnimation(int coinChange) {
         mTvCoinChange.setVisibility(VISIBLE);
-        mConinChangeIv.setVisibility(VISIBLE);
         if (coinChange > 0) {
             mTvCoinChange.setText("+ " + Math.abs(coinChange));
         } else {
@@ -101,13 +119,9 @@ public class GrabTopView extends RelativeLayout {
             ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(mTvCoinChange, TRANSLATION_Y, 0f, -U.getDisplayUtils().dip2px(30));
             ObjectAnimator alphAnimation = ObjectAnimator.ofFloat(mTvCoinChange, View.ALPHA, 1f, 0f);
 
-            ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(mConinChangeIv, ROTATION, 0f, 360f);
             // 高度确定，直接写死中心点
-            mConinChangeIv.setPivotX(U.getDisplayUtils().dip2px(19));
-            mConinChangeIv.setPivotY(U.getDisplayUtils().dip2px(19));
-
             mAnimatorSet.setDuration(1000);
-            mAnimatorSet.playTogether(translateAnimation, alphAnimation, rotateAnimation);
+            mAnimatorSet.playTogether(translateAnimation, alphAnimation);
         }
 
         mAnimatorSet.removeAllListeners();
@@ -119,7 +133,7 @@ public class GrabTopView extends RelativeLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mConinChangeIv.setVisibility(GONE);
+                mTvCoinChange.setVisibility(GONE);
             }
 
             @Override
@@ -136,13 +150,17 @@ public class GrabTopView extends RelativeLayout {
 
     }
 
+
     public void init() {
         inflate(getContext(), R.layout.grab_top_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mTvCoin = (BitmapTextView) findViewById(R.id.tv_coin);
-        mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
         mIvVoiceSetting = (ImageView) findViewById(R.id.iv_voice_setting);
+        mIvHzIcon = (ExImageView) findViewById(R.id.iv_hz_icon);
+        mTvHzChange = (ExTextView) findViewById(R.id.tv_hz_change);
+        mTvHz = (BitmapTextView) findViewById(R.id.tv_hz);
+        mTvHz.setText("0");
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -168,7 +186,9 @@ public class GrabTopView extends RelativeLayout {
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
         mTvCoin.setText(mGrabRoomData.getCoin() + "");
+        mTvHz.setText(String.format("%.1f", mGrabRoomData.getHzCount()));
         mCoin = mGrabRoomData.getCoin();
+        mHz = mGrabRoomData.getHzCount();
 
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间

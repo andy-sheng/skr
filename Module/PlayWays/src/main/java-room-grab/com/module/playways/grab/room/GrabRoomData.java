@@ -17,6 +17,7 @@ import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WonderfulMomentModel;
+import com.module.playways.room.gift.event.UpdateHZEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 
@@ -28,6 +29,7 @@ import java.util.List;
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     //    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
     protected int mCoin;// 金币数
+    protected float mHzCount;// 金币数
     protected int mTagId;//一场到底歌曲分类
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
@@ -48,6 +50,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private int mOpenRecording = -1; // 是否开启高光时刻
 
     private List<WonderfulMomentModel> mWonderfulMomentList = new ArrayList<>();// 高光时刻本地录音文件路径
+
+    long lastHzTs = -1;
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -194,6 +198,18 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         }
     }
 
+    public void setHzCount(float hzCount, long ts) {
+        if (lastHzTs < ts) {
+            lastHzTs = ts;
+            mHzCount = hzCount;
+            EventBus.getDefault().post(new UpdateHZEvent(mHzCount, ts));
+        }
+    }
+
+    public float getHzCount() {
+        return mHzCount;
+    }
+
     public boolean isAccEnable() {
         return mIsAccEnable;
     }
@@ -263,6 +279,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     public void loadFromRsp(JoinGrabRoomRspModel rsp) {
         this.setGameId(rsp.getRoomID());
         this.setCoin(rsp.getCoin());
+        this.setHzCount(rsp.getHongZuan(), 0);
         if (rsp.getConfig() != null) {
             this.setGrabConfigModel(rsp.getConfig());
         } else {
@@ -365,16 +382,17 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     }
 
     public boolean openAudioRecording() {
-        if(mOpenRecording ==-1){
-            if(U.getDeviceUtils().getLevel().equals(DeviceUtils.LEVEL.BAD)){
-                MyLog.w(TAG,"设备太差，不开启录制");
+        if (mOpenRecording == -1) {
+            if (U.getDeviceUtils().getLevel().equals(DeviceUtils.LEVEL.BAD)) {
+                MyLog.w(TAG, "设备太差，不开启录制");
                 mOpenRecording = 0;
-            }else{
+            } else {
                 mOpenRecording = 1;
             }
         }
-        return mOpenRecording ==1;
+        return mOpenRecording == 1;
     }
+
 
     public void addWonderfulMomentPath(WonderfulMomentModel savePath){
         mWonderfulMomentList.add(savePath);
@@ -383,7 +401,4 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     public List<WonderfulMomentModel> getWonderfulMomentList() {
         return mWonderfulMomentList;
     }
-
-
-
 }

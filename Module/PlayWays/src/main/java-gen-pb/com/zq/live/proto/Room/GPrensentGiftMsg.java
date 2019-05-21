@@ -19,6 +19,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentGiftMsg.Builder> {
@@ -84,15 +85,25 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
   )
   private final Float receiveUserCoin;
 
+  /**
+   * 资产变动列表
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.zq.live.proto.Room.Property#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<Property> propertyChangeList;
+
   public GPrensentGiftMsg(GiftInfo giftInfo, Integer count, UserInfo sendUserInfo,
       UserInfo receiveUserInfo, Integer roomID, Long continueID, Integer continueCnt,
-      Float receiveUserCoin) {
-    this(giftInfo, count, sendUserInfo, receiveUserInfo, roomID, continueID, continueCnt, receiveUserCoin, ByteString.EMPTY);
+      Float receiveUserCoin, List<Property> propertyChangeList) {
+    this(giftInfo, count, sendUserInfo, receiveUserInfo, roomID, continueID, continueCnt, receiveUserCoin, propertyChangeList, ByteString.EMPTY);
   }
 
   public GPrensentGiftMsg(GiftInfo giftInfo, Integer count, UserInfo sendUserInfo,
       UserInfo receiveUserInfo, Integer roomID, Long continueID, Integer continueCnt,
-      Float receiveUserCoin, ByteString unknownFields) {
+      Float receiveUserCoin, List<Property> propertyChangeList, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.giftInfo = giftInfo;
     this.count = count;
@@ -102,6 +113,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     this.continueID = continueID;
     this.continueCnt = continueCnt;
     this.receiveUserCoin = receiveUserCoin;
+    this.propertyChangeList = Internal.immutableCopyOf("propertyChangeList", propertyChangeList);
   }
 
   @Override
@@ -115,6 +127,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     builder.continueID = continueID;
     builder.continueCnt = continueCnt;
     builder.receiveUserCoin = receiveUserCoin;
+    builder.propertyChangeList = Internal.copyOf("propertyChangeList", propertyChangeList);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -132,7 +145,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
         && Internal.equals(roomID, o.roomID)
         && Internal.equals(continueID, o.continueID)
         && Internal.equals(continueCnt, o.continueCnt)
-        && Internal.equals(receiveUserCoin, o.receiveUserCoin);
+        && Internal.equals(receiveUserCoin, o.receiveUserCoin)
+        && propertyChangeList.equals(o.propertyChangeList);
   }
 
   @Override
@@ -148,6 +162,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
       result = result * 37 + (continueID != null ? continueID.hashCode() : 0);
       result = result * 37 + (continueCnt != null ? continueCnt.hashCode() : 0);
       result = result * 37 + (receiveUserCoin != null ? receiveUserCoin.hashCode() : 0);
+      result = result * 37 + propertyChangeList.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -164,6 +179,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     if (continueID != null) builder.append(", continueID=").append(continueID);
     if (continueCnt != null) builder.append(", continueCnt=").append(continueCnt);
     if (receiveUserCoin != null) builder.append(", receiveUserCoin=").append(receiveUserCoin);
+    if (!propertyChangeList.isEmpty()) builder.append(", propertyChangeList=").append(propertyChangeList);
     return builder.replace(0, 2, "GPrensentGiftMsg{").append('}').toString();
   }
 
@@ -233,6 +249,16 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     return receiveUserCoin;
   }
 
+  /**
+   * 资产变动列表
+   */
+  public List<Property> getPropertyChangeListList() {
+    if(propertyChangeList==null){
+        return new java.util.ArrayList<Property>();
+    }
+    return propertyChangeList;
+  }
+
   public boolean hasGiftInfo() {
     return giftInfo!=null;
   }
@@ -265,6 +291,13 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     return receiveUserCoin!=null;
   }
 
+  /**
+   * 资产变动列表
+   */
+  public boolean hasPropertyChangeListList() {
+    return propertyChangeList!=null;
+  }
+
   public static final class Builder extends Message.Builder<GPrensentGiftMsg, Builder> {
     private GiftInfo giftInfo;
 
@@ -282,7 +315,10 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
 
     private Float receiveUserCoin;
 
+    private List<Property> propertyChangeList;
+
     public Builder() {
+      propertyChangeList = Internal.newMutableList();
     }
 
     public Builder setGiftInfo(GiftInfo giftInfo) {
@@ -325,9 +361,18 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
       return this;
     }
 
+    /**
+     * 资产变动列表
+     */
+    public Builder addAllPropertyChangeList(List<Property> propertyChangeList) {
+      Internal.checkElementsNotNull(propertyChangeList);
+      this.propertyChangeList = propertyChangeList;
+      return this;
+    }
+
     @Override
     public GPrensentGiftMsg build() {
-      return new GPrensentGiftMsg(giftInfo, count, sendUserInfo, receiveUserInfo, roomID, continueID, continueCnt, receiveUserCoin, super.buildUnknownFields());
+      return new GPrensentGiftMsg(giftInfo, count, sendUserInfo, receiveUserInfo, roomID, continueID, continueCnt, receiveUserCoin, propertyChangeList, super.buildUnknownFields());
     }
   }
 
@@ -346,6 +391,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
           + ProtoAdapter.SINT64.encodedSizeWithTag(6, value.continueID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.continueCnt)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(8, value.receiveUserCoin)
+          + Property.ADAPTER.asRepeated().encodedSizeWithTag(9, value.propertyChangeList)
           + value.unknownFields().size();
     }
 
@@ -359,6 +405,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
       ProtoAdapter.SINT64.encodeWithTag(writer, 6, value.continueID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.continueCnt);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 8, value.receiveUserCoin);
+      Property.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.propertyChangeList);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -376,6 +423,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
           case 6: builder.setContinueID(ProtoAdapter.SINT64.decode(reader)); break;
           case 7: builder.setContinueCnt(ProtoAdapter.UINT32.decode(reader)); break;
           case 8: builder.setReceiveUserCoin(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 9: builder.propertyChangeList.add(Property.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -393,6 +441,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
       if (builder.giftInfo != null) builder.giftInfo = GiftInfo.ADAPTER.redact(builder.giftInfo);
       if (builder.sendUserInfo != null) builder.sendUserInfo = UserInfo.ADAPTER.redact(builder.sendUserInfo);
       if (builder.receiveUserInfo != null) builder.receiveUserInfo = UserInfo.ADAPTER.redact(builder.receiveUserInfo);
+      Internal.redactElements(builder.propertyChangeList, Property.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

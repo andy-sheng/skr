@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.inter;
 
-import com.module.playways.grab.room.songmanager.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
 import com.component.busilib.friends.SpecialModel;
 
 import java.util.List;
@@ -17,6 +17,4 @@ public interface IGrabSongManageView {
     void showNum(int num);
 
     void deleteSong(GrabRoomSongModel grabRoomSongModel);
-
-    void updateRoomNameSuccess();
 }

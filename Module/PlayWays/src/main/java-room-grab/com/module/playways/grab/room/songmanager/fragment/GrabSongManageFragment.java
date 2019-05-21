@@ -1,5 +1,6 @@
-package com.module.playways.grab.room.songmanager;
+package com.module.playways.grab.room.songmanager.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -7,46 +8,30 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
-import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
-import com.common.utils.ImageUtils;
 import com.common.utils.U;
-import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.ExTextView;
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.component.busilib.friends.SpecialModel;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
+import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.presenter.GrabSongManagePresenter;
+import com.module.playways.grab.room.songmanager.adapter.ManageSongAdapter;
+import com.module.playways.grab.room.songmanager.event.SongNumChangeEvent;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
-import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.songmanager.tags.GrabTagsAdapter;
-import com.module.playways.grab.room.songmanager.view.GrabEditView;
-import com.module.playways.room.song.fragment.GrabSearchSongFragment;
-import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnDismissListener;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -55,21 +40,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     GrabRoomData mRoomData;
 
-    ExTextView mSearchSongIv;
-
-    ExTextView mTvSelectedSong;
-
-    ExTextView mEditRoomName;
-
-    ExLinearLayout mFlSongListContainer;
-
     SmartRefreshLayout mRefreshLayout;
 
     RecyclerView mRecyclerView;
 
-    SimpleDraweeView mTvSelectedTag;
-
-    TextView mTvFinish;
+    ExTextView mTvSelectedTag;
 
     ImageView mIvArrow;
 
@@ -80,8 +55,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     GrabSongTagsView mGrabSongTagsView;
 
     PopupWindow mPopupWindow;
-
-    RelativeLayout mRlContent;
 
     DialogPlus mEditRoomDialog;
 
@@ -100,15 +73,9 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         addPresent(mGrabSongManagePresenter);
 
         mIvArrow = (ImageView) mRootView.findViewById(R.id.iv_arrow);
-        mSearchSongIv = mRootView.findViewById(R.id.search_song_iv);
-        mTvSelectedSong = (ExTextView) mRootView.findViewById(R.id.tv_selected_song);
-        mEditRoomName = (ExTextView) mRootView.findViewById(R.id.edit_room_name);
-        mFlSongListContainer = (ExLinearLayout) mRootView.findViewById(R.id.fl_song_list_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mTvSelectedTag = mRootView.findViewById(R.id.selected_tag);
-        mTvFinish = (TextView) mRootView.findViewById(R.id.tv_finish);
-        mRlContent = (RelativeLayout) mRootView.findViewById(R.id.rl_content);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mManageSongAdapter = new ManageSongAdapter();
@@ -136,12 +103,10 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mRecyclerView.setItemAnimator(defaultItemAnimator);
 
         initListener();
-        mGrabSongManagePresenter.getPlayBookList();
 
         if (mRoomData.getSpecialModel() != null) {
             setTagTv(mRoomData.getSpecialModel());
         }
-        mEditRoomName.setText(mRoomData.getRoomName());
 
         mUiHandler.postDelayed(() -> {
             TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
@@ -149,9 +114,9 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             animation.setDuration(400);
             animation.setRepeatMode(Animation.REVERSE);
             animation.setFillAfter(true);
-            mRlContent.startAnimation(animation);
-            mRlContent.setVisibility(View.VISIBLE);
         }, 50);
+
+        mGrabSongManagePresenter.getPlayBookList();
     }
 
     private void setTagTv(SpecialModel specialModel) {
@@ -159,11 +124,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mRoomData.setTagId(specialModel.getTagID());
 
         mSpecialModelId = specialModel.getTagID();
-
-        FrescoWorker.loadImage(mTvSelectedTag, ImageFactory.newPathImage(specialModel.getBgImage3())
-                .setScaleType(ScalingUtils.ScaleType.FIT_XY)
-                .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_640.getW()).build())
-                .build());
+        mTvSelectedTag.setText(specialModel.getTagName());
+        mTvSelectedTag.setTextColor(Color.parseColor(specialModel.getBgColor()));
     }
 
     @Override
@@ -176,17 +138,12 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     @Override
     public void showNum(int num) {
-        mTvSelectedSong.setText(String.format("已点%d首", num));
+        EventBus.getDefault().post(new SongNumChangeEvent(num));
     }
 
     @Override
     public void deleteSong(GrabRoomSongModel grabRoomSongModel) {
         mManageSongAdapter.deleteSong(grabRoomSongModel);
-    }
-
-    @Override
-    public void updateRoomNameSuccess() {
-        mEditRoomName.setText(mRoomData.getRoomName());
     }
 
     @Override
@@ -216,33 +173,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     private void initListener() {
-        mEditRoomName.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                showEditRoomDialog();
-            }
-        });
-
-        mSearchSongIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), GrabSearchSongFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-                                if (requestCode == 0 && resultCode == 0 && obj != null) {
-                                    SongModel model = (SongModel) obj;
-                                    MyLog.d(TAG, "onFragmentResult" + " model=" + model);
-                                    mGrabSongManagePresenter.addSong(model);
-                                }
-                            }
-                        })
-                        .build());
-            }
-        });
-
         mTvSelectedTag.setOnClickListener(v -> {
             if (mGrabSongTagsView == null) {
                 mGrabSongTagsView = new GrabSongTagsView(getContext());
@@ -282,18 +212,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             }
         });
 
-        mTvFinish.setOnClickListener(v -> {
-            finish();
-        });
-
-        mRootView.setOnClickListener(v -> {
-            finish();
-        });
-
-        mRlContent.setOnClickListener(v -> {
-
-        });
-
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
             mGrabSongManagePresenter.deleteSong(grabRoomSongModel);
         });
@@ -301,50 +219,9 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mManageSongAdapter.setGrabRoomData(mRoomData);
     }
 
-    private void showEditRoomDialog() {
-        GrabEditView grabEditView = new GrabEditView(getContext(), mRoomData.getRoomName());
-        grabEditView.setListener(new GrabEditView.Listener() {
-            @Override
-            public void onClickCancel() {
-                if (mEditRoomDialog != null) {
-                    mEditRoomDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onClickSave(String roomName) {
-                if (!TextUtils.isEmpty(roomName)) {
-                    // TODO: 2019/4/18 修改房间名
-                    mEditRoomDialog.dismiss(false);
-                    mGrabSongManagePresenter.updateRoomName(mRoomData.getGameId(), roomName);
-                } else {
-                    // TODO: 2019/4/18 房间名为空
-                    U.getToastUtil().showShort("输入的房间名为空");
-                }
-            }
-        });
-
-        mEditRoomDialog = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(grabEditView))
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_50)
-                .setExpanded(false)
-                .setGravity(Gravity.CENTER)
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                    }
-                })
-                .create();
-        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
-        mEditRoomDialog.show();
-    }
-
     @Override
     public void destroy() {
         super.destroy();
-        mRlContent.clearAnimation();
         if (mEditRoomDialog != null) {
             mEditRoomDialog.dismiss(false);
         }

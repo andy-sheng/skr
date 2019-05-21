@@ -52,7 +52,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
-import com.module.playways.grab.room.songmanager.GrabSongManageFragment;
+import com.module.playways.grab.room.songmanager.fragment.OwnerManageFragment;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
@@ -94,7 +94,6 @@ import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.report.fragment.QuickFeedbackFragment;
-import com.zq.report.fragment.ReportFragment;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -668,9 +667,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void clickRoomManagerBtn() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), GrabSongManageFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), OwnerManageFragment.class)
                         .setAddToBackStack(true)
-                        .setHasAnimation(false)
+                        .setHasAnimation(true)
+                        .setEnterAnim(R.anim.slide_right_in)
+                        .setExitAnim(R.anim.slide_right_out)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
                 removeManageSongTipView();

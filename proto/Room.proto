@@ -118,6 +118,16 @@ enum ERoomMsgType {
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
 }
 
+// 用户金币、红钻资产, -1 表示没有变动
+message Property
+{
+    uint32 userID         = 1;
+    float coinBalance     = 2;
+    float hongZuanBalance = 3;
+    int64 lastChangeMs    = 4;
+}
+
+
 message GPrensentGiftMsg
 {
     Common.GiftInfo giftInfo        = 1;
@@ -128,6 +138,7 @@ message GPrensentGiftMsg
         sint64 continueID        = 6;
         uint32 continueCnt       = 7;
         float receiveUserCoin    = 8;
+        repeated Property propertyChangeList = 9; // 资产变动列表
 
 }
 

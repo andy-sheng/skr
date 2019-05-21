@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.songmanager;
+package com.module.playways.grab.room.songmanager.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +13,7 @@ import com.common.view.recyclerview.DiffAdapter;
 
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.R;
+import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {

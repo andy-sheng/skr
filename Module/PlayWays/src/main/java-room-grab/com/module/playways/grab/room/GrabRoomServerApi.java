@@ -17,6 +17,7 @@ public interface GrabRoomServerApi {
 
     /**
      * 房主开始游戏
+     *
      * @param body
      * @return
      */
@@ -274,8 +275,9 @@ public interface GrabRoomServerApi {
 
     /**
      * 修改房间名
-     * @param body    "roomID": 0,
-     *                "roomName": "string"
+     *
+     * @param body "roomID": 0,
+     *             "roomName": "string"
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/update-name")
@@ -302,6 +304,7 @@ public interface GrabRoomServerApi {
 
     /**
      * 获取粉丝列表
+     *
      * @param offset
      * @param count
      * @return
@@ -377,4 +380,20 @@ message STCommitSegmentResultReq
       */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/pk-commit-segment-result")
     Observable<ApiResult> sendPkPerSegmentResult(@Body RequestBody body);
+
+    /**
+     * 获取推荐tag列表
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/stand-billboards")
+    Observable<ApiResult> getStandBillBoards();
+
+    /**
+     * 获取推荐歌曲
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
+    Observable<ApiResult> getListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
 }
