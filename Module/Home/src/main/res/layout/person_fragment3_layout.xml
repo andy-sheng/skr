@@ -52,15 +52,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/photo_view"
+            <LinearLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/view_9_dp"
-                android:layout_marginTop="@dimen/view_7_dp"
-                android:layout_marginRight="@dimen/view_9_dp"
-                android:overScrollMode="never"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+                android:layout_below="@+id/titlebar"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <com.common.view.viewpager.SlidingTabLayout
+                    android:id="@+id/person_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_52_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/view_80_dp"
+                    android:layout_marginRight="@dimen/view_80_dp" />
+
+                <com.common.view.viewpager.NestViewPager
+                    android:id="@+id/person_vp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fadingEdge="none"
+                    android:fadingEdgeLength="0dp"
+                    android:overScrollMode="never"
+                    android:requiresFadingEdge="none" />
+
+            </LinearLayout>
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
@@ -94,7 +112,7 @@
                         <RelativeLayout
                             android:id="@id/user_top_area"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_448_dp"
+                            android:layout_height="@dimen/view_408_dp"
                             android:layout_below="@id/titlebar"
                             android:background="@drawable/person_fragment_bg">
 
@@ -415,20 +433,6 @@
                                 android:textColor="#0C2275"
                                 android:textSize="@dimen/textsize_14_dp"
                                 android:textStyle="bold" />
-
-                            <com.common.view.ex.ExTextView
-                                android:id="@+id/photo_num_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/view_27_dp"
-                                android:layout_below="@id/medal_layout"
-                                android:layout_marginLeft="@dimen/view_16_dp"
-                                android:layout_marginTop="@dimen/view_20_dp"
-                                android:background="@drawable/person_photos_bg"
-                                android:gravity="center_vertical"
-                                android:paddingLeft="@dimen/view_12_dp"
-                                android:paddingRight="@dimen/view_12_dp"
-                                android:paddingBottom="@dimen/view_1_dp"
-                                android:textColor="@color/white" />
                         </RelativeLayout>
 
                     </RelativeLayout>

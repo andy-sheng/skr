@@ -65,7 +65,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
         mShareView = (InviteShareFriendView) mRootView.findViewById(R.id.share_view);
 
-        mInviteTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
+        mInviteTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
         mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         mInviteTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
         mInviteTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);

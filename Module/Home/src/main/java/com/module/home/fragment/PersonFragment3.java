@@ -7,12 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,9 +19,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
-
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
@@ -34,24 +31,20 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
-
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
+import com.common.view.viewpager.NestViewPager;
+import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.imagebrowse.ImageBrowseView;
-import com.imagebrowse.big.BigImageBrowseFragment;
-import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.module.RouterConstants;
 import com.module.home.R;
-
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.respicker.ResPicker;
@@ -63,24 +56,24 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.adapter.PhotoAdapter;
-import com.zq.person.model.AddPhotoModel;
 import com.zq.person.model.PhotoModel;
+import com.zq.person.view.PhotoWallView;
+import com.zq.person.view.ProducationWallView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.RelationNumModel;
 
-public class PersonFragment2 extends BaseFragment implements IPersonView {
+/**
+ * 带作品的照片墙
+ */
+public class PersonFragment3 extends BaseFragment implements IPersonView {
 
     SmartRefreshLayout mSmartRefresh;
     ClassicsHeader mClassicsHeader;
-    ExTextView mPhotoNumTv;
-    RecyclerView mPhotoView;
     RelativeLayout mUserInfoArea;
     CommonTitleBar mTitlebar;
     ImageView mAvatarBg;
@@ -118,19 +111,20 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
 
     PersonCorePresenter mPresenter;
 
-    PhotoAdapter mPhotoAdapter;
+    SlidingTabLayout mPersonTab;
+    NestViewPager mPersonVp;
+    PagerAdapter mPersonTabAdapter;
 
-    int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
-    boolean mHasMore = false;
-    int mTotalPhotoNum = 0;
     int mFriendNum = 0;  // 好友数
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
 
+    PhotoWallView mPhotoWallView;
+    ProducationWallView mProducationWallView;
 
     @Override
     public int initView() {
-        return R.layout.person_fragment2_layout;
+        return R.layout.person_fragment3_layout;
     }
 
     @Override
@@ -144,7 +138,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
         initRelationNumArea();
         initFunctionArea();
         initGameInfoArea();
-        initPhotoArea();
+        initPersonArea();
 
         refreshUserInfoView();
     }
@@ -153,9 +147,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPresenter.getHomePage(false);
-        if (mPhotoAdapter.getSuccessNum() == 0) {
-            mPresenter.getPhotos(0, DEFAUAT_CNT);
-        }
     }
 
     private void initBaseContainArea() {
@@ -176,7 +167,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
         }
 
         mSmartRefresh.setEnableRefresh(true);
-        mSmartRefresh.setEnableLoadMore(true);
+        mSmartRefresh.setEnableLoadMore(false);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
         mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
@@ -184,22 +175,21 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getPhotos(mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT);
+
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(true);
-                mPresenter.getPhotos(0, DEFAUAT_CNT);
+                if (mPhotoWallView != null) {
+                    mPhotoWallView.getPhotos();
+                }
             }
         });
 
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                MyLog.d(TAG, "onOffsetChanged" + " appBarLayout=" + appBarLayout + " verticalOffset=" + verticalOffset);
-//                MyLog.d(TAG, "onOffsetChanged" + " appBarLayout=" + appBarLayout.getTotalScrollRange());
-//                MyLog.d(TAG, "onOffsetChanged" + " mAppbar=" + mAppbar.getTotalScrollRange());
                 if (verticalOffset == 0) {
                     // 展开状态
                     mToolbar.setVisibility(View.GONE);
@@ -349,125 +339,80 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
     }
 
-    private void initPhotoArea() {
-        mPhotoNumTv = (ExTextView) mRootView.findViewById(R.id.photo_num_tv);
-        mPhotoView = (RecyclerView) mRootView.findViewById(R.id.photo_view);
+    private void initPersonArea() {
+        mPersonTab = (SlidingTabLayout) mRootView.findViewById(R.id.person_tab);
+        mPersonVp = (NestViewPager) mRootView.findViewById(R.id.person_vp);
 
-        mPhotoView.setFocusableInTouchMode(false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        mPhotoView.setLayoutManager(gridLayoutManager);
-        mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
+        mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
+        mPersonTab.setSelectedIndicatorColors(U.getColor(com.component.busilib.R.color.black_trans_20));
+        mPersonTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
+        mPersonTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
+        mPersonTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
+        mPersonTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(12));
+        mPersonTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
+        mPersonTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
+        mPersonTabAdapter = new PagerAdapter() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                if (model instanceof AddPhotoModel) {
-                    goAddPhotoFragment();
-                } else if (model instanceof PhotoModel) {
-                    // 跳到看大图
-                    BigImageBrowseFragment.open(true, getActivity(), new DefaultImageBrowserLoader<PhotoModel>() {
-                        @Override
-                        public void init() {
+            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                container.removeView((View) object);
+            }
 
-                        }
-
-                        @Override
-                        public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
-                            if (TextUtils.isEmpty(item.getPicPath())) {
-                                imageBrowseView.load(item.getLocalPath());
-                            } else {
-                                imageBrowseView.load(item.getPicPath());
-                            }
-                        }
-
-                        @Override
-                        public int getInitCurrentItemPostion() {
-                            return mPhotoAdapter.getPostionOfItem((PhotoModel) model);
-                        }
-
-                        @Override
-                        public List<PhotoModel> getInitList() {
-                            return mPhotoAdapter.getDataList();
-                        }
-
-                        @Override
-                        public void loadMore(boolean backward, int position, PhotoModel data, Callback<List<PhotoModel>> callback) {
-                            if (backward) {
-                                // 向后加载
-                                mPresenter.getPhotos(mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
-                                    @Override
-                                    public void onCallback(int r, List<PhotoModel> list) {
-                                        if (callback != null && list != null) {
-                                            callback.onCallback(0, list);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-
-                        @Override
-                        public boolean hasMore(boolean backward, int position, PhotoModel data) {
-                            if (backward) {
-                                return mHasMore;
-                            }
-                            return false;
-                        }
-
-                        @Override
-                        public boolean hasMenu() {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean hasDeleteMenu() {
-                            return true;
-                        }
-
-                        @Override
-                        public Callback<PhotoModel> getDeleteListener() {
-                            return new Callback<PhotoModel>() {
-                                @Override
-                                public void onCallback(int r, PhotoModel obj) {
-                                    mPresenter.deletePhoto(obj);
-                                }
-                            };
-                        }
-                    });
+            @NonNull
+            @Override
+            public Object instantiateItem(@NonNull ViewGroup container, int position) {
+                if (position == 0) {
+                    // 照片墙
+                    mPhotoWallView = new PhotoWallView(PersonFragment3.this);
+                    container.addView(mPhotoWallView);
+                    mPhotoWallView.getPhotos();
+                    return mPhotoWallView;
+                } else if (position == 1) {
+                    // 作品
+                    mProducationWallView = new ProducationWallView(getContext());
+                    container.addView(mProducationWallView);
+                    return mProducationWallView;
                 }
-            }
-        }, PhotoAdapter.TYPE_PERSON_CENTER);
-
-        mPhotoAdapter.setPhotoManageListener(new PhotoAdapter.PhotoManageListener() {
-            @Override
-            public void delete(PhotoModel model) {
-                mPresenter.deletePhoto(model);
+                return super.instantiateItem(container, position);
             }
 
             @Override
-            public void reupload(PhotoModel model) {
-                ArrayList<PhotoModel> photoModelArrayList = new ArrayList<>(1);
-                photoModelArrayList.add(model);
-                mPresenter.upload(photoModelArrayList, true);
+            public int getCount() {
+                return 2;
             }
-        });
-        mPhotoView.setAdapter(mPhotoAdapter);
-        mPresenter.loadUnSuccessPhotoFromDB();
-    }
 
-    void goAddPhotoFragment() {
-        ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
-                .setMultiMode(true)
-                .setShowCamera(true)
-                .setCrop(false)
-                .setSelectLimit(9)
-                .build()
-        );
-        ResPickerActivity.open(getActivity());
+            @Override
+            public int getItemPosition(@NonNull Object object) {
+                return POSITION_NONE;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                if (position == 0) {
+                    return "相册";
+                } else if (position == 1) {
+                    return "作品";
+                }
+                return "";
+            }
+
+            @Override
+            public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+                return view == (object);
+            }
+        };
+        mPersonVp.setAdapter(mPersonTabAdapter);
+        mPersonTab.setViewPager(mPersonVp);
+        mPersonTabAdapter.notifyDataSetChanged();
     }
 
     @Override
     public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
             List<ImageItem> imageItems = ResPicker.getInstance().getSelectedImageList();
-            mPresenter.uploadPhotoList(imageItems);
+            if (mPhotoWallView != null) {
+                mPhotoWallView.uploadPhotoList(imageItems);
+            }
             return true;
         }
         return super.onActivityResultReal(requestCode, resultCode, data);
@@ -599,55 +544,22 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
         mSmartRefresh.finishRefresh();
         mSmartRefresh.finishLoadMore();
 
-        mTotalPhotoNum = totalNum;
-        setPhotoNum();
-        mPhotoNumTv.setVisibility(View.VISIBLE);
-
-        if (list != null && list.size() > 0) {
-            // 有数据
-            mHasMore = true;
-            mSmartRefresh.setEnableLoadMore(true);
-            if (clear) {
-                mPhotoAdapter.setDataList(list);
-            } else {
-                mPhotoAdapter.insertLast(list);
-            }
-        } else {
-            mHasMore = false;
-            mSmartRefresh.setEnableLoadMore(false);
-            if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
-                // 没有更多了
-            } else {
-                // 没有数据
-            }
-        }
     }
 
-    void setPhotoNum() {
-        mPhotoNumTv.setText("个人相册（" + mTotalPhotoNum + "）");
-    }
 
     @Override
     public void insertPhoto(PhotoModel photoModel) {
-        mPhotoAdapter.insertFirst(photoModel);
+
     }
 
     @Override
     public void deletePhoto(PhotoModel photoModel, boolean numchange) {
-        if (numchange) {
-            mTotalPhotoNum--;
-            setPhotoNum();
-        }
-        mPhotoAdapter.delete(photoModel);
+
     }
 
     @Override
     public void updatePhoto(PhotoModel photoModel) {
-        if (photoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
-            mTotalPhotoNum++;
-            setPhotoNum();
-        }
-        mPhotoAdapter.update(photoModel);
+
     }
 
     @Override
@@ -683,3 +595,5 @@ public class PersonFragment2 extends BaseFragment implements IPersonView {
         super.destroy();
     }
 }
+
+

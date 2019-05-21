@@ -6,7 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.module.RouterConstants;
 import com.module.home.event.AuthSuccessEvent;
 import com.module.home.fragment.HalfRechargeFragment;
-import com.module.home.fragment.PersonFragment2;
+import com.module.home.fragment.PersonFragment3;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -22,7 +22,7 @@ public class HomeServiceImpl implements IHomeService {
     @Override
     public Object getData(int type, Object object) {
         if (0 == type) {
-            return PersonFragment2.class;
+            return PersonFragment3.class;
         } else if (1 == type) {
             return HomeActivity.class.getSimpleName();
         } else if (2 == type) {
