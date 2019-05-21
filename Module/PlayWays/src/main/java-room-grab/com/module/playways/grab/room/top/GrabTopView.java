@@ -18,9 +18,9 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.view.BitmapTextView;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
-import com.module.playways.R;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.module.playways.room.gift.event.UpdateHZEvent;
 
@@ -51,6 +51,7 @@ public class GrabTopView extends RelativeLayout {
     long lastHzTs;
 
     AnimatorSet mAnimatorSet;  //金币加减的动画
+    AnimatorSet mHzAnimatorSet;  //金币加减的动画
 
     public GrabTopView(Context context) {
         super(context);
@@ -99,15 +100,57 @@ public class GrabTopView extends RelativeLayout {
     public void onEvent(UpdateHZEvent event) {
         if (mHz != event.getHz()) {
             if (lastHzTs < event.getTs()) {
+                float hzChange = event.getHz() - mHz;
                 lastHzTs = event.getTs();
                 mHz = event.getHz();
                 mTvHz.setText(String.format("%.1f", event.getHz()));
+                playHZChangeAnimation(hzChange);
             }
         }
     }
 
+    private void playHZChangeAnimation(float hzChange) {
+        mTvHzChange.setText(String.format("+ %.1f", hzChange));
+
+        if (mHzAnimatorSet == null) {
+            mHzAnimatorSet = new AnimatorSet();
+            ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(mTvHzChange, TRANSLATION_Y, 0f, -U.getDisplayUtils().dip2px(30));
+            ObjectAnimator alphAnimation = ObjectAnimator.ofFloat(mTvHzChange, View.ALPHA, 1f, 0f);
+
+            // 高度确定，直接写死中心点
+            mHzAnimatorSet.setDuration(1000);
+            mHzAnimatorSet.playTogether(translateAnimation, alphAnimation);
+        } else {
+            mHzAnimatorSet.cancel();
+        }
+
+        mTvHzChange.setVisibility(VISIBLE);
+        mHzAnimatorSet.removeAllListeners();
+        mHzAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mTvHzChange.setVisibility(GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        mHzAnimatorSet.start();
+    }
+
     private void playCoinChangeAnimation(int coinChange) {
-        mTvCoinChange.setVisibility(VISIBLE);
         if (coinChange > 0) {
             mTvCoinChange.setText("+ " + Math.abs(coinChange));
         } else {
@@ -122,8 +165,11 @@ public class GrabTopView extends RelativeLayout {
             // 高度确定，直接写死中心点
             mAnimatorSet.setDuration(1000);
             mAnimatorSet.playTogether(translateAnimation, alphAnimation);
+        } else {
+            mAnimatorSet.cancel();
         }
 
+        mTvCoinChange.setVisibility(VISIBLE);
         mAnimatorSet.removeAllListeners();
         mAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -147,7 +193,6 @@ public class GrabTopView extends RelativeLayout {
             }
         });
         mAnimatorSet.start();
-
     }
 
 
@@ -246,6 +291,11 @@ public class GrabTopView extends RelativeLayout {
         if (mAnimatorSet != null) {
             mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
+        }
+
+        if (mHzAnimatorSet != null) {
+            mHzAnimatorSet.removeAllListeners();
+            mHzAnimatorSet.cancel();
         }
     }
 
