@@ -1,28 +1,20 @@
 package com.common.core.userinfo;
 
-import android.support.annotation.NonNull;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
-import org.greenrobot.greendao.annotation.Generated;
 
 import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * 个人信息(基础类)
  */
-@Entity(
-        indexes = {
-                @Index(value = "userId DESC", unique = true)
-        }
-)
+@Entity
 public class UserInfoDB implements Serializable {
     private static final long serialVersionUID = -5809782578272943999L;
 
     @Id
-    private Long id;
-    @NonNull
     private Long userId;
     private String avatar;   // 头像时间戳
     private String userNickname;    // 昵称
@@ -40,12 +32,11 @@ public class UserInfoDB implements Serializable {
 
     private String ext; //待扩展
 
-    @Generated(hash = 1624474751)
-    public UserInfoDB(Long id, @NonNull Long userId, String avatar,
-                      String userNickname, String userDisplayname, String letter,
-                      Long updateTime, Integer sex, String birthday, String signature,
-                      Integer relative, Integer block, Integer isSystem, String ext) {
-        this.id = id;
+    @Generated(hash = 1157054382)
+    public UserInfoDB(Long userId, String avatar, String userNickname,
+            String userDisplayname, String letter, Long updateTime, Integer sex,
+            String birthday, String signature, Integer relative, Integer block,
+            Integer isSystem, String ext) {
         this.userId = userId;
         this.avatar = avatar;
         this.userNickname = userNickname;
@@ -63,14 +54,6 @@ public class UserInfoDB implements Serializable {
 
     @Generated(hash = 1831215638)
     public UserInfoDB() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getUserId() {

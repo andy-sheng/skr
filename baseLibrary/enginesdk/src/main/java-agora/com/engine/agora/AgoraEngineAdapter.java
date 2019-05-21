@@ -79,7 +79,6 @@ public class AgoraEngineAdapter {
     private Params mConfig;
     private RtcEngine mRtcEngine;
     private Handler mUiHandler = new Handler();
-    private HandlerThread mWorkHandler = new HandlerThread("AgoraAdapterWorkThread");
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
