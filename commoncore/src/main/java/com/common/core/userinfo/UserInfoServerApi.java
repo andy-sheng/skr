@@ -257,4 +257,23 @@ public interface UserInfoServerApi {
      */
     @GET("/v1/mate/latest-relation")
     Observable<ApiResult> getLatestRelation(@Query("cnt") int cnt);
+
+    @GET("/v1/mate/list-follows-by-page")
+    Call<ApiResult> listFollowsByPage(@Query("offset") int offset,@Query("cnt") int cnt);
+
+    @GET("/v1/mate/list-follows-by-index-id")
+    Call<ApiResult> listFollowsByIndexId(@Query("lastIndexID") long lastIndexID);
+
+    @GET("/v1/mate/list-fans-by-page")
+    Observable<ApiResult> listFansByPage(@Query("offset") int offset,@Query("cnt") int cnt);
+
+
+    @GET("/v1/mate/list-remark-by-index-id")
+    Call<ApiResult> listRemarkByIndexId(@Query("lastIndexID") long lastIndexID);
+
+    @GET("/v1/mate/list-remark-by-page")
+    Call<ApiResult> listRemarkByPage(@Query("offset") int offset,@Query("cnt") int cnt);
+
+    @PUT("/v1/mate/write-user-remark")
+    Observable<ApiResult> writeUserRemark(@Body RequestBody body);
 }

@@ -11,24 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
-import com.common.notification.event.FollowNotifyEvent;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
@@ -36,13 +26,7 @@ import com.zq.dialog.InviteFriendDialog;
 import com.zq.relation.activity.RelationActivity;
 import com.zq.relation.view.RelationView;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.HashMap;
-import java.util.List;
-
-import model.RelationNumModel;
 
 /**
  * 关系列表
@@ -150,9 +134,9 @@ public class RelationFragment extends BaseFragment {
             }
         });
 
-        mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION_FRIENDS));
-        mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION_FOLLOW));
-        mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION_FANS));
+        mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue()));
+        mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION.FOLLOW.getValue()));
+        mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION.FANS.getValue()));
 
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
         mRelationTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
@@ -233,13 +217,13 @@ public class RelationFragment extends BaseFragment {
             if (relation == UserInfoManager.RA_UNKNOWN) {
                 selectPosition(0);
             } else {
-                if (relation == UserInfoManager.RELATION_FRIENDS) {
+                if (relation == UserInfoManager.RELATION.FRIENDS.getValue()) {
                     mRelationVp.setCurrentItem(0);
                     selectPosition(0);
-                } else if (relation == UserInfoManager.RELATION_FOLLOW) {
+                } else if (relation == UserInfoManager.RELATION.FOLLOW.getValue()) {
                     mRelationVp.setCurrentItem(1);
                     selectPosition(1);
-                } else if (relation == UserInfoManager.RELATION_FANS) {
+                } else if (relation == UserInfoManager.RELATION.FANS.getValue()) {
                     mRelationVp.setCurrentItem(2);
                     selectPosition(2);
                 }

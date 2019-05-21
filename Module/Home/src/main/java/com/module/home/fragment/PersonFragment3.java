@@ -263,7 +263,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
             @Override
             public void clickValid(View v) {
                 // 好友，双向关注
-                openRelationFragment(UserInfoManager.RELATION_FRIENDS);
+                openRelationFragment(UserInfoManager.RELATION.FRIENDS.getValue());
             }
         });
 
@@ -271,7 +271,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
             @Override
             public void clickValid(View v) {
                 // 粉丝，我关注的
-                openRelationFragment(UserInfoManager.RELATION_FANS);
+                openRelationFragment(UserInfoManager.RELATION.FANS.getValue());
             }
         });
 
@@ -279,7 +279,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
             @Override
             public void clickValid(View v) {
                 // 关注, 关注我的
-                openRelationFragment(UserInfoManager.RELATION_FOLLOW);
+                openRelationFragment(UserInfoManager.RELATION.FOLLOW.getValue());
             }
         });
     }
@@ -470,11 +470,11 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
     @Override
     public void showRelationNum(List<RelationNumModel> list) {
         for (RelationNumModel mode : list) {
-            if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
+            if (mode.getRelation() == UserInfoManager.RELATION.FRIENDS.getValue()) {
                 mFriendNum = mode.getCnt();
-            } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+            } else if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
                 mFansNum = mode.getCnt();
-            } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
+            } else if (mode.getRelation() == UserInfoManager.RELATION.FOLLOW.getValue()) {
                 mFocusNum = mode.getCnt();
             }
         }

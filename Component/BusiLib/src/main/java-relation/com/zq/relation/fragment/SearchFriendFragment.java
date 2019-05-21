@@ -99,7 +99,7 @@ public class SearchFriendFragment extends BaseFragment {
             }
         });
 
-        mRelationAdapter = new RelationAdapter(UserInfoManager.NO_RELATION, new RecyclerOnItemClickListener() {
+        mRelationAdapter = new RelationAdapter(UserInfoManager.RELATION.NO_RELATION.getValue(), new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 UserInfoModel userInfoModel = (UserInfoModel) model;

@@ -626,7 +626,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         int fansNum = 0;
         if (relationNumModes != null && relationNumModes.size() > 0) {
             for (RelationNumModel mode : relationNumModes) {
-                if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
                     fansNum = mode.getCnt();
                 }
             }

@@ -77,8 +77,8 @@ public class InviteFriendFragment2 extends BaseFragment {
         mTitleList.put(0, "好友");
         mTitleList.put(1, "粉丝");
 
-        mTitleAndViewMap.put(0, new InviteFriendView(this, mRoomData.getGameId(), UserInfoManager.RELATION_FRIENDS));
-        mTitleAndViewMap.put(1, new InviteFriendView(this, mRoomData.getGameId(), UserInfoManager.RELATION_FANS));
+        mTitleAndViewMap.put(0, new InviteFriendView(this, mRoomData.getGameId(), UserInfoManager.RELATION.FRIENDS.getValue()));
+        mTitleAndViewMap.put(1, new InviteFriendView(this, mRoomData.getGameId(), UserInfoManager.RELATION.FANS.getValue()));
 
         mTabPagerAdapter = new PagerAdapter() {
 

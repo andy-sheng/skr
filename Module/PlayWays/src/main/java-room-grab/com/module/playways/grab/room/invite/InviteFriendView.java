@@ -28,7 +28,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     RecyclerView mRecyclerView;
     InviteFirendAdapter mInviteFirendAdapter;
 
-    private int mMode = UserInfoManager.RELATION_FRIENDS;
+    private int mMode = UserInfoManager.RELATION.FRIENDS.getValue();
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
     private boolean mHasMore = true;
@@ -70,9 +70,9 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                if (mMode == UserInfoManager.RELATION_FRIENDS) {
+                if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
                     mGrabInvitePresenter.getFriendList(mOffset, DEFAULT_COUNT);
-                } else if (mMode == UserInfoManager.RELATION_FANS) {
+                } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
                     mGrabInvitePresenter.getFansList(mOffset, DEFAULT_COUNT);
                 }
             }
@@ -98,9 +98,9 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     }
 
     private void syncInviteMode() {
-        if (mMode == UserInfoManager.RELATION_FRIENDS) {
+        if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
             mGrabInvitePresenter.getFriendList(0, DEFAULT_COUNT);
-        } else if (mMode == UserInfoManager.RELATION_FANS) {
+        } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             mGrabInvitePresenter.getFansList(0, DEFAULT_COUNT);
         }
     }
@@ -121,9 +121,9 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
             if (mInviteFirendAdapter.getDataList() == null || mInviteFirendAdapter.getDataList().size() == 0) {
                 // 没有数据
-                if (mMode == UserInfoManager.RELATION_FRIENDS) {
+                if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
                     mLoadService.showCallback(FriendsEmptyCallback.class);
-                } else if (mMode == UserInfoManager.RELATION_FANS) {
+                } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
                     mLoadService.showCallback(FansEmptyCallback.class);
                 }
             } else {

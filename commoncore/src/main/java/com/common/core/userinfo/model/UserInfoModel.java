@@ -4,8 +4,10 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoDB;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
@@ -50,6 +52,13 @@ public class UserInfoModel implements Serializable, Cloneable {
     private int status;    // 状态
     private String statusDesc;  //状态描述
 
+    public UserInfoModel() {
+    }
+
+    public UserInfoModel(int userId) {
+        this.userId = userId;
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -64,6 +73,16 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public void setNickname(String userNickname) {
         this.nickname = userNickname;
+    }
+
+    public String getNicknameRemark() {
+        String remark = UserInfoManager.getInstance().getRemarkName(userId,nickname);
+        return remark;
+    }
+
+    public String getNicknameRemark(String defaultName) {
+        String remark = UserInfoManager.getInstance().getRemarkName(userId,defaultName);
+        return remark;
     }
 
     public int getSex() {
@@ -229,6 +248,10 @@ public class UserInfoModel implements Serializable, Cloneable {
         if (model != null) {
             userInfoModel.setUserId(model.getUserID());
             userInfoModel.setNickname(model.getNickName());
+//            String remarkName = UserInfoManager.getInstance().getRemarkName(model.getUserID(),null);
+//            if(!TextUtils.isEmpty(remarkName)){
+//                userInfoModel.setNicknameRemark(remarkName);
+//            }
             userInfoModel.setSex(model.getSex().getValue());
             userInfoModel.setAvatar(model.getAvatar());
             userInfoModel.setSignature(model.getDescription());
@@ -243,6 +266,7 @@ public class UserInfoModel implements Serializable, Cloneable {
         if (userInfModel != null) {
             userInfoDB.setUserId(Long.valueOf((long) userInfModel.getUserId()));
             userInfoDB.setUserNickname(userInfModel.getNickname());
+            userInfoDB.setUserDisplayname(userInfModel.getNicknameRemark(null));
             userInfoDB.setSex(userInfModel.getSex());
             userInfoDB.setBirthday(userInfModel.getBirthday());
             userInfoDB.setAvatar(userInfModel.getAvatar());
@@ -274,6 +298,8 @@ public class UserInfoModel implements Serializable, Cloneable {
         if (userInDB != null) {
             userInfoModel.setUserId(userInDB.getUserId().intValue());
             userInfoModel.setNickname(userInDB.getUserNickname());
+//            userInfoModel.setNicknameRemark(userInDB.getUserDisplayname());
+
             userInfoModel.setSex(userInDB.getSex());
             userInfoModel.setBirthday(userInDB.getBirthday());
             userInfoModel.setAvatar(userInDB.getAvatar());

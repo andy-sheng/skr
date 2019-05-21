@@ -92,7 +92,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 mFollowTv.setVisibility(View.GONE);
                 return;
             } else {
-                if (mMode != UserInfoManager.RELATION_FRIENDS) {
+                if (mMode != UserInfoManager.RELATION.FRIENDS.getValue()) {
                     if (userInfoModel.isFriend()) {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已互关");

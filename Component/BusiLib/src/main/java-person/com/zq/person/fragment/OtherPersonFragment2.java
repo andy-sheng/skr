@@ -555,7 +555,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         int fansNum = 0;
         if (list != null && list.size() > 0) {
             for (RelationNumModel mode : list) {
-                if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
                     fansNum = mode.getCnt();
                 }
             }

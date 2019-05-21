@@ -47,5 +47,17 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
                 UserInfoDBDao.dropTable(db, ifExists);
             }
         }, UserInfoDBDao.class);
+
+        MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
+            @Override
+            public void onCreateAllTables(Database db, boolean ifNotExists) {
+                RemarkDBDao.createTable(db, ifNotExists);
+            }
+
+            @Override
+            public void onDropAllTables(Database db, boolean ifExists) {
+                RemarkDBDao.dropTable(db, ifExists);
+            }
+        }, RemarkDBDao.class);
     }
 }

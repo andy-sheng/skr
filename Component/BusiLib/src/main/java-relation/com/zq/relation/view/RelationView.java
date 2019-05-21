@@ -44,13 +44,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import static com.common.core.userinfo.UserInfoManager.RELATION_FOLLOW;
-
 public class RelationView extends RelativeLayout {
 
     public final static String TAG = "RelationView";
 
-    private int mMode = UserInfoManager.RELATION_FRIENDS;
+    private int mMode = UserInfoManager.RELATION.FRIENDS.getValue();
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
     private boolean hasMore = true; // 是否还有数据
@@ -97,7 +95,7 @@ public class RelationView extends RelativeLayout {
                             .build());
                 } else if (view.getId() == R.id.follow_tv) {
                     // 关注和好友都是有关系的人
-                    if (mMode == UserInfoManager.RELATION_FANS) {
+                    if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
                         if (userInfoModel.isFriend()) {
                             unFollow(userInfoModel);
                         } else {
@@ -209,11 +207,11 @@ public class RelationView extends RelativeLayout {
                 mRefreshLayout.finishLoadMore();
                 if (mRelationAdapter.getData() == null || mRelationAdapter.getData().size() == 0) {
                     // 第一次拉数据
-                    if (mMode == UserInfoManager.RELATION_FRIENDS) {
+                    if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
                         mLoadService.showCallback(FriendsEmptyCallback.class);
-                    } else if (mMode == UserInfoManager.RELATION_FANS) {
+                    } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
                         mLoadService.showCallback(FansEmptyCallback.class);
-                    } else if (mMode == RELATION_FOLLOW) {
+                    } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
                         mLoadService.showCallback(FollowEmptyCallback.class);
                     }
                 }
@@ -228,7 +226,7 @@ public class RelationView extends RelativeLayout {
 
     public void loadData(final int mode, final int offset, int limit) {
         this.mOffset = offset;
-        UserInfoManager.getInstance().getRelationList(mode, offset, limit, mApiResultResponseCallBack);
+        //UserInfoManager.getInstance().getRelationList(mode, offset, limit, mApiResultResponseCallBack);
     }
 
     @Override
@@ -257,7 +255,7 @@ public class RelationView extends RelativeLayout {
     public void onEvent(FollowNotifyEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         this.mOffset = 0;
-        UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
+        //UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
     }
 
     /**
@@ -269,7 +267,7 @@ public class RelationView extends RelativeLayout {
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
         this.mOffset = 0;
-        UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
+        //UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
     }
 
 }
