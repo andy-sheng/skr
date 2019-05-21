@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_76_dp"
+    android:layout_marginTop="@dimen/view_13_dp"
+    android:padding="@dimen/common_stroke_with"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#77C7F0"
+    app:bl_stroke_color="#3B4E79"
+    app:bl_stroke_width="@dimen/common_stroke_with">
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/view_3_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF" />
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/cover_area"
+        android:layout_width="@dimen/view_41_dp"
+        android:layout_height="@dimen/view_46_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:padding="@dimen/common_stroke_with"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#6EBDFF"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/common_stroke_with">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/cover_iv"
+            android:layout_width="@dimen/view_38_dp"
+            android:layout_height="@dimen/view_38_dp"
+            android:layout_centerHorizontal="true" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/play_back_iv"
+            android:layout_width="@dimen/view_34_dp"
+            android:layout_height="@dimen/view_34_dp"
+            android:layout_alignTop="@id/cover_iv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_2_dp"
+            android:background="@drawable/grab_works_play" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/save_share_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_toLeftOf="@id/play_back_iv">
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/save_share_iv"
+            android:layout_width="@dimen/view_35_dp"
+            android:layout_height="@dimen/view_39_dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/grab_works_save_share" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/save_share_iv"
+            android:layout_marginTop="@dimen/view_2_dp"
+            android:text="保存分享"
+            android:textColor="#803B4E79"
+            android:textSize="@dimen/textsize_12_dp" />
+
+
+    </RelativeLayout>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_toLeftOf="@+id/save_share_area"
+        android:layout_toRightOf="@+id/cover_area"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_owner_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_below="@id/song_name_tv"
+        android:layout_alignLeft="@id/song_name_tv"
+        android:layout_alignRight="@id/song_name_tv"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#993B4E79"
+        android:textSize="@dimen/textsize_12_dp" />
+
+</com.common.view.ex.ExRelativeLayout>

@@ -147,7 +147,7 @@ public class GrabResultFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-//        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(GrabResultFragment.TAG);
         mUiHandler.removeCallbacksAndMessages(null);
     }
 
@@ -202,7 +202,7 @@ public class GrabResultFragment extends BaseFragment {
                 }
             }, this);
         } else {
-            MyLog.d(TAG, "syncFromServer"  + " mRoomData == null Why?");
+            MyLog.d(TAG, "syncFromServer" + " mRoomData == null Why?");
         }
     }
 

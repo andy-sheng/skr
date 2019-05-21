@@ -1,12 +1,82 @@
 package com.module.playways.grab.room.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.share.SharePanel;
+import com.common.core.share.ShareType;
+import com.common.log.MyLog;
+import com.common.player.IPlayer;
+import com.common.player.VideoPlayerAdapter;
+import com.common.player.exoplayer.ExoPlayer;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
+import com.common.view.AnimateClickListener;
+import com.common.view.ex.ExRelativeLayout;
+import com.common.view.ex.ExTextView;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.constans.GameModeType;
+import com.component.busilib.view.BitmapTextView;
+import com.module.RouterConstants;
 import com.module.playways.R;
+import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.room.GrabResultData;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.model.GrabResultInfoModel;
+import com.module.playways.grab.room.model.WonderfulMomentModel;
+import com.module.playways.grab.room.production.ProductionAdapter;
+import com.module.playways.room.prepare.model.PrepareData;
+import com.module.playways.room.room.model.score.ScoreResultModel;
+import com.module.playways.room.room.model.score.ScoreStateModel;
+import com.zq.level.view.LevelStarProgressBar;
+import com.zq.level.view.NormalLevelView2;
 
+import java.util.List;
+
+/**
+ * 一唱到底结果页面 (有作品)
+ */
 public class GrabProductionFragment extends BaseFragment {
+
+    public final static String TAG = "GrabProductionFragment";
+
+    GrabRoomData mRoomData;
+    GrabResultData mGrabResultData;
+    ScoreStateModel mScoreStateModel;
+
+    RelativeLayout mSingEndRecord;
+    ExRelativeLayout mResultArea;
+    ExTextView mLevelDescTv;
+    LevelStarProgressBar mLevelProgress;
+    BitmapTextView mSongNum;
+    BitmapTextView mSongEndPer;
+    BitmapTextView mBaodengNum;
+    NormalLevelView2 mLevelView;
+    LinearLayout mLlBottomArea;
+    RecyclerView mProductionView;
+    ExTextView mTvBack;
+    ExTextView mTvAgain;
+    ExTextView mTvShare;
+
+    Handler mUiHandler = new Handler();
+
+    ProductionAdapter mAdapter;
+    IPlayer mIPlayer;
+
     @Override
     public int initView() {
         return R.layout.grab_production_fragment_layout;
@@ -14,7 +84,203 @@ public class GrabProductionFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mSingEndRecord = (RelativeLayout) mRootView.findViewById(R.id.sing_end_record);
+        mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
+        mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
+        mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
+        mSongNum = (BitmapTextView) mRootView.findViewById(R.id.song_num);
+        mSongEndPer = (BitmapTextView) mRootView.findViewById(R.id.song_end_per);
+        mBaodengNum = (BitmapTextView) mRootView.findViewById(R.id.baodeng_num);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
+        mLlBottomArea = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_area);
 
+        mProductionView = (RecyclerView) mRootView.findViewById(R.id.production_view);
+
+        mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
+        mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
+        mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
+
+        mAdapter = new ProductionAdapter(new ProductionAdapter.Listener() {
+            // TODO: 2019/5/20 主要做播放键位的
+            @Override
+            public void onClickPlay(int position, WonderfulMomentModel model) {
+                mAdapter.setSelectPosition(position);
+                if (mIPlayer == null) {
+                    mIPlayer = new ExoPlayer();
+                    // 播放完毕
+                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                        @Override
+                        public void onCompletion() {
+                            super.onCompletion();
+                            mIPlayer.stop();
+                            mAdapter.setSelectPosition(-1);
+                        }
+                    });
+                }
+                mIPlayer.reset();
+                mIPlayer.startPlay(model.getLocalPath());
+            }
+
+            @Override
+            public void onClickPause(int position, WonderfulMomentModel model) {
+                mAdapter.setSelectPosition(-1);
+                if (mIPlayer != null) {
+                    mIPlayer.stop();
+                }
+            }
+
+            @Override
+            public void onClickSaveAndShare(int position, WonderfulMomentModel model) {
+
+            }
+        });
+        mProductionView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mProductionView.setAdapter(mAdapter);
+
+        mTvBack.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
+
+        mTvShare.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                SharePanel sharePanel = new SharePanel(getActivity());
+                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
+                sharePanel.show(ShareType.IMAGE_RUL);
+            }
+        });
+
+        mTvAgain.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                PrepareData prepareData = new PrepareData();
+                prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+                prepareData.setTagId(mRoomData.getTagId());
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                        .withSerializable("prepare_data", prepareData)
+                        .navigation();
+
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
+
+
+        if (mRoomData != null) {
+            mGrabResultData = mRoomData.getGrabResultData();
+        }
+
+        if (mGrabResultData == null) {
+            /**
+             * 游戏结束会由sync或者push触发
+             * push触发的话带着结果数据
+             */
+            syncFromServer();
+        } else {
+            bindData();
+        }
+
+        U.getSoundUtils().preLoad(TAG, R.raw.grab_gameover);
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getSoundUtils().play(GrabProductionFragment.TAG, R.raw.grab_gameover, 500);
+            }
+        }, 500);
+    }
+
+    private void bindData() {
+        if (mGrabResultData == null) {
+            MyLog.w(TAG, "bindData" + " grabResultData = null");
+            return;
+        }
+
+        if (mGrabResultData != null) {
+            for (ScoreResultModel scoreResultModel : mGrabResultData.getScoreResultModels()) {
+                if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    mScoreStateModel = scoreResultModel.getSeq(3);
+                }
+            }
+
+            if (mScoreStateModel != null && mGrabResultData.getGrabResultInfoModel() != null) {
+                mLevelView.bindData(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking());
+                mLevelDescTv.setText("" + mScoreStateModel.getSubRanking() + "段");
+                int progress = 0;
+                if (mScoreStateModel.getMaxExp() != 0) {
+                    progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
+                }
+                mLevelProgress.setCurProgress(progress);
+                mSongNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingCnt()) + "");
+                mSongEndPer.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio()) + "");
+                mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
+            }
+
+            if (mRoomData.getWonderfulMomentList() != null) {
+                mAdapter.setDataList(mRoomData.getWonderfulMomentList());
+            }
+        } else {
+            MyLog.w(TAG, "bindData 数据为空了");
+        }
+    }
+
+    private void syncFromServer() {
+        if (mRoomData != null) {
+            GrabRoomServerApi getStandResult = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+            ApiMethods.subscribe(getStandResult.getStandResult(mRoomData.getGameId()), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        GrabResultInfoModel resultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
+                        List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
+                        if (resultInfoModel != null && scoreResultModels != null) {
+                            mGrabResultData = new GrabResultData(resultInfoModel, scoreResultModels);
+                            mRoomData.setGrabResultData(mGrabResultData);
+                            bindData();
+                        } else {
+                            MyLog.d(TAG, "syncFromServer" + " info=null");
+                        }
+
+                    }
+                }
+            }, this);
+        } else {
+            MyLog.d(TAG, "syncFromServer" + " mRoomData == null Why?");
+        }
+    }
+
+    @Override
+    public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
+        if (type == 0) {
+            mRoomData = (GrabRoomData) data;
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(GrabProductionFragment.TAG);
+        mUiHandler.removeCallbacksAndMessages(null);
+        if (mIPlayer != null) {
+            mIPlayer.stop();
+            mIPlayer.release();
+        }
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+        return true;
     }
 
     @Override
