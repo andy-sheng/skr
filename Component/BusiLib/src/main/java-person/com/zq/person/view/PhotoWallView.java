@@ -252,4 +252,12 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
     public void loadDataFailed() {
         mSmartRefresh.finishLoadMore();
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mPhotoCorePresenter != null) {
+            mPhotoCorePresenter.destroy();
+        }
+    }
 }

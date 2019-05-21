@@ -84,6 +84,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mUseridTv;
+    ExTextView mSignTv;
     LinearLayout mRelationNumArea;
     RelativeLayout mFriendsArea;
     ExTextView mFriendsNumTv;
@@ -211,6 +212,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
+        mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -461,6 +463,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
             }
             mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
             mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+            mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
         }
     }
 
@@ -536,37 +539,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
     @Override
     public void showRankView(UserRankModel userRankModel) {
 
-    }
-
-    @Override
-    public void addPhoto(List<PhotoModel> list, boolean clear, int totalNum) {
-        MyLog.d(TAG, "showPhoto" + " list=" + list + " clear=" + clear + " totalNum=" + totalNum);
-        mSmartRefresh.finishRefresh();
-        mSmartRefresh.finishLoadMore();
-
-    }
-
-
-    @Override
-    public void insertPhoto(PhotoModel photoModel) {
-
-    }
-
-    @Override
-    public void deletePhoto(PhotoModel photoModel, boolean numchange) {
-
-    }
-
-    @Override
-    public void updatePhoto(PhotoModel photoModel) {
-
-    }
-
-    @Override
-    public void loadDataFailed() {
-        MyLog.d(TAG, "loadDataFailed");
-        mSmartRefresh.finishRefresh();
-        mSmartRefresh.finishLoadMore();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

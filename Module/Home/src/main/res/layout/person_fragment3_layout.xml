@@ -178,7 +178,6 @@
                                 android:layout_height="@dimen/view_25_dp"
                                 android:layout_alignTop="@id/avatar_iv"
                                 android:layout_marginLeft="@dimen/view_12_dp"
-                                android:layout_marginTop="@dimen/view_3_dp"
                                 android:layout_toRightOf="@id/avatar_iv"
                                 android:ellipsize="end"
                                 android:gravity="left|center_vertical"
@@ -201,13 +200,22 @@
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/userid_tv"
                                 android:layout_width="wrap_content"
-                                android:layout_height="@dimen/view_20_dp"
+                                android:layout_height="@dimen/view_17_dp"
                                 android:layout_below="@id/name_tv"
                                 android:layout_alignLeft="@id/name_tv"
-                                android:layout_marginTop="@dimen/view_4_dp"
                                 android:layout_marginRight="@dimen/view_50_dp"
                                 android:textColor="@color/white_trans_50"
-                                android:textSize="@dimen/textsize_14_dp" />
+                                android:textSize="@dimen/textsize_12_dp" />
+
+                            <com.common.view.ex.ExTextView
+                                android:id="@+id/sign_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/view_20_dp"
+                                android:layout_below="@id/userid_tv"
+                                android:layout_alignLeft="@id/name_tv"
+                                android:layout_marginRight="@dimen/view_50_dp"
+                                android:textSize="@dimen/textsize_14_dp"
+                                android:textColor="@color/white_trans_80"/>
 
                             <LinearLayout
                                 android:id="@+id/relation_num_area"
