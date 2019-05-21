@@ -31,7 +31,7 @@
             android:layout_marginBottom="@dimen/view_25_dp"
             android:layout_toLeftOf="@+id/tv_finish"
             android:background="@drawable/ycdd_shurukuang"
-            android:drawableLeft="@drawable/fz_sousuo"
+            android:drawableLeft="@drawable/common_search_icon"
             android:drawablePadding="@dimen/view_10_dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/textsize_10_dp"

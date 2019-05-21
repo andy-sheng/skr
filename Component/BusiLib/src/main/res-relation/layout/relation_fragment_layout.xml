@@ -5,30 +5,22 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <com.common.view.titlebar.CommonTitleBar
-        android:id="@+id/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:bottomLineColor="#0C2275"
-        app:centerText="通讯录"
-        app:centerTextColor="@color/white"
-        app:centerTextSize="@dimen/textsize_20_dp"
-        app:centerType="textView"
-        app:leftDrawable="@drawable/img_back"
-        app:leftType="textView"
-        app:rightImageResource="@drawable/tianjia_friend_icon"
-        app:rightType="imageButton"
-        app:showBottomLine="false"
-        app:statusBarColor="@color/colorPrimary"
-        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
-
-
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="@dimen/view_18_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:padding="@dimen/view_16_dp"
+        android:background="@drawable/img_back" />
 
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar"
+        android:layout_marginTop="@dimen/view_28_dp"
         android:orientation="vertical">
 
         <com.common.view.viewpager.SlidingTabLayout
@@ -36,7 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_52_dp"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/view_50_dp"
+            android:layout_marginRight="@dimen/view_50_dp" />
 
         <com.common.view.viewpager.NestViewPager
             android:id="@+id/relation_vp"
@@ -53,7 +47,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_52_dp"
-        android:layout_below="@+id/titlebar"
+        android:layout_marginLeft="@dimen/view_50_dp"
+        android:layout_marginTop="@dimen/view_28_dp"
+        android:layout_marginRight="@dimen/view_50_dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -71,8 +67,8 @@
                 android:singleLine="true"
                 android:text="好友"
                 android:textSize="@dimen/textsize_15_dp"
-                app:bl_unSelected_textColor="@color/white_trans_50"
-                app:bl_selected_textColor="@color/white"/>
+                app:bl_selected_textColor="@color/white"
+                app:bl_unSelected_textColor="@color/white_trans_50" />
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/friend_red_dot"
@@ -100,8 +96,8 @@
                 android:singleLine="true"
                 android:text="关注"
                 android:textSize="@dimen/textsize_15_dp"
-                app:bl_unSelected_textColor="@color/white_trans_50"
-                app:bl_selected_textColor="@color/white"/>
+                app:bl_selected_textColor="@color/white"
+                app:bl_unSelected_textColor="@color/white_trans_50" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -119,8 +115,8 @@
                 android:singleLine="true"
                 android:text="粉丝"
                 android:textSize="@dimen/textsize_15_dp"
-                app:bl_unSelected_textColor="@color/white_trans_50"
-                app:bl_selected_textColor="@color/white"/>
+                app:bl_selected_textColor="@color/white"
+                app:bl_unSelected_textColor="@color/white_trans_50" />
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/fans_red_dot"

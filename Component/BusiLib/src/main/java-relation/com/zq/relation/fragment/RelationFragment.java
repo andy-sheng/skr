@@ -49,8 +49,8 @@ import model.RelationNumModel;
  */
 public class RelationFragment extends BaseFragment {
 
-    CommonTitleBar mTitlebar;
     LinearLayout mContainer;
+    ExImageView mIvBack;
     SlidingTabLayout mRelationTab;
     NestViewPager mRelationVp;
 
@@ -84,7 +84,7 @@ public class RelationFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
         mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
         mRelationTab = (SlidingTabLayout) mRootView.findViewById(R.id.relation_tab);
         mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
@@ -104,7 +104,7 @@ public class RelationFragment extends BaseFragment {
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
 
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
 //                U.getFragmentUtils().popFragment(RelationFragment.this);
@@ -114,17 +114,17 @@ public class RelationFragment extends BaseFragment {
             }
         });
 
-        mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (mPopupWindow != null && mPopupWindow.isShowing()) {
-                    mPopupWindow.dismiss();
-                }
-                mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
-                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
-                mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
-            }
-        });
+//        mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+//            @Override
+//            public void clickValid(View v) {
+//                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+//                    mPopupWindow.dismiss();
+//                }
+//                mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
+//                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
+//                mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
+//            }
+//        });
 
         mSearchArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -231,7 +231,6 @@ public class RelationFragment extends BaseFragment {
             mFansNum = bundle.getInt(RelationActivity.FANS_NUM_KEY);
             mFocusNum = bundle.getInt(RelationActivity.FOLLOW_NUM_KEY);
             if (relation == UserInfoManager.RA_UNKNOWN) {
-                getRelationNums();
                 selectPosition(0);
             } else {
                 if (relation == UserInfoManager.RELATION_FRIENDS) {
@@ -244,7 +243,6 @@ public class RelationFragment extends BaseFragment {
                     mRelationVp.setCurrentItem(2);
                     selectPosition(2);
                 }
-                refreshRelationNums();
             }
         } else {
             MyLog.w(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
@@ -276,47 +274,10 @@ public class RelationFragment extends BaseFragment {
         mInviteFriendDialog.show();
     }
 
-    private void getRelationNums() {
-        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        ApiMethods.subscribe(userInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
-                    if (relationNumModels != null && relationNumModels.size() > 0) {
-                        for (RelationNumModel mode : relationNumModels) {
-                            if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
-                                mFriendNum = mode.getCnt();
-                            } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
-                                mFansNum = mode.getCnt();
-                            } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
-                                mFocusNum = mode.getCnt();
-                            }
-                        }
-                    }
-                    refreshRelationNums();
-                }
-            }
-        }, this);
-
+    @Override
+    public boolean useEventBus() {
+        return false;
     }
-
-    public void refreshRelationNums() {
-        mFriend.setText(String.format(U.app().getResources().getString(R.string.friends_num), mFriendNum));
-        mFollow.setText(String.format(U.app().getResources().getString(R.string.follows_num), mFocusNum));
-        mFans.setText(String.format(U.app().getResources().getString(R.string.fans_num), mFansNum));
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RelationChangeEvent event) {
-        getRelationNums();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FollowNotifyEvent event) {
-        getRelationNums();
-    }
-
 
     @Override
     public void destroy() {
