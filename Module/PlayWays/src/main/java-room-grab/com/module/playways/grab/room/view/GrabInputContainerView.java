@@ -100,7 +100,7 @@ public class GrabInputContainerView extends InputContainerView {
                     UserInfo userInfo = new UserInfo.Builder()
                             .setAvatar(mGrabPlayerInfoModel.getUserInfo().getAvatar())
                             .setUserID(mGrabPlayerInfoModel.getUserID())
-                            .setNickName(mGrabPlayerInfoModel.getUserInfo().getNicknameRemark())
+                            .setNickName(mGrabPlayerInfoModel.getUserInfo().getNickname())
                             .build();
                     map.put("receiver", new UserInfo[]{userInfo});
                 }
