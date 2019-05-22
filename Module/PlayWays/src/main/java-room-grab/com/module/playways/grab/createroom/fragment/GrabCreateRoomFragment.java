@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -20,6 +21,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.constans.GrabRoomType;
 import com.dialog.view.TipsDialogView;
+import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -94,7 +96,9 @@ public class GrabCreateRoomFragment extends BaseFragment {
                         } else if (ErrRealAuth == result.getErrno()) {
                             //实人认证
                             ToastUtils.showShort("请实人认证再开共开房");
-
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                    .withString("url", "app.inframe.mobil/face/mobile?from=room")
+                                    .greenChannel().navigation();
                         } else {
                             if (TextUtils.isEmpty(result.getErrmsg())) {
                                 showErrorMsgDialog("您还没有权限创建公开房间");
