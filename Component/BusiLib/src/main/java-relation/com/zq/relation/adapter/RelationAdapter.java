@@ -28,12 +28,12 @@ public class RelationAdapter extends RecyclerView.Adapter {
         mUserInfos = new ArrayList<>();
     }
 
-    public void addData(Collection<UserInfoModel> list) {
+    public void addData(List<UserInfoModel> list) {
         mUserInfos.addAll(list);
         notifyDataSetChanged();
     }
 
-    public void setData(Collection<UserInfoModel> list) {
+    public void setData(List<UserInfoModel> list) {
         mUserInfos.clear();
         mUserInfos.addAll(list);
         notifyDataSetChanged();

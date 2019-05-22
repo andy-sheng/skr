@@ -41,7 +41,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Collection;
+import java.util.List;
 
 public class RelationView extends RelativeLayout {
 
@@ -189,9 +189,9 @@ public class RelationView extends RelativeLayout {
     public void loadData(final int offset) {
         this.mOffset = offset;
         if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
-            UserInfoManager.getInstance().getMyFriends(new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFriends(true,new UserInfoManager.UserInfoListCallback() {
                 @Override
-                public void onSucess(UserInfoManager.FROM from, int offset, final Collection<UserInfoModel> list) {
+                public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -218,9 +218,9 @@ public class RelationView extends RelativeLayout {
                 }
             });
         } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
-            UserInfoManager.getInstance().getMyFollow(new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFollow(true,new UserInfoManager.UserInfoListCallback() {
                 @Override
-                public void onSucess(UserInfoManager.FROM from, int offset, final Collection<UserInfoModel> list) {
+                public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -249,7 +249,7 @@ public class RelationView extends RelativeLayout {
         } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             UserInfoManager.getInstance().getFans(offset, DEFAULT_COUNT, new UserInfoManager.UserInfoListCallback() {
                 @Override
-                public void onSucess(UserInfoManager.FROM from, final int offset, final Collection<UserInfoModel> list) {
+                public void onSuccess(UserInfoManager.FROM from, final int offset, final List<UserInfoModel> list) {
                     mOffset = offset;
                     if (list != null && list.size() != 0) {
                         mRefreshLayout.finishLoadMore();

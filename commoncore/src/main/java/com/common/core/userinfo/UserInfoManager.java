@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.model.OfflineModel;
+import com.common.core.userinfo.model.OnlineModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.remark.RemarkDB;
 import com.common.core.userinfo.remark.RemarkLocalApi;
@@ -19,8 +21,12 @@ import com.common.utils.U;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -190,7 +196,7 @@ public class UserInfoManager {
         /**
          * 服务器，成功时回调。
          */
-        public abstract void onSucess(FROM from, int offset, Collection<UserInfoModel> list);
+        public abstract void onSuccess(FROM from, int offset, List<UserInfoModel> list);
 
 
     }
@@ -362,7 +368,11 @@ public class UserInfoManager {
      * 获取我的关注
      * 注意返回的不在主线程
      */
-    public void getMyFollow(final UserInfoListCallback userInfoListCallback) {
+    /**
+     * @param pullOnlineStatus     是否拉取在线状态
+     * @param userInfoListCallback
+     */
+    public void getMyFollow(final boolean pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
         Observable.create(new ObservableOnSubscribe<List<UserInfoModel>>() {
             @Override
             public void subscribe(ObservableEmitter<List<UserInfoModel>> emitter) {
@@ -370,9 +380,7 @@ public class UserInfoManager {
                 LinkedHashSet<UserInfoModel> resutlSet = new LinkedHashSet();
                 List<UserInfoModel> userInfoModels = UserInfoLocalApi.getFollowUserInfoList();
                 resutlSet.addAll(userInfoModels);
-                if (userInfoListCallback != null) {
-                    userInfoListCallback.onSucess(FROM.DB, resutlSet.size(), resutlSet);
-                }
+
                 long followMarkerWater = U.getPreferenceUtils().getSettingLong(PREF_KEY_FOLLOW_MARKER_WATER, -1);
                 if (followMarkerWater == -1) {
                     // 全量分页拉
@@ -384,12 +392,12 @@ public class UserInfoManager {
                         try {
                             Response<ApiResult> response = call.execute();
                             ApiResult obj = response.body();
-                            if(obj==null){
+                            if (obj == null || obj.getData()==null || obj.getErrno()!=0) {
                                 break;
                             }
                             if (offset == 0) {
                                 // offset为0是记录水位
-                                if(obj.getData()!=null){
+                                if (obj.getData() != null) {
                                     followMarkerWater = obj.getData().getLongValue("lastIndexID");
                                 }
                                 // 同步下备注名
@@ -406,9 +414,6 @@ public class UserInfoManager {
                                 UserInfoLocalApi.insertOrUpdate(userInfoModels2);
                                 // 应该返回给上层
                                 resutlSet.addAll(userInfoModels2);
-                                if (userInfoListCallback != null) {
-                                    userInfoListCallback.onSucess(FROM.SERVER_PAGE, offset, resutlSet);
-                                }
                             }
                         } catch (IOException e) {
                             MyLog.e(e);
@@ -418,16 +423,13 @@ public class UserInfoManager {
                 } else {
                     // 增量拉取
                     Call<ApiResult> call = userInfoServerApi.listFollowsByIndexId((int) followMarkerWater);
-
                     try {
                         Response<ApiResult> response = call.execute();
                         ApiResult obj = response.body();
-                        if(obj!=null){
+                        if (obj != null && obj.getData()!=null && obj.getErrno()==0) {
                             List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
                             List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
-
                             userInfoModels2.addAll(userInfoModels3);
-
                             boolean hasUpdate = false;
                             if (!userInfoModels2.isEmpty()) {
                                 UserInfoLocalApi.insertOrUpdate(userInfoModels2);
@@ -435,8 +437,6 @@ public class UserInfoManager {
                                 resutlSet.addAll(userInfoModels2);
                                 hasUpdate = true;
                             }
-
-
                             List<Integer> delIds = JSON.parseArray(obj.getData().getString("dels"), Integer.class);
                             if (!delIds.isEmpty()) {
                                 //批量删除
@@ -446,21 +446,27 @@ public class UserInfoManager {
                                 }
                                 hasUpdate = true;
                             }
-
                             followMarkerWater = obj.getData().getLongValue("lastIndexID");
                             U.getPreferenceUtils().setSettingLong(PREF_KEY_FOLLOW_MARKER_WATER, followMarkerWater);
-
-                            if (userInfoListCallback != null && hasUpdate) {
-                                userInfoListCallback.onSucess(FROM.SERVER_INCREMENT, resutlSet.size(), resutlSet);
-                            }
                         }
-
                     } catch (IOException e) {
                         MyLog.e(e);
                     }
                 }
+                List<UserInfoModel> resultList = new ArrayList<>();
+                for (UserInfoModel userInfoModel : resutlSet) {
+                    resultList.add(userInfoModel);
+                }
+                if (pullOnlineStatus) {
+                    checkUserOnlineStatus(resultList);
+                }
+                if (userInfoListCallback != null) {
+                    userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                }
+                emitter.onComplete();
             }
-        }).subscribeOn(U.getThreadUtils().singleThreadPoll())
+        })
+                .subscribeOn(U.getThreadUtils().singleThreadPoll())
                 .subscribe();
 
     }
@@ -468,19 +474,22 @@ public class UserInfoManager {
     /**
      * 获取我的好友
      */
-    public void getMyFriends(final UserInfoListCallback userInfoListCallback) {
+    public void getMyFriends(final boolean pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
         //先从数据库里取我的关注
-        getMyFollow(new UserInfoListCallback() {
+        getMyFollow(false, new UserInfoListCallback() {
             @Override
-            public void onSucess(FROM from, int offset, Collection<UserInfoModel> list) {
-                LinkedHashSet<UserInfoModel> r = new LinkedHashSet<>();
+            public void onSuccess(FROM from, int offset, List<UserInfoModel> list) {
+                List<UserInfoModel> resultList = new ArrayList<>();
                 for (UserInfoModel userInfoModel : list) {
                     if (userInfoModel.isFriend()) {
-                        r.add(userInfoModel);
+                        resultList.add(userInfoModel);
                     }
                 }
+                if (pullOnlineStatus) {
+                    checkUserOnlineStatus(resultList);
+                }
                 if (userInfoListCallback != null) {
-                    userInfoListCallback.onSucess(from, offset, r);
+                    userInfoListCallback.onSuccess(from, resultList.size(), resultList);
                 }
             }
         });
@@ -505,7 +514,7 @@ public class UserInfoManager {
                     @Override
                     public void accept(List<UserInfoModel> l) throws Exception {
                         if (userInfoListCallback != null) {
-                            userInfoListCallback.onSucess(FROM.DB, -1, l);
+                            userInfoListCallback.onSuccess(FROM.DB, -1, l);
                         }
                     }
                 });
@@ -543,13 +552,13 @@ public class UserInfoManager {
         // 全量分页拉
         int offset = 0;
         int baohu = 0;
-        while (baohu < 100) {
+        while (baohu < 20) {
             baohu++;
             Call<ApiResult> call = userInfoServerApi.listRemarkByPage(offset, 50);
             try {
                 Response<ApiResult> response = call.execute();
                 ApiResult obj = response.body();
-                if(obj==null){
+                if (obj == null || obj.getData()==null || obj.getErrno()!=0) {
                     break;
                 }
                 offset = obj.getData().getIntValue("offset");
@@ -592,7 +601,7 @@ public class UserInfoManager {
                 List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
                 int newOffset = obj.getData().getIntValue("offset");
                 if (userInfoListCallback != null) {
-                    userInfoListCallback.onSucess(FROM.SERVER_PAGE, newOffset, list);
+                    userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
                 }
             }
         });
@@ -628,8 +637,72 @@ public class UserInfoManager {
         }
     }
 
-
-    public void checkUserOnlineStatus(Collection<UserInfoModel> list){
-
+    public void checkUserOnlineStatus(final List<UserInfoModel> list) {
+        HashSet<Integer> set = new HashSet();
+        for (UserInfoModel userInfoModel : list) {
+            set.add(userInfoModel.getUserId());
+        }
+        checkUserOnlineStatusByIds(set)
+                .map(new Function<UserStatusSet, Collection<UserInfoModel>>() {
+                    @Override
+                    public Collection<UserInfoModel> apply(UserStatusSet userStatusSet) {
+                        if (userStatusSet != null) {
+                            for (UserInfoModel userInfoModel : list) {
+                                if (userStatusSet.containsOnline(userInfoModel.getUserId())) {
+                                    userInfoModel.setStatus(UserInfoModel.EF_OnLine);
+                                } else {
+                                    userInfoModel.setStatus(UserInfoModel.EF_OffLine);
+                                }
+                            }
+                            Collections.sort(list, new Comparator<UserInfoModel>() {
+                                @Override
+                                public int compare(UserInfoModel o1, UserInfoModel o2) {
+                                    return o1.getStatus() - o2.getStatus();
+                                }
+                            });
+                        }
+                        return list;
+                    }
+                }).subscribe();
     }
+
+    public Observable<UserStatusSet> checkUserOnlineStatusByIds(Collection<Integer> list) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userIDs", list);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        return userInfoServerApi.checkUserOnlineStatus(body)
+                .map(new Function<ApiResult, UserStatusSet>() {
+                    @Override
+                    public UserStatusSet apply(ApiResult obj) {
+                        if (obj != null && obj.getData() != null && obj.getErrno()==0) {
+                            List<OnlineModel> onlineModelList = JSON.parseArray(obj.getData().getString("userOnlineList"), OnlineModel.class);
+                            List<OfflineModel> offlineModelList = JSON.parseArray(obj.getData().getString("userOfflineList"), OfflineModel.class);
+                            return new UserStatusSet(onlineModelList, offlineModelList);
+                        }
+                        return null;
+                    }
+                });
+    }
+
+    static class UserStatusSet {
+        private List<OnlineModel> mOnlineModelList;
+        private List<OfflineModel> mOfflineModelList;
+
+        private HashSet<Integer> mOnlineModelSet;
+        private HashSet<Integer> mOfflineModelSet;
+
+        public UserStatusSet(List<OnlineModel> onlineModelList, List<OfflineModel> offlineModelList) {
+            mOnlineModelList = onlineModelList;
+            mOfflineModelList = offlineModelList;
+            mOnlineModelSet = new HashSet<>();
+            mOfflineModelSet = new HashSet<>();
+        }
+
+        public boolean containsOnline(int userID) {
+            return mOnlineModelSet.contains(userID);
+        }
+    }
+
 }

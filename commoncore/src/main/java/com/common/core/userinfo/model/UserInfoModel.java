@@ -49,7 +49,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private boolean isFriend;
     private boolean isFollow;
     private int mainLevel; // 主段位
-    private int status;    // 状态
+    private int status;    // 状态 在线 1 离线 2 EF_OnLine
     private String statusDesc;  //状态描述
 
     public UserInfoModel() {
