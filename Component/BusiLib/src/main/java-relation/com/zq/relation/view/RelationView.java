@@ -250,11 +250,17 @@ public class RelationView extends RelativeLayout {
             UserInfoManager.getInstance().getFans(offset, DEFAULT_COUNT, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, final int offset, final List<UserInfoModel> list) {
+
                     mOffset = offset;
                     if (list != null && list.size() != 0) {
                         mRefreshLayout.finishLoadMore();
                         mLoadService.showSuccess();
-                        mRelationAdapter.addData(list);
+                        if(offset==0){
+                            // 如果是从0来的，则是刷新数据
+                            mRelationAdapter.setData(list);
+                        }else{
+                            mRelationAdapter.addData(list);
+                        }
                         mRefreshLayout.setEnableLoadMore(true);
                     } else {
                         mRefreshLayout.setEnableLoadMore(false);
