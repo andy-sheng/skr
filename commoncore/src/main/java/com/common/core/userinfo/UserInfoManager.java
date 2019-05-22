@@ -1,12 +1,11 @@
 package com.common.core.userinfo;
 
-import android.support.v4.util.ArrayMap;
+import android.support.v4.util.LruCache;
 import android.text.TextUtils;
+import android.util.SparseArray;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
-import com.common.core.userinfo.model.OfflineModel;
 import com.common.core.userinfo.model.OnlineModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.remark.RemarkDB;
@@ -90,7 +89,16 @@ public class UserInfoManager {
 
     UserInfoServerApi userInfoServerApi;
 
-    ArrayMap<Integer, String> mRemarkMap = new ArrayMap<>();
+    /**
+     * 备注名的映射缓存住了
+     */
+    SparseArray<String> mRemarkMap = new SparseArray<>();
+
+    /**
+     * 在线状态缓存一份
+     */
+    LruCache<Integer, OnlineModel> mStatusMap = new LruCache<>(50);
+
 
     boolean hasLoadRemarkFromDB = false;
 
@@ -259,9 +267,6 @@ public class UserInfoManager {
             public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                 // 写入数据库
                 UserInfoLocalApi.insertOrUpdate(userInfoModel);
-                if (userInfoModel != null) {
-                    BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfoModel));
-                }
 
                 if (userInfoModel != null) {
                     emitter.onNext(userInfoModel);
@@ -644,20 +649,43 @@ public class UserInfoManager {
     }
 
     public void checkUserOnlineStatus(final List<UserInfoModel> list) {
-        HashSet<Integer> set = new HashSet();
+
+        final HashSet<Integer> idSets = new HashSet();
         for (UserInfoModel userInfoModel : list) {
-            set.add(userInfoModel.getUserId());
+            OnlineModel onlineModel = mStatusMap.get(userInfoModel.getUserId());
+            if (onlineModel == null) {
+                idSets.add(userInfoModel.getUserId());
+            } else {
+                long t = System.currentTimeMillis() - onlineModel.getRecordTs();
+                if (Math.abs(t) < 30 * 1000) {
+                    // 认为状态缓存有效，不去这个id的状态了
+                    if (onlineModel.isOnline()) {
+                        userInfoModel.setStatus(UserInfoModel.EF_OnLine);
+                    } else {
+                        userInfoModel.setStatus(UserInfoModel.EF_OffLine);
+                    }
+                } else {
+                    idSets.add(userInfoModel.getUserId());
+                }
+            }
         }
-        checkUserOnlineStatusByIds(set)
-                .map(new Function<UserStatusSet, Collection<UserInfoModel>>() {
-                    @Override
-                    public Collection<UserInfoModel> apply(UserStatusSet userStatusSet) {
-                        if (userStatusSet != null) {
+        if (!idSets.isEmpty()) {
+            checkUserOnlineStatusByIds(idSets)
+                    .map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
+                        @Override
+                        public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
                             for (UserInfoModel userInfoModel : list) {
-                                if (userStatusSet.containsOnline(userInfoModel.getUserId())) {
-                                    userInfoModel.setStatus(UserInfoModel.EF_OnLine);
-                                } else {
-                                    userInfoModel.setStatus(UserInfoModel.EF_OffLine);
+                                if (idSets.contains(userInfoModel.getUserId())) {
+                                    OnlineModel onlineModel = map.get(userInfoModel.getUserId());
+                                    if (onlineModel != null) {
+                                        if (onlineModel.isOnline()) {
+                                            userInfoModel.setStatus(UserInfoModel.EF_OnLine);
+                                        } else {
+                                            userInfoModel.setStatus(UserInfoModel.EF_OffLine);
+                                        }
+                                    } else {
+                                        userInfoModel.setStatus(UserInfoModel.EF_OffLine);
+                                    }
                                 }
                             }
                             Collections.sort(list, new Comparator<UserInfoModel>() {
@@ -666,59 +694,47 @@ public class UserInfoManager {
                                     return o1.getStatus() - o2.getStatus();
                                 }
                             });
+                            return list;
                         }
-                        return list;
-                    }
-                }).subscribe();
+                    })
+                    .subscribe();
+        }
     }
 
-    public Observable<UserStatusSet> checkUserOnlineStatusByIds(Collection<Integer> list) {
+    public Observable<HashMap<Integer, OnlineModel>> checkUserOnlineStatusByIds(Collection<Integer> list) {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("userIDs", list);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         return userInfoServerApi.checkUserOnlineStatus(body)
-                .map(new Function<ApiResult, UserStatusSet>() {
+                .map(new Function<ApiResult, HashMap<Integer, OnlineModel>>() {
                     @Override
-                    public UserStatusSet apply(ApiResult obj) {
+                    public HashMap<Integer, OnlineModel> apply(ApiResult obj) {
                         if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
+                            HashMap<Integer, OnlineModel> hashSet = new HashMap<>();
+
                             List<OnlineModel> onlineModelList = JSON.parseArray(obj.getData().getString("userOnlineList"), OnlineModel.class);
-                            List<OfflineModel> offlineModelList = JSON.parseArray(obj.getData().getString("userOfflineList"), OfflineModel.class);
-                            return new UserStatusSet(onlineModelList, offlineModelList);
+                            if (onlineModelList != null) {
+                                for (OnlineModel onlineModel : onlineModelList) {
+                                    onlineModel.setRecordTs(System.currentTimeMillis());
+                                    hashSet.put(onlineModel.getUserID(), onlineModel);
+                                    mStatusMap.put(onlineModel.getUserID(), onlineModel);
+                                }
+                            }
+                            List<OnlineModel> offlineModelList = JSON.parseArray(obj.getData().getString("userOfflineList"), OnlineModel.class);
+                            if (offlineModelList != null) {
+                                for (OnlineModel offlineModel : offlineModelList) {
+                                    offlineModel.setRecordTs(System.currentTimeMillis());
+                                    hashSet.put(offlineModel.getUserID(), offlineModel);
+                                    mStatusMap.put(offlineModel.getUserID(), offlineModel);
+                                }
+                            }
+                            return hashSet;
                         }
                         return null;
                     }
                 });
-    }
-
-    static class UserStatusSet {
-        private List<OnlineModel> mOnlineModelList;
-        private List<OfflineModel> mOfflineModelList;
-
-        private HashSet<Integer> mOnlineModelSet;
-        private HashSet<Integer> mOfflineModelSet;
-
-        public UserStatusSet(List<OnlineModel> onlineModelList, List<OfflineModel> offlineModelList) {
-            mOnlineModelList = onlineModelList;
-            mOfflineModelList = offlineModelList;
-            mOnlineModelSet = new HashSet<>();
-            mOfflineModelSet = new HashSet<>();
-            if (mOnlineModelList != null) {
-                for (OnlineModel onlineModel : mOnlineModelList) {
-                    mOnlineModelSet.add(onlineModel.getUserID());
-                }
-            }
-            if (mOfflineModelSet != null) {
-                for (OfflineModel offlineModel : mOfflineModelList) {
-                    mOfflineModelSet.add(offlineModel.getUserID());
-                }
-            }
-        }
-
-        public boolean containsOnline(int userID) {
-            return mOnlineModelSet.contains(userID);
-        }
     }
 
 }
