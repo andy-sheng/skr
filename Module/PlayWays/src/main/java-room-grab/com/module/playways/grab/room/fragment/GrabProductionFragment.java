@@ -304,8 +304,9 @@ public class GrabProductionFragment extends BaseFragment {
 
             StringBuilder sb = new StringBuilder();
             sb.append("http://dev.app.inframe.mobi/user/work")
-                    .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
-                    .append("&workId=").append(String.valueOf(model.getWorksID()));
+                    .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
+                    .append("&workId=").append(model.getWorksID());
+
             String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
             music.setmTargetUrl(mUrl);
 
