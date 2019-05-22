@@ -60,6 +60,15 @@ public class SongModel implements Serializable {
     private int playType;// 玩法类型 普通 合唱 pk
     @JSONField(name = "SPKMusic")
     private List<SongModel> pkMusicList;
+    private int singCount;
+
+    public int getSingCount() {
+        return singCount;
+    }
+
+    public void setSingCount(int singCount) {
+        this.singCount = singCount;
+    }
 
     public boolean isChallengeAvailable() {
         return challengeAvailable;

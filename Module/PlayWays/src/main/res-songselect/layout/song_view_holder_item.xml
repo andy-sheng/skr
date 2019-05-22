@@ -8,7 +8,8 @@
         android:layout_width="@dimen/view_48_dp"
         android:layout_height="@dimen/view_48_dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_22_dp" />
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:visibility="gone" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_select_tv"
@@ -32,6 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
         android:layout_alignTop="@+id/song_cover_iv"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_14_dp"
         android:layout_marginTop="@dimen/view_5_dp"
         android:layout_marginRight="@dimen/view_14_dp"
@@ -56,7 +59,8 @@
         android:singleLine="true"
         android:text="迪克牛仔"
         android:textColor="#800C2275"
-        android:textSize="@dimen/textsize_12_dp" />
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

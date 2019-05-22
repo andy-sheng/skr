@@ -69,7 +69,6 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
     private class ItemHolder extends RecyclerView.ViewHolder {
         ExTextView mTvSongName;
-        ExTextView mTvAuther;
         ExTextView mTvManage;
         ExTextView mChorusSongTag;
         ExTextView mPkSongTag;
@@ -80,7 +79,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         public ItemHolder(View itemView) {
             super(itemView);
             mTvSongName = (ExTextView) itemView.findViewById(R.id.tv_song_name);
-            mTvAuther = (ExTextView) itemView.findViewById(R.id.tv_auther);
+//            mTvAuther = (ExTextView) itemView.findViewById(R.id.tv_auther);
             mTvManage = (ExTextView) itemView.findViewById(R.id.tv_manage);
             mChorusSongTag = (ExTextView) itemView.findViewById(R.id.chorus_song_tag);
             mPkSongTag = (ExTextView) itemView.findViewById(R.id.pk_song_tag);
@@ -96,8 +95,8 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         public void bind(GrabRoomSongModel model, int position) {
             this.mSongModel = model;
             mPosition = position;
-            mTvSongName.setText(model.getDisplaySongName());
-            mTvAuther.setText(model.getOwner());
+            mTvSongName.setText("《" + model.getDisplaySongName() + "》");
+//            mTvAuther.setText(model.getOwner());
 
             if (mGrabRoomData.hasGameBegin()) {
                 if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
