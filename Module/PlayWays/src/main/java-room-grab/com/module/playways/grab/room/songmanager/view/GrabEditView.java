@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.songmanager.view;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -34,7 +35,10 @@ public class GrabEditView extends RelativeLayout {
         mRoomName = (NoLeakEditText) this.findViewById(R.id.room_name);
         mCancelTv = (StrokeTextView) this.findViewById(R.id.cancel_tv);
         mSaveTv = (StrokeTextView) this.findViewById(R.id.save_tv);
-        mRoomName.setHint(mRoomNameText + "");
+
+        if (!TextUtils.isEmpty(mRoomNameText)) {
+            mRoomName.setHint(mRoomNameText);
+        }
 
         mCancelTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -58,6 +62,10 @@ public class GrabEditView extends RelativeLayout {
         mRoomName.postDelayed(new Runnable() {
             @Override
             public void run() {
+                String editName = mRoomName.getText().toString().trim();
+                if (!TextUtils.isEmpty(editName)) {
+                    mRoomName.setSelection(editName.length());
+                }
                 mRoomName.requestFocus();
             }
         }, 500);

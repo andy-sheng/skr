@@ -38,15 +38,15 @@ public class EditRemarkView extends RelativeLayout {
         mRemarkNameEdt = (NoLeakEditText) findViewById(R.id.remark_name_edt);
         mCancelTv = (StrokeTextView) findViewById(R.id.cancel_tv);
         mSaveTv = (StrokeTextView) findViewById(R.id.save_tv);
-        mPlaceBottomView = (View)findViewById(R.id.place_bottom_view);
-        mPlaceTopView = (View)findViewById(R.id.place_top_view);
+        mPlaceBottomView = (View) findViewById(R.id.place_bottom_view);
+        mPlaceTopView = (View) findViewById(R.id.place_top_view);
 
         ViewGroup.LayoutParams layoutParams = mPlaceBottomView.getLayoutParams();
         layoutParams.height = U.getKeyBoardUtils().getKeyBoardHeight();
         mPlaceBottomView.setLayoutParams(layoutParams);
 
         if (!TextUtils.isEmpty(mRemarkName)) {
-            mRemarkNameEdt.setHint("" + mRemarkName);
+            mRemarkNameEdt.setText(mRemarkName);
         }
 
         mCancelTv.setOnClickListener(new DebounceViewClickListener() {
@@ -88,6 +88,10 @@ public class EditRemarkView extends RelativeLayout {
         mRemarkNameEdt.postDelayed(new Runnable() {
             @Override
             public void run() {
+                String editRemark = mRemarkNameEdt.getText().toString().trim();
+                if (!TextUtils.isEmpty(editRemark)) {
+                    mRemarkNameEdt.setSelection(editRemark.length());
+                }
                 mRemarkNameEdt.requestFocus();
                 U.getKeyBoardUtils().showSoftInputKeyBoard(mFragment.getActivity());
             }
