@@ -61,7 +61,7 @@ public class GiftBigContinuousView extends RelativeLayout {
                 .build()
         );
 
-        mSenderNameTv.setText(model.getSender().getNickname());
+        mSenderNameTv.setText(model.getSender().getNicknameRemark());
         mDescTv.setText(model.getAction());
 
         if (model.getEGiftType() == GiftPlayModel.EGiftType.GIFT) {
@@ -72,8 +72,8 @@ public class GiftBigContinuousView extends RelativeLayout {
                     .setHeight(U.getDisplayUtils().dip2px(45))
                     .build());
 
-            mSenderNameTv.setText(model.getSender().getNickname());
-            mDescTv.setText("送给 " + model.getReceiver().getNickname());
+            mSenderNameTv.setText(model.getSender().getNicknameRemark());
+            mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
             mDescTv.setVisibility(VISIBLE);
         }
 

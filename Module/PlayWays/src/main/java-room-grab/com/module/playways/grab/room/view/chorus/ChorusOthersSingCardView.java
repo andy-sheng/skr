@@ -190,7 +190,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mLeftName.setText(mLeftUserInfoModel.getNickname());
+            mLeftName.setText(mLeftUserInfoModel.getNicknameRemark());
 
             AvatarUtils.loadAvatarByUrl(mRightIv,
                     AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
@@ -198,7 +198,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mRightName.setText(mRightUserInfoModel.getNickname());
+            mRightName.setText(mRightUserInfoModel.getNicknameRemark());
 
             setShowFlag(mLeftChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
             setShowFlag(mRightChorusRoundInfoModel, mRightStatusArea, mRightStatus);

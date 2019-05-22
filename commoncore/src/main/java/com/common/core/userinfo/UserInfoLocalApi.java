@@ -238,10 +238,10 @@ public class UserInfoLocalApi {
         return l;
     }
 
-    public static void updateRemark(int userId,String remark) {
-        String sql = String.format("UPDATE %s set %s='%s' WHERE %s=%s",UserInfoDBDao.TABLENAME,
-                UserInfoDBDao.Properties.UserDisplayname.columnName,remark,
-                UserInfoDBDao.Properties.UserId.columnName,userId);
+    public static void updateRemark(int userId, String remark) {
+        String sql = String.format("UPDATE %s set %s='%s' WHERE %s=%s", UserInfoDBDao.TABLENAME,
+                UserInfoDBDao.Properties.UserDisplayname.columnName, remark,
+                UserInfoDBDao.Properties.UserId.columnName, userId);
         getDao().getDatabase().execSQL(sql);
     }
 }

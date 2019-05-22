@@ -24,7 +24,7 @@ public class CommentDynamicModel extends CommentModel {
             commentModel.setUserName(event.info.getSender().getNickName());
         } else {
             UserInfoModel userInfoModel = roomData.getUserInfo(event.info.getSender().getUserID());
-            commentModel.setUserName(userInfoModel.getNickname());
+            commentModel.setUserName(userInfoModel.getNicknameRemark());
         }
 
         if (roomData != null) {

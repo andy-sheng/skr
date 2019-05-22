@@ -255,7 +255,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 songName = songName.substring(0, 7) + "...";
             }
             dynamicEntity.setDynamicText("《" + songName + "》", textPaint1, "text1");
-            dynamicEntity.setDynamicText("演唱：" + info.getUserInfo().getNickname(), textPaint2, "text2");
+            dynamicEntity.setDynamicText("演唱：" + info.getUserInfo().getNicknameRemark(), textPaint2, "text2");
         }
         return dynamicEntity;
     }

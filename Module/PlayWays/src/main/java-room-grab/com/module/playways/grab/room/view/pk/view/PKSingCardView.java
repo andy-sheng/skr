@@ -187,7 +187,7 @@ public class PKSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mLeftName.setText(mLeftUserInfoModel.getNickname());
+            mLeftName.setText(mLeftUserInfoModel.getNicknameRemark());
         }
         if (mRightUserInfoModel != null) {
             if (mRightOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
@@ -212,7 +212,7 @@ public class PKSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mRightName.setText(mRightUserInfoModel.getNickname());
+            mRightName.setText(mRightUserInfoModel.getNicknameRemark());
         }
     }
 

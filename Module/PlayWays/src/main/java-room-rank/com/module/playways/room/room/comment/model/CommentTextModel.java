@@ -6,10 +6,8 @@ import android.text.TextUtils;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.SpanUtils;
-import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
-import com.module.playways.R;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 
 /**
@@ -29,7 +27,7 @@ public class CommentTextModel extends CommentModel {
             commentModel.setUserName(event.info.getSender().getNickName());
         } else {
             UserInfoModel userInfoModel = roomData.getUserInfo(event.info.getSender().getUserID());
-            commentModel.setUserName(userInfoModel.getNickname());
+            commentModel.setUserName(userInfoModel.getNicknameRemark());
         }
 
         if (roomData != null) {
@@ -53,7 +51,7 @@ public class CommentTextModel extends CommentModel {
                 SpannableStringBuilder ssb = new SpanUtils()
                         .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                         .append("@ ").setForegroundColor(Color.parseColor("#586D94"))
-                        .append(event.mUserInfoModelList.get(0).getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                        .append(event.mUserInfoModelList.get(0).getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                         .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
                         .create();
                 commentModel.setStringBuilder(ssb);

@@ -161,10 +161,10 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             CommentTextModel commentModel = new CommentTextModel();
             commentModel.setUserId(userInfo.getUserId());
             commentModel.setAvatar(userInfo.getAvatar());
-            commentModel.setUserName(userInfo.getNickname());
+            commentModel.setUserName(userInfo.getNicknameRemark());
             commentModel.setAvatarColor(Color.WHITE);
             SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(userInfo.getNickname() + " ").setForegroundColor(CommentModel.TEXT_GRAY)
+                    .append(userInfo.getNicknameRemark() + " ").setForegroundColor(CommentModel.TEXT_GRAY)
                     .append("离开了语音房").setForegroundColor(CommentModel.TEXT_GRAY)
                     .create();
             commentModel.setStringBuilder(stringBuilder);

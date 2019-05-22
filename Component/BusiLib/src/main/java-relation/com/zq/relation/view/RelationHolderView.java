@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.common.core.CoreConfiguration;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -70,7 +69,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                         .setCircle(true)
                         .build());
-        mNameTv.setText(userInfoModel.getNickname());
+        mNameTv.setText(userInfoModel.getNicknameRemark());
         if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(View.VISIBLE);
             mSexIv.setBackgroundResource(R.drawable.sex_man_icon);

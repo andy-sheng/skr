@@ -1,12 +1,9 @@
 package com.module.home.persenter;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.NotificationCompat;
 import android.text.SpannableStringBuilder;
 import android.view.Gravity;
 import android.view.View;
@@ -183,7 +180,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 if (userInfoModel != null) {
                     SpannableStringBuilder stringBuilder = new SpanUtils()
                             .append("是否确定与").setForegroundColor(Color.parseColor("#7F7F7F"))
-                            .append("" + userInfoModel.getNickname()).setForegroundColor(Color.parseColor("#F5A623"))
+                            .append("" + userInfoModel.getNicknameRemark()).setForegroundColor(Color.parseColor("#F5A623"))
                             .append("成为好友？").setForegroundColor(Color.parseColor("#7F7F7F"))
                             .create();
                     TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.app())

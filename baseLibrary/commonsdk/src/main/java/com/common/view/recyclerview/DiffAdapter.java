@@ -27,6 +27,11 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
     }
 
     public void setDataList(List<T> dataList, boolean useDiffUtils) {
+        if(dataList==null){
+            mDataList.clear();
+            notifyDataSetChanged();
+            return;
+        }
         if (useDiffUtils) {
             /**
              *  想要 dataList 中的数据完全替换 mDataList 中的数据

@@ -8,8 +8,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -21,9 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -42,7 +38,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
@@ -51,9 +46,7 @@ import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
-import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.module.ModuleServiceManager;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -71,7 +64,6 @@ import com.zq.person.view.EditRemarkView;
 import com.zq.person.view.IOtherPersonView;
 import com.zq.person.view.OtherPhotoWallView;
 import com.zq.person.view.PersonMoreOpView;
-import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
 import com.zq.report.fragment.ReportFragment;
 
@@ -518,7 +510,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                 if (mUserInfoModel != null) {
                     boolean needPop = ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
                             String.valueOf(mUserInfoModel.getUserId()),
-                            mUserInfoModel.getNickname(),
+                            mUserInfoModel.getNicknameRemark(),
                             mUserInfoModel.isFriend()
                     );
                     if (needPop) {
@@ -566,7 +558,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                         .setCircle(true)
                         .build());
 
-        mNameTv.setText(model.getNickname());
+        mNameTv.setText(model.getNicknameRemark());
         if (model.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(View.VISIBLE);
             mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
@@ -577,7 +569,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
             mSexIv.setVisibility(View.GONE);
         }
 
-        mSrlNameTv.setText(model.getNickname());
+        mSrlNameTv.setText(model.getNicknameRemark());
         mUseridTv.setText("撕歌号：" + model.getUserId());
         mSignTv.setText(model.getSignature());
 

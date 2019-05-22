@@ -10,7 +10,6 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -92,7 +91,7 @@ public class FollowNotifyView extends RelativeLayout {
                 AvatarUtils.newParamsBuilder(mUserInfoModel.getAvatar())
                         .setCircle(true)
                         .build());
-        mNameTv.setText(mUserInfoModel.getNickname());
+        mNameTv.setText(mUserInfoModel.getNicknameRemark());
         if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(VISIBLE);
             mSexIv.setBackgroundResource(R.drawable.sex_man_icon);

@@ -100,7 +100,7 @@ public class GrabInputContainerView extends InputContainerView {
                     UserInfo userInfo = new UserInfo.Builder()
                             .setAvatar(mGrabPlayerInfoModel.getUserInfo().getAvatar())
                             .setUserID(mGrabPlayerInfoModel.getUserID())
-                            .setNickName(mGrabPlayerInfoModel.getUserInfo().getNickname())
+                            .setNickName(mGrabPlayerInfoModel.getUserInfo().getNicknameRemark())
                             .build();
                     map.put("receiver", new UserInfo[]{userInfo});
                 }
@@ -119,7 +119,7 @@ public class GrabInputContainerView extends InputContainerView {
 
                                 if (grabPlayerInfoModel != null && grabPlayerInfoModel.getUserInfo() != null) {
                                     UserInfoModel userInfoModel = new UserInfoModel();
-                                    userInfoModel.setNickname(grabPlayerInfoModel.getUserInfo().getNickname());
+                                    userInfoModel.setNickname(grabPlayerInfoModel.getUserInfo().getNicknameRemark());
                                     userInfoModel.setAvatar(grabPlayerInfoModel.getUserInfo().getAvatar());
                                     userInfoModel.setUserId(grabPlayerInfoModel.getUserID());
                                     EventHelper.pretendCommentPush(content, mRoomData.getGameId(), userInfoModel);
@@ -219,7 +219,7 @@ public class GrabInputContainerView extends InputContainerView {
                         mGrabPlayerInfoModel = mWalletRecordModel;
 
                         if (mWalletRecordModel.getUserInfo() != null) {
-                            String nickName = mGrabPlayerInfoModel.getUserInfo().getNickname();
+                            String nickName = mGrabPlayerInfoModel.getUserInfo().getNicknameRemark();
                             if (TextUtils.isEmpty(nickName)) {
                                 nickName = "";
                             }

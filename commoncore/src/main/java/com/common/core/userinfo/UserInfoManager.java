@@ -665,11 +665,11 @@ public class UserInfoManager {
                     } else {
                         userInfoModel.setStatus(UserInfoModel.EF_OffLine);
                         String timeDesc = "";
-                        if(onlineModel.getOfflineTime()>0){
-                            timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(),System.currentTimeMillis());
+                        if (onlineModel.getOfflineTime() > 0) {
+                            timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(), System.currentTimeMillis());
                         }
                         // 显示
-                        userInfoModel.setStatusDesc("离线 "+timeDesc);
+                        userInfoModel.setStatusDesc("离线 " + timeDesc);
                     }
                 } else {
                     idSets.add(userInfoModel.getUserId());
@@ -691,28 +691,34 @@ public class UserInfoManager {
                                         } else {
                                             userInfoModel.setStatus(UserInfoModel.EF_OffLine);
                                             String timeDesc = "";
-                                            if(onlineModel.getOfflineTime()>0){
-                                                timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(),System.currentTimeMillis());
+                                            if (onlineModel.getOfflineTime() > 0) {
+                                                timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(), System.currentTimeMillis());
                                             }
                                             // 显示
-                                            userInfoModel.setStatusDesc("离线 "+timeDesc);
+                                            userInfoModel.setStatusDesc("离线 " + timeDesc);
                                         }
                                     } else {
                                         userInfoModel.setStatus(UserInfoModel.EF_OffLine);
                                     }
                                 }
                             }
-                            Collections.sort(list, new Comparator<UserInfoModel>() {
-                                @Override
-                                public int compare(UserInfoModel o1, UserInfoModel o2) {
-                                    return o1.getStatus() - o2.getStatus();
-                                }
-                            });
+
                             return list;
                         }
                     })
                     .subscribe();
         }
+        Collections.sort(list, new Comparator<UserInfoModel>() {
+            @Override
+            public int compare(UserInfoModel o1, UserInfoModel o2) {
+                int r = o1.getStatus() - o2.getStatus();
+                if (r == 0) {
+                    return o1.getUserId() - o2.getUserId();
+                } else {
+                    return r;
+                }
+            }
+        });
     }
 
     public Observable<HashMap<Integer, OnlineModel>> checkUserOnlineStatusByIds(Collection<Integer> list) {

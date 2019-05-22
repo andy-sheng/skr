@@ -1911,7 +1911,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QJoinNoticeEvent event) {
         boolean canAdd = false;
         GrabPlayerInfoModel playerInfoModel = event.infoModel;
-        MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNickname() + " role=" + playerInfoModel.getRole() + " roundSeq=" + event.roundSeq);
+        MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNicknameRemark() + " role=" + playerInfoModel.getRole() + " roundSeq=" + event.roundSeq);
         if (playerInfoModel != null && playerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             /**
              * 自己加入房间不提示
@@ -2011,12 +2011,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             } else if (now.singBySelf()) {
                                 // 是我的对手不唱了
                                 if (userInfoModel != null) {
-                                    U.getToastUtil().showShort(userInfoModel.getNickname() + "已经退出合唱");
+                                    U.getToastUtil().showShort(userInfoModel.getNicknameRemark() + "已经退出合唱");
                                 }
                             } else {
                                 // 观众视角，有人不唱了
                                 if (userInfoModel != null) {
-                                    U.getToastUtil().showShort(userInfoModel.getNickname() + "已经退出合唱");
+                                    U.getToastUtil().showShort(userInfoModel.getNicknameRemark() + "已经退出合唱");
                                 }
                             }
                             pretendGiveUp(userInfoModel);
@@ -2060,11 +2060,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             CommentTextModel commentModel = new CommentTextModel();
             commentModel.setUserId(userInfoModel.getUserId());
             commentModel.setAvatar(userInfoModel.getAvatar());
-            commentModel.setUserName(userInfoModel.getNickname());
+            commentModel.setUserName(userInfoModel.getNicknameRemark());
             commentModel.setAvatarColor(Color.WHITE);
             SpannableStringBuilder stringBuilder;
             SpanUtils spanUtils = new SpanUtils()
-                    .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                    .append(userInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                     .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
             stringBuilder = spanUtils.create();
             commentModel.setStringBuilder(stringBuilder);
@@ -2076,17 +2076,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         CommentTextModel commentModel = new CommentTextModel();
         commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
         commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
-        commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+        commentModel.setUserName(playerInfoModel.getUserInfo().getNicknameRemark());
         commentModel.setAvatarColor(Color.WHITE);
         SpannableStringBuilder stringBuilder;
         if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
             stringBuilder = new SpanUtils()
-                    .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                    .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                     .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(Color.parseColor("#586D94"))
                     .create();
         } else {
             SpanUtils spanUtils = new SpanUtils()
-                    .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                    .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                     .append("加入了房间").setForegroundColor(Color.parseColor("#586D94"));
             if (BuildConfig.DEBUG) {
                 spanUtils.append(" 角色为" + playerInfoModel.getRole())

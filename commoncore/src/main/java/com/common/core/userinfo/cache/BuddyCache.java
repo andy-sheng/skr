@@ -9,7 +9,6 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.module.ModuleServiceManager;
-import com.zq.live.proto.Common.UserInfo;
 
 import java.util.List;
 
@@ -132,7 +131,7 @@ public class BuddyCache {
             public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                 UserInfoModel userInfoModel = UserInfoLocalApi.getUserInfoByUUid(uuid);
                 if (userInfoModel != null) {
-                    BuddyCacheEntry buddyCacheEntry = new BuddyCacheEntry(userInfoModel.getUserId(), userInfoModel.getNickname(), userInfoModel.getAvatar());
+                    BuddyCacheEntry buddyCacheEntry = new BuddyCacheEntry(userInfoModel.getUserId(), userInfoModel.getNicknameRemark(), userInfoModel.getAvatar());
                     putBuddy(buddyCacheEntry);
                 }
                 emitter.onComplete();
@@ -205,7 +204,7 @@ public class BuddyCache {
                 return;
             }
             this.uuid = userInfoModel.getUserId();
-            this.name = userInfoModel.getNickname();
+            this.name = userInfoModel.getNicknameRemark();
             this.avatar = userInfoModel.getAvatar();
         }
 

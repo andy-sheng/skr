@@ -330,7 +330,7 @@ public class GiftPanelView extends FrameLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mTvSelectedName.setText(grabPlayerInfoModel.getUserInfo().getNickname());
+            mTvSelectedName.setText(grabPlayerInfoModel.getUserInfo().getNicknameRemark());
 
 //            mAllPlayersRV.setVisibility(GONE);
 //            mLlSelectedMan.setVisibility(VISIBLE);

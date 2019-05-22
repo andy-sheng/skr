@@ -54,7 +54,10 @@ public class RecommendSongFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> recommendTagModelArrayList = JSONObject.parseArray(result.getData().getString("items"), SongModel.class);
-                    mRecommendSongAdapter.setDataList(recommendTagModelArrayList);
+                    if (recommendTagModelArrayList != null) {
+                        mRecommendSongAdapter.setDataList(recommendTagModelArrayList);
+                    }
+
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
                 }

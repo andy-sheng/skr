@@ -117,7 +117,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(5))
                             .setCircle(true)
                             .build());
-            mTvSingerName.setText(userInfoModel.getNickname());
+            mTvSingerName.setText(userInfoModel.getNicknameRemark());
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }

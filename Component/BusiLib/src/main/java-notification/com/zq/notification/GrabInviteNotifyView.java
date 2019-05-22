@@ -81,7 +81,7 @@ public class GrabInviteNotifyView extends RelativeLayout {
                         .setBorderColorBySex(mUserInfoModel.getSex() == ESex.SX_MALE.getValue())
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .build());
-        mNameTv.setText(mUserInfoModel.getNickname());
+        mNameTv.setText(mUserInfoModel.getNicknameRemark());
         if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(VISIBLE);
             mSexIv.setBackgroundResource(R.drawable.sex_man_icon);

@@ -156,7 +156,7 @@ public class GiftContinuousView extends RelativeLayout {
             }
         });
 
-        mSenderNameTv.setText(model.getSender().getNickname());
+        mSenderNameTv.setText(model.getSender().getNicknameRemark());
         mDescTv.setText(model.getAction());
 
         if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
@@ -172,7 +172,7 @@ public class GiftContinuousView extends RelativeLayout {
             FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newResImage(resId)
                     .build());
 
-            mSenderNameTv.setText(model.getSender().getNickname() + model.getAction());
+            mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
             mDescTv.setVisibility(GONE);
         } else if (model.getEGiftType() == GiftPlayModel.EGiftType.GIFT) {
             FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newPathImage(model.getGiftIconUrl())
@@ -182,8 +182,8 @@ public class GiftContinuousView extends RelativeLayout {
                     .setHeight(U.getDisplayUtils().dip2px(45))
                     .build());
 
-            mSenderNameTv.setText(model.getSender().getNickname());
-            mDescTv.setText("送给 " + model.getReceiver().getNickname());
+            mSenderNameTv.setText(model.getSender().getNicknameRemark());
+            mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
             mDescTv.setVisibility(VISIBLE);
         }
 

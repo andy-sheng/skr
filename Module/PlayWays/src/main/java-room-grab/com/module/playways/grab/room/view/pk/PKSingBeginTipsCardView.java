@@ -136,12 +136,12 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
             }
         }
 
-        if (!TextUtils.isEmpty(left.getNickname())) {
+        if (!TextUtils.isEmpty(left.getNicknameRemark())) {
             TextPaint leftPaint = new TextPaint();
             leftPaint.setColor(U.getColor(R.color.black_trans_60));
             leftPaint.setAntiAlias(true);
             leftPaint.setTextSize(U.getDisplayUtils().dip2px(12));
-            String text = left.getNickname();
+            String text = left.getNicknameRemark();
             dynamicEntity.setDynamicText(text, leftPaint, "text_441");
         }
 
@@ -164,12 +164,12 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
             }
         }
 
-        if (!TextUtils.isEmpty(right.getNickname())) {
+        if (!TextUtils.isEmpty(right.getNicknameRemark())) {
             TextPaint rightPaint = new TextPaint();
             rightPaint.setColor(U.getColor(R.color.black_trans_60));
             rightPaint.setAntiAlias(true);
             rightPaint.setTextSize(U.getDisplayUtils().dip2px(12));
-            String text = right.getNickname();
+            String text = right.getNicknameRemark();
             dynamicEntity.setDynamicText(text, rightPaint, "text_442");
         }
         return dynamicEntity;

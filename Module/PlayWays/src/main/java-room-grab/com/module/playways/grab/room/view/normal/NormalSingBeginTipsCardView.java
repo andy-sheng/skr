@@ -137,7 +137,7 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
         String text1 = "";
         String text2 = "";
         if (userInfoModel.getUserId() != MyUserInfoManager.getInstance().getUid()) {
-            text1 = userInfoModel.getNickname();
+            text1 = userInfoModel.getNicknameRemark();
             text2 = "获得演唱机会!";
         } else {
             text1 = "轮到你唱";

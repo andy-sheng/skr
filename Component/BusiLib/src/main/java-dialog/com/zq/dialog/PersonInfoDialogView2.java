@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -595,7 +594,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                             .setCircle(true)
                             .build());
 
-            mNameTv.setText(model.getNickname());
+            mNameTv.setText(model.getNicknameRemark());
             mSignTv.setText(model.getSignature());
             if (model.getSex() == ESex.SX_MALE.getValue()) {
                 mSexIv.setVisibility(VISIBLE);

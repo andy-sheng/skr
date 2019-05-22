@@ -18,7 +18,6 @@ import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
@@ -294,7 +293,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             @Override
             public boolean onGetLocalDB(UserInfoModel userInfoModel) {
                 if (userInfoModel != null) {
-                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
                     RongIM.getInstance().refreshUserInfoCache(userInfo);
                 }
                 return false;
@@ -303,7 +302,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             @Override
             public boolean onGetServer(UserInfoModel userInfoModel) {
                 if (userInfoModel != null) {
-                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
                     RongIM.getInstance().refreshUserInfoCache(userInfo);
                 }
                 return false;
