@@ -15,6 +15,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.upgrade.UpgradeCheckApi;
 import com.common.rxretrofit.ApiManager;
@@ -280,7 +281,7 @@ public class SettingFragment extends BaseFragment {
 
     private void initVersion() {
         UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
-        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode()),
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.getInstance().getUid()),
                 new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult apiResult) {

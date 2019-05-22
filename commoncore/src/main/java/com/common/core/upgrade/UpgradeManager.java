@@ -20,6 +20,7 @@ import android.view.Gravity;
 import com.alibaba.fastjson.JSON;
 import com.common.core.R;
 import com.common.core.global.event.ShowDialogInHomeEvent;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.provideer.MyFileProvider;
 import com.common.rxretrofit.ApiManager;
@@ -147,7 +148,7 @@ public class UpgradeManager {
 
     private void loadDataFromServer() {
         UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
-        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode()),
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.getInstance().getUid()),
                 new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult apiResult) {
