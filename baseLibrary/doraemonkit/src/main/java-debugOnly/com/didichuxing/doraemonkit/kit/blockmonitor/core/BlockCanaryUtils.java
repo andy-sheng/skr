@@ -44,8 +44,10 @@ public final class BlockCanaryUtils {
             sProcessNameFirstGetFlag = true;
             sProcessName = obtainProcessName(context);
         }
-        if (line.startsWith(sProcessName) || line.startsWith(CURRENT_PACKAGE)) {
-            return classSimpleName(line);
+        if(line!=null) {
+            if (line.startsWith(sProcessName) || line.startsWith(CURRENT_PACKAGE)) {
+                return classSimpleName(line);
+            }
         }
         return null;
     }

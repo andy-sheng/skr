@@ -25,10 +25,6 @@ public class UserInfoLocalApi {
     //Relation中的relative  0为未关注，1为已关注 2为互关
     private static final String TAG = "UserInfoLocalApi";
 
-    public static final int UN_FOLLOW = 0;    // 未关注
-    public static final int ONE_FOLLOW = 1;   // 已关注
-    public static final int INTER_FOLLOW = 2; //互相关注
-
     private static UserInfoDBDao getDao() {
         return GreenDaoManager.getDaoSession().getUserInfoDBDao();
     }

@@ -392,7 +392,7 @@ public class UserInfoManager {
                         try {
                             Response<ApiResult> response = call.execute();
                             ApiResult obj = response.body();
-                            if (obj == null || obj.getData()==null || obj.getErrno()!=0) {
+                            if (obj == null || obj.getData() == null || obj.getErrno() != 0) {
                                 break;
                             }
                             if (offset == 0) {
@@ -405,7 +405,7 @@ public class UserInfoManager {
                             }
                             offset = obj.getData().getIntValue("offset");
                             List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("contacts"), UserInfoModel.class);
-                            if (userInfoModels2.isEmpty()) {
+                            if (userInfoModels2 == null || userInfoModels2.isEmpty()) {
                                 // 水位持久化
                                 U.getPreferenceUtils().setSettingLong(PREF_KEY_FOLLOW_MARKER_WATER, followMarkerWater);
                                 break;
@@ -426,19 +426,25 @@ public class UserInfoManager {
                     try {
                         Response<ApiResult> response = call.execute();
                         ApiResult obj = response.body();
-                        if (obj != null && obj.getData()!=null && obj.getErrno()==0) {
+                        if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
+                            List<UserInfoModel> l3 = new ArrayList<>();
                             List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
                             List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
-                            userInfoModels2.addAll(userInfoModels3);
+                            if (userInfoModels2 != null) {
+                                l3.addAll(userInfoModels2);
+                            }
+                            if (userInfoModels3 != null) {
+                                l3.addAll(userInfoModels3);
+                            }
                             boolean hasUpdate = false;
-                            if (!userInfoModels2.isEmpty()) {
-                                UserInfoLocalApi.insertOrUpdate(userInfoModels2);
+                            if (!l3.isEmpty()) {
+                                UserInfoLocalApi.insertOrUpdate(l3);
                                 // 更新最终表
-                                resutlSet.addAll(userInfoModels2);
+                                resutlSet.addAll(l3);
                                 hasUpdate = true;
                             }
                             List<Integer> delIds = JSON.parseArray(obj.getData().getString("dels"), Integer.class);
-                            if (!delIds.isEmpty()) {
+                            if (delIds != null && !delIds.isEmpty()) {
                                 //批量删除
                                 UserInfoLocalApi.deleUserInfoByUUids(delIds);
                                 for (Integer userId : delIds) {
@@ -558,12 +564,12 @@ public class UserInfoManager {
             try {
                 Response<ApiResult> response = call.execute();
                 ApiResult obj = response.body();
-                if (obj == null || obj.getData()==null || obj.getErrno()!=0) {
+                if (obj == null || obj.getData() == null || obj.getErrno() != 0) {
                     break;
                 }
                 offset = obj.getData().getIntValue("offset");
                 List<RemarkDB> remarks2 = JSON.parseArray(obj.getData().getString("info"), RemarkDB.class);
-                if (remarks2.isEmpty()) {
+                if (remarks2 == null || remarks2.isEmpty()) {
                     U.getPreferenceUtils().setSettingBoolean(PREF_KEY_HAS_PULL_REMARK, true);
                     // 水位持久化
                     break;
@@ -676,7 +682,7 @@ public class UserInfoManager {
                 .map(new Function<ApiResult, UserStatusSet>() {
                     @Override
                     public UserStatusSet apply(ApiResult obj) {
-                        if (obj != null && obj.getData() != null && obj.getErrno()==0) {
+                        if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
                             List<OnlineModel> onlineModelList = JSON.parseArray(obj.getData().getString("userOnlineList"), OnlineModel.class);
                             List<OfflineModel> offlineModelList = JSON.parseArray(obj.getData().getString("userOfflineList"), OfflineModel.class);
                             return new UserStatusSet(onlineModelList, offlineModelList);
@@ -698,6 +704,16 @@ public class UserInfoManager {
             mOfflineModelList = offlineModelList;
             mOnlineModelSet = new HashSet<>();
             mOfflineModelSet = new HashSet<>();
+            if (mOnlineModelList != null) {
+                for (OnlineModel onlineModel : mOnlineModelList) {
+                    mOnlineModelSet.add(onlineModel.getUserID());
+                }
+            }
+            if (mOfflineModelSet != null) {
+                for (OfflineModel offlineModel : mOfflineModelList) {
+                    mOfflineModelSet.add(offlineModel.getUserID());
+                }
+            }
         }
 
         public boolean containsOnline(int userID) {

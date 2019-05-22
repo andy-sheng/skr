@@ -274,10 +274,12 @@ if [[ $1 = "app" ]]; then
 		    echo "clean一下"
 		    ./gradlew :app:clean
 		fi
+		rm -rf app/build/outputs/apk
 		./gradlew :app:assembleDebugChannels --stacktrace
-		 if [ $apkcanary = true ]; then
-		        ./apk_canary.sh
-		 fi
+        if [ -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
+            if [ $apkcanary = true ]; then
+		           ./apk_canary.sh
+		    fi
 		    if [ $dev = true ]; then
 		        findChannel DEV debug
 		    elif [ $test = true ];then
@@ -287,9 +289,11 @@ if [[ $1 = "app" ]]; then
 		    else
 		        findChannel DEFAULT debug
 		    fi
-
-		installApkForAllDevices $installApkPath
-		myandroidlog.sh  com.zq.live
+		    installApkForAllDevices $installApkPath
+		    myandroidlog.sh  com.zq.live
+		else
+		   echo "app/build/outputs/apk/debug 为空"
+        fi
 	fi
 else
 	if [[ $isBuildModule = false ]]; then

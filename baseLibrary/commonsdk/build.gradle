@@ -38,6 +38,8 @@ android {
 
         debug {
             debuggable true
+
+                resValue("string", "PORT_NUMBER", "8089")
         }
         release {
             minifyEnabled false
@@ -245,7 +247,7 @@ dependencies {
 
     api rootProject.ext.dependencies["swipebackhelper"]
 
-    debugImplementation rootProject.ext.dependencies["debug-db"]
+    debugApi rootProject.ext.dependencies["debug-db"]
 
     // exo 播放器
     api rootProject.ext.dependencies["exoplayer-core"]

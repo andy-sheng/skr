@@ -17,11 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.common.core.userinfo.UserInfoLocalApi.INTER_FOLLOW;
-import static com.common.core.userinfo.UserInfoLocalApi.ONE_FOLLOW;
-import static com.common.core.userinfo.UserInfoLocalApi.UN_FOLLOW;
-
-// TODO: 2019/1/2 该类会作为json来解析，不要改变量名 
+// TODO: 2019/1/2 该类会作为json来解析，不要改变量名
 public class UserInfoModel implements Serializable, Cloneable {
 
     public static final int EF_OnLine = 1; //在线
@@ -76,12 +72,12 @@ public class UserInfoModel implements Serializable, Cloneable {
     }
 
     public String getNicknameRemark() {
-        String remark = UserInfoManager.getInstance().getRemarkName(userId,nickname);
+        String remark = UserInfoManager.getInstance().getRemarkName(userId, nickname);
         return remark;
     }
 
     public String getNicknameRemark(String defaultName) {
-        String remark = UserInfoManager.getInstance().getRemarkName(userId,defaultName);
+        String remark = UserInfoManager.getInstance().getRemarkName(userId, defaultName);
         return remark;
     }
 
@@ -275,11 +271,11 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoDB.setIsSystem(userInfModel.getIsSystem() ? 1 : 0);
 
             if (userInfModel.isFriend()) {
-                userInfoDB.setRelative(INTER_FOLLOW);
+                userInfoDB.setRelative(UserInfoManager.RELATION.FRIENDS.getValue());
             } else if (userInfModel.isFollow()) {
-                userInfoDB.setRelative(ONE_FOLLOW);
+                userInfoDB.setRelative(UserInfoManager.RELATION.FOLLOW.getValue());
             } else {
-                userInfoDB.setRelative(UN_FOLLOW);
+                userInfoDB.setRelative(UserInfoManager.RELATION.NO_RELATION.getValue());
             }
 
             JSONObject jsonObject = new JSONObject();
@@ -306,6 +302,13 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setSignature(userInDB.getSignature());
             userInfoModel.setLetter(userInDB.getLetter());
             userInfoModel.setIsSystem(userInDB.getIsSystem() == 1);
+            if (userInDB.getRelative() == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                userInfoModel.setFriend(true);
+                userInfoModel.setFollow(true);
+            } else if (userInDB.getRelative() == UserInfoManager.RELATION.FOLLOW.getValue()) {
+                userInfoModel.setFollow(true);
+            }
+
             String extJSon = userInDB.getExt();
             if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);

@@ -36,6 +36,9 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
                 UserAccountDao.dropTable(db, ifExists);
             }
         }, UserAccountDao.class);
+        if (oldVersion == 6) {
+            UserInfoDBDao.dropTable(db, true);
+        }
         MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
             @Override
             public void onCreateAllTables(Database db, boolean ifNotExists) {
