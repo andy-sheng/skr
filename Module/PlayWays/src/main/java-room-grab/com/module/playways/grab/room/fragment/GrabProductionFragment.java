@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePanel;
@@ -21,7 +22,7 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -96,6 +97,41 @@ public class GrabProductionFragment extends BaseFragment {
 
     ShareWorksDialog mShareWorksDialog;
 
+    boolean mSaving = false;
+
+    /**
+     * 使用一个队列负责上传 作品保存成功 移除队列
+     */
+    ObjectPlayControlTemplate<WorksUploadModel, GrabProductionFragment> mObjectPlayControlTemplate = new ObjectPlayControlTemplate<WorksUploadModel, GrabProductionFragment>() {
+        @Override
+        protected GrabProductionFragment accept(WorksUploadModel cur) {
+            if (!mSaving) {
+                mSaving = true;
+                return GrabProductionFragment.this;
+            }
+            return null;
+        }
+
+        @Override
+        public void onStart(WorksUploadModel worksUploadModel, GrabProductionFragment grabProductionFragment) {
+            if (TextUtils.isEmpty(worksUploadModel.getUrl())) {
+                saveWorksStep1(worksUploadModel);
+            } else {
+                if (worksUploadModel.getWorksID() > 0) {
+                    mSaving = false;
+                    mObjectPlayControlTemplate.endCurrent(worksUploadModel);
+                } else {
+                    saveWorksStep2(worksUploadModel);
+                }
+            }
+        }
+
+        @Override
+        protected void onEnd(WorksUploadModel worksUploadModel) {
+
+        }
+    };
+
     @Override
     public int initView() {
         return R.layout.grab_production_fragment_layout;
@@ -126,13 +162,13 @@ public class GrabProductionFragment extends BaseFragment {
             public void onClickPlay(int position, WorksUploadModel model) {
                 mAdapter.setSelectPosition(position);
                 if (mIPlayer == null) {
-                    mIPlayer = new ExoPlayer();
+                    mIPlayer = new AndroidMediaPlayer();
                     // 播放完毕
                     mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                         @Override
                         public void onCompletion() {
                             super.onCompletion();
-                            mIPlayer.stop();
+                            //mIPlayer.stop();
                             mAdapter.setSelectPosition(-1);
                         }
                     });
@@ -153,55 +189,10 @@ public class GrabProductionFragment extends BaseFragment {
             @Override
             public void onClickSaveAndShare(int position, WorksUploadModel model) {
                 MyLog.d(TAG, "onClickSaveAndShare" + " position=" + position + " model=" + model);
-                if (model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
+                if (model.getWorksID() > 0) {
                     showShareDialog(model);
                 } else {
-                    UploadTask uploadTask = UploadParams.newBuilder(model.getLocalPath())
-                            .setFileType(UploadParams.FileType.audioAi)
-                            .startUploadAsync(new UploadCallback() {
-
-                                @Override
-                                public void onProgress(long currentSize, long totalSize) {
-
-                                }
-
-                                @Override
-                                public void onSuccess(String url) {
-                                    MyLog.d(TAG, "onSuccess" + " url=" + url);
-                                    // TODO: 2019/5/22 上传服务器
-                                    HashMap<String, Object> map = new HashMap<>();
-                                    if (model.isBlight()) {
-                                        // 一唱到底高光时刻
-                                        map.put("category", ProducationModel.TYPE_STAND_HIGHLIGHT);
-                                    } else {
-                                        // 一唱到底
-                                        map.put("category", ProducationModel.TYPE_STAND_NORMAL);
-                                    }
-                                    map.put("duration", String.valueOf(model.getSongModel().getTotalMs()));
-                                    map.put("songID", model.getSongModel().getItemID());
-                                    map.put("worksURL", url);
-                                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-                                    ApiMethods.subscribe(mUserInfoServerApi.addWorks(body), new ApiObserver<ApiResult>() {
-                                        @Override
-                                        public void process(ApiResult result) {
-                                            if (result.getErrno() == 0) {
-                                                int worksID = result.getData().getIntValue("worksID");
-                                                model.setWorksID(worksID);
-                                                model.setUrl(url);
-                                                mAdapter.update(model);
-                                                showShareDialog(model);
-                                            }
-                                        }
-
-                                    }, GrabProductionFragment.this);
-                                }
-
-                                @Override
-                                public void onFailure(String msg) {
-
-                                }
-                            });
+                    mObjectPlayControlTemplate.add(model, true);
                 }
             }
         });
@@ -268,30 +259,109 @@ public class GrabProductionFragment extends BaseFragment {
         }, 500);
     }
 
-    private void showShareDialog(WorksUploadModel momentModel) {
-        if (mShareWorksDialog == null) {
-            mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName(), new ShareWorksDialog.ShareListener() {
-                @Override
-                public void onClickQQShare() {
-                    shareUrl(SharePlatform.QQ, momentModel);
-                }
+    private void saveWorksStep1(WorksUploadModel model) {
+        UploadTask uploadTask = UploadParams.newBuilder(model.getLocalPath())
+                .setFileType(UploadParams.FileType.audioAi)
+                .startUploadAsync(new UploadCallback() {
 
-                @Override
-                public void onClickQZoneShare() {
-                    shareUrl(SharePlatform.QZONE, momentModel);
-                }
+                    @Override
+                    public void onProgress(long currentSize, long totalSize) {
 
-                @Override
-                public void onClickWeixinShare() {
-                    shareUrl(SharePlatform.WEIXIN, momentModel);
-                }
+                    }
 
-                @Override
-                public void onClickQuanShare() {
-                    shareUrl(SharePlatform.WEIXIN_CIRCLE, momentModel);
-                }
-            });
+                    @Override
+                    public void onSuccess(String url) {
+                        MyLog.d(TAG, "onSuccess" + " url=" + url);
+                        model.setUrl(url);
+                        saveWorksStep2(model);
+
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        U.getToastUtil().showShort("保存失败");
+                        mSaving = false;
+                        mObjectPlayControlTemplate.endCurrent(model);
+                    }
+                });
+    }
+
+    private void saveWorksStep2(WorksUploadModel model) {
+        // TODO: 2019/5/22 上传服务器
+        HashMap<String, Object> map = new HashMap<>();
+        if (model.isBlight()) {
+            // 一唱到底高光时刻
+            map.put("category", ProducationModel.TYPE_STAND_HIGHLIGHT);
+        } else {
+            // 一唱到底
+            map.put("category", ProducationModel.TYPE_STAND_NORMAL);
         }
+        map.put("duration", String.valueOf(model.getSongModel().getTotalMs()));
+        map.put("songID", model.getSongModel().getItemID());
+        map.put("worksURL", model.getUrl());
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(mUserInfoServerApi.addWorks(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    int worksID = result.getData().getIntValue("worksID");
+                    model.setWorksID(worksID);
+                    mAdapter.update(model);
+                    showShareDialog(model);
+                    U.getToastUtil().showShort("保存成功");
+                    mSaving = false;
+                    mObjectPlayControlTemplate.endCurrent(model);
+                } else {
+                    U.getToastUtil().showShort("保存失败");
+                    mSaving = false;
+                    mObjectPlayControlTemplate.endCurrent(model);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                U.getToastUtil().showShort("保存失败");
+                mSaving = false;
+                mObjectPlayControlTemplate.endCurrent(model);
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                U.getToastUtil().showShort("保存失败");
+                mSaving = false;
+                mObjectPlayControlTemplate.endCurrent(model);
+            }
+        }, GrabProductionFragment.this);
+    }
+
+    private void showShareDialog(WorksUploadModel momentModel) {
+        if (mShareWorksDialog != null) {
+            mShareWorksDialog.dismiss(false);
+        }
+        mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName(), new ShareWorksDialog.ShareListener() {
+            @Override
+            public void onClickQQShare() {
+                shareUrl(SharePlatform.QQ, momentModel);
+            }
+
+            @Override
+            public void onClickQZoneShare() {
+                shareUrl(SharePlatform.QZONE, momentModel);
+            }
+
+            @Override
+            public void onClickWeixinShare() {
+                shareUrl(SharePlatform.WEIXIN, momentModel);
+            }
+
+            @Override
+            public void onClickQuanShare() {
+                shareUrl(SharePlatform.WEIXIN_CIRCLE, momentModel);
+            }
+        });
         mShareWorksDialog.show();
     }
 
@@ -417,6 +487,9 @@ public class GrabProductionFragment extends BaseFragment {
         }
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
+        }
+        if (mObjectPlayControlTemplate != null) {
+            mObjectPlayControlTemplate.destroy();
         }
     }
 
