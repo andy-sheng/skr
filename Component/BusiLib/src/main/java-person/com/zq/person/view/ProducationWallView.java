@@ -198,6 +198,9 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     private void showShareDialog(final ProducationModel model) {
+        if (mShareWorksDialog != null) {
+            mShareWorksDialog.dismiss(false);
+        }
         mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName(), new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
@@ -234,6 +237,7 @@ public class ProducationWallView extends RelativeLayout {
                     .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
                     .append("&workId=").append(String.valueOf(model.getWorksID()));
             String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
+            // TODO: 2019/5/22 微信分享不成功的原因可能是mUrl未上线，微信会检测这个
             music.setmTargetUrl(mUrl);
 
             switch (sharePlatform) {

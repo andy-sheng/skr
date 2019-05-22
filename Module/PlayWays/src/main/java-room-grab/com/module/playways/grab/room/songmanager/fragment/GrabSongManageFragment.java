@@ -56,8 +56,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     PopupWindow mPopupWindow;
 
-    DialogPlus mEditRoomDialog;
-
     Handler mUiHandler = new Handler();
 
     int mSpecialModelId;
@@ -222,9 +220,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     @Override
     public void destroy() {
         super.destroy();
-        if (mEditRoomDialog != null) {
-            mEditRoomDialog.dismiss(false);
-        }
     }
 
     @Override

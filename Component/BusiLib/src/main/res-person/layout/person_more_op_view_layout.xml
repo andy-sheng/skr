@@ -10,65 +10,55 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/voice_control_btn_container"
+            android:id="@+id/modify_remark_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_50_dp">
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/voice_control_btn"
+                android:id="@+id/modify_remark_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
-                android:drawableLeft="@drawable/soundoff"
+                android:drawableLeft="@drawable/person_remark_icon"
                 android:drawablePadding="@dimen/view_5_dp"
                 android:gravity="center"
-                android:text="关闭声音"
+                android:text="修改备注"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_1_dp"
-                android:layout_alignParentBottom="true"
-                android:background="#2E3041" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/game_guide_rl"
+            android:id="@+id/unfollow_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_50_dp">
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/game_guide_btn"
+                android:id="@+id/unfollow_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
-                android:drawableLeft="@drawable/grab_game_role"
+                android:drawableLeft="@drawable/person_unfollow_icon"
                 android:drawablePadding="@dimen/view_5_dp"
                 android:gravity="center"
-                android:text="比赛规则"
+                android:text="取消关注"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_1_dp"
-                android:layout_alignParentBottom="true"
-                android:background="#2E3041" />
         </RelativeLayout>
 
 
         <RelativeLayout
-            android:id="@+id/game_feedback_rl"
+            android:id="@+id/report_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_50_dp">
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/game_feedback_tv"
+                android:id="@+id/report_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -77,36 +67,9 @@
                 android:drawableLeft="@drawable/quick_feedback_icon"
                 android:drawablePadding="@dimen/view_5_dp"
                 android:gravity="center"
-                android:text="一键反馈"
+                android:text="举报"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_1_dp"
-                android:layout_alignParentBottom="true"
-                android:background="#2E3041" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/quit_btn_container"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp">
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/quit_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_marginRight="@dimen/view_10_dp"
-                android:drawableLeft="@drawable/quitroom"
-                android:drawablePadding="@dimen/view_5_dp"
-                android:gravity="center"
-                android:text="退出游戏"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_16_dp" />
-
 
         </RelativeLayout>
 

@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
@@ -34,6 +35,7 @@ import com.common.core.userinfo.model.UserRankModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -65,10 +67,13 @@ import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 import com.zq.person.presenter.OtherPersonPresenter;
+import com.zq.person.view.EditRemarkView;
 import com.zq.person.view.IOtherPersonView;
 import com.zq.person.view.OtherPhotoWallView;
+import com.zq.person.view.PersonMoreOpView;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
+import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -78,6 +83,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import model.RelationNumModel;
+
+import static com.zq.report.fragment.ReportFragment.FORM_PERSON;
+import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
+import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView {
 
@@ -120,11 +129,15 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     TextView mSrlNameTv;
 
     ExImageView mIvBack;
+    ExImageView mMoreBtn;
+    PersonMoreOpView mPersonMoreOpView;
+
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mUseridTv;
+    ExTextView mSignTv;
     TagFlowLayout mFlowlayout;
     ExRelativeLayout mGameLayout;
     ImageView mPaiweiImg;
@@ -150,6 +163,8 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     ImageView mFollowIv;
     ImageView mMessageIv;
 
+    DialogPlus mEditRemarkDialog;
+
     @Override
     public int initView() {
         return R.layout.other_person_fragment3_layout;
@@ -158,6 +173,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         initBaseContainArea();
+        initTopArea();
         initUserInfoArea();
         initMedalInfoArea();
         initPersonTabArea();
@@ -175,6 +191,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
             mFunctionArea.setVisibility(View.GONE);
+            mMoreBtn.setVisibility(View.GONE);
         }
     }
 
@@ -242,13 +259,118 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         });
     }
 
-    private void initUserInfoArea() {
+    private void initTopArea() {
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mMoreBtn = (ExImageView) mRootView.findViewById(R.id.more_btn);
+
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(OtherPersonFragment3.this);
+            }
+        });
+
+        mMoreBtn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mPersonMoreOpView != null) {
+                    mPersonMoreOpView.dismiss();
+                }
+                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.isFollow());
+                mPersonMoreOpView.setListener(new PersonMoreOpView.Listener() {
+                    @Override
+                    public void onClickRemark() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
+                        // TODO: 2019/5/22 修改备注昵称
+                        showRemarkDialog();
+                    }
+
+                    @Override
+                    public void onClickUnFollow() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
+                        unFollow(mUserInfoModel);
+                    }
+
+                    @Override
+                    public void onClickReport() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(REPORT_FROM_KEY, FORM_PERSON);
+                        bundle.putInt(REPORT_USER_ID, mUserId);
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
+                                        .setBundle(bundle)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                                        .build());
+                    }
+                });
+                mPersonMoreOpView.showAt(mMoreBtn);
+            }
+        });
+    }
+
+    private void showRemarkDialog() {
+        EditRemarkView editRemarkView = new EditRemarkView(getContext(), mUserInfoModel.getNicknameRemark());
+        editRemarkView.setListener(new EditRemarkView.Listener() {
+            @Override
+            public void onClickCancel() {
+                if (mEditRemarkDialog != null) {
+                    mEditRemarkDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onClickSave(String remarkName) {
+                if (mEditRemarkDialog != null) {
+                    mEditRemarkDialog.dismiss();
+                }
+                if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(mUserInfoModel.getNicknameRemark())) {
+                    // 都为空
+                    return;
+                } else if (!TextUtils.isEmpty(mUserInfoModel.getNicknameRemark()) && (mUserInfoModel.getNicknameRemark()).equals(remarkName)) {
+                    // 相同
+                    return;
+                } else {
+                    UserInfoManager.getInstance().updateRemark(remarkName, mUserId);
+                }
+            }
+        });
+
+        mEditRemarkDialog = DialogPlus.newDialog(getContext()).setContentHolder(new ViewHolder(editRemarkView))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    }
+                })
+                .create();
+        U.getKeyBoardUtils().
+
+                showSoftInputKeyBoard(getActivity());
+        mEditRemarkDialog.show();
+
+    }
+
+    private void initUserInfoArea() {
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
+        mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
         mGameLayout = (ExRelativeLayout) mRootView.findViewById(R.id.game_layout);
         mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
@@ -268,13 +390,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
             }
         };
         mFlowlayout.setAdapter(mTagAdapter);
-
-        mIvBack.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(OtherPersonFragment3.this);
-            }
-        });
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -376,6 +491,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mFollowIv = (ImageView) mRootView.findViewById(R.id.follow_iv);
         mMessageIv = (ImageView) mRootView.findViewById(R.id.message_iv);
 
+
         mFollowIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
@@ -463,6 +579,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 
         mSrlNameTv.setText(model.getNickname());
         mUseridTv.setText("撕歌号：" + model.getUserId());
+        mSignTv.setText(model.getSignature());
 
         if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
             mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
@@ -569,12 +686,18 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mUserInfoModel.setFriend(isFriend);
         mUserInfoModel.setFollow(isFollow);
         if (isFriend) {
+            mFollowIv.setClickable(false);
+            mFollowIv.setAlpha(0.5f);
             mFollowIv.setBackgroundResource(R.drawable.other_person_friend);
             mFollowIv.setTag(RELATION_FOLLOWED);
         } else if (isFollow) {
+            mFollowIv.setClickable(false);
+            mFollowIv.setAlpha(0.5f);
             mFollowIv.setBackgroundResource(R.drawable.other_person_followed);
             mFollowIv.setTag(RELATION_FOLLOWED);
         } else {
+            mFollowIv.setClickable(true);
+            mFollowIv.setAlpha(1f);
             mFollowIv.setBackgroundResource(R.drawable.other_person_follow);
             mFollowIv.setTag(RELATION_UN_FOLLOW);
         }
@@ -595,19 +718,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
         if (event.useId == mUserInfoModel.getUserId()) {
-            mUserInfoModel.setFriend(event.isFriend);
-            mUserInfoModel.setFollow(event.isFollow);
-            if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
-                if (event.isFriend) {
-                    mFollowIv.setBackgroundResource(R.drawable.other_person_friend);
-                } else if (event.isFollow) {
-                    mFollowIv.setBackgroundResource(R.drawable.other_person_followed);
-                }
-                mFollowIv.setTag(RELATION_FOLLOWED);
-            } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
-                mFollowIv.setBackgroundResource(R.drawable.other_person_follow);
-                mFollowIv.setTag(RELATION_UN_FOLLOW);
-            }
+            showUserRelation(event.isFriend, event.isFollow);
         }
     }
 
@@ -657,6 +768,12 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         super.destroy();
         if (mDialogPlus != null) {
             mDialogPlus.dismiss();
+        }
+        if (mPersonMoreOpView != null) {
+            mPersonMoreOpView.dismiss();
+        }
+        if (mEditRemarkDialog != null) {
+            mEditRemarkDialog.dismiss(false);
         }
     }
 }

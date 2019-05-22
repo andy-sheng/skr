@@ -46,7 +46,7 @@ public class MoreOpView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.more_op_view_layout, this);
-        setBackgroundResource(R.drawable.tuichufangjian);
+        setBackgroundResource(R.drawable.common_menu_bg);
 
         mMenuContainer = (LinearLayout) this.findViewById(R.id.menu_container);
         mVoiceControlBtnContainer = (RelativeLayout) this.findViewById(R.id.voice_control_btn_container);
