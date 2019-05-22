@@ -484,7 +484,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (mRoomData.openAudioRecording()) {
             // 需要上传音频伪装成机器人
             if (now != null) {
-                String fileName = String.format("wm_%s_%s", mRoomData.getGameId(), now.getRoundSeq());
+                String fileName = String.format("wm_%s_%s.aac", mRoomData.getGameId(), now.getRoundSeq());
                 String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
                 EngineManager.getInstance().startAudioRecording(savePath, Constants.AUDIO_RECORDING_QUALITY_HIGH);
             }
@@ -851,7 +851,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (roundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
                     MyLog.d(TAG,"添加到待选作品");
                     // 一唱到底
-                    String fileName = String.format("wm_%s_%s", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
+                    String fileName = String.format("wm_%s_%s.aac", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
                     String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
                     SongModel songModel = roundInfoModel.getMusic();
                     if (roundInfoModel.getsPkRoundInfoModels().size() >= 1 && roundInfoModel.getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {

@@ -249,10 +249,13 @@ public class UploadTask {
         if (TextUtils.isEmpty(mUploadParams.getFileName())) {
             String ext = U.getFileUtils().getSuffixFromFilePath(filePath);
             String fileName = U.getMD5Utils().MD5_16(System.currentTimeMillis() + filePath);
+            if(!TextUtils.isEmpty(ext)){
+                fileName = fileName+"."+ext;
+            }
             if (TextUtils.isEmpty(mDir)) {
-                mObjectId = mUploadParams.getFileType().getOssSavaDir() + fileName + "." + ext;
+                mObjectId = mUploadParams.getFileType().getOssSavaDir() + fileName;
             } else {
-                mObjectId = mDir + fileName + "." + ext;
+                mObjectId = mDir + fileName;
             }
         } else {
             mObjectId = mDir + mUploadParams.getFileName();
