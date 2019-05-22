@@ -305,5 +305,11 @@ public interface UserInfoServerApi {
 
     @GET("/v1/profile/query-works")
     Observable<ApiResult> getWorks();
-    
+
+
+    @POST("/v1/mate/multi-check-user-online-status")
+    Observable<ApiResult> checkUserOnlineStatus(@Body RequestBody body);
+
+    @POST("/v1/mate/multi-check-user-game-status")
+    Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
 }

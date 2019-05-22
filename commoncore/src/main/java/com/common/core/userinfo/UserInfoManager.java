@@ -628,64 +628,8 @@ public class UserInfoManager {
         }
     }
 
-//    /**
-//     * 获取关系列表
-//     *
-//     * @param relation
-//     * @param offset
-//     * @param limit
-//     * @param responseCallBack
-//     */
-//    public void getRelationList(final int relation, int offset, final int limit, final ResponseCallBack responseCallBack) {
-//        if (relation == 0) {
-//            MyLog.w(TAG, "getRelationList Illegal parameter");
-//            return;
-//        }
-//
-//        final WeakReference<ResponseCallBack> responseCallBackWeakReference = new WeakReference<>(responseCallBack);
-//
-//        Observable<ApiResult> apiResultObservable = userInfoServerApi.getRelationList(relation, offset, limit);
-//        ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
-//            @Override
-//            public void process(final ApiResult obj) {
-//                if (obj.getErrno() == 0) {
-//                    //写入数据库
-//                    Observable.create(new ObservableOnSubscribe<ApiResult>() {
-//                        @Override
-//                        public void subscribe(ObservableEmitter<ApiResult> emitter) throws Exception {
-//                            // 写入数据库
-//                            List<UserInfoModel> userInfoModels = JSON.parseArray(obj.getData().getString("users"), UserInfoModel.class);
-//                            if (userInfoModels != null && userInfoModels.size() > 0) {
-//                                UserInfoLocalApi.insertOrUpdate(userInfoModels);
-//
-//                                List<BuddyCache.BuddyCacheEntry> list = new ArrayList<>();
-//                                for (UserInfoModel userInfoModel : userInfoModels) {
-//                                    list.add(new BuddyCache.BuddyCacheEntry(userInfoModel));
-//                                }
-//                                BuddyCache.getInstance().putBuddyList(list);
-//                            }
-//                            emitter.onNext(obj);
-//                            emitter.onComplete();
-//                        }
-//                    })
-//                            .subscribeOn(Schedulers.io())
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(new Consumer<ApiResult>() {
-//                                @Override
-//                                public void accept(ApiResult userInfo) throws Exception {
-//                                    if (responseCallBackWeakReference.get() != null) {
-//                                        responseCallBackWeakReference.get().onServerSucess(obj);
-//                                    }
-//                                }
-//                            });
-//                } else {
-//                    if (responseCallBackWeakReference.get() != null) {
-//                        responseCallBackWeakReference.get().onServerFailed();
-//                    }
-//                }
-//
-//            }
-//        });
-//    }
 
+    public void checkUserOnlineStatus(Collection<UserInfoModel> list){
+
+    }
 }
