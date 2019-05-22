@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_105_dp"
-    android:layout_marginTop="@dimen/view_13_dp"
+    android:layout_marginBottom="@dimen/view_12_dp"
     android:padding="@dimen/common_stroke_with"
     app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_shape="rectangle"
@@ -23,8 +23,8 @@
         android:id="@+id/cover_area"
         android:layout_width="@dimen/view_41_dp"
         android:layout_height="@dimen/view_46_dp"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_12_dp"
         android:padding="@dimen/common_stroke_with"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_69_dp"
-        android:background="#3B4E79" />
+        android:background="#333B4E79" />
 
 
     <RelativeLayout
@@ -111,7 +111,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/view_70_dp"
-        android:gravity="left">
+        android:gravity="left"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

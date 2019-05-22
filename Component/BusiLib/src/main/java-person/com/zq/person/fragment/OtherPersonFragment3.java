@@ -219,6 +219,9 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                 if (mOtherPhotoWallView != null) {
                     mOtherPhotoWallView.getPhotos();
                 }
+                if (mProducationWallView != null) {
+                    mProducationWallView.getProducations();
+                }
             }
         });
 
@@ -334,8 +337,9 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                     return mOtherPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    mProducationWallView = new ProducationWallView(getContext());
+                    mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserId);
                     container.addView(mProducationWallView);
+                    mProducationWallView.getProducations();
                     return mProducationWallView;
                 }
                 return super.instantiateItem(container, position);

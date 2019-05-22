@@ -5,9 +5,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -19,7 +21,11 @@ import com.module.playways.R;
 import com.module.playways.grab.room.model.WorksUploadModel;
 
 public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
+
+    public final static String TAG = "ResultProducationViewHolder";
+
     WorksUploadModel mWonderfulMomentModel;
+
     int position;
     boolean isPlay;
 
@@ -78,27 +84,24 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
         this.isPlay = isPlay;
 
         if (mWonderfulMomentModel != null && !TextUtils.isEmpty(mWonderfulMomentModel.getSongModel().getCover())) {
-            FrescoWorker.loadImage(mCoverIv,
-                    ImageFactory.newPathImage(mWonderfulMomentModel.getSongModel().getCover())
-                            .setCornerRadius(U.getDisplayUtils().dip2px(7))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white))
-                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
-                            .build());
             mSongNameTv.setText(mWonderfulMomentModel.getSongModel().getDisplaySongName());
-            mSongOwnerTv.setText(mWonderfulMomentModel.getSongModel().getOwner());
             if (mWonderfulMomentModel.isBlight()) {
                 mBlightTipsIv.setVisibility(View.VISIBLE);
             } else {
                 mBlightTipsIv.setVisibility(View.GONE);
             }
         } else {
-            FrescoWorker.loadImage(mCoverIv,
-                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
-                            .setCornerRadius(U.getDisplayUtils().dip2px(7))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white)).build());
+            MyLog.w(TAG, "bindData" + " position=" + position + " momentModel=" + momentModel + " isPlay=" + isPlay);
         }
+
+        mSongOwnerTv.setText(MyUserInfoManager.getInstance().getNickName());
+        FrescoWorker.loadImage(mCoverIv,
+                ImageFactory.newPathImage(MyUserInfoManager.getInstance().getAvatar())
+                        .setCornerRadius(U.getDisplayUtils().dip2px(7))
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(U.getColor(R.color.white))
+                        .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+                        .build());
 
         if (isPlay) {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);

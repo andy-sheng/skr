@@ -55,6 +55,7 @@ import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.level.view.LevelStarProgressBar;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.person.model.ProducationModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -144,6 +145,7 @@ public class GrabProductionFragment extends BaseFragment {
             public void onClickPause(int position, WorksUploadModel model) {
                 mAdapter.setSelectPosition(-1);
                 if (mIPlayer != null) {
+                    mIPlayer.setCallback(null);
                     mIPlayer.stop();
                 }
             }
@@ -170,10 +172,10 @@ public class GrabProductionFragment extends BaseFragment {
                                     HashMap<String, Object> map = new HashMap<>();
                                     if (model.isBlight()) {
                                         // 一唱到底高光时刻
-                                        map.put("category", 2);
+                                        map.put("category", ProducationModel.TYPE_STAND_HIGHLIGHT);
                                     } else {
                                         // 一唱到底
-                                        map.put("category", 1);
+                                        map.put("category", ProducationModel.TYPE_STAND_NORMAL);
                                     }
                                     map.put("duration", String.valueOf(model.getSongModel().getTotalMs()));
                                     map.put("songID", model.getSongModel().getItemID());
@@ -330,7 +332,7 @@ public class GrabProductionFragment extends BaseFragment {
                             .share();
                     break;
             }
-        }else {
+        } else {
             MyLog.w(TAG, "shareUrl" + " sharePlatform=" + sharePlatform + " model=" + model);
         }
 

@@ -149,6 +149,14 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
         mPresenter.getHomePage(false);
     }
 
+    @Override
+    protected void onFragmentInvisible() {
+        super.onFragmentInvisible();
+        if (mProducationWallView != null) {
+            mProducationWallView.stopPlay();
+        }
+    }
+
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
@@ -183,6 +191,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
                 mPresenter.getHomePage(true);
                 if (mPhotoWallView != null) {
                     mPhotoWallView.getPhotos();
+                }
+                if (mProducationWallView != null) {
+                    mProducationWallView.getProducations();
                 }
             }
         });
@@ -369,8 +380,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
                     return mPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    mProducationWallView = new ProducationWallView(getContext());
+                    mProducationWallView = new ProducationWallView(PersonFragment3.this, (int) MyUserInfoManager.getInstance().getUid());
                     container.addView(mProducationWallView);
+                    mProducationWallView.getProducations();
                     return mProducationWallView;
                 }
                 return super.instantiateItem(container, position);
