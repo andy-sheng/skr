@@ -43,6 +43,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.view.BitmapTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -311,7 +312,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     }
 
     private void showRemarkDialog() {
-        EditRemarkView editRemarkView = new EditRemarkView(getContext(), mUserInfoModel.getNicknameRemark());
+        EditRemarkView editRemarkView = new EditRemarkView(OtherPersonFragment3.this, mUserInfoModel.getNicknameRemark());
         editRemarkView.setListener(new EditRemarkView.Listener() {
             @Override
             public void onClickCancel() {
@@ -337,11 +338,14 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
             }
         });
 
-        mEditRemarkDialog = DialogPlus.newDialog(getContext()).setContentHolder(new ViewHolder(editRemarkView))
+        mEditRemarkDialog = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(editRemarkView))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setInAnimation(R.anim.fade_in)
+                .setOutAnimation(R.anim.fade_out)
                 .setExpanded(false)
-                .setGravity(Gravity.CENTER)
+                .setGravity(Gravity.BOTTOM)
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(@NonNull DialogPlus dialog) {
@@ -349,9 +353,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                     }
                 })
                 .create();
-        U.getKeyBoardUtils().
-
-                showSoftInputKeyBoard(getActivity());
         mEditRemarkDialog.show();
 
     }
