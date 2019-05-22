@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,7 +15,9 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePanel;
+import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
+import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
@@ -23,6 +26,9 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExRelativeLayout;
@@ -42,10 +48,22 @@ import com.module.playways.grab.room.production.ResultProducationAdapter;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.score.ScoreStateModel;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMusic;
+import com.zq.dialog.ShareWorksDialog;
 import com.zq.level.view.LevelStarProgressBar;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.live.proto.Common.UserInfo;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 一唱到底结果页面 (有作品)
@@ -73,9 +91,12 @@ public class GrabProductionFragment extends BaseFragment {
     ExTextView mTvShare;
 
     Handler mUiHandler = new Handler();
+    UserInfoServerApi mUserInfoServerApi;
 
     ResultProducationAdapter mAdapter;
     IPlayer mIPlayer;
+
+    ShareWorksDialog mShareWorksDialog;
 
     @Override
     public int initView() {
@@ -99,6 +120,8 @@ public class GrabProductionFragment extends BaseFragment {
         mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
         mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
+
+        mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
 
         mAdapter = new ResultProducationAdapter(new ResultProducationAdapter.Listener() {
             @Override
@@ -130,7 +153,57 @@ public class GrabProductionFragment extends BaseFragment {
 
             @Override
             public void onClickSaveAndShare(int position, WonderfulMomentModel model) {
-                // TODO: 2019/5/21 缺一个保存和分享
+                MyLog.d(TAG, "onClickSaveAndShare" + " position=" + position + " model=" + model);
+                if (model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
+                    showShareDialog(model);
+                } else {
+                    UploadTask uploadTask = UploadParams.newBuilder(model.getLocalPath())
+                            .setFileType(UploadParams.FileType.audioAi)
+                            .startUploadAsync(new UploadCallback() {
+
+                                @Override
+                                public void onProgress(long currentSize, long totalSize) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(String url) {
+                                    MyLog.d(TAG, "onSuccess" + " url=" + url);
+                                    // TODO: 2019/5/22 上传服务器
+                                    HashMap<String, Object> map = new HashMap<>();
+                                    if (model.isBlight()) {
+                                        // 一唱到底高光时刻
+                                        map.put("category", 2);
+                                    } else {
+                                        // 一唱到底
+                                        map.put("category", 1);
+                                    }
+                                    map.put("duration", String.valueOf(model.getSongModel().getTotalMs()));
+                                    map.put("songID", model.getSongModel().getItemID());
+                                    map.put("worksURL", url);
+                                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+                                    ApiMethods.subscribe(mUserInfoServerApi.addWorks(body), new ApiObserver<ApiResult>() {
+                                        @Override
+                                        public void process(ApiResult result) {
+                                            if (result.getErrno() == 0) {
+                                                int worksID = result.getData().getIntValue("worksID");
+                                                model.setWorksID(worksID);
+                                                model.setUrl(url);
+                                                mAdapter.update(model);
+                                                showShareDialog(model);
+                                            }
+                                        }
+
+                                    }, GrabProductionFragment.this);
+                                }
+
+                                @Override
+                                public void onFailure(String msg) {
+
+                                }
+                            });
+                }
             }
         });
         mProductionView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -194,6 +267,76 @@ public class GrabProductionFragment extends BaseFragment {
                 U.getSoundUtils().play(GrabProductionFragment.TAG, R.raw.grab_gameover, 500);
             }
         }, 500);
+    }
+
+    private void showShareDialog(WonderfulMomentModel momentModel) {
+        if (mShareWorksDialog == null) {
+            mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName(), new ShareWorksDialog.ShareListener() {
+                @Override
+                public void onClickQQShare() {
+                    shareUrl(SharePlatform.QQ, momentModel);
+                }
+
+                @Override
+                public void onClickQZoneShare() {
+                    shareUrl(SharePlatform.QZONE, momentModel);
+                }
+
+                @Override
+                public void onClickWeixinShare() {
+                    shareUrl(SharePlatform.WEIXIN, momentModel);
+                }
+
+                @Override
+                public void onClickQuanShare() {
+                    shareUrl(SharePlatform.WEIXIN_CIRCLE, momentModel);
+                }
+            });
+        }
+        mShareWorksDialog.show();
+    }
+
+    private void shareUrl(SharePlatform sharePlatform, WonderfulMomentModel model) {
+        if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
+            UMusic music = new UMusic(model.getUrl());
+            music.setTitle("" + model.getSongModel().getItemName());
+            music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
+            music.setThumb(new UMImage(getActivity(), MyUserInfoManager.getInstance().getAvatar()));
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("http://dev.app.inframe.mobi/user/work")
+                    .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
+                    .append("&workId=").append(String.valueOf(model.getWorksID()));
+            String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
+            music.setmTargetUrl(mUrl);
+
+            switch (sharePlatform) {
+                case QQ:
+                    new ShareAction(getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.QQ)
+                            .share();
+                    break;
+                case QZONE:
+                    new ShareAction(getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.QZONE)
+                            .share();
+                    break;
+                case WEIXIN:
+                    new ShareAction(getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.WEIXIN)
+                            .share();
+                    break;
+
+                case WEIXIN_CIRCLE:
+                    new ShareAction(getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                            .share();
+                    break;
+            }
+        }else {
+            MyLog.w(TAG, "shareUrl" + " sharePlatform=" + sharePlatform + " model=" + model);
+        }
+
     }
 
     private void bindData() {
@@ -271,6 +414,9 @@ public class GrabProductionFragment extends BaseFragment {
         if (mIPlayer != null) {
             mIPlayer.stop();
             mIPlayer.release();
+        }
+        if (mShareWorksDialog != null) {
+            mShareWorksDialog.dismiss(false);
         }
     }
 

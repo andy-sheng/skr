@@ -259,20 +259,20 @@ public interface UserInfoServerApi {
 
 
     @GET("/v1/mate/list-follows-by-page")
-    Call<ApiResult> listFollowsByPage(@Query("offset") int offset,@Query("cnt") int cnt);
+    Call<ApiResult> listFollowsByPage(@Query("offset") int offset, @Query("cnt") int cnt);
 
     @GET("/v1/mate/list-follows-by-index-id")
     Call<ApiResult> listFollowsByIndexId(@Query("lastIndexID") long lastIndexID);
 
     @GET("/v1/mate/list-fans-by-page")
-    Observable<ApiResult> listFansByPage(@Query("offset") int offset,@Query("cnt") int cnt);
+    Observable<ApiResult> listFansByPage(@Query("offset") int offset, @Query("cnt") int cnt);
 
 
     @GET("/v1/mate/list-remark-by-index-id")
     Call<ApiResult> listRemarkByIndexId(@Query("lastIndexID") long lastIndexID);
 
     @GET("/v1/mate/list-remark-by-page")
-    Call<ApiResult> listRemarkByPage(@Query("offset") int offset,@Query("cnt") int cnt);
+    Call<ApiResult> listRemarkByPage(@Query("offset") int offset, @Query("cnt") int cnt);
 
     @PUT("/v1/mate/write-user-remark")
     Observable<ApiResult> writeUserRemark(@Body RequestBody body);
@@ -280,7 +280,14 @@ public interface UserInfoServerApi {
 
     /**
      * 新增作品
-     * @param body
+     *
+     * @param body "category": EPC_Stand_Normal	1一唱到底
+     *                         EPC_Stand_Highlight	2一唱到底高光时刻
+     *                         EPC_Practice	3 练歌房
+     *                         EPC_Team	4 团队赛
+     *             "duration": "string",
+     *             "songID": 0,
+     *             "worksURL": "string"
      * @return
      */
     @PUT("/v1/profile/add-works")
@@ -288,7 +295,8 @@ public interface UserInfoServerApi {
 
     /**
      * 删除作品
-     * @param body
+     *
+     * @param body  "worksID": 0
      * @return
      */
     @PUT("/v1/profile/del-works")
@@ -296,15 +304,26 @@ public interface UserInfoServerApi {
 
     /**
      * 播放作品
-     * @param body
+     *
+     * @param body  "toUserID": 0,
+     *              "worksID": 0
      * @return
      */
     @PUT("/v1/profile/like-works")
     Observable<ApiResult> playWorks(@Body RequestBody body);
 
 
+    /**
+     * 查看作品
+     * @param toUserID  查看用户ID（别人必填，自己选填）
+     * @param offset
+     * @param cnt
+     * @return
+     */
     @GET("/v1/profile/query-works")
-    Observable<ApiResult> getWorks();
+    Observable<ApiResult> getWorks(@Query("toUserID") int toUserID,
+                                   @Query("offset") int offset,
+                                   @Query("cnt") int cnt);
 
 
     @POST("/v1/mate/multi-check-user-online-status")
@@ -312,4 +331,7 @@ public interface UserInfoServerApi {
 
     @POST("/v1/mate/multi-check-user-game-status")
     Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
+
+
+
 }

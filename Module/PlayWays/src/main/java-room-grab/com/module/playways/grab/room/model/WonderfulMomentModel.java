@@ -8,6 +8,8 @@ public class WonderfulMomentModel implements Serializable {
     String localPath;
     SongModel mSongModel;
     boolean isBlight;
+    int worksID; // 用来标记是否已经上传了
+    String url;  // 记录上传的路径
 
     public WonderfulMomentModel(String localPath, SongModel songModel, boolean isBlight) {
         this.localPath = localPath;
@@ -37,5 +39,33 @@ public class WonderfulMomentModel implements Serializable {
 
     public void setBlight(boolean blight) {
         isBlight = blight;
+    }
+
+
+    public int getWorksID() {
+        return worksID;
+    }
+
+    public void setWorksID(int worksID) {
+        this.worksID = worksID;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return "WonderfulMomentModel{" +
+                "localPath='" + localPath + '\'' +
+                ", mSongModel=" + mSongModel +
+                ", isBlight=" + isBlight +
+                ", worksID=" + worksID +
+                ", url='" + url + '\'' +
+                '}';
     }
 }
