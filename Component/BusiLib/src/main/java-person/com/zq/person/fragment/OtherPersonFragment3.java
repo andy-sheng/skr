@@ -24,6 +24,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
@@ -712,6 +713,13 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     public void onEvent(RelationChangeEvent event) {
         if (event.useId == mUserInfoModel.getUserId()) {
             showUserRelation(event.isFriend, event.isFollow);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RemarkChangeEvent event) {
+        if (event.userId == mUserInfoModel.getUserId()) {
+            mNameTv.setText(mUserInfoModel.getNicknameRemark());
         }
     }
 

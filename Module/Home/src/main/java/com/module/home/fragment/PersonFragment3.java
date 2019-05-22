@@ -67,6 +67,7 @@ import java.util.List;
 import model.RelationNumModel;
 
 /**
+ * 自己
  * 带作品的照片墙
  */
 public class PersonFragment3 extends BaseFragment implements IPersonView {

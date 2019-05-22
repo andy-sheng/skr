@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.core.userinfo.model.OnlineModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.remark.RemarkDB;
@@ -639,13 +640,16 @@ public class UserInfoManager {
             RemarkLocalApi.delete(userId);
             //关系数据库
             UserInfoLocalApi.updateRemark(userId, "");
+            EventBus.getDefault().post(new RemarkChangeEvent(userId, null));
         } else {
             mRemarkMap.put(userId, remark);
             //写入备注数据库
             RemarkLocalApi.insertOrUpdate(userId, remark);
             //关系数据库
             UserInfoLocalApi.updateRemark(userId, remark);
+            EventBus.getDefault().post(new RemarkChangeEvent(userId, remark));
         }
+
     }
 
     public void checkUserOnlineStatus(final List<UserInfoModel> list) {
