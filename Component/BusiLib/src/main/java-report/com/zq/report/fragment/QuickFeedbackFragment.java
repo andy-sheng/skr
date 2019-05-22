@@ -1,5 +1,7 @@
 package com.zq.report.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
+import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -18,11 +21,18 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
 import com.common.utils.KeyboardEvent;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.component.busilib.R;
+import com.respicker.ResPicker;
+import com.respicker.activity.ResPickerActivity;
+import com.respicker.model.ImageItem;
+import com.zq.person.model.PhotoModel;
 import com.zq.report.FeedbackServerApi;
 import com.zq.report.view.FeedbackView;
 import com.zq.toast.CommonToastView;
@@ -30,25 +40,50 @@ import com.zq.toast.CommonToastView;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import io.agora.rtc.RtcEngine;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.zq.report.view.FeedbackView.FEEDBACK_ERRO;
-import static com.zq.report.view.FeedbackView.FEEDBACK_SUGGEST;
+import static com.zq.person.model.PhotoModel.STATUS_FAILED;
+import static com.zq.person.model.PhotoModel.STATUS_SUCCESS;
+import static com.zq.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
 
 /**
  * 快速一键反馈
  */
 public class QuickFeedbackFragment extends BaseFragment {
-
+    public final static String TAG = "QuickFeedbackFragment";
     View mPlaceHolderView;
     RelativeLayout mContainer;
     FeedbackView mFeedBackView;
     View mPlaceView;
     ProgressBar mUploadProgressBar;
+    List<PhotoModel> mPhotoModelList;
+    String mContent;
+    List<Integer> mTypeList;
+    String mLogUrl;
+
+    ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment>() {
+        @Override
+        protected QuickFeedbackFragment accept(PhotoModel cur) {
+            return QuickFeedbackFragment.this;
+        }
+
+        @Override
+        public void onStart(PhotoModel pm, QuickFeedbackFragment personFragment2) {
+            MyLog.d(TAG, "onStart" + "开始上传 PhotoModel=" + pm + " 队列还有 mPlayControlTemplate.getSize()=" + mPlayControlTemplate.getSize());
+            execUploadPhoto(pm);
+        }
+
+        @Override
+        protected void onEnd(PhotoModel pm) {
+            MyLog.d(TAG, "onEnd" + " 上传结束 PhotoModel=" + pm);
+        }
+    };
 
     @Override
     public int initView() {
@@ -65,32 +100,42 @@ public class QuickFeedbackFragment extends BaseFragment {
 
         mFeedBackView.setListener(new FeedbackView.Listener() {
             @Override
-            public void onClickSubmit(final int type, final String content) {
+            public void onClickSubmit(final List<Integer> typeList, final String content, final List<ImageItem> imageItemList) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 mUploadProgressBar.setVisibility(View.VISIBLE);
-                if (type == FEEDBACK_ERRO) {
-                    U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
-                        @Override
-                        public void onSuccess(String url) {
-                            feedback(new int[]{type}, content, url);
-                        }
+                U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
+                    @Override
+                    public void onSuccess(String url) {
+                        if (imageItemList != null && imageItemList.size() > 0) {
+                            List<PhotoModel> list = new ArrayList<>();
+                            for (ImageItem imageItem : imageItemList) {
+                                PhotoModel photoModel = new PhotoModel();
+                                photoModel.setLocalPath(imageItem.getPath());
+                                photoModel.setStatus(STATUS_WAIT_UPLOAD);
+                                list.add(photoModel);
+                                mPlayControlTemplate.add(photoModel, true);
+                            }
 
-                        @Override
-                        public void onFailed() {
-                            mUploadProgressBar.setVisibility(View.GONE);
-                            U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                                    .setImage(R.drawable.touxiangshezhishibai_icon)
-                                    .setText("反馈失败")
-                                    .build());
-
-                            U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
+                            mPhotoModelList = list;
+                            mTypeList = typeList;
+                            mContent = content;
+                            mLogUrl = url;
+                        } else {
+                            feedback(typeList, content, url, new ArrayList<String>());
                         }
-                    }, true);
-                } else if (type == FEEDBACK_SUGGEST) {
-                    feedback(new int[]{type}, content, null);
-                } else {
-                    // donothing
-                }
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        mUploadProgressBar.setVisibility(View.GONE);
+                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                .setImage(R.drawable.touxiangshezhishibai_icon)
+                                .setText("反馈失败")
+                                .build());
+
+                        U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
+                    }
+                }, true);
             }
         });
 
@@ -102,21 +147,80 @@ public class QuickFeedbackFragment extends BaseFragment {
         });
     }
 
-    private void feedback(int[] type, String content, String logUrl) {
+    @Override
+    public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
+            List<ImageItem> imageItems = ResPicker.getInstance().getSelectedImageList();
+            if (mFeedBackView != null) {
+                mFeedBackView.uploadPhotoList(imageItems);
+            }
+            return true;
+        }
+        return super.onActivityResultReal(requestCode, resultCode, data);
+    }
+
+    void execUploadPhoto(final PhotoModel photoModel) {
+        MyLog.d(TAG, "execUploadPhoto" + " photoModel=" + photoModel);
+        UploadTask uploadTask = UploadParams.newBuilder(photoModel.getLocalPath())
+                .setNeedCompress(true)
+                .setNeedMonitor(true)
+                .setFileType(UploadParams.FileType.profilepic)
+                .startUploadAsync(new UploadCallback() {
+                    @Override
+                    public void onProgress(long currentSize, long totalSize) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String url) {
+                        MyLog.d(TAG, "上传成功" + " url=" + url);
+                        photoModel.setStatus(STATUS_SUCCESS);
+                        photoModel.setPicPath(url);
+                        checkUploadState(mPhotoModelList);
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        MyLog.d(TAG, "上传失败" + " msg=" + msg);
+                        photoModel.setStatus(STATUS_FAILED);
+                        checkUploadState(mPhotoModelList);
+                    }
+                });
+    }
+
+    private void checkUploadState(final List<PhotoModel> imageItemList) {
+        for (PhotoModel photoModel : imageItemList) {
+            if (photoModel.getStatus() == STATUS_WAIT_UPLOAD) {
+                return;
+            }
+        }
+
+        ArrayList<String> picUrls = new ArrayList<>();
+        for (PhotoModel photoModel : imageItemList) {
+            picUrls.add(photoModel.getPicPath());
+        }
+
+        feedback(mTypeList, mContent, mLogUrl, picUrls);
+    }
+
+    private void feedback(List<Integer> typeList, String content, String logUrl, List<String> picUrls) {
+        MyLog.d(TAG, "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
         HashMap<String, Object> map = new HashMap<>();
         map.put("createdAt", System.currentTimeMillis());
         map.put("appVer", U.getAppInfoUtils().getVersionName());
         map.put("channel", U.getChannelUtils().getChannel());
         map.put("source", 1);
-        map.put("type", type);
+        map.put("type", typeList);
         map.put("content", content);
         map.put("appLog", logUrl);
+        map.put("screenshot", picUrls);
 
         FeedbackServerApi feedbackServerApi = ApiManager.getInstance().createService(FeedbackServerApi.class);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(feedbackServerApi.feedback(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                MyLog.d(TAG, "process" + " result=" + result);
                 if (result.getErrno() == 0) {
                     mUploadProgressBar.setVisibility(View.GONE);
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())

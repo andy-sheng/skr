@@ -1,34 +1,58 @@
 package com.zq.report.view;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
+import com.common.utils.ToastUtils;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
 import com.dialog.view.StrokeTextView;
+import com.respicker.ResPicker;
+import com.respicker.activity.ResPickerActivity;
+import com.respicker.model.ImageItem;
+import com.zq.report.adapter.QuickFeedBackAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 public class FeedbackView extends RelativeLayout {
 
     public static int FEEDBACK_ERRO = 1;  // 反馈问题
     public static int FEEDBACK_SUGGEST = 2; // 功能建议
 
-    NoLeakEditText mFeedbackContent;
+    EditText mFeedbackContent;
     ExTextView mContentTextSize;
-    RadioGroup mButtonArea;
-    RadioButton mErrorBack;
-    RadioButton mFeedBack;
     StrokeTextView mSubmitTv;
+    ExImageView mSelfSingCatonIv;
+    ExImageView mAccNoVoiceIv;
+    ExImageView mOtherIv;
+    ExImageView mOtherSingCatonIv;
+    ExImageView mLyricNoShowIv;
+    ExImageView mNewFunIv;
+    ExTextView mPicNumTv;
+    RecyclerView mRecyclerView;
+
+    QuickFeedBackAdapter mQuickFeedBackAdapter;
+
+    ExImageView[] mSelectIvList;
+
+    List<ImageItem> mImageItemArrayList = new ArrayList<>();
 
     int mBefore;  // 记录之前的位置
-    int mType = FEEDBACK_ERRO;
+    int[] mType;
 
     Listener mListener;
 
@@ -53,25 +77,18 @@ public class FeedbackView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.feedback_view_layout, this);
-        mFeedbackContent = (NoLeakEditText) findViewById(R.id.feedback_content);
+        mPicNumTv = (ExTextView) findViewById(R.id.pic_num_tv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mSelfSingCatonIv = (ExImageView) findViewById(R.id.self_sing_caton_iv);
+        mAccNoVoiceIv = (ExImageView) findViewById(R.id.acc_no_voice_iv);
+        mOtherIv = (ExImageView) findViewById(R.id.other_iv);
+        mOtherSingCatonIv = (ExImageView) findViewById(R.id.other_sing_caton_iv);
+        mLyricNoShowIv = (ExImageView) findViewById(R.id.lyric_no_show_iv);
+        mNewFunIv = (ExImageView) findViewById(R.id.new_fun_iv);
+        mSelectIvList = new ExImageView[]{mSelfSingCatonIv, mAccNoVoiceIv, mOtherIv, mOtherSingCatonIv, mLyricNoShowIv, mNewFunIv};
+        mFeedbackContent = (EditText) findViewById(R.id.feedback_content);
         mContentTextSize = (ExTextView) findViewById(R.id.content_text_size);
-        mButtonArea = (RadioGroup) findViewById(R.id.button_area);
-        mErrorBack = (RadioButton) findViewById(R.id.error_back);
-        mFeedBack = (RadioButton) findViewById(R.id.feed_back);
         mSubmitTv = (StrokeTextView) findViewById(R.id.submit_tv);
-
-
-        mButtonArea.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.error_back) {
-                    mType = FEEDBACK_ERRO;
-                } else if (checkedId == R.id.feed_back) {
-                    mType = FEEDBACK_SUGGEST;
-                }
-            }
-        });
-
 
         mFeedbackContent.addTextChangedListener(new TextWatcher() {
             @Override
@@ -102,14 +119,87 @@ public class FeedbackView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    mListener.onClickSubmit(mType, mFeedbackContent.getText().toString().trim());
+                    ArrayList<Integer> tags = new ArrayList<>();
+                    for (ExImageView imageView : mSelectIvList) {
+                        if (imageView.isSelected()) {
+                            tags.add(Integer.parseInt((String) imageView.getTag()));
+                        }
+                    }
+
+                    if (tags.size() == 0) {
+                        ToastUtils.showShort("请选择顶部的选项哦");
+                    } else {
+                        mListener.onClickSubmit(tags, mFeedbackContent.getText().toString().trim(), mImageItemArrayList);
+                    }
                 }
             }
         });
 
+        mQuickFeedBackAdapter = new QuickFeedBackAdapter(new QuickFeedBackAdapter.FeedBackPicManageListener() {
+            @Override
+            public void addPic() {
+                goAddPhotoFragment();
+            }
+
+            @Override
+            public void deletePic(ImageItem imageItem) {
+                mImageItemArrayList.remove(imageItem);
+                uploadPhotoList(new ArrayList<ImageItem>(mImageItemArrayList));
+            }
+        });
+
+        mRecyclerView.setAdapter(mQuickFeedBackAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        uploadPhotoList(new ArrayList<ImageItem>(mImageItemArrayList));
+
+        Observable.fromArray(mSelectIvList).subscribe(new Consumer<ExImageView>() {
+            @Override
+            public void accept(ExImageView exImageView) throws Exception {
+                exImageView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.setSelected(!v.isSelected());
+                    }
+                });
+            }
+        });
+    }
+
+    public void uploadPhotoList(List<ImageItem> imageItems) {
+        if (imageItems != null) {
+            mImageItemArrayList = imageItems;
+            mPicNumTv.setText(mImageItemArrayList.size() + "/4");
+            ArrayList<ImageItem> imageItemArrayList = new ArrayList<>();
+            if (imageItems.size() == 4) {
+                imageItemArrayList.addAll(imageItems);
+            } else {
+                imageItemArrayList.addAll(imageItems);
+                ImageItem imageItem = new ImageItem();
+                imageItem.setPath("");
+                imageItemArrayList.add(imageItem);
+            }
+
+            mQuickFeedBackAdapter.setDataList(imageItemArrayList);
+            mQuickFeedBackAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    void goAddPhotoFragment() {
+        ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
+                .setMultiMode(true)
+                .setShowCamera(true)
+                .setCrop(false)
+                .setSelectLimit(4)
+                .build()
+        );
+
+        ResPickerActivity.open((BaseActivity) getContext());
     }
 
     public interface Listener {
-        void onClickSubmit(int type, String content);
+        void onClickSubmit(List<Integer> typeList, String content, List<ImageItem> imageItemList);
     }
 }

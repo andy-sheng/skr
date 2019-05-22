@@ -14,7 +14,7 @@
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_342_dp"
+        android:layout_height="wrap_content"
         android:layout_above="@id/place_holder_view"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
