@@ -1152,7 +1152,10 @@ public class AgoraEngineAdapter {
                     // 针对不同场景，处理agc
                     switch (mConfig.getScene()) {
                         case grab:
-                            mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                            // 只有单人清唱才走天宝的agc
+                            if (mConfig.isGrabSingNoAcc()) {
+                                mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                            }
                             break;
                         case voice:
                             break;
