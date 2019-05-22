@@ -9,6 +9,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -21,6 +22,8 @@ import com.zq.person.adapter.ProducationAdapter;
 import com.zq.person.model.ProducationModel;
 
 public class ProducationHolder extends RecyclerView.ViewHolder {
+
+    public final static String TAG = "ProducationHolder";
 
     int position;
     boolean isPlay;
@@ -90,6 +93,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(int position, ProducationModel model, boolean isPlay) {
+        MyLog.d(TAG, "bindData" + " position=" + position + " model=" + model + " isPlay=" + isPlay);
         this.position = position;
         this.model = model;
         this.isPlay = isPlay;

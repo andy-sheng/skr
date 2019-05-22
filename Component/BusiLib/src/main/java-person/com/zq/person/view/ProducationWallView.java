@@ -1,8 +1,13 @@
 package com.zq.person.view;
 
+import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -19,16 +24,33 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.SpanUtils;
+import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.dialog.view.TipsDialogView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.person.adapter.ProducationAdapter;
 import com.zq.person.model.ProducationModel;
 
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 作品墙view
@@ -41,6 +63,7 @@ public class ProducationWallView extends RelativeLayout {
     UserInfoServerApi mUserInfoServerApi;
     int mUserId;
 
+    SmartRefreshLayout mSmartRefresh;
     RecyclerView mProducationView;
     ProducationAdapter mProducationAdapter;
 
@@ -48,8 +71,8 @@ public class ProducationWallView extends RelativeLayout {
 
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
     int offset;  // 拉照片偏移量
-    int mSelectPlayPosition = -1;  //选中播放的id
 
+    DialogPlus mConfirmDialog;
     ShareWorksDialog mShareWorksDialog;
 
     public ProducationWallView(BaseFragment fragment, int userId) {
@@ -64,6 +87,8 @@ public class ProducationWallView extends RelativeLayout {
         inflate(getContext(), R.layout.producation_wall_view_layout, this);
 
         mProducationView = (RecyclerView) findViewById(R.id.producation_view);
+        mSmartRefresh = (SmartRefreshLayout) findViewById(R.id.smart_refresh);
+
         mProducationView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         boolean hasDeleted = false;
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
@@ -72,17 +97,18 @@ public class ProducationWallView extends RelativeLayout {
         mProducationAdapter = new ProducationAdapter(new ProducationAdapter.Listener() {
             @Override
             public void onClickDele(int position, ProducationModel model) {
-                if (position == mSelectPlayPosition) {
+                if (position == mProducationAdapter.getSelectPlayPosition()) {
                     // 先停止播放
                     stopPlay();
                 }
                 // TODO: 2019/5/22 弹出删除确认框
+                showConfirmDialog(model);
             }
 
             @Override
             public void onClickShare(int position, ProducationModel model) {
                 // TODO: 2019/5/22 弹出分享框 需不需要先停止音乐
-                if (position == mSelectPlayPosition) {
+                if (position == mProducationAdapter.getSelectPlayPosition()) {
                     // 先停止播放
                     stopPlay();
                 }
@@ -91,7 +117,6 @@ public class ProducationWallView extends RelativeLayout {
 
             @Override
             public void onClickPlay(int position, ProducationModel model) {
-                mSelectPlayPosition = position;
                 mProducationAdapter.setSelectPlayPosition(position);
                 if (mIPlayer == null) {
                     mIPlayer = new ExoPlayer();
@@ -107,7 +132,7 @@ public class ProducationWallView extends RelativeLayout {
                 mIPlayer.reset();
                 mIPlayer.startPlay(model.getWorksURL());
 
-                // TODO: 2019/5/22  加上播放的接口
+                playProducation(model);
             }
 
             @Override
@@ -116,32 +141,85 @@ public class ProducationWallView extends RelativeLayout {
             }
         }, hasDeleted);
         mProducationView.setAdapter(mProducationAdapter);
+
+        mSmartRefresh.setEnableRefresh(false);
+        mSmartRefresh.setEnableLoadMore(true);
+        mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
+        mSmartRefresh.setEnableOverScrollDrag(true);
+        mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                getProducations(offset);
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+            }
+        });
+    }
+
+    private void showConfirmDialog(final ProducationModel model) {
+        SpannableStringBuilder stringBuilder = new SpanUtils()
+                .append("确定删除改作品吗？")
+                .create();
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip(stringBuilder)
+                .setConfirmTip("确认")
+                .setCancelTip("我再想想")
+                .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mConfirmDialog != null) {
+                            mConfirmDialog.dismiss();
+                        }
+                        deleteProducation(model);
+                    }
+                })
+                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mConfirmDialog != null) {
+                            mConfirmDialog.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        mConfirmDialog = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .create();
+        mConfirmDialog.show();
+
     }
 
     private void showShareDialog(final ProducationModel model) {
-        if (mShareWorksDialog == null) {
-            mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName(), new ShareWorksDialog.ShareListener() {
-                @Override
-                public void onClickQQShare() {
-                    shareUrl(SharePlatform.QQ, model);
-                }
+        model.setWorksURL("http://song-static.inframe.mobi/bgm/5a570b621c6e64a34246bb0b5756b197_2.mp3");
+        mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName(), new ShareWorksDialog.ShareListener() {
+            @Override
+            public void onClickQQShare() {
+                shareUrl(SharePlatform.QQ, model);
+            }
 
-                @Override
-                public void onClickQZoneShare() {
-                    shareUrl(SharePlatform.QZONE, model);
-                }
+            @Override
+            public void onClickQZoneShare() {
+                shareUrl(SharePlatform.QZONE, model);
+            }
 
-                @Override
-                public void onClickWeixinShare() {
-                    shareUrl(SharePlatform.WEIXIN, model);
-                }
+            @Override
+            public void onClickWeixinShare() {
+                shareUrl(SharePlatform.WEIXIN, model);
+            }
 
-                @Override
-                public void onClickQuanShare() {
-                    shareUrl(SharePlatform.WEIXIN_CIRCLE, model);
-                }
-            });
-        }
+            @Override
+            public void onClickQuanShare() {
+                shareUrl(SharePlatform.WEIXIN_CIRCLE, model);
+            }
+        });
         mShareWorksDialog.show();
     }
 
@@ -188,7 +266,6 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     public void stopPlay() {
-        mSelectPlayPosition = -1;
         mProducationAdapter.setSelectPlayPosition(-1);
         if (mIPlayer != null) {
             mIPlayer.setCallback(null);
@@ -226,8 +303,41 @@ public class ProducationWallView extends RelativeLayout {
         }, mFragment);
     }
 
+
+    private void deleteProducation(final ProducationModel model) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("worksID", model.getWorksID());
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(mUserInfoServerApi.deleWorks(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    mProducationAdapter.delete(model);
+                }
+            }
+        }, mFragment);
+    }
+
+    public void playProducation(final ProducationModel model) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("toUserID", mUserId);
+        map.put("worksID", model.getWorksID());
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(mUserInfoServerApi.playWorks(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // TODO: 2019/5/22 播放次数客户端自己加一
+                    model.setPlayCnt(model.getPlayCnt() + 1);
+                    mProducationAdapter.update(model);
+                }
+            }
+        }, mFragment);
+    }
+
     private void addProducation(List<ProducationModel> list, int newOffset, int totalCnt, boolean isClear) {
         offset = newOffset;
+        mSmartRefresh.finishLoadMore();
         if (isClear) {
             mProducationAdapter.getDataList().clear();
         }
@@ -245,7 +355,7 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     private void loadProducationsFailed() {
-
+        mSmartRefresh.finishLoadMore();
     }
 
     @Override
@@ -258,6 +368,9 @@ public class ProducationWallView extends RelativeLayout {
         }
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
+        }
+        if (mConfirmDialog != null) {
+            mConfirmDialog.dismiss(false);
         }
     }
 }

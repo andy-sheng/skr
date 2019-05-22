@@ -309,7 +309,7 @@ public interface UserInfoServerApi {
      *              "worksID": 0
      * @return
      */
-    @PUT("/v1/profile/like-works")
+    @PUT("/v1/profile/play-works")
     Observable<ApiResult> playWorks(@Body RequestBody body);
 
 

@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.floatwindow.FloatWindow;
+import com.common.log.MyLog;
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.R;
 import com.zq.person.holder.ProducationHolder;
+import com.zq.person.model.PhotoModel;
 import com.zq.person.model.ProducationModel;
 
 import org.apache.commons.lang3.builder.Diff;
@@ -44,6 +46,18 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, Producatio
         }
     }
 
+    public void delete(ProducationModel model) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            ProducationModel m = mDataList.get(i);
+            if (m.equals(model)) {
+                MyLog.d(TAG, "delete" + " find i=" + i);
+                mDataList.remove(i);
+                notifyItemRemoved(i);
+                return;
+            }
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mDataList.size();
@@ -54,8 +68,13 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, Producatio
     }
 
     public void setSelectPlayPosition(int selectPlayPosition) {
-        mSelectPlayPosition = selectPlayPosition;
-        notifyDataSetChanged();
+        if (mSelectPlayPosition != selectPlayPosition) {
+            int oldPlayPosition = mSelectPlayPosition;
+            mSelectPlayPosition = selectPlayPosition;
+
+            notifyItemChanged(oldPlayPosition);
+            notifyItemChanged(mSelectPlayPosition);
+        }
     }
 
 

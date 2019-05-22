@@ -36,14 +36,18 @@ public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, Resu
         }
     }
 
-
     public int getSelectPosition() {
         return mSelectPosition;
     }
 
     public void setSelectPosition(int selectPosition) {
-        mSelectPosition = selectPosition;
-        notifyDataSetChanged();
+        if (mSelectPosition != selectPosition) {
+            int oldSelectPosition = mSelectPosition;
+            mSelectPosition = selectPosition;
+
+            notifyItemChanged(oldSelectPosition);
+            notifyItemChanged(mSelectPosition);
+        }
     }
 
     @Override

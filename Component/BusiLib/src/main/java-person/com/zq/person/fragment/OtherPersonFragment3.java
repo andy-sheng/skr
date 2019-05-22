@@ -326,12 +326,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 if (position == 0) {
                     // 照片墙
-                    mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment3.this, mUserId, new OtherPhotoWallView.AppCanSrollListener() {
-                        @Override
-                        public void notifyAppbarSroll(boolean canScroll) {
-                            setAppBarCanScroll(canScroll);
-                        }
-                    });
+                    mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment3.this, mUserId, null);
                     container.addView(mOtherPhotoWallView);
                     mOtherPhotoWallView.getPhotos();
                     return mOtherPhotoWallView;
