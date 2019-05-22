@@ -198,7 +198,6 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     private void showShareDialog(final ProducationModel model) {
-        model.setWorksURL("http://song-static.inframe.mobi/bgm/5a570b621c6e64a34246bb0b5756b197_2.mp3");
         mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName(), new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
