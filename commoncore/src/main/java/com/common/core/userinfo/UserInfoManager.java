@@ -661,8 +661,15 @@ public class UserInfoManager {
                     // 认为状态缓存有效，不去这个id的状态了
                     if (onlineModel.isOnline()) {
                         userInfoModel.setStatus(UserInfoModel.EF_OnLine);
+                        userInfoModel.setStatusDesc("在线");
                     } else {
                         userInfoModel.setStatus(UserInfoModel.EF_OffLine);
+                        String timeDesc = "";
+                        if(onlineModel.getOfflineTime()>0){
+                            timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(),System.currentTimeMillis());
+                        }
+                        // 显示
+                        userInfoModel.setStatusDesc("离线 "+timeDesc);
                     }
                 } else {
                     idSets.add(userInfoModel.getUserId());
@@ -680,8 +687,15 @@ public class UserInfoManager {
                                     if (onlineModel != null) {
                                         if (onlineModel.isOnline()) {
                                             userInfoModel.setStatus(UserInfoModel.EF_OnLine);
+                                            userInfoModel.setStatusDesc("在线");
                                         } else {
                                             userInfoModel.setStatus(UserInfoModel.EF_OffLine);
+                                            String timeDesc = "";
+                                            if(onlineModel.getOfflineTime()>0){
+                                                timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(),System.currentTimeMillis());
+                                            }
+                                            // 显示
+                                            userInfoModel.setStatusDesc("离线 "+timeDesc);
                                         }
                                     } else {
                                         userInfoModel.setStatus(UserInfoModel.EF_OffLine);
