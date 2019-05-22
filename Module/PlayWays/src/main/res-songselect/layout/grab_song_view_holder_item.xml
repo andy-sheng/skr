@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_72_dp">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/song_cover_iv"
-        android:layout_width="@dimen/view_48_dp"
-        android:layout_height="@dimen/view_48_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_22_dp" />
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
+    <!--android:id="@+id/song_cover_iv"-->
+    <!--android:layout_width="@dimen/view_48_dp"-->
+    <!--android:layout_height="@dimen/view_48_dp"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="@dimen/view_22_dp" />-->
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_select_tv"
@@ -31,9 +31,8 @@
         android:id="@+id/song_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
-        android:layout_alignTop="@+id/song_cover_iv"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_14_dp"
-        android:layout_marginTop="@dimen/view_5_dp"
         android:layout_toRightOf="@+id/song_cover_iv"
         android:ellipsize="end"
         android:maxLines="1"
@@ -78,18 +77,18 @@
         app:bl_solid_color="#E55088" />
 
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/song_owner_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_17_dp"
-        android:layout_below="@+id/song_name_tv"
-        android:layout_alignLeft="@+id/song_name_tv"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text="迪克牛仔"
-        android:textColor="#99B2B6D6"
-        android:textSize="@dimen/textsize_12_dp" />
+    <!--<com.common.view.ex.ExTextView-->
+    <!--android:id="@+id/song_owner_tv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="@dimen/view_17_dp"-->
+    <!--android:layout_below="@+id/song_name_tv"-->
+    <!--android:layout_alignLeft="@+id/song_name_tv"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxLines="1"-->
+    <!--android:singleLine="true"-->
+    <!--android:text="迪克牛仔"-->
+    <!--android:textColor="#99B2B6D6"-->
+    <!--android:textSize="@dimen/textsize_12_dp" />-->
 
 
 </RelativeLayout>

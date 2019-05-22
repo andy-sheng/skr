@@ -22,17 +22,17 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
     SongModel mSongModel;
     int position;
 
-    SimpleDraweeView mSongCoverIv;
+//    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
-    ExTextView mSongOwnerTv;
+//    ExTextView mSongOwnerTv;
     ExTextView mSongSelectTv;
 
     public SongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
         super(itemView);
 
-        mSongCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.song_cover_iv);
+//        mSongCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
-        mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
+//        mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
         mSongSelectTv = (ExTextView) itemView.findViewById(R.id.song_select_tv);
 
         mSongSelectTv.setOnClickListener(new DebounceViewClickListener() {
@@ -50,23 +50,23 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         this.mSongModel = songModel;
 
         mSongNameTv.setText(mSongModel.getItemName());
-        mSongOwnerTv.setText(mSongModel.getOwner());
-        int strokeColor = Color.parseColor("#202239");
-        if (!TextUtils.isEmpty(mSongModel.getCover())) {
-            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newPathImage(mSongModel.getCover())
-                    .setCornerRadius(U.getDisplayUtils().dip2px(4))
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                    .setBorderColor(strokeColor)
-                    //压缩一把
-                    .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
-                    .build()
-            );
-        } else {
-            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
-                    .setBorderColor(strokeColor)
-                    .build());
-        }
+//        mSongOwnerTv.setText(mSongModel.getOwner());
+//        int strokeColor = Color.parseColor("#202239");
+//        if (!TextUtils.isEmpty(mSongModel.getCover())) {
+//            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newPathImage(mSongModel.getCover())
+//                    .setCornerRadius(U.getDisplayUtils().dip2px(4))
+//                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
+//                    .setBorderColor(strokeColor)
+//                    //压缩一把
+//                    .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+//                    .build()
+//            );
+//        } else {
+//            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
+//                    .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
+//                    .setBorderColor(strokeColor)
+//                    .build());
+//        }
     }
 
 }
