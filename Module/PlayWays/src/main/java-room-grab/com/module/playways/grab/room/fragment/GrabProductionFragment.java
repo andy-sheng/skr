@@ -362,8 +362,8 @@ public class GrabProductionFragment extends BaseFragment {
                 mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
             }
 
-            if (mRoomData.getWonderfulMomentList() != null) {
-                mAdapter.setDataList(mRoomData.getWonderfulMomentList());
+            if (mRoomData.getWorksUploadModel() != null) {
+                mAdapter.setDataList(mRoomData.getWorksUploadModel());
             }
         } else {
             MyLog.w(TAG, "bindData 数据为空了");
