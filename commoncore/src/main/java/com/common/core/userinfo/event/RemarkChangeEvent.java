@@ -8,4 +8,12 @@ public class RemarkChangeEvent {
         this.userId = userId;
         this.remark = remark;
     }
+
+    @Override
+    public String toString() {
+        return "RemarkChangeEvent{" +
+                "userId=" + userId +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

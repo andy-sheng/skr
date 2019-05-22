@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
@@ -321,4 +322,10 @@ public class RelationView extends RelativeLayout {
         loadData(0);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RemarkChangeEvent event) {
+        MyLog.d(TAG,"onEvent" + " event=" + event);
+        this.mOffset = 0;
+        loadData(0);
+    }
 }
