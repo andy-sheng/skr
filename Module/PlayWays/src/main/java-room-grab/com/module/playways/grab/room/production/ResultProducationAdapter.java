@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
-import com.module.playways.grab.room.model.WonderfulMomentModel;
+import com.module.playways.grab.room.model.WorksUploadModel;
 
-public class ResultProducationAdapter extends DiffAdapter<WonderfulMomentModel, ResultProducationViewHolder> {
+public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, ResultProducationViewHolder> {
 
     Listener mListener;
     int mSelectPosition = -1;  //选中播放的id
@@ -28,7 +28,7 @@ public class ResultProducationAdapter extends DiffAdapter<WonderfulMomentModel, 
 
     @Override
     public void onBindViewHolder(@NonNull ResultProducationViewHolder holder, int position) {
-        WonderfulMomentModel wonderfulMomentModel = mDataList.get(position);
+        WorksUploadModel wonderfulMomentModel = mDataList.get(position);
         if (mSelectPosition == position) {
             holder.bindData(position, wonderfulMomentModel, true);
         } else {
@@ -52,11 +52,11 @@ public class ResultProducationAdapter extends DiffAdapter<WonderfulMomentModel, 
     }
 
     public interface Listener {
-        void onClickPlay(int position, WonderfulMomentModel model);
+        void onClickPlay(int position, WorksUploadModel model);
 
-        void onClickPause(int position, WonderfulMomentModel model);
+        void onClickPause(int position, WorksUploadModel model);
 
-        void onClickSaveAndShare(int position, WonderfulMomentModel model);
+        void onClickSaveAndShare(int position, WorksUploadModel model);
     }
 
 }

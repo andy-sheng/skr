@@ -10,17 +10,16 @@ import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
-import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
-import com.module.playways.grab.room.model.WonderfulMomentModel;
+import com.module.playways.grab.room.model.WorksUploadModel;
 
 public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
-    WonderfulMomentModel mWonderfulMomentModel;
+    WorksUploadModel mWonderfulMomentModel;
     int position;
     boolean isPlay;
 
@@ -73,7 +72,7 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bindData(int position, WonderfulMomentModel momentModel, boolean isPlay) {
+    public void bindData(int position, WorksUploadModel momentModel, boolean isPlay) {
         this.position = position;
         this.mWonderfulMomentModel = momentModel;
         this.isPlay = isPlay;

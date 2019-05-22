@@ -43,7 +43,7 @@ import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
-import com.module.playways.grab.room.model.WonderfulMomentModel;
+import com.module.playways.grab.room.model.WorksUploadModel;
 import com.module.playways.grab.room.production.ResultProducationAdapter;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.model.score.ScoreResultModel;
@@ -55,10 +55,7 @@ import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.level.view.LevelStarProgressBar;
 import com.zq.level.view.NormalLevelView2;
-import com.zq.live.proto.Common.UserInfo;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -125,7 +122,7 @@ public class GrabProductionFragment extends BaseFragment {
 
         mAdapter = new ResultProducationAdapter(new ResultProducationAdapter.Listener() {
             @Override
-            public void onClickPlay(int position, WonderfulMomentModel model) {
+            public void onClickPlay(int position, WorksUploadModel model) {
                 mAdapter.setSelectPosition(position);
                 if (mIPlayer == null) {
                     mIPlayer = new ExoPlayer();
@@ -144,7 +141,7 @@ public class GrabProductionFragment extends BaseFragment {
             }
 
             @Override
-            public void onClickPause(int position, WonderfulMomentModel model) {
+            public void onClickPause(int position, WorksUploadModel model) {
                 mAdapter.setSelectPosition(-1);
                 if (mIPlayer != null) {
                     mIPlayer.stop();
@@ -152,7 +149,7 @@ public class GrabProductionFragment extends BaseFragment {
             }
 
             @Override
-            public void onClickSaveAndShare(int position, WonderfulMomentModel model) {
+            public void onClickSaveAndShare(int position, WorksUploadModel model) {
                 MyLog.d(TAG, "onClickSaveAndShare" + " position=" + position + " model=" + model);
                 if (model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
                     showShareDialog(model);
@@ -269,7 +266,7 @@ public class GrabProductionFragment extends BaseFragment {
         }, 500);
     }
 
-    private void showShareDialog(WonderfulMomentModel momentModel) {
+    private void showShareDialog(WorksUploadModel momentModel) {
         if (mShareWorksDialog == null) {
             mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName(), new ShareWorksDialog.ShareListener() {
                 @Override
@@ -296,7 +293,7 @@ public class GrabProductionFragment extends BaseFragment {
         mShareWorksDialog.show();
     }
 
-    private void shareUrl(SharePlatform sharePlatform, WonderfulMomentModel model) {
+    private void shareUrl(SharePlatform sharePlatform, WorksUploadModel model) {
         if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
             UMusic music = new UMusic(model.getUrl());
             music.setTitle("" + model.getSongModel().getItemName());

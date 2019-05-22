@@ -4,14 +4,14 @@ import com.module.playways.room.song.model.SongModel;
 
 import java.io.Serializable;
 
-public class WonderfulMomentModel implements Serializable {
-    String localPath;
+public class WorksUploadModel implements Serializable {
+    String localPath;// 本地路径
     SongModel mSongModel;
-    boolean isBlight;
+    boolean isBlight; // 是否是爆灯时刻
     int worksID; // 用来标记是否已经上传了
     String url;  // 记录上传的路径
 
-    public WonderfulMomentModel(String localPath, SongModel songModel, boolean isBlight) {
+    public WorksUploadModel(String localPath, SongModel songModel, boolean isBlight) {
         this.localPath = localPath;
         this.mSongModel = songModel;
         this.isBlight = isBlight;

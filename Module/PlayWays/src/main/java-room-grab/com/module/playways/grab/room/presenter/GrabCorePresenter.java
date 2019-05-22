@@ -27,23 +27,19 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
-import com.common.utils.DeviceUtils;
 import com.common.utils.HandlerTaskTimer;
-import com.component.busilib.constans.GameModeType;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
-import com.module.playways.grab.room.model.WonderfulMomentModel;
+import com.module.playways.grab.room.model.WorksUploadModel;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
-import com.module.playways.room.gift.event.UpdateHZEvent;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
-import com.zq.live.proto.Room.Property;
+import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
-import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
@@ -121,7 +117,6 @@ import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.EQGameOverReason;
 import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.EWantSingType;
@@ -851,18 +846,26 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         if (mRoomData.openAudioRecording()) {
-            if (!roundInfoModel.getbLightInfos().isEmpty()) {
-                // 有人爆灯了
-                String fileName = String.format("wm_%s_%s", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
-                String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
-                SongModel songModel = roundInfoModel.getMusic();
-                if (roundInfoModel.getsPkRoundInfoModels().size() >= 1 && roundInfoModel.getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                    songModel = roundInfoModel.getMusic().getPkMusic();
+            if (roundInfoModel.getOverReason() == EQRoundOverReason.ROR_CHO_SUCCESS.getValue() ||
+                    roundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()) {
+                if (roundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
+                    MyLog.d(TAG,"添加到待选作品");
+                    // 一唱到底
+                    String fileName = String.format("wm_%s_%s", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
+                    String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
+                    SongModel songModel = roundInfoModel.getMusic();
+                    if (roundInfoModel.getsPkRoundInfoModels().size() >= 1 && roundInfoModel.getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                        songModel = roundInfoModel.getMusic().getPkMusic();
+                    }
+                    if (!roundInfoModel.getbLightInfos().isEmpty()) {
+                        // 有人爆灯了
+                        mRoomData.addWorksUploadModel(new WorksUploadModel(savePath, songModel, true));
+                    } else {
+                        mRoomData.addWorksUploadModel(new WorksUploadModel(savePath, songModel, false));
+                    }
                 }
-                mRoomData.addWonderfulMomentPath(new WonderfulMomentModel(savePath, songModel, true));
             }
         }
-
     }
 
     /**
