@@ -124,7 +124,7 @@ public class FeedbackFragment extends BaseFragment {
                     U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
                         @Override
                         public void onSuccess(String url) {
-                            tryUploadPic(typeList, content, imageItemList);
+                            tryUploadPic(typeList, content, imageItemList, url);
                         }
 
                         @Override
@@ -139,7 +139,7 @@ public class FeedbackFragment extends BaseFragment {
                         }
                     }, true);
                 } else {
-                    tryUploadPic(typeList, content, imageItemList);
+                    tryUploadPic(typeList, content, imageItemList, "");
                 }
             }
         });
@@ -147,7 +147,7 @@ public class FeedbackFragment extends BaseFragment {
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
-    private void tryUploadPic(List<Integer> typeList, String content, List<ImageItem> imageItemList) {
+    private void tryUploadPic(List<Integer> typeList, String content, List<ImageItem> imageItemList, String logUrl) {
         if (imageItemList != null && imageItemList.size() > 0) {
             List<PhotoModel> list = new ArrayList<>();
             for (ImageItem imageItem : imageItemList) {
@@ -158,6 +158,7 @@ public class FeedbackFragment extends BaseFragment {
                 mPlayControlTemplate.add(photoModel, true);
             }
 
+            mLogUrl = logUrl;
             mPhotoModelList = list;
             mTypeList = typeList;
             mContent = content;
