@@ -167,7 +167,9 @@ public class LastFollowFragment extends BaseFragment {
 
     @Override
     public void finish() {
-        super.finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
         /**
          * 如果没有通知栏权限，提示一次
          */
