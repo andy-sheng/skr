@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.log.MyLog;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 import com.module.playways.grab.room.model.WorksUploadModel;
@@ -12,7 +13,7 @@ import com.module.playways.grab.room.model.WorksUploadModel;
 public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, ResultProducationViewHolder> {
 
     Listener mListener;
-    int mSelectPosition = -1;  //选中播放的id
+    int mPlayPosition = -1;  //选中播放的id
 
     public ResultProducationAdapter(Listener listener) {
         this.mListener = listener;
@@ -29,28 +30,28 @@ public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, Resu
     @Override
     public void onBindViewHolder(@NonNull ResultProducationViewHolder holder, int position) {
         WorksUploadModel wonderfulMomentModel = mDataList.get(position);
-        if (mSelectPosition == position) {
+        if (mPlayPosition == position) {
             holder.bindData(position, wonderfulMomentModel, true);
         } else {
             holder.bindData(position, wonderfulMomentModel, false);
         }
     }
 
-    public int getSelectPosition() {
-        return mSelectPosition;
+    public int getPlayPosition() {
+        return mPlayPosition;
     }
 
-    public void setSelectPosition(int selectPosition) {
-        if (mSelectPosition != selectPosition) {
-            int oldSelectPosition = mSelectPosition;
-            mSelectPosition = selectPosition;
-
-            if (oldSelectPosition >= 0) {
+    public void setPlayPosition(int playPosition,boolean refresh) {
+        MyLog.d(TAG,"setSelectPosition" + " playPosition=" + playPosition);
+        if (mPlayPosition != playPosition) {
+            int oldSelectPosition = mPlayPosition;
+            mPlayPosition = playPosition;
+            if (oldSelectPosition >= 0 && refresh) {
                 notifyItemChanged(oldSelectPosition);
             }
-            if (mSelectPosition >= 0) {
-                notifyItemChanged(mSelectPosition);
-            }
+//            if (mPlayPosition >= 0) {
+//                notifyItemChanged(mPlayPosition);
+//            }
         }
     }
 
@@ -59,10 +60,10 @@ public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, Resu
         return mDataList.size();
     }
 
-    public interface Listener {
-        void onClickPlay(int position, WorksUploadModel model);
 
-        void onClickPause(int position, WorksUploadModel model);
+
+    public interface Listener {
+        void onClickPlayBtn(View view,boolean play,int position, WorksUploadModel model);
 
         void onClickSaveAndShare(int position, WorksUploadModel model);
     }

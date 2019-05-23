@@ -48,6 +48,8 @@ public class AndroidMediaPlayer implements IPlayer {
 
     HandlerTaskTimer mMusicTimePlayTimeListener;
 
+    long resetTs = 0;
+
     public AndroidMediaPlayer() {
         TAG += hashCode();
         MyLog.w(TAG, "ExoPlayer()");
@@ -67,12 +69,15 @@ public class AndroidMediaPlayer implements IPlayer {
         } else {
             mPlayer = genPlayer();
         }
-
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 MyLog.d(TAG, "onCompletion" + " mp=" + mp);
-                if (mCallback != null) {
+                /**
+                 * 只要调用了reset 接口也会异步回调这个 ，这不是期望的
+                 *  所以使用时间戳保护一下
+                 */
+                if (mCallback != null && !TextUtils.isEmpty(mPath) && (System.currentTimeMillis() - resetTs)>500){
                     mCallback.onCompletion();
                 }
             }
@@ -376,6 +381,7 @@ public class AndroidMediaPlayer implements IPlayer {
         if (mPlayer == null) {
             return;
         }
+        resetTs = System.currentTimeMillis();
         mPlayer.reset();
         mPath = null;
         stopMusicPlayTimeListener();

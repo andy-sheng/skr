@@ -99,6 +99,7 @@ public class GrabProductionFragment extends BaseFragment {
 
     boolean mSaving = false;
 
+    LinearLayoutManager mLinearLayoutManager;
     /**
      * 使用一个队列负责上传 作品保存成功 移除队列
      */
@@ -158,28 +159,36 @@ public class GrabProductionFragment extends BaseFragment {
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
 
         mAdapter = new ResultProducationAdapter(new ResultProducationAdapter.Listener() {
-            @Override
-            public void onClickPlay(int position, WorksUploadModel model) {
-                mAdapter.setSelectPosition(position);
-                if (mIPlayer == null) {
-                    mIPlayer = new AndroidMediaPlayer();
-                    // 播放完毕
-                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
-                        @Override
-                        public void onCompletion() {
-                            super.onCompletion();
-                            //mIPlayer.stop();
-                            stopPlay();
-                        }
-                    });
-                }
-                mIPlayer.reset();
-                mIPlayer.startPlay(model.getLocalPath());
-            }
 
             @Override
-            public void onClickPause(int position, WorksUploadModel model) {
-                stopPlay();
+            public void onClickPlayBtn(View view, boolean play, int position, WorksUploadModel model) {
+                if (play) {
+                    if (mIPlayer == null) {
+                        mIPlayer = new AndroidMediaPlayer();
+                        // 播放完毕
+                        mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                            @Override
+                            public void onCompletion() {
+                                super.onCompletion();
+                                //mIPlayer.stop();
+                                mAdapter.setPlayPosition(-1, true);
+                            }
+                        });
+                    }
+                    mIPlayer.reset();
+                    mIPlayer.startPlay(model.getLocalPath());
+                    // 开始播放当前postion，
+                    // 清楚上一个
+                    mAdapter.setPlayPosition(position, true);
+                } else {
+                    if (mIPlayer != null) {
+                        //mIPlayer.setCallback(null);
+                        mIPlayer.pause();
+                    }
+                    // 不用刷新，优化下，防止闪动， icon 在 click 事件内部已经设置过了
+                    mAdapter.setPlayPosition(-1, false);
+                }
+
             }
 
             @Override
@@ -195,7 +204,8 @@ public class GrabProductionFragment extends BaseFragment {
                 }
             }
         });
-        mProductionView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mProductionView.setLayoutManager(mLinearLayoutManager);
         mProductionView.setAdapter(mAdapter);
 
         mTvBack.setOnClickListener(new AnimateClickListener() {
@@ -489,7 +499,6 @@ public class GrabProductionFragment extends BaseFragment {
         U.getSoundUtils().release(GrabProductionFragment.TAG);
         mUiHandler.removeCallbacksAndMessages(null);
         if (mIPlayer != null) {
-            mIPlayer.stop();
             mIPlayer.release();
         }
         if (mShareWorksDialog != null) {

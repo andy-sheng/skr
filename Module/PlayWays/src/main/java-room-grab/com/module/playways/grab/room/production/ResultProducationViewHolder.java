@@ -57,12 +57,17 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (isPlay) {
+                    isPlay = false;
+                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
                     if (mListener != null) {
-                        mListener.onClickPause(position, mWonderfulMomentModel);
+                        mListener.onClickPlayBtn(v,isPlay,position, mWonderfulMomentModel);
                     }
+
                 } else {
+                    isPlay = true;
+                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
                     if (mListener != null) {
-                        mListener.onClickPlay(position, mWonderfulMomentModel);
+                        mListener.onClickPlayBtn(v,isPlay,position, mWonderfulMomentModel);
                     }
                 }
             }
