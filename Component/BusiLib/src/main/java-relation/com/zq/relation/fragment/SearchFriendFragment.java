@@ -17,8 +17,10 @@ import android.widget.TextView;
 
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
+import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -28,12 +30,19 @@ import com.component.busilib.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.live.proto.Common.UserInfo;
 import com.zq.person.fragment.OtherPersonFragment3;
 import com.zq.relation.adapter.RelationAdapter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.subjects.PublishSubject;
 
@@ -54,7 +63,8 @@ public class SearchFriendFragment extends BaseFragment {
 
     CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
-    DisposableObserver<ApiResult> mDisposableObserver;
+    DisposableObserver<List<UserInfoModel>> mDisposableObserver;  // 关注和好友使用
+    DisposableObserver<ApiResult> mFansDisposableObserver;     //粉丝使用
 
     RelationAdapter mRelationAdapter;
 
@@ -178,12 +188,7 @@ public class SearchFriendFragment extends BaseFragment {
     UserInfoManager.UserInfoListCallback userInfoListCallback = new UserInfoManager.UserInfoListCallback() {
         @Override
         public void onSuccess(UserInfoManager.FROM from, int offset, List<UserInfoModel> list) {
-            // TODO: 2019/5/23 还需要完善
-            if (list != null && list.size() > 0) {
-                mRelationAdapter.getData().clear();
-                mRelationAdapter.getData().addAll(list);
-                mRelationAdapter.notifyDataSetChanged();
-            }
+            showUserInfoList(list);
         }
     };
 
@@ -193,48 +198,88 @@ public class SearchFriendFragment extends BaseFragment {
             U.getToastUtil().showShort("搜索内容为空");
             return;
         }
+        // TODO: 2019/5/23 区分好友关注和粉丝
         UserInfoManager.getInstance().searchFollow(keyword, userInfoListCallback);
     }
 
+    private void showUserInfoList(List<UserInfoModel> list) {
+        if (list != null && list.size() > 0) {
+            mRelationAdapter.getData().clear();
+            mRelationAdapter.getData().addAll(list);
+            mRelationAdapter.notifyDataSetChanged();
+        }
+    }
+
     private void initPublishSubject() {
-//        mPublishSubject = PublishSubject.create();
-//        mDisposableObserver = new DisposableObserver<ApiResult>() {
-//            @Override
-//            public void onNext(ApiResult result) {
-//                if (result.getErrno() == 0) {
-//                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
-//                    loadSongsDetailItems(list, false);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//
-//            @Override
-//            public void onComplete() {
-//
-//            }
-//        };
-//        mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
-//            @Override
-//            public boolean test(String s) throws Exception {
-//                return s.length() > 0;
-//            }
-//        }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
-//            @Override
-//            public ObservableSource<ApiResult> apply(String string) throws Exception {
-//                return UserInfoManager.getInstance().searchFollow(string, userInfoListCallback);
-//            }
-//        }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
-//        mCompositeDisposable = new CompositeDisposable();
-//        mCompositeDisposable.add(mDisposableObserver);
+        mPublishSubject = PublishSubject.create();
+        if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+            mFansDisposableObserver = new DisposableObserver<ApiResult>() {
+                @Override
+                public void onNext(ApiResult result) {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            };
+            // TODO: 2019/5/23 等服务器粉丝搜索接口补充
+        } else {
+            mDisposableObserver = new DisposableObserver<List<UserInfoModel>>() {
+                @Override
+                public void onNext(List<UserInfoModel> list) {
+                    MyLog.d(TAG, "onNext" + " list=" + list);
+                    // TODO: 2019/5/23 一次搞定，不需要做分页
+                    showUserInfoList(list);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            };
+            mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+                @Override
+                public boolean test(String s) throws Exception {
+                    return s.length() > 0;
+                }
+            }).switchMap(new Function<String, ObservableSource<List<UserInfoModel>>>() {
+                @Override
+                public ObservableSource<List<UserInfoModel>> apply(String string) throws Exception {
+                    // TODO: 2019/5/23 区分好友和关注
+                    List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(string);
+                    return Observable.just(userInfoModels);
+                }
+            }).observeOn(AndroidSchedulers.mainThread()).
+                    subscribe(mDisposableObserver);
+            mCompositeDisposable = new CompositeDisposable();
+            mCompositeDisposable.add(mDisposableObserver);
+        }
+
     }
 
 
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
+        }
     }
 }
