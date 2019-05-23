@@ -45,8 +45,12 @@ public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, Resu
             int oldSelectPosition = mSelectPosition;
             mSelectPosition = selectPosition;
 
-            notifyItemChanged(oldSelectPosition);
-            notifyItemChanged(mSelectPosition);
+            if (oldSelectPosition >= 0) {
+                notifyItemChanged(oldSelectPosition);
+            }
+            if (mSelectPosition >= 0) {
+                notifyItemChanged(mSelectPosition);
+            }
         }
     }
 

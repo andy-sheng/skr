@@ -169,7 +169,7 @@ public class GrabProductionFragment extends BaseFragment {
                         public void onCompletion() {
                             super.onCompletion();
                             //mIPlayer.stop();
-                            mAdapter.setSelectPosition(-1);
+                            stopPlay();
                         }
                     });
                 }
@@ -179,16 +179,15 @@ public class GrabProductionFragment extends BaseFragment {
 
             @Override
             public void onClickPause(int position, WorksUploadModel model) {
-                mAdapter.setSelectPosition(-1);
-                if (mIPlayer != null) {
-                    mIPlayer.setCallback(null);
-                    mIPlayer.stop();
-                }
+                stopPlay();
             }
 
             @Override
             public void onClickSaveAndShare(int position, WorksUploadModel model) {
                 MyLog.d(TAG, "onClickSaveAndShare" + " position=" + position + " model=" + model);
+                if (position == mAdapter.getSelectPosition()) {
+                    stopPlay();
+                }
                 if (model.getWorksID() > 0) {
                     showShareDialog(model);
                 } else {
@@ -257,6 +256,14 @@ public class GrabProductionFragment extends BaseFragment {
                 U.getSoundUtils().play(GrabProductionFragment.TAG, R.raw.grab_gameover, 500);
             }
         }, 500);
+    }
+
+    public void stopPlay() {
+        mAdapter.setSelectPosition(-1);
+        if (mIPlayer != null) {
+            mIPlayer.setCallback(null);
+            mIPlayer.stop();
+        }
     }
 
     private void saveWorksStep1(WorksUploadModel model) {

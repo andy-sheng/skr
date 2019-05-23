@@ -72,8 +72,14 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, Producatio
             int oldPlayPosition = mSelectPlayPosition;
             mSelectPlayPosition = selectPlayPosition;
 
-            notifyItemChanged(oldPlayPosition);
-            notifyItemChanged(mSelectPlayPosition);
+            if (oldPlayPosition >= 0) {
+                notifyItemChanged(oldPlayPosition);
+            }
+
+            if (mSelectPlayPosition >= 0) {
+                notifyItemChanged(mSelectPlayPosition);
+            }
+
         }
     }
 
