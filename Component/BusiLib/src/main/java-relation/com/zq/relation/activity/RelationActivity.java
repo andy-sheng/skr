@@ -35,6 +35,11 @@ public class RelationActivity extends BaseActivity {
     }
 
     @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return true;
+    }
+
+    @Override
     public boolean useEventBus() {
         return false;
     }
