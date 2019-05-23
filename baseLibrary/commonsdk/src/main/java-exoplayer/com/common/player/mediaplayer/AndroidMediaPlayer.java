@@ -103,6 +103,7 @@ public class AndroidMediaPlayer implements IPlayer {
             public void onPrepared(MediaPlayer mp) {
                 mDuration = mp.getDuration();
                 MyLog.d(TAG, "onPrepared 总时长:"+ mDuration);
+                setVolume(1);
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
@@ -110,7 +111,7 @@ public class AndroidMediaPlayer implements IPlayer {
                     mCallback.onPrepared(mDuration);
                 }
                 if(enableDecreaseVolume){
-                    mHandler.sendEmptyMessage(MSG_DECREASE_VOLUME);
+                    mHandler.removeMessages(MSG_DECREASE_VOLUME);
                     mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, mDuration -3000);
                 }
             }
@@ -274,7 +275,7 @@ public class AndroidMediaPlayer implements IPlayer {
         }
     }
 
-    float mVolume;
+    float mVolume = 1.0f;
 
     @Override
     public void setVolume(float volume) {
@@ -493,10 +494,11 @@ public class AndroidMediaPlayer implements IPlayer {
     ValueAnimator mDecreaseVolumeAnimator;
 
     private void decreaseVolume(){
+        MyLog.d(TAG,"decreaseVolume" );
         if (mDecreaseVolumeAnimator != null) {
             mDecreaseVolumeAnimator.cancel();
         }
-        mDecreaseVolumeAnimator = ValueAnimator.ofFloat(0, getVolume());
+        mDecreaseVolumeAnimator = ValueAnimator.ofFloat(getVolume(),0);
         mDecreaseVolumeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

@@ -123,6 +123,7 @@ public class ProducationWallView extends RelativeLayout {
                 if (play) {
                     if (mIPlayer == null) {
                         mIPlayer = new AndroidMediaPlayer();
+                        mIPlayer.setDecreaseVolumeEnd(true);
                         // 播放完毕
                         mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                             @Override
