@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -44,12 +45,13 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 import com.component.busilib.constans.GameModeType;
-import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.view.BitmapTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.ModuleServiceManager;
+import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -67,7 +69,6 @@ import com.zq.person.view.IOtherPersonView;
 import com.zq.person.view.OtherPhotoWallView;
 import com.zq.person.view.PersonMoreOpView;
 import com.zq.person.view.ProducationWallView;
-import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -297,13 +298,16 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                         Bundle bundle = new Bundle();
                         bundle.putInt(REPORT_FROM_KEY, FORM_PERSON);
                         bundle.putInt(REPORT_USER_ID, mUserId);
+                        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+                        Class<BaseFragment> baseFragmentClass = (Class) channelService.getData(3, null);
                         U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
-                                        .setBundle(bundle)
+                                FragmentUtils.newAddParamsBuilder(getActivity(), baseFragmentClass)
                                         .setAddToBackStack(true)
                                         .setHasAnimation(true)
-                                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                                        .addDataBeforeAdd(0, 1)
+                                        .addDataBeforeAdd(1, mUserId)
+                                        .setEnterAnim(R.anim.slide_in_bottom)
+                                        .setExitAnim(R.anim.slide_out_bottom)
                                         .build());
                     }
                 });

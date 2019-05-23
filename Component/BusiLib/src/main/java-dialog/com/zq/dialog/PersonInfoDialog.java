@@ -2,9 +2,7 @@ package com.zq.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
-import android.view.View;
 
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
@@ -14,11 +12,9 @@ import com.common.utils.U;
 import com.component.busilib.R;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Common.UserInfo;
 import com.zq.person.model.PhotoModel;
-import com.zq.report.fragment.ReportFragment;
+import com.zq.report.fragment.QuickFeedbackFragment;
 
 import static com.zq.report.fragment.ReportFragment.FORM_GAME;
 import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
@@ -145,13 +141,15 @@ public class PersonInfoDialog {
         Bundle bundle = new Bundle();
         bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
         bundle.putInt(REPORT_USER_ID, userID);
+
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, ReportFragment.class)
-                        .setBundle(bundle)
+                FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, QuickFeedbackFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                        .addDataBeforeAdd(0, 1)
+                        .addDataBeforeAdd(1, userID)
+                        .setEnterAnim(R.anim.slide_in_bottom)
+                        .setExitAnim(R.anim.slide_out_bottom)
                         .build());
     }
 

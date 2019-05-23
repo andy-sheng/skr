@@ -5,6 +5,7 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.module.RouterConstants;
 import com.module.home.event.AuthSuccessEvent;
+import com.module.home.feedback.FeedbackFragment;
 import com.module.home.fragment.HalfRechargeFragment;
 import com.module.home.fragment.PersonFragment3;
 
@@ -27,6 +28,8 @@ public class HomeServiceImpl implements IHomeService {
             return HomeActivity.class.getSimpleName();
         } else if (2 == type) {
             return HalfRechargeFragment.class;
+        } else if (3 == type) {
+            return FeedbackFragment.class;
         }
 
         return null;

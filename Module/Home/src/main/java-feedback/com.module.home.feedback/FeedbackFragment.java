@@ -15,6 +15,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
+import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -52,6 +53,11 @@ import static com.zq.person.model.PhotoModel.STATUS_SUCCESS;
 import static com.zq.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
 
 public class FeedbackFragment extends BaseFragment {
+    //反馈
+    public static final int FEED_BACK = 0;
+    //举报
+    public static final int REPORT = 1;
+
     CommonTitleBar mTitlebar;
     FeedbackView mFeedBackView;
     ProgressBar mUploadProgressBar;
@@ -60,6 +66,8 @@ public class FeedbackFragment extends BaseFragment {
     String mContent;
     List<Integer> mTypeList;
     String mLogUrl;
+    int mActionType;
+    int mTargetId;
 
     ObjectPlayControlTemplate<PhotoModel, FeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, FeedbackFragment>() {
         @Override
@@ -89,6 +97,7 @@ public class FeedbackFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mFeedBackView = (FeedbackView) mRootView.findViewById(R.id.feed_back_view);
         mUploadProgressBar = (ProgressBar) mRootView.findViewById(R.id.upload_progress_bar);
+        mFeedBackView.setActionType(mActionType);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -99,49 +108,61 @@ public class FeedbackFragment extends BaseFragment {
             }
         });
 
+        if (mActionType == FEED_BACK) {
+            mTitlebar.getCenterTextView().setText("意见反馈");
+        } else {
+            mTitlebar.getCenterTextView().setText("举报");
+        }
+
         mFeedBackView.setListener(new FeedbackView.Listener() {
             @Override
             public void onClickSubmit(List<Integer> typeList, String content, List<ImageItem> imageItemList) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 mUploadProgressBar.setVisibility(View.VISIBLE);
-                U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
-                    @Override
-                    public void onSuccess(String url) {
-                        if (imageItemList != null && imageItemList.size() > 0) {
-                            List<PhotoModel> list = new ArrayList<>();
-                            for (ImageItem imageItem : imageItemList) {
-                                PhotoModel photoModel = new PhotoModel();
-                                photoModel.setLocalPath(imageItem.getPath());
-                                photoModel.setStatus(STATUS_WAIT_UPLOAD);
-                                list.add(photoModel);
-                                mPlayControlTemplate.add(photoModel, true);
-                            }
-
-                            mPhotoModelList = list;
-                            mTypeList = typeList;
-                            mContent = content;
-                            mLogUrl = url;
-                        } else {
-                            feedback(typeList, content, url, new ArrayList<String>());
+                if (mActionType == FEED_BACK) {
+                    U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
+                        @Override
+                        public void onSuccess(String url) {
+                            tryUploadPic(typeList, content, imageItemList);
                         }
-                    }
 
-                    @Override
-                    public void onFailed() {
-                        mUploadProgressBar.setVisibility(View.GONE);
-                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                                .setImage(R.drawable.touxiangshezhishibai_icon)
-                                .setText("反馈失败")
-                                .build());
+                        @Override
+                        public void onFailed() {
+                            mUploadProgressBar.setVisibility(View.GONE);
+                            U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                    .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
+                                    .setText("反馈失败")
+                                    .build());
 
-                        U.getFragmentUtils().popFragment(FeedbackFragment.this);
-                    }
-                }, true);
-
+                            U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                        }
+                    }, true);
+                } else {
+                    tryUploadPic(typeList, content, imageItemList);
+                }
             }
         });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
+
+    private void tryUploadPic(List<Integer> typeList, String content, List<ImageItem> imageItemList) {
+        if (imageItemList != null && imageItemList.size() > 0) {
+            List<PhotoModel> list = new ArrayList<>();
+            for (ImageItem imageItem : imageItemList) {
+                PhotoModel photoModel = new PhotoModel();
+                photoModel.setLocalPath(imageItem.getPath());
+                photoModel.setStatus(STATUS_WAIT_UPLOAD);
+                list.add(photoModel);
+                mPlayControlTemplate.add(photoModel, true);
+            }
+
+            mPhotoModelList = list;
+            mTypeList = typeList;
+            mContent = content;
+        } else {
+            feedback(typeList, content, "", new ArrayList<String>());
+        }
     }
 
     @Override
@@ -200,12 +221,31 @@ public class FeedbackFragment extends BaseFragment {
         feedback(mTypeList, mContent, mLogUrl, picUrls);
     }
 
+    @Override
+    public void setData(int type, @Nullable Object data) {
+        if (type == 0) {
+            mActionType = (int) data;
+        } else if (type == 1) {
+            mTargetId = (int) data;
+        }
+    }
+
     private void feedback(List<Integer> typeList, String content, String logUrl, List<String> picUrls) {
+        MyLog.d(TAG, "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
+        if (mActionType == FEED_BACK) {
+            summitFeedback(typeList, content, logUrl, picUrls);
+        } else {
+            submitReport(typeList, content, picUrls);
+        }
+    }
+
+    private void summitFeedback(List<Integer> typeList, String content, String logUrl, List<String> picUrls) {
+        MyLog.d(TAG, "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
         HashMap<String, Object> map = new HashMap<>();
         map.put("createdAt", System.currentTimeMillis());
         map.put("appVer", U.getAppInfoUtils().getVersionName());
         map.put("channel", U.getChannelUtils().getChannel());
-        map.put("source", 2);
+        map.put("source", 1);
         map.put("type", typeList);
         map.put("content", content);
         map.put("appLog", logUrl);
@@ -216,10 +256,11 @@ public class FeedbackFragment extends BaseFragment {
         ApiMethods.subscribe(feedbackServerApi.feedback(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                MyLog.d(TAG, "process" + " result=" + result);
                 if (result.getErrno() == 0) {
                     mUploadProgressBar.setVisibility(View.GONE);
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                            .setImage(R.drawable.touxiangshezhichenggong_icon)
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhichenggong_icon)
                             .setText("反馈成功")
                             .build());
 
@@ -227,7 +268,7 @@ public class FeedbackFragment extends BaseFragment {
                 } else {
                     mUploadProgressBar.setVisibility(View.GONE);
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                            .setImage(R.drawable.touxiangshezhishibai_icon)
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
                             .setText(result.getErrmsg())
                             .build());
 
@@ -240,11 +281,43 @@ public class FeedbackFragment extends BaseFragment {
                 super.onNetworkError(errorType);
                 mUploadProgressBar.setVisibility(View.GONE);
                 U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                        .setImage(R.drawable.touxiangshezhishibai_icon)
+                        .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
                         .setText("反馈失败！\n请检查网络之后重试")
                         .build());
+                U.getFragmentUtils().popFragment(FeedbackFragment.this);
             }
         });
+    }
+
+    private void submitReport(List<Integer> typeList, String content, List<String> picUrls) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("targetID", mTargetId);
+        map.put("content", content);
+        map.put("screenshot", picUrls);
+        map.put("type", typeList);
+        map.put("source", 2);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.report(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhichenggong_icon)
+                            .setText("举报成功")
+                            .build());
+                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                } else {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
+                            .setText("举报失败")
+                            .build());
+                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                }
+            }
+        }, this);
     }
 
     @Override

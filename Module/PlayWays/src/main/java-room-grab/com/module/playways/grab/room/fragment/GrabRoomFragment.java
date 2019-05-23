@@ -36,14 +36,15 @@ import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
+import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.bottom.GrabBottomContainerView;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
-import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
-import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.invite.InviteFriendFragment2;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -58,35 +59,33 @@ import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
-import com.module.playways.grab.room.view.GrabOpView;
-
 import com.module.playways.grab.room.view.GrabGiveupView;
+import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
+import com.module.playways.grab.room.view.RedPkgCountDownView;
+import com.module.playways.grab.room.view.SongInfoCardView;
+import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.grab.room.view.control.OthersSingCardView;
 import com.module.playways.grab.room.view.control.RoundOverCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView;
-import com.module.playways.grab.room.view.RedPkgCountDownView;
-import com.module.playways.grab.room.view.SongInfoCardView;
-import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.view.ContinueSendView;
 import com.module.playways.room.gift.view.GiftPanelView;
-import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.comment.CommentView;
+import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftBigContinuousView;
-import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
+import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -957,6 +956,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
+                            .addDataBeforeAdd(0, 0)
                             .setEnterAnim(R.anim.slide_in_bottom)
                             .setExitAnim(R.anim.slide_out_bottom)
                             .build());

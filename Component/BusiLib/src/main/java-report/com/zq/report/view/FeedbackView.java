@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
+import com.common.log.MyLog;
 import com.common.utils.ToastUtils;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -29,9 +30,12 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
 public class FeedbackView extends RelativeLayout {
+    public final static String TAG = "FeedbackView";
 
     public static int FEEDBACK_ERRO = 1;  // 反馈问题
     public static int FEEDBACK_SUGGEST = 2; // 功能建议
+
+    int mActionType;
 
     EditText mFeedbackContent;
     ExTextView mContentTextSize;
@@ -58,25 +62,33 @@ public class FeedbackView extends RelativeLayout {
 
     public FeedbackView(Context context) {
         super(context);
-        init();
     }
 
     public FeedbackView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public FeedbackView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
     public void setListener(Listener listener) {
         this.mListener = listener;
     }
 
+    public void setActionType(int actionType) {
+        MyLog.d(TAG, "setActionType" + " actionType=" + actionType);
+        mActionType = actionType;
+        init();
+    }
+
     private void init() {
-        inflate(getContext(), R.layout.feedback_view_layout, this);
+        if (mActionType == 0) {
+            inflate(getContext(), R.layout.feedback_view_layout, this);
+        } else {
+            inflate(getContext(), R.layout.report_view_layout, this);
+        }
+
         mPicNumTv = (ExTextView) findViewById(R.id.pic_num_tv);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mSelfSingCatonIv = (ExImageView) findViewById(R.id.self_sing_caton_iv);
