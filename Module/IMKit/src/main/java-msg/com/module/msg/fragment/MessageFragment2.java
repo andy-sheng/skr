@@ -29,7 +29,6 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.RouterConstants;
 import com.module.msg.IMessageFragment;
-import com.module.msg.follow.LastFollowFragment;
 import com.module.msg.follow.LastFollowModel;
 import com.zq.dialog.InviteFriendDialog;
 import com.zq.relation.fragment.SearchUserFragment;
@@ -138,11 +137,8 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
         mLatestFollowArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), LastFollowFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_LAST_FOLLOW)
+                        .navigation();
 
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 0);
             }

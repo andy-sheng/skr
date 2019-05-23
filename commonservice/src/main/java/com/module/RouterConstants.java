@@ -34,6 +34,8 @@ public interface RouterConstants {
     String ACTIVITY_MUSIC_TEST = "/home/MusicTestActivity";
     String ACTIVITY_SETTING = "/home/SettingActivity";
 
+    String ACTIVITY_LAST_FOLLOW = "/msg/LastFollowActivity";
+
     String ACTIVITY_FRIEND_ROOM = "/busilib/GrabFriendRoomActivity";
     String ACTIVITY_RELATION = "/busilib/RelationActivity";
 
