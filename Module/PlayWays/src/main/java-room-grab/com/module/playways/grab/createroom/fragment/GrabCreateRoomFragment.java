@@ -97,7 +97,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                             //实人认证
                             ToastUtils.showShort("请实人认证再开共开房");
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                    .withString("url", "app.inframe.mobil/face/mobile?from=room")
+                                    .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/mobile?from=room"))
                                     .greenChannel().navigation();
                         } else {
                             if (TextUtils.isEmpty(result.getErrmsg())) {
