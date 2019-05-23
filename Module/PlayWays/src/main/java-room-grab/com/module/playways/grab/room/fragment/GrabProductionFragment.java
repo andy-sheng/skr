@@ -268,7 +268,7 @@ public class GrabProductionFragment extends BaseFragment {
     }
 
     public void stopPlay() {
-        mAdapter.setPlayPosition(-1,true);
+        mAdapter.setPlayPosition(-1, true);
         if (mIPlayer != null) {
             mIPlayer.setCallback(null);
             mIPlayer.stop();
@@ -357,7 +357,8 @@ public class GrabProductionFragment extends BaseFragment {
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }
-        mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName(), new ShareWorksDialog.ShareListener() {
+        mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName()
+                , ShareWorksDialog.FROM_GRAB_RESULT, new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
                 shareUrl(SharePlatform.QQ, momentModel);

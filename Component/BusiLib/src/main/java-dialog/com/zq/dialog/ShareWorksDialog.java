@@ -11,8 +11,12 @@ public class ShareWorksDialog {
 
     DialogPlus mShareDialog;
 
-    public ShareWorksDialog(Context context, String songName, final ShareListener listener) {
-        ShareWorksDialogView shareWorksDialogView = new ShareWorksDialogView(context, songName, new ShareWorksDialogView.Listener() {
+    public static final int FROM_PERSON_INFO = 1;
+    public static final int FROM_GRAB_RESULT = 2;
+
+    public ShareWorksDialog(Context context, String songName, int from, final ShareListener listener) {
+        ShareWorksDialogView shareWorksDialogView = new ShareWorksDialogView(context, songName, from
+                , new ShareWorksDialogView.Listener() {
             @Override
             public void onClickQQShare() {
                 if (mShareDialog != null) {

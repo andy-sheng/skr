@@ -2,7 +2,7 @@
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_212_dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/view_16_dp"
     android:layout_marginRight="@dimen/view_16_dp"
     android:layout_marginBottom="@dimen/view_8_dp"
@@ -12,14 +12,17 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_25_dp"
+        android:drawableLeft="@drawable/works_save_tips_icon"
+        android:gravity="center"
         android:text="已保存到个人中心"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/textsize_14_dp" />
 
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_60_dp"
@@ -30,9 +33,10 @@
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_below="@id/divider"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_80_dp"
+        android:layout_marginTop="@dimen/view_17_dp"
         android:text="分享"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/textsize_14_dp"
@@ -41,7 +45,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_108_dp"
-        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_below="@id/tv_text"
         android:orientation="horizontal">
 
         <RelativeLayout

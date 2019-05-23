@@ -381,7 +381,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
                     return mPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    mProducationWallView = new ProducationWallView(PersonFragment3.this, (int) MyUserInfoManager.getInstance().getUid());
+                    mProducationWallView = new ProducationWallView(PersonFragment3.this, (int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName());
                     container.addView(mProducationWallView);
                     mProducationWallView.getProducations();
                     return mProducationWallView;

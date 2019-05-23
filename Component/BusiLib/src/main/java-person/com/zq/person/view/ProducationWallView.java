@@ -55,6 +55,7 @@ public class ProducationWallView extends RelativeLayout {
     BaseFragment mFragment;
     UserInfoServerApi mUserInfoServerApi;
     int mUserId;
+    String mNickName;
 
     SmartRefreshLayout mSmartRefresh;
     RecyclerView mProducationView;
@@ -68,12 +69,21 @@ public class ProducationWallView extends RelativeLayout {
     DialogPlus mConfirmDialog;
     ShareWorksDialog mShareWorksDialog;
 
-    public ProducationWallView(BaseFragment fragment, int userId) {
+    public ProducationWallView(BaseFragment fragment, int userId, String nickName) {
         super(fragment.getContext());
         this.mFragment = fragment;
         this.mUserId = userId;
+        this.mNickName = nickName;
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         init();
+    }
+
+    public String getNickName() {
+        return mNickName;
+    }
+
+    public void setNickName(String nickName) {
+        mNickName = nickName;
     }
 
     private void init() {
@@ -200,7 +210,8 @@ public class ProducationWallView extends RelativeLayout {
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }
-        mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName(), new ShareWorksDialog.ShareListener() {
+        mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName()
+                , ShareWorksDialog.FROM_PERSON_INFO, new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
                 shareUrl(SharePlatform.QQ, model);
@@ -228,12 +239,12 @@ public class ProducationWallView extends RelativeLayout {
         if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getWorksURL())) {
             UMusic music = new UMusic(model.getWorksURL());
             music.setTitle("" + model.getName());
-            music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
+            music.setDescription(mNickName + "的撕歌精彩时刻");
             music.setThumb(new UMImage(mFragment.getActivity(), MyUserInfoManager.getInstance().getAvatar()));
 
             StringBuilder sb = new StringBuilder();
             sb.append("http://dev.app.inframe.mobi/user/work")
-                    .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
+                    .append("?skerId=").append(String.valueOf(mUserId))
                     .append("&workId=").append(String.valueOf(model.getWorksID()));
             String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
             // TODO: 2019/5/22 微信分享不成功的原因可能是mUrl未上线，微信会检测这个

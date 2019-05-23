@@ -13,18 +13,22 @@ public class ShareWorksDialogView extends RelativeLayout {
 
     String mSongName;
     Listener mListener;
+    int mFrom;
 
     ExTextView mTvTitle;
+    View mDivider;
     ExTextView mTvText;
     TextView mTvQqShare;
     TextView mTvQzoneShare;
     TextView mTvWeixinShare;
     TextView mTvQuanShare;
 
-    public ShareWorksDialogView(Context context, String songName, Listener listener) {
+
+    public ShareWorksDialogView(Context context, String songName, int from, Listener listener) {
         super(context);
         this.mSongName = songName;
         this.mListener = listener;
+        this.mFrom = from;
         init(context);
     }
 
@@ -32,6 +36,7 @@ public class ShareWorksDialogView extends RelativeLayout {
         inflate(context, R.layout.share_works_panel, this);
 
         mTvTitle = (ExTextView) findViewById(R.id.tv_title);
+        mDivider = (View) findViewById(R.id.divider);
         mTvText = (ExTextView) findViewById(R.id.tv_text);
         mTvQqShare = (TextView) findViewById(R.id.tv_qq_share);
         mTvQzoneShare = (TextView) findViewById(R.id.tv_qzone_share);
@@ -39,6 +44,14 @@ public class ShareWorksDialogView extends RelativeLayout {
         mTvQuanShare = (TextView) findViewById(R.id.tv_quan_share);
 
         mTvText.setText("分享《" + mSongName + "》");
+
+        if (mFrom == ShareWorksDialog.FROM_PERSON_INFO) {
+            mTvTitle.setVisibility(GONE);
+            mDivider.setVisibility(GONE);
+        } else {
+            mTvTitle.setVisibility(VISIBLE);
+            mDivider.setVisibility(VISIBLE);
+        }
 
         mTvQqShare.setOnClickListener(new AnimateClickListener() {
             @Override
