@@ -21,7 +21,7 @@
                 android:layout_width="@dimen/view_30_dp"
                 android:layout_height="@dimen/view_30_dp"
                 android:layout_gravity="center_vertical"
-                android:tag="0"
+                android:tag="3"
                 app:bl_selected_drawable="@drawable/feedback_xuanzhong"
                 app:bl_unSelected_drawable="@drawable/feedback_weixuanzhong" />
 
@@ -45,7 +45,7 @@
                 android:layout_width="@dimen/view_30_dp"
                 android:layout_height="@dimen/view_30_dp"
                 android:layout_gravity="center_vertical"
-                android:tag="1"
+                android:tag="5"
                 app:bl_selected_drawable="@drawable/feedback_xuanzhong"
                 app:bl_unSelected_drawable="@drawable/feedback_weixuanzhong" />
 
@@ -69,7 +69,7 @@
                 android:layout_width="@dimen/view_30_dp"
                 android:layout_height="@dimen/view_30_dp"
                 android:layout_gravity="center_vertical"
-                android:tag="2"
+                android:tag="8"
                 app:bl_selected_drawable="@drawable/feedback_xuanzhong"
                 app:bl_unSelected_drawable="@drawable/feedback_weixuanzhong" />
 
@@ -102,7 +102,7 @@
                 android:layout_width="@dimen/view_30_dp"
                 android:layout_height="@dimen/view_30_dp"
                 android:layout_gravity="center_vertical"
-                android:tag="3"
+                android:tag="4"
                 app:bl_selected_drawable="@drawable/feedback_xuanzhong"
                 app:bl_unSelected_drawable="@drawable/feedback_weixuanzhong" />
 
@@ -126,7 +126,7 @@
                 android:layout_width="@dimen/view_30_dp"
                 android:layout_height="@dimen/view_30_dp"
                 android:layout_gravity="center_vertical"
-                android:tag="4"
+                android:tag="6"
                 app:bl_selected_drawable="@drawable/feedback_xuanzhong"
                 app:bl_unSelected_drawable="@drawable/feedback_weixuanzhong" />
 
@@ -150,7 +150,7 @@
                 android:layout_width="@dimen/view_30_dp"
                 android:layout_height="@dimen/view_30_dp"
                 android:layout_gravity="center_vertical"
-                android:tag="5"
+                android:tag="2"
                 app:bl_selected_drawable="@drawable/feedback_xuanzhong"
                 app:bl_unSelected_drawable="@drawable/feedback_weixuanzhong" />
 
