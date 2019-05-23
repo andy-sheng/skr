@@ -165,16 +165,24 @@ public class GrabProductionFragment extends BaseFragment {
                 if (play) {
                     if (mIPlayer == null) {
                         mIPlayer = new AndroidMediaPlayer();
-                        // 播放完毕
-                        mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
-                            @Override
-                            public void onCompletion() {
-                                super.onCompletion();
-                                //mIPlayer.stop();
-                                mAdapter.setPlayPosition(-1, true);
-                            }
-                        });
+                        mIPlayer.setDecreaseVolumeEnd(true);
                     }
+                    // 播放完毕
+                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                        @Override
+                        public void onPrepared(long duration) {
+                            super.onPrepared(duration);
+                            model.setDuration(duration);
+                        }
+
+                        @Override
+                        public void onCompletion() {
+                            super.onCompletion();
+                            //mIPlayer.stop();
+                            mAdapter.setPlayPosition(-1, true);
+                        }
+
+                    });
                     mIPlayer.reset();
                     mIPlayer.startPlay(model.getLocalPath());
                     // 开始播放当前postion，
@@ -312,7 +320,12 @@ public class GrabProductionFragment extends BaseFragment {
             // 一唱到底
             map.put("category", ProducationModel.TYPE_STAND_NORMAL);
         }
-        map.put("duration", String.valueOf(model.getSongModel().getTotalMs()));
+        if (model.getDuration() <= 0) {
+            // 这是个耗时操作
+            model.setDuration(U.getMediaUtils().getDuration(model.getLocalPath()));
+        }
+        // 单位毫秒
+        map.put("duration",model.getDuration());
         map.put("songID", model.getSongModel().getItemID());
         map.put("worksURL", model.getUrl());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));

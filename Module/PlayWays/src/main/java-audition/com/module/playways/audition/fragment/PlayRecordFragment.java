@@ -211,7 +211,7 @@ public class PlayRecordFragment extends BaseFragment {
 
             mPlayer.setCallback(new IPlayerCallback() {
                 @Override
-                public void onPrepared() {
+                public void onPrepared(long duration) {
 
                 }
 

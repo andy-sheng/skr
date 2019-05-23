@@ -29,7 +29,6 @@ import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataRenderer;
-import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
 import com.google.android.exoplayer2.source.DefaultMediaSourceEventListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -40,7 +39,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
@@ -80,7 +78,7 @@ public class ExoPlayer implements IPlayer {
     private int videoWidth = 0;
     private int videoHeight = 0;
     private float mShiftUp = 0;
-
+    private long mDuration;
     private View mView;
     private float mVolume = 1.0f;
     private boolean mPreparedFlag = false;
@@ -154,7 +152,8 @@ public class ExoPlayer implements IPlayer {
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_READY:
                         if (mCallback != null) {
-                            mCallback.onPrepared();
+                            mDuration = getDuration();
+                            mCallback.onPrepared(mDuration);
                         } else {
                             mPreparedFlag = true;
                         }
@@ -377,7 +376,7 @@ public class ExoPlayer implements IPlayer {
         this.mCallback = callback;
         if (callback != null) {
             if (mPreparedFlag) {
-                callback.onPrepared();
+                callback.onPrepared(mDuration);
                 mPreparedFlag = false;
             }
         }
@@ -520,6 +519,11 @@ public class ExoPlayer implements IPlayer {
 
     public float getVolume() {
         return mVolume;
+    }
+
+    @Override
+    public void setDecreaseVolumeEnd(boolean b) {
+
     }
 
     @Override

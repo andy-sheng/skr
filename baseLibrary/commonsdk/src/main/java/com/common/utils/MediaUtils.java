@@ -1,5 +1,7 @@
 package com.common.utils;
 
+import android.media.MediaPlayer;
+
 import com.common.log.MyLog;
 
 import java.io.DataOutputStream;
@@ -123,5 +125,21 @@ public class MediaUtils {
             output.write(value.charAt(i));
         }
     }
+
+    public int getDuration(String filePath) {
+        MediaPlayer player = new MediaPlayer();
+        try {
+            player.setDataSource(filePath);  //recordingFilePath（）为音频文件的路径
+            player.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int duration = player.getDuration();//获取音频的时间
+        player.release();//记得释放资源
+        return duration;
+    }
+
 }
 

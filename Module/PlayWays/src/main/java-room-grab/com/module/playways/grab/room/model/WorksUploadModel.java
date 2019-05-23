@@ -10,6 +10,7 @@ public class WorksUploadModel implements Serializable {
     boolean isBlight; // 是否是爆灯时刻
     int worksID; // 用来标记是否已经上传了
     String url;  // 记录上传的路径
+    long duration;// 播放总时长
 
     public WorksUploadModel(String localPath, SongModel songModel, boolean isBlight) {
         this.localPath = localPath;
@@ -56,6 +57,14 @@ public class WorksUploadModel implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     @Override

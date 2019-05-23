@@ -206,10 +206,10 @@ public class VideoPlayerAdapter {
          * 如果是prestart的话 播放器中会缓存这个标记，等到 setCallback 时会调用
          */
         @Override
-        public void onPrepared() {
+        public void onPrepared(long duration) {
             MyLog.d(TAG, "onPrepared");
             if (mOutPlayerCallback != null) {
-                mOutPlayerCallback.onPrepared();
+                mOutPlayerCallback.onPrepared(duration);
             }
         }
 
@@ -257,6 +257,7 @@ public class VideoPlayerAdapter {
                 mOutPlayerCallback.onInfo(what, extra);
             }
         }
+
     };
 
     /**
@@ -463,7 +464,7 @@ public class VideoPlayerAdapter {
     public static class PlayerCallbackAdapter implements IPlayerCallback {
 
         @Override
-        public void onPrepared() {
+        public void onPrepared(long duration) {
 
         }
 
@@ -491,5 +492,6 @@ public class VideoPlayerAdapter {
         public void onInfo(int what, int extra) {
 
         }
+
     }
 }

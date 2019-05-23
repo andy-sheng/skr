@@ -1,8 +1,10 @@
 package com.common.player.mediaplayer;
 
+import android.animation.ValueAnimator;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.View;
@@ -41,6 +43,8 @@ public class AndroidMediaPlayer implements IPlayer {
     private int videoWidth = 0;
     private int videoHeight = 0;
     private float mShiftUp = 0;
+    private long mDuration;
+    private boolean enableDecreaseVolume = false;
 
     private View mView;
 
@@ -49,6 +53,18 @@ public class AndroidMediaPlayer implements IPlayer {
     HandlerTaskTimer mMusicTimePlayTimeListener;
 
     long resetTs = 0;
+
+    Handler mHandler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == MSG_DECREASE_VOLUME){
+                decreaseVolume();
+            }
+        }
+    };
+
+    public static final int MSG_DECREASE_VOLUME = 10;
 
     public AndroidMediaPlayer() {
         TAG += hashCode();
@@ -85,12 +101,17 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                MyLog.d(TAG, "onPrepared");
+                mDuration = mp.getDuration();
+                MyLog.d(TAG, "onPrepared 总时长:"+ mDuration);
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
                 if (mCallback != null) {
-                    mCallback.onPrepared();
+                    mCallback.onPrepared(mDuration);
+                }
+                if(enableDecreaseVolume){
+                    mHandler.sendEmptyMessage(MSG_DECREASE_VOLUME);
+                    mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, mDuration -3000);
                 }
             }
         });
@@ -131,7 +152,7 @@ public class AndroidMediaPlayer implements IPlayer {
         this.mCallback = callback;
         if (callback != null) {
             if (mPreparedFlag) {
-                callback.onPrepared();
+                callback.onPrepared(mDuration);
                 mPreparedFlag = false;
             }
         }
@@ -372,6 +393,7 @@ public class AndroidMediaPlayer implements IPlayer {
         }
         mPlayer.stop();
         mPath = null;
+        mHandler.removeCallbacksAndMessages(null);
         stopMusicPlayTimeListener();
     }
 
@@ -384,6 +406,7 @@ public class AndroidMediaPlayer implements IPlayer {
         resetTs = System.currentTimeMillis();
         mPlayer.reset();
         mPath = null;
+        mHandler.removeCallbacksAndMessages(null);
         stopMusicPlayTimeListener();
     }
 
@@ -396,6 +419,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mCallback = null;
         mView = null;
         mPath = null;
+        mHandler.removeCallbacksAndMessages(null);
         stopMusicPlayTimeListener();
     }
 
@@ -416,6 +440,11 @@ public class AndroidMediaPlayer implements IPlayer {
     @Override
     public float getVolume() {
         return mVolume;
+    }
+
+    @Override
+    public void setDecreaseVolumeEnd(boolean b) {
+        enableDecreaseVolume = b;
     }
 
     private void startMusicPlayTimeListener() {
@@ -459,5 +488,23 @@ public class AndroidMediaPlayer implements IPlayer {
         if (mMusicTimePlayTimeListener != null) {
             mMusicTimePlayTimeListener.dispose();
         }
+    }
+
+    ValueAnimator mDecreaseVolumeAnimator;
+
+    private void decreaseVolume(){
+        if (mDecreaseVolumeAnimator != null) {
+            mDecreaseVolumeAnimator.cancel();
+        }
+        mDecreaseVolumeAnimator = ValueAnimator.ofFloat(0, getVolume());
+        mDecreaseVolumeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float v = (float) animation.getAnimatedValue();
+                setVolume(v, false);
+            }
+        });
+        mDecreaseVolumeAnimator.setDuration(3000);
+        mDecreaseVolumeAnimator.start();
     }
 }

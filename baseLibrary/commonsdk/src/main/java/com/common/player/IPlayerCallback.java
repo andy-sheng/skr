@@ -5,7 +5,7 @@ package com.common.player;
  */
 public interface IPlayerCallback {
 
-    void onPrepared();
+    void onPrepared(long duration);
 
     void onCompletion();
 
@@ -16,4 +16,5 @@ public interface IPlayerCallback {
     void onError(int what, int extra);
 
     void onInfo(int what, int extra);
+
 }

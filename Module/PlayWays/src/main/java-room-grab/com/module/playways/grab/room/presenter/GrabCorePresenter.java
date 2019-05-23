@@ -374,8 +374,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                 @Override
-                public void onPrepared() {
-                    super.onPrepared();
+                public void onPrepared(long duration) {
+                    super.onPrepared(duration);
                     if (!now.isParticipant() && now.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
                         MyLog.d(TAG, "这轮刚进来，导唱需要seek");
                         mExoPlayer.seekTo(now.getElapsedTimeMs());
@@ -772,7 +772,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mExoPlayer.startPlay(skrerUrl);
         mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
             @Override
-            public void onPrepared() {
+            public void onPrepared(long duration) {
                 if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
                     MyLog.d(TAG, "进来时已经时演唱阶段了，则机器人资源要seek一下 " + grabRoundInfoModel.getElapsedTimeMs());
                     mExoPlayer.seekTo(grabRoundInfoModel.getElapsedTimeMs());
@@ -2483,7 +2483,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 } else {
                     mIGrabView.kickBySomeOne(false);
                 }
-
             }
         } else {
             // 别人被踢出去
