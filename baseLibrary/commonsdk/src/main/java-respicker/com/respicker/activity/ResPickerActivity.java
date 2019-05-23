@@ -67,6 +67,11 @@ public class ResPickerActivity extends BaseActivity {
         open(activity, null);
     }
 
+    /**
+     *
+     * @param activity
+     * @param hasSelectedList 已经选择的图片
+     */
     public static void open(Activity activity, ArrayList<ImageItem> hasSelectedList) {
         Intent intent = new Intent();
         intent.setClass(activity, ResPickerActivity.class);
