@@ -23,7 +23,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_20_dp"
-        android:background="@drawable/tianjia_friend_icon" />
+        android:background="@drawable/tianjia_friend_icon"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/container"

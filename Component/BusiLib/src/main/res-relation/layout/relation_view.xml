@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/view_12_dp"
             android:layout_toRightOf="@id/search_icon_iv"
-            android:text="昵称、备注名、ID"
+            android:text="输入用户昵称、备注或ID"
             android:textColor="@color/white_trans_30"
             android:textSize="@dimen/textsize_16_dp" />
 

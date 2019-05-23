@@ -118,18 +118,23 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         }
 
         // 只是关心在线和离线
-        if (userInfoModel.getStatus() >= UserInfoModel.EF_ONLINE) {
-            mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
-            mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greendot, 0, 0, 0);
-            mStatusTv.setVisibility(View.VISIBLE);
-            mStatusTv.setText(userInfoModel.getStatusDesc());
-        } else if (userInfoModel.getStatus() == UserInfoModel.EF_OFFLINE) {
-            mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
-            mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graydot, 0, 0, 0);
-            mStatusTv.setVisibility(View.VISIBLE);
-            mStatusTv.setText(userInfoModel.getStatusDesc());
+        if (mMode != UserInfoManager.RELATION.FANS.getValue()) {
+            if (userInfoModel.getStatus() >= UserInfoModel.EF_ONLINE) {
+                mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
+                mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greendot, 0, 0, 0);
+                mStatusTv.setVisibility(View.VISIBLE);
+                mStatusTv.setText(userInfoModel.getStatusDesc());
+            } else if (userInfoModel.getStatus() == UserInfoModel.EF_OFFLINE) {
+                mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
+                mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graydot, 0, 0, 0);
+                mStatusTv.setVisibility(View.VISIBLE);
+                mStatusTv.setText(userInfoModel.getStatusDesc());
+            } else {
+                mStatusTv.setVisibility(View.GONE);
+            }
         } else {
             mStatusTv.setVisibility(View.GONE);
         }
+
     }
 }
