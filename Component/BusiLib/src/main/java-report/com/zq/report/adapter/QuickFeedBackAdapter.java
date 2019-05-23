@@ -81,7 +81,7 @@ public class QuickFeedBackAdapter extends DiffAdapter<ImageItem, RecyclerView.Vi
             mImageItem = imageItem;
             mPosition = position;
             if (TextUtils.isEmpty(imageItem.getPath())) {
-                mPicIv.setImageResource(R.drawable.ic_tab_add);
+                mPicIv.setImageResource(R.drawable.feed_back_add_pic);
                 mDeleteIv.setVisibility(View.GONE);
             } else {
                 FrescoWorker.loadImage(mPicIv,

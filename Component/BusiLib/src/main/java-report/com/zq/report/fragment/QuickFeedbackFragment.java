@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
@@ -199,7 +200,7 @@ public class QuickFeedbackFragment extends BaseFragment {
         UploadTask uploadTask = UploadParams.newBuilder(photoModel.getLocalPath())
                 .setNeedCompress(true)
                 .setNeedMonitor(true)
-                .setFileType(UploadParams.FileType.profilepic)
+                .setFileType(UploadParams.FileType.audit)
                 .startUploadAsync(new UploadCallback() {
                     @Override
                     public void onProgress(long currentSize, long totalSize) {
@@ -232,7 +233,9 @@ public class QuickFeedbackFragment extends BaseFragment {
 
         ArrayList<String> picUrls = new ArrayList<>();
         for (PhotoModel photoModel : imageItemList) {
-            picUrls.add(photoModel.getPicPath());
+            if (!TextUtils.isEmpty(photoModel.getPicPath())) {
+                picUrls.add(photoModel.getPicPath());
+            }
         }
 
         feedback(mTypeList, mContent, mLogUrl, picUrls);
