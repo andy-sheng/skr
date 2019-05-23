@@ -17,7 +17,7 @@
         app:centerSearchMaxLength="20"
         app:centerSearchRightType="delete"
         app:centerSearchNormalIcon="@drawable/grab_search_icon"
-        app:centerSearchDeleteIcon="@drawable/grab_search_delete"
+        app:centerSearchDeleteIcon="@drawable/common_search_delete"
         app:centerType="searchView"
         app:rightText="取消"
         app:rightTextColor="@color/white"

@@ -32,7 +32,7 @@ import com.module.msg.IMessageFragment;
 import com.module.msg.follow.LastFollowFragment;
 import com.module.msg.follow.LastFollowModel;
 import com.zq.dialog.InviteFriendDialog;
-import com.zq.relation.fragment.SearchFriendFragment;
+import com.zq.relation.fragment.SearchUserFragment;
 
 import java.util.List;
 
@@ -97,7 +97,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
                     mPopupWindow.dismiss();
                 }
                 U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), SearchFriendFragment.class)
+                        FragmentUtils.newAddParamsBuilder(getActivity(), SearchUserFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());

@@ -13,8 +13,17 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_40_dp"
-        android:padding="@dimen/view_16_dp"
-        android:background="@drawable/img_back" />
+        android:background="@drawable/img_back"
+        android:padding="@dimen/view_16_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/add_friend_iv"
+        android:layout_width="@dimen/view_27_dp"
+        android:layout_height="@dimen/view_27_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:background="@drawable/tianjia_friend_icon" />
 
     <LinearLayout
         android:id="@+id/container"

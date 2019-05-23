@@ -37,6 +37,7 @@ import com.zq.relation.adapter.RelationAdapter;
 import com.zq.relation.callback.FansEmptyCallback;
 import com.zq.relation.callback.FollowEmptyCallback;
 import com.zq.relation.callback.FriendsEmptyCallback;
+import com.zq.relation.fragment.SearchFriendFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,6 +53,7 @@ public class RelationView extends RelativeLayout {
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
 
+    RelativeLayout mSearchArea;
     RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
 
@@ -76,8 +78,24 @@ public class RelationView extends RelativeLayout {
             EventBus.getDefault().register(this);
         }
 
+        mSearchArea = (RelativeLayout) this.findViewById(R.id.search_area);
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view);
         mRefreshLayout = (SmartRefreshLayout) this.findViewById(R.id.refreshLayout);
+
+        mSearchArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(SearchFriendFragment.BUNDLE_SEARCH_MODE, mMode);
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newAddParamsBuilder((BaseActivity) getContext(), SearchFriendFragment.class)
+                        .setUseOldFragmentIfExist(false)
+                        .setBundle(bundle)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
 
         mRelationAdapter = new RelationAdapter(mMode, new RecyclerOnItemClickListener() {
             @Override
@@ -190,7 +208,7 @@ public class RelationView extends RelativeLayout {
     public void loadData(final int offset) {
         this.mOffset = offset;
         if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
-            UserInfoManager.getInstance().getMyFriends(true,new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFriends(true, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {
@@ -219,7 +237,7 @@ public class RelationView extends RelativeLayout {
                 }
             });
         } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
-            UserInfoManager.getInstance().getMyFollow(true,new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFollow(true, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {
@@ -254,10 +272,10 @@ public class RelationView extends RelativeLayout {
                     if (list != null && list.size() != 0) {
                         mRefreshLayout.finishLoadMore();
                         mLoadService.showSuccess();
-                        if(mOffset==0){
+                        if (mOffset == 0) {
                             // 如果是从0来的，则是刷新数据
                             mRelationAdapter.setData(list);
-                        }else{
+                        } else {
                             mRelationAdapter.addData(list);
                         }
                         mRefreshLayout.setEnableLoadMore(true);

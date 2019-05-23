@@ -35,6 +35,7 @@ public class RelationFragment extends BaseFragment {
 
     LinearLayout mContainer;
     ExImageView mIvBack;
+    ExImageView mAddFriendIv;
     SlidingTabLayout mRelationTab;
     NestViewPager mRelationVp;
 
@@ -69,6 +70,7 @@ public class RelationFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mAddFriendIv = (ExImageView) mRootView.findViewById(R.id.add_friend_iv);
         mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
         mRelationTab = (SlidingTabLayout) mRootView.findViewById(R.id.relation_tab);
         mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
@@ -98,17 +100,17 @@ public class RelationFragment extends BaseFragment {
             }
         });
 
-//        mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
-//            @Override
-//            public void clickValid(View v) {
-//                if (mPopupWindow != null && mPopupWindow.isShowing()) {
-//                    mPopupWindow.dismiss();
-//                }
-//                mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
-//                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
-//                mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
-//            }
-//        });
+        mAddFriendIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
+                mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
+                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
+                mPopupWindow.showAsDropDown(mAddFriendIv, -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
+            }
+        });
 
         mSearchArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -117,7 +119,7 @@ public class RelationFragment extends BaseFragment {
                     mPopupWindow.dismiss();
                 }
                 U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), SearchFriendFragment.class)
+                        FragmentUtils.newAddParamsBuilder(getActivity(), SearchUserFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
