@@ -12,7 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_22_dp"
-        android:background="@drawable/common_search_icon" />
+        android:background="@drawable/comm_titlebar_search_normal" />
 
     <TextView
         android:layout_width="wrap_content"

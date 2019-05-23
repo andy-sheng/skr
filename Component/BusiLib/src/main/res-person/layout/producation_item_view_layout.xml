@@ -95,13 +95,17 @@
         android:gravity="right">
 
         <TextView
+            android:id="@+id/share_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_16_dp"
+            android:drawableLeft="@drawable/works_share_icon"
+            android:drawablePadding="@dimen/view_6_dp"
             android:text="分享"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp" />
+
 
     </RelativeLayout>
 
@@ -110,15 +114,18 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_70_dp"
         android:gravity="left"
         android:visibility="gone">
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_16_dp"
+            android:drawableLeft="@drawable/work_dele_icon"
+            android:drawablePadding="@dimen/view_6_dp"
             android:text="删除"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp" />
@@ -137,6 +144,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/works_listener_icon"
+            android:drawablePadding="@dimen/view_6_dp"
             android:text="播放次数"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp" />
