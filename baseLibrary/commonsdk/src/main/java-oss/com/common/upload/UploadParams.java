@@ -103,6 +103,12 @@ public class UploadParams {
             return this;
         }
 
+        /**
+         * 为了保证能监听到回调事件设置的
+         * 一般不需要设置，除非不回调会导致逻辑有问题可以设置上
+         * @param needMonitor
+         * @return
+         */
         public Builder setNeedMonitor(boolean needMonitor) {
             this.mParams.setNeedMonitor(needMonitor);
             return this;
