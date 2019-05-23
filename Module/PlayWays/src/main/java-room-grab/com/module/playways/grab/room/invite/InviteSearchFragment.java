@@ -1,4 +1,4 @@
-package com.zq.relation.fragment;
+package com.module.playways.grab.room.invite;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,23 +14,19 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.component.busilib.R;
+import com.module.playways.R;
+import com.module.playways.grab.room.model.GrabFriendModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.person.fragment.OtherPersonFragment3;
-import com.zq.relation.adapter.RelationAdapter;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -45,14 +40,15 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.subjects.PublishSubject;
 
-public class SearchFriendFragment extends BaseFragment {
+public class InviteSearchFragment extends BaseFragment {
 
-    public final static String TAG = "SearchFriendFragment";
+    public final static String TAG = "InviteSearchFragment";
 
-    public static String BUNDLE_SEARCH_MODE = "bundle_search_mode";
+    public static String INVITE_SEARCH_MODE = "invite_search_mode";
+    public static String INVITE_ROOM_ID = "invite_room_id";
 
     private int mMode;
-    String mKeyword;
+    private int mRoomID;
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
@@ -60,16 +56,18 @@ public class SearchFriendFragment extends BaseFragment {
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
 
+    InviteFirendAdapter mInviteFirendAdapter;
+
     CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
     DisposableObserver<List<UserInfoModel>> mDisposableObserver;  // 关注和好友使用
-    DisposableObserver<ApiResult> mFansDisposableObserver;     //粉丝使用
+    DisposableObserver<ApiResult> mFansDisposableObserver;        // 粉丝使用
 
-    RelationAdapter mRelationAdapter;
+    InviteSearchPresenter mPresenter;
 
     @Override
     public int initView() {
-        return R.layout.search_friends_fragment_layout;
+        return R.layout.invite_search_fragment;
     }
 
     @Override
@@ -83,37 +81,25 @@ public class SearchFriendFragment extends BaseFragment {
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mMode = bundle.getInt(BUNDLE_SEARCH_MODE);
+            mMode = bundle.getInt(INVITE_SEARCH_MODE);
+            mRoomID = bundle.getInt(INVITE_ROOM_ID);
         }
 
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRelationAdapter = new RelationAdapter(mMode, new RecyclerOnItemClickListener() {
+        mPresenter = new InviteSearchPresenter();
+        mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                UserInfoModel userInfoModel = (UserInfoModel) model;
-                if (view.getId() == R.id.content) {
-                    // 跳到他人的个人主页
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, userInfoModel.getUserId());
-                    U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment3.class)
-                            .setUseOldFragmentIfExist(false)
-                            .setBundle(bundle)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .build());
-                } else if (view.getId() == R.id.follow_tv) {
-                    // 关注和好友都是有关系的人
-                    if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
-                        if (!userInfoModel.isFriend()) {
-                            UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_BUILD, userInfoModel.isFriend());
-                        }
-                    }
-                }
+            public void onClick(GrabFriendModel model) {
+                // TODO: 2019/5/23 邀请
+                mPresenter.inviteFriend(mRoomID, model);
             }
-        });
-        mRecyclerView.setAdapter(mRelationAdapter);
+
+            @Override
+            public void onClickSearch() {
+                // TODO: 2019/5/23  donothing
+            }
+        }, false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mInviteFirendAdapter);
 
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             mRefreshLayout.setEnableLoadMore(true);
@@ -141,7 +127,7 @@ public class SearchFriendFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                U.getFragmentUtils().popFragment(SearchFriendFragment.this);
+                U.getFragmentUtils().popFragment(InviteSearchFragment.this);
             }
         });
 
@@ -184,29 +170,8 @@ public class SearchFriendFragment extends BaseFragment {
         }, 200);
     }
 
-    UserInfoManager.UserInfoListCallback userInfoListCallback = new UserInfoManager.UserInfoListCallback() {
-        @Override
-        public void onSuccess(UserInfoManager.FROM from, int offset, List<UserInfoModel> list) {
-            showUserInfoList(list);
-        }
-    };
+    private void searchFriends(String trim) {
 
-    private void searchFriends(String keyword) {
-        mKeyword = keyword;
-        if (TextUtils.isEmpty(keyword)) {
-            U.getToastUtil().showShort("搜索内容为空");
-            return;
-        }
-        // TODO: 2019/5/23 区分好友关注和粉丝
-        UserInfoManager.getInstance().searchFollow(keyword, userInfoListCallback);
-    }
-
-    private void showUserInfoList(List<UserInfoModel> list) {
-        if (list != null && list.size() > 0) {
-            mRelationAdapter.getData().clear();
-            mRelationAdapter.getData().addAll(list);
-            mRelationAdapter.notifyDataSetChanged();
-        }
     }
 
     private void initPublishSubject() {
@@ -268,17 +233,12 @@ public class SearchFriendFragment extends BaseFragment {
 
     }
 
+    private void showUserInfoList(List<UserInfoModel> list) {
+        // TODO: 2019/5/23 后续补充
+    }
 
     @Override
     public boolean useEventBus() {
         return false;
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
-        }
     }
 }

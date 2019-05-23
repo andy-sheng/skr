@@ -438,7 +438,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_50_dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/person_send_message_icon" />
+                android:background="@drawable/other_person_follow" />
         </RelativeLayout>
 
     </LinearLayout>

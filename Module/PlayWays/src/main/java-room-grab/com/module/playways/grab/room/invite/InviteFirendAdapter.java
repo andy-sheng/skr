@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
@@ -21,29 +22,80 @@ import com.module.playways.R;
 
 public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerView.ViewHolder> {
     OnInviteClickListener mOnInviteClickListener;
+    boolean mHasSearch = false;
 
-    public InviteFirendAdapter(OnInviteClickListener onInviteClickListener) {
+    private static final int ITEM_TYPE_NORMAL = 1;
+    private static final int ITEM_TYPE_SEARCH = 2;
+
+    public InviteFirendAdapter(OnInviteClickListener onInviteClickListener, boolean hasSearch) {
         this.mOnInviteClickListener = onInviteClickListener;
+        this.mHasSearch = hasSearch;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.invite_friend_item_layout, parent, false);
-        ItemHolder viewHolder = new ItemHolder(view);
-        return viewHolder;
+        if (viewType == ITEM_TYPE_SEARCH) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_friend_item_layout, parent, false);
+            SearchItmeHolder viewHolder = new SearchItmeHolder(view);
+            return viewHolder;
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.invite_friend_item_layout, parent, false);
+            ItemHolder viewHolder = new ItemHolder(view);
+            return viewHolder;
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        GrabFriendModel model = mDataList.get(position);
-        ItemHolder reportItemHolder = (ItemHolder) holder;
-        reportItemHolder.bind(model);
+        if (mHasSearch) {
+            if (position == 0) {
+
+            } else {
+                GrabFriendModel model = mDataList.get(position - 1);
+                ItemHolder reportItemHolder = (ItemHolder) holder;
+                reportItemHolder.bind(model);
+            }
+        } else {
+            GrabFriendModel model = mDataList.get(position);
+            ItemHolder reportItemHolder = (ItemHolder) holder;
+            reportItemHolder.bind(model);
+        }
     }
 
     @Override
     public int getItemCount() {
+        if (mHasSearch) {
+            return mDataList.size() + 1;
+        }
         return mDataList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mHasSearch && position == 0) {
+            return ITEM_TYPE_SEARCH;
+        }
+        return ITEM_TYPE_NORMAL;
+    }
+
+    private class SearchItmeHolder extends RecyclerView.ViewHolder {
+
+        RelativeLayout mContent;
+
+        public SearchItmeHolder(View itemView) {
+            super(itemView);
+            mContent = (RelativeLayout) itemView.findViewById(R.id.content);
+
+            mContent.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if (mOnInviteClickListener != null) {
+                        mOnInviteClickListener.onClickSearch();
+                    }
+                }
+            });
+        }
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder {
@@ -145,5 +197,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
     interface OnInviteClickListener {
         void onClick(GrabFriendModel model);
+
+        void onClickSearch();
     }
 }

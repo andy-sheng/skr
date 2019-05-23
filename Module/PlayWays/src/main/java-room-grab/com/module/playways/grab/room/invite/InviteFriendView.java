@@ -1,13 +1,17 @@
 package com.module.playways.grab.room.invite;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -57,7 +61,21 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
             public void onClick(GrabFriendModel model) {
                 mGrabInvitePresenter.inviteFriend(mRoomID, model);
             }
-        });
+
+            @Override
+            public void onClickSearch() {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
+                bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
+                        .setUseOldFragmentIfExist(false)
+                        .setBundle(bundle)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        }, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mInviteFirendAdapter);
 
