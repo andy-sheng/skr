@@ -479,7 +479,17 @@ public class UserInfoManager {
             }
         })
                 .subscribeOn(U.getThreadUtils().singleThreadPoll())
-                .subscribe();
+                .subscribe(new Consumer<List<UserInfoModel>>() {
+                    @Override
+                    public void accept(List<UserInfoModel> userInfoModels) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
 
     }
 
@@ -526,11 +536,47 @@ public class UserInfoManager {
                     @Override
                     public void accept(List<UserInfoModel> l) throws Exception {
                         if (userInfoListCallback != null) {
-                            userInfoListCallback.onSuccess(FROM.DB, -1, l);
+                            userInfoListCallback.onSuccess(FROM.DB, l.size(), l);
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
                     }
                 });
     }
+
+    /**
+     * 搜索我的好友
+     * @param key
+     * @param userInfoListCallback
+     */
+    public void searchFriends(final String key, final UserInfoListCallback userInfoListCallback) {
+        Observable.create(new ObservableOnSubscribe<List<UserInfoModel>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<UserInfoModel>> emitter) throws Exception {
+                List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFriends(key);
+                emitter.onNext(userInfoModels);
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<UserInfoModel>>() {
+                    @Override
+                    public void accept(List<UserInfoModel> l) throws Exception {
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, l.size(), l);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+    }
+
 
     /**
      * 获取备注名
@@ -710,7 +756,17 @@ public class UserInfoManager {
                             return list;
                         }
                     })
-                    .subscribe();
+                    .subscribe(new Consumer<List<UserInfoModel>>() {
+                        @Override
+                        public void accept(List<UserInfoModel> userInfoModels) throws Exception {
+
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+
+                        }
+                    });
         }
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override

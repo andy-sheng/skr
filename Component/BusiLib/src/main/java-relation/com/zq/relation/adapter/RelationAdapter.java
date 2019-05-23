@@ -35,7 +35,9 @@ public class RelationAdapter extends RecyclerView.Adapter {
 
     public void setData(List<UserInfoModel> list) {
         mUserInfos.clear();
-        mUserInfos.addAll(list);
+        if(list!=null) {
+            mUserInfos.addAll(list);
+        }
         notifyDataSetChanged();
     }
 

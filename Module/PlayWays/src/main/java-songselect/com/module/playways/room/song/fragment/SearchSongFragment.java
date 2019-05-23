@@ -66,7 +66,6 @@ public class SearchSongFragment extends BaseFragment {
     String mKeyword;
     DialogPlus mSearchFeedbackDialog;
 
-    CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
     DisposableObserver<ApiResult> mDisposableObserver;
 
@@ -266,8 +265,6 @@ public class SearchSongFragment extends BaseFragment {
                 return songSelectServerApi.searchMusicItems(s).subscribeOn(Schedulers.io());
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
-        mCompositeDisposable = new CompositeDisposable();
-        mCompositeDisposable.add(mDisposableObserver);
     }
 
     private void searchMusicItems(String keyword) {
@@ -319,8 +316,8 @@ public class SearchSongFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
+        if (mDisposableObserver != null) {
+            mDisposableObserver.dispose();
         }
         if (mSearchFeedbackDialog != null) {
             mSearchFeedbackDialog.dismiss();

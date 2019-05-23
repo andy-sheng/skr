@@ -43,6 +43,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 public class SearchFriendFragment extends BaseFragment {
@@ -52,7 +53,6 @@ public class SearchFriendFragment extends BaseFragment {
     public static String BUNDLE_SEARCH_MODE = "bundle_search_mode";
 
     private int mMode;
-    String mKeyword;
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
@@ -60,7 +60,6 @@ public class SearchFriendFragment extends BaseFragment {
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
 
-    CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
     DisposableObserver<List<UserInfoModel>> mDisposableObserver;  // 关注和好友使用
     DisposableObserver<ApiResult> mFansDisposableObserver;     //粉丝使用
@@ -169,7 +168,15 @@ public class SearchFriendFragment extends BaseFragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchFriends(mSearchContent.getText().toString().trim());
+                    String keyword = mSearchContent.getText().toString().trim();
+                    if (TextUtils.isEmpty(keyword)) {
+                        U.getToastUtil().showShort("搜索内容为空");
+                        return false;
+                    }
+                    if (mPublishSubject != null) {
+                        mPublishSubject.onNext(keyword);
+                    }
+                    U.getKeyBoardUtils().hideSoftInput(mSearchContent);
                 }
                 return false;
             }
@@ -191,22 +198,8 @@ public class SearchFriendFragment extends BaseFragment {
         }
     };
 
-    private void searchFriends(String keyword) {
-        mKeyword = keyword;
-        if (TextUtils.isEmpty(keyword)) {
-            U.getToastUtil().showShort("搜索内容为空");
-            return;
-        }
-        // TODO: 2019/5/23 区分好友关注和粉丝
-        UserInfoManager.getInstance().searchFollow(keyword, userInfoListCallback);
-    }
-
     private void showUserInfoList(List<UserInfoModel> list) {
-        if (list != null && list.size() > 0) {
-            mRelationAdapter.getData().clear();
-            mRelationAdapter.getData().addAll(list);
-            mRelationAdapter.notifyDataSetChanged();
-        }
+        mRelationAdapter.setData(list);
     }
 
     private void initPublishSubject() {
@@ -240,7 +233,7 @@ public class SearchFriendFragment extends BaseFragment {
 
                 @Override
                 public void onError(Throwable e) {
-
+                    MyLog.e(e);
                 }
 
                 @Override
@@ -255,19 +248,22 @@ public class SearchFriendFragment extends BaseFragment {
                 }
             }).switchMap(new Function<String, ObservableSource<List<UserInfoModel>>>() {
                 @Override
-                public ObservableSource<List<UserInfoModel>> apply(String string) throws Exception {
-                    // TODO: 2019/5/23 区分好友和关注
-                    List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(string);
-                    return Observable.just(userInfoModels);
+                public ObservableSource<List<UserInfoModel>> apply(String string) {
+                    List<UserInfoModel> r = null;
+                    if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                        r = UserInfoLocalApi.searchFriends(string);
+                    } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
+                        r = UserInfoLocalApi.searchFollow(string);
+                    } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+                    } else {
+                    }
+                    return Observable.just(r);
                 }
-            }).observeOn(AndroidSchedulers.mainThread()).
+            }).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).
                     subscribe(mDisposableObserver);
-            mCompositeDisposable = new CompositeDisposable();
-            mCompositeDisposable.add(mDisposableObserver);
         }
-
     }
-
 
     @Override
     public boolean useEventBus() {
@@ -277,8 +273,8 @@ public class SearchFriendFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
+        if (mFansDisposableObserver != null) {
+            mFansDisposableObserver.dispose();
         }
     }
 }

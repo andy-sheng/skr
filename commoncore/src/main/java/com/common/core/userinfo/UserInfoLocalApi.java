@@ -9,6 +9,7 @@ import com.common.log.MyLog;
 import com.zq.live.proto.Common.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,15 +223,67 @@ public class UserInfoLocalApi {
      * @param key
      */
     public static List<UserInfoModel> searchFollow(String key) {
-        List<UserInfoDB> dbList = getDao().queryBuilder().whereOr(
-                UserInfoDBDao.Properties.Relative.eq(UserInfoManager.RELATION.FOLLOW.getValue()),
-                UserInfoDBDao.Properties.Relative.eq(UserInfoManager.RELATION.FRIENDS.getValue())
-        )
-                .whereOr(
-                        UserInfoDBDao.Properties.UserNickname.like(key),
-                        UserInfoDBDao.Properties.UserDisplayname.like(key)
-                )
-                .build().list();
+        long id = 0;
+        try {
+            id = Long.parseLong(key);
+        } catch (Exception e) {
+
+        }
+        String whereSql;
+        if (id > 0) {
+            whereSql = String.format("WHERE (%s=%s OR %s=%s) AND (%s LIKE '%s' OR %s LIKE '%s' OR %s=%s)",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FOLLOW.getValue() + "",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserId.columnName, key
+            );
+        } else {
+            whereSql = String.format("WHERE (%s=%s OR %s=%s) AND (%s LIKE '%s' OR %s LIKE '%s')",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FOLLOW.getValue() + "",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%"
+            );
+        }
+        List<UserInfoDB> dbList = getDao().queryRaw(whereSql);
+        List<UserInfoModel> l = new ArrayList<>();
+        for (UserInfoDB db : dbList) {
+            l.add(UserInfoModel.parseFromDB(db));
+        }
+        return l;
+    }
+
+    /**
+     * 搜索我的好友
+     *
+     * @param key
+     */
+    public static List<UserInfoModel> searchFriends(String key) {
+        long id = 0;
+        try {
+            id = Long.parseLong(key);
+        } catch (Exception e) {
+
+        }
+        String whereSql;
+        if (id > 0) {
+            whereSql = String.format("WHERE %s=%s AND (%s LIKE '%s' OR %s LIKE '%s' OR %s=%s)",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserId.columnName, key
+            );
+        } else {
+            whereSql = String.format("WHERE %s=%s AND (%s LIKE '%s' OR %s LIKE '%s')",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%"
+            );
+        }
+
+        List<UserInfoDB> dbList = getDao().queryRaw(whereSql);
+
         List<UserInfoModel> l = new ArrayList<>();
         for (UserInfoDB db : dbList) {
             l.add(UserInfoModel.parseFromDB(db));

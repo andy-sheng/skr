@@ -79,7 +79,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
     String mNickName = "";
     String mLastName = "";   //最后一次检查的昵称
 
-    CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject = PublishSubject.create();
     DisposableObserver<ApiResult> mDisposableObserver;
 
@@ -359,8 +358,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 return myUserInfoServerApi.verifyName(string).subscribeOn(Schedulers.io());
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
-        mCompositeDisposable = new CompositeDisposable();
-        mCompositeDisposable.add(mDisposableObserver);
     }
 
 
@@ -383,8 +380,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
+        if (mDisposableObserver != null) {
+            mDisposableObserver.dispose();
         }
 
     }
