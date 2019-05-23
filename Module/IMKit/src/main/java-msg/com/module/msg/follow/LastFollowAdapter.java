@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -99,7 +100,7 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
                     AvatarUtils.newParamsBuilder(lastFollowModel.getAvatar())
                             .setCircle(true)
                             .build());
-            mNameTv.setText(lastFollowModel.getNickname());
+            mNameTv.setText(UserInfoManager.getInstance().getRemarkName(lastFollowModel.getUserID(),lastFollowModel.getNickname()));
             mStatusDescTv.setText(lastFollowModel.getStatusDesc());
             if (lastFollowModel.getSex() == ESex.SX_MALE.getValue()) {
                 mSexIv.setVisibility(View.VISIBLE);
@@ -110,7 +111,6 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
             } else {
                 mSexIv.setVisibility(View.GONE);
             }
-
 
             if (lastFollowModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 mFollowTv.setVisibility(View.GONE);

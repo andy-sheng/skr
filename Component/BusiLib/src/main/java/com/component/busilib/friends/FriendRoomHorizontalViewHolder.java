@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.utils.U;
@@ -61,7 +62,11 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
                     AvatarUtils.newParamsBuilder(mFriendRoomModel.getDisplayAvatar())
                             .setCircle(true)
                             .build());
-            mNicknameTv.setText(mFriendRoomModel.getDisplayName());
+            String disName = mFriendRoomModel.getDisplayName();
+            if (mFriendRoomModel.getUserInfo() != null) {
+                 disName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getDisplayName());
+            }
+            mNicknameTv.setText(disName);
             if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
                 mRecommendTagSdv.setVisibility(View.VISIBLE);
                 FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getDisplayURL())

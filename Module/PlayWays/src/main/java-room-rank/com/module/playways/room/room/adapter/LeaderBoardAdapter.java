@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -96,7 +97,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
         public void bind(RankInfoModel rankInfoModel) {
             mRankInfoModel = rankInfoModel;
             mTvRank.setText(rankInfoModel.getRankSeq() + "");
-            mTvName.setText(rankInfoModel.getNickname());
+            mTvName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
             mTvSegment.setText(rankInfoModel.getLevelDesc());
             mLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             AvatarUtils.loadAvatarByUrl(mSdvIcon,

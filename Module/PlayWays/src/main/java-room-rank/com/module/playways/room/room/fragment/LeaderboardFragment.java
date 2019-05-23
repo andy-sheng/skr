@@ -21,6 +21,7 @@ import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrLocationPermission;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.utils.FragmentUtils;
@@ -437,7 +438,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
-            mTvChanpainName.setText(rankInfoModel.getNickname());
+            mTvChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
             mChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             mChanpainLevelTv.setText(rankInfoModel.getLevelDesc());
         } else if (rankInfoModel.getRankSeq() == 2) {
@@ -454,7 +455,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
-            mTvRightChanpainName.setText(rankInfoModel.getNickname());
+            mTvRightChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
             mRightChanpainLevelView.setVisibility(View.VISIBLE);
             mRightChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             mRightChanpainLevelTv.setText(rankInfoModel.getLevelDesc());
@@ -472,7 +473,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
-            mTvLeftChanpainName.setText(rankInfoModel.getNickname());
+            mTvLeftChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
             mLeftChanpainLevelView.setVisibility(View.VISIBLE);
             mLeftChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             mLeftChanpainLevelTv.setText(rankInfoModel.getLevelDesc());
