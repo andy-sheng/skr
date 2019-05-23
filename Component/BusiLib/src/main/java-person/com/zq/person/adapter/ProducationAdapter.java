@@ -63,21 +63,17 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, Producatio
         return mDataList.size();
     }
 
-    public int getSelectPlayPosition() {
+    public int getPlayPosition() {
         return mSelectPlayPosition;
     }
 
-    public void setSelectPlayPosition(int selectPlayPosition) {
+    public void setPlayPosition(int selectPlayPosition,boolean refresh) {
         if (mSelectPlayPosition != selectPlayPosition) {
             int oldPlayPosition = mSelectPlayPosition;
             mSelectPlayPosition = selectPlayPosition;
 
-            if (oldPlayPosition >= 0) {
+            if (oldPlayPosition >= 0 && refresh) {
                 notifyItemChanged(oldPlayPosition);
-            }
-
-            if (mSelectPlayPosition >= 0) {
-                notifyItemChanged(mSelectPlayPosition);
             }
 
         }
@@ -90,8 +86,6 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, Producatio
 
         void onClickShare(int position, ProducationModel model);
 
-        void onClickPlay(int position, ProducationModel model);
-
-        void onClickPause(int position, ProducationModel model);
+        void onClickPlayBtn(View view, boolean play, int position, ProducationModel model);
     }
 }

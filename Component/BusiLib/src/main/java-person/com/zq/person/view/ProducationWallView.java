@@ -1,6 +1,5 @@
 package com.zq.person.view;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,27 +11,22 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePlatform;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.SpanUtils;
-import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -40,7 +34,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.person.adapter.ProducationAdapter;
@@ -65,7 +58,7 @@ public class ProducationWallView extends RelativeLayout {
 
     SmartRefreshLayout mSmartRefresh;
     RecyclerView mProducationView;
-    ProducationAdapter mProducationAdapter;
+    ProducationAdapter mAdapter;
 
     IPlayer mIPlayer;
 
@@ -94,10 +87,10 @@ public class ProducationWallView extends RelativeLayout {
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
             hasDeleted = true;
         }
-        mProducationAdapter = new ProducationAdapter(new ProducationAdapter.Listener() {
+        mAdapter = new ProducationAdapter(new ProducationAdapter.Listener() {
             @Override
             public void onClickDele(int position, ProducationModel model) {
-                if (position == mProducationAdapter.getSelectPlayPosition()) {
+                if (position == mAdapter.getPlayPosition()) {
                     // 先停止播放
                     stopPlay();
                 }
@@ -108,7 +101,7 @@ public class ProducationWallView extends RelativeLayout {
             @Override
             public void onClickShare(int position, ProducationModel model) {
                 // TODO: 2019/5/22 弹出分享框 需不需要先停止音乐
-                if (position == mProducationAdapter.getSelectPlayPosition()) {
+                if (position == mAdapter.getPlayPosition()) {
                     // 先停止播放
                     stopPlay();
                 }
@@ -116,31 +109,36 @@ public class ProducationWallView extends RelativeLayout {
             }
 
             @Override
-            public void onClickPlay(int position, ProducationModel model) {
-                mProducationAdapter.setSelectPlayPosition(position);
-                if (mIPlayer == null) {
-                    mIPlayer = new ExoPlayer();
-                    // 播放完毕
-                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
-                        @Override
-                        public void onCompletion() {
-                            super.onCompletion();
-                            stopPlay();
-                        }
-                    });
+            public void onClickPlayBtn(View view, boolean play, int position, ProducationModel model) {
+                if (play) {
+                    if (mIPlayer == null) {
+                        mIPlayer = new AndroidMediaPlayer();
+                        // 播放完毕
+                        mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                            @Override
+                            public void onCompletion() {
+                                super.onCompletion();
+                                //mIPlayer.stop();
+                                mAdapter.setPlayPosition(-1, true);
+                            }
+                        });
+                    }
+                    mIPlayer.reset();
+                    mIPlayer.startPlay(model.getWorksURL());
+                    // 开始播放当前postion，
+                    // 清楚上一个
+                    mAdapter.setPlayPosition(position, true);
+                } else {
+                    if (mIPlayer != null) {
+                        //mIPlayer.setCallback(null);
+                        mIPlayer.pause();
+                    }
+                    // 不用刷新，优化下，防止闪动， icon 在 click 事件内部已经设置过了
+                    mAdapter.setPlayPosition(-1, false);
                 }
-                mIPlayer.reset();
-                mIPlayer.startPlay(model.getWorksURL());
-
-                playProducation(model);
-            }
-
-            @Override
-            public void onClickPause(int position, ProducationModel model) {
-                stopPlay();
             }
         }, hasDeleted);
-        mProducationView.setAdapter(mProducationAdapter);
+        mProducationView.setAdapter(mAdapter);
 
         mSmartRefresh.setEnableRefresh(false);
         mSmartRefresh.setEnableLoadMore(true);
@@ -269,9 +267,8 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     public void stopPlay() {
-        mProducationAdapter.setSelectPlayPosition(-1);
+        mAdapter.setPlayPosition(-1,true);
         if (mIPlayer != null) {
-            mIPlayer.setCallback(null);
             mIPlayer.stop();
         }
     }
@@ -315,7 +312,7 @@ public class ProducationWallView extends RelativeLayout {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    mProducationAdapter.delete(model);
+                    mAdapter.delete(model);
                 }
             }
         }, mFragment);
@@ -332,7 +329,7 @@ public class ProducationWallView extends RelativeLayout {
                 if (result.getErrno() == 0) {
                     // TODO: 2019/5/22 播放次数客户端自己加一
                     model.setPlayCnt(model.getPlayCnt() + 1);
-                    mProducationAdapter.update(model);
+                    mAdapter.update(model);
                 }
             }
         }, mFragment);
@@ -342,14 +339,14 @@ public class ProducationWallView extends RelativeLayout {
         offset = newOffset;
         mSmartRefresh.finishLoadMore();
         if (isClear) {
-            mProducationAdapter.getDataList().clear();
+            mAdapter.getDataList().clear();
         }
 
         if (list != null && list.size() > 0) {
-            mProducationAdapter.getDataList().addAll(list);
-            mProducationAdapter.notifyDataSetChanged();
+            mAdapter.getDataList().addAll(list);
+            mAdapter.notifyDataSetChanged();
         } else {
-            if (mProducationAdapter.getDataList() != null && mProducationAdapter.getDataList().size() > 0) {
+            if (mAdapter.getDataList() != null && mAdapter.getDataList().size() > 0) {
                 // 没有更多了
             } else {
                 // 没有数据

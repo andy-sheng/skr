@@ -188,13 +188,12 @@ public class GrabProductionFragment extends BaseFragment {
                     // 不用刷新，优化下，防止闪动， icon 在 click 事件内部已经设置过了
                     mAdapter.setPlayPosition(-1, false);
                 }
-
             }
 
             @Override
             public void onClickSaveAndShare(int position, WorksUploadModel model) {
                 MyLog.d(TAG, "onClickSaveAndShare" + " position=" + position + " model=" + model);
-                if (position == mAdapter.getSelectPosition()) {
+                if (position == mAdapter.getPlayPosition()) {
                     stopPlay();
                 }
                 if (model.getWorksID() > 0) {
@@ -269,7 +268,7 @@ public class GrabProductionFragment extends BaseFragment {
     }
 
     public void stopPlay() {
-        mAdapter.setSelectPosition(-1);
+        mAdapter.setPlayPosition(-1,true);
         if (mIPlayer != null) {
             mIPlayer.setCallback(null);
             mIPlayer.stop();

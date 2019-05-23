@@ -80,12 +80,16 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (isPlay) {
+                    isPlay = false;
+                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
                     if (listener != null) {
-                        listener.onClickPause(position, model);
+                        listener.onClickPlayBtn(v, isPlay, position, model);
                     }
                 } else {
+                    isPlay = true;
+                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
                     if (listener != null) {
-                        listener.onClickPlay(position, model);
+                        listener.onClickPlayBtn(v, isPlay, position, model);
                     }
                 }
             }
