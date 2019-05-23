@@ -125,6 +125,7 @@ public class ProducationWallView extends RelativeLayout {
                     }
                     mIPlayer.reset();
                     mIPlayer.startPlay(model.getWorksURL());
+                    playProducation(model);
                     // 开始播放当前postion，
                     // 清楚上一个
                     mAdapter.setPlayPosition(position, true);
@@ -267,7 +268,7 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     public void stopPlay() {
-        mAdapter.setPlayPosition(-1,true);
+        mAdapter.setPlayPosition(-1, true);
         if (mIPlayer != null) {
             mIPlayer.stop();
         }

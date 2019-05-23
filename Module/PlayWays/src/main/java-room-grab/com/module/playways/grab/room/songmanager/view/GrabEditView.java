@@ -37,6 +37,7 @@ public class GrabEditView extends RelativeLayout {
         mSaveTv = (StrokeTextView) this.findViewById(R.id.save_tv);
 
         if (!TextUtils.isEmpty(mRoomNameText)) {
+            mRoomName.setText(mRoomNameText);
             mRoomName.setHint(mRoomNameText);
         }
 

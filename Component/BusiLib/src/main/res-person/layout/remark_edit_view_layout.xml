@@ -25,7 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_24_dp"
-            android:text="设置备注名"
             android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/textsize_18_dp" />
 
