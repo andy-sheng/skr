@@ -208,7 +208,7 @@ public class FeedbackView extends RelativeLayout {
                 .build()
         );
 
-        ResPickerActivity.open((BaseActivity) getContext());
+        ResPickerActivity.open((BaseActivity) getContext(), new ArrayList<>(mImageItemArrayList));
     }
 
     public interface Listener {
