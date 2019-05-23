@@ -53,11 +53,11 @@ public class SongInfoCardView extends RelativeLayout {
 
     public final static String TAG = "SongInfoCardView";
 
-    SimpleDraweeView mSongCoverIv;
+//    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
     ExTextView mChorusSongTag;
     ExTextView mPkSongTag;
-    ExTextView mSongSingerTv;
+//    ExTextView mSongSingerTv;
     BitmapTextView mCurrentSeq;
     BitmapTextView mTotalSeq;
     ExTextView mSongLyrics;
@@ -88,11 +88,11 @@ public class SongInfoCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_song_info_card_layout, this);
-        mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
+//        mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
         mChorusSongTag = (ExTextView) findViewById(R.id.chorus_song_tag);
         mPkSongTag = (ExTextView) findViewById(R.id.pk_song_tag);
-        mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
+//        mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
         mCurrentSeq = (BitmapTextView) findViewById(R.id.current_seq);
         mTotalSeq = (BitmapTextView) findViewById(R.id.total_seq);
         mSongLyrics = (ExTextView) findViewById(R.id.song_lyrics);
@@ -109,22 +109,22 @@ public class SongInfoCardView extends RelativeLayout {
         }
 
         setVisibility(VISIBLE);
-        if (!TextUtils.isEmpty(songModel.getCover())) {
-            FrescoWorker.loadImage(mSongCoverIv,
-                    ImageFactory.newPathImage(songModel.getCover())
-                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white))
-                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
-                            .build());
-        } else {
-            FrescoWorker.loadImage(mSongCoverIv,
-                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
-                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white)).build());
-        }
-        mSongSingerTv.setText(songModel.getOwner());
+//        if (!TextUtils.isEmpty(songModel.getCover())) {
+//            FrescoWorker.loadImage(mSongCoverIv,
+//                    ImageFactory.newPathImage(songModel.getCover())
+//                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
+//                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+//                            .setBorderColor(U.getColor(R.color.white))
+//                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+//                            .build());
+//        } else {
+//            FrescoWorker.loadImage(mSongCoverIv,
+//                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
+//                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
+//                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+//                            .setBorderColor(U.getColor(R.color.white)).build());
+//        }
+//        mSongSingerTv.setText(songModel.getOwner());
         mSongLyrics.setText("歌词加载中...");
         mCurrentSeq.setText("" + curRoundSeq);
         mTotalSeq.setText("" + totalSeq);

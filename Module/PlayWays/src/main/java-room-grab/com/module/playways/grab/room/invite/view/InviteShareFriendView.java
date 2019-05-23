@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.invite;
+package com.module.playways.grab.room.invite.view;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
+import com.module.playways.grab.room.invite.model.ShareModel;
+import com.module.playways.grab.room.invite.adapter.InviteShareAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

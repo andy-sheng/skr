@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.invite;
+package com.module.playways.grab.room.invite.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +17,10 @@ import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.grab.room.inter.IGrabInviteView;
-import com.module.playways.grab.room.model.GrabFriendModel;
+import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
+import com.module.playways.grab.room.invite.fragment.InviteSearchFragment;
+import com.module.playways.grab.room.invite.presenter.GrabInvitePresenter;
+import com.module.playways.grab.room.invite.model.GrabFriendModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;

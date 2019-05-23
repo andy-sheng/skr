@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.inter;
 
-import com.module.playways.grab.room.model.GrabFriendModel;
+import com.module.playways.grab.room.invite.model.GrabFriendModel;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.model;
+package com.module.playways.grab.room.invite.model;
 
 import com.zq.live.proto.Common.ESex;
 

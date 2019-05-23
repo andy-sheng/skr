@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.invite;
+package com.module.playways.grab.room.invite.model;
 
 public class ShareModel {
 

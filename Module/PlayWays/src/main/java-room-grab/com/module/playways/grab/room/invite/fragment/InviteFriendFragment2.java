@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.invite;
+package com.module.playways.grab.room.invite.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,9 @@ import com.common.view.viewpager.SlidingTabLayout;
 import com.module.common.ICallback;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.invite.view.InviteFriendView;
+import com.module.playways.grab.room.invite.view.InviteShareFriendView;
+import com.module.playways.grab.room.invite.model.ShareModel;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
