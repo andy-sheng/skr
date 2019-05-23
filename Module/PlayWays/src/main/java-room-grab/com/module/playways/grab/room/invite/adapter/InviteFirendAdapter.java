@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -21,11 +20,9 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
 
-import java.util.ArrayList;
-
 public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView.ViewHolder> {
+
     OnInviteClickListener mOnInviteClickListener;
-    ArrayList<Integer> mInvitedList;
     boolean mHasSearch;
 
     private static final int ITEM_TYPE_NORMAL = 1;
@@ -33,26 +30,7 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
 
     public InviteFirendAdapter(OnInviteClickListener onInviteClickListener, boolean hasSearch) {
         this.mOnInviteClickListener = onInviteClickListener;
-        this.mInvitedList = new ArrayList<>();
         this.mHasSearch = hasSearch;
-    }
-
-    public void addInvitedId(int useID) {
-        if (mInvitedList != null) {
-            mInvitedList.add(useID);
-        }
-        for (int i = 0; i < mDataList.size(); i++) {
-            UserInfoModel userInfoModel = mDataList.get(i);
-            if (userInfoModel.getUserId() == useID) {
-                MyLog.d(TAG, "update" + " find i=" + i);
-                if (mHasSearch) {
-                    notifyItemChanged(i + 1);
-                } else {
-                    notifyItemChanged(i);
-                }
-                return;
-            }
-        }
     }
 
     @NonNull
@@ -77,20 +55,13 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
             } else {
                 UserInfoModel model = mDataList.get(position - 1);
                 ItemHolder itemHolder = (ItemHolder) holder;
-                if (mInvitedList != null && mInvitedList.size() > 0 && mInvitedList.contains(model.getUserId())) {
-                    itemHolder.bind(model, true);
-                } else {
-                    itemHolder.bind(model, false);
-                }
+                itemHolder.bind(model);
             }
         } else {
             UserInfoModel model = mDataList.get(position);
             ItemHolder itemHolder = (ItemHolder) holder;
-            if (mInvitedList != null && mInvitedList.size() > 0 && mInvitedList.contains(model.getUserId())) {
-                itemHolder.bind(model, true);
-            } else {
-                itemHolder.bind(model, false);
-            }
+            itemHolder.bind(model);
+
         }
     }
 
@@ -155,7 +126,7 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
                 @Override
                 public void clickValid(View v) {
                     if (mOnInviteClickListener != null) {
-                        mOnInviteClickListener.onClick(mGrabFriendModel);
+                        mOnInviteClickListener.onClick(mGrabFriendModel, mTvInvite);
                     }
                 }
             });
@@ -182,7 +153,7 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
 
         }
 
-        public void bind(UserInfoModel model, boolean hasInvited) {
+        public void bind(UserInfoModel model) {
             this.mGrabFriendModel = model;
             AvatarUtils.loadAvatarByUrl(mIvFriendIcon,
                     AvatarUtils.newParamsBuilder(model.getAvatar())
@@ -215,20 +186,15 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
                 }
             }
 
-            if (hasInvited) {
-                mTvInvite.setAlpha(0.5f);
-                mTvInvite.setEnabled(false);
-                mTvInvite.setText("已邀请");
-            } else {
-                mTvInvite.setAlpha(1f);
-                mTvInvite.setEnabled(true);
-                mTvInvite.setText("邀请");
-            }
+            mTvInvite.setAlpha(1f);
+            mTvInvite.setClickable(true);
+            mTvInvite.setText("邀请");
         }
+
     }
 
     public interface OnInviteClickListener {
-        void onClick(UserInfoModel model);
+        void onClick(UserInfoModel model, StrokeTextView view);
 
         void onClickSearch();
     }

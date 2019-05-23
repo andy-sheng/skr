@@ -27,6 +27,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
@@ -93,9 +94,8 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         addPresent(mPresenter);
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
-            public void onClick(UserInfoModel model) {
-                // TODO: 2019/5/23 邀请
-                mPresenter.inviteFriend(mRoomID, model);
+            public void onClick(UserInfoModel model, StrokeTextView view) {
+                mPresenter.inviteFriend(mRoomID, model, view);
             }
 
             @Override
@@ -253,6 +253,16 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             mInviteFirendAdapter.notifyDataSetChanged();
         }
 
+    }
+
+    @Override
+    public void updateInvited(StrokeTextView view) {
+        if (view != null) {
+            view.setVisibility(View.VISIBLE);
+            view.setClickable(false);
+            view.setAlpha(0.5f);
+            view.setText("已邀请");
+        }
     }
 
     @Override

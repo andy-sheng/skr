@@ -13,6 +13,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.dialog.view.StrokeTextView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -60,9 +61,10 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
+
             @Override
-            public void onClick(UserInfoModel model) {
-                mGrabInvitePresenter.inviteFriend(mRoomID, model);
+            public void onClick(UserInfoModel model, StrokeTextView view) {
+                mGrabInvitePresenter.inviteFriend(mRoomID, model, view);
             }
 
             @Override
@@ -153,15 +155,14 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     }
 
     @Override
-    public void hasInvitedModel(UserInfoModel userInfoModel) {
-        mInviteFirendAdapter.addInvitedId(userInfoModel.getUserId());
+    public void updateInvited(StrokeTextView view) {
+        if (view != null) {
+            view.setAlpha(0.5f);
+            view.setText("已邀请");
+            view.setClickable(false);
+            view.setVisibility(VISIBLE);
+        }
     }
-
-//    @Override
-//    public void updateInviteModel(UserInfoModel grabFriendModel) {
-//        mInviteFirendAdapter.update(grabFriendModel);
-//    }
-
 
     @Override
     public void finishRefresh() {

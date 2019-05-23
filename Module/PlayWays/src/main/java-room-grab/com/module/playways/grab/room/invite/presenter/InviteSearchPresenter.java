@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.dialog.view.StrokeTextView;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.view.IInviteSearchView;
 
@@ -29,7 +30,7 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
     }
 
-    public void inviteFriend(int roomID, UserInfoModel model) {
+    public void inviteFriend(int roomID, UserInfoModel model, StrokeTextView view) {
         MyLog.d(TAG, "deleteSong");
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
@@ -42,7 +43,7 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    // TODO: 2019/5/23 更新视图
+                    mView.updateInvited(view);
                 } else {
                     MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
                 }
