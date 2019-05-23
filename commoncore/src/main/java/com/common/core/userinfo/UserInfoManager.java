@@ -88,6 +88,10 @@ public class UserInfoManager {
     public static final int RA_BUILD = 1;         //创建关系
     public static final int RA_UNBUILD = 2;       //解除关系
 
+    public static final int ONLINE_PULL_NONE = 0;
+    public static final int ONLINE_PULL_NORMAL = 1;
+    public static final int ONLINE_PULL_GAME = 2;
+
     UserInfoServerApi userInfoServerApi;
 
     /**
@@ -378,7 +382,7 @@ public class UserInfoManager {
      * @param pullOnlineStatus     是否拉取在线状态
      * @param userInfoListCallback
      */
-    public void getMyFollow(final boolean pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
+    public void getMyFollow(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
         Observable.create(new ObservableOnSubscribe<List<UserInfoModel>>() {
             @Override
             public void subscribe(ObservableEmitter<List<UserInfoModel>> emitter) {
@@ -469,8 +473,12 @@ public class UserInfoManager {
                 for (UserInfoModel userInfoModel : resutlSet) {
                     resultList.add(userInfoModel);
                 }
-                if (pullOnlineStatus) {
-                    checkUserOnlineStatus(resultList);
+                if (pullOnlineStatus == ONLINE_PULL_GAME) {
+                    fillUserOnlineStatus(resultList, true);
+                } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
+                    fillUserOnlineStatus(resultList, false);
+                } else {
+
                 }
                 if (userInfoListCallback != null) {
                     userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
@@ -496,9 +504,9 @@ public class UserInfoManager {
     /**
      * 获取我的好友
      */
-    public void getMyFriends(final boolean pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
+    public void getMyFriends(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
         //先从数据库里取我的关注
-        getMyFollow(false, new UserInfoListCallback() {
+        getMyFollow(ONLINE_PULL_NONE, new UserInfoListCallback() {
             @Override
             public void onSuccess(FROM from, int offset, List<UserInfoModel> list) {
                 List<UserInfoModel> resultList = new ArrayList<>();
@@ -507,8 +515,12 @@ public class UserInfoManager {
                         resultList.add(userInfoModel);
                     }
                 }
-                if (pullOnlineStatus) {
-                    checkUserOnlineStatus(resultList);
+                if (pullOnlineStatus == ONLINE_PULL_GAME) {
+                    fillUserOnlineStatus(resultList, true);
+                } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
+                    fillUserOnlineStatus(resultList, false);
+                } else {
+
                 }
                 if (userInfoListCallback != null) {
                     userInfoListCallback.onSuccess(from, resultList.size(), resultList);
@@ -549,6 +561,7 @@ public class UserInfoManager {
 
     /**
      * 搜索我的好友
+     *
      * @param key
      * @param userInfoListCallback
      */
@@ -698,8 +711,7 @@ public class UserInfoManager {
 
     }
 
-    public void checkUserOnlineStatus(final List<UserInfoModel> list) {
-
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus) {
         final HashSet<Integer> idSets = new HashSet();
         for (UserInfoModel userInfoModel : list) {
             OnlineModel onlineModel = mStatusMap.get(userInfoModel.getUserId());
@@ -709,18 +721,7 @@ public class UserInfoManager {
                 long t = System.currentTimeMillis() - onlineModel.getRecordTs();
                 if (Math.abs(t) < 30 * 1000) {
                     // 认为状态缓存有效，不去这个id的状态了
-                    if (onlineModel.isOnline()) {
-                        userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
-                        userInfoModel.setStatusDesc("在线");
-                    } else {
-                        userInfoModel.setStatus(UserInfoModel.EF_OFFLINE);
-                        String timeDesc = "";
-                        if (onlineModel.getOfflineTime() > 0) {
-                            timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(), System.currentTimeMillis());
-                        }
-                        // 显示
-                        userInfoModel.setStatusDesc("离线 " + timeDesc);
-                    }
+                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                 } else {
                     idSets.add(userInfoModel.getUserId());
                 }
@@ -734,25 +735,9 @@ public class UserInfoManager {
                             for (UserInfoModel userInfoModel : list) {
                                 if (idSets.contains(userInfoModel.getUserId())) {
                                     OnlineModel onlineModel = map.get(userInfoModel.getUserId());
-                                    if (onlineModel != null) {
-                                        if (onlineModel.isOnline()) {
-                                            userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
-                                            userInfoModel.setStatusDesc("在线");
-                                        } else {
-                                            userInfoModel.setStatus(UserInfoModel.EF_OFFLINE);
-                                            String timeDesc = "";
-                                            if (onlineModel.getOfflineTime() > 0) {
-                                                timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(), System.currentTimeMillis());
-                                            }
-                                            // 显示
-                                            userInfoModel.setStatusDesc("离线 " + timeDesc);
-                                        }
-                                    } else {
-                                        userInfoModel.setStatus(UserInfoModel.EF_OFFLINE);
-                                    }
+                                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                                 }
                             }
-
                             return list;
                         }
                     })
@@ -781,6 +766,38 @@ public class UserInfoManager {
         });
     }
 
+    private void fillUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
+        // 认为状态缓存有效，不去这个id的状态了
+        if (onlineModel.isOnline()) {
+            userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
+            if (pullGameStatus) {
+                if (onlineModel.getBusy()) {
+                    userInfoModel.setStatusDesc("忙碌中");
+                } else if (onlineModel.getInRoom()) {
+                    userInfoModel.setStatusDesc("已加入游戏");
+                } else {
+                    userInfoModel.setStatusDesc("在线");
+                }
+            } else {
+                userInfoModel.setStatusDesc("在线");
+            }
+        } else {
+            userInfoModel.setStatus(UserInfoModel.EF_OFFLINE);
+            String timeDesc = "";
+            if (onlineModel.getOfflineTime() > 0) {
+                timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(), System.currentTimeMillis());
+            }
+            // 显示
+            userInfoModel.setStatusDesc("离线 " + timeDesc);
+        }
+    }
+
+    /**
+     * 查询用户简单在线状态
+     *
+     * @param list
+     * @return
+     */
     public Observable<HashMap<Integer, OnlineModel>> checkUserOnlineStatusByIds(Collection<Integer> list) {
 
         HashMap<String, Object> map = new HashMap<>();
@@ -817,4 +834,77 @@ public class UserInfoManager {
                 });
     }
 
+
+    public Observable<HashMap<Integer, OnlineModel>> checkUserGameStatusByIds(Collection<Integer> list) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userIDs", list);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        return userInfoServerApi.checkUserGameStatus(body)
+                .map(new Function<ApiResult, HashMap<Integer, OnlineModel>>() {
+                    @Override
+                    public HashMap<Integer, OnlineModel> apply(ApiResult obj) {
+                        if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
+                            HashMap<Integer, OnlineModel> hashSet = new HashMap<>();
+                            {
+                                List<Integer> busyStatusUserList = JSON.parseArray(obj.getData().getString("busyStatusUserList"), Integer.class);
+                                if (busyStatusUserList != null) {
+                                    for (int uid : busyStatusUserList) {
+                                        OnlineModel onlineModel = new OnlineModel();
+                                        onlineModel.setUserID(uid);
+                                        onlineModel.setOnline(true);
+                                        onlineModel.setBusy(true);
+                                        onlineModel.setRecordTs(System.currentTimeMillis());
+                                        hashSet.put(onlineModel.getUserID(), onlineModel);
+                                        mStatusMap.put(onlineModel.getUserID(), onlineModel);
+                                    }
+                                }
+                            }
+                            {
+                                List<Integer> inRoomStatusUserList = JSON.parseArray(obj.getData().getString("inRoomStatusUserList"), Integer.class);
+                                if (inRoomStatusUserList != null) {
+                                    for (int uid : inRoomStatusUserList) {
+                                        OnlineModel onlineModel = new OnlineModel();
+                                        onlineModel.setUserID(uid);
+                                        onlineModel.setOnline(true);
+                                        onlineModel.setInRoom(true);
+                                        onlineModel.setRecordTs(System.currentTimeMillis());
+                                        hashSet.put(onlineModel.getUserID(), onlineModel);
+                                        mStatusMap.put(onlineModel.getUserID(), onlineModel);
+                                    }
+                                }
+                            }
+                            {
+                                List<Integer> inviteStatusUserList = JSON.parseArray(obj.getData().getString("inviteStatusUserList"), Integer.class);
+                                if (inviteStatusUserList != null) {
+                                    for (int uid : inviteStatusUserList) {
+                                        OnlineModel onlineModel = new OnlineModel();
+                                        onlineModel.setUserID(uid);
+                                        onlineModel.setOnline(true);
+                                        onlineModel.setRecordTs(System.currentTimeMillis());
+                                        hashSet.put(onlineModel.getUserID(), onlineModel);
+                                        mStatusMap.put(onlineModel.getUserID(), onlineModel);
+                                    }
+                                }
+                            }
+                            {
+                                List<Integer> userOfflineList = JSON.parseArray(obj.getData().getString("userOfflineList"), Integer.class);
+                                if (userOfflineList != null) {
+                                    for (int uid : userOfflineList) {
+                                        OnlineModel onlineModel = new OnlineModel();
+                                        onlineModel.setUserID(uid);
+                                        onlineModel.setOnline(false);
+                                        onlineModel.setRecordTs(System.currentTimeMillis());
+                                        hashSet.put(onlineModel.getUserID(), onlineModel);
+                                        mStatusMap.put(onlineModel.getUserID(), onlineModel);
+                                    }
+                                }
+                            }
+                            return hashSet;
+                        }
+                        return null;
+                    }
+                });
+    }
 }

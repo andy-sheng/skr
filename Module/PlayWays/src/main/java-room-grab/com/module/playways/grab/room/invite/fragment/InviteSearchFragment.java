@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.invite.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +21,9 @@ import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.utils.UserInfoDataUtils;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -39,12 +39,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 public class InviteSearchFragment extends BaseFragment implements IInviteSearchView {
@@ -64,10 +60,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     InviteFirendAdapter mInviteFirendAdapter;
 
-    CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
-    DisposableObserver<List<UserInfoModel>> mDisposableObserver;  // 关注和好友使用
-    DisposableObserver<ApiResult> mFansDisposableObserver;        // 粉丝使用
 
     InviteSearchPresenter mPresenter;
 
@@ -138,7 +131,15 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchFriends(mSearchContent.getText().toString().trim());
+                    String keyword = mSearchContent.getText().toString().trim();
+                    if (TextUtils.isEmpty(keyword)) {
+                        U.getToastUtil().showShort("搜索内容为空");
+                        return false;
+                    }
+                    if (mPublishSubject != null) {
+                        mPublishSubject.onNext(keyword);
+                    }
+                    U.getKeyBoardUtils().hideSoftInput(mSearchContent);
                 }
                 return false;
             }
@@ -153,93 +154,53 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         }, 200);
     }
 
-    private void searchFriends(String content) {
-        if (TextUtils.isEmpty(content)) {
-            U.getToastUtil().showShort("搜索内容为空");
-            return;
-        }
-        if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
-            mPresenter.searchFans(content);
-        } else {
-            // 搜好友
-        }
-    }
 
     private void initPublishSubject() {
         mPublishSubject = PublishSubject.create();
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             // 粉丝
-            mFansDisposableObserver = new DisposableObserver<ApiResult>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
                 @Override
-                public void onNext(ApiResult result) {
+                public boolean test(String s) {
+                    return s.length() > 0;
+                }
+            }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
+                @Override
+                public ObservableSource<ApiResult> apply(String s) {
+                    GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+                    return grabRoomServerApi.searchFans(s);
+                }
+            }), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
                         List<JSONObject> list = JSON.parseArray(result.getData().getString("fans"), JSONObject.class);
                         List<UserInfoModel> userInfoModels = UserInfoDataUtils.parseRoomUserInfo(list);
                         showUserInfoList(userInfoModels);
                     }
                 }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            };
-            // TODO: 2019/5/23 等服务器粉丝搜索接口补充
-            mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
-                @Override
-                public boolean test(String s) throws Exception {
-                    return s.length() > 0;
-                }
-            }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
-                @Override
-                public ObservableSource<ApiResult> apply(String s) throws Exception {
-                    GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-                    return grabRoomServerApi.searchFans(s).subscribeOn(Schedulers.io());
-                }
-            }).observeOn(AndroidSchedulers.mainThread()).subscribe(mFansDisposableObserver);
-            mCompositeDisposable = new CompositeDisposable();
-            mCompositeDisposable.add(mFansDisposableObserver);
+            },this);
         } else {
             // 好友
-            mDisposableObserver = new DisposableObserver<List<UserInfoModel>>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
                 @Override
-                public void onNext(List<UserInfoModel> list) {
-                    MyLog.d(TAG, "onNext" + " list=" + list);
-                    // TODO: 2019/5/23 一次搞定，不需要做分页
-                    showUserInfoList(list);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            };
-            mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
-                @Override
-                public boolean test(String s) throws Exception {
+                public boolean test(String s) {
                     return s.length() > 0;
                 }
             }).switchMap(new Function<String, ObservableSource<List<UserInfoModel>>>() {
                 @Override
-                public ObservableSource<List<UserInfoModel>> apply(String string) throws Exception {
+                public ObservableSource<List<UserInfoModel>> apply(String string) {
                     // TODO: 2019/5/23 区分好友和关注
                     List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(string);
+                    UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true);
                     return Observable.just(userInfoModels);
                 }
-            }).observeOn(AndroidSchedulers.mainThread()).
-                    subscribe(mDisposableObserver);
-            mCompositeDisposable = new CompositeDisposable();
-            mCompositeDisposable.add(mDisposableObserver);
+            }), new ApiObserver<List<UserInfoModel>>() {
+                @Override
+                public void process(List<UserInfoModel> list) {
+                    showUserInfoList(list);
+                }
+            },this);
         }
     }
 

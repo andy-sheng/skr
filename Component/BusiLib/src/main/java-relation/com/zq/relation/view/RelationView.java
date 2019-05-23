@@ -208,7 +208,7 @@ public class RelationView extends RelativeLayout {
     public void loadData(final int offset) {
         this.mOffset = offset;
         if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
-            UserInfoManager.getInstance().getMyFriends(true, new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_NORMAL, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {
@@ -237,7 +237,7 @@ public class RelationView extends RelativeLayout {
                 }
             });
         } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
-            UserInfoManager.getInstance().getMyFollow(true, new UserInfoManager.UserInfoListCallback() {
+            UserInfoManager.getInstance().getMyFollow(UserInfoManager.ONLINE_PULL_NORMAL, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, int offset, final List<UserInfoModel> list) {
                     mHandler.post(new Runnable() {

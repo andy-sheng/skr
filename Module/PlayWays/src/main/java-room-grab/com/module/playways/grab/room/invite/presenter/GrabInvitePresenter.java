@@ -1,8 +1,12 @@
 package com.module.playways.grab.room.invite.presenter;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
@@ -34,30 +38,18 @@ public class GrabInvitePresenter {
     }
 
     public void getFriendList(int mOffset, int mLimit) {
-        ApiMethods.subscribe(mGrabRoomServerApi.getRoomFriendList(mOffset, mLimit), new ApiObserver<ApiResult>() {
+        UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_GAME, new UserInfoManager.UserInfoListCallback() {
             @Override
-            public void process(ApiResult result) {
-                mIGrabInviteView.finishRefresh();
-                if (result.getErrno() == 0) {
-//                    List<GrabFriendModel> grabFriendModelList = JSON.parseArray(result.getData().getString("friends"), GrabFriendModel.class);
-//                    int newOffset = result.getData().getIntValue("offset");
-//                    mIGrabInviteView.addInviteModelList(grabFriendModelList, newOffset);
-                } else {
-                    MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
-                }
+            public void onSuccess(UserInfoManager.FROM from, int offset, List<UserInfoModel> list) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabInviteView.finishRefresh();
+                        mIGrabInviteView.addInviteModelList(list,mOffset, offset);
+                    }
+                });
             }
-
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                mIGrabInviteView.finishRefresh();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mIGrabInviteView.finishRefresh();
-                MyLog.e(TAG, e);
-            }
-        }, mBaseFragment);
+        });
     }
 
 
@@ -70,7 +62,7 @@ public class GrabInvitePresenter {
                     List<JSONObject> list = JSON.parseArray(result.getData().getString("fans"), JSONObject.class);
                     List<UserInfoModel> userInfoModels = UserInfoDataUtils.parseRoomUserInfo(list);
                     int newOffset = result.getData().getIntValue("offset");
-                    mIGrabInviteView.addInviteModelList(userInfoModels, newOffset);
+                    mIGrabInviteView.addInviteModelList(userInfoModels,mOffset, newOffset);
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }

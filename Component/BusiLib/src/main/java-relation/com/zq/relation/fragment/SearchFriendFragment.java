@@ -45,12 +45,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 public class SearchFriendFragment extends BaseFragment {
@@ -244,10 +240,10 @@ public class SearchFriendFragment extends BaseFragment {
                     List<UserInfoModel> r = null;
                     if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
                         r = UserInfoLocalApi.searchFriends(string);
-                        UserInfoManager.getInstance().checkUserOnlineStatus(r);
+                        UserInfoManager.getInstance().fillUserOnlineStatus(r,false);
                     } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
                         r = UserInfoLocalApi.searchFollow(string);
-                        UserInfoManager.getInstance().checkUserOnlineStatus(r);
+                        UserInfoManager.getInstance().fillUserOnlineStatus(r,false);
                     }
                     return Observable.just(r);
                 }

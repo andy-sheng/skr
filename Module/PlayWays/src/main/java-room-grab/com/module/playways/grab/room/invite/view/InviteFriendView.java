@@ -129,27 +129,37 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     }
 
     @Override
-    public void addInviteModelList(List<UserInfoModel> grabFriendModelList, int newOffset) {
-        this.mOffset = newOffset;
-        if (grabFriendModelList != null && grabFriendModelList.size() > 0) {
-            mHasMore = true;
-            mRefreshLayout.setEnableLoadMore(true);
-
+    public void addInviteModelList(List<UserInfoModel> grabFriendModelList, int oldOffset, int newOffset) {
+        if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
+            mRefreshLayout.setEnableLoadMore(false);
             mLoadService.showSuccess();
+            mInviteFirendAdapter.getDataList().clear();
             mInviteFirendAdapter.getDataList().addAll(grabFriendModelList);
             mInviteFirendAdapter.notifyDataSetChanged();
-        } else {
-            mHasMore = false;
-            mRefreshLayout.setEnableLoadMore(false);
-            if (mInviteFirendAdapter.getDataList() == null || mInviteFirendAdapter.getDataList().size() == 0) {
-                // 没有数据
-                if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
-                    mLoadService.showCallback(FriendsEmptyCallback.class);
-                } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
-                    mLoadService.showCallback(FansEmptyCallback.class);
+        } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+            this.mOffset = newOffset;
+            if (grabFriendModelList != null && grabFriendModelList.size() > 0) {
+                mHasMore = true;
+                mRefreshLayout.setEnableLoadMore(true);
+                mLoadService.showSuccess();
+                if (oldOffset == 0) {
+                    mInviteFirendAdapter.getDataList().clear();
                 }
+                mInviteFirendAdapter.getDataList().addAll(grabFriendModelList);
+                mInviteFirendAdapter.notifyDataSetChanged();
             } else {
-                // 没有更多了
+                mHasMore = false;
+                mRefreshLayout.setEnableLoadMore(false);
+                if (mInviteFirendAdapter.getDataList() == null || mInviteFirendAdapter.getDataList().size() == 0) {
+                    // 没有数据
+                    if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                        mLoadService.showCallback(FriendsEmptyCallback.class);
+                    } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
+                        mLoadService.showCallback(FansEmptyCallback.class);
+                    }
+                } else {
+                    // 没有更多了
+                }
             }
         }
     }

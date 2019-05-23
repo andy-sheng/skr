@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IGrabInviteView {
 
-    void addInviteModelList(List<UserInfoModel> list, int newOffset);
+    void addInviteModelList(List<UserInfoModel> list,int oldOffset, int newOffset);
 
     void updateInvited(StrokeTextView view);
 

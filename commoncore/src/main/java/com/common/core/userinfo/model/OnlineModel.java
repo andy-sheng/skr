@@ -9,6 +9,8 @@ public class OnlineModel implements Serializable {
     long offlineTime;
 
     long recordTs;
+    private boolean mBusy;
+    private boolean mInRoom;
 
     public long getOnlineTime() {
         return onlineTime;
@@ -63,5 +65,21 @@ public class OnlineModel implements Serializable {
 
     public void setRecordTs(long ts) {
         recordTs = ts;
+    }
+
+    public void setBusy(boolean busy) {
+        mBusy = busy;
+    }
+
+    public boolean getBusy() {
+        return mBusy;
+    }
+
+    public void setInRoom(boolean inRoom) {
+        mInRoom = inRoom;
+    }
+
+    public boolean getInRoom() {
+        return mInRoom;
     }
 }
