@@ -2,6 +2,8 @@ package com.zq.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Gravity;
 
 import com.common.base.BaseActivity;
@@ -12,9 +14,15 @@ import com.common.utils.U;
 import com.component.busilib.R;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.dialog.event.ShowEditRemarkEvent;
+import com.zq.person.fragment.OtherPersonFragment3;
 import com.zq.person.model.PhotoModel;
+import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import static com.zq.report.fragment.ReportFragment.FORM_GAME;
 import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
@@ -83,7 +91,6 @@ public class PersonInfoDialog {
 
             @Override
             public void onClickMessage(UserInfoModel userInfoModel) {
-                // TODO: 2019/4/8 私信
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
@@ -94,12 +101,20 @@ public class PersonInfoDialog {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
-                // TODO: 2019/4/8 打开大图浏览
             }
 
             @Override
             public void onClickOut() {
                 mDialogPlus.dismiss();
+            }
+
+            @Override
+            public void onClickRemark(UserInfoModel userInfoModel) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+
+                EventBus.getDefault().post(new ShowEditRemarkEvent(userInfoModel));
             }
         });
 
@@ -171,5 +186,7 @@ public class PersonInfoDialog {
         void onClickPhoto(PhotoModel photoModel, int position);
 
         void onClickOut();
+
+        void onClickRemark(UserInfoModel userInfoModel);
     }
 }

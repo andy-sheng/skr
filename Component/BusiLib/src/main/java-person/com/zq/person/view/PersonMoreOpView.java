@@ -15,22 +15,26 @@ import com.component.busilib.R;
 
 public class PersonMoreOpView extends RelativeLayout {
 
-    boolean mIsFollow;
+    boolean mHasUnFollow;
+    boolean mHasKick;
 
     LinearLayout mMenuContainer;
     RelativeLayout mModifyRemarkArea;
     ExTextView mModifyRemarkTv;
     RelativeLayout mUnfollowArea;
     ExTextView mUnfollowTv;
+    RelativeLayout mKickArea;
+    ExTextView mKickTv;
     RelativeLayout mReportArea;
     ExTextView mReportTv;
 
     Listener mListener;
     PopupWindow mPopupWindow;
 
-    public PersonMoreOpView(Context context, boolean isFollow) {
+    public PersonMoreOpView(Context context, boolean hasUnFollow, boolean hasKick) {
         super(context);
-        this.mIsFollow = isFollow;
+        this.mHasUnFollow = hasUnFollow;
+        this.mHasKick = hasKick;
         init();
     }
 
@@ -43,13 +47,13 @@ public class PersonMoreOpView extends RelativeLayout {
         mModifyRemarkTv = (ExTextView) findViewById(R.id.modify_remark_tv);
         mUnfollowArea = (RelativeLayout) findViewById(R.id.unfollow_area);
         mUnfollowTv = (ExTextView) findViewById(R.id.unfollow_tv);
+        mKickArea = (RelativeLayout) findViewById(R.id.kick_area);
+        mKickTv = (ExTextView) findViewById(R.id.kick_tv);
         mReportArea = (RelativeLayout) findViewById(R.id.report_area);
         mReportTv = (ExTextView) findViewById(R.id.report_tv);
-        if (mIsFollow) {
-            mUnfollowArea.setVisibility(VISIBLE);
-        } else {
-            mUnfollowArea.setVisibility(GONE);
-        }
+
+        mUnfollowArea.setVisibility(mHasUnFollow ? VISIBLE : GONE);
+        mKickTv.setVisibility(mHasKick ? VISIBLE : GONE);
 
         mModifyRemarkArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -74,6 +78,15 @@ public class PersonMoreOpView extends RelativeLayout {
             public void clickValid(View v) {
                 if (mListener != null) {
                     mListener.onClickReport();
+                }
+            }
+        });
+
+        mKickArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.onClickKick();
                 }
             }
         });
@@ -106,5 +119,7 @@ public class PersonMoreOpView extends RelativeLayout {
         void onClickUnFollow();
 
         void onClickReport();
+
+        void onClickKick();
     }
 }

@@ -12,7 +12,7 @@
         <RelativeLayout
             android:id="@+id/modify_remark_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp">
+            android:layout_height="@dimen/view_45_dp">
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/modify_remark_tv"
@@ -33,10 +33,32 @@
         <RelativeLayout
             android:id="@+id/unfollow_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp">
+            android:layout_height="@dimen/view_45_dp">
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/unfollow_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:drawableLeft="@drawable/person_unfollow_icon"
+                android:drawablePadding="@dimen/view_5_dp"
+                android:gravity="center"
+                android:text="取消关注"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16_dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/kick_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_45_dp"
+            android:visibility="gone">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/kick_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -55,7 +77,7 @@
         <RelativeLayout
             android:id="@+id/report_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp">
+            android:layout_height="@dimen/view_45_dp">
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/report_tv"

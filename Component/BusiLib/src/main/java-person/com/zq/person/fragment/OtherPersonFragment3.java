@@ -271,7 +271,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView.dismiss();
                 }
-                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.isFollow());
+                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.isFollow(), false);
                 mPersonMoreOpView.setListener(new PersonMoreOpView.Listener() {
                     @Override
                     public void onClickRemark() {
@@ -309,6 +309,11 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                                         .setEnterAnim(R.anim.slide_in_bottom)
                                         .setExitAnim(R.anim.slide_out_bottom)
                                         .build());
+                    }
+
+                    @Override
+                    public void onClickKick() {
+
                     }
                 });
                 mPersonMoreOpView.showAt(mMoreBtn);

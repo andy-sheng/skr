@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
@@ -88,10 +90,14 @@ import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
+import com.zq.dialog.event.ShowEditRemarkEvent;
 import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.person.fragment.OtherPersonFragment3;
+import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
 import com.zq.toast.CommonToastView;
 
@@ -177,6 +183,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     PersonInfoDialog mPersonInfoDialog;
 
     DialogPlus mGameRuleDialog;
+
+    DialogPlus mEditRemarkDialog;
 
     ConfirmDialog mGrabKickDialog;
 
@@ -743,6 +751,56 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         );
 
         removeInviteTipView();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ShowEditRemarkEvent event) {
+
+    }
+
+    private void showRemarkDialog(UserInfoModel mUserInfoModel) {
+        EditRemarkView editRemarkView = new EditRemarkView(GrabRoomFragment.this, mUserInfoModel.getNicknameRemark(null));
+        editRemarkView.setListener(new EditRemarkView.Listener() {
+            @Override
+            public void onClickCancel() {
+                if (mEditRemarkDialog != null) {
+                    mEditRemarkDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onClickSave(String remarkName) {
+                if (mEditRemarkDialog != null) {
+                    mEditRemarkDialog.dismiss();
+                }
+                if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(mUserInfoModel.getNicknameRemark())) {
+                    // 都为空
+                    return;
+                } else if (!TextUtils.isEmpty(mUserInfoModel.getNicknameRemark()) && (mUserInfoModel.getNicknameRemark()).equals(remarkName)) {
+                    // 相同
+                    return;
+                } else {
+                    UserInfoManager.getInstance().updateRemark(remarkName, mUserInfoModel.getUserId());
+                }
+            }
+        });
+
+        mEditRemarkDialog = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(editRemarkView))
+                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
+                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
+                .setInAnimation(com.component.busilib.R.anim.fade_in)
+                .setOutAnimation(com.component.busilib.R.anim.fade_out)
+                .setExpanded(false)
+                .setGravity(Gravity.BOTTOM)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    }
+                })
+                .create();
+        mEditRemarkDialog.show();
     }
 
     private void showPersonInfoView(int userID) {
@@ -1668,6 +1726,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     private void dismissDialog() {
         if (mGameRuleDialog != null) {
             mGameRuleDialog.dismiss(false);
+        }
+        if (mEditRemarkDialog != null) {
+            mGrabKickDialog.dismiss(false);
         }
         if (mBottomContainerView != null) {
             mBottomContainerView.dismissPopWindow();
