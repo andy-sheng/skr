@@ -332,6 +332,6 @@ public interface UserInfoServerApi {
     @POST("/v1/mate/multi-check-user-game-status")
     Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
 
-
-
+    @GET("v1/mate/search-fans")
+    Observable<ApiResult> searchFans(@Query("searchContent") String searchContent);
 }

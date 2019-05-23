@@ -15,12 +15,19 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -61,8 +68,6 @@ public class SearchFriendFragment extends BaseFragment {
     RecyclerView mRecyclerView;
 
     PublishSubject<String> mPublishSubject;
-    DisposableObserver<List<UserInfoModel>> mDisposableObserver;  // 关注和好友使用
-    DisposableObserver<ApiResult> mFansDisposableObserver;     //粉丝使用
 
     RelationAdapter mRelationAdapter;
 
@@ -102,6 +107,7 @@ public class SearchFriendFragment extends BaseFragment {
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
                             .build());
+                    U.getKeyBoardUtils().hideSoftInput(mSearchContent);
                 } else if (view.getId() == R.id.follow_tv) {
                     // 关注和好友都是有关系的人
                     if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
@@ -205,43 +211,29 @@ public class SearchFriendFragment extends BaseFragment {
     private void initPublishSubject() {
         mPublishSubject = PublishSubject.create();
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
-            mFansDisposableObserver = new DisposableObserver<ApiResult>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
                 @Override
-                public void onNext(ApiResult result) {
-
+                public boolean test(String s) throws Exception {
+                    return s.length() > 0;
                 }
-
+            }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
                 @Override
-                public void onError(Throwable e) {
-
+                public ObservableSource<ApiResult> apply(String key) {
+                    UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+                    return userInfoServerApi.searchFans(key);
                 }
-
+            }), new ApiObserver<ApiResult>() {
                 @Override
-                public void onComplete() {
-
+                public void process(ApiResult obj) {
+                    List<JSONObject> list = JSON.parseArray(obj.getData().getString("fans"), JSONObject.class);
+                    List<UserInfoModel> resultList = UserInfoDataUtils.parseRoomUserInfo(list);
+                    if (resultList != null) {
+                        showUserInfoList(resultList);
+                    }
                 }
-            };
-            // TODO: 2019/5/23 等服务器粉丝搜索接口补充
+            }, this);
         } else {
-            mDisposableObserver = new DisposableObserver<List<UserInfoModel>>() {
-                @Override
-                public void onNext(List<UserInfoModel> list) {
-                    MyLog.d(TAG, "onNext" + " list=" + list);
-                    // TODO: 2019/5/23 一次搞定，不需要做分页
-                    showUserInfoList(list);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    MyLog.e(e);
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            };
-            mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
                 @Override
                 public boolean test(String s) throws Exception {
                     return s.length() > 0;
@@ -252,16 +244,21 @@ public class SearchFriendFragment extends BaseFragment {
                     List<UserInfoModel> r = null;
                     if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
                         r = UserInfoLocalApi.searchFriends(string);
+                        UserInfoManager.getInstance().checkUserOnlineStatus(r);
                     } else if (mMode == UserInfoManager.RELATION.FOLLOW.getValue()) {
                         r = UserInfoLocalApi.searchFollow(string);
-                    } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
-                    } else {
+                        UserInfoManager.getInstance().checkUserOnlineStatus(r);
                     }
                     return Observable.just(r);
                 }
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()).
-                    subscribe(mDisposableObserver);
+            }), new ApiObserver<List<UserInfoModel>>() {
+                @Override
+                public void process(List<UserInfoModel> list) {
+                    MyLog.d(TAG, "onNext" + " list=" + list);
+                    // TODO: 2019/5/23 一次搞定，不需要做分页
+                    showUserInfoList(list);
+                }
+            }, this);
         }
     }
 
@@ -273,8 +270,5 @@ public class SearchFriendFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (mFansDisposableObserver != null) {
-            mFansDisposableObserver.dispose();
-        }
     }
 }

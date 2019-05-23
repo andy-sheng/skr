@@ -117,6 +117,7 @@ public class UserInfoDataUtils {
                 int status = jsonObject.getIntValue("status");
                 boolean isOnline = jsonObject.getBooleanValue("isOnline");
                 if (isOnline) {
+                    status = UserInfoModel.EF_ONLINE;
                     // status: 1.可邀请 2.忙碌中 3.已加入游戏
                     if (status == 2) {
                         status = UserInfoModel.EF_ONLINE_BUSY;
