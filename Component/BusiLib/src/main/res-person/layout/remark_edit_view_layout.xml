@@ -52,7 +52,7 @@
             android:layout_below="@id/remark_name_edt"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_10_dp"
-            android:text="备注最多不超过7歌汉字，14个英文哦～"
+            android:text="备注最多不超过7个汉字，14个英文哦～"
             android:textColor="#803B4E79"
             android:textSize="@dimen/textsize_12_dp" />
 
