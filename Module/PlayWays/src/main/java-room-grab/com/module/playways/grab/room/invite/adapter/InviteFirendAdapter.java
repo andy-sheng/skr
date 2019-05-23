@@ -10,26 +10,49 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.dialog.view.StrokeTextView;
-import com.module.playways.grab.room.invite.model.GrabFriendModel;
 import com.module.playways.R;
 
-public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerView.ViewHolder> {
+import java.util.ArrayList;
+
+public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView.ViewHolder> {
     OnInviteClickListener mOnInviteClickListener;
-    boolean mHasSearch = false;
+    ArrayList<Integer> mInvitedList;
+    boolean mHasSearch;
 
     private static final int ITEM_TYPE_NORMAL = 1;
     private static final int ITEM_TYPE_SEARCH = 2;
 
     public InviteFirendAdapter(OnInviteClickListener onInviteClickListener, boolean hasSearch) {
         this.mOnInviteClickListener = onInviteClickListener;
+        this.mInvitedList = new ArrayList<>();
         this.mHasSearch = hasSearch;
+    }
+
+    public void addInvitedId(int useID) {
+        if (mInvitedList != null) {
+            mInvitedList.add(useID);
+        }
+        for (int i = 0; i < mDataList.size(); i++) {
+            UserInfoModel userInfoModel = mDataList.get(i);
+            if (userInfoModel.getUserId() == useID) {
+                MyLog.d(TAG, "update" + " find i=" + i);
+                if (mHasSearch) {
+                    notifyItemChanged(i + 1);
+                } else {
+                    notifyItemChanged(i);
+                }
+                return;
+            }
+        }
     }
 
     @NonNull
@@ -52,14 +75,22 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
             if (position == 0) {
 
             } else {
-                GrabFriendModel model = mDataList.get(position - 1);
-                ItemHolder reportItemHolder = (ItemHolder) holder;
-                reportItemHolder.bind(model);
+                UserInfoModel model = mDataList.get(position - 1);
+                ItemHolder itemHolder = (ItemHolder) holder;
+                if (mInvitedList != null && mInvitedList.size() > 0 && mInvitedList.contains(model.getUserId())) {
+                    itemHolder.bind(model, true);
+                } else {
+                    itemHolder.bind(model, false);
+                }
             }
         } else {
-            GrabFriendModel model = mDataList.get(position);
-            ItemHolder reportItemHolder = (ItemHolder) holder;
-            reportItemHolder.bind(model);
+            UserInfoModel model = mDataList.get(position);
+            ItemHolder itemHolder = (ItemHolder) holder;
+            if (mInvitedList != null && mInvitedList.size() > 0 && mInvitedList.contains(model.getUserId())) {
+                itemHolder.bind(model, true);
+            } else {
+                itemHolder.bind(model, false);
+            }
         }
     }
 
@@ -105,7 +136,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
         StrokeTextView mTvInvite;
         ExTextView mTvCircleState;
 
-        GrabFriendModel mGrabFriendModel;
+        UserInfoModel mGrabFriendModel;
 
         Drawable mBusyCircleDrawable;
         Drawable mAIDLCircleDrawable;
@@ -151,7 +182,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
         }
 
-        public void bind(GrabFriendModel model) {
+        public void bind(UserInfoModel model, boolean hasInvited) {
             this.mGrabFriendModel = model;
             AvatarUtils.loadAvatarByUrl(mIvFriendIcon,
                     AvatarUtils.newParamsBuilder(model.getAvatar())
@@ -160,30 +191,31 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .build());
 
-            mIvFriendName.setText(model.getNickName());
+            mIvFriendName.setText(model.getNicknameRemark());
 
-            if (model.getStatus() == 2) {
+            if (model.getStatus() == UserInfoModel.EF_ONLINE_BUSY) {
                 mTvState.setText("忙碌中");
                 mTvInvite.setVisibility(View.GONE);
                 mTvCircleState.setBackground(mBusyCircleDrawable);
-            } else if (model.getStatus() == 1) {
-                if (model.isIsOnline()) {
-                    mTvCircleState.setBackground(mAIDLCircleDrawable);
-                    mTvState.setText("在线");
-                } else {
-                    mTvCircleState.setBackground(mOffLineCircleDrawable);
-                    mTvState.setText("离线");
-                }
-
-                mTvInvite.setVisibility(View.VISIBLE);
-
-            } else if (model.getStatus() == 3) {
+            } else if (model.getStatus() == UserInfoModel.EF_ONLiNE_JOINED) {
                 mTvState.setText("已加入游戏");
                 mTvInvite.setVisibility(View.GONE);
                 mTvCircleState.setBackground(mGameCircleDrawable);
+            } else {
+                if (model.getStatus() == UserInfoModel.EF_ONLINE) {
+                    mTvCircleState.setBackground(mAIDLCircleDrawable);
+                    mTvState.setText("在线");
+                    mTvInvite.setVisibility(View.VISIBLE);
+                } else if (model.getStatus() == UserInfoModel.EF_OFFLINE) {
+                    mTvCircleState.setBackground(mOffLineCircleDrawable);
+                    mTvState.setText("离线");
+                    mTvInvite.setVisibility(View.VISIBLE);
+                } else {
+                    mTvInvite.setVisibility(View.GONE);
+                }
             }
 
-            if (model.isInvited()) {
+            if (hasInvited) {
                 mTvInvite.setAlpha(0.5f);
                 mTvInvite.setEnabled(false);
                 mTvInvite.setText("已邀请");
@@ -196,7 +228,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
     }
 
     public interface OnInviteClickListener {
-        void onClick(GrabFriendModel model);
+        void onClick(UserInfoModel model);
 
         void onClickSearch();
     }

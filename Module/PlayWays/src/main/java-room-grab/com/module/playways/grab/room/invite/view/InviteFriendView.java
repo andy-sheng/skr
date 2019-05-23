@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.kingja.loadsir.callback.Callback;
@@ -20,7 +21,6 @@ import com.module.playways.grab.room.inter.IGrabInviteView;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
 import com.module.playways.grab.room.invite.fragment.InviteSearchFragment;
 import com.module.playways.grab.room.invite.presenter.GrabInvitePresenter;
-import com.module.playways.grab.room.invite.model.GrabFriendModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -61,7 +61,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
-            public void onClick(GrabFriendModel model) {
+            public void onClick(UserInfoModel model) {
                 mGrabInvitePresenter.inviteFriend(mRoomID, model);
             }
 
@@ -127,7 +127,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     }
 
     @Override
-    public void addInviteModelList(List<GrabFriendModel> grabFriendModelList, int newOffset) {
+    public void addInviteModelList(List<UserInfoModel> grabFriendModelList, int newOffset) {
         this.mOffset = newOffset;
         if (grabFriendModelList != null && grabFriendModelList.size() > 0) {
             mHasMore = true;
@@ -139,7 +139,6 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
         } else {
             mHasMore = false;
             mRefreshLayout.setEnableLoadMore(false);
-
             if (mInviteFirendAdapter.getDataList() == null || mInviteFirendAdapter.getDataList().size() == 0) {
                 // 没有数据
                 if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
@@ -154,9 +153,14 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     }
 
     @Override
-    public void updateInviteModel(GrabFriendModel grabFriendModel) {
-        mInviteFirendAdapter.update(grabFriendModel);
+    public void hasInvitedModel(UserInfoModel userInfoModel) {
+        mInviteFirendAdapter.addInvitedId(userInfoModel.getUserId());
     }
+
+//    @Override
+//    public void updateInviteModel(UserInfoModel grabFriendModel) {
+//        mInviteFirendAdapter.update(grabFriendModel);
+//    }
 
 
     @Override

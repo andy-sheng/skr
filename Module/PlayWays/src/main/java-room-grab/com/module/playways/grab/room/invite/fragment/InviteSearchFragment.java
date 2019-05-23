@@ -31,10 +31,8 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
 import com.module.playways.grab.room.invite.presenter.InviteSearchPresenter;
-import com.module.playways.grab.room.invite.model.GrabFriendModel;
 import com.module.playways.grab.room.invite.view.IInviteSearchView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -95,7 +93,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         addPresent(mPresenter);
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
-            public void onClick(GrabFriendModel model) {
+            public void onClick(UserInfoModel model) {
                 // TODO: 2019/5/23 邀请
                 mPresenter.inviteFriend(mRoomID, model);
             }
@@ -249,6 +247,12 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
     @Override
     public void showUserInfoList(List<UserInfoModel> list) {
         // TODO: 2019/5/23 后续补充
+        if (list != null && list.size() > 0) {
+            mInviteFirendAdapter.getDataList().clear();
+            mInviteFirendAdapter.getDataList().addAll(list);
+            mInviteFirendAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override

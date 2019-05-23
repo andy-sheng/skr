@@ -11,7 +11,6 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.room.invite.model.GrabFriendModel;
 import com.module.playways.grab.room.invite.view.IInviteSearchView;
 
 import java.util.HashMap;
@@ -30,11 +29,11 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
     }
 
-    public void inviteFriend(int roomID, GrabFriendModel model) {
+    public void inviteFriend(int roomID, UserInfoModel model) {
         MyLog.d(TAG, "deleteSong");
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
-        map.put("userID", model.getUserID());
+        map.put("userID", model.getUserId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -43,7 +42,7 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    model.setInvited(true);
+                    // TODO: 2019/5/23 更新视图
                 } else {
                     MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
                 }

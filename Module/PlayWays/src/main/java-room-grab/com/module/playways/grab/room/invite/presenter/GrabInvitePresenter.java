@@ -1,7 +1,10 @@
 package com.module.playways.grab.room.invite.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
+import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -9,7 +12,6 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.inter.IGrabInviteView;
-import com.module.playways.grab.room.invite.model.GrabFriendModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +38,9 @@ public class GrabInvitePresenter {
             public void process(ApiResult result) {
                 mIGrabInviteView.finishRefresh();
                 if (result.getErrno() == 0) {
-                    List<GrabFriendModel> grabFriendModelList = JSON.parseArray(result.getData().getString("friends"), GrabFriendModel.class);
-                    int newOffset = result.getData().getIntValue("offset");
-                    mIGrabInviteView.addInviteModelList(grabFriendModelList, newOffset);
+//                    List<GrabFriendModel> grabFriendModelList = JSON.parseArray(result.getData().getString("friends"), GrabFriendModel.class);
+//                    int newOffset = result.getData().getIntValue("offset");
+//                    mIGrabInviteView.addInviteModelList(grabFriendModelList, newOffset);
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }
@@ -64,12 +66,10 @@ public class GrabInvitePresenter {
             public void process(ApiResult result) {
                 mIGrabInviteView.finishRefresh();
                 if (result.getErrno() == 0) {
-
-
-
-                    List<GrabFriendModel> grabFriendModelList = JSON.parseArray(result.getData().getString("friends"), GrabFriendModel.class);
+                    List<JSONObject> list = JSON.parseArray(result.getData().getString("fans"), JSONObject.class);
+                    List<UserInfoModel> userInfoModels = UserInfoDataUtils.parseRoomUserInfo(list);
                     int newOffset = result.getData().getIntValue("offset");
-                    mIGrabInviteView.addInviteModelList(grabFriendModelList, newOffset);
+                    mIGrabInviteView.addInviteModelList(userInfoModels, newOffset);
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }
@@ -89,11 +89,11 @@ public class GrabInvitePresenter {
     }
 
 
-    public void inviteFriend(int roomID, GrabFriendModel model) {
+    public void inviteFriend(int roomID, UserInfoModel model) {
         MyLog.d(TAG, "deleteSong");
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
-        map.put("userID", model.getUserID());
+        map.put("userID", model.getUserId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -102,8 +102,8 @@ public class GrabInvitePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    model.setInvited(true);
-                    mIGrabInviteView.updateInviteModel(model);
+                    // 更新视图
+                    mIGrabInviteView.hasInvitedModel(model);
                 } else {
                     MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
                 }
