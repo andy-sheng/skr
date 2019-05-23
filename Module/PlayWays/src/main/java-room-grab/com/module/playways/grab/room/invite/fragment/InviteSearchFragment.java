@@ -21,6 +21,7 @@ import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
@@ -31,7 +32,9 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
 import com.module.playways.grab.room.invite.presenter.InviteSearchPresenter;
 import com.module.playways.grab.room.invite.model.GrabFriendModel;
+import com.module.playways.grab.room.invite.view.IInviteSearchView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +48,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-public class InviteSearchFragment extends BaseFragment {
+public class InviteSearchFragment extends BaseFragment implements IInviteSearchView {
 
     public final static String TAG = "InviteSearchFragment";
 
@@ -88,7 +91,8 @@ public class InviteSearchFragment extends BaseFragment {
             mRoomID = bundle.getInt(INVITE_ROOM_ID);
         }
 
-        mPresenter = new InviteSearchPresenter();
+        mPresenter = new InviteSearchPresenter(this);
+        addPresent(mPresenter);
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
             public void onClick(GrabFriendModel model) {
@@ -171,7 +175,9 @@ public class InviteSearchFragment extends BaseFragment {
                 @Override
                 public void onNext(ApiResult result) {
                     if (result.getErrno() == 0) {
-
+                        List<JSONObject> list = JSON.parseArray(result.getData().getString("fans"), JSONObject.class);
+                        List<UserInfoModel> userInfoModels = UserInfoDataUtils.parseRoomUserInfo(list);
+                        showUserInfoList(userInfoModels);
                     }
                 }
 
@@ -194,7 +200,6 @@ public class InviteSearchFragment extends BaseFragment {
             }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
                 @Override
                 public ObservableSource<ApiResult> apply(String s) throws Exception {
-
                     GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
                     return grabRoomServerApi.searchFans(s).subscribeOn(Schedulers.io());
                 }
@@ -238,11 +243,11 @@ public class InviteSearchFragment extends BaseFragment {
             mCompositeDisposable = new CompositeDisposable();
             mCompositeDisposable.add(mDisposableObserver);
         }
-
     }
 
 
-    private void showUserInfoList(List<UserInfoModel> list) {
+    @Override
+    public void showUserInfoList(List<UserInfoModel> list) {
         // TODO: 2019/5/23 后续补充
     }
 

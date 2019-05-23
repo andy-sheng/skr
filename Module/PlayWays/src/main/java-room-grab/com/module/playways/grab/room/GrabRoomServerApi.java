@@ -302,6 +302,16 @@ public interface GrabRoomServerApi {
     @GET("http://dev.api.inframe.mobi/v1/mate/room-friends")
     Observable<ApiResult> getRoomFriendList(@Query("offset") int offset, @Query("cnt") int count);
 
+//    /**
+//     * 获取粉丝列表
+//     *
+//     * @param offset
+//     * @param count
+//     * @return
+//     */
+//    @GET("http://dev.api.inframe.mobi/v1/mate/room-fans")
+//    Observable<ApiResult> getRoomFansList(@Query("offset") int offset, @Query("cnt") int count);
+
     /**
      * 获取粉丝列表
      *
@@ -309,9 +319,8 @@ public interface GrabRoomServerApi {
      * @param count
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/mate/room-fans")
+    @GET("http://dev.api.inframe.mobi/v1/mate/room-fans-by-page")
     Observable<ApiResult> getRoomFansList(@Query("offset") int offset, @Query("cnt") int count);
-
 
     /**
      * 搜索房间内粉丝

@@ -64,6 +64,9 @@ public class GrabInvitePresenter {
             public void process(ApiResult result) {
                 mIGrabInviteView.finishRefresh();
                 if (result.getErrno() == 0) {
+
+
+
                     List<GrabFriendModel> grabFriendModelList = JSON.parseArray(result.getData().getString("friends"), GrabFriendModel.class);
                     int newOffset = result.getData().getIntValue("offset");
                     mIGrabInviteView.addInviteModelList(grabFriendModelList, newOffset);

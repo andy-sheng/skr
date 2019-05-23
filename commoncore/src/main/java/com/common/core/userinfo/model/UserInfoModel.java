@@ -20,8 +20,10 @@ import java.util.List;
 // TODO: 2019/1/2 该类会作为json来解析，不要改变量名
 public class UserInfoModel implements Serializable, Cloneable {
 
-    public static final int EF_OnLine = 1; //在线
-    public static final int EF_OffLine = 2; //离线
+    public static final int EF_OFFLINE = 10;      //离线
+    public static final int EF_ONLINE = 20;       //在线
+    public static final int EF_ONLINE_BUSY = EF_ONLINE + 1;  //在线忙碌中
+    public static final int EF_ONLiNE_JOINED = EF_ONLINE + 2;//在线已加入游戏
 
     /**
      * userID : 11
