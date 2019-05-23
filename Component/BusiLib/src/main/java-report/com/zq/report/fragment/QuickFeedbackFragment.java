@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -57,7 +58,6 @@ import static com.zq.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
  */
 public class QuickFeedbackFragment extends BaseFragment {
     public final static String TAG = "QuickFeedbackFragment";
-    View mPlaceHolderView;
     RelativeLayout mContainer;
     FeedbackView mFeedBackView;
     View mPlaceView;
@@ -66,6 +66,8 @@ public class QuickFeedbackFragment extends BaseFragment {
     String mContent;
     List<Integer> mTypeList;
     String mLogUrl;
+    int mFeedBackViewHeight;
+    int mTopMargin;
 
     ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment>() {
         @Override
@@ -92,7 +94,6 @@ public class QuickFeedbackFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mPlaceHolderView = (View) mRootView.findViewById(R.id.place_holder_view);
         mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
         mFeedBackView = (FeedbackView) mRootView.findViewById(R.id.feed_back_view);
         mPlaceView = (View) mRootView.findViewById(R.id.place_view);
@@ -145,6 +146,19 @@ public class QuickFeedbackFragment extends BaseFragment {
                 U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
             }
         });
+
+        mFeedBackView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mFeedBackView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mFeedBackViewHeight = mFeedBackView.getHeight();
+                mTopMargin = U.getDisplayUtils().getScreenHeight() - mFeedBackViewHeight - U.getStatusBarUtil().getStatusBarHeight(getContext()) - U.getDisplayUtils().dip2px(24);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
+                layoutParams.setMargins(U.getDisplayUtils().dip2px(16), mTopMargin, U.getDisplayUtils().dip2px(16), 0);
+                mPlaceView.getLayoutParams().height = mTopMargin;
+                mRootView.requestLayout();
+            }
+        });
     }
 
     @Override
@@ -157,6 +171,11 @@ public class QuickFeedbackFragment extends BaseFragment {
             return true;
         }
         return super.onActivityResultReal(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     void execUploadPhoto(final PhotoModel photoModel) {
@@ -262,20 +281,19 @@ public class QuickFeedbackFragment extends BaseFragment {
     public void onEvent(KeyboardEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         // 注意内容高度
-        int maxHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(357) - U.getStatusBarUtil().getStatusBarHeight(getContext());
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN: {
-                mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
-                mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
+                layoutParams.setMargins(U.getDisplayUtils().dip2px(16), mTopMargin, U.getDisplayUtils().dip2px(16), 0);
+                mPlaceView.getLayoutParams().height = mTopMargin;
+                mRootView.requestLayout();
                 break;
             }
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
-                if (event.keybordHeight > maxHeight) {
-                    mPlaceHolderView.getLayoutParams().height = maxHeight;
-                } else {
-                    mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
-                }
-                mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
+                layoutParams.setMargins(U.getDisplayUtils().dip2px(16), mTopMargin - event.keybordHeight, U.getDisplayUtils().dip2px(16), 0);
+                mPlaceView.getLayoutParams().height = mTopMargin - event.keybordHeight < 0 ? 0 : mTopMargin - event.keybordHeight;
+                mRootView.requestLayout();
                 break;
             }
         }
