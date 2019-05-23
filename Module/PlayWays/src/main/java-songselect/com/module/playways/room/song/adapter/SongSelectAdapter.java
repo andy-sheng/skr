@@ -48,9 +48,15 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == SEARCH_ITEM_TYPE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_search_footer_view, parent, false);
-            SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
-            return songSearchFooter;
+            if (mode == GRAB_MODE) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_search_footer_view, parent, false);
+                SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
+                return songSearchFooter;
+            } else {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_search_footer_view, parent, false);
+                SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
+                return songSearchFooter;
+            }
         } else {
             if (mode == GRAB_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
@@ -71,7 +77,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
             SongModel songModel = mDataList.get(position);
             songInfoHolder.bind(position, songModel);
         } else if (holder instanceof GrabSongInfoHolder) {
-            GrabSongInfoHolder grabSongInfoHolder = (GrabSongInfoHolder)holder;
+            GrabSongInfoHolder grabSongInfoHolder = (GrabSongInfoHolder) holder;
             SongModel songModel = mDataList.get(position);
             grabSongInfoHolder.bind(position, songModel);
         } else if (holder instanceof SongSearchFooter) {
