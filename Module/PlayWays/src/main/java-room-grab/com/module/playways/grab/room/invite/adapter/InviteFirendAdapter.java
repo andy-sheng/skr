@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.invite;
+package com.module.playways.grab.room.invite.adapter;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -17,7 +17,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.dialog.view.StrokeTextView;
-import com.module.playways.grab.room.model.GrabFriendModel;
+import com.module.playways.grab.room.invite.model.GrabFriendModel;
 import com.module.playways.R;
 
 public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerView.ViewHolder> {
@@ -195,7 +195,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
         }
     }
 
-    interface OnInviteClickListener {
+    public interface OnInviteClickListener {
         void onClick(GrabFriendModel model);
 
         void onClickSearch();

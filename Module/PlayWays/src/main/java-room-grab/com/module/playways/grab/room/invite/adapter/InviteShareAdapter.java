@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.invite;
+package com.module.playways.grab.room.invite.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +12,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
+import com.module.playways.grab.room.invite.model.ShareModel;
 
 public class InviteShareAdapter extends DiffAdapter<ShareModel, InviteShareAdapter.ShareViewHolder> {
 

@@ -282,8 +282,6 @@ public class UserInfoModel implements Serializable, Cloneable {
             Location location = userInfModel.getLocation();
             jsonObject.put("location", location);
             jsonObject.put("mainLevel", userInfModel.getMainLevel());
-            jsonObject.put("status", userInfModel.getStatus());
-            jsonObject.put("statusDesc", userInfModel.getStatusDesc());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -316,10 +314,6 @@ public class UserInfoModel implements Serializable, Cloneable {
                 userInfoModel.setLocation(location);
                 int mainLevel = jsonObject.getIntValue("mainLevel");
                 userInfoModel.setMainLevel(mainLevel);
-                int status = jsonObject.getIntValue("status");
-                userInfoModel.setStatus(status);
-                String statusDesc = jsonObject.getString("statusDesc");
-                userInfoModel.setStatusDesc(statusDesc);
             }
         }
         return userInfoModel;

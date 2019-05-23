@@ -1,16 +1,15 @@
-package com.module.playways.grab.room.invite;
+package com.module.playways.grab.room.invite.presenter;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
-import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.inter.IGrabInviteView;
-import com.module.playways.grab.room.model.GrabFriendModel;
+import com.module.playways.grab.room.invite.model.GrabFriendModel;
 
 import java.util.HashMap;
 import java.util.List;
