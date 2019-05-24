@@ -13,7 +13,9 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePlatform;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
@@ -56,8 +58,7 @@ public class ProducationWallView extends RelativeLayout {
 
     BaseFragment mFragment;
     UserInfoServerApi mUserInfoServerApi;
-    int mUserId;
-    String mNickName;
+    UserInfoModel mUserInfoModel;
 
     SmartRefreshLayout mSmartRefresh;
     RecyclerView mProducationView;
@@ -72,21 +73,20 @@ public class ProducationWallView extends RelativeLayout {
     ShareWorksDialog mShareWorksDialog;
     LoadService mLoadService;
 
-    public ProducationWallView(BaseFragment fragment, int userId, String nickName) {
+    public UserInfoModel getUserInfoModel() {
+        return mUserInfoModel;
+    }
+
+    public void setUserInfoModel(UserInfoModel userInfoModel) {
+        mUserInfoModel = userInfoModel;
+    }
+
+    public ProducationWallView(BaseFragment fragment, UserInfoModel userInfoModel) {
         super(fragment.getContext());
         this.mFragment = fragment;
-        this.mUserId = userId;
-        this.mNickName = nickName;
+        this.mUserInfoModel = userInfoModel;
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         init();
-    }
-
-    public String getNickName() {
-        return mNickName;
-    }
-
-    public void setNickName(String nickName) {
-        mNickName = nickName;
     }
 
     private void init() {
@@ -97,7 +97,7 @@ public class ProducationWallView extends RelativeLayout {
 
         mProducationView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         boolean hasDeleted = false;
-        if (mUserId == MyUserInfoManager.getInstance().getUid()) {
+        if (mUserInfoModel != null && mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
             hasDeleted = true;
         }
         mAdapter = new ProducationAdapter(new ProducationAdapter.Listener() {
@@ -172,7 +172,7 @@ public class ProducationWallView extends RelativeLayout {
         });
 
         String text = "ta还有没有作品哦～";
-        if (MyUserInfoManager.getInstance().getUid() == mUserId) {
+        if (mUserInfoModel != null && MyUserInfoManager.getInstance().getUid() == mUserInfoModel.getUserId()) {
             text = "嗨唱结束记得保存你的作品哦～";
         }
         LoadSir mLoadSir = new LoadSir.Builder()
@@ -229,7 +229,7 @@ public class ProducationWallView extends RelativeLayout {
             mShareWorksDialog.dismiss(false);
         }
         mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName()
-                , ShareWorksDialog.FROM_PERSON_INFO, new ShareWorksDialog.ShareListener() {
+                , false, new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
                 shareUrl(SharePlatform.QQ, model);
@@ -257,12 +257,12 @@ public class ProducationWallView extends RelativeLayout {
         if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getWorksURL())) {
             UMusic music = new UMusic(model.getWorksURL());
             music.setTitle("" + model.getName());
-            music.setDescription(mNickName + "的撕歌精彩时刻");
-            music.setThumb(new UMImage(mFragment.getActivity(), MyUserInfoManager.getInstance().getAvatar()));
+            music.setDescription(mUserInfoModel.getNickname() + "的撕歌精彩时刻");
+            music.setThumb(new UMImage(mFragment.getActivity(), mUserInfoModel.getAvatar()));
 
             StringBuilder sb = new StringBuilder();
             sb.append("http://dev.app.inframe.mobi/user/work")
-                    .append("?skerId=").append(String.valueOf(mUserId))
+                    .append("?skerId=").append(String.valueOf(mUserInfoModel.getUserId()))
                     .append("&workId=").append(String.valueOf(model.getWorksID()));
             String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
             // TODO: 2019/5/22 微信分享不成功的原因可能是mUrl未上线，微信会检测这个
@@ -308,7 +308,7 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     public void getProducations(final int offset) {
-        ApiMethods.subscribe(mUserInfoServerApi.getWorks(mUserId, offset, DEFAUAT_CNT), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getWorks(mUserInfoModel.getUserId(), offset, DEFAUAT_CNT), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -350,7 +350,7 @@ public class ProducationWallView extends RelativeLayout {
 
     public void playProducation(final ProducationModel model) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("toUserID", mUserId);
+        map.put("toUserID", mUserInfoModel.getUserId());
         map.put("worksID", model.getWorksID());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mUserInfoServerApi.playWorks(body), new ApiObserver<ApiResult>() {

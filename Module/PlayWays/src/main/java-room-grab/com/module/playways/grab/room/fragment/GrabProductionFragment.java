@@ -372,12 +372,12 @@ public class GrabProductionFragment extends BaseFragment {
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }
-        int from = ShareWorksDialog.FROM_GRAB_RESULT_NOSAVE;
+        boolean containSaveTips = true;
         if (hasSave) {
-            from = ShareWorksDialog.FROM_GRAB_RESULT_SAVED;
+            containSaveTips = false;
         }
         mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName()
-                , from, new ShareWorksDialog.ShareListener() {
+                , containSaveTips, new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
                 shareUrl(SharePlatform.QQ, momentModel);

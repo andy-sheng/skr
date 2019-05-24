@@ -450,7 +450,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                     return mOtherPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserId, mUserInfoModel.getNickname());
+                    mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserInfoModel);
                     container.addView(mProducationWallView);
                     mProducationWallView.getProducations();
                     return mProducationWallView;
@@ -564,7 +564,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     public void showUserInfo(UserInfoModel model) {
         this.mUserInfoModel = model;
         if (mProducationWallView != null) {
-            mProducationWallView.setNickName(model.getNickname());
+            mProducationWallView.setUserInfoModel(model);
         }
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(model.getAvatar())

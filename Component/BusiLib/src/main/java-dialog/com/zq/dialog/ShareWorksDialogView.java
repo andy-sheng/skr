@@ -13,7 +13,7 @@ public class ShareWorksDialogView extends RelativeLayout {
 
     String mSongName;
     Listener mListener;
-    int mFrom;
+    boolean mContainSaveTips;
 
     ExTextView mTvTitle;
     View mDivider;
@@ -24,11 +24,11 @@ public class ShareWorksDialogView extends RelativeLayout {
     TextView mTvQuanShare;
 
 
-    public ShareWorksDialogView(Context context, String songName, int from, Listener listener) {
+    public ShareWorksDialogView(Context context, String songName, boolean containSaveTips, Listener listener) {
         super(context);
         this.mSongName = songName;
         this.mListener = listener;
-        this.mFrom = from;
+        this.mContainSaveTips = containSaveTips;
         init(context);
     }
 
@@ -45,15 +45,12 @@ public class ShareWorksDialogView extends RelativeLayout {
 
         mTvText.setText("分享《" + mSongName + "》");
 
-        if (mFrom == ShareWorksDialog.FROM_PERSON_INFO) {
-            mTvTitle.setVisibility(GONE);
-            mDivider.setVisibility(GONE);
-        } else if (mFrom == ShareWorksDialog.FROM_GRAB_RESULT_SAVED) {
-            mTvTitle.setVisibility(GONE);
-            mDivider.setVisibility(GONE);
-        } else if (mFrom == ShareWorksDialog.FROM_GRAB_RESULT_NOSAVE) {
+        if (mContainSaveTips) {
             mTvTitle.setVisibility(VISIBLE);
             mDivider.setVisibility(VISIBLE);
+        } else {
+            mTvTitle.setVisibility(GONE);
+            mDivider.setVisibility(GONE);
         }
 
         mTvQqShare.setOnClickListener(new AnimateClickListener() {

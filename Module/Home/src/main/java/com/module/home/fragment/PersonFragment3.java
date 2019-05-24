@@ -27,6 +27,7 @@ import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
@@ -56,6 +57,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
+import com.zq.live.proto.Common.UserInfo;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
 
@@ -381,7 +383,11 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
                     return mPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    mProducationWallView = new ProducationWallView(PersonFragment3.this, (int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName());
+                    UserInfoModel userInfoModel = new UserInfoModel();
+                    userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
+                    userInfoModel.setNickname(MyUserInfoManager.getInstance().getNickName());
+                    userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+                    mProducationWallView = new ProducationWallView(PersonFragment3.this, userInfoModel);
                     container.addView(mProducationWallView);
                     mProducationWallView.getProducations();
                     return mProducationWallView;
