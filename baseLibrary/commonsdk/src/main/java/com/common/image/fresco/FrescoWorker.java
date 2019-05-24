@@ -253,8 +253,8 @@ public class FrescoWorker {
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
                         if (imageInfo != null && baseImage.adjustViewWHbyImage()) {
                             ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
-                            layoutParams.width = imageInfo.getWidth();
-                            layoutParams.height = imageInfo.getHeight();
+                            layoutParams.width = U.getDisplayUtils().dip2px(imageInfo.getWidth() / 3);
+                            layoutParams.height = U.getDisplayUtils().dip2px(imageInfo.getHeight() / 3);
                             draweeView.setLayoutParams(layoutParams);
                         }
                         if (baseImage.getCallBack() != null) {

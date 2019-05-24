@@ -50,7 +50,7 @@ public class CommentDynamicHolder extends RecyclerView.ViewHolder {
                 .build());
 
         FrescoWorker.loadImage(mCommentSdv, ImageFactory.newPathImage(commentModel.getDynamicModel().getBigEmojiURL())
-                .setScaleType(ScalingUtils.ScaleType.CENTER)
+                .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                 .setFitDrawable(true)
                 .build());
     }

@@ -12,7 +12,7 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/comment_sdv"
-        android:layout_width="@dimen/view_130_dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_80_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_11_dp"
