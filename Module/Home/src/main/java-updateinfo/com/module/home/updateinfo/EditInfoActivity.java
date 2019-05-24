@@ -179,6 +179,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 .setMultiMode(false)
                 .setSelectLimit(1)
                 .setCropStyle(CropImageView.Style.CIRCLE)
+                .setIncludeGif(false)
                 .build()
         );
         ResPickerActivity.open(this);

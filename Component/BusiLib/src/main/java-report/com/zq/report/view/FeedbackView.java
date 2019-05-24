@@ -203,6 +203,7 @@ public class FeedbackView extends RelativeLayout {
         ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                 .setMultiMode(true)
                 .setShowCamera(true)
+                .setIncludeGif(false)
                 .setCrop(false)
                 .setSelectLimit(4)
                 .build()
