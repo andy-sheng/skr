@@ -795,8 +795,10 @@ public class UserInfoManager {
             userInfoModel.setStatusTs(onlineModel.getOnlineTime());
             if (pullGameStatus) {
                 if (onlineModel.getBusy()) {
+                    userInfoModel.setStatus(UserInfoModel.EF_ONLINE_BUSY);
                     userInfoModel.setStatusDesc("忙碌中");
                 } else if (onlineModel.getInRoom()) {
+                    userInfoModel.setStatus(UserInfoModel.EF_ONLiNE_JOINED);
                     userInfoModel.setStatusDesc("已加入游戏");
                 } else {
                     userInfoModel.setStatusDesc("在线");
