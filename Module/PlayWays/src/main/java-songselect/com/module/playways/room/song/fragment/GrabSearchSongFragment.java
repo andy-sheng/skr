@@ -213,7 +213,7 @@ public class GrabSearchSongFragment extends BaseFragment {
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setExpanded(false)
-                .setGravity(Gravity.CENTER)
+                .setGravity(Gravity.BOTTOM)
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(@NonNull DialogPlus dialog) {
