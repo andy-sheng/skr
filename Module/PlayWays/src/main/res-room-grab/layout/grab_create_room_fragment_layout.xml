@@ -26,40 +26,43 @@
         android:textSize="@dimen/textsize_18_dp"
         android:textStyle="bold" />
 
-    <com.common.view.ex.ExRelativeLayout
+    <com.common.view.ex.ExImageView
         android:id="@+id/friends_room"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_139_dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_80_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/chuangjianfangjian_haoyoufangrukou">
+        android:adjustViewBounds="true"
+        android:src="@drawable/chuangjianfangjian_haoyoufangrukou">
 
-    </com.common.view.ex.ExRelativeLayout>
+    </com.common.view.ex.ExImageView>
 
-    <com.common.view.ex.ExRelativeLayout
+    <com.common.view.ex.ExImageView
         android:id="@+id/secret_room"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_139_dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/friends_room"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/chuangjianfangjian_simifangrukou">
+        android:adjustViewBounds="true"
+        android:src="@drawable/chuangjianfangjian_simifangrukou">
 
-    </com.common.view.ex.ExRelativeLayout>
+    </com.common.view.ex.ExImageView>
 
 
-    <com.common.view.ex.ExRelativeLayout
+    <com.common.view.ex.ExImageView
         android:id="@+id/public_room"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_139_dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/secret_room"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/chuangjianhaoyou_haohuapaiduirukou">
+        android:adjustViewBounds="true"
+        android:src="@drawable/chuangjianhaoyou_haohuapaiduirukou">
 
-    </com.common.view.ex.ExRelativeLayout>
+    </com.common.view.ex.ExImageView>
 
 </com.common.view.ex.ExRelativeLayout>

@@ -17,7 +17,6 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.constans.GrabRoomType;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
@@ -36,9 +35,9 @@ public class GrabCreateRoomFragment extends BaseFragment {
     public static final int ErrRealAuth = 8344158; //实名认证未通过
 
     ExImageView mIvBack;
-    ExRelativeLayout mFriendsRoom;
-    ExRelativeLayout mSecretRoom;
-    ExRelativeLayout mPublicRoom;
+    ExImageView mFriendsRoom;
+    ExImageView mSecretRoom;
+    ExImageView mPublicRoom;
 
     DialogPlus mDialogPlus;
     DialogPlus mCertificationDialogPlus;
@@ -51,9 +50,9 @@ public class GrabCreateRoomFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mFriendsRoom = (ExRelativeLayout) mRootView.findViewById(R.id.friends_room);
-        mSecretRoom = (ExRelativeLayout) mRootView.findViewById(R.id.secret_room);
-        mPublicRoom = (ExRelativeLayout) mRootView.findViewById(R.id.public_room);
+        mFriendsRoom = (ExImageView) mRootView.findViewById(R.id.friends_room);
+        mSecretRoom = (ExImageView) mRootView.findViewById(R.id.secret_room);
+        mPublicRoom = (ExImageView) mRootView.findViewById(R.id.public_room);
 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
