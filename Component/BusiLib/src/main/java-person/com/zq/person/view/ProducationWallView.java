@@ -156,7 +156,7 @@ public class ProducationWallView extends RelativeLayout {
         }, hasDeleted);
         mProducationView.setAdapter(mAdapter);
 
-        String text = "ta还有没有作品哦～";
+        String text = "ta还没有作品哦～";
         if (mUserInfoModel != null && MyUserInfoManager.getInstance().getUid() == mUserInfoModel.getUserId()) {
             text = "嗨唱结束记得保存你的作品哦～";
         }
