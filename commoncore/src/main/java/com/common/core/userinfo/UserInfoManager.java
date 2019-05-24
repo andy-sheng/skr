@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.core.userinfo.model.OnlineModel;
@@ -918,12 +919,13 @@ public class UserInfoManager {
                                 }
                             }
                             {
-                                List<Integer> userOfflineList = JSON.parseArray(obj.getData().getString("userOfflineList"), Integer.class);
+                                List<JSONObject> userOfflineList = JSON.parseArray(obj.getData().getString("userOfflineList"), JSONObject.class);
                                 if (userOfflineList != null) {
-                                    for (int uid : userOfflineList) {
+                                    for (JSONObject jsonObject : userOfflineList) {
                                         OnlineModel onlineModel = new OnlineModel();
-                                        onlineModel.setUserID(uid);
+                                        onlineModel.setUserID(jsonObject.getIntValue("userID"));
                                         onlineModel.setOnline(false);
+                                        onlineModel.setOfflineTime(jsonObject.getLongValue("offlineTime"));
                                         onlineModel.setRecordTs(System.currentTimeMillis());
                                         hashSet.put(onlineModel.getUserID(), onlineModel);
                                         mStatusMap.put(onlineModel.getUserID(), onlineModel);
