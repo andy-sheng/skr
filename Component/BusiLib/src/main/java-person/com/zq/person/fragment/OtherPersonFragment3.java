@@ -69,6 +69,7 @@ import com.zq.person.view.IOtherPersonView;
 import com.zq.person.view.OtherPhotoWallView;
 import com.zq.person.view.PersonMoreOpView;
 import com.zq.person.view.ProducationWallView;
+import com.zq.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -83,7 +84,7 @@ import static com.zq.report.fragment.ReportFragment.FORM_PERSON;
 import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
 import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
-public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView {
+public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView, RequestCallBack {
 
     public static final String BUNDLE_USER_ID = "bundle_user_id";
 
@@ -101,10 +102,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     TagAdapter mTagAdapter;
 
     PhotoAdapter mPhotoAdapter;
-    int offset;  // 拉照片偏移量
-    int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
-
-    boolean mHasMore = false;
     boolean isAppbarCanSrcoll = true;  // AppBarLayout是否可以滚动
 
     UserInfoModel mUserInfoModel = new UserInfoModel();
@@ -215,7 +212,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         }
 
         mSmartRefresh.setEnableRefresh(true);
-        mSmartRefresh.setEnableLoadMore(false);
+        mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
         mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
@@ -223,15 +220,21 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                if (mOtherPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
+                    mOtherPhotoWallView.getMorePhotos();
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mProducationWallView.getMoreProducations();
+                }
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(mUserId);
-                if (mOtherPhotoWallView != null) {
+                if (mOtherPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mOtherPhotoWallView.getPhotos();
                 }
-                if (mProducationWallView != null) {
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
                     mProducationWallView.getProducations();
                 }
             }
@@ -444,13 +447,13 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 if (position == 0) {
                     // 照片墙
-                    mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment3.this, mUserId, null);
+                    mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment3.this, mUserId, OtherPersonFragment3.this, null);
                     container.addView(mOtherPhotoWallView);
                     mOtherPhotoWallView.getPhotos();
                     return mOtherPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserInfoModel);
+                    mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserInfoModel, OtherPersonFragment3.this);
                     container.addView(mProducationWallView);
                     mProducationWallView.getProducations();
                     return mProducationWallView;
@@ -549,16 +552,8 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     }
 
     @Override
-    public void addPhotos(List<PhotoModel> list, int newOffset, int totalNum, boolean clear) {
-
-    }
-
-    @Override
-    public void addPhotosFail() {
-        mSmartRefresh.finishLoadMore();
-        if (mPhotoAdapter.getDataList() == null || mPhotoAdapter.getDataList().size() == 0) {
-            setAppBarCanScroll(false);
-        }
+    public void getHomePageFail() {
+        mSmartRefresh.finishRefresh();
     }
 
     public void showUserInfo(UserInfoModel model) {
@@ -787,5 +782,10 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         if (mEditRemarkDialog != null) {
             mEditRemarkDialog.dismiss(false);
         }
+    }
+
+    @Override
+    public void onRequestSucess() {
+        mSmartRefresh.finishLoadMore();
     }
 }

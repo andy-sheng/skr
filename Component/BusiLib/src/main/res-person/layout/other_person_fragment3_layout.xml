@@ -74,6 +74,8 @@
                     android:id="@+id/person_vp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/view_9_dp"
+                    android:layout_marginRight="@dimen/view_9_dp"
                     android:fadingEdge="none"
                     android:fadingEdgeLength="0dp"
                     android:overScrollMode="never"

@@ -1,6 +1,5 @@
 package com.zq.person.view;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -22,9 +21,6 @@ import com.imagebrowse.big.BigImageBrowseFragment;
 import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 
@@ -34,12 +30,12 @@ public class OtherPhotoWallView extends RelativeLayout {
 
     public final static String TAG = "PhotoWallView";
     int mUserId;
+    RequestCallBack mCallBack;
 
     int offset;  // 拉照片偏移量
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
     boolean mHasMore = false;
 
-    SmartRefreshLayout mSmartRefresh;
     RecyclerView mPhotoView;
     BaseFragment mFragment;
     PhotoAdapter mPhotoAdapter;
@@ -48,10 +44,11 @@ public class OtherPhotoWallView extends RelativeLayout {
     AppCanSrollListener mListener;
     LoadService mLoadService;
 
-    public OtherPhotoWallView(BaseFragment fragment, int userID, AppCanSrollListener listener) {
+    public OtherPhotoWallView(BaseFragment fragment, int userID, RequestCallBack callBack, AppCanSrollListener listener) {
         super(fragment.getContext());
         this.mFragment = fragment;
         this.mUserId = userID;
+        this.mCallBack = callBack;
         this.mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         this.mListener = listener;
         init();
@@ -60,26 +57,7 @@ public class OtherPhotoWallView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.photo_other_wall_view_layout, this);
 
-        mSmartRefresh = (SmartRefreshLayout) findViewById(R.id.smart_refresh);
         mPhotoView = (RecyclerView) findViewById(R.id.photo_view);
-
-
-        mSmartRefresh.setEnableRefresh(false);
-        mSmartRefresh.setEnableLoadMore(true);
-        mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
-        mSmartRefresh.setEnableOverScrollDrag(true);
-        mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                getPhotos(mUserId, offset, DEFAUAT_CNT, null);
-            }
-
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-            }
-        });
-
         mPhotoView.setFocusableInTouchMode(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         mPhotoView.setLayoutManager(gridLayoutManager);
@@ -147,7 +125,7 @@ public class OtherPhotoWallView extends RelativeLayout {
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "这个人很神秘，都没有照片"))
                 .build();
-        mLoadService = mLoadSir.register(mSmartRefresh, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
+        mLoadService = mLoadSir.register(mPhotoView, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
                 getPhotos();
@@ -159,7 +137,11 @@ public class OtherPhotoWallView extends RelativeLayout {
         getPhotos(mUserId, 0, DEFAUAT_CNT, null);
     }
 
-    public void getPhotos(int userId, final int offset, int cnt, final Callback<List<PhotoModel>> callback) {
+    public void getMorePhotos() {
+        getPhotos(mUserId, offset, DEFAUAT_CNT, null);
+    }
+
+    private void getPhotos(int userId, final int offset, int cnt, final Callback<List<PhotoModel>> callback) {
         ApiMethods.subscribe(mUserInfoServerApi.getPhotos(userId, offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -193,7 +175,10 @@ public class OtherPhotoWallView extends RelativeLayout {
 
     public void addPhotos(List<PhotoModel> list, int newOffset, int totalNum, boolean clear) {
         offset = newOffset;
-        mSmartRefresh.finishLoadMore();
+
+        if (mCallBack != null) {
+            mCallBack.onRequestSucess();
+        }
 
         if (clear) {
             mPhotoAdapter.getDataList().clear();
@@ -202,7 +187,6 @@ public class OtherPhotoWallView extends RelativeLayout {
         if (list != null && list.size() > 0) {
             mHasMore = true;
             mLoadService.showSuccess();
-            mSmartRefresh.setEnableLoadMore(true);
             mPhotoAdapter.getDataList().addAll(list);
             mPhotoAdapter.notifyDataSetChanged();
             if (mListener != null) {
@@ -210,7 +194,6 @@ public class OtherPhotoWallView extends RelativeLayout {
             }
         } else {
             mHasMore = false;
-            mSmartRefresh.setEnableLoadMore(false);
             if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
                 // 没有更多了
             } else {
@@ -225,7 +208,9 @@ public class OtherPhotoWallView extends RelativeLayout {
 
 
     public void addPhotosFail() {
-        mSmartRefresh.finishLoadMore();
+        if (mCallBack != null) {
+            mCallBack.onRequestSucess();
+        }
         if (mPhotoAdapter.getDataList() == null || mPhotoAdapter.getDataList().size() == 0) {
             if (mListener != null) {
                 mListener.notifyAppbarSroll(false);

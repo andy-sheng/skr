@@ -73,6 +73,8 @@
                     android:id="@+id/person_vp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/view_9_dp"
+                    android:layout_marginRight="@dimen/view_9_dp"
                     android:fadingEdge="none"
                     android:fadingEdgeLength="0dp"
                     android:overScrollMode="never"
@@ -214,8 +216,8 @@
                                 android:layout_below="@id/userid_tv"
                                 android:layout_alignLeft="@id/name_tv"
                                 android:layout_marginRight="@dimen/view_50_dp"
-                                android:textSize="@dimen/textsize_14_dp"
-                                android:textColor="@color/white_trans_80"/>
+                                android:textColor="@color/white_trans_80"
+                                android:textSize="@dimen/textsize_14_dp" />
 
                             <LinearLayout
                                 android:id="@+id/relation_num_area"

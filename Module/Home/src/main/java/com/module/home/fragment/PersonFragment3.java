@@ -60,6 +60,7 @@ import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
+import com.zq.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -72,7 +73,7 @@ import model.RelationNumModel;
  * 自己
  * 带作品的照片墙
  */
-public class PersonFragment3 extends BaseFragment implements IPersonView {
+public class PersonFragment3 extends BaseFragment implements IPersonView, RequestCallBack {
 
     SmartRefreshLayout mSmartRefresh;
     ClassicsHeader mClassicsHeader;
@@ -150,6 +151,12 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPresenter.getHomePage(false);
+        if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
+            mPhotoWallView.getPhotos();
+        }
+        if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+            mProducationWallView.getProducations();
+        }
     }
 
     @Override
@@ -178,7 +185,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
         }
 
         mSmartRefresh.setEnableRefresh(true);
-        mSmartRefresh.setEnableLoadMore(false);
+        mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
         mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
@@ -186,16 +193,21 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+                if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
+                    mPhotoWallView.getMorePhotos();
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mProducationWallView.getMoreProducations();
+                }
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(true);
-                if (mPhotoWallView != null) {
+                if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getPhotos();
                 }
-                if (mProducationWallView != null) {
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
                     mProducationWallView.getProducations();
                 }
             }
@@ -377,7 +389,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 if (position == 0) {
                     // 照片墙
-                    mPhotoWallView = new PhotoWallView(PersonFragment3.this);
+                    mPhotoWallView = new PhotoWallView(PersonFragment3.this, PersonFragment3.this);
                     container.addView(mPhotoWallView);
                     mPhotoWallView.getPhotos();
                     return mPhotoWallView;
@@ -387,7 +399,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
                     userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
                     userInfoModel.setNickname(MyUserInfoManager.getInstance().getNickName());
                     userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
-                    mProducationWallView = new ProducationWallView(PersonFragment3.this, userInfoModel);
+                    mProducationWallView = new ProducationWallView(PersonFragment3.this, userInfoModel, PersonFragment3.this);
                     container.addView(mProducationWallView);
                     mProducationWallView.getProducations();
                     return mProducationWallView;
@@ -583,6 +595,11 @@ public class PersonFragment3 extends BaseFragment implements IPersonView {
     @Override
     public void destroy() {
         super.destroy();
+    }
+
+    @Override
+    public void onRequestSucess() {
+        mSmartRefresh.finishLoadMore();
     }
 }
 

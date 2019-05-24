@@ -18,9 +18,6 @@ import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.AddPhotoModel;
 import com.zq.person.model.PhotoModel;
@@ -39,40 +36,24 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
     boolean mHasMore = false;
 
-    SmartRefreshLayout mSmartRefresh;
     RecyclerView mPhotoView;
     BaseFragment mFragment;
+    RequestCallBack mCallBack;
     PhotoAdapter mPhotoAdapter;
     PhotoCorePresenter mPhotoCorePresenter;
 
-    public PhotoWallView(BaseFragment fragment) {
+    public PhotoWallView(BaseFragment fragment, RequestCallBack callBack) {
         super(fragment.getContext());
         this.mFragment = fragment;
+        this.mCallBack = callBack;
         init();
     }
 
     private void init() {
         inflate(getContext(), R.layout.photo_wall_view_layout, this);
-        mSmartRefresh = (SmartRefreshLayout) findViewById(R.id.smart_refresh);
         mPhotoView = (RecyclerView) findViewById(R.id.photo_view);
 
         mPhotoCorePresenter = new PhotoCorePresenter(this, mFragment);
-
-        mSmartRefresh.setEnableRefresh(false);
-        mSmartRefresh.setEnableLoadMore(true);
-        mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
-        mSmartRefresh.setEnableOverScrollDrag(true);
-        mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPhotoCorePresenter.getPhotos(mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT);
-            }
-
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-            }
-        });
 
         mPhotoView.setFocusableInTouchMode(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -183,6 +164,10 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
         }
     }
 
+    public void getMorePhotos() {
+        mPhotoCorePresenter.getPhotos(mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT);
+    }
+
     void goAddPhotoFragment() {
         ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                 .setMultiMode(true)
@@ -200,8 +185,9 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
     public void addPhoto(List<PhotoModel> list, boolean clear, int totalNum) {
         MyLog.d(TAG, "showPhoto" + " list=" + list + " clear=" + clear + " totalNum=" + totalNum);
 
-        mSmartRefresh.finishLoadMore();
-
+        if (mCallBack != null) {
+            mCallBack.onRequestSucess();
+        }
         if (list != null && list.size() > 0) {
             // 有数据
             mHasMore = true;
@@ -248,7 +234,9 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
 
     @Override
     public void loadDataFailed() {
-        mSmartRefresh.finishLoadMore();
+        if (mCallBack != null) {
+            mCallBack.onRequestSucess();
+        }
     }
 
     @Override

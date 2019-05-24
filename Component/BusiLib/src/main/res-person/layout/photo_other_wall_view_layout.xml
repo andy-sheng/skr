@@ -3,21 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/smart_refresh"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/photo_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/photo_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/view_9_dp"
-            android:layout_marginTop="@dimen/view_7_dp"
-            android:layout_marginRight="@dimen/view_9_dp"
-            android:overScrollMode="never" />
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
 
 </merge>

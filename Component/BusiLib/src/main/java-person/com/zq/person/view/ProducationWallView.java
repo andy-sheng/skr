@@ -57,10 +57,10 @@ public class ProducationWallView extends RelativeLayout {
     public final static String TAG = "ProducationWallView";
 
     BaseFragment mFragment;
+    RequestCallBack mCallBack;
     UserInfoServerApi mUserInfoServerApi;
     UserInfoModel mUserInfoModel;
 
-    SmartRefreshLayout mSmartRefresh;
     RecyclerView mProducationView;
     ProducationAdapter mAdapter;
 
@@ -81,10 +81,11 @@ public class ProducationWallView extends RelativeLayout {
         mUserInfoModel = userInfoModel;
     }
 
-    public ProducationWallView(BaseFragment fragment, UserInfoModel userInfoModel) {
+    public ProducationWallView(BaseFragment fragment, UserInfoModel userInfoModel, RequestCallBack requestCallBack) {
         super(fragment.getContext());
         this.mFragment = fragment;
         this.mUserInfoModel = userInfoModel;
+        this.mCallBack = requestCallBack;
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         init();
     }
@@ -93,7 +94,6 @@ public class ProducationWallView extends RelativeLayout {
         inflate(getContext(), R.layout.producation_wall_view_layout, this);
 
         mProducationView = (RecyclerView) findViewById(R.id.producation_view);
-        mSmartRefresh = (SmartRefreshLayout) findViewById(R.id.smart_refresh);
 
         mProducationView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         boolean hasDeleted = false;
@@ -155,22 +155,6 @@ public class ProducationWallView extends RelativeLayout {
         }, hasDeleted);
         mProducationView.setAdapter(mAdapter);
 
-        mSmartRefresh.setEnableRefresh(false);
-        mSmartRefresh.setEnableLoadMore(true);
-        mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
-        mSmartRefresh.setEnableOverScrollDrag(true);
-        mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                getProducations(offset);
-            }
-
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-            }
-        });
-
         String text = "ta还有没有作品哦～";
         if (mUserInfoModel != null && MyUserInfoManager.getInstance().getUid() == mUserInfoModel.getUserId()) {
             text = "嗨唱结束记得保存你的作品哦～";
@@ -178,7 +162,7 @@ public class ProducationWallView extends RelativeLayout {
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, text))
                 .build();
-        mLoadService = mLoadSir.register(mSmartRefresh, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
+        mLoadService = mLoadSir.register(mProducationView, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
                 getProducations();
@@ -307,7 +291,11 @@ public class ProducationWallView extends RelativeLayout {
         getProducations(0);
     }
 
-    public void getProducations(final int offset) {
+    public void getMoreProducations() {
+        getProducations(offset);
+    }
+
+    private void getProducations(final int offset) {
         ApiMethods.subscribe(mUserInfoServerApi.getWorks(mUserInfoModel.getUserId(), offset, DEFAUAT_CNT), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -367,7 +355,9 @@ public class ProducationWallView extends RelativeLayout {
 
     private void addProducation(List<ProducationModel> list, int newOffset, int totalCnt, boolean isClear) {
         offset = newOffset;
-        mSmartRefresh.finishLoadMore();
+        if (mCallBack != null) {
+            mCallBack.onRequestSucess();
+        }
         if (isClear) {
             mAdapter.getDataList().clear();
         }
@@ -387,7 +377,9 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     private void loadProducationsFailed() {
-        mSmartRefresh.finishLoadMore();
+        if (mCallBack != null) {
+            mCallBack.onRequestSucess();
+        }
     }
 
     @Override
