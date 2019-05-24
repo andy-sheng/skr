@@ -325,7 +325,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     }
 
     private void showRemarkDialog() {
-        EditRemarkView editRemarkView = new EditRemarkView(OtherPersonFragment3.this, mUserInfoModel.getNicknameRemark());
+        EditRemarkView editRemarkView = new EditRemarkView(OtherPersonFragment3.this, mUserInfoModel.getNickname(), mUserInfoModel.getNicknameRemark(null));
         editRemarkView.setListener(new EditRemarkView.Listener() {
             @Override
             public void onClickCancel() {

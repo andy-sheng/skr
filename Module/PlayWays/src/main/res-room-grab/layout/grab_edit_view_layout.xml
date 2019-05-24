@@ -38,6 +38,7 @@
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_weight="1"
             android:background="@drawable/red_button_icon"
+            app:borderColor="#cc5883"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
             android:text="取消"

@@ -15,6 +15,7 @@ import com.dialog.view.StrokeTextView;
 public class EditRemarkView extends RelativeLayout {
 
     BaseFragment mFragment;
+    String mNickName;
     String mRemarkName;
     Listener mListener;
 
@@ -24,9 +25,15 @@ public class EditRemarkView extends RelativeLayout {
     StrokeTextView mCancelTv;
     StrokeTextView mSaveTv;
 
-    public EditRemarkView(BaseFragment fragment, String remarkName) {
+    /**
+     * @param fragment
+     * @param nickName   昵称
+     * @param remarkName 真的备注
+     */
+    public EditRemarkView(BaseFragment fragment, String nickName, String remarkName) {
         super(fragment.getContext());
         this.mFragment = fragment;
+        this.mNickName = nickName;
         this.mRemarkName = remarkName;
         init();
     }
@@ -46,7 +53,10 @@ public class EditRemarkView extends RelativeLayout {
 
         if (!TextUtils.isEmpty(mRemarkName)) {
             mRemarkNameEdt.setText(mRemarkName);
-            mRemarkNameEdt.setHint(mRemarkName);
+        }
+        if (!TextUtils.isEmpty(mNickName)) {
+            // 怎么变，提示都显示其昵称
+            mRemarkNameEdt.setHint(mNickName);
         }
 
         mCancelTv.setOnClickListener(new DebounceViewClickListener() {

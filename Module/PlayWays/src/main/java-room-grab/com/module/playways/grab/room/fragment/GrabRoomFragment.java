@@ -761,7 +761,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void showRemarkDialog(UserInfoModel mUserInfoModel) {
-        EditRemarkView editRemarkView = new EditRemarkView(GrabRoomFragment.this, mUserInfoModel.getNicknameRemark());
+        EditRemarkView editRemarkView = new EditRemarkView(GrabRoomFragment.this, mUserInfoModel.getNickname(), mUserInfoModel.getNicknameRemark(null));
         editRemarkView.setListener(new EditRemarkView.Listener() {
             @Override
             public void onClickCancel() {
