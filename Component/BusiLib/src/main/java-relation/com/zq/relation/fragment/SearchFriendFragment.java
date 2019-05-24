@@ -15,9 +15,9 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
@@ -29,15 +29,14 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.module.RouterConstants;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.person.fragment.OtherPersonFragment3;
 import com.zq.relation.adapter.RelationAdapter;
 
 import java.util.List;
@@ -95,14 +94,11 @@ public class SearchFriendFragment extends BaseFragment {
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, userInfoModel.getUserId());
-                    U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment3.class)
-                            .setUseOldFragmentIfExist(false)
-                            .setBundle(bundle)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .build());
+                    bundle.putInt("bundle_user_id", userInfoModel.getUserId());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation();
                     U.getKeyBoardUtils().hideSoftInput(mSearchContent);
                 } else if (view.getId() == R.id.follow_tv) {
                     // 关注和好友都是有关系的人

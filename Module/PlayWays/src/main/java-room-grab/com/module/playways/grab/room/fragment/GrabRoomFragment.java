@@ -783,6 +783,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 if (mEditRemarkDialog != null) {
                     mEditRemarkDialog.dismiss();
                 }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             }
 
             @Override
@@ -790,6 +791,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 if (mEditRemarkDialog != null) {
                     mEditRemarkDialog.dismiss();
                 }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(mUserInfoModel.getNicknameRemark())) {
                     // 都为空
                     return;

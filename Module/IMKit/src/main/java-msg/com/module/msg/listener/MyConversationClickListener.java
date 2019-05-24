@@ -4,11 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
-import com.common.base.BaseActivity;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.zq.person.fragment.OtherPersonFragment3;
+import com.module.RouterConstants;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
@@ -29,14 +28,11 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
         if (Integer.valueOf(userInfo.getUserId()) != MyUserInfoManager.getInstance().getUid()) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             Bundle bundle = new Bundle();
-            bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
-            U.getFragmentUtils().addFragment(FragmentUtils
-                    .newAddParamsBuilder((BaseActivity) context, OtherPersonFragment3.class)
-                    .setUseOldFragmentIfExist(false)
-                    .setBundle(bundle)
-                    .setAddToBackStack(true)
-                    .setHasAnimation(true)
-                    .build());
+            bundle.putInt("bundle_user_id", Integer.valueOf(userInfo.getUserId()));
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                    .with(bundle)
+                    .navigation();
         }
         return true;
     }

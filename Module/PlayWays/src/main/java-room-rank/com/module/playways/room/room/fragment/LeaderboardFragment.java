@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -15,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.Location;
@@ -26,7 +26,6 @@ import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.permission.PermissionUtils;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
 import com.common.utils.U;
@@ -35,6 +34,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.room.room.adapter.LeaderBoardAdapter;
 import com.module.playways.room.room.presenter.LeaderboardPresenter;
@@ -44,7 +44,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.fragment.OtherPersonFragment3;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -485,14 +484,11 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     public void gotoPersonFragment(int uid) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, uid);
-        U.getFragmentUtils().addFragment(FragmentUtils
-                .newAddParamsBuilder((FragmentActivity) getActivity(), OtherPersonFragment3.class)
-                .setUseOldFragmentIfExist(false)
-                .setBundle(bundle)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
-                .build());
+        bundle.putInt("bundle_user_id", uid);
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                .with(bundle)
+                .navigation();
     }
 
     @Override

@@ -7,8 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.permission.SkrNotificationPermission;
 import com.common.core.userinfo.UserInfoManager;
@@ -20,7 +20,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -28,11 +27,11 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import com.module.RouterConstants;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.person.fragment.OtherPersonFragment3;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -86,14 +85,11 @@ public class LastFollowFragment extends BaseFragment {
                 if (view.getId() == R.id.content) {
                     // TODO: 2019/4/24 跳到主页还是开始聊天？？？
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment3.BUNDLE_USER_ID, model.getUserID());
-                    U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment3.class)
-                            .setUseOldFragmentIfExist(false)
-                            .setBundle(bundle)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .build());
+                    bundle.putInt("bundle_user_id", model.getUserID());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation();
                 } else if (view.getId() == R.id.follow_tv) {
                     if (!model.isIsFollow() && !model.isIsFriend()) {
                         UserInfoManager.getInstance().mateRelation(model.getUserID(), UserInfoManager.RA_BUILD, model.isIsFriend());

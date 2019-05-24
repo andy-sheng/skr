@@ -61,7 +61,6 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.EditRemarkView;
 import com.zq.person.view.IOtherPersonView;
@@ -79,9 +78,9 @@ import java.util.List;
 
 import model.RelationNumModel;
 
-public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView, RequestCallBack {
+import static com.zq.person.activity.OtherPersonActivity.BUNDLE_USER_ID;
 
-    public static final String BUNDLE_USER_ID = "bundle_user_id";
+public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView, RequestCallBack {
 
     public static final int RELATION_FOLLOWED = 1; // 已关注关系
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
@@ -96,7 +95,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 
     TagAdapter mTagAdapter;
 
-    PhotoAdapter mPhotoAdapter;
     boolean isAppbarCanSrcoll = true;  // AppBarLayout是否可以滚动
 
     UserInfoModel mUserInfoModel = new UserInfoModel();
@@ -259,7 +257,9 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(OtherPersonFragment3.this);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 
@@ -325,6 +325,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                 if (mEditRemarkDialog != null) {
                     mEditRemarkDialog.dismiss();
                 }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             }
 
             @Override
@@ -332,6 +333,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                 if (mEditRemarkDialog != null) {
                     mEditRemarkDialog.dismiss();
                 }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(mUserInfoModel.getNicknameRemark())) {
                     // 都为空
                     return;
