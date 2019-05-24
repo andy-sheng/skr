@@ -15,12 +15,12 @@
 
         <com.common.view.ex.ExImageView
             android:id="@+id/emoji1_btn"
-            android:layout_width="@dimen/view_38_dp"
-            android:layout_height="@dimen/view_41_dp"
+            android:layout_width="@dimen/view_39_dp"
+            android:layout_height="@dimen/view_35_dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/ycdd_liaotian_biaoqing" />
+            app:src_unPressed_drawable="@drawable/biaoqing" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/emoji2_btn"
