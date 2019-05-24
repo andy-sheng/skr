@@ -3,6 +3,7 @@ package com.zq.dialog;
 import android.content.Context;
 import android.view.Gravity;
 
+import com.common.utils.U;
 import com.component.busilib.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -16,6 +17,10 @@ public class ShareWorksDialog {
                 , new ShareWorksDialogView.Listener() {
             @Override
             public void onClickQQShare() {
+                if(!U.getCommonUtils().hasInstallApp("com.tencent.qq")){
+                    U.getToastUtil().showShort("未安装QQ");
+                    return;
+                }
                 if (mShareDialog != null) {
                     mShareDialog.dismiss();
                 }
@@ -26,6 +31,10 @@ public class ShareWorksDialog {
 
             @Override
             public void onClickQZoneShare() {
+                if(!U.getCommonUtils().hasInstallApp("com.tencent.qq")){
+                    U.getToastUtil().showShort("未安装QQ");
+                    return;
+                }
                 if (mShareDialog != null) {
                     mShareDialog.dismiss();
                 }
@@ -36,6 +45,10 @@ public class ShareWorksDialog {
 
             @Override
             public void onClickWeixinShare() {
+                if(!U.getCommonUtils().hasInstallApp("com.tencent.mm")){
+                    U.getToastUtil().showShort("未安装微信");
+                    return;
+                }
                 if (mShareDialog != null) {
                     mShareDialog.dismiss();
                 }
@@ -46,6 +59,10 @@ public class ShareWorksDialog {
 
             @Override
             public void onClickQuanShare() {
+                if(!U.getCommonUtils().hasInstallApp("com.tencent.mm")){
+                    U.getToastUtil().showShort("未安装微信");
+                    return;
+                }
                 if (mShareDialog != null) {
                     mShareDialog.dismiss();
                 }

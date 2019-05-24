@@ -54,6 +54,7 @@ import com.module.playways.room.room.model.score.ScoreStateModel;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.level.view.LevelStarProgressBar;
@@ -406,46 +407,61 @@ public class GrabProductionFragment extends BaseFragment {
 
     private void shareUrl(SharePlatform sharePlatform, WorksUploadModel model) {
         if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
-            UMusic music = new UMusic(model.getUrl());
-            music.setTitle("" + model.getSongModel().getItemName());
-            music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
-            music.setThumb(new UMImage(getActivity(), MyUserInfoManager.getInstance().getAvatar()));
+            if(sharePlatform == SharePlatform.WEIXIN){
+                StringBuilder sb = new StringBuilder();
+                sb.append("http://dev.app.inframe.mobi/user/work")
+                        .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
+                        .append("&workId=").append(model.getWorksID());
+                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
+                UMWeb music = new UMWeb(mUrl);
+                music.setTitle("" + model.getSongModel().getItemName());
+                music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
+                music.setThumb(new UMImage(getActivity(), MyUserInfoManager.getInstance().getAvatar()));
+                new ShareAction(getActivity()).withMedia(music)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)
+                        .share();
+            }else{
+                UMusic music = new UMusic(model.getUrl());
+                music.setTitle("" + model.getSongModel().getItemName());
+                music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
+                music.setThumb(new UMImage(getActivity(), MyUserInfoManager.getInstance().getAvatar()));
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("http://dev.app.inframe.mobi/user/work")
-                    .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
-                    .append("&workId=").append(model.getWorksID());
+                StringBuilder sb = new StringBuilder();
+                sb.append("http://dev.app.inframe.mobi/user/work")
+                        .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
+                        .append("&workId=").append(model.getWorksID());
 
-            String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-            music.setmTargetUrl(mUrl);
+                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
+                music.setmTargetUrl(mUrl);
 
-            switch (sharePlatform) {
-                case QQ:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.QQ)
-                            .share();
-                    break;
-                case QZONE:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.QZONE)
-                            .share();
-                    break;
-                case WEIXIN:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.WEIXIN)
-                            .share();
-                    break;
+                switch (sharePlatform) {
+                    case QQ:
+                        new ShareAction(getActivity()).withMedia(music)
+                                .setPlatform(SHARE_MEDIA.QQ)
+                                .share();
+                        break;
+                    case QZONE:
+                        new ShareAction(getActivity()).withMedia(music)
+                                .setPlatform(SHARE_MEDIA.QZONE)
+                                .share();
+                        break;
+                    case WEIXIN:
+                        new ShareAction(getActivity()).withMedia(music)
+                                .setPlatform(SHARE_MEDIA.WEIXIN)
+                                .share();
+                        break;
 
-                case WEIXIN_CIRCLE:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                            .share();
-                    break;
+                    case WEIXIN_CIRCLE:
+                        new ShareAction(getActivity()).withMedia(music)
+                                .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                .share();
+                        break;
+                }
             }
+
         } else {
             MyLog.w(TAG, "shareUrl" + " sharePlatform=" + sharePlatform + " model=" + model);
         }
-
     }
 
     private void bindData() {
