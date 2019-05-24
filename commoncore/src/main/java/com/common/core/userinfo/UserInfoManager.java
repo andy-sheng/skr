@@ -110,7 +110,7 @@ public class UserInfoManager {
 
     private UserInfoManager() {
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        if (hasLoadRemarkFromDB) {
+        if (!hasLoadRemarkFromDB) {
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
