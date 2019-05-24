@@ -24,6 +24,7 @@ import com.module.RouterConstants;
 import com.module.playways.IPlaywaysModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
     ExImageView mIvBack;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mContentRv;
+    ClassicsHeader mClassicsHeader;
 
     int offset = 0;          //偏移量
     int DEFAULT_COUNT = 50;  // 每次拉去列表数目
@@ -51,6 +53,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mContentRv = (RecyclerView) mRootView.findViewById(R.id.content_rv);
+        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -63,19 +66,20 @@ public class GrabFriendsRoomFragment extends BaseFragment {
             }
         });
 
-        mRefreshLayout.setEnableRefresh(false);
-        mRefreshLayout.setEnableLoadMore(true);
+        mRefreshLayout.setEnableRefresh(true);
+        mRefreshLayout.setEnableLoadMore(false);
+        mRefreshLayout.setRefreshHeader(mClassicsHeader);
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false);
         mRefreshLayout.setEnableOverScrollDrag(false);
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadData(offset, DEFAULT_COUNT, true);
+//                loadData(offset, DEFAULT_COUNT, true);
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                mRefreshLayout.finishRefresh();
+                loadData(offset, DEFAULT_COUNT, true);
             }
         });
         mContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -92,7 +96,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
                             public void run() {
                                 IPlaywaysModeService playWaysService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                                 if (playWaysService != null) {
-                                    playWaysService.tryGoGrabRoom(roomID,0);
+                                    playWaysService.tryGoGrabRoom(roomID, 0);
                                 }
                             }
                         }, true);
@@ -131,18 +135,12 @@ public class GrabFriendsRoomFragment extends BaseFragment {
 
     private void refreshView(List<RecommendModel> list, int offset, boolean isLoadMore) {
         this.offset = offset;
-        mRefreshLayout.finishLoadMore();
-        if (!isLoadMore) {
-            mFriendRoomVeritAdapter.getDataList().clear();
-        }
+        mRefreshLayout.finishRefresh();
 
         if (list != null && list.size() > 0) {
-            mRefreshLayout.setEnableLoadMore(true);
+            mFriendRoomVeritAdapter.getDataList().clear();
             mFriendRoomVeritAdapter.getDataList().addAll(list);
             mFriendRoomVeritAdapter.notifyDataSetChanged();
-        } else {
-            // TODO: 2019/4/15  用mFriendRoomVeritAdapter去判断是否空和没有更多
-            mRefreshLayout.setEnableLoadMore(false);
         }
     }
 }
