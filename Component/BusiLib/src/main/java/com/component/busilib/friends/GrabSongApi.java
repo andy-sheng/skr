@@ -56,4 +56,7 @@ public interface GrabSongApi {
 
     @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room-more")
     Observable<ApiResult> getRecommendRoomList(@Query("offset") int offset, @Query("cnt") int count);
+
+    @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room")
+    Observable<ApiResult> getFirstPageRecommendRoomList(@Query("offset") int offset, @Query("cnt") int count);
 }

@@ -98,7 +98,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
             return;
         }
         GrabSongApi mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(mRecommendRoomModel.getOffset(), 50), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(mRecommendRoomModel.getOffset(), 50), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {

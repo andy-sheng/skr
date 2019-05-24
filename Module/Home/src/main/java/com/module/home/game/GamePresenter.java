@@ -210,7 +210,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     private void loadRecommendRoomData() {
-        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
