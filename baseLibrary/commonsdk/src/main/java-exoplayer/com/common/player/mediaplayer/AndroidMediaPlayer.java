@@ -1,10 +1,7 @@
 package com.common.player.mediaplayer;
 
-import android.animation.ValueAnimator;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.View;
@@ -13,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.player.BasePlayer;
-import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
 import com.common.player.IPlayerNotSupport;
 import com.common.player.event.PlayerEvent;
@@ -49,17 +45,19 @@ public class AndroidMediaPlayer extends BasePlayer {
     private int videoHeight = 0;
     private float mShiftUp = 0;
     private long mDuration;
-
+    private float mVolume = 1.0f;
     private View mView;
 
     private boolean mPreparedFlag = false;
 
-    HandlerTaskTimer mMusicTimePlayTimeListener;
+    private HandlerTaskTimer mMusicTimePlayTimeListener;
 
-    long resetTs = 0;
-    long startTs = 0;
+    private long resetTs = 0;
+    private long startTs = 0;
 
-    IPlayerNotSupport mIPlayerNotSupport;
+    private IPlayerNotSupport mIPlayerNotSupport;
+
+    private boolean mMuted = false;
 
     public AndroidMediaPlayer() {
         TAG += hashCode();
@@ -277,22 +275,17 @@ public class AndroidMediaPlayer extends BasePlayer {
 
     @Override
     public void setMuteAudio(boolean isMute) {
+        mMuted = isMute;
         if (isMute) {
             mPlayer.setVolume(0, 0);
         } else {
-            mPlayer.setVolume(0.5f, 0.5f);
+            mPlayer.setVolume(mVolume, mVolume);
         }
     }
 
-    float mVolume = 1.0f;
-
     @Override
     public void setVolume(float volume) {
-        if (mPlayer == null) {
-            return;
-        }
-        mVolume = volume;
-        mPlayer.setVolume(volume, volume);
+        setVolume(volume,true);
     }
 
     @Override
@@ -303,7 +296,9 @@ public class AndroidMediaPlayer extends BasePlayer {
         if (setConfig) {
             this.mVolume = volume;
         }
-        mPlayer.setVolume(volume, volume);
+        if(!mMuted){
+            mPlayer.setVolume(volume, volume);
+        }
     }
 
     @Override

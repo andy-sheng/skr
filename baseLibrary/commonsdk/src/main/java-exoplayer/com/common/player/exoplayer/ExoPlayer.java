@@ -82,8 +82,8 @@ public class ExoPlayer extends BasePlayer {
     private View mView;
     private float mVolume = 1.0f;
     private boolean mPreparedFlag = false;
-
-    HandlerTaskTimer mMusicTimePlayTimeListener;
+    private boolean mMuted = false;
+    private HandlerTaskTimer mMusicTimePlayTimeListener;
 
     public ExoPlayer() {
         TAG += hashCode();
@@ -498,10 +498,11 @@ public class ExoPlayer extends BasePlayer {
 
     @Override
     public void setMuteAudio(boolean isMute) {
+        mMuted = isMute;
         if (isMute) {
             mPlayer.setVolume(0);
         } else {
-            mPlayer.setVolume(0.5f);
+            mPlayer.setVolume(mVolume);
         }
     }
 
@@ -518,7 +519,9 @@ public class ExoPlayer extends BasePlayer {
         if (setConfig) {
             this.mVolume = volume;
         }
-        mPlayer.setVolume(volume);
+        if(!mMuted){
+            mPlayer.setVolume(volume);
+        }
     }
 
     public float getVolume() {

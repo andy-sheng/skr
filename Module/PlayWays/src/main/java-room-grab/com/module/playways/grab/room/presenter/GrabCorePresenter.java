@@ -797,12 +797,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (mute) {
             // 如果是静音
             if (mExoPlayer != null) {
-                mExoPlayer.setVolume(0);
+                mExoPlayer.setMuteAudio(true);
             }
         } else {
             // 如果打开静音
             if (mExoPlayer != null) {
-                mExoPlayer.setVolume(1f);
+                mExoPlayer.setMuteAudio(false);
             }
         }
     }
