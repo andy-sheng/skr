@@ -110,6 +110,8 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(mFriendRoomModel.getDisplayAvatar())
                             .setCircle(true)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setBorderColor(U.getColor(R.color.white))
                             .build());
             mNameTv.setText(mFriendRoomModel.getDisplayName());
             if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
