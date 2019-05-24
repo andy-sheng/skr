@@ -179,7 +179,7 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
                     mTvInvite.setVisibility(View.VISIBLE);
                 } else if (model.getStatus() == UserInfoModel.EF_OFFLINE) {
                     mTvCircleState.setBackground(mOffLineCircleDrawable);
-                    mTvState.setText("离线");
+                    mTvState.setText(model.getStatusDesc());
                     mTvInvite.setVisibility(View.VISIBLE);
                 } else {
                     mTvInvite.setVisibility(View.GONE);

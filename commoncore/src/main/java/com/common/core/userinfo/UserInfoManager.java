@@ -785,10 +785,14 @@ public class UserInfoManager {
             userInfoModel.setStatus(UserInfoModel.EF_OFFLINE);
             String timeDesc = "";
             if (onlineModel.getOfflineTime() > 0) {
-                timeDesc = U.getDateTimeUtils().formatHumanableDate(onlineModel.getOfflineTime(), System.currentTimeMillis());
+                timeDesc = U.getDateTimeUtils().formatHumanableDateForSkr(onlineModel.getOfflineTime(), System.currentTimeMillis());
             }
             // 显示
-            userInfoModel.setStatusDesc("离线 " + timeDesc);
+            if (TextUtils.isEmpty(timeDesc)) {
+                userInfoModel.setStatusDesc("离线");
+            } else {
+                userInfoModel.setStatusDesc("离线 " + timeDesc);
+            }
         }
     }
 
