@@ -818,6 +818,7 @@ public class UserInfoManager {
                             List<OnlineModel> onlineModelList = JSON.parseArray(obj.getData().getString("userOnlineList"), OnlineModel.class);
                             if (onlineModelList != null) {
                                 for (OnlineModel onlineModel : onlineModelList) {
+                                    onlineModel.setOnline(true);
                                     onlineModel.setRecordTs(System.currentTimeMillis());
                                     hashSet.put(onlineModel.getUserID(), onlineModel);
                                     mStatusMap.put(onlineModel.getUserID(), onlineModel);
@@ -826,6 +827,7 @@ public class UserInfoManager {
                             List<OnlineModel> offlineModelList = JSON.parseArray(obj.getData().getString("userOfflineList"), OnlineModel.class);
                             if (offlineModelList != null) {
                                 for (OnlineModel offlineModel : offlineModelList) {
+                                    offlineModel.setOnline(false);
                                     offlineModel.setRecordTs(System.currentTimeMillis());
                                     hashSet.put(offlineModel.getUserID(), offlineModel);
                                     mStatusMap.put(offlineModel.getUserID(), offlineModel);
