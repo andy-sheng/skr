@@ -1693,7 +1693,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void onGrabGameOver(String from) {
-        MyLog.d(TAG, "onGrabGameOver " + from);
+        MyLog.w(TAG, "onGrabGameOver " + from);
 //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
         Activity activity = getActivity();
         if (activity != null) {
