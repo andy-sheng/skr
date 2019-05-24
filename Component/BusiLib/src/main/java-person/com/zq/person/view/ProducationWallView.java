@@ -18,6 +18,7 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
+import com.common.player.MyMediaPlayer;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
@@ -125,7 +126,7 @@ public class ProducationWallView extends RelativeLayout {
             public void onClickPlayBtn(View view, boolean play, int position, ProducationModel model) {
                 if (play) {
                     if (mIPlayer == null) {
-                        mIPlayer = new AndroidMediaPlayer();
+                        mIPlayer = new MyMediaPlayer();
                         mIPlayer.setDecreaseVolumeEnd(true);
                         // 播放完毕
                         mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {

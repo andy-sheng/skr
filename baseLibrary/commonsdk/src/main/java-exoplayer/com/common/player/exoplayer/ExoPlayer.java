@@ -558,6 +558,7 @@ public class ExoPlayer extends BasePlayer {
             mUrlChange = false;
             mPlayer.prepare(mMediaSource, true, false);
         }
+        mDuration = 0;
         mPlayer.setPlayWhenReady(true);
         startMusicPlayTimeListener();
     }
