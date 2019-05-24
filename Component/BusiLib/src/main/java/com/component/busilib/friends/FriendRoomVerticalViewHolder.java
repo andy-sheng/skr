@@ -91,7 +91,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         for (int i = 0; i < friendRoomModel.getPlayUsers().size() && i < mSimpleDraweeViewList.length; i++) {
             mSimpleDraweeViewList[i].setVisibility(View.VISIBLE);
             AvatarUtils.loadAvatarByUrl(mSimpleDraweeViewList[i],
-                    AvatarUtils.newParamsBuilder(friendRoomModel.getPlayUsers().get(i).getUserInfo().getAvatar())
+                    AvatarUtils.newParamsBuilder(friendRoomModel.getPlayUsers().get(i).getAvatar())
                             .setCircle(true)
                             .setGray(false)
                             .setBorderWidth(U.getDisplayUtils().dip2px(1))
