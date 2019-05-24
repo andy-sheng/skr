@@ -24,9 +24,9 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.event.SongNumChangeEvent;
+import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
 import com.module.playways.grab.room.songmanager.presenter.OwnerManagePresenter;
 import com.module.playways.grab.room.songmanager.view.GrabEditView;
 import com.module.playways.grab.room.songmanager.view.IOwnerManageView;
@@ -132,7 +132,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             mRecommendSongFragmentList.add(recommendSongFragment);
         }
 
-        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getActivity().getSupportFragmentManager()) {
+        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 MyLog.d(TAG, "getItem" + " position=" + position);
