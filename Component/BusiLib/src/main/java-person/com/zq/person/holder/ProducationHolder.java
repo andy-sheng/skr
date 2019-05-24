@@ -1,6 +1,7 @@
 package com.zq.person.holder;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -108,14 +109,24 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
             mPlayNumTv.setText("" + model.getPlayCnt() + "次播放");
         }
 
-        mSongOwnerTv.setText(MyUserInfoManager.getInstance().getNickName());
-        FrescoWorker.loadImage(mCoverIv,
-                ImageFactory.newPathImage(MyUserInfoManager.getInstance().getAvatar())
-                        .setCornerRadius(U.getDisplayUtils().dip2px(7))
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(U.getColor(R.color.white))
-                        .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
-                        .build());
+        mSongOwnerTv.setText(model.getNickName());
+        if (!TextUtils.isEmpty(model.getCover())) {
+            FrescoWorker.loadImage(mCoverIv,
+                    ImageFactory.newPathImage(model.getCover())
+                            .setCornerRadius(U.getDisplayUtils().dip2px(7))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setBorderColor(U.getColor(R.color.white))
+                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+                            .build());
+        } else {
+            FrescoWorker.loadImage(mCoverIv,
+                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
+                            .setCornerRadius(U.getDisplayUtils().dip2px(7))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setBorderColor(U.getColor(R.color.white))
+                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+                            .build());
+        }
 
 
         if (isPlay) {
