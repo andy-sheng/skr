@@ -205,7 +205,8 @@ public class GrabProductionFragment extends BaseFragment {
                     stopPlay();
                 }
                 if (model.getWorksID() > 0) {
-                    showShareDialog(model);
+                    // 只是分享,已经保存
+                    showShareDialog(model, true);
                 } else {
                     mObjectPlayControlTemplate.add(model, true);
                 }
@@ -325,7 +326,7 @@ public class GrabProductionFragment extends BaseFragment {
             model.setDuration(U.getMediaUtils().getDuration(model.getLocalPath()));
         }
         // 单位毫秒
-        map.put("duration",model.getDuration());
+        map.put("duration", model.getDuration());
         map.put("songID", model.getSongModel().getItemID());
         map.put("worksURL", model.getUrl());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -337,7 +338,8 @@ public class GrabProductionFragment extends BaseFragment {
                     int worksID = result.getData().getIntValue("worksID");
                     model.setWorksID(worksID);
                     mAdapter.update(model);
-                    showShareDialog(model);
+                    // 保存分享，提示用户保存到个人中心了
+                    showShareDialog(model, false);
                     U.getToastUtil().showShort("保存成功");
                     mSaving = false;
                     mObjectPlayControlTemplate.endCurrent(model);
@@ -366,12 +368,16 @@ public class GrabProductionFragment extends BaseFragment {
         }, GrabProductionFragment.this);
     }
 
-    private void showShareDialog(WorksUploadModel momentModel) {
+    private void showShareDialog(WorksUploadModel momentModel, boolean hasSave) {
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }
+        int from = ShareWorksDialog.FROM_GRAB_RESULT_NOSAVE;
+        if (hasSave) {
+            from = ShareWorksDialog.FROM_GRAB_RESULT_SAVED;
+        }
         mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName()
-                , ShareWorksDialog.FROM_GRAB_RESULT, new ShareWorksDialog.ShareListener() {
+                , from, new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
                 shareUrl(SharePlatform.QQ, momentModel);

@@ -66,6 +66,7 @@
             android:background="@drawable/grab_works_save_share" />
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/save_share_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/save_share_iv"

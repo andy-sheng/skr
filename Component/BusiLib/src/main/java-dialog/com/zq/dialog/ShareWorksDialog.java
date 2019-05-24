@@ -12,7 +12,8 @@ public class ShareWorksDialog {
     DialogPlus mShareDialog;
 
     public static final int FROM_PERSON_INFO = 1;
-    public static final int FROM_GRAB_RESULT = 2;
+    public static final int FROM_GRAB_RESULT_NOSAVE = 2;
+    public static final int FROM_GRAB_RESULT_SAVED = 3;
 
     public ShareWorksDialog(Context context, String songName, int from, final ShareListener listener) {
         ShareWorksDialogView shareWorksDialogView = new ShareWorksDialogView(context, songName, from

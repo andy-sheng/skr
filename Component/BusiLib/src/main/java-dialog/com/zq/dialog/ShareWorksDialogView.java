@@ -48,7 +48,10 @@ public class ShareWorksDialogView extends RelativeLayout {
         if (mFrom == ShareWorksDialog.FROM_PERSON_INFO) {
             mTvTitle.setVisibility(GONE);
             mDivider.setVisibility(GONE);
-        } else {
+        } else if (mFrom == ShareWorksDialog.FROM_GRAB_RESULT_SAVED) {
+            mTvTitle.setVisibility(GONE);
+            mDivider.setVisibility(GONE);
+        } else if (mFrom == ShareWorksDialog.FROM_GRAB_RESULT_NOSAVE) {
             mTvTitle.setVisibility(VISIBLE);
             mDivider.setVisibility(VISIBLE);
         }

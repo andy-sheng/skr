@@ -35,6 +35,7 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
     ExImageView mPlayBackIv;
     RelativeLayout mSaveShareArea;
     ExImageView mSaveShareIv;
+    ExTextView mSaveShareTv;
     ExTextView mSongNameTv;
     ExTextView mSongOwnerTv;
 
@@ -50,6 +51,7 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
         mPlayBackIv = (ExImageView) itemView.findViewById(R.id.play_back_iv);
         mSaveShareArea = (RelativeLayout) itemView.findViewById(R.id.save_share_area);
         mSaveShareIv = (ExImageView) itemView.findViewById(R.id.save_share_iv);
+        mSaveShareTv = (ExTextView)itemView.findViewById(R.id.save_share_tv);
         mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
         mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
 
@@ -60,14 +62,14 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
                     isPlay = false;
                     mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
                     if (mListener != null) {
-                        mListener.onClickPlayBtn(v,isPlay,position, mWonderfulMomentModel);
+                        mListener.onClickPlayBtn(v, isPlay, position, mWonderfulMomentModel);
                     }
 
                 } else {
                     isPlay = true;
                     mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
                     if (mListener != null) {
-                        mListener.onClickPlayBtn(v,isPlay,position, mWonderfulMomentModel);
+                        mListener.onClickPlayBtn(v, isPlay, position, mWonderfulMomentModel);
                     }
                 }
             }
@@ -95,6 +97,13 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
             } else {
                 mBlightTipsIv.setVisibility(View.GONE);
             }
+            if (momentModel.getWorksID() > 0) {
+                mSaveShareIv.setBackgroundResource(R.drawable.grab_works_share_icon);
+                mSaveShareTv.setText("分享");
+            } else {
+                mSaveShareTv.setText("保存分享");
+                mSaveShareIv.setBackgroundResource(R.drawable.grab_works_save_share);
+            }
         } else {
             MyLog.w(TAG, "bindData" + " position=" + position + " momentModel=" + momentModel + " isPlay=" + isPlay);
         }
@@ -107,7 +116,6 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
                         .setBorderColor(U.getColor(R.color.white))
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                         .build());
-
         if (isPlay) {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
         } else {
