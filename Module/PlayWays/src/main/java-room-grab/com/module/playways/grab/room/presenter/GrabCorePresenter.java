@@ -1193,7 +1193,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "exitRoom" + " from=" + from);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
-        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_EXIT, 2000);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_EXIT, 5000);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.exitRoom(body), new ApiObserver<ApiResult>() {
             @Override
