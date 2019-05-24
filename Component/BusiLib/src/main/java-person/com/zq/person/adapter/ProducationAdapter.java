@@ -10,39 +10,58 @@ import com.common.floatwindow.FloatWindow;
 import com.common.log.MyLog;
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.R;
+import com.zq.person.holder.EmptyProducationHolder;
 import com.zq.person.holder.ProducationHolder;
 import com.zq.person.model.PhotoModel;
 import com.zq.person.model.ProducationModel;
 
 import org.apache.commons.lang3.builder.Diff;
 
-public class ProducationAdapter extends DiffAdapter<ProducationModel, ProducationHolder> {
+/**
+ * 用recycleview做一个空页面
+ */
+public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerView.ViewHolder> {
+
+    private static final int TYPE_NORMAL = 1;
+    private static final int TYPE_EMPTY = 2;
 
     Listener mListener;
-    boolean mHasDele;
+    boolean mIsSelf;
 
     int mSelectPlayPosition = -1;  //选中播放的id
 
-    public ProducationAdapter(Listener listener, boolean hasDeleted) {
+    public ProducationAdapter(Listener listener, boolean isSelf) {
         this.mListener = listener;
-        this.mHasDele = hasDeleted;
+        this.mIsSelf = isSelf;
     }
 
     @NonNull
     @Override
-    public ProducationHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.producation_item_view_layout, parent, false);
-        ProducationHolder viewHolder = new ProducationHolder(view, mListener, mHasDele);
-        return viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == TYPE_NORMAL) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.producation_item_view_layout, parent, false);
+            ProducationHolder viewHolder = new ProducationHolder(view, mListener, mIsSelf);
+            return viewHolder;
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.produacation_empty_view_layout, parent, false);
+            EmptyProducationHolder viewHolder = new EmptyProducationHolder(view);
+            return viewHolder;
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProducationHolder holder, int position) {
-        ProducationModel model = mDataList.get(position);
-        if (mSelectPlayPosition == position) {
-            holder.bindData(position, model, true);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (mDataList != null && mDataList.size() > 0) {
+            ProducationModel model = mDataList.get(position);
+            ProducationHolder viewHolder = (ProducationHolder) holder;
+            if (mSelectPlayPosition == position) {
+                viewHolder.bindData(position, model, true);
+            } else {
+                viewHolder.bindData(position, model, false);
+            }
         } else {
-            holder.bindData(position, model, false);
+            EmptyProducationHolder viewHolder = (EmptyProducationHolder) holder;
+            viewHolder.bindData(mIsSelf);
         }
     }
 
@@ -60,14 +79,27 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, Producatio
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        if (mDataList != null && mDataList.size() > 0) {
+            return mDataList.size();
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mDataList != null && mDataList.size() > 0) {
+            return TYPE_NORMAL;
+        } else {
+            return TYPE_EMPTY;
+        }
     }
 
     public int getPlayPosition() {
         return mSelectPlayPosition;
     }
 
-    public void setPlayPosition(int selectPlayPosition,boolean refresh) {
+    public void setPlayPosition(int selectPlayPosition, boolean refresh) {
         if (mSelectPlayPosition != selectPlayPosition) {
             int oldPlayPosition = mSelectPlayPosition;
             mSelectPlayPosition = selectPlayPosition;

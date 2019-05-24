@@ -1,6 +1,5 @@
 package com.zq.person.view;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -13,14 +12,12 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePlatform;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.MyMediaPlayer;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -29,13 +26,8 @@ import com.common.utils.SpanUtils;
 import com.common.view.DebounceViewClickListener;
 import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
-import com.kingja.loadsir.core.LoadService;
-import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -73,7 +65,6 @@ public class ProducationWallView extends RelativeLayout {
 
     DialogPlus mConfirmDialog;
     ShareWorksDialog mShareWorksDialog;
-    LoadService mLoadService;
 
     public UserInfoModel getUserInfoModel() {
         return mUserInfoModel;
@@ -98,9 +89,9 @@ public class ProducationWallView extends RelativeLayout {
         mProducationView = (RecyclerView) findViewById(R.id.producation_view);
 
         mProducationView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        boolean hasDeleted = false;
+        boolean isSelf = false;
         if (mUserInfoModel != null && mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
-            hasDeleted = true;
+            isSelf = true;
         }
         mAdapter = new ProducationAdapter(new ProducationAdapter.Listener() {
             @Override
@@ -154,22 +145,8 @@ public class ProducationWallView extends RelativeLayout {
                     mAdapter.setPlayPosition(-1, false);
                 }
             }
-        }, hasDeleted);
+        }, isSelf);
         mProducationView.setAdapter(mAdapter);
-
-        String text = "ta还没有作品哦～";
-        if (mUserInfoModel != null && MyUserInfoManager.getInstance().getUid() == mUserInfoModel.getUserId()) {
-            text = "嗨唱结束记得保存你的作品哦～";
-        }
-        LoadSir mLoadSir = new LoadSir.Builder()
-                .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, text))
-                .build();
-        mLoadService = mLoadSir.register(mProducationView, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
-            @Override
-            public void onReload(View v) {
-                getProducations();
-            }
-        });
     }
 
     private void showConfirmDialog(final ProducationModel model) {
@@ -380,7 +357,6 @@ public class ProducationWallView extends RelativeLayout {
         }
 
         if (list != null && list.size() > 0) {
-            mLoadService.showSuccess();
             mAdapter.getDataList().addAll(list);
             mAdapter.notifyDataSetChanged();
         } else {
@@ -388,7 +364,6 @@ public class ProducationWallView extends RelativeLayout {
                 // 没有更多了
             } else {
                 // 没有数据
-                mLoadService.showCallback(PersonEmptyCallback.class);
             }
         }
     }

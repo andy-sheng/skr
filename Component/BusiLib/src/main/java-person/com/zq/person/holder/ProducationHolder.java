@@ -40,7 +40,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
     RelativeLayout mPlayNumArea;
     TextView mPlayNumTv;
 
-    public ProducationHolder(View itemView, final ProducationAdapter.Listener listener, boolean mHasDeleted) {
+    public ProducationHolder(View itemView, final ProducationAdapter.Listener listener, boolean mIsSelf) {
         super(itemView);
 
         mCoverArea = (ExRelativeLayout) itemView.findViewById(R.id.cover_area);
@@ -53,7 +53,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
         mPlayNumArea = (RelativeLayout) itemView.findViewById(R.id.play_num_area);
         mPlayNumTv = (TextView) itemView.findViewById(R.id.play_num_tv);
 
-        if (mHasDeleted) {
+        if (mIsSelf) {
             mDeleArea.setVisibility(View.VISIBLE);
         } else {
             mDeleArea.setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 package com.zq.person.view;
 
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -42,7 +43,6 @@ public class OtherPhotoWallView extends RelativeLayout {
     UserInfoServerApi mUserInfoServerApi;
 
     AppCanSrollListener mListener;
-    LoadService mLoadService;
 
     public OtherPhotoWallView(BaseFragment fragment, int userID, RequestCallBack callBack, AppCanSrollListener listener) {
         super(fragment.getContext());
@@ -59,8 +59,7 @@ public class OtherPhotoWallView extends RelativeLayout {
 
         mPhotoView = (RecyclerView) findViewById(R.id.photo_view);
         mPhotoView.setFocusableInTouchMode(false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        mPhotoView.setLayoutManager(gridLayoutManager);
+        mPhotoView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, final int position, Object model) {
@@ -121,16 +120,6 @@ public class OtherPhotoWallView extends RelativeLayout {
             }
         }, PhotoAdapter.TYPE_OTHER_PERSON_CENTER);
         mPhotoView.setAdapter(mPhotoAdapter);
-
-        LoadSir mLoadSir = new LoadSir.Builder()
-                .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "这个人很神秘，都没有照片"))
-                .build();
-        mLoadService = mLoadSir.register(mPhotoView, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
-            @Override
-            public void onReload(View v) {
-                getPhotos();
-            }
-        });
     }
 
     public void getPhotos() {
@@ -185,8 +174,8 @@ public class OtherPhotoWallView extends RelativeLayout {
         }
 
         if (list != null && list.size() > 0) {
+            mPhotoView.setLayoutManager(new GridLayoutManager(getContext(), 3));
             mHasMore = true;
-            mLoadService.showSuccess();
             mPhotoAdapter.getDataList().addAll(list);
             mPhotoAdapter.notifyDataSetChanged();
             if (mListener != null) {
@@ -198,7 +187,7 @@ public class OtherPhotoWallView extends RelativeLayout {
                 // 没有更多了
             } else {
                 // 没有数据
-                mLoadService.showCallback(PersonEmptyCallback.class);
+                mPhotoView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                 if (mListener != null) {
                     mListener.notifyAppbarSroll(false);
                 }
