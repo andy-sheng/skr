@@ -215,7 +215,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="left|top"
-        android:hint="详细的描述有助于我们更好的核实举报信息 例如：他的相册图片大量都是黄色内容，并在聊天过程中不断进行辱骂"
+        android:hint="例如：他在聊天过程中不断进行辱骂，影响房间氛围"
         android:lineSpacingExtra="@dimen/view_10_dp"
         android:maxLength="200"
         android:paddingLeft="@dimen/view_15_dp"

@@ -215,7 +215,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="left|top"
-        android:hint="详细的描述有助于我们更好的为你解决问题 例如：11点左右，唱《绿色》的时候，演唱声音非常卡顿"
+        android:hint="例如：11点左右，在唱《绿色》的时候，声音非常卡"
         android:lineSpacingExtra="@dimen/view_10_dp"
         android:maxLength="200"
         android:paddingLeft="@dimen/view_15_dp"
