@@ -62,8 +62,12 @@ public class EditRemarkView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 String mRemarkName = mRemarkNameEdt.getText().toString().trim();
-                if (mListener != null) {
-                    mListener.onClickSave(mRemarkName);
+                if (U.getStringUtils().getStringLength(mRemarkName) > 14) {
+                    U.getToastUtil().showShort("备注名长度不能超过14个字符哦～");
+                } else {
+                    if (mListener != null) {
+                        mListener.onClickSave(mRemarkName);
+                    }
                 }
             }
         });
