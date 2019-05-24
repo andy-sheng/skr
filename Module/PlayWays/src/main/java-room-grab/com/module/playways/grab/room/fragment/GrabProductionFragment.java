@@ -39,6 +39,7 @@ import com.common.view.ex.ExTextView;
 
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
+import com.dialog.view.StrokeTextView;
 import com.module.RouterConstants;
 import com.module.playways.R;
 
@@ -89,9 +90,8 @@ public class GrabProductionFragment extends BaseFragment {
     NormalLevelView2 mLevelView;
     LinearLayout mLlBottomArea;
     RecyclerView mProductionView;
-    ExTextView mTvBack;
-    ExTextView mTvAgain;
-    ExTextView mTvShare;
+    StrokeTextView mTvBack;
+    StrokeTextView mTvAgain;
 
     Handler mUiHandler = new Handler();
     UserInfoServerApi mUserInfoServerApi;
@@ -156,9 +156,8 @@ public class GrabProductionFragment extends BaseFragment {
 
         mProductionView = (RecyclerView) mRootView.findViewById(R.id.production_view);
 
-        mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
-        mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
-        mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
+        mTvBack = (StrokeTextView) mRootView.findViewById(R.id.tv_back);
+        mTvAgain = (StrokeTextView) mRootView.findViewById(R.id.tv_again);
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
 
@@ -229,14 +228,14 @@ public class GrabProductionFragment extends BaseFragment {
             }
         });
 
-        mTvShare.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                SharePanel sharePanel = new SharePanel(getActivity());
-                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
-                sharePanel.show(ShareType.IMAGE_RUL);
-            }
-        });
+//        mTvShare.setOnClickListener(new AnimateClickListener() {
+//            @Override
+//            public void click(View view) {
+//                SharePanel sharePanel = new SharePanel(getActivity());
+//                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
+//                sharePanel.show(ShareType.IMAGE_RUL);
+//            }
+//        });
 
         mTvAgain.setOnClickListener(new AnimateClickListener() {
             @Override
