@@ -114,232 +114,240 @@
                         <RelativeLayout
                             android:id="@id/user_top_area"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_408_dp"
-                            android:layout_below="@id/titlebar"
-                            android:background="@drawable/person_fragment_bg">
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/titlebar">
 
-                            <ImageView
-                                android:id="@+id/avatar_bg"
-                                android:layout_width="@dimen/view_62_dp"
-                                android:layout_height="@dimen/view_67_dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="@dimen/view_40_dp"
-                                android:background="@drawable/b_touxiang" />
-
-                            <com.facebook.drawee.view.SimpleDraweeView
-                                android:id="@+id/avatar_iv"
-                                android:layout_width="@dimen/view_52_dp"
-                                android:layout_height="@dimen/view_52_dp"
-                                android:layout_alignLeft="@id/avatar_bg"
-                                android:layout_alignTop="@id/avatar_bg"
-                                android:layout_marginLeft="@dimen/view_5_dp"
-                                android:layout_marginTop="@dimen/view_5_dp" />
-
-                            <!--设置-->
                             <RelativeLayout
-                                android:id="@+id/setting_area"
-                                android:layout_width="@dimen/view_27_dp"
+                                android:id="@+id/blue_area"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_alignTop="@id/avatar_iv"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="@dimen/view_6_dp"
-                                android:layout_marginRight="@dimen/view_16_dp">
+                                android:background="#7088FF">
 
                                 <ImageView
-                                    android:id="@+id/setting_img_iv"
+                                    android:id="@+id/avatar_bg"
+                                    android:layout_width="@dimen/view_62_dp"
+                                    android:layout_height="@dimen/view_67_dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="@dimen/view_40_dp"
+                                    android:background="@drawable/b_touxiang" />
+
+                                <com.facebook.drawee.view.SimpleDraweeView
+                                    android:id="@+id/avatar_iv"
+                                    android:layout_width="@dimen/view_52_dp"
+                                    android:layout_height="@dimen/view_52_dp"
+                                    android:layout_alignLeft="@id/avatar_bg"
+                                    android:layout_alignTop="@id/avatar_bg"
+                                    android:layout_marginLeft="@dimen/view_5_dp"
+                                    android:layout_marginTop="@dimen/view_5_dp" />
+
+                                <!--设置-->
+                                <RelativeLayout
+                                    android:id="@+id/setting_area"
                                     android:layout_width="@dimen/view_27_dp"
-                                    android:layout_height="@dimen/view_31_dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:background="@drawable/gerenzhongxin_shezhi" />
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignTop="@id/avatar_iv"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="@dimen/view_6_dp"
+                                    android:layout_marginRight="@dimen/view_16_dp">
+
+                                    <ImageView
+                                        android:id="@+id/setting_img_iv"
+                                        android:layout_width="@dimen/view_27_dp"
+                                        android:layout_height="@dimen/view_31_dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:background="@drawable/gerenzhongxin_shezhi" />
+
+                                    <com.common.view.ex.ExTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/setting_img_iv"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginTop="@dimen/view_2_dp"
+                                        android:text="设置"
+                                        android:textColor="#0C2275"
+                                        android:textSize="@dimen/textsize_12_dp"
+                                        android:visibility="gone" />
+
+                                    <com.common.view.ex.ExImageView
+                                        android:id="@+id/setting_red_dot"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignTop="@+id/setting_img_iv"
+                                        android:layout_alignRight="@+id/setting_img_iv"
+                                        android:src="@drawable/reddot" />
+
+                                </RelativeLayout>
 
                                 <com.common.view.ex.ExTextView
+                                    android:id="@+id/name_tv"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/setting_img_iv"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginTop="@dimen/view_2_dp"
-                                    android:text="设置"
-                                    android:textColor="#0C2275"
-                                    android:textSize="@dimen/textsize_12_dp"
-                                    android:visibility="gone" />
+                                    android:layout_height="@dimen/view_25_dp"
+                                    android:layout_alignTop="@id/avatar_iv"
+                                    android:layout_marginLeft="@dimen/view_12_dp"
+                                    android:layout_toRightOf="@id/avatar_iv"
+                                    android:ellipsize="end"
+                                    android:gravity="left|center_vertical"
+                                    android:maxLines="1"
+                                    android:paddingRight="@dimen/view_70_dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/textsize_18_dp"
+                                    android:textStyle="bold" />
 
-                                <com.common.view.ex.ExImageView
-                                    android:id="@+id/setting_red_dot"
+                                <ImageView
+                                    android:id="@+id/sex_iv"
+                                    android:layout_width="@dimen/view_16_dp"
+                                    android:layout_height="@dimen/view_16_dp"
+                                    android:layout_alignBottom="@id/name_tv"
+                                    android:layout_marginLeft="-66dp"
+                                    android:layout_marginBottom="@dimen/view_4_dp"
+                                    android:layout_toRightOf="@id/name_tv" />
+
+                                <com.common.view.ex.ExTextView
+                                    android:id="@+id/userid_tv"
                                     android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/view_17_dp"
+                                    android:layout_below="@id/name_tv"
+                                    android:layout_alignLeft="@id/name_tv"
+                                    android:layout_marginRight="@dimen/view_50_dp"
+                                    android:textColor="@color/white_trans_50"
+                                    android:textSize="@dimen/textsize_12_dp" />
+
+                                <com.common.view.ex.ExTextView
+                                    android:id="@+id/sign_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/view_20_dp"
+                                    android:layout_below="@id/userid_tv"
+                                    android:layout_alignLeft="@id/name_tv"
+                                    android:layout_marginRight="@dimen/view_50_dp"
+                                    android:textColor="@color/white_trans_80"
+                                    android:textSize="@dimen/textsize_14_dp" />
+
+                                <LinearLayout
+                                    android:id="@+id/relation_num_area"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignTop="@+id/setting_img_iv"
-                                    android:layout_alignRight="@+id/setting_img_iv"
-                                    android:src="@drawable/reddot" />
+                                    android:layout_below="@+id/avatar_iv"
+                                    android:layout_marginTop="@dimen/view_24_dp"
+                                    android:orientation="horizontal">
+
+                                    <RelativeLayout
+                                        android:id="@+id/friends_area"
+                                        android:layout_width="@dimen/view_0_dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1">
+
+                                        <com.common.view.ex.ExTextView
+                                            android:id="@+id/friends_num_tv"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="@dimen/view_36_dp"
+                                            android:layout_centerHorizontal="true"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/textsize_24_dp" />
+
+                                        <com.common.view.ex.ExImageView
+                                            android:id="@+id/friend_red_dot"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignTop="@id/friends_num_tv"
+                                            android:layout_toRightOf="@id/friends_num_tv"
+                                            android:src="@drawable/reddot"
+                                            android:visibility="gone" />
+
+                                    </RelativeLayout>
+
+                                    <RelativeLayout
+                                        android:id="@+id/follows_area"
+                                        android:layout_width="@dimen/view_0_dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1">
+
+                                        <com.common.view.ex.ExTextView
+                                            android:id="@+id/follows_num_tv"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerHorizontal="true"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/textsize_24_dp" />
+
+                                    </RelativeLayout>
+
+                                    <RelativeLayout
+                                        android:id="@+id/fans_area"
+                                        android:layout_width="@dimen/view_0_dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1">
+
+                                        <com.common.view.ex.ExTextView
+                                            android:id="@+id/fans_num_tv"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="@dimen/view_36_dp"
+                                            android:layout_centerHorizontal="true"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/textsize_24_dp" />
+
+                                        <com.common.view.ex.ExImageView
+                                            android:id="@+id/fans_red_dot"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignTop="@id/fans_num_tv"
+                                            android:layout_toRightOf="@id/fans_num_tv"
+                                            android:src="@drawable/reddot"
+                                            android:visibility="gone" />
+
+                                    </RelativeLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/function_area"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/relation_num_area"
+                                    android:layout_marginLeft="@dimen/view_16_dp"
+                                    android:layout_marginTop="@dimen/view_20_dp"
+                                    android:layout_marginRight="@dimen/view_16_dp"
+                                    android:layout_marginBottom="@dimen/view_65_dp"
+                                    android:orientation="horizontal">
+
+                                    <com.common.view.ex.ExImageView
+                                        android:id="@+id/wallet_iv"
+                                        android:layout_width="@dimen/view_0_dp"
+                                        android:layout_height="@dimen/view_60_dp"
+                                        android:layout_marginRight="@dimen/view_6_dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/gerenzhongxin_yuederukou" />
+
+                                    <com.common.view.ex.ExImageView
+                                        android:id="@+id/income_iv"
+                                        android:layout_width="@dimen/view_0_dp"
+                                        android:layout_height="@dimen/view_60_dp"
+                                        android:layout_marginRight="@dimen/view_6_dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/gerenzhongxin_shouyiderukou" />
+
+                                    <com.common.view.ex.ExImageView
+                                        android:id="@+id/music_test_iv"
+                                        android:layout_width="@dimen/view_0_dp"
+                                        android:layout_height="@dimen/view_60_dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/gerenzhongxin_ceshiderukou" />
+
+                                </LinearLayout>
 
                             </RelativeLayout>
-
-                            <com.common.view.ex.ExTextView
-                                android:id="@+id/name_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/view_25_dp"
-                                android:layout_alignTop="@id/avatar_iv"
-                                android:layout_marginLeft="@dimen/view_12_dp"
-                                android:layout_toRightOf="@id/avatar_iv"
-                                android:ellipsize="end"
-                                android:gravity="left|center_vertical"
-                                android:maxLines="1"
-                                android:paddingRight="@dimen/view_70_dp"
-                                android:singleLine="true"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/textsize_18_dp"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:id="@+id/sex_iv"
-                                android:layout_width="@dimen/view_16_dp"
-                                android:layout_height="@dimen/view_16_dp"
-                                android:layout_alignBottom="@id/name_tv"
-                                android:layout_marginLeft="-66dp"
-                                android:layout_marginBottom="@dimen/view_4_dp"
-                                android:layout_toRightOf="@id/name_tv" />
-
-                            <com.common.view.ex.ExTextView
-                                android:id="@+id/userid_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/view_17_dp"
-                                android:layout_below="@id/name_tv"
-                                android:layout_alignLeft="@id/name_tv"
-                                android:layout_marginRight="@dimen/view_50_dp"
-                                android:textColor="@color/white_trans_50"
-                                android:textSize="@dimen/textsize_12_dp" />
-
-                            <com.common.view.ex.ExTextView
-                                android:id="@+id/sign_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/view_20_dp"
-                                android:layout_below="@id/userid_tv"
-                                android:layout_alignLeft="@id/name_tv"
-                                android:layout_marginRight="@dimen/view_50_dp"
-                                android:textColor="@color/white_trans_80"
-                                android:textSize="@dimen/textsize_14_dp" />
-
-                            <LinearLayout
-                                android:id="@+id/relation_num_area"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/avatar_iv"
-                                android:layout_marginTop="@dimen/view_24_dp"
-                                android:orientation="horizontal">
-
-                                <RelativeLayout
-                                    android:id="@+id/friends_area"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1">
-
-                                    <com.common.view.ex.ExTextView
-                                        android:id="@+id/friends_num_tv"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/view_36_dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/textsize_24_dp" />
-
-                                    <com.common.view.ex.ExImageView
-                                        android:id="@+id/friend_red_dot"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignTop="@id/friends_num_tv"
-                                        android:layout_toRightOf="@id/friends_num_tv"
-                                        android:src="@drawable/reddot"
-                                        android:visibility="gone" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/follows_area"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1">
-
-                                    <com.common.view.ex.ExTextView
-                                        android:id="@+id/follows_num_tv"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerHorizontal="true"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/textsize_24_dp" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/fans_area"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1">
-
-                                    <com.common.view.ex.ExTextView
-                                        android:id="@+id/fans_num_tv"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/view_36_dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/textsize_24_dp" />
-
-                                    <com.common.view.ex.ExImageView
-                                        android:id="@+id/fans_red_dot"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignTop="@id/fans_num_tv"
-                                        android:layout_toRightOf="@id/fans_num_tv"
-                                        android:src="@drawable/reddot"
-                                        android:visibility="gone" />
-
-                                </RelativeLayout>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/function_area"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/relation_num_area"
-                                android:layout_marginLeft="@dimen/view_16_dp"
-                                android:layout_marginTop="@dimen/view_20_dp"
-                                android:layout_marginRight="@dimen/view_16_dp"
-                                android:orientation="horizontal">
-
-                                <com.common.view.ex.ExImageView
-                                    android:id="@+id/wallet_iv"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="@dimen/view_60_dp"
-                                    android:layout_marginRight="@dimen/view_6_dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/gerenzhongxin_yuederukou" />
-
-                                <com.common.view.ex.ExImageView
-                                    android:id="@+id/income_iv"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="@dimen/view_60_dp"
-                                    android:layout_marginRight="@dimen/view_6_dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/gerenzhongxin_shouyiderukou" />
-
-                                <com.common.view.ex.ExImageView
-                                    android:id="@+id/music_test_iv"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="@dimen/view_60_dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/gerenzhongxin_ceshiderukou" />
-
-                            </LinearLayout>
 
                             <com.common.view.ex.ExRelativeLayout
                                 android:id="@+id/medal_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/view_130_dp"
-                                android:layout_below="@+id/function_area"
+                                android:layout_below="@+id/blue_area"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginLeft="@dimen/view_16_dp"
-                                android:layout_marginTop="@dimen/view_34_dp"
+                                android:layout_marginTop="-30dp"
                                 android:layout_marginRight="@dimen/view_16_dp"
                                 android:background="@drawable/person_medal_bg">
 
