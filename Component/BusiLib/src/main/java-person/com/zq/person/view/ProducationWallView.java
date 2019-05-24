@@ -171,8 +171,12 @@ public class ProducationWallView extends RelativeLayout {
             }
         });
 
+        String text = "ta还有没有作品哦～";
+        if (MyUserInfoManager.getInstance().getUid() == mUserId) {
+            text = "嗨唱结束记得保存你的作品哦～";
+        }
         LoadSir mLoadSir = new LoadSir.Builder()
-                .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "这个人很神秘，都没有作品"))
+                .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, text))
                 .build();
         mLoadService = mLoadSir.register(mSmartRefresh, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
             @Override
