@@ -13,6 +13,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.NoLeakEditText;
 import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
+import com.zq.toast.CommonToastView;
 
 public class SearchFeedbackView extends RelativeLayout {
 
@@ -64,7 +65,14 @@ public class SearchFeedbackView extends RelativeLayout {
                 if (mListener != null) {
                     String songName = mSongName.getText().toString().trim();
                     String songSinger = mSongSinger.getText().toString().trim();
-                    mListener.onClickSubmit(songName, songSinger);
+                    if (TextUtils.isEmpty(songName) && TextUtils.isEmpty(songSinger)) {
+                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                .setImage(R.drawable.touxiangshezhishibai_icon)
+                                .setText("请输入歌曲名或歌手名")
+                                .build());
+                    } else {
+                        mListener.onClickSubmit(songName, songSinger);
+                    }
                 }
             }
         });
