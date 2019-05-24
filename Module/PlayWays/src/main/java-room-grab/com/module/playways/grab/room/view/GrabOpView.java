@@ -24,12 +24,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
 import com.zq.live.proto.Common.StandPlayType;
 
 import org.greenrobot.eventbus.EventBus;
@@ -169,6 +169,7 @@ public class GrabOpView extends RelativeLayout {
                     if (mStatus == STATUS_GRAP) {
                         if (mListener != null) {
                             mListener.clickGrabBtn(mSeq, false);
+                            StatisticsAdapter.recordCountEvent("grab", "game_grab", null);
                         }
                     }
                 }

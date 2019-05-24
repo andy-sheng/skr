@@ -13,18 +13,15 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
-
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -216,7 +213,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                         public void run() {
                             IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(),0);
+                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(), 0);
                             }
                         }
                     }, true);
@@ -230,6 +227,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void moreRoom() {
                 MyLog.d(TAG, "moreRoom");
+                StatisticsAdapter.recordCountEvent("grab", "room_more", null);
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_FRIEND_ROOM)
                         .navigation();

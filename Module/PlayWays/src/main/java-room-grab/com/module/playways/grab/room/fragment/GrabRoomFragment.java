@@ -96,7 +96,6 @@ import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
 import com.zq.dialog.event.ShowEditRemarkEvent;
 import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.person.fragment.OtherPersonFragment3;
 import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
 import com.zq.toast.CommonToastView;
@@ -333,6 +332,22 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 tryShowInviteTipView();
                 tryShowManageSongTipView();
                 tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
+            }
+        }
+
+        enterRoomEvent();
+    }
+
+    private void enterRoomEvent() {
+        if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
+            StatisticsAdapter.recordCountEvent("grab", "normalroom_enter", null);
+        } else if (mRoomData.getOwnerId() != MyUserInfoManager.getInstance().getUid()) {
+            if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PUBLIC) {
+                StatisticsAdapter.recordCountEvent("grab", "hostroom_enter", null);
+            } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND) {
+                StatisticsAdapter.recordCountEvent("grab", "friendroom_enter", null);
+            } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_SECRET) {
+                StatisticsAdapter.recordCountEvent("grab", "privateroom_enter", null);
             }
         }
     }
@@ -1317,6 +1332,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             });
         }
 
+        StatisticsAdapter.recordCountEvent("grab", "game_sing", null);
     }
 
     @Override

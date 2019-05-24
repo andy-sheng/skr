@@ -24,20 +24,21 @@ import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
+import com.common.permission.PermissionUtils;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
-import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.R;
 import com.module.playways.room.room.adapter.LeaderBoardAdapter;
 import com.module.playways.room.room.presenter.LeaderboardPresenter;
 import com.module.playways.room.room.view.ILeaderBoardView;
-import com.module.playways.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -269,6 +270,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         if (!MyUserInfoManager.getInstance().hasLocation() && U.getPreferenceUtils().getSettingBoolean("tips_location_permission_in_rank", false)) {
             tryGetLocation();
         }
+
+        StatisticsAdapter.recordCountEvent("rank", "ranklist", null);
     }
 
     private void setRankMode() {
@@ -438,7 +441,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
-            mTvChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
+            mTvChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(), rankInfoModel.getNickname()));
             mChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             mChanpainLevelTv.setText(rankInfoModel.getLevelDesc());
         } else if (rankInfoModel.getRankSeq() == 2) {
@@ -455,7 +458,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
-            mTvRightChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
+            mTvRightChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(), rankInfoModel.getNickname()));
             mRightChanpainLevelView.setVisibility(View.VISIBLE);
             mRightChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             mRightChanpainLevelTv.setText(rankInfoModel.getLevelDesc());
@@ -473,7 +476,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
-            mTvLeftChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
+            mTvLeftChanpainName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(), rankInfoModel.getNickname()));
             mLeftChanpainLevelView.setVisibility(View.VISIBLE);
             mLeftChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             mLeftChanpainLevelTv.setText(rankInfoModel.getLevelDesc());

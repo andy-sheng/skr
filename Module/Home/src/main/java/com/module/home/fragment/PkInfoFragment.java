@@ -351,6 +351,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         super.onFragmentVisible();
         initBaseInfo();
         mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), false);
+        StatisticsAdapter.recordCountEvent("rank", "expose", null);
     }
 
     @Override

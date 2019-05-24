@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
@@ -24,6 +25,7 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -37,9 +39,8 @@ import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
-import com.common.core.global.event.ShowDialogInHomeEvent;
-import com.zq.notification.GrabInviteNotifyView;
 import com.zq.notification.FollowNotifyView;
+import com.zq.notification.GrabInviteNotifyView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -251,6 +252,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
 
         WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 2, true);
+        StatisticsAdapter.recordCountEvent("social", "getfollow", null);
     }
 
 

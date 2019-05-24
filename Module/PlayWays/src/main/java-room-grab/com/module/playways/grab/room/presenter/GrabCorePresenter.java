@@ -28,27 +28,21 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
-import com.engine.arccloud.ArcRecognizeListener;
-import com.engine.arccloud.SongInfo;
-import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
-import com.module.playways.grab.room.model.ChorusRoundInfoModel;
-import com.module.playways.grab.room.model.WorksUploadModel;
-import com.module.playways.room.gift.event.GiftBrushMsgEvent;
-import com.module.playways.room.gift.event.UpdateCoinEvent;
-import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
-import com.zq.live.proto.Room.EQRoundResultType;
-import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.UserStatus;
+import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
+import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.BuildConfig;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
@@ -57,29 +51,33 @@ import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
-import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
-import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
+import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.model.BLightInfoModel;
+import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.grab.room.model.WorksUploadModel;
 import com.module.playways.others.LyricAndAccMatchManager;
+import com.module.playways.room.gift.event.GiftBrushMsgEvent;
+import com.module.playways.room.gift.event.UpdateCoinEvent;
+import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
-
+import com.module.playways.room.msg.event.QChangeMusicTagEvent;
 import com.module.playways.room.msg.event.QChangeRoomNameEvent;
 import com.module.playways.room.msg.event.QChoGiveUpEvent;
 import com.module.playways.room.msg.event.QCoinChangeEvent;
-
-import com.module.playways.room.msg.event.QChangeMusicTagEvent;
-
 import com.module.playways.room.msg.event.QExitGameMsgEvent;
 import com.module.playways.room.msg.event.QGameBeginEvent;
 import com.module.playways.room.msg.event.QGetSingChanceMsgEvent;
@@ -95,33 +93,31 @@ import com.module.playways.room.msg.event.QSyncStatusMsgEvent;
 import com.module.playways.room.msg.event.QWantSingChanceMsgEvent;
 import com.module.playways.room.msg.filter.PushMsgFilter;
 import com.module.playways.room.msg.manager.ChatRoomMsgManager;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
-import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.SwapStatusType;
-import com.module.playways.RoomDataUtils;
 import com.module.playways.room.room.comment.model.CommentLightModel;
 import com.module.playways.room.room.comment.model.CommentSysModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.model.score.ScoreResultModel;
-
 import com.module.playways.room.room.score.MachineScoreItem;
 import com.module.playways.room.room.score.RobotScoreHelper;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.BuildConfig;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.StandPlayType;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.EQGameOverReason;
 import com.zq.live.proto.Room.EQRoundOverReason;
+import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
+import com.zq.lyrics.utils.SongResUtils;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -849,7 +845,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (roundInfoModel.getOverReason() == EQRoundOverReason.ROR_CHO_SUCCESS.getValue() ||
                     roundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()) {
                 if (roundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                    MyLog.d(TAG,"添加到待选作品");
+                    MyLog.d(TAG, "添加到待选作品");
                     // 一唱到底
                     String fileName = String.format("wm_%s_%s.aac", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
                     String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
@@ -1868,16 +1864,24 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
+        int singerId = 0;
         if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
             if (event.roundInfo.getsPkRoundInfoModels().size() > 0) {
                 pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(), event.uid, true);
+                singerId = event.roundInfo.getsPkRoundInfoModels().get(0).getUserID();
             }
         } else if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             if (event.roundInfo.getsPkRoundInfoModels().size() > 1) {
                 pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(), event.uid, true);
+                singerId = event.roundInfo.getsPkRoundInfoModels().get(1).getUserID();
             }
         } else {
             pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, true);
+            singerId = event.roundInfo.getUserID();
+        }
+
+        if (singerId == MyUserInfoManager.getInstance().getUid()) {
+            StatisticsAdapter.recordCountEvent("grab", "game_getlike", null);
         }
     }
 
@@ -2467,6 +2471,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
 
                 break;
+            }
+        }
+
+        if (giftPresentEvent.mGPrensentGiftMsgModel.getReceiveUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+            if (giftPresentEvent.mGPrensentGiftMsgModel.getGiftInfo().getPrice() <= 0) {
+                StatisticsAdapter.recordCountEvent("grab", "game_getflower", null);
+            } else {
+                StatisticsAdapter.recordCountEvent("grab", "game_getgift", null);
             }
         }
     }

@@ -16,6 +16,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 
 import org.greenrobot.eventbus.EventBus;
@@ -324,6 +325,7 @@ public class UserInfoManager {
                         responseCallBack.onServerSucess(isFriend);
                     }
                     if (action == RA_BUILD) {
+                        StatisticsAdapter.recordCountEvent("social", "follow", null);
                         if (isOldFriend) {
                             EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, true, isFriend, isFollow));
                         } else {
