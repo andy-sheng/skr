@@ -4,7 +4,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 
 public class ShowEditRemarkEvent {
 
-    UserInfoModel mUserInfoModel;
+    public UserInfoModel mUserInfoModel;
 
     public ShowEditRemarkEvent(UserInfoModel userInfoModel) {
         this.mUserInfoModel = userInfoModel;

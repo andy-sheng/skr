@@ -755,7 +755,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ShowEditRemarkEvent event) {
-
+        if (event.mUserInfoModel != null) {
+            showRemarkDialog(event.mUserInfoModel);
+        }
     }
 
     private void showRemarkDialog(UserInfoModel mUserInfoModel) {
@@ -1728,7 +1730,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mGameRuleDialog.dismiss(false);
         }
         if (mEditRemarkDialog != null) {
-            mGrabKickDialog.dismiss(false);
+            mEditRemarkDialog.dismiss(false);
         }
         if (mBottomContainerView != null) {
             mBottomContainerView.dismissPopWindow();

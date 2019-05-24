@@ -404,6 +404,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
                     @Override
                     public void onClickKick() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
                         if (mClickListener != null) {
                             mClickListener.onClickKick(mUserInfoModel);
                         }
