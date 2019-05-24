@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.production;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,18 @@ import com.common.log.MyLog;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 import com.module.playways.grab.room.model.WorksUploadModel;
+import com.zq.person.holder.ProducationHolder;
+import com.zq.person.model.ProducationModel;
 
 public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, ResultProducationViewHolder> {
 
     Listener mListener;
     int mPlayPosition = -1;  //选中播放的id
+    LinearLayoutManager mLinearLayoutManager;
 
-    public ResultProducationAdapter(Listener listener) {
+    public ResultProducationAdapter(Listener listener, LinearLayoutManager linearLayoutManager) {
         this.mListener = listener;
+        this.mLinearLayoutManager = linearLayoutManager;
     }
 
     @NonNull
@@ -41,18 +46,28 @@ public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, Resu
         return mPlayPosition;
     }
 
-    public void setPlayPosition(int playPosition,boolean refresh) {
-        MyLog.d(TAG,"setSelectPosition" + " playPosition=" + playPosition);
-        if (mPlayPosition != playPosition) {
-            int oldSelectPosition = mPlayPosition;
-            mPlayPosition = playPosition;
-            if (oldSelectPosition >= 0 && refresh) {
-                notifyItemChanged(oldSelectPosition);
+    public void setPlayPosition(int selectPlayPosition) {
+        if (mPlayPosition != selectPlayPosition) {
+            ResultProducationViewHolder holder1 = getHolderByPosition(mPlayPosition);
+            if (holder1 != null) {
+                holder1.setPlayBtn(false);
             }
-//            if (mPlayPosition >= 0) {
-//                notifyItemChanged(mPlayPosition);
-//            }
+            mPlayPosition = selectPlayPosition;
+            ResultProducationViewHolder holder2 = getHolderByPosition(mPlayPosition);
+            if (holder2 != null) {
+                holder2.setPlayBtn(true);
+            }
         }
+    }
+
+    ResultProducationViewHolder getHolderByPosition(int playPosition) {
+        if (playPosition >= 0) {
+            View view = mLinearLayoutManager.findViewByPosition(mPlayPosition);
+            if (view != null) {
+                return (ResultProducationViewHolder) view.getTag();
+            }
+        }
+        return null;
     }
 
     @Override

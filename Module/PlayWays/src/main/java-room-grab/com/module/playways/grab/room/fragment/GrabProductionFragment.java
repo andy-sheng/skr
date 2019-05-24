@@ -161,6 +161,9 @@ public class GrabProductionFragment extends BaseFragment {
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
 
+        mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mProductionView.setLayoutManager(mLinearLayoutManager);
+
         mAdapter = new ResultProducationAdapter(new ResultProducationAdapter.Listener() {
 
             @Override
@@ -182,7 +185,7 @@ public class GrabProductionFragment extends BaseFragment {
                         public void onCompletion() {
                             super.onCompletion();
                             //mIPlayer.stop();
-                            mAdapter.setPlayPosition(-1, true);
+                            mAdapter.setPlayPosition(-1);
                         }
 
                     });
@@ -190,14 +193,14 @@ public class GrabProductionFragment extends BaseFragment {
                     mIPlayer.startPlay(model.getLocalPath());
                     // 开始播放当前postion，
                     // 清楚上一个
-                    mAdapter.setPlayPosition(position, true);
+                    mAdapter.setPlayPosition(position);
                 } else {
                     if (mIPlayer != null) {
                         //mIPlayer.setCallback(null);
                         mIPlayer.pause();
                     }
                     // 不用刷新，优化下，防止闪动， icon 在 click 事件内部已经设置过了
-                    mAdapter.setPlayPosition(-1, false);
+                    mAdapter.setPlayPosition(-1);
                 }
             }
 
@@ -214,9 +217,8 @@ public class GrabProductionFragment extends BaseFragment {
                     mObjectPlayControlTemplate.add(model, true);
                 }
             }
-        });
-        mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        mProductionView.setLayoutManager(mLinearLayoutManager);
+        },mLinearLayoutManager);
+
         mProductionView.setAdapter(mAdapter);
 
         mTvBack.setOnClickListener(new AnimateClickListener() {
@@ -280,7 +282,7 @@ public class GrabProductionFragment extends BaseFragment {
     }
 
     public void stopPlay() {
-        mAdapter.setPlayPosition(-1, true);
+        mAdapter.setPlayPosition(-1);
         if (mIPlayer != null) {
             mIPlayer.setCallback(null);
             mIPlayer.stop();

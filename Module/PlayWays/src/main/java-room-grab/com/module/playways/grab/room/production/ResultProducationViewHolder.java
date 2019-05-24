@@ -26,8 +26,8 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
 
     WorksUploadModel mWonderfulMomentModel;
 
-    int position;
-    boolean isPlay;
+    int mPosition;
+    boolean mIsPlay;
 
     ExImageView mBlightTipsIv;
     ExRelativeLayout mCoverArea;
@@ -44,32 +44,28 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
     public ResultProducationViewHolder(View itemView, ResultProducationAdapter.Listener listener) {
         super(itemView);
         this.mListener = listener;
-
+        itemView.setTag(this);
         mBlightTipsIv = (ExImageView) itemView.findViewById(R.id.blight_tips_iv);
         mCoverArea = (ExRelativeLayout) itemView.findViewById(R.id.cover_area);
         mCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.cover_iv);
         mPlayBackIv = (ExImageView) itemView.findViewById(R.id.play_back_iv);
         mSaveShareArea = (RelativeLayout) itemView.findViewById(R.id.save_share_area);
         mSaveShareIv = (ExImageView) itemView.findViewById(R.id.save_share_iv);
-        mSaveShareTv = (ExTextView)itemView.findViewById(R.id.save_share_tv);
+        mSaveShareTv = (ExTextView) itemView.findViewById(R.id.save_share_tv);
         mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
         mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
 
         mPlayBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (isPlay) {
-                    isPlay = false;
-                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
+                if (mIsPlay) {
                     if (mListener != null) {
-                        mListener.onClickPlayBtn(v, isPlay, position, mWonderfulMomentModel);
+                        mListener.onClickPlayBtn(v, !mIsPlay, mPosition, mWonderfulMomentModel);
                     }
 
                 } else {
-                    isPlay = true;
-                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
                     if (mListener != null) {
-                        mListener.onClickPlayBtn(v, isPlay, position, mWonderfulMomentModel);
+                        mListener.onClickPlayBtn(v, !mIsPlay, mPosition, mWonderfulMomentModel);
                     }
                 }
             }
@@ -79,16 +75,16 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    mListener.onClickSaveAndShare(position, mWonderfulMomentModel);
+                    mListener.onClickSaveAndShare(mPosition, mWonderfulMomentModel);
                 }
             }
         });
     }
 
     public void bindData(int position, WorksUploadModel momentModel, boolean isPlay) {
-        this.position = position;
+        this.mPosition = position;
         this.mWonderfulMomentModel = momentModel;
-        this.isPlay = isPlay;
+        this.mIsPlay = isPlay;
 
         if (mWonderfulMomentModel != null && !TextUtils.isEmpty(mWonderfulMomentModel.getSongModel().getCover())) {
             mSongNameTv.setText(mWonderfulMomentModel.getSongModel().getDisplaySongName());
@@ -116,12 +112,16 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
                         .setBorderColor(U.getColor(R.color.white))
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                         .build());
-        if (isPlay) {
+
+        setPlayBtn(isPlay);
+    }
+
+    public void setPlayBtn(boolean b) {
+        mIsPlay = b;
+        if (mIsPlay) {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
         } else {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
         }
-
     }
-
 }
