@@ -15,16 +15,12 @@ import com.alibaba.fastjson.JSON;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
-import com.common.core.share.ShareType;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.MyMediaPlayer;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -381,34 +377,15 @@ public class GrabProductionFragment extends BaseFragment {
         if (hasSave) {
             containSaveTips = false;
         }
-        mShareWorksDialog = new ShareWorksDialog(getContext(), momentModel.getSongModel().getDisplaySongName()
-                , containSaveTips, new ShareWorksDialog.ShareListener() {
-            @Override
-            public void onClickQQShare() {
-                shareUrl(SharePlatform.QQ, momentModel);
-            }
-
-            @Override
-            public void onClickQZoneShare() {
-                shareUrl(SharePlatform.QZONE, momentModel);
-            }
-
-            @Override
-            public void onClickWeixinShare() {
-                shareUrl(SharePlatform.WEIXIN, momentModel);
-            }
-
-            @Override
-            public void onClickQuanShare() {
-                shareUrl(SharePlatform.WEIXIN_CIRCLE, momentModel);
-            }
-        });
+        mShareWorksDialog = new ShareWorksDialog(GrabProductionFragment.this, momentModel.getSongModel().getDisplaySongName(), containSaveTips);
+        mShareWorksDialog.setData((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), MyUserInfoManager.getInstance().getAvatar()
+                , momentModel.getSongModel().getItemName(), momentModel.getUrl(), momentModel.getWorksID());
         mShareWorksDialog.show();
     }
 
     private void shareUrl(SharePlatform sharePlatform, WorksUploadModel model) {
         if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
-            if(sharePlatform == SharePlatform.WEIXIN){
+            if (sharePlatform == SharePlatform.WEIXIN) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("http://dev.app.inframe.mobi/user/work")
                         .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
@@ -421,7 +398,7 @@ public class GrabProductionFragment extends BaseFragment {
                 new ShareAction(getActivity()).withMedia(music)
                         .setPlatform(SHARE_MEDIA.WEIXIN)
                         .share();
-            }else{
+            } else {
                 UMusic music = new UMusic(model.getUrl());
                 music.setTitle("" + model.getSongModel().getItemName());
                 music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");

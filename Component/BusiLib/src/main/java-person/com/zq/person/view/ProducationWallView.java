@@ -3,7 +3,6 @@ package com.zq.person.view;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -11,10 +10,8 @@ import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.share.SharePlatform;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.MyMediaPlayer;
 import com.common.player.VideoPlayerAdapter;
@@ -28,11 +25,6 @@ import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.person.adapter.ProducationAdapter;
 import com.zq.person.model.ProducationModel;
@@ -191,87 +183,9 @@ public class ProducationWallView extends RelativeLayout {
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }
-        mShareWorksDialog = new ShareWorksDialog(getContext(), model.getName()
-                , false, new ShareWorksDialog.ShareListener() {
-            @Override
-            public void onClickQQShare() {
-                shareUrl(SharePlatform.QQ, model);
-            }
-
-            @Override
-            public void onClickQZoneShare() {
-                shareUrl(SharePlatform.QZONE, model);
-            }
-
-            @Override
-            public void onClickWeixinShare() {
-                shareUrl(SharePlatform.WEIXIN, model);
-            }
-
-            @Override
-            public void onClickQuanShare() {
-                shareUrl(SharePlatform.WEIXIN_CIRCLE, model);
-            }
-        });
+        mShareWorksDialog = new ShareWorksDialog(mFragment, model.getName(), false);
+        mShareWorksDialog.setData(model.getUserID(), model.getNickName(), model.getCover(), model.getName(), model.getWorksURL(), model.getWorksID());
         mShareWorksDialog.show();
-    }
-
-    private void shareUrl(SharePlatform sharePlatform, ProducationModel model) {
-        if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getWorksURL())) {
-            if (sharePlatform == SharePlatform.WEIXIN) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("http://dev.app.inframe.mobi/user/work")
-                        .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
-                        .append("&workId=").append(model.getWorksID());
-                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-                UMWeb music = new UMWeb(mUrl);
-                music.setTitle("" + model.getName());
-                music.setDescription(mUserInfoModel.getNickname() + "的撕歌精彩时刻");
-                music.setThumb(new UMImage(mFragment.getActivity(), mUserInfoModel.getAvatar()));
-                new ShareAction(mFragment.getActivity()).withMedia(music)
-                        .setPlatform(SHARE_MEDIA.WEIXIN)
-                        .share();
-            } else {
-                UMusic music = new UMusic(model.getWorksURL());
-                music.setTitle("" + model.getName());
-                music.setDescription(mUserInfoModel.getNickname() + "的撕歌精彩时刻");
-                music.setThumb(new UMImage(mFragment.getActivity(), mUserInfoModel.getAvatar()));
-
-                StringBuilder sb = new StringBuilder();
-                sb.append("http://dev.app.inframe.mobi/user/work")
-                        .append("?skerId=").append(String.valueOf(mUserInfoModel.getUserId()))
-                        .append("&workId=").append(String.valueOf(model.getWorksID()));
-                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-                // TODO: 2019/5/22 微信分享不成功的原因可能是mUrl未上线，微信会检测这个
-                music.setmTargetUrl(mUrl);
-
-                switch (sharePlatform) {
-                    case QQ:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.QQ)
-                                .share();
-                        break;
-                    case QZONE:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.QZONE)
-                                .share();
-                        break;
-                    case WEIXIN:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.WEIXIN)
-                                .share();
-                        break;
-
-                    case WEIXIN_CIRCLE:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                                .share();
-                        break;
-                }
-            }
-        } else {
-            MyLog.w(TAG, "shareUrl" + " sharePlatform=" + sharePlatform + " model=" + model);
-        }
     }
 
     public void stopPlay() {

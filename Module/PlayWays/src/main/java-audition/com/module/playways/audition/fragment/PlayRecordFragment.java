@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.share.SharePlatform;
+
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
@@ -28,12 +28,6 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.common.utils.ActivityUtils;
-import com.module.playways.grab.room.fragment.GrabProductionFragment;
-import com.module.playways.grab.room.model.WorksUploadModel;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
@@ -395,72 +389,10 @@ public class PlayRecordFragment extends BaseFragment {
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }
-        mShareWorksDialog = new ShareWorksDialog(getContext(), mSongModel.getItemName()
-                , containSaveTips, new ShareWorksDialog.ShareListener() {
-            @Override
-            public void onClickQQShare() {
-                shareUrl(SharePlatform.QQ);
-            }
-
-            @Override
-            public void onClickQZoneShare() {
-                shareUrl(SharePlatform.QZONE);
-            }
-
-            @Override
-            public void onClickWeixinShare() {
-                shareUrl(SharePlatform.WEIXIN);
-            }
-
-            @Override
-            public void onClickQuanShare() {
-                shareUrl(SharePlatform.WEIXIN_CIRCLE);
-            }
-        });
+        mShareWorksDialog = new ShareWorksDialog(PlayRecordFragment.this, mSongModel.getItemName(), containSaveTips);
+        mShareWorksDialog.setData((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), MyUserInfoManager.getInstance().getAvatar()
+                , mSongModel.getItemName(), mUrl, mWorksId);
         mShareWorksDialog.show();
-    }
-
-    private void shareUrl(SharePlatform sharePlatform) {
-        if (!TextUtils.isEmpty(mUrl) && mWorksId > 0) {
-            UMusic music = new UMusic(mUrl);
-            music.setTitle("" + mSongModel.getItemName());
-            music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
-            music.setThumb(new UMImage(getActivity(), MyUserInfoManager.getInstance().getAvatar()));
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("http://dev.app.inframe.mobi/user/work")
-                    .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
-                    .append("&workId=").append(String.valueOf(mWorksId));
-            String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-            // TODO: 2019/5/22 微信分享不成功的原因可能是mUrl未上线，微信会检测这个
-            music.setmTargetUrl(mUrl);
-
-            switch (sharePlatform) {
-                case QQ:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.QQ)
-                            .share();
-                    break;
-                case QZONE:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.QZONE)
-                            .share();
-                    break;
-                case WEIXIN:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.WEIXIN)
-                            .share();
-                    break;
-
-                case WEIXIN_CIRCLE:
-                    new ShareAction(getActivity()).withMedia(music)
-                            .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                            .share();
-                    break;
-            }
-        } else {
-            MyLog.w(TAG, "shareUrl" + " sharePlatform=" + sharePlatform);
-        }
     }
 
     @Override
