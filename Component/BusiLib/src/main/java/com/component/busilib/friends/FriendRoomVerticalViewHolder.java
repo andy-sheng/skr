@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
@@ -113,7 +114,13 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setBorderColor(U.getColor(R.color.white))
                             .build());
-            mNameTv.setText(mFriendRoomModel.getDisplayName());
+            String disName = mFriendRoomModel.getDisplayName();
+            if (mFriendRoomModel.getUserInfo() != null &&
+                    (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM || mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM)) {
+                disName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getDisplayName());
+            }
+            mNameTv.setText(disName);
+
             if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
                 mRecommendTagSdv.setVisibility(View.VISIBLE);
                 FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getDisplayURL())
