@@ -181,7 +181,7 @@ public class SearchSongFragment extends BaseFragment {
     }
 
     private void showSearchFeedback() {
-        SearchFeedbackView searchFeedbackView = new SearchFeedbackView(getContext());
+        SearchFeedbackView searchFeedbackView = new SearchFeedbackView(SearchSongFragment.this);
         searchFeedbackView.setListener(new SearchFeedbackView.Listener() {
             @Override
             public void onClickSubmit(String songName, String songSinger) {
