@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.text.SpannableStringBuilder;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,7 +24,6 @@ import com.common.core.share.ShareManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -275,10 +272,7 @@ public class LoginFragment extends BaseFragment {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         StatisticsAdapter.recordCountEvent("login", "expose", null);
-        if (U.getPreferenceUtils().getSettingBoolean("newinstall", true)) {
-            U.getPreferenceUtils().setSettingBoolean("newinstall", false);
-            StatisticsAdapter.recordCountEvent("signup", "expose", null);
-        }
+        StatisticsAdapter.recordCountEvent("signup", "expose", null,true);
     }
 
     @Override

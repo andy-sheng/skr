@@ -1,6 +1,5 @@
 package com.module.home.updateinfo.fragment;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,26 +11,19 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
-import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
-import com.common.core.permission.SkrAudioPermission;
-import com.common.core.permission.SkrSdcardPermission;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
@@ -46,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
@@ -272,7 +263,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         if (getActivity() != null) {
             getActivity().finish();
         }
-        StatisticsAdapter.recordCountEvent("signup", "success2", null);
+        StatisticsAdapter.recordCountEvent("signup", "success2", null,true);
     }
 
 
@@ -369,7 +360,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null);
+        StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null,true);
     }
 
     @Override

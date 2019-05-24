@@ -103,11 +103,10 @@ public class UserAccountManager {
             // 用户登录成功，这里应该是要发出通知的
             setAccount(account, true);
             U.getActivityUtils().showSnackbar("登录成功", false);
-            /**
-             * 不需要完善个人资料，直接注册成功
-             */
-            if (!MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
-                StatisticsAdapter.recordCountEvent("signup", "success3", null);
+
+            if (!MyUserInfoManager.getInstance().isFirstLogin()) {
+                // 是个老用户，打个点
+                StatisticsAdapter.recordCountEvent("signup","oldid",null,true);
             }
         }
     }

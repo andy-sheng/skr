@@ -1,8 +1,5 @@
 package com.common.utils;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 
 
@@ -10,7 +7,6 @@ import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.meituan.android.walle.WalleChannelReader;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class ChannelUtils {
@@ -24,7 +20,7 @@ public class ChannelUtils {
 
     ChannelUtils() {
         try {
-            mSubChannel = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(),PREF_KEY_SUB_CHANNEL, "");
+            mSubChannel = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(),PREF_KEY_SUB_CHANNEL, "");
 //            Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
 //            Field field = ct.getField("CHANNEL_NAME");
 //            channelNameFromBuildConfig = (String) field.get(null);
@@ -32,7 +28,7 @@ public class ChannelUtils {
             if (!TextUtils.isEmpty(walleChannel)) {
                 channelNameFromBuildConfig = walleChannel;
             }
-            channelNameFromBuildConfig = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(),PREF_KEY_DEBUG_CHANNEL, channelNameFromBuildConfig);
+            channelNameFromBuildConfig = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(),PREF_KEY_DEBUG_CHANNEL, channelNameFromBuildConfig);
         } catch (Exception e) {
             MyLog.e(e);
 //            PgyCrashManager.reportCaughtException(e);
@@ -45,7 +41,7 @@ public class ChannelUtils {
 
     public void setChannelNameFromBuildConfig(String channel) {
         channelNameFromBuildConfig = channel;
-        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(),PREF_KEY_DEBUG_CHANNEL, channel);
+        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(),PREF_KEY_DEBUG_CHANNEL, channel);
     }
 
     /**
@@ -66,7 +62,7 @@ public class ChannelUtils {
         }
         if (TextUtils.isEmpty(channelNameFromPref)) {
             //读一下 pref
-            channelNameFromPref = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(),PREF_KEY_CHANNEL, "DEFAULT");
+            channelNameFromPref = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(),PREF_KEY_CHANNEL, "DEFAULT");
         }
         if (!channelNameFromBuildConfig.equals(channelNameFromPref)) {
             if (channelNameFromBuildConfig.equals("DEFAULT")) {
@@ -80,7 +76,7 @@ public class ChannelUtils {
             } else {
                 // 如果不是自升级渠道,保存起来
                 channelNameFromPref = channelNameFromBuildConfig;
-                U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(),PREF_KEY_CHANNEL, channelNameFromPref);
+                U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(),PREF_KEY_CHANNEL, channelNameFromPref);
             }
         }
         if ("DEFAULT".equals(channelNameFromPref)) {
@@ -115,9 +111,9 @@ public class ChannelUtils {
             HashMap map = new HashMap();
             map.put("from", subChannel);
             StatisticsAdapter.recordCountEvent("", "sub_channel", map);
-            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(),PREF_KEY_SUB_CHANNEL, subChannel);
+            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(),PREF_KEY_SUB_CHANNEL, subChannel);
         } else {
-            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(),PREF_KEY_SUB_CHANNEL, "");
+            U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(),PREF_KEY_SUB_CHANNEL, "");
         }
     }
 

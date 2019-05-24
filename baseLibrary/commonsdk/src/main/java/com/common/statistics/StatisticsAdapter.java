@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.common.cache.LruCache;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import java.util.HashMap;
@@ -75,6 +76,22 @@ public class StatisticsAdapter {
      * @param params   参数 可为null
      */
     public static void recordCountEvent(String category, String key, HashMap<String,String> params) {
+        recordCountEvent(category,key,params,false);
+    }
+
+    /**
+     * 计数事件
+     * 如 统计礼物面板的打开次数 统计收藏按钮的点击次数等
+     * 可产生一次相应的计数事件
+     * 例 MiStatInterface.recordCountEvent("Button_Click", "Button_OK_click",null);
+     * 统计后台会对这类事件做总发生次数、总覆盖用户数等统计计算
+     *
+     * @param category 类别
+     * @param key      主key
+     * @param params   参数 可为null
+     * @param onlyOneTimeInAppLifeCycle 在app生命周期内这个点只会打一次，除非app卸载，常用于注册 登录等漏斗转化
+     */
+    public static void recordCountEvent(String category, String key, HashMap<String,String> params,boolean onlyOneTimeInAppLifeCycle) {
         if (useXiaomi) {
             MiStatInterface.recordCountEvent(category, key, params);
         }
@@ -88,6 +105,14 @@ public class StatisticsAdapter {
             if (ts != null && now - ts < 400) {
                 MyLog.d(TAG, "recordCountEvent 删除" + s + ",去抖动");
             } else {
+                if(onlyOneTimeInAppLifeCycle){
+                    if(U.getPreferenceUtils().getSettingBoolean(U.getPreferenceUtils().longlySp(),s,false)){
+                       //  如果打过
+                        MyLog.d(s+" 这个点在App周期内已经打过了 cancel");
+                        return;
+                    }
+                    U.getPreferenceUtils().setSettingBoolean(U.getPreferenceUtils().longlySp(),s,true);
+                }
                 debounceLruCache.put(s, now);
                 UmengStatistics.recordCountEvent(s, params);
             }

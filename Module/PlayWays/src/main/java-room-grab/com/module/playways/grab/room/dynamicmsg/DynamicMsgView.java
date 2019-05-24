@@ -75,11 +75,11 @@ public class DynamicMsgView extends RelativeLayout {
     }
 
     public void loadEmoji() {
-        long saveTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis_save_ts", 0);
+        long saveTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "pref_emojis_save_ts", 0);
         if (System.currentTimeMillis() - saveTs > 3600 * 1000 * 6) {
             syncEmojis();
         } else {
-            String listStr = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis", "");
+            String listStr = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "pref_emojis", "");
             List<DynamicModel> list = JSON.parseArray(listStr, DynamicModel.class);
             if (list != null && list.size() > 0) {
                 showDynamicModels(list);
@@ -97,8 +97,8 @@ public class DynamicMsgView extends RelativeLayout {
                 if (result.getErrno() == 0) {
                     String listStr = result.getData().getString("emojis");
                     List<DynamicModel> list = JSON.parseArray(listStr, DynamicModel.class);
-                    U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis", listStr);
-                    U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis_save_ts", System.currentTimeMillis());
+                    U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "pref_emojis", listStr);
+                    U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "pref_emojis_save_ts", System.currentTimeMillis());
                     showDynamicModels(list);
                 }
             }
