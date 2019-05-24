@@ -2,8 +2,6 @@ package com.zq.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.Gravity;
 
 import com.common.base.BaseActivity;
@@ -14,19 +12,13 @@ import com.common.utils.U;
 import com.component.busilib.R;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.event.ShowEditRemarkEvent;
-import com.zq.person.fragment.OtherPersonFragment3;
 import com.zq.person.model.PhotoModel;
-import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
-import static com.zq.report.fragment.ReportFragment.FORM_GAME;
-import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
-import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 // 个人信息卡片
 public class PersonInfoDialog {
@@ -153,10 +145,6 @@ public class PersonInfoDialog {
     }
 
     private void showReportView(int userID) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
-        bundle.putInt(REPORT_USER_ID, userID);
-
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, QuickFeedbackFragment.class)
                         .setAddToBackStack(true)

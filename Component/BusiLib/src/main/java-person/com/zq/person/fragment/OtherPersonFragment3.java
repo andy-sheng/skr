@@ -62,7 +62,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
-import com.zq.person.model.PhotoModel;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.EditRemarkView;
 import com.zq.person.view.IOtherPersonView;
@@ -79,10 +78,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import model.RelationNumModel;
-
-import static com.zq.report.fragment.ReportFragment.FORM_PERSON;
-import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
-import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView, RequestCallBack {
 
@@ -298,9 +293,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                         if (mPersonMoreOpView != null) {
                             mPersonMoreOpView.dismiss();
                         }
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(REPORT_FROM_KEY, FORM_PERSON);
-                        bundle.putInt(REPORT_USER_ID, mUserId);
+
                         IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
                         Class<BaseFragment> baseFragmentClass = (Class) channelService.getData(3, null);
                         U.getFragmentUtils().addFragment(
