@@ -69,6 +69,7 @@ public class PlayRecordFragment extends BaseFragment {
     ExTextView mOptTv;
     RelativeLayout mResetArea;
     RelativeLayout mSaveShareArea;
+    ExTextView mSaveShareTv;
     ManyLyricsView mManyLyricsView;
 
     SongModel mSongModel;
@@ -100,6 +101,7 @@ public class PlayRecordFragment extends BaseFragment {
         mOptTv = (ExTextView) mRootView.findViewById(R.id.opt_tv);
         mResetArea = (RelativeLayout) mRootView.findViewById(R.id.reset_area);
         mSaveShareArea = (RelativeLayout) mRootView.findViewById(R.id.save_share_area);
+        mSaveShareTv = (ExTextView) mRootView.findViewById(R.id.save_share_tv);
         mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
 
         mTvName.setText("《" + mSongModel.getItemName() + "》");
@@ -156,7 +158,7 @@ public class PlayRecordFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 if (!TextUtils.isEmpty(mUrl) && mWorksId > 0) {
-                    showShareDialog();
+                    showShareDialog(false);
                 } else {
                     saveWorksStep1();
                 }
@@ -363,7 +365,9 @@ public class PlayRecordFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mWorksId = result.getData().getIntValue("worksID");
-                    showShareDialog();
+                    mSaveShareTv.setText("分享");
+                    mSaveShareTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.audition_share, 0, 0);
+                    showShareDialog(true);
                 } else {
                     mWorksId = 0;
                     U.getToastUtil().showShort("保存失败");
@@ -387,12 +391,12 @@ public class PlayRecordFragment extends BaseFragment {
         }, this);
     }
 
-    private void showShareDialog() {
+    private void showShareDialog(boolean containSaveTips) {
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }
         mShareWorksDialog = new ShareWorksDialog(getContext(), mSongModel.getItemName()
-                , true, new ShareWorksDialog.ShareListener() {
+                , containSaveTips, new ShareWorksDialog.ShareListener() {
             @Override
             public void onClickQQShare() {
                 shareUrl(SharePlatform.QQ);
