@@ -3,6 +3,7 @@ package com.zq.person.view;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
@@ -22,6 +23,7 @@ public class EditRemarkView extends RelativeLayout {
     View mPlaceBottomView;
     View mPlaceTopView;
     NoLeakEditText mRemarkNameEdt;
+    ImageView mClearEditIv;
     StrokeTextView mCancelTv;
     StrokeTextView mSaveTv;
 
@@ -42,6 +44,7 @@ public class EditRemarkView extends RelativeLayout {
         inflate(getContext(), R.layout.remark_edit_view_layout, this);
 
         mRemarkNameEdt = (NoLeakEditText) findViewById(R.id.remark_name_edt);
+        mClearEditIv = (ImageView) findViewById(R.id.clear_edit_iv);
         mCancelTv = (StrokeTextView) findViewById(R.id.cancel_tv);
         mSaveTv = (StrokeTextView) findViewById(R.id.save_tv);
         mPlaceBottomView = (View) findViewById(R.id.place_bottom_view);
@@ -82,6 +85,13 @@ public class EditRemarkView extends RelativeLayout {
             }
         });
 
+        mClearEditIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mRemarkNameEdt.setText("");
+            }
+        });
+
         mPlaceBottomView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -109,7 +119,7 @@ public class EditRemarkView extends RelativeLayout {
                 mRemarkNameEdt.requestFocus();
                 U.getKeyBoardUtils().showSoftInputKeyBoard(mFragment.getActivity());
             }
-        }, 500);
+        }, 300);
 
     }
 
