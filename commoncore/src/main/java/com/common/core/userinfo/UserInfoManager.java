@@ -756,7 +756,7 @@ public class UserInfoManager {
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
             public int compare(UserInfoModel o1, UserInfoModel o2) {
-                int r = o1.getStatus() - o2.getStatus();
+                int r = o2.getStatus() - o1.getStatus();
                 if (r == 0) {
                     return o1.getUserId() - o2.getUserId();
                 } else {
