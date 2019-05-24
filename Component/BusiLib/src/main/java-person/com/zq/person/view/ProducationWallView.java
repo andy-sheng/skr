@@ -86,10 +86,10 @@ public class ProducationWallView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.producation_wall_view_layout, this);
 
-        mProducationView = (RecyclerView) findViewById(R.id.producation_view);
-
-        mProducationView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mProducationView = findViewById(R.id.producation_view);
         boolean isSelf = false;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mProducationView.setLayoutManager(linearLayoutManager);
         if (mUserInfoModel != null && mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
             isSelf = true;
         }
@@ -126,26 +126,26 @@ public class ProducationWallView extends RelativeLayout {
                             public void onCompletion() {
                                 super.onCompletion();
                                 //mIPlayer.stop();
-                                mAdapter.setPlayPosition(-1, true);
+                                mAdapter.setPlayPosition(-1);
                             }
                         });
                     }
                     mIPlayer.reset();
                     mIPlayer.startPlay(model.getWorksURL());
-                    playProducation(model);
+                    playProducation(model, position);
                     // 开始播放当前postion，
                     // 清楚上一个
-                    mAdapter.setPlayPosition(position, true);
+                    mAdapter.setPlayPosition(position);
                 } else {
                     if (mIPlayer != null) {
                         //mIPlayer.setCallback(null);
                         mIPlayer.pause();
                     }
                     // 不用刷新，优化下，防止闪动， icon 在 click 事件内部已经设置过了
-                    mAdapter.setPlayPosition(-1, false);
+                    mAdapter.setPlayPosition(-1);
                 }
             }
-        }, isSelf);
+        }, isSelf, linearLayoutManager);
         mProducationView.setAdapter(mAdapter);
     }
 
@@ -218,7 +218,7 @@ public class ProducationWallView extends RelativeLayout {
 
     private void shareUrl(SharePlatform sharePlatform, ProducationModel model) {
         if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getWorksURL())) {
-            if(sharePlatform == SharePlatform.WEIXIN){
+            if (sharePlatform == SharePlatform.WEIXIN) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("http://dev.app.inframe.mobi/user/work")
                         .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
@@ -231,7 +231,7 @@ public class ProducationWallView extends RelativeLayout {
                 new ShareAction(mFragment.getActivity()).withMedia(music)
                         .setPlatform(SHARE_MEDIA.WEIXIN)
                         .share();
-            }else{
+            } else {
                 UMusic music = new UMusic(model.getWorksURL());
                 music.setTitle("" + model.getName());
                 music.setDescription(mUserInfoModel.getNickname() + "的撕歌精彩时刻");
@@ -275,7 +275,7 @@ public class ProducationWallView extends RelativeLayout {
     }
 
     public void stopPlay() {
-        mAdapter.setPlayPosition(-1, true);
+        mAdapter.setPlayPosition(-1);
         if (mIPlayer != null) {
             mIPlayer.stop();
         }
@@ -330,7 +330,7 @@ public class ProducationWallView extends RelativeLayout {
         }, mFragment);
     }
 
-    public void playProducation(final ProducationModel model) {
+    public void playProducation(final ProducationModel model, final int position) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("toUserID", mUserInfoModel.getUserId());
         map.put("worksID", model.getWorksID());
@@ -341,7 +341,7 @@ public class ProducationWallView extends RelativeLayout {
                 if (result.getErrno() == 0) {
                     // TODO: 2019/5/22 播放次数客户端自己加一
                     model.setPlayCnt(model.getPlayCnt() + 1);
-                    mAdapter.update(model);
+                    mAdapter.updatePlaycnt(model, position);
                 }
             }
         }, mFragment);

@@ -842,24 +842,48 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         if (mRoomData.openAudioRecording()) {
+            SongModel songModel = null;
+            boolean baodeng = false;
             if (roundInfoModel.getOverReason() == EQRoundOverReason.ROR_CHO_SUCCESS.getValue() ||
                     roundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()) {
                 if (roundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                    MyLog.d(TAG, "添加到待选作品");
-                    // 一唱到底
-                    String fileName = String.format("wm_%s_%s.aac", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
-                    String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
-                    SongModel songModel = roundInfoModel.getMusic();
-                    if (roundInfoModel.getsPkRoundInfoModels().size() >= 1 && roundInfoModel.getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                        songModel = roundInfoModel.getMusic().getPkMusic();
-                    }
+                    // 一唱到底 或者是 是pk轮次，正常结束
+                    songModel = roundInfoModel.getMusic();
                     if (!roundInfoModel.getbLightInfos().isEmpty()) {
-                        // 有人爆灯了
-                        mRoomData.addWorksUploadModel(new WorksUploadModel(savePath, songModel, true));
+                        baodeng = true;
                     } else {
-                        mRoomData.addWorksUploadModel(new WorksUploadModel(savePath, songModel, false));
+                        baodeng = false;
                     }
                 }
+            }
+            if (roundInfoModel.getsPkRoundInfoModels().size() == 2) {
+                if (roundInfoModel.getsPkRoundInfoModels().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()
+                        && roundInfoModel.getsPkRoundInfoModels().get(0).getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()) {
+                    // 第一轮我唱
+                    songModel = roundInfoModel.getMusic();
+                    if (!roundInfoModel.getsPkRoundInfoModels().get(0).getbLightInfos().isEmpty()) {
+                        baodeng = true;
+                    } else {
+                        baodeng = false;
+                    }
+                } else if (roundInfoModel.getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()
+                        && roundInfoModel.getsPkRoundInfoModels().get(1).getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()) {
+                    // 第一轮我唱
+                    if (roundInfoModel.getMusic() != null) {
+                        songModel = roundInfoModel.getMusic().getPkMusic();
+                    }
+                    if (!roundInfoModel.getsPkRoundInfoModels().get(1).getbLightInfos().isEmpty()) {
+                        baodeng = true;
+                    } else {
+                        baodeng = false;
+                    }
+                }
+            }
+            if (songModel != null) {
+                MyLog.d(TAG, "添加到待选作品");
+                String fileName = String.format("wm_%s_%s.aac", mRoomData.getGameId(), roundInfoModel.getRoundSeq());
+                String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
+                mRoomData.addWorksUploadModel(new WorksUploadModel(savePath, songModel, baodeng));
             }
         }
     }

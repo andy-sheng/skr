@@ -1,21 +1,17 @@
 package com.zq.person.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.floatwindow.FloatWindow;
-import com.common.log.MyLog;
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.R;
 import com.zq.person.holder.EmptyProducationHolder;
 import com.zq.person.holder.ProducationHolder;
-import com.zq.person.model.PhotoModel;
 import com.zq.person.model.ProducationModel;
-
-import org.apache.commons.lang3.builder.Diff;
 
 /**
  * 用recycleview做一个空页面
@@ -28,11 +24,14 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerVi
     Listener mListener;
     boolean mIsSelf;
 
-    int mSelectPlayPosition = -1;  //选中播放的id
+    int mPlayPosition = -1;  //选中播放的id
 
-    public ProducationAdapter(Listener listener, boolean isSelf) {
-        this.mListener = listener;
+    LinearLayoutManager mLinearLayoutManager;
+
+    public ProducationAdapter(Listener listener, boolean isSelf, LinearLayoutManager linearLayoutManager) {
         this.mIsSelf = isSelf;
+        this.mListener = listener;
+        this.mLinearLayoutManager = linearLayoutManager;
     }
 
     @NonNull
@@ -54,7 +53,7 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerVi
         if (mDataList != null && mDataList.size() > 0) {
             ProducationModel model = mDataList.get(position);
             ProducationHolder viewHolder = (ProducationHolder) holder;
-            if (mSelectPlayPosition == position) {
+            if (mPlayPosition == position) {
                 viewHolder.bindData(position, model, true);
             } else {
                 viewHolder.bindData(position, model, false);
@@ -62,18 +61,6 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerVi
         } else {
             EmptyProducationHolder viewHolder = (EmptyProducationHolder) holder;
             viewHolder.bindData(mIsSelf);
-        }
-    }
-
-    public void delete(ProducationModel model) {
-        for (int i = 0; i < mDataList.size(); i++) {
-            ProducationModel m = mDataList.get(i);
-            if (m.equals(model)) {
-                MyLog.d(TAG, "delete" + " find i=" + i);
-                mDataList.remove(i);
-                notifyItemRemoved(i);
-                return;
-            }
         }
     }
 
@@ -96,21 +83,39 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerVi
     }
 
     public int getPlayPosition() {
-        return mSelectPlayPosition;
+        return mPlayPosition;
     }
 
-    public void setPlayPosition(int selectPlayPosition, boolean refresh) {
-        if (mSelectPlayPosition != selectPlayPosition) {
-            int oldPlayPosition = mSelectPlayPosition;
-            mSelectPlayPosition = selectPlayPosition;
-
-            if (oldPlayPosition >= 0 && refresh) {
-                notifyItemChanged(oldPlayPosition);
+    public void setPlayPosition(int selectPlayPosition) {
+        if (mPlayPosition != selectPlayPosition) {
+            ProducationHolder holder1 = getHolderByPosition(mPlayPosition);
+            if (holder1 != null) {
+                holder1.setPlayBtn(false);
             }
-
+            mPlayPosition = selectPlayPosition;
+            ProducationHolder holder2 = getHolderByPosition(mPlayPosition);
+            if (holder2 != null) {
+                holder2.setPlayBtn(true);
+            }
         }
     }
 
+    public void updatePlaycnt(ProducationModel model, int position) {
+        ProducationHolder holder = getHolderByPosition(position);
+        if (holder != null) {
+            holder.setPlaycnt(model.getPlayCnt());
+        }
+    }
+
+    ProducationHolder getHolderByPosition(int playPosition) {
+        if (playPosition >= 0) {
+            View view = mLinearLayoutManager.findViewByPosition(mPlayPosition);
+            if (view != null) {
+                return (ProducationHolder) view.getTag();
+            }
+        }
+        return null;
+    }
 
     public interface Listener {
 

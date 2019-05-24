@@ -82,6 +82,21 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
     }
 
     /**
+     * 删除某条数据
+     * @param model
+     */
+    public void delete(T model) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            T m = mDataList.get(i);
+            if (m.equals(model)) {
+                mDataList.remove(i);
+                notifyItemRemoved(i);
+                return;
+            }
+        }
+    }
+
+    /**
      * 更新某个数据
      *
      * @param data

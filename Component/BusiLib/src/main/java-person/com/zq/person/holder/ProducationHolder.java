@@ -26,9 +26,9 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
 
     public final static String TAG = "ProducationHolder";
 
-    int position;
-    boolean isPlay;
-    ProducationModel model;
+    int mPosition;
+    boolean mIsPlay;
+    ProducationModel mModel;
 
     ExRelativeLayout mCoverArea;
     SimpleDraweeView mCoverIv;
@@ -42,7 +42,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
 
     public ProducationHolder(View itemView, final ProducationAdapter.Listener listener, boolean mIsSelf) {
         super(itemView);
-
+        itemView.setTag(this);
         mCoverArea = (ExRelativeLayout) itemView.findViewById(R.id.cover_area);
         mCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.cover_iv);
         mPlayBackIv = (ExImageView) itemView.findViewById(R.id.play_back_iv);
@@ -63,7 +63,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (listener != null) {
-                    listener.onClickShare(position, model);
+                    listener.onClickShare(mPosition, mModel);
                 }
             }
         });
@@ -72,7 +72,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (listener != null) {
-                    listener.onClickDele(position, model);
+                    listener.onClickDele(mPosition, mModel);
                 }
             }
         });
@@ -80,17 +80,13 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
         mPlayBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (isPlay) {
-                    isPlay = false;
-                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
+                if (mIsPlay) {
                     if (listener != null) {
-                        listener.onClickPlayBtn(v, isPlay, position, model);
+                        listener.onClickPlayBtn(v, !mIsPlay, mPosition, mModel);
                     }
                 } else {
-                    isPlay = true;
-                    mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
                     if (listener != null) {
-                        listener.onClickPlayBtn(v, isPlay, position, model);
+                        listener.onClickPlayBtn(v, !mIsPlay, mPosition, mModel);
                     }
                 }
             }
@@ -99,9 +95,9 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
 
     public void bindData(int position, ProducationModel model, boolean isPlay) {
         MyLog.d(TAG, "bindData" + " position=" + position + " model=" + model + " isPlay=" + isPlay);
-        this.position = position;
-        this.model = model;
-        this.isPlay = isPlay;
+        this.mPosition = position;
+        this.mModel = model;
+        this.mIsPlay = isPlay;
 
         if (model != null) {
             mSongNameTv.setText("" + model.getName());
@@ -127,14 +123,19 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                             .build());
         }
+        setPlayBtn(isPlay);
+    }
 
-
-        if (isPlay) {
+    public void setPlayBtn(boolean play) {
+        mIsPlay = play;
+        if (play) {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_pause);
         } else {
             mPlayBackIv.setBackgroundResource(R.drawable.grab_works_play);
         }
-
     }
 
+    public void setPlaycnt(int playCnt) {
+        mPlayNumTv.setText("" + playCnt + "次播放");
+    }
 }
