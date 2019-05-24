@@ -71,14 +71,15 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_manage"
-        android:layout_width="@dimen/view_72_dp"
-        android:layout_height="@dimen/view_38_dp"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_32_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
         android:gravity="center"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/textsize_14_dp" />
 
     <View
         android:layout_width="match_parent"
