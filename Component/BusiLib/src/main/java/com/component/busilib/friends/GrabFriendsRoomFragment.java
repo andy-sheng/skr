@@ -36,9 +36,6 @@ public class GrabFriendsRoomFragment extends BaseFragment {
     RecyclerView mContentRv;
     ClassicsHeader mClassicsHeader;
 
-    int offset = 0;          //偏移量
-    int DEFAULT_COUNT = 50;  // 每次拉去列表数目
-
     FriendRoomVerticalAdapter mFriendRoomVeritAdapter;
 
     SkrAudioPermission mSkrAudioPermission;
@@ -74,12 +71,12 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//                loadData(offset, DEFAULT_COUNT, true);
+
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                loadData(offset, DEFAULT_COUNT, true);
+                loadData();
             }
         });
         mContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -110,7 +107,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         });
         mContentRv.setAdapter(mFriendRoomVeritAdapter);
 
-        loadData(0, DEFAULT_COUNT, false);
+        loadData();
     }
 
     @Override
@@ -118,25 +115,25 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         return false;
     }
 
-    private void loadData(int offset, int count, final boolean isLoadMore) {
+    private void loadData() {
         GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(grabSongApi.getRecommendRoomList(offset, count), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(grabSongApi.getRecommendRoomList(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    int totalNum = obj.getData().getIntValue("cnt");
-                    refreshView(list, offset, isLoadMore);
+                    refreshView(list);
                 }
             }
         }, this);
     }
 
-    private void refreshView(List<RecommendModel> list, int offset, boolean isLoadMore) {
-        this.offset = offset;
+    /**
+     * 刷新数据
+     * @param list
+     */
+    private void refreshView(List<RecommendModel> list) {
         mRefreshLayout.finishRefresh();
-
         if (list != null && list.size() > 0) {
             mFriendRoomVeritAdapter.getDataList().clear();
             mFriendRoomVeritAdapter.getDataList().addAll(list);

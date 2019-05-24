@@ -67,7 +67,7 @@
                 android:drawableLeft="@drawable/person_unfollow_icon"
                 android:drawablePadding="@dimen/view_5_dp"
                 android:gravity="center"
-                android:text="取消关注"
+                android:text="踢人"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
 

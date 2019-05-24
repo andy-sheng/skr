@@ -53,7 +53,7 @@ public class PersonMoreOpView extends RelativeLayout {
         mReportTv = (ExTextView) findViewById(R.id.report_tv);
 
         mUnfollowArea.setVisibility(mHasUnFollow ? VISIBLE : GONE);
-        mKickTv.setVisibility(mHasKick ? VISIBLE : GONE);
+        mKickArea.setVisibility(mHasKick ? VISIBLE : GONE);
 
         mModifyRemarkArea.setOnClickListener(new DebounceViewClickListener() {
             @Override

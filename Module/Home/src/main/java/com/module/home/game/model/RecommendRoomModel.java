@@ -7,13 +7,9 @@ import java.util.List;
 public class RecommendRoomModel {
 
     List<RecommendModel> mRoomModels;
-    int offset;
-    int totalNum;
 
-    public RecommendRoomModel(List<RecommendModel> list, int offset, int totalNum) {
+    public RecommendRoomModel(List<RecommendModel> list) {
         this.mRoomModels = list;
-        this.offset = offset;
-        this.totalNum = totalNum;
     }
 
     public List<RecommendModel> getRoomModels() {
@@ -24,19 +20,4 @@ public class RecommendRoomModel {
         mRoomModels = roomModels;
     }
 
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public int getTotalNum() {
-        return totalNum;
-    }
-
-    public void setTotalNum(int totalNum) {
-        this.totalNum = totalNum;
-    }
 }

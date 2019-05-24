@@ -210,15 +210,13 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     private void loadRecommendRoomData() {
-        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mLastUpdateRecomendInfo = System.currentTimeMillis();
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    int totalNum = obj.getData().getIntValue("totalRoomsNum");
-                    mIGameView.setRecommendInfo(list, offset, totalNum);
+                    mIGameView.setRecommendInfo(list);
                 }
             }
         }, this, new ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis));

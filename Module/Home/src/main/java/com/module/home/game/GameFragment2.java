@@ -375,13 +375,13 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     // TODO: 2019/4/3 这都是第一次拉数据
     @Override
-    public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
+    public void setRecommendInfo(List<RecommendModel> list) {
         if (list == null || list.size() == 0) {
             // 清空好友派对列表
             mGameAdapter.updateRecommendRoomInfo(null);
             return;
         }
-        RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
+        RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list);
         mGameAdapter.updateRecommendRoomInfo(recommendRoomModel);
     }
 
