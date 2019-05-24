@@ -2,6 +2,7 @@ package com.zq.report.adapter;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.common.callback.Callback;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
@@ -18,7 +20,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.imagebrowse.ImageBrowseView;
+import com.imagebrowse.big.BigImageBrowseFragment;
+import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.respicker.model.ImageItem;
+
+import java.util.List;
 
 public class QuickFeedBackAdapter extends DiffAdapter<ImageItem, RecyclerView.ViewHolder> {
     FeedBackPicManageListener mFeedBackPicManageListener;
@@ -54,7 +61,7 @@ public class QuickFeedBackAdapter extends DiffAdapter<ImageItem, RecyclerView.Vi
         ImageView mDeleteIv;
         int mPosition;
 
-        public ItemHolder(View itemView) {
+        public ItemHolder(final View itemView) {
             super(itemView);
             mPicIv = (SimpleDraweeView) itemView.findViewById(R.id.pic_iv);
             mDeleteIv = (ImageView) itemView.findViewById(R.id.delete_iv);
@@ -62,7 +69,47 @@ public class QuickFeedBackAdapter extends DiffAdapter<ImageItem, RecyclerView.Vi
                 @Override
                 public void clickValid(View v) {
                     if (mFeedBackPicManageListener != null) {
-                        mFeedBackPicManageListener.addPic();
+                        if (TextUtils.isEmpty(mImageItem.getPath())) {
+                            mFeedBackPicManageListener.addPic();
+                        } else {
+                            BigImageBrowseFragment.open(true, (FragmentActivity) itemView.getContext(), new DefaultImageBrowserLoader<ImageItem>() {
+                                @Override
+                                public void init() {
+
+                                }
+
+                                @Override
+                                public void load(ImageBrowseView imageBrowseView, int position, ImageItem item) {
+                                    imageBrowseView.load(item.getPath());
+                                }
+
+                                @Override
+                                public int getInitCurrentItemPostion() {
+                                    return mPosition;
+                                }
+
+                                @Override
+                                public List<ImageItem> getInitList() {
+                                    return mFeedBackPicManageListener.getImageItemList();
+                                }
+
+                                @Override
+                                public void loadMore(boolean backward, int position, ImageItem data, final Callback<List<ImageItem>> callback) {
+
+                                }
+
+                                @Override
+                                public boolean hasMore(boolean backward, int position, ImageItem data) {
+
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean hasMenu() {
+                                    return false;
+                                }
+                            });
+                        }
                     }
                 }
             });
@@ -102,5 +149,7 @@ public class QuickFeedBackAdapter extends DiffAdapter<ImageItem, RecyclerView.Vi
         void addPic();
 
         void deletePic(ImageItem imageItem);
+
+        List<ImageItem> getImageItemList();
     }
 }

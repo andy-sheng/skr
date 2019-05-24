@@ -158,6 +158,11 @@ public class FeedbackView extends RelativeLayout {
                 mImageItemArrayList.remove(imageItem);
                 uploadPhotoList(new ArrayList<ImageItem>(mImageItemArrayList));
             }
+
+            @Override
+            public List<ImageItem> getImageItemList() {
+                return mImageItemArrayList;
+            }
         });
 
         mRecyclerView.setAdapter(mQuickFeedBackAdapter);
