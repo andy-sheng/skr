@@ -1864,24 +1864,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
-        int singerId = 0;
         if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
             if (event.roundInfo.getsPkRoundInfoModels().size() > 0) {
                 pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(), event.uid, true);
-                singerId = event.roundInfo.getsPkRoundInfoModels().get(0).getUserID();
             }
         } else if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             if (event.roundInfo.getsPkRoundInfoModels().size() > 1) {
                 pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(), event.uid, true);
-                singerId = event.roundInfo.getsPkRoundInfoModels().get(1).getUserID();
             }
         } else {
             pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, true);
-            singerId = event.roundInfo.getUserID();
         }
 
-        if (singerId == MyUserInfoManager.getInstance().getUid()) {
-            StatisticsAdapter.recordCountEvent("grab", "game_getlike", null);
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            if (now.singBySelf()) {
+                StatisticsAdapter.recordCountEvent("grab", "game_getlike", null);
+            }
         }
     }
 
