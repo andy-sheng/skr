@@ -104,8 +104,9 @@ public class PhotoCorePresenter {
                             return;
                         }
                     }
+                } else {
+                    mView.loadDataFailed();
                 }
-                mView.loadDataFailed();
             }
 
             @Override
