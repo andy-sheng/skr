@@ -134,7 +134,7 @@ public class UserInfoDataUtils {
                     String timeDesc = "";
                     long offlineTime = jsonObject.getLongValue("offlineTime");
                     if (offlineTime > 0) {
-                        timeDesc = U.getDateTimeUtils().formatHumanableDate(offlineTime, System.currentTimeMillis());
+                        timeDesc = U.getDateTimeUtils().formatHumanableDateForSkr(offlineTime, System.currentTimeMillis());
                     }
                     // 显示
                     userInfoModel.setStatusDesc("离线 " + timeDesc);

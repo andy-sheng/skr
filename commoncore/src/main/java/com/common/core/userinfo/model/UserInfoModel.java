@@ -47,7 +47,8 @@ public class UserInfoModel implements Serializable, Cloneable {
     private boolean isFriend;
     private boolean isFollow;
     private int mainLevel; // 主段位
-    private int status;    // 状态 在线 1 离线 2 EF_OnLine
+    private int status;    // 状态 在线  离线
+    private long statusTs;// 在线或者离线的时间
     private String statusDesc;  //状态描述
 
     public UserInfoModel() {
@@ -200,6 +201,14 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public void setMainLevel(int mainLevel) {
         this.mainLevel = mainLevel;
+    }
+
+    public long getStatusTs() {
+        return statusTs;
+    }
+
+    public void setStatusTs(long statusTs) {
+        this.statusTs = statusTs;
     }
 
     @Override

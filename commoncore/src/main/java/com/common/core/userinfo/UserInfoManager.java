@@ -755,13 +755,27 @@ public class UserInfoManager {
         }
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
-            public int compare(UserInfoModel o1, UserInfoModel o2) {
-                int r = o2.getStatus() - o1.getStatus();
-                if (r == 0) {
-                    return o1.getUserId() - o2.getUserId();
-                } else {
-                    return r;
+            public int compare(UserInfoModel u1, UserInfoModel u2) {
+                if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
+                    // 两者都是离线
+                    // 按离线时间排序
+                    if (u1.getStatusTs() > u2.getStatusTs()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
                 }
+                if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
+                    // 两者都是在线
+                    // 按在线时间排序
+                    if (u1.getStatusTs() > u2.getStatusTs()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+                int r = u2.getStatus() - u1.getStatus();
+                return r;
             }
         });
     }
@@ -770,6 +784,7 @@ public class UserInfoManager {
         // 认为状态缓存有效，不去这个id的状态了
         if (onlineModel.isOnline()) {
             userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
+            userInfoModel.setStatusTs(onlineModel.getOnlineTime());
             if (pullGameStatus) {
                 if (onlineModel.getBusy()) {
                     userInfoModel.setStatusDesc("忙碌中");
@@ -783,6 +798,7 @@ public class UserInfoManager {
             }
         } else {
             userInfoModel.setStatus(UserInfoModel.EF_OFFLINE);
+            userInfoModel.setStatusTs(onlineModel.getOfflineTime());
             String timeDesc = "";
             if (onlineModel.getOfflineTime() > 0) {
                 timeDesc = U.getDateTimeUtils().formatHumanableDateForSkr(onlineModel.getOfflineTime(), System.currentTimeMillis());
