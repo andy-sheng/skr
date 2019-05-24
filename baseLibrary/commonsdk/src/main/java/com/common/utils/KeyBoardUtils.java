@@ -160,11 +160,12 @@ public class KeyBoardUtils {
 
     /**
      * 获取软键盘高度
+     * (注意，代码中单位都用工具类转一下）
      *
      * @return
      */
     public int getKeyBoardHeight() {
-        return U.getPreferenceUtils().getSettingInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, 858);
+        return U.getPreferenceUtils().getSettingInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, U.getDisplayUtils().dip2px(286));
     }
 
     public void setKeyBoardHeight(int height) {
