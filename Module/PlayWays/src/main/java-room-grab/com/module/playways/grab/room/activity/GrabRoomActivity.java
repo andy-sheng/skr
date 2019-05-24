@@ -11,6 +11,7 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -179,6 +180,12 @@ public class GrabRoomActivity extends BaseActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         super.destroy();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        MyLog.w(TAG,"finish" );
     }
 
     @Override

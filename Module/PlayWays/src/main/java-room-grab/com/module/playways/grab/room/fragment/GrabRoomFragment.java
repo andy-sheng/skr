@@ -1693,11 +1693,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void onGrabGameOver(String from) {
-        MyLog.w(TAG, "onGrabGameOver " + from);
+        MyLog.w(TAG, "onGrabGameOver1 " + from);
 //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
         Activity activity = getActivity();
         if (activity != null) {
             if (!activity.isDestroyed() && !activity.isFinishing()) {
+                MyLog.w(TAG, "onGrabGameOver activity gogogo");
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
                         .withSerializable("room_data", mRoomData)
                         .navigation();
@@ -1705,9 +1706,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 getActivity().finish();
 //                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
 //                        StatConstants.KEY_GAME_FINISH, null);
+            }else{
+                MyLog.d(TAG, "onGrabGameOver activity hasdestroy");
             }
         } else {
-            MyLog.d(TAG, "onGrabGameOver activity==null");
+            MyLog.w(TAG, "onGrabGameOver activity==null");
         }
     }
 
