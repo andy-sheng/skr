@@ -12,6 +12,7 @@
         android:background="@color/transparent" />
 
     <RelativeLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_248_dp"
         android:layout_above="@id/place_bottom_view"
