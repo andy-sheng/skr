@@ -349,6 +349,8 @@ public static java.lang.String TABLENAME;
 
 #腾讯matrix
 -keep public class com.tencent.matrix.**{*;}
+
+-keep public class pl.droidsonroids.gif.GifIOException{<init>(int, java.lang.String);}
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.

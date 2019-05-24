@@ -235,7 +235,8 @@ dependencies {
     api(rootProject.ext.dependencies["fresco-animated-webp"])
     //api(rootProject.ext.dependencies["fresco-okhttp"])
     // 流畅的gif
-    api(rootProject.ext.dependencies["android-gif-drawable"])
+    //api(rootProject.ext.dependencies["android-gif-drawable"])
+    api project(":baseLibrary:android-gif-drawable")
     // 超大图加载
     api(rootProject.ext.dependencies["scale-image-view"])
 

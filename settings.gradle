@@ -1,7 +1,7 @@
 include ':app',  ':commonservice', ':commoncore', ':moduletest'
-include ':baseLibrary:commonsdk','baseLibrary:enginesdk'
+include ':baseLibrary:commonsdk',':baseLibrary:enginesdk',':baseLibrary:android-gif-drawable'
 //include ':modulewatch', ':modulechannel'
-include ':Module:Home', ':Module:PlayWays',':Module:IMKit'
+include ':Module:Home',':Module:PlayWays',':Module:IMKit'
 
 include ':Component:IMLib',':Component:BusiLib'
 //include ':plugindemo'
