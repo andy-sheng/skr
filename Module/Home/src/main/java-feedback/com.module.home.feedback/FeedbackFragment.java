@@ -249,7 +249,7 @@ public class FeedbackFragment extends BaseFragment {
         map.put("createdAt", System.currentTimeMillis());
         map.put("appVer", U.getAppInfoUtils().getVersionName());
         map.put("channel", U.getChannelUtils().getChannel());
-        map.put("source", 1);
+        map.put("source", 2);
         map.put("type", typeList);
         map.put("content", content);
         map.put("appLog", logUrl);
