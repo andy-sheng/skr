@@ -60,6 +60,7 @@ import com.zq.level.view.LevelStarProgressBar;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.person.model.ProducationModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -474,11 +475,25 @@ public class GrabProductionFragment extends BaseFragment {
             }
 
             if (mRoomData.getWorksUploadModel() != null) {
-                mAdapter.setDataList(mRoomData.getWorksUploadModel());
+
+                mAdapter.setDataList(sortWorks(mRoomData.getWorksUploadModel()));
             }
         } else {
             MyLog.w(TAG, "bindData 数据为空了");
         }
+    }
+
+    private List<WorksUploadModel> sortWorks(List<WorksUploadModel> worksUploadModels) {
+        List<WorksUploadModel> result = new ArrayList<>();
+        if (worksUploadModels != null && worksUploadModels.size() > 0) {
+            for (int i = (worksUploadModels.size() - 1); i >= 0; i--) {
+                if (worksUploadModels.get(i).isBlight()) {
+                    result.add(0, worksUploadModels.remove(i));
+                }
+            }
+        }
+        result.addAll(worksUploadModels);
+        return result;
     }
 
     private void syncFromServer() {
