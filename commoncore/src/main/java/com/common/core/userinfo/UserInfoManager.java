@@ -809,7 +809,7 @@ public class UserInfoManager {
             if (TextUtils.isEmpty(timeDesc)) {
                 userInfoModel.setStatusDesc("离线");
             } else {
-                userInfoModel.setStatusDesc("离线 " + timeDesc);
+                userInfoModel.setStatusDesc(timeDesc + "在线");
             }
         }
     }
