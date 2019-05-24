@@ -20,6 +20,8 @@ import com.component.busilib.R;
 import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.imagebrowse.big.DefaultImageBrowserLoader;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -44,6 +46,7 @@ public class OtherPhotoWallView extends RelativeLayout {
     UserInfoServerApi mUserInfoServerApi;
 
     AppCanSrollListener mListener;
+    LoadService mLoadService;
 
     public OtherPhotoWallView(BaseFragment fragment, int userID, AppCanSrollListener listener) {
         super(fragment.getContext());
@@ -140,6 +143,16 @@ public class OtherPhotoWallView extends RelativeLayout {
             }
         }, PhotoAdapter.TYPE_OTHER_PERSON_CENTER);
         mPhotoView.setAdapter(mPhotoAdapter);
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "这个人很神秘，都没有照片"))
+                .build();
+        mLoadService = mLoadSir.register(mSmartRefresh, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                getPhotos();
+            }
+        });
     }
 
     public void getPhotos() {
@@ -188,6 +201,7 @@ public class OtherPhotoWallView extends RelativeLayout {
 
         if (list != null && list.size() > 0) {
             mHasMore = true;
+            mLoadService.showSuccess();
             mSmartRefresh.setEnableLoadMore(true);
             mPhotoAdapter.getDataList().addAll(list);
             mPhotoAdapter.notifyDataSetChanged();
@@ -201,6 +215,7 @@ public class OtherPhotoWallView extends RelativeLayout {
                 // 没有更多了
             } else {
                 // 没有数据
+                mLoadService.showCallback(PersonEmptyCallback.class);
                 if (mListener != null) {
                     mListener.notifyAppbarSroll(false);
                 }

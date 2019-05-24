@@ -26,6 +26,8 @@ import com.common.utils.SpanUtils;
 import com.common.view.DebounceViewClickListener;
 import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -68,6 +70,7 @@ public class ProducationWallView extends RelativeLayout {
 
     DialogPlus mConfirmDialog;
     ShareWorksDialog mShareWorksDialog;
+    LoadService mLoadService;
 
     public ProducationWallView(BaseFragment fragment, int userId, String nickName) {
         super(fragment.getContext());
@@ -167,11 +170,21 @@ public class ProducationWallView extends RelativeLayout {
 
             }
         });
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new PersonEmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "这个人很神秘，都没有作品"))
+                .build();
+        mLoadService = mLoadSir.register(mSmartRefresh, new com.kingja.loadsir.callback.Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                getProducations();
+            }
+        });
     }
 
     private void showConfirmDialog(final ProducationModel model) {
         SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("确定删除改作品吗？")
+                .append("确定删除该作品吗？")
                 .create();
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                 .setMessageTip(stringBuilder)
@@ -356,6 +369,7 @@ public class ProducationWallView extends RelativeLayout {
         }
 
         if (list != null && list.size() > 0) {
+            mLoadService.showSuccess();
             mAdapter.getDataList().addAll(list);
             mAdapter.notifyDataSetChanged();
         } else {
@@ -363,6 +377,7 @@ public class ProducationWallView extends RelativeLayout {
                 // 没有更多了
             } else {
                 // 没有数据
+                mLoadService.showCallback(PersonEmptyCallback.class);
             }
         }
     }
