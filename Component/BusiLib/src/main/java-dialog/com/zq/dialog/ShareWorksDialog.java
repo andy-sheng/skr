@@ -17,7 +17,7 @@ public class ShareWorksDialog {
                 , new ShareWorksDialogView.Listener() {
             @Override
             public void onClickQQShare() {
-                if(!U.getCommonUtils().hasInstallApp("com.tencent.qq")){
+                if(!U.getCommonUtils().hasInstallApp("com.tencent.mobileqq")){
                     U.getToastUtil().showShort("未安装QQ");
                     return;
                 }
@@ -31,7 +31,7 @@ public class ShareWorksDialog {
 
             @Override
             public void onClickQZoneShare() {
-                if(!U.getCommonUtils().hasInstallApp("com.tencent.qq")){
+                if(!U.getCommonUtils().hasInstallApp("com.tencent.mobileqq")){
                     U.getToastUtil().showShort("未安装QQ");
                     return;
                 }
