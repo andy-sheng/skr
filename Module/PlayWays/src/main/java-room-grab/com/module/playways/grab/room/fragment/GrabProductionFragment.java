@@ -21,7 +21,9 @@ import com.common.core.share.ShareType;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
+import com.common.player.MyMediaPlayer;
 import com.common.player.VideoPlayerAdapter;
+import com.common.player.exoplayer.ExoPlayer;
 import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -164,7 +166,7 @@ public class GrabProductionFragment extends BaseFragment {
             public void onClickPlayBtn(View view, boolean play, int position, WorksUploadModel model) {
                 if (play) {
                     if (mIPlayer == null) {
-                        mIPlayer = new AndroidMediaPlayer();
+                        mIPlayer = new MyMediaPlayer();
                         mIPlayer.setDecreaseVolumeEnd(true);
                     }
                     // 播放完毕
