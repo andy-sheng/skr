@@ -72,7 +72,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     List<PhotoModel> mPhotoModelList;
     String mContent;
     List<Integer> mTypeList;
-    String mLogUrl;
+    String mLogUrl = "";
     int mFeedBackViewHeight;
     int mTopMargin;
     int mActionType;
@@ -160,6 +160,10 @@ public class QuickFeedbackFragment extends BaseFragment {
     }
 
     private void tryUploadPic(List<Integer> typeList, String content, List<ImageItem> imageItemList, String logUrl) {
+        mLogUrl = logUrl;
+        mTypeList = typeList;
+        mContent = content;
+
         if (imageItemList != null && imageItemList.size() > 0) {
             List<PhotoModel> list = new ArrayList<>();
             for (ImageItem imageItem : imageItemList) {
@@ -170,12 +174,9 @@ public class QuickFeedbackFragment extends BaseFragment {
                 mPlayControlTemplate.add(photoModel, true);
             }
 
-            mLogUrl = logUrl;
             mPhotoModelList = list;
-            mTypeList = typeList;
-            mContent = content;
         } else {
-            feedback(typeList, content, "", new ArrayList<String>());
+            feedback(typeList, content, mLogUrl, new ArrayList<String>());
         }
     }
 
