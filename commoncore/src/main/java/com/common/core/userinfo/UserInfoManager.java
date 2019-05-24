@@ -730,19 +730,24 @@ public class UserInfoManager {
             }
         }
         if (!idSets.isEmpty()) {
-            checkUserOnlineStatusByIds(idSets)
-                    .map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
-                        @Override
-                        public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
-                            for (UserInfoModel userInfoModel : list) {
-                                if (idSets.contains(userInfoModel.getUserId())) {
-                                    OnlineModel onlineModel = map.get(userInfoModel.getUserId());
-                                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
-                                }
-                            }
-                            return list;
+            Observable<HashMap<Integer, OnlineModel>> observable = null;
+            if (pullGameStatus) {
+                observable = checkUserGameStatusByIds(idSets);
+            } else {
+                observable = checkUserOnlineStatusByIds(idSets);
+            }
+            observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
+                @Override
+                public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
+                    for (UserInfoModel userInfoModel : list) {
+                        if (idSets.contains(userInfoModel.getUserId())) {
+                            OnlineModel onlineModel = map.get(userInfoModel.getUserId());
+                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                         }
-                    })
+                    }
+                    return list;
+                }
+            })
                     .subscribe(new Consumer<List<UserInfoModel>>() {
                         @Override
                         public void accept(List<UserInfoModel> userInfoModels) throws Exception {
