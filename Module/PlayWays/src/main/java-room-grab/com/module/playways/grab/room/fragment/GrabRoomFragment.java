@@ -962,10 +962,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         @Override
         public void onVoiceChange(boolean voiceOpen) {
             mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-            if (!voiceOpen) {
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                        "game_muteon", null);
-            }
+//            if (!voiceOpen) {
+//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                        "game_muteon", null);
+//            }
         }
 
         @Override
@@ -1129,12 +1129,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void giveUp() {
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-                if (infoModel != null) {
-                    HashMap map = new HashMap();
-                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                            "give_up_sing", map);
-                }
+//                if (infoModel != null) {
+//                    HashMap map = new HashMap();
+//                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
+//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                            "give_up_sing", map);
+//                }
                 mCorePresenter.giveUpSing();
             }
         });
@@ -1585,8 +1585,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                 mQuitTipsDialog.dismiss(false);
                             }
                             mCorePresenter.exitRoom("quitGame tipsDialog");
-                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                    "game_exit", null);
+//                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                                    "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
@@ -1685,8 +1685,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                         .navigation();
 
                 getActivity().finish();
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                        StatConstants.KEY_GAME_FINISH, null);
+//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                        StatConstants.KEY_GAME_FINISH, null);
             }
         } else {
             MyLog.d(TAG, "onGrabGameOver activity==null");

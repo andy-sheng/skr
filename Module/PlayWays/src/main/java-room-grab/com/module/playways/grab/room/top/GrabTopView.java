@@ -212,8 +212,8 @@ public class GrabTopView extends RelativeLayout {
             public void clickValid(View v) {
                 if (mOnClickChangeRoomListener != null) {
                     mOnClickChangeRoomListener.changeRoom();
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                            "game_changeroom", null);
+//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                            "game_changeroom", null);
                 }
             }
         });

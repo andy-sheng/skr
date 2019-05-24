@@ -202,8 +202,8 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                "game_like", null);
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                                "game_like", null);
 //                        mIvBurst.setEnabled(false);
                     }
                 }
@@ -217,8 +217,8 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickLightOff();
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                "game_dislike", null);
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                                "game_dislike", null);
                     }
                 }
             }

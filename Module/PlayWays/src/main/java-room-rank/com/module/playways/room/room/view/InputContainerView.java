@@ -134,15 +134,15 @@ public class InputContainerView extends RelativeLayout implements EmotionKeyboar
             @Override
             public void clickValid(View v) {
                 mHasPretend = false;
-                if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                    if (getContext() instanceof VoiceRoomActivity) {
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_chat", null);
-                    } else {
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_chat", null);
-                    }
-                } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_chat", null);
-                }
+//                if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+//                    if (getContext() instanceof VoiceRoomActivity) {
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_chat", null);
+//                    } else {
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_chat", null);
+//                    }
+//                } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_chat", null);
+//                }
                 String content = mEtContent.getText().toString();
                 RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
 

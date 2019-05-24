@@ -60,15 +60,15 @@ public class QuickMsgView extends RelativeLayout {
         mQuickMsgAdapter = new QuickMsgAdapter(new RecyclerOnItemClickListener<QuickMsgModel>() {
             @Override
             public void onItemClicked(View view, int position, QuickMsgModel model) {
-                if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                    if (getContext() instanceof VoiceRoomActivity) {
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_expresschat", null);
-                    }else {
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expresschat", null);
-                    }
-                } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expresschat", null);
-                }
+//                if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+//                    if (getContext() instanceof VoiceRoomActivity) {
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_expresschat", null);
+//                    }else {
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expresschat", null);
+//                    }
+//                } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expresschat", null);
+//                }
 
                 String content = model.getText();
                 RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);

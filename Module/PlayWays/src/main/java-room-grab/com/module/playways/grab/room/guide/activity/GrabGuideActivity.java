@@ -92,8 +92,8 @@ public class GrabGuideActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_GAME_START, null);
+//        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                StatConstants.KEY_GAME_START, null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 

@@ -67,8 +67,8 @@ public class RankRoomActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-                StatConstants.KEY_GAME_START, null);
+//        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
+//                StatConstants.KEY_GAME_START, null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 

@@ -327,10 +327,10 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
         @Override
         public void onVoiceChange(boolean voiceOpen) {
             mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-            if (!voiceOpen) {
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                        "game_muteon", null);
-            }
+//            if (!voiceOpen) {
+//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                        "game_muteon", null);
+//            }
         }
 
         @Override
@@ -458,12 +458,12 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
             @Override
             public void giveUp() {
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-                if (infoModel != null) {
-                    HashMap map = new HashMap();
-                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                            "give_up_sing", map);
-                }
+//                if (infoModel != null) {
+//                    HashMap map = new HashMap();
+//                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
+//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                            "give_up_sing", map);
+//                }
                 mCorePresenter.giveUpSing();
             }
         });
@@ -907,8 +907,8 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
                                 mQuitTipsDialog.dismiss(false);
                             }
                             mCorePresenter.exitRoom();
-                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                    "game_exit", null);
+//                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                                    "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
