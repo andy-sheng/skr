@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_58_dp"
-        android:text="备注、昵称和ID"
+        android:text="输入用户昵称、备注或ID"
         android:textColor="#4c3B4E79"
         android:textSize="@dimen/textsize_14_dp" />
 
