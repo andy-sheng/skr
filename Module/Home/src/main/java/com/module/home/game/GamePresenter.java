@@ -41,7 +41,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
     long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
     long mLastUpdateRecomendInfo = 0; //好友派对上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
-
+    boolean mIsFirstQuick = true;
     boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
 
     HandlerTaskTimer mRecommendTimer;
@@ -152,26 +152,36 @@ public class GamePresenter extends RxLifeCyclePresenter {
         }, this, new ApiMethods.RequestControl("getSlideList", ApiMethods.ControlType.CancelThis));
     }
 
-    public void initQuickRoom() {
-        if (mLastUpdateQuickInfo > 0) {
-            return;
+    public void initQuickRoom(boolean isFlag) {
+        MyLog.d(TAG, "initQuickRoom" + " isFlag=" + isFlag);
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 半个小时更新一次吧
+            if ((now - mLastUpdateQuickInfo) < 30 * 60 * 1000) {
+                return;
+            }
         }
 
-        // 先用SP里面的
-        String spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", "");
-        if (!TextUtils.isEmpty(spResult)) {
-            JSONObject jsonObject = JSON.parseObject(spResult, JSONObject.class);
-            List<SpecialModel> list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel.class);
-            int offset = jsonObject.getIntValue("offset");
-            mIGameView.setQuickRoom(list, offset);
+        String spResult = "";
+        if (mIsFirstQuick) {
+            // 先用SP里面的
+            mIsFirstQuick = false;
+            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", "");
+            if (!TextUtils.isEmpty(spResult)) {
+                JSONObject jsonObject = JSON.parseObject(spResult, JSONObject.class);
+                List<SpecialModel> list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel.class);
+                int offset = jsonObject.getIntValue("offset");
+                mIGameView.setQuickRoom(list, offset);
+            }
         }
 
+        String finalSpResult = spResult;
         ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mLastUpdateQuickInfo = System.currentTimeMillis();
-                    if (!spResult.equals(obj.getData().toJSONString())) {
+                    if (!obj.getData().toJSONString().equals(finalSpResult)) {
                         U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", obj.getData().toJSONString());
                         List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
                         int offset = obj.getData().getIntValue("offset");
