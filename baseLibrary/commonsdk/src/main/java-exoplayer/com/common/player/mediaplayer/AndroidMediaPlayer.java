@@ -340,7 +340,8 @@ public class AndroidMediaPlayer extends BasePlayer {
                 }
                 mPlayer.setDataSource(p);
                 mPlayer.prepareAsync();
-            } catch (IOException e) {
+            } catch (Exception e) {
+                MyLog.e(e);
             }
         }
 
