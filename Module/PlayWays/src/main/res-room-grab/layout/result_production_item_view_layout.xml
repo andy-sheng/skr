@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/save_share_iv"
             android:layout_marginTop="@dimen/view_2_dp"
+            android:gravity="center"
             android:text="保存分享"
             android:textColor="#803B4E79"
             android:textSize="@dimen/textsize_12_dp" />

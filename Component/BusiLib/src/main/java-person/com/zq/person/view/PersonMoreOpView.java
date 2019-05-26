@@ -2,6 +2,7 @@ package com.zq.person.view;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -105,7 +106,10 @@ public class PersonMoreOpView extends RelativeLayout {
             mPopupWindow.setOutsideTouchable(true);
         }
         if (!mPopupWindow.isShowing()) {
-            mPopupWindow.showAsDropDown(view, -U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(5));
+            // TODO: 2019-05-26  showAsDropDown(会受到组件位置的影响)和 showAtLocation(屏幕的位置)区别
+            int l[] = new int[2];
+            view.getLocationInWindow(l);
+            mPopupWindow.showAtLocation(view, Gravity.START | Gravity.TOP, l[0] - U.getDisplayUtils().dip2px(70), l[1] + U.getDisplayUtils().dip2px(35));
         }
     }
 
