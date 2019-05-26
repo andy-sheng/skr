@@ -310,7 +310,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
 
         if (buddyCacheEntry != null) {
-            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), buddyCacheEntry.getName(), Uri.parse(buddyCacheEntry.getAvatar()));
+            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), UserInfoManager.getInstance().getRemarkName(buddyCacheEntry.getUuid(),buddyCacheEntry.getName()), Uri.parse(buddyCacheEntry.getAvatar()));
         } else {
             // TODO: 2019/4/16 此时靠 RongIM.getInstance().refreshUserInfoCache去更新
             return null;
