@@ -29,4 +29,8 @@ public class SkrConfig {
         return false;
     }
 
+    public boolean worksShareOpen(){
+        return false;
+    }
+
 }
