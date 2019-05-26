@@ -108,7 +108,7 @@ public class ShareWorksDialog {
         if (!TextUtils.isEmpty(mUrl) && mWorksId > 0) {
             if (sharePlatform == SharePlatform.WEIXIN) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("http://dev.app.inframe.mobi/user/work")
+                sb.append("http://www.skrer.mobi/user/work")
                         .append("?skerId=").append(mUserId)
                         .append("&workId=").append(mWorksId);
                 String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
@@ -126,7 +126,7 @@ public class ShareWorksDialog {
                 music.setThumb(new UMImage(mFragment.getActivity(), mCover));
 
                 StringBuilder sb = new StringBuilder();
-                sb.append("http://dev.app.inframe.mobi/user/work")
+                sb.append("http://www.skrer.mobi/user/work")
                         .append("?skerId=").append(String.valueOf(mUserId))
                         .append("&workId=").append(String.valueOf(mWorksId));
                 String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
