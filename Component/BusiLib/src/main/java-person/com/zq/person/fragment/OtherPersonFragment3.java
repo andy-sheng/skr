@@ -8,6 +8,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -78,6 +79,7 @@ import java.util.List;
 
 import model.RelationNumModel;
 
+import static android.content.Context.POWER_SERVICE;
 import static com.zq.person.activity.OtherPersonActivity.BUNDLE_USER_ID;
 
 public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView, RequestCallBack {
@@ -225,10 +227,10 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(mUserId);
                 if (mOtherPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
-                    mOtherPhotoWallView.getPhotos();
+                    mOtherPhotoWallView.getPhotos(true);
                 }
                 if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
-                    mProducationWallView.getProducations();
+                    mProducationWallView.getProducations(true);
                 }
             }
         });
@@ -442,15 +444,22 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 if (position == 0) {
                     // 照片墙
-                    mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment3.this, mUserId, OtherPersonFragment3.this, null);
-                    container.addView(mOtherPhotoWallView);
-                    mOtherPhotoWallView.getPhotos();
+                    if (mOtherPhotoWallView == null) {
+                        mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment3.this, mUserId, OtherPersonFragment3.this, null);
+                    }
+                    if (container.indexOfChild(mOtherPhotoWallView) == -1) {
+                        container.addView(mOtherPhotoWallView);
+                    }
+                    mOtherPhotoWallView.getPhotos(false);
                     return mOtherPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserInfoModel, OtherPersonFragment3.this);
-                    container.addView(mProducationWallView);
-                    mProducationWallView.getProducations();
+                    if (mProducationWallView == null) {
+                        mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserInfoModel, OtherPersonFragment3.this);
+                    }
+                    if (container.indexOfChild(mProducationWallView) == -1) {
+                        container.addView(mProducationWallView);
+                    }
                     return mProducationWallView;
                 }
                 return super.instantiateItem(container, position);
@@ -485,6 +494,31 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mPersonVp.setAdapter(mPersonTabAdapter);
         mPersonTab.setViewPager(mPersonVp);
         mPersonTabAdapter.notifyDataSetChanged();
+
+        mPersonVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    if (mOtherPhotoWallView != null) {
+                        mOtherPhotoWallView.getPhotos(false);
+                    }
+                } else if (position == 1) {
+                    if (mProducationWallView != null) {
+                        mProducationWallView.getProducations(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initFunctionArea() {

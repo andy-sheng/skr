@@ -54,6 +54,7 @@ public class ProducationWallView extends RelativeLayout {
 
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
     int offset;  // 拉照片偏移量
+    long mLastUpdateInfo = 0;    //上次更新成功时间
 
     DialogPlus mConfirmDialog;
     ShareWorksDialog mShareWorksDialog;
@@ -195,7 +196,15 @@ public class ProducationWallView extends RelativeLayout {
         }
     }
 
-    public void getProducations() {
+    public void getProducations(boolean isFlag) {
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 10分钟更新一次吧
+            if ((now - mLastUpdateInfo) < 10 * 60 * 1000) {
+                return;
+            }
+        }
+
         getProducations(0);
     }
 
@@ -263,6 +272,8 @@ public class ProducationWallView extends RelativeLayout {
 
     private void addProducation(List<ProducationModel> list, int newOffset, int totalCnt, boolean isClear) {
         offset = newOffset;
+        mLastUpdateInfo = System.currentTimeMillis();
+
         if (mCallBack != null) {
             mCallBack.onRequestSucess();
         }

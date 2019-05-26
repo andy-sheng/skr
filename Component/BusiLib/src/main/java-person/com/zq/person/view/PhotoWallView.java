@@ -42,6 +42,8 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
     PhotoAdapter mPhotoAdapter;
     PhotoCorePresenter mPhotoCorePresenter;
 
+    long mLastUpdateInfo = 0;    //上次更新成功时间
+
     public PhotoWallView(BaseFragment fragment, RequestCallBack callBack) {
         super(fragment.getContext());
         this.mFragment = fragment;
@@ -158,7 +160,14 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
         mPhotoCorePresenter.uploadPhotoList(imageItems);
     }
 
-    public void getPhotos() {
+    public void getPhotos(boolean isFlag) {
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 10分钟更新一次吧
+            if ((now - mLastUpdateInfo) < 10 * 60 * 1000) {
+                return;
+            }
+        }
         if (mPhotoAdapter.getSuccessNum() == 0) {
             mPhotoCorePresenter.getPhotos(0, DEFAUAT_CNT);
         }
@@ -184,6 +193,8 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
     @Override
     public void addPhoto(List<PhotoModel> list, boolean clear, int totalNum) {
         MyLog.d(TAG, "showPhoto" + " list=" + list + " clear=" + clear + " totalNum=" + totalNum);
+
+        mLastUpdateInfo = System.currentTimeMillis();
 
         if (mCallBack != null) {
             mCallBack.onRequestSucess();

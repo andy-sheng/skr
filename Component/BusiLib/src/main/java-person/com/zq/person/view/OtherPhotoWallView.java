@@ -35,6 +35,7 @@ public class OtherPhotoWallView extends RelativeLayout {
 
     int offset;  // 拉照片偏移量
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
+    long mLastUpdateInfo = 0;
     boolean mHasMore = false;
 
     RecyclerView mPhotoView;
@@ -122,7 +123,14 @@ public class OtherPhotoWallView extends RelativeLayout {
         mPhotoView.setAdapter(mPhotoAdapter);
     }
 
-    public void getPhotos() {
+    public void getPhotos(boolean isFlag) {
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 10分钟更新一次吧
+            if ((now - mLastUpdateInfo) < 10 * 60 * 1000) {
+                return;
+            }
+        }
         getPhotos(mUserId, 0, DEFAUAT_CNT, null);
     }
 
@@ -164,6 +172,7 @@ public class OtherPhotoWallView extends RelativeLayout {
 
     public void addPhotos(List<PhotoModel> list, int newOffset, int totalNum, boolean clear) {
         offset = newOffset;
+        mLastUpdateInfo = System.currentTimeMillis();
 
         if (mCallBack != null) {
             mCallBack.onRequestSucess();

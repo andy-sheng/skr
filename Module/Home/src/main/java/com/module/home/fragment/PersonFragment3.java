@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -152,10 +153,10 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         super.onFragmentVisible();
         mPresenter.getHomePage(false);
         if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
-            mPhotoWallView.getPhotos();
+            mPhotoWallView.getPhotos(false);
         }
         if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
-            mProducationWallView.getProducations();
+            mProducationWallView.getProducations(false);
         }
     }
 
@@ -205,10 +206,10 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(true);
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
-                    mPhotoWallView.getPhotos();
+                    mPhotoWallView.getPhotos(true);
                 }
                 if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
-                    mProducationWallView.getProducations();
+                    mProducationWallView.getProducations(true);
                 }
             }
         });
@@ -395,7 +396,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
                     if (container.indexOfChild(mPhotoWallView) == -1) {
                         container.addView(mPhotoWallView);
                     }
-                    mPhotoWallView.getPhotos();
                     return mPhotoWallView;
                 } else if (position == 1) {
                     // 作品
@@ -409,7 +409,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
                     if (container.indexOfChild(mProducationWallView) == -1) {
                         container.addView(mProducationWallView);
                     }
-                    mProducationWallView.getProducations();
                     return mProducationWallView;
                 }
                 return super.instantiateItem(container, position);
@@ -444,6 +443,31 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mPersonVp.setAdapter(mPersonTabAdapter);
         mPersonTab.setViewPager(mPersonVp);
         mPersonTabAdapter.notifyDataSetChanged();
+
+        mPersonVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    if (mPhotoWallView != null) {
+                        mPhotoWallView.getPhotos(false);
+                    }
+                } else if (position == 1) {
+                    if (mProducationWallView != null) {
+                        mProducationWallView.getProducations(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
