@@ -266,7 +266,7 @@ public class DateTimeUtils {
         } else if (timeSpan < MILLI_SECONDS_ONE_DAY) {         //一天之内, 显示　多少小时前
             long tmp = timeSpan / MILLI_SECONDS_ONE_HOUR;
             return U.app().getResources().getQuantityString(R.plurals.hour_ago, (int) tmp, tmp);
-        } else if (timeSpan < 15 * MILLI_SECONDS_ONE_DAY) {       //一个月之内, 显示　多少天前
+        } else if (timeSpan < 4 * MILLI_SECONDS_ONE_DAY) {       //一个月之内, 显示　多少天前
             float value = (float) timeSpan / (float) MILLI_SECONDS_ONE_DAY;
             //这里是为了解决跨天的问题, 比如value为2.55天有可能跨天了
             Calendar calendar = Calendar.getInstance();
