@@ -389,8 +389,12 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 if (position == 0) {
                     // 照片墙
-                    mPhotoWallView = new PhotoWallView(PersonFragment3.this, PersonFragment3.this);
-                    container.addView(mPhotoWallView);
+                    if (mPhotoWallView == null) {
+                        mPhotoWallView = new PhotoWallView(PersonFragment3.this, PersonFragment3.this);
+                    }
+                    if (container.indexOfChild(mPhotoWallView) == -1) {
+                        container.addView(mPhotoWallView);
+                    }
                     mPhotoWallView.getPhotos();
                     return mPhotoWallView;
                 } else if (position == 1) {
@@ -399,8 +403,12 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
                     userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
                     userInfoModel.setNickname(MyUserInfoManager.getInstance().getNickName());
                     userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
-                    mProducationWallView = new ProducationWallView(PersonFragment3.this, userInfoModel, PersonFragment3.this);
-                    container.addView(mProducationWallView);
+                    if (mProducationWallView == null) {
+                        mProducationWallView = new ProducationWallView(PersonFragment3.this, userInfoModel, PersonFragment3.this);
+                    }
+                    if (container.indexOfChild(mProducationWallView) == -1) {
+                        container.addView(mProducationWallView);
+                    }
                     mProducationWallView.getProducations();
                     return mProducationWallView;
                 }

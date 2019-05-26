@@ -1,6 +1,7 @@
 package com.module.home.game;
 
 import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -20,6 +21,7 @@ import com.engine.EngineManager;
 import com.module.home.MainPageSlideApi;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
+
 import java.util.List;
 
 public class GamePresenter extends RxLifeCyclePresenter {
@@ -159,10 +161,13 @@ public class GamePresenter extends RxLifeCyclePresenter {
             mIsFirstQuick = false;
             spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", "");
             if (!TextUtils.isEmpty(spResult)) {
-                JSONObject jsonObject = JSON.parseObject(spResult, JSONObject.class);
-                List<SpecialModel> list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel.class);
-                int offset = jsonObject.getIntValue("offset");
-                mIGameView.setQuickRoom(list, offset);
+                try {
+                    JSONObject jsonObject = JSON.parseObject(spResult, JSONObject.class);
+                    List<SpecialModel> list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel.class);
+                    int offset = jsonObject.getIntValue("offset");
+                    mIGameView.setQuickRoom(list, offset);
+                } catch (Exception e) {
+                }
             }
         }
 
