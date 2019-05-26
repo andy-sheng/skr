@@ -19,6 +19,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.component.busilib.SkrConfig;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.person.adapter.ProducationAdapter;
 import com.zq.person.model.ProducationModel;
@@ -106,7 +107,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
             mPlayNumTv.setText("" + model.getPlayCnt() + "次播放");
         }
 
-        mSongOwnerTv.setText( UserInfoManager.getInstance().getRemarkName(model.getUserID(),model.getNickName()) );
+        mSongOwnerTv.setText(UserInfoManager.getInstance().getRemarkName(model.getUserID(), model.getNickName()));
         if (!TextUtils.isEmpty(model.getCover())) {
             FrescoWorker.loadImage(mCoverIv,
                     ImageFactory.newPathImage(model.getCover())
@@ -123,6 +124,11 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
                             .setBorderColor(U.getColor(R.color.white))
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                             .build());
+        }
+        if (SkrConfig.getInstance().worksShareOpen()) {
+            mShareArea.setVisibility(View.VISIBLE);
+        } else {
+            mShareArea.setVisibility(View.GONE);
         }
         setPlayBtn(isPlay);
     }

@@ -28,6 +28,7 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.common.utils.ActivityUtils;
+import com.component.busilib.SkrConfig;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
@@ -147,17 +148,27 @@ public class PlayRecordFragment extends BaseFragment {
             }
         });
 
-
         mSaveShareArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (!TextUtils.isEmpty(mUrl) && mWorksId > 0) {
-                    showShareDialog(false);
+                    if(SkrConfig.getInstance().worksShareOpen()){
+                        showShareDialog(false);
+                    }else{
+
+                    }
                 } else {
                     saveWorksStep1();
                 }
             }
         });
+
+        if(SkrConfig.getInstance().worksShareOpen()){
+
+        }else{
+            mSaveShareTv.setText("保存");
+        }
+
     }
 
     /**
@@ -359,9 +370,14 @@ public class PlayRecordFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mWorksId = result.getData().getIntValue("worksID");
-                    mSaveShareTv.setText("分享");
-                    mSaveShareTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.audition_share, 0, 0);
-                    showShareDialog(true);
+                    if(SkrConfig.getInstance().worksShareOpen()){
+                        mSaveShareTv.setText("分享");
+                        mSaveShareTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.audition_share, 0, 0);
+                        showShareDialog(true);
+                    }else{
+                        mSaveShareTv.setText("已保存");
+                        mSaveShareTv.setClickable(false);
+                    }
                 } else {
                     mWorksId = 0;
                     U.getToastUtil().showShort("保存失败");
