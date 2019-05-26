@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -341,11 +342,11 @@ public class GrabProductionFragment extends BaseFragment {
                     mAdapter.update(model);
                     // 保存分享，提示用户保存到个人中心了
                     showShareDialog(model, false);
-                    U.getToastUtil().showShort("保存成功");
+                    U.getToastUtil().showShort("保存成功",0, Gravity.CENTER);
                     mSaving = false;
                     mObjectPlayControlTemplate.endCurrent(model);
                 } else {
-                    U.getToastUtil().showShort("保存失败");
+                    U.getToastUtil().showShort("保存失败",0,Gravity.CENTER);
                     mSaving = false;
                     mObjectPlayControlTemplate.endCurrent(model);
                 }
@@ -354,7 +355,7 @@ public class GrabProductionFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                U.getToastUtil().showShort("保存失败");
+                U.getToastUtil().showShort("保存失败",0,Gravity.CENTER);
                 mSaving = false;
                 mObjectPlayControlTemplate.endCurrent(model);
             }
@@ -362,7 +363,7 @@ public class GrabProductionFragment extends BaseFragment {
             @Override
             public void onNetworkError(ErrorType errorType) {
                 super.onNetworkError(errorType);
-                U.getToastUtil().showShort("保存失败");
+                U.getToastUtil().showShort("保存失败",0,Gravity.CENTER);
                 mSaving = false;
                 mObjectPlayControlTemplate.endCurrent(model);
             }
@@ -381,65 +382,6 @@ public class GrabProductionFragment extends BaseFragment {
         mShareWorksDialog.setData((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), MyUserInfoManager.getInstance().getAvatar()
                 , momentModel.getSongModel().getItemName(), momentModel.getUrl(), momentModel.getWorksID());
         mShareWorksDialog.show();
-    }
-
-    private void shareUrl(SharePlatform sharePlatform, WorksUploadModel model) {
-        if (model != null && model.getWorksID() != 0 && !TextUtils.isEmpty(model.getUrl())) {
-            if (sharePlatform == SharePlatform.WEIXIN) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("http://dev.app.inframe.mobi/user/work")
-                        .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
-                        .append("&workId=").append(model.getWorksID());
-                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-                UMWeb music = new UMWeb(mUrl);
-                music.setTitle("" + model.getSongModel().getItemName());
-                music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
-                music.setThumb(new UMImage(getActivity(), MyUserInfoManager.getInstance().getAvatar()));
-                new ShareAction(getActivity()).withMedia(music)
-                        .setPlatform(SHARE_MEDIA.WEIXIN)
-                        .share();
-            } else {
-                UMusic music = new UMusic(model.getUrl());
-                music.setTitle("" + model.getSongModel().getItemName());
-                music.setDescription(MyUserInfoManager.getInstance().getNickName() + "的撕歌精彩时刻");
-                music.setThumb(new UMImage(getActivity(), MyUserInfoManager.getInstance().getAvatar()));
-
-                StringBuilder sb = new StringBuilder();
-                sb.append("http://dev.app.inframe.mobi/user/work")
-                        .append("?skerId=").append(MyUserInfoManager.getInstance().getUid())
-                        .append("&workId=").append(model.getWorksID());
-
-                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-                music.setmTargetUrl(mUrl);
-
-                switch (sharePlatform) {
-                    case QQ:
-                        new ShareAction(getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.QQ)
-                                .share();
-                        break;
-                    case QZONE:
-                        new ShareAction(getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.QZONE)
-                                .share();
-                        break;
-                    case WEIXIN:
-                        new ShareAction(getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.WEIXIN)
-                                .share();
-                        break;
-
-                    case WEIXIN_CIRCLE:
-                        new ShareAction(getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                                .share();
-                        break;
-                }
-            }
-
-        } else {
-            MyLog.w(TAG, "shareUrl" + " sharePlatform=" + sharePlatform + " model=" + model);
-        }
     }
 
     private void bindData() {
