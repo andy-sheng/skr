@@ -3,6 +3,8 @@ package com.module.home.feedback;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -70,6 +72,8 @@ public class FeedbackFragment extends BaseFragment {
     int mActionType;
     int mTargetId;
 
+    Handler mHandler = new Handler(Looper.getMainLooper());
+
     ObjectPlayControlTemplate<PhotoModel, FeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, FeedbackFragment>() {
         @Override
         protected FeedbackFragment accept(PhotoModel cur) {
@@ -129,13 +133,18 @@ public class FeedbackFragment extends BaseFragment {
 
                         @Override
                         public void onFailed() {
-                            mUploadProgressBar.setVisibility(View.GONE);
-                            U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                                    .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
-                                    .setText("反馈失败")
-                                    .build());
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mUploadProgressBar.setVisibility(View.GONE);
+                                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                            .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
+                                            .setText("反馈失败")
+                                            .build());
 
-                            U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                                }
+                            });
                         }
                     }, true);
                 } else {
@@ -329,6 +338,7 @@ public class FeedbackFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override

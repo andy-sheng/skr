@@ -3,6 +3,8 @@ package com.zq.report.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -78,6 +80,8 @@ public class QuickFeedbackFragment extends BaseFragment {
     int mActionType;
     int mTargetId;
 
+    Handler mHandler = new Handler(Looper.getMainLooper());
+
     ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment>() {
         @Override
         protected QuickFeedbackFragment accept(PhotoModel cur) {
@@ -123,13 +127,18 @@ public class QuickFeedbackFragment extends BaseFragment {
 
                         @Override
                         public void onFailed() {
-                            mUploadProgressBar.setVisibility(View.GONE);
-                            U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                                    .setImage(R.drawable.touxiangshezhishibai_icon)
-                                    .setText("反馈失败")
-                                    .build());
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mUploadProgressBar.setVisibility(View.GONE);
+                                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                            .setImage(R.drawable.touxiangshezhishibai_icon)
+                                            .setText("反馈失败")
+                                            .build());
 
-                            U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
+                                    U.getFragmentUtils().popFragment(QuickFeedbackFragment.this);
+                                }
+                            });
                         }
                     }, true);
                 } else {
@@ -409,5 +418,6 @@ public class QuickFeedbackFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

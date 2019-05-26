@@ -111,6 +111,7 @@ public class LogUploadUtils {
             @Override
             public void accept(Throwable throwable) throws Exception {
                 EventBus.getDefault().post(new UploadLogEvent(null, false));
+                callback.onFailed();
                 MyLog.e(TAG, throwable);
             }
         });
