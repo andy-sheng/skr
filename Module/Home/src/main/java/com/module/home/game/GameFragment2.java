@@ -123,7 +123,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 mGamePresenter.initGameKConfig();
                 mGamePresenter.initCoinNum(true);
                 mGamePresenter.initOperationArea(true);
-                mGamePresenter.initQuickRoom(true);
                 mGamePresenter.initRecommendRoom(mRecommendInterval);
                 mGamePresenter.checkTaskRedDot();
 
@@ -265,7 +264,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mGamePresenter.initOperationArea(false);
-        mGamePresenter.initQuickRoom(false);
+        mGamePresenter.initQuickRoom();
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
         mGamePresenter.initCoinNum(false);
@@ -297,7 +296,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent event) {
         mGamePresenter.initOperationArea(true);
-        mGamePresenter.initQuickRoom(true);
+        mGamePresenter.initQuickRoom();
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
         mGamePresenter.initCoinNum(true);

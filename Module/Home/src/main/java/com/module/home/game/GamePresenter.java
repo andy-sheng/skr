@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -151,13 +152,18 @@ public class GamePresenter extends RxLifeCyclePresenter {
         }, this, new ApiMethods.RequestControl("getSlideList", ApiMethods.ControlType.CancelThis));
     }
 
-    public void initQuickRoom(boolean isFlag) {
-        long now = System.currentTimeMillis();
-        if (!isFlag) {
-            // 半个小时更新一次吧
-            if ((now - mLastUpdateQuickInfo) < 30 * 60 * 1000) {
-                return;
-            }
+    public void initQuickRoom() {
+        if (mLastUpdateQuickInfo > 0) {
+            return;
+        }
+
+        // 先用SP里面的
+        String spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", "");
+        if (!TextUtils.isEmpty(spResult)) {
+            JSONObject jsonObject = JSON.parseObject(spResult, JSONObject.class);
+            List<SpecialModel> list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel.class);
+            int offset = jsonObject.getIntValue("offset");
+            mIGameView.setQuickRoom(list, offset);
         }
 
         ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
@@ -165,9 +171,12 @@ public class GamePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mLastUpdateQuickInfo = System.currentTimeMillis();
-                    List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    mIGameView.setQuickRoom(list, offset);
+                    if (!spResult.equals(obj.getData().toJSONString())) {
+                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", obj.getData().toJSONString());
+                        List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
+                        int offset = obj.getData().getIntValue("offset");
+                        mIGameView.setQuickRoom(list, offset);
+                    }
                 }
             }
         }, this, new ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis));
