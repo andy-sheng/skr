@@ -47,7 +47,7 @@ public interface GrabRoomServerApi {
     Observable<ApiResult> createRoom(@Body RequestBody body);
 
     //检查公开房间有没有权限
-    @GET("http://dev.room.inframe.mobi/v2/room/public-permission")
+    @GET("http://dev.room.inframe.mobi/v3/room/public-permission")
     Observable<ApiResult> checkCreatePublicRoomPermission();
 
     /**
