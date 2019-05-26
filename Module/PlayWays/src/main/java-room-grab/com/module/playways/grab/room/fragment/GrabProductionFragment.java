@@ -16,7 +16,6 @@ import com.alibaba.fastjson.JSON;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.share.SharePlatform;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
@@ -34,6 +33,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 
+import com.component.busilib.SkrConfig;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
 import com.dialog.view.StrokeTextView;
@@ -49,11 +49,6 @@ import com.module.playways.grab.room.production.ResultProducationAdapter;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.score.ScoreStateModel;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.media.UMusic;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.level.view.LevelStarProgressBar;
 import com.zq.level.view.NormalLevelView2;
@@ -209,12 +204,16 @@ public class GrabProductionFragment extends BaseFragment {
                 }
                 if (model.getWorksID() > 0) {
                     // 只是分享,已经保存
-                    showShareDialog(model, true);
+                    if (SkrConfig.getInstance().worksShareOpen()) {
+                        showShareDialog(model, true);
+                    } else {
+                        //作品已保存
+                    }
                 } else {
                     mObjectPlayControlTemplate.add(model, true);
                 }
             }
-        },mLinearLayoutManager);
+        }, mLinearLayoutManager);
 
         mProductionView.setAdapter(mAdapter);
 
@@ -341,12 +340,14 @@ public class GrabProductionFragment extends BaseFragment {
                     model.setWorksID(worksID);
                     mAdapter.update(model);
                     // 保存分享，提示用户保存到个人中心了
-                    showShareDialog(model, false);
-                    U.getToastUtil().showShort("保存成功",0, Gravity.CENTER);
+                    if (SkrConfig.getInstance().worksShareOpen()) {
+                        showShareDialog(model, false);
+                    }
+                    U.getToastUtil().showShort("保存成功", 0, Gravity.CENTER);
                     mSaving = false;
                     mObjectPlayControlTemplate.endCurrent(model);
                 } else {
-                    U.getToastUtil().showShort("保存失败",0,Gravity.CENTER);
+                    U.getToastUtil().showShort("保存失败", 0, Gravity.CENTER);
                     mSaving = false;
                     mObjectPlayControlTemplate.endCurrent(model);
                 }
@@ -355,7 +356,7 @@ public class GrabProductionFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                U.getToastUtil().showShort("保存失败",0,Gravity.CENTER);
+                U.getToastUtil().showShort("保存失败", 0, Gravity.CENTER);
                 mSaving = false;
                 mObjectPlayControlTemplate.endCurrent(model);
             }
@@ -363,7 +364,7 @@ public class GrabProductionFragment extends BaseFragment {
             @Override
             public void onNetworkError(ErrorType errorType) {
                 super.onNetworkError(errorType);
-                U.getToastUtil().showShort("保存失败",0,Gravity.CENTER);
+                U.getToastUtil().showShort("保存失败", 0, Gravity.CENTER);
                 mSaving = false;
                 mObjectPlayControlTemplate.endCurrent(model);
             }

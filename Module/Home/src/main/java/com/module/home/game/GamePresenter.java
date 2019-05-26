@@ -1,12 +1,8 @@
 package com.module.home.game;
 
 import android.text.TextUtils;
-import android.view.View;
-
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
@@ -17,19 +13,14 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
-import com.common.view.DebounceViewClickListener;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
 import com.engine.EngineManager;
-import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
-
 import java.util.List;
-
-import io.reactivex.disposables.Disposable;
 
 public class GamePresenter extends RxLifeCyclePresenter {
 

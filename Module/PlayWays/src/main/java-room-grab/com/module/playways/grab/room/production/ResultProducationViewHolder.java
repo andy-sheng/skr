@@ -16,6 +16,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.SkrConfig;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.model.WorksUploadModel;
@@ -93,13 +94,24 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
             } else {
                 mBlightTipsIv.setVisibility(View.GONE);
             }
-            if (momentModel.getWorksID() > 0) {
-                mSaveShareIv.setBackgroundResource(R.drawable.grab_works_share_icon);
-                mSaveShareTv.setText("分享");
+            if (SkrConfig.getInstance().worksShareOpen()) {
+                if (momentModel.getWorksID() > 0) {
+                    mSaveShareIv.setBackgroundResource(R.drawable.grab_works_share_icon);
+                    mSaveShareTv.setText("分享");
+                } else {
+                    mSaveShareTv.setText("保存分享");
+                    mSaveShareIv.setBackgroundResource(R.drawable.grab_works_save_share);
+                }
             } else {
-                mSaveShareTv.setText("保存分享");
-                mSaveShareIv.setBackgroundResource(R.drawable.grab_works_save_share);
+                if (momentModel.getWorksID() > 0) {
+                    mSaveShareIv.setBackgroundResource(R.drawable.grab_works_has_saved);
+                    mSaveShareTv.setText("已保存");
+                } else {
+                    mSaveShareTv.setText("保存");
+                    mSaveShareIv.setBackgroundResource(R.drawable.grab_works_save_share);
+                }
             }
+
         } else {
             MyLog.w(TAG, "bindData" + " position=" + position + " momentModel=" + momentModel + " isPlay=" + isPlay);
         }
