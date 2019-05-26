@@ -35,6 +35,9 @@ import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
+/**
+ * 注意 upload 的callback 回调不一定是主线程
+ */
 public class UploadTask {
 
     public final static String TAG = "UploadTask";
