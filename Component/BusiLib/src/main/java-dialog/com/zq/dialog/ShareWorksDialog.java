@@ -114,7 +114,7 @@ public class ShareWorksDialog {
                 String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
                 UMWeb music = new UMWeb(mUrl);
                 music.setTitle("" + mSongName);
-                music.setDescription(mNickName + "的撕歌精彩时刻");
+                music.setDescription(mNickName + "在撕歌演唱获得了一个精彩时刻，来听听吧");
                 music.setThumb(new UMImage(mFragment.getActivity(), mCover));
                 new ShareAction(mFragment.getActivity()).withMedia(music)
                         .setPlatform(SHARE_MEDIA.WEIXIN)

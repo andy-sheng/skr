@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
@@ -105,7 +106,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
             mPlayNumTv.setText("" + model.getPlayCnt() + "次播放");
         }
 
-        mSongOwnerTv.setText(model.getNickName());
+        mSongOwnerTv.setText( UserInfoManager.getInstance().getRemarkName(model.getUserID(),model.getNickName()) );
         if (!TextUtils.isEmpty(model.getCover())) {
             FrescoWorker.loadImage(mCoverIv,
                     ImageFactory.newPathImage(model.getCover())
