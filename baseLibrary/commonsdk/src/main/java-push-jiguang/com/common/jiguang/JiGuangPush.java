@@ -65,4 +65,8 @@ public class JiGuangPush {
             MyLog.w("已经设置了alias,cancel");
         }
     }
+
+    public static void clearAlias(String alias) {
+        JPushInterface.deleteAlias(U.app(), 2);
+    }
 }
