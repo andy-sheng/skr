@@ -71,6 +71,9 @@ public class ResDataSource {
         if (mPhotoAlbumContentResolver != null) {
             mPhotoAlbumContentResolver.unregisterContentObserver(mPhotoAlbumContentObserver);
         }
+        if (mVideoContentResolver != null) {
+            mVideoContentResolver.unregisterContentObserver(mVideoContentObserver);
+        }
     }
 
     public ContentResolver getPhotoAlbumResolver() {
