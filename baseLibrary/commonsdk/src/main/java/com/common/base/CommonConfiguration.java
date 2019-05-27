@@ -67,23 +67,36 @@ public class CommonConfiguration implements ConfigModule {
 
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
-                MyLog.d(TAG, "onMainProcessCreate begin");
+                MyLog.w(TAG, "onMainProcessCreate begin");
+                MyLog.w(TAG, "MyLog begin");
                 MyLog.init();
+                // 无法异步延迟，因为 module 接口 还需要ARouter
+                MyLog.w(TAG, "ARouter begin");
                 if (BuildConfig.DEBUG) {
                     ARouter.openLog();
                     ARouter.openDebug();
                 }
                 ARouter.init(application); // 尽可能早,推荐在Application中初始化
+
+                MyLog.w(TAG, "FrescoInitManager begin");
                 FrescoInitManager.initFresco(U.app());
                 //PgyCrashManager.register();
                 CommonReceiver.register();
+                MyLog.w(TAG, "Umeng begin");
                 UmengInit.init();
+                MyLog.w(TAG, "Jiguang begin");
 
-                /**
-                 * 延迟初始化极光，极光初始化会耗时 400ms
-                 */
-                JiGuangPush.init();
+                InitManager.initMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        /**
+                         * 延迟初始化极光，极光初始化会耗时 400ms
+                         */
+                        JiGuangPush.init(true);
+                    }
+                },5000);
 
+                MyLog.w(TAG, "Bugly begin");
                 BuglyInit.init(true);
                 /**
                  * 初始化Matrix，分debug和release
@@ -99,7 +112,7 @@ public class CommonConfiguration implements ConfigModule {
                 InitManager.initMainThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(U.getDeviceUtils().isEmui()){
+                        if (U.getDeviceUtils().isEmui()) {
                             MyLog.e(TAG, "是emui系统，hook广播白名单");
                             LoadedApkHuaWei.hookHuaWeiVerifier(U.app(), new LoadedApkHuaWei.TooManyBroadcastCallback() {
                                 @Override
@@ -107,13 +120,13 @@ public class CommonConfiguration implements ConfigModule {
                                     MyLog.e(TAG, "注册了太多广播 tooManyBroadcast" + " registedCount=" + registedCount + " totalCount=" + totalCount);
                                 }
                             });
-                        }else{
+                        } else {
                             MyLog.e(TAG, "不是emui系统,cancel");
                         }
                     }
-                },20*1000);
+                }, 20 * 1000);
                 // 这里耗费 900ms
-                MyLog.d(TAG, "onMainProcessCreate over");
+                MyLog.w(TAG, "onMainProcessCreate over");
             }
 
             @Override
@@ -124,8 +137,8 @@ public class CommonConfiguration implements ConfigModule {
                  */
                 if (U.getProcessName().endsWith(":channel")) {
                     UmengInit.init();
-                }else if(U.getProcessName().endsWith(":pushcore")){
-                    JiGuangPush.init();
+                } else if (U.getProcessName().endsWith(":pushcore")) {
+                    JiGuangPush.init(false);
                 }
                 BuglyInit.init(false);
             }
