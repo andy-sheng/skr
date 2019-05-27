@@ -24,6 +24,7 @@ import android.util.Log;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.delegate.AppLifecycles;
 import com.common.bugly.BuglyInit;
+import com.common.huawei.LoadedApkHuaWei;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
@@ -66,13 +67,13 @@ public class CommonConfiguration implements ConfigModule {
 
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
-                Log.d(TAG, "application onCreate");
+                MyLog.d(TAG, "onMainProcessCreate begin");
+                MyLog.init();
                 if (BuildConfig.DEBUG) {
                     ARouter.openLog();
                     ARouter.openDebug();
                 }
                 ARouter.init(application); // 尽可能早,推荐在Application中初始化
-                MyLog.init();
                 FrescoInitManager.initFresco(U.app());
                 //PgyCrashManager.register();
                 CommonReceiver.register();
@@ -94,6 +95,25 @@ public class CommonConfiguration implements ConfigModule {
                 // BlockDetectByPrinter.start();
                 // 所有的都会过这个
                 //Debug.startMethodTracing();
+
+                InitManager.initMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(U.getDeviceUtils().isEmui()){
+                            MyLog.e(TAG, "是emui系统，hook广播白名单");
+                            LoadedApkHuaWei.hookHuaWeiVerifier(U.app(), new LoadedApkHuaWei.TooManyBroadcastCallback() {
+                                @Override
+                                public void tooManyBroadcast(int registedCount, int totalCount) {
+                                    MyLog.e(TAG, "注册了太多广播 tooManyBroadcast" + " registedCount=" + registedCount + " totalCount=" + totalCount);
+                                }
+                            });
+                        }else{
+                            MyLog.e(TAG, "不是emui系统,cancel");
+                        }
+                    }
+                },20*1000);
+                // 这里耗费 900ms
+                MyLog.d(TAG, "onMainProcessCreate over");
             }
 
             @Override
