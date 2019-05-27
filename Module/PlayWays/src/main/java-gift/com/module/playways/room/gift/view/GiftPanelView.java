@@ -282,8 +282,9 @@ public class GiftPanelView extends FrameLayout {
     }
 
     private void setSelectArea(GrabPlayerInfoModel grabPlayerInfoModel) {
-        if (mGrabRoomData.getInSeatPlayerInfoList().size() == 1
-                && mGrabRoomData.getInSeatPlayerInfoList().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+        if (mGrabRoomData.getInSeatPlayerInfoList().size() == 0
+                || (mGrabRoomData.getInSeatPlayerInfoList().size() == 1
+                && mGrabRoomData.getInSeatPlayerInfoList().get(0).getUserID() == MyUserInfoManager.getInstance().getUid())) {
             //只有自己
             mRlPlayerSelectArea.setVisibility(GONE);
         } else {

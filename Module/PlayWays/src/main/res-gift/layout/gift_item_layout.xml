@@ -6,12 +6,14 @@
     android:orientation="vertical">
 
     <com.common.view.ex.ExImageView
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginRight="@dimen/view_4_dp"
         android:id="@+id/iv_selected_bg"
-        android:layout_width="@dimen/view_70_dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_86_dp"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_13_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_solid_color="#343E8A" />
 
     <com.common.image.fresco.BaseImageView
