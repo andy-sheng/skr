@@ -19,47 +19,74 @@
             android:id="@+id/rl_player_select_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_59_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginLeft="@dimen/view_15_dp"
             android:layout_marginRight="@dimen/view_36_dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll_selected_man"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/view_12_dp">
 
                 <com.common.image.fresco.BaseImageView
                     android:id="@+id/iv_selected_icon"
-                    android:layout_width="@dimen/view_30_dp"
-                    android:layout_height="@dimen/view_30_dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/view_8_dp" />
+                    android:layout_width="@dimen/view_36_dp"
+                    android:layout_height="@dimen/view_36_dp" />
+
+                <ImageView
+                    android:layout_width="@dimen/view_16_dp"
+                    android:layout_height="@dimen/view_18_dp"
+                    android:layout_alignRight="@+id/iv_selected_icon"
+                    android:layout_marginTop="@dimen/view_24_dp"
+                    android:background="@drawable/xuanzhong_duihao" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/tv_selected_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_alignTop="@+id/iv_selected_icon"
                     android:layout_marginLeft="@dimen/view_10_dp"
+                    android:layout_marginTop="@dimen/view_8_dp"
                     android:layout_toRightOf="@+id/iv_selected_icon"
-                    android:text="送你 呼啦啦"
+                    android:maxWidth="@dimen/view_98_dp"
+                    android:singleLine="true"
+                    android:text="送你 呼啦啦呼啦啦呼啦啦"
                     android:textColor="#ffffffff"
                     android:textSize="14sp" />
-            </LinearLayout>
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/follow_tv"
+                    android:layout_width="@dimen/view_68_dp"
+                    android:layout_height="@dimen/view_28_dp"
+                    android:layout_alignTop="@+id/iv_selected_icon"
+                    android:layout_marginLeft="@dimen/view_10_dp"
+                    android:layout_marginTop="@dimen/view_4_dp"
+                    android:layout_toRightOf="@+id/tv_selected_name"
+                    android:gravity="center"
+                    android:text="+关注"
+                    android:textColor="#ff3b4e79"
+                    android:textSize="@dimen/textsize_14_dp"
+                    android:textStyle="bold"
+                    app:bl_corners_radius="@dimen/view_16_dp"
+                    app:bl_solid_color="#FFC15B"
+                    app:bl_stroke_color="#3B4E79"
+                    app:bl_stroke_width="@dimen/view_2_dp" />
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/all_players_rv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/view_12_dp"
                 android:layout_toLeftOf="@+id/all_players_tv"
                 android:orientation="horizontal"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/all_players_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/view_36_dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:drawableLeft="@drawable/suoyouren_left"

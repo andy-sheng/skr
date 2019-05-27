@@ -10,10 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -61,7 +61,7 @@ public class GiftPanelView extends FrameLayout {
     ExImageView mIvSend;
     ExRelativeLayout mGiftPanelArea;
     RecyclerView mAllPlayersRV;
-    LinearLayout mLlSelectedMan;
+    RelativeLayout mLlSelectedMan;
     ExTextView mTvDiamond;
     RelativeLayout mRlPlayerSelectArea;
 
@@ -120,7 +120,7 @@ public class GiftPanelView extends FrameLayout {
         mIvSend = (ExImageView) findViewById(R.id.iv_send);
         mGiftView = (GiftDisplayView) findViewById(R.id.gift_view);
         mAllPlayersRV = (RecyclerView) findViewById(R.id.all_players_rv);
-        mLlSelectedMan = (LinearLayout) findViewById(R.id.ll_selected_man);
+        mLlSelectedMan = (RelativeLayout) findViewById(R.id.ll_selected_man);
         mTvDiamond = (ExTextView) findViewById(R.id.tv_diamond);
 
         mGiftAllPlayersAdapter = new GiftAllPlayersAdapter();
@@ -136,7 +136,28 @@ public class GiftPanelView extends FrameLayout {
         mGiftAllPlayersAdapter.setOnClickPlayerListener(new GiftAllPlayersAdapter.OnClickPlayerListener() {
             @Override
             public void onClick(GrabPlayerInfoModel grabPlayerInfoModel) {
-                selectSendGiftPlayer(grabPlayerInfoModel);
+                if (mAllPlayersRV.getVisibility() != VISIBLE) {
+                    return;
+                }
+
+                mGiftAllPlayersAdapter.setSelectedGrabPlayerInfoModel(grabPlayerInfoModel);
+                mGiftAllPlayersAdapter.update(grabPlayerInfoModel);
+                mCurMicroMan = grabPlayerInfoModel;
+
+                AvatarUtils.loadAvatarByUrl(mIvSelectedIcon,
+                        AvatarUtils.newParamsBuilder(grabPlayerInfoModel.getUserInfo().getAvatar())
+                                .setBorderColor(U.getColor(R.color.white))
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                .setCircle(true)
+                                .build());
+                mTvSelectedName.setText(grabPlayerInfoModel.getUserInfo().getNicknameRemark());
+
+                mUiHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        collapsePlayerList();
+                    }
+                }, 100);
             }
         });
 
@@ -175,18 +196,40 @@ public class GiftPanelView extends FrameLayout {
                     return;
                 }
 
-                int visibleState = mAllPlayersRV.getVisibility();
-                mAllPlayersRV.setVisibility(visibleState == VISIBLE ? GONE : VISIBLE);
-                mLlSelectedMan.setVisibility(visibleState == VISIBLE ? VISIBLE : GONE);
 
-                if (mAllPlayersRV.getVisibility() == VISIBLE) {
+                int visibleState = mAllPlayersRV.getVisibility();
+
+                if (visibleState == VISIBLE) {
+                    collapsePlayerList();
+                } else {
+                    RecyclerView.LayoutManager layoutManager = mAllPlayersRV.getLayoutManager();
+                    LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+                    int lastItemPosition = linearManager.findLastVisibleItemPosition();
+                    int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+
+                    mAllPlayersTv.setEnabled(false);
+                    mAllPlayersRV.setVisibility(VISIBLE);
+                    mLlSelectedMan.setVisibility(GONE);
+                    for (int i = firstItemPosition; i <= lastItemPosition; i++) {
+                        View view = linearLayoutManager.getChildAt(i);
+                        TranslateAnimation translateAnimation = new TranslateAnimation(-i * U.getDisplayUtils().dip2px(46), 0, 0, 0);
+                        translateAnimation.setDuration(300);
+                        translateAnimation.setInterpolator(new DecelerateInterpolator());
+                        view.setAnimation(translateAnimation);
+                        view.startAnimation(translateAnimation);
+                    }
+
                     Drawable drawable = U.getDrawable(R.drawable.suoyouren_left);
                     drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
                     mAllPlayersTv.setCompoundDrawables(drawable, null, null, null);
-                } else {
-                    Drawable drawable = U.getDrawable(R.drawable.suoyouren_right);
-                    drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-                    mAllPlayersTv.setCompoundDrawables(drawable, null, null, null);
+                    mAllPlayersTv.setText("收起");
+
+                    mUiHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAllPlayersTv.setEnabled(true);
+                        }
+                    }, 300);
                 }
             }
         });
@@ -201,8 +244,38 @@ public class GiftPanelView extends FrameLayout {
         getZSBalance();
     }
 
+    public void collapsePlayerList() {
+        RecyclerView.LayoutManager layoutManager = mAllPlayersRV.getLayoutManager();
+        LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+        int lastItemPosition = linearManager.findLastVisibleItemPosition();
+        int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+        mAllPlayersTv.setEnabled(false);
+        for (int i = firstItemPosition; i <= lastItemPosition; i++) {
+            View view = linearManager.getChildAt(i);
+            TranslateAnimation translateAnimation = new TranslateAnimation(0, -i * U.getDisplayUtils().dip2px(46), 0, 0);
+            translateAnimation.setDuration(300);
+            translateAnimation.setInterpolator(new DecelerateInterpolator());
+            view.setAnimation(translateAnimation);
+            view.startAnimation(translateAnimation);
+        }
+
+        Drawable drawable = U.getDrawable(R.drawable.suoyouren_right);
+        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+        mAllPlayersTv.setCompoundDrawables(drawable, null, null, null);
+        mAllPlayersTv.setText("重选");
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAllPlayersTv.setEnabled(true);
+                mAllPlayersRV.setVisibility(INVISIBLE);
+                mLlSelectedMan.setVisibility(VISIBLE);
+            }
+        }, 300);
+    }
+
     public void updateZS() {
-        MyLog.d(TAG, "updateZS" );
+        MyLog.d(TAG, "updateZS");
         getZSBalance();
     }
 
@@ -332,18 +405,13 @@ public class GiftPanelView extends FrameLayout {
                             .setCircle(true)
                             .build());
             mTvSelectedName.setText(grabPlayerInfoModel.getUserInfo().getNicknameRemark());
-
-//            mAllPlayersRV.setVisibility(GONE);
-//            mLlSelectedMan.setVisibility(VISIBLE);
         } else {
             mGiftAllPlayersAdapter.setSelectedGrabPlayerInfoModel(null);
             mGiftAllPlayersAdapter.update(grabPlayerInfoModel);
-//            mAllPlayersRV.setVisibility(VISIBLE);
-//            mLlSelectedMan.setVisibility(GONE);
         }
 
         if (isPlayerInMic) {
-            mAllPlayersRV.setVisibility(GONE);
+            mAllPlayersRV.setVisibility(INVISIBLE);
             mLlSelectedMan.setVisibility(VISIBLE);
         } else {
             mAllPlayersRV.setVisibility(VISIBLE);
@@ -354,10 +422,12 @@ public class GiftPanelView extends FrameLayout {
             Drawable drawable = U.getDrawable(R.drawable.suoyouren_left);
             drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
             mAllPlayersTv.setCompoundDrawables(drawable, null, null, null);
+            mAllPlayersTv.setText("收起");
         } else {
             Drawable drawable = U.getDrawable(R.drawable.suoyouren_right);
             drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
             mAllPlayersTv.setCompoundDrawables(drawable, null, null, null);
+            mAllPlayersTv.setText("重选");
         }
     }
 
