@@ -1,15 +1,20 @@
 package com.component.busilib.friends;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.UserInfoManager;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
 
@@ -19,9 +24,7 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNicknameTv;
-    ExTextView mFriendTv;
-    ExTextView mRecommendTv;
-    ExTextView mFollowTv;
+    SimpleDraweeView mRecommendTagSdv;
 
     RecommendModel mFriendRoomModel;
     int position;
@@ -31,9 +34,8 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
         mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
         mNicknameTv = (ExTextView) itemView.findViewById(R.id.nickname_tv);
-        mFriendTv = (ExTextView) itemView.findViewById(R.id.friend_tv);
-        mRecommendTv = (ExTextView) itemView.findViewById(R.id.recommend_tv);
-        mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
+        mRecommendTagSdv = (SimpleDraweeView) itemView.findViewById(R.id.recommend_tag_sdv);
+
 
         itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -55,30 +57,24 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         this.position = position;
 
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
+
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getUserInfo().getAvatar())
+                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getDisplayAvatar())
                             .setCircle(true)
                             .build());
-
-            if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
-                mRecommendTv.setVisibility(View.VISIBLE);
-                mFollowTv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.GONE);
-                mNicknameTv.setText(mFriendRoomModel.getRoomInfo().getRoomName());
-            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
-                mRecommendTv.setVisibility(View.GONE);
-                mFollowTv.setVisibility(View.VISIBLE);
-                mFriendTv.setVisibility(View.GONE);
-                mNicknameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
-            } else if (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
-                mRecommendTv.setVisibility(View.GONE);
-                mFollowTv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.VISIBLE);
-                mNicknameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
+            String disName = mFriendRoomModel.getDisplayName();
+            if (mFriendRoomModel.getUserInfo() != null &&
+                    (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM || mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM)) {
+                disName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getDisplayName());
+            }
+            mNicknameTv.setText(disName);
+            if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
+                mRecommendTagSdv.setVisibility(View.VISIBLE);
+                FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getDisplayURL())
+                        .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
+                        .build());
             } else {
-                mRecommendTv.setVisibility(View.GONE);
-                mFollowTv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.GONE);
+                mRecommendTagSdv.setVisibility(View.GONE);
             }
         }
     }

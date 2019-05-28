@@ -3,13 +3,17 @@ package com.module.playways.room.room.gift.model;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.util.Pair;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import com.common.callback.Callback;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.CustomHandlerThread;
-import com.module.playways.room.room.gift.GiftContinuousView;
+import com.module.playways.room.room.gift.GiftContinueViewGroup;
 
 
+import java.security.spec.ECField;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,44 +22,39 @@ import java.util.Map;
  * 循环播放动画时的控制模板类，封装点亮、背景、大礼物等播放的基本队列逻辑
  * Created by chengsimin on 16/6/17.
  */
-public abstract class GiftPlayControlTemplate {
-    public static final String GiftPlayModelAG = "AnimationPlayControlGiftPlayModelemplate";
+public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.GiftProvider {
+    public final static String TAG = "GiftPlayControlTemplate";
 
-    static final int MSG_START_ON_UI = 80;
-
-    static final int MSG_END_ON_UI = 81;
+    public static final int BIG_GIFT = 1;
+    public static final int MEDIUM_GIFT = 2;
+    public static final int SMALL_GIFT = 3;
+    public static final int FREE_GIFT = 4;
 
     public static final int SIZE = 100;//生产者池子里最多多少个
 
     /**
      * 播放动画队列
      */
-    private LinkedHashMap<String, GiftPlayModel> mQueueMap = new LinkedHashMap<>();
+    private LinkedHashMap<String, GiftPlayModel> mOwnerGiftMap = new LinkedHashMap<>();
+
+    private LinkedHashMap<String, GiftPlayModel> mMediumGiftMap = new LinkedHashMap<>();
+
+    private LinkedHashMap<String, GiftPlayModel> mSmallQueueMap = new LinkedHashMap<>();
+
+    private LinkedHashMap<String, GiftPlayModel> mFreeQueueMap = new LinkedHashMap<>();
+
+    //礼物可以切入，需要把已经赠送的数据保存起来
+    private LinkedHashMap<String, Integer> mHasContinueCount = new LinkedHashMap<>();
 
     CustomHandlerThread mHandlerGiftPlayModelhread;// 保证++ --  都在后台线程操作
 
-    Handler mUiHandler;
-
+    Handler mUiHanlder = new Handler(Looper.getMainLooper());
 
     public GiftPlayControlTemplate() {
-        mHandlerGiftPlayModelhread = new CustomHandlerThread("my-queue-thread") {
+        mHandlerGiftPlayModelhread = new CustomHandlerThread(TAG) {
             @Override
             protected void processMessage(Message var1) {
 
-            }
-        };
-        mUiHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case MSG_START_ON_UI:
-                        Pair<GiftPlayModel, GiftContinuousView> pair = (Pair<GiftPlayModel, GiftContinuousView>) msg.obj;
-                        onStart(pair.first, pair.second);
-                        break;
-                    case MSG_END_ON_UI:
-                        onEnd((GiftPlayModel) msg.obj);
-                        break;
-                }
             }
         };
     }
@@ -64,133 +63,289 @@ public abstract class GiftPlayControlTemplate {
         mHandlerGiftPlayModelhread.post(new Runnable() {
             @Override
             public void run() {
-                // 加入队列
-                String key = getKey(model);
-                GiftPlayModel giftPlayModel = mQueueMap.get(key);
-                if (giftPlayModel != null) {
-                    if (model.getBeginCount() < giftPlayModel.getBeginCount()) {
-                        giftPlayModel.setBeginCount(model.getBeginCount());
+                //以防崩溃
+                try {
+                    if (canCutLine()) {
+                        if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                            updateOrPushGiftModel(mOwnerGiftMap, model, true);
+                        } else if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
+                            updateOrPushGiftModel(mFreeQueueMap, model, true);
+                        } else {
+                            switch (model.getGift().getDisplayType()) {
+                                case MEDIUM_GIFT:
+
+                                    updateOrPushGiftModel(mMediumGiftMap, model, true);
+                                    break;
+                                case SMALL_GIFT:
+
+                                    updateOrPushGiftModel(mSmallQueueMap, model, false);
+                                    break;
+                                case FREE_GIFT:
+
+                                    updateOrPushGiftModel(mFreeQueueMap, model, false);
+                                    break;
+                                default:
+
+                                    updateOrPushGiftModel(mFreeQueueMap, model, false);
+                                    break;
+                            }
+                        }
+                    } else {
+                        updateOrPushGiftModel(mMediumGiftMap, model, true);
                     }
-                    if (model.getEndCount() > giftPlayModel.getEndCount()) {
-                        giftPlayModel.setEndCount(model.getEndCount());
-                    }
-                } else {
-                    if (mQueueMap.size() < SIZE || must) {
-                        mQueueMap.put(key, model);
-                    }
+                } catch (Exception e) {
+                    MyLog.e(TAG, e);
                 }
-                play();
             }
         });
     }
 
-    private GiftPlayModel peek() {
-        Iterator iterator = mQueueMap.entrySet().iterator();
+    private void updateOrPushGiftModel(LinkedHashMap<String, GiftPlayModel> linkedHashMap, GiftPlayModel model, boolean must) {
+        String key = getKey(model);
+        GiftPlayModel giftPlayModel = linkedHashMap.get(key);
+        if (giftPlayModel != null) {
+            if (model.getBeginCount() < giftPlayModel.getBeginCount()) {
+                giftPlayModel.setBeginCount(model.getBeginCount());
+            }
+            if (model.getEndCount() > giftPlayModel.getEndCount()) {
+                giftPlayModel.setEndCount(model.getEndCount());
+            }
+        } else {
+            if (linkedHashMap.size() < SIZE || must) {
+                linkedHashMap.put(key, model);
+            }
+        }
+
+        needNotify();
+    }
+
+    private GiftPlayModel peek(LinkedHashMap<String, GiftPlayModel> linkedHashMap, int id) {
+        Iterator iterator = linkedHashMap.entrySet().iterator();
         GiftPlayModel model = null;
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
             model = (GiftPlayModel) entry.getValue();
-            return model;
+            /**
+             * 判断当前对象是否在被期望的在播放
+             */
+            if (!isGiftModelIsPlayingExpectOwer(model, id)) {
+                return model;
+            }
         }
         return null;
     }
 
     private String getKey(GiftPlayModel giftPlayModel) {
+        if (giftPlayModel == null) {
+            return "";
+        }
+
         return giftPlayModel.getContinueId() + "_" + giftPlayModel.getSender().getUserId();
     }
 
-    private void play() {
-        GiftPlayModel cur = peek();
-        if (cur != null) {
-            GiftContinuousView consumer = accept(cur);
-            if (consumer != null) {
-                // 肯定有消费者，才会走到这
-                mQueueMap.remove(getKey(cur));
-                if (cur != null) {
-                    //取出来一个
-                    processInBackGround(cur);
-                    onStartInside(cur, consumer);
+    @Override
+    public void tryGetGiftModel(GiftPlayModel giftPlayModel, int curNum, int id, Callback<GiftPlayModel> callback, Callback<GiftPlayModel> callbackInUiThread) {
+        if (Looper.myLooper() != mHandlerGiftPlayModelhread.getLooper()) {
+            mHandlerGiftPlayModelhread.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        tryGetGiftModel(giftPlayModel, curNum, id, callback, callbackInUiThread);
+                    } catch (Exception e) {
+                        MyLog.e(TAG, e);
+                        if (callback != null) {
+                            callback.onCallback(0, null);
+                        }
+
+                        if (mUiHanlder != null) {
+                            mUiHanlder.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (callbackInUiThread != null) {
+                                        callbackInUiThread.onCallback(0, null);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+            return;
+        }
+        /**
+         * 保证运行在队列专有线程
+         *
+         * 假设有这样一个过程
+         * ContinueId 为 A 1-3 B 1-5 ，A为自己送的
+         * 每次发送是 存起 当前 continueId 最大 beginCount
+         * 假设 B 送到 x3 时，自己送了
+         * 这时将 B 存起
+         *
+         * 保证 所有的对 model 和 map 的操作都在一个线程里
+         */
+        GiftPlayModel model = getNextPlayModel(giftPlayModel, curNum, id);
+        if (model != null) {
+            Integer curContinue = mHasContinueCount.get(getKey(model));
+            if (curContinue != null) {
+                model.setBeginCount(curContinue.intValue() + 1);
+            }
+        }
+        if (callback != null) {
+            callback.onCallback(0, model);
+        }
+        if (mUiHanlder != null) {
+            mUiHanlder.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (callbackInUiThread != null) {
+                        callbackInUiThread.onCallback(0, model);
+                    }
+                }
+            });
+        }
+    }
+
+    //获取最新的礼物数据
+    private GiftPlayModel getNextPlayModel(GiftPlayModel giftPlayModel, int curNum, int id) {
+
+        if (giftPlayModel == null) {
+            /**
+             * giftPlayModel == null说明是IDLE的状态，从最先优先级取一个数据
+             *
+             * 中礼物 小礼物 免费礼物 为什么分优先级？
+             */
+            GiftPlayModel model = null;
+            if (!mOwnerGiftMap.isEmpty()) {
+                model = peek(mOwnerGiftMap, id);
+                if (model != null) {
+                    return model;
                 }
             }
+
+            if (!mMediumGiftMap.isEmpty()) {
+                model = peek(mMediumGiftMap, id);
+                if (model != null) {
+                    return model;
+                }
+            }
+
+            if (!mSmallQueueMap.isEmpty()) {
+                model = peek(mSmallQueueMap, id);
+                if (model != null) {
+                    return model;
+                }
+            }
+
+            if (!mFreeQueueMap.isEmpty()) {
+                model = peek(mFreeQueueMap, id);
+                if (model != null) {
+                    return model;
+                }
+            }
+        } else {
+            /**
+             * 这是播放的状态中取数据的，从最高优先级开始往下找
+             */
+
+            String key = "";
+            if (mHasContinueCount.size() > 30) {
+                Iterator<String> iterator = mHasContinueCount.keySet().iterator();
+                while (iterator.hasNext()) {
+                    key = iterator.next();
+                    break;
+                }
+            }
+
+            if (!TextUtils.isEmpty(key)) {
+                mHasContinueCount.remove(key);
+            }
+
+            /**
+             * 把当前播放的次数保存起来
+             */
+            mHasContinueCount.put(getKey(giftPlayModel), curNum);
+
+            GiftPlayModel model = tryGetContinueGiftModel(mOwnerGiftMap, giftPlayModel, curNum, id);
+            if (model != null) {
+                return model;
+            }
+
+            model = tryGetContinueGiftModel(mMediumGiftMap, giftPlayModel, curNum, id);
+            if (model != null) {
+                return model;
+            }
+
+            model = tryGetContinueGiftModel(mSmallQueueMap, giftPlayModel, curNum, id);
+            if (model != null) {
+                return model;
+            }
+
+            model = tryGetContinueGiftModel(mFreeQueueMap, giftPlayModel, curNum, id);
+            if (model != null) {
+                return model;
+            }
+        }
+
+        return null;
+    }
+
+    private GiftPlayModel tryGetContinueGiftModel(LinkedHashMap<String, GiftPlayModel> linkedHashMap, GiftPlayModel giftPlayModel, int curNum, int id) {
+        GiftPlayModel model = linkedHashMap.get(getKey(giftPlayModel));
+
+        if (model != null) {
+            if (model.getEndCount() > curNum) {
+                return linkedHashMap.get(getKey(giftPlayModel));
+            } else {
+                linkedHashMap.remove(getKey(giftPlayModel));
+                return peek(linkedHashMap, id);
+            }
+        } else {
+            return peek(linkedHashMap, id);
         }
     }
 
     /**
-     * 确保在主线程执行
-     *
-     * @param model
+     * 复位
      */
-    private void onStartInside(GiftPlayModel model, GiftContinuousView consumer) {
-        MyLog.d(GiftPlayModelAG, "onStartInside model:" + model);
-        Message msg = mUiHandler.obtainMessage(MSG_START_ON_UI);
-        msg.obj = new Pair<>(model, consumer);
-        mUiHandler.sendMessage(msg);
+    public void reset() {
+        mHandlerGiftPlayModelhread.getHandler().removeCallbacksAndMessages(null);
+        mOwnerGiftMap.clear();
+        mMediumGiftMap.clear();
+        mSmallQueueMap.clear();
+        mFreeQueueMap.clear();
+        mHasContinueCount.clear();
+        if (mUiHanlder != null) {
+            mUiHanlder.removeCallbacksAndMessages(null);
+        }
     }
 
-    /**
-     * 重要，每次消费完，请手动调用告知
-     * 确保主线程执行
-     *
-     * @param model
-     */
-    public void endCurrent(GiftPlayModel model) {
-        Message msg = mUiHandler.obtainMessage(MSG_END_ON_UI);
-        msg.obj = model;
-        mUiHandler.sendMessage(msg);
-
+    public void clear() {
         mHandlerGiftPlayModelhread.post(new Runnable() {
             @Override
             public void run() {
-                onEndInSide(model);
+                mOwnerGiftMap.clear();
+                mMediumGiftMap.clear();
+                mSmallQueueMap.clear();
+                mFreeQueueMap.clear();
+                mHasContinueCount.clear();
             }
         });
     }
 
-    private void onEndInSide(GiftPlayModel model) {
-        MyLog.d(GiftPlayModelAG, "onEndInSide model:" + model);
-        play();
-    }
-
     /**
      * 复位
      */
-    public synchronized void reset() {
-        mQueueMap.clear();
-    }
-
-    /**
-     * 复位
-     */
-    public synchronized void destroy() {
-        mQueueMap.clear();
-        if (mUiHandler != null) {
-            mUiHandler.removeCallbacksAndMessages(null);
-        }
+    public void destroy() {
+        reset();
         mHandlerGiftPlayModelhread.destroy();
     }
 
+    protected abstract void needNotify();
 
-    /**
-     * 是否接受这个播放对象
-     *
-     * @param cur
-     * @return
-     */
-    protected abstract GiftContinuousView accept(GiftPlayModel cur);
+    protected abstract boolean canCutLine();
 
-    /**
-     * 某次动画开始时执行
-     *
-     * @param model
-     */
-    public abstract void onStart(GiftPlayModel model, GiftContinuousView consumer);
-
-    /**
-     * 某次动画结束了执行
-     *
-     * @param model
-     */
-    protected abstract void onEnd(GiftPlayModel model);
+    //判断这个礼物是不是别人在播放，如果自己在播放或者无人播放返回false, 如果别人在播放返回true
+    protected abstract boolean isGiftModelIsPlayingExpectOwer(@NonNull GiftPlayModel giftPlayModel, int id);
 
     protected void processInBackGround(GiftPlayModel model) {
 
@@ -201,8 +356,11 @@ public abstract class GiftPlayControlTemplate {
      *
      * @return
      */
-    public synchronized boolean hasMoreData() {
-        return !mQueueMap.isEmpty();
+    public boolean hasMoreData() {
+        return !mOwnerGiftMap.isEmpty()
+                || !mSmallQueueMap.isEmpty()
+                || !mMediumGiftMap.isEmpty()
+                || !mFreeQueueMap.isEmpty();
     }
 
 }

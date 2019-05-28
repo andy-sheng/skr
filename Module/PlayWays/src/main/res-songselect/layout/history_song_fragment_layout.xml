@@ -15,8 +15,8 @@
         android:background="@drawable/img_nichangguode_bg" />
 
     <com.common.view.ex.ExImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_211_dp"
+        android:layout_height="@dimen/view_102_dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_24_dp"

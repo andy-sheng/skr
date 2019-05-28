@@ -78,7 +78,8 @@
             android:text="取消请求"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_16_dp"
-            android:background="@drawable/red_button_icon" />
+            android:background="@drawable/red_button_icon"
+            app:borderColor="#cc5883"/>
 
         <com.dialog.view.StrokeTextView
             android:id="@+id/confirm_tv"

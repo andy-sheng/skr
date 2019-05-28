@@ -133,7 +133,7 @@ public class BallencePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult obj) {
                 MyLog.w(TAG, "getZSBalance process" + " obj=" + obj);
                 if (obj.getErrno() == 0) {
-                    String amount = JSON.parseObject(obj.getData().getString("totalAmountStr"), String.class);
+                    String amount = obj.getData().getString("totalAmountStr");
                     mIBallanceView.showBalance(amount);
                 }
             }
@@ -150,7 +150,7 @@ public class BallencePresenter extends RxLifeCyclePresenter {
                 + goodsID + "|"
                 + "dbf555fe9347eef8c74c5ff6b9f047dd" + "|"
                 + ts);
-        map.put("sign", sign);
+        map.put("signV2", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -186,12 +186,14 @@ public class BallencePresenter extends RxLifeCyclePresenter {
         String ts = System.currentTimeMillis() + "";
         map.put("goodsID", goodsID);
         map.put("timeMs", ts);
-        String sign = U.getMD5Utils().MD5_32("skrer|"
-                + MyUserInfoManager.getInstance().getUid() + "|"
-                + goodsID + "|"
-                + "dbf555fe9347eef8c74c5ff6b9f047dd" + "|"
-                + ts);
-        map.put("sign", sign);
+
+        HashMap<String, Object> signMap = new HashMap<>(map);
+        signMap.put("userID", MyUserInfoManager.getInstance().getUid());
+        signMap.put("skrer", "skrer");
+        signMap.put("appSecret", "dbf555fe9347eef8c74c5ff6b9f047dd");
+        String sign = U.getMD5Utils().signReq(signMap);
+
+        map.put("signV2", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 

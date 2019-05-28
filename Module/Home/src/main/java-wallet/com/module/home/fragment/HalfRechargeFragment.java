@@ -2,6 +2,7 @@ package com.module.home.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,6 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.home.R;
 import com.module.home.adapter.HalfRechargeAdapter;
-import com.module.home.adapter.RechargeAdapter;
 import com.module.home.presenter.BallencePresenter;
 import com.respicker.view.GridSpacingItemDecoration;
 
@@ -32,6 +32,8 @@ public class HalfRechargeFragment extends BallanceFragment {
             .build();
 
     Drawable mSelectedBg = U.getDrawable(R.drawable.chongzhijiemian_dianjiuxuanzhongtai);
+
+    Handler mUiHanlder = new Handler();
 
     @Override
     public int initView() {
@@ -67,13 +69,13 @@ public class HalfRechargeFragment extends BallanceFragment {
             }
         });
 
-        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                mEPayPlatform = EPayPlatform.ALI_PAY;
-                updatePlatformBg();
-            }
-        });
+//        mBtbZhifubao.setOnClickListener(new DebounceViewClickListener() {
+//            @Override
+//            public void clickValid(View v) {
+//                mEPayPlatform = EPayPlatform.ALI_PAY;
+//                updatePlatformBg();
+//            }
+//        });
 
         mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -84,7 +86,11 @@ public class HalfRechargeFragment extends BallanceFragment {
                 }
 
                 if (mEPayPlatform == EPayPlatform.WX_PAY) {
-                    mBallencePresenter.rechargeWxPay(mRechargeAdapter.getSelectedItem().getGoodsID());
+                    if (U.getCommonUtils().hasInstallApp("com.tencent.mm")) {
+                        mBallencePresenter.rechargeWxPay(mRechargeAdapter.getSelectedItem().getGoodsID());
+                    } else {
+                        U.getToastUtil().showShort("未安装微信");
+                    }
                 } else {
                     mBallencePresenter.rechargeAliPay(mRechargeAdapter.getSelectedItem().getGoodsID());
                 }
@@ -118,6 +124,21 @@ public class HalfRechargeFragment extends BallanceFragment {
 
     @Override
     public void rechargeSuccess() {
-        super.rechargeSuccess();
+        U.getToastUtil().showShort("充值成功");
+
+        if (mWaitingDialogPlus != null) {
+            mWaitingDialogPlus.dismiss();
+        }
+
+        if (mFragmentDataListener != null) {
+            mFragmentDataListener.onFragmentResult(100, 0, null, null);
+        }
+
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 500);
     }
 }

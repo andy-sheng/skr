@@ -26,21 +26,13 @@
         android:layout_marginBottom="@dimen/view_15_dp"
         android:background="@drawable/img_kaishipipei_bg">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/song_icon"
-            android:layout_width="@dimen/view_97_dp"
-            android:layout_height="@dimen/view_97_dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_92_dp" />
-
         <com.common.view.ex.ExTextView
             android:id="@+id/song_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/song_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/view_30_dp"
-            android:layout_marginTop="@dimen/view_18_dp"
+            android:layout_marginTop="@dimen/view_80_dp"
             android:layout_marginRight="@dimen/view_30_dp"
             android:gravity="center"
             android:text="你好"
@@ -95,6 +87,7 @@
         </LinearLayout>
 
         <com.common.view.ex.ExTextView
+            android:textSize="@dimen/textsize_16_dp"
             android:id="@+id/tv_lyric"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,7 +110,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/view_2_dp"
             android:layout_marginBottom="@dimen/view_63_dp"
-            android:progressDrawable="@drawable/song_res_progress_bg" />
+            android:progressDrawable="@drawable/download_apk_progress_bg" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/iv_start_match"

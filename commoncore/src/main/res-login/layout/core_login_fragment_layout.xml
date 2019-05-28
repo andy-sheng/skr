@@ -3,91 +3,86 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1EBE6"
+    android:background="#7187FF"
     android:clipChildren="false"
     android:clipToPadding="false">
 
     <ImageView
         android:id="@+id/picture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:src="@drawable/meinv_launch" />
+        android:layout_width="@dimen/view_186_dp"
+        android:layout_height="@dimen/view_156_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_135_dp"
+        android:background="@drawable/skrer_logo" />
 
-    <RelativeLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/picture"
-        android:layout_alignParentBottom="true">
+    <LinearLayout
+        android:id="@+id/tv_user_agree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/logo_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="撕歌 | 很高兴，用歌声认识你"
-            android:gravity="center"
-            android:letterSpacing="0.1"
-            android:textColor="#514C46"
-            android:textSize="@dimen/textsize_16_dp" />
+            android:layout_gravity="center_vertical"
+            android:text="《用户服务协议》"
+            android:textColor="@color/white_trans_30"
+            android:textSize="@dimen/textsize_12_dp" />
 
-        <LinearLayout
-            android:id="@+id/tv_user_agree"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_20_dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/denglu_agree_img" />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="《用户服务协议》"
-                android:textSize="@dimen/textsize_12_dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/denglu_agree_img" />
-        </LinearLayout>
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/logo_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_user_agree"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:text="年轻人都爱玩的在线KTV"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp" />
 
     <LinearLayout
         android:id="@+id/denglu_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/container"
+        android:layout_above="@id/logo_text"
         android:layout_marginLeft="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_40_dp"
-        android:layout_marginTop="-32dp"
+        android:layout_marginBottom="@dimen/view_105_dp"
         android:orientation="horizontal">
+
         <com.common.view.ex.ExImageView
             android:id="@+id/phone_login_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_64_dp"
             android:layout_weight="1"
-            android:src="@drawable/denglu_iphone" />
+            android:src="@drawable/icon_phone" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/weixin_login_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_64_dp"
             android:layout_weight="1"
-            android:src="@drawable/denglu_weixin" />
+            android:src="@drawable/icon_weixin" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/qq_login_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_64_dp"
             android:layout_weight="1"
-            android:src="@drawable/denglu_qq" />
-
+            android:src="@drawable/icon_qq" />
     </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progress_bar"

@@ -8,4 +8,6 @@ public interface IGrabMatchingView {
      * 匹配成功
      */
     void matchGrabSucess(JoinGrabRoomRspModel t);
+
+    void channelIsOffLine();
 }

@@ -6,7 +6,6 @@ import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.utils.HttpUtils;
-import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.module.playways.room.prepare.view.IPrepareResView;
 import com.module.playways.room.song.model.SongModel;
@@ -14,6 +13,7 @@ import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.model.UrlRes;
+import com.zq.lyrics.utils.SongResUtils;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.greendao.annotation.NotNull;
@@ -52,7 +52,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
         //伴奏
         String accUrl = mSongModel.getAcc();
         if (!TextUtils.isEmpty(accUrl)) {
-            UrlRes acc = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl,SongResUtils.SUFF_ACC));
+            UrlRes acc = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl, SongResUtils.SUFF_ACC));
             songResList.add(acc);
         }
 
@@ -66,7 +66,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
         //评分文件
         String midiUrl = mSongModel.getMidi();
         if (!TextUtils.isEmpty(midiUrl)) {
-            UrlRes midi = new UrlRes(midiUrl, SongResUtils.getMIDIDir(), U.getFileUtils().getSuffixFromUrl(midiUrl,SongResUtils.SUFF_MIDI));
+            UrlRes midi = new UrlRes(midiUrl, SongResUtils.getMIDIDir(), U.getFileUtils().getSuffixFromUrl(midiUrl, SongResUtils.SUFF_MIDI));
             songResList.add(midi);
         }
 
@@ -76,9 +76,9 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
         fetchLyric();
     }
 
-    private void fetchLyric(){
+    private void fetchLyric() {
         File lyricFile = SongResUtils.getLyricFileByUrl(mSongModel.getLyric());
-        if(lyricFile == null || !lyricFile.exists()){
+        if (lyricFile == null || !lyricFile.exists()) {
             LyricsManager.getLyricsManager(U.app())
                     .fetchLyricTask(mSongModel.getLyric())
                     .compose(bindUntilEvent(PresenterEvent.DESTROY))
@@ -90,7 +90,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
-                            MyLog.e(throwable);
+                            MyLog.e(TAG, throwable);
                         }
                     });
         } else {
@@ -98,7 +98,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
         }
     }
 
-    private void showLyric(){
+    private void showLyric() {
         final String fileName = SongResUtils.getFileNameWithMD5(mSongModel.getLyric());
         LyricsManager.getLyricsManager(U.app())
                 .loadLyricsObserable(fileName, fileName.hashCode() + "")
@@ -114,9 +114,12 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                         for (int i = 0; i < lyricsLineInfos.size(); i++) {
                             LyricsLineInfo lyricsLineInfo = lyricsLineInfos.get(i);
                             if (lyricsLineInfo.getStartTime() >= mSongModel.getRankLrcBeginT()) {
-                                String l = lyricsLineInfo.getLineLyrics();
-                                l = l + "\n" + lyricsLineInfos.get(i + 1).getLineLyrics();
-                                l = l + "\n" + lyricsLineInfos.get(i + 2).getLineLyrics();
+                                String l = "";
+                                int count = lyricsLineInfos.size() - i > 6 ? 6 : lyricsLineInfos.size() - i;
+                                for (int j = 0; j < count; j++) {
+                                    l = l + lyricsLineInfos.get(i + j).getLineLyrics() + "\n";
+                                }
+
                                 mIPrepareResView.onLyricReady(l);
                                 break;
                             }
@@ -130,7 +133,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                 });
     }
 
-    public void cancelTask(){
+    public void cancelTask() {
         mSongResourceZhang.cancelAllTask();
     }
 }

@@ -12,6 +12,7 @@ import com.component.busilib.R;
 import com.zq.relation.view.RelationHolderView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RelationAdapter extends RecyclerView.Adapter {
@@ -29,6 +30,15 @@ public class RelationAdapter extends RecyclerView.Adapter {
 
     public void addData(List<UserInfoModel> list) {
         mUserInfos.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void setData(List<UserInfoModel> list) {
+        mUserInfos.clear();
+        if(list!=null) {
+            mUserInfos.addAll(list);
+        }
+        notifyDataSetChanged();
     }
 
     public List<UserInfoModel> getData() {

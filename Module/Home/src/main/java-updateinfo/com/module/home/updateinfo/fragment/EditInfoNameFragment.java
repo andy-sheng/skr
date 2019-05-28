@@ -88,7 +88,7 @@ public class EditInfoNameFragment extends BaseFragment {
                 int length = U.getStringUtils().getStringLength(editable.toString());
                 int selectionStart = mNicknameEt.getSelectionStart();
                 int selectionEnd = mNicknameEt.getSelectionEnd();
-                if (length > 14) {
+                if (length > 14 && selectionStart >= 1 && selectionEnd >= selectionStart) {
                     editable.delete(selectionStart - 1, selectionEnd);
                     mNicknameEt.setText(editable.toString());
                     int selection = editable.length();
@@ -97,8 +97,7 @@ public class EditInfoNameFragment extends BaseFragment {
                 }
             }
         });
-
-
+        
     }
 
     private void clickComplete() {
@@ -119,7 +118,7 @@ public class EditInfoNameFragment extends BaseFragment {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        boolean isValid = result.getData().getBoolean("isValid");
+                        boolean isValid = result.getData().getBooleanValue("isValid");
                         String unValidReason = result.getData().getString("unValidReason");
                         if (isValid) {
                             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()

@@ -1,11 +1,9 @@
 package com.module.home.game;
 
 import android.text.TextUtils;
-import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.common.core.avatar.AvatarUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
@@ -16,19 +14,15 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
-import com.common.view.DebounceViewClickListener;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
 import com.engine.EngineManager;
-import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 
 import java.util.List;
-
-import io.reactivex.disposables.Disposable;
 
 public class GamePresenter extends RxLifeCyclePresenter {
 
@@ -40,7 +34,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
     long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
     long mLastUpdateRecomendInfo = 0; //好友派对上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
-
+    boolean mIsFirstQuick = true;
     boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
 
     HandlerTaskTimer mRecommendTimer;
@@ -152,6 +146,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     public void initQuickRoom(boolean isFlag) {
+        MyLog.d(TAG, "initQuickRoom" + " isFlag=" + isFlag);
         long now = System.currentTimeMillis();
         if (!isFlag) {
             // 半个小时更新一次吧
@@ -160,14 +155,34 @@ public class GamePresenter extends RxLifeCyclePresenter {
             }
         }
 
+        String spResult = "";
+        if (mIsFirstQuick) {
+            // 先用SP里面的
+            mIsFirstQuick = false;
+            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", "");
+            if (!TextUtils.isEmpty(spResult)) {
+                try {
+                    JSONObject jsonObject = JSON.parseObject(spResult, JSONObject.class);
+                    List<SpecialModel> list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel.class);
+                    int offset = jsonObject.getIntValue("offset");
+                    mIGameView.setQuickRoom(list, offset);
+                } catch (Exception e) {
+                }
+            }
+        }
+
+        String finalSpResult = spResult;
         ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mLastUpdateQuickInfo = System.currentTimeMillis();
-                    List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    mIGameView.setQuickRoom(list, offset);
+                    if (!obj.getData().toJSONString().equals(finalSpResult)) {
+                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", obj.getData().toJSONString());
+                        List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
+                        int offset = obj.getData().getIntValue("offset");
+                        mIGameView.setQuickRoom(list, offset);
+                    }
                 }
             }
         }, this, new ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis));
@@ -210,15 +225,13 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     private void loadRecommendRoomData() {
-        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mLastUpdateRecomendInfo = System.currentTimeMillis();
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    int totalNum = obj.getData().getIntValue("totalRoomsNum");
-                    mIGameView.setRecommendInfo(list, offset, totalNum);
+                    mIGameView.setRecommendInfo(list);
                 }
             }
         }, this, new ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis));

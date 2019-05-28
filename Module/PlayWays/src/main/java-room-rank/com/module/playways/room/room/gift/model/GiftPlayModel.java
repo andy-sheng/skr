@@ -3,12 +3,11 @@ package com.module.playways.room.room.gift.model;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.gift.model.BaseGift;
-import com.module.playways.room.msg.event.GiftBrushMsgEvent;
+import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
+import com.module.playways.room.gift.model.NormalGift;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
-
-import static com.module.playways.BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
 
 public class GiftPlayModel {
     private EGiftType mEGiftType = EGiftType.EMOJI;
@@ -21,12 +20,12 @@ public class GiftPlayModel {
     String action;
     int beginCount;
     int endCount;
-    String giftIconUrl;
-    String bigGiftResUrl;
-
+    BaseGift mBaseGift;
+    boolean isPlaying;
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
+        giftPlayModel.mEGiftType = EGiftType.EMOJI;
         giftPlayModel.setContinueId(event.coutinueId);
         giftPlayModel.setEmojiType(event.emojiType);
         giftPlayModel.setRoomID(event.info.getRoomID());
@@ -34,6 +33,7 @@ public class GiftPlayModel {
         giftPlayModel.setBeginCount(event.count);
         giftPlayModel.setEndCount(event.count);
         giftPlayModel.setTimeMs(event.info.getTimeMs());
+        giftPlayModel.setGift(new NormalGift());
 
         UserInfoModel userInfoModel;
         if (roomData != null) {
@@ -49,22 +49,26 @@ public class GiftPlayModel {
     }
 
 
-    public static GiftPlayModel parseFromEvent(GPrensentGiftMsg gPrensentGiftMsg, BaseRoomData roomData) {
+    public static GiftPlayModel parseFromEvent(GPrensentGiftMsgModel gPrensentGiftMsg, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
+        giftPlayModel.mEGiftType = EGiftType.GIFT;
+
         giftPlayModel.setContinueId(gPrensentGiftMsg.getContinueID());
         giftPlayModel.setEmojiType(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN);
-        giftPlayModel.setRoomID(gPrensentGiftMsg.getRoomID());
+        giftPlayModel.setRoomID((int) gPrensentGiftMsg.getRoomID());
         giftPlayModel.setAction("");
         giftPlayModel.setBeginCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setEndCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setTimeMs(System.currentTimeMillis());
-        giftPlayModel.mEGiftType = EGiftType.GIFT;
-        UserInfoModel userInfoModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getSendUserInfo());
+        UserInfoModel userInfoModel = gPrensentGiftMsg.getSendUserInfo();
         giftPlayModel.setSender(userInfoModel);
-        UserInfoModel receiverModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getReceiveUserInfo());
+        UserInfoModel receiverModel = gPrensentGiftMsg.getReceiveUserInfo();
         giftPlayModel.setReceiver(receiverModel);
-        giftPlayModel.setGiftIconUrl(gPrensentGiftMsg.getGiftInfo().getGiftURL());
-        giftPlayModel.setBigGiftResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
+
+        BaseGift baseGift = gPrensentGiftMsg.getGiftInfo();
+
+        giftPlayModel.setGift(baseGift);
+
         return giftPlayModel;
     }
 
@@ -145,23 +149,46 @@ public class GiftPlayModel {
         return mEGiftType;
     }
 
+    public BaseGift getGift() {
+        return mBaseGift;
+    }
+
+    public void setGift(BaseGift baseGift) {
+        mBaseGift = baseGift;
+    }
+
     public String getGiftIconUrl() {
-        return giftIconUrl;
+        if (mBaseGift != null) {
+            return mBaseGift.getGiftURL();
+        }
+        return "";
     }
 
-    public void setGiftIconUrl(String giftIconUrl) {
-        this.giftIconUrl = giftIconUrl;
-    }
-
-    public String getBigGiftResUrl() {
-        return bigGiftResUrl;
-    }
-
-    public void setBigGiftResUrl(String bigGiftResUrl) {
-        this.bigGiftResUrl = bigGiftResUrl;
+    public String getGiftAnimationUrl() {
+        if (mBaseGift != null) {
+            return mBaseGift.getSourceURL();
+        }
+        return "";
     }
 
     public enum EGiftType {
         EMOJI, GIFT
+    }
+
+    @Override
+    public String toString() {
+        return "GiftPlayModel{" +
+                "mEGiftType=" + mEGiftType +
+                ", continueId=" + continueId +
+                ", timeMs=" + timeMs +
+                ", roomID=" + roomID +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
+                ", emojiType=" + emojiType +
+                ", action='" + action + '\'' +
+                ", beginCount=" + beginCount +
+                ", endCount=" + endCount +
+                ", mBaseGift=" + mBaseGift +
+                '}';
     }
 }

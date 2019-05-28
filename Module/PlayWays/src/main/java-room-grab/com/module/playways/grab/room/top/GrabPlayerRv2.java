@@ -16,18 +16,19 @@ import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.component.busilib.constans.GrabRoomType;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
+import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
-import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -184,8 +185,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
             }
         }
         RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
-        lp.leftMargin = U.getDisplayUtils().dip2px(15);
-        lp.rightMargin = U.getDisplayUtils().dip2px(15);
+        lp.leftMargin = U.getDisplayUtils().dip2px(7);
+        lp.rightMargin = U.getDisplayUtils().dip2px(7);
         mContentLl.setLayoutParams(lp);
     }
 
@@ -227,8 +228,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
 
         RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
-        lp.leftMargin = U.getDisplayUtils().dip2px(15);
-        lp.rightMargin = U.getDisplayUtils().dip2px(15);
+        lp.leftMargin = U.getDisplayUtils().dip2px(7);
+        lp.rightMargin = U.getDisplayUtils().dip2px(7);
         mContentLl.setLayoutParams(lp);
     }
 
@@ -607,10 +608,21 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mRoomData = roomData;
         if (mGrabTopItemViewArrayList.size() != 0) {
             VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
-            if (mRoomData.isOwner()) {
-                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
-            } else {
+            if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+                // 新手房
                 vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+            } else {
+                if (mRoomData.getOwnerId() != 0) {
+                    // 房主房
+                    if (mRoomData.isOwner()) {
+                        vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                    } else {
+                        vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+                    }
+                } else {
+                    // 普通房
+                    vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                }
             }
         }
         initData();

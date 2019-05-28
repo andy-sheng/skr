@@ -1,8 +1,5 @@
 package com.common.core.userinfo;
 
-import android.animation.ObjectAnimator;
-import android.support.v7.widget.RecyclerView;
-
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
@@ -254,10 +251,87 @@ public interface UserInfoServerApi {
     Observable<ApiResult> deletePhoto(@Body RequestBody body);
 
     /**
-     *
-     * @param cnt  获取第一条传1 列表最大值100
+     * @param cnt 获取第一条传1 列表最大值100
      * @return
      */
     @GET("/v1/mate/latest-relation")
     Observable<ApiResult> getLatestRelation(@Query("cnt") int cnt);
+
+
+    @GET("/v1/mate/list-follows-by-page")
+    Call<ApiResult> listFollowsByPage(@Query("offset") int offset, @Query("cnt") int cnt);
+
+    @GET("/v1/mate/list-follows-by-index-id")
+    Call<ApiResult> listFollowsByIndexId(@Query("lastIndexID") long lastIndexID);
+
+    @GET("/v1/mate/list-fans-by-page")
+    Observable<ApiResult> listFansByPage(@Query("offset") int offset, @Query("cnt") int cnt);
+
+
+    @GET("/v1/mate/list-remark-by-index-id")
+    Call<ApiResult> listRemarkByIndexId(@Query("lastIndexID") long lastIndexID);
+
+    @GET("/v1/mate/list-remark-by-page")
+    Call<ApiResult> listRemarkByPage(@Query("offset") int offset, @Query("cnt") int cnt);
+
+    @PUT("/v1/mate/write-user-remark")
+    Observable<ApiResult> writeUserRemark(@Body RequestBody body);
+
+
+    /**
+     * 新增作品
+     *
+     * @param body "category": EPC_Stand_Normal	1一唱到底
+     *                         EPC_Stand_Highlight	2一唱到底高光时刻
+     *                         EPC_Practice	3 练歌房
+     *                         EPC_Team	4 团队赛
+     *             "duration": "string",
+     *             "songID": 0,
+     *             "worksURL": "string"
+     * @return
+     */
+    @PUT("/v1/profile/add-works")
+    Observable<ApiResult> addWorks(@Body RequestBody body);
+
+    /**
+     * 删除作品
+     *
+     * @param body  "worksID": 0
+     * @return
+     */
+    @PUT("/v1/profile/del-works")
+    Observable<ApiResult> deleWorks(@Body RequestBody body);
+
+    /**
+     * 播放作品
+     *
+     * @param body  "toUserID": 0,
+     *              "worksID": 0
+     * @return
+     */
+    @PUT("/v1/profile/play-works")
+    Observable<ApiResult> playWorks(@Body RequestBody body);
+
+
+    /**
+     * 查看作品
+     * @param toUserID  查看用户ID（别人必填，自己选填）
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/profile/query-works")
+    Observable<ApiResult> getWorks(@Query("toUserID") int toUserID,
+                                   @Query("offset") int offset,
+                                   @Query("cnt") int cnt);
+
+
+    @POST("/v1/mate/multi-check-user-online-status")
+    Observable<ApiResult> checkUserOnlineStatus(@Body RequestBody body);
+
+    @POST("/v1/mate/multi-check-user-game-status")
+    Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
+
+    @GET("v1/mate/search-fans")
+    Observable<ApiResult> searchFans(@Query("searchContent") String searchContent);
 }

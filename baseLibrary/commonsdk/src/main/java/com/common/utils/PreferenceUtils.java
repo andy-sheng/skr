@@ -21,9 +21,10 @@ public class PreferenceUtils {
 
     /**
      * 私有的pref 这个Pref退出账号时不会清空
+     * 伴随整个 APP 生命周期
      * @return
      */
-    public SharedPreferences getSharedPreferencesSp2() {
+    public SharedPreferences longlySp() {
         return mSharedPreferencesSp2;
     }
 

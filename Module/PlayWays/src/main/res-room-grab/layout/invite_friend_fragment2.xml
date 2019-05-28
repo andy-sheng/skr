@@ -38,7 +38,7 @@
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/grab_back" />
 
-    <com.module.playways.grab.room.invite.InviteShareFriendView
+    <com.module.playways.grab.room.invite.view.InviteShareFriendView
         android:id="@+id/share_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_140_dp"

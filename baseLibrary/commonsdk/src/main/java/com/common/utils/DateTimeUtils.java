@@ -221,12 +221,8 @@ public class DateTimeUtils {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             float hourPercent = (float) hour / (float) 24;
-
             value += hourPercent;
-
-
             int tmp = (int) value;
-
             return U.app().getResources().getQuantityString(R.plurals.days_ago, tmp, tmp);
         } else if (timeSpan < MILLI_SECONDS_ONE_YEAR) {       //一年之内, 显示　几个月前
             long value = timeSpan / MILLI_SECONDS_ONE_MONTH;
@@ -242,6 +238,47 @@ public class DateTimeUtils {
         }
     }
 
+    /**
+     * 返回一个时间　相对于另一个时间的可读的　时间表示
+     * （1）       60分钟内，显示时间：XX分钟前，例：6分钟前、12分钟前
+     * （2）       1天内，显示时间：XX小时前，例：1小时前
+     * （3）       15天内，显示时间：XX天前，例：2天前（特例：超过24小时，显示“昨天”）
+     * (4)       超过15天，返回空
+     *
+     * @param timeToFormat 　要转换的时间
+     * @param timeToBase   　基准时间
+     * @return
+     */
+    public String formatHumanableDateForSkr(final long timeToFormat, final long timeToBase) {
+        MyLog.v(TAG + " formatHumanableDate timeToFormat == " + timeToFormat + " timeToBase == " + timeToBase);
+        if (timeToFormat < 0 || timeToBase < 0) {
+            MyLog.e(TAG + " formatHumanableDate timeToFormat or timeToBase < 0, timeToFormat == " + timeToFormat + " timeToBase == " + timeToBase);
+            return "";
+        }
+
+        long timeSpan = Math.abs(timeToBase - timeToFormat);
+        MyLog.v(TAG + " formatHumanableDate timeSpan == " + timeSpan);
+        if (timeSpan < MILLI_SECONDS_ONE_MINUTE) {        //一分钟之内, 显示刚刚
+            return U.app().getResources().getString(R.string.justnow);
+        } else if (timeSpan < MILLI_SECONDS_ONE_HOUR) {        //一小时之内, 显示　多少分钟前
+            long tmp = timeSpan / MILLI_SECONDS_ONE_MINUTE;
+            return U.app().getResources().getQuantityString(R.plurals.minute_ago, (int) tmp, tmp);
+        } else if (timeSpan < MILLI_SECONDS_ONE_DAY) {         //一天之内, 显示　多少小时前
+            long tmp = timeSpan / MILLI_SECONDS_ONE_HOUR;
+            return U.app().getResources().getQuantityString(R.plurals.hour_ago, (int) tmp, tmp);
+        } else if (timeSpan < 4 * MILLI_SECONDS_ONE_DAY) {       //一个月之内, 显示　多少天前
+            float value = (float) timeSpan / (float) MILLI_SECONDS_ONE_DAY;
+            //这里是为了解决跨天的问题, 比如value为2.55天有可能跨天了
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            float hourPercent = (float) hour / (float) 24;
+            value += hourPercent;
+            int tmp = (int) value;
+            return U.app().getResources().getQuantityString(R.plurals.days_ago, tmp, tmp);
+        } else {
+            return "";
+        }
+    }
 
     /**
      * 返回时间戳相差几天 今天返回0 昨天返回-1 明天返回1
@@ -289,6 +326,7 @@ public class DateTimeUtils {
 
     /**
      * 融云时间计算方式
+     *
      * @param dateMillis
      * @param showTime
      * @param context

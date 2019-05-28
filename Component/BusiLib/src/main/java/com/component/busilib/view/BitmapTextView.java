@@ -3,7 +3,6 @@ package com.component.busilib.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -15,6 +14,8 @@ import android.view.View;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
+import com.glidebitmappool.BitmapFactoryAdapter;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,12 @@ public class BitmapTextView extends View {
 
     public final static String TAG = "BitmapTextView";
 
-    List<Bitmap> mBitmapList = new ArrayList<>();
+    protected List<Bitmap> mBitmapList = new ArrayList<>();
     int diff = U.getDisplayUtils().dip2px(2);  //两张图片的偏移量重合部分
-    int mWidth = 0;// view的宽度
-    int mHeight = 0;// view的高度
+    protected int mWidth = 0;// view的宽度
+    protected int mHeight = 0;// view的高度
 
-    float scale;   //图片放缩比例
+    protected float scale;   //图片放缩比例
     int textColor; //图片文字颜色
     boolean hasShadow;  //是否有阴影
 
@@ -47,7 +48,7 @@ public class BitmapTextView extends View {
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    protected void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BitmapTextView);
         scale = typedArray.getFloat(R.styleable.BitmapTextView_scale, 1.0f);
         textColor = typedArray.getColor(R.styleable.BitmapTextView_text_color, 0);
@@ -72,7 +73,7 @@ public class BitmapTextView extends View {
         drawText(canvas, mBitmapList);
     }
 
-    private void drawText(Canvas canvas, List<Bitmap> bitmaps) {
+    protected void drawText(Canvas canvas, List<Bitmap> bitmaps) {
         float left = 0;
         for (Bitmap bitmap : bitmaps) {
             canvas.drawBitmap(bitmap, left, 0, new Paint());
@@ -80,58 +81,58 @@ public class BitmapTextView extends View {
         }
     }
 
-    private Bitmap getBitmap(char aChar) {
+    protected Bitmap getBitmap(char aChar) {
         if (hasShadow) {
             switch (aChar) {
                 case '0':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_0);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_0);
                 case '1':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_1);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_1);
                 case '2':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_2);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_2);
                 case '3':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_3);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_3);
                 case '4':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_4);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_4);
                 case '5':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_5);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_5);
                 case '6':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_6);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_6);
                 case '7':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_7);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_7);
                 case '8':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_8);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_8);
                 case '9':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_9);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_9);
                 case '.':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_dian);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.daojishi_dian);
                 default:
                     return null;
             }
         } else {
             switch (aChar) {
                 case '0':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_0);
                 case '1':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_1);
                 case '2':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_2);
                 case '3':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_3);
                 case '4':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_4);
                 case '5':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_5);
                 case '6':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_6);
                 case '7':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_7);
                 case '8':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_8);
                 case '9':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_9);
                 case '.':
-                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
+                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
                 default:
                     return null;
             }
@@ -154,7 +155,7 @@ public class BitmapTextView extends View {
                         matrix.postScale(scale, scale);
                         Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
                         if (!bitmap.isRecycled()) {
-                            bitmap.recycle();
+                            BitmapPoolAdapter.putBitmap(bitmap);
                         }
                         if (newBM != null) {
                             mWidth = mWidth + newBM.getWidth();

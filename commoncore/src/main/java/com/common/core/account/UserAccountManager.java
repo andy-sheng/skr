@@ -11,29 +11,28 @@ import com.common.callback.Callback;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
-import com.common.core.db.UserInfoDBDao;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
-import com.common.jiguang.JiGuangPush;
+import com.common.core.userinfo.remark.RemarkLocalApi;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.statistics.UmengStatistics;
-import com.common.umeng.UmengPushRegisterSuccessEvent;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
+import com.tencent.bugly.crashreport.CrashReport;
+
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -54,7 +53,7 @@ public class UserAccountManager {
     public static final int SYSTEM_ID = 1;       //系统id
     public static final int SYSTEM_GRAB_ID = 2;  //一唱到底多音
     public static final int SYSTEM_RANK_AI = 3;  //AI裁判
-    public static final String SYSTEM_AVATAR = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png"; //系统头像
+    public static final String SYSTEM_AVATAR = "http://res-static.inframe.mobi/common/system2.png"; //系统头像
 
     private UserAccount mAccount;
 
@@ -81,7 +80,7 @@ public class UserAccountManager {
     }
 
     private UserAccountManager() {
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     public static final UserAccountManager getInstance() {
@@ -104,6 +103,11 @@ public class UserAccountManager {
             // 用户登录成功，这里应该是要发出通知的
             setAccount(account, true);
             U.getActivityUtils().showSnackbar("登录成功", false);
+
+            if (!MyUserInfoManager.getInstance().isFirstLogin()) {
+                // 是个老用户，打个点
+                StatisticsAdapter.recordCountEvent("signup","oldid",null,true);
+            }
         }
     }
 
@@ -130,7 +134,7 @@ public class UserAccountManager {
                 mHasTryConnentRM = false;
             }
 
-            trySetUmengPushAlias();
+            trySetAlias();
 //            ScreenLogView.addInfo("用户id", account.getUid());
         } else {
 
@@ -238,7 +242,7 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum,callback);
+                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
@@ -271,11 +275,11 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), "",null);
+                            UserAccount userAccount = parseRsp(obj.getData(), "", null);
                             if (mode == 3) {
                                 UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
                             } else if (mode == 2) {
-                                UmengStatistics.onProfileSignIn("qq", userAccount.getUid());
+                                UmengStatistics.onProfileSignIn("icon_qq", userAccount.getUid());
                             }
                         } else {
                             U.getToastUtil().showShort(obj.getErrmsg());
@@ -284,23 +288,24 @@ public class UserAccountManager {
                 });
     }
 
-    UserAccount parseRsp(JSONObject jsonObject, String phoneNum,Callback callback) {
+    UserAccount parseRsp(JSONObject jsonObject, String phoneNum, Callback callback) {
         String secretToken = jsonObject.getJSONObject("token").getString("T");
         String serviceToken = jsonObject.getJSONObject("token").getString("S");
         String rongToken = jsonObject.getJSONObject("token").getString("RC");
         com.alibaba.fastjson.JSONObject profileJO = jsonObject.getJSONObject("profile");
-        long userID = profileJO.getLong("userID");
+        long userID = profileJO.getLongValue("userID");
         String nickName = profileJO.getString("nickname");
-        int sex = profileJO.getInteger("sex");
+        int sex = profileJO.getIntValue("sex");
         String birthday = profileJO.getString("birthday");
         String avatar = profileJO.getString("avatar");
         String sign = profileJO.getString("signature");
         Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
 
-        boolean isFirstLogin = jsonObject.getBoolean("isFirstLogin");
+        boolean isFirstLogin = jsonObject.getBooleanValue("isFirstLogin");
         if (isFirstLogin) {
             U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
         }
+        boolean needBeginnerGuide = jsonObject.getBooleanValue("needBeginnerGuide");
 
         // 设置个人信息
         MyUserInfo myUserInfo = new MyUserInfo();
@@ -311,8 +316,10 @@ public class UserAccountManager {
         myUserInfo.setAvatar(avatar);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
+        MyUserInfoManager.getInstance().setFirstLogin(isFirstLogin);
+        MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo,true);
+        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true, "parseRsp");
 
         UserAccount userAccount = new UserAccount();
         userAccount.setPhoneNum(phoneNum);
@@ -324,7 +331,7 @@ public class UserAccountManager {
         userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
         onLoginResult(userAccount);
         if (callback != null) {
-            callback.onCallback(1,null);
+            callback.onCallback(1, null);
         }
         return userAccount;
     }
@@ -391,6 +398,7 @@ public class UserAccountManager {
                     // 清除pref 清除数据库
                     U.getPreferenceUtils().clearPreference();
                     UserInfoLocalApi.deleteAll();
+                    RemarkLocalApi.deleteAll();
                     UmengStatistics.onProfileSignOff();
                     //com.common.umeng.UmengPush.UmengPush.clearAlias(userId);
                     com.common.jiguang.JiGuangPush.clearAlias(userId);
@@ -402,25 +410,6 @@ public class UserAccountManager {
                     .subscribeOn(Schedulers.io())
                     .subscribe();
         }
-    }
-
-    // todo 检查昵称是否可用
-    public void checkNickName(String nickname) {
-        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        ApiMethods.subscribe(userAccountServerApi.checkNickName(nickname), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    boolean isValid = result.getData().getBoolean("isValid");
-                    if (isValid) {
-                        // 昵称可用
-                    } else {
-                        // 昵称不可用和理由
-                        String unValidReason = result.getData().getString("unValidReason");
-                    }
-                }
-            }
-        });
     }
 
     public void tryConnectRongIM(boolean force) {
@@ -556,18 +545,24 @@ public class UserAccountManager {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(UmengPushRegisterSuccessEvent event) {
-        trySetUmengPushAlias();
-    }
+//    @Subscribe(threadMode = ThreadMode.POSTING)
+//    public void onEvent(UmengPushRegisterSuccessEvent event) {
+//        trySetAlias();
+//    }
 
     /**
      * 给Umeng的push通道设置 Alias
      */
-    void trySetUmengPushAlias() {
+    void trySetAlias() {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
             com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
+            if(U.getChannelUtils().isStaging()){
+                CrashReport.setUserId("dev_"+UserAccountManager.getInstance().getUuid());
+            }else{
+                CrashReport.setUserId(UserAccountManager.getInstance().getUuid());
+            }
+
         }
     }
 }

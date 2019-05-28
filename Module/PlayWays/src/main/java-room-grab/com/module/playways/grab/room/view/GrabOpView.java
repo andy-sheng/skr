@@ -24,12 +24,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
 import com.zq.live.proto.Common.StandPlayType;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,6 +73,8 @@ public class GrabOpView extends RelativeLayout {
     ExImageView mCoinFlagIv;
 
     int mShowChallengeTime = 0;
+    int mShowGrabTipsTime = 0; // 展示抢唱气泡次数
+    boolean mIsShowBurstTips = false;  // 是否展示过爆灯tips
 
     int mStatus;
 
@@ -97,9 +99,13 @@ public class GrabOpView extends RelativeLayout {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
-                    hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
-                    if (mListener != null) {
-                        mListener.grabCountDownOver();
+                    if (mGrabRoomData.getGrabGuideInfoModel() == null) {
+                        hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
+                        if (mListener != null) {
+                            mListener.grabCountDownOver();
+                        }
+                    } else {
+                        MyLog.d(TAG, "新手引导不隐藏抢唱按钮");
                     }
                     break;
                 case MSG_HIDE:
@@ -107,7 +113,11 @@ public class GrabOpView extends RelativeLayout {
                     mIvBurst.setVisibility(GONE);
                     mGrabContainer.setVisibility(GONE);
                     mGrab2Container.setVisibility(GONE);
-                    mListener.hideChallengeTipView();
+                    if (mListener != null) {
+                        mListener.hideChallengeTipView();
+                        mListener.hideGrabTipView();
+                        mListener.hideBurstTipView();
+                    }
                     break;
                 case MSG_SHOW_BRUST_BTN:
                     MyLog.d(TAG, "handleMessage" + " msg=" + MSG_SHOW_BRUST_BTN);
@@ -120,6 +130,12 @@ public class GrabOpView extends RelativeLayout {
                     mIvBurst.setVisibility(VISIBLE);
                     mIvBurst.startAnimation(animation);
                     mIvBurst.setEnabled(true);
+                    if (mGrabRoomData.isNewUser() && !mIsShowBurstTips) {
+                        if (mListener != null) {
+                            mListener.showBurstTipView();
+                        }
+                        mIsShowBurstTips = true;
+                    }
                     break;
             }
         }
@@ -153,6 +169,7 @@ public class GrabOpView extends RelativeLayout {
                     if (mStatus == STATUS_GRAP) {
                         if (mListener != null) {
                             mListener.clickGrabBtn(mSeq, false);
+                            StatisticsAdapter.recordCountEvent("grab", "game_grab", null);
                         }
                     }
                 }
@@ -178,7 +195,6 @@ public class GrabOpView extends RelativeLayout {
             });
         }
 
-
         mIvBurst = findViewById(R.id.iv_burst);
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -187,8 +203,8 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                "game_like", null);
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                                "game_like", null);
 //                        mIvBurst.setEnabled(false);
                     }
                 }
@@ -202,8 +218,8 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickLightOff();
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                "game_dislike", null);
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                                "game_dislike", null);
                     }
                 }
             }
@@ -344,6 +360,15 @@ public class GrabOpView extends RelativeLayout {
                         }
 
                         U.getPreferenceUtils().setSettingInt(KEY_SHOW_CHALLENGE_TIME, ++mShowChallengeTime);
+                    }
+                }
+
+                if (mGrabRoomData.isNewUser()) {
+                    if (mShowGrabTipsTime < 2) {
+                        if (mListener != null) {
+                            mListener.showGrabTipView();
+                        }
+                        ++mShowGrabTipsTime;
                     }
                 }
                 break;
@@ -493,9 +518,6 @@ public class GrabOpView extends RelativeLayout {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        if (mListener != null) {
-                            mListener.countDownOver();
-                        }
 
                         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                                 Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
@@ -575,6 +597,14 @@ public class GrabOpView extends RelativeLayout {
         }
     }
 
+    public View getGrabBtn() {
+        return mGrabIv;
+    }
+
+    public View getBurstBtn() {
+        return mIvBurst;
+    }
+
     public interface Listener {
         void clickGrabBtn(int seq, boolean challenge);
 
@@ -589,5 +619,13 @@ public class GrabOpView extends RelativeLayout {
         void showChallengeTipView();
 
         void hideChallengeTipView();
+
+        void showGrabTipView();
+
+        void hideGrabTipView();
+
+        void showBurstTipView();
+
+        void hideBurstTipView();
     }
 }

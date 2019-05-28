@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_80_dp"
             android:layout_centerVertical="true"
-            android:drawableTop="@drawable/qq"
+            android:drawableTop="@drawable/icon_qq"
             android:gravity="center_horizontal|bottom"
             android:text="QQ"
             android:textSize="@dimen/textsize_12_dp" />
@@ -80,7 +80,7 @@
             android:layout_height="@dimen/view_80_dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:drawableTop="@drawable/share_weixin"
+            android:drawableTop="@drawable/icon_weixin"
             android:gravity="center_horizontal|bottom"
             android:text="微信好友"
             android:textSize="@dimen/textsize_12_dp" />

@@ -34,11 +34,11 @@
             android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
-                android:drawablePadding="@dimen/view_3_dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawableTop="@drawable/audition_back"
+                android:drawablePadding="@dimen/view_3_dp"
                 android:text="返回"
                 android:textColor="#99B2B6D6"
                 android:textSize="@dimen/textsize_12_dp" />
@@ -53,12 +53,12 @@
             android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
-                android:drawablePadding="@dimen/view_3_dp"
                 android:id="@+id/opt_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawableTop="@drawable/audition_zanting"
+                android:drawablePadding="@dimen/view_3_dp"
                 android:text="暂停"
                 android:textColor="#99B2B6D6"
                 android:textSize="@dimen/textsize_12_dp" />
@@ -74,14 +74,35 @@
             android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
-                android:drawablePadding="@dimen/view_3_dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawableTop="@drawable/audition_chongchang"
+                android:drawablePadding="@dimen/view_3_dp"
                 android:text="重唱"
                 android:textColor="#99B2B6D6"
                 android:textSize="@dimen/textsize_12_dp" />
+        </RelativeLayout>
+
+        <!--保存-->
+        <RelativeLayout
+            android:id="@+id/save_share_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/save_share_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_save"
+                android:drawablePadding="@dimen/view_3_dp"
+                android:text="保存分享"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+
         </RelativeLayout>
 
     </LinearLayout>

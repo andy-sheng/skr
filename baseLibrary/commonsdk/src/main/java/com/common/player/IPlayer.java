@@ -69,4 +69,6 @@ public interface IPlayer {
     void reconnect();
 
     float getVolume();
+
+    void setDecreaseVolumeEnd(boolean b);
 }

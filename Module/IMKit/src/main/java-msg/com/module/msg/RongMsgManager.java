@@ -18,7 +18,6 @@ import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
@@ -203,7 +202,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     EventBus.getDefault().post(event);
                 }
             }
-            return false;
+
+            // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
+            return true;
         }
     };
 
@@ -292,7 +293,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             @Override
             public boolean onGetLocalDB(UserInfoModel userInfoModel) {
                 if (userInfoModel != null) {
-                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
                     RongIM.getInstance().refreshUserInfoCache(userInfo);
                 }
                 return false;
@@ -301,7 +302,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             @Override
             public boolean onGetServer(UserInfoModel userInfoModel) {
                 if (userInfoModel != null) {
-                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
                     RongIM.getInstance().refreshUserInfoCache(userInfo);
                 }
                 return false;
@@ -309,7 +310,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
 
         if (buddyCacheEntry != null) {
-            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), buddyCacheEntry.getName(), Uri.parse(buddyCacheEntry.getAvatar()));
+            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), UserInfoManager.getInstance().getRemarkName(buddyCacheEntry.getUuid(),buddyCacheEntry.getName()), Uri.parse(buddyCacheEntry.getAvatar()));
         } else {
             // TODO: 2019/4/16 此时靠 RongIM.getInstance().refreshUserInfoCache去更新
             return null;

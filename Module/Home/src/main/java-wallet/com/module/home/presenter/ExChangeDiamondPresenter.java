@@ -38,9 +38,13 @@ public class ExChangeDiamondPresenter extends RxLifeCyclePresenter {
         });
     }
 
-    public void exChange(long diamondNum) {
+    public void exChange(float diamondNum) {
+        if (diamondNum == 0) {
+            return;
+        }
+
         HashMap<String, Object> map = new HashMap<>();
-        map.put("amount", diamondNum);
+        map.put("amount", (long) (diamondNum * 1000));
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mWalletServerApi.exChangeDiamond(body), new ApiObserver<ApiResult>() {

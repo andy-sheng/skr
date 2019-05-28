@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.common.core.CoreConfiguration;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -70,8 +69,16 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                         .setCircle(true)
                         .build());
-        mNameTv.setText(userInfoModel.getNickname());
-        mSexIv.setBackgroundResource(userInfoModel.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+        mNameTv.setText(userInfoModel.getNicknameRemark());
+        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(View.VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(View.VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(View.GONE);
+        }
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);
@@ -84,7 +91,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 mFollowTv.setVisibility(View.GONE);
                 return;
             } else {
-                if (mMode != UserInfoManager.RELATION_FRIENDS) {
+                if (mMode != UserInfoManager.RELATION.FRIENDS.getValue()) {
                     if (userInfoModel.isFriend()) {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已互关");
@@ -110,18 +117,24 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             }
         }
 
-        if (userInfoModel.getStatus() == UserInfoModel.EF_OnLine) {
-            mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
-            mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greendot, 0, 0, 0);
-            mStatusTv.setVisibility(View.VISIBLE);
-            mStatusTv.setText(userInfoModel.getStatusDesc());
-        } else if (userInfoModel.getStatus() == UserInfoModel.EF_OffLine) {
-            mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
-            mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graydot, 0, 0, 0);
-            mStatusTv.setVisibility(View.VISIBLE);
-            mStatusTv.setText(userInfoModel.getStatusDesc());
+        // 只是关心在线和离线
+        if (mMode != UserInfoManager.RELATION.FANS.getValue()) {
+            if (userInfoModel.getStatus() >= UserInfoModel.EF_ONLINE) {
+                mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
+                mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greendot, 0, 0, 0);
+                mStatusTv.setVisibility(View.VISIBLE);
+                mStatusTv.setText(userInfoModel.getStatusDesc());
+            } else if (userInfoModel.getStatus() == UserInfoModel.EF_OFFLINE) {
+                mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
+                mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graydot, 0, 0, 0);
+                mStatusTv.setVisibility(View.VISIBLE);
+                mStatusTv.setText(userInfoModel.getStatusDesc());
+            } else {
+                mStatusTv.setVisibility(View.GONE);
+            }
         } else {
             mStatusTv.setVisibility(View.GONE);
         }
+
     }
 }

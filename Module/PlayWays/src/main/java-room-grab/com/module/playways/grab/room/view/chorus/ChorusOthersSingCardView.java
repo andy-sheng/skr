@@ -190,7 +190,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mLeftName.setText(mLeftUserInfoModel.getNickname());
+            mLeftName.setText(mLeftUserInfoModel.getNicknameRemark());
 
             AvatarUtils.loadAvatarByUrl(mRightIv,
                     AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
@@ -198,7 +198,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mRightName.setText(mRightUserInfoModel.getNickname());
+            mRightName.setText(mRightUserInfoModel.getNicknameRemark());
 
             setShowFlag(mLeftChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
             setShowFlag(mRightChorusRoundInfoModel, mRightStatusArea, mRightStatus);
@@ -218,7 +218,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             } else {
                 mSingCountDownView.startPlay(0, grabRoundInfoModel.getSingTotalMs(), false);
                 mUiHandler.removeMessages(MSG_ENSURE_PLAY);
-                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000);
             }
         }
     }
@@ -397,16 +397,18 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                     if (uid == 0) {
                         uid = (int) UserAccountManager.getInstance().getUuidAsLong();
                     }
-                    if (mLeftUserInfoModel != null && mLeftUserInfoModel.getUserId() == uid) {
-                        mUiHandler.removeMessages(MSG_LEFT_SPEAK_OVER);
-                        mUiHandler.sendEmptyMessageDelayed(MSG_LEFT_SPEAK_OVER, 2000);
-                        playSingAnimation(mLeftSingSvga);
-                    } else if (mRightUserInfoModel != null && mRightUserInfoModel.getUserId() == uid) {
-                        mUiHandler.removeMessages(MSG_RIGHT_SPEAK_OVER);
-                        mUiHandler.sendEmptyMessageDelayed(MSG_RIGHT_SPEAK_OVER, 2000);
-                        playSingAnimation(mRightSingSvga);
-                    } else {
-                        MyLog.w(TAG, "onEvent" + " 不是唱歌两人说话 event=" + event);
+                    if(u.getVolume()>30) {
+                        if (mLeftUserInfoModel != null && mLeftUserInfoModel.getUserId() == uid) {
+                            mUiHandler.removeMessages(MSG_LEFT_SPEAK_OVER);
+                            mUiHandler.sendEmptyMessageDelayed(MSG_LEFT_SPEAK_OVER, 2000);
+                            playSingAnimation(mLeftSingSvga);
+                        } else if (mRightUserInfoModel != null && mRightUserInfoModel.getUserId() == uid) {
+                            mUiHandler.removeMessages(MSG_RIGHT_SPEAK_OVER);
+                            mUiHandler.sendEmptyMessageDelayed(MSG_RIGHT_SPEAK_OVER, 2000);
+                            playSingAnimation(mRightSingSvga);
+                        } else {
+                            MyLog.w(TAG, "onEvent" + " 不是唱歌两人说话 event=" + event);
+                        }
                     }
                 }
                 break;

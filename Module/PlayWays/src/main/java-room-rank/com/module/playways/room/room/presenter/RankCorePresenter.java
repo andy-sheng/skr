@@ -255,10 +255,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         CommentTextModel commentTextModel = new CommentTextModel();
         commentTextModel.setUserId(playerInfoModel.getUserInfo().getUserId());
         commentTextModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
-        commentTextModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+        commentTextModel.setUserName(playerInfoModel.getUserInfo().getNicknameRemark());
         commentTextModel.setAvatarColor(Color.WHITE);
         SpannableStringBuilder ssb = new SpanUtils()
-                .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(TEXT_YELLOW)
+                .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(TEXT_YELLOW)
                 .append(String.format("第%s个唱", index + 1)).setForegroundColor(TEXT_WHITE)
                 .create();
         commentTextModel.setStringBuilder(ssb);
@@ -534,8 +534,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
 
-                    long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
-                    long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
+                    long syncStatusTimes = result.getData().getLongValue("syncStatusTimeMs");  //状态同步时的毫秒时间戳
+                    long gameOverTimeMs = result.getData().getLongValue("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
 
                     RankRoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RankRoundInfoModel.class); //当前轮次信息
@@ -1440,7 +1440,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PkSomeOneOnlineChangeEvent event) {
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
-        CommentSysModel commentSysModel = new CommentSysModel(userInfo.getNickname(), "偷偷溜走了");
+        CommentSysModel commentSysModel = new CommentSysModel(userInfo.getNicknameRemark(), "偷偷溜走了");
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
 
         if (event.model.getUserID() == MyUserInfoManager.getInstance().getUid()) {

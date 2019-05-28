@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.player.IPlayer;
+import com.common.player.BasePlayer;
 import com.common.player.IPlayerCallback;
 import com.common.player.event.PlayerEvent;
 import com.common.utils.HandlerTaskTimer;
@@ -29,7 +29,6 @@ import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataRenderer;
-import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
 import com.google.android.exoplayer2.source.DefaultMediaSourceEventListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -40,7 +39,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
@@ -58,7 +56,7 @@ import io.reactivex.disposables.Disposable;
  * Created by chengsimin on 2017/6/1.
  */
 
-public class ExoPlayer implements IPlayer {
+public class ExoPlayer extends BasePlayer {
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
     private static DataSource.Factory mediaDataSourceFactory = new DefaultDataSourceFactory(U.app(), BANDWIDTH_METER,
@@ -80,12 +78,12 @@ public class ExoPlayer implements IPlayer {
     private int videoWidth = 0;
     private int videoHeight = 0;
     private float mShiftUp = 0;
-
+    private long mDuration = 0;
     private View mView;
     private float mVolume = 1.0f;
     private boolean mPreparedFlag = false;
-
-    HandlerTaskTimer mMusicTimePlayTimeListener;
+    private boolean mMuted = false;
+    private HandlerTaskTimer mMusicTimePlayTimeListener;
 
     public ExoPlayer() {
         TAG += hashCode();
@@ -148,16 +146,21 @@ public class ExoPlayer implements IPlayer {
                         if (mCallback != null) {
                             mCallback.onCompletion();
                         }
+                        stopMusicPlayTimeListener();
+                        mHandler.removeMessages(MSG_DECREASE_VOLUME);
+                        MyLog.d(TAG, "onCompletion");
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_IDLE:
 
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_READY:
                         if (mCallback != null) {
-                            mCallback.onPrepared();
+                            mCallback.onPrepared(-1);
                         } else {
                             mPreparedFlag = true;
                         }
+                        setVolume(1);
+                        MyLog.d(TAG, "onPrepared 总时长:" + mDuration);
                         break;
                     default:
                         break;
@@ -306,56 +309,56 @@ public class ExoPlayer implements IPlayer {
                     @Override
                     public void onMediaPeriodCreated(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
                         super.onMediaPeriodCreated(windowIndex, mediaPeriodId);
-                        MyLog.d("ExoPlayer","onMediaPeriodCreated" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
+                        MyLog.d("ExoPlayer", "onMediaPeriodCreated" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
                     }
 
                     @Override
                     public void onMediaPeriodReleased(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
                         super.onMediaPeriodReleased(windowIndex, mediaPeriodId);
-                        MyLog.d("ExoPlayer","onMediaPeriodReleased" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
+                        MyLog.d("ExoPlayer", "onMediaPeriodReleased" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
 
                     }
 
                     @Override
                     public void onLoadStarted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
                         super.onLoadStarted(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData);
-                        MyLog.d("ExoPlayer","onLoadStarted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
+                        MyLog.d("ExoPlayer", "onLoadStarted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
                     }
 
                     @Override
                     public void onLoadCompleted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
                         super.onLoadCompleted(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData);
-                        MyLog.d("ExoPlayer","onLoadCompleted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
+                        MyLog.d("ExoPlayer", "onLoadCompleted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
                     }
 
                     @Override
                     public void onLoadCanceled(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
                         super.onLoadCanceled(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData);
-                        MyLog.d("ExoPlayer","onLoadCanceled" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
+                        MyLog.d("ExoPlayer", "onLoadCanceled" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
                     }
 
                     @Override
                     public void onLoadError(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData, IOException error, boolean wasCanceled) {
                         super.onLoadError(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData, error, wasCanceled);
-                        MyLog.d("ExoPlayer","onLoadError" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData + " error=" + error + " wasCanceled=" + wasCanceled);
+                        MyLog.d("ExoPlayer", "onLoadError" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData + " error=" + error + " wasCanceled=" + wasCanceled);
                     }
 
                     @Override
                     public void onReadingStarted(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
                         super.onReadingStarted(windowIndex, mediaPeriodId);
-                        MyLog.d("ExoPlayer","onReadingStarted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
+                        MyLog.d("ExoPlayer", "onReadingStarted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
                     }
 
                     @Override
                     public void onUpstreamDiscarded(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, MediaLoadData mediaLoadData) {
                         super.onUpstreamDiscarded(windowIndex, mediaPeriodId, mediaLoadData);
-                        MyLog.d("ExoPlayer","onUpstreamDiscarded" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " mediaLoadData=" + mediaLoadData);
+                        MyLog.d("ExoPlayer", "onUpstreamDiscarded" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " mediaLoadData=" + mediaLoadData);
                     }
 
                     @Override
                     public void onDownstreamFormatChanged(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, MediaLoadData mediaLoadData) {
                         super.onDownstreamFormatChanged(windowIndex, mediaPeriodId, mediaLoadData);
-                        MyLog.d("ExoPlayer","onDownstreamFormatChanged" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " mediaLoadData=" + mediaLoadData);
+                        MyLog.d("ExoPlayer", "onDownstreamFormatChanged" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " mediaLoadData=" + mediaLoadData);
                     }
                 });
             case C.TYPE_OTHER:
@@ -377,7 +380,7 @@ public class ExoPlayer implements IPlayer {
         this.mCallback = callback;
         if (callback != null) {
             if (mPreparedFlag) {
-                callback.onPrepared();
+                callback.onPrepared(mDuration);
                 mPreparedFlag = false;
             }
         }
@@ -495,10 +498,11 @@ public class ExoPlayer implements IPlayer {
 
     @Override
     public void setMuteAudio(boolean isMute) {
+        mMuted = isMute;
         if (isMute) {
             mPlayer.setVolume(0);
         } else {
-            mPlayer.setVolume(0.5f);
+            mPlayer.setVolume(mVolume);
         }
     }
 
@@ -515,11 +519,18 @@ public class ExoPlayer implements IPlayer {
         if (setConfig) {
             this.mVolume = volume;
         }
-        mPlayer.setVolume(volume);
+        if(!mMuted){
+            mPlayer.setVolume(volume);
+        }
     }
 
     public float getVolume() {
         return mVolume;
+    }
+
+    @Override
+    public void setDecreaseVolumeEnd(boolean b) {
+        enableDecreaseVolume = b;
     }
 
     @Override
@@ -550,6 +561,7 @@ public class ExoPlayer implements IPlayer {
             mUrlChange = false;
             mPlayer.prepare(mMediaSource, true, false);
         }
+        mDuration = 0;
         mPlayer.setPlayWhenReady(true);
         startMusicPlayTimeListener();
     }
@@ -654,6 +666,14 @@ public class ExoPlayer implements IPlayer {
                         engineEvent.totalDuration = duration;
                         engineEvent.curPostion = currentPostion;
                         EventBus.getDefault().post(engineEvent);
+
+                        if (enableDecreaseVolume && mDuration <= 0) {
+                            mDuration = duration;
+                            if (mDuration > 10 * 1000) {
+                                mHandler.removeMessages(MSG_DECREASE_VOLUME);
+                                mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, mDuration - currentPostion - 3000);
+                            }
+                        }
                     }
 
                     @Override

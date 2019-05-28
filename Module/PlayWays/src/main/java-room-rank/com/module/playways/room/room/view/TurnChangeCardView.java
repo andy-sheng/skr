@@ -2,7 +2,6 @@ package com.module.playways.room.room.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -11,13 +10,13 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
-import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
-import com.common.utils.ImageUtils;
 import com.common.utils.U;
+import com.glidebitmappool.BitmapFactoryAdapter;
+import com.glidebitmappool.BitmapPoolAdapter;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
@@ -210,22 +209,22 @@ public class TurnChangeCardView extends RelativeLayout {
 
     private SVGADynamicEntity requestDynamicItem(RankPlayerInfoModel info) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        Bitmap bitmap = Bitmap.createBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = BitmapPoolAdapter.getBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(info.getUserInfo().getSex() == ESex.SX_MALE.getValue() ? U.getColor(com.common.core.R.color.color_man_stroke_color) : U.getColor(com.common.core.R.color.color_woman_stroke_color));
         dynamicEntity.setDynamicImage(bitmap, "border");
 
-        HttpImage image = ImageFactory.newPathImage(info.getUserInfo().getAvatar())
-                .addOssProcessors(OssImgFactory.newResizeBuilder()
-                                .setW(ImageUtils.SIZE.SIZE_160.getW())
-                                .build()
-                        , OssImgFactory.newCircleBuilder()
-                                .setR(500)
-                                .build()
-                )
-                .build();
+        HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(info.getUserInfo().getAvatar())
+                .setCircle(true)
+                .build());
         File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
         if (file != null && file.exists()) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar128");
+            Bitmap bitmap2 = BitmapFactoryAdapter.decodeFile(file.getPath());
+            //防止用户不给sd权限导致 bitmap为null
+            if(bitmap2!=null){
+                dynamicEntity.setDynamicImage(bitmap2, "avatar128");
+            }else{
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar128");
+            }
         } else {
             dynamicEntity.setDynamicImage(image.getUrl(), "avatar128");
         }
@@ -256,7 +255,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 songName = songName.substring(0, 7) + "...";
             }
             dynamicEntity.setDynamicText("《" + songName + "》", textPaint1, "text1");
-            dynamicEntity.setDynamicText("演唱：" + info.getUserInfo().getNickname(), textPaint2, "text2");
+            dynamicEntity.setDynamicText("演唱：" + info.getUserInfo().getNicknameRemark(), textPaint2, "text2");
         }
         return dynamicEntity;
     }

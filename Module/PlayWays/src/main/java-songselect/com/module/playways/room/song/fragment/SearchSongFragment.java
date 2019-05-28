@@ -37,6 +37,7 @@ import com.module.playways.room.song.view.SearchFeedbackView;
 import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.toast.CommonToastView;
 
@@ -66,7 +67,6 @@ public class SearchSongFragment extends BaseFragment {
     String mKeyword;
     DialogPlus mSearchFeedbackDialog;
 
-    CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
     DisposableObserver<ApiResult> mDisposableObserver;
 
@@ -181,30 +181,37 @@ public class SearchSongFragment extends BaseFragment {
     }
 
     private void showSearchFeedback() {
-        SearchFeedbackView searchFeedbackView = new SearchFeedbackView(getContext());
+        SearchFeedbackView searchFeedbackView = new SearchFeedbackView(SearchSongFragment.this);
+        searchFeedbackView.setListener(new SearchFeedbackView.Listener() {
+            @Override
+            public void onClickSubmit(String songName, String songSinger) {
+                if (!TextUtils.isEmpty(songName) || !TextUtils.isEmpty(songSinger)) {
+                    if (mSearchFeedbackDialog != null) {
+                        mSearchFeedbackDialog.dismiss();
+                    }
+                    reportNotExistSong(songName, songSinger);
+                } else {
+                    U.getToastUtil().showShort("歌曲名和歌手至少输入一个哟～");
+                }
+            }
+
+            @Override
+            public void onClickCancle() {
+                if (mSearchFeedbackDialog != null) {
+                    mSearchFeedbackDialog.dismiss();
+                }
+            }
+        });
         mSearchFeedbackDialog = DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(searchFeedbackView))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setExpanded(false)
-                .setGravity(Gravity.CENTER)
-                .setOnClickListener(new OnClickListener() {
+                .setGravity(Gravity.BOTTOM)
+                .setOnDismissListener(new OnDismissListener() {
                     @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view.getId() == R.id.cancel_tv) {
-                            // 取消
-                            dialog.dismiss();
-                        } else if (view.getId() == R.id.confirm_tv) {
-                            // 提交
-                            String songName = searchFeedbackView.getSongName();
-                            String songSinger = searchFeedbackView.getSongSinger();
-                            if (!TextUtils.isEmpty(songName) || !TextUtils.isEmpty(songSinger)) {
-                                dialog.dismiss();
-                                reportNotExistSong(songName, songSinger);
-                            } else {
-                                U.getToastUtil().showShort("歌曲名和歌手至少输入一个哟～");
-                            }
-                        }
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     }
                 })
                 .create();
@@ -266,8 +273,6 @@ public class SearchSongFragment extends BaseFragment {
                 return songSelectServerApi.searchMusicItems(s).subscribeOn(Schedulers.io());
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
-        mCompositeDisposable = new CompositeDisposable();
-        mCompositeDisposable.add(mDisposableObserver);
     }
 
     private void searchMusicItems(String keyword) {
@@ -319,8 +324,8 @@ public class SearchSongFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
+        if (mDisposableObserver != null) {
+            mDisposableObserver.dispose();
         }
         if (mSearchFeedbackDialog != null) {
             mSearchFeedbackDialog.dismiss();

@@ -384,7 +384,7 @@ public class EnhancedImageView extends RelativeLayout {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                U.getHttpUtils().downloadFileSync(url, getGifSaveFile(url, true), new HttpUtils.OnDownloadProgress() {
+                U.getHttpUtils().downloadFileSync(url, getGifSaveFile(url, true),false, new HttpUtils.OnDownloadProgress() {
                     @Override
                     public void onDownloaded(long downloaded, long totalLength) {
                         MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);

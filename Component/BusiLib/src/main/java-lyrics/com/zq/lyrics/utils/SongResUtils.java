@@ -2,6 +2,7 @@ package com.zq.lyrics.utils;
 
 import android.text.TextUtils;
 
+import com.common.utils.PreferenceUtils;
 import com.common.utils.U;
 
 import java.io.File;
@@ -17,13 +18,21 @@ public class SongResUtils {
     public static final String SUFF_TXT = "txt";
 
     //存储目录
-    private static final String LYRIC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "lyrics";
-    private static final String ACC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "acc";
-    private static final String ORI_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "ori";
-    private static final String MIDI_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "midi";
-    private static final String SCORE_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "score";
-    private static final String STAND_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "stand";
-    private static final String GRAB_LYRIC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "grabLyric";
+    private static final String LYRIC_DIR = getRootFile() + File.separator + "lyrics";
+    private static final String ACC_DIR = getRootFile() + File.separator + "acc";
+    private static final String ORI_DIR = getRootFile() + File.separator + "ori";
+    private static final String MIDI_DIR = getRootFile() + File.separator + "midi";
+    private static final String SCORE_DIR = getRootFile() + File.separator + "score";
+    private static final String STAND_DIR = getRootFile() + File.separator + "stand";
+    private static final String GRAB_LYRIC_DIR = getRootFile() + File.separator + "grabLyric";
+
+    public static final File getRootFile() {
+        if (U.getPermissionUtils().checkExternalStorage(U.getActivityUtils().getTopActivity())) {
+            return U.getAppInfoUtils().getMainDir();
+        } else {
+            return U.app().getFilesDir();
+        }
+    }
 
     public static final String getLyricDir() {
         return LYRIC_DIR;
@@ -41,15 +50,15 @@ public class SongResUtils {
         return MIDI_DIR;
     }
 
-    public static final String getScoreDir(){
+    public static final String getScoreDir() {
         return SCORE_DIR;
     }
 
-    public static final String getStandDir(){
+    public static final String getStandDir() {
         return STAND_DIR;
     }
 
-    public static final String getGrabLyricDir(){
+    public static final String getGrabLyricDir() {
         return GRAB_LYRIC_DIR;
     }
 
@@ -116,15 +125,15 @@ public class SongResUtils {
         return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
     }
 
-    public static String createTempLyricFileName(String url) {
-        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
-    }
+//    public static String createTempLyricFileName(String url) {
+//        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
+//    }
 
-    public static String createStandLyricTempFileName(String url){
-        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_TXT;
-    }
+//    public static String createStandLyricTempFileName(String url) {
+//        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_TXT;
+//    }
 
-    public static String createStandLyricFileName(String url){
+    public static String createStandLyricFileName(String url) {
         return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + SUFF_TXT;
     }
 }

@@ -35,6 +35,9 @@ import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
+/**
+ * 注意 upload 的callback 回调不一定是主线程
+ */
 public class UploadTask {
 
     public final static String TAG = "UploadTask";
@@ -82,7 +85,7 @@ public class UploadTask {
                             }
                             return;
                         }
-                        int code = data.getInteger("statusCode");
+                        int code = data.getIntValue("statusCode");
                         if (code == 200) {
                             String accessKeyId = data.getString("accessKeyId");
                             String accessKeySecret = data.getString("accessKeySecret");
@@ -249,10 +252,13 @@ public class UploadTask {
         if (TextUtils.isEmpty(mUploadParams.getFileName())) {
             String ext = U.getFileUtils().getSuffixFromFilePath(filePath);
             String fileName = U.getMD5Utils().MD5_16(System.currentTimeMillis() + filePath);
+            if(!TextUtils.isEmpty(ext)){
+                fileName = fileName+"."+ext;
+            }
             if (TextUtils.isEmpty(mDir)) {
-                mObjectId = mUploadParams.getFileType().getOssSavaDir() + fileName + "." + ext;
+                mObjectId = mUploadParams.getFileType().getOssSavaDir() + fileName;
             } else {
-                mObjectId = mDir + fileName + "." + ext;
+                mObjectId = mDir + fileName;
             }
         } else {
             mObjectId = mDir + mUploadParams.getFileName();

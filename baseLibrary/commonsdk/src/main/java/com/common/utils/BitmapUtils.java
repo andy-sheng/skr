@@ -1,7 +1,6 @@
 package com.common.utils;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,7 +8,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.PorterDuffXfermode;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -17,13 +15,13 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.common.log.MyLog;
+import com.glidebitmappool.BitmapFactoryAdapter;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class BitmapUtils {
     BitmapUtils() {
@@ -73,7 +71,7 @@ public class BitmapUtils {
         // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         if (!bitmap.isRecycled()) {
-            bitmap.recycle();
+            BitmapPoolAdapter.putBitmap(bitmap);
         }
         return newBitmap;
     }
@@ -86,7 +84,7 @@ public class BitmapUtils {
      * @return 旋转后的图片
      */
     public Bitmap rotateBitmapByDegree(String path, int degree) {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        Bitmap bitmap = BitmapFactoryAdapter.decodeFile(path);
         return rotateBitmapByDegree(bitmap, degree);
     }
 
@@ -100,7 +98,7 @@ public class BitmapUtils {
     public Uri getRotatedUri(Activity activity, String path) {
         int degree = getBitmapDegree(path);
         if (degree != 0) {
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            Bitmap bitmap = BitmapFactoryAdapter.decodeFile(path);
             Bitmap newBitmap = rotateBitmapByDegree(bitmap, degree);
             return Uri.parse(MediaStore.Images.Media.insertImage(activity.getContentResolver(), newBitmap, null, null));
         } else {
@@ -184,7 +182,7 @@ public class BitmapUtils {
         if (inBitmap == null) {
             return null;
         }
-        Bitmap outBitmap = Bitmap.createBitmap(inBitmap.getWidth(), inBitmap.getHeight(), inBitmap.getConfig());
+        Bitmap outBitmap = BitmapPoolAdapter.getBitmap(inBitmap.getWidth(), inBitmap.getHeight(), inBitmap.getConfig());
         Canvas canvas = new Canvas(outBitmap);
         Paint paint = new Paint();
         paint.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));

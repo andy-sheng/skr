@@ -46,7 +46,7 @@ public class JsBridgeImpl {
             return;
         }
 
-        //panel/wx/qq,弹出分享弹窗还是直接指定一个平台
+        //panel/wx/icon_qq,弹出分享弹窗还是直接指定一个平台
         String param = jsonObject.getString("param");
         if (TextUtils.isEmpty(param)) {
             MyLog.w(TAG, "share" + " param=empty");

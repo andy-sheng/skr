@@ -3,7 +3,6 @@ package com.common.image.fresco;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.http.HttpResponseCache;
 import android.os.Build;
 
 import com.common.base.BuildConfig;
@@ -27,7 +26,6 @@ import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -116,6 +114,11 @@ public class FrescoInitManager {
 
         FLog.setLoggingDelegate(new FrescoLogDelegate("FrescoLogDelegate"));
         FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.ERROR : FLog.ERROR);
+
+        /**
+         * bitmap 缓存池初始化
+         */
+        //GlideBitmapPool.initialize(25 * 1024 * 1024); // 10mb max memory size
     }
 
 

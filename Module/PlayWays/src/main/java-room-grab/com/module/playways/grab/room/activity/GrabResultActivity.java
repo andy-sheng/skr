@@ -9,6 +9,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.fragment.GrabProductionFragment;
 import com.module.playways.grab.room.fragment.GrabResultFragment;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_RESULT)
@@ -26,11 +27,28 @@ public class GrabResultActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mRoomData = (GrabRoomData) getIntent().getSerializableExtra("room_data");
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabResultFragment.class)
-                .setAddToBackStack(false)
-                .setHasAnimation(false)
-                .addDataBeforeAdd(0, mRoomData)
-                .build());
+//        for (int i = 0; i < 10; i++) {
+//            SongModel songModel = new SongModel();
+//            songModel.setCover("http://song-static.inframe.mobi/cover/98c7135e5df7869a7b010157e28808b5.jpg");
+//            songModel.setOwner("王力宏");
+//            songModel.setItemName("依然爱你");
+//            String url = "http://song-static.inframe.mobi/bgm/893161bbfa5a8e33fe81d2a07cfcd39a_2.mp3";
+//            WonderfulMomentModel wonderfulMomentModel = new WonderfulMomentModel(url, songModel, true);
+//            mRoomData.getWonderfulMomentList().add(wonderfulMomentModel);
+//        }
+        if (mRoomData.getWorksUploadModel() != null && mRoomData.getWorksUploadModel().size() > 0) {
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabProductionFragment.class)
+                    .setAddToBackStack(false)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, mRoomData)
+                    .build());
+        } else {
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabResultFragment.class)
+                    .setAddToBackStack(false)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, mRoomData)
+                    .build());
+        }
     }
 
     @Override

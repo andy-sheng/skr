@@ -12,17 +12,26 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
-import com.module.playways.room.room.gift.model.GiftDataUtils;
-import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.R;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
+import com.module.playways.room.gift.view.ContinueTextView;
+import com.module.playways.room.room.comment.model.CommentGiftModel;
+import com.module.playways.room.room.event.PretendCommentMsgEvent;
+import com.module.playways.room.room.gift.model.GiftPlayModel;
+
+import org.greenrobot.eventbus.EventBus;
+
+import static com.module.playways.room.room.gift.model.GiftPlayControlTemplate.MEDIUM_GIFT;
 
 /**
  * Created by yangjiawei on 2017/8/7.
@@ -44,14 +53,16 @@ public class GiftContinuousView extends RelativeLayout {
     BaseImageView mSendAvatarIv;
     ExTextView mDescTv;
     BaseImageView mGiftImgIv;
-    ExTextView mGiftNumTv;
+    ContinueTextView mGiftNumTv;
     ObjectAnimator mStep1Animator;
     AnimatorSet mStep2Animator;
     ExTextView mSenderNameTv;
 
+    GiftContinueViewGroup.GiftProvider mGiftProvider;
+
     int mCurNum = 1;
 
-    GiftPlayModel mCurGiftPlayModel;
+    volatile GiftPlayModel mCurGiftPlayModel;
 
     int mCurStatus = STATUS_IDLE;
 
@@ -86,18 +97,48 @@ public class GiftContinuousView extends RelativeLayout {
         init();
     }
 
+    public void setGiftProvider(GiftContinueViewGroup.GiftProvider giftProvider) {
+        mGiftProvider = giftProvider;
+    }
+
     private void init() {
         inflate(getContext(), R.layout.gift_continue_view_layout, this);
         mInfoContainer = (ExRelativeLayout) this.findViewById(R.id.info_container);
         mSendAvatarIv = (BaseImageView) this.findViewById(R.id.send_avatar_iv);
         mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
         mGiftImgIv = (BaseImageView) this.findViewById(R.id.gift_img_iv);
-        mGiftNumTv = (ExTextView) this.findViewById(R.id.gift_num_tv);
+        mGiftNumTv = (ContinueTextView) this.findViewById(R.id.gift_num_tv);
         mSenderNameTv = (ExTextView) this.findViewById(R.id.sender_name_tv);
     }
 
-    public boolean play(GiftPlayModel model) {
+    //只有在IDLE情况下才去拉数据
+    public void tryNotifyHasGiftCanPlay() {
         if (mCurStatus != STATUS_IDLE) {
+            return;
+        }
+
+        mGiftProvider.tryGetGiftModel(null, 1, mId, new Callback<GiftPlayModel>() {
+            @Override
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                /**
+                 * 这边得在异步线程立即设值
+                 */
+
+                mCurGiftPlayModel = newGiftPlayModel;
+            }
+        }, new Callback<GiftPlayModel>() {
+            @Override
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+
+                if (newGiftPlayModel != null) {
+                    play(newGiftPlayModel, false);
+                }
+            }
+        });
+    }
+
+    public boolean play(GiftPlayModel model, boolean force) {
+        if (mCurStatus != STATUS_IDLE && !force) {
             return false;
         }
         mCurGiftPlayModel = model;
@@ -107,19 +148,44 @@ public class GiftContinuousView extends RelativeLayout {
                 .setBorderColor(Color.WHITE)
                 .build()
         );
-        mSenderNameTv.setText(model.getSender().getNickname());
+
+        mSendAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                EventBus.getDefault().post(new ShowPersonCardEvent(model.getSender().getUserId()));
+            }
+        });
+
+        mSenderNameTv.setText(model.getSender().getNicknameRemark());
         mDescTv.setText(model.getAction());
-        int resId = 0;
-        switch (model.getEmojiType()) {
-            case SP_EMOJI_TYPE_LIKE:
-                resId = R.drawable.yanchangjiemian_xin;
-                break;
-            case SP_EMOJI_TYPE_UNLIKE:
-                resId = R.drawable.yanchangjiemian_dabian;
-                break;
+
+        if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
+            int resId = 0;
+            switch (model.getEmojiType()) {
+                case SP_EMOJI_TYPE_LIKE:
+                    resId = R.drawable.yanchangjiemian_xin;
+                    break;
+                case SP_EMOJI_TYPE_UNLIKE:
+                    resId = R.drawable.yanchangjiemian_dabian;
+                    break;
+            }
+            FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newResImage(resId)
+                    .build());
+
+            mSenderNameTv.setText(model.getSender().getNicknameRemark() + model.getAction());
+            mDescTv.setVisibility(GONE);
+        } else if (model.getEGiftType() == GiftPlayModel.EGiftType.GIFT) {
+            FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newPathImage(model.getGiftIconUrl())
+                    .setLoadingDrawable(U.getDrawable(R.drawable.skrer_logo))
+                    .setFailureDrawable(U.getDrawable(R.drawable.skrer_logo))
+                    .setWidth(U.getDisplayUtils().dip2px(45))
+                    .setHeight(U.getDisplayUtils().dip2px(45))
+                    .build());
+
+            mSenderNameTv.setText(model.getSender().getNicknameRemark());
+            mDescTv.setText("送给 " + model.getReceiver().getNicknameRemark());
+            mDescTv.setVisibility(VISIBLE);
         }
-        FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newResImage(resId)
-                .build());
 
 //        mCurNum = model.getBeginCount();
 //        mGiftNumTv.setText("X" + mCurNum);
@@ -159,7 +225,7 @@ public class GiftContinuousView extends RelativeLayout {
         mCurStatus = STATUS_STEP2;
         mCurNum = count;
         mGiftNumTv.setVisibility(VISIBLE);
-        mGiftNumTv.setText("X" + count);
+        mGiftNumTv.setText(String.valueOf(count));
         if (mStep2Animator == null) {
             ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_X, 1.2f, 0.9f, 1);
             ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_Y, 1.2f, 0.9f, 1);
@@ -174,57 +240,115 @@ public class GiftContinuousView extends RelativeLayout {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (mCurNum >= mCurGiftPlayModel.getEndCount()) {
-                        mCurStatus = STATUS_WAIT_OVER;
-                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-                        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
-                    } else {
-                        step2(mCurNum + 1);
-                    }
+//                    if (mCurNum >= mCurGiftPlayModel.getEndCount()) {
+//                        mCurStatus = STATUS_WAIT_OVER;
+//                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+//                        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+//                    } else {
+//                        step2(mCurNum + 1);
+//                    }
+
+                    // TODO: 2019-05-08 取数据
+                    GiftPlayModel giftPlayModels[] = new GiftPlayModel[1];
+                    mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
+                        @Override
+                        public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+                            if (newGiftPlayModel != null) {
+
+                                giftPlayModels[0] = mCurGiftPlayModel;
+                                mCurGiftPlayModel = newGiftPlayModel;
+                            }
+                        }
+                    }, new Callback<GiftPlayModel>() {
+                        @Override
+                        public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+
+                            //TODO 这里有 bug 吧
+                            if (newGiftPlayModel != null) {
+                                if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
+                                        && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()
+                                        && newGiftPlayModel.getEndCount() > mCurNum) {
+                                    step2(++mCurNum);
+//                                    setData(newGiftPlayModel);
+                                } else {
+                                    play(newGiftPlayModel, true);
+                                }
+                            } else {
+                                mCurStatus = STATUS_WAIT_OVER;
+                                mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
+                                mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+                                mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+                            }
+                        }
+                    });
+
                 }
             });
         }
+
         mStep2Animator.start();
+        // TODO: 2019/5/9 礼物弹幕
+        if (mCurGiftPlayModel.getGift().isPlay() && mCurGiftPlayModel.getGift().getDisplayType() == MEDIUM_GIFT) {
+            EventBus.getDefault().post(new OverlayGiftBrushMsgEvent(mCurGiftPlayModel));
+            if (mCurGiftPlayModel.getGift().getTextContinueCount() == -1) {
+                //无限发
+                EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel)));
+            } else if (mCurGiftPlayModel.getGift().getTextContinueCount() == 0) {
+                //不发
+            } else {
+                //发送限制
+                if (mCurGiftPlayModel.getGift().getTextContinueCount() >= mCurNum) {
+                    // 发
+                    EventBus.getDefault().post(new PretendCommentMsgEvent(new CommentGiftModel(mCurGiftPlayModel)));
+                } else {
+                    // 不发
+                }
+            }
+        }
+    }
+
+    public GiftPlayModel getCurGiftPlayModel() {
+        return mCurGiftPlayModel;
     }
 
     private void onPlayOver() {
-        mCurStatus = STATUS_IDLE;
-        this.setVisibility(GONE);
-        if (mListener != null) {
-            mListener.onPlayOver(this, mCurGiftPlayModel);
-        }
-        mUiHandler.removeCallbacksAndMessages(null);
-    }
-
-    public boolean isIdle() {
-        MyLog.d(TAG + hashCode(), "isIdle mCurStatus=" + mCurStatus);
-        return mCurStatus == STATUS_IDLE;
-    }
-
-    public boolean accept(GiftPlayModel playModel) {
-        if (GiftDataUtils.sameContinueId(mCurGiftPlayModel, playModel)) {
-            int endCount = playModel.getEndCount();
-            if (endCount > mCurGiftPlayModel.getEndCount()) {
-                mCurGiftPlayModel.setEndCount(endCount);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void tryTriggerAnimation() {
-        mUiHandler.post(new Runnable() {
+        GiftPlayModel giftPlayModels[] = new GiftPlayModel[1];
+        mGiftProvider.tryGetGiftModel(mCurGiftPlayModel, mCurNum, mId, new Callback<GiftPlayModel>() {
             @Override
-            public void run() {
-                if (mCurStatus == STATUS_WAIT_OVER) {
-                    //等待结束
-                    if (mCurNum < mCurGiftPlayModel.getEndCount()) {
-                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-                        step2(mCurNum + 1);
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+
+                if (newGiftPlayModel != null) {
+                    giftPlayModels[0] = mCurGiftPlayModel;
+                    mCurGiftPlayModel = newGiftPlayModel;
+                }
+            }
+        }, new Callback<GiftPlayModel>() {
+            @Override
+            public void onCallback(int r, GiftPlayModel newGiftPlayModel) {
+
+                if (newGiftPlayModel != null) {
+                    if (newGiftPlayModel.getSender().getUserId() == giftPlayModels[0].getSender().getUserId()
+                            && newGiftPlayModel.getContinueId() == giftPlayModels[0].getContinueId()
+                            && newGiftPlayModel.getEndCount() > mCurNum) {
+                        step2(++mCurNum);
+//                        setData(newGiftPlayModel);
+                    } else {
+                        play(newGiftPlayModel, true);
                     }
+                } else {
+                    mCurStatus = STATUS_IDLE;
+                    mCurGiftPlayModel = null;
+                    GiftContinuousView.this.setVisibility(GONE);
+                    if (mListener != null) {
+                        mListener.onPlayOver(GiftContinuousView.this, mCurGiftPlayModel);
+                    }
+                    mUiHandler.removeCallbacksAndMessages(null);
+                    //自己结束的时候也去查看礼物新数据
+                    tryNotifyHasGiftCanPlay();
                 }
             }
         });
+
     }
 
     @Override
@@ -248,6 +372,11 @@ public class GiftContinuousView extends RelativeLayout {
 
     public void setMyId(int id) {
         mId = id;
+        TAG = "GiftContinuousView " + id;
+    }
+
+    public int getMyId() {
+        return mId;
     }
 
     public interface Listener {

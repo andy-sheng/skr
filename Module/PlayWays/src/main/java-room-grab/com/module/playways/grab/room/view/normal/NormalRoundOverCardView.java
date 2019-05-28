@@ -157,10 +157,10 @@ public class NormalRoundOverCardView extends RelativeLayout {
         mSingResultSvga.setLayoutParams(lp);
 
 //        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_nobodywants);
-        HashMap map = new HashMap();
-        map.put("songId2", String.valueOf(songId));
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_SONG_NO_ONE, map);
+//        HashMap map = new HashMap();
+//        map.put("songId2", String.valueOf(songId));
+//        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                StatConstants.KEY_SONG_NO_ONE, map);
         playAnimation();
     }
 
@@ -192,10 +192,10 @@ public class NormalRoundOverCardView extends RelativeLayout {
         mSingResultSvga.setLayoutParams(lp);
 
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengewin);
-        HashMap map = new HashMap();
-        map.put("song_id2", String.valueOf(songId));
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_SONG_SUCCESS, map);
+//        HashMap map = new HashMap();
+//        map.put("song_id2", String.valueOf(songId));
+//        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                StatConstants.KEY_SONG_SUCCESS, map);
 
         playAnimation();
     }
@@ -209,10 +209,10 @@ public class NormalRoundOverCardView extends RelativeLayout {
         mSingResultSvga.setLayoutParams(lp);
 
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengelose);
-        HashMap map = new HashMap();
-        map.put("song_id2", String.valueOf(songId));
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_SONG_FAIL, map);
+//        HashMap map = new HashMap();
+//        map.put("song_id2", String.valueOf(songId));
+//        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                StatConstants.KEY_SONG_FAIL, map);
 
         playAnimation();
     }

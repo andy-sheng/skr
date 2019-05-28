@@ -407,11 +407,11 @@ public class HttpUtils {
      * @param progress
      */
     public void downloadFileAsync(String urlStr, final File outputFile,
-                                  OnDownloadProgress progress) {
+                                  boolean needTempFile, OnDownloadProgress progress) {
         io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                downloadFileSync(urlStr, outputFile, progress);
+                downloadFileSync(urlStr, outputFile, needTempFile,progress);
                 emitter.onComplete();
             }
         })
@@ -443,21 +443,27 @@ public class HttpUtils {
      *
      * @param urlStr
      * @param outputFile
+     * @param needTempFile 是否生成一个下载中间temp文件，只有下载成功outputFile才有值
      * @param progress
      * @return
      */
     public boolean downloadFileSync(String urlStr, final File outputFile,
-                                    OnDownloadProgress progress) {
+                                    boolean needTempFile, OnDownloadProgress progress) {
+        MyLog.d(TAG,"downloadFileSync" + " urlStr="+urlStr+" out="+outputFile.getAbsolutePath());
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
         }
-        if (!outputFile.exists()) {
-            File parentFile = outputFile.getParentFile();
+        File outputFile2 = outputFile;
+        if (needTempFile) {
+            outputFile2 = new File(outputFile.getParentFile(), "temp" + outputFile.getName());
+        }
+        if (!outputFile2.exists()) {
+            File parentFile = outputFile2.getParentFile();
             if (parentFile != null && !parentFile.exists()) {
                 parentFile.mkdirs();
             }
             try {
-                outputFile.createNewFile();
+                outputFile2.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -466,7 +472,7 @@ public class HttpUtils {
         OutputStream output = null;
         long startDownloadMs = System.currentTimeMillis();
         try {
-            output = new FileOutputStream(outputFile);
+            output = new FileOutputStream(outputFile2);
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(10 * 1000);
@@ -501,6 +507,14 @@ public class HttpUtils {
                 downloaded += count;
                 if (null != progress) {
                     progress.onDownloaded(downloaded, totalLength);
+                }
+                //Thread.sleep(1000);
+            }
+            if (needTempFile) {
+                if (outputFile2.renameTo(outputFile)) {
+                    MyLog.w(TAG, urlStr+" 下载成功");
+                } else {
+                    MyLog.w(TAG, "重命名失败");
                 }
             }
             if (null != progress) {

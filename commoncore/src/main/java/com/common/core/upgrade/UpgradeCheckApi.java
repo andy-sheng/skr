@@ -38,6 +38,7 @@ public interface UpgradeCheckApi {
     io.reactivex.Observable<ApiResult> getUpdateInfo(@Query("packageName")String packageName,
                                                      @Query("platform")int platform,
                                                      @Query("channel")int channel,
-                                                     @Query("versionCode")int versionCode
+                                                     @Query("versionCode")int versionCode,
+                                                     @Query("userID")int userID
     );
 }

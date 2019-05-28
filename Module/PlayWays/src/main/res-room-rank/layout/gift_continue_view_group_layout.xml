@@ -14,7 +14,7 @@
         android:id="@+id/gift_continue_v2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_60_dp"
         android:visibility="gone" />
 
 </merge>

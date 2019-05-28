@@ -11,6 +11,7 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -57,10 +58,12 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
+        Boolean isNewUser = getIntent().getBooleanExtra("is_new_user", false);
         SpecialModel specialModel = (SpecialModel) getIntent().getSerializableExtra("special_model");
         if (rsp != null) {
             mRoomData.loadFromRsp(rsp);
             mRoomData.setSpecialModel(specialModel);
+            mRoomData.setNewUser(isNewUser);
             go();
         } else {
             int roomID = getIntent().getIntExtra("roomID", 0);
@@ -75,6 +78,7 @@ public class GrabRoomActivity extends BaseActivity {
                         if (result.getErrno() == 0) {
                             JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
                             mRoomData.loadFromRsp(grabCurGameStateModel);
+                            mRoomData.setNewUser(isNewUser);
                             go();
                         } else {
                             U.getToastUtil().showShort(result.getErrmsg());
@@ -142,6 +146,7 @@ public class GrabRoomActivity extends BaseActivity {
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
                         .setAddToBackStack(false)
+                        .setHasAnimation(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
         // 销毁其他的一唱到底页面
@@ -164,8 +169,8 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_GAME_START, null);
+//        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                StatConstants.KEY_GAME_START, null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -175,6 +180,12 @@ public class GrabRoomActivity extends BaseActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         super.destroy();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        MyLog.w(TAG,"finish" );
     }
 
     @Override

@@ -161,7 +161,7 @@ public class SharePanel {
         if (!TextUtils.isEmpty(mShareImage)) {
             web.setThumb(new UMImage(mActivity, mShareImage));
         } else {
-            web.setThumb(new UMImage(mActivity, R.drawable.share_app_icon));
+            web.setThumb(new UMImage(mActivity, R.drawable.app_icon));
         }
         web.setDescription(mDes);
 

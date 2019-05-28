@@ -178,7 +178,7 @@
         android:layout_below="@+id/birthday_area"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_120_dp"
-        android:background="@drawable/complete_icon"
+        android:background="@drawable/complete_normal_icon"
         android:visibility="gone" />
 
 </RelativeLayout>

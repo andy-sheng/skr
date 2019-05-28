@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_80_dp"
+    android:layout_height="@dimen/view_70_dp"
+    android:orientation="vertical">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/pic_iv"
+        android:layout_width="@dimen/view_64_dp"
+        android:layout_height="@dimen/view_64_dp" />
+
+    <ImageView
+        android:background="@drawable/photo_shanchu"
+        android:visibility="gone"
+        android:id="@+id/delete_iv"
+        android:layout_width="@dimen/view_20_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="@dimen/view_7_dp" />
+</FrameLayout>

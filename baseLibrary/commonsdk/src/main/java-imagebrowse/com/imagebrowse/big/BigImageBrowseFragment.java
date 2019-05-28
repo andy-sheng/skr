@@ -237,6 +237,12 @@ public class BigImageBrowseFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 浏览组图 数据从Loader里的各个回调里拿
+     * @param useActivity
+     * @param activity
+     * @param mLoader
+     */
     public static void open(boolean useActivity, FragmentActivity activity, Loader mLoader) {
         if (mLoader != null) {
             mLoader.init();
@@ -255,6 +261,12 @@ public class BigImageBrowseFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 浏览单个大图
+     * @param useActivity
+     * @param activity
+     * @param path
+     */
     public static void open(boolean useActivity, FragmentActivity activity, String path) {
         open(useActivity, activity, new DefaultImageBrowserLoader<String>() {
             @Override

@@ -17,6 +17,7 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightText="提现记录"
         app:rightTextColor="@color/white"
         app:rightTextSize="@dimen/textsize_14_dp"
         app:rightType="textView"
@@ -37,6 +38,7 @@
         app:bl_stroke_width="@dimen/view_2_dp">
 
         <com.common.view.ex.ExImageView
+            android:id="@+id/iv_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/view_2_dp"

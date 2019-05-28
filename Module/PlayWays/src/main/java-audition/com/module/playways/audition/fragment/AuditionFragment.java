@@ -24,9 +24,9 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
-import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -36,13 +36,14 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
+import com.module.playways.R;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.PrepareData;
-import com.module.playways.view.VoiceControlPanelView;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
+import com.module.playways.view.VoiceControlPanelView;
 import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.utils.SongResUtils;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.mediaengine.kit.ZqEngineKit;
@@ -218,6 +219,8 @@ public class AuditionFragment extends BaseFragment {
         mTvSongName.setText("《" + mSongModel.getItemName() + "》");
         resendAutoLeaveChannelMsg();
         startRecord();
+
+        StatisticsAdapter.recordCountEvent("rank", "practice", null);
     }
 
     private void startRecord() {
@@ -275,7 +278,7 @@ public class AuditionFragment extends BaseFragment {
                 .setMResultListener(new ArcRecognizeListener() {
                     @Override
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                        mLyricAndAccMatchManager.onAcrResult( result,  list,  targetSongInfo,  lineNo);
+                        mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);
                     }
                 }).build());
     }
@@ -460,7 +463,7 @@ public class AuditionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -532,17 +535,17 @@ public class AuditionFragment extends BaseFragment {
         int acrScore = event.acrScore;
         int melpScore = event.melpScore;
         String from = event.from;
-        if(MyLog.isDebugLogOpen()){
+        if (MyLog.isDebugLogOpen()) {
             StringBuilder sb = new StringBuilder();
             sb.append("第").append(line).append("行,");
             sb.append(" melpScore=").append(melpScore);
             sb.append(" acrScore=").append(acrScore);
             addLogText(sb.toString());
         }
-        if(melpScore>acrScore){
-            processScore(from,melpScore,line);
-        }else{
-            processScore(from,acrScore,line);
+        if (melpScore > acrScore) {
+            processScore(from, melpScore, line);
+        } else {
+            processScore(from, acrScore, line);
         }
     }
 

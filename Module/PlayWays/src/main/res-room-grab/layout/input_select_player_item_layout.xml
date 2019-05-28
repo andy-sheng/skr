@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_46_dp"
+    android:layout_height="@dimen/view_48_dp"
+    android:orientation="vertical">
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/player_iv"
+        android:layout_width="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_8_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/selected_icon_tv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="@dimen/view_4_dp"
+        android:layout_marginBottom="@dimen/view_5_dp"
+        android:background="@drawable/xuanzhong_duihao"
+        android:visibility="gone" />
+</FrameLayout>

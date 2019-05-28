@@ -1,14 +1,23 @@
 package com.module.home;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -16,11 +25,15 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
+import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
+import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -30,7 +43,9 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
-import com.module.home.fragment.PersonFragment2;
+import com.module.home.event.SkipGuideHomepageEvent;
+import com.module.home.fragment.GrabGuideHomePageFragment;
+import com.module.home.fragment.PersonFragment3;
 import com.module.home.game.GameFragment2;
 import com.module.home.fragment.PkInfoFragment;
 import com.module.home.persenter.CheckInPresenter;
@@ -38,15 +53,17 @@ import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.view.IHomeActivity;
+import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener {
+public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
     public final static String TAG = "HomeActivity";
+    public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
     RelativeLayout mMainActContainer;
     LinearLayout mBottomContainer;
@@ -68,10 +85,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RedPkgPresenter mRedPkgPresenter;
     CheckInPresenter mCheckInPresenter;
 
+    Handler mUiHandler = new Handler(Looper.getMainLooper());
+
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
 
     int mMessageFollowRedDotValue = 0;
+
+    NotificationManager mNManager;
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
@@ -118,6 +139,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
+        mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(NOTIFY_CHANNEL_ID, "notify", NotificationManager.IMPORTANCE_LOW);
+            mNManager.createNotificationChannel(mChannel);
+        }
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
@@ -134,12 +161,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                     return new PkInfoFragment();
                 } else if (position == 2) {
                     if (mMsgService == null) {
-                        return new PersonFragment2();
+                        return new PersonFragment3();
                     } else {
                         return (Fragment) mMsgService.getMessageFragment();
                     }
                 } else if (position == 3) {
-                    return new PersonFragment2();
+                    return new PersonFragment3();
                 }
                 return null;
             }
@@ -157,7 +184,15 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setAdapter(fragmentPagerAdapter);
 
         mHomePresenter = new HomeCorePresenter(this, this);
-        mHomePresenter.checkUserInfo("HomeActivity onCreate");
+        if(mHomePresenter.checkUserInfo("HomeActivity onCreate")){
+            mMainActContainer.setVisibility(View.GONE);
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mMainActContainer.setVisibility(View.VISIBLE);
+                }
+            },3000);
+        }
         mCheckInPresenter = new CheckInPresenter(this);
         addPresent(mCheckInPresenter);
 
@@ -198,7 +233,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mRedPkgPresenter = new RedPkgPresenter(this);
         addPresent(mRedPkgPresenter);
 
-        mNotifyCorePresenter = new NotifyCorePresenter();
+        mNotifyCorePresenter = new NotifyCorePresenter(this);
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
@@ -209,6 +244,45 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         WeakRedDotManager.getInstance().addListener(this);
         mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
         refreshMessageRedDot();
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                /**
+                 * 清除启动页
+                 */
+                Window window = getWindow();
+                if (window != null) {
+                    window.setBackgroundDrawable(null);
+                }
+            }
+        }, 5000);
+
+    }
+
+    @Override
+    public void showNotify(GrabInviteNotifyEvent event) {
+        Intent it = new Intent(this, SchemeSdkActivity.class);
+        it.putExtra("uri", String.format("inframeskr://room/grabjoin?owner=%d&gameId=%d&ask=1", event.mUserInfoModel.getUserId(), event.roomID));
+        PendingIntent pit = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //设置图片,通知标题,发送时间,提示方式等属性
+        Notification.Builder mBuilder = new Notification.Builder(this);
+        mBuilder.setContentTitle("@" + MyUserInfoManager.getInstance().getNickName())                        //标题
+                .setContentText("你的好友" + event.mUserInfoModel.getNicknameRemark() + "邀请你玩游戏")      //内容
+                .setWhen(System.currentTimeMillis())           //设置通知时间
+                .setSmallIcon(R.drawable.app_icon)            //设置小图标
+                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)    //设置默认的三色灯与振动器
+//                .setPriority(Notification.PRIORITY_MAX)      //设置应用的优先级，可以用来修复在小米手机上可能显示在不重要通知中
+                .setAutoCancel(true)                           //设置点击后取消Notification
+                .setContentIntent(pit);                        //设置PendingIntent
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mBuilder.setChannelId(NOTIFY_CHANNEL_ID);
+        }
+
+        Notification notify1 = mBuilder.build();
+        mNManager.notify(1, notify1);
     }
 
     private void selectTab(int tabSeq) {
@@ -316,15 +390,27 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             // 获取地理位置权限
             //mSkrLocationPermission.ensurePermission(null, false);
         }
-        if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
-            if (mFromCreate) {
+        if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe(this)) {
+            if (mFromCreate && UserAccountManager.getInstance().hasAccount()) {
                 mSkrSdcardPermission.ensurePermission(this, null, true);
             }
         }
         mFromCreate = false;
-        UpgradeManager.getInstance().checkUpdate1();
-        mRedPkgPresenter.checkRedPkg();
-        mCheckInPresenter.check();
+
+        if (MyUserInfoManager.getInstance().isNeedBeginnerGuide()) {
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(this, GrabGuideHomePageFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(false)
+                            .build());
+        } else {
+            UpgradeManager.getInstance().checkUpdate1();
+            mRedPkgPresenter.checkRedPkg();
+            mCheckInPresenter.check();
+        }
+        if(UserAccountManager.getInstance().hasAccount()){
+            mMainActContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -337,6 +423,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mHomeDialogManager.destroy();
         }
         WeakRedDotManager.getInstance().removeListener(this);
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -362,6 +451,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SkipGuideHomepageEvent event) {
+        UpgradeManager.getInstance().checkUpdate1();
+        mRedPkgPresenter.checkRedPkg();
+        mCheckInPresenter.check();
+    }
 
     @Override
     public boolean resizeLayoutSelfWhenKeybordShow() {

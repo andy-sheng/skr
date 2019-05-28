@@ -27,6 +27,11 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
     }
 
     public void setDataList(List<T> dataList, boolean useDiffUtils) {
+        if(dataList==null){
+            mDataList.clear();
+            notifyDataSetChanged();
+            return;
+        }
         if (useDiffUtils) {
             /**
              *  想要 dataList 中的数据完全替换 mDataList 中的数据
@@ -73,6 +78,21 @@ public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends
             mDataList.clear();
             mDataList.addAll(dataList);
             notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 删除某条数据
+     * @param model
+     */
+    public void delete(T model) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            T m = mDataList.get(i);
+            if (m.equals(model)) {
+                mDataList.remove(i);
+                notifyItemRemoved(i);
+                return;
+            }
         }
     }
 

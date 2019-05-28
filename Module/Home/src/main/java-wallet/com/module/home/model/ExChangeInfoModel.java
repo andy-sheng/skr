@@ -1,16 +1,17 @@
 package com.module.home.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ExChangeInfoModel implements Serializable {
 
 
     /**
      * dqBalance : {"createdAt":-62135596800,"lockAmount":0,"lockAmountStr":"0.00","remark":"","status":2,"totalAmount":660,"totalAmountStr":"0.66"}
-     * toDQDesc : 1钻石礼物兑换0.9点券
-     * toRMBDesc : 100点券兑换人民币0.6元
+     * toDQDesc : 1钻石礼物兑换0.9红钻
+     * toRMBDesc : 100红钻兑换人民币0.6元
      * toRMBRatio : 600
-     * toZSDesc : 1点券兑换1钻石
+     * toZSDesc : 1红钻兑换1钻石
      * toZSRatio : 1
      * zsBalance : {"createdAt":1555656476,"lockAmount":0,"lockAmountStr":"0.00","remark":"","status":2,"totalAmount":1419340,"totalAmountStr":"1419.34"}
      */
@@ -22,6 +23,15 @@ public class ExChangeInfoModel implements Serializable {
     private String toZSDesc;
     private int toZSRatio;
     private ZsBalanceBean zsBalance;
+    private List<String> rule;
+
+    public List<String> getRule() {
+        return rule;
+    }
+
+    public void setRule(List<String> rule) {
+        this.rule = rule;
+    }
 
     public DqBalanceBean getDqBalance() {
         return dqBalance;

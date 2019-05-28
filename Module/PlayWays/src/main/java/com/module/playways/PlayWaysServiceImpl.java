@@ -6,6 +6,8 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfo;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -15,8 +17,10 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.event.GrabChangeRoomEvent;
+import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
+import com.module.playways.grab.room.guide.model.GrabGuideInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -56,7 +60,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     Disposable mJoinRoomDisposable;
 
     @Override
-    public void tryGoGrabRoom(int roomID,int inviteType) {
+    public void tryGoGrabRoom(int roomID, int inviteType) {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
@@ -112,7 +116,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
             return;
         }
-        if(U.getActivityUtils().getTopActivity() instanceof GrabRoomActivity){
+        if (U.getActivityUtils().getTopActivity() instanceof GrabRoomActivity) {
             MyLog.d(TAG, "tryGoCreateRoom 顶部一唱到底房间，cancel");
             return;
         }
@@ -134,6 +138,40 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         if (musicURLs != null && musicURLs.size() > 0) {
             prepareData.setBgMusic(musicURLs.get(0));
         }
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation();
+    }
+
+    @Override
+    public void tryGoGrabGuide(int tagId) {
+        GrabGuideServerApi grabGuideServerApi = ApiManager.getInstance().createService(GrabGuideServerApi.class);
+        if (grabGuideServerApi != null) {
+            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1, (int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(), GrabGuideInfoModel.class);
+
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
+                            .withSerializable("guide_data", grabGuideInfoModel)
+                            .withInt("tag_id", tagId)
+                            .navigation();
+                }
+            }, new ApiMethods.RequestControl("getGuideRes", ApiMethods.ControlType.CancelThis));
+        }
+    }
+
+    /**
+     * 新手引导匹配
+     */
+    @Override
+    public void tryGoNewGrabMatch() {
+        PrepareData prepareData = new PrepareData();
+        prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+        prepareData.setTagId(0);
+        prepareData.setNewUser(true);
 
         ARouter.getInstance()
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -140,7 +139,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                     AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
                             .setCircle(true)
                             .build());
-            mLeftName.setText(mLeftUserInfoModel.getNickname());
+            mLeftName.setText(mLeftUserInfoModel.getNicknameRemark());
             mLeftScoreBtv.setText(mLeftScore);
             showOverReason(mLeftOverReason, mLeftOverReasonIv, mLeftScoreBtv, mLeftTipsTv);
         }
@@ -150,7 +149,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                     AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
                             .setCircle(true)
                             .build());
-            mRightName.setText(mRightUserInfoModel.getNickname());
+            mRightName.setText(mRightUserInfoModel.getNicknameRemark());
             mRightScoreBtv.setText(mRightScore);
             showOverReason(mRightOverReason, mRightOverReasonIv, mRightScoreBtv, mRightTipsTv);
         }

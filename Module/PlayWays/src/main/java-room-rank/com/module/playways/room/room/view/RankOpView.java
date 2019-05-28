@@ -123,7 +123,7 @@ public class RankOpView extends RelativeLayout {
                         }
                         MyLog.w(TAG, "clickValid LightOff " + " seq=" + mSeq);
                         mOpListener.clickLightOff(mSeq);
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_x", null);
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_x", null);
                     }
                 }
             }

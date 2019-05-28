@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_54_dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/view_23_dp"
+        android:layout_height="@dimen/view_23_dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:background="@drawable/comm_titlebar_search_normal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_58_dp"
+        android:text="输入用户昵称、备注或ID"
+        android:textColor="#4c3B4E79"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_alignParentBottom="true"
+        android:background="#D8D8D8" />
+</RelativeLayout>

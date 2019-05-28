@@ -22,7 +22,6 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -45,7 +44,7 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
 
     private final int CRASH = 10;
 
-    private Handler handler;
+    private Handler mHandler;
 
     private Context mContext;
 
@@ -68,9 +67,11 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
             mContext = context.getApplicationContext();
             mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
             Thread.setDefaultUncaughtExceptionHandler(this);
-            CrashHandlerThread crashHandlerThread = new CrashHandlerThread(TAG);
-            crashHandlerThread.start();
-            handler = new Handler(crashHandlerThread.getLooper(), crashHandlerThread);
+            if (MyLog.isDebugLogOpen()) {
+                CrashHandlerThread crashHandlerThread = new CrashHandlerThread(TAG);
+                crashHandlerThread.start();
+                mHandler = new Handler(crashHandlerThread.getLooper(), crashHandlerThread);
+            }
         }
     }
 
@@ -85,28 +86,15 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        if (!handleException(ex) && mDefaultHandler != null) {
-            mDefaultHandler.uncaughtException(thread, ex);
-        } else {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (MyLog.isDebugLogOpen()) {
-                        Toast.makeText(mContext, R.string.dk_crash_capture_tips, Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+        handleException(ex);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+
         }
-
-
-        if (!handleException(ex) && mDefaultHandler != null) {
+        if (mDefaultHandler != null) {
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-
-            }
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(0);
         }
@@ -117,7 +105,11 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
         if (ex == null) {
             return false;
         }
-        handler.sendEmptyMessage(CRASH);
+        if (MyLog.isDebugLogOpen()) {
+            if (mHandler != null) {
+                mHandler.sendEmptyMessage(CRASH);
+            }
+        }
 
         collectDeviceInfo();
 
@@ -201,7 +193,6 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
         } catch (Exception e) {
 
         }
-
     }
 
     public void RecursionDeleteFile(File file, int left) {

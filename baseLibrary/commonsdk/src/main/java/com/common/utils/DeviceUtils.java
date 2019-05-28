@@ -2,6 +2,7 @@ package com.common.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothProfile;
@@ -15,6 +16,7 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -28,16 +30,25 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.common.log.MyLog;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 通过U.getDeviceUtils
@@ -157,13 +168,14 @@ public class DeviceUtils {
         return romName.equals(rom);
     }
 
-    public String getRomVersion(){
-        if(!TextUtils.isEmpty(romVersion)){
+    public String getRomVersion() {
+        if (!TextUtils.isEmpty(romVersion)) {
             return romVersion;
         }
         check("");
         return romVersion;
     }
+
     /**
      * 得到系统的属性值
      *
@@ -497,7 +509,6 @@ public class DeviceUtils {
         }
         return mBlueToothHeadsetPlugOn == 1;
     }
-
     /**
      * 耳机插拔事件
      */
@@ -538,6 +549,429 @@ public class DeviceUtils {
                 U.getDeviceUtils().setBlueToothHeadsetPlugOn(-1);
             }
         }
+    }
+
+    /**
+     * 以下为获取设备信息
+     */
+    private static final long MB = 1024 * 1024;
+    private static final int INVALID = 0;
+    private static final String MEMORY_FILE_PATH = "/proc/meminfo";
+    private static final String CPU_FILE_PATH_0 = "/sys/devices/system/cpu/";
+    private static final String CPU_FILE_PATH_1 = "/sys/devices/system/cpu/possible";
+    private static final String CPU_FILE_PATH_2 = "/sys/devices/system/cpu/present";
+    private static LEVEL sLevelCache = null;
+
+    public static final String DEVICE_MACHINE = "machine";
+    private static final String DEVICE_MEMORY_FREE = "mem_free";
+    private static final String DEVICE_MEMORY = "mem";
+    private static final String DEVICE_CPU = "cpu_app";
+
+    private static long sTotalMemory = 0;
+    private static long sLowMemoryThresold = 0;
+    private static int sMemoryClass = 0;
+
+    public enum LEVEL {
+
+        BEST(5), HIGH(4), MIDDLE(3), LOW(2), BAD(1), UN_KNOW(-1);
+
+        int value;
+
+        LEVEL(int val) {
+            this.value = val;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    /**
+     * 得到当前设备级别，能反应出改设备的大概档次
+     *
+     * @return
+     */
+    public LEVEL getLevel() {
+        if (null != sLevelCache) {
+            return sLevelCache;
+        }
+        long start = System.currentTimeMillis();
+        long totalMemory = getTotalMemory();
+        int coresNum = getNumOfCores();
+        if (totalMemory >= 4 * 1024 * MB) {
+            sLevelCache = LEVEL.BEST;
+        } else if (totalMemory >= 3 * 1024 * MB) {
+            sLevelCache = LEVEL.HIGH;
+        } else if (totalMemory >= 2 * 1024 * MB) {
+            if (coresNum >= 4) {
+                sLevelCache = LEVEL.HIGH;
+            } else if (coresNum >= 2) {
+                sLevelCache = LEVEL.MIDDLE;
+            } else if (coresNum > 0) {
+                sLevelCache = LEVEL.LOW;
+            }
+        } else if (totalMemory >= 1024 * MB) {
+            if (coresNum >= 4) {
+                sLevelCache = LEVEL.MIDDLE;
+            } else if (coresNum >= 2) {
+                sLevelCache = LEVEL.LOW;
+            } else if (coresNum > 0) {
+                sLevelCache = LEVEL.LOW;
+            }
+        } else if (0 <= totalMemory && totalMemory < 1024 * MB) {
+            sLevelCache = LEVEL.BAD;
+        } else {
+            sLevelCache = LEVEL.UN_KNOW;
+        }
+
+        MyLog.i(TAG, "getLevel, cost:" + (System.currentTimeMillis() - start) + ", level:" + sLevelCache);
+        return sLevelCache;
+    }
+
+    private int getAppId() {
+        return android.os.Process.myPid();
+    }
+
+    /**
+     * 得到低内存阈值
+     *
+     * @return
+     */
+    public long getLowMemoryThresold() {
+        if (0 != sLowMemoryThresold) {
+            return sLowMemoryThresold;
+        }
+
+        getTotalMemory();
+        return sLowMemoryThresold;
+    }
+
+    /**
+     * 为了在运行时查看可用内存，
+     * <p>
+     * 可用getLargeMemoryClass（）或者 getMemoryClass（）
+     *
+     * @return
+     */
+    public int getMemoryClass() {
+        if (0 != sMemoryClass) {
+            return sMemoryClass * 1024;
+        }
+        getTotalMemory();
+        return sMemoryClass * 1024;
+    }
+
+    /**
+     * 得到总内存
+     * @return
+     */
+    public long getTotalMemory() {
+        if (0 != sTotalMemory) {
+            return sTotalMemory;
+        }
+
+        long start = System.currentTimeMillis();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+            ActivityManager am = (ActivityManager) U.app().getSystemService(Context.ACTIVITY_SERVICE);
+            am.getMemoryInfo(memInfo);
+            sTotalMemory = memInfo.totalMem;
+            sLowMemoryThresold = memInfo.threshold;
+
+            long memClass = Runtime.getRuntime().maxMemory();
+            if (memClass == Long.MAX_VALUE) {
+                sMemoryClass = am.getMemoryClass(); //if not set maxMemory, then is not large heap
+            } else {
+                sMemoryClass = (int) (memClass / MB);
+            }
+//            int isLargeHeap = (context.getApplicationInfo().flags | ApplicationInfo.FLAG_LARGE_HEAP);
+//            if (isLargeHeap > 0) {
+//                sMemoryClass = am.getLargeMemoryClass();
+//            } else {
+//                sMemoryClass = am.getMemoryClass();
+//            }
+
+            MyLog.i(TAG, "getTotalMemory cost:" + (System.currentTimeMillis() - start) + ", total_mem:" + sTotalMemory
+                    + ", LowMemoryThresold:" + sLowMemoryThresold + ", Memory Class:" + sMemoryClass);
+            return sTotalMemory;
+        }
+        return 0;
+    }
+
+    /**
+     * 是否是低内存
+     *
+     * @return
+     */
+    public boolean isLowMemory() {
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        ActivityManager am = (ActivityManager) U.app().getSystemService(Context.ACTIVITY_SERVICE);
+        am.getMemoryInfo(memInfo);
+        return memInfo.lowMemory;
+    }
+
+    //return in KB
+    public long getAvailMemory(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            am.getMemoryInfo(memInfo);
+            return memInfo.availMem / 1024;
+        } else {
+            long availMemory = INVALID;
+            BufferedReader bufferedReader = null;
+            try {
+                bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(MEMORY_FILE_PATH), "UTF-8"));
+                String line = bufferedReader.readLine();
+                while (null != line) {
+                    String[] args = line.split("\\s+");
+                    if ("MemFree:".equals(args[0])) {
+                        availMemory = Integer.parseInt(args[1]) * 1024L;
+                        break;
+                    } else {
+                        line = bufferedReader.readLine();
+                    }
+                }
+
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            } finally {
+                try {
+                    if (null != bufferedReader) {
+                        bufferedReader.close();
+                    }
+                } catch (Exception e) {
+                    MyLog.e(TAG, e);
+                }
+            }
+            return availMemory / 1024;
+        }
+    }
+
+    public  long getMemFree() {
+        long availMemory = INVALID;
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(MEMORY_FILE_PATH), "UTF-8"));
+            String line = bufferedReader.readLine();
+            while (null != line) {
+                String[] args = line.split("\\s+");
+                if ("MemFree:".equals(args[0])) {
+                    availMemory = Integer.parseInt(args[1]) * 1024L;
+                    break;
+                } else {
+                    line = bufferedReader.readLine();
+                }
+            }
+
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        } finally {
+            try {
+                if (null != bufferedReader) {
+                    bufferedReader.close();
+                }
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        }
+        return availMemory / 1024;
+    }
+
+    public double getAppCpuRate() {
+        long start = System.currentTimeMillis();
+        long cpuTime = 0L;
+        long appTime = 0L;
+        double cpuRate = 0.0D;
+        RandomAccessFile procStatFile = null;
+        RandomAccessFile appStatFile = null;
+
+        try {
+            procStatFile = new RandomAccessFile("/proc/stat", "r");
+            String procStatString = procStatFile.readLine();
+            String[] procStats = procStatString.split(" ");
+            cpuTime = Long.parseLong(procStats[2]) + Long.parseLong(procStats[3])
+                    + Long.parseLong(procStats[4]) + Long.parseLong(procStats[5])
+                    + Long.parseLong(procStats[6]) + Long.parseLong(procStats[7])
+                    + Long.parseLong(procStats[8]);
+
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        } finally {
+            try {
+                if (null != procStatFile) {
+                    procStatFile.close();
+                }
+
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        }
+
+        try {
+            appStatFile = new RandomAccessFile("/proc/" + getAppId() + "/stat", "r");
+            String appStatString = appStatFile.readLine();
+            String[] appStats = appStatString.split(" ");
+            appTime = Long.parseLong(appStats[13]) + Long.parseLong(appStats[14]);
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        } finally {
+            try {
+                if (null != appStatFile) {
+                    appStatFile.close();
+                }
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        }
+
+        if (0 != cpuTime) {
+            cpuRate = ((double) (appTime) / (double) (cpuTime)) * 100D;
+        }
+
+        MyLog.i(TAG, "getAppCpuRate cost:" + (System.currentTimeMillis() - start) + ",rate:" + cpuRate);
+        return cpuRate;
+    }
+
+    public Debug.MemoryInfo getAppMemory(Context context) {
+        try {
+            // 统计进程的内存信息 totalPss
+            ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            final Debug.MemoryInfo[] memInfo = activityManager.getProcessMemoryInfo(new int[]{getAppId()});
+            if (memInfo.length > 0) {
+                return memInfo[0];
+            }
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        }
+        return null;
+    }
+
+    private int getNumOfCores() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+            return 1;
+        }
+        int cores;
+        try {
+            cores = getCoresFromFile(CPU_FILE_PATH_1);
+            if (cores == INVALID) {
+                cores = getCoresFromFile(CPU_FILE_PATH_2);
+            }
+            if (cores == INVALID) {
+                cores = getCoresFromCPUFiles(CPU_FILE_PATH_0);
+            }
+        } catch (Exception e) {
+            cores = INVALID;
+        }
+        if (cores == INVALID) {
+            cores = 1;
+        }
+        return cores;
+    }
+
+    private int getCoresFromCPUFiles(String path) {
+        File[] list = new File(path).listFiles(CPU_FILTER);
+        return null == list ? 0 : list.length;
+    }
+
+    private int getCoresFromFile(String file) {
+        InputStream is = null;
+        try {
+            is = new FileInputStream(file);
+            BufferedReader buf = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String fileContents = buf.readLine();
+            buf.close();
+            if (fileContents == null || !fileContents.matches("0-[\\d]+$")) {
+                return INVALID;
+            }
+            String num = fileContents.substring(2);
+            return Integer.parseInt(num) + 1;
+        } catch (IOException e) {
+            return INVALID;
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    private static final FileFilter CPU_FILTER = new FileFilter() {
+        @Override
+        public boolean accept(File pathname) {
+            return Pattern.matches("cpu[0-9]", pathname.getName());
+        }
+    };
+
+    public long getDalvikHeap() {
+        Runtime runtime = Runtime.getRuntime();
+        return (runtime.totalMemory() - runtime.freeMemory()) / 1024;   //in KB
+    }
+
+    public long getNativeHeap() {
+        return Debug.getNativeHeapAllocatedSize() / 1024;   //in KB
+    }
+
+    public long getVmSize() {
+        String status = String.format("/proc/%s/status", getAppId());
+        try {
+            String content = getStringFromFile(status).trim();
+            String[] args = content.split("\n");
+            for (String str : args) {
+                if (str.startsWith("VmSize")) {
+                    Pattern p = Pattern.compile("\\d+");
+                    Matcher matcher = p.matcher(str);
+                    if (matcher.find()) {
+                        return Long.parseLong(matcher.group());
+                    }
+                }
+            }
+            if (args.length > 12) {
+                Pattern p = Pattern.compile("\\d+");
+                Matcher matcher = p.matcher(args[12]);
+                if (matcher.find()) {
+                    return Long.parseLong(matcher.group());
+                }
+            }
+        } catch (Exception e) {
+            return -1;
+        }
+        return -1;
+    }
+
+    protected  String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            reader = new BufferedReader(new InputStreamReader(is));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append('\n');
+            }
+        } finally {
+            if (null != reader) {
+                reader.close();
+            }
+        }
+
+        return sb.toString();
+    }
+
+    protected  String getStringFromFile(String filePath) throws Exception {
+        File fl = new File(filePath);
+        FileInputStream fin = null;
+        String ret;
+        try {
+            fin = new FileInputStream(fl);
+            ret = convertStreamToString(fin);
+        } finally {
+            if (null != fin) {
+                fin.close();
+            }
+        }
+        return ret;
     }
 
 }

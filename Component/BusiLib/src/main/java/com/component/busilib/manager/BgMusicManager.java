@@ -85,7 +85,7 @@ public class BgMusicManager {
 
         mExoPlayer.setCallback(new IPlayerCallback() {
             @Override
-            public void onPrepared() {
+            public void onPrepared(long duration) {
 
             }
 

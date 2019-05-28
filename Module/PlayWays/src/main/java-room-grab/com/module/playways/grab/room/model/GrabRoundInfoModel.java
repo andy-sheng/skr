@@ -715,21 +715,25 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
          */
         if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
             totalTs = getsPkRoundInfoModels().get(1).getSingEndMs() - getsPkRoundInfoModels().get(1).getSingBeginMs();
-        } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 0) {
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 0) {
             totalTs = getsPkRoundInfoModels().get(0).getSingEndMs() - getsPkRoundInfoModels().get(0).getSingBeginMs();
         } else {
             totalTs = getSingEndMs() - getSingBeginMs();
         }
         if (totalTs <= 0) {
             MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正");
-            if (getWantSingType() == 0) {
+            if (getWantSingType() == EWantSingType.EWST_DEFAULT.getValue()) {
                 totalTs = 20 * 1000;
-            } else if (getWantSingType() == 1) {
+            } else if (getWantSingType() == EWantSingType.EWST_ACCOMPANY.getValue()) {
                 totalTs = 30 * 1000;
-            } else if (getWantSingType() == 2) {
+            } else if (getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue()) {
                 totalTs = 40 * 1000;
-            } else if (getWantSingType() == 3) {
-                totalTs = 50 * 1000;
+            } else if (getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()) {
+                totalTs = 60 * 1000;
+            } else if (getWantSingType() == EWantSingType.EWST_CHORUS.getValue()) {
+                totalTs = 40 * 1000;
+            } else if (getWantSingType() == EWantSingType.EWST_SPK.getValue()) {
+                totalTs = 30 * 1000;
             }
         }
         return totalTs;

@@ -79,6 +79,13 @@ public class RankTopContainerView1 extends RelativeLayout {
                         public void onClickGameRule() {
 
                         }
+
+                        @Override
+                        public void onClickFeedback() {
+                            if (mListener != null) {
+                                mListener.onClickFeedback();
+                            }
+                        }
                     });
                     mMoreOpView.setRoomData(mRoomData);
                 }
@@ -219,5 +226,7 @@ public class RankTopContainerView1 extends RelativeLayout {
         void closeBtnClick();
 
         void onVoiceChange(boolean voiceOpen);
+
+        void onClickFeedback();
     }
 }

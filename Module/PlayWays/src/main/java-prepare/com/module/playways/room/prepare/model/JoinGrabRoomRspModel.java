@@ -194,9 +194,18 @@ public class JoinGrabRoomRspModel implements Serializable {
     private boolean hasGameBegin = true;// 游戏是否已经开始
     private boolean challengeAvailable = false;// 是否有挑战资格
     private String roomName;    //房间名称
+    private float hongZuan;
 
     public JoinGrabRoomRspModel() {
 
+    }
+
+    public float getHongZuan() {
+        return hongZuan;
+    }
+
+    public void setHongZuan(float hongZuan) {
+        this.hongZuan = hongZuan;
     }
 
     public int getCoin() {

@@ -1,23 +1,23 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
     <LinearLayout
         android:id="@+id/content_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/view_15_dp"
-        android:layout_marginRight="@dimen/view_15_dp"
-        android:orientation="horizontal"/>
+        android:layout_marginLeft="@dimen/view_7_dp"
+        android:layout_marginRight="@dimen/view_7_dp"
+        android:orientation="horizontal" />
 
     <!--<com.common.view.ex.ExImageView-->
-        <!--android:id="@+id/erji_iv"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:visibility="gone"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:src="@drawable/yanchang_erji" />-->
+    <!--android:id="@+id/erji_iv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:visibility="gone"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:src="@drawable/yanchang_erji" />-->
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/miedeng_iv"

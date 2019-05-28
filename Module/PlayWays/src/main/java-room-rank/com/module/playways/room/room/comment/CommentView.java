@@ -2,6 +2,8 @@ package com.module.playways.room.room.comment;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -52,6 +54,20 @@ public class CommentView extends RelativeLayout {
     private boolean mHasDataUpdate = false;
     private long mLastSetCommentListTs = 0;
 
+    public static final int MSG_ENSURE_AUTO_SCROLL_BOTTOM = 1;  //自动滚动到底部
+
+    Handler mUIHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_ENSURE_AUTO_SCROLL_BOTTOM:
+                    setOnBottom("AUTO_SCROLL_BOTTOM", true);
+                    break;
+            }
+        }
+    };
+
     public CommentView(Context context) {
         super(context);
         init(null);
@@ -85,8 +101,10 @@ public class CommentView extends RelativeLayout {
             } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 // 手动拖着滑动
                 mDraging = true;
+                mUIHandler.removeCallbacksAndMessages(null);
             } else {
                 // 自动滑动
+                mUIHandler.removeCallbacksAndMessages(null);
             }
         }
 
@@ -98,6 +116,11 @@ public class CommentView extends RelativeLayout {
 
     private void setOnBottom(String from, boolean onBottom) {
         MyLog.d(TAG, "onBottom:" + this.mOnBottom + "-->" + onBottom + " from:" + from);
+        if (!onBottom) {
+            mUIHandler.sendEmptyMessageDelayed(MSG_ENSURE_AUTO_SCROLL_BOTTOM, 5000);
+        } else {
+            mUIHandler.removeCallbacksAndMessages(null);
+        }
         if (this.mOnBottom != onBottom) {
             this.mOnBottom = onBottom;
             if (mOnBottom) {
@@ -181,7 +204,8 @@ public class CommentView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (EventBus.getDefault().isRegistered(this)){
+        mUIHandler.removeCallbacksAndMessages(null);
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
@@ -189,6 +213,9 @@ public class CommentView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " CommentMsgEvent = " + event.text);
+        if (event.type == CommentMsgEvent.MSG_TYPE_SEND) {
+            setOnBottom("CommentMsgEvent", true);
+        }
         CommentTextModel commentTextModel = CommentTextModel.parseFromEvent(event, mRoomData);
         processCommentModel(commentTextModel);
     }
@@ -202,13 +229,16 @@ public class CommentView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DynamicEmojiMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
+        if (event.type == DynamicEmojiMsgEvent.MSG_TYPE_SEND) {
+            setOnBottom("DynamicEmojiMsgEvent", true);
+        }
         // TODO: 2019/4/9 特殊图片表情
         CommentDynamicModel commentDynamicModel = CommentDynamicModel.parseFromEvent(event, mRoomData);
         processCommentModel(commentDynamicModel);
     }
 
     void processCommentModel(CommentModel commentModel) {
-        mCommentAdapter.getDataList().add(0, commentModel);
+        mCommentAdapter.addToHead(commentModel);
         if (!mOnBottom || mDraging) {
             mHasDataUpdate = true;
 //            mHasMore++;

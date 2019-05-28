@@ -57,6 +57,20 @@ public class PermissionUtils {
     public PermissionUtils() {
     }
 
+    /**
+     * 检查通知栏权限
+     * @param context
+     * @return
+     */
+    public boolean checkNotification(Context context) {
+        return NotificationPermission.isNotificationEnabled(context);
+    }
+
+    /**
+     * 检查悬浮窗权限
+     * @param context
+     * @return
+     */
     public boolean checkFloatWindow(Context context) {
         return FloatWindowPermission.checkFloatWindow(context);
     }
@@ -235,6 +249,13 @@ public class PermissionUtils {
      */
     public void requestFloatWindow(Activity activity) {
         FloatWindowPermission.requestPermission(activity);
+    }
+
+    /**
+     * 请求通知栏权限设置
+     */
+    public void goNotificationSettingPage() {
+        NotificationPermission.goNotificationSettingPage();
     }
 
     /**

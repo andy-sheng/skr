@@ -1,6 +1,5 @@
 package com.common.utils;
 
-import android.os.Environment;
 import android.text.TextUtils;
 
 import com.common.log.MyLog;
@@ -13,6 +12,8 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -52,8 +53,11 @@ public class FileUtils {
                 return file.length();
             } else if (file.isDirectory()) {
                 long len = 0;
-                for (File f : file.listFiles()) {
-                    len += getDirSize(f.getAbsolutePath());
+                File[] files = file.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        len += getDirSize(f.getAbsolutePath());
+                    }
                 }
                 return len;
             }
@@ -294,7 +298,10 @@ public class FileUtils {
             MyLog.w("FileUtils", "deleteAllFiles root error");
             return;
         }
-
+        if (root.isFile()) {
+            root.delete();
+            return;
+        }
         File files[] = root.listFiles();
         if (files != null)
             for (File f : files) {
@@ -315,6 +322,37 @@ public class FileUtils {
                 }
             }
     }
+
+    /**
+     * @param file
+     * @param left
+     */
+    public void deleteEarlyFiles(File file, int left) {
+        if (file.isFile()) {
+            file.delete();
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] childFile = file.listFiles();
+            // 文件修改时间排序
+            Arrays.sort(childFile, new Comparator<File>() {
+                public int compare(File f1, File f2) {
+                    long diff = f1.lastModified() - f2.lastModified();
+                    if (diff > 0)
+                        return 1;
+                    else if (diff == 0)
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
+            for (int i = 0; i < childFile.length - left; i++) {
+                File f = childFile[i];
+                U.getFileUtils().deleteAllFiles(f);
+            }
+        }
+    }
+
 
 }
 

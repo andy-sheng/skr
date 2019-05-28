@@ -24,20 +24,19 @@ public class UserInfoDBDao extends AbstractDao<UserInfoDB, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property UserId = new Property(1, Long.class, "userId", false, "USER_ID");
-        public final static Property Avatar = new Property(2, String.class, "avatar", false, "AVATAR");
-        public final static Property UserNickname = new Property(3, String.class, "userNickname", false, "USER_NICKNAME");
-        public final static Property UserDisplayname = new Property(4, String.class, "userDisplayname", false, "USER_DISPLAYNAME");
-        public final static Property Letter = new Property(5, String.class, "letter", false, "LETTER");
-        public final static Property UpdateTime = new Property(6, Long.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property Sex = new Property(7, Integer.class, "sex", false, "SEX");
-        public final static Property Birthday = new Property(8, String.class, "birthday", false, "BIRTHDAY");
-        public final static Property Signature = new Property(9, String.class, "signature", false, "SIGNATURE");
-        public final static Property Relative = new Property(10, Integer.class, "relative", false, "RELATIVE");
-        public final static Property Block = new Property(11, Integer.class, "block", false, "BLOCK");
-        public final static Property IsSystem = new Property(12, Integer.class, "isSystem", false, "IS_SYSTEM");
-        public final static Property Ext = new Property(13, String.class, "ext", false, "EXT");
+        public final static Property UserId = new Property(0, Long.class, "userId", true, "_id");
+        public final static Property Avatar = new Property(1, String.class, "avatar", false, "AVATAR");
+        public final static Property UserNickname = new Property(2, String.class, "userNickname", false, "USER_NICKNAME");
+        public final static Property UserDisplayname = new Property(3, String.class, "userDisplayname", false, "USER_DISPLAYNAME");
+        public final static Property Letter = new Property(4, String.class, "letter", false, "LETTER");
+        public final static Property UpdateTime = new Property(5, Long.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property Sex = new Property(6, Integer.class, "sex", false, "SEX");
+        public final static Property Birthday = new Property(7, String.class, "birthday", false, "BIRTHDAY");
+        public final static Property Signature = new Property(8, String.class, "signature", false, "SIGNATURE");
+        public final static Property Relative = new Property(9, Integer.class, "relative", false, "RELATIVE");
+        public final static Property Block = new Property(10, Integer.class, "block", false, "BLOCK");
+        public final static Property IsSystem = new Property(11, Integer.class, "isSystem", false, "IS_SYSTEM");
+        public final static Property Ext = new Property(12, String.class, "ext", false, "EXT");
     }
 
 
@@ -53,23 +52,19 @@ public class UserInfoDBDao extends AbstractDao<UserInfoDB, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_INFO_DB\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"USER_ID\" INTEGER NOT NULL ," + // 1: userId
-                "\"AVATAR\" TEXT," + // 2: avatar
-                "\"USER_NICKNAME\" TEXT," + // 3: userNickname
-                "\"USER_DISPLAYNAME\" TEXT," + // 4: userDisplayname
-                "\"LETTER\" TEXT," + // 5: letter
-                "\"UPDATE_TIME\" INTEGER," + // 6: updateTime
-                "\"SEX\" INTEGER," + // 7: sex
-                "\"BIRTHDAY\" TEXT," + // 8: birthday
-                "\"SIGNATURE\" TEXT," + // 9: signature
-                "\"RELATIVE\" INTEGER," + // 10: relative
-                "\"BLOCK\" INTEGER," + // 11: block
-                "\"IS_SYSTEM\" INTEGER," + // 12: isSystem
-                "\"EXT\" TEXT);"); // 13: ext
-        // Add Indexes
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_INFO_DB_USER_ID_DESC ON USER_INFO_DB" +
-                " (\"USER_ID\" DESC);");
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: userId
+                "\"AVATAR\" TEXT," + // 1: avatar
+                "\"USER_NICKNAME\" TEXT," + // 2: userNickname
+                "\"USER_DISPLAYNAME\" TEXT," + // 3: userDisplayname
+                "\"LETTER\" TEXT," + // 4: letter
+                "\"UPDATE_TIME\" INTEGER," + // 5: updateTime
+                "\"SEX\" INTEGER," + // 6: sex
+                "\"BIRTHDAY\" TEXT," + // 7: birthday
+                "\"SIGNATURE\" TEXT," + // 8: signature
+                "\"RELATIVE\" INTEGER," + // 9: relative
+                "\"BLOCK\" INTEGER," + // 10: block
+                "\"IS_SYSTEM\" INTEGER," + // 11: isSystem
+                "\"EXT\" TEXT);"); // 12: ext
     }
 
     /** Drops the underlying database table. */
@@ -82,70 +77,69 @@ public class UserInfoDBDao extends AbstractDao<UserInfoDB, Long> {
     protected final void bindValues(DatabaseStatement stmt, UserInfoDB entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
+        Long userId = entity.getUserId();
+        if (userId != null) {
+            stmt.bindLong(1, userId);
         }
-        stmt.bindLong(2, entity.getUserId());
  
         String avatar = entity.getAvatar();
         if (avatar != null) {
-            stmt.bindString(3, avatar);
+            stmt.bindString(2, avatar);
         }
  
         String userNickname = entity.getUserNickname();
         if (userNickname != null) {
-            stmt.bindString(4, userNickname);
+            stmt.bindString(3, userNickname);
         }
  
         String userDisplayname = entity.getUserDisplayname();
         if (userDisplayname != null) {
-            stmt.bindString(5, userDisplayname);
+            stmt.bindString(4, userDisplayname);
         }
  
         String letter = entity.getLetter();
         if (letter != null) {
-            stmt.bindString(6, letter);
+            stmt.bindString(5, letter);
         }
  
         Long updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindLong(7, updateTime);
+            stmt.bindLong(6, updateTime);
         }
  
         Integer sex = entity.getSex();
         if (sex != null) {
-            stmt.bindLong(8, sex);
+            stmt.bindLong(7, sex);
         }
  
         String birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindString(9, birthday);
+            stmt.bindString(8, birthday);
         }
  
         String signature = entity.getSignature();
         if (signature != null) {
-            stmt.bindString(10, signature);
+            stmt.bindString(9, signature);
         }
  
         Integer relative = entity.getRelative();
         if (relative != null) {
-            stmt.bindLong(11, relative);
+            stmt.bindLong(10, relative);
         }
  
         Integer block = entity.getBlock();
         if (block != null) {
-            stmt.bindLong(12, block);
+            stmt.bindLong(11, block);
         }
  
         Integer isSystem = entity.getIsSystem();
         if (isSystem != null) {
-            stmt.bindLong(13, isSystem);
+            stmt.bindLong(12, isSystem);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(14, ext);
+            stmt.bindString(13, ext);
         }
     }
 
@@ -153,70 +147,69 @@ public class UserInfoDBDao extends AbstractDao<UserInfoDB, Long> {
     protected final void bindValues(SQLiteStatement stmt, UserInfoDB entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
+        Long userId = entity.getUserId();
+        if (userId != null) {
+            stmt.bindLong(1, userId);
         }
-        stmt.bindLong(2, entity.getUserId());
  
         String avatar = entity.getAvatar();
         if (avatar != null) {
-            stmt.bindString(3, avatar);
+            stmt.bindString(2, avatar);
         }
  
         String userNickname = entity.getUserNickname();
         if (userNickname != null) {
-            stmt.bindString(4, userNickname);
+            stmt.bindString(3, userNickname);
         }
  
         String userDisplayname = entity.getUserDisplayname();
         if (userDisplayname != null) {
-            stmt.bindString(5, userDisplayname);
+            stmt.bindString(4, userDisplayname);
         }
  
         String letter = entity.getLetter();
         if (letter != null) {
-            stmt.bindString(6, letter);
+            stmt.bindString(5, letter);
         }
  
         Long updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindLong(7, updateTime);
+            stmt.bindLong(6, updateTime);
         }
  
         Integer sex = entity.getSex();
         if (sex != null) {
-            stmt.bindLong(8, sex);
+            stmt.bindLong(7, sex);
         }
  
         String birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindString(9, birthday);
+            stmt.bindString(8, birthday);
         }
  
         String signature = entity.getSignature();
         if (signature != null) {
-            stmt.bindString(10, signature);
+            stmt.bindString(9, signature);
         }
  
         Integer relative = entity.getRelative();
         if (relative != null) {
-            stmt.bindLong(11, relative);
+            stmt.bindLong(10, relative);
         }
  
         Integer block = entity.getBlock();
         if (block != null) {
-            stmt.bindLong(12, block);
+            stmt.bindLong(11, block);
         }
  
         Integer isSystem = entity.getIsSystem();
         if (isSystem != null) {
-            stmt.bindLong(13, isSystem);
+            stmt.bindLong(12, isSystem);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(14, ext);
+            stmt.bindString(13, ext);
         }
     }
 
@@ -228,52 +221,50 @@ public class UserInfoDBDao extends AbstractDao<UserInfoDB, Long> {
     @Override
     public UserInfoDB readEntity(Cursor cursor, int offset) {
         UserInfoDB entity = new UserInfoDB( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // userId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // avatar
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userNickname
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userDisplayname
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // letter
-            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // updateTime
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // sex
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // birthday
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // signature
-            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // relative
-            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // block
-            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // isSystem
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // ext
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // userId
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // avatar
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // userNickname
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userDisplayname
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // letter
+            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // updateTime
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // sex
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // birthday
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // signature
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // relative
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // block
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // isSystem
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // ext
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, UserInfoDB entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setUserId(cursor.getLong(offset + 1));
-        entity.setAvatar(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setUserNickname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUserDisplayname(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setLetter(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setUpdateTime(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
-        entity.setSex(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setBirthday(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setSignature(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setRelative(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setBlock(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
-        entity.setIsSystem(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
-        entity.setExt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setUserId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setAvatar(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setUserNickname(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setUserDisplayname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setLetter(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUpdateTime(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setSex(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setBirthday(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setSignature(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setRelative(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setBlock(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setIsSystem(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setExt(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     @Override
     protected final Long updateKeyAfterInsert(UserInfoDB entity, long rowId) {
-        entity.setId(rowId);
+        entity.setUserId(rowId);
         return rowId;
     }
     
     @Override
     public Long getKey(UserInfoDB entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getUserId();
         } else {
             return null;
         }
@@ -281,7 +272,7 @@ public class UserInfoDBDao extends AbstractDao<UserInfoDB, Long> {
 
     @Override
     public boolean hasKey(UserInfoDB entity) {
-        return entity.getId() != null;
+        return entity.getUserId() != null;
     }
 
     @Override

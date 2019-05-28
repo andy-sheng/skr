@@ -51,9 +51,9 @@ public class DqRecordAdapter extends DiffAdapter<DqRecordModel, RecyclerView.Vie
 
         public void bind(DqRecordModel model) {
             this.mDqRecordModel = model;
-            mRecordDescTv.setText(model.getDesc());
+            mRecordDescTv.setText(model.getRemark());
             mRecordTimeTv.setText(model.getDateTime());
-            mRecordNumTv.setText(model.getAmountStr() + "点券");
+            mRecordNumTv.setText(model.getAmountStr() + "红钻");
         }
     }
 }

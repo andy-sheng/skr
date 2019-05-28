@@ -1,4 +1,5 @@
 <resources>
+    <dimen name="common_stroke_with">1.5dp</dimen>
     <dimen name="view_0_dp">0dp</dimen>
     <dimen name="view_0_33_dp">0.33dp</dimen>
     <dimen name="view_0_67_dp">0.67dp</dimen>

@@ -316,10 +316,22 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     protected final void onDestroy() {
         MyLog.d(TAG, "onDestroy" + hashCode());
-        super.onDestroy();
-        if (!mIsDestroyed) {
-            destroy();
-            mIsDestroyed = true;
+        if (MyLog.isDebugLogOpen()) {
+            super.onDestroy();
+            if (!mIsDestroyed) {
+                destroy();
+                mIsDestroyed = true;
+            }
+        } else {
+            try {
+                super.onDestroy();
+                if (!mIsDestroyed) {
+                    destroy();
+                    mIsDestroyed = true;
+                }
+            } catch (Exception e) {
+                MyLog.e(e);
+            }
         }
     }
 

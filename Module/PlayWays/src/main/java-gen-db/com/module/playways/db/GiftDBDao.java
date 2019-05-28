@@ -15,7 +15,7 @@ import com.module.playways.room.gift.GiftDB;
 /** 
  * DAO for table "GIFT_DB".
 */
-public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
+public class GiftDBDao extends AbstractDao<GiftDB, Long> {
 
     public static final String TABLENAME = "GIFT_DB";
 
@@ -24,7 +24,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property GiftID = new Property(0, Integer.class, "giftID", true, "GIFT_ID");
+        public final static Property GiftID = new Property(0, Long.class, "giftID", true, "_id");
         public final static Property CanContinue = new Property(1, Boolean.class, "canContinue", false, "CAN_CONTINUE");
         public final static Property Description = new Property(2, String.class, "description", false, "DESCRIPTION");
         public final static Property GiftName = new Property(3, String.class, "giftName", false, "GIFT_NAME");
@@ -34,6 +34,10 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         public final static Property SortID = new Property(7, Integer.class, "sortID", false, "SORT_ID");
         public final static Property SourceURL = new Property(8, String.class, "sourceURL", false, "SOURCE_URL");
         public final static Property RealPrice = new Property(9, Float.class, "realPrice", false, "REAL_PRICE");
+        public final static Property Play = new Property(10, Boolean.class, "play", false, "PLAY");
+        public final static Property TextContinueCount = new Property(11, Integer.class, "textContinueCount", false, "TEXT_CONTINUE_COUNT");
+        public final static Property DisplayType = new Property(12, Integer.class, "displayType", false, "DISPLAY_TYPE");
+        public final static Property Extra = new Property(13, String.class, "extra", false, "EXTRA");
     }
 
 
@@ -49,7 +53,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"GIFT_DB\" (" + //
-                "\"GIFT_ID\" INTEGER PRIMARY KEY ," + // 0: giftID
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: giftID
                 "\"CAN_CONTINUE\" INTEGER," + // 1: canContinue
                 "\"DESCRIPTION\" TEXT," + // 2: description
                 "\"GIFT_NAME\" TEXT," + // 3: giftName
@@ -58,7 +62,11 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
                 "\"PRICE\" INTEGER," + // 6: price
                 "\"SORT_ID\" INTEGER," + // 7: sortID
                 "\"SOURCE_URL\" TEXT," + // 8: sourceURL
-                "\"REAL_PRICE\" REAL);"); // 9: realPrice
+                "\"REAL_PRICE\" REAL," + // 9: realPrice
+                "\"PLAY\" INTEGER," + // 10: play
+                "\"TEXT_CONTINUE_COUNT\" INTEGER," + // 11: textContinueCount
+                "\"DISPLAY_TYPE\" INTEGER," + // 12: displayType
+                "\"EXTRA\" TEXT);"); // 13: extra
     }
 
     /** Drops the underlying database table. */
@@ -71,7 +79,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
     protected final void bindValues(DatabaseStatement stmt, GiftDB entity) {
         stmt.clearBindings();
  
-        Integer giftID = entity.getGiftID();
+        Long giftID = entity.getGiftID();
         if (giftID != null) {
             stmt.bindLong(1, giftID);
         }
@@ -119,6 +127,26 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         Float realPrice = entity.getRealPrice();
         if (realPrice != null) {
             stmt.bindDouble(10, realPrice);
+        }
+ 
+        Boolean play = entity.getPlay();
+        if (play != null) {
+            stmt.bindLong(11, play ? 1L: 0L);
+        }
+ 
+        Integer textContinueCount = entity.getTextContinueCount();
+        if (textContinueCount != null) {
+            stmt.bindLong(12, textContinueCount);
+        }
+ 
+        Integer displayType = entity.getDisplayType();
+        if (displayType != null) {
+            stmt.bindLong(13, displayType);
+        }
+ 
+        String extra = entity.getExtra();
+        if (extra != null) {
+            stmt.bindString(14, extra);
         }
     }
 
@@ -126,7 +154,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
     protected final void bindValues(SQLiteStatement stmt, GiftDB entity) {
         stmt.clearBindings();
  
-        Integer giftID = entity.getGiftID();
+        Long giftID = entity.getGiftID();
         if (giftID != null) {
             stmt.bindLong(1, giftID);
         }
@@ -175,17 +203,37 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         if (realPrice != null) {
             stmt.bindDouble(10, realPrice);
         }
+ 
+        Boolean play = entity.getPlay();
+        if (play != null) {
+            stmt.bindLong(11, play ? 1L: 0L);
+        }
+ 
+        Integer textContinueCount = entity.getTextContinueCount();
+        if (textContinueCount != null) {
+            stmt.bindLong(12, textContinueCount);
+        }
+ 
+        Integer displayType = entity.getDisplayType();
+        if (displayType != null) {
+            stmt.bindLong(13, displayType);
+        }
+ 
+        String extra = entity.getExtra();
+        if (extra != null) {
+            stmt.bindString(14, extra);
+        }
     }
 
     @Override
-    public Integer readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0);
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public GiftDB readEntity(Cursor cursor, int offset) {
         GiftDB entity = new GiftDB( //
-            cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0), // giftID
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // giftID
             cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0, // canContinue
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // description
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // giftName
@@ -194,14 +242,18 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // price
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // sortID
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // sourceURL
-            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9) // realPrice
+            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9), // realPrice
+            cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0, // play
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // textContinueCount
+            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // displayType
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // extra
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, GiftDB entity, int offset) {
-        entity.setGiftID(cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0));
+        entity.setGiftID(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setCanContinue(cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0);
         entity.setDescription(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setGiftName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
@@ -211,15 +263,20 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         entity.setSortID(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setSourceURL(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setRealPrice(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
+        entity.setPlay(cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0);
+        entity.setTextContinueCount(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setDisplayType(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
+        entity.setExtra(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     @Override
-    protected final Integer updateKeyAfterInsert(GiftDB entity, long rowId) {
-        return entity.getGiftID();
+    protected final Long updateKeyAfterInsert(GiftDB entity, long rowId) {
+        entity.setGiftID(rowId);
+        return rowId;
     }
     
     @Override
-    public Integer getKey(GiftDB entity) {
+    public Long getKey(GiftDB entity) {
         if(entity != null) {
             return entity.getGiftID();
         } else {

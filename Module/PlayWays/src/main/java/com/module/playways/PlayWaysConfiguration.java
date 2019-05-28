@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.common.base.GlobalParams;
+import com.common.base.InitManager;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.ConfigModule;
 import com.module.ModuleServiceManager;
@@ -69,7 +70,6 @@ public class PlayWaysConfiguration implements ConfigModule {
                     ChatRoomMsgManager.getInstance().addChatRoomMsgProcessor(new ChatRoomChatMsgProcess());
                     ChatRoomMsgManager.getInstance().addChatRoomMsgProcessor(new ChatRoomGameMsgProcess());
                 }
-
             }
 
             @Override

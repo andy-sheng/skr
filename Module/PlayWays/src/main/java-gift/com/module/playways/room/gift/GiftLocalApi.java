@@ -4,6 +4,7 @@ import com.module.playways.db.GiftDBDao;
 import com.module.playways.db.GreenDaoManager;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GiftServerModel;
+import com.umeng.socialize.media.Base;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,19 +27,22 @@ public class GiftLocalApi {
 
     public static List<BaseGift> getAllGift() {
         List<GiftDB> giftDBList = getGiftDBDao().queryBuilder().build().list();
-        if (giftDBList == null || giftDBList.size() == 0) {
-            new ArrayList<BaseGift>();
-        }
 
-        List<BaseGift> baseGiftList = BaseGift.parseFromGiftDB(giftDBList);
+        List<BaseGift> baseGiftList = new ArrayList<>();
+        if (giftDBList != null) {
+            for(int i=0;i<giftDBList.size();i++){
+                GiftDB giftDB = giftDBList.get(i);
+                baseGiftList.add(BaseGift.parse(giftDB));
+            }
+        }
         return baseGiftList;
     }
 
-    public void deleteAll() {
+    public static void deleteAll() {
         getGiftDBDao().deleteAll();
     }
 
-    public void deleteById(int id) {
+    public static void deleteById(long id) {
         getGiftDBDao().deleteByKey(id);
     }
 }

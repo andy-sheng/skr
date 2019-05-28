@@ -1,16 +1,17 @@
 package com.common.player.mediaplayer;
 
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.player.IPlayer;
+import com.common.player.BasePlayer;
 import com.common.player.IPlayerCallback;
+import com.common.player.IPlayerNotSupport;
 import com.common.player.event.PlayerEvent;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
@@ -24,7 +25,10 @@ import java.io.IOException;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class AndroidMediaPlayer implements IPlayer {
+/**
+ * 有的手机播放本地 aac 会没法播放，一 start 立马回调 onCompletion
+ */
+public class AndroidMediaPlayer extends BasePlayer {
     public static String TAG = "AndroidMediaPlayer";
 
     // 为了预加载使用
@@ -40,12 +44,20 @@ public class AndroidMediaPlayer implements IPlayer {
     private int videoWidth = 0;
     private int videoHeight = 0;
     private float mShiftUp = 0;
-
+    private long mDuration;
+    private float mVolume = 1.0f;
     private View mView;
 
     private boolean mPreparedFlag = false;
 
-    HandlerTaskTimer mMusicTimePlayTimeListener;
+    private HandlerTaskTimer mMusicTimePlayTimeListener;
+
+    private long resetTs = 0;
+    private long startTs = 0;
+
+    private IPlayerNotSupport mIPlayerNotSupport;
+
+    private boolean mMuted = false;
 
     public AndroidMediaPlayer() {
         TAG += hashCode();
@@ -66,12 +78,27 @@ public class AndroidMediaPlayer implements IPlayer {
         } else {
             mPlayer = genPlayer();
         }
-
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                if (mCallback != null) {
+                MyLog.d(TAG, "onCompletion" + " mp=" + mp);
+                /**
+                 * 只要调用了reset 接口也会异步回调这个 ，这不是期望的
+                 *  所以使用时间戳保护一下
+                 */
+                if (mCallback != null && !TextUtils.isEmpty(mPath) && (System.currentTimeMillis() - resetTs) > 500) {
                     mCallback.onCompletion();
+                }
+                mHandler.removeMessages(MSG_DECREASE_VOLUME);
+                stopMusicPlayTimeListener();
+                long a = System.currentTimeMillis() - startTs;
+                if (a > 0 && a < 200) {
+                    /**
+                     * 一start马上回调onCompletion 可以认为这个播放器不支持这个格式
+                     */
+                    if (mIPlayerNotSupport != null) {
+                        mIPlayerNotSupport.notSupport();
+                    }
                 }
             }
         });
@@ -81,14 +108,25 @@ public class AndroidMediaPlayer implements IPlayer {
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
+                setVolume(1);
+                mDuration = mp.getDuration();
                 if (mCallback != null) {
-                    mCallback.onPrepared();
+                    mCallback.onPrepared(mDuration);
                 }
+                if (enableDecreaseVolume) {
+                    mHandler.removeMessages(MSG_DECREASE_VOLUME);
+                    if(mDuration>10*1000){
+                        mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, mDuration - 3000);
+                    }
+                }
+                startTs = System.currentTimeMillis();
+                MyLog.d(TAG, "onPrepared 总时长:" + mDuration);
             }
         });
         mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
+                MyLog.d(TAG, "onError" + " what=" + what + " extra=" + extra);
                 if (mCallback != null) {
                     mCallback.onError(what, extra);
                 }
@@ -98,6 +136,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
             @Override
             public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                MyLog.d(TAG, "onVideoSizeChanged" + " width=" + width + " height=" + height);
                 AndroidMediaPlayer.this.videoWidth = width;
                 AndroidMediaPlayer.this.videoHeight = height;
                 if (null != mCallback) {
@@ -108,6 +147,7 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
             @Override
             public void onSeekComplete(MediaPlayer mp) {
+                MyLog.d(TAG, "onSeekComplete");
                 if (null != mCallback) {
                     mCallback.onSeekComplete();
                 }
@@ -120,7 +160,7 @@ public class AndroidMediaPlayer implements IPlayer {
         this.mCallback = callback;
         if (callback != null) {
             if (mPreparedFlag) {
-                callback.onPrepared();
+                callback.onPrepared(mDuration);
                 mPreparedFlag = false;
             }
         }
@@ -235,33 +275,30 @@ public class AndroidMediaPlayer implements IPlayer {
 
     @Override
     public void setMuteAudio(boolean isMute) {
+        mMuted = isMute;
         if (isMute) {
             mPlayer.setVolume(0, 0);
         } else {
-            mPlayer.setVolume(0.5f, 0.5f);
+            mPlayer.setVolume(mVolume, mVolume);
         }
     }
-
-    float mVolume;
 
     @Override
     public void setVolume(float volume) {
-        if (mPlayer == null) {
-            return;
-        }
-        mVolume = volume;
-        mPlayer.setVolume(volume, volume);
+        setVolume(volume,true);
     }
 
     @Override
-    public void setVolume(float volume,boolean setConfig) {
+    public void setVolume(float volume, boolean setConfig) {
         if (mPlayer == null) {
             return;
         }
-        if(setConfig) {
+        if (setConfig) {
             this.mVolume = volume;
         }
-        mPlayer.setVolume(volume,volume);
+        if(!mMuted){
+            mPlayer.setVolume(volume, volume);
+        }
     }
 
     @Override
@@ -275,6 +312,7 @@ public class AndroidMediaPlayer implements IPlayer {
 
     /**
      * 也可以播放在线的文件
+     *
      * @param path
      */
     @Override
@@ -284,7 +322,11 @@ public class AndroidMediaPlayer implements IPlayer {
             MyLog.w(TAG, "startPlay but mPlayer === null,return");
             return;
         }
+        boolean needReset = false;
         if (path != null && !path.equals(mPath)) {
+            if (!TextUtils.isEmpty(mPath)) {
+                needReset = true;
+            }
             mPath = path;
             mUrlChange = true;
         }
@@ -293,9 +335,13 @@ public class AndroidMediaPlayer implements IPlayer {
             try {
                 String p = mPath;
                 MyLog.d(TAG, "startPlay2" + " p=" + p);
+                if (needReset) {
+                    reset();
+                }
                 mPlayer.setDataSource(p);
                 mPlayer.prepareAsync();
-            } catch (IOException e) {
+            } catch (Exception e) {
+                MyLog.e(e);
             }
         }
 
@@ -330,7 +376,9 @@ public class AndroidMediaPlayer implements IPlayer {
         if (mPlayer == null) {
             return;
         }
-        mPlayer.pause();
+        if (mPlayer.isPlaying()) {
+            mPlayer.pause();
+        }
         stopMusicPlayTimeListener();
     }
 
@@ -360,6 +408,7 @@ public class AndroidMediaPlayer implements IPlayer {
         if (mPlayer == null) {
             return;
         }
+        resetTs = System.currentTimeMillis();
         mPlayer.reset();
         mPath = null;
         stopMusicPlayTimeListener();
@@ -394,6 +443,10 @@ public class AndroidMediaPlayer implements IPlayer {
     @Override
     public float getVolume() {
         return mVolume;
+    }
+
+    public void setIPlayerNotSupport(IPlayerNotSupport l) {
+        mIPlayerNotSupport = l;
     }
 
     private void startMusicPlayTimeListener() {
@@ -438,4 +491,5 @@ public class AndroidMediaPlayer implements IPlayer {
             mMusicTimePlayTimeListener.dispose();
         }
     }
+
 }

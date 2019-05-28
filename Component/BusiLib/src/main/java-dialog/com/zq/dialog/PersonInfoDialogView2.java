@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,6 +41,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
@@ -60,6 +60,7 @@ import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
+import com.zq.person.view.PersonMoreOpView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,7 +87,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     RelativeLayout mUserInfoArea;
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
-    ExTextView mReport;
+    ExImageView mMoreBtn;
     RelativeLayout mNameArea;
     NormalLevelView2 mLevelView;
     ExTextView mNameTv;
@@ -95,8 +96,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     TagFlowLayout mFlowlayout;
 
     LinearLayout mFunctionArea;
-    RelativeLayout mKickArea;
-    ImageView mKickIv;
     RelativeLayout mFollowArea;
     ImageView mFollowIv;
 
@@ -126,6 +125,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     boolean isShowKick;
     boolean isFollow;
     boolean isFriend;
+
+    PersonMoreOpView mPersonMoreOpView;
 
     Context mContext;
     UserInfoServerApi mUserInfoServerApi;
@@ -163,7 +164,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-
     }
 
     public void setListener(PersonInfoDialog.PersonCardClickListener listener) {
@@ -187,22 +187,17 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         // 多音和ai裁判
         if (mUserId == UserAccountManager.SYSTEM_GRAB_ID || mUserId == UserAccountManager.SYSTEM_RANK_AI) {
             isShowKick = false;
-            mReport.setVisibility(View.GONE);
-            mKickArea.setVisibility(GONE);
+            mMoreBtn.setVisibility(GONE);
         }
 
         // 自己卡片的处理
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
             isShowKick = false;
+            mMoreBtn.setVisibility(GONE);
             mToolbar.setVisibility(GONE);
-            mReport.setVisibility(View.GONE);
             mFunctionArea.setVisibility(View.GONE);
             mSrlFollowIv.setVisibility(GONE);
-            // TODO: 2019/4/8 可能需要调整布局
         }
-
-        mReport.setVisibility(showReport ? VISIBLE : GONE);
-        mKickArea.setVisibility(isShowKick ? VISIBLE : GONE);
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         getHomePage(mUserId);
@@ -220,8 +215,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
 //                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
 
-                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
-                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
+                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
+                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
 
                     showUserInfo(userInfoModel);
                     showUserRelationNum(relationNumModes);
@@ -319,7 +314,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mUserInfoArea = (RelativeLayout) this.findViewById(R.id.user_info_area);
         mAvatarBg = (ImageView) this.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
-        mReport = (ExTextView) this.findViewById(R.id.report);
+        mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mNameArea = (RelativeLayout) this.findViewById(R.id.name_area);
         mLevelView = (NormalLevelView2) this.findViewById(R.id.level_view);
@@ -338,15 +333,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             }
         };
         mFlowlayout.setAdapter(mTagAdapter);
-
-        mReport.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (mClickListener != null) {
-                    mClickListener.onClickReport(mUserId);
-                }
-            }
-        });
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -382,12 +368,57 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 }
             });
         }
+
+        mMoreBtn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mPersonMoreOpView != null) {
+                    mPersonMoreOpView.dismiss();
+                }
+                mPersonMoreOpView = new PersonMoreOpView(getContext(), false, isShowKick);
+                mPersonMoreOpView.setListener(new PersonMoreOpView.Listener() {
+                    @Override
+                    public void onClickRemark() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
+                        if (mClickListener != null) {
+                            mClickListener.onClickRemark(mUserInfoModel);
+                        }
+                    }
+
+                    @Override
+                    public void onClickUnFollow() {
+
+                    }
+
+                    @Override
+                    public void onClickReport() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
+                        if (mClickListener != null) {
+                            mClickListener.onClickReport(mUserId);
+                        }
+                    }
+
+                    @Override
+                    public void onClickKick() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
+                        if (mClickListener != null) {
+                            mClickListener.onClickKick(mUserInfoModel);
+                        }
+                    }
+                });
+                mPersonMoreOpView.showAt(mMoreBtn);
+            }
+        });
     }
 
     private void initOpretaArea() {
         mFunctionArea = (LinearLayout) this.findViewById(R.id.function_area);
-        mKickArea = (RelativeLayout) this.findViewById(R.id.kick_area);
-        mKickIv = (ImageView) this.findViewById(R.id.kick_iv);
         mFollowArea = (RelativeLayout) this.findViewById(R.id.follow_area);
         mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
 
@@ -396,15 +427,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mSrlAvatarArea = (RelativeLayout) this.findViewById(R.id.srl_avatar_area);
         mSrlAvatarBg = (ImageView) this.findViewById(R.id.srl_avatar_bg);
         mSrlAvatarIv = (SimpleDraweeView) this.findViewById(R.id.srl_avatar_iv);
-
-        mKickIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                if (mClickListener != null) {
-                    mClickListener.onClickKick(mUserInfoModel);
-                }
-            }
-        });
 
         mFollowIv.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -432,15 +454,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 }
             }
         });
-
-//        mMessageIv.setOnClickListener(new DebounceViewClickListener() {
-//            @Override
-//            public void clickValid(View v) {
-//                if (mClickListener != null) {
-//                    mClickListener.onClickMessage(mUserInfoModel);
-//                }
-//            }
-//        });
     }
 
     private void initPhotoArea() {
@@ -595,9 +608,17 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                             .setCircle(true)
                             .build());
 
-            mNameTv.setText(model.getNickname());
+            mNameTv.setText(model.getNicknameRemark());
             mSignTv.setText(model.getSignature());
-            mSexIv.setBackgroundResource(model.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+            if (model.getSex() == ESex.SX_MALE.getValue()) {
+                mSexIv.setVisibility(VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+            } else if (model.getSex() == ESex.SX_FEMALE.getValue()) {
+                mSexIv.setVisibility(VISIBLE);
+                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+            } else {
+                mSexIv.setVisibility(GONE);
+            }
 
             if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
                 mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
@@ -618,7 +639,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         int fansNum = 0;
         if (relationNumModes != null && relationNumModes.size() > 0) {
             for (RelationNumModel mode : relationNumModes) {
-                if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
                     fansNum = mode.getCnt();
                 }
             }

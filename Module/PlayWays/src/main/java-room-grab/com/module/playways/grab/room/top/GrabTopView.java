@@ -18,10 +18,11 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.view.BitmapTextView;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
-import com.module.playways.R;
-import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
+import com.module.playways.room.gift.event.UpdateCoinEvent;
+import com.module.playways.room.gift.event.UpdateHZEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,17 +32,26 @@ public class GrabTopView extends RelativeLayout {
 
     ExTextView mTvChangeRoom;
     BitmapTextView mTvCoin;
-    ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
     ImageView mIvVoiceSetting;
-//    ImageView mIvAccDisable;
+    ExTextView mTvHzChange;
+    BitmapTextView mTvHz;
 
     Listener mOnClickChangeRoomListener;
     GrabRoomData mGrabRoomData;
 
+    ExImageView mIvHzIcon;
+
     int mCoin = 0;
 
+    float mHz = 0;
+
+    long lastTs;
+
+    long lastHzTs;
+
     AnimatorSet mAnimatorSet;  //金币加减的动画
+    AnimatorSet mHzAnimatorSet;  //金币加减的动画
 
     public GrabTopView(Context context) {
         super(context);
@@ -70,17 +80,77 @@ public class GrabTopView extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(UpdateCoinAndDiamondEvent event) {
+    public void onEvent(UpdateCoinEvent event) {
         if (mCoin != event.getCoinBalance()) {
-            mCoin = event.getCoinBalance();
-            mTvCoin.setText(event.getCoinBalance() + "");
-            playCoinChangeAnimation(event.getCoinBalance());
+            if (event.getTs() == 0) {
+                //从购买礼物来的
+                mCoin = event.getCoinBalance();
+                mTvCoin.setText(event.getCoinBalance() + "");
+            } else if (lastTs < event.getTs()) {
+                lastTs = event.getTs();
+                mCoin = event.getCoinBalance();
+                mTvCoin.setText(event.getCoinBalance() + "");
+            }
+        }
+
+        mGrabRoomData.setCoinNoEvent(mCoin);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateHZEvent event) {
+        if (mHz != event.getHz()) {
+            if (lastHzTs < event.getTs()) {
+                float hzChange = event.getHz() - mHz;
+                lastHzTs = event.getTs();
+                mHz = event.getHz();
+                mTvHz.setText(String.format("%.1f", event.getHz()));
+                playHZChangeAnimation(hzChange);
+            }
         }
     }
 
+    private void playHZChangeAnimation(float hzChange) {
+        mTvHzChange.setText(String.format("+ %.1f", hzChange));
+
+        if (mHzAnimatorSet == null) {
+            mHzAnimatorSet = new AnimatorSet();
+            ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(mTvHzChange, TRANSLATION_Y, 0f, -U.getDisplayUtils().dip2px(30));
+            ObjectAnimator alphAnimation = ObjectAnimator.ofFloat(mTvHzChange, View.ALPHA, 1f, 0f);
+
+            // 高度确定，直接写死中心点
+            mHzAnimatorSet.setDuration(1000);
+            mHzAnimatorSet.playTogether(translateAnimation, alphAnimation);
+        } else {
+            mHzAnimatorSet.cancel();
+        }
+
+        mTvHzChange.setVisibility(VISIBLE);
+        mHzAnimatorSet.removeAllListeners();
+        mHzAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mTvHzChange.setVisibility(GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        mHzAnimatorSet.start();
+    }
+
     private void playCoinChangeAnimation(int coinChange) {
-        mTvCoinChange.setVisibility(VISIBLE);
-        mConinChangeIv.setVisibility(VISIBLE);
         if (coinChange > 0) {
             mTvCoinChange.setText("+ " + Math.abs(coinChange));
         } else {
@@ -92,15 +162,14 @@ public class GrabTopView extends RelativeLayout {
             ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(mTvCoinChange, TRANSLATION_Y, 0f, -U.getDisplayUtils().dip2px(30));
             ObjectAnimator alphAnimation = ObjectAnimator.ofFloat(mTvCoinChange, View.ALPHA, 1f, 0f);
 
-            ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(mConinChangeIv, ROTATION, 0f, 360f);
             // 高度确定，直接写死中心点
-            mConinChangeIv.setPivotX(U.getDisplayUtils().dip2px(19));
-            mConinChangeIv.setPivotY(U.getDisplayUtils().dip2px(19));
-
             mAnimatorSet.setDuration(1000);
-            mAnimatorSet.playTogether(translateAnimation, alphAnimation, rotateAnimation);
+            mAnimatorSet.playTogether(translateAnimation, alphAnimation);
+        } else {
+            mAnimatorSet.cancel();
         }
 
+        mTvCoinChange.setVisibility(VISIBLE);
         mAnimatorSet.removeAllListeners();
         mAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -110,7 +179,7 @@ public class GrabTopView extends RelativeLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mConinChangeIv.setVisibility(GONE);
+                mTvCoinChange.setVisibility(GONE);
             }
 
             @Override
@@ -124,24 +193,27 @@ public class GrabTopView extends RelativeLayout {
             }
         });
         mAnimatorSet.start();
-
     }
+
 
     public void init() {
         inflate(getContext(), R.layout.grab_top_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mTvCoin = (BitmapTextView) findViewById(R.id.tv_coin);
-        mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
         mIvVoiceSetting = (ImageView) findViewById(R.id.iv_voice_setting);
+        mIvHzIcon = (ExImageView) findViewById(R.id.iv_hz_icon);
+        mTvHzChange = (ExTextView) findViewById(R.id.tv_hz_change);
+        mTvHz = (BitmapTextView) findViewById(R.id.tv_hz);
+        mTvHz.setText("0");
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mOnClickChangeRoomListener != null) {
                     mOnClickChangeRoomListener.changeRoom();
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                            "game_changeroom", null);
+//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                            "game_changeroom", null);
                 }
             }
         });
@@ -159,7 +231,9 @@ public class GrabTopView extends RelativeLayout {
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
         mTvCoin.setText(mGrabRoomData.getCoin() + "");
+        mTvHz.setText(String.format("%.1f", mGrabRoomData.getHzCount()));
         mCoin = mGrabRoomData.getCoin();
+        mHz = mGrabRoomData.getHzCount();
 
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
@@ -172,6 +246,12 @@ public class GrabTopView extends RelativeLayout {
             } else {
                 setChangeRoomBtnVisiable(true);
             }
+        }
+
+        if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+            // 新手房
+            setChangeRoomBtnVisiable(false);
+            mIvVoiceSetting.setVisibility(GONE);
         }
     }
 
@@ -211,6 +291,11 @@ public class GrabTopView extends RelativeLayout {
         if (mAnimatorSet != null) {
             mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
+        }
+
+        if (mHzAnimatorSet != null) {
+            mHzAnimatorSet.removeAllListeners();
+            mHzAnimatorSet.cancel();
         }
     }
 

@@ -294,24 +294,28 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
         MyLog.d(TAG, "onActivityResult" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         if (resultCode == FragmentActivity.RESULT_OK && requestCode == ResPicker.REQUEST_CODE_TAKE) {
-            // 拍照结果返回
-            U.getImageUtils().notifyGalleryChangeByBroadcast(mImagePicker.getTakeImageFile());
-            String path = mImagePicker.getTakeImageFile().getAbsolutePath();
+            if (mImagePicker != null && mImagePicker.getTakeImageFile() != null) {
+                // 拍照结果返回
+                U.getImageUtils().notifyGalleryChangeByBroadcast(mImagePicker.getTakeImageFile());
+                String path = mImagePicker.getTakeImageFile().getAbsolutePath();
 
-            ImageItem imageItem = new ImageItem();
-            imageItem.setPath(path);
+                ImageItem imageItem = new ImageItem();
+                imageItem.setPath(path);
 
-            mImagePicker.clearSelectedRes();
-            mImagePicker.addSelectedResItem(0, imageItem);
+                mImagePicker.clearSelectedRes();
+                mImagePicker.addSelectedResItem(0, imageItem);
 
-            if (mImagePicker.getParams().isCrop()) {
-                gotoCrop();
-            } else {
-                if (data != null) {
-                    deliverResult(requestCode, resultCode, data.getExtras());
+                if (mImagePicker.getParams().isCrop()) {
+                    gotoCrop();
                 } else {
-                    deliverResult(requestCode, resultCode, null);
+                    if (data != null) {
+                        deliverResult(requestCode, resultCode, data.getExtras());
+                    } else {
+                        deliverResult(requestCode, resultCode, null);
+                    }
                 }
+            } else {
+                MyLog.w(TAG, "onActivityResultReal" + "no takeImageFile" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
             }
         }
         return false;
@@ -337,6 +341,14 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     @Override
     public void onResItemClick(View view, ResItem resItem, int position) {
         //根据是否有相机按钮确定位置
+        if (mImagePicker.getCurrentResFolderItems().size() <= position) {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+
+            return;
+        }
+
         if (resItem instanceof ImageItem) {
             position = mImagePicker.getParams().isShowCamera() ? position - 1 : position;
             if (mImagePicker.getParams().isMultiMode()) {

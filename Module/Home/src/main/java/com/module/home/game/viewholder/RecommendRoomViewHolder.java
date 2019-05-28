@@ -35,8 +35,6 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
     RecyclerView mFriendsRecycle;
     ExImageView mMoreFriends;
 
-    boolean hasMore = true;
-
     RecommendRoomModel mRecommendRoomModel;
     FriendRoomHorizontalAdapter mFriendRoomAdapter;
     GameAdapter.GameAdapterListener mListener;
@@ -70,7 +68,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onLoadMore() {
                 MyLog.d(TAG, "onLoadMore");
-                loadMoreData();
+                refreshData();
             }
         });
 
@@ -88,39 +86,28 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(RecommendRoomModel recommendRoomModel) {
-        hasMore = true;
         this.mRecommendRoomModel = recommendRoomModel;
         mFriendRoomAdapter.setDataList(mRecommendRoomModel.getRoomModels());
     }
 
-    private void loadMoreData() {
-        if (!hasMore) {
-            return;
-        }
+    private void refreshData() {
         GrabSongApi mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(mRecommendRoomModel.getOffset(), 50), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    int totalNum = obj.getData().getIntValue("totalRoomsNum");
-                    refreshData(list, offset, totalNum);
+                    refreshData(list);
                 }
             }
         }, mBaseFragment);
     }
 
-    private void refreshData(List<RecommendModel> list, int offset, int totalNum) {
-        if (list == null || list.size() == 0) {
-            hasMore = false;
-            return;
+    private void refreshData(List<RecommendModel> list) {
+        if (list != null && list.size() > 0) {
+            this.mRecommendRoomModel.getRoomModels().clear();
+            this.mRecommendRoomModel.getRoomModels().addAll(list);
+            mFriendRoomAdapter.setDataList(mRecommendRoomModel.getRoomModels());
         }
-
-        this.mRecommendRoomModel.setOffset(offset);
-        this.mRecommendRoomModel.setTotalNum(totalNum);
-        this.mRecommendRoomModel.getRoomModels().addAll(list);
-
-        mFriendRoomAdapter.setDataList(mRecommendRoomModel.getRoomModels());
     }
 }

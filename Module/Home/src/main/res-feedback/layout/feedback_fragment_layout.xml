@@ -21,7 +21,7 @@
         app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
 
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/titlebar"
@@ -34,91 +34,12 @@
         android:paddingRight="@dimen/view_3_dp"
         android:paddingBottom="@dimen/view_5_dp">
 
-        <com.common.view.ex.NoLeakEditText
-            android:id="@+id/feedback_content"
+        <com.zq.report.view.FeedbackView
+            android:paddingBottom="@dimen/view_15_dp"
+            android:id="@+id/feed_back_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_162_dp"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:layout_marginTop="@dimen/view_30_dp"
-            android:layout_marginRight="@dimen/view_10_dp"
-            android:background="@drawable/common_edit_no_stroke_bg"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="left|top"
-            android:hint="有什么想要吐槽给撕歌的呢"
-            android:lineSpacingExtra="@dimen/view_10_dp"
-            android:maxLength="200"
-            android:paddingLeft="@dimen/view_15_dp"
-            android:paddingTop="@dimen/view_15_dp"
-            android:paddingRight="@dimen/view_15_dp"
-            android:paddingBottom="@dimen/view_30_dp"
-            android:textColor="@color/textColorPrimary"
-            android:textColorHint="#663B4E79"
-            android:textSize="@dimen/view_16_dp"
-            android:textStyle="bold" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/content_text_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/feedback_content"
-            android:layout_alignBottom="@id/feedback_content"
-            android:layout_marginRight="@dimen/view_12_dp"
-            android:layout_marginBottom="@dimen/view_10_dp"
-            android:text="0/200"
-            android:textColor="#663B4E79"
-            android:textSize="@dimen/textsize_14_dp"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/button_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/feedback_content"
-            android:layout_marginTop="@dimen/view_14_dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/error_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_17_dp"
-                android:button="@drawable/radiobutton_default"
-                android:checked="true"
-                android:paddingLeft="@dimen/view_8_dp"
-                android:text="遇到问题"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/textsize_16_dp"
-                android:textStyle="bold" />
-
-            <RadioButton
-                android:id="@+id/feed_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_40_dp"
-                android:button="@drawable/radiobutton_default"
-                android:paddingLeft="@dimen/view_8_dp"
-                android:text="新功能建议"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/textsize_16_dp"
-                android:textStyle="bold" />
-        </RadioGroup>
-
-        <com.dialog.view.StrokeTextView
-            android:id="@+id/submit_tv"
-            android:layout_width="@dimen/view_132_dp"
-            android:layout_height="@dimen/view_54_dp"
-            android:layout_below="@+id/button_area"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_20_dp"
-            android:background="@drawable/red_button_icon"
-            android:gravity="center"
-            android:paddingBottom="@dimen/view_6_dp"
-            android:text="提交"
-            android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_20_dp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/upload_progress_bar"

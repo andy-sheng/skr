@@ -11,6 +11,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.crash.IgnoreException;
 import com.common.image.fresco.FrescoWorker;
@@ -19,6 +20,7 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.ImageUtils;
+import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -51,11 +53,11 @@ public class SongInfoCardView extends RelativeLayout {
 
     public final static String TAG = "SongInfoCardView";
 
-    SimpleDraweeView mSongCoverIv;
+//    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
     ExTextView mChorusSongTag;
     ExTextView mPkSongTag;
-    ExTextView mSongSingerTv;
+//    ExTextView mSongSingerTv;
     BitmapTextView mCurrentSeq;
     BitmapTextView mTotalSeq;
     ExTextView mSongLyrics;
@@ -86,11 +88,11 @@ public class SongInfoCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_song_info_card_layout, this);
-        mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
+//        mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
         mChorusSongTag = (ExTextView) findViewById(R.id.chorus_song_tag);
         mPkSongTag = (ExTextView) findViewById(R.id.pk_song_tag);
-        mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
+//        mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
         mCurrentSeq = (BitmapTextView) findViewById(R.id.current_seq);
         mTotalSeq = (BitmapTextView) findViewById(R.id.total_seq);
         mSongLyrics = (ExTextView) findViewById(R.id.song_lyrics);
@@ -107,28 +109,29 @@ public class SongInfoCardView extends RelativeLayout {
         }
 
         setVisibility(VISIBLE);
-        if (!TextUtils.isEmpty(songModel.getCover())) {
-            FrescoWorker.loadImage(mSongCoverIv,
-                    ImageFactory.newPathImage(songModel.getCover())
-                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white))
-                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
-                            .build());
-        } else {
-            FrescoWorker.loadImage(mSongCoverIv,
-                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
-                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white)).build());
-        }
-        mSongSingerTv.setText(songModel.getOwner());
+//        if (!TextUtils.isEmpty(songModel.getCover())) {
+//            FrescoWorker.loadImage(mSongCoverIv,
+//                    ImageFactory.newPathImage(songModel.getCover())
+//                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
+//                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+//                            .setBorderColor(U.getColor(R.color.white))
+//                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+//                            .build());
+//        } else {
+//            FrescoWorker.loadImage(mSongCoverIv,
+//                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
+//                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
+//                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+//                            .setBorderColor(U.getColor(R.color.white)).build());
+//        }
+//        mSongSingerTv.setText(songModel.getOwner());
         mSongLyrics.setText("歌词加载中...");
         mCurrentSeq.setText("" + curRoundSeq);
         mTotalSeq.setText("" + totalSeq);
         if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             // 合唱
-            mSongNameTv.setText("" + songModel.getItemName());
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
+            mSongNameTv.setText("" + songModel.getDisplaySongName());
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
@@ -138,7 +141,8 @@ public class SongInfoCardView extends RelativeLayout {
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             // PK
-            mSongNameTv.setText("" + songModel.getItemName());
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
+            mSongNameTv.setText("" + songModel.getDisplaySongName());
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(VISIBLE);
@@ -187,22 +191,12 @@ public class SongInfoCardView extends RelativeLayout {
         mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
-
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), tempFile, null);
-
-                File oldName = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
                 File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), newName,true, null);
 
                 if (isSuccess) {
-                    if (oldName != null && oldName.renameTo(newName)) {
-                        MyLog.w(TAG, "已重命名");
                         emitter.onNext(newName);
                         emitter.onComplete();
-                    } else {
-                        MyLog.w(TAG, "Error");
-                        emitter.onError(new IgnoreException("重命名错误"));
-                    }
                 } else {
                     emitter.onError(new IgnoreException("下载失败" + TAG));
                 }
@@ -226,8 +220,7 @@ public class SongInfoCardView extends RelativeLayout {
             public void subscribe(ObservableEmitter<String> emitter) {
                 if (file != null && file.exists() && file.isFile()) {
                     try (BufferedSource source = Okio.buffer(Okio.source(file))) {
-                        String lyric = source.readUtf8Line();
-                        lyric = lyric + "\n" + source.readUtf8Line();
+                        String lyric = source.readUtf8();
                         emitter.onNext(lyric);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -241,9 +234,31 @@ public class SongInfoCardView extends RelativeLayout {
                 .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
             @Override
             public void accept(String o) {
-                mSongLyrics.setText(o);
+                mSongLyrics.setText("");
+                if (isJSON2(o)) {
+                    NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
+                    for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
+                        mSongLyrics.append(newChorusLyricModel.getItems().get(i).getWords());
+                        if (i == 0) {
+                            mSongLyrics.append("\n");
+                        }
+                    }
+                } else {
+                    mSongLyrics.setText(o);
+                }
             }
         }, throwable -> MyLog.e(TAG, throwable));
+    }
+
+    public boolean isJSON2(String str) {
+        boolean result = false;
+        try {
+            Object obj = JSON.parse(str);
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
     }
 
     /**

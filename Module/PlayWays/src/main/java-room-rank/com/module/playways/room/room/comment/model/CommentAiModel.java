@@ -14,7 +14,7 @@ public class CommentAiModel extends CommentModel {
     public CommentAiModel(PlayerInfoModel ai, String text) {
         setCommentType(CommentModel.TYPE_AI);
         setUserId(ai.getUserInfo().getUserId());
-        setUserName(ai.getUserInfo().getNickname());
+        setUserName(ai.getUserInfo().getNicknameRemark());
         setAvatar(ai.getUserInfo().getAvatar());
         setAvatarColor(Color.WHITE);
         SpannableStringBuilder stringBuilder = new SpanUtils()

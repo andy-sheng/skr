@@ -5,12 +5,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.common.base.BaseFragment;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.home.R;
 import com.module.home.adapter.WalletRecordAdapter;
 import com.module.home.inter.IWalletView;
+import com.module.home.loadsir.BalanceEmptyCallBack;
 import com.module.home.model.WalletRecordModel;
 import com.module.home.model.WithDrawInfoModel;
 import com.module.home.presenter.WalletRecordPresenter;
@@ -28,6 +37,9 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
     RecyclerView mRecyclerView;
     CommonTitleBar mTitlebar;
     SmartRefreshLayout mRefreshLayout;
+    ExImageView mIvBg;
+
+    LoadService mLoadService;
 
     int offset = 0; //偏移量
     int DEFAULT_COUNT = 50; //每次拉去的数量
@@ -42,6 +54,7 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mIvBg = (ExImageView)mRootView.findViewById(R.id.iv_bg);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mWalletRecordAdapter = new WalletRecordAdapter();
@@ -64,6 +77,34 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
             }
         });
 
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                finish();
+            }
+        });
+
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), WithDrawHistoryFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new BalanceEmptyCallBack())
+                .build();
+
+        mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                mWalletRecordPresenter.getAllWalletRecords(offset, DEFAULT_COUNT);
+            }
+        });
+
         mWalletRecordPresenter = new WalletRecordPresenter(this);
         addPresent(mWalletRecordPresenter);
         mWalletRecordPresenter.getAllWalletRecords(offset, DEFAULT_COUNT);
@@ -79,8 +120,13 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
         this.offset = offset;
         if (list == null || list.size() <= 0) {
             mRefreshLayout.setEnableLoadMore(false);
+            if(mWalletRecordAdapter.getItemCount() == 0){
+                mLoadService.showCallback(BalanceEmptyCallBack.class);
+            }
             return;
         }
+
+        mLoadService.showSuccess();
         mRefreshLayout.finishLoadMore();
         mWalletRecordAdapter.insertListLast(list);
         mWalletRecordAdapter.notifyDataSetChanged();
@@ -92,8 +138,13 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
         if (list == null || list.size() <= 0) {
             mRefreshLayout.setEnableLoadMore(false);
             mRefreshLayout.finishLoadMore();
+            if(mWalletRecordAdapter.getItemCount() == 0){
+                mLoadService.showCallback(BalanceEmptyCallBack.class);
+            }
             return;
         }
+
+        mLoadService.showSuccess();
         mRefreshLayout.finishLoadMore();
         mWalletRecordAdapter.insertListLast(list);
         mWalletRecordAdapter.notifyDataSetChanged();

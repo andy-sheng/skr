@@ -1,74 +1,41 @@
 package com.zq.relation.fragment;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.clipboard.ClipboardUtils;
-import com.common.core.kouling.SkrKouLingUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
-import com.common.notification.NotificationManager;
-import com.common.notification.event.FollowNotifyEvent;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
-import com.component.busilib.constans.GrabRoomType;
-import com.component.busilib.manager.WeakRedDotManager;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.common.ICallback;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zq.dialog.InviteFriendDialog;
-import com.zq.dialog.InviteFriendDialogView;
 import com.zq.relation.activity.RelationActivity;
 import com.zq.relation.view.RelationView;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
-import model.RelationNumModel;
 
 /**
  * 关系列表
  */
 public class RelationFragment extends BaseFragment {
 
-    CommonTitleBar mTitlebar;
     LinearLayout mContainer;
+    ExImageView mIvBack;
+    ExImageView mAddFriendIv;
     SlidingTabLayout mRelationTab;
     NestViewPager mRelationVp;
 
@@ -102,7 +69,8 @@ public class RelationFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mAddFriendIv = (ExImageView) mRootView.findViewById(R.id.add_friend_iv);
         mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
         mRelationTab = (SlidingTabLayout) mRootView.findViewById(R.id.relation_tab);
         mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
@@ -122,7 +90,7 @@ public class RelationFragment extends BaseFragment {
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
 
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
 //                U.getFragmentUtils().popFragment(RelationFragment.this);
@@ -132,7 +100,7 @@ public class RelationFragment extends BaseFragment {
             }
         });
 
-        mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+        mAddFriendIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mPopupWindow != null && mPopupWindow.isShowing()) {
@@ -140,7 +108,7 @@ public class RelationFragment extends BaseFragment {
                 }
                 mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
                 mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
-                mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
+                mPopupWindow.showAsDropDown(mAddFriendIv, -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
             }
         });
 
@@ -151,7 +119,7 @@ public class RelationFragment extends BaseFragment {
                     mPopupWindow.dismiss();
                 }
                 U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), SearchFriendFragment.class)
+                        FragmentUtils.newAddParamsBuilder(getActivity(), SearchUserFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
@@ -168,9 +136,9 @@ public class RelationFragment extends BaseFragment {
             }
         });
 
-        mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION_FRIENDS));
-        mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION_FOLLOW));
-        mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION_FANS));
+        mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION.FRIENDS.getValue()));
+        mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION.FOLLOW.getValue()));
+        mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION.FANS.getValue()));
 
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
         mRelationTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
@@ -249,20 +217,18 @@ public class RelationFragment extends BaseFragment {
             mFansNum = bundle.getInt(RelationActivity.FANS_NUM_KEY);
             mFocusNum = bundle.getInt(RelationActivity.FOLLOW_NUM_KEY);
             if (relation == UserInfoManager.RA_UNKNOWN) {
-                getRelationNums();
                 selectPosition(0);
             } else {
-                if (relation == UserInfoManager.RELATION_FRIENDS) {
+                if (relation == UserInfoManager.RELATION.FRIENDS.getValue()) {
                     mRelationVp.setCurrentItem(0);
                     selectPosition(0);
-                } else if (relation == UserInfoManager.RELATION_FOLLOW) {
+                } else if (relation == UserInfoManager.RELATION.FOLLOW.getValue()) {
                     mRelationVp.setCurrentItem(1);
                     selectPosition(1);
-                } else if (relation == UserInfoManager.RELATION_FANS) {
+                } else if (relation == UserInfoManager.RELATION.FANS.getValue()) {
                     mRelationVp.setCurrentItem(2);
                     selectPosition(2);
                 }
-                refreshRelationNums();
             }
         } else {
             MyLog.w(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
@@ -294,47 +260,10 @@ public class RelationFragment extends BaseFragment {
         mInviteFriendDialog.show();
     }
 
-    private void getRelationNums() {
-        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        ApiMethods.subscribe(userInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
-                    if (relationNumModels != null && relationNumModels.size() > 0) {
-                        for (RelationNumModel mode : relationNumModels) {
-                            if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
-                                mFriendNum = mode.getCnt();
-                            } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
-                                mFansNum = mode.getCnt();
-                            } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
-                                mFocusNum = mode.getCnt();
-                            }
-                        }
-                    }
-                    refreshRelationNums();
-                }
-            }
-        }, this);
-
+    @Override
+    public boolean useEventBus() {
+        return false;
     }
-
-    public void refreshRelationNums() {
-        mFriend.setText(String.format(U.app().getResources().getString(R.string.friends_num), mFriendNum));
-        mFollow.setText(String.format(U.app().getResources().getString(R.string.follows_num), mFocusNum));
-        mFans.setText(String.format(U.app().getResources().getString(R.string.fans_num), mFansNum));
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RelationChangeEvent event) {
-        getRelationNums();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FollowNotifyEvent event) {
-        getRelationNums();
-    }
-
 
     @Override
     public void destroy() {

@@ -24,6 +24,7 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
+import com.dialog.view.StrokeTextView;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
@@ -39,7 +40,7 @@ import com.zq.level.view.NormalLevelView2;
 import java.util.List;
 
 /**
- * 一唱到底结果页面
+ * 一唱到底结果页面 (无作品)
  */
 public class GrabResultFragment extends BaseFragment {
 
@@ -51,7 +52,6 @@ public class GrabResultFragment extends BaseFragment {
 
     RelativeLayout mSingEndRecord;
     ExRelativeLayout mResultArea;
-    ExRelativeLayout mGrabResultArea;
     ExTextView mLevelDescTv;
     LevelStarProgressBar mLevelProgress;
     BitmapTextView mSongNum;
@@ -59,9 +59,8 @@ public class GrabResultFragment extends BaseFragment {
     BitmapTextView mBaodengNum;
     NormalLevelView2 mLevelView;
     LinearLayout mLlBottomArea;
-    ExTextView mTvBack;
-    ExTextView mTvAgain;
-    ExTextView mTvShare;
+    StrokeTextView mTvBack;
+    StrokeTextView mTvAgain;
 
     Handler mUiHandler = new Handler();
 
@@ -74,7 +73,6 @@ public class GrabResultFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mSingEndRecord = (RelativeLayout) mRootView.findViewById(R.id.sing_end_record);
         mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
-        mGrabResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.grab_result_area);
         mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
         mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
         mSongNum = (BitmapTextView) mRootView.findViewById(R.id.song_num);
@@ -82,9 +80,8 @@ public class GrabResultFragment extends BaseFragment {
         mBaodengNum = (BitmapTextView) mRootView.findViewById(R.id.baodeng_num);
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mLlBottomArea = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_area);
-        mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
-        mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
-        mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
+        mTvBack = (StrokeTextView) mRootView.findViewById(R.id.tv_back);
+        mTvAgain = (StrokeTextView) mRootView.findViewById(R.id.tv_again);
 
         if (mRoomData != null) {
             mGrabResultData = mRoomData.getGrabResultData();
@@ -110,14 +107,14 @@ public class GrabResultFragment extends BaseFragment {
             }
         });
 
-        mTvShare.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                SharePanel sharePanel = new SharePanel(getActivity());
-                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
-                sharePanel.show(ShareType.IMAGE_RUL);
-            }
-        });
+//        mTvShare.setOnClickListener(new AnimateClickListener() {
+//            @Override
+//            public void click(View view) {
+//                SharePanel sharePanel = new SharePanel(getActivity());
+//                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
+//                sharePanel.show(ShareType.IMAGE_RUL);
+//            }
+//        });
 
         mTvAgain.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -149,7 +146,7 @@ public class GrabResultFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-//        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(GrabResultFragment.TAG);
         mUiHandler.removeCallbacksAndMessages(null);
     }
 
@@ -204,7 +201,7 @@ public class GrabResultFragment extends BaseFragment {
                 }
             }, this);
         } else {
-            MyLog.d(TAG, "syncFromServer"  + " mRoomData == null Why?");
+            MyLog.d(TAG, "syncFromServer" + " mRoomData == null Why?");
         }
     }
 

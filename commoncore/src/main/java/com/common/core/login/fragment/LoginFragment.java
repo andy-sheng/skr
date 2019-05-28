@@ -1,12 +1,11 @@
 package com.common.core.login.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.text.SpannableStringBuilder;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,11 +19,11 @@ import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
+import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.share.ShareManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -33,6 +32,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class LoginFragment extends BaseFragment {
@@ -45,8 +45,6 @@ public class LoginFragment extends BaseFragment {
 
     RelativeLayout mMainActContainer;
     ImageView mPicture;
-    RelativeLayout mContainer;
-
 
     LinearLayout mTvUserAgree;
     ExImageView mWeixinLoginTv;
@@ -58,9 +56,6 @@ public class LoginFragment extends BaseFragment {
     ProgressBar mProgressBar;
 
     volatile boolean mIsWaitOss = false;
-
-    ViewTreeObserver mObserver;
-    boolean isMeasured = false;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -74,22 +69,10 @@ public class LoginFragment extends BaseFragment {
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
-    ViewTreeObserver.OnPreDrawListener mOnDrawListener = new ViewTreeObserver.OnPreDrawListener() {
+    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission(){
         @Override
-        public boolean onPreDraw() {
-            if (!isMeasured) {
-                isMeasured = true;
-                int height = mContainer.getMeasuredHeight();
-                if (height < MIN_HEIGHT) {
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
-                    layoutParams.height = MIN_HEIGHT;
-                    mContainer.setLayoutParams(layoutParams);
-                    mDengluArea.setTranslationY(height - MIN_HEIGHT);
-                    mLogoText.setTranslationY((height - MIN_HEIGHT) / 2);
-                    mPicture.setTranslationY(height - MIN_HEIGHT);
-                }
-            }
-            return true;
+        public void onRequestPermissionFailure1(Activity activity, boolean goSettingIfRefuse) {
+            // 点击拒绝但不是不再询问 不弹去设置的弹窗
         }
     };
 
@@ -104,7 +87,6 @@ public class LoginFragment extends BaseFragment {
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mPicture = (ImageView) mRootView.findViewById(R.id.picture);
-        mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
 
         mDengluArea = (LinearLayout) mRootView.findViewById(R.id.denglu_area);
         mWeixinLoginTv = (ExImageView) mRootView.findViewById(R.id.weixin_login_tv);
@@ -114,26 +96,24 @@ public class LoginFragment extends BaseFragment {
         mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
-        mObserver = mContainer.getViewTreeObserver();
-        mObserver.addOnPreDrawListener(mOnDrawListener);
-
-        SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("撕歌").setBold()
-                .append(" | 很高兴，用歌声认识你")
-                .create();
-        mLogoText.setText(stringBuilder);
-
-
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mIsWaitOss) {
                     return;
                 }
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
+                HashMap map = new HashMap();
+                map.put("type","Phone");
+                StatisticsAdapter.recordCountEvent("signup", "click", map);
+                mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+                    }
+                },true);
             }
         });
 
@@ -143,22 +123,35 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
+                HashMap map = new HashMap();
+                map.put("type","WeiXin");
+                StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
                     U.getToastUtil().showShort("你没有安装微信");
                     return;
                 }
                 if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
                     // 小米商店渠道，需要获取读取imei权限
-                    mSkrPermission.ensurePermission(new Runnable() {
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                        @Override
+                        public void run() {
+                            mSkrPermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showLoginingBar(true);
+                                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                                }
+                            }, true);
+                        }
+                    },true);
+                } else {
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
-                    }, true);
-                } else {
-                    showLoginingBar(true);
-                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                    },true);
                 }
             }
         });
@@ -169,23 +162,37 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
+                HashMap map = new HashMap();
+                map.put("type","QQ");
+                StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
                     U.getToastUtil().showShort("你没有安装QQ");
                     return;
                 }
+
                 if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
-                    mSkrPermission.ensurePermission(new Runnable() {
+                    // 小米商店渠道，需要获取读取imei权限
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
+                        @Override
+                        public void run() {
+                            mSkrPermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showLoginingBar(true);
+                                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                                }
+                            }, true);
+                        }
+                    },true);
+                } else {
+                    mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
-                    }, true);
-                } else {
-                    showLoginingBar(true);
-                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                    },true);
                 }
-
             }
         });
 
@@ -257,17 +264,15 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrPermission.onBackFromPermisionManagerMaybe();
+        mSkrPermission.onBackFromPermisionManagerMaybe(getActivity());
+        mSkrSdcardPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         StatisticsAdapter.recordCountEvent("login", "expose", null);
-        if (U.getPreferenceUtils().getSettingBoolean("newinstall", true)) {
-            U.getPreferenceUtils().setSettingBoolean("newinstall", false);
-            StatisticsAdapter.recordCountEvent("signup", "expose", null);
-        }
+        StatisticsAdapter.recordCountEvent("signup", "expose", null,true);
     }
 
     @Override
@@ -278,9 +283,6 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (mObserver != null && mObserver.isAlive() && mOnDrawListener != null) {
-            mObserver.removeOnPreDrawListener(mOnDrawListener);
-        }
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
         }

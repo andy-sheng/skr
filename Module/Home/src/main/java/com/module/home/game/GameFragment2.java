@@ -13,15 +13,15 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
-
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.BaseImageView;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
-import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -34,6 +34,7 @@ import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.event.CheckInSuccessEvent;
 import com.module.home.game.adapter.GameAdapter;
 import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
@@ -165,10 +166,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mTaskIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-//                U.getToastUtil().showShort("点击了做任务");
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
                         .navigation();
+                StatisticsAdapter.recordCountEvent("grab", "task_click", null);
             }
         });
 
@@ -200,7 +201,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
-                StatisticsAdapter.recordCountEvent("grab", "room_click", null);
+                StatisticsAdapter.recordCountEvent("grab", "categoryall2", null);
             }
 
             @Override
@@ -212,7 +213,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                         public void run() {
                             IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(),0);
+                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(), 0);
                             }
                         }
                     }, true);
@@ -220,12 +221,13 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
-                StatisticsAdapter.recordCountEvent("grab", "categoryall", null);
+                StatisticsAdapter.recordCountEvent("grab", "room_click2", null);
             }
 
             @Override
             public void moreRoom() {
                 MyLog.d(TAG, "moreRoom");
+                StatisticsAdapter.recordCountEvent("grab", "room_more", null);
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_FRIEND_ROOM)
                         .navigation();
@@ -250,7 +252,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override
@@ -268,6 +270,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initGameKConfig();
         mGamePresenter.initCoinNum(false);
         mGamePresenter.checkTaskRedDot();
+        StatisticsAdapter.recordCountEvent("grab", "expose", null);
     }
 
     @Override
@@ -284,6 +287,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         initBaseInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(CheckInSuccessEvent checkInSuccessEvent) {
+        mGamePresenter.checkTaskRedDot();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -336,11 +344,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean
                                              homepagesitefirstBean) {
-        AvatarUtils.loadAvatarByUrl(mIvRedPkg,
-                AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
-                        .setWidth(U.getDisplayUtils().dip2px(48f))
-                        .setHeight(U.getDisplayUtils().dip2px(53f))
-                        .build());
+        FrescoWorker.loadImage(mIvRedPkg, ImageFactory.newPathImage(homepagesitefirstBean.getPic())
+                .setWidth(U.getDisplayUtils().dip2px(48f))
+                .setHeight(U.getDisplayUtils().dip2px(53f))
+                .build()
+        );
+
         mIvRedPkg.setVisibility(View.VISIBLE);
         mIvRedPkg.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -364,13 +373,13 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     // TODO: 2019/4/3 这都是第一次拉数据
     @Override
-    public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
+    public void setRecommendInfo(List<RecommendModel> list) {
         if (list == null || list.size() == 0) {
             // 清空好友派对列表
             mGameAdapter.updateRecommendRoomInfo(null);
             return;
         }
-        RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
+        RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list);
         mGameAdapter.updateRecommendRoomInfo(recommendRoomModel);
     }
 

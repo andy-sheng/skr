@@ -10,30 +10,30 @@ public interface GrabSongApi {
 
     /**
      * 得到专场列表
+     *
      * @param offset
      * @param count
-     * @return
+     * @return {
+     * "errno": 0,
+     * "errmsg": "",
+     * "data": {
+     * "tags": [
      * {
-     *     "errno": 0,
-     *     "errmsg": "",
-     *     "data": {
-     *         "tags": [
-     *             {
-     *                 "tagID": 3,
-     *                 "tagName": "怀旧"
-     *             },
-     *             {
-     *                 "tagID": 2,
-     *                 "tagName": "流行"
-     *             }
-     *         ],
-     *         "offset": 2
-     *     },
-     *     "traceId": "5c4429cf53a42b1c5900001b"
+     * "tagID": 3,
+     * "tagName": "怀旧"
+     * },
+     * {
+     * "tagID": 2,
+     * "tagName": "流行"
+     * }
+     * ],
+     * "offset": 2
+     * },
+     * "traceId": "5c4429cf53a42b1c5900001b"
      * }
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-tags")
-    Observable<ApiResult> getSepcialList(@Query("offset") int offset,@Query("cnt") int count);
+    Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
      * 获取一唱到底匹配中播放的音乐
@@ -45,14 +45,25 @@ public interface GrabSongApi {
 
     /**
      * 获取在线好友房间
+     *
      * @param offset
      * @param count
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/mate/room-online-friends")
-    Observable<ApiResult> getOnlineFriendsRoom(@Query("offset") int offset,@Query("cnt") int count);
+    Observable<ApiResult> getOnlineFriendsRoom(@Query("offset") int offset, @Query("cnt") int count);
 
+    /**
+     * 更多房间，只能刷新，不能加载更多
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room-more")
+    Observable<ApiResult> getRecommendRoomList();
 
-    @GET("http://dev.api.inframe.mobi/v2/mate/recommend-room-list")
-    Observable<ApiResult> getRecommendRoomList(@Query("offset") int offset,@Query("cnt") int count);
+    /**
+     * 首页推荐房间，只能刷新，不能加载更多
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room")
+    Observable<ApiResult> getFirstPageRecommendRoomList();
 }

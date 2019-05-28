@@ -133,7 +133,7 @@ public class RankResultView2 extends FrameLayout {
             } else {
                 mPlaybackIv.setVisibility(GONE);
             }
-            mNameTv.setText(playerInfoModel.getUserInfo().getNickname());
+            mNameTv.setText(playerInfoModel.getUserInfo().getNicknameRemark());
             mSongTv.setText("《" + playerInfoModel.getSongList().get(0).getItemName() + "》");
             if (userGameResultModel.getWinType() == EWinType.Win.getValue()) {
                 mResultIv.setBackground(getResources().getDrawable(R.drawable.ic_medal_win));

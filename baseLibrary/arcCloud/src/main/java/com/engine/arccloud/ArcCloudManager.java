@@ -121,6 +121,7 @@ public class ArcCloudManager implements IACRCloudListener {
     public void startRecognize(RecognizeConfig recognizeConfig) {
         MyLog.d(TAG, "startCollect" + " recognizeConfig=" + recognizeConfig);
         // 开始积攒
+        mProcessing = false;
         this.mRecognizeConfig = recognizeConfig;
         // 停止积攒
         setLen(0);
@@ -141,6 +142,7 @@ public class ArcCloudManager implements IACRCloudListener {
         // 停止积攒
 //        setLen(0);
         this.mRecognizeConfig = null;
+        mProcessing = false;
     }
 
     public void putPool(byte[] buffer, int sampleRate, int nChannels) {
@@ -189,46 +191,48 @@ public class ArcCloudManager implements IACRCloudListener {
 
         RecognizeConfig recognizeConfig = mRecognizeConfig;
 
-        if (recognizeConfig.mode == RecognizeConfig.MODE_AUTO) {
-            if (recognizeConfig.getAutoTimes() <= 0) {
-                return;
+        if (recognizeConfig != null) {
+            if (recognizeConfig.mode == RecognizeConfig.MODE_AUTO) {
+                if (recognizeConfig.getAutoTimes() <= 0) {
+                    return;
+                }
             }
-        }
 
-        if (mSampleRate < 0) {
-            mSampleRate = sampleRate;
-        }
-        if (mChannels < 0) {
-            mChannels = nChannels;
-        }
-        int tl = mLength;
-        if (tl + newBuffer.length <= BUFFER_LEN) {
-            // buffer还没满，足够容纳，那就放呗
-            System.arraycopy(newBuffer, 0, mBuffer, tl, newBuffer.length);
-            setLen(tl + newBuffer.length);
-            if (mLength == BUFFER_LEN) {
-                if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+            if (mSampleRate < 0) {
+                mSampleRate = sampleRate;
+            }
+            if (mChannels < 0) {
+                mChannels = nChannels;
+            }
+            int tl = mLength;
+            if (tl + newBuffer.length <= BUFFER_LEN) {
+                // buffer还没满，足够容纳，那就放呗
+                System.arraycopy(newBuffer, 0, mBuffer, tl, newBuffer.length);
+                setLen(tl + newBuffer.length);
+                if (mLength == BUFFER_LEN) {
+                    if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+                        if (recognizeConfig.isWantRecognizeInManualMode()) {
+                            recognizeInner(mLineNo);
+                        }
+                    }
+                }
+            } else {
+                // 再放buffer就要满了，头部的要移走
+                int left = tl + newBuffer.length - BUFFER_LEN;
+                //MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
+                // 往左移动 left 个位置
+//            byte [] temp = new byte[BUFFER_LEN];
+
+                System.arraycopy(mBuffer, left, mBuffer, 0, tl - left);
+                System.arraycopy(newBuffer, 0, mBuffer, tl - left, newBuffer.length);
+                setLen(BUFFER_LEN);
+                if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO && recognizeConfig.getAutoTimes() > 0) {
+                    // 自动识别
+                    recognizeInner(mLineNo);
+                } else if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                     if (recognizeConfig.isWantRecognizeInManualMode()) {
                         recognizeInner(mLineNo);
                     }
-                }
-            }
-        } else {
-            // 再放buffer就要满了，头部的要移走
-            int left = tl + newBuffer.length - BUFFER_LEN;
-            //MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
-            // 往左移动 left 个位置
-//            byte [] temp = new byte[BUFFER_LEN];
-
-            System.arraycopy(mBuffer, left, mBuffer, 0, tl - left);
-            System.arraycopy(newBuffer, 0, mBuffer, tl - left, newBuffer.length);
-            setLen(BUFFER_LEN);
-            if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO && recognizeConfig.getAutoTimes() > 0) {
-                // 自动识别
-                recognizeInner(mLineNo);
-            } else if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
-                if (recognizeConfig.isWantRecognizeInManualMode()) {
-                    recognizeInner(mLineNo);
                 }
             }
         }
@@ -268,6 +272,16 @@ public class ArcCloudManager implements IACRCloudListener {
                                 HashMap hashMap = new HashMap();
                                 String songName = recognizeConfig.getSongName();
                                 if (!TextUtils.isEmpty(songName)) {
+                                    int a = songName.indexOf("(");
+                                    if (a != -1) {
+                                        // 过滤掉歌曲
+                                        songName = songName.substring(0, a);
+                                    } else {
+                                        a = songName.indexOf("（");
+                                        if (a != -1) {
+                                            songName = songName.substring(0, a);
+                                        }
+                                    }
                                     hashMap.put("title", songName);
                                 }
                                 String artist = recognizeConfig.getArtist();

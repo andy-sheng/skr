@@ -34,7 +34,7 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
 
 
     public ObjectPlayControlTemplate() {
-        mHandlerThread = new CustomHandlerThread("my-queue-thread") {
+        mHandlerThread = new CustomHandlerThread("ObjectPlayControlTemplate") {
             @Override
             protected void processMessage(Message var1) {
 
@@ -86,7 +86,6 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
     }
 
     /**
-     * 确保在主线程执行
      *
      * @param model
      */
@@ -99,7 +98,7 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
 
     /**
      * 重要，每次消费完，请手动调用告知
-     * 确保主线程执行
+     * 这样模型才继续前进 取 下一个消费对象
      *
      * @param model
      */
@@ -142,7 +141,7 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
 
     /**
      * 是否接受这个播放对象
-     *
+     * 如果不接受 不会从队列移除被消费
      * @param cur
      * @return
      */

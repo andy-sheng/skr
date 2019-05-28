@@ -10,6 +10,9 @@ import com.component.busilib.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
+/**
+ * 邀请好友
+ */
 public class InviteFriendDialog {
 
     public final static int INVITE_GRAB_GAME = 1;

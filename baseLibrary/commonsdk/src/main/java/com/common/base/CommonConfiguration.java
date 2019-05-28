@@ -23,21 +23,19 @@ import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.delegate.AppLifecycles;
+import com.common.bugly.BuglyInit;
+import com.common.huawei.LoadedApkHuaWei;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
-import com.common.statistics.StatisticsAdapter;
+import com.common.matrix.MatrixInit;
 import com.common.umeng.UmengInit;
 import com.common.utils.CommonReceiver;
 import com.common.utils.U;
-import com.kingja.loadsir.LoadSirUtil;
-import com.kingja.loadsir.callback.SuccessCallback;
-import com.kingja.loadsir.core.LoadSir;
+import com.glidebitmappool.BitmapPoolAdapter;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
-
-import cn.jpush.android.api.JPushInterface;
 
 
 /**
@@ -69,20 +67,66 @@ public class CommonConfiguration implements ConfigModule {
 
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
-                Log.d(TAG, "application onCreate");
+                MyLog.w(TAG, "onMainProcessCreate begin");
+                MyLog.w(TAG, "MyLog begin");
+                MyLog.init();
+                // 无法异步延迟，因为 module 接口 还需要ARouter
+                MyLog.w(TAG, "ARouter begin");
                 if (BuildConfig.DEBUG) {
                     ARouter.openLog();
                     ARouter.openDebug();
                 }
                 ARouter.init(application); // 尽可能早,推荐在Application中初始化
-                MyLog.init();
+
+                MyLog.w(TAG, "FrescoInitManager begin");
                 FrescoInitManager.initFresco(U.app());
-//                PgyCrashManager.register();
+                //PgyCrashManager.register();
                 CommonReceiver.register();
+                MyLog.w(TAG, "Umeng begin");
                 UmengInit.init();
-                JiGuangPush.init();
+                MyLog.w(TAG, "Jiguang begin");
+
+                InitManager.initMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        /**
+                         * 延迟初始化极光，极光初始化会耗时 400ms
+                         */
+                        JiGuangPush.init(true);
+                    }
+                },5000);
+
+                MyLog.w(TAG, "Bugly begin");
+                BuglyInit.init(true);
+                /**
+                 * 初始化Matrix，分debug和release
+                 */
+                MatrixInit.init();
                 //leakCanary 引用
                 LeakCanary.install(application);
+                // 卡顿检测 ,使用matrix，能检测出帧问题
+                // BlockDetectByPrinter.start();
+                // 所有的都会过这个
+                //Debug.startMethodTracing();
+
+                InitManager.initMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (U.getDeviceUtils().isEmui()) {
+                            MyLog.e(TAG, "是emui系统，hook广播白名单");
+                            LoadedApkHuaWei.hookHuaWeiVerifier(U.app(), new LoadedApkHuaWei.TooManyBroadcastCallback() {
+                                @Override
+                                public void tooManyBroadcast(int registedCount, int totalCount) {
+                                    MyLog.e(TAG, "注册了太多广播 tooManyBroadcast" + " registedCount=" + registedCount + " totalCount=" + totalCount);
+                                }
+                            });
+                        } else {
+                            MyLog.e(TAG, "不是emui系统,cancel");
+                        }
+                    }
+                }, 20 * 1000);
+                // 这里耗费 900ms
+                MyLog.w(TAG, "onMainProcessCreate over");
             }
 
             @Override
@@ -93,14 +137,17 @@ public class CommonConfiguration implements ConfigModule {
                  */
                 if (U.getProcessName().endsWith(":channel")) {
                     UmengInit.init();
-                }else if(U.getProcessName().endsWith(":pushcore")){
-                    JiGuangPush.init();
+                } else if (U.getProcessName().endsWith(":pushcore")) {
+                    JiGuangPush.init(false);
                 }
+                BuglyInit.init(false);
             }
 
             @Override
             public void onTerminate(@NonNull Application application) {
 //                PgyCrashManager.unregister();
+                BitmapPoolAdapter.clearMemory();
+                //GlideBitmapPool.trimMemory(level);
             }
         });
     }

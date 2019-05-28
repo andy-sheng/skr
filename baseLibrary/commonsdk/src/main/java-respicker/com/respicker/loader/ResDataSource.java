@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.log.MyLog;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.respicker.ResPicker;
 import com.respicker.model.ResFolder;
@@ -69,6 +70,9 @@ public class ResDataSource {
     public void destroy() {
         if (mPhotoAlbumContentResolver != null) {
             mPhotoAlbumContentResolver.unregisterContentObserver(mPhotoAlbumContentObserver);
+        }
+        if (mVideoContentResolver != null) {
+            mVideoContentResolver.unregisterContentObserver(mVideoContentObserver);
         }
     }
 
@@ -249,8 +253,19 @@ public class ResDataSource {
                 imageItem.setHeight(imageHeight);
                 imageItem.setMimeType(imageMimeType);
                 imageItem.setAddTime(imageAddTime);
-                allImages.add(imageItem);
+
+                // 再根据真正的类型判断一下是不是gif
+                if (ResPicker.getInstance().getParams().isIncludeGif()) {
+                    allImages.add(imageItem);
+                } else{
+                    if(U.getImageUtils().getImageType(imagePath) == ImageUtils.TYPE.GIF){
+
+                    }else{
+                        allImages.add(imageItem);
+                    }
+                }
             }
+            data.close();
         }
         return allImages;
     }

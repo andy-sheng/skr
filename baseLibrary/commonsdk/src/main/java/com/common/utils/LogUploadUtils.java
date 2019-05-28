@@ -111,6 +111,7 @@ public class LogUploadUtils {
             @Override
             public void accept(Throwable throwable) throws Exception {
                 EventBus.getDefault().post(new UploadLogEvent(null, false));
+                callback.onFailed();
                 MyLog.e(TAG, throwable);
             }
         });
@@ -138,7 +139,8 @@ public class LogUploadUtils {
             for (int i = fileList.length - 1; i >= 0; i--) {
                 if (fileList[i].isFile()) {
                     if (fileList[i].getName().endsWith(".log")
-                            || fileList[i].getName().endsWith(".txt")) {
+                            || fileList[i].getName().endsWith(".txt")
+                            || fileList[i].getName().endsWith(".xlog")) {
                         lastThreeFiles.add(fileList[i].getAbsolutePath());
                         if (lastThreeFiles.size() >= lastNum) {
                             break;

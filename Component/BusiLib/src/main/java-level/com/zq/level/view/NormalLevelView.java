@@ -2,9 +2,7 @@ package com.zq.level.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -18,6 +16,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.glidebitmappool.BitmapFactoryAdapter;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
@@ -320,18 +319,18 @@ public class NormalLevelView extends RelativeLayout {
     private SVGADynamicEntity requestDynamicBitmapItem(int levelBefore, int subLevelBefore, int levelNow, int sublevelNow) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
         if (LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore)), "keyLevelBefore");
+            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore)), "keyLevelBefore");
         }
         if (LevelConfigUtils.getImageResoucesLevel(levelBefore) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelBefore)), "keyMedalBefore");
+            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelBefore)), "keyMedalBefore");
         }
 
         if (LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow)), "keyLevelNew");
+            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow)), "keyLevelNew");
         }
 
         if (LevelConfigUtils.getImageResoucesLevel(levelNow) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelNow)), "keyMedalNew");
+            dynamicEntity.setDynamicImage(BitmapFactoryAdapter.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelNow)), "keyMedalNew");
         }
         return dynamicEntity;
     }

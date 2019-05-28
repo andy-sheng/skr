@@ -79,7 +79,6 @@ public class AgoraEngineAdapter {
     private Params mConfig;
     private RtcEngine mRtcEngine;
     private Handler mUiHandler = new Handler();
-    private HandlerThread mWorkHandler = new HandlerThread("AgoraAdapterWorkThread");
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
@@ -195,6 +194,7 @@ public class AgoraEngineAdapter {
                 mOutCallback.onAudioMixingFinished();
             }
         }
+
 
         // 说话者音量提示
         @Override
@@ -950,6 +950,8 @@ public class AgoraEngineAdapter {
         }
         mICbScoreProcessor.init();
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
+
+
         if (mDebugScoreIS != null) {
             try {
                 mDebugScoreIS.close();
@@ -1121,6 +1123,9 @@ public class AgoraEngineAdapter {
                         if (mConfig != null) {
                             if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                                 mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                            } else if (mConfig.isGrabSingNoAcc()) {
+                                // 一唱到底清唱模式，acr打分
+                                mArcCloudManager.putPool(samples, samplesPerSec, channels);
                             }
                         }
                     }
@@ -1129,7 +1134,7 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step2:" + testIn(samples));
                 }
-                if(!mConfig.isMixMusicPlaying()){
+                if (!mConfig.isMixMusicPlaying()) {
                     // 不播放音乐才走这些音效，否则不走
                     if (styleEnum == Params.AudioEffect.ktv) {
                         mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
@@ -1149,7 +1154,10 @@ public class AgoraEngineAdapter {
                     // 针对不同场景，处理agc
                     switch (mConfig.getScene()) {
                         case grab:
-                            mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                            // 只有单人清唱才走天宝的agc
+                            if (mConfig.isGrabSingNoAcc()) {
+                                mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                            }
                             break;
                         case voice:
                             break;

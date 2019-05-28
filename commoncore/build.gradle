@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -86,7 +89,7 @@ dependencies {
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
 greendao {
 
-    schemaVersion 6//数据库版本号
+    schemaVersion 8//数据库版本号
 
     daoPackage 'com.common.core.db'//设置DaoMaster、DaoSession、Dao包名
 

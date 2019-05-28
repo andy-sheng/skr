@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.common.base.BaseFragment;
 import com.common.utils.ToastUtils;
@@ -31,18 +32,17 @@ import static com.module.home.fragment.InComeFragment.DQ_EXCHANGE_REQ;
 public class ExChangeCashFragment extends BaseFragment implements IExChangeCashView {
     public static final int HF = 100000;
     CommonTitleBar mTitlebar;
-    ExTextView mTvMaxExchange;
+    //    ExTextView mTvMaxExchange;
     NoLeakEditText mEditCashNum;
     ExTextView mTvTip;
     ExTextView mTvExchangeWhole;
     StrokeTextView mIvExchangeBtn;
     ExTextView mTvExchangeRole;
+    ImageView mClearIv;
 
     ExChangeCashPresenter mExChangeCashPresenter;
 
-    //单位为毫分
-    long mMaxExchangeCash;
-    //目前的点券
+    //目前的红钻
     float mDq;
 
     ExChangeInfoModel mExChangeInfoModel;
@@ -57,12 +57,12 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mTvMaxExchange = (ExTextView) mRootView.findViewById(R.id.tv_max_exchange);
         mEditCashNum = (NoLeakEditText) mRootView.findViewById(R.id.edit_cash_num);
         mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
         mTvExchangeWhole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_whole);
         mIvExchangeBtn = mRootView.findViewById(R.id.iv_exchange_btn);
         mTvExchangeRole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_role);
+        mClearIv = (ImageView) mRootView.findViewById(R.id.clear_iv);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -74,15 +74,32 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
         mIvExchangeBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mExChangeCashPresenter.exChange(stringToHaoFen(mEditCashNum.getText().toString()));
+                if (mExChangeInfoModel == null) {
+                    mExChangeCashPresenter.getDQBalance();
+                    return;
+                }
+
+                if (hfToYuan((long) (Float.parseFloat(mEditCashNum.getText().toString()) * mExChangeInfoModel.getToRMBRatio())) <= 0) {
+                    ToastUtils.showShort("提现需要大于0.00元");
+                    return;
+                }
+
+                mExChangeCashPresenter.exChange((long) (Float.parseFloat(mEditCashNum.getText().toString()) * 1000));
             }
         });
 
         mTvExchangeWhole.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mEditCashNum.setText(String.format("%.2f", hfToYuan(mMaxExchangeCash)));
+                mEditCashNum.setText(String.format("%.1f", mDq));
                 mEditCashNum.setSelection(mEditCashNum.length());
+            }
+        });
+
+        mClearIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mEditCashNum.setText("");
             }
         });
 
@@ -104,34 +121,49 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 String editString = s.toString();
 
                 if (checkInputNum(editString)) {
-                    long cash = stringToHaoFen(editString);
-                    if (cash >= 10000 * HF) {
-                        mEditCashNum.setText(beforeTextChanged);
-                        mEditCashNum.setSelection(beforeTextChanged.length() - 1);
-                        return;
-                    }
+//                    if (editDq > 10000 * HF) {
+//                        mEditCashNum.setText(beforeTextChanged);
+//                        mEditCashNum.setSelection(beforeTextChanged.length() - 1);
+//                        ToastUtils.showShort("一次最多兑换10000元");
+//                        return;
+//                    }
 
                     if (mExChangeInfoModel == null && !TextUtils.isEmpty(editString)) {
                         mEditCashNum.setText("");
+                        mClearIv.setVisibility(View.GONE);
                         return;
                     }
 
                     if (mExChangeInfoModel != null) {
                         if (TextUtils.isEmpty(mEditCashNum.getText().toString())) {
-                            mTvTip.setText(String.format("点券余额%.1f，", mDq));
+                            mTvTip.setText(String.format("红钻余额%.1f", mDq));
                             mTvExchangeWhole.setVisibility(View.VISIBLE);
                             mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
                             mIvExchangeBtn.setEnabled(false);
-                        } else if (cash > mMaxExchangeCash) {
-                            mTvTip.setText("已超过可兑换点券余额");
-                            mTvTip.setTextColor(U.getColor(R.color.red));
-                            mTvExchangeWhole.setVisibility(View.GONE);
-                            mIvExchangeBtn.setEnabled(false);
+                            mClearIv.setVisibility(View.GONE);
+                            mEditCashNum.setTextSize(16);
                         } else {
-                            mTvTip.setText(String.format("点券余额%.1f，", mDq));
-                            mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                            mTvExchangeWhole.setVisibility(View.VISIBLE);
-                            mIvExchangeBtn.setEnabled(true);
+                            mEditCashNum.setTextSize(24);
+                            float editDq = Float.parseFloat(editString);
+                            if (editDq > mDq) {
+                                mTvTip.setText("已超过可兑换红钻余额");
+                                mTvTip.setTextColor(U.getColor(R.color.red));
+                                mTvExchangeWhole.setVisibility(View.VISIBLE);
+                                mIvExchangeBtn.setEnabled(false);
+                                mClearIv.setVisibility(View.VISIBLE);
+                            } else {
+//                            mTvTip.setText(String.format("红钻余额%.1f", mDq));
+                                mTvTip.setText(String.format("预计可兑换%.2f元", hfToYuan((long) (editDq * mExChangeInfoModel.getToRMBRatio()))));
+                                mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
+                                mTvExchangeWhole.setVisibility(View.VISIBLE);
+                                mIvExchangeBtn.setEnabled(true);
+                                mClearIv.setVisibility(View.VISIBLE);
+                                if (editDq == 0) {
+                                    mIvExchangeBtn.setEnabled(false);
+                                } else {
+                                    mIvExchangeBtn.setEnabled(true);
+                                }
+                            }
                         }
 
                     }
@@ -139,10 +171,10 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
             }
         });
 
-        mUiHandler.postDelayed(()-> {
-                mEditCashNum.setFocusable(true);
-                mEditCashNum.requestFocus();
-                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity(), mEditCashNum);
+        mUiHandler.postDelayed(() -> {
+            mEditCashNum.setFocusable(true);
+            mEditCashNum.requestFocus();
+            U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity(), mEditCashNum);
         }, 500);
 
         mIvExchangeBtn.setEnabled(false);
@@ -163,7 +195,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 .setText("兑换成功")
                 .build());
         mExChangeCashPresenter.getDQBalance();
-        if(mFragmentDataListener != null){
+        if (mFragmentDataListener != null) {
             mFragmentDataListener.onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
         }
         finish();
@@ -173,13 +205,12 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
     public void showExChangeInfo(ExChangeInfoModel exChangeInfoModel) {
         mExChangeInfoModel = exChangeInfoModel;
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
-        mMaxExchangeCash = (long) (600 * mDq);
-        mTvMaxExchange.setText(String.format("账户最多可兑换%.2f元人民币", hfToYuan(mMaxExchangeCash)));
-        mTvTip.setText(String.format("点券余额%.1f，", mDq));
+        mTvTip.setText(String.format("红钻余额%.1f", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToRMBDesc());
     }
 
     public float hfToYuan(long hf) {
+        hf = hf - (hf % 1000);
         return (float) hf / HF;
     }
 
@@ -216,8 +247,8 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 //小数点后面只能有两位
                 String floatNum = editString.split("\\.")[1];
                 String intNum = editString.split("\\.")[0];
-                if (floatNum.length() > 2) {
-                    floatNum = floatNum.substring(0, 2);
+                if (floatNum.length() > 1) {
+                    floatNum = floatNum.substring(0, 1);
                     String text = intNum + "." + floatNum;
                     mEditCashNum.setText(text);
                     mEditCashNum.setSelection(text.length());

@@ -11,7 +11,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="点券明细"
+        app:centerText="红钻明细"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
@@ -37,6 +37,7 @@
         app:bl_stroke_width="@dimen/view_2_dp">
 
         <com.common.view.ex.ExImageView
+            android:id="@+id/iv_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/view_2_dp"

@@ -4,24 +4,26 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoDB;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-import static com.common.core.userinfo.UserInfoLocalApi.INTER_FOLLOW;
-import static com.common.core.userinfo.UserInfoLocalApi.ONE_FOLLOW;
-import static com.common.core.userinfo.UserInfoLocalApi.UN_FOLLOW;
-
-// TODO: 2019/1/2 该类会作为json来解析，不要改变量名 
+// TODO: 2019/1/2 该类会作为json来解析，不要改变量名
 public class UserInfoModel implements Serializable, Cloneable {
 
-    public static final int EF_OnLine = 1; //在线
-    public static final int EF_OffLine = 2; //离线
+    public static final int EF_OFFLINE = 10;      //离线
+    public static final int EF_ONLINE = 20;       //在线
+    public static final int EF_ONLINE_BUSY = EF_ONLINE + 1;  //在线忙碌中
+    public static final int EF_ONLiNE_JOINED = EF_ONLINE + 2;//在线已加入游戏
 
     /**
      * userID : 11
@@ -45,8 +47,16 @@ public class UserInfoModel implements Serializable, Cloneable {
     private boolean isFriend;
     private boolean isFollow;
     private int mainLevel; // 主段位
-    private int status;    // 状态
+    private int status;    // 状态 在线  离线
+    private long statusTs;// 在线或者离线的时间
     private String statusDesc;  //状态描述
+
+    public UserInfoModel() {
+    }
+
+    public UserInfoModel(int userId) {
+        this.userId = userId;
+    }
 
     public int getUserId() {
         return userId;
@@ -62,6 +72,16 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public void setNickname(String userNickname) {
         this.nickname = userNickname;
+    }
+
+    public String getNicknameRemark() {
+        String remark = UserInfoManager.getInstance().getRemarkName(userId, nickname);
+        return remark;
+    }
+
+    public String getNicknameRemark(String defaultName) {
+        String remark = UserInfoManager.getInstance().getRemarkName(userId, defaultName);
+        return remark;
     }
 
     public int getSex() {
@@ -183,6 +203,14 @@ public class UserInfoModel implements Serializable, Cloneable {
         this.mainLevel = mainLevel;
     }
 
+    public long getStatusTs() {
+        return statusTs;
+    }
+
+    public void setStatusTs(long statusTs) {
+        this.statusTs = statusTs;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -209,11 +237,28 @@ public class UserInfoModel implements Serializable, Cloneable {
         return userInfoModel;
     }
 
+    public static List<UserInfoModel> parseFromPB(List<UserInfo> userInfoList) {
+        ArrayList<UserInfoModel> modelArrayList = new ArrayList<>();
+        if (userInfoList == null) {
+            return modelArrayList;
+        }
+
+        for (int i = 0; i < userInfoList.size(); i++) {
+            modelArrayList.add(parseFromPB(userInfoList.get(i)));
+        }
+
+        return modelArrayList;
+    }
+
     public static UserInfoModel parseFromPB(UserInfo model) {
         UserInfoModel userInfoModel = new UserInfoModel();
         if (model != null) {
             userInfoModel.setUserId(model.getUserID());
             userInfoModel.setNickname(model.getNickName());
+//            String remarkName = UserInfoManager.getInstance().getRemarkName(model.getUserID(),null);
+//            if(!TextUtils.isEmpty(remarkName)){
+//                userInfoModel.setNicknameRemark(remarkName);
+//            }
             userInfoModel.setSex(model.getSex().getValue());
             userInfoModel.setAvatar(model.getAvatar());
             userInfoModel.setSignature(model.getDescription());
@@ -228,6 +273,7 @@ public class UserInfoModel implements Serializable, Cloneable {
         if (userInfModel != null) {
             userInfoDB.setUserId(Long.valueOf((long) userInfModel.getUserId()));
             userInfoDB.setUserNickname(userInfModel.getNickname());
+            userInfoDB.setUserDisplayname(userInfModel.getNicknameRemark(null));
             userInfoDB.setSex(userInfModel.getSex());
             userInfoDB.setBirthday(userInfModel.getBirthday());
             userInfoDB.setAvatar(userInfModel.getAvatar());
@@ -236,19 +282,17 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoDB.setIsSystem(userInfModel.getIsSystem() ? 1 : 0);
 
             if (userInfModel.isFriend()) {
-                userInfoDB.setRelative(INTER_FOLLOW);
+                userInfoDB.setRelative(UserInfoManager.RELATION.FRIENDS.getValue());
             } else if (userInfModel.isFollow()) {
-                userInfoDB.setRelative(ONE_FOLLOW);
+                userInfoDB.setRelative(UserInfoManager.RELATION.FOLLOW.getValue());
             } else {
-                userInfoDB.setRelative(UN_FOLLOW);
+                userInfoDB.setRelative(UserInfoManager.RELATION.NO_RELATION.getValue());
             }
 
             JSONObject jsonObject = new JSONObject();
             Location location = userInfModel.getLocation();
             jsonObject.put("location", location);
             jsonObject.put("mainLevel", userInfModel.getMainLevel());
-            jsonObject.put("status", userInfModel.getStatus());
-            jsonObject.put("statusDesc", userInfModel.getStatusDesc());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -259,12 +303,21 @@ public class UserInfoModel implements Serializable, Cloneable {
         if (userInDB != null) {
             userInfoModel.setUserId(userInDB.getUserId().intValue());
             userInfoModel.setNickname(userInDB.getUserNickname());
+//            userInfoModel.setNicknameRemark(userInDB.getUserDisplayname());
+
             userInfoModel.setSex(userInDB.getSex());
             userInfoModel.setBirthday(userInDB.getBirthday());
             userInfoModel.setAvatar(userInDB.getAvatar());
             userInfoModel.setSignature(userInDB.getSignature());
             userInfoModel.setLetter(userInDB.getLetter());
             userInfoModel.setIsSystem(userInDB.getIsSystem() == 1);
+            if (userInDB.getRelative() == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                userInfoModel.setFriend(true);
+                userInfoModel.setFollow(true);
+            } else if (userInDB.getRelative() == UserInfoManager.RELATION.FOLLOW.getValue()) {
+                userInfoModel.setFollow(true);
+            }
+
             String extJSon = userInDB.getExt();
             if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
@@ -272,10 +325,6 @@ public class UserInfoModel implements Serializable, Cloneable {
                 userInfoModel.setLocation(location);
                 int mainLevel = jsonObject.getIntValue("mainLevel");
                 userInfoModel.setMainLevel(mainLevel);
-                int status = jsonObject.getIntValue("status");
-                userInfoModel.setStatus(status);
-                String statusDesc = jsonObject.getString("statusDesc");
-                userInfoModel.setStatusDesc(statusDesc);
             }
         }
         return userInfoModel;

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/view_36_dp"
-    android:layout_height="@dimen/view_40_dp"
+    android:layout_width="@dimen/view_46_dp"
+    android:layout_height="@dimen/view_42_dp"
     android:orientation="vertical">
 
     <com.common.image.fresco.BaseImageView
-        android:layout_gravity="center_vertical"
         android:id="@+id/iv_player_icon"
-        android:layout_width="@dimen/view_30_dp"
-        android:layout_height="@dimen/view_30_dp" />
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp" />
 
     <ImageView
-        android:background="@drawable/gift_select_xuanzhong"
         android:id="@+id/iv_selected_icon"
         android:layout_width="@dimen/view_16_dp"
         android:layout_height="@dimen/view_18_dp"
-        android:layout_gravity="bottom|right" />
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/xuanzhong_duihao" />
 </FrameLayout>

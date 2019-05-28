@@ -1,5 +1,6 @@
 package com.module.home.persenter;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -9,11 +10,12 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.floatwindow.FloatWindow;
 import com.common.floatwindow.MoveType;
@@ -23,6 +25,7 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -31,13 +34,13 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.view.INotifyView;
 import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
-import com.common.core.global.event.ShowDialogInHomeEvent;
-import com.zq.notification.GrabInviteNotifyView;
 import com.zq.notification.FollowNotifyView;
+import com.zq.notification.GrabInviteNotifyView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,6 +54,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
 
     DialogPlus mBeFriendDialog;
+
+    INotifyView mINotifyView;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -97,7 +102,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public NotifyCorePresenter() {
+    public NotifyCorePresenter(INotifyView iNotifyView) {
+        mINotifyView = iNotifyView;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -131,7 +137,11 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 @Override
                 public boolean onGetServer(UserInfoModel userInfoModel) {
                     if (userInfoModel != null) {
-                        ConfirmDialog confirmDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity()
+                        Activity activity = U.getActivityUtils().getTopActivity();
+                        if (activity instanceof SchemeSdkActivity) {
+                            activity = U.getActivityUtils().getHomeActivity();
+                        }
+                        ConfirmDialog confirmDialog = new ConfirmDialog(activity
                                 , userInfoModel, ConfirmDialog.TYPE_INVITE_CONFIRM);
                         confirmDialog.setListener(new ConfirmDialog.Listener() {
                             @Override
@@ -171,10 +181,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 if (userInfoModel != null) {
                     SpannableStringBuilder stringBuilder = new SpanUtils()
                             .append("是否确定与").setForegroundColor(Color.parseColor("#7F7F7F"))
-                            .append("" + userInfoModel.getNickname()).setForegroundColor(Color.parseColor("#F5A623"))
+                            .append("" + userInfoModel.getNicknameRemark()).setForegroundColor(Color.parseColor("#F5A623"))
                             .append("成为好友？").setForegroundColor(Color.parseColor("#7F7F7F"))
                             .create();
-                    TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                    TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.app())
                             .setMessageTip(stringBuilder)
                             .setConfirmTip("确定")
                             .setCancelTip("取消")
@@ -201,7 +211,11 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             })
                             .build();
                     if (mBeFriendDialog == null) {
-                        mBeFriendDialog = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
+                        Activity activity = U.getActivityUtils().getTopActivity();
+                        if (activity instanceof SchemeSdkActivity) {
+                            activity = U.getActivityUtils().getHomeActivity();
+                        }
+                        mBeFriendDialog = DialogPlus.newDialog(activity)
                                 .setContentHolder(new ViewHolder(tipsDialogView))
                                 .setGravity(Gravity.BOTTOM)
                                 .setContentBackgroundResource(R.color.transparent)
@@ -238,22 +252,23 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
 
         WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 2, true);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RelationChangeEvent event) {
-        if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 2, true);
-        }
+        StatisticsAdapter.recordCountEvent("social", "getfollow", null);
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabInviteNotifyEvent event) {
-        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
-        floatWindowData.setUserInfoModel(event.mUserInfoModel);
-        floatWindowData.setRoomID(event.roomID);
-        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
+        // TODO: 2019/5/16 区分前台后台
+        if (U.getActivityUtils().isAppForeground()) {
+            FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
+            floatWindowData.setUserInfoModel(event.mUserInfoModel);
+            floatWindowData.setRoomID(event.roomID);
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
+        } else {
+            // 展示一个通知
+            mINotifyView.showNotify(event);
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

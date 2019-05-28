@@ -51,7 +51,7 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
 
         String text = commentMsg.getText();
         if (!TextUtils.isEmpty(text)) {
-            EventBus.getDefault().post(new CommentMsgEvent(info, CommentMsgEvent.MSG_TYPE_RECE, text));
+            EventBus.getDefault().post(new CommentMsgEvent(info, CommentMsgEvent.MSG_TYPE_RECE, commentMsg));
         }
     }
 

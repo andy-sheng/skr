@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -17,7 +17,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -30,9 +29,9 @@ import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.ModuleServiceManager;
+import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
-import com.zq.person.fragment.OtherPersonFragment2;
 import com.zq.relation.adapter.RelationAdapter;
 
 import java.util.ArrayList;
@@ -81,14 +80,11 @@ public class BlackListFragment extends BaseFragment {
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, userInfoModel.getUserId());
-                    U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment2.class)
-                            .setUseOldFragmentIfExist(false)
-                            .setBundle(bundle)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .build());
+                    bundle.putInt("bundle_user_id", userInfoModel.getUserId());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation();
                 } else if (view.getId() == R.id.follow_tv) {
                     // 移除黑名单
                     IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();

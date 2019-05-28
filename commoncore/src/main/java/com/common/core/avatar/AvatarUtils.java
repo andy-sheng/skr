@@ -72,8 +72,8 @@ public class AvatarUtils {
         if (params.sizeType != null && params.sizeType != ImageUtils.SIZE.ORIGIN) {
             imgBuilder.addOssProcessors(OssImgFactory.newResizeBuilder().setW(params.sizeType.getW()).build());
         }
-        if (params.isWebpFormat) {
-            imgBuilder.addOssProcessors(OssImgFactory.newFormatBuilder().setFormat(OssImgFormat.ImgF.webp).build());
+        if (params.isJpgFormat) {
+            imgBuilder.addOssProcessors(OssImgFactory.newFormatBuilder().setFormat(OssImgFormat.ImgF.jpg).build());
         }
         if (params.loadingAvatarResId > 0) {
             imgBuilder.setLoadingDrawable(U.app().getResources().getDrawable(params.loadingAvatarResId));
@@ -148,7 +148,7 @@ public class AvatarUtils {
 
         String url; // 头像url
         ImageUtils.SIZE sizeType = ImageUtils.SIZE.SIZE_160;
-        boolean isWebpFormat = false;
+        boolean isJpgFormat = true;
         boolean isCircle = false;
         boolean isBlur = false;
         int loadingAvatarResId = R.drawable.avatar_default_b;
@@ -179,8 +179,8 @@ public class AvatarUtils {
 //            this.timestamp = timestamp;
 //        }
 
-        public void setWebpFormat(boolean webpFormat) {
-            isWebpFormat = webpFormat;
+        public void setJpgFormat(boolean jpgFormat) {
+            isJpgFormat = jpgFormat;
         }
 
         public void setCircle(boolean circle) {
@@ -244,8 +244,8 @@ public class AvatarUtils {
                 return this;
             }
 
-            public Builder setWebpFormat(boolean webpFormat) {
-                mUploadParams.setWebpFormat(webpFormat);
+            public Builder setJpgFormat(boolean format) {
+                mUploadParams.setJpgFormat(format);
                 return this;
             }
 

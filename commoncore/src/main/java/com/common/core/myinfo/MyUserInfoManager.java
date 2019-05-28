@@ -51,6 +51,8 @@ public class MyUserInfoManager {
 
     private MyUserInfo mUser = new MyUserInfo();
     private boolean mUserInfoFromServer = false;
+    private boolean needBeginnerGuide = false;
+    private boolean mIsFirstLogin = false;    // 标记是否第一次登录
 //    private boolean mHasLoadFromDB = false;
 
     public void init() {
@@ -62,14 +64,14 @@ public class MyUserInfoManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
-                    if(mUserInfoFromServer && mUser!=null){
-                        MyLog.d(TAG,"load。 mUser 有效 来自server，取消本次");
-                    }else{
+                    if (mUserInfoFromServer && mUser != null) {
+                        MyLog.d(TAG, "load。 mUser 有效 来自server，取消本次");
+                    } else {
                         MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                         MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
                         MyLog.d(TAG, "load myUserInfo=" + userInfo);
                         if (userInfo != null) {
-                            setMyUserInfo(userInfo, false);
+                            setMyUserInfo(userInfo, false, "load");
                         }
                         // 从服务器同步个人信息
                         syncMyInfoFromServer();
@@ -85,6 +87,23 @@ public class MyUserInfoManager {
                 .subscribe();
     }
 
+    public boolean isFirstLogin() {
+        return mIsFirstLogin;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        mIsFirstLogin = firstLogin;
+    }
+
+    public boolean isNeedBeginnerGuide() {
+        // TODO: 2019/5/9 先下掉新手引导入口
+        return false;
+    }
+
+    public void setNeedBeginnerGuide(boolean needBeginnerGuide) {
+        this.needBeginnerGuide = needBeginnerGuide;
+    }
+
     public void logoff() {
         mUser = new MyUserInfo();
         mUserInfoFromServer = false;
@@ -94,8 +113,8 @@ public class MyUserInfoManager {
         return mUser;
     }
 
-    public void setMyUserInfo(MyUserInfo myUserInfo, boolean fromServer) {
-        MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo);
+    public void setMyUserInfo(MyUserInfo myUserInfo, boolean fromServer, String from) {
+        MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo + " fromServer=" + fromServer + " from=" + from);
         if (myUserInfo != null) {
             mUser = myUserInfo;
             if (!mUserInfoFromServer) {
@@ -132,7 +151,7 @@ public class MyUserInfoManager {
                             final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                             MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                            setMyUserInfo(myUserInfo, true);
+                            setMyUserInfo(myUserInfo, true,"syncMyInfoFromServer");
                         } else if (obj.getErrno() == 107) {
                             UserAccountManager.getInstance().notifyAccountExpired();
                         }
@@ -262,7 +281,7 @@ public class MyUserInfoManager {
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(mUser, true);
+                                setMyUserInfo(mUser, true,"updateInfo");
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
@@ -285,21 +304,15 @@ public class MyUserInfoManager {
 
     //是否需要完善资料
     public boolean isNeedCompleteInfo() {
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-            MyLog.d(TAG, "isNeedCompleteInfo nickName is null");
-            return true;
-        }
-        if (MyUserInfoManager.getInstance().getSex() == 0) {
-            MyLog.d(TAG, "isNeedCompleteInfo sex == 0");
-            return true;
-        }
-
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-            MyLog.d(TAG, "isNeedCompleteInfo birthday == 0");
-            return true;
-        }
-
-        return false;
+//        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+//            MyLog.d(TAG, "isNeedCompleteInfo nickName is null");
+//            return true;
+//        }
+//        if (MyUserInfoManager.getInstance().getSex() == 0) {
+//            MyLog.d(TAG, "isNeedCompleteInfo sex == 0");
+//            return true;
+//        }
+        return isFirstLogin();
     }
 
     public long getUid() {
@@ -471,9 +484,6 @@ public class MyUserInfoManager {
             this.birthday = birthday;
         }
 
-        public String getAvatar() {
-            return avatar;
-        }
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;

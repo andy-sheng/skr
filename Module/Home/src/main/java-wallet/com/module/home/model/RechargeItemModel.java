@@ -19,6 +19,7 @@ public class RechargeItemModel implements Serializable {
     private int quantity;
     private String thirdProductID;
     private String desc;
+    private String imgPath;
 
     public String getGoodsID() {
         return goodsID;
@@ -66,5 +67,13 @@ public class RechargeItemModel implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }

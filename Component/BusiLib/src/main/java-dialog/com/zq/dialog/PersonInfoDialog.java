@@ -2,9 +2,7 @@ package com.zq.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
-import android.view.View;
 
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
@@ -14,27 +12,35 @@ import com.common.utils.U;
 import com.component.busilib.R;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Common.UserInfo;
+import com.zq.dialog.event.ShowEditRemarkEvent;
 import com.zq.person.model.PhotoModel;
-import com.zq.report.fragment.ReportFragment;
+import com.zq.report.fragment.QuickFeedbackFragment;
 
-import static com.zq.report.fragment.ReportFragment.FORM_GAME;
-import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
-import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
+import org.greenrobot.eventbus.EventBus;
+
 
 // 个人信息卡片
 public class PersonInfoDialog {
 
     Context mContext;
+    int mRoomID;
     DialogPlus mDialogPlus;
 
     KickListener mKickListener;
 
     public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick) {
         mContext = context;
+        init(context, userId, showReport, showKick);
+    }
 
+    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick, int roomID) {
+        mContext = context;
+        mRoomID = roomID;
+        init(context, userId, showReport, showKick);
+    }
+
+    private void init(Context context, final int userId, final boolean showReport, boolean showKick) {
         PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(context, userId, showReport, showKick);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
@@ -71,14 +77,12 @@ public class PersonInfoDialog {
 //                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
 //                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                 } else {
-                    UserInfoManager.getInstance().mateRelation(userID,
-                            UserInfoManager.RA_BUILD, isFriend);
+                    UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
                 }
             }
 
             @Override
             public void onClickMessage(UserInfoModel userInfoModel) {
-                // TODO: 2019/4/8 私信
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
@@ -89,12 +93,20 @@ public class PersonInfoDialog {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
-                // TODO: 2019/4/8 打开大图浏览
             }
 
             @Override
             public void onClickOut() {
                 mDialogPlus.dismiss();
+            }
+
+            @Override
+            public void onClickRemark(UserInfoModel userInfoModel) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+
+                EventBus.getDefault().post(new ShowEditRemarkEvent(userInfoModel));
             }
         });
 
@@ -133,16 +145,14 @@ public class PersonInfoDialog {
     }
 
     private void showReportView(int userID) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
-        bundle.putInt(REPORT_USER_ID, userID);
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, ReportFragment.class)
-                        .setBundle(bundle)
+                FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, QuickFeedbackFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                        .addDataBeforeAdd(0, 1)
+                        .addDataBeforeAdd(1, userID)
+                        .setEnterAnim(R.anim.slide_in_bottom)
+                        .setExitAnim(R.anim.slide_out_bottom)
                         .build());
     }
 
@@ -164,5 +174,7 @@ public class PersonInfoDialog {
         void onClickPhoto(PhotoModel photoModel, int position);
 
         void onClickOut();
+
+        void onClickRemark(UserInfoModel userInfoModel);
     }
 }

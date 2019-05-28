@@ -13,7 +13,7 @@ public final class BlockCanaryUtils {
     private static String sProcessName;
     private static boolean sProcessNameFirstGetFlag = false;
 
-    private static final String CURRENT_PACKAGE = "com.didichuxing.doraemonkit";
+    private static final String CURRENT_PACKAGE = "com.zq.live";
 
     public static String concernStackString(Context context, BlockInfo blockInfo) {
         String result = "";
@@ -44,8 +44,10 @@ public final class BlockCanaryUtils {
             sProcessNameFirstGetFlag = true;
             sProcessName = obtainProcessName(context);
         }
-        if (line.startsWith(sProcessName) || line.startsWith(CURRENT_PACKAGE)) {
-            return classSimpleName(line);
+        if(line!=null) {
+            if (line.startsWith(sProcessName) || line.startsWith(CURRENT_PACKAGE)) {
+                return classSimpleName(line);
+            }
         }
         return null;
     }

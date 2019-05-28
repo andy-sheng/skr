@@ -11,7 +11,7 @@ public class DqRecordModel implements Serializable {
      * createAt : 1555845729
      * dateTime : 2019-04-21
      * decrEvent : 1
-     * desc : 点券
+     * desc : 红钻
      * incrEvent : 0
      * remark : dq2zs
      * userID : 1115638

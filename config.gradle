@@ -5,8 +5,8 @@ ext {
             buildToolsVersion: "28.0.3",
             minSdkVersion    : 19,
             targetSdkVersion : 27,
-            versionCode      : 1006005,
-            versionName      : "1.6.5"
+            versionCode      : 1009003,
+            versionName      : "1.9.3"
     ]
     version = [
             androidSupportSdkVersion: "27.1.0",
@@ -189,7 +189,7 @@ ext {
             // facebook 性能调试工具 国内被墙，不好用
             "stetho"                           : "com.facebook.stetho:stetho:1.5.0",
             // 直接在浏览器查看数据库的工具
-            "debug-db"                         : "com.amitshekhar.android:debug-db:1.0.3",
+            "debug-db"                         : "com.amitshekhar.android:debug-db-encrypt:1.0.6",
             // doraemonkit 滴滴开源一款app内调试工具,以源码方式引入
             //"doraemonkit"                      : 'com.didichuxing.doraemonkit:doraemonkit:1.0.5',
             //"doraemonkit-no-op"                   : 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.0.5',

@@ -2,23 +2,24 @@ package com.module.playways.room.room.adapter;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.RankInfoModel;
-import com.common.utils.FragmentUtils;
+
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.RouterConstants;
 import com.module.playways.R;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.fragment.OtherPersonFragment2;
 
 public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.ViewHolder> {
 
@@ -81,14 +82,11 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, mRankInfoModel.getUserID());
-                    U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((FragmentActivity) itemView.getContext(), OtherPersonFragment2.class)
-                            .setUseOldFragmentIfExist(false)
-                            .setBundle(bundle)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .build());
+                    bundle.putInt("bundle_user_id", mRankInfoModel.getUserID());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation();
                 }
             });
         }
@@ -96,7 +94,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
         public void bind(RankInfoModel rankInfoModel) {
             mRankInfoModel = rankInfoModel;
             mTvRank.setText(rankInfoModel.getRankSeq() + "");
-            mTvName.setText(rankInfoModel.getNickname());
+            mTvName.setText(UserInfoManager.getInstance().getRemarkName(rankInfoModel.getUserID(),rankInfoModel.getNickname()));
             mTvSegment.setText(rankInfoModel.getLevelDesc());
             mLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             AvatarUtils.loadAvatarByUrl(mSdvIcon,

@@ -11,7 +11,7 @@ public interface IGameView {
 
     void setBannerImage(List<SlideShowModel> slideShowModelList);
 
-    void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum);
+    void setRecommendInfo(List<RecommendModel> list);
 
     void setQuickRoom(List<SpecialModel> list, int offset);
 

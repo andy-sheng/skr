@@ -128,6 +128,7 @@ public class HomeCorePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(NetworkUtils.NetworkChangeEvent event) {
         if (event.type == -1) {
+            mUiHandler.removeCallbacksAndMessages(mNetworkChangeRunnable);
             mUiHandler.postDelayed(mNetworkChangeRunnable, 3000);
         } else {
             mUiHandler.removeCallbacks(mNetworkChangeRunnable);
@@ -135,7 +136,10 @@ public class HomeCorePresenter {
     }
 
     private void showNetworkDisConnectDialog() {
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.app())
                 .setMessageTip("网络异常\n请检查网络连接后重试")
                 .setOkBtnTip("确认")
                 .setOkBtnClickListener(new AnimateClickListener() {
@@ -187,13 +191,14 @@ public class HomeCorePresenter {
         BgMusicManager.getInstance().destory();
     }
 
-    public void checkUserInfo(String from) {
+    public boolean checkUserInfo(String from) {
         MyLog.d(TAG, "checkUserInfo" + " from=" + from);
         if (UserAccountManager.getInstance().hasLoadAccountFromDB()) {
             if (!UserAccountManager.getInstance().hasAccount()) {
                 // 到时会有广告页或者启动页挡一下的，先不用管
                 LoginActivity.open(mBaseActivity);
 //                ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+                return true;
             } else {
                 if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
                     // 如果有账号了
@@ -203,8 +208,8 @@ public class HomeCorePresenter {
                             // 顶层的不是这个activity
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
                                     .greenChannel().navigation();
-                        }else{
-                            MyLog.d(TAG,"顶部已经是UploadAccountInfoActivity");
+                        } else {
+                            MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
                         }
                     } else {
                         //MyUserInfoManager.getInstance().trySyncLocation();
@@ -216,6 +221,7 @@ public class HomeCorePresenter {
                 }
             }
         }
+        return false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

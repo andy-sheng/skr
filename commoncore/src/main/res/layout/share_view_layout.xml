@@ -12,7 +12,7 @@
     android:layout_height="@dimen/view_127_dp">
 
     <TextView
-        android:drawableTop="@drawable/share_weixin"
+        android:drawableTop="@drawable/icon_weixin"
         android:gravity="center_horizontal|bottom"
         android:textSize="@dimen/textsize_12_dp"
         android:text="微信好友"
@@ -32,7 +32,7 @@
         android:layout_height="@dimen/view_80_dp" />
 
     <TextView
-        android:drawableTop="@drawable/qq"
+        android:drawableTop="@drawable/icon_qq"
         android:gravity="center_horizontal|bottom"
         android:textSize="@dimen/textsize_12_dp"
         android:text="QQ"

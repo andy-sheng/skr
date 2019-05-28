@@ -150,21 +150,9 @@ public class ZipUrlResourceManager {
         currentTask = songRes;
 
         //先用临时文件路径下载
-        File file = new File(songRes.fileDir + File.separator + "temp" + songRes.outputFileName + "." + songRes.suff);
-        MyLog.d(TAG, "startQueue temp file path is " + file.getAbsolutePath() + ", url is " + songRes.getResUrl());
-        if (!file.exists()) {
-            File parentFile = file.getParentFile();
-            if (parentFile != null && !parentFile.exists()) {
-                parentFile.mkdirs();
-            }
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        File file  = new File(songRes.getAbsolutPath());
 
-        U.getHttpUtils().downloadFileSync(songRes.getResUrl(), file, new HttpUtils.OnDownloadProgress() {
+        U.getHttpUtils().downloadFileSync(songRes.getResUrl(), file,true, new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long length) {
                 if (onDownloadProgress != null) {
@@ -180,14 +168,6 @@ public class ZipUrlResourceManager {
                 downloadLength = downloadLength + songRes.length;
                 MyLog.d(TAG, "onCompleted" + " localPath=" + localPath);
                 MyLog.d(TAG, "onCompleted" + " songRes.length=" + songRes.length);
-                File oldName = new File(localPath);
-                File newName = new File(songRes.getAbsolutPath());
-
-                if (oldName.renameTo(newName)) {
-                    MyLog.w(TAG, "已重命名");
-                } else {
-                    MyLog.w(TAG, "重命名失败");
-                }
 
                 startQueue();
             }

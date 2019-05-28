@@ -6,8 +6,10 @@ import com.common.core.userinfo.event.UserInfoDBChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
+import com.zq.live.proto.Common.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +26,7 @@ public class UserInfoLocalApi {
     //Relation中的relative  0为未关注，1为已关注 2为互关
     private static final String TAG = "UserInfoLocalApi";
 
-    public static final int UN_FOLLOW = 0;    // 未关注
-    public static final int ONE_FOLLOW = 1;   // 已关注
-    public static final int INTER_FOLLOW = 2; //互相关注
-
-    private static UserInfoDBDao getUserInfoDao() {
+    private static UserInfoDBDao getDao() {
         return GreenDaoManager.getDaoSession().getUserInfoDBDao();
     }
 
@@ -52,7 +50,7 @@ public class UserInfoLocalApi {
             UserInfoDB userInfoDB = UserInfoModel.toUserInfoDB(userInfoModel);
             userInfoDBList.add(userInfoDB);
         }
-        getUserInfoDao().insertOrReplaceInTx(userInfoDBList);
+        getDao().insertOrReplaceInTx(userInfoDBList);
         // 默认插入list都是从服务器直接获取,即一次初始化
         EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_INIT, null));
         return userInfoList.size();
@@ -80,7 +78,7 @@ public class UserInfoLocalApi {
         } else {
             EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_INSERT, userInfoModel));
         }
-        getUserInfoDao().insertOrReplaceInTx(UserInfoModel.toUserInfoDB(userInfoModel));
+        getDao().insertOrReplaceInTx(UserInfoModel.toUserInfoDB(userInfoModel));
         return 1;
     }
 
@@ -90,7 +88,7 @@ public class UserInfoLocalApi {
      * @return
      */
     public static void deleteAll() {
-        getUserInfoDao().deleteAll();
+        getDao().deleteAll();
     }
 
     /**
@@ -104,13 +102,30 @@ public class UserInfoLocalApi {
             UserInfoModel userInfo = getUserInfoByUUid(uid);
             if (userInfo != null) {
                 MyLog.w(TAG, "deleteUserInfo in DB");
-                getUserInfoDao().deleteByKey(uid);
+                getDao().deleteByKey(uid);
                 EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_REMOVE, userInfo));
                 return true;
             }
             MyLog.w(TAG, "deleteRelation but not exist in DB");
         }
         return false;
+    }
+
+    public static void deleUserInfoByUUids(List<Integer> delIds) {
+        if (delIds.isEmpty()) {
+            return;
+        }
+        String sql = String.format("DELETE FROM %s WHERE %s IN (", getDao().getTablename(), UserInfoDBDao.Properties.UserId.columnName);
+        for (int i = 0; i < delIds.size(); i++) {
+            int userId = delIds.get(i);
+            if (i == 0) {
+                sql += userId;
+            } else {
+                sql += "," + userId;
+            }
+        }
+        sql += ")";
+        getDao().getDatabase().execSQL(sql);
     }
 
     /**
@@ -123,7 +138,7 @@ public class UserInfoLocalApi {
         if (uid <= 0) {
             return null;
         }
-        UserInfoDB userInfoDB = getUserInfoDao().queryBuilder().where(UserInfoDBDao.Properties.UserId.eq(uid)).unique();
+        UserInfoDB userInfoDB = getDao().queryBuilder().where(UserInfoDBDao.Properties.UserId.eq(uid)).unique();
         if (userInfoDB == null) {
             return null;
         } else {
@@ -143,7 +158,7 @@ public class UserInfoLocalApi {
             return null;
         }
 
-        List<UserInfoDB> dbList = getUserInfoDao().queryBuilder().where(
+        List<UserInfoDB> dbList = getDao().queryBuilder().where(
                 UserInfoDBDao.Properties.UserId.in(longs)
         ).list();
         List<UserInfoModel> l = new ArrayList<>();
@@ -154,25 +169,31 @@ public class UserInfoLocalApi {
     }
 
     /**
-     * 获取好友列表
+     * 获取关注列表
      *
-     * @param relative 关系类别
-     * @param isBlock  是否包含黑名单
      * @return
      */
-    public static List<UserInfoModel> getFriendUserInfoList(int relative, boolean isBlock) {
-        List<UserInfoDB> dbList = null;
-        if (isBlock) {
-            dbList = getUserInfoDao().queryBuilder().where(
-                    UserInfoDBDao.Properties.Relative.eq(relative)
-            ).build().list();
-        } else {
-            dbList = getUserInfoDao().queryBuilder().where(
-                    UserInfoDBDao.Properties.Relative.eq(relative),
-                    UserInfoDBDao.Properties.Block.eq(false)
-            ).build().list();
+    public static List<UserInfoModel> getFollowUserInfoList() {
+        List<UserInfoDB> dbList = getDao().queryBuilder().whereOr(
+                UserInfoDBDao.Properties.Relative.eq(UserInfoManager.RELATION.FOLLOW.getValue()),
+                UserInfoDBDao.Properties.Relative.eq(UserInfoManager.RELATION.FRIENDS.getValue())
+        ).build().list();
+        List<UserInfoModel> l = new ArrayList<>();
+        for (UserInfoDB db : dbList) {
+            l.add(UserInfoModel.parseFromDB(db));
         }
+        return l;
+    }
 
+    /**
+     * 获取好友列表
+     *
+     * @return
+     */
+    public static List<UserInfoModel> getFriendUserInfoList() {
+        List<UserInfoDB> dbList = getDao().queryBuilder().where(
+                UserInfoDBDao.Properties.Relative.eq(UserInfoManager.RELATION.FRIENDS.getValue())
+        ).build().list();
         List<UserInfoModel> l = new ArrayList<>();
         for (UserInfoDB db : dbList) {
             l.add(UserInfoModel.parseFromDB(db));
@@ -186,7 +207,7 @@ public class UserInfoLocalApi {
      * @returnf
      */
     public static List<UserInfoModel> getBockerList() {
-        List<UserInfoDB> dbList = getUserInfoDao().queryBuilder().where(
+        List<UserInfoDB> dbList = getDao().queryBuilder().where(
                 UserInfoDBDao.Properties.Block.eq(true)
         ).build().list();
         List<UserInfoModel> l = new ArrayList<>();
@@ -196,4 +217,87 @@ public class UserInfoLocalApi {
         return l;
     }
 
+    /**
+     * 搜索我的关注
+     *
+     * @param key
+     */
+    public static List<UserInfoModel> searchFollow(String key) {
+        long id = 0;
+        try {
+            id = Long.parseLong(key);
+        } catch (Exception e) {
+
+        }
+        String whereSql;
+        if (id > 0) {
+            whereSql = String.format("WHERE (%s=%s OR %s=%s) AND (%s LIKE '%s' OR %s LIKE '%s' OR %s=%s)",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FOLLOW.getValue() + "",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserId.columnName, key
+            );
+        } else {
+            whereSql = String.format("WHERE (%s=%s OR %s=%s) AND (%s LIKE '%s' OR %s LIKE '%s')",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FOLLOW.getValue() + "",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%"
+            );
+        }
+        List<UserInfoDB> dbList = getDao().queryRaw(whereSql);
+        List<UserInfoModel> l = new ArrayList<>();
+        for (UserInfoDB db : dbList) {
+            l.add(UserInfoModel.parseFromDB(db));
+        }
+        return l;
+    }
+
+    /**
+     * 搜索我的好友
+     *
+     * @param key
+     */
+    public static List<UserInfoModel> searchFriends(String key) {
+        long id = 0;
+        try {
+            id = Long.parseLong(key);
+        } catch (Exception e) {
+
+        }
+        String whereSql;
+        if (id > 0) {
+            whereSql = String.format("WHERE %s=%s AND (%s LIKE '%s' OR %s LIKE '%s' OR %s=%s)",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserId.columnName, key
+            );
+        } else {
+            whereSql = String.format("WHERE %s=%s AND (%s LIKE '%s' OR %s LIKE '%s')",
+                    UserInfoDBDao.Properties.Relative.columnName, UserInfoManager.RELATION.FRIENDS.getValue() + "",
+                    UserInfoDBDao.Properties.UserNickname.columnName, "%" + key + "%",
+                    UserInfoDBDao.Properties.UserDisplayname.columnName, "%" + key + "%"
+            );
+        }
+
+        List<UserInfoDB> dbList = getDao().queryRaw(whereSql);
+
+        List<UserInfoModel> l = new ArrayList<>();
+        for (UserInfoDB db : dbList) {
+            l.add(UserInfoModel.parseFromDB(db));
+        }
+        return l;
+    }
+
+    public static void updateRemark(int userId, String remark) {
+        if (remark == null) {
+            remark = "";
+        }
+        String sql = String.format("UPDATE %s set %s='%s' WHERE %s=%s", UserInfoDBDao.TABLENAME,
+                UserInfoDBDao.Properties.UserDisplayname.columnName, remark,
+                UserInfoDBDao.Properties.UserId.columnName, userId);
+        getDao().getDatabase().execSQL(sql);
+    }
 }

@@ -9,11 +9,13 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 /**
@@ -35,19 +37,31 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
   )
   private final String text;
 
-  public CommentMsg(String text) {
-    this(text, ByteString.EMPTY);
+  /**
+   * 接收者信息
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<UserInfo> receiver;
+
+  public CommentMsg(String text, List<UserInfo> receiver) {
+    this(text, receiver, ByteString.EMPTY);
   }
 
-  public CommentMsg(String text, ByteString unknownFields) {
+  public CommentMsg(String text, List<UserInfo> receiver, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.text = text;
+    this.receiver = Internal.immutableCopyOf("receiver", receiver);
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.text = text;
+    builder.receiver = Internal.copyOf("receiver", receiver);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -58,7 +72,8 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
     if (!(other instanceof CommentMsg)) return false;
     CommentMsg o = (CommentMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(text, o.text);
+        && Internal.equals(text, o.text)
+        && receiver.equals(o.receiver);
   }
 
   @Override
@@ -67,6 +82,7 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (text != null ? text.hashCode() : 0);
+      result = result * 37 + receiver.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -76,6 +92,7 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (text != null) builder.append(", text=").append(text);
+    if (!receiver.isEmpty()) builder.append(", receiver=").append(receiver);
     return builder.replace(0, 2, "CommentMsg{").append('}').toString();
   }
 
@@ -100,16 +117,36 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
   }
 
   /**
+   * 接收者信息
+   */
+  public List<UserInfo> getReceiverList() {
+    if(receiver==null){
+        return new java.util.ArrayList<UserInfo>();
+    }
+    return receiver;
+  }
+
+  /**
    * 发表内容
    */
   public boolean hasText() {
     return text!=null;
   }
 
+  /**
+   * 接收者信息
+   */
+  public boolean hasReceiverList() {
+    return receiver!=null;
+  }
+
   public static final class Builder extends Message.Builder<CommentMsg, Builder> {
     private String text;
 
+    private List<UserInfo> receiver;
+
     public Builder() {
+      receiver = Internal.newMutableList();
     }
 
     /**
@@ -120,9 +157,18 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
       return this;
     }
 
+    /**
+     * 接收者信息
+     */
+    public Builder addAllReceiver(List<UserInfo> receiver) {
+      Internal.checkElementsNotNull(receiver);
+      this.receiver = receiver;
+      return this;
+    }
+
     @Override
     public CommentMsg build() {
-      return new CommentMsg(text, super.buildUnknownFields());
+      return new CommentMsg(text, receiver, super.buildUnknownFields());
     }
   }
 
@@ -134,12 +180,14 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
     @Override
     public int encodedSize(CommentMsg value) {
       return ProtoAdapter.STRING.encodedSizeWithTag(1, value.text)
+          + UserInfo.ADAPTER.asRepeated().encodedSizeWithTag(2, value.receiver)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, CommentMsg value) throws IOException {
       ProtoAdapter.STRING.encodeWithTag(writer, 1, value.text);
+      UserInfo.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.receiver);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -150,6 +198,7 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setText(ProtoAdapter.STRING.decode(reader)); break;
+          case 2: builder.receiver.add(UserInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -164,6 +213,7 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
     @Override
     public CommentMsg redact(CommentMsg value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.receiver, UserInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

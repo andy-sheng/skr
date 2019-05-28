@@ -95,7 +95,7 @@ public class SkrKouLingUtils {
         sb.append(name).append(" 在 撕歌skr 创建了个嗨唱包房 ，邀你一起来嗨呀。等你喔~").append("\n");
         sb.append("——————————").append("\n");
         sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
-        sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
+        sb.append("撕歌skr 下载地址:http://a.app.icon_qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
         if (MyLog.isDebugLogOpen()) {
             sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
         }
@@ -165,7 +165,7 @@ public class SkrKouLingUtils {
         sb.append(name).append(" 想添加你为好友，来 撕歌skr 一起嗨唱躁不停，等你喔~").append("\n");
         sb.append("——————————").append("\n");
         sb.append("邀请口令:").append("$").append(kouling).append("$").append("\n");
-        sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
+        sb.append("撕歌skr 下载地址:http://a.app.icon_qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
         if (MyLog.isDebugLogOpen()) {
             sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
         }

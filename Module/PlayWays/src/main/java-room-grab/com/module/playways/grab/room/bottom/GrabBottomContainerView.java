@@ -10,9 +10,14 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.component.busilib.constans.GameModeType;
+import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
@@ -22,10 +27,13 @@ import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.R;
+import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
 
 public class GrabBottomContainerView extends BottomContainerView {
 
@@ -40,6 +48,8 @@ public class GrabBottomContainerView extends BottomContainerView {
     DynamicMsgView mDynamicMsgView;
 
     GrabRoomData mGrabRoomData;
+
+    RelativeLayout mEmojiArea;
 
     public GrabBottomContainerView(Context context) {
         super(context);
@@ -56,6 +66,7 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     protected void init() {
         super.init();
+        mEmojiArea = this.findViewById(R.id.emoji_area);
         mIvRoomManage = this.findViewById(R.id.iv_room_manage);
         mIvRoomManage.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -104,11 +115,24 @@ public class GrabBottomContainerView extends BottomContainerView {
                 } else {
                     mDynamicMsgPopWindow.dismiss();
                 }
-//                if (mBottomContainerListener != null) {
-//                    mBottomContainerListener.showGiftPanel();
-//                }
             }
         });
+
+        mEmoji2Btn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mBottomContainerListener != null) {
+                    mBottomContainerListener.showGiftPanel();
+                }
+            }
+        });
+    }
+
+    public void setOpVisible(boolean visible) {
+        mEmojiArea.setVisibility(visible ? VISIBLE : INVISIBLE);
+        mEmoji2Btn.setEnabled(visible);
+        mEmoji1Btn.setEnabled(visible);
+        mIvRoomManage.setEnabled(visible);
     }
 
     protected void onQuickMsgDialogShow(boolean show) {
@@ -130,16 +154,16 @@ public class GrabBottomContainerView extends BottomContainerView {
                 //不是一唱到底房主
                 adjustUi(false);
             }
+
+            if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
+                mEmoji2Btn.setVisibility(GONE);
+            }
         }
     }
 
     void adjustUi(boolean grabOwner) {
         if (grabOwner) {
             mIvRoomManage.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
-            lp.addRule(RelativeLayout.LEFT_OF, mIvRoomManage.getId());
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-            mEmoji2Btn.setLayoutParams(lp);
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
             mQuickBtn.setEnabled(true);
             mQuickBtn.setOnClickListener(null);
@@ -177,10 +201,6 @@ public class GrabBottomContainerView extends BottomContainerView {
             });
         } else {
             mIvRoomManage.setVisibility(GONE);
-            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
-            lp.addRule(RelativeLayout.LEFT_OF, 0);
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            mEmoji2Btn.setLayoutParams(lp);
             mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
         }
     }
@@ -198,13 +218,12 @@ public class GrabBottomContainerView extends BottomContainerView {
             mSpeakingDotAnimationView.setVisibility(GONE);
             mShowInputContainerBtn.setText("夸赞是一种美德");
             EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
-
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        if (mGrabRoomData.isOwner()) {
+        if (mGrabRoomData != null && mGrabRoomData.isOwner()) {
             mQuickBtn.setEnabled(true);
             if (mGrabRoomData.isSpeaking()) {
                 // 正在说话，就算了

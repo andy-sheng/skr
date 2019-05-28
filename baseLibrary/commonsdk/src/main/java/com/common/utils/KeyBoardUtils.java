@@ -34,11 +34,13 @@ public class KeyBoardUtils {
     }
 
     public void hideSoftInputKeyBoard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        if (view == null) {
-            view = new View(activity);
+        if (activity != null) {
+            View view = activity.getCurrentFocus();
+            if (view == null) {
+                view = new View(activity);
+            }
+            hideSoftInput(view);
         }
-        hideSoftInput(view);
     }
 
     /**
@@ -158,11 +160,12 @@ public class KeyBoardUtils {
 
     /**
      * 获取软键盘高度
+     * (注意，代码中单位都用工具类转一下）
      *
      * @return
      */
     public int getKeyBoardHeight() {
-        return U.getPreferenceUtils().getSettingInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, 858);
+        return U.getPreferenceUtils().getSettingInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, U.getDisplayUtils().dip2px(286));
     }
 
     public void setKeyBoardHeight(int height) {

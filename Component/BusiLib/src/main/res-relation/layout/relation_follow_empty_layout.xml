@@ -18,7 +18,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/view_20_dp"
         android:text="你可知道有个按钮叫“关注”"
-        android:textColor="#993B4E79"
-        android:textSize="@dimen/textsize_14_dp" />
+        android:textColor="#778FAF"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
 
 </LinearLayout>

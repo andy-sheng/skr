@@ -1,7 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-apply plugin: 'kotlin-android-extensions'
+
+//kotlin-android用于编译Android代码
 apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -35,6 +38,8 @@ android {
 
         debug {
             debuggable true
+
+                resValue("string", "PORT_NUMBER", "8089")
         }
         release {
             minifyEnabled false
@@ -57,8 +62,8 @@ android {
             res.srcDirs += 'src/main/res-titlebar'
 
             //xlog
-            java.srcDirs += 'src/main/java-xlog'
-
+            //java.srcDirs += 'src/main/java-xlog'
+            java.srcDirs += 'src/main/java-xlog-wx'
             // 使用多啦A梦的log工具了，这个可以暂时不要了
             //java.srcDirs += 'src/main/java-screenlog'
             // 直接引入支持下拉加载 recyclerView,放弃 paginate，使用SmartRefreshLayout
@@ -114,6 +119,7 @@ android {
 
             // lubban 图片压缩
             java.srcDirs += 'src/main/java-luban'
+            java.srcDirs += 'src/main/java-bitmap-pool'
 
             // webview
             java.srcDirs += 'src/main/java-agentweb'
@@ -153,6 +159,12 @@ android {
                 // 极光push
                 java.srcDirs += 'src/main/java-push-jiguang'
             }
+            if(MatrixEnable.toBoolean()){
+                java.srcDirs += 'src/main/java-matrix'
+                res.srcDirs += 'src/main/res-matrix'
+            }else{
+                java.srcDirs += 'src/main/java-matrix-noop'
+            }
         }
 
 //        release {
@@ -175,7 +187,7 @@ android {
 dependencies {
     // New api keyword is exactly the same as the old compile keyword.
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // implementation 只会引入依赖的A，不会把A依赖的B也引进来
     api(rootProject.ext.dependencies["support-v4"])
     api(rootProject.ext.dependencies["appcompat-v7"])
@@ -213,6 +225,8 @@ dependencies {
     api(rootProject.ext.dependencies["rxpermissions2"])
     // 日志 以源代码方式方式引入
     //implementation(rootProject.ext.dependencies["xlog"])
+    // 微信xlog
+    implementation 'com.tencent.mars:mars-xlog:1.0.7'
 
     // fresco图片加载
     api(rootProject.ext.dependencies["fresco"])
@@ -221,7 +235,8 @@ dependencies {
     api(rootProject.ext.dependencies["fresco-animated-webp"])
     //api(rootProject.ext.dependencies["fresco-okhttp"])
     // 流畅的gif
-    api(rootProject.ext.dependencies["android-gif-drawable"])
+    //api(rootProject.ext.dependencies["android-gif-drawable"])
+    api project(":baseLibrary:android-gif-drawable")
     // 超大图加载
     api(rootProject.ext.dependencies["scale-image-view"])
 
@@ -233,7 +248,7 @@ dependencies {
 
     api rootProject.ext.dependencies["swipebackhelper"]
 
-    debugImplementation rootProject.ext.dependencies["debug-db"]
+    debugApi rootProject.ext.dependencies["debug-db"]
 
     // exo 播放器
     api rootProject.ext.dependencies["exoplayer-core"]
@@ -257,6 +272,9 @@ dependencies {
     api rootProject.ext.dependencies['umeng-common']
     api rootProject.ext.dependencies['umeng-analytics']
 
+    // 腾讯 bugly sdk
+    api 'com.tencent.bugly:crashreport:2.8.6' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    api 'com.tencent.bugly:nativecrashreport:3.6.0' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     // 友盟push
     if(UmengPushEnable.toBoolean()){
         api rootProject.ext.dependencies['umeng-push']
@@ -281,9 +299,9 @@ dependencies {
         api 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
         api 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
         api 'cn.jiguang.sdk.plugin:xiaomi:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        api 'cn.jiguang.sdk.plugin:huawei:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        api 'cn.jiguang.sdk.plugin:huawei:3.2.1'//此版本插件仅支持JPushSDK3.2.0及以上版本
         api 'cn.jiguang.sdk.plugin:meizu:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        api 'cn.jiguang.sdk.plugin:oppo:3.1.8'//此版本插件仅支持JPushSDK3.1.8及以上版本
+        api 'cn.jiguang.sdk.plugin:oppo:3.2.0'//此版本插件仅支持JPushSDK3.1.8及以上版本
         api 'cn.jiguang.sdk.plugin:vivo:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
     }
 
@@ -330,6 +348,18 @@ dependencies {
 
     // 微信支付
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
+
+    if(MatrixEnable.toBoolean()){
+        implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-resource-canary-android", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-resource-canary-common", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-io-canary", version: MATRIX_VERSION, changing: true
+        implementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk", version: MATRIX_VERSION, changing: true
+        //releaseImplementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk-no-op", version: MATRIX_VERSION, changing: true
+    }
+
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

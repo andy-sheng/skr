@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 
+import com.glidebitmappool.BitmapPoolAdapter;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -77,7 +78,7 @@ public class ZXingUtils {
 
             }
         }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = BitmapPoolAdapter.getBitmap(width, height, Bitmap.Config.ARGB_8888);
         // 通过像素数组生成bitmap
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
@@ -109,7 +110,7 @@ public class ZXingUtils {
                 }
             }
         }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = BitmapPoolAdapter.getBitmap(width, height, Bitmap.Config.ARGB_8888);
         //通过像素数组生成bitmap
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;

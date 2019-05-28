@@ -9,32 +9,31 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
+import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.playways.room.gift.model.AnimationGift;
+import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
-import com.module.playways.BaseRoomData;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Random;
-
 public class GiftBigAnimationView {
-    static final int MSG_ENSURE_FINISH = 91;
+
+    public final static String TAG = "GiftBigAnimationView";
+
+    static final int MSG_ENSURE_FINISH = 101;
 
     static final int STATUS_IDLE = 1;
     static final int STATUS_PLAYING = 2;
     int mStatus = STATUS_IDLE;
+
     Listener mListener;
 
     SVGAImageView mSVGAImageView;
     GiftPlayModel mGiftPlayModel;
-
-    Random mRandom = new Random();
 
     Handler mUiHanlder = new Handler(Looper.getMainLooper()) {
         @Override
@@ -55,44 +54,21 @@ public class GiftBigAnimationView {
     }
 
     public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
-        if (parent.indexOfChild(mSVGAImageView) < 0) {
-            int translateX = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
-            int translateY = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
-            SLocation l = new SLocation(0.67f + mRandom.nextFloat() / 3f, translateX, translateY);
-
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-            parent.addView(mSVGAImageView, lp);
-
-            // 变化一下位置
-            mSVGAImageView.setScaleX(l.scale);
-            mSVGAImageView.setScaleY(l.scale);
-            mSVGAImageView.setTranslationX(l.translateX);
-            mSVGAImageView.setTranslationY(l.translateY);
-        }
-        mStatus = STATUS_PLAYING;
+        // TODO: 2019/5/8  播放动画 差个偏移量
         mGiftPlayModel = giftPlayModel;
-        String url = null;
-
-        if (giftPlayModel.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
-            switch (giftPlayModel.getEmojiType()) {
-                case SP_EMOJI_TYPE_UNLIKE:
-                    url = BaseRoomData.ROOM_SPECAIL_EMOJI_DABIAN;
-                    break;
-                case SP_EMOJI_TYPE_LIKE:
-                    url = BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
-                    break;
-            }
-        } else {
-            url = giftPlayModel.getBigGiftResUrl();
+        BaseGift baseGift = mGiftPlayModel.getGift();
+        if (baseGift instanceof AnimationGift) {
+            AnimationGift animationGift = (AnimationGift) baseGift;
+            AnimationGift.AnimationPrams giftParamModel = animationGift.getAnimationPrams();
+            mStatus = STATUS_PLAYING;
+            load(parent, animationGift.getSourceURL(), giftParamModel);
+            mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
+            // TODO: 2019/5/8 时间可以根据动画加上一点做保护
+            mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, giftParamModel.getDuration() + 5000);
         }
-
-        load(url);
-        mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
-        mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, 5000);
     }
 
-    private void load(String url) {
+    private void load(RelativeLayout parent, String url, AnimationGift.AnimationPrams animationPrams) {
         if (TextUtils.isEmpty(url)) {
             onFinish();
             return;
@@ -100,7 +76,7 @@ public class GiftBigAnimationView {
         SvgaParserAdapter.parse(url, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(SVGAVideoEntity videoItem) {
-                onLoadComplete(videoItem);
+                onLoadComplete(parent, animationPrams, videoItem);
             }
 
             @Override
@@ -110,8 +86,73 @@ public class GiftBigAnimationView {
         });
     }
 
-    private void onLoadComplete(SVGAVideoEntity videoItem) {
+    private void onLoadComplete(RelativeLayout parent, AnimationGift.AnimationPrams animationPrams, SVGAVideoEntity videoItem) {
         SVGADrawable drawable = new SVGADrawable(videoItem);
+        if (parent.indexOfChild(mSVGAImageView) < 0) {
+            // 确定尺寸和位置
+            if (animationPrams.isFullScreen()) {
+                // 全屏
+                double realWidth = videoItem.getVideoSize().getWidth();
+                double realHeight = videoItem.getVideoSize().getHeight();
+                if (animationPrams.isFullX()) {
+                    // 横向平铺
+                    if (realWidth != 0) {
+                        int width = U.getDisplayUtils().getScreenWidth();
+                        int height = (int) (realHeight * width / realWidth);
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, height);
+                        // 确定位置
+                        if (animationPrams.getBottom() != -1) {
+                            // 距离底部多远
+                            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                            lp.bottomMargin = U.getDisplayUtils().dip2px(animationPrams.getBottom());
+                            parent.addView(mSVGAImageView, lp);
+                        } else if (animationPrams.getTop() != -1) {
+                            // 距离顶部多远
+                            lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                            lp.topMargin = U.getDisplayUtils().dip2px(animationPrams.getTop());
+                            parent.addView(mSVGAImageView, lp);
+                        } else {
+                            // 顶部和底部无要求，则居中
+                            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                            parent.addView(mSVGAImageView, lp);
+                        }
+                    } else {
+                        MyLog.w(TAG, "onLoadComplete" + " parent=" + parent + " animationPrams=" + animationPrams + " videoItem=" + videoItem + " realWidth = 0");
+                    }
+                } else {
+                    // 纵向平铺
+                    if (realHeight != 0) {
+                        int height = U.getDisplayUtils().getScreenHeight();
+                        int width = (int) (realWidth * height / realHeight);
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, height);
+                        // 确定位置
+                        if (animationPrams.getLeft() != -1) {
+                            // 距离左边多远
+                            lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                            lp.leftMargin = U.getDisplayUtils().dip2px(animationPrams.getLeft());
+                            parent.addView(mSVGAImageView, lp);
+                        } else if (animationPrams.getRight() != -1) {
+                            // 距离右边多远
+                            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                            lp.rightMargin = U.getDisplayUtils().dip2px(animationPrams.getRight());
+                            parent.addView(mSVGAImageView, lp);
+                        } else {
+                            // 左部和右部无要求，则居中
+                            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                            parent.addView(mSVGAImageView, lp);
+                        }
+                    } else {
+                        MyLog.w(TAG, "onLoadComplete" + " parent=" + parent + " animationPrams=" + animationPrams + " videoItem=" + videoItem + "realHeight = 0");
+                    }
+                }
+            } else {
+                // 非全屏幕
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(animationPrams.getWidth()),
+                        U.getDisplayUtils().dip2px(animationPrams.getHeight()));
+                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                parent.addView(mSVGAImageView, lp);
+            }
+        }
         mSVGAImageView.setImageDrawable(drawable);
         mSVGAImageView.setCallback(new SVGACallback() {
             @Override
@@ -121,12 +162,18 @@ public class GiftBigAnimationView {
 
             @Override
             public void onFinished() {
+                if (mSVGAImageView != null) {
+                    mSVGAImageView.setCallback(null);
+                    mSVGAImageView.stopAnimation(true);
+                }
                 GiftBigAnimationView.this.onFinish();
             }
 
             @Override
             public void onRepeat() {
-                GiftBigAnimationView.this.onFinish();
+                if (mSVGAImageView != null && mSVGAImageView.isAnimating()) {
+                    mSVGAImageView.stopAnimation(true);
+                }
             }
 
             @Override
@@ -172,20 +219,13 @@ public class GiftBigAnimationView {
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
+    public void reset() {
+        if (mSVGAImageView != null) {
+            mSVGAImageView.stopAnimation(true);
+        }
+    }
 
     public interface Listener {
         void onFinished(GiftBigAnimationView animationView, GiftPlayModel giftPlayModel);
-    }
-
-    public static class SLocation {
-        float scale = 1.0f;
-        float translateX = 0;
-        float translateY = 0;
-
-        public SLocation(float scale, float translateX, float translateY) {
-            this.scale = scale;
-            this.translateX = translateX;
-            this.translateY = translateY;
-        }
     }
 }

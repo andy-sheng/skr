@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.common.log.MyLog;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.zq.person.holder.EmptyPhotoHolder;
 import com.zq.person.holder.PhotoAddHolder;
 import com.zq.person.holder.PhotoViewHolder;
 import com.zq.person.model.PhotoModel;
@@ -30,8 +31,9 @@ public class PhotoAdapter extends RecyclerView.Adapter {
     boolean mHasUpdate;
     int type;
 
-    private int PHOTO_ADD_TYPE = 0;
-    private int PHOTO_ITEM_TYPE = 1;
+    private int PHOTO_ADD_TYPE = 0;     //上传
+    private int PHOTO_ITEM_TYPE = 1;    //照片
+    private int PHOTO_ITEM_EMPTY = 2;   //空页面
 
     public PhotoAdapter(RecyclerOnItemClickListener mListener, int type) {
         this.mListener = mListener;
@@ -64,12 +66,21 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_add_view_layout, parent, false);
             PhotoAddHolder viewHolder = new PhotoAddHolder(view, mListener);
             return viewHolder;
+        } else if (viewType == PHOTO_ITEM_EMPTY) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_empty_layout, parent, false);
+            EmptyPhotoHolder viewHolder = new EmptyPhotoHolder(view);
+            return viewHolder;
         }
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (isContainEmpty()) {
+            EmptyPhotoHolder emptyPhotoHolder = (EmptyPhotoHolder) holder;
+            return;
+        }
+
         if (mHasUpdate) {
             if (position == 0) {
                 ((PhotoAddHolder) holder).bindData(position);
@@ -85,16 +96,37 @@ public class PhotoAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        if (isContainEmpty()) {
+            return PHOTO_ITEM_EMPTY;
+        }
+
         if (position == 0 && mHasUpdate) {
             return PHOTO_ADD_TYPE;
         }
+
         return PHOTO_ITEM_TYPE;
+    }
+
+    private boolean isContainEmpty() {
+        if (type == TYPE_OTHER_PERSON_CENTER) {
+            if (mDataList != null && mDataList.size() > 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public int getItemCount() {
         if (mHasUpdate) {
             return mDataList.size() + 1;
+        }
+
+        if (isContainEmpty()) {
+            // 空页面
+            return 1;
         }
 
         return mDataList.size();

@@ -40,6 +40,7 @@ public class DynamicMsgHolder extends RecyclerView.ViewHolder {
         FrescoWorker.loadImage(mDynamicEmojiIv,
                 ImageFactory.newPathImage(mDynamicModel.getSmallEmojiURL())
                         .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
+                        .setFitDrawable(true)
                         .build());
 
     }

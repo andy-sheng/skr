@@ -29,6 +29,11 @@ public class InComeActivity extends BaseActivity {
     }
 
     @Override
+    public boolean canSlide() {
+        return false;
+    }
+
+    @Override
     public boolean useEventBus() {
         return false;
     }

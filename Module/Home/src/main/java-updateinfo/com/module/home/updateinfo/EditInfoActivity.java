@@ -17,6 +17,7 @@ import com.common.base.BaseActivity;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.log.MyLog;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -134,6 +135,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
         String age = String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge());
+        if (MyUserInfoManager.getInstance().getAge() == 0) {
+            age = "未知";
+        }
         String constellation = MyUserInfoManager.getInstance().getConstellation();
         if (!TextUtils.isEmpty(constellation)) {
             mAgeTv.setText(age + " " + constellation);
@@ -141,7 +145,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             mAgeTv.setText(age + "");
         }
 
-        String sex = "未知";
+        String sex = "保密";
         if (MyUserInfoManager.getInstance().getSex() == 1) {
             sex = "男";
         } else if (MyUserInfoManager.getInstance().getSex() == 2) {
@@ -175,6 +179,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 .setMultiMode(false)
                 .setSelectLimit(1)
                 .setCropStyle(CropImageView.Style.CIRCLE)
+                .setIncludeGif(false)
                 .build()
         );
         ResPickerActivity.open(this);
@@ -252,6 +257,11 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK && resultCode == Activity.RESULT_OK) {
             ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
+            if (imageItem == null) {
+                MyLog.e(TAG, new Throwable("选中的ImageItem为null"));
+                return;
+            }
+
             mProgressBar.setVisibility(View.VISIBLE);
             UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
                     .setNeedCompress(true)

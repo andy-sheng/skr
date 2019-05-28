@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
+import com.common.base.InitManager;
 import com.common.base.delegate.AppLifecycles;
 import com.component.room.msg.push.BasicMsgProcessor;
 import com.module.ModuleServiceManager;
@@ -60,10 +61,10 @@ public class BusiLibConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
-                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-                if (msgService != null) {
-                    msgService.addMsgProcessor(new BasicMsgProcessor());
-                }
+                        IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                        if (msgService != null) {
+                            msgService.addMsgProcessor(new BasicMsgProcessor());
+                        }
             }
 
             @Override

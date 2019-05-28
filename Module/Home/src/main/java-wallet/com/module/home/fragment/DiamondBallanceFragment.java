@@ -21,6 +21,10 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.StrokeTextView;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
+import com.module.home.event.RechargeSuccessEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class DiamondBallanceFragment extends BaseFragment {
     public final static String TAG = "DiamondBallanceFragment";
@@ -81,13 +85,19 @@ public class DiamondBallanceFragment extends BaseFragment {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(RechargeSuccessEvent giftPresentEvent) {
+        // 收到一条礼物消息,进入生产者队列
+        getZSBalance();
+    }
+
     public void getZSBalance() {
         ApiMethods.subscribe(mWalletServerApi.getZSBalance(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 MyLog.w(TAG, "getZSBalance process" + " obj=" + obj);
                 if (obj.getErrno() == 0) {
-                    String amount = JSON.parseObject(obj.getData().getString("totalAmountStr"), String.class);
+                    String amount = obj.getData().getString("totalAmountStr");
                     mTvDiamondBalance.setText(amount);
                 }
             }
@@ -107,6 +117,6 @@ public class DiamondBallanceFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }

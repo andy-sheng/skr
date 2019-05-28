@@ -40,7 +40,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
     HandlerTaskTimer mLoopMatchTask;
     HandlerTaskTimer mCheckJoinStateTask;
     int mCurrentMusicId; //选择的歌曲id
-    int mGameType; // 当前游戏类型
+    int mGameType;      // 当前游戏类型
+    boolean mIsNewUser;  // 是否新手引导
     // TODO: 2018/12/12 怎么确定一个push肯定是当前一轮的push？？？
     QJoinActionEvent mJoinActionEvent;
 
@@ -52,8 +53,9 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
 
     volatile MatchState mMatchState = MatchState.IDLE;
 
-    public GrabMatchPresenter(@NonNull IGrabMatchingView view) {
+    public GrabMatchPresenter(@NonNull IGrabMatchingView view, boolean isNewUser) {
         this.mView = view;
+        this.mIsNewUser = isNewUser;
         mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -104,6 +106,9 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         map.put("modeID", gameType);
         map.put("platform", PLAT_FORM);   // 代表是android平台
         map.put("tagID", playbookItemID);
+        if (mIsNewUser) {
+            map.put("isNewUser", mIsNewUser);
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         mStartMatchTask = ApiMethods.subscribe(mMatchServerApi.startGrabMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
@@ -112,8 +117,11 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
                 if (result.getErrno() == 0) {
 //                    U.getToastUtil().showShort("开始匹配");
+                } else if (result.getErrno() == 8344155) {
+                    //专场已下线
+                    mView.channelIsOffLine();
                 } else {
-                    onError(new Throwable("开始匹配失败"));
+                    MyLog.e("开始匹配失败");
                 }
             }
 
@@ -198,7 +206,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
      */
     private void joinRongRoom() {
         MyLog.d(TAG, "joinRongRoom gameId " + mJoinActionEvent.gameId);
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId),10, new ICallback() {
+        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId), 10, new ICallback() {
             @Override
             public void onSucess(Object obj) {
                 if (mMatchState == MatchState.MatchSucess) {

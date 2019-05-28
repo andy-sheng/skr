@@ -81,8 +81,16 @@ public class GrabInviteNotifyView extends RelativeLayout {
                         .setBorderColorBySex(mUserInfoModel.getSex() == ESex.SX_MALE.getValue())
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .build());
-        mNameTv.setText(mUserInfoModel.getNickname());
-        mSexIv.setBackgroundResource(userInfoModel.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
+        mNameTv.setText(mUserInfoModel.getNicknameRemark());
+        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(GONE);
+        }
     }
 
     Listener mListener;

@@ -18,6 +18,7 @@ public class PrepareData implements Serializable {
     private int mShiftTs;
     //一场到底歌曲分类
     private int mTagId;
+    private boolean isNewUser = false;
 
     private String mBgMusic; // 背景音乐
 
@@ -140,5 +141,13 @@ public class PrepareData implements Serializable {
 
     public String getAgoraToken() {
         return mAgoraToken;
+    }
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
     }
 }

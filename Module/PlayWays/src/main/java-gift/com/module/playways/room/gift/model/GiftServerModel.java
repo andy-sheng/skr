@@ -1,64 +1,49 @@
 package com.module.playways.room.gift.model;
 
+import android.text.TextUtils;
+
 import com.module.playways.room.gift.GiftDB;
 
 import java.io.Serializable;
 
 public class GiftServerModel implements Serializable {
-
-
     /**
-     * canContinue : true
-     * description :
      * giftID : 2
-     * giftName : 爱心2
-     * giftType : 1
-     * giftURL : www.inframe.com
+     * giftName : 大便
+     * giftURL : http://res-static.inframe.mobi/gift/img/liwu_dabian.png
      * price : 2
-     * sortID : 1
-     * sourceURL : www.source.com
+     * sourceURL :
+     * sortID : 2
+     * giftType : 1
+     * canContinue : true
+     * description : 大便
+     * realPrice : 2
+     * play : false
+     * textContinueCount : 0
+     * displayType : 0
+     * extra : null
      */
 
-    private boolean canContinue;
-    private String description;
-    private int giftID;
+    private long giftID;
     private String giftName;
-    private int giftType;
     private String giftURL;
     private int price;
-    private int sortID;
     private String sourceURL;
+    private int sortID;
+    private int giftType;
+    private boolean canContinue;
+    private String description;
     private float realPrice;
+    private boolean play;
+    private int textContinueCount;
+    private int displayType;
+    private String extra;
 
-    public float getRealPrice() {
-        return realPrice;
-    }
-
-    public void setRealPrice(float realPrice) {
-        this.realPrice = realPrice;
-    }
-
-    public boolean isCanContinue() {
-        return canContinue;
-    }
-
-    public void setCanContinue(boolean canContinue) {
-        this.canContinue = canContinue;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getGiftID() {
+    public long getGiftID() {
         return giftID;
     }
 
-    public void setGiftID(int giftID) {
+    public void setGiftID(long giftID) {
         this.giftID = giftID;
     }
 
@@ -68,14 +53,6 @@ public class GiftServerModel implements Serializable {
 
     public void setGiftName(String giftName) {
         this.giftName = giftName;
-    }
-
-    public int getGiftType() {
-        return giftType;
-    }
-
-    public void setGiftType(int giftType) {
-        this.giftType = giftType;
     }
 
     public String getGiftURL() {
@@ -94,6 +71,10 @@ public class GiftServerModel implements Serializable {
         this.price = price;
     }
 
+    public String getSourceURL() {
+        return sourceURL;
+    }
+
     public int getSortID() {
         return sortID;
     }
@@ -102,8 +83,68 @@ public class GiftServerModel implements Serializable {
         this.sortID = sortID;
     }
 
-    public String getSourceURL() {
-        return sourceURL;
+    public int getGiftType() {
+        return giftType;
+    }
+
+    public void setGiftType(int giftType) {
+        this.giftType = giftType;
+    }
+
+    public boolean isCanContinue() {
+        return canContinue;
+    }
+
+    public void setCanContinue(boolean canContinue) {
+        this.canContinue = canContinue;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getRealPrice() {
+        return realPrice;
+    }
+
+    public void setRealPrice(float realPrice) {
+        this.realPrice = realPrice;
+    }
+
+    public boolean isPlay() {
+        return play;
+    }
+
+    public void setPlay(boolean play) {
+        this.play = play;
+    }
+
+    public int getTextContinueCount() {
+        return textContinueCount;
+    }
+
+    public void setTextContinueCount(int textContinueCount) {
+        this.textContinueCount = textContinueCount;
+    }
+
+    public int getDisplayType() {
+        return displayType;
+    }
+
+    public void setDisplayType(int displayType) {
+        this.displayType = displayType;
+    }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 
     public void setSourceURL(String sourceURL) {
@@ -112,17 +153,20 @@ public class GiftServerModel implements Serializable {
 
     public static GiftDB toGiftDB(GiftServerModel giftServerModel) {
         GiftDB giftDB = new GiftDB();
-        giftDB.setCanContinue(giftServerModel.isCanContinue());
-        giftDB.setDescription(giftServerModel.getDescription());
         giftDB.setGiftID(giftServerModel.getGiftID());
         giftDB.setGiftName(giftServerModel.getGiftName());
         giftDB.setGiftType(giftServerModel.getGiftType());
+        giftDB.setCanContinue(giftServerModel.isCanContinue());
+        giftDB.setTextContinueCount(giftServerModel.getTextContinueCount());
         giftDB.setGiftURL(giftServerModel.getGiftURL());
         giftDB.setPrice(giftServerModel.getPrice());
+        giftDB.setRealPrice(giftServerModel.getRealPrice());
         giftDB.setSortID(giftServerModel.getSortID());
+        giftDB.setDescription(giftServerModel.getDescription());
         giftDB.setSourceURL(giftServerModel.getSourceURL());
-
-
+        giftDB.setPlay(giftServerModel.isPlay());
+        giftDB.setDisplayType(giftServerModel.getDisplayType());
+        giftDB.setExtra(giftServerModel.getExtra());
         return giftDB;
     }
 }

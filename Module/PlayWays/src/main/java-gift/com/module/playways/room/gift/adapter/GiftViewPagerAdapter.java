@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.common.log.MyLog;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.view.GiftOnePageView;
-import com.module.playways.room.gift.view.GiftView;
+import com.module.playways.room.gift.view.GiftDisplayView;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,9 +21,9 @@ public class GiftViewPagerAdapter extends PagerAdapter {
     HashMap<Integer, GiftOnePageView> mGiftOnePageViewHashMap = new HashMap<>();
     HashMap<Integer, List<BaseGift>> mGiftDataHashMap = new HashMap<>();
     Context mContext;
-    GiftView.IGiftOpListener mIGiftOpListener;
+    GiftDisplayView.IGiftOpListener mIGiftOpListener;
 
-    public GiftViewPagerAdapter(Context context, GiftView.IGiftOpListener iGiftOpListener) {
+    public GiftViewPagerAdapter(Context context, GiftDisplayView.IGiftOpListener iGiftOpListener) {
         mContext = context;
         mIGiftOpListener = iGiftOpListener;
     }
@@ -32,6 +32,11 @@ public class GiftViewPagerAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         MyLog.d(TAG, "destroyItem" + " container=" + container + " position=" + position + " object=" + object);
         container.removeView((View) object);
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 
     @NonNull
@@ -70,6 +75,13 @@ public class GiftViewPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return mGiftDataHashMap == null ? 0 : mGiftDataHashMap.size();
+    }
+
+    public void destroy() {
+        Iterator<Map.Entry<Integer, GiftOnePageView>> integerGiftOnePageViewIterator = mGiftOnePageViewHashMap.entrySet().iterator();
+        while (integerGiftOnePageViewIterator.hasNext()) {
+            integerGiftOnePageViewIterator.next().getValue().destroy();
+        }
     }
 
     @Override

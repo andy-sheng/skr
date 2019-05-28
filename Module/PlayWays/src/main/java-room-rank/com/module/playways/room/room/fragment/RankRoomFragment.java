@@ -31,18 +31,19 @@ import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.RankRoomData;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
+import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent;
-import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
+import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.room.room.presenter.RankCorePresenter;
@@ -55,7 +56,6 @@ import com.module.playways.room.room.view.RankTopContainerView1;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.room.view.TurnChangeCardView;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -66,6 +66,7 @@ import com.zq.dialog.PersonInfoDialog;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -216,6 +217,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
         onFirstSongGo();
+
+        StatisticsAdapter.recordCountEvent("rank", "rankgame", null);
     }
 
     private void initMainStage() {
@@ -233,7 +236,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override
@@ -438,7 +441,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator(int userId) {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        if(mRoomData.getUserInfo(userId) == null){
+        if (mRoomData.getUserInfo(userId) == null) {
             return;
         }
 
@@ -448,39 +451,39 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
         mStageView.setLoops(0);
         SvgaParserAdapter.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
-                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                    mStageView.setImageDrawable(drawable);
-                    mStageView.startAnimation();
-                    mSingAvatarView.setVisibility(View.VISIBLE);
-                    mCountDownProcess.setVisibility(View.VISIBLE);
-                    mCountDownProcess.restart();
-                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
-                            AvatarUtils.newParamsBuilder(avatar)
-                                    .setCircle(true)
-                                    .build());
-                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
-                    objectAnimatorStage.setDuration(1000);
-                    objectAnimatorStage.start();
-                    mAnimatorList.add(objectAnimatorStage);
+            @Override
+            public void onComplete(SVGAVideoEntity svgaVideoEntity) {
+                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                mStageView.setImageDrawable(drawable);
+                mStageView.startAnimation();
+                mSingAvatarView.setVisibility(View.VISIBLE);
+                mCountDownProcess.setVisibility(View.VISIBLE);
+                mCountDownProcess.restart();
+                AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                        AvatarUtils.newParamsBuilder(avatar)
+                                .setCircle(true)
+                                .build());
+                ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+                objectAnimatorStage.setDuration(1000);
+                objectAnimatorStage.start();
+                mAnimatorList.add(objectAnimatorStage);
 
-                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
-                    objectAnimatorAvatar.setDuration(1000);
-                    objectAnimatorAvatar.start();
-                    mAnimatorList.add(objectAnimatorAvatar);
+                ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
+                objectAnimatorAvatar.setDuration(1000);
+                objectAnimatorAvatar.start();
+                mAnimatorList.add(objectAnimatorAvatar);
 
-                    ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
-                    objectAnimatorTime.setDuration(1000);
-                    objectAnimatorTime.start();
-                    mAnimatorList.add(objectAnimatorTime);
-                }
+                ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
+                objectAnimatorTime.setDuration(1000);
+                objectAnimatorTime.start();
+                mAnimatorList.add(objectAnimatorTime);
+            }
 
-                @Override
-                public void onError() {
-                    MyLog.d(TAG, "playShowMainStageAnimator onError");
-                }
-            });
+            @Override
+            public void onError() {
+                MyLog.d(TAG, "playShowMainStageAnimator onError");
+            }
+        });
 
         RxView.clicks(mSingAvatarView)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -627,6 +630,17 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             public void onVoiceChange(boolean voiceOpen) {
                 mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
             }
+
+            @Override
+            public void onClickFeedback() {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build());
+            }
         });
 
     }
@@ -645,7 +659,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void initGiftDisplayView() {
         GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
         giftContinueViewGroup.setRoomData(mRoomData);
-        GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        GiftOverlayAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
@@ -756,7 +770,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
-                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_exit", null);
+//                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new AnimateClickListener() {
@@ -1075,7 +1089,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 /**
                  * 更新本地总分
                  */
-                updateScrollBarProgress(999,0,eventNum);
+                updateScrollBarProgress(999, 0, eventNum);
                 /**
                  * 通知远端更新总分
                  */

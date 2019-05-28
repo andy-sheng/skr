@@ -2,9 +2,7 @@ package com.module.home.view;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,15 +12,12 @@ import android.widget.TextView;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.home.R;
 import com.module.home.adapter.HomeGoldCheckinAdapter;
 import com.module.home.model.HomeGoldModel;
 
 import java.util.List;
-
-import java.util.logging.LogRecord;
 
 public class HomeGoldCheckInView extends RelativeLayout {
     public final static String TAG = "HomeGoldCheckInView";

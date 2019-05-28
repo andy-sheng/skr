@@ -149,8 +149,8 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
                         .withBoolean("selectSong", true)
                         .navigation();
 
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
-                        StatConstants.KEY_RANK_CLICK, null);
+//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
+//                        StatConstants.KEY_RANK_CLICK, null);
             }
         });
 
@@ -351,6 +351,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         super.onFragmentVisible();
         initBaseInfo();
         mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), false);
+        StatisticsAdapter.recordCountEvent("rank", "expose", null);
     }
 
     @Override

@@ -187,7 +187,7 @@ public class PKSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mLeftName.setText(mLeftUserInfoModel.getNickname());
+            mLeftName.setText(mLeftUserInfoModel.getNicknameRemark());
         }
         if (mRightUserInfoModel != null) {
             if (mRightOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
@@ -212,7 +212,7 @@ public class PKSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mRightName.setText(mRightUserInfoModel.getNickname());
+            mRightName.setText(mRightUserInfoModel.getNicknameRemark());
         }
     }
 
@@ -260,6 +260,21 @@ public class PKSingCardView extends RelativeLayout {
         }
     }
 
+    public void playScaleWithoutAnimation(int userId) {
+        if (mLeftUserInfoModel != null && userId == mLeftUserInfoModel.getUserId()) {
+            if (!mLeftAnimationFlag && !mLeftSingSvga.isAnimating()) {
+                mLeftArea.setScaleX(1.35f);
+                mLeftArea.setScaleY(1.35f);
+            } else {
+            }
+        } else if (mRightUserInfoModel != null && userId == mRightUserInfoModel.getUserId()) {
+            if (!mRightAnimationFlag && !mRightSingSvga.isAnimating()) {
+                mRightArea.setScaleX(1.35f);
+                mRightArea.setScaleY(1.35f);
+            } else {
+            }
+        }
+    }
     /**
      * @param uid        播放谁的动画
      * @param isPlaySVGA 是否播放声纹SVGA

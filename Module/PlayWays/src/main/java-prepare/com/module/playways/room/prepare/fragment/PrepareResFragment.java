@@ -52,7 +52,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     RelativeLayout mMainActContainer;
 
     ExImageView mIvTop;
-    SimpleDraweeView mSongIcon;
+//    SimpleDraweeView mSongIcon;
     ExTextView mSongName;
     ExTextView mTvDuration;
     ExTextView mTvLyric;
@@ -87,7 +87,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
-        mSongIcon = (SimpleDraweeView) mRootView.findViewById(R.id.song_icon);
+//        mSongIcon = (SimpleDraweeView) mRootView.findViewById(R.id.song_icon);
         mSongName = (ExTextView) mRootView.findViewById(R.id.song_name);
         mTvDuration = (ExTextView) mRootView.findViewById(R.id.tv_duration);
         mTvLyric = (ExTextView) mRootView.findViewById(R.id.tv_lyric);
@@ -100,21 +100,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
         if (mSetBackGround) {
             mMainActContainer.setBackgroundResource(R.drawable.dabeijing);
-        }
-
-        if (!TextUtils.isEmpty(mPrepareData.getSongModel().getCover())) {
-            FrescoWorker.loadImage(mSongIcon,
-                    ImageFactory.newPathImage(mPrepareData.getSongModel().getCover())
-                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
-                            .setBorderColor(Color.parseColor("#0C2275")).build());
-        } else {
-            FrescoWorker.loadImage(mSongIcon,
-                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
-                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                            .setBorderColor(Color.parseColor("#0C2275")).build());
         }
 
         mTvDuration.setText(U.getDateTimeUtils().formatTimeStringForDate(mPrepareData.getSongModel().getTotalMs(), "mm:ss"));
@@ -164,10 +149,10 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                                 .withSerializable("prepare_data", mPrepareData)
                                 .navigation();
-                        HashMap map = new HashMap();
-                        map.put("songId2", String.valueOf(mPrepareData.getSongModel().getItemID()));
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-                                StatConstants.KEY_MATCH_START, map);
+//                        HashMap map = new HashMap();
+//                        map.put("songId2", String.valueOf(mPrepareData.getSongModel().getItemID()));
+//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
+//                                StatConstants.KEY_MATCH_START, map);
                     }
                 }, true);
             }
@@ -194,7 +179,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     @Override
     public void onResume() {
         super.onResume();
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

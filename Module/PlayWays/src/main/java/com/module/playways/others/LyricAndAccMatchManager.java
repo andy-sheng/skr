@@ -108,7 +108,7 @@ public class LyricAndAccMatchManager {
                         int accBeginTs,
                         int accEndTs
     ) {
-        MyLog.d(TAG,"setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
+        MyLog.w(TAG,"setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
         mManyLyricsView = manyLyricsView;
         mVoiceScaleView = voiceScaleView;
         mLyricUrl = lyricUrl;
@@ -129,6 +129,7 @@ public class LyricAndAccMatchManager {
         mUiHandler.removeCallbacksAndMessages(null);
         mLastLineNum = -1;
         mListener = l;
+        mHasLauncher = false;
         parseLyric();
     }
 
@@ -141,6 +142,7 @@ public class LyricAndAccMatchManager {
             mDisposable.dispose();
         }
         mLastLineNum = -1;
+        mHasLauncher = false;
         mListener = null;
     }
 
@@ -204,6 +206,7 @@ public class LyricAndAccMatchManager {
         }
         if (mHasLauncher) {
             MyLog.d(TAG, "launchLyricEvent 事件已经发射过了，取消这次");
+            return;
         }
         mHasLauncher = true;
         mUiHandler.removeMessages(MSG_ENSURE_LAUNCHER);
@@ -244,6 +247,7 @@ public class LyricAndAccMatchManager {
                     long ts2 = in.getCurrent() + mAccBeginTs;
                     if (Math.abs(ts1 - ts2) > 500) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=" + ts1 + " 伴奏ts=" + ts2);
+
                         mManyLyricsView.seekto((int) ts2);
                     }
                 }
@@ -286,7 +290,7 @@ public class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
-        MyLog.d(TAG, "LineLineEndEvent" + " event=" + event);
+        MyLog.w(TAG, "LineLineEndEvent" + " event=" + event);
         if (ScoreConfig.isMelp2Enable()) {
             ZqEngineKit.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
                 @Override
@@ -330,7 +334,7 @@ public class LyricAndAccMatchManager {
     }
 
     private void processScore(String from, int melpScore, int acrScore, int line) {
-        MyLog.d(TAG, "processScore" + " from=" + from + " melpScore=" + melpScore + " acrScore=" + acrScore + " line=" + line + " mLastLineNum=" + mLastLineNum);
+        MyLog.w(TAG, "processScore" + " from=" + from + " melpScore=" + melpScore + " acrScore=" + acrScore + " line=" + line + " mLastLineNum=" + mLastLineNum);
         if (line <= mLastLineNum) {
             return;
         }
@@ -357,7 +361,7 @@ public class LyricAndAccMatchManager {
         //void onScoreResult(String from,int melpScore, int acrScore, int line);
     }
 
-    public class ScoreResultEvent {
+    public static class ScoreResultEvent {
         public String from;
         public int melpScore;
         public int acrScore;

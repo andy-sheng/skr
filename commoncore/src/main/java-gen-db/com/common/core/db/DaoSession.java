@@ -8,9 +8,11 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import com.common.core.userinfo.remark.RemarkDB;
 import com.common.core.userinfo.UserInfoDB;
 import com.common.core.account.UserAccount;
 
+import com.common.core.db.RemarkDBDao;
 import com.common.core.db.UserInfoDBDao;
 import com.common.core.db.UserAccountDao;
 
@@ -23,9 +25,11 @@ import com.common.core.db.UserAccountDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig remarkDBDaoConfig;
     private final DaoConfig userInfoDBDaoConfig;
     private final DaoConfig userAccountDaoConfig;
 
+    private final RemarkDBDao remarkDBDao;
     private final UserInfoDBDao userInfoDBDao;
     private final UserAccountDao userAccountDao;
 
@@ -33,22 +37,32 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
+        remarkDBDaoConfig = daoConfigMap.get(RemarkDBDao.class).clone();
+        remarkDBDaoConfig.initIdentityScope(type);
+
         userInfoDBDaoConfig = daoConfigMap.get(UserInfoDBDao.class).clone();
         userInfoDBDaoConfig.initIdentityScope(type);
 
         userAccountDaoConfig = daoConfigMap.get(UserAccountDao.class).clone();
         userAccountDaoConfig.initIdentityScope(type);
 
+        remarkDBDao = new RemarkDBDao(remarkDBDaoConfig, this);
         userInfoDBDao = new UserInfoDBDao(userInfoDBDaoConfig, this);
         userAccountDao = new UserAccountDao(userAccountDaoConfig, this);
 
+        registerDao(RemarkDB.class, remarkDBDao);
         registerDao(UserInfoDB.class, userInfoDBDao);
         registerDao(UserAccount.class, userAccountDao);
     }
     
     public void clear() {
+        remarkDBDaoConfig.clearIdentityScope();
         userInfoDBDaoConfig.clearIdentityScope();
         userAccountDaoConfig.clearIdentityScope();
+    }
+
+    public RemarkDBDao getRemarkDBDao() {
+        return remarkDBDao;
     }
 
     public UserInfoDBDao getUserInfoDBDao() {

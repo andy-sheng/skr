@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/view_8_dp"
+    android:layout_marginRight="@dimen/view_8_dp"
+    android:orientation="vertical"
+    app:bl_corners_radius="@dimen/view_18_dp"
+    app:bl_solid_color="#7187FF"
+    app:bl_stroke_color="#3B4E79"
+    app:bl_stroke_width="@dimen/view_1_dp">
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="红钻规则说明"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_32_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:paddingBottom="@dimen/view_32_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#576FE3">
+
+        <LinearLayout
+            android:id="@+id/rule_one_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_1" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/toHZDescTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                android:text=""
+                android:textColor="@color/white_trans_80"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rule_two_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_2" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/toZSDescTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                android:text=""
+                android:textColor="@color/white_trans_80"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rule_three_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_3" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/toCashDescTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                android:text=""
+                android:textColor="@color/white_trans_80"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rule_four_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_4" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/rule_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                android:text=""
+                android:textColor="@color/white_trans_80"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </com.common.view.ex.ExLinearLayout>
+</com.common.view.ex.ExLinearLayout>

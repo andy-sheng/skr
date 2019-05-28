@@ -10,6 +10,10 @@ import com.common.base.FragmentDataListener;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.respicker.fragment.ResPickerFragment;
+import com.respicker.model.ImageItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ResPickerActivity extends BaseActivity {
@@ -25,7 +29,8 @@ public class ResPickerActivity extends BaseActivity {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ResPickerFragment.class)
                 .setHasAnimation(false)
                 .setAddToBackStack(false)
-                .addDataBeforeAdd(11,true)
+                .setBundle(getIntent().getExtras())
+                .addDataBeforeAdd(11, true)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
@@ -59,8 +64,20 @@ public class ResPickerActivity extends BaseActivity {
      * @param activity
      */
     public static void open(Activity activity) {
+        open(activity, null);
+    }
+
+    /**
+     *
+     * @param activity
+     * @param hasSelectedList 已经选择的图片
+     */
+    public static void open(Activity activity, ArrayList<ImageItem> hasSelectedList) {
         Intent intent = new Intent();
         intent.setClass(activity, ResPickerActivity.class);
+        if (hasSelectedList != null && !hasSelectedList.isEmpty()) {
+            intent.putParcelableArrayListExtra(ResPickerFragment.EXTRAS_IMAGES, hasSelectedList);
+        }
         activity.startActivityForResult(intent, REQ_CODE_RES_PICK);
     }
 }

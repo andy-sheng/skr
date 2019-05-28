@@ -3,11 +3,13 @@ package com.didichuxing.doraemonkit.kit.blockmonitor;
 import android.content.Context;
 import android.content.Intent;
 
+import com.common.log.MyLog;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.constant.BundleKey;
 import com.didichuxing.doraemonkit.constant.FragmentIndex;
 import com.didichuxing.doraemonkit.kit.Category;
 import com.didichuxing.doraemonkit.kit.IKit;
+import com.didichuxing.doraemonkit.kit.blockmonitor.core.BlockMonitorManager;
 import com.didichuxing.doraemonkit.ui.UniversalActivity;
 
 
@@ -15,7 +17,6 @@ import com.didichuxing.doraemonkit.ui.UniversalActivity;
  * @desc: 卡顿检测kit
  */
 public class BlockMonitorKit implements IKit {
-
 
 
     @Override
@@ -44,6 +45,8 @@ public class BlockMonitorKit implements IKit {
 
     @Override
     public void onAppInit(Context context) {
-
+        if(MyLog.isDebugLogOpen()) {
+            BlockMonitorManager.getInstance().start(context);
+        }
     }
 }

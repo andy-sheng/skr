@@ -5,6 +5,11 @@ if (isBuildModule.toBoolean()) {
     apply plugin: 'org.greenrobot.greendao' // apply plugin
 }
 
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
+
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -86,6 +91,8 @@ android {
 
             java.srcDirs += 'src/main/java-gift'
             res.srcDirs += 'src/main/res-gift'
+
+            res.srcDirs += 'src/main/res-guide'
         }
     }
 }

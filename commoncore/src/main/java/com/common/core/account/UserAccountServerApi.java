@@ -67,8 +67,4 @@ public interface UserAccountServerApi {
 
     @GET("v1/passport/logout")
     Observable<ApiResult> loginOut();
-
-    @Headers(ApiManager.NO_NEED_LOGIN_TAG)
-    @GET("/v1/uprofile/nickname-verification")
-    Observable<ApiResult> checkNickName(@Query("nickname") String nickname);
 }

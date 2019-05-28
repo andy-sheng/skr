@@ -124,7 +124,20 @@ Vivo
 账号：15801140410
 密码：zhenqu123
 
+bugly
+程思敏 的 QQ 扫码登录的
 
 
+内存检测工具使用经验
+导出 内存快照 hprof 
+要查看 bitmap 请使用 8.0 一下手机，8.0以上 bitmap的内存放到了native中，看不了。
+~/Documents/sm_mac_doc/self_dev_utils/dump_memory/dump.sh com.zq.live
 
+In MAT for related Bitmap object right click mBuffer field and select "Copy" -> "Save Value To File",
+name the file with an .rgba extension.
 
+width 与 height 在 MAT 中的 Inspector 可以查看
+
+安装 imagemagick
+brew install imagemagick
+convert -size 680x1209 -depth 8 phone_decor.rgba phone_decor.png

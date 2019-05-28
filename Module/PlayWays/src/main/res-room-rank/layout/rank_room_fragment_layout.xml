@@ -100,14 +100,24 @@
         android:layout_marginRight="@dimen/view_128_dp"
         android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
+    <!--<com.module.playways.room.room.gift.GiftContinueViewGroup-->
+        <!--android:id="@+id/gift_continue_vg"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="@dimen/view_75_dp"-->
+        <!--android:layout_alignTop="@+id/comment_view"-->
+        <!--android:layout_marginLeft="@dimen/view_16_dp"-->
+        <!--android:layout_marginTop="-30dp"-->
+        <!--android:layout_marginBottom="@dimen/view_10_dp" />-->
+
     <com.module.playways.room.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_75_dp"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/comment_view"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="-30dp"
-        android:layout_marginBottom="@dimen/view_10_dp" />
+        android:layout_marginTop="-50dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        />
 
     <com.module.playways.room.room.view.TurnChangeCardView
         android:id="@+id/turn_change_view"
@@ -116,7 +126,7 @@
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
 
-    <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
+    <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
