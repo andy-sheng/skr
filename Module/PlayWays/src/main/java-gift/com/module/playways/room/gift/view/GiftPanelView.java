@@ -457,6 +457,7 @@ public class GiftPanelView extends FrameLayout {
             mRelationTask.dispose();
         }
 
+        mFollowTv.setVisibility(GONE);
         if (mCurMicroMan.getUserInfo().isFriend() || mCurMicroMan.getUserInfo().isFollow()) {
             mFollowTv.setVisibility(GONE);
         } else {
