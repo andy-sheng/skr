@@ -2,7 +2,6 @@ package com.zq.lyrics.utils;
 
 import android.text.TextUtils;
 
-import com.common.utils.PreferenceUtils;
 import com.common.utils.U;
 
 import java.io.File;
@@ -134,6 +133,6 @@ public class SongResUtils {
 //    }
 
     public static String createStandLyricFileName(String url) {
-        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + SUFF_TXT;
+        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_TXT);
     }
 }
