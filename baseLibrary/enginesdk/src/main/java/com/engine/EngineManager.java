@@ -53,7 +53,7 @@ import retrofit2.Response;
 public class EngineManager implements AgoraOutCallback {
 
     public final static String TAG = "EngineManager";
-    public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
+
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
@@ -285,7 +285,7 @@ public class EngineManager implements AgoraOutCallback {
 
     private EngineManager() {
         AgoraEngineAdapter.getInstance().setOutCallback(this);
-        mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+        mTokenEnable = U.getPreferenceUtils().getSettingBoolean(Params.PREF_KEY_TOKEN_ENABLE, false);
     }
 
     private static final EngineManager getInstance() {

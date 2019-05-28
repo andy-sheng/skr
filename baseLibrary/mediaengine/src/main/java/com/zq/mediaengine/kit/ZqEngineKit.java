@@ -1296,6 +1296,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
         MyLog.d(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
         if (mCustomHandlerThread != null) {
+            mConfig.setRecording(true);
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1355,7 +1356,8 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     public void stopAudioRecording() {
         MyLog.d(TAG, "stopAudioRecording");
-        if (mCustomHandlerThread != null) {
+        if (mCustomHandlerThread != null && mConfig.isRecording()) {
+            mConfig.setRecording(false);
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {

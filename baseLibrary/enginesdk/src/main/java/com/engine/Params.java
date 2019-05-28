@@ -19,6 +19,8 @@ import io.agora.rtc.video.VideoEncoderConfiguration;
  * 对于含义不清楚的参数，要看这个参数在哪里使用的
  */
 public class Params implements Serializable {
+    public final static String TAG = "Params";
+    public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
@@ -738,7 +740,7 @@ public class Params implements Serializable {
     public static void save2Pref(Params params) {
         if (params != null) {
             String s = JSON.toJSONString(params);
-            MyLog.w(EngineManager.TAG, "save2Pref " + s);
+            MyLog.w(TAG, "save2Pref " + s);
             U.getPreferenceUtils().setSettingString("engine_pref_params3", s);
         }
     }
@@ -750,7 +752,7 @@ public class Params implements Serializable {
      */
     public static Params getFromPref() {
         String s = U.getPreferenceUtils().getSettingString("engine_pref_params3", "");
-        MyLog.w(EngineManager.TAG, "getFromPref " + s);
+        MyLog.w(TAG, "getFromPref " + s);
         Params params;
         if (!TextUtils.isEmpty(s)) {
             params = JSON.parseObject(s, Params.class);

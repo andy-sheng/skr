@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.engine.EngineManager;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
