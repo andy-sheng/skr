@@ -569,7 +569,6 @@ enum VP8ResilienceMode {
                      // within a frame.
 };
 
-class TemporalLayersFactory;
 // VP8 specific
 struct VideoCodecVP8 {
   bool                 pictureLossIndicationOn;
@@ -582,7 +581,23 @@ struct VideoCodecVP8 {
   bool                 automaticResizeOn;
   bool                 frameDroppingOn;
   int                  keyFrameInterval;
-  const TemporalLayersFactory* tl_factory;
+
+  bool operator==(const VideoCodecVP8& other) const {
+    return pictureLossIndicationOn == other.pictureLossIndicationOn &&
+           feedbackModeOn == other.feedbackModeOn &&
+           complexity == other.complexity &&
+           resilience == other.resilience &&
+           numberOfTemporalLayers == other.numberOfTemporalLayers &&
+           denoisingOn == other.denoisingOn &&
+           errorConcealmentOn == other.errorConcealmentOn &&
+           automaticResizeOn == other.automaticResizeOn &&
+           frameDroppingOn == other.frameDroppingOn &&
+           keyFrameInterval == other.keyFrameInterval;
+  }
+
+  bool operator!=(const VideoCodecVP8& other) const {
+    return !(*this == other);
+  }
 };
 
 // VP9 specific.
@@ -640,6 +655,20 @@ struct SimulcastStream {
   unsigned int        targetBitrate;  // kilobits/sec.
   unsigned int        minBitrate;  // kilobits/sec.
   unsigned int        qpMax; // minimum quality
+
+  bool operator==(const SimulcastStream& other) const {
+    return width == other.width &&
+           height == other.height &&
+           numberOfTemporalLayers == other.numberOfTemporalLayers &&
+           maxBitrate == other.maxBitrate &&
+           targetBitrate == other.targetBitrate &&
+           minBitrate == other.minBitrate &&
+           qpMax == other.qpMax;
+  }
+
+  bool operator!=(const SimulcastStream& other) const {
+    return !(*this == other);
+  }
 };
 
 struct SpatialLayer {
@@ -679,8 +708,37 @@ struct VideoCodec {
 
   VideoCodecMode      mode;
 
-  bool operator==(const VideoCodec& other) const = delete;
-  bool operator!=(const VideoCodec& other) const = delete;
+  // When using an external encoder/decoder this allows to pass
+  // extra options without requiring webrtc to be aware of them.
+  Config*  extra_options;
+
+  bool operator==(const VideoCodec& other) const {
+    bool ret = codecType == other.codecType &&
+               (STR_CASE_CMP(plName, other.plName) == 0) &&
+               plType == other.plType &&
+               width == other.width &&
+               height == other.height &&
+               startBitrate == other.startBitrate &&
+               maxBitrate == other.maxBitrate &&
+               minBitrate == other.minBitrate &&
+               targetBitrate == other.targetBitrate &&
+               maxFramerate == other.maxFramerate &&
+               qpMax == other.qpMax &&
+               numberOfSimulcastStreams == other.numberOfSimulcastStreams &&
+               mode == other.mode;
+    if (ret && codecType == kVideoCodecVP8) {
+      ret &= (codecSpecific.VP8 == other.codecSpecific.VP8);
+    }
+
+    for (unsigned char i = 0; i < other.numberOfSimulcastStreams && ret; ++i) {
+      ret &= (simulcastStream[i] == other.simulcastStream[i]);
+    }
+    return ret;
+  }
+
+  bool operator!=(const VideoCodec& other) const {
+    return !(*this == other);
+  }
 };
 
 // Bandwidth over-use detector options.  These are used to drive

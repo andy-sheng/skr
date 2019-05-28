@@ -56,18 +56,23 @@ public class GLRender {
     private AtomicInteger mState;
     private long mGLThreadId;
     private GLSurfaceView mGLSurfaceView;
-    private LinkedList<GLRenderListener> mListeners;
-    private final Object mListenersLock = new Object();
-    private LinkedList<Runnable> mEvents;
-    private final Object mEventsLock = new Object();
-    private LinkedList<Runnable> mDrawFrameAppends;
-    private final Object mDrawFrameAppendsLock = new Object();
+    private final LinkedList<GLRenderListener> mListeners;
+    private final LinkedList<OnReadyListener> mReadyListeners;
+    private final LinkedList<OnSizeChangedListener> mSizeChangedListeners;
+    private final LinkedList<OnDrawFrameListener> mDrawFrameListeners;
+    private final LinkedList<OnReleasedListener> mReleasedListeners;
+    private final LinkedList<Runnable> mEvents;
+    private final LinkedList<Runnable> mDrawFrameAppends;
 
     private FboManager mFboManager;
 
     /**
      * GLRender listener interface.
+     *
+     * @deprecated use separated {@link OnReadyListener} {@link OnSizeChangedListener}
+     * {@link OnDrawFrameListener} {@link OnReleasedListener} instead.
      */
+    @Deprecated
     public interface GLRenderListener {
 
         /**
@@ -94,6 +99,37 @@ public class GLRender {
         void onReleased();
     }
 
+    public interface OnReadyListener {
+        /**
+         * GLContext ready
+         */
+        void onReady();
+    }
+
+    public interface OnSizeChangedListener {
+        /**
+         * GLRenderer size changed
+         *
+         * @param width  width
+         * @param height height
+         */
+        void onSizeChanged(int width, int height);
+    }
+
+    public interface OnDrawFrameListener {
+        /**
+         * Draw frame on GL thread
+         */
+        void onDrawFrame();
+    }
+
+    public interface OnReleasedListener {
+        /**
+         * GLContext released
+         */
+        void onReleased();
+    }
+
     public interface ScreenShotListener {
         void onBitmapAvailable(Bitmap bitmap);
     }
@@ -101,6 +137,10 @@ public class GLRender {
     public GLRender() {
         mState = new AtomicInteger(STATE_RELEASED);
         mListeners = new LinkedList<>();
+        mReadyListeners = new LinkedList<>();
+        mSizeChangedListeners = new LinkedList<>();
+        mDrawFrameListeners = new LinkedList<>();
+        mReleasedListeners = new LinkedList<>();
         mEvents = new LinkedList<>();
         mDrawFrameAppends = new LinkedList<>();
         mInitEGL10Context = EGL10.EGL_NO_CONTEXT;
@@ -213,17 +253,109 @@ public class GLRender {
         }
     }
 
-    public void addListener(GLRenderListener listener) {
-        synchronized (mListenersLock) {
+    /**
+     * Add GLRenderListener to current GLRender.
+     *
+     * Should be removed by calling {@link #removeListener(GLRenderListener)}.
+     *
+     * @param listener listener to be added
+     * @deprecated Use separated {@link #addListener(OnReadyListener)}
+     * {@link #addListener(OnSizeChangedListener)} {@link #addListener(OnDrawFrameListener)}
+     * {@link #addListener(OnReleasedListener)} instead.
+     */
+    @Deprecated
+    public void addListener(final GLRenderListener listener) {
+        synchronized (mListeners) {
             if (!mListeners.contains(listener)) {
+                if (mState.get() == STATE_READY) {
+                    queueEvent(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onReady();
+                        }
+                    });
+                }
                 mListeners.add(listener);
             }
         }
     }
 
+    /**
+     * Remove GLRenderListener.
+     *
+     * @param listener listener to be removed.
+     * @deprecated Use separated {@link #removeListener(OnReadyListener)}
+     * {@link #removeListener(OnSizeChangedListener)} {@link #removeListener(OnDrawFrameListener)}
+     * {@link #removeListener(OnReleasedListener)} instead.
+     */
+    @Deprecated
     public void removeListener(GLRenderListener listener) {
-        synchronized (mListenersLock) {
+        synchronized (mListeners) {
             mListeners.remove(listener);
+        }
+    }
+
+    public void addListener(final OnReadyListener listener) {
+        synchronized (mReadyListeners) {
+            if (!mReadyListeners.contains(listener)) {
+                if (mState.get() == STATE_READY) {
+                    queueEvent(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onReady();
+                        }
+                    });
+                }
+                mReadyListeners.add(listener);
+            }
+        }
+    }
+
+    public void removeListener(OnReadyListener listener) {
+        synchronized (mReadyListeners) {
+            mReadyListeners.remove(listener);
+        }
+    }
+
+    public void addListener(OnSizeChangedListener listener) {
+        synchronized (mSizeChangedListeners) {
+            if (!mSizeChangedListeners.contains(listener)) {
+                mSizeChangedListeners.add(listener);
+            }
+        }
+    }
+
+    public void removeListener(OnSizeChangedListener listener) {
+        synchronized (mSizeChangedListeners) {
+            mSizeChangedListeners.remove(listener);
+        }
+    }
+
+    public void addListener(OnDrawFrameListener listener) {
+        synchronized (mDrawFrameListeners) {
+            if (!mDrawFrameListeners.contains(listener)) {
+                mDrawFrameListeners.add(listener);
+            }
+        }
+    }
+
+    public void removeListener(OnDrawFrameListener listener) {
+        synchronized (mDrawFrameListeners) {
+            mDrawFrameListeners.remove(listener);
+        }
+    }
+
+    public void addListener(OnReleasedListener listener) {
+        synchronized (mReleasedListeners) {
+            if (!mReleasedListeners.contains(listener)) {
+                mReleasedListeners.add(listener);
+            }
+        }
+    }
+
+    public void removeListener(OnReleasedListener listener) {
+        synchronized (mReleasedListeners) {
+            mReleasedListeners.remove(listener);
         }
     }
 
@@ -272,7 +404,7 @@ public class GLRender {
     public void queueEvent(Runnable r) {
         if (mState.get() == STATE_IDLE) {
             if (VERBOSE) Log.d(TAG, "glContext not ready, queue event:" + r);
-            synchronized (mEventsLock) {
+            synchronized (mEvents) {
                 mEvents.add(r);
             }
         } else if (mState.get() == STATE_READY) {
@@ -290,7 +422,7 @@ public class GLRender {
 
     public void queueDrawFrameAppends(Runnable r) {
         if (mState.get() == STATE_READY) {
-            synchronized (mDrawFrameAppendsLock) {
+            synchronized (mDrawFrameAppends) {
                 mDrawFrameAppends.add(r);
             }
         }
@@ -317,7 +449,6 @@ public class GLRender {
     }
 
     private void onReady() {
-        mState.set(STATE_READY);
         mGLThreadId = Thread.currentThread().getId();
         mFboManager.init();
         GLES20.glEnable(GL10.GL_BLEND);
@@ -326,8 +457,23 @@ public class GLRender {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             mEGLContext = EGL14.eglGetCurrentContext();
         }
-        synchronized (mListenersLock) {
+        mState.set(STATE_READY);
+
+        // execute queued events
+        synchronized (mEvents) {
+            for (Runnable r : mEvents) {
+                queueEvent(r);
+            }
+            mEvents.clear();
+        }
+
+        synchronized (mListeners) {
             for (GLRenderListener listener : mListeners) {
+                listener.onReady();
+            }
+        }
+        synchronized (mReadyListeners) {
+            for (OnReadyListener listener : mReadyListeners) {
                 listener.onReady();
             }
         }
@@ -335,8 +481,13 @@ public class GLRender {
 
     private void onSizeChanged(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
-        synchronized (mListenersLock) {
+        synchronized (mListeners) {
             for (GLRenderListener listener : mListeners) {
+                listener.onSizeChanged(width, height);
+            }
+        }
+        synchronized (mSizeChangedListeners) {
+            for (OnSizeChangedListener listener : mSizeChangedListeners) {
                 listener.onSizeChanged(width, height);
             }
         }
@@ -344,15 +495,20 @@ public class GLRender {
 
     private void onDrawFrame() {
         // execute queued events
-        synchronized (mEventsLock) {
+        synchronized (mEvents) {
             for (Runnable r : mEvents) {
                 r.run();
             }
             mEvents.clear();
         }
 
-        synchronized (mListenersLock) {
+        synchronized (mListeners) {
             for (GLRenderListener listener : mListeners) {
+                listener.onDrawFrame();
+            }
+        }
+        synchronized (mDrawFrameListeners) {
+            for (OnDrawFrameListener listener : mDrawFrameListeners) {
                 listener.onDrawFrame();
             }
         }
@@ -366,8 +522,13 @@ public class GLRender {
             mEGLContext = EGL14.EGL_NO_CONTEXT;
         }
         mState.set(STATE_RELEASED);
-        synchronized (mListenersLock) {
+        synchronized (mListeners) {
             for (GLRenderListener listener : mListeners) {
+                listener.onReleased();
+            }
+        }
+        synchronized (mReleasedListeners) {
+            for (OnReleasedListener listener : mReleasedListeners) {
                 listener.onReleased();
             }
         }
@@ -376,7 +537,7 @@ public class GLRender {
     private void drainDrawFrameAppends() {
         while (true) {
             Runnable r;
-            synchronized (mDrawFrameAppendsLock) {
+            synchronized (mDrawFrameAppends) {
                 if (mDrawFrameAppends.isEmpty()) {
                     break;
                 } else {

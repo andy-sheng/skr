@@ -1,10 +1,6 @@
 #include "util.h"
 #include <time.h>
 #include "log.h"
-#include <libavutil/log.h>
-
-char ffmpeg_error_str[512];
-int ffmpeg_error_code = 0;
 
 long long getTime() {
 	struct timeval now;

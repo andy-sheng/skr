@@ -2,9 +2,8 @@
 // Created by 乐 程 on 16/03/2017.
 //
 
-#include <stdlib.h>
-#include <string.h>
 #include <assert.h>
+#include <string.h>
 #include "AudioRecord.h"
 #include "log.h"
 #include "thread_util.h"
@@ -108,7 +107,7 @@ int AudioRecord::start() {
 
     pthread_mutex_lock(&mFilterLock);
     if (mFilter && !mFilterInited) {
-        mFilter->init(mFilterIdx, mSampleRate, mChannels, mBufferSamples);
+        mFilter->init(mFilterIdx, SAMPLE_FMT_S16, mSampleRate, mChannels, mBufferSamples);
         mFilterInited = true;
     }
     pthread_mutex_unlock(&mFilterLock);
@@ -212,7 +211,7 @@ void AudioRecord::bqRecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *con
     pthread_mutex_lock(&thiz->mFilterLock);
     if (thiz->mFilter) {
         if (!thiz->mFilterInited) {
-            thiz->mFilter->init(thiz->mFilterIdx, thiz->mSampleRate,
+            thiz->mFilter->init(thiz->mFilterIdx, SAMPLE_FMT_S16, thiz->mSampleRate,
                                 thiz->mChannels, thiz->mBufferSamples);
             thiz->mFilterInited = true;
         }

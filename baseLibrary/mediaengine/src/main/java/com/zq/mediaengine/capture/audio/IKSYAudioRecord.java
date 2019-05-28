@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
  * Base class of audio record.
  */
 
-public interface IUnionAudioRecord {
+public interface IKSYAudioRecord {
 
     void setVolume(float volume);
 

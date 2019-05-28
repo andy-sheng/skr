@@ -2,8 +2,8 @@
 // Created by 昝晓飞 on 16/9/13.
 //
 
-#include <string.h>
 #include "jni_cache.h"
+#include <string.h>
 #include "log.h"
 /****************Class Section Define Begin*********************************************/
 
@@ -45,8 +45,7 @@ ST_METHODINFO stImageBufFrameClassMethod[] = {
  };
 
 ST_FIELDINFO stImageBufFrameClassField[] = {
-         {JAVA_IMGBUFFRAME_FIELD_FORMAT,        "Lorg/opencdnunion/media/streamer/framework/ImgBufFormat;"},
-         {JAVA_IMGBUFFRAME_FIELD_DTS, 			"J"},
+         {JAVA_IMGBUFFRAME_FIELD_FORMAT,               "Lcom/ksyun/media/streamer/framework/ImgBufFormat;"},
          {JAVA_IMGBUFFRAME_FIELD_PTS,              "J"},
          {JAVA_IMGBUFFRAME_FIELD_FLAGS,              "I"},
          {JAVA_IMGBUFFRAME_FIELD_BUF,              "Ljava/nio/ByteBuffer;"},
@@ -91,8 +90,7 @@ ST_METHODINFO stAudioBufFormatClassMethod[] = {
 ST_FIELDINFO stAudioBufFormatClassField[] = {
     {JAVA_AUDIOBUFFORMAT_FIELD_FORMAT,               "I"},
     {JAVA_AUDIOBUFFORMAT_FIELD_RATE,              "I"},
-    {JAVA_AUDIOBUFFORMAT_FIELD_CHANNELS,              "I"},
-    {JAVA_AUDIOBUFFORMAT_FIELD_CODECID,              "I"}
+    {JAVA_AUDIOBUFFORMAT_FIELD_CHANNELS,              "I"}
 };
 /////////////  end AudioBufFormat Define ////////////////////////////////////////
 
@@ -126,6 +124,14 @@ ST_METHODINFO stIntegerClassMethod[] = {
 
 ST_FIELDINFO *stIntegerClassField = NULL;
 /////////////////////end Integer Define///////////////////////////////
+
+///////////// EffectOption Class Define ////////////////////////////////////////
+ST_METHODINFO *stAudioEffectOptionClassMethod = NULL;
+
+ST_FIELDINFO stAudioEffectOptionField[] = {
+        {JAVA_AUDIOEFFECTOPTION_FIELD_OPTION,               "Ljava/lang/String;"}
+};
+/////////////  end EffectOption Define ////////////////////////////////////////
 /****************Class Section Define End*********************************************/
 
 const ST_CLASSINFO stClassList[] = {
@@ -138,7 +144,8 @@ const ST_CLASSINFO stClassList[] = {
     ST_CLASSLIST_ITEM(JAVA_CLASS_ARRRAYLIST, stArrayListClassMethod, stArrayListClassField),
     ST_CLASSLIST_ITEM(JAVA_CLASS_INTEGER, stIntegerClassMethod, stIntegerClassField ),
     ST_CLASSLIST_ITEM(JAVA_CLASS_PATH_CREDPTMODEL, stCredptModelClassMethod,
-                        stCredptModelClassField)
+                        stCredptModelClassField),
+    ST_CLASSLIST_ITEM(JAVA_CLASS_PATH_AUDIOEFFECTOPTION, stAudioEffectOptionClassMethod, stAudioEffectOptionField)
 };
 
 JniCache *JniCache::GetInstance()

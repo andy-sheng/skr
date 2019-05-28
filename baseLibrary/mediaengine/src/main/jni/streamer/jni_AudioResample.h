@@ -18,10 +18,10 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_AudioResample__1ini
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioResample
  * Method:    _setOutputFormat
- * Signature: (JII)V
+ * Signature: (JIII)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioResample__1setOutputFormat
-        (JNIEnv *, jobject, jlong, jint, jint);
+        (JNIEnv *, jobject, jlong, jint, jint, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioResample

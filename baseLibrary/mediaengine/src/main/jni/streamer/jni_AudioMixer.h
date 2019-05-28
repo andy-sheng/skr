@@ -11,13 +11,15 @@ extern "C" {
 #define com_zq_mediaengine_filter_audio_AudioMixer_MAX_SINKPIN_NUM 8L
 #undef com_zq_mediaengine_filter_audio_AudioMixer_VERBOSE
 #define com_zq_mediaengine_filter_audio_AudioMixer_VERBOSE 0L
+#undef com_zq_mediaengine_filter_audio_AudioMixer_INSTANCE_UNINIT
+#define com_zq_mediaengine_filter_audio_AudioMixer_INSTANCE_UNINIT 0L
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
  * Method:    _init
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1init
-        (JNIEnv *, jobject);
+  (JNIEnv *, jobject);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -25,7 +27,7 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1init
  * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setMainIdx
-        (JNIEnv *, jobject, jlong, jint);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -33,7 +35,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setMain
  * Signature: (JZ)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setMute
-        (JNIEnv *, jobject, jlong, jboolean);
+  (JNIEnv *, jobject, jlong, jboolean);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -41,23 +43,39 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setMute
  * Signature: (JZ)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setBlockingMode
-        (JNIEnv *, jobject, jlong, jboolean);
+  (JNIEnv *, jobject, jlong, jboolean);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
  * Method:    _setOutputVolume
  * Signature: (JF)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setOutputVolume
-        (JNIEnv *, jobject, jlong, jfloat);
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setOutputVolume__JF
+  (JNIEnv *, jobject, jlong, jfloat);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_AudioMixer
+ * Method:    _setOutputVolume
+ * Signature: (JFF)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setOutputVolume__JFF
+  (JNIEnv *, jobject, jlong, jfloat, jfloat);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
  * Method:    _setInputVolume
  * Signature: (JIF)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInputVolume
-        (JNIEnv *, jobject, jlong, jint, jfloat);
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInputVolume__JIF
+  (JNIEnv *, jobject, jlong, jint, jfloat);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_AudioMixer
+ * Method:    _setInputVolume
+ * Signature: (JIFF)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInputVolume__JIFF
+  (JNIEnv *, jobject, jlong, jint, jfloat, jfloat);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -65,7 +83,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInpu
  * Signature: (JIJZ)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1attachTo
-        (JNIEnv *, jobject, jlong, jint, jlong, jboolean);
+  (JNIEnv *, jobject, jlong, jint, jlong, jboolean);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -73,7 +91,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1attachT
  * Signature: (JIIIII)I
  */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1config
-        (JNIEnv *, jobject, jlong, jint, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jlong, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -81,7 +99,7 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1config
  * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1destroy
-        (JNIEnv *, jobject, jlong, jint);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -89,7 +107,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1destroy
  * Signature: (JLjava/nio/ByteBuffer;I)I
  */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1read
-        (JNIEnv *, jobject, jlong, jobject, jint);
+  (JNIEnv *, jobject, jlong, jobject, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -97,7 +115,7 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1read
  * Signature: (JILjava/nio/ByteBuffer;I)I
  */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1process
-        (JNIEnv *, jobject, jlong, jint, jobject, jint);
+  (JNIEnv *, jobject, jlong, jint, jobject, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
@@ -105,7 +123,7 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1process
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1release
-        (JNIEnv *, jobject, jlong);
+  (JNIEnv *, jobject, jlong);
 
 #ifdef __cplusplus
 }

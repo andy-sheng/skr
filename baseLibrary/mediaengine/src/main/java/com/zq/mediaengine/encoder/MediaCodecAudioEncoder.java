@@ -1,9 +1,7 @@
 package com.zq.mediaengine.encoder;
 
 import android.annotation.TargetApi;
-import android.media.AudioFormat;
 import android.media.MediaCodec;
-import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.os.Build;
 import android.util.Log;
@@ -11,7 +9,7 @@ import android.util.Log;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
-import com.zq.mediaengine.framework.AudioEncodeConfig;
+import com.zq.mediaengine.framework.AudioCodecFormat;
 import com.zq.mediaengine.framework.AudioPacket;
 import com.zq.mediaengine.util.FrameBufferCache;
 
@@ -25,8 +23,9 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
     private static final String TAG = "HWAudioEncoder";
 
     private static final int AUDIO_CACHE_NUM = 16;
-    private static final int AUDIO_CACHE_ITEM_SIZE = 8*1024;
+    private static final int AUDIO_CACHE_ITEM_SIZE = 8 * 1024;
 
+    private AudioCodecFormat mOutFormat;
     private FrameBufferCache mAudioBufferCache;
 
     public MediaCodecAudioEncoder() {
@@ -34,64 +33,11 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
     }
 
     @Override
-    public int getEncoderType() {
-        return AVConst.MEDIA_TYPE_AUDIO;
-    }
-
-    @Override
-    protected int doStart(Object encodeConfig) {
-        AudioEncodeConfig config = (AudioEncodeConfig) encodeConfig;
-
-        int channel;
-        switch (config.channels) {
-            case 1:
-                channel = AudioFormat.CHANNEL_IN_MONO;
-                break;
-            case 2:
-                channel = AudioFormat.CHANNEL_IN_STEREO;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid channel count. Must be 1 or 2");
-        }
-
-        String mime;
-        switch (config.codecId) {
-            case AVConst.CODEC_ID_AAC:
-                mime = "audio/mp4a-latm";
-                break;
-            default:
-                throw new IllegalArgumentException("Only aac supported");
-        }
-
-        int audioProfile = config.profile;
-        if (audioProfile == AVConst.PROFILE_AAC_HE_V2 && config.channels == 1) {
-            audioProfile = AVConst.PROFILE_AAC_HE;
-            Log.w(TAG, "set aac_he_v2 for mono audio, fallback to aac_he");
-        }
-
-        int profile;
-        switch (audioProfile) {
-            case AVConst.PROFILE_AAC_HE:
-                profile = MediaCodecInfo.CodecProfileLevel.AACObjectHE;
-                break;
-            case AVConst.PROFILE_AAC_HE_V2:
-                profile = MediaCodecInfo.CodecProfileLevel.AACObjectHE_PS;
-                break;
-            case AVConst.PROFILE_AAC_LOW:
-            default:
-                profile = MediaCodecInfo.CodecProfileLevel.AACObjectLC;
-                break;
-        }
-
-        MediaFormat mediaFormat = MediaFormat.createAudioFormat(mime, config.sampleRate, channel);
-        mediaFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, profile);
-        mediaFormat.setInteger(MediaFormat.KEY_CHANNEL_COUNT, config.channels);
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, config.bitrate);
-        mediaFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 16384);
-        mediaFormat.setInteger(MediaFormat.KEY_IS_ADTS, 0);
-
+    protected int doStart(Object encodeFormat) {
+        AudioCodecFormat format = (AudioCodecFormat) encodeFormat;
+        MediaFormat mediaFormat = format.toMediaFormat();
         try {
-            mEncoder = MediaCodec.createEncoderByType(mime);
+            mEncoder = MediaCodec.createEncoderByType(mediaFormat.getString(MediaFormat.KEY_MIME));
             mEncoder.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             mEncoder.start();
         } catch (Exception e) {
@@ -100,8 +46,13 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
             return ENCODER_ERROR_UNSUPPORTED;
         }
 
-        mBufferInfo = new MediaCodec.BufferInfo();
-        mOutConfig = null;
+        // trigger format changed event
+        mOutFormat = new AudioCodecFormat((AudioCodecFormat) mEncodeFormat);
+        onEncodedFormatChanged(mOutFormat);
+
+        // try to get codec config frame
+        drainEncoder(20 * 1000, false);
+
         return 0;
     }
 
@@ -123,7 +74,7 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
         mEncoder = null;
         Log.i(TAG, "MediaCodec released");
 
-        AudioPacket packet = new AudioPacket((AudioEncodeConfig) mOutConfig, null, 0);
+        AudioPacket packet = new AudioPacket(mOutFormat, null, 0);
         packet.flags |= AVConst.FLAG_END_OF_STREAM;
         onEncodedFrame(packet);
     }
@@ -131,10 +82,10 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
     @Override
     protected boolean updateEncodeFormat(Object src, Object dst) {
         AudioBufFormat audioBufFormat = (AudioBufFormat) src;
-        AudioEncodeConfig encodeConfig = (AudioEncodeConfig) dst;
-        encodeConfig.sampleFmt = audioBufFormat.sampleFormat;
-        encodeConfig.sampleRate = audioBufFormat.sampleRate;
-        encodeConfig.channels = audioBufFormat.channels;
+        AudioCodecFormat encodeFormat = (AudioCodecFormat) dst;
+        encodeFormat.sampleFmt = audioBufFormat.sampleFormat;
+        encodeFormat.sampleRate = audioBufFormat.sampleRate;
+        encodeFormat.channels = audioBufFormat.channels;
         return true;
     }
 
@@ -161,7 +112,7 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
         if (frame != null && frame.buf != null) {
             if (mMute) {
                 for (int i = 0; i < frame.buf.limit(); i++) {
-                    frame.buf.put(i, (byte)0);
+                    frame.buf.put(i, (byte) 0);
                 }
                 frame.buf.rewind();
             }
@@ -179,13 +130,8 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
     }
 
     @Override
-    protected void updateOutFormat(MediaFormat mediaFormat) {
-        mOutConfig = new AudioEncodeConfig((AudioEncodeConfig) mEncodeConfig);
-    }
-
-    @Override
     protected AudioPacket getOutFrame(ByteBuffer buffer, MediaCodec.BufferInfo bufferInfo) {
-        AudioPacket packet = new AudioPacket((AudioEncodeConfig) mOutConfig, buffer,
+        AudioPacket packet = new AudioPacket(mOutFormat, buffer,
                 bufferInfo.presentationTimeUs / 1000);
         if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0)
             packet.flags |= AVConst.FLAG_END_OF_STREAM;

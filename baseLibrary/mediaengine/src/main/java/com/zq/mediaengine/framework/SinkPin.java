@@ -1,12 +1,29 @@
 package com.zq.mediaengine.framework;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Sink pin definition
  */
-public abstract class SinkPin<T> {
-    private boolean mIsConnected = false;
-    public synchronized void onConnected(){
+public abstract class SinkPin<T extends AVFrameBase> {
+    protected List<SrcPin<T>> mSrcPins;
+    protected boolean mIsConnected = false;
+
+    public SinkPin() {
+        mSrcPins = new LinkedList<>();
+    }
+
+    public synchronized void onConnected() {
         mIsConnected = true;
+    }
+
+    public synchronized void onConnected(SrcPin<T> srcPin) {
+        if (mSrcPins.contains(srcPin)) {
+            return;
+        }
+        mSrcPins.add(srcPin);
+        onConnected();
     }
 
     public boolean isConnected(){
@@ -24,5 +41,12 @@ public abstract class SinkPin<T> {
      */
     public synchronized void onDisconnect(boolean recursive){
         mIsConnected = false;
+    }
+
+    public synchronized void onDisconnect(SrcPin<T> srcPin, boolean recursive) {
+        mSrcPins.remove(srcPin);
+        if (mSrcPins.isEmpty()) {
+            onDisconnect(recursive);
+        }
     }
 }

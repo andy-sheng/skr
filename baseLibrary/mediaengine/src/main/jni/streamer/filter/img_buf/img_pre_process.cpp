@@ -160,7 +160,7 @@ ImageBufFrame* ImgPreProcess::ProcessScale(const ImageBufFrame* srcImageBuf)
     if(mRotateCropImage == NULL) {
         mRotateCropImage = new ImageBufFrame(rotateCropWidth, rotateCropHeight,
                                              FMT_I420, 3,
-                                             srcImageBuf->pts, srcImageBuf->dts,
+                                             srcImageBuf->pts,
                                              srcImageBuf->orientation,
                                              srcImageBuf->flags);
         mRotateCropImage->CreateStride();
@@ -291,7 +291,6 @@ ImageBufFrame* ImgPreProcess::ProcessScale(const ImageBufFrame* srcImageBuf)
       ImageBufFrame* img;
       if (!bScale) {
           mRotateCropImage->pts = srcImageBuf->pts;
-          mRotateCropImage->dts = srcImageBuf->dts;
           mRotateCropImage->flags = srcImageBuf->flags;
 
           img = mRotateCropImage;
@@ -305,7 +304,7 @@ ImageBufFrame* ImgPreProcess::ProcessScale(const ImageBufFrame* srcImageBuf)
           if (mScaleImage == NULL) {
               mScaleImage = new ImageBufFrame(mTargetWidth, mTargetHeight,
                                               FMT_I420, 3,
-                                              srcImageBuf->pts, srcImageBuf->dts,
+                                              srcImageBuf->pts,
                                               srcImageBuf->orientation, srcImageBuf->flags);
               mScaleImage->CreateStride();
               //YUV420 在内存中的大小width*height*3/2 Y=width*hegiht U = Y/4 V = Y/4
@@ -346,7 +345,6 @@ ImageBufFrame* ImgPreProcess::ProcessScale(const ImageBufFrame* srcImageBuf)
           pDstV = pscaleDstV;
 
           mScaleImage->pts = srcImageBuf->pts;
-          mScaleImage->dts = srcImageBuf->dts;
           mScaleImage->flags = srcImageBuf->flags;
 
           img = mScaleImage;
@@ -378,7 +376,7 @@ ImageBufFrame* ImgPreProcess::ConvertI420ToRGBA(const ImageBufFrame* srcImageBuf
     //I420ToRGBA
     if(mTempImage == NULL) {
         mTempImage = new ImageBufFrame(srcImageBuf->width, srcImageBuf->height, FMT_RGBA, srcImageBuf->channels,
-                                       srcImageBuf->pts, srcImageBuf->dts, srcImageBuf->orientation, srcImageBuf->flags);
+                                       srcImageBuf->pts, srcImageBuf->orientation, srcImageBuf->flags);
 
         mTempImage->CreateStride(); // not used with RGBA
 
@@ -443,7 +441,7 @@ ImageBufFrame* ImgPreProcess::ProcessBeauty(const ImageBufFrame* srcImageBuf)
 
     if(mBeautyImage == NULL) {
         mBeautyImage = new ImageBufFrame(srcImageBuf->width, srcImageBuf->height, srcImageBuf->format,
-                                         srcImageBuf->channels, srcImageBuf->pts, srcImageBuf->dts,
+                                         srcImageBuf->channels, srcImageBuf->pts,
                                          srcImageBuf->orientation, srcImageBuf->flags);
 
         mBeautyImage->buf_size = srcImageBuf->buf_size;
@@ -461,7 +459,6 @@ ImageBufFrame* ImgPreProcess::ProcessBeauty(const ImageBufFrame* srcImageBuf)
         mBeautyImage->height = srcImageBuf->height;
         mBeautyImage->format = srcImageBuf->format;
         mBeautyImage->pts = srcImageBuf->pts;
-        mBeautyImage->dts = srcImageBuf->dts;
         mBeautyImage->orientation = srcImageBuf->orientation;
         mBeautyImage->flags = srcImageBuf->flags;
 
@@ -514,7 +511,7 @@ ImageBufFrame* ImgPreProcess::ProcessMixer(ImageBufFrame* *srcImageBufs, int src
 
     if(mMixerImage == NULL) {
         mMixerImage = new ImageBufFrame(srcImageBufs[0]->width, srcImageBufs[0]->height, srcImageBufs[0]->format,
-                                         srcImageBufs[0]->channels, srcImageBufs[0]->pts, srcImageBufs[0]->dts,
+                                         srcImageBufs[0]->channels, srcImageBufs[0]->pts,
                                          srcImageBufs[0]->orientation, srcImageBufs[0]->flags);
 
         mMixerImage->buf_size = srcImageBufs[0]->buf_size;
@@ -532,7 +529,6 @@ ImageBufFrame* ImgPreProcess::ProcessMixer(ImageBufFrame* *srcImageBufs, int src
         mMixerImage->height = srcImageBufs[0]->height;
         mMixerImage->format = srcImageBufs[0]->format;
         mMixerImage->pts = srcImageBufs[0]->pts;
-        mMixerImage->dts = srcImageBufs[0]->dts;
         mMixerImage->orientation = srcImageBufs[0]->orientation;
         mMixerImage->flags = srcImageBufs[0]->flags;
 
@@ -586,7 +582,7 @@ ImageBufFrame* ImgPreProcess::ConvertI420ToNV21(const ImageBufFrame* srcImageBuf
     //I420ToNV21
     if(mTempImage == NULL) {
         mTempImage = new ImageBufFrame(srcImageBuf->width, srcImageBuf->height, srcImageBuf->format, srcImageBuf->channels,
-                                       srcImageBuf->pts, srcImageBuf->dts, srcImageBuf->orientation, srcImageBuf->flags);
+                                       srcImageBuf->pts, srcImageBuf->orientation, srcImageBuf->flags);
 
         mTempImage->CreateStride();
 

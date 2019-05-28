@@ -31,6 +31,27 @@ public class ICbScoreProcessor {
         melPath = null;
         melFileExist = false;
         checkMelFileTs = 0;
+
+        if (ScoreConfig.isMelp2Enable()) {
+            mCustomHandlerThread = new CustomHandlerThread("getScore2") {
+                @Override
+                protected void processMessage(Message var1) {
+                    if (var1.what == 1) {
+                        Holder holder = (Holder) var1.obj;
+                        process2(holder.needScore, holder.restartEngine, holder.samples, holder.length,
+                                holder.channels, holder.samplesPerSec, holder.currentTimeMills, holder.melPath);
+                    } else if (var1.what == 2) {
+                        Score2Callback score2Callback = (Score2Callback) var1.obj;
+                        if (score2Callback != null) {
+                            int score2 = getScore2();
+                            score2Callback.onGetScore(var1.arg1, score2);
+                        }
+                    } else if (var1.what == 3) {
+                        destroyScoreProcessor();
+                    }
+                }
+            };
+        }
         return 0;
     }
 
@@ -69,23 +90,6 @@ public class ICbScoreProcessor {
             int r1 = process1(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
         }
         if (ScoreConfig.isMelp2Enable()) {
-            if (mCustomHandlerThread == null) {
-                mCustomHandlerThread = new CustomHandlerThread("getScore2") {
-                    @Override
-                    protected void processMessage(Message var1) {
-                        if (var1.what == 1) {
-                            Holder holder = (Holder) var1.obj;
-                            process2(holder.needScore, holder.restartEngine, holder.samples, holder.length, holder.channels, holder.samplesPerSec, holder.currentTimeMills, holder.melPath);
-                        } else if (var1.what == 2) {
-                            Score2Callback score2Callback = (Score2Callback) var1.obj;
-                            if (score2Callback != null) {
-                                int score2 = getScore2();
-                                score2Callback.onGetScore(var1.arg1, score2);
-                            }
-                        }
-                    }
-                };
-            }
             Message msg = mCustomHandlerThread.obtainMessage();
             msg.what = 1;
             msg.obj = new Holder(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
@@ -113,23 +117,28 @@ public class ICbScoreProcessor {
         melPath = null;
         melFileExist = false;
         checkMelFileTs = 0;
-        destroyScoreProcessor();
         if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.removeCallbacksAndMessages(null);
+            Message msg = mCustomHandlerThread.obtainMessage();
+            msg.what = 3;
+            mCustomHandlerThread.sendMessage(msg);
             mCustomHandlerThread.destroy();
             mCustomHandlerThread = null;
+        } else {
+            destroyScoreProcessor();
         }
         return 0;
     }
 
-    public native int process1(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
+    private native int process1(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
 
-    public native int getScore1();
+    private native int getScore1();
 
-    public native int process2(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
+    private native int process2(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
 
-    public native int getScore2();
+    private native int getScore2();
 
-    public native void destroyScoreProcessor();
+    private native void destroyScoreProcessor();
 
     public static class Holder {
         boolean needScore;

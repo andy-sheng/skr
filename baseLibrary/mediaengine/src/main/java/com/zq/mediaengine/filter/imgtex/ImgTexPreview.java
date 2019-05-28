@@ -49,7 +49,10 @@ public class ImgTexPreview {
 
     public void setEGL10Context(EGLContext eglContext) {
         mGLRender.setInitEGL10Context(eglContext);
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mOnReadyListener);
+        mGLRender.addListener(mOnSizeChangedListener);
+        mGLRender.addListener(mOnDrawFrameListener);
+        mGLRender.addListener(mOnReleasedListener);
     }
 
     public void setKeepFrameOnResume(boolean keepFrameOnResume) {
@@ -169,7 +172,7 @@ public class ImgTexPreview {
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    private GLRender.GLRenderListener mGLRenderListener = new GLRender.GLRenderListener() {
+    private GLRender.OnReadyListener mOnReadyListener = new GLRender.OnReadyListener() {
         @Override
         public void onReady() {
             Log.d(TAG, "onReady");
@@ -178,12 +181,17 @@ public class ImgTexPreview {
                 mGLRender.requestRender();
             }
         }
+    };
 
+    private GLRender.OnSizeChangedListener mOnSizeChangedListener =
+            new GLRender.OnSizeChangedListener() {
         @Override
         public void onSizeChanged(int width, int height) {
             Log.d(TAG, "onSizeChanged " + width + "x" + height);
         }
+    };
 
+    private GLRender.OnDrawFrameListener mOnDrawFrameListener = new GLRender.OnDrawFrameListener() {
         @Override
         public void onDrawFrame() {
             if (mImgTexFrame != null) {
@@ -199,7 +207,9 @@ public class ImgTexPreview {
                 GLES20.glFinish();
             }
         }
+    };
 
+    private GLRender.OnReleasedListener mOnReleasedListener = new GLRender.OnReleasedListener() {
         @Override
         public void onReleased() {
             mSig.open();

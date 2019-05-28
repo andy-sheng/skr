@@ -1,5 +1,6 @@
 package com.zq.mediaengine.filter.imgtex;
 
+import android.graphics.RectF;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.util.Log;
@@ -33,6 +34,9 @@ public class ImgTexFilter extends ImgTexFilterBase {
     protected int muTexMatrixLoc;
     protected int maPositionLoc;
     protected int maTextureCoordLoc;
+    protected RectF mEffectRect;
+    private FloatBuffer mTexCoordsBuf;
+    private FloatBuffer mVertexCoordsBuf;
 
     protected boolean mMirror;
 
@@ -57,6 +61,23 @@ public class ImgTexFilter extends ImgTexFilterBase {
     protected void init(String vertexShader, String fragmentShader) {
         mVertexShader = vertexShader;
         mFragmentShaderBody = fragmentShader;
+        mEffectRect = new RectF(0.f, 0.f, 1.f, 1.f);
+        mTexCoordsBuf = genTexCoords(mEffectRect);
+        mVertexCoordsBuf = genVertexCoordsBuf(mEffectRect);
+    }
+
+    /**
+     * Set effect rect to main input pin.
+     *
+     * @param x x position for left top of frame from main pin, should be 0~1
+     * @param y y position for left top of frame from main pin, should be 0~1
+     * @param w width for frame from main pin to show, should be 0~1
+     * @param h height for frame from main pin to show, should be 0~1
+     */
+    public void setEffectRect(float x, float y, float w, float h) {
+        mEffectRect.set(x, y, x + w, y + h);
+        mTexCoordsBuf = genTexCoords(mEffectRect);
+        mVertexCoordsBuf = genVertexCoordsBuf(mEffectRect);
     }
 
     /**
@@ -120,13 +141,26 @@ public class ImgTexFilter extends ImgTexFilterBase {
     @Override
     public void onFormatChanged(final int inIdx, final ImgTexFormat format) {
         if (inIdx == mMainSinkPinIndex) {
+            int textureTarget;
             if (format.colorFormat == ImgTexFormat.COLOR_EXTERNAL_OES) {
-                mTextureTarget = GLES11Ext.GL_TEXTURE_EXTERNAL_OES;
+                textureTarget = GLES11Ext.GL_TEXTURE_EXTERNAL_OES;
                 mFragmentShader = GlUtil.FRAGMENT_SHADER_OES_HEADER + mFragmentShaderBody;
             } else {
-                mTextureTarget = GLES20.GL_TEXTURE_2D;
+                Log.e(TAG, "create texture 2d");
+                textureTarget = GLES20.GL_TEXTURE_2D;
                 mFragmentShader = GlUtil.FRAGMENT_SHADER_HEADER + mFragmentShaderBody;
             }
+
+            // check texture format, delete current program if needed
+            if (mInited && textureTarget != mTextureTarget) {
+                if (mProgramId != 0) {
+                    // onFormatChanged always running in GL thread now
+                    GLES20.glDeleteProgram(mProgramId);
+                    mProgramId = 0;
+                }
+                mInited = false;
+            }
+            mTextureTarget = textureTarget;
 
             mOutFormat = new ImgTexFormat(ImgTexFormat.COLOR_RGBA,
                     format.width, format.height);
@@ -138,6 +172,10 @@ public class ImgTexFilter extends ImgTexFilterBase {
     public void onDraw(final ImgTexFrame[] frames) {
         int textureId = frames[mMainSinkPinIndex].textureId;
         float[] texMatrix = frames[mMainSinkPinIndex].texMatrix;
+
+        if (textureId == ImgTexFrame.NO_TEXTURE) {
+            return;
+        }
 
         GlUtil.checkGlError("draw start");
         if (!mInited) {
@@ -210,6 +248,7 @@ public class ImgTexFilter extends ImgTexFilterBase {
 
     @Override
     protected void onRelease() {
+        super.onRelease();
         if (mProgramId != 0) {
             GLES20.glDeleteProgram(mProgramId);
             mProgramId = 0;
@@ -217,7 +256,21 @@ public class ImgTexFilter extends ImgTexFilterBase {
     }
 
     protected FloatBuffer getTexCoords() {
-        return TexTransformUtil.getTexCoordsBuf();
+        if (mTexCoordsBuf == null) {
+            genTexCoords(mEffectRect);
+        }
+        return mTexCoordsBuf;
+    }
+
+    private FloatBuffer genTexCoords(RectF rect) {
+        // Tex coords
+        float left = rect.left;
+        float right = 1.0f - rect.right;
+        float top = rect.top;
+        float bottom = 1.0f - rect.bottom;
+
+        return TexTransformUtil.getTexCoordsBuf(left, top, right,
+                bottom, 0, mMirror, false);
     }
 
     protected int getUniformLocation(String uniformName) {
@@ -226,11 +279,30 @@ public class ImgTexFilter extends ImgTexFilterBase {
         return loc;
     }
 
-    private FloatBuffer getVertexCoords() {
-        if (mMirror) {
-            return TexTransformUtil.getVertexMirrorCoordsBuf();
+    protected FloatBuffer getVertexCoords() {
+        if (mVertexCoordsBuf == null) {
+            mVertexCoordsBuf = genVertexCoordsBuf(mEffectRect);
+        }
+        return mVertexCoordsBuf;
+    }
+
+    private FloatBuffer genVertexCoordsBuf(RectF rect) {
+        if (!mMirror) {
+            float vertexArray[] = {
+                    -1 + 2 * rect.left, 1 - 2 * rect.bottom,   // 0 bottom left
+                    -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 1 bottom right
+                    -1 + 2 * rect.left, 1 - 2 * rect.top,      // 2 top left
+                    -1 + 2 * rect.right, 1 - 2 * rect.top,      // 3 top right
+            };
+            return GlUtil.createFloatBuffer(vertexArray);
         } else {
-            return TexTransformUtil.getVertexCoordsBuf();
+            float vertexArray[] = {
+                    -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 0 bottom left
+                    -1 + 2 * rect.left, 1 - 2 * rect.bottom,   // 1 bottom right
+                    -1 + 2 * rect.right, 1 - 2 * rect.top,      // 2 top left
+                    -1 + 2 * rect.left, 1 - 2 * rect.top,      // 2 top right
+            };
+            return GlUtil.createFloatBuffer(vertexArray);
         }
     }
 }

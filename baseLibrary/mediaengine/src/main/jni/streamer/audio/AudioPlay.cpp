@@ -2,9 +2,8 @@
 // Created by 乐 程 on 17/03/2017.
 //
 
-#include <stdlib.h>
-#include <string.h>
 #include <assert.h>
+#include <string.h>
 #include <include/log.h>
 #include "AudioPlay.h"
 #include "thread_util.h"
@@ -29,10 +28,16 @@ AudioPlay::~AudioPlay() {
     release();
 }
 
-int AudioPlay::config(int sampleRate, int channels, int bufferSamples, int fifoSizeInMs) {
+int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs) {
     // destroy previous instance
     release();
 
+    if (sampleFmt != SAMPLE_FMT_S16) {
+        LOGE("AudioPlay only support SAMPLE_FMT_S16!");
+        return -1;
+    }
+
+    mSampleFmt = sampleFmt;
     mSampleRate = sampleRate;
     mChannels = channels;
     mBufferSamples = bufferSamples;
@@ -149,7 +154,7 @@ int AudioPlay::stop() {
 
 int AudioPlay::write(uint8_t *inBuf, int inSize, bool nonBlock) {
     if (mState != STATE_PLAYING) {
-        return filterProcess(mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
+        return filterProcess(mSampleFmt, mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
     }
 
     mNonBlock = nonBlock;
@@ -159,7 +164,7 @@ int AudioPlay::write(uint8_t *inBuf, int inSize, bool nonBlock) {
         if (len < inSamples) {
             LOGD("fifo full, only write %d samples", len);
         }
-        return filterProcess(mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
+        return filterProcess(mSampleFmt, mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
     }
     while (len < inSamples) {
         waitThreadLock(mWriteCond);
@@ -173,9 +178,9 @@ int AudioPlay::write(uint8_t *inBuf, int inSize, bool nonBlock) {
     return len * mFrameSize;
 }
 
-int AudioPlay::init(int idx, int sampleRate, int channels, int bufferSamples) {
-    filterInit(sampleRate, channels, bufferSamples);
-    return config(sampleRate, channels, bufferSamples);
+int AudioPlay::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    filterInit(sampleFmt, sampleRate, channels, bufferSamples);
+    return config(sampleFmt, sampleRate, channels, bufferSamples);
 }
 
 int AudioPlay::process(int idx, uint8_t *inBuf, int inSize) {
@@ -210,8 +215,8 @@ void AudioPlay::bqPlayerCallback(SLAndroidSimpleBufferQueueItf bq, void *context
 
     // send data to next filter in blocking mode here
     if (!thiz->mFirstFrame && !thiz->mNonBlock) {
-        thiz->filterProcess(thiz->mSampleRate, thiz->mChannels, thiz->mBufferSamples,
-                            thiz->mBuffer, size);
+        thiz->filterProcess(thiz->mSampleFmt, thiz->mSampleRate, thiz->mChannels,
+                            thiz->mBufferSamples, thiz->mBuffer, size);
     }
 
     int len;

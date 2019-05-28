@@ -24,29 +24,28 @@ public class AudioAPMFilterMgt {
     public final static int AUDIO_NS_LEVEL_2 = APMWrapper.NS_LEVEL_HIGH;
     public final static int AUDIO_NS_LEVEL_3 = APMWrapper.NS_LEVEL_VERYHIGH;
 
-    private SinkPin<AudioBufFrame> mInputSinkPin;
-    private SrcPin<AudioBufFrame> mInputSrcPin;
+    private APMSinkPin[] mSinkPins;
+    private AudioBufSrcPin[] mSrcPins;
+    private AudioResampleFilter[] mResampleFilters;
 
-    private PinAdapter<AudioBufFrame> mOutputFilter;
-    private AudioResampleFilter mAudioResample;
     private APMFilter mAPMFilter;
-    private AudioBufFormat mOutFormat;
     private boolean mEnableNS = false;
     private int mNSLevel = APMWrapper.NS_LEVEL_MODERATE;
 
     public AudioAPMFilterMgt() {
-        mInputSinkPin = new AudioSinkAdapter();
-        mInputSrcPin = new AudioBufSrcPin();
-        mOutputFilter = new AudioBufPinAdapter();
-        mAudioResample = new AudioResampleFilter();
-        mAPMFilter = new APMFilter();
+        mSinkPins = new APMSinkPin[2];
+        mSrcPins = new AudioBufSrcPin[2];
+        mResampleFilters = new AudioResampleFilter[2];
 
+        for (int i = 0; i < 2; i++) {
+            mSinkPins[i] = new APMSinkPin(i);
+            mSrcPins[i] = new AudioBufSrcPin();
+            mResampleFilters[i] = new AudioResampleFilter();
+        }
+
+        mAPMFilter = new APMFilter();
         mAPMFilter.enableNs(mEnableNS);
         mAPMFilter.setNsLevel(mNSLevel);
-
-        mInputSrcPin.connect(mAudioResample.getSinkPin());
-        mAudioResample.getSrcPin().connect(mAPMFilter.getSinkPin());
-        mAPMFilter.getSrcPin().connect(mOutputFilter.mSinkPin);
     }
 
     /**
@@ -55,7 +54,11 @@ public class AudioAPMFilterMgt {
      * @return input pin instance
      */
     public SinkPin<AudioBufFrame> getSinkPin() {
-        return mInputSinkPin;
+        return mSinkPins[0];
+    }
+
+    public SinkPin<AudioBufFrame> getReverseSinkPin() {
+        return mSinkPins[1];
     }
 
     /**
@@ -64,53 +67,86 @@ public class AudioAPMFilterMgt {
      * @return output pin instance
      */
     public SrcPin<AudioBufFrame> getSrcPin() {
-        return mOutputFilter.mSrcPin;
-    }
-
-    protected void doRelease() {
+        return mAPMFilter.getSrcPin();
     }
 
     public void release() {
-        mInputSrcPin.disconnect(true);
-        doRelease();
+        for (int i = 0; i < 2; i++) {
+            mSrcPins[i].disconnect(true);
+            mResampleFilters[i].release();
+        }
     }
 
-    private class AudioSinkAdapter extends SinkPin<AudioBufFrame> {
+    private boolean isNeedResample(int sampleRate) {
+        return sampleRate != kSampleRate8kHz &&
+                sampleRate != kSampleRate16kHz &&
+                sampleRate != kSampleRate32kHz &&
+                sampleRate != kSampleRate48kHz;
+
+//        return false;
+    }
+
+    private AudioBufFormat getResampleOutFormat(AudioBufFormat format) {
+        int sampleRate = format.sampleRate;
+        if (isNeedResample(sampleRate)) {
+            if (sampleRate == kSampleRate44kHz) {
+                sampleRate = kSampleRate48kHz;
+            } else {
+                sampleRate = kSampleRate32kHz;
+            }
+        }
+        return new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, sampleRate, format.channels);
+    }
+
+    private SinkPin<AudioBufFrame> getAPMSink(int idx) {
+        return idx == 0 ? mAPMFilter.getSinkPin() : mAPMFilter.getReverseSinkPin();
+    }
+
+    private void doFormatChanged(int idx, AudioBufFormat format) {
+        mResampleFilters[idx].getSrcPin().disconnect(false);
+        mSrcPins[idx].disconnect(false);
+        if (isNeedResample(format.sampleRate)) {
+            AudioBufFormat outFormat = getResampleOutFormat(format);
+            mSrcPins[idx].connect(mResampleFilters[idx].getSinkPin());
+            mResampleFilters[idx].getSrcPin().connect(getAPMSink(idx));
+            mResampleFilters[idx].setOutFormat(outFormat);
+        } else {
+            mSrcPins[idx].connect(getAPMSink(idx));
+        }
+        mSrcPins[idx].onFormatChanged(format);
+    }
+
+    private void doFrameAvailable(int idx, AudioBufFrame frame) {
+        mSrcPins[idx].onFrameAvailable(frame);
+    }
+
+    private void doDisconnect(int idx, boolean recursive) {
+        if (idx == 0 && recursive) {
+            release();
+        }
+    }
+
+    private class APMSinkPin extends SinkPin<AudioBufFrame> {
+        private int mIndex;
+
+        public APMSinkPin(int idx) {
+            mIndex = idx;
+        }
 
         @Override
         public void onFormatChanged(Object format) {
-            if (format == null) {
-                return;
-            }
-            AudioBufFormat tmpFormat = (AudioBufFormat) format;
-            switch (tmpFormat.sampleRate) {
-                case kSampleRate8kHz:
-                case kSampleRate16kHz:
-                case kSampleRate32kHz:
-                case kSampleRate48kHz: {
-                    mOutFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, tmpFormat.sampleRate, tmpFormat.channels);
-                    break;
-                }
-                case kSampleRate44kHz:
-                default: {
-                    mOutFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, kSampleRate48kHz, tmpFormat.channels);
-                    break;
-                }
-            }
-            mAudioResample.setOutFormat(mOutFormat);
-            mInputSrcPin.onFormatChanged(format);
+            doFormatChanged(mIndex, (AudioBufFormat) format);
         }
 
         @Override
         public void onFrameAvailable(AudioBufFrame frame) {
-            mInputSrcPin.onFrameAvailable(frame);
+            doFrameAvailable(mIndex, frame);
         }
 
         @Override
-        public void onDisconnect(boolean recursive) {
-            if (recursive) {
-                release();
-            }
+        public synchronized void onDisconnect(boolean recursive) {
+            doDisconnect(mIndex, recursive);
+            super.onDisconnect(recursive);
         }
     }
 
@@ -139,6 +175,22 @@ public class AudioAPMFilterMgt {
         }
         mEnableNS = enable;
         mAPMFilter.enableNs(enable);
+    }
+
+    public int enableAECM(boolean enable) {
+        return mAPMFilter.enableAECM(enable);
+    }
+
+    public int enableAEC(boolean enable) {
+        return mAPMFilter.enableAEC(enable);
+    }
+
+    public int setRoutingMode(int mode) {
+        return mAPMFilter.setRoutingMode(mode);
+    }
+
+    public int setStreamDelay(int delay) {
+        return mAPMFilter.setStreamDelay(delay);
     }
 
     public boolean getNSState() {

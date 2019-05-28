@@ -3,6 +3,7 @@
 //
 
 #include <jni.h>
+#include <include/android_nio_utils.h>
 #include "jni_AudioResample.h"
 #include "audio/AudioResample.h"
 
@@ -17,8 +18,8 @@ jlong Java_com_zq_mediaengine_filter_audio_AudioResample__1init
 }
 
 void Java_com_zq_mediaengine_filter_audio_AudioResample__1setOutputFormat
-        (JNIEnv *env, jobject obj, jlong instance, jint sampleRate, jint channels) {
-    getInstance(instance)->setOutputFormat(sampleRate, channels);
+        (JNIEnv *env, jobject obj, jlong instance, jint sampleFmt, jint sampleRate, jint channels) {
+    getInstance(instance)->setOutputFormat(sampleFmt, sampleRate, channels);
 }
 
 jint Java_com_zq_mediaengine_filter_audio_AudioResample__1config
@@ -37,7 +38,8 @@ jint Java_com_zq_mediaengine_filter_audio_AudioResample__1read
     if (byteBuffer == NULL) {
         return 0;
     }
-    uint8_t* buf = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    AutoBufferPointer abp(env, byteBuffer, JNI_TRUE);
+    uint8_t *buf = (uint8_t*)abp.pointer();
     return getInstance(instance)->read(buf, size);
 }
 
@@ -49,8 +51,14 @@ jobject Java_com_zq_mediaengine_filter_audio_AudioResample__1resample
 
     jobject outByteBuffer = NULL;
     uint8_t* outBuf = NULL;
-    uint8_t* inBuf = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
-    int outSize = getInstance(instance)->resample(&outBuf, inBuf, size);
+    int outSize = 0;
+
+    {   // auto release pool to avoid JNI critical issue
+        AutoBufferPointer abp(env, byteBuffer, JNI_FALSE);
+        uint8_t *inBuf = (uint8_t *) abp.pointer();
+        outSize = getInstance(instance)->resample(&outBuf, inBuf, size);
+    }
+
     if (outSize > 0 && outBuf) {
         outByteBuffer = env->NewDirectByteBuffer(outBuf, outSize);
     }

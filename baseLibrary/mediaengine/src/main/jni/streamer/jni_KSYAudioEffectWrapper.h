@@ -12,7 +12,7 @@ extern "C" {
  * Method:    native_init
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_native_1init
+JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1init
         (JNIEnv *, jobject);
 
 /*
@@ -20,7 +20,7 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_
  * Method:    native_set_audio_format
  * Signature: (JIII)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_native_1set_1audio_1format
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1set_1audio_1format
         (JNIEnv *, jobject, jlong, jint, jint, jint);
 
 /*
@@ -28,7 +28,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_n
  * Method:    native_set_effect_type
  * Signature: (JI)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_native_1set_1effect_1type
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1set_1effect_1type
         (JNIEnv *, jobject, jlong, jint);
 
 /*
@@ -36,15 +36,30 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_n
  * Method:    native_set_pitch_level
  * Signature: (JI)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_native_1set_1pitch_1level
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1set_1pitch_1level
         (JNIEnv *, jobject, jlong, jint);
 
+/*
+ * Class:     com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper
+ * Method:    native_add_effect
+ * Signature: (JLjava/lang/String;I[Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1add_1effect
+        (JNIEnv *, jobject, jlong, jstring, jint, jobjectArray);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper
+ * Method:    native_remove_effects
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1remove_1effects
+        (JNIEnv *, jobject, jlong);
 /*
  * Class:     com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper
  * Method:    native_process
  * Signature: (JLjava/nio/ByteBuffer;I)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_native_1process
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1process
         (JNIEnv *, jobject, jlong, jobject, jint);
 
 /*
@@ -52,7 +67,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_n
  * Method:    native_quit
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_native_1quit
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1quit
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -60,7 +75,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_n
  * Method:    attachTo
  * Signature: (JIJZ)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_attachTo__JIJZ
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_attachTo
         (JNIEnv *, jobject, jlong, jint, jlong, jboolean);
 
 /*
@@ -68,7 +83,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_a
  * Method:    native_read
  * Signature: (JLjava/nio/ByteBuffer;I)I
  */
-JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioEffectWrapper_native_1read
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_KSYAudioEffectWrapper_native_1read
         (JNIEnv *, jobject, jlong, jobject, jint);
 
 #ifdef __cplusplus

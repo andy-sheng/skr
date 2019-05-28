@@ -3,7 +3,7 @@ package com.zq.mediaengine.framework;
 /**
  * Simple transfer data from SinkPin to SrcPin.
  */
-public class PinAdapter<T> {
+public class PinAdapter<T extends AVFrameBase> {
     public SinkPin<T> mSinkPin;
     public SrcPin<T> mSrcPin;
 

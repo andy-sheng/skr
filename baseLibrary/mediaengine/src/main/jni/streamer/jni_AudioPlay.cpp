@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <include/android_nio_utils.h>
 #include "jni_AudioPlay.h"
 #include "audio/AudioPlay.h"
 
@@ -13,7 +14,7 @@ jlong Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1init
 }
 
 int Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1config
-        (JNIEnv *env, jobject obj, jlong instance, jint sampleRate, jint channels,
+        (JNIEnv *env, jobject obj, jlong instance, jint sampleFmt, jint sampleRate, jint channels,
          jint bufferSamples, jint fifoSizeInMs) {
     return getInstance(instance)->config(sampleRate, channels, bufferSamples, fifoSizeInMs);
 }
@@ -58,14 +59,16 @@ jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1read
     if (byteBuffer == NULL) {
         return 0;
     }
-    uint8_t* buf = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    AutoBufferPointer abp(env, byteBuffer, JNI_TRUE);
+    uint8_t *buf = (uint8_t*)abp.pointer();
     return getInstance(instance)->read(buf, size);
 }
 
 jint Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1write
         (JNIEnv *env, jobject obj, jlong instance, jobject byteBuffer,
          jint size, jboolean nonBlock) {
-    uint8_t* buf = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    AutoBufferPointer abp(env, byteBuffer, JNI_TRUE);
+    uint8_t *buf = (uint8_t*)abp.pointer();
     return getInstance(instance)->write(buf, size, nonBlock);
 }
 

@@ -25,19 +25,19 @@ public class ImgBeautySimpleFilter extends ImgFilterBase {
             mSpecialEffectsFilter = new ImgBeautySpecialEffectsFilter(glRender,
                     context, "13_nature.png");
         } catch (Exception e) {
-            Log.e(TAG, "Resource missing!");
+            Log.e(TAG, "KSYResource missing!");
         }
         if (mSpecialEffectsFilter != null) {
             mGrindSimpleFilter.getSrcPin().connect(mSpecialEffectsFilter.getSinkPin());
         }
 
-        String pinkUri = "assets://Resource/0_pink.png";
-        String ruddyUri = "assets://Resource/0_ruddy2.png";
+        String pinkUri = "assets://KSYResource/0_pink.png";
+        String ruddyUri = "assets://KSYResource/0_ruddy2.png";
         try {
             mAdjustSkinColorFilter = new ImgBeautyAdjustSkinColorFilter(glRender, context,
                     pinkUri, ruddyUri);
         } catch (Exception e) {
-            Log.e(TAG, "Resource missing!");
+            Log.e(TAG, "KSYResource missing!");
         }
         if (mAdjustSkinColorFilter != null) {
             if (mSpecialEffectsFilter != null) {

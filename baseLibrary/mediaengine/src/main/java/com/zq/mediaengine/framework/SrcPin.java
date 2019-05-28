@@ -3,18 +3,22 @@ package com.zq.mediaengine.framework;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Source pin definition.
  */
-public class SrcPin<T> {
+public class SrcPin<T extends AVFrameBase> {
     protected List<SinkPin<T>> sinkPins;
+    protected Map<SinkPin, Boolean> isFormatChangedMap;
     protected Object format;
 
     public SrcPin() {
         sinkPins = new LinkedList<>();
+        isFormatChangedMap = new LinkedHashMap<>();
     }
 
     synchronized public boolean isConnected() {
@@ -26,35 +30,25 @@ public class SrcPin<T> {
             return;
         }
         sinkPins.add(sinkPin);
-        sinkPin.onConnected();
-        if (format != null) {
-            sinkPin.onFormatChanged(format);
-        }
+        isFormatChangedMap.put(sinkPin, false);
+        sinkPin.onConnected(this);
     }
 
     synchronized public void onFormatChanged(Object format) {
         this.format = format;
         for (SinkPin<T> sinkPin : sinkPins) {
             sinkPin.onFormatChanged(format);
+            isFormatChangedMap.put(sinkPin, true);
         }
     }
 
     synchronized public void onFrameAvailable(T frame) {
         for (SinkPin<T> sinkPin : sinkPins) {
+            if (!isFormatChangedMap.get(sinkPin)) {
+                sinkPin.onFormatChanged(format);
+                isFormatChangedMap.put(sinkPin, true);
+            }
             sinkPin.onFrameAvailable(frame);
-        }
-
-        if (frame == null) {
-            return;
-        }
-        if (frame instanceof AVFrameBase) {
-            if ((((AVFrameBase) frame).flags & AVConst.FLAG_END_OF_STREAM) != 0) {
-                this.format = null;
-            }
-        } else if (frame instanceof AVPacketBase) {
-            if ((((AVPacketBase) frame).flags & AVConst.FLAG_END_OF_STREAM) != 0) {
-                this.format = null;
-            }
         }
     }
 
@@ -75,13 +69,15 @@ public class SrcPin<T> {
      */
     synchronized public void disconnect(@Nullable SinkPin<T> sinkPin, boolean recursive) {
         if (sinkPin != null) {
-            sinkPin.onDisconnect(recursive);
+            sinkPin.onDisconnect(this, recursive);
             sinkPins.remove(sinkPin);
+            isFormatChangedMap.remove(sinkPin);
         } else {
             for (SinkPin<T> sink : sinkPins) {
-                sink.onDisconnect(recursive);
+                sink.onDisconnect(this, recursive);
             }
             sinkPins.clear();
+            isFormatChangedMap.clear();
         }
     }
 }

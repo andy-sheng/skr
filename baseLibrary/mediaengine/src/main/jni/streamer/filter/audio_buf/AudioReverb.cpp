@@ -1,9 +1,11 @@
 #include "AudioReverb.h"
 #include "assert.h"
+#include "log.h"
 
 AudioReverb::AudioReverb()
 {
     mScenario = 3;
+    mSampleFmt = SAMPLE_FMT_S16;
     mSampleRate = 44100;
     mChannels = 1;
     mBufferSamples = 0;
@@ -19,12 +21,18 @@ AudioReverb::~AudioReverb()
     }
 }
 
-void AudioReverb::Config(int sampleRate, int channels) {
+int AudioReverb::Config(int sampleFmt, int sampleRate, int channels) {
+    if (sampleFmt != SAMPLE_FMT_S16) {
+        LOGE("AudioReverb only support SAMPLE_FMT_S16!");
+        return -1;
+    }
     if (mSampleRate != sampleRate || mChannels != channels) {
         mReCreate = true;
     }
+    mSampleFmt = sampleFmt;
     mSampleRate = sampleRate;
     mChannels = channels;
+    return 0;
 }
 
 void AudioReverb::Init()
@@ -149,14 +157,17 @@ void  AudioReverb::ReverbSet(int scenario) {
     mScenario = scenario;
 }
 
-int AudioReverb::init(int idx, int sampleRate, int channels, int bufferSamples) {
-    Config(sampleRate, channels);
+int AudioReverb::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    int ret = Config(sampleFmt, sampleRate, channels);
+    if (ret < 0) {
+        return ret;
+    }
     mBufferSamples = bufferSamples;
-    filterInit(sampleRate, channels, bufferSamples);
+    filterInit(sampleFmt, sampleRate, channels, bufferSamples);
     return 0;
 }
 
 int AudioReverb::process(int idx, uint8_t *inBuf, int inSize) {
     ReverbProcess((short*) inBuf, inSize / 2);
-    return filterProcess(mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
+    return filterProcess(mSampleFmt, mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
 }

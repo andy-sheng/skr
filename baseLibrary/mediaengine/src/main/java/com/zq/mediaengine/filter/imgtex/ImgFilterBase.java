@@ -185,4 +185,10 @@ abstract public class ImgFilterBase {
     public String getVersion() {
         return "1.0";
     }
+
+    /**
+     * Release current filter.
+     */
+    public void release() {
+    }
 }

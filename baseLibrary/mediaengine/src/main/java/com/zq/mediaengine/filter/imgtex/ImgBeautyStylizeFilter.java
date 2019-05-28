@@ -17,25 +17,25 @@ import com.zq.mediaengine.util.gles.GlUtil;
 
 public class ImgBeautyStylizeFilter extends ImgTexFilter {
     private final static String TAG = "ImgBeautyStylizeFilter";
-    public static final String KSY_RES_PATH = "assets://Resource/";
+    public static final String KSY_RES_PATH = "assets://KSYResource/";
 
-    public static final int IMG_FILTER_STYLE_1977 = 0;
-    public static final int IMG_FILTER_STYLE_AMARO = 1;
-    public static final int IMG_FILTER_STYLE_BRANNAN = 2;
-    public static final int IMG_FILTER_STYLE_EARLY_BIRD = 3;
-    public static final int IMG_FILTER_STYLE_HEFE = 4;
-    public static final int IMG_FILTER_STYLE_HUDSON = 5;
-    public static final int IMG_FILTER_STYLE_INK = 6;
-    public static final int IMG_FILTER_STYLE_LOMO = 7;
-    public static final int IMG_FILTER_STYLE_LORD_KELVIN = 8;
-    public static final int IMG_FILTER_STYLE_NASHVILLE = 9;
-    public static final int IMG_FILTER_STYLE_RISE = 10;
-    public static final int IMG_FILTER_STYLE_SIERRA = 11;
-    public static final int IMG_FILTER_STYLE_SUTRO = 12;
-    public static final int IMG_FILTER_STYLE_TOASTER = 13;
-    public static final int IMG_FILTER_STYLE_VALENCIA = 14;
-    public static final int IMG_FILTER_STYLE_WALDEN = 15;
-    public static final int IMG_FILTER_STYLE_XPROLL = 16;
+    public static final int KSY_FILTER_STYLE_1977 = 0;
+    public static final int KSY_FILTER_STYLE_AMARO = 1;
+    public static final int KSY_FILTER_STYLE_BRANNAN = 2;
+    public static final int KSY_FILTER_STYLE_EARLY_BIRD = 3;
+    public static final int KSY_FILTER_STYLE_HEFE = 4;
+    public static final int KSY_FILTER_STYLE_HUDSON = 5;
+    public static final int KSY_FILTER_STYLE_INK = 6;
+    public static final int KSY_FILTER_STYLE_LOMO = 7;
+    public static final int KSY_FILTER_STYLE_LORD_KELVIN = 8;
+    public static final int KSY_FILTER_STYLE_NASHVILLE = 9;
+    public static final int KSY_FILTER_STYLE_RISE = 10;
+    public static final int KSY_FILTER_STYLE_SIERRA = 11;
+    public static final int KSY_FILTER_STYLE_SUTRO = 12;
+    public static final int KSY_FILTER_STYLE_TOASTER = 13;
+    public static final int KSY_FILTER_STYLE_VALENCIA = 14;
+    public static final int KSY_FILTER_STYLE_WALDEN = 15;
+    public static final int KSY_FILTER_STYLE_XPROLL = 16;
 
     protected int[] GL_TEXTURES = {GLES20.GL_TEXTURE3, GLES20.GL_TEXTURE4, GLES20.GL_TEXTURE5,
             GLES20.GL_TEXTURE6, GLES20.GL_TEXTURE7, GLES20.GL_TEXTURE8};

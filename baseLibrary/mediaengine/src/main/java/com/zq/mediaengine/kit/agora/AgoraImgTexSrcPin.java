@@ -21,9 +21,9 @@ public class AgoraImgTexSrcPin extends SrcPin<ImgTexFrame> implements IVideoSink
     private ImgTexFormat mImgTexFormat;
 
     public AgoraImgTexSrcPin(GLRender glRender) {
-//        if (glRender == null) {
-//            throw new IllegalArgumentException("glRender should not be null!");
-//        }
+        if (glRender == null) {
+            throw new IllegalArgumentException("glRender should not be null!");
+        }
         mGLRender = glRender;
     }
 

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <jni/util/jni_cache.h>
 #include "KSYAudioEffect.h"
 
 #define AUDIO_PITCH_LEVEL_1 -3
@@ -24,6 +25,7 @@
 #define AUDIO_EFFECT_TYPE_FLANGER 15
 #define AUDIO_EFFECT_TYPE_CHORUS 16
 #define AUDIO_EFFECT_TYPE_EARWAX 17
+#define AUDIO_EFFECT_TYPE_USER_DEFINED 20
 
 #define DEBUG 0
 #if DEBUG
@@ -34,9 +36,8 @@ FILE* out_file;
  *
  */
 static int input_drain(
-        sox_effect_t * effp, sox_sample_t * obuf, size_t * osamp)
-{
-    AudioEffectInbuffer* thiz = (AudioEffectInbuffer*) effp->priv;
+        sox_effect_t *effp, sox_sample_t *obuf, size_t *osamp) {
+    AudioEffectInbuffer *thiz = (AudioEffectInbuffer *) effp->priv;
     /* ensure that *osamp is a multiple of the number of channels. */
     *osamp -= *osamp % effp->out_signal.channels;
 
@@ -48,8 +49,7 @@ static int input_drain(
         *osamp = thiz->in_left;
     }
 
-    for (size_t i=0; i < *osamp; i++, thiz->in_pos++)
-    {
+    for (size_t i = 0; i < *osamp; i++, thiz->in_pos++) {
         *obuf++ = SOX_SIGNED_16BIT_TO_SAMPLE(thiz->in_buf[thiz->in_pos],);
     }
     thiz->in_left -= *osamp;
@@ -57,22 +57,20 @@ static int input_drain(
     if (done) {
         return SOX_EOF;
     }
-    return *osamp? SOX_SUCCESS : SOX_EOF;
+    return *osamp ? SOX_SUCCESS : SOX_EOF;
 }
 
 /* The function that will be called to output samples from the effects chain.
  *
  */
-static int output_flow(sox_effect_t *effp LSX_UNUSED, sox_sample_t const * ibuf,
-                       sox_sample_t * obuf LSX_UNUSED, size_t * isamp, size_t * osamp)
-{
-    AudioEffectOutBuffer* thiz = (AudioEffectOutBuffer*) effp->priv;
+static int output_flow(sox_effect_t *effp LSX_UNUSED, sox_sample_t const *ibuf,
+                       sox_sample_t *obuf LSX_UNUSED, size_t *isamp, size_t *osamp) {
+    AudioEffectOutBuffer *thiz = (AudioEffectOutBuffer *) effp->priv;
     /* Write out *isamp samples */
     SOX_SAMPLE_LOCALS;
     int clips;
 
-    for (size_t i = 0; i < *isamp; i++, thiz->out_pos++)
-    {
+    for (size_t i = 0; i < *isamp; i++, thiz->out_pos++) {
         thiz->out_buf[thiz->out_pos] = SOX_SAMPLE_TO_SIGNED_16BIT(ibuf[i], clips);
     }
     thiz->out_length += *isamp * thiz->signal.precision / 8;
@@ -86,8 +84,7 @@ static int output_flow(sox_effect_t *effp LSX_UNUSED, sox_sample_t const * ibuf,
 
 /* A `stub' effect handler to handle inputting samples to the effects
  * chain; the only function needed for this example is `drain' */
-static sox_effect_handler_t const * input_handler(void)
-{
+static sox_effect_handler_t const *input_handler(void) {
     static sox_effect_handler_t handler = {
             "input", NULL, SOX_EFF_MCHAN, NULL, NULL, NULL,
             input_drain, NULL, NULL, sizeof(AudioEffectInbuffer)
@@ -97,8 +94,7 @@ static sox_effect_handler_t const * input_handler(void)
 
 /* A `stub' effect handler to handle outputting samples from the effects
  * chain; the only function needed for this example is `flow' */
-static sox_effect_handler_t const * output_handler(void)
-{
+static sox_effect_handler_t const *output_handler(void) {
     static sox_effect_handler_t handler = {
             "output", NULL, SOX_EFF_MCHAN, NULL, NULL,
             output_flow, NULL, NULL, NULL, sizeof(AudioEffectOutBuffer)
@@ -106,8 +102,8 @@ static sox_effect_handler_t const * output_handler(void)
     return &handler;
 }
 
-static int update_status(sox_bool all_done, void * client_data) {
-    KSYAudioEffect* thiz = (KSYAudioEffect*) client_data;
+static int update_status(sox_bool all_done, void *client_data) {
+    KSYAudioEffect *thiz = (KSYAudioEffect *) client_data;
     return thiz->stop ? SOX_EOF : SOX_SUCCESS;
 }
 
@@ -122,7 +118,7 @@ static void init_sox() {
 
 static void quit_sox() {
     count--;
-    if (count <= 0 ) {
+    if (count <= 0) {
         sox_quit();
     }
 }
@@ -131,15 +127,15 @@ KSYAudioEffect::KSYAudioEffect() {
 }
 
 KSYAudioEffect::~KSYAudioEffect() {
+    removeEffects();
 }
 
 void KSYAudioEffect::Init() {
     mEffectType = AUDIO_EFFECT_TYPE_PITCH;
     mPitchLevel = AUDIO_PITCH_LEVEL_4;
+    mSampleFmt = SAMPLE_FMT_S16;
     mSampleRate = 44100;
     mChannels = 1;
-    mBitsPerSample = 16;
-//    sox_globals.bufsiz = 2048;
 
     mChain = NULL;
     mInBuffer = NULL;
@@ -148,15 +144,15 @@ void KSYAudioEffect::Init() {
     init_sox();
 }
 
-void KSYAudioEffect::setAudioFormat(int bits_per_sample, int sample_rate, int channels) {
-    if (bits_per_sample != mBitsPerSample ||
-            sample_rate != mSampleRate ||
-               channels != mChannels) {
+void KSYAudioEffect::setAudioFormat(int sample_fmt, int sample_rate, int channels) {
+    if (sample_fmt != mSampleFmt ||
+        sample_rate != mSampleRate ||
+        channels != mChannels) {
         mReCreate = true;
     }
+    mSampleFmt = sample_fmt;
     mSampleRate = sample_rate;
     mChannels = channels;
-    mBitsPerSample = bits_per_sample;
 }
 
 void KSYAudioEffect::setEffectType(int type) {
@@ -174,11 +170,11 @@ void KSYAudioEffect::setPitchLevel(int level) {
     mPitchLevel = level;
 }
 
-void KSYAudioEffect::auto_effect(char const *name, int factor,
+void KSYAudioEffect::auto_effect(char const *name, float factor,
                                sox_signalinfo_t *interm_signal) {
-    char f[12] = {0};
-    snprintf(f, 12, "%d", factor);
-    char* argv[] = {f, NULL};
+    char f[256] = {0};
+    snprintf(f, 256, "%f", factor);
+    char *argv[] = {f, NULL};
     sox_effect_t *effect = sox_create_effect(sox_find_effect(name));
     sox_effect_options(effect, 1, argv);
     sox_add_effect(mChain, effect, interm_signal,
@@ -193,8 +189,8 @@ void KSYAudioEffect::add_echo_effect(sox_signalinfo_t *interm_signal) {
     char gain_out[] = "0.75";
     char delay[] = "60";
     char decay[] = "0.75";
-    char* argv[] = {gain_in, gain_out, delay, decay, NULL};
-    int   argc   = (int)(sizeof(argv) / sizeof(argv[0])) - 1;
+    char *argv[] = {gain_in, gain_out, delay, decay, NULL};
+    int argc = (int) (sizeof(argv) / sizeof(argv[0])) - 1;
 
     sox_effect_t *effect = sox_create_effect(sox_find_effect("echo"));
     sox_effect_options(effect, argc, argv);
@@ -211,12 +207,12 @@ void KSYAudioEffect::add_reverb_effect(sox_signalinfo_t *interm_signal) {
     char stereo_depth[] = "100";
     char pre_delay[] = "50";
     char weg_grain[] = "0";
-    char* argv[] = {reverberance, hf_damping,room_scale, stereo_depth,
-                    pre_delay,weg_grain, NULL};
-    int   argc   = (int)(sizeof(argv) / sizeof(argv[0])) - 1;
+    char *argv[] = {reverberance, hf_damping, room_scale, stereo_depth,
+                    pre_delay, weg_grain, NULL};
+    int argc = (int) (sizeof(argv) / sizeof(argv[0])) - 1;
 
     sox_effect_t *effect = sox_create_effect(sox_find_effect("reverb"));
-    sox_effect_options( effect, argc, argv);
+    sox_effect_options(effect, argc, argv);
     sox_add_effect(mChain, effect, interm_signal,
                    &mOutBuffer->signal);
     free(effect);
@@ -232,12 +228,12 @@ void KSYAudioEffect::add_chorus_effect(sox_signalinfo_t *interm_signal) {
     char speed[] = "2";
     char depth[] = "2";
     char t[] = "-t";
-    char* argv[] = {gain_in, gain_out, delay, decay,
-                    speed, depth, t,  NULL};
-    int   argc   = (int)(sizeof(argv) / sizeof(argv[0])) - 1;
+    char *argv[] = {gain_in, gain_out, delay, decay,
+                    speed, depth, t, NULL};
+    int argc = (int) (sizeof(argv) / sizeof(argv[0])) - 1;
 
     sox_effect_t *effect = sox_create_effect(sox_find_effect("chorus"));
-    sox_effect_options( effect, argc, argv);
+    sox_effect_options(effect, argc, argv);
     sox_add_effect(mChain, effect, interm_signal,
                    &mOutBuffer->signal);
     free(effect);
@@ -267,7 +263,7 @@ void KSYAudioEffect::add_flanger_effect(sox_signalinfo_t *interm_signal) {
 void KSYAudioEffect::addEffects() {
     if (mChain != NULL) {
         // destroy fifo
-        if( mOutBuffer && mOutBuffer->fifoInited) {
+        if (mOutBuffer && mOutBuffer->fifoInited) {
             audio_utils_fifo_deinit(&mOutBuffer->fifo);
             mOutBuffer->fifoInited = false;
         }
@@ -282,20 +278,20 @@ void KSYAudioEffect::addEffects() {
     }
 
     //mInBuffer and mOutBuffer is freed by sox_delete_effects_chain
-    mInBuffer = (AudioEffectInbuffer*)calloc(1, sizeof(AudioEffectInbuffer));
-    mOutBuffer = (AudioEffectOutBuffer*)calloc(1, sizeof(AudioEffectOutBuffer));
+    mInBuffer = (AudioEffectInbuffer *) calloc(1, sizeof(AudioEffectInbuffer));
+    mOutBuffer = (AudioEffectOutBuffer *) calloc(1, sizeof(AudioEffectOutBuffer));
     mInBuffer->in_length = 0;
     mInBuffer->in_left = 0;
     mInBuffer->in_pos = 0;
     mOutBuffer->out_length = 0;
-    mOutBuffer->out_pos =0;
+    mOutBuffer->out_pos = 0;
     mOutBuffer->fifoInited = false;
     stop = false;
 
-    mOutBuffer->frameSize = 2 * mChannels;
+    mOutBuffer->frameSize = getBytesPerSample(mSampleFmt) * mChannels;
     mOutBuffer->fifoSamples = BUF_SIZE * 3;
-    mOutBuffer->fifoBuffer = (uint8_t*) malloc((size_t) (mOutBuffer->fifoSamples *
-            mOutBuffer->frameSize));
+    mOutBuffer->fifoBuffer = (uint8_t *) malloc((size_t) (mOutBuffer->fifoSamples *
+                                                          mOutBuffer->frameSize));
     assert(mFifoBuffer);
     audio_utils_fifo_init(&mOutBuffer->fifo, (size_t) mOutBuffer->fifoSamples,
                           (size_t) mOutBuffer->frameSize, mOutBuffer->fifoBuffer);
@@ -303,12 +299,12 @@ void KSYAudioEffect::addEffects() {
 
     mOutBuffer->signal.channels = mChannels;
     mOutBuffer->signal.rate = mSampleRate;
-    mOutBuffer->signal.precision = mBitsPerSample;
+    mOutBuffer->signal.precision = getBytesPerSample(mSampleFmt) * 8;
     mOutBuffer->signal.mult = NULL;
     mOutBuffer->signal.length = 0;
 
     mOutBuffer->encoding.encoding = SOX_ENCODING_SIGN2;
-    mOutBuffer->encoding.bits_per_sample = mBitsPerSample;
+    mOutBuffer->encoding.bits_per_sample = getBytesPerSample(mSampleFmt) * 8;
     mOutBuffer->encoding.compression = 0;
     mOutBuffer->encoding.reverse_bits = sox_option_default;
     mOutBuffer->encoding.reverse_bytes = sox_option_default;
@@ -317,7 +313,7 @@ void KSYAudioEffect::addEffects() {
 
     //create effect mChain
     mChain = sox_create_effects_chain(&mOutBuffer->encoding,
-                                     &mOutBuffer->encoding);
+                                      &mOutBuffer->encoding);
 
     sox_signalinfo_t interm_signal = mOutBuffer->signal;
     sox_effect_t *effect = NULL;
@@ -409,13 +405,16 @@ void KSYAudioEffect::addEffects() {
                     break;
             }
             break;
+        case AUDIO_EFFECT_TYPE_USER_DEFINED:
+            addUserEffects(&interm_signal);
+            break;
         default:
             break;
     }
 
     if (interm_signal.rate != mOutBuffer->signal.rate) {
         effect = sox_create_effect(sox_find_effect("rate"));
-        sox_effect_options( effect, 0, NULL);
+        sox_effect_options(effect, 0, NULL);
         effect->flows = 1;
         sox_add_effect(mChain, effect, &interm_signal,
                        &mOutBuffer->signal);
@@ -424,7 +423,7 @@ void KSYAudioEffect::addEffects() {
 
     if (interm_signal.channels != mOutBuffer->signal.channels) {
         effect = sox_create_effect(sox_find_effect("channels"));
-        sox_effect_options( effect, 0, NULL);
+        sox_effect_options(effect, 0, NULL);
         sox_add_effect(mChain, effect, &interm_signal,
                        &mOutBuffer->signal);
         free(effect);
@@ -443,7 +442,24 @@ void KSYAudioEffect::addEffects() {
 #endif
 }
 
-void KSYAudioEffect::processAudio(uint8_t *buf, size_t len) {
+void KSYAudioEffect::addUserEffects(sox_signalinfo_t *interm_signal) {
+    int size = mUserDefineParams.size();
+    if (size > 0) {
+        for (int i = 0; i < size; i++) {
+            if(mUserDefineParams[i] != NULL) {
+                sox_effect_t *effect = sox_create_effect(
+                        sox_find_effect(mUserDefineParams[i]->name));
+                sox_effect_options(effect, mUserDefineParams[i]->argc,
+                                   mUserDefineParams[i]->argv);
+                sox_add_effect(mChain, effect, interm_signal,
+                               &mOutBuffer->signal);
+                free(effect);
+            }
+        }
+    }
+}
+
+void KSYAudioEffect::processAudio(uint8_t *buf, int len) {
     if (mReCreate) {
         if (mChain != NULL) {
             sox_delete_effects_chain(mChain);
@@ -456,16 +472,16 @@ void KSYAudioEffect::processAudio(uint8_t *buf, size_t len) {
     }
     if (mChain != NULL) {
         stop = false;
-        mInBuffer->in_length = len / (mOutBuffer->signal.precision / 8);
+        mInBuffer->in_length = (uint16_t)(len / (mOutBuffer->signal.precision / 8));
         mInBuffer->in_left = mInBuffer->in_length;
         mOutBuffer->out_length = 0;
         mInBuffer->in_pos = 0;
         mOutBuffer->out_pos = 0;
-        memcpy(mInBuffer->in_buf, buf, len);
+        memcpy(mInBuffer->in_buf, buf, (size_t)len);
 
         sox_flow_effects(mChain, update_status, this);
     }
-    if(mOutBuffer->out_length > 0) {
+    if (mOutBuffer->out_length > 0) {
 #if DEBUG
         fwrite(mOutBuffer->out_buf, 1, mOutBuffer->out_length, out_file);
 #endif
@@ -492,7 +508,7 @@ void KSYAudioEffect::quit() {
     stop = true;
 
     // destroy fifo
-    if( mOutBuffer != NULL && mOutBuffer->fifoInited) {
+    if (mOutBuffer != NULL && mOutBuffer->fifoInited) {
         LOGD("mOutBuffer->fifoInited %d", mOutBuffer->fifoInited);
         audio_utils_fifo_deinit(&mOutBuffer->fifo);
         mOutBuffer->fifoInited = false;
@@ -516,18 +532,63 @@ void KSYAudioEffect::quit() {
 }
 
 
-int KSYAudioEffect::init(int idx, int sampleRate, int channels, int bufferSamples) {
+int KSYAudioEffect::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    mSampleFmt = sampleFmt;
     mSampleRate = sampleRate;
     mChannels = channels;
     mBufferSamples = bufferSamples;
 
-    setAudioFormat(mBitsPerSample, sampleRate, channels);
-    filterInit(sampleRate, channels, bufferSamples);
+    setAudioFormat(sampleFmt, sampleRate, channels);
+    filterInit(sampleFmt, sampleRate, channels, bufferSamples);
     return 0;
 }
 
 int KSYAudioEffect::process(int idx, uint8_t *inBuf, int inSize) {
     processAudio(inBuf, inSize);
 
-    return filterProcess(mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
+    return filterProcess(mSampleFmt, mSampleRate, mChannels, mBufferSamples, inBuf, inSize);
+}
+
+void KSYAudioEffect::addEffects(char const *name, int argc, char *argv[]) {
+
+    AudioEffectUserDefineParams *params =
+            (AudioEffectUserDefineParams *) calloc(1, sizeof(AudioEffectUserDefineParams));
+
+    int size = strlen(name) + 1;
+    params->name = (char *) calloc(1, size * sizeof(char));
+    strcpy(params->name, name);
+    LOGD("set audio effect name:%s", params->name);
+    params->argc = argc;
+
+    params->argv = (char **) calloc(1, argc * sizeof(char *));
+    for (int i = 0; i < argc; i++) {
+        int size = strlen(argv[i]) + 1;
+        params->argv[i] = (char *) calloc(1, size * sizeof(char));
+        strcpy(params->argv[i], argv[i]);
+        LOGD("set audio effect argv[%d]:%s", i, params->argv[i]);
+    }
+    mUserDefineParams.push_back(params);
+    mReCreate = true;
+}
+
+void KSYAudioEffect::removeEffects() {
+    int count = mUserDefineParams.size();
+    if (count > 0) {
+        for (int i = 0; i < count; i++) {
+            if (mUserDefineParams[i]->name != NULL) {
+                free(mUserDefineParams[i]->name);
+                mUserDefineParams[i]->name = NULL;
+            }
+            if (mUserDefineParams[i]->argv != NULL) {
+                for (int j = 0; j < mUserDefineParams[i]->argc; j++) {
+                    free(mUserDefineParams[i]->argv[j]);
+                    mUserDefineParams[i]->argv[j] = NULL;
+                }
+                free(mUserDefineParams[i]->argv);
+                mUserDefineParams[i]->argv = NULL;
+            }
+        }
+        mUserDefineParams.clear();
+    }
+    mReCreate = true;
 }

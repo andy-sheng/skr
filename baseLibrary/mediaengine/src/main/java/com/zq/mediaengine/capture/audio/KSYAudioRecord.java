@@ -14,8 +14,8 @@ import java.nio.ShortBuffer;
  * @hide
  */
 
-public class UnionAudioRecord implements IUnionAudioRecord {
-    private static final String TAG = "UnionAudioRecord";
+public class KSYAudioRecord implements IKSYAudioRecord {
+    private static final String TAG = "KSYAudioRecord";
 
     private AudioRecord mAudioRecord;
 
@@ -24,13 +24,13 @@ public class UnionAudioRecord implements IUnionAudioRecord {
     private long mStartTime;
 
     /**
-     * Construct UnionAudioRecord
+     * Construct KSYAudioRecord
      *
      * @param sampleRate sample rate in HZ
      * @param channels channel number, only 1 and 2 valid
      * @param bufferSamples atom buffer samples
      */
-    public UnionAudioRecord(int sampleRate, int channels, int bufferSamples) {
+    public KSYAudioRecord(int sampleRate, int channels, int bufferSamples) {
         int channelConfig = (channels == 1) ? AudioFormat.CHANNEL_IN_MONO :
                 AudioFormat.CHANNEL_IN_STEREO;
         int bufferSize = bufferSamples * channels * 2;

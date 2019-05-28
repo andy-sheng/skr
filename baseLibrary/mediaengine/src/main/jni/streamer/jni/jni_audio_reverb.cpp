@@ -2,6 +2,7 @@
 // Created by 昝晓飞 on 16/8/4.
 //
 
+#include <include/android_nio_utils.h>
 #include "jni_audio_reverb.h"
 #include "filter/audio_buf/AudioReverb.h"
 
@@ -13,8 +14,8 @@ jlong Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_create
 }
 
 void Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_config
-        (JNIEnv *env, jobject thiz, jlong instance, jint sampleRate, jint channels) {
-    ((AudioReverb*) instance)->Config(sampleRate, channels);
+        (JNIEnv *env, jobject thiz, jlong instance, jint sampleFmt, jint sampleRate, jint channels) {
+    ((AudioReverb*) instance)->Config(sampleFmt, sampleRate, channels);
 }
 
 void Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_attachTo
@@ -31,14 +32,16 @@ jboolean Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_setLevel
 
 jint Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_read
         (JNIEnv *env, jobject thiz, jlong instance, jobject jbuf, jint jsize) {
-    uint8_t* buf = (uint8_t *) env->GetDirectBufferAddress(jbuf);
+    AutoBufferPointer abp(env, jbuf, JNI_TRUE);
+    uint8_t *buf = (uint8_t*)abp.pointer();
     return ((AudioReverb*) instance)->read(buf, jsize);
 }
 
 jint Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_process
 (JNIEnv *env, jobject thiz, jlong instance, jobject jbuf, jint jsize)
 {
-    short* buf = (short*) env->GetDirectBufferAddress(jbuf);
+    AutoBufferPointer abp(env, jbuf, JNI_TRUE);
+    short *buf = (short *)abp.pointer();
     int samples = jsize / 2;
     if (((AudioReverb*) instance) != NULL) {
         ((AudioReverb*) instance)->ReverbProcess(buf, samples);

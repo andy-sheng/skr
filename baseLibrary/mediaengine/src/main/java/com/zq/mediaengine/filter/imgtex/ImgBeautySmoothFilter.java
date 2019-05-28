@@ -38,9 +38,9 @@ public class ImgBeautySmoothFilter extends ImgFilterBase {
 
         try {
             mSpecialEffectsFilter = new ImgBeautySpecialEffectsFilter(glRender, context,
-                    ImgBeautySpecialEffectsFilter.IMG_SPECIAL_EFFECT_SWEETY);
+                    ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SWEETY);
         } catch (Exception e) {
-            Log.e(TAG, "Resource missing, ruddy is unusable!");
+            Log.e(TAG, "KSYResource missing, ruddy is unusable!");
         }
 
         mSinkAdapter.mSrcPin.connect(mSkinDetectFilter.getSinkPin());

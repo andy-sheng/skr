@@ -8,11 +8,11 @@ import com.zq.mediaengine.framework.AudioBufFrame;
 import java.nio.ByteBuffer;
 
 /**
- * audio effect
+ * ksy audio effect
  */
 
-public class AudioEffectFilter extends AudioFilterBase {
-    private static final String TAG = "AudioEffectFilter";
+public class KSYAudioEffectFilter extends AudioFilterBase {
+    private static final String TAG = "KSYAudioEffectFilter";
     private static final boolean VERBOSE = false;
 
     /*
@@ -37,15 +37,17 @@ public class AudioEffectFilter extends AudioFilterBase {
     //机器人
     public static int AUDIO_EFFECT_TYPE_ROBOT = 13;
 
-    private AudioEffectWrapper mWrapper;
+    public static int Audio_EFFECT_TYPE_USER_DEFINE = 20;
+
+    private KSYAudioEffectWrapper mWrapper;
     private AudioBufFormat mInputFormat;
 
     private int mAudioEffectType =  AUDIO_EFFECT_TYPE_PITCH;
     private int mAudioPitchLevel = AUDIO_PITCH_LEVEL_4;
 
-    public AudioEffectFilter(int type) {
+    public KSYAudioEffectFilter(int type) {
         mAudioEffectType = type;
-        mWrapper = new AudioEffectWrapper(type);
+        mWrapper = new KSYAudioEffectWrapper(type);
     }
 
     /**
@@ -72,6 +74,24 @@ public class AudioEffectFilter extends AudioFilterBase {
 
     public int getPitchLevel() {
         return mAudioPitchLevel;
+    }
+
+    /**
+     * add effect for audio
+     * @param name  the name of effect
+     * @param argc  the count of argv
+     * @param argv  the options for effect
+     * @throws IllegalArgumentException
+     */
+    public void addEffect(String name, int argc, String[] argv) throws IllegalArgumentException{
+        if(argv == null) {
+            throw new IllegalArgumentException("argv must not been null");
+        }
+        mWrapper.addEffects(name, argc, argv);
+    }
+
+    public void removeEffects() {
+        mWrapper.removeEffects();
     }
 
     @Override

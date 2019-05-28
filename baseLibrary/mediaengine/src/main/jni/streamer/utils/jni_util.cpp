@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdlib.h>
-
 #include "jni_util.h"
 #include "util.h"
 #include "log.h"

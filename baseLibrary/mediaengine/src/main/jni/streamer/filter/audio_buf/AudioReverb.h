@@ -37,18 +37,19 @@ public:
     AudioReverb();
     ~AudioReverb();
 
-    void Config(int sampleRate, int channels);
+    int Config(int sampleFmt, int sampleRate, int channels);
     void Init();
     void ReverbProcess(short *buf, const int samples);
     void ReverbSet(int scenario);
 
-    int init(int idx, int sampleRate, int channels, int bufferSamples);
+    int init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples);
     int process(int idx, uint8_t* inBuf, int inSize);
     
 private:
     float mInputC[REVERB_FRAMELEN];
     float mOutputC[REVERB_FRAMELEN];
 
+    int mSampleFmt;
     int mSampleRate;
     int mChannels;
     int mBufferSamples;

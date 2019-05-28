@@ -24,8 +24,14 @@ public class ITbAgcProcessor {
          return process(samples, null, length,channels,samplesPerSec);
     }
 
-    public int processV1(ByteBuffer byteBuffer, int length, int channels, int samplesPerSec) {
-        return process(null, byteBuffer, length, channels, samplesPerSec);
+    public int processV1(ByteBuffer buffer, int length, int channels, int samplesPerSec) {
+        byte[] byteArray = null;
+        ByteBuffer byteBuffer = buffer;
+        if (buffer != null && buffer.hasArray()) {
+            byteArray = buffer.array();
+            byteBuffer = null;
+        }
+        return process(byteArray, byteBuffer, length, channels, samplesPerSec);
     }
 
     private native int process(byte[] samples, ByteBuffer byteBuffer, int length, int channels, int samplesPerSec);

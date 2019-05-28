@@ -37,7 +37,6 @@ ImageBufFrame* DataConvertUtility::ConvertJImgBuf(JNIEnv *env, jobject jImgBufFr
 
     ImageBufFrame* imagebufFrame = new ImageBufFrame();
     imagebufFrame->pts = JCOM_GET_FIELD_J(env, jImgBufFrame, JAVA_CLASS_PATH_IMGBUFFRAME, JAVA_IMGBUFFRAME_FIELD_PTS);
-    imagebufFrame->dts = JCOM_GET_FIELD_J(env, jImgBufFrame, JAVA_CLASS_PATH_IMGBUFFRAME, JAVA_IMGBUFFRAME_FIELD_DTS);
     imagebufFrame->flags = JCOM_GET_FIELD_I(env, jImgBufFrame, JAVA_CLASS_PATH_IMGBUFFRAME, JAVA_IMGBUFFRAME_FIELD_FLAGS);
     //buf
     jobject  jextra = JCOM_GET_FIELD_L(env, jImgBufFrame, JAVA_CLASS_PATH_IMGBUFFRAME, JAVA_IMGBUFFRAME_FIELD_BUF);
@@ -149,8 +148,6 @@ AudioBufFormat* DataConvertUtility::ConvertJAudioBuf(JNIEnv *env, jobject inForm
                                 JAVA_AUDIOBUFFORMAT_FIELD_RATE);
     audioBuf->channels = JCOM_GET_FIELD_I(env, inFormat, JAVA_CLASS_PATH_AUDIOBUFFORMAT,
                                 JAVA_AUDIOBUFFORMAT_FIELD_CHANNELS);
-    audioBuf->codecId = JCOM_GET_FIELD_I(env, inFormat, JAVA_CLASS_PATH_AUDIOBUFFORMAT,
-                                    JAVA_AUDIOBUFFORMAT_FIELD_CODECID);
 
     return audioBuf;
 }
@@ -179,7 +176,6 @@ jobject DataConvertUtility::ConvertSTImgBuf(JNIEnv *env, ImageBufFrame* stImagBu
     jobject imgBufFormat = env->NewObject(jImgBufFormat, jmImgBufFormatConstruct);
 
     JCOM_SET_FIELD_J(env, imgBuf, JAVA_CLASS_PATH_IMGBUFFRAME, JAVA_IMGBUFFRAME_FIELD_PTS, stImagBuf->pts);
-    JCOM_SET_FIELD_J(env, imgBuf, JAVA_CLASS_PATH_IMGBUFFRAME, JAVA_IMGBUFFRAME_FIELD_DTS, stImagBuf->dts);
     JCOM_SET_FIELD_I(env, imgBuf, JAVA_CLASS_PATH_IMGBUFFRAME, JAVA_IMGBUFFRAME_FIELD_FLAGS, stImagBuf->flags);
 
     JCOM_SET_FIELD_I(env, imgBufFormat, JAVA_CLASS_PATH_IMGBUFFRAME_FORMAT, JAVA_IMGBUFFRAME_FORMAT_FIELD_WIDTH, stImagBuf->width);

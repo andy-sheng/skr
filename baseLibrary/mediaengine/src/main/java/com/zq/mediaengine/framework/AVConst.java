@@ -17,31 +17,25 @@ public class AVConst {
     public static final int AV_SAMPLE_FMT_DBLP = 9;
 
     public static final int PIX_FMT_NONE = 0x00;
-    public static final int PIX_FMT_NV12 = 0X01;
-    public static final int PIX_FMT_NV21 = 0x02;
-    public static final int PIX_FMT_YV12 = 0x03;
-    public static final int PIX_FMT_I420 = 0x04;
-    public static final int PIX_FMT_ARGB = 0x05;
-    public static final int PIX_FMT_RGBA = 0x06;
-    public static final int PIX_FMT_BGR8 = 0x07;
+    public static final int PIX_FMT_NV21 = 0x01;
+    public static final int PIX_FMT_YV12 = 0x02;
+    public static final int PIX_FMT_I420 = 0x03;
+    public static final int PIX_FMT_ARGB = 0x04;
+    public static final int PIX_FMT_RGBA = 0x05;
+    public static final int PIX_FMT_BGR8 = 0x06;
 
     // codec id
-    public static final int CODEC_ID_NONE = 0x000;
-    public static final int CODEC_ID_AVC  = 0x001;
-    public static final int CODEC_ID_HEVC = 0x002;
-    public static final int CODEC_ID_GIF  = 0x003;
-    public static final int CODEC_ID_AAC  = 0x100;
+    public static final int CODEC_ID_NONE  = 0x000;
+    public static final int CODEC_ID_AVC   = 0x001;
+    public static final int CODEC_ID_HEVC  = 0x002;
+    public static final int CODEC_ID_GIF   = 0x003;
+    public static final int CODEC_ID_MPEG4 = 0x004;
+    public static final int CODEC_ID_AAC   = 0x100;
 
     // codec profile
-    public static final int PROFILE_NONE = 0x0;
-    public static final int PROFILE_H264_BASELINE = 0x100;
-    public static final int PROFILE_H264_MAIN = 0x101;
-    public static final int PROFILE_H264_HIGH = 0x102;
-    public static final int PROFILE_H265_MAIN = 0x200;
-    public static final int PROFILE_H265_MAIN10 = 0x201;
-    public static final int PROFILE_AAC_LOW = 0x300;
-    public static final int PROFILE_AAC_HE = 0x301;
-    public static final int PROFILE_AAC_HE_V2 = 0x302;
+    public static final int PROFILE_AAC_LOW = 1;
+    public static final int PROFILE_AAC_HE = 4;
+    public static final int PROFILE_AAC_HE_V2 = 28;
 
     // A/V frame additional info
     public static final int FLAG_KEY_FRAME = 1;
@@ -49,22 +43,17 @@ public class AVConst {
     public static final int FLAG_END_OF_STREAM = 1<<2;
     public static final int FLAG_P_FRAME = 1<<3;
     public static final int FLAG_B_FRAME = 1<<4;
-
-    public static final int UNION_MEDIA_TYPE_VIDEO = 1;
-    public static final int UNION_MEDIA_TYPE_AUDIO = 2;
+    public static final int FLAG_FLUSH_OF_STREAM = 1<<5;
+    public static final int FLAG_FLUSH_DECODER = 1<<6;
     /**
      * Audio native module destroying
      */
     public static final int FLAG_DETACH_NATIVE_MODULE = 0x10000;
-    /**
-     * Dummy video frame to show the initial video pts
-     */
-    public static final int FLAG_DUMMY_VIDEO_FRAME = 0x20000;
 
     // media type definition
-    public static final int MEDIA_TYPE_NONE = 0;
-    public static final int MEDIA_TYPE_VIDEO = 1;
-    public static final int MEDIA_TYPE_AUDIO = 2;
+    public static final int MEDIA_TYPE_UNKNOWN = 0;
+    public static final int MEDIA_TYPE_AUDIO = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
 
     public static int getBytesPerSample(int sampleFmt) {
         switch (sampleFmt) {

@@ -36,6 +36,12 @@ public class CredtpModel {
     public static final int BEAUTY_VALENCIA_FILTER = 28;
     public static final int BEAUTY_WALDEN_FILTER = 29;
     public static final int BEAUTY_XPROLL_FILTER = 30;
+    public static final int BEAUTY_SHAKE_COLOR = 31;
+    public static final int BEAUTY_SHAKE_ZOOM = 32;
+    public static final int BEAUTY_SHAKE_WAVE = 33;
+    public static final int BEAUTY_SHAKE_70S = 34;
+    public static final int BEAUTY_SHAKE_XSINGLE = 35;
+    public static final int BEAUTY_SHAKE_ILLUSION = 36;
 
     private int type;
     private String key;

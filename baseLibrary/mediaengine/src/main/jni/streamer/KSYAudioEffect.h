@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <audio/audio_utils_fifo.h>
+#include <vector>
 #include "log.h"
 #include "audio/AudioFilterBase.h"
 
@@ -39,6 +40,12 @@ typedef struct AudioEffectOutBuffer {
     int fifoSamples;
 } AudioEffectOutBuffer;
 
+typedef struct AudioEffectUserDefineParams {
+    char* name;
+    int argc;
+    char** argv;
+}AudioEffectParams;
+
 class KSYAudioEffect : public AudioFilterBase {
 public:
     KSYAudioEffect();
@@ -46,37 +53,40 @@ public:
 
     void Init();
 
-    void setAudioFormat(int bits_per_sample, int sample_rate, int channels);
+    void setAudioFormat(int sample_fmt, int sample_rate, int channels);
 
     void setEffectType(int type);
 
     void setPitchLevel(int type);
 
-    void processAudio(uint8_t *buf, size_t len);
+    void processAudio(uint8_t *buf, int len);
 
     void quit();
 
-    int init(int idx, int sampleRate, int channels, int bufferSamples);
+    int init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples);
     int process(int idx, uint8_t* inBuf, int inSize);
-
+    void addEffects(char const *name, int argc, char* argv[]);
+    void removeEffects();
     bool stop;
 private:
     sox_effects_chain_t *mChain;
 
     AudioEffectInbuffer* mInBuffer;
     AudioEffectOutBuffer* mOutBuffer;
+    std::vector<AudioEffectParams*> mUserDefineParams;
 
     int mEffectType;
     int mPitchLevel;
+    int mSampleFmt;
     int mSampleRate;
     int mChannels;
-    int mBitsPerSample;
     int mBufferSamples;
 
     bool mReCreate;
 
     void addEffects();
-    void auto_effect(char const *name, int factor,
+    void addUserEffects(sox_signalinfo_t *interm_signal);
+    void auto_effect(char const *name, float factor,
                 sox_signalinfo_t *interm_signal);
     void add_echo_effect(sox_signalinfo_t *interm_signal);
     void add_reverb_effect(sox_signalinfo_t *interm_signal);

@@ -1,4 +1,4 @@
-package com.zq.mediaengine.encoder;
+package com.zq.mediaengine.util;
 
 import com.zq.mediaengine.util.LibraryLoader;
 

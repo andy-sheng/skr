@@ -27,13 +27,15 @@ public class Params implements Serializable {
     @JSONField(serialize=false)
     private Scene scene = Scene.audiotest;
     @JSONField(serialize=false)
-    private boolean useExternalAudio = false;
-    @JSONField(serialize=false)
-    private boolean useExternalVideo = true;
-    @JSONField(serialize=false)
     private boolean enableVideo = false;
     @JSONField(serialize=false)
     private boolean enableAudio = true;
+    @JSONField(serialize=false)
+    private boolean useExternalVideo = true;
+    @JSONField(serialize=false)
+    private boolean useExternalAudio = false;
+    @JSONField(serialize=false)
+    private boolean useExternalAudioRecord = true;
     @JSONField(serialize=false)
     private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
     @JSONField(serialize=false)
@@ -127,6 +129,11 @@ public class Params implements Serializable {
     @JSONField(serialize=false)
     private boolean mIsAnchor;
 
+    @JSONField(serialize=false)
+    private int mAudioSampleRate = 44100; // 输出的音频采样率
+    @JSONField(serialize=false)
+    private int mAudioChannels = 2; // 输出的音频声道数
+
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
     }
@@ -153,6 +160,14 @@ public class Params implements Serializable {
 
     public void setUseExternalVideo(boolean useExternalVideo) {
         this.useExternalVideo = useExternalVideo;
+    }
+
+    public boolean isUseExternalAudioRecord() {
+        return useExternalAudioRecord;
+    }
+
+    public void setUseExternalAudioRecord(boolean useExternalAudioRecord) {
+        this.useExternalAudioRecord = useExternalAudioRecord;
     }
 
     public boolean isEnableVideo() {
@@ -499,6 +514,26 @@ public class Params implements Serializable {
         return mIsAnchor;
     }
 
+    public int getAudioSampleRate() {
+        return mAudioSampleRate;
+    }
+
+    public void setAudioSampleRate(int sampleRate) {
+        mAudioSampleRate = sampleRate;
+    }
+
+    public int getAudioChannels() {
+        return mAudioChannels;
+    }
+
+    public void setAudioChannels(int channels) {
+        mAudioChannels = channels;
+    }
+
+    public int getAudioBitrate() {
+        return mAudioChannels == 1 ? 48*1000 : 96*1000;
+    }
+
     // 工具方法，获取歌曲播放的实际时间戳
     public long getAccTs() {
         long accTs = 0;
@@ -527,6 +562,11 @@ public class Params implements Serializable {
 
         public Builder setUseExternalVideo(boolean useExternalVideo) {
             mParams.setUseExternalVideo(useExternalVideo);
+            return this;
+        }
+
+        public Builder setUseExternalAudioRecord(boolean useExternalAudioRecord) {
+            mParams.setUseExternalAudioRecord(useExternalAudioRecord);
             return this;
         }
 
@@ -655,6 +695,16 @@ public class Params implements Serializable {
             return this;
         }
 
+        public Builder setAudioSampleRate(int sampleRate) {
+            mParams.setAudioSampleRate(sampleRate);
+            return this;
+        }
+
+        public Builder setAudioChannels(int channels) {
+            mParams.setAudioChannels(channels);
+            return this;
+        }
+
         public Params build() {
             return mParams;
         }
@@ -690,6 +740,7 @@ public class Params implements Serializable {
                     .setEnableAudio(true)
                     .setUseExternalAudio(false)
                     .setUseExternalVideo(true)
+                    .setUseExternalAudioRecord(true)
                     .setStyleEnum(AudioEffect.none)
                     .build();
         }

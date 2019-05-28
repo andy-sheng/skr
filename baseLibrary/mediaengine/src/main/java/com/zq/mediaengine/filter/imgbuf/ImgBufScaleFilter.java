@@ -51,7 +51,7 @@ public class ImgBufScaleFilter extends ImgBufFilterBase {
     }
 
     /**
-     * Set outputFormat after scale, should be ImgBufFormat.FMT_I420 or ImgBufFormat.FMT_RGBA
+     * Set outputFormat after scale, should be AVConst.PIX_FMT_I420 or AVConst.PIX_FMT_RGBA
      * @param outputFormat
      * @throws UnknownFormatFlagsException
      */

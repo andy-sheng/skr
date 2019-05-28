@@ -23,8 +23,54 @@ enum {
     CODEC_ID_AVC,
     CODEC_ID_HEVC,
     CODEC_ID_GIF,
+    CODEC_ID_MPEG4,
     // audio codec
     CODEC_ID_AAC = 0x100,
 };
+
+enum {
+    ///< unsigned 8 bits
+    SAMPLE_FMT_U8,
+    ///< signed 16 bits
+    SAMPLE_FMT_S16,
+    ///< signed 32 bits
+    SAMPLE_FMT_S32,
+    ///< float
+    SAMPLE_FMT_FLT,
+    ///< double
+    SAMPLE_FMT_DBL,
+
+    ///< unsigned 8 bits, planar
+    SAMPLE_FMT_U8P,
+    ///< signed 16 bits, planar
+    SAMPLE_FMT_S16P,
+    ///< signed 32 bits, planar
+    SAMPLE_FMT_S32P,
+    ///< float, planar
+    SAMPLE_FMT_FLTP,
+    ///< double, planar
+    SAMPLE_FMT_DBLP,
+};
+
+inline int getBytesPerSample(int sampleFmt) {
+    switch (sampleFmt) {
+        case SAMPLE_FMT_U8:
+        case SAMPLE_FMT_U8P:
+            return 1;
+        case SAMPLE_FMT_S16:
+        case SAMPLE_FMT_S16P:
+            return 2;
+        case SAMPLE_FMT_S32:
+        case SAMPLE_FMT_S32P:
+        case SAMPLE_FMT_FLT:
+        case SAMPLE_FMT_FLTP:
+            return 4;
+        case SAMPLE_FMT_DBL:
+        case SAMPLE_FMT_DBLP:
+            return 8;
+        default:
+            return 2;
+    }
+}
 
 #endif  // __AVCONST_H__

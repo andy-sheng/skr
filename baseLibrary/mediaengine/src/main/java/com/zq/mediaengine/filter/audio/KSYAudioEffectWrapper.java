@@ -1,29 +1,29 @@
 package com.zq.mediaengine.filter.audio;
 
-import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.util.LibraryLoader;
 
 import java.nio.ByteBuffer;
 
+import static com.zq.mediaengine.framework.AVConst.getBytesPerSample;
+
 /**
  * @hide
  */
 
-class AudioEffectWrapper {
+class KSYAudioEffectWrapper {
     private AudioBufFormat mFormat;
 
     private long mInstance = 0;
 
-    public AudioEffectWrapper(int type) {
+    public KSYAudioEffectWrapper(int type) {
         mInstance = native_init();
         native_set_effect_type(mInstance, type);
     }
 
     public void setAudioFormat(AudioBufFormat format) {
         this.mFormat = format;
-        native_set_audio_format(mInstance, 8* AVConst.getBytesPerSample(format.sampleFormat),
-                format.sampleRate, format.channels);
+        native_set_audio_format(mInstance, format.sampleFormat, format.sampleRate, format.channels);
     }
 
     public void setEffectType(int type) {
@@ -32,6 +32,19 @@ class AudioEffectWrapper {
 
     public void setPitchLevel(int level) {
         native_set_pitch_level(mInstance, level);
+    }
+
+    public void addEffects(String name, int argc, String[] argv){
+        int optionCount = argv.length;
+        EffectOption[] options = new EffectOption[optionCount];
+        for(int i = 0; i < argv.length; i++) {
+            options[i] = new EffectOption(argv[i]);
+        }
+        native_add_effect(mInstance, name, argc, options);
+    }
+
+    public void removeEffects() {
+        native_remove_effects(mInstance);
     }
 
     public void process(ByteBuffer buf) {
@@ -62,9 +75,11 @@ class AudioEffectWrapper {
     }
 
     private native long native_init();
-    private native void native_set_audio_format(long ptr,int bitsPerSample, int sampleRate, int channels);
+    private native void native_set_audio_format(long ptr,int sampleFmt, int sampleRate, int channels);
     private native void native_set_effect_type(long ptr,int type);
     private native void native_set_pitch_level(long ptr, int level);
+    private native void native_add_effect(long ptr, String name, int argc, EffectOption[] argv);
+    private native void native_remove_effects(long ptr);
     private native void native_process(long ptr, ByteBuffer buf, int size);
     private native void native_quit(long ptr);
     private native void attachTo(long instance, int idx, long ptr, boolean detach);
@@ -72,5 +87,12 @@ class AudioEffectWrapper {
 
     static {
         LibraryLoader.load();
+    }
+
+    static public class EffectOption {
+        String option;
+        public EffectOption(String option) {
+            this.option = option;
+        }
     }
 }

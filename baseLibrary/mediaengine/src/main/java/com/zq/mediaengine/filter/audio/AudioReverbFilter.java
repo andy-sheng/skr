@@ -64,7 +64,7 @@ public class AudioReverbFilter extends AudioFilterBase {
 
     @Override
     protected AudioBufFormat doFormatChanged(AudioBufFormat format) {
-        mAudioReverbWrap.config(format.sampleRate, format.channels);
+        mAudioReverbWrap.config(format.sampleFormat, format.sampleRate, format.channels);
         mAudioReverbWrap.setReverbLevel(mReverbLevel);
         return format;
     }

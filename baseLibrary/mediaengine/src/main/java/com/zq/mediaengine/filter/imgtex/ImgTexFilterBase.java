@@ -7,11 +7,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
+import com.zq.mediaengine.util.gles.FboManager;
 import com.zq.mediaengine.util.gles.GLProgramLoadException;
 import com.zq.mediaengine.util.gles.GLRender;
 
@@ -25,9 +25,6 @@ import java.util.List;
  */
 abstract public class ImgTexFilterBase extends ImgFilterBase {
     private static final String TAG = "ImgTexFilterBase";
-    // Only Fbo reused case tested
-    private static final boolean REUSE_FBO = true;
-    protected boolean mReuseFbo = REUSE_FBO;
 
     public static final int ERROR_LOAD_PROGRAM_FAILED = -1;
     public static final int ERROR_UNKNOWN = -2;
@@ -42,8 +39,10 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
     private SrcPin<ImgTexFrame> mSrcPin;
 
     private ImgTexFrame[] mInputFrames;
+    private boolean[] mUnRefFbos;
     private int[] mViewPort = new int[4];
 
+    protected boolean mReuseFbo = true;
     protected GLRender mGLRender;
     protected boolean mInited;
     protected int mOutTexture = ImgTexFrame.NO_TEXTURE;
@@ -62,20 +61,21 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         for (int i = 0; i < getSinkPinNum(); i++) {
             mSinkPins.add(new ImgTexFilterSinkPin(i));
         }
-        mSrcPin = new SrcPin<>();
+        mSrcPin = new ImgTexFilterSrcPin();
         mInputFrames = new ImgTexFrame[getSinkPinNum()];
+        mUnRefFbos = new boolean[getSinkPinNum()];
         mMainHandler = new Handler(Looper.getMainLooper());
 
         mGLRender = glRender;
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mGLReadyListener);
     }
 
     public void setGLRender(GLRender glRender) {
         if (mGLRender != null) {
-            mGLRender.removeListener(mGLRenderListener);
+            mGLRender.removeListener(mGLReadyListener);
         }
         mGLRender = glRender;
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mGLReadyListener);
     }
 
     /**
@@ -107,31 +107,28 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         return mSrcPin;
     }
 
-    public void release() {
-        mSrcPin.disconnect(true);
-        if (mOutTexture != ImgTexFrame.NO_TEXTURE) {
-            mGLRender.getFboManager().unlock(mOutTexture);
-            mOutTexture = ImgTexFrame.NO_TEXTURE;
-        }
-        mGLRender.queueEvent(new Runnable() {
-            @Override
-            public void run() {
-                onRelease();
-            }
-        });
-        mGLRender.removeListener(mGLRenderListener);
-        if (mScreenShotThread != null && mScreenShotThread.isAlive()) {
-            mScreenShotThread.interrupt();
-            mScreenShotThread = null;
-        }
-    }
-
     protected boolean isReuseFbo() {
         return mReuseFbo;
     }
 
     public void setReuseFbo(boolean reuse) {
         mReuseFbo = reuse;
+    }
+
+    @Override
+    public void release() {
+        mSrcPin.disconnect(true);
+        mGLRender.queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                onRelease();
+            }
+        });
+        mGLRender.removeListener(mGLReadyListener);
+        if (mScreenShotThread != null && mScreenShotThread.isAlive()) {
+            mScreenShotThread.interrupt();
+            mScreenShotThread = null;
+        }
     }
 
     /**
@@ -148,14 +145,29 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
      */
     abstract protected void onFormatChanged(final int inIdx, final ImgTexFormat format);
 
+    protected void onDisconnect(boolean recursive){
+
+    }
+
     /**
      * On draw
      *
-     * @param frames    input frames
+     * @param frames input frames
      */
     abstract protected void onDraw(final ImgTexFrame[] frames);
 
     protected void onRelease() {
+        // unref previous fbo if needed
+        for (ImgTexFrame frame : mInputFrames) {
+            if (frame != null && frame.isRefCounted()) {
+                frame.unref();
+            }
+        }
+        // unref current fbo
+        if (!isReuseFbo()) {
+            mGLRender.getFboManager().unlock(mOutTexture);
+            mOutTexture = ImgTexFrame.NO_TEXTURE;
+        }
     }
 
     protected void sendError(final int errno) {
@@ -177,6 +189,12 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         }
 
         @Override
+        public synchronized void onConnected(SrcPin<ImgTexFrame> srcPin) {
+            super.onConnected(srcPin);
+            mUnRefFbos[mIndex] = srcPin instanceof ImgTexFilterSrcPin;
+        }
+
+        @Override
         public void onFormatChanged(Object format) {
             ImgTexFilterBase.this.onFormatChanged(mIndex, (ImgTexFormat) format);
             if (mIndex == mMainSinkPinIndex) {
@@ -188,19 +206,41 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
 
         @Override
         public void onFrameAvailable(ImgTexFrame frame) {
-            mInputFrames[mIndex] = frame;
-            if (mIndex == mMainSinkPinIndex) {
+            if (mIndex != mMainSinkPinIndex) {
+                // unref previous fbo if needed
+                if (mInputFrames[mIndex] != null && mInputFrames[mIndex].isRefCounted()) {
+                    mInputFrames[mIndex].unref();
+                }
+                // ref current fbo if needed
+                if (!mUnRefFbos[mIndex] && frame.isRefCounted()) {
+                    frame.ref();
+                }
+                mInputFrames[mIndex] = frame;
+            } else {
+                mInputFrames[mIndex] = frame;
                 render(frame);
+                mInputFrames[mIndex] = null;
             }
         }
 
         @Override
-        public void onDisconnect(boolean recursive) {
-            mInputFrames[mIndex] = null;
+        public synchronized void onDisconnect(boolean recursive) {
             if (mIndex == mMainSinkPinIndex) {
                 if (recursive) {
                     release();
+                } else {
+                    ImgTexFilterBase.this.onDisconnect(recursive);
                 }
+            } else {
+                mGLRender.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mInputFrames[mIndex] != null && mInputFrames[mIndex].isRefCounted()) {
+                            mInputFrames[mIndex].unref();
+                        }
+                        mInputFrames[mIndex] = null;
+                    }
+                });
             }
         }
 
@@ -210,8 +250,7 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
             }
 
             final ImgTexFormat outFormat = ImgTexFilterBase.this.getSrcPinFormat();
-
-            if(outFormat == null) {
+            if (outFormat == null) {
                 return;
             }
 
@@ -252,39 +291,69 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
                 }
                 Log.e(TAG, "Draw frame error!");
                 e.printStackTrace();
+                return;
             } finally {
+                // we can only unref fbo if SrcPin is implemented by ImgTexFilterBase
+                if (mUnRefFbos[mIndex]) {
+                    frame.unref();
+                }
+                // reset gl state
                 GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
                 GLES20.glViewport(mViewPort[0], mViewPort[1], mViewPort[2], mViewPort[3]);
             }
-
-            final long pts = frame.pts;
-            if (((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0)) {
-                ImgTexFrame imgTexFrame = new ImgTexFrame(outFormat, mOutTexture, null, pts);
-                imgTexFrame.flags |= AVConst.FLAG_END_OF_STREAM;
-                mSrcPin.onFrameAvailable(imgTexFrame);
-                return;
-            }
-
+            
+            // send to the next module
+            FboManager fboManager = isReuseFbo() ? mGLRender.getFboManager() : null;
+            ImgTexFrame outFrame = new ImgTexFrame(outFormat, fboManager, mOutTexture,
+                    null, frame.pts);
+            outFrame.flags = frame.flags;
+            mSrcPin.onFrameAvailable(outFrame);
             if (isReuseFbo()) {
-                mGLRender.queueDrawFrameAppends(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            mSrcPin.onFrameAvailable(new ImgTexFrame(outFormat,
-                                    mOutTexture, null, pts));
-                        } finally {
-                            mGLRender.getFboManager().unlock(mOutTexture);
-                            mOutTexture = ImgTexFrame.NO_TEXTURE;
-                        }
-                    }
-                });
-            } else {
-                mSrcPin.onFrameAvailable(new ImgTexFrame(outFormat, mOutTexture, null, pts));
+                mOutTexture = ImgTexFrame.NO_TEXTURE;
             }
         }
     }
 
-    private GLRender.GLRenderListener mGLRenderListener = new GLRender.GLRenderListener() {
+    private class ImgTexFilterSrcPin extends SrcPin<ImgTexFrame> {
+
+        @Override
+        public synchronized void onFrameAvailable(ImgTexFrame frame) {
+            if (frame == null) {
+                return;
+            }
+
+            if (isReuseFbo()) {
+                // ref with sink pin numbers
+                for (int i = 0; i < sinkPins.size(); i++) {
+                    frame.ref();
+                }
+                // unref once here
+                frame.unref();
+            }
+
+            for (SinkPin<ImgTexFrame> sinkPin : sinkPins) {
+                try {
+                    if (!isFormatChangedMap.get(sinkPin)) {
+                        sinkPin.onFormatChanged(format);
+                        isFormatChangedMap.put(sinkPin, true);
+                    }
+                    sinkPin.onFrameAvailable(frame);
+                } catch (Exception e) {
+                    Log.e(TAG, ImgTexFilterBase.this.getClass().getSimpleName());
+                    e.printStackTrace();
+                } finally {
+                    if (isReuseFbo()) {
+                        // if sink pin is not implement in ImgTexFilterBase, we must unref here
+                        if (!(sinkPin instanceof ImgTexFilterSinkPin)) {
+                            frame.unref();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private GLRender.OnReadyListener mGLReadyListener = new GLRender.OnReadyListener() {
         @Override
         public void onReady() {
             mInited = false;
@@ -293,18 +362,6 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
                 mInputFrames[i] = null;
             }
             ImgTexFilterBase.this.onGLContextReady();
-        }
-
-        @Override
-        public void onSizeChanged(int width, int height) {
-        }
-
-        @Override
-        public void onDrawFrame() {
-        }
-
-        @Override
-        public void onReleased() {
         }
     };
 

@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <pthread.h>
 #include "audio_utils_fifo.h"
+#include "avconst.h"
 
 class AudioFilterBase;
 
@@ -35,7 +36,7 @@ private:
     int mFifoSize;
     void* mReadCond;
 
-    void initFifo(int sampleRate, int channels);
+    void initFifo(int sampleFmt, int sampleRate, int channels);
     void destroyFifo();
 
 public:
@@ -57,7 +58,7 @@ public:
      * @param channels      channels of 1 or 2
      * @param bufferSamples sample number of every process
      */
-    virtual int init(int idx, int sampleRate, int channels, int bufferSamples) = 0;
+    virtual int init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) = 0;
 
     /**
      * Process audio data in this index.
@@ -71,10 +72,10 @@ public:
 
     virtual int read(uint8_t* buf, int size);
 
-    virtual int filterInit(int sampleRate, int channels, int bufferSamples);
+    virtual int filterInit(int sampleFmt, int sampleRate, int channels, int bufferSamples);
 
-    virtual int filterProcess(int sampleRate, int channels, int bufferSamples,
-                              uint8_t* inBuf, int inSize);
+    virtual int filterProcess(int sampleFmt, int sampleRate, int channels,
+                              int bufferSamples, uint8_t* inBuf, int inSize);
 };
 
 #endif //KSYSTREAMERANDROIDSDK_AUDIOFILTERBASE_H

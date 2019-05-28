@@ -7,22 +7,26 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.zq.mediaengine.framework.AVFrameBase;
+import com.zq.mediaengine.framework.AVPacketBase;
+
 import java.nio.ByteBuffer;
 
 /**
  * MediaCodec encoder module base.
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-abstract public class MediaCodecEncoderBase<I,O> extends Encoder<I,O> {
+abstract public class MediaCodecEncoderBase<I extends AVFrameBase, O extends AVPacketBase>
+        extends Encoder<I,O> {
     private final static String TAG = "MediaCodecEncoderBase";
     private final static boolean VERBOSE = false;
+    private static final long TIMEOUT_USEC = 10000;
+    private static final int MAX_EOS_SPINS = 10;
 
     protected MediaCodec mEncoder;
     protected MediaCodec.BufferInfo mBufferInfo;
     protected boolean mForceEos = false;
     private int mEosSpinCount = 0;
-
-    protected Object mOutConfig;
 
     /**
      * This method should be called before the last input packet is queued
@@ -69,9 +73,11 @@ abstract public class MediaCodecEncoderBase<I,O> extends Encoder<I,O> {
     }
 
     protected void drainEncoder(boolean endOfStream) {
-        final int TIMEOUT_USEC = 0;
-        final int MAX_EOS_SPINS = 10;
-        if (VERBOSE) Log.d(TAG, "drainEncoder(" + endOfStream + ")");
+        drainEncoder(0, endOfStream);
+    }
+
+    protected void drainEncoder(long timeout, boolean endOfStream) {
+        if (VERBOSE) Log.d(TAG, "drainEncoder(" + timeout + ", " + endOfStream + ")");
 
         if (mBufferInfo == null) {
             mBufferInfo = new MediaCodec.BufferInfo();
@@ -81,7 +87,7 @@ abstract public class MediaCodecEncoderBase<I,O> extends Encoder<I,O> {
         while (true) {
             int encoderStatus;
             try {
-                encoderStatus = mEncoder.dequeueOutputBuffer(mBufferInfo, TIMEOUT_USEC);
+                encoderStatus = mEncoder.dequeueOutputBuffer(mBufferInfo, timeout);
             } catch (Exception e) {
                 // Exynos socs may report invalid state exception even on a valid state,
                 // when no input frame filled but eos signaled.
@@ -93,6 +99,7 @@ abstract public class MediaCodecEncoderBase<I,O> extends Encoder<I,O> {
                 if (!endOfStream) {
                     break;      // out of while
                 } else {
+                    timeout = TIMEOUT_USEC;
                     mEosSpinCount++;
                     if (mEosSpinCount > MAX_EOS_SPINS) {
                         if (VERBOSE) {
@@ -112,10 +119,7 @@ abstract public class MediaCodecEncoderBase<I,O> extends Encoder<I,O> {
                 // should happen before receiving buffers, and should only happen once
                 MediaFormat newFormat = mEncoder.getOutputFormat();
                 if (VERBOSE) Log.d(TAG, "encoder output format changed: " + newFormat);
-
-                updateOutFormat(newFormat);
-                // now that we have the Magic Goodies
-                onEncodedFormatChanged(mOutConfig);
+                // CONFIG_FRAME will be got right after this, now we ignore this
             } else if (encoderStatus < 0) {
                 Log.w(TAG, "unexpected result from encoder.dequeueOutputBuffer: " +
                         encoderStatus);
@@ -136,14 +140,6 @@ abstract public class MediaCodecEncoderBase<I,O> extends Encoder<I,O> {
                         mBufferInfo.flags = mBufferInfo.flags |
                                 MediaCodec.BUFFER_FLAG_END_OF_STREAM;
                         Log.i(TAG, "Forcing EOS");
-                    }
-
-                    // we got no INFO_OUTPUT_FORMAT_CHANGED info from some device,
-                    // create format here if needed
-                    if (mOutConfig == null) {
-                        Log.e(TAG, "No INFO_OUTPUT_FORMAT_CHANGED event before frame available");
-                        throw new IllegalStateException(
-                                "No INFO_OUTPUT_FORMAT_CHANGED event before frame available");
                     }
 
                     O frame = getOutFrame(encodedData, mBufferInfo);
@@ -173,6 +169,5 @@ abstract public class MediaCodecEncoderBase<I,O> extends Encoder<I,O> {
         }
     }
 
-    abstract protected void updateOutFormat(MediaFormat mediaFormat);
     abstract protected O getOutFrame(ByteBuffer buffer, MediaCodec.BufferInfo bufferInfo);
 }

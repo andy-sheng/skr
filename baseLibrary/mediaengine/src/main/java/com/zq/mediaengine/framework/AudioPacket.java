@@ -10,17 +10,26 @@ public class AudioPacket extends AVPacketBase {
     /**
      * Audio encoding configuration
      */
-    public AudioEncodeConfig cfg;
+    public AudioCodecFormat format;
 
-    public AudioPacket(AudioEncodeConfig cfg, ByteBuffer buf, long pts) {
-        this.cfg = cfg;
+    public AudioPacket(AudioCodecFormat format, ByteBuffer buf, long pts, long avPacketOpaque) {
+        super(avPacketOpaque);
+        this.format = format;
+        this.buf = buf;
+        this.pts = pts;
+        this.dts = pts;
+    }
+
+    public AudioPacket(AudioCodecFormat format, ByteBuffer buf, long pts) {
+        this.format = format;
         this.buf = buf;
         this.pts = pts;
         this.dts = pts;
     }
 
     public AudioPacket(AudioPacket pkt) {
-        this.cfg = pkt.cfg;
+        super(pkt);
+        this.format = pkt.format;
         this.buf = pkt.buf;
         this.pts = pkt.pts;
         this.dts = pkt.dts;

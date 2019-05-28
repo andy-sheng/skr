@@ -10,10 +10,10 @@ import java.nio.ByteBuffer;
  * @hide
  */
 
-public class UnionAudioSLRecord implements IUnionAudioRecord {
+public class KSYAudioSLRecord implements IKSYAudioRecord {
     private long mInstance;
 
-    public UnionAudioSLRecord(int sampleRate, int channels, int bufferSamples) {
+    public KSYAudioSLRecord(int sampleRate, int channels, int bufferSamples) {
         mInstance = _init(sampleRate, channels, bufferSamples);
         if (mInstance == 0) {
             throw new IllegalArgumentException("Create OpenGLES record failed!");
@@ -52,7 +52,8 @@ public class UnionAudioSLRecord implements IUnionAudioRecord {
 
     @Override
     public long getNativeModule() {
-        return mInstance;
+        return 0;
+//        return mInstance;
     }
 
     @Override

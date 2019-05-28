@@ -14,8 +14,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Watermark capture module.
@@ -30,7 +28,6 @@ public class WaterMarkCapture {
     public ImgBufSrcPin mTimeBufSrcPin;
 
     private Timer mWmiTimer;
-    private ExecutorService mExecutorService;
     private GLRender mGLRender;
 
     // only used for BufSrcPin
@@ -54,9 +51,12 @@ public class WaterMarkCapture {
         mTimeTexSrcPin = new ImgTexSrcPin(glRender);
         mTimeBufSrcPin = new ImgBufSrcPin();
 
-        mExecutorService = Executors.newSingleThreadExecutor();
+        // use ImgTexSrcPin in sync mode to avoid bitmap recycled issue.
+        mLogoTexSrcPin.setUseSyncMode(true);
+        mTimeTexSrcPin.setUseSyncMode(true);
+
         mGLRender = glRender;
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mGLReadyListener);
     }
 
     public ImgTexSrcPin getLogoTexSrcPin() {
@@ -86,7 +86,7 @@ public class WaterMarkCapture {
         mPreviewWidth = w;
         mPreviewHeight = h;
         if (isOutSizeReady() && mShowLogoRunnable != null) {
-            mExecutorService.execute(mShowLogoRunnable);
+            mGLRender.queueEvent(mShowLogoRunnable);
             mShowLogoRunnable = null;
         }
     }
@@ -101,7 +101,7 @@ public class WaterMarkCapture {
         mTargetWidth = w;
         mTargetHeight = h;
         if (isOutSizeReady() && mShowLogoRunnable != null) {
-            mExecutorService.execute(mShowLogoRunnable);
+            mGLRender.queueEvent(mShowLogoRunnable);
             mShowLogoRunnable = null;
         }
     }
@@ -129,7 +129,7 @@ public class WaterMarkCapture {
         };
 
         if (isOutSizeReady()) {
-            mExecutorService.execute(runnable);
+            mGLRender.queueEvent(runnable);
         } else {
             mShowLogoRunnable = runnable;
         }
@@ -163,7 +163,7 @@ public class WaterMarkCapture {
         };
 
         if (isOutSizeReady()) {
-            mExecutorService.execute(runnable);
+            mGLRender.queueEvent(runnable);
         } else {
             mShowLogoRunnable = runnable;
         }
@@ -181,15 +181,13 @@ public class WaterMarkCapture {
             }
         }
 
-        if (!mExecutorService.isShutdown()) {
-            mExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mLogoBufSrcPin.updateFrame(null, false);
-                    mLogoTexSrcPin.updateFrame(null, false);
-                }
-            });
-        }
+        mGLRender.queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                mLogoBufSrcPin.updateFrame(null, false);
+                mLogoTexSrcPin.updateFrame(null, false);
+            }
+        });
 
         if (mShowLogoRunnable != null) {
             mShowLogoRunnable = null;
@@ -249,12 +247,11 @@ public class WaterMarkCapture {
                 mLogoBitmap = null;
             }
         }
-        mExecutorService.shutdown();
         mLogoTexSrcPin.release();
         mLogoBufSrcPin.release();
         mTimeTexSrcPin.release();
         mTimeBufSrcPin.release();
-        mGLRender.removeListener(mGLRenderListener);
+        mGLRender.removeListener(mGLReadyListener);
     }
 
     private boolean isOutSizeReady() {
@@ -330,7 +327,7 @@ public class WaterMarkCapture {
         }
     }
 
-    private GLRender.GLRenderListener mGLRenderListener = new GLRender.GLRenderListener() {
+    private GLRender.OnReadyListener mGLReadyListener = new GLRender.OnReadyListener() {
         @Override
         public void onReady() {
             mGLRender.queueEvent(new Runnable() {
@@ -346,21 +343,6 @@ public class WaterMarkCapture {
                     }
                 }
             });
-        }
-
-        @Override
-        public void onSizeChanged(int width, int height) {
-
-        }
-
-        @Override
-        public void onDrawFrame() {
-
-        }
-
-        @Override
-        public void onReleased() {
-
         }
     };
 }

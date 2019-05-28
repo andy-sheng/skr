@@ -19,10 +19,17 @@ public class APMWrapper {
     public final static int NS_LEVEL_HIGH = 2;
     public final static int NS_LEVEL_VERYHIGH = 3;
 
-    private final static int UNINIT = 0;
+    public final static int AEC_ROUTING_MODE_HEADSET = 0;
+    public final static int AEC_ROUTING_MODE_EARPIECE = 1;
+    public final static int AEC_ROUTING_MODE_LOUD_EARPIECE = 2;
+    public final static int AEC_ROUTING_MODE_SPEAKER_PHONE = 3;
+    public final static int AEC_ROUTING_MODE_LOUD_SPEAKER_PHONE = 4;
+
     public final static int APM_SAMPLE_RATE = 48000;
     public final static int APM_CHANNEL_NUM = 2;
     public final static int APM_SAMPLE_FORMAT = AVConst.AV_SAMPLE_FMT_S16;
+
+    private final static int UNINIT = 0;
 
     public static boolean mNativeLibraryLoad = true;
 
@@ -46,15 +53,15 @@ public class APMWrapper {
         return mAPMWrapperInstance;
     }
 
-    public AudioBufFormat getAPMFormate() {
+    public AudioBufFormat getAPMFormat() {
         return mAPMProcessFormat;
     }
 
-    public ByteBuffer processStream(ByteBuffer data) {
-        if (mAPMWrapperInstance == UNINIT) {
+    public ByteBuffer processStream(int idx, ByteBuffer data) {
+        if (mAPMWrapperInstance == UNINIT || data == null) {
             return null;
         }
-        return processStream(mAPMWrapperInstance, data, data.limit());
+        return processStream(mAPMWrapperInstance, idx, data, data.limit());
     }
 
     private int enableHighPassFilter(boolean enable) {
@@ -93,13 +100,41 @@ public class APMWrapper {
         return setVADLikelihood(mAPMWrapperInstance, likelihood);
     }
 
-    public int config(int samplerate, int channels) {
+    public int enableAECM(boolean enable) {
+        if (mAPMWrapperInstance == UNINIT) {
+            return -1;
+        }
+        return enableAECM(mAPMWrapperInstance, enable);
+    }
+
+    public int enableAEC(boolean enable) {
+        if (mAPMWrapperInstance == UNINIT) {
+            return -1;
+        }
+        return enableAEC(mAPMWrapperInstance, enable);
+    }
+
+    public int setRoutingMode(int mode) {
+        if (mAPMWrapperInstance == UNINIT) {
+            return -1;
+        }
+        return setRoutingMode(mAPMWrapperInstance, mode);
+    }
+
+    public int setStreamDelay(int delay) {
+        if (mAPMWrapperInstance == UNINIT) {
+            return -1;
+        }
+        return setStreamDelay(mAPMWrapperInstance, delay);
+    }
+
+    public int config(int idx, int sampleFmt, int samplerate, int channels) {
         if (mAPMWrapperInstance == UNINIT) {
             return -1;
         }
         mAPMProcessFormat.sampleRate = samplerate;
         mAPMProcessFormat.channels = channels;
-        return config(mAPMWrapperInstance, samplerate, channels);
+        return config(mAPMWrapperInstance, idx, sampleFmt, samplerate, channels);
     }
 
     public void attachTo(int idx, long ptr, boolean detach) {
@@ -125,7 +160,7 @@ public class APMWrapper {
 
     private native long create();
 
-    private native ByteBuffer processStream(long instance, ByteBuffer data, int count);
+    private native ByteBuffer processStream(long instance, int idx, ByteBuffer data, int size);
 
     private native int enableHighPassFilter(long instance, boolean enable);
 
@@ -137,7 +172,15 @@ public class APMWrapper {
 
     private native int setVADLikelihood(long instance, int likelihood);
 
-    private native int config(long instance, int samplerate, int channels);
+    private native int enableAECM(long instance, boolean enable);
+
+    private native int enableAEC(long instance, boolean enable);
+
+    private native int setRoutingMode(long instance, int mode);
+
+    private native int setStreamDelay(long instance, int delay);
+
+    private native int config(long instance, int idx, int sampleFmt, int samplerate, int channels);
 
     private native void attachTo(long instance, int idx, long ptr, boolean detach);
 
@@ -148,10 +191,10 @@ public class APMWrapper {
     static {
         LibraryLoader.load();
         try {
-            System.loadLibrary("apm");
+            System.loadLibrary("ksyapm");
         } catch (UnsatisfiedLinkError error) {
             mNativeLibraryLoad = false;
-            Log.e(TAG, "No libapm.so! Please check ");
+            Log.e(TAG, "No libksyapm.so! Please check ");
         }
     }
 }

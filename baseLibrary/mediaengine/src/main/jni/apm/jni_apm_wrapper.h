@@ -29,7 +29,7 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_create
  * Signature: (JLjava/nio/ByteBuffer;)Ljava/nio/ByteBuffer;
  */
 JNIEXPORT jobject JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_processStream
-        (JNIEnv *, jobject, jlong, jobject, jint);
+        (JNIEnv *, jobject, jlong, jint, jobject, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_APMWrapper
@@ -73,11 +73,43 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setVADLik
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_APMWrapper
- * Method:    config
+ * Method:    enableAECM
+ * Signature: (JZ)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_enableAECM
+        (JNIEnv *, jobject, jlong, jboolean);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    enableAEC
+ * Signature: (JZ)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_enableAEC
+        (JNIEnv *, jobject, jlong, jboolean);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    setRoutingMode
  * Signature: (JI)I
  */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setRoutingMode
+        (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    setStreamDelay
+ * Signature: (JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setStreamDelay
+        (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    config
+ * Signature: (JIIII)I
+ */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_config
-        (JNIEnv *, jobject, jlong, jint, jint);
+        (JNIEnv *, jobject, jlong, jint, jint, jint, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_APMWrapper

@@ -1,9 +1,11 @@
 package com.zq.mediaengine.filter.imgtex;
 
-import android.graphics.PointF;
+import android.graphics.RectF;
+import android.util.Log;
 
 import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.util.gles.GLRender;
+import com.zq.mediaengine.util.gles.GlUtil;
 import com.zq.mediaengine.util.gles.TexTransformUtil;
 
 import java.nio.FloatBuffer;
@@ -13,13 +15,22 @@ import java.nio.FloatBuffer;
  * and covert image format to RGBA if needed.
  */
 public class ImgTexScaleFilter extends ImgTexFilter {
+    private static final String TAG = "ImgTexScaleFilter";
+    public static final int SCALING_MODE_FULL_FILL = 0;
+    public static final int SCALING_MODE_BEST_FIT = 1;
+    public static final int SCALING_MODE_CENTER_CROP = 2;
 
+    private int mRenderScalingMode;
+
+    private FloatBuffer mVertexCoordsBuf = TexTransformUtil.getVertexCoordsBuf();
     private FloatBuffer mTexCoordsBuf = TexTransformUtil.getTexCoordsBuf();
     private ImgTexFormat mTargetFormat;
     private ImgTexFormat mInputFormat;
+    private int mRotateDegrees = 0;
 
     public ImgTexScaleFilter(GLRender glRender) {
         super(glRender);
+        mRenderScalingMode = SCALING_MODE_CENTER_CROP;
     }
 
     /**
@@ -35,8 +46,35 @@ public class ImgTexScaleFilter extends ImgTexFilter {
         }
     }
 
+    /**
+     * Set scaling mode for specific input pin.
+     *
+     * @param mode scaling mode, see {@link #SCALING_MODE_FULL_FILL},
+     *             {@link #SCALING_MODE_BEST_FIT},
+     *             {@link #SCALING_MODE_CENTER_CROP}
+     */
+    public void setScalingMode(int mode) {
+        mRenderScalingMode = mode;
+        if (mInputFormat != null) {
+            calculate(mInputFormat);
+        }
+    }
+
+    /**
+     * Set rotate degrees in anti-clockwise of current video.
+     *
+     * @param degrees Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
+     * @throws IllegalArgumentException
+     */
+    public void setRotateDegrees(int degrees) {
+        mRotateDegrees = degrees;
+        if (mInputFormat != null) {
+            calculate(mInputFormat);
+        }
+    }
+
     @Override
-    protected ImgTexFormat getSrcPinFormat() {
+    public ImgTexFormat getSrcPinFormat() {
         return mTargetFormat;
     }
 
@@ -51,6 +89,11 @@ public class ImgTexScaleFilter extends ImgTexFilter {
         return mTexCoordsBuf;
     }
 
+    @Override
+    protected FloatBuffer getVertexCoords() {
+        return mVertexCoordsBuf;
+    }
+
     private void calculate(final ImgTexFormat format) {
         if (mTargetFormat == null ||
                 mTargetFormat.width == 0 || mTargetFormat.height == 0 ||
@@ -63,8 +106,46 @@ public class ImgTexScaleFilter extends ImgTexFilter {
         float sar, dar;
         sar = (float) sw / (float) sh;
         dar = (float) mTargetFormat.width / (float) mTargetFormat.height;
-        PointF crop = TexTransformUtil.calCrop(sar, dar);
 
-        mTexCoordsBuf = TexTransformUtil.getCropTexCoordsBuf(crop.x, crop.y);
+        float cropX, cropY;
+        RectF rectF = new RectF(0.f, 0.f, 1.f, 1.f);
+        if (mRenderScalingMode == SCALING_MODE_BEST_FIT) {
+            if (sar > dar) {
+                cropX = 0;
+                cropY = (1.0f - dar / sar) / 2;
+            } else {
+                cropY = 0;
+                cropX = (1.0f - sar / dar) / 2;
+            }
+            Log.d(TAG, "sar=" + sar + " dar=" + dar + " cropX=" + cropX + " cropY=" + cropY);
+            rectF = new RectF(rectF.left + cropX, rectF.top + cropY,
+                    rectF.right - cropX, rectF.bottom - cropY);
+            Log.d(TAG, "rectF=" + rectF);
+        }
+        mVertexCoordsBuf = genVertexCoordsBuf(rectF);
+
+        float crop;
+        float left = 0.f;
+        float top = 0.f;
+        if (mRenderScalingMode == SCALING_MODE_CENTER_CROP) {
+            if (sar > dar) {
+                crop = 1.0f - dar / sar;
+                left = crop / 2.0f;
+            } else {
+                crop = 1.0f - sar / dar;
+                top = crop / 2.0f;
+            }
+        }
+        mTexCoordsBuf = TexTransformUtil.getTexCoordsBuf(left, top, mRotateDegrees, false, false);
+    }
+
+    private FloatBuffer genVertexCoordsBuf(RectF rect) {
+        float vertexArray[] = {
+                -1 + 2 * rect.left, 1 - 2 * rect.bottom,   // 0 bottom left
+                -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 1 bottom right
+                -1 + 2 * rect.left, 1 - 2 * rect.top,      // 2 top left
+                -1 + 2 * rect.right, 1 - 2 * rect.top,      // 3 top right
+        };
+        return GlUtil.createFloatBuffer(vertexArray);
     }
 }

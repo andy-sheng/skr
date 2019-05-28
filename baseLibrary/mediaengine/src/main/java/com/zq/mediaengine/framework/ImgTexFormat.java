@@ -8,7 +8,7 @@ public class ImgTexFormat {
     public static final int COLOR_YUVA = 2;
     public static final int COLOR_EXTERNAL_OES = 3;
 
-    public final int colorFormat;
+    public int colorFormat;
     public final int width;
     public final int height;
 

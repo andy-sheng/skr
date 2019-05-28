@@ -248,6 +248,7 @@ public class ImgTexMixer extends ImgTexFilterBase {
 
     @Override
     protected void onRelease() {
+        super.onRelease();
         if (mProgram != 0) {
             GLES20.glDeleteProgram(mProgram);
             mProgram = 0;

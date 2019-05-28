@@ -1,3 +1,4 @@
+#include <include/android_nio_utils.h>
 #include "jni_AudioMixer.h"
 #include "audio/AudioMixer.h"
 
@@ -28,12 +29,22 @@ void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setBlockingMode
 
 void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setOutputVolume
         (JNIEnv *env, jobject obj, jlong instance, jfloat vol) {
-    getInstance(instance)->setOutputVolume(vol);
+    getInstance(instance)->setOutputVolume(vol, vol);
+}
+
+void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setOutputVolume__JFF
+(JNIEnv *env, jobject obj, jlong instance, jfloat leftVol, jfloat rightVol) {
+    getInstance(instance)->setOutputVolume(leftVol, rightVol);
 }
 
 void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInputVolume
         (JNIEnv *env, jobject obj, jlong instance, jint idx, jfloat vol) {
     getInstance(instance)->setInputVolume(idx, vol);
+}
+
+void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInputVolume__JIFF
+        (JNIEnv *env, jobject obj, jlong instance, jint idx, jfloat leftVol, jfloat rightVol) {
+    getInstance(instance)->setInputVolume(idx, leftVol, rightVol);
 }
 
 void Java_com_zq_mediaengine_filter_audio_AudioMixer__1attachTo
@@ -42,9 +53,9 @@ void Java_com_zq_mediaengine_filter_audio_AudioMixer__1attachTo
 }
 
 jint Java_com_zq_mediaengine_filter_audio_AudioMixer__1config
-        (JNIEnv *env, jobject obj, jlong instance, jint idx, jint sampleRate, jint channels,
-         jint bufferSamples, jint fifoSizeInMs) {
-    return getInstance(instance)->config(idx, sampleRate, channels, bufferSamples,
+        (JNIEnv *env, jobject obj, jlong instance, jint idx, jint sampleFmt, jint sampleRate,
+         jint channels, jint bufferSamples, jint fifoSizeInMs) {
+    return getInstance(instance)->config(idx, sampleFmt, sampleRate, channels, bufferSamples,
                                          fifoSizeInMs, false);
 }
 
@@ -55,13 +66,15 @@ void Java_com_zq_mediaengine_filter_audio_AudioMixer__1destroy
 
 jint Java_com_zq_mediaengine_filter_audio_AudioMixer__1read
         (JNIEnv *env, jobject obj, jlong instance, jobject byteBuffer, jint size) {
-    uint8_t* buf = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    AutoBufferPointer abp(env, byteBuffer, JNI_TRUE);
+    uint8_t *buf = (uint8_t*)abp.pointer();
     return getInstance(instance)->read(buf, size);
 }
 
 jint Java_com_zq_mediaengine_filter_audio_AudioMixer__1process
         (JNIEnv *env, jobject obj, jlong instance, jint idx, jobject byteBuffer, jint size) {
-    uint8_t* buf = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    AutoBufferPointer abp(env, byteBuffer, JNI_TRUE);
+    uint8_t *buf = (uint8_t*)abp.pointer();
     return getInstance(instance)->process(idx, buf, size, false);
 }
 

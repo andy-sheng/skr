@@ -59,7 +59,7 @@ using namespace std;
     className, INFO_NUMBER(classMethodInfo), INFO_NUMBER(classFieldInfo), classMethodInfo, classFieldInfo }
 
 
-#define KSY_MAX_CLASSNAME_LEN 100
+#define KSY_MAX_CLASSNAME_LEN 80
 #define KSY_MAX_METHOD_LEN 64
 #define KSY_MAX_FIELD_LEN 64
 #define KSY_MAX_METHOD_SIGNATURE_LEN 240

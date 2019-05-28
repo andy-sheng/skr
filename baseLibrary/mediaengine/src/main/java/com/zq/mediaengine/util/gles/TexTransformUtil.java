@@ -1,6 +1,7 @@
 package com.zq.mediaengine.util.gles;
 
 import android.graphics.PointF;
+import android.opengl.Matrix;
 
 import java.nio.FloatBuffer;
 
@@ -287,4 +288,39 @@ public class TexTransformUtil {
         return COORDS_PER_VERTEX;
     }
 
+    /**
+     * Calculate transform matrix with given scaleX, scaleY and degrees.
+     *
+     * If scaleX<1, the right side extra pixels would be cropped.
+     * If scaleY<1, the bottom side extra pixels would be cropped.
+     *
+     * @param mat       the 4x4 matrix to be calculated.
+     * @param scaleX    scale value of X axis
+     * @param scaleY    scale value of Y axis
+     * @param degrees   rotate degrees
+     */
+    public static void calTransformMatrix(float[] mat, float scaleX, float scaleY, int degrees) {
+        degrees %= 360;
+        if (degrees % 90 != 0) {
+            return;
+        }
+        Matrix.setIdentityM(mat, 0);
+        Matrix.translateM(mat, 0, 0, scaleY, 0);
+        Matrix.scaleM(mat, 0, scaleX, -scaleY, 1);
+        switch (degrees) {
+            case 0:
+                Matrix.translateM(mat, 0, 0, 0, 0);
+                break;
+            case 90:
+                Matrix.translateM(mat, 0, 1, 0, 0);
+                break;
+            case 180:
+                Matrix.translateM(mat, 0, 1, 1, 0);
+                break;
+            case 270:
+                Matrix.translateM(mat, 0, 0, 1, 0);
+                break;
+        }
+        Matrix.rotateM(mat, 0, degrees, 0, 0, 1);
+    }
 }

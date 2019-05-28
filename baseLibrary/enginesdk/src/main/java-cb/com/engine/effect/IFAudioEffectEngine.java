@@ -109,7 +109,13 @@ public class IFAudioEffectEngine {
             mType = type;
             load(type);
         }
-        processAudioEffect(null, buffer, length, channels, samplesPerSec);
+        byte[] byteArray = null;
+        ByteBuffer byteBuffer = buffer;
+        if (buffer != null && buffer.hasArray()) {
+            byteArray = buffer.array();
+            byteBuffer = null;
+        }
+        processAudioEffect(byteArray, byteBuffer, length, channels, samplesPerSec);
         return 0;
     }
 

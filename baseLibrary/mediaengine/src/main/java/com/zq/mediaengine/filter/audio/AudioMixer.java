@@ -38,8 +38,9 @@ public class AudioMixer {
 
     private long mInstance = INSTANCE_UNINIT;
     private int mMainSinkPinIndex = 0;
-    private float[] mInputVolumes;
-    private float mOutputVolume;
+    private float[][] mInputVolumes;
+    private float mLeftOutputVolume;
+    private float mRightOutputVolume;
     private boolean mMute;
     private boolean mBlockingMode;
 
@@ -49,11 +50,13 @@ public class AudioMixer {
     public AudioMixer() {
         mSinkPins = new LinkedList<>();
         mSrcPin = new AudioBufSrcPin();
-        mOutputVolume = 1.0f;
-        mInputVolumes = new float[getSinkPinNum()];
+        mLeftOutputVolume = 1.0f;
+        mRightOutputVolume = 1.0f;
+        mInputVolumes = new float[getSinkPinNum()][2];
         for (int i = 0; i < getSinkPinNum(); i++) {
             mSinkPins.add(new AudioMixerSinkPin(i));
-            mInputVolumes[i] = 1.0f;
+            mInputVolumes[i][0] = 1.0f;
+            mInputVolumes[i][1] = 1.0f;
         }
         mInFormats = new AudioBufFormat[getSinkPinNum()];
         mInstance = _init();
@@ -99,23 +102,54 @@ public class AudioMixer {
      * @param vol volume in [0.0f-1.0f]
      */
     public void setInputVolume(int idx, float vol) {
+        setInputVolume(idx, vol, vol);
+    }
+
+    /**
+     * Set input audio source volume for left and right channel,
+     * the source audio data would multiply this value before mix.
+     *
+     * @param idx SinkPin index
+     * @param leftVol left channel volume in [0.0f-1.0f]
+     * @param rightVol right channel volume in [0.0f-1.0f]
+     */
+    public void setInputVolume(int idx, float leftVol, float rightVol) {
         if (idx < mInputVolumes.length) {
-            mInputVolumes[idx] = vol;
-            _setInputVolume(mInstance, idx, vol);
+            mInputVolumes[idx][0] = leftVol;
+            mInputVolumes[idx][1] = rightVol;
+            _setInputVolume(mInstance, idx, leftVol, rightVol);
         }
     }
 
     /**
-     * return input audio source volume
+     * return input audio source left channel volume
      *
      * @param idx SinkPin index
-     * @return volume in [0.0f-1.0f]
+     * @return volume in [0.0f-1.0f], null if idx if out of range
      */
     public float getInputVolume(int idx) {
         if (idx < mInputVolumes.length) {
-            return mInputVolumes[idx];
+            return mInputVolumes[idx][0];
         } else {
-            return 0.0f;
+            return 0;
+        }
+    }
+    /**
+     * return input audio source volume
+     *
+     * @param idx SinkPin index
+     * @param isLeftChannel is left channel or right channel
+     * @return volume in [0.0f-1.0f], null if idx if out of range
+     */
+    public float getInputVolume(int idx, boolean isLeftChannel) {
+        if (idx < mInputVolumes.length) {
+            if(isLeftChannel) {
+                return mInputVolumes[idx][0];
+            } else {
+                return mInputVolumes[idx][1];
+            }
+        } else {
+            return 0;
         }
     }
 
@@ -125,17 +159,41 @@ public class AudioMixer {
      * @param vol volume in [0.0f-1.0f]
      */
     public void setOutputVolume(float vol) {
-        mOutputVolume = vol;
-        _setOutputVolume(mInstance, vol);
+        setOutputVolume(vol, vol);
     }
 
     /**
-     * Get output audio volume.
+     * Set output audio volume for left and right channel, the mixer result would multiply this
+     * value.
+     * @param leftVol left channel volume
+     * @param rightVol right channel volume
+     */
+    public void setOutputVolume(float leftVol, float rightVol) {
+        mLeftOutputVolume = leftVol;
+        mRightOutputVolume = rightVol;
+        _setOutputVolume(mInstance, mLeftOutputVolume, mRightOutputVolume);
+    }
+
+    /**
+     * Get output audio volume.If mono, return left channel volume
      *
      * @return output volume, default value 1.0f
      */
     public float getOutputVolume() {
-        return mOutputVolume;
+        return mLeftOutputVolume;
+    }
+
+    /**
+     * Get output audio volume.
+     * @param isLeftChannel left or right channel
+     * @return output volume, default value 1.0f
+     */
+    public float getOutputVolume(boolean isLeftChannel) {
+        if(isLeftChannel) {
+            return mLeftOutputVolume;
+        } else {
+            return mRightOutputVolume;
+        }
     }
 
     /**
@@ -176,20 +234,6 @@ public class AudioMixer {
      */
     public boolean getBlockingMode() {
         return mBlockingMode;
-    }
-
-    /**
-     * Clear all cached input audio data.
-     */
-    public void clearBuffer() {
-    }
-
-    /**
-     * Clear cached input audio data with specified index number.
-     *
-     * @param idx dedicated index number
-     */
-    public void clearBuffer(int idx) {
     }
 
     /**
@@ -244,7 +288,7 @@ public class AudioMixer {
         if (format.nativeModule != 0) {
             _attachTo(mInstance, idx, format.nativeModule, false);
         } else {
-            _config(mInstance, idx, format.sampleRate, format.channels, 1024, 300);
+            _config(mInstance, idx, format.sampleFormat, format.sampleRate, format.channels, 1024, 300);
         }
         if (idx == mMainSinkPinIndex) {
             mOutFormat = new AudioBufFormat(format.sampleFormat,
@@ -324,12 +368,16 @@ public class AudioMixer {
 
     private native void _setOutputVolume(long instance, float vol);
 
+    private native void _setOutputVolume(long instance, float leftVol, float rightVol);
+
     private native void _setInputVolume(long instance, int idx, float vol);
+
+    private native void _setInputVolume(long instance, int idx, float leftVol, float rightVol);
 
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
 
-    private native int _config(long instance, int idx, int sampleRate, int channels,
-                               int bufferSamples, int fifoSizeInMs);
+    private native int _config(long instance, int idx, int sampleFmt, int sampleRate,
+                               int channels, int bufferSamples, int fifoSizeInMs);
 
     private native void _destroy(long instance, int idx);
 

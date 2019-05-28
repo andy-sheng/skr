@@ -3,6 +3,9 @@ package com.zq.mediaengine.filter.audio;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.util.Log;
+
+import com.zq.mediaengine.framework.AVConst;
 
 import java.nio.ByteBuffer;
 
@@ -11,8 +14,10 @@ import java.nio.ByteBuffer;
  */
 
 public class AudioTrackPlayer implements IPcmPlayer {
+    private final static String TAG = "AudioTrackPlayer";
 
     private AudioTrack mAudioTrack;
+    private int mSampleRate;
     private short[] mPcm;
     private boolean mMute;
     private boolean mStart;
@@ -23,15 +28,21 @@ public class AudioTrackPlayer implements IPcmPlayer {
     }
 
     @Override
-    public synchronized int config(int sampleRate, int channels,
+    public synchronized int config(int sampleFmt, int sampleRate, int channels,
                                    int bufferSamples, int fifoSizeInMs) {
+        if (sampleFmt != AVConst.AV_SAMPLE_FMT_S16) {
+            Log.e(TAG, "AudioTrackPlayer only support SAMPLE_FMT_S16!");
+            return -1;
+        }
         if (mAudioTrack != null) {
             mAudioTrack.release();
         }
+        mSampleRate = sampleRate;
         int channel = (channels == 1) ? AudioFormat.CHANNEL_OUT_MONO :
                 AudioFormat.CHANNEL_OUT_STEREO;
         int minBufferSize = AudioTrack.getMinBufferSize(sampleRate, channel,
                 AudioFormat.ENCODING_PCM_16BIT);
+        Log.e(TAG, "minBufferSize: " + minBufferSize);
         mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channel,
                 AudioFormat.ENCODING_PCM_16BIT, minBufferSize, AudioTrack.MODE_STREAM);
         if (mMute) {
@@ -99,6 +110,25 @@ public class AudioTrackPlayer implements IPcmPlayer {
         }
         buffer.asShortBuffer().get(mPcm, 0, len);
         return mAudioTrack.write(mPcm, 0, len);
+    }
+
+    @Override
+    public int flush() {
+        if (mAudioTrack != null) {
+            mAudioTrack.pause();
+            mAudioTrack.flush();
+            mAudioTrack.play();
+        }
+        return 0;
+    }
+
+    @Override
+    public long getPosition() {
+        if (mAudioTrack != null) {
+            long samples = mAudioTrack.getPlaybackHeadPosition();
+            return samples * 1000 / mSampleRate;
+        }
+        return 0;
     }
 
     @Override

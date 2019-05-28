@@ -21,7 +21,7 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_cre
  * Signature: (JII)V
  */
 JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioReverbWrap_config
-        (JNIEnv *, jobject, jlong, jint, jint);
+        (JNIEnv *, jobject, jlong, jint, jint, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioReverbWrap

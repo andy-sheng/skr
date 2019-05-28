@@ -54,6 +54,10 @@ public abstract class CustomHandlerThread {
         this.mHandler.removeMessages(what, obj);
     }
 
+    public void removeCallbacksAndMessages(Object token) {
+        this.mHandler.removeCallbacksAndMessages(token);
+    }
+
     public final boolean post(Runnable r) {
         return this.mHandler.post(r);
     }
@@ -65,7 +69,7 @@ public abstract class CustomHandlerThread {
     protected abstract void processMessage(Message var1);
 
     public void destroy() {
-        this.mHandlerThread.quit();
+        this.mHandlerThread.quitSafely();
     }
 
     public Looper getLooper() {

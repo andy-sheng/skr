@@ -47,6 +47,7 @@ STREAMER_C_INCLUDES += $(DENOISE_PATH)
 STREAMER_SRC_FILES := utils/jni_util.cpp
 STREAMER_SRC_FILES += utils/value.cpp
 STREAMER_SRC_FILES += utils/util.c
+STREAMER_SRC_FILES += utils/android_nio_utils.cpp
 
 STREAMER_SRC_FILES += watermark.cpp
 
@@ -59,11 +60,11 @@ STREAMER_SRC_FILES += filter/audio_buf/AudioReverb.cpp
 STREAMER_SRC_FILES += jni/jni_audio_reverb.cpp
 
 ifneq ($(TARGET_ARCH_ABI),armeabi)
-STREAMER_SRC_FILES += color_format_convert.c.arm.neon
+STREAMER_SRC_FILES += color_format_convert.cpp.arm.neon
 else
-STREAMER_SRC_FILES += color_format_convert.c
+STREAMER_SRC_FILES += color_format_convert.cpp
 endif
-STREAMER_SRC_FILES += jni_ColorFormatConvert.c
+STREAMER_SRC_FILES += jni_ColorFormatConvert.cpp
 
 STREAMER_SRC_FILES += cipher/CipherUtility.cpp
 STREAMER_SRC_FILES += jni/jni_decrypt.cpp
@@ -92,7 +93,7 @@ STREAMER_STATIC_LIBRARIES += yuv_static swresample avutil \
 
 # build shared library
 include $(CLEAR_VARS)
-LOCAL_MODULE := unionstreamer
+LOCAL_MODULE := ksylive
 LOCAL_LDLIBS := -llog -landroid -lOpenSLES -lEGL -lGLESv2 -ljnigraphics -lz
 
 LOCAL_CONLYFLAGS := $(STREAMER_CONLYFLAGS)

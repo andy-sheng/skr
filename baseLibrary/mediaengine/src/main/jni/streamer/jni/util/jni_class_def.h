@@ -13,7 +13,7 @@
 #define KSYSTREAMERANDROID_JNI_CLASS_DEF_H
 
 #ifndef JAVA_PACKAGE_PATH
-#define JAVA_PACKAGE_PATH                          "org/opencdnunion/media/streamer/"
+#define JAVA_PACKAGE_PATH                          "com/ksyun/media/streamer/"
 #endif
 
 ///////////// ArrayList Define ////////////////////////////////////////
@@ -72,7 +72,7 @@
 #define JAVA_IMGBUFFRAME_FIELD_FORMAT                 "format"
 #define JAVA_IMGBUFFRAME_FIELD_BUF                "buf"
 //#define JAVA_IMGBUFFRAME_FIELD_BUFSIZE                "buf_size"
-#define JAVA_IMGBUFFRAME_FIELD_DTS                "dts"
+//#define JAVA_IMGBUFFRAME_FIELD_DTS                "dts"
 #define JAVA_IMGBUFFRAME_FIELD_PTS                "pts"
 #define JAVA_IMGBUFFRAME_FIELD_FLAGS                "flags"
 
@@ -86,7 +86,7 @@
 
 
 // Field name
-#define JAVA_IMGBUFFRAME_FORMAT_FIELD_FORMAT                 "format"
+#define JAVA_IMGBUFFRAME_FORMAT_FIELD_FORMAT                 "pixFmt"
 #define JAVA_IMGBUFFRAME_FORMAT_FIELD_ORIENTATION                "orientation"
 #define JAVA_IMGBUFFRAME_FORMAT_FIELD_WIDTH                "width"
 #define JAVA_IMGBUFFRAME_FORMAT_FIELD_HEIGHT                "height"
@@ -122,7 +122,6 @@
 #define JAVA_AUDIOBUFFORMAT_FIELD_FORMAT                 "sampleFormat"
 #define JAVA_AUDIOBUFFORMAT_FIELD_RATE                "sampleRate"
 #define JAVA_AUDIOBUFFORMAT_FIELD_CHANNELS                "channels"
-#define JAVA_AUDIOBUFFORMAT_FIELD_CODECID             "codecId"
 
 //calss name
 #ifndef JAVA_CLASS_PATH_AVFILTERWRAPPER
@@ -132,5 +131,14 @@
 //Method name
 #define JAVA_AVFILTERWRAPPER_METHOD_CONSTRUCT      "<init>"
 #define JAVA_AVFILTERWRAPPER_METHOD_ONAUDIOFRAME "onAudioFrame"
+
+// Class name
+#ifndef JAVA_CLASS_PATH_AUDIOEFFECTOPTION
+#define JAVA_CLASS_PATH_AUDIOEFFECTOPTION             JAVA_PACKAGE_PATH"filter/audio/KSYAudioEffectWrapper$EffectOption"
+#endif
+
+// Field name
+#define JAVA_AUDIOEFFECTOPTION_FIELD_OPTION                 "option"
+
 
 #endif //KSYSTREAMERANDROID_JNI_CLASS_DEF_H

@@ -71,7 +71,10 @@ public class AudioPreview extends AudioFilterBase {
     @Override
     protected AudioBufFormat doFormatChanged(AudioBufFormat format) {
         int atomSize = AudioUtil.getNativeBufferSize(mContext, format.sampleRate);
-        mAudioSLPlayer.config(format.sampleRate, format.channels, atomSize, 200);
+        int ret = mAudioSLPlayer.config(format.sampleFormat, format.sampleRate, format.channels, atomSize, 200);
+        if (ret < 0) {
+            return null;
+        }
         return format;
     }
 

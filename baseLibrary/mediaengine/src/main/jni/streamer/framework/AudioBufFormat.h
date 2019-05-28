@@ -10,29 +10,25 @@ public:
     int sampleFormat;
     int sampleRate;
     int channels;
-    int codecId;
     AudioBufFormat() {
 
     }
-    AudioBufFormat(int sampleFormat, int sampleRate, int channels, int codecId) {
+    AudioBufFormat(int sampleFormat, int sampleRate, int channels) {
         this->sampleFormat = sampleFormat;
         this->sampleRate = sampleRate;
         this->channels = channels;
-        this->codecId = codecId;
     }
 
     AudioBufFormat(AudioBufFormat *format) {
         this->sampleFormat = format->sampleFormat;
         this->sampleRate = format->sampleRate;
         this->channels = format->channels;
-        this->codecId = format->codecId;
     }
 
     bool equal(AudioBufFormat *other) {
         if(other->sampleFormat == this->sampleFormat &&
                 other->sampleRate == this->sampleRate &&
-                other->channels == this->channels &&
-                other->codecId == this->codecId) {
+                other->channels == this->channels) {
             return true;
         }
         return false;

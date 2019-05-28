@@ -2,7 +2,6 @@ package com.zq.mediaengine.capture;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
-import android.opengl.Matrix;
 import android.os.ConditionVariable;
 
 import com.zq.mediaengine.framework.ImgTexFormat;
@@ -10,6 +9,7 @@ import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.gles.GLRender;
 import com.zq.mediaengine.util.gles.GlUtil;
+import com.zq.mediaengine.util.gles.TexTransformUtil;
 import com.zq.mediaengine.util.gles.YUVLoader;
 
 import java.nio.ByteBuffer;
@@ -33,7 +33,8 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
 
         // keep eye on if glcontext recreated
         mGLRender = glRender;
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mOnReadyListener);
+        mGLRender.addListener(mOnReleasedListener);
         mSyncMode = false;
     }
 
@@ -66,12 +67,23 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
         if (mGLRender.isGLRenderThread()) {
             doUpdateFrame(img, rotate, pts, recycle);
         } else {
-            mGLRender.queueEvent(new Runnable() {
-                @Override
-                public void run() {
-                    doUpdateFrame(img, rotate, pts, recycle);
+            if (mSyncMode) {
+                mSig.close();
+            }
+            if (mGLRender.getState() != GLRender.STATE_RELEASED) {
+                mGLRender.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        doUpdateFrame(img, rotate, pts, recycle);
+                        if (mSyncMode) {
+                            mSig.open();
+                        }
+                    }
+                });
+                if (mSyncMode) {
+                    mSig.block();
                 }
-            });
+            }
         }
     }
 
@@ -103,17 +115,19 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             if (mSyncMode) {
                 mSig.close();
             }
-            mGLRender.queueEvent(new Runnable() {
-                @Override
-                public void run() {
-                    doUpdateFrame(buf, stride, width, height, rotate, pts);
-                    if (mSyncMode) {
-                        mSig.open();
+            if (mGLRender.getState() != GLRender.STATE_RELEASED) {
+                mGLRender.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        doUpdateFrame(buf, stride, width, height, rotate, pts);
+                        if (mSyncMode) {
+                            mSig.open();
+                        }
                     }
+                });
+                if (mSyncMode) {
+                    mSig.block();
                 }
-            });
-            if (mSyncMode) {
-                mSig.block();
             }
         }
     }
@@ -136,17 +150,20 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             if (mSyncMode) {
                 mSig.close();
             }
-            mGLRender.queueEvent(new Runnable() {
-                @Override
-                public void run() {
-                    doUpdateYUVFrame(buf, strides, width, height, rotate, pts);
-                    if (mSyncMode) {
-                        mSig.open();
+            if (mGLRender.getState() != GLRender.STATE_RELEASED) {
+                mGLRender.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        doUpdateYUVFrame(buf, strides, width, height, rotate, pts);
+                        if (mSyncMode) {
+                            mSig.open();
+                        }
                     }
+                });
+
+                if (mSyncMode) {
+                    mSig.block();
                 }
-            });
-            if (mSyncMode) {
-                mSig.block();
             }
         }
     }
@@ -171,17 +188,20 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             if (mSyncMode) {
                 mSig.close();
             }
-            mGLRender.queueEvent(new Runnable() {
-                @Override
-                public void run() {
-                    doRepeatFrame(pts);
-                    if (mSyncMode) {
-                        mSig.open();
+
+            if (mGLRender.getState() != GLRender.STATE_RELEASED) {
+                mGLRender.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        doRepeatFrame(pts);
+                        if (mSyncMode) {
+                            mSig.open();
+                        }
                     }
+                });
+                if (mSyncMode) {
+                    mSig.block();
                 }
-            });
-            if (mSyncMode) {
-                mSig.block();
             }
         }
     }
@@ -200,43 +220,24 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
     }
 
     private void doReset() {
-        GLES20.glDeleteTextures(1, new int[]{mTextureId}, 0);
-        mTextureId = ImgTexFrame.NO_TEXTURE;
-        if (mYUVLoader != null) {
+        if (mYUVLoader == null) {
+            if (mTextureId != ImgTexFrame.NO_TEXTURE) {
+                GLES20.glDeleteTextures(1, new int[]{mTextureId}, 0);
+                mTextureId = ImgTexFrame.NO_TEXTURE;
+            }
+        } else {
             mYUVLoader.reset();
+            mTextureId = ImgTexFrame.NO_TEXTURE;
         }
         mImgTexFormat = null;
     }
 
     public void release() {
         disconnect(true);
-        mGLRender.removeListener(mGLRenderListener);
+        mGLRender.removeListener(mOnReadyListener);
+        mGLRender.removeListener(mOnReleasedListener);
         reset();
         mYUVLoader = null;
-    }
-
-    private void calRotateMatrix(float[] mat, float scaleX, int degrees) {
-        degrees %= 360;
-        if (degrees % 90 != 0) {
-            return;
-        }
-        Matrix.setIdentityM(mat, 0);
-        switch (degrees) {
-            case 0:
-                Matrix.translateM(mat, 0, 0, 1, 0);
-                break;
-            case 90:
-                Matrix.translateM(mat, 0, 0, 0, 0);
-                break;
-            case 180:
-                Matrix.translateM(mat, 0, 1, 0, 0);
-                break;
-            case 270:
-                Matrix.translateM(mat, 0, 1, 1, 0);
-                break;
-        }
-        Matrix.rotateM(mat, 0, degrees, 0, 0, 1);
-        Matrix.scaleM(mat, 0, scaleX, -1, 1);
     }
 
     private void doUpdateFrame(Bitmap img, int rotate, long pts, boolean recycle) {
@@ -284,7 +285,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             onFormatChanged(mImgTexFormat);
         }
 
-        calRotateMatrix(mTexMatrix, 1, rotate);
+        TexTransformUtil.calTransformMatrix(mTexMatrix, 1, 1, rotate);
         ImgTexFrame frame = new ImgTexFrame(mImgTexFormat, mTextureId, mTexMatrix, pts);
         onFrameAvailable(frame);
     }
@@ -335,7 +336,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
 
         // update matrix
         float fx = (float) srcWidth / (float) sw;
-        calRotateMatrix(mTexMatrix, fx, rotate);
+        TexTransformUtil.calTransformMatrix(mTexMatrix, fx, 1, rotate);
         ImgTexFrame frame = new ImgTexFrame(mImgTexFormat, mTextureId, mTexMatrix, pts);
         onFrameAvailable(frame);
     }
@@ -349,6 +350,8 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             if (mYUVLoader != null) {
                 mYUVLoader.reset();
             }
+            mTextureId = ImgTexFrame.NO_TEXTURE;
+
             ImgTexFrame frame = new ImgTexFrame(mImgTexFormat, ImgTexFrame.NO_TEXTURE, null, 0);
             onFrameAvailable(frame);
             return;
@@ -369,6 +372,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             if (mYUVLoader != null) {
                 mYUVLoader.reset();
             }
+            mTextureId = ImgTexFrame.NO_TEXTURE;
             formatChanged = true;
         }
 
@@ -376,8 +380,8 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             mYUVLoader = new YUVLoader(mGLRender);
         }
 
-        int textureId = mYUVLoader.loadTexture(buf, srcWidth, srcHeight, strides);
-        if (textureId == ImgTexFrame.NO_TEXTURE) {
+        mTextureId = mYUVLoader.loadTexture(buf, srcWidth, srcHeight, strides);
+        if (mTextureId == ImgTexFrame.NO_TEXTURE) {
             return;
         }
 
@@ -386,8 +390,8 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
         }
 
         // update matrix
-        calRotateMatrix(mTexMatrix, 1, rotate);
-        ImgTexFrame frame = new ImgTexFrame(mImgTexFormat, textureId, mTexMatrix, pts);
+        TexTransformUtil.calTransformMatrix(mTexMatrix, 1, 1, rotate);
+        ImgTexFrame frame = new ImgTexFrame(mImgTexFormat, mTextureId, mTexMatrix, pts);
         onFrameAvailable(frame);
     }
 
@@ -399,7 +403,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
         onFrameAvailable(frame);
     }
 
-    private GLRender.GLRenderListener mGLRenderListener = new GLRender.GLRenderListener() {
+    private GLRender.OnReadyListener mOnReadyListener = new GLRender.OnReadyListener() {
         @Override
         public void onReady() {
             mImgTexFormat = null;
@@ -408,15 +412,9 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
                 mYUVLoader.reset();
             }
         }
+    };
 
-        @Override
-        public void onSizeChanged(int width, int height) {
-        }
-
-        @Override
-        public void onDrawFrame() {
-        }
-
+    private GLRender.OnReleasedListener mOnReleasedListener = new GLRender.OnReleasedListener() {
         @Override
         public void onReleased() {
             if (mSyncMode) {

@@ -17,7 +17,7 @@ public:
     ~AudioResample();
 
     // config output format, must be set before config
-    int setOutputFormat(int sampleRate, int channels);
+    int setOutputFormat(int sampleFmt, int sampleRate, int channels);
     // config input format and init resample instance
     int config(int sampleFormat, int sampleRate, int channels);
     // do resample
@@ -25,14 +25,16 @@ public:
     // get delay in output samples
     int getDelay();
 
-    int init(int idx, int sampleRate, int channels, int bufferSamples);
+    int init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples);
     int process(int idx, uint8_t* inBuf, int inSize);
 
 private:
     KSYSwr* mSwr;
     pthread_mutex_t mLock;
+    int mInSampleFmt;
     int mInSampleRate;
     int mInChannels;
+    int mOutSampleFmt;
     int mOutSampleRate;
     int mOutChannels;
     int mOutBufferSamples;

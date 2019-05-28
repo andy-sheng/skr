@@ -28,7 +28,7 @@ public class AudioResampleFilter extends AudioFilterBase {
      */
     public void setOutFormat(@NonNull AudioBufFormat outFormat) {
         mOutFormat = outFormat;
-        mAudioResample.setOutputFormat(outFormat.sampleRate, outFormat.channels);
+        mAudioResample.setOutputFormat(outFormat.sampleFormat, outFormat.sampleRate, outFormat.channels);
     }
 
     @Override
@@ -64,7 +64,11 @@ public class AudioResampleFilter extends AudioFilterBase {
     protected AudioBufFrame doFilter(AudioBufFrame inputFrame) {
         if (inputFrame.buf != null) {
             ByteBuffer outBuffer = mAudioResample.resample(inputFrame.buf);
-            return new AudioBufFrame(mOutFormat, outBuffer, inputFrame.pts);
+            if (outBuffer != null) {
+                return new AudioBufFrame(mOutFormat, outBuffer, inputFrame.pts);
+            } else {
+                return null;
+            }
         } else {
             return inputFrame;
         }

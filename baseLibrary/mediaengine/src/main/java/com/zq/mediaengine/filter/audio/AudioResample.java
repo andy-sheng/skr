@@ -1,15 +1,20 @@
 package com.zq.mediaengine.filter.audio;
 
+import android.util.Log;
+
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.util.LibraryLoader;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * Audio resample implemented with swr.
  */
 
 public class AudioResample {
+    private static final String TAG = "AudioResample";
+
     private long mInstance;
 
     public AudioResample() {
@@ -18,7 +23,7 @@ public class AudioResample {
 
     public AudioResample(AudioBufFormat inFormat, AudioBufFormat outFormat) {
         mInstance = _init();
-        setOutputFormat(outFormat.sampleRate, outFormat.channels);
+        setOutputFormat(outFormat.sampleFormat, outFormat.sampleRate, outFormat.channels);
         config(inFormat.sampleFormat, inFormat.sampleRate, inFormat.channels);
     }
 
@@ -32,8 +37,8 @@ public class AudioResample {
      * @param sampleRate output sample rate
      * @param channels   output channel number
      */
-    public void setOutputFormat(int sampleRate, int channels) {
-        _setOutputFormat(mInstance, sampleRate, channels);
+    public void setOutputFormat(int sampleFmt, int sampleRate, int channels) {
+        _setOutputFormat(mInstance, sampleFmt, sampleRate, channels);
     }
 
     /**
@@ -65,7 +70,11 @@ public class AudioResample {
         if (buffer == null || buffer.limit() == 0) {
             return null;
         }
-        return _resample(mInstance, buffer, buffer.limit());
+        ByteBuffer outBuffer = _resample(mInstance, buffer, buffer.limit());
+        if (outBuffer != null) {
+            outBuffer.order(ByteOrder.nativeOrder());
+        }
+        return outBuffer;
     }
 
     public void release() {
@@ -73,7 +82,7 @@ public class AudioResample {
     }
 
     private native long _init();
-    private native void _setOutputFormat(long instance, int sampleRate, int channels);
+    private native void _setOutputFormat(long instance, int sampleFmt, int sampleRate, int channels);
     private native int _config(long instance, int sampleFormat, int sampleRate, int channels);
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
     private native int _read(long instance, ByteBuffer buffer, int size);

@@ -11,9 +11,9 @@ public class LibraryLoader {
 
     public static void load() {
         try {
-            System.loadLibrary("unionstreamer");
+            System.loadLibrary("ksylive");
         } catch (UnsatisfiedLinkError error) {
-            Log.e(TAG, "No libunionstreamer.so! Please check");
+            Log.e(TAG, "No libksylive.so! Please check");
         }
     }
 }

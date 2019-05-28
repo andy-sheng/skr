@@ -10,12 +10,12 @@ import android.util.Log;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AVFrameBase;
 import com.zq.mediaengine.framework.AVPacketBase;
-import com.zq.mediaengine.framework.AudioEncodeConfig;
+import com.zq.mediaengine.framework.AudioCodecFormat;
 import com.zq.mediaengine.framework.AudioPacket;
 import com.zq.mediaengine.framework.ImgPacket;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
-import com.zq.mediaengine.framework.VideoEncodeConfig;
+import com.zq.mediaengine.framework.VideoCodecFormat;
 import com.zq.mediaengine.util.FpsLimiter;
 
 import java.nio.ByteBuffer;
@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Base class of encoder modules.
  */
-abstract public class Encoder<I, O> {
+abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
     private static final String TAG = "Encoder";
     private static final boolean VERBOSE = false;
     private static final boolean TRACE_FPS_LIMIT = false;
@@ -54,15 +54,11 @@ abstract public class Encoder<I, O> {
     private static final int MSG_FRAME_AVAILABLE = 11;
     private static final int MSG_REPEAT_LAST_FRAME = 12;
 
-    private static final int TYPE_UNKNOWN = 0;
-    private static final int TYPE_AUDIO = 1;
-    private static final int TYPE_VIDEO = 2;
+    private SinkPin<I> mSinkPin;
+    private SrcPin<O> mSrcPin;
 
-    public SinkPin<I> mSinkPin;
-    public SrcPin<O> mSrcPin;
-
-    protected int mType = TYPE_UNKNOWN;
-    protected Object mEncodeConfig;
+    protected int mType = AVConst.MEDIA_TYPE_UNKNOWN;
+    protected Object mEncodeFormat;
     protected AtomicInteger mFrameEncoded;
     protected AtomicInteger mFrameDropped;
     protected boolean mMute;
@@ -78,7 +74,6 @@ abstract public class Encoder<I, O> {
 
     private boolean mUseSyncMode = false;
     private boolean mAutoWork = false;
-    protected boolean mTransWorkMode = false;
 
     protected volatile boolean mForceKeyFrame;
     private ByteBuffer mExtra;
@@ -108,20 +103,23 @@ abstract public class Encoder<I, O> {
         initEncodeThread();
     }
 
+    /**
+     * Get sink pin.
+     *
+     * @return sink pin of this encoder.
+     */
     public SinkPin<I> getSinkPin() {
         return mSinkPin;
     }
 
+    /**
+     * Get source pin.
+     *
+     * @return source pin of this encoder.
+     */
     public SrcPin<O> getSrcPin() {
         return mSrcPin;
     }
-
-    /**
-     * Implement by child class, to define what type of encoder this instance is.
-     *
-     * @return type as AVConst.MEDIA_TYPE_XXX
-     */
-    abstract public int getEncoderType();
 
     /**
      * Set encoder listener.
@@ -132,31 +130,8 @@ abstract public class Encoder<I, O> {
         mListener = listener;
     }
 
-    /**
-     * Get encoder listener.
-     *
-     * @return listener previous set
-     */
-    public EncoderListener getEncoderListener() {
-        return mListener;
-    }
-
-    /**
-     * Set encoder info listener
-     *
-     * @param infoListener listener to set
-     */
     public void setEncoderInfoListener(EncoderInfoListener infoListener) {
         mInfoListener = infoListener;
-    }
-
-    /**
-     * Get encoder info listener.
-     *
-     * @return info listener previous set
-     */
-    public EncoderInfoListener getEncoderInfoListener() {
-        return mInfoListener;
     }
 
     /**
@@ -188,10 +163,9 @@ abstract public class Encoder<I, O> {
 
     /**
      * Set if encoder start/stop by input frames.
-     *
+     * <p>
      * For example, onFormatChanged would start encoding if encoder not started,
-     * and frame with {@link AVConst#FLAG_END_OF_STREAM}
-     * would stop encoding.
+     * and frame with {@link AVConst#FLAG_END_OF_STREAM} would stop encoding.
      *
      * @param autoWork true to enable, false to disable
      */
@@ -203,21 +177,28 @@ abstract public class Encoder<I, O> {
      * Configure encoder with given format.<br/>
      * Should be set before start encoding.
      *
-     * @param encodeConfig encode format to set
+     * @param encodeFormat encode format to set
      */
-    public void configure(Object encodeConfig) {
-        mEncodeConfig = encodeConfig;
-        if (mType == TYPE_UNKNOWN) {
-            if (encodeConfig instanceof AudioEncodeConfig) {
-                mType = TYPE_AUDIO;
-            } else if (encodeConfig instanceof VideoEncodeConfig) {
-                mType = TYPE_VIDEO;
+    public void configure(Object encodeFormat) {
+        Log.d(TAG, "config encoder width " + encodeFormat);
+
+        mEncodeFormat = encodeFormat;
+        if (mType == AVConst.MEDIA_TYPE_UNKNOWN) {
+            if (encodeFormat instanceof AudioCodecFormat) {
+                mType = AVConst.MEDIA_TYPE_AUDIO;
+            } else if (encodeFormat instanceof VideoCodecFormat) {
+                mType = AVConst.MEDIA_TYPE_VIDEO;
             }
         }
     }
 
-    public Object getEncodeConfig() {
-        return mEncodeConfig;
+    /**
+     * Get encoder config format set by user.
+     *
+     * @return null or encode format set by user.
+     */
+    public Object getEncodeFormat() {
+        return mEncodeFormat;
     }
 
     /**
@@ -304,7 +285,7 @@ abstract public class Encoder<I, O> {
             return;
         }
         if (mEncodeThread != null) {
-            Message msg = mEncodeHandler.obtainMessage(CMD_START, mEncodeConfig);
+            Message msg = mEncodeHandler.obtainMessage(CMD_START, mEncodeFormat);
             mEncodeHandler.sendMessage(msg);
         }
     }
@@ -362,12 +343,12 @@ abstract public class Encoder<I, O> {
      */
     public void startRepeatLastFrame() {
         if (mState.get() != ENCODER_STATE_ENCODING ||
-                mType != TYPE_VIDEO || mTimer != null || mLastFrame == null) {
+                mType != AVConst.MEDIA_TYPE_VIDEO || mTimer != null || mLastFrame == null) {
             Log.e(TAG, "Call startRepeatLastFrame on invalid state");
             return;
         }
 
-        float fps = ((VideoEncodeConfig) mEncodeConfig).frameRate;
+        float fps = ((VideoCodecFormat) mEncodeFormat).frameRate;
         int delay = (int) (1000.f / fps);
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
@@ -380,7 +361,7 @@ abstract public class Encoder<I, O> {
                                 " total encoded: " + mFrameEncoded.get());
                     }
                 } else if (mLastFrame != null && !onFrameAvailable(mLastFrame)) {
-                    ((AVFrameBase) mLastFrame).pts = System.nanoTime() / 1000 / 1000;
+                    mLastFrame.pts = System.nanoTime() / 1000 / 1000;
                     Message msg = mEncodeHandler.obtainMessage(MSG_REPEAT_LAST_FRAME, mLastFrame);
                     mEncodeHandler.sendMessage(msg);
                 }
@@ -439,11 +420,9 @@ abstract public class Encoder<I, O> {
         return null;
     }
 
-    private void cacheExtra(O obj) {
-        AVPacketBase packet = (AVPacketBase) obj;
-
+    private void cacheExtra(O packet) {
         //cache the frame with FLAG_CODEC_CONFIG flag
-        if ((packet.flags & AVConst.FLAG_CODEC_CONFIG) != 0) {
+        if ((packet.flags & AVConst.FLAG_CODEC_CONFIG) != 0 && packet.buf != null) {
             Log.d(TAG, "Cache Extra: " + packet.buf.limit() + " bytes");
             if (mExtra == null || mExtra.capacity() < packet.buf.limit()) {
                 mExtra = ByteBuffer.allocateDirect(packet.buf.limit());
@@ -474,7 +453,7 @@ abstract public class Encoder<I, O> {
         mSrcPin.onFrameAvailable(encodedFrame);
     }
 
-    abstract protected int doStart(Object encodeConfig);
+    abstract protected int doStart(Object encodeFormat);
 
     abstract protected void doStop();
 
@@ -595,7 +574,7 @@ abstract public class Encoder<I, O> {
                 if (mState.get() == ENCODER_STATE_ENCODING) {
                     int err = 0;
                     long encodeStartTime = System.currentTimeMillis();
-                    if ((((AVFrameBase) frame).flags & AVConst.FLAG_END_OF_STREAM) != 0) {
+                    if ((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0) {
                         // flush and stop encoder
                         if (getAutoWork()) {
                             Log.d(TAG, "end of stream, flushing...");
@@ -604,15 +583,23 @@ abstract public class Encoder<I, O> {
                             return;
                         }
                     } else {
+                        // lock this frame for repeat use
+                        if (frame.isRefCounted()) {
+                            frame.ref();
+                        }
                         err = doFrameAvailable(frame);
                     }
-                    //just for stats
-                    long encodeEndTime = System.currentTimeMillis();
-                    int encodeDelay = (int) (encodeEndTime - encodeStartTime);
 
                     if (err != 0) {
+                        if (frame.isRefCounted()) {
+                            frame.unref();
+                        }
                         sendError(err);
                     } else {
+                        // keep last frame for repeat use, and free previous one.
+                        if (mLastFrame != null && mLastFrame.isRefCounted()) {
+                            mLastFrame.unref();
+                        }
                         mLastFrame = frame;
                         mFrameEncoded.incrementAndGet();
                     }
@@ -632,7 +619,7 @@ abstract public class Encoder<I, O> {
         @Override
         public void onFormatChanged(Object format) {
             if (getState() == ENCODER_STATE_IDLE && getAutoWork()) {
-                if (updateEncodeFormat(format, mEncodeConfig)) {
+                if (updateEncodeFormat(format, mEncodeFormat)) {
                     if (getUseSyncMode()) {
                         mSig.close();
                     }
@@ -653,11 +640,12 @@ abstract public class Encoder<I, O> {
                 return;
             }
 
-            if (mType == TYPE_VIDEO && ((AVFrameBase) frame).flags == 0) {
-                float fps = ((VideoEncodeConfig) mEncodeConfig).frameRate;
+            //check pts depend fps except eos
+            if (mType == AVConst.MEDIA_TYPE_VIDEO && (frame.flags & AVConst.FLAG_END_OF_STREAM) == 0) {
+                float fps = ((VideoCodecFormat) mEncodeFormat).frameRate;
                 if (fps > 0) {
                     // drop frame due fps set
-                    long pts = ((AVFrameBase) frame).pts;
+                    long pts = frame.pts;
                     if (mFrameEncoded.get() == 0) {
                         mFpsLimiter.init(fps, pts);
                     }
@@ -673,13 +661,14 @@ abstract public class Encoder<I, O> {
             }
 
             boolean isDropped = false;
-            if (mType == TYPE_VIDEO && mEncodeHandler.hasMessages(MSG_FRAME_AVAILABLE)) {
+            if (mType == AVConst.MEDIA_TYPE_VIDEO &&
+                    mEncodeHandler.hasMessages(MSG_FRAME_AVAILABLE)) {
                 // do not cache video raw frame
                 isDropped = true;
             } else {
                 if (!Encoder.this.onFrameAvailable(frame)) {
                     boolean toWait = getUseSyncMode() &&
-                            (((AVFrameBase) frame).flags & AVConst.FLAG_END_OF_STREAM) == 0;
+                            (frame.flags & AVConst.FLAG_END_OF_STREAM) == 0;
                     if (toWait) {
                         mSig.close();
                     }
@@ -708,9 +697,5 @@ abstract public class Encoder<I, O> {
                 release();
             }
         }
-    }
-
-    public void setEnableTransWorkMode(boolean enable) {
-        mTransWorkMode = enable;
     }
 }

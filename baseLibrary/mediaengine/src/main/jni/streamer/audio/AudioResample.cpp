@@ -11,8 +11,10 @@
 
 AudioResample::AudioResample():
         mSwr(NULL),
+        mInSampleFmt(0),
         mInSampleRate(0),
         mInChannels(0),
+        mOutSampleFmt(0),
         mOutSampleRate(0),
         mOutChannels(0),
         mOutBufferSamples(1024) {
@@ -29,8 +31,9 @@ AudioResample::~AudioResample() {
     pthread_mutex_destroy(&mLock);
 }
 
-int AudioResample::setOutputFormat(int sampleRate, int channels) {
+int AudioResample::setOutputFormat(int sampleFmt, int sampleRate, int channels) {
     pthread_mutex_lock(&mLock);
+    mOutSampleFmt = sampleFmt;
     mOutSampleRate = sampleRate;
     mOutChannels = channels;
     pthread_mutex_unlock(&mLock);
@@ -40,16 +43,17 @@ int AudioResample::setOutputFormat(int sampleRate, int channels) {
 int AudioResample::config(int sampleFormat, int sampleRate, int channels) {
     int ret = 0;
     pthread_mutex_lock(&mLock);
+    mInSampleFmt = sampleFormat;
     mInSampleRate = sampleRate;
     mInChannels = channels;
     if (mSwr) {
         ksy_swr_release(mSwr);
         mSwr = NULL;
     }
-    if (sampleFormat != AV_SAMPLE_FMT_S16 || mInSampleRate != mOutSampleRate || mInChannels !=
-                                                                                 mOutChannels) {
-        mSwr = ksy_swr_init(mInSampleRate, mInChannels, sampleFormat,
-                            mOutSampleRate, mOutChannels, AV_SAMPLE_FMT_S16);
+    if (mInSampleFmt != mOutSampleFmt || mInSampleRate != mOutSampleRate ||
+        mInChannels != mOutChannels) {
+        mSwr = ksy_swr_init(mInSampleRate, mInChannels, mInSampleFmt,
+                            mOutSampleRate, mOutChannels, mOutSampleFmt);
         if (!mSwr) {
             LOGE("create audio resample failed!");
             ret = -1;
@@ -63,7 +67,11 @@ int AudioResample::resample(uint8_t **out, uint8_t *in, int in_size) {
     int ret = 0;
     pthread_mutex_lock(&mLock);
     if (mSwr) {
-        ret = ksy_swr_convert(mSwr, out, in, in_size);
+        uint8_t **ppOut = NULL;
+        ret = ksy_swr_convert(mSwr, &out, &in, in_size);
+        if (ppOut) {
+            *out = ppOut[0];
+        }
     } else {
         *out = in;
         ret = in_size;
@@ -82,10 +90,10 @@ int AudioResample::getDelay() {
     return delay;
 }
 
-int AudioResample::init(int idx, int sampleRate, int channels, int bufferSamples) {
-    int ret = config(AV_SAMPLE_FMT_S16, sampleRate, channels);
+int AudioResample::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    int ret = config(sampleFmt, sampleRate, channels);
     if (!ret) {
-        ret = filterInit(mOutSampleRate, mOutChannels, mOutBufferSamples);
+        ret = filterInit(mOutSampleFmt, mOutSampleRate, mOutChannels, mOutBufferSamples);
     }
     return ret;
 }
@@ -95,7 +103,8 @@ int AudioResample::process(int idx, uint8_t *inBuf, int inSize) {
     uint8_t *outBuf = NULL;
     int outSize = resample(&outBuf, inBuf, inSize);
     if (outBuf && outSize > 0) {
-        ret = filterProcess(mOutSampleRate, mOutChannels, mOutBufferSamples, outBuf, outSize);
+        ret = filterProcess(mOutSampleFmt, mOutSampleRate, mOutChannels, mOutBufferSamples,
+                            outBuf, outSize);
     } else {
         LOGE("resample %d data failed!", inSize);
         ret = -1;

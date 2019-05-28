@@ -66,7 +66,7 @@ public class AuditionFragment extends BaseFragment {
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
 
     static final boolean RECORD_BY_CALLBACK = false;
-    static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
+    static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
     static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
 
     RankTopContainerView2 mRankTopView;
@@ -260,7 +260,7 @@ public class AuditionFragment extends BaseFragment {
                 if (RECORD_BY_CALLBACK) {
                     ZqEngineKit.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
                 } else {
-                    ZqEngineKit.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
+                    ZqEngineKit.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
                 }
             }
         });

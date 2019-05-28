@@ -18,10 +18,10 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1ini
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioSLPlayer
  * Method:    _config
- * Signature: (JIIII)I
+ * Signature: (JIIIII)I
  */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1config
-        (JNIEnv *, jobject, jlong, jint, jint, jint, jint);
+        (JNIEnv *, jobject, jlong, jint, jint, jint, jint, jint);
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioSLPlayer

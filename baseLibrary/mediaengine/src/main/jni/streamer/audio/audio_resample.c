@@ -88,7 +88,7 @@ KSYSwr* ksy_swr_init(int in_samplerate, int in_chnnum, int in_samplefmt,
     return ctx;
 }
 
-int ksy_swr_convert(KSYSwr* s, uint8_t** out, uint8_t* in, int in_size)
+int ksy_swr_convert(KSYSwr* s, uint8_t*** out, uint8_t** in, int in_size)
 {
     if (s == NULL)
         return 0;
@@ -110,16 +110,23 @@ int ksy_swr_convert(KSYSwr* s, uint8_t** out, uint8_t* in, int in_size)
         s->aoutMaxSamples = dstSamples;
     }
 
-    ret = swr_convert(s->swrCtx, s->aoutData, dstSamples, (const uint8_t **)&in, inSamples);
-    if (ret < 0) {
-        LOGE("Error while resampling audio");
+    ret = swr_convert(s->swrCtx, s->aoutData, dstSamples, (const uint8_t **)in, inSamples);
+    if (ret <= 0) {
+        if (ret < 0) {
+            LOGE("Error while resampling audio");
+        }
         *out = NULL;
         return 0;
     }
 
-    int size = av_samples_get_buffer_size(&s->aoutDataSize, s->outChnNum, ret, s->outSampleFmt, 1);
-    *out = s->aoutData[0];
-    return size;
+    ret = av_samples_get_buffer_size(&s->aoutDataSize, s->outChnNum, ret, s->outSampleFmt, 1);
+    if (ret < 0) {
+        LOGE("av_samples_get_buffer_size failed with code %d", ret);
+        *out = NULL;
+        return 0;
+    }
+    *out = s->aoutData;
+    return ret;
 }
 
 int ksy_swr_get_delay(KSYSwr* s) {

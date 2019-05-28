@@ -16,7 +16,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Surface;
 
-import com.zq.mediaengine.encoder.ColorFormatConvert;
+import com.zq.mediaengine.util.ColorFormatConvert;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.ImgBufFormat;
 import com.zq.mediaengine.framework.ImgBufFrame;
@@ -24,6 +24,7 @@ import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
+import com.zq.mediaengine.util.FrameBufferCache;
 import com.zq.mediaengine.util.gles.EglCore;
 import com.zq.mediaengine.util.gles.EglWindowSurface;
 import com.zq.mediaengine.util.gles.GLRender;
@@ -78,7 +79,7 @@ public class ImgTexToBuf {
     private int mColorFormat = AVConst.PIX_FMT_I420;
     private ImgTexFormat mInputFormat;
     private ImageReader mImageReader;
-    private ByteBuffer mOutBuffer;
+    private FrameBufferCache mBufferCache;
     private ImgBufFormat mOutFormat;
     private HandlerThread mHandlerThread;
     private Handler mHandler;
@@ -102,7 +103,7 @@ public class ImgTexToBuf {
         mFrameSent = new AtomicInteger(0);
         mMainHandler = new Handler(Looper.getMainLooper());
         mGLRender = glRender;
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mOnReadyListener);
         initThread();
     }
 
@@ -112,18 +113,18 @@ public class ImgTexToBuf {
 
     /**
      * Set output color format.
-     * Only ImgBufFormat.FMT_RGBA , ImgBufFormat.FMT_I420 and Img.FMT_BGR8 supported.
+     * Only AVConst.PIX_FMT_RGBA, AVConst.PIX_FMT_I420 and AVConst.PIX_FMT_BGR8 supported.
      *
-     * @param colorFormat color format to set, default is FMT_I420
+     * @param colorFormat color format to set, default is AVConst.PIX_FMT_I420
      * @throws IllegalArgumentException
      */
     public void setOutputColorFormat(int colorFormat) {
-        if (colorFormat != AVConst.PIX_FMT_RGBA &&
-                colorFormat != AVConst.PIX_FMT_I420) {
+        if (colorFormat != AVConst.PIX_FMT_RGBA && colorFormat != AVConst.PIX_FMT_I420 &&
+                colorFormat != AVConst.PIX_FMT_BGR8) {
             throw new IllegalArgumentException("only FMT_RGBA or FMT_I420 supported!");
         }
         mColorFormat = colorFormat;
-        mOutBuffer = null;
+        mBufferCache = null;
     }
 
     public void resetFrameStat() {
@@ -160,7 +161,7 @@ public class ImgTexToBuf {
         mSig.open();
 
         // remove GLRender listener
-        mGLRender.removeListener(mGLRenderListener);
+        mGLRender.removeListener(mOnReadyListener);
 
         // disconnect connected module
         mSrcPin.disconnect(true);
@@ -178,23 +179,11 @@ public class ImgTexToBuf {
 
     }
 
-    private GLRender.GLRenderListener mGLRenderListener = new GLRender.GLRenderListener() {
+    private GLRender.OnReadyListener mOnReadyListener = new GLRender.OnReadyListener() {
         @Override
         public void onReady() {
             mInited = false;
             mProgramId = 0;
-        }
-
-        @Override
-        public void onSizeChanged(int width, int height) {
-        }
-
-        @Override
-        public void onDrawFrame() {
-        }
-
-        @Override
-        public void onReleased() {
         }
     };
 
@@ -315,17 +304,19 @@ public class ImgTexToBuf {
                 ImgBufFrame outFrame = new ImgBufFrame(mOutFormat, buffer, pts);
                 mSrcPin.onFrameAvailable(outFrame);
             } else if(mColorFormat == AVConst.PIX_FMT_I420){
-                if (mOutBuffer == null) {
-                    int size = mOutFormat.width * mOutFormat.height * 3 / 2;
-                    mOutBuffer = ByteBuffer.allocateDirect(size);
+                int size = mOutFormat.width * mOutFormat.height * 3 / 2;
+                if (mBufferCache == null) {
+                    mBufferCache = new FrameBufferCache(0, size);
                 }
-                if (mOutBuffer != null) {
-                    mOutBuffer.clear();
+                ByteBuffer outBuffer = mBufferCache.poll(size);
+                if (outBuffer != null) {
                     ColorFormatConvert.YUVAToI420(buffer, rowStride, mOutFormat.width,
-                            mOutFormat.height, mOutBuffer);
-                    mOutBuffer.rewind();
-                    ImgBufFrame outFrame = new ImgBufFrame(mOutFormat, mOutBuffer, pts);
+                            mOutFormat.height, outBuffer);
+                    outBuffer.rewind();
+                    ImgBufFrame outFrame = new ImgBufFrame(mOutFormat, mBufferCache,
+                            outBuffer, pts);
                     mSrcPin.onFrameAvailable(outFrame);
+                    outFrame.unref();
                 }
             }
         }
@@ -379,7 +370,7 @@ public class ImgTexToBuf {
             mEglCore = null;
         }
         mOutFormat = null;
-        mOutBuffer = null;
+        mBufferCache = null;
         mInited = false;
     }
 

@@ -15,8 +15,6 @@
 #define FMT_ARGB  0x04
 #define FMT_RGBA 0x05
 #define FMT_BGR8 0x06
-#define FMT_AVC  0x100
-#define FMT_HEVC  0x101
 
 class  ImageBufFrame
 {
@@ -26,7 +24,6 @@ public:
     int* stride;
     int strideNum;
     int64_t pts;
-    int64_t dts;
     int channels;
     int flags;
     int format;
@@ -40,7 +37,6 @@ public:
         stride(NULL),
         strideNum(0),
         pts(0),
-        dts(0),
         channels(2),
         flags(0),
         format(1),
@@ -48,14 +44,13 @@ public:
         buf_size(0),
         buf(NULL)
     {}
-    ImageBufFrame(int width, int height, int format, int channels, int64_t pts, int64_t dts,
+    ImageBufFrame(int width, int height, int format, int channels, int64_t pts,
                   int orientation, int flags):
         width(0),
         height(0),
         stride(NULL),
         strideNum(0),
         pts(0),
-        dts(0),
         channels(2),
         flags(0),
         format(0),
@@ -68,7 +63,6 @@ public:
         this->format = format;
         this->channels = channels;
         this->pts = pts;
-        this->dts = dts;
         this->orientation = orientation;
         this->flags = flags;
     }

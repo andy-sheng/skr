@@ -6,7 +6,7 @@
 #include "value.h"
 
 #ifndef ANDROID_STREAMER_JNI_UTIL_H
-#define ANDROID_STREAMER_JNI_JNI_UTIL_H
+#define ANDROID_STREAMER_JNI_UTIL_H
 
 #define JNI_NULL NULL
 

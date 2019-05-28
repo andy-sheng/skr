@@ -67,16 +67,24 @@ public class AgoraRTCAdapter {
 
     private GLRender mGLRender;
     private byte[] mAudioData;
-    private ByteBuffer mAudioByteBuffer;
     private AudioBufFormat mLocalAudioFormat;
+    private AudioBufFormat mRemoteAudioFormat;
 
+    // 麦克风采集的音频
     private SrcPin<AudioBufFrame> mLocalAudioSrcPin;
+    // 远端的音频数据，包括开启bgm后，bgm的音频数据
+    private SrcPin<AudioBufFrame> mRemoteAudioSrcPin;
     // 声网SDK内采集的视频数据无法进行自定义处理，可用来自定义渲染和编码
     // 要修改视频数据，需要通过注册声网的C++接口来实现
     private AgoraImgTexSrcPin mLocalVideoSrcPin;
     private Map<Integer, AgoraImgTexSrcPin> mRemoteVideoSrcPins;
     private AudioSinkPin mAudioSinkPin;
     private ImgTexSinkPin mVideoSinkPin;
+
+    // Debug
+    private int mAudioCBCount = 0;
+    private int mAudioCBSamples = 0;
+    private long mStartCBTime = 0;
 
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
@@ -95,6 +103,7 @@ public class AgoraRTCAdapter {
     private AgoraRTCAdapter(GLRender glRender) {
         mGLRender = glRender;
         mLocalAudioSrcPin = new SrcPin<>();
+        mRemoteAudioSrcPin = new SrcPin<>();
         mLocalVideoSrcPin = new AgoraImgTexSrcPin(glRender);
         mRemoteVideoSrcPins = new HashMap<>();
         mAudioSinkPin = new AudioSinkPin();
@@ -105,6 +114,10 @@ public class AgoraRTCAdapter {
 
     public SrcPin<AudioBufFrame> getLocalAudioSrcPin() {
         return mLocalAudioSrcPin;
+    }
+
+    public SrcPin<AudioBufFrame> getRemoteAudioSrcPin() {
+        return mRemoteAudioSrcPin;
     }
 
     public SrcPin<ImgTexFrame> getLocalVideoSrcPin() {
@@ -341,8 +354,10 @@ public class AgoraRTCAdapter {
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
             // 设置onRecordFrame回调的数据
-            setRecordingAudioFrameParameters(44100, 1, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
-            setPlaybackAudioFrameParameters(44100, 2, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
+            setRecordingAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
+                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
+            setPlaybackAudioFrameParameters(mConfig.getAudioSampleRate(), mConfig.getAudioChannels(),
+                    Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
         } else {
             mRtcEngine.disableAudio();
         }
@@ -379,14 +394,14 @@ public class AgoraRTCAdapter {
 
         if (mConfig.isUseExternalAudio()) {
             // 音视频自采集
-            // TODO: 自采集模式下，使用设备自有采样率
             mRtcEngine.setExternalAudioSource(
-                    true,      // 开启外部音频源
-                    44100,     // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
-                    1          // 外部音源的通道数，最多2个
+                    true,                       // 开启外部音频源
+                    mConfig.getAudioSampleRate(),   // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
+                    mConfig.getAudioChannels()      // 外部音源的通道数，最多2个
             );
         } else {
             mLocalAudioFormat = null;
+            mRemoteAudioFormat = null;
             // 注册音频回调
             mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
                 @Override
@@ -396,26 +411,31 @@ public class AgoraRTCAdapter {
                                              int channels,// 2
                                              int samplesPerSec//44100
                 ) {
+                    long curTime = System.nanoTime() / 1000 / 1000;
                     if (mLocalAudioFormat == null) {
-                        MyLog.e(TAG, "mLocalAudioFormat changed");
+                        MyLog.i(TAG, "mLocalAudioFormat changed");
+                        mAudioCBCount = 0;
+                        mAudioCBSamples = 0;
+                        mStartCBTime = curTime;
                         mLocalAudioFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, samplesPerSec, channels);
                         mLocalAudioSrcPin.onFormatChanged(mLocalAudioFormat);
                     }
-                    long pts = System.nanoTime() / 1000 / 1000;
-                    pts -= (long) numOfSamples * 1000 / samplesPerSec;
-                    int size = numOfSamples * bytesPerSample * channels;
-                    if (mAudioByteBuffer == null || mAudioByteBuffer.capacity() < size) {
-                        mAudioByteBuffer = ByteBuffer.allocateDirect(size);
-                        mAudioByteBuffer.order(ByteOrder.nativeOrder());
-                        Log.d(TAG, "ByteBuffer size: " + size);
+                    mAudioCBCount++;
+                    mAudioCBSamples += numOfSamples;
+                    if (curTime - mStartCBTime > 5000) {
+                        long duration = curTime - mStartCBTime;
+                        MyLog.d(TAG, "audio cb count: " + mAudioCBCount + " duration: " + duration +
+                                " samples: " + mAudioCBSamples);
+                        mStartCBTime = curTime;
+                        mAudioCBCount = 0;
+                        mAudioCBSamples = 0;
                     }
-                    mAudioByteBuffer.clear();
-                    mAudioByteBuffer.put(samples, 0, size);
-                    mAudioByteBuffer.flip();
-                    AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, mAudioByteBuffer, pts);
+
+                    long pts = curTime - (long) numOfSamples * 1000 / samplesPerSec;
+                    int size = numOfSamples * bytesPerSample * channels;
+                    ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
+                    AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, byteBuffer, pts);
                     mLocalAudioSrcPin.onFrameAvailable(frame);
-                    mAudioByteBuffer.get(samples, 0, Math.min(mAudioByteBuffer.limit(), samples.length));
-                    mAudioByteBuffer.rewind();
                     return true;
                 }
 
@@ -426,6 +446,18 @@ public class AgoraRTCAdapter {
                                                int channels,
                                                int samplesPerSec
                 ) {
+                    long curTime = System.nanoTime() / 1000 / 1000;
+                    if (mRemoteAudioFormat == null) {
+                        MyLog.i(TAG, "mRemoteAudioFormat changed");
+                        mRemoteAudioFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, samplesPerSec, channels);
+                        mRemoteAudioSrcPin.onFormatChanged(mRemoteAudioFormat);
+                    }
+
+                    long pts = curTime - (long) numOfSamples * 1000 / samplesPerSec;
+                    int size = numOfSamples * bytesPerSample * channels;
+                    ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
+                    AudioBufFrame frame = new AudioBufFrame(mRemoteAudioFormat, byteBuffer, pts);
+                    mRemoteAudioSrcPin.onFrameAvailable(frame);
                     return true;
                 }
             });
@@ -481,6 +513,12 @@ public class AgoraRTCAdapter {
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
             RtcEngine.destroy();
             mRtcEngine = null;
+
+            // 释放所有SrcPin
+            // TODO: remote video source pin 需要何时释放？
+            mLocalAudioSrcPin.disconnect(true);
+            mRemoteAudioSrcPin.disconnect(true);
+            mLocalVideoSrcPin.disconnect(true);
         }
     }
 

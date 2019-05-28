@@ -69,17 +69,6 @@ struct ExtendedFilter {
   bool enabled;
 };
 
-// Enables the next generation AEC functionality. This feature replaces the
-// standard methods for echo removal in the AEC. This configuration only applies
-// to EchoCancellation and not EchoControlMobile. It can be set in the
-// constructor or using AudioProcessing::SetExtraOptions().
-struct NextGenerationAec {
-  NextGenerationAec() : enabled(false) {}
-  explicit NextGenerationAec(bool enabled) : enabled(enabled) {}
-  static const ConfigOptionID identifier = ConfigOptionID::kNextGenerationAec;
-  bool enabled;
-};
-
 // Enables delay-agnostic echo cancellation. This feature relies on internally
 // estimated delays between the process and reverse streams, thus not relying
 // on reported system delays. This configuration only applies to
@@ -426,27 +415,18 @@ class AudioProcessing {
   // Starts recording debugging information to a file specified by |filename|,
   // a NULL-terminated string. If there is an ongoing recording, the old file
   // will be closed, and recording will continue in the newly specified file.
-  // An already existing file will be overwritten without warning. A maximum
-  // file size (in bytes) for the log can be specified. The logging is stopped
-  // once the limit has been reached. If max_log_size_bytes is set to a value
-  // <= 0, no limit will be used.
+  // An already existing file will be overwritten without warning.
   static const size_t kMaxFilenameSize = 1024;
-  virtual int StartDebugRecording(const char filename[kMaxFilenameSize],
-                                  int64_t max_log_size_bytes) = 0;
+  virtual int StartDebugRecording(const char filename[kMaxFilenameSize]) = 0;
 
   // Same as above but uses an existing file handle. Takes ownership
   // of |handle| and closes it at StopDebugRecording().
-  virtual int StartDebugRecording(FILE* handle, int64_t max_log_size_bytes) = 0;
-
-  // TODO(ivoc): Remove this function after Chrome stops using it.
-  int StartDebugRecording(FILE* handle) {
-    return StartDebugRecording(handle, -1);
-  }
+  virtual int StartDebugRecording(FILE* handle) = 0;
 
   // Same as above but uses an existing PlatformFile handle. Takes ownership
   // of |handle| and closes it at StopDebugRecording().
   // TODO(xians): Make this interface pure virtual.
-  virtual int StartDebugRecordingForPlatformFile(rtc::PlatformFile handle) {
+  virtual int StartDebugRecordingForPlatformFile(rtc::PlatformFile /*handle*/) {
       return -1;
   }
 
@@ -925,9 +905,6 @@ class NoiseSuppression {
   // averaged over output channels. This is not supported in fixed point, for
   // which |kUnsupportedFunctionError| is returned.
   virtual float speech_probability() const = 0;
-
-  // Returns the noise estimate per frequency bin averaged over all channels.
-  virtual std::vector<float> NoiseEstimate() = 0;
 
  protected:
   virtual ~NoiseSuppression() {}

@@ -30,12 +30,18 @@ public class ITbEffectProcessor {
         }
     }
 
-    public int process(int type, ByteBuffer byteBuffer, int length, int channels, int samplesPerSec) {
+    public int process(int type, ByteBuffer buffer, int length, int channels, int samplesPerSec) {
+        byte[] byteArray = null;
+        ByteBuffer byteBuffer = buffer;
+        if (buffer != null && buffer.hasArray()) {
+            byteArray = buffer.array();
+            byteBuffer = null;
+        }
         if (type == 1) {
-            int r = process1(null, byteBuffer, length, channels, samplesPerSec);
+            int r = process1(byteArray, byteBuffer, length, channels, samplesPerSec);
             return r;
         } else {
-            int r = process2(null, byteBuffer, length, channels, samplesPerSec);
+            int r = process2(byteArray, byteBuffer, length, channels, samplesPerSec);
             return r;
         }
     }

@@ -1,6 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
 #include <pthread.h>
+#include <stdlib.h>
 
 typedef struct threadLock_{
     pthread_mutex_t m;

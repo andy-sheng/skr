@@ -1,5 +1,7 @@
 package com.zq.mediaengine.framework;
 
+import com.zq.mediaengine.util.FrameBufferCache;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -11,13 +13,24 @@ public class ImgBufFrame extends AVBufFrame {
      */
     public ImgBufFormat format;
 
+    public ImgBufFrame(ImgBufFormat format, FrameBufferCache frameBufferCache,
+                       ByteBuffer buf, long pts) {
+        super(frameBufferCache);
+        this.format = format;
+        this.buf = buf;
+        this.pts = pts;
+        this.flags = 0;
+    }
+
     public ImgBufFrame(ImgBufFormat format, ByteBuffer buf, long pts) {
         this.format = format;
         this.buf = buf;
         this.pts = pts;
+        this.flags = 0;
     }
 
     public ImgBufFrame(ImgBufFrame frame) {
+        super(frame);
         this.format = frame.format;
         this.buf = frame.buf;
         this.pts = frame.pts;

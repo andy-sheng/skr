@@ -35,11 +35,11 @@ AudioFilterBase* AudioBase::getFilter() {
     return mFilter;
 }
 
-void AudioFilterBase::initFifo(int sampleRate, int channels) {
+void AudioFilterBase::initFifo(int sampleFmt, int sampleRate, int channels) {
     if (mFifoBuffer) {
         return;
     }
-    mFrameSize = channels * 2;
+    mFrameSize = channels * getBytesPerSample(sampleFmt);
     mFifoSize = sampleRate * 300 / 1000;     // 300ms
     mFifoBuffer = (uint8_t *) malloc((size_t) (mFrameSize * mFifoSize));
     audio_utils_fifo_init(&mFifo, (size_t) mFifoSize, (size_t) mFrameSize, mFifoBuffer);
@@ -111,23 +111,23 @@ int AudioFilterBase::read(uint8_t* buf, int size) {
     return read * mFrameSize;
 }
 
-int AudioFilterBase::filterInit(int sampleRate, int channels, int bufferSamples) {
+int AudioFilterBase::filterInit(int sampleFmt, int sampleRate, int channels, int bufferSamples) {
     // init fifo for java read
-    initFifo(sampleRate, channels);
+    initFifo(sampleFmt, sampleRate, channels);
     mStopped = false;
 
     int result = 0;
     pthread_mutex_lock(&mFilterLock);
     if (mFilter && !mFilterInited) {
-        result = mFilter->init(mFilterIdx, sampleRate, channels, bufferSamples);
+        result = mFilter->init(mFilterIdx, sampleFmt, sampleRate, channels, bufferSamples);
         mFilterInited = true;
     }
     pthread_mutex_unlock(&mFilterLock);
     return result;
 }
 
-int AudioFilterBase::filterProcess(int sampleRate, int channels, int bufferSamples,
-                                   uint8_t* inBuf, int inSize) {
+int AudioFilterBase::filterProcess(int sampleFmt, int sampleRate, int channels,
+                                   int bufferSamples, uint8_t* inBuf, int inSize) {
     if (mFifoBuffer && !mStopped) {
         // write fifo
         int count = inSize / mFrameSize;
@@ -145,7 +145,7 @@ int AudioFilterBase::filterProcess(int sampleRate, int channels, int bufferSampl
     pthread_mutex_lock(&mFilterLock);
     if (mFilter) {
         if (!mFilterInited) {
-            mFilter->init(mFilterIdx, sampleRate, channels, bufferSamples);
+            mFilter->init(mFilterIdx, sampleFmt, sampleRate, channels, bufferSamples);
             mFilterInited = true;
         }
         result = mFilter->process(mFilterIdx, inBuf, inSize);

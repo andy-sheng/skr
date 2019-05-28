@@ -3,6 +3,7 @@ package com.zq.mediaengine.filter.imgtex;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.PinAdapter;
@@ -20,20 +21,21 @@ import java.util.List;
  */
 public class ImgTexFilterMgt {
     private static final String TAG = "ImgTexFilterMgt";
+    private static final boolean VERBOSE = false;
 
-    public static final int IMG_FILTER_BEAUTY_DISABLE = 0;
-    public static final int IMG_FILTER_BEAUTY_SOFT = 16;
-    public static final int IMG_FILTER_BEAUTY_SKINWHITEN = 17;
-    public static final int IMG_FILTER_BEAUTY_ILLUSION = 18;
-    public static final int IMG_FILTER_BEAUTY_DENOISE = 19;
-    public static final int IMG_FILTER_BEAUTY_SMOOTH = 20;
-    public static final int IMG_FILTER_BEAUTY_SOFT_EXT = 21;
-    public static final int IMG_FILTER_BEAUTY_SOFT_SHARPEN = 22;
-    public static final int IMG_FILTER_BEAUTY_PRO = 23;
-    public static final int IMG_FILTER_BEAUTY_PRO1 = 24;
-    public static final int IMG_FILTER_BEAUTY_PRO2 = 25;
-    public static final int IMG_FILTER_BEAUTY_PRO3 = 26;
-    public static final int IMG_FILTER_BEAUTY_PRO4 = 27;
+    public static final int KSY_FILTER_BEAUTY_DISABLE = 0;
+    public static final int KSY_FILTER_BEAUTY_SOFT = 16;
+    public static final int KSY_FILTER_BEAUTY_SKINWHITEN = 17;
+    public static final int KSY_FILTER_BEAUTY_ILLUSION = 18;
+    public static final int KSY_FILTER_BEAUTY_DENOISE = 19;
+    public static final int KSY_FILTER_BEAUTY_SMOOTH = 20;
+    public static final int KSY_FILTER_BEAUTY_SOFT_EXT = 21;
+    public static final int KSY_FILTER_BEAUTY_SOFT_SHARPEN = 22;
+    public static final int KSY_FILTER_BEAUTY_PRO = 23;
+    public static final int KSY_FILTER_BEAUTY_PRO1 = 24;
+    public static final int KSY_FILTER_BEAUTY_PRO2 = 25;
+    public static final int KSY_FILTER_BEAUTY_PRO3 = 26;
+    public static final int KSY_FILTER_BEAUTY_PRO4 = 27;
 
     private Context mContext;
     private PinAdapter<ImgTexFrame> mInputFilter;
@@ -92,45 +94,45 @@ public class ImgTexFilterMgt {
      * Set an builtin gpu image filer to use, the previous ones would be released automatically.
      *
      * @param glRender  audio filter to set, null means disable filter
-     * @param filterIdx builtin filter index, see IMG_FILTER_BEAUTY_XXX
+     * @param filterIdx builtin filter index, see KSY_FILTER_BEAUTY_XXX
      */
     public void setFilter(GLRender glRender, int filterIdx) {
         ImgFilterBase filter;
         switch (filterIdx) {
-            case IMG_FILTER_BEAUTY_SOFT:
+            case KSY_FILTER_BEAUTY_SOFT:
                 filter = new ImgBeautySoftFilter(glRender);
                 break;
-            case IMG_FILTER_BEAUTY_SKINWHITEN:
+            case KSY_FILTER_BEAUTY_SKINWHITEN:
                 filter = new ImgBeautySkinWhitenFilter(glRender);
                 break;
-            case IMG_FILTER_BEAUTY_ILLUSION:
+            case KSY_FILTER_BEAUTY_ILLUSION:
                 filter = new ImgBeautyIllusionFilter(glRender);
                 break;
-            case IMG_FILTER_BEAUTY_DENOISE:
+            case KSY_FILTER_BEAUTY_DENOISE:
                 filter = new ImgBeautyDenoiseFilter(glRender);
                 break;
-            case IMG_FILTER_BEAUTY_SOFT_EXT:
+            case KSY_FILTER_BEAUTY_SOFT_EXT:
                 filter = new ImgBeautySoftExtFilter(glRender);
                 break;
-            case IMG_FILTER_BEAUTY_SOFT_SHARPEN:
+            case KSY_FILTER_BEAUTY_SOFT_SHARPEN:
                 filter = new ImgBeautySoftSharpenFilter(glRender);
                 break;
-            case IMG_FILTER_BEAUTY_SMOOTH:
+            case KSY_FILTER_BEAUTY_SMOOTH:
                 filter = new ImgBeautySmoothFilter(glRender, mContext);
                 break;
-            case IMG_FILTER_BEAUTY_PRO:
+            case KSY_FILTER_BEAUTY_PRO:
                 filter = new ImgBeautyProFilter(glRender, mContext);
                 break;
-            case IMG_FILTER_BEAUTY_PRO1:
+            case KSY_FILTER_BEAUTY_PRO1:
                 filter = new ImgBeautyProFilter(glRender, mContext, 1);
                 break;
-            case IMG_FILTER_BEAUTY_PRO2:
+            case KSY_FILTER_BEAUTY_PRO2:
                 filter = new ImgBeautyProFilter(glRender, mContext, 2);
                 break;
-            case IMG_FILTER_BEAUTY_PRO3:
+            case KSY_FILTER_BEAUTY_PRO3:
                 filter = new ImgBeautyProFilter(glRender, mContext, 3);
                 break;
-            case IMG_FILTER_BEAUTY_PRO4:
+            case KSY_FILTER_BEAUTY_PRO4:
                 filter = new ImgBeautyProFilter(glRender, mContext, 4);
                 break;
             default:
@@ -138,6 +140,23 @@ public class ImgTexFilterMgt {
                 break;
         }
         setFilter(filter);
+    }
+
+    /**
+     * Set an gpu image filer to use. <br/>
+     * The previous ones would be released automatically.
+     *
+     * @param filter gpu image filter to set, null means disable filter
+     * @param autoRelease should added filters be auto released.
+     *                    If set to false, the all added filters should be released by user.
+     */
+    public void setFilter(ImgFilterBase filter, boolean autoRelease) {
+        List<ImgFilterBase> filters = null;
+        if (filter != null) {
+            filters = new LinkedList<>();
+            filters.add(filter);
+        }
+        setFilter(filters, autoRelease);
     }
 
     /**
@@ -177,8 +196,10 @@ public class ImgTexFilterMgt {
      * The previous ones would be released automatically.
      *
      * @param filters filter list to set, null or empty means disable filter
+     * @param autoRelease should added filters be auto released.
+     *                    If set to false, the all added filters should be released by user.
      */
-    public void setFilter(List<? extends ImgFilterBase> filters) {
+    public void setFilter(List<? extends ImgFilterBase> filters, boolean autoRelease) {
         if (mOnErrorListener != null && filters != null && !filters.isEmpty()) {
             for (ImgFilterBase filter : filters) {
                 filter.setOnErrorListener(mOnErrorListener);
@@ -187,7 +208,7 @@ public class ImgTexFilterMgt {
         synchronized (mFiltersLock) {
             if (!mFilters.isEmpty()) {
                 mFilters.get(mFilters.size() - 1).getSrcPin().disconnect(false);
-                mInputFilter.mSrcPin.disconnect(true);
+                mInputFilter.mSrcPin.disconnect(autoRelease);
                 mFilters.clear();
             } else if (filters != null && !filters.isEmpty()) {
                 mInputFilter.mSrcPin.disconnect(false);
@@ -212,7 +233,30 @@ public class ImgTexFilterMgt {
                 mFilters.addAll(filters);
             }
         }
-        uploadLog(filters);
+    }
+
+    /**
+     * Set gpu image filter in list, you can set a image group filter with this method,
+     * the filters set would be connected in order.<br/>
+     * The previous ones would be released automatically.
+     *
+     * @param filters filter list to set, null or empty means disable filter
+     */
+    public void setFilter(List<? extends ImgFilterBase> filters) {
+        setFilter(filters, true);
+    }
+
+    /**
+     * Replace the filter in filter list to new one.
+     *
+     * The replaced filter will be auto released after this call, and should not be reused.
+     *
+     * @param replaced  filter to be replaced, must not be null
+     * @param filter    filter to replace, null means disable the previous filter
+     * @throws InvalidParameterException the filter to be replaced not found
+     */
+    public void replaceFilter(@NonNull ImgFilterBase replaced, @Nullable ImgFilterBase filter) {
+        replaceFilter(replaced, filter, true);
     }
 
     /**
@@ -220,11 +264,17 @@ public class ImgTexFilterMgt {
      *
      * @param replaced filter to be replaced, must not be null
      * @param filter   filter to replace, null means disable the previous filter
+     * @param autoRelease should the replaced filter be auto released.
+     *                    If set to false, the replaced filter should be released by user.
      * @throws InvalidParameterException the filter to be replaced not found
      */
-    public void replaceFilter(@NonNull ImgFilterBase replaced, @Nullable ImgFilterBase filter)
+    public void replaceFilter(@NonNull ImgFilterBase replaced, @Nullable ImgFilterBase filter,
+                              boolean autoRelease)
             throws InvalidParameterException {
         synchronized (mFiltersLock) {
+            if (VERBOSE) {
+                Log.d(TAG, "replaceFilter " + replaced + " to " + filter);
+            }
             if (mFilters.isEmpty() || !mFilters.contains(replaced)) {
                 throw new InvalidParameterException("The filter to be replaced not found!");
             }
@@ -250,7 +300,7 @@ public class ImgTexFilterMgt {
                 nextSinkPin = mFilters.get(idx + 1).getSinkPin();
             }
             replaced.getSrcPin().disconnect(false);
-            preSrcPin.disconnect(false);
+            preSrcPin.disconnect(autoRelease);
             if (filter != null) {
                 preSrcPin.connect(filter.getSinkPin());
                 filter.getSrcPin().connect(nextSinkPin);
@@ -259,9 +309,6 @@ public class ImgTexFilterMgt {
                 preSrcPin.connect(nextSinkPin);
                 mFilters.remove(idx);
             }
-
-            // update log
-            uploadLog(mFilters);
         }
     }
 
@@ -279,6 +326,14 @@ public class ImgTexFilterMgt {
         }
 
         synchronized (mFiltersLock) {
+            if (VERBOSE) {
+                ImgFilterBase lastFilter = null;
+                if (mFilters.size() > 0) {
+                    lastFilter = mFilters.getLast();
+                }
+                Log.d(TAG, "addFilter " + filter + " after " + lastFilter);
+            }
+
             SrcPin<ImgTexFrame> preSrcPin;
             SinkPin<ImgTexFrame> nextSinkPin;
             if (mFilters.isEmpty()) {
@@ -295,9 +350,6 @@ public class ImgTexFilterMgt {
             preSrcPin.connect(filter.getSinkPin());
             filter.getSrcPin().connect(nextSinkPin);
             mFilters.add(filter);
-
-            // update log
-            uploadLog(mFilters);
         }
     }
 
@@ -320,6 +372,9 @@ public class ImgTexFilterMgt {
             if (mOnErrorListener != null) {
                 filter.setOnErrorListener(mOnErrorListener);
             }
+            if (VERBOSE) {
+                Log.d(TAG, "addFilter " + filter + " after " + previous);
+            }
 
             SinkPin<ImgTexFrame> nextSinkPin;
             int idx = mFilters.indexOf(previous);
@@ -336,9 +391,6 @@ public class ImgTexFilterMgt {
             previous.getSrcPin().connect(filter.getSinkPin());
             filter.getSrcPin().connect(nextSinkPin);
             mFilters.add(idx + 1, filter);
-
-            // update log
-            uploadLog(mFilters);
         }
     }
 
@@ -361,6 +413,9 @@ public class ImgTexFilterMgt {
             if (mOnErrorListener != null) {
                 filter.setOnErrorListener(mOnErrorListener);
             }
+            if (VERBOSE) {
+                Log.d(TAG, "addFilter " + filter + " before " + next);
+            }
 
             SrcPin<ImgTexFrame> preSrcPin;
             int idx = mFilters.indexOf(next);
@@ -373,9 +428,6 @@ public class ImgTexFilterMgt {
             preSrcPin.connect(filter.getSinkPin());
             filter.getSrcPin().connect(next.getSinkPin());
             mFilters.add(idx, filter);
-
-            // update log
-            uploadLog(mFilters);
         }
     }
 
@@ -391,6 +443,27 @@ public class ImgTexFilterMgt {
     /**
      * Set extra filter, which would be added after the filters set by setFilter.
      *
+     * The previous extra filters will be auto released, and should not be used again.
+     *
+     * @param filter extra filter to set
+     * @param autoRelease should the replaced filter be auto released.
+     *                    If set to false, the replaced filter should be released by user.
+     *
+     */
+    public void setExtraFilter(ImgFilterBase filter, boolean autoRelease) {
+        List<ImgFilterBase> filters = null;
+        if (filter != null) {
+            filters = new LinkedList<>();
+            filters.add(filter);
+        }
+        setExtraFilter(filters, autoRelease);
+    }
+
+    /**
+     * Set extra filter, which would be added after the filters set by setFilter.
+     *
+     * The previous extra filters will be auto released, and should not be used again.
+     *
      * @param filter extra filter to set
      */
     public void setExtraFilter(ImgFilterBase filter) {
@@ -405,14 +478,16 @@ public class ImgTexFilterMgt {
     /**
      * Set extra filters, which would be added after the filters set by setFilter.
      *
+     * The previous extra filters will be auto released, and should not be used again.
+     *
      * @param filters extra filters to set
      */
-    public void setExtraFilter(List<? extends ImgFilterBase> filters) {
+    public void setExtraFilter(List<? extends ImgFilterBase> filters, boolean autoRelease) {
         synchronized (mFiltersLock) {
             if (!mExtraFilters.isEmpty()) {
                 mExtraFilters.get(mExtraFilters.size() - 1).getSrcPin().disconnect(false);
                 if (mFilters.isEmpty()) {
-                    mInputFilter.mSrcPin.disconnect(true);
+                    mInputFilter.mSrcPin.disconnect(autoRelease);
                 } else {
                     mFilters.get(mFilters.size() - 1).getSrcPin().disconnect(true);
                 }
@@ -444,26 +519,26 @@ public class ImgTexFilterMgt {
                 mExtraFilters.addAll(filters);
             }
         }
-        uploadLog(filters);
     }
 
+    /**
+     * Set extra filters, which would be added after the filters set by setFilter.
+     *
+     * The previous extra filters will be auto released, and should not be used again.
+     *
+     * @param filters extra filters to set
+     */
+    public void setExtraFilter(List<? extends ImgFilterBase> filters) {
+        setExtraFilter(filters, true);
+    }
+
+    /**
+     * Get current set extra filters.
+     *
+     * @return current set extra filters.
+     */
     public List<ImgFilterBase> getExtraFilters() {
         return mExtraFilters;
-    }
-
-    private void uploadLog(List<? extends ImgFilterBase> filters) {
-        if (filters == null || filters.size() <= 0) {
-            return;
-        }
-        for (int i = 0; i < filters.size(); i++) {
-            if (filters.get(i) != null) {
-                if (filters.get(i) instanceof ImgBeautySpecialEffectsFilter) {
-                    ImgBeautySpecialEffectsFilter filter = (ImgBeautySpecialEffectsFilter)
-                            filters.get(i);
-                    filter.setTakeEffect(true);
-                }
-            }
-        }
     }
 
     public void release() {

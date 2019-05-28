@@ -16,7 +16,7 @@ import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.ImgPacket;
 import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
-import com.zq.mediaengine.framework.VideoEncodeConfig;
+import com.zq.mediaengine.framework.VideoCodecFormat;
 import com.zq.mediaengine.util.gles.EglCore;
 import com.zq.mediaengine.util.gles.EglWindowSurface;
 import com.zq.mediaengine.util.gles.GLRender;
@@ -46,9 +46,12 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
     private float mFps;
     private BlockingQueue<Long> mPtsQueue;
 
+    // out format
+    private VideoCodecFormat mOutFormat;
+
     public MediaCodecSurfaceEncoder(GLRender glRender) {
         mGLRender = glRender;
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mOnReadyListener);
         mPtsQueue = new ArrayBlockingQueue<>(128);
 
         // default use sync encoding mode
@@ -56,54 +59,70 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
     }
 
     @Override
-    public int getEncoderType() {
-        return AVConst.MEDIA_TYPE_VIDEO;
-    }
-
-    @Override
     public void release() {
-        mGLRender.removeListener(mGLRenderListener);
+        mGLRender.removeListener(mOnReadyListener);
         super.release();
     }
 
     @Override
-    protected int doStart(Object encodeConfig) {
-        VideoEncodeConfig config = (VideoEncodeConfig) encodeConfig;
+    protected int doStart(Object encodeFormat) {
+        VideoCodecFormat format = (VideoCodecFormat) encodeFormat;
 
         String mime;
-        if (config.codecId == AVConst.CODEC_ID_AVC) {
+        if (format.codecId == AVConst.CODEC_ID_AVC) {
             mime = "video/avc";
-        } else if (config.codecId == AVConst.CODEC_ID_HEVC) {
+        } else if (format.codecId == AVConst.CODEC_ID_HEVC) {
             mime = "video/hevc";
         } else {
             return ENCODER_ERROR_UNSUPPORTED;
         }
 
+        try {
+            // Create a MediaCodec encoder
+            mEncoder = MediaCodec.createEncoderByType(mime);
+        } catch (Exception e) {
+            if (format.codecId == AVConst.CODEC_ID_HEVC) {
+                //fallback to avc
+                Log.e(TAG, "do not support hevc, fallback to avc");
+                format.codecId = AVConst.CODEC_ID_AVC;
+                mime = "video/avc";
+            }
+            try {
+                mEncoder = MediaCodec.createEncoderByType(mime);
+            } catch (Exception ex) {
+                Log.e(TAG, "Failed to start MediaCodec surface encoder");
+                e.printStackTrace();
+                return ENCODER_ERROR_UNSUPPORTED;
+            }
+
+        }
+
         MediaFormat mediaFormat = MediaFormat.createVideoFormat(mime,
-                (config.width + 15) / 16 * 16, (config.height + 1) / 2 * 2);
+                (format.width + 15) / 16 * 16, (format.height + 1) / 2 * 2);
         mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
                 MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, config.bitrate);
+        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, format.bitrate);
+        mediaFormat.setInteger("bitrate-mode", format.bitrateMode);
         mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE,
-                (int) (config.frameRate + 0.5f));
+                (int) (format.frameRate + 0.5f));
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
             mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL,
-                    (int) (config.iFrameInterval + 0.5f));
+                    (int) (format.iFrameInterval + 0.5f));
         } else {
-            mediaFormat.setFloat(MediaFormat.KEY_I_FRAME_INTERVAL, config.iFrameInterval);
+            mediaFormat.setFloat(MediaFormat.KEY_I_FRAME_INTERVAL, format.iFrameInterval);
         }
         // avc profile
         int profile = MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline;
-        if (config.codecId == AVConst.CODEC_ID_AVC) {
+        if (format.codecId == AVConst.CODEC_ID_AVC) {
             int level = MediaCodecInfo.CodecProfileLevel.AVCLevel31;
-            if (config.width * config.height > 1280 * 720) {
+            if (format.width * format.height > 1280 * 720) {
                 level = MediaCodecInfo.CodecProfileLevel.AVCLevel4;
             }
-            switch (config.profile) {
-                case AVConst.PROFILE_H264_HIGH:
+            switch (format.profile) {
+                case VideoCodecFormat.ENCODE_PROFILE_HIGH_PERFORMANCE:
                     profile = MediaCodecInfo.CodecProfileLevel.AVCProfileHigh;
                     break;
-                case AVConst.PROFILE_H264_MAIN:
+                case VideoCodecFormat.ENCODE_PROFILE_BALANCE:
                     profile = MediaCodecInfo.CodecProfileLevel.AVCProfileMain;
                     break;
                 default:
@@ -115,13 +134,12 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
         Log.d(TAG, "MediaFormat: " + mediaFormat);
 
         try {
-            // Create a MediaCodec encoder, and configure it with our format.  Get a Surface
+            // configure MediaCodec with our format.  Get a Surface
             // we can use for input and wrap it with a class that handles the EGL work.
-            mEncoder = MediaCodec.createEncoderByType(mime);
             try {
                 mEncoder.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             } catch (Exception e) {
-                if (config.codecId == AVConst.CODEC_ID_AVC &&
+                if (format.codecId == AVConst.CODEC_ID_AVC &&
                         profile != MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline) {
                     // retry with baseline profile
                     profile = MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline;
@@ -138,16 +156,20 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
             e.printStackTrace();
             return ENCODER_ERROR_UNSUPPORTED;
         }
+
         // for dts calculate
-        mFps = config.frameRate;
+        mFps = format.frameRate;
         mPtsQueue.clear();
 
-        if (mTransWorkMode) {
-            VideoEncodeConfig cfg = new VideoEncodeConfig(config);
-            ImgPacket packet = new ImgPacket(cfg, null, 0, 0);
-            packet.flags |= AVConst.FLAG_CODEC_CONFIG;
-            mSrcPin.onFrameAvailable(packet);
-        }
+        // trigger format changed event
+        int width = mediaFormat.getInteger("width");
+        int height = mediaFormat.getInteger("height");
+        VideoCodecFormat outFormat = new VideoCodecFormat((VideoCodecFormat) mEncodeFormat);
+        outFormat.width = width;
+        outFormat.height = height;
+        mOutFormat = outFormat;
+        onEncodedFormatChanged(mOutFormat);
+
         return 0;
     }
 
@@ -195,37 +217,27 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
     @Override
     protected boolean updateEncodeFormat(Object src, Object dst) {
         ImgTexFormat imgTexFormat = (ImgTexFormat) src;
-        VideoEncodeConfig encodeConfig = (VideoEncodeConfig) dst;
-        encodeConfig.width = imgTexFormat.width;
-        encodeConfig.height = imgTexFormat.height;
+        VideoCodecFormat encodeFormat = (VideoCodecFormat) dst;
+        encodeFormat.width = imgTexFormat.width;
+        encodeFormat.height = imgTexFormat.height;
         return true;
     }
 
     @Override
     protected void doFormatChanged(Object format) {
         ImgTexFormat imgTexFormat = (ImgTexFormat) format;
-        VideoEncodeConfig encodeConfig = (VideoEncodeConfig) mEncodeConfig;
+        VideoCodecFormat encodeFormat = (VideoCodecFormat) mEncodeFormat;
         if (getState() == ENCODER_STATE_ENCODING) {
-            if (encodeConfig.width != imgTexFormat.width ||
-                    encodeConfig.height != imgTexFormat.height) {
+            if (encodeFormat.width != imgTexFormat.width ||
+                    encodeFormat.height != imgTexFormat.height) {
                 Log.d(TAG, "restart encoder");
                 doFlush();
                 doStop();
-                encodeConfig.width = imgTexFormat.width;
-                encodeConfig.height = imgTexFormat.height;
-                doStart(mEncodeConfig);
+                encodeFormat.width = imgTexFormat.width;
+                encodeFormat.height = imgTexFormat.height;
+                doStart(mEncodeFormat);
             }
         }
-    }
-
-    @Override
-    protected void updateOutFormat(MediaFormat mediaFormat) {
-        int width = mediaFormat.getInteger("width");
-        int height = mediaFormat.getInteger("height");
-        VideoEncodeConfig outConfig = new VideoEncodeConfig((VideoEncodeConfig) mEncodeConfig);
-        outConfig.width = width;
-        outConfig.height = height;
-        mOutConfig = outConfig;
     }
 
     @Override
@@ -233,7 +245,7 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
         boolean isKeyFrame = false;
         boolean ignoreDts = buffer == null || buffer.limit() == 0;
         long pts = bufferInfo.presentationTimeUs / 1000;
-        ImgPacket packet = new ImgPacket((VideoEncodeConfig) mOutConfig, buffer, pts, pts);
+        ImgPacket packet = new ImgPacket(mOutFormat, buffer, pts, pts);
 
         if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
             packet.flags |= AVConst.FLAG_END_OF_STREAM;
@@ -414,23 +426,11 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
         GLES20.glUseProgram(0);
     }
 
-    private GLRender.GLRenderListener mGLRenderListener = new GLRender.GLRenderListener() {
+    private GLRender.OnReadyListener mOnReadyListener = new GLRender.OnReadyListener() {
         @Override
         public void onReady() {
             mEglInited = false;
             mProgramId = 0;
-        }
-
-        @Override
-        public void onSizeChanged(int width, int height) {
-        }
-
-        @Override
-        public void onDrawFrame() {
-        }
-
-        @Override
-        public void onReleased() {
         }
     };
 }

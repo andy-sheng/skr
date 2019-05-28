@@ -2,8 +2,8 @@
 #include <jni.h>
 /* Header for class com_zq_mediaengine_capture_audio_KSYAudioSLRecord */
 
-#ifndef _Included_com_zq_mediaengine_capture_audio_UnionAudioSLRecord
-#define _Included_com_zq_mediaengine_capture_audio_UnionAudioSLRecord
+#ifndef _Included_com_zq_mediaengine_capture_audio_KSYAudioSLRecord
+#define _Included_com_zq_mediaengine_capture_audio_KSYAudioSLRecord
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -12,7 +12,7 @@ extern "C" {
  * Method:    _init
  * Signature: (III)J
  */
-JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord__1init
+JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1init
         (JNIEnv *, jobject, jint, jint, jint);
 
 /*
@@ -20,7 +20,7 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord
  * Method:    _setVolume
  * Signature: (JF)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord__1setVolume
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1setVolume
         (JNIEnv *, jobject, jlong, jfloat);
 
 /*
@@ -28,7 +28,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord_
  * Method:    _start
  * Signature: (J)I
  */
-JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord__1start
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1start
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -36,7 +36,7 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord_
  * Method:    _stop
  * Signature: (J)I
  */
-JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord__1stop
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1stop
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -44,7 +44,7 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord_
  * Method:    _setEnableLatencyTest
  * Signature: (JZ)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord__1setEnableLatencyTest
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1setEnableLatencyTest
         (JNIEnv *, jobject, jlong, jboolean);
 
 /*
@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord_
  * Method:    _read
  * Signature: (JLjava/nio/ByteBuffer;I)I
  */
-JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord__1read
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1read
         (JNIEnv *, jobject, jlong, jobject, jint);
 
 /*
@@ -60,7 +60,7 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord_
  * Method:    _release
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_UnionAudioSLRecord__1release
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_capture_audio_KSYAudioSLRecord__1release
         (JNIEnv *, jobject, jlong);
 
 #ifdef __cplusplus

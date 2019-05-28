@@ -30,18 +30,22 @@ JNIEXPORT jlong JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_create
  * Signature: (JLjava/nio/ByteBuffer;)I
  */
 JNIEXPORT jobject JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_processStream
-        (JNIEnv *env, jobject thiz, jlong instance, jobject inBuf, jint insize) {
+        (JNIEnv *env, jobject thiz, jlong instance, jint idx, jobject inBuf, jint insize) {
     APMWrapper *apmWrapper = getInstance(instance);
     short *buf = (short *) env->GetDirectBufferAddress(inBuf);
 
     int16_t *outBuf = NULL;
     jobject outByteBuffer = NULL;
-    int outSize = apmWrapper->ProcessStream(&outBuf, buf, insize);
 
-    if (outSize > 0 && outBuf) {
-        outByteBuffer = env->NewDirectByteBuffer((int8_t *) outBuf, outSize);
+    if (idx == 0) {
+        int outSize = apmWrapper->ProcessStream(&outBuf, buf, insize);
+        if (outSize > 0 && outBuf) {
+            outByteBuffer = env->NewDirectByteBuffer((int8_t *) outBuf, outSize);
+        } else {
+            LOGE("[APM][processStream] APM processStream failed: %d", outSize);
+        }
     } else {
-        LOGE("[APM][processStream] APM processStream failed: %d", outSize);
+        apmWrapper->AnalyzeReverseStream(buf, insize);
     }
 
     return outByteBuffer;
@@ -100,14 +104,55 @@ JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setVADLik
         (JNIEnv *env, jobject thiz, jlong instance, jint likelihood) {
     return getInstance(instance)->SetVADLikelihood(likelihood);
 }
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    enableAECM
+ * Signature: (JZ)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_enableAECM
+        (JNIEnv *env, jobject thiz, jlong instance, jboolean enable) {
+    return getInstance(instance)->EnableAECM(enable);
+}
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    enableAEC
+ * Signature: (JZ)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_enableAEC
+        (JNIEnv *env, jobject thiz, jlong instance, jboolean enable) {
+    return getInstance(instance)->EnableAEC(enable);
+}
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    setRoutingMode
+ * Signature: (JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setRoutingMode
+        (JNIEnv *env, jobject thiz, jlong instance, jint mode) {
+    return getInstance(instance)->SetRoutingMode(mode);
+}
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_APMWrapper
+ * Method:    setStreamDelay
+ * Signature: (JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_setStreamDelay
+        (JNIEnv *env, jobject thiz, jlong instance, jint delay) {
+    return getInstance(instance)->SetStreamDelay(delay);
+}
+
 /*
  * Class:     com_zq_mediaengine_filter_audio_APMWrapper
  * Method:    config
  * Signature: (JI)I
  */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_filter_audio_APMWrapper_config
-        (JNIEnv *env, jobject, jlong instance, jint samplerate, jint channels) {
-    return getInstance(instance)->Config(samplerate, channels);
+        (JNIEnv *env, jobject, jlong instance, jint idx, jint sampleFmt, jint samplerate, jint channels) {
+    return getInstance(instance)->Config(idx, sampleFmt, samplerate, channels);
 }
 
 /*

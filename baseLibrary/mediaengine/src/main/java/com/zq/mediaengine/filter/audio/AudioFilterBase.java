@@ -200,8 +200,8 @@ public abstract class AudioFilterBase {
                     attachTo(0, frame.format.nativeModule, true);
                 }
             } else if (frame.buf != null) {
-                if (!frame.buf.isDirect()) {
-                    Log.e(TAG, "input frame must use direct ByteBuffer");
+                if (!frame.buf.isDirect() && !frame.buf.hasArray()) {
+                    Log.e(TAG, "input frame must be direct ByteBuffer or array backed ByteBuffer");
                 }
                 outFrame = doFilter(frame);
             }

@@ -21,8 +21,8 @@ public class AudioSLPlayer implements IPcmPlayer {
         return mInstance;
     }
 
-    public int config(int sampleRate, int channels, int bufferSamples, int fifoSizeInMs) {
-        return _config(mInstance, sampleRate, channels, bufferSamples, fifoSizeInMs);
+    public int config(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs) {
+        return _config(mInstance, sampleFmt, sampleRate, channels, bufferSamples, fifoSizeInMs);
     }
 
     public void attachTo(int idx, long ptr, boolean detach) {
@@ -66,6 +66,16 @@ public class AudioSLPlayer implements IPcmPlayer {
         return write(buffer, false);
     }
 
+    @Override
+    public int flush() {
+        return 0;
+    }
+
+    @Override
+    public long getPosition() {
+        return 0;
+    }
+
     public int write(ByteBuffer buffer, boolean nonBlock) {
         return _write(mInstance, buffer, buffer.limit(), nonBlock);
     }
@@ -75,7 +85,7 @@ public class AudioSLPlayer implements IPcmPlayer {
     }
 
     private native long _init();
-    private native int _config(long instance, int sampleRate, int channels,
+    private native int _config(long instance, int sampleFmt, int sampleRate, int channels,
                                int bufferSamples, int fifoSizeInMs);
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
     private native void _setTuneLatency(long instance, boolean tuneLatency);

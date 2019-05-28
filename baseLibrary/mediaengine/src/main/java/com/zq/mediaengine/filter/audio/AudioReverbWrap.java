@@ -19,8 +19,8 @@ public class AudioReverbWrap {
         return mReverbInstance;
     }
 
-    public void config(int sampleRate, int channels) {
-        config(mReverbInstance, sampleRate, channels);
+    public void config(int sampleFmt, int sampleRate, int channels) {
+        config(mReverbInstance, sampleFmt, sampleRate, channels);
     }
 
     public void attachTo(int idx, long ptr, boolean detach) {
@@ -48,7 +48,7 @@ public class AudioReverbWrap {
     }
 
     private native long create();
-    private native void config(long reverbInstance, int sampleRate, int channels);
+    private native void config(long reverbInstance, int sampleFmt, int sampleRate, int channels);
     private native void attachTo(long reverbInstance, int idx, long ptr, boolean detach);
     private native boolean setLevel(long reverbInstance, int level);
     private native int read(long reverbInstance, ByteBuffer buf, int size);

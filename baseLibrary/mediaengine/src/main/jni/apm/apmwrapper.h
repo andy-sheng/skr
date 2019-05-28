@@ -9,6 +9,7 @@
 #include "webrtc/modules/audio_processing/include/audio_processing.h"
 #include "webrtc/modules/include/module_common_types.h"
 #include "audio/AudioFilterBase.h"
+#include "audio/audio_resample.h"
 #include <algorithm>
 
 using namespace std;
@@ -28,6 +29,12 @@ const int VAD_LIKELIHOOD_VERYLOW = VoiceDetection::kVeryLowLikelihood;
 const int VAD_LIKELIHOOD_LOW = VoiceDetection::kLowLikelihood;
 const int VAD_LIKELIHOOD_MODERATE = VoiceDetection::kModerateLikelihood;
 const int VAD_LIKELIHOOD_HIGH = VoiceDetection::kHighLikelihood;
+
+const int AEC_ROUTING_MODE_HEADSET = EchoControlMobile::kQuietEarpieceOrHeadset;
+const int AEC_ROUTING_MODE_EARPIECE = EchoControlMobile::kEarpiece;
+const int AEC_ROUTING_MODE_LOUD_EARPIECE = EchoControlMobile::kLoudEarpiece;
+const int AEC_ROUTING_MODE_SPEAKER_PHONE = EchoControlMobile::kSpeakerphone;
+const int AEC_ROUTING_MODE_LOUD_SPEAKER_PHONE = EchoControlMobile::kLoudSpeakerphone;
 
 class APMWrapper : public AudioFilterBase {
 public:
@@ -51,23 +58,40 @@ public:
 
     int SetVADLikelihood(int likelihood);
 
-    int Config(int samplerate, int channels);
+    int EnableAECM(bool enable);
 
-    int init(int idx, int sampleRate, int channels, int bufferSamples);
+    int EnableAEC(bool enable);
+
+    int SetRoutingMode(int mode);
+
+    int SetStreamDelay(int delay);
+
+    int AnalyzeReverseStream(int16_t *data, int len);
+
+    int Config(int idx, int sampleFmt, int samplerate, int channels);
+
+    int init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples);
 
     int process(int idx, uint8_t *inBuf, int inSize);
 
 private:
     AudioProcessing *mAPM;
-    AudioFrame *mAudioFrame;  //This class holds up to 60 ms of super-wideband (32 kHz) stereo audio
+    int mSamplesPerFrame[2];    // 10ms frame samples
+    int mBufferSamples[2];      // 每次音频处理送进来的samples数
+    audio_utils_fifo mFifo[2];
+    int mFrameSize[2];
+    int mFifoSize[2];
+    uint8_t *mFifoBuffer[2];
+    int mInSampleFmt[2];
 
-    int mSamplesPerFrame;
-    int mBufferSamples;
-    audio_utils_fifo mFifo;
-    int mFrameSize;
-    int mFifoSize;
-    uint8_t *mFifoBuffer;
-    int16_t *mOutData;
+    KSYSwr *mResample[2];
+    KSYSwr *mOutResample;
+    int16_t *mInData[2];
+    float **mTempData[2];
+    StreamConfig mConfig[2];
+
+    bool mHasVoice;
+    int mAnalogLevel;
 };
 
 #endif //KSYAPMDEMO_APMWRAPPER_H

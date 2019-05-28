@@ -13,7 +13,8 @@ AudioMixer::AudioMixer() {
     mMainIdx = 0;
     mMainFrameReady = false;
     mMute = false;
-    mOutputVolume = 1.0f;
+    mLeftOutputVolume = 1.0f;
+    mRightOutputVolume = 1.0f;
     mBuffer = NULL;
     mBufSize = 0;
     pthread_mutex_init(&mLock, NULL);
@@ -21,7 +22,8 @@ AudioMixer::AudioMixer() {
         mChannelParams[i] = NULL;
         mChannelFifos[i] = NULL;
         mChannelSwrs[i] = NULL;
-        mInputVolume[i] = 1.0f;
+        mInputVolume[i][0] = 1.0f;
+        mInputVolume[i][1] = 1.0f;
     }
 
     // for blocking mode
@@ -55,7 +57,8 @@ void AudioMixer::fifoSwrInit(int idx) {
     if (dcp->fifoSizeInMs > scp->fifoSizeInMs) {
         fifoSizeInMs = dcp->fifoSizeInMs;
     }
-    mChannelFifos[idx] = fifoInit(dcp->sampleRate, dcp->channels, dcp->bufferSamples, fifoSizeInMs);
+    mChannelFifos[idx] = fifoInit(dcp->sampleFmt, dcp->sampleRate, dcp->channels,
+                                  dcp->bufferSamples, fifoSizeInMs);
     if (scp->sampleRate != dcp->sampleRate || scp->channels != dcp->channels) {
         mChannelSwrs[idx] = ksy_swr_init(scp->sampleRate, scp->channels, AV_SAMPLE_FMT_S16,
                                          dcp->sampleRate, dcp->channels, AV_SAMPLE_FMT_S16);
@@ -72,8 +75,8 @@ void AudioMixer::fifoSwrRelease(int idx) {
     }
 }
 
-AudioMixer::ChannelFifo* AudioMixer::fifoInit(int sampleRate, int channels, int bufferSamples,
-                                              int fifoSizeInMs) {
+AudioMixer::ChannelFifo* AudioMixer::fifoInit(int sampleFmt, int sampleRate, int channels,
+                                              int bufferSamples, int fifoSizeInMs) {
     ChannelFifo* cf = (ChannelFifo*) calloc(1, sizeof(ChannelFifo));
     cf->frameSize = channels * 2;
     cf->fifoSamples = bufferSamples * 4;
@@ -111,9 +114,13 @@ void AudioMixer::fifoRelease(AudioMixer::ChannelFifo *cf) {
     }
 }
 
-int AudioMixer::config(int idx, int sampleRate, int channels, int bufferSamples,
+int AudioMixer::config(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples,
                        int fifoSizeInMs, bool nativeMode) {
     if (idx < 0 || idx >= CHN_NUM) {
+        return -1;
+    }
+    if (sampleFmt != SAMPLE_FMT_S16) {
+        LOGE("AudioMixer only support SAMPLE_FMT_S16!");
         return -1;
     }
 
@@ -122,14 +129,15 @@ int AudioMixer::config(int idx, int sampleRate, int channels, int bufferSamples,
     if (cp == NULL) {
         cp = (ChannelParam *) calloc(1, sizeof(ChannelParam));
     }
+    cp->sampleFmt = sampleFmt;
     cp->sampleRate = sampleRate;
     cp->channels = channels;
     cp->bufferSamples = bufferSamples;
     cp->fifoSizeInMs = fifoSizeInMs;
     cp->frameSize = channels * 2;
     mChannelParams[idx] = cp;
-    LOGD("config: idx=%d sampleRate=%d channels=%d bufferSamples=%d fifoSizeInMs=%d",
-         idx, sampleRate, channels, bufferSamples, fifoSizeInMs);
+    LOGD("config: idx=%d sampleFmt=%d sampleRate=%d channels=%d bufferSamples=%d fifoSizeInMs=%d",
+         idx, sampleFmt, sampleRate, channels, bufferSamples, fifoSizeInMs);
 
     if (idx == mMainIdx) {
         mMainFrameReady = false;
@@ -140,7 +148,7 @@ int AudioMixer::config(int idx, int sampleRate, int channels, int bufferSamples,
 
         // init attached filter if needed
         if (nativeMode) {
-            filterInit(cp->sampleRate, cp->channels, cp->bufferSamples);
+            filterInit(cp->sampleFmt, cp->sampleRate, cp->channels, cp->bufferSamples);
         }
     } else if (mChannelParams[mMainIdx]) {
         fifoSwrRelease(idx);
@@ -171,8 +179,8 @@ void AudioMixer::destroy(int idx) {
     pthread_mutex_unlock(&mLock);
 }
 
-int AudioMixer::init(int idx, int sampleRate, int channels, int bufferSamples) {
-    return config(idx, sampleRate, channels, bufferSamples, 160, true);
+int AudioMixer::init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples) {
+    return config(idx, sampleFmt, sampleRate, channels, bufferSamples, 160, true);
 }
 
 int AudioMixer::process(int idx, uint8_t *inBuf, int inSize) {
@@ -193,7 +201,8 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
         // do filter if needed
         if (nativeMode) {
             ChannelParam *cp = mChannelParams[mMainIdx];
-            result = filterProcess(cp->sampleRate, cp->channels, cp->bufferSamples, inBuf, inSize);
+            result = filterProcess(cp->sampleFmt, cp->sampleRate, cp->channels, cp->bufferSamples,
+                                   inBuf, inSize);
         }
     } else {
         ChannelFifo* cf = mChannelFifos[idx];
@@ -202,7 +211,9 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
             int size = 0;
             uint8_t* buf = NULL;
             if (swr) {
-                size = ksy_swr_convert(swr, &buf, inBuf, inSize);
+                uint8_t **ppBuf = NULL;
+                size = ksy_swr_convert(swr, &ppBuf, &inBuf, inSize);
+                buf = ppBuf[0];
                 if (size <= 0) {
                     LOGE("mixer %d resample failed, err=%d", idx, size);
                 }
@@ -243,17 +254,28 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
 }
 
 int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
-    float mainVol = mInputVolume[mMainIdx];
+    float leftMainVol = mInputVolume[mMainIdx][0];
+    float rightMainVol = mInputVolume[mMainIdx][1];
     int frameSize = mChannelParams[mMainIdx]->frameSize;
     // set volume to main source input
-    if(mainVol != 1.0f) {
+    if(leftMainVol != 1.0f || rightMainVol != 1.0f) {
         short* data = (short*) inBuf;
         int size = inSize / sizeof(short);
-        for (int i = 0; i < size; i++) {
-            data[i] = av_clip_int16((int) (data[i] * mainVol));
+        int step = 1;
+        if(mChannelParams[mMainIdx]->channels == 2)  {
+            step = 2;
+        }
+        for (int i = 0; i < size; i = i + step) {
+            data[i] = av_clip_int16((int) (data[i] * leftMainVol));
+        }
+        if(mChannelParams[mMainIdx]->channels == 2) {
+            for (int i = 1; i < size; i = i + step) {
+                data[i] = av_clip_int16((int) (data[i] * rightMainVol));
+            }
         }
     }
-    mainVol = 1.0f;
+    leftMainVol = 1.0f;
+    rightMainVol = 1.0f;
     for (int i = 0; i < CHN_NUM; i++) {
         ChannelFifo *cf = mChannelFifos[i];
         if (cf) {
@@ -290,23 +312,49 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
                 LOGD("mixer %d fifo empty, try to read %d, remain %d",
                      i, inSize, samples * frameSize);
             }
-            mix((short *) inBuf, inSize / sizeof(short), mainVol, (short *) mBuffer,
-                (inSize - samples * frameSize) / sizeof(short), mInputVolume[i]);
+            mix((short *) inBuf, inSize / sizeof(short), leftMainVol, rightMainVol, (short *) mBuffer,
+                (inSize - samples * frameSize) / sizeof(short), mInputVolume[i],
+                mChannelParams[i]->channels);
         }
     }
-    if (mOutputVolume != 1.0f) {
-        short* data = (short*) inBuf;
-        int size = inSize / sizeof(short);
-        for (int i = 0; i < size; i++) {
-            data[i] = av_clip_int16((int) (data[i] * mOutputVolume));
+
+    short *data = (short *) inBuf;
+    int size = inSize / sizeof(short);
+    int step = 1;
+    if(mChannelParams[mMainIdx]->channels == 2) {
+        step = 2;
+    }
+    //when mono, this is actually not left channel volume
+    if (mLeftOutputVolume != 1.0f) {
+        for (int i = 0; i < size; i = i + step) {
+            data[i] = av_clip_int16((int) (data[i] * mLeftOutputVolume));
         }
     }
+
+    if(mChannelParams[mMainIdx]->channels > 1) {
+        if (mRightOutputVolume != 1.0f) {
+            for (int i = 1; i < size; i = i + step) {
+                data[i] = av_clip_int16((int) (data[i] * mRightOutputVolume));
+            }
+        }
+    }
+
     return 0;
 }
 
-void AudioMixer::mix(short *src1, int size1, float vol1, short *src2, int size2, float vol2) {
+void AudioMixer::mix(short *src1, int size1, float leftVol1, float rightVol1,
+                     short *src2, int size2, float* vol2, int channels) {
     int size = (size1 < size2) ? size1 : size2;
-    for (int i=0; i<size; i++) {
-        src1[i] = av_clip_int16((int) (src1[i] * vol1 + src2[i] * vol2));
+    int step = 1;
+    if (channels == 2) {
+        step = 2;
+    }
+    for (int i = 0; i < size; i = i + step) {
+        src1[i] = av_clip_int16((int) (src1[i] * leftVol1 + src2[i] * vol2[0]));
+    }
+    if (channels == 2) {
+        for (int i = 1; i < size; i = i + step) {
+            src1[i] = av_clip_int16((int) (src1[i] * rightVol1 + src2[i] * vol2[1]));
+        }
     }
 }

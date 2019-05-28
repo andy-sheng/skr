@@ -17,8 +17,6 @@ public class FboManager {
     private static boolean VERBOSE = true;
     private static boolean TRACE_FBO_REUSE = false;
 
-    private static FboManager sInstance;
-
     private HashMap<String, List<Integer>> mResolutionMap;
     private HashMap<Integer, Fbo> mTextureMap;
     private int mTextureCount;
@@ -95,14 +93,25 @@ public class FboManager {
      * @return true on success, false otherwise
      */
     synchronized public boolean lock(int texture) {
+        return lock(texture, 1);
+    }
+
+    /**
+     * Increase the fbo reference count with given count.
+     *
+     * @param texture texture id to be locked
+     * @param count   reference count to be added
+     * @return true on success, false otherwise
+     */
+    synchronized public boolean lock(int texture, int count) {
         Fbo fbo = mTextureMap.get(texture);
         if (TRACE_FBO_REUSE && fbo != null) {
-            Log.d(TAG, "lock: " + texture);
+            Log.d(TAG, "lock: " + texture + " " + count + " times");
         }
         if (fbo == null) {
             return false;
         }
-        fbo.lock();
+        fbo.lock(count);
         return true;
     }
 
@@ -233,12 +242,18 @@ public class FboManager {
             count++;
         }
 
+        synchronized public void lock(int count) {
+            this.count += count;
+        }
+
         synchronized public boolean unlock() {
             if (count == 0) {
                 return false;
             }
-
             count--;
+            if (TRACE_FBO_REUSE && count == 0) {
+                Log.d(TAG, "fbo " + texture + " released");
+            }
             return true;
         }
     }

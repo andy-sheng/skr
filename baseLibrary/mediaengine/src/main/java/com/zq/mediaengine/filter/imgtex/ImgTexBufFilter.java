@@ -3,7 +3,7 @@ package com.zq.mediaengine.filter.imgtex;
 import android.os.ConditionVariable;
 
 import com.zq.mediaengine.capture.ImgTexSrcPin;
-import com.zq.mediaengine.encoder.ColorFormatConvert;
+import com.zq.mediaengine.util.ColorFormatConvert;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.ImgBufFormat;
 import com.zq.mediaengine.framework.ImgBufFrame;
@@ -36,7 +36,7 @@ public abstract class ImgTexBufFilter extends ImgFilterBase {
 
     public ImgTexBufFilter(GLRender glRender, int format) {
         if (format != AVConst.PIX_FMT_I420 && format != AVConst.PIX_FMT_RGBA) {
-            throw new IllegalArgumentException("only FMT_RGBA or FMT_I420 supported!");
+            throw new IllegalArgumentException("only PIX_FMT_RGBA or PIX_FMT_I420 supported!");
         }
 
         mBufferReady = new ConditionVariable(true);

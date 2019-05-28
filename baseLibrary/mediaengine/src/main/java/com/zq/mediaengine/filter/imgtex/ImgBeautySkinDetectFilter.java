@@ -2,7 +2,6 @@ package com.zq.mediaengine.filter.imgtex;
 
 import com.zq.mediaengine.framework.CredtpModel;
 import com.zq.mediaengine.framework.ImgTexFormat;
-import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.util.gles.GLRender;
 
 /**
@@ -17,13 +16,7 @@ public class ImgBeautySkinDetectFilter extends ImgTexFilter {
     }
 
     @Override
-    protected boolean isReuseFbo() {
-        return false;
-    }
-
-    @Override
     protected void onFormatChanged(ImgTexFormat format) {
         mInited = false;
-        mOutTexture = ImgTexFrame.NO_TEXTURE;
     }
 }

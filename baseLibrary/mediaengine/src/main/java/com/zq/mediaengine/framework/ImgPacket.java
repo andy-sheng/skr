@@ -10,17 +10,27 @@ public class ImgPacket extends AVPacketBase {
     /**
      * Video encoding configuration
      */
-    public VideoEncodeConfig cfg;
+    public VideoCodecFormat format;
 
-    public ImgPacket(VideoEncodeConfig cfg, ByteBuffer buf, long pts, long dts) {
-        this.cfg = cfg;
+    public ImgPacket(VideoCodecFormat format, ByteBuffer buf, long pts, long dts,
+                     long avPacketOpaque) {
+        super(avPacketOpaque);
+        this.format = format;
+        this.buf = buf;
+        this.pts = pts;
+        this.dts = dts;
+    }
+
+    public ImgPacket(VideoCodecFormat format, ByteBuffer buf, long pts, long dts) {
+        this.format = format;
         this.buf = buf;
         this.pts = pts;
         this.dts = dts;
     }
 
     public ImgPacket(ImgPacket pkt) {
-        this.cfg = pkt.cfg;
+        super(pkt);
+        this.format = pkt.format;
         this.buf = pkt.buf;
         this.pts = pkt.pts;
         this.dts = pkt.dts;

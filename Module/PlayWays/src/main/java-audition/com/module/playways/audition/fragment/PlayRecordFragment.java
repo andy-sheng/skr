@@ -258,7 +258,7 @@ public class PlayRecordFragment extends BaseFragment {
         if (AuditionFragment.RECORD_BY_CALLBACK) {
             mPlayer.startPlayPcm(AuditionFragment.PCM_SAVE_PATH, 2, 44100, 44100 * 2);
         } else {
-            mPlayer.startPlay(AuditionFragment.ACC_SAVE_PATH);
+            mPlayer.startPlay(AuditionFragment.AAC_SAVE_PATH);
         }
 
     }

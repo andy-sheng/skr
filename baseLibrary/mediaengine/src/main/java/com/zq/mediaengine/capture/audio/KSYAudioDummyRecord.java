@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
  * @hide
  */
 
-public class UnionAudioDummyRecord implements IUnionAudioRecord {
+public class KSYAudioDummyRecord implements IKSYAudioRecord {
 
     private int mSampleRate;
     private int mFrameSize;
@@ -17,7 +17,7 @@ public class UnionAudioDummyRecord implements IUnionAudioRecord {
     private long mLastTime;
     private int mFifoBytes;
 
-    public UnionAudioDummyRecord(int sampleRate, int channels, int bufferSamples) {
+    public KSYAudioDummyRecord(int sampleRate, int channels, int bufferSamples) {
         mSampleRate = sampleRate;
         mFrameSize = channels * 2;
         mAtomSleepMs = bufferSamples * 1000 / sampleRate;

@@ -20,6 +20,7 @@ import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
+import com.zq.mediaengine.util.StcMgt;
 import com.zq.mediaengine.util.audio.AudioUtil;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ import java.nio.ShortBuffer;
  */
 public class AudioPlayerCapture {
     private final static String TAG = "AudioPlayerCapture";
-    private final static boolean VERBOSE = false;
+    private final static boolean VERBOSE = true;
 
     private static final long TIMEOUT_US = 10000;
     private static final int MAX_EOS_SPINS = 10;
@@ -80,12 +81,15 @@ public class AudioPlayerCapture {
     private final static int CMD_SEEK = 3;
     private final static int CMD_RELEASE = 4;
     private final static int CMD_LOOP = 5;
+    private final static int CMD_PAUSE = 6;
+    private final static int CMD_WAIT = 7;
 
     private SrcPin<AudioBufFrame> mSrcPin;
     private AudioFilterMgt mAudioFilterMgt;
 
     private Context mContext;
     private IPcmPlayer mPcmPlayer;
+    private StcMgt mStcMgt;
     private AudioBufFormat mOutFormat;
     private ByteBuffer mOutBuffer;
     private int mAudioPlayerType = AUDIO_PLAYER_TYPE_AUDIOTRACK;
@@ -104,9 +108,11 @@ public class AudioPlayerCapture {
     private volatile int mState;
     private volatile boolean mPaused;
     private volatile boolean mLoop;
+    private volatile boolean mIsSeeking;
     private long mFirstPts;
     private long mDuration;
-    private long mPosition;
+    private long mBasePosition;
+    private long mSamplesWritten;
 
     private OnPreparedListener mOnPreparedListener;
     private OnCompletionListener mOnCompletionListener;
@@ -160,6 +166,7 @@ public class AudioPlayerCapture {
         mContext = context;
         mSrcPin = new SrcPin<>();
         mMainHandler = new Handler(Looper.getMainLooper());
+        mStcMgt = new StcMgt();
         initDecodeThread();
 
         mAudioFilterMgt = new AudioFilterMgt();
@@ -169,6 +176,18 @@ public class AudioPlayerCapture {
             @Override
             public void onFormatChanged(Object format) {
                 AudioBufFormat inFormat = (AudioBufFormat) format;
+
+                // open pcm player
+                if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
+                    mPcmPlayer = new AudioSLPlayer();
+                } else {
+                    mPcmPlayer = new AudioTrackPlayer();
+                }
+                int atomSize = AudioUtil.getNativeBufferSize(mContext, inFormat.sampleRate);
+                mPcmPlayer.config(inFormat.sampleFormat, inFormat.sampleRate, inFormat.channels, atomSize, 40);
+                mPcmPlayer.setMute(mMute);
+                mPcmPlayer.start();
+
                 mPcmOutFormat = new AudioBufFormat(inFormat);
                 mPcmOutFormat.nativeModule = mPcmPlayer.getNativeInstance();
                 mSrcPin.onFormatChanged(mPcmOutFormat);
@@ -319,15 +338,16 @@ public class AudioPlayerCapture {
      * Pause.
      */
     public void pause() {
-        mPaused = true;
+        Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 1, 0);
+        mDecodeHandler.sendMessage(msg);
     }
 
     /**
      * Resume.
      */
     public void resume() {
-        mPaused = false;
-        mDecodeHandler.sendEmptyMessage(CMD_LOOP);
+        Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 0, 0);
+        mDecodeHandler.sendMessage(msg);
     }
 
     /**
@@ -364,7 +384,11 @@ public class AudioPlayerCapture {
      * @return current position in miliseconds
      */
     public long getPosition() {
-        return mPosition;
+        long pos = mStcMgt.getCurrentStc();
+        long pos1 = 0;//(mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
+        Log.e(TAG, "getPosition: " + pos + " pos1: " + pos1);
+        return pos;
+//        return mStcMgt.getCurrentStc();
     }
 
     private void initDecodeThread() {
@@ -400,7 +424,38 @@ public class AudioPlayerCapture {
                                 mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                             }
                         } else {
-                            postOnCompletion();
+                            mDecodeHandler.sendEmptyMessage(CMD_WAIT);
+                        }
+                        break;
+                    case CMD_PAUSE:
+                        if (mState != STATE_STARTED) {
+                            break;
+                        }
+                        if (msg.arg1 != 0 && !mPaused) {
+                            mPaused = true;
+                            mPcmPlayer.pause();
+                            mStcMgt.pause();
+                        } else if (msg.arg1 == 0 && mPaused) {
+                            mPaused = false;
+                            mPcmPlayer.resume();
+                            mStcMgt.start();
+                            mDecodeHandler.sendEmptyMessage(CMD_LOOP);
+                        }
+                        break;
+                    case CMD_WAIT:
+                        if (mState != STATE_STARTED) {
+                            break;
+                        }
+                        long delay = doWait();
+                        if (delay < 10) {
+                            if (mLoop) {
+                                doRestart();
+                                mDecodeHandler.sendEmptyMessage(CMD_LOOP);
+                            } else {
+                                postOnCompletion();
+                            }
+                        } else {
+                            mDecodeHandler.sendEmptyMessageDelayed(CMD_WAIT, delay);
                         }
                         break;
                     case CMD_STOP:
@@ -484,8 +539,11 @@ public class AudioPlayerCapture {
 
     private int doStart() {
         mFirstPts = Long.MIN_VALUE;
+        mIsSeeking = false;
         mDuration = 0;
-        mPosition = 0;
+        mBasePosition = 0;
+        mSamplesWritten = 0;
+        mStcMgt.reset();
         mMediaExtractor = new MediaExtractor();
         try {
             setDataSource(mUrl);
@@ -508,16 +566,16 @@ public class AudioPlayerCapture {
                 int channels = mediaFormat.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
                 mOutFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, sampleRate, channels);
 
-                // open pcm player
-                if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
-                    mPcmPlayer = new AudioSLPlayer();
-                } else {
-                    mPcmPlayer = new AudioTrackPlayer();
-                }
-                int atomSize = AudioUtil.getNativeBufferSize(mContext, sampleRate);
-                mPcmPlayer.config(sampleRate, channels, atomSize, 40);
-                mPcmPlayer.setMute(mMute);
-                mPcmPlayer.start();
+//                // open pcm player
+//                if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
+//                    mPcmPlayer = new AudioSLPlayer();
+//                } else {
+//                    mPcmPlayer = new AudioTrackPlayer();
+//                }
+//                int atomSize = AudioUtil.getNativeBufferSize(mContext, sampleRate);
+//                mPcmPlayer.config(sampleRate, channels, atomSize, 40);
+//                mPcmPlayer.setMute(mMute);
+//                mPcmPlayer.start();
 
                 // open decoder
                 try {
@@ -554,7 +612,28 @@ public class AudioPlayerCapture {
         return eos;
     }
 
+    private long doWait() {
+        long dur = mSamplesWritten * 1000 / mOutFormat.sampleRate - mPcmPlayer.getPosition();
+        Log.d(TAG, "do Wait " + dur + "ms");
+        return dur;
+    }
+
+    private void doRestart() {
+        mMediaCodec.flush();
+        mMediaExtractor.seekTo(0, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
+        mPcmPlayer.stop();
+        mPcmPlayer.start();
+        mBasePosition = 0;
+        mSamplesWritten = 0;
+    }
+
     private void doSeek(long ms) {
+        mMediaCodec.flush();
+        mPcmPlayer.flush();
+        mSamplesWritten = 0;
+        mIsSeeking = true;
+        mStcMgt.pause();
+        mStcMgt.updateStc(ms);
         mMediaExtractor.seekTo(ms * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
     }
 
@@ -570,14 +649,13 @@ public class AudioPlayerCapture {
                 if (mFirstPts == Long.MIN_VALUE) {
                     mFirstPts = pts;
                 }
-                mPosition = (pts - mFirstPts) / 1000;
-                if (VERBOSE) Log.d(TAG, "fill decoder " + sampleSize + " pos: " + mPosition);
+                if (mIsSeeking) {
+                    mBasePosition = (pts - mFirstPts) / 1000;
+                    mIsSeeking = false;
+                }
+                if (VERBOSE) Log.d(TAG, "fill decoder " + sampleSize + " pts: " + pts / 1000);
                 mMediaCodec.queueInputBuffer(inputBufferIndex, 0, sampleSize, pts, 0);
                 mMediaExtractor.advance();
-            } else if (mLoop) {
-                Log.d(TAG, "EOS got, seek to beginning");
-                mMediaCodec.queueInputBuffer(inputBufferIndex, 0, 0, 0, 0);
-                mMediaExtractor.seekTo(0, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
             } else {
                 Log.d(TAG, "EOS got, flush decoder");
                 eos = true;
@@ -649,7 +727,7 @@ public class AudioPlayerCapture {
             }
             mPcmPlayer.setMute(mMute);
             int atomSize = AudioUtil.getNativeBufferSize(mContext, mOutFormat.sampleRate);
-            mPcmPlayer.config(mOutFormat.sampleRate, mOutFormat.channels, atomSize, 40);
+            mPcmPlayer.config(mOutFormat.sampleFormat, mOutFormat.sampleRate, mOutFormat.channels, atomSize, 40);
             mPcmPlayer.start();
 
             mAudioFilterMgt.getSinkPin().onFormatChanged(mOutFormat);
@@ -672,6 +750,12 @@ public class AudioPlayerCapture {
             }
             if (outputBufferIndex >= 0) {
                 if (VERBOSE) Log.d(TAG, "drain decoder " + mBufferInfo.size);
+
+//                if (mBufferInfo.size < 512) {
+//                    mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+//                    continue;
+//                }
+
                 ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
                 outputBuffer.position(mBufferInfo.offset);
                 outputBuffer.limit(mBufferInfo.size + mBufferInfo.offset);
@@ -686,6 +770,15 @@ public class AudioPlayerCapture {
                 }
                 mAudioFilterMgt.getSinkPin().onFrameAvailable(frame);
                 mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+
+                mSamplesWritten += frame.buf.limit() / 2 / mOutFormat.channels;
+                long position = mBasePosition + mPcmPlayer.getPosition();
+                mStcMgt.updateStc(position, true);
+                if (VERBOSE) {
+                    long pos = (mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
+                    Log.i(TAG, "pos: " + pos + " position: " + position);
+                }
+
                 if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                     break;
                 }

@@ -8,10 +8,10 @@ import android.os.Looper;
 import android.os.Process;
 import android.util.Log;
 
-import com.zq.mediaengine.capture.audio.IUnionAudioRecord;
-import com.zq.mediaengine.capture.audio.UnionAudioDummyRecord;
-import com.zq.mediaengine.capture.audio.UnionAudioRecord;
-import com.zq.mediaengine.capture.audio.UnionAudioSLRecord;
+import com.zq.mediaengine.capture.audio.IKSYAudioRecord;
+import com.zq.mediaengine.capture.audio.KSYAudioDummyRecord;
+import com.zq.mediaengine.capture.audio.KSYAudioRecord;
+import com.zq.mediaengine.capture.audio.KSYAudioSLRecord;
 import com.zq.mediaengine.filter.audio.AudioBufSrcPin;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
@@ -21,6 +21,7 @@ import com.zq.mediaengine.util.audio.AudioUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.ShortBuffer;
 
 /**
  * Capture audio data from microphone.
@@ -47,7 +48,7 @@ public class AudioCapture {
     private float mVolume = 1.0f;
 
     private Context mContext;
-    private IUnionAudioRecord mAudioRecord;
+    private IKSYAudioRecord mAudioRecord;
     private Thread mThread;
     private Handler mMainHandler;
     private int mState;
@@ -241,12 +242,12 @@ public class AudioCapture {
                         while (readSize < threshold) {
                             readSize += atomSize;
                         }
-                        mAudioRecord = new UnionAudioSLRecord(mSampleRate, mChannels, atomSize);
+                        mAudioRecord = new KSYAudioSLRecord(mSampleRate, mChannels, atomSize);
                         break;
                     case AUDIO_CAPTURE_TYPE_DUMMY:
                         atomSize = mSampleRate * 10 / 1000;
                         readSize = atomSize * 2;
-                        mAudioRecord = new UnionAudioDummyRecord(mSampleRate, mChannels, atomSize);
+                        mAudioRecord = new KSYAudioDummyRecord(mSampleRate, mChannels, atomSize);
                         break;
                     case AUDIO_CAPTURE_TYPE_AUDIORECORDER:
                     default:
@@ -255,7 +256,7 @@ public class AudioCapture {
                         atomSize = AudioRecord.getMinBufferSize(mSampleRate, channelConfig,
                                 AudioFormat.ENCODING_PCM_16BIT) / (2 * mChannels);
                         readSize = atomSize;
-                        mAudioRecord = new UnionAudioRecord(mSampleRate, mChannels, atomSize);
+                        mAudioRecord = new KSYAudioRecord(mSampleRate, mChannels, atomSize);
                         break;
                 }
             } catch (Exception e) {
@@ -328,7 +329,7 @@ public class AudioCapture {
             postState(STATE_INITIALIZED);
 
             // release
-            IUnionAudioRecord audioRecord = mAudioRecord;
+            IKSYAudioRecord audioRecord = mAudioRecord;
             mAudioRecord = null;
             audioRecord.release();
             postState(STATE_IDLE);

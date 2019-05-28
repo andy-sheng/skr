@@ -16,7 +16,7 @@ public:
 
     void setMute(bool mute);
     void setTuneLatency(bool tuneLatency) {mTuneLatency = tuneLatency;}
-    int config(int sampleRate, int channels, int bufferSamples, int fifoSizeInMs = 40);
+    int config(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs = 40);
     int start();
     int stop();
     int pause();
@@ -24,7 +24,7 @@ public:
     int write(uint8_t* inBuf, int inSize, bool nonBlock = false);
     void release();
 
-    int init(int idx, int sampleRate, int channels, int bufferSamples);
+    int init(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples);
     int process(int idx, uint8_t* inBuf, int inSize);
 
     static const int STATE_IDLE = 0;
@@ -59,6 +59,7 @@ private:
     SLresult resumePlayer();
     SLresult mutePlayer(bool mute);
 
+    int mSampleFmt;
     int mSampleRate;
     int mChannels;
     int mBufferSamples;

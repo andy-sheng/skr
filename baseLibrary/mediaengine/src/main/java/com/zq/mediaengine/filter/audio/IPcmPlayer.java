@@ -12,7 +12,7 @@ public interface IPcmPlayer {
 
     long getNativeInstance();
 
-    int config(int sampleRate, int channels, int bufferSamples, int fifoSizeInMs);
+    int config(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs);
 
     void setMute(boolean mute);
 
@@ -25,6 +25,10 @@ public interface IPcmPlayer {
     int resume();
 
     int write(ByteBuffer buffer);
+
+    int flush();
+
+    long getPosition();
 
     void release();
 }

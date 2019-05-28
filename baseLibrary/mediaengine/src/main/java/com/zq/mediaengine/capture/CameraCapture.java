@@ -120,10 +120,6 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
     private long mLastTraceTime;
     private long mFrameDrawn;
 
-    private long mPtsOffSet = 0;
-    private float mSpeed = 1.0f;
-    private float mPtsRate = 1.0f;
-
     public CameraCapture(Context context, GLRender glRender) {
         mContext = context;
         mImgTexSrcPin = new SrcPin<>();
@@ -136,7 +132,10 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
         mPresetPreviewSize = new Size(1280, 720);
         mPresetPreviewFps = DEFAULT_PREVIEW_FPS;
         mGLRender = glRender;
-        mGLRender.addListener(mGLRenderListener);
+        mGLRender.addListener(mGLReadyListener);
+        mGLRender.addListener(mGLSizeChangedListener);
+        mGLRender.addListener(mGLDrawFrameListener);
+        mGLRender.addListener(mGLReleasedListener);
     }
 
     /**
@@ -259,7 +258,6 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
         mCameraSetupHandler.sendEmptyMessage(MSG_CAMERA_RELEASE);
         mSig.block();
         mStopping = false;
-        mPtsOffSet = 0;
         Log.d(TAG, "stopped");
     }
 
@@ -415,7 +413,10 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
         mImgTexSrcPin.disconnect(true);
         mImgBufSrcPin.disconnect(true);
 
-        mGLRender.removeListener(mGLRenderListener);
+        mGLRender.removeListener(mGLReadyListener);
+        mGLRender.removeListener(mGLSizeChangedListener);
+        mGLRender.removeListener(mGLDrawFrameListener);
+        mGLRender.removeListener(mGLReleasedListener);
         synchronized (mCameraLock) {
             if (mSurfaceTexture != null) {
                 mSurfaceTexture.release();
@@ -488,7 +489,6 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
      */
     public void startRecord() {
         mIsRecording = true;
-        mPtsOffSet = 0;
     }
 
     /**
@@ -805,12 +805,7 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
         }
     }
 
-    public void setSpeed(float speed) {
-        mSpeed = speed;
-        mPtsRate = 1.0f / mSpeed;
-    }
-
-    private GLRender.GLRenderListener mGLRenderListener = new GLRender.GLRenderListener() {
+    private GLRender.OnReadyListener mGLReadyListener = new GLRender.OnReadyListener() {
         @Override
         public void onReady() {
             if (VERBOSE) Log.d(TAG, "onGLContext ready");
@@ -829,12 +824,17 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
             mTexInited = false;
             mFrameAvailable = false;
         }
+    };
 
-        @Override
-        public void onSizeChanged(int width, int height) {
-            if (VERBOSE) Log.d(TAG, "onSizeChanged " + width + "x" + height);
-        }
+    private GLRender.OnSizeChangedListener mGLSizeChangedListener =
+            new GLRender.OnSizeChangedListener() {
+                @Override
+                public void onSizeChanged(int width, int height) {
+                    if (VERBOSE) Log.d(TAG, "onSizeChanged " + width + "x" + height);
+                }
+            };
 
+    private GLRender.OnDrawFrameListener mGLDrawFrameListener = new GLRender.OnDrawFrameListener() {
         @Override
         public void onDrawFrame() {
             long pts = System.nanoTime() / 1000 / 1000;
@@ -868,14 +868,6 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
 
             float[] texMatrix = new float[16];
             mSurfaceTexture.getTransformMatrix(texMatrix);
-            if (mIsRecording && mSpeed != 1.0) {
-                if (mPtsOffSet == 0) {
-                    mPtsOffSet = pts;
-                } else {
-                    long diff = (pts - mPtsOffSet);
-                    pts = (long) ((float) diff * mPtsRate) + mPtsOffSet;
-                }
-            }
             ImgTexFrame frame = new ImgTexFrame(mImgTexFormat, mTextureId, texMatrix, pts);
             try {
                 mImgTexSrcPin.onFrameAvailable(frame);
@@ -899,22 +891,6 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
             }
         }
 
-        @Override
-        public void onReleased() {
-            if (VERBOSE) Log.d(TAG, "onGLContext released");
-            mFrameAvailable = false;
-            synchronized (mCameraLock) {
-                if (mCameraDevice != null) {
-                    mCameraDevice.stopPreview();
-                }
-                if (mSurfaceTexture != null) {
-                    mSurfaceTexture.setOnFrameAvailableListener(null);
-                    mSurfaceTexture.release();
-                    mSurfaceTexture = null;
-                }
-            }
-        }
-
         private void init() {
             int ori = CameraUtil.getDisplayOrientation(mOrientationDegrees, getCameraId(mFacing));
             int width = mPreviewSize.width;
@@ -932,6 +908,24 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
             mLastTraceTime = System.currentTimeMillis();
             mFrameDrawn = 0;
             mCurrentFps = 0;
+        }
+    };
+
+    private GLRender.OnReleasedListener mGLReleasedListener = new GLRender.OnReleasedListener() {
+        @Override
+        public void onReleased() {
+            if (VERBOSE) Log.d(TAG, "onGLContext released");
+            mFrameAvailable = false;
+            synchronized (mCameraLock) {
+                if (mCameraDevice != null) {
+                    mCameraDevice.stopPreview();
+                }
+                if (mSurfaceTexture != null) {
+                    mSurfaceTexture.setOnFrameAvailableListener(null);
+                    mSurfaceTexture.release();
+                    mSurfaceTexture = null;
+                }
+            }
         }
     };
 
