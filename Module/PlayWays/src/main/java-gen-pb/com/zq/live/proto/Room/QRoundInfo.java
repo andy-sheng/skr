@@ -246,24 +246,14 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   )
   private final List<QSPKInnerRoundInfo> SPKRoundInfos;
 
-  /**
-   * 一唱到底连麦小游戏：内部轮次信息
-   */
-  @WireField(
-      tag = 22,
-      adapter = "com.zq.live.proto.Room.QMINIGameInnerRoundInfo#ADAPTER",
-      label = WireField.Label.REPEATED
-  )
-  private final List<QMINIGameInnerRoundInfo> MINIGAMERoundInfos;
-
   public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
       Integer introEndMs, Integer singBeginMs, Integer singEndMs, EQRoundStatus status,
       List<WantSingInfo> wantSingInfos, EQRoundOverReason overReason, EQRoundResultType resultType,
       MusicInfo music, List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos,
       ResourceInfo skrResource, List<OnlineInfo> waitUsers, List<OnlineInfo> playUsers,
       Boolean isInChallenge, EWantSingType wantSingType, List<QCHOInnerRoundInfo> CHORoundInfos,
-      List<QSPKInnerRoundInfo> SPKRoundInfos, List<QMINIGameInnerRoundInfo> MINIGAMERoundInfos) {
-    this(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, isInChallenge, wantSingType, CHORoundInfos, SPKRoundInfos, MINIGAMERoundInfos, ByteString.EMPTY);
+      List<QSPKInnerRoundInfo> SPKRoundInfos) {
+    this(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, isInChallenge, wantSingType, CHORoundInfos, SPKRoundInfos, ByteString.EMPTY);
   }
 
   public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
@@ -272,8 +262,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       MusicInfo music, List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos,
       ResourceInfo skrResource, List<OnlineInfo> waitUsers, List<OnlineInfo> playUsers,
       Boolean isInChallenge, EWantSingType wantSingType, List<QCHOInnerRoundInfo> CHORoundInfos,
-      List<QSPKInnerRoundInfo> SPKRoundInfos, List<QMINIGameInnerRoundInfo> MINIGAMERoundInfos,
-      ByteString unknownFields) {
+      List<QSPKInnerRoundInfo> SPKRoundInfos, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.playbookID = playbookID;
@@ -296,7 +285,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     this.wantSingType = wantSingType;
     this.CHORoundInfos = Internal.immutableCopyOf("CHORoundInfos", CHORoundInfos);
     this.SPKRoundInfos = Internal.immutableCopyOf("SPKRoundInfos", SPKRoundInfos);
-    this.MINIGAMERoundInfos = Internal.immutableCopyOf("MINIGAMERoundInfos", MINIGAMERoundInfos);
   }
 
   @Override
@@ -323,7 +311,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     builder.wantSingType = wantSingType;
     builder.CHORoundInfos = Internal.copyOf("CHORoundInfos", CHORoundInfos);
     builder.SPKRoundInfos = Internal.copyOf("SPKRoundInfos", SPKRoundInfos);
-    builder.MINIGAMERoundInfos = Internal.copyOf("MINIGAMERoundInfos", MINIGAMERoundInfos);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -354,8 +341,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
         && Internal.equals(isInChallenge, o.isInChallenge)
         && Internal.equals(wantSingType, o.wantSingType)
         && CHORoundInfos.equals(o.CHORoundInfos)
-        && SPKRoundInfos.equals(o.SPKRoundInfos)
-        && MINIGAMERoundInfos.equals(o.MINIGAMERoundInfos);
+        && SPKRoundInfos.equals(o.SPKRoundInfos);
   }
 
   @Override
@@ -384,7 +370,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
       result = result * 37 + CHORoundInfos.hashCode();
       result = result * 37 + SPKRoundInfos.hashCode();
-      result = result * 37 + MINIGAMERoundInfos.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -414,7 +399,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
     if (!CHORoundInfos.isEmpty()) builder.append(", CHORoundInfos=").append(CHORoundInfos);
     if (!SPKRoundInfos.isEmpty()) builder.append(", SPKRoundInfos=").append(SPKRoundInfos);
-    if (!MINIGAMERoundInfos.isEmpty()) builder.append(", MINIGAMERoundInfos=").append(MINIGAMERoundInfos);
     return builder.replace(0, 2, "QRoundInfo{").append('}').toString();
   }
 
@@ -639,16 +623,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
-   * 一唱到底连麦小游戏：内部轮次信息
-   */
-  public List<QMINIGameInnerRoundInfo> getMINIGAMERoundInfosList() {
-    if(MINIGAMERoundInfos==null){
-        return new java.util.ArrayList<QMINIGameInnerRoundInfo>();
-    }
-    return MINIGAMERoundInfos;
-  }
-
-  /**
    * 抢唱成功的玩家id
    */
   public boolean hasUserID() {
@@ -795,13 +769,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     return SPKRoundInfos!=null;
   }
 
-  /**
-   * 一唱到底连麦小游戏：内部轮次信息
-   */
-  public boolean hasMINIGAMERoundInfosList() {
-    return MINIGAMERoundInfos!=null;
-  }
-
   public static final class Builder extends Message.Builder<QRoundInfo, Builder> {
     private Integer userID;
 
@@ -845,8 +812,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     private List<QSPKInnerRoundInfo> SPKRoundInfos;
 
-    private List<QMINIGameInnerRoundInfo> MINIGAMERoundInfos;
-
     public Builder() {
       wantSingInfos = Internal.newMutableList();
       bLightInfos = Internal.newMutableList();
@@ -855,7 +820,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       playUsers = Internal.newMutableList();
       CHORoundInfos = Internal.newMutableList();
       SPKRoundInfos = Internal.newMutableList();
-      MINIGAMERoundInfos = Internal.newMutableList();
     }
 
     /**
@@ -1033,18 +997,9 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       return this;
     }
 
-    /**
-     * 一唱到底连麦小游戏：内部轮次信息
-     */
-    public Builder addAllMINIGAMERoundInfos(List<QMINIGameInnerRoundInfo> MINIGAMERoundInfos) {
-      Internal.checkElementsNotNull(MINIGAMERoundInfos);
-      this.MINIGAMERoundInfos = MINIGAMERoundInfos;
-      return this;
-    }
-
     @Override
     public QRoundInfo build() {
-      return new QRoundInfo(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, isInChallenge, wantSingType, CHORoundInfos, SPKRoundInfos, MINIGAMERoundInfos, super.buildUnknownFields());
+      return new QRoundInfo(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, isInChallenge, wantSingType, CHORoundInfos, SPKRoundInfos, super.buildUnknownFields());
     }
   }
 
@@ -1076,7 +1031,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
           + EWantSingType.ADAPTER.encodedSizeWithTag(19, value.wantSingType)
           + QCHOInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(20, value.CHORoundInfos)
           + QSPKInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(21, value.SPKRoundInfos)
-          + QMINIGameInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(22, value.MINIGAMERoundInfos)
           + value.unknownFields().size();
     }
 
@@ -1103,7 +1057,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       EWantSingType.ADAPTER.encodeWithTag(writer, 19, value.wantSingType);
       QCHOInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 20, value.CHORoundInfos);
       QSPKInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 21, value.SPKRoundInfos);
-      QMINIGameInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 22, value.MINIGAMERoundInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1162,7 +1115,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
           }
           case 20: builder.CHORoundInfos.add(QCHOInnerRoundInfo.ADAPTER.decode(reader)); break;
           case 21: builder.SPKRoundInfos.add(QSPKInnerRoundInfo.ADAPTER.decode(reader)); break;
-          case 22: builder.MINIGAMERoundInfos.add(QMINIGameInnerRoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1186,7 +1138,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       Internal.redactElements(builder.playUsers, OnlineInfo.ADAPTER);
       Internal.redactElements(builder.CHORoundInfos, QCHOInnerRoundInfo.ADAPTER);
       Internal.redactElements(builder.SPKRoundInfos, QSPKInnerRoundInfo.ADAPTER);
-      Internal.redactElements(builder.MINIGAMERoundInfos, QMINIGameInnerRoundInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

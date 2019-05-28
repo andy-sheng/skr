@@ -56,22 +56,7 @@ public enum EQRoundOverReason implements WireEnum {
   /**
    * SPK人数不够
    */
-  ROR_SPK_NOT_ENOUTH_PLAYER(9),
-
-  /**
-   * 连麦小游戏人数不够
-   */
-  ROR_MIN_GAME_NOT_ENOUTH_PLAYER(10),
-
-  /**
-   * 连麦小游戏房主结束轮次
-   */
-  ROR_MIN_GAME_OWNER_END_ROUND(11),
-
-  /**
-   * 用户不玩了
-   */
-  ROR_MIN_GAME_NOT_PLAY(12);
+  ROR_SPK_NOT_ENOUTH_PLAYER(9);
 
   public static final ProtoAdapter<EQRoundOverReason> ADAPTER = new ProtoAdapter_EQRoundOverReason();
 
@@ -96,9 +81,6 @@ public enum EQRoundOverReason implements WireEnum {
       case 7: return ROR_CHO_FAILED;
       case 8: return ROR_CHO_NOT_ENOUTH_PLAYER;
       case 9: return ROR_SPK_NOT_ENOUTH_PLAYER;
-      case 10: return ROR_MIN_GAME_NOT_ENOUTH_PLAYER;
-      case 11: return ROR_MIN_GAME_OWNER_END_ROUND;
-      case 12: return ROR_MIN_GAME_NOT_PLAY;
       default: return null;
     }
   }

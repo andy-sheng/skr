@@ -36,12 +36,7 @@ public enum EWantSingType implements WireEnum {
   /**
    * 一唱到底spk模式
    */
-  EWST_SPK(5),
-
-  /**
-   * 一唱到底连麦小游戏模式
-   */
-  EWST_MIN_GAME(6);
+  EWST_SPK(5);
 
   public static final ProtoAdapter<EWantSingType> ADAPTER = new ProtoAdapter_EWantSingType();
 
@@ -62,7 +57,6 @@ public enum EWantSingType implements WireEnum {
       case 3: return EWST_ACCOMPANY_OVER_TIME;
       case 4: return EWST_CHORUS;
       case 5: return EWST_SPK;
-      case 6: return EWST_MIN_GAME;
       default: return null;
     }
   }

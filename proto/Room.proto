@@ -231,7 +231,6 @@ enum EWantSingType {
     EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
     EWST_CHORUS = 4; //合唱模式
     EWST_SPK = 5; //一唱到底spk模式
-    EWST_MIN_GAME= 6; //一唱到底连麦小游戏模式
 }
 
 message QSyncStatusMsg {
@@ -299,10 +298,6 @@ enum EQRoundOverReason {
     ROR_CHO_FAILED           = 7; //合唱失败
     ROR_CHO_NOT_ENOUTH_PLAYER = 8; //合唱人数不够
     ROR_SPK_NOT_ENOUTH_PLAYER = 9; //SPK人数不够
-    ROR_MIN_GAME_NOT_ENOUTH_PLAYER = 10; //连麦小游戏人数不够
-    ROR_MIN_GAME_OWNER_END_ROUND = 11; //连麦小游戏房主结束轮次
-    ROR_MIN_GAME_NOT_PLAY        = 12; //用户不玩了
-
 }
 
 message QResultInfo {
@@ -628,7 +623,6 @@ message QRoundInfo {
     EWantSingType wantSingType = 19; //抢唱方式
     repeated QCHOInnerRoundInfo CHORoundInfos = 20; //一唱到底合唱：内部轮次信息
     repeated QSPKInnerRoundInfo SPKRoundInfos = 21; //一唱到底spk：内部轮次信息
-    repeated QMINIGameInnerRoundInfo MINIGAMERoundInfos = 22; //一唱到底连麦小游戏：内部轮次信息
 }
 
 message QCHOInnerRoundInfo {
@@ -648,12 +642,6 @@ message QSPKInnerRoundInfo {
     float SPKFinalScore          = 8; //最终得分
     bool  isWin                     = 9; //是否获胜
 }
-
-message QMINIGameInnerRoundInfo
-{
-    uint32 userID  = 1; //抢唱成功的玩家id
-}
-
 
 message QBLightMsg {
     uint32 userID = 1; //玩家id

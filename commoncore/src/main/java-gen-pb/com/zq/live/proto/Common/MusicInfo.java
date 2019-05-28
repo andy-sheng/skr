@@ -334,23 +334,14 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   private final List<MusicInfo> SPKMusic;
 
-  /**
-   * 连麦小游戏演唱类型
-   */
-  @WireField(
-      tag = 29,
-      adapter = "com.zq.live.proto.Common.MiniGameInfo#ADAPTER"
-  )
-  private final MiniGameInfo miniGame;
-
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
       Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
       Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
-      List<MusicInfo> SPKMusic, MiniGameInfo miniGame) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, ByteString.EMPTY);
+      List<MusicInfo> SPKMusic) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
@@ -359,7 +350,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
       Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
-      List<MusicInfo> SPKMusic, MiniGameInfo miniGame, ByteString unknownFields) {
+      List<MusicInfo> SPKMusic, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -389,7 +380,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.challengeAvailable = challengeAvailable;
     this.playType = playType;
     this.SPKMusic = Internal.immutableCopyOf("SPKMusic", SPKMusic);
-    this.miniGame = miniGame;
   }
 
   @Override
@@ -423,7 +413,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.challengeAvailable = challengeAvailable;
     builder.playType = playType;
     builder.SPKMusic = Internal.copyOf("SPKMusic", SPKMusic);
-    builder.miniGame = miniGame;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -461,8 +450,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(standTotalMs, o.standTotalMs)
         && Internal.equals(challengeAvailable, o.challengeAvailable)
         && Internal.equals(playType, o.playType)
-        && SPKMusic.equals(o.SPKMusic)
-        && Internal.equals(miniGame, o.miniGame);
+        && SPKMusic.equals(o.SPKMusic);
   }
 
   @Override
@@ -498,7 +486,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (challengeAvailable != null ? challengeAvailable.hashCode() : 0);
       result = result * 37 + (playType != null ? playType.hashCode() : 0);
       result = result * 37 + SPKMusic.hashCode();
-      result = result * 37 + (miniGame != null ? miniGame.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -535,7 +522,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (challengeAvailable != null) builder.append(", challengeAvailable=").append(challengeAvailable);
     if (playType != null) builder.append(", playType=").append(playType);
     if (!SPKMusic.isEmpty()) builder.append(", SPKMusic=").append(SPKMusic);
-    if (miniGame != null) builder.append(", miniGame=").append(miniGame);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -830,16 +816,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 连麦小游戏演唱类型
-   */
-  public MiniGameInfo getMiniGame() {
-    if(miniGame==null){
-        return new MiniGameInfo.Builder().build();
-    }
-    return miniGame;
-  }
-
-  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -1035,13 +1011,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return SPKMusic!=null;
   }
 
-  /**
-   * 连麦小游戏演唱类型
-   */
-  public boolean hasMiniGame() {
-    return miniGame!=null;
-  }
-
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     private Integer itemID;
 
@@ -1098,8 +1067,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     private StandPlayType playType;
 
     private List<MusicInfo> SPKMusic;
-
-    private MiniGameInfo miniGame;
 
     public Builder() {
       SPKMusic = Internal.newMutableList();
@@ -1330,17 +1297,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
-    /**
-     * 连麦小游戏演唱类型
-     */
-    public Builder setMiniGame(MiniGameInfo miniGame) {
-      this.miniGame = miniGame;
-      return this;
-    }
-
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, super.buildUnknownFields());
     }
   }
 
@@ -1379,7 +1338,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.BOOL.encodedSizeWithTag(26, value.challengeAvailable)
           + StandPlayType.ADAPTER.encodedSizeWithTag(27, value.playType)
           + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(28, value.SPKMusic)
-          + MiniGameInfo.ADAPTER.encodedSizeWithTag(29, value.miniGame)
           + value.unknownFields().size();
     }
 
@@ -1413,7 +1371,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.BOOL.encodeWithTag(writer, 26, value.challengeAvailable);
       StandPlayType.ADAPTER.encodeWithTag(writer, 27, value.playType);
       MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 28, value.SPKMusic);
-      MiniGameInfo.ADAPTER.encodeWithTag(writer, 29, value.miniGame);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1458,7 +1415,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
             break;
           }
           case 28: builder.SPKMusic.add(MusicInfo.ADAPTER.decode(reader)); break;
-          case 29: builder.setMiniGame(MiniGameInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1474,7 +1430,6 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     public MusicInfo redact(MusicInfo value) {
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.SPKMusic, MusicInfo.ADAPTER);
-      if (builder.miniGame != null) builder.miniGame = MiniGameInfo.ADAPTER.redact(builder.miniGame);
       builder.clearUnknownFields();
       return builder.build();
     }
