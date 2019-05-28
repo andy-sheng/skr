@@ -141,7 +141,7 @@
         android:layout_alignTop="@+id/bottom_bg_vp"
         android:layout_marginTop="-55dp"
         android:layout_marginBottom="@dimen/view_10_dp"
-        android:paddingLeft="@dimen/view_16_dp" />
+        android:paddingLeft="@dimen/view_10_dp" />
 
     <!--爆灭等大礼物区域-->
     <com.module.playways.grab.room.view.GrabDengBigAnimationView
