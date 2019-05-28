@@ -301,6 +301,10 @@ public class AudioMixer {
     }
 
     protected void doFrameAvailable(int idx, AudioBufFrame frame) {
+        if (frame == null || frame.format == null) {
+            return;
+        }
+
         if ((frame.flags & AVConst.FLAG_DETACH_NATIVE_MODULE) != 0) {
             if (frame.format.nativeModule != 0) {
                 _attachTo(mInstance, idx, frame.format.nativeModule, true);
