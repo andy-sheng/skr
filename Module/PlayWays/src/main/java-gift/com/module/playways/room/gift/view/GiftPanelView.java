@@ -1,6 +1,7 @@
 package com.module.playways.room.gift.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -33,6 +34,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
@@ -85,6 +87,20 @@ public class GiftPanelView extends FrameLayout {
     private boolean mHasInit = false;
 
     GiftServerApi mGiftServerApi;
+
+    Drawable mNeedFollowDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+            .setStrokeColor(Color.parseColor("#3B4E79"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(16))
+            .setSolidColor(Color.parseColor("#FFC15B"))
+            .build();
+
+    Drawable mHasFollowDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+            .setStrokeColor(U.getColor(R.color.white_trans_50))
+            .setCornersRadius(U.getDisplayUtils().dip2px(16))
+            .setSolidColor(U.getColor(R.color.transparent))
+            .build();
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -458,22 +474,33 @@ public class GiftPanelView extends FrameLayout {
         }
 
         mFollowTv.setVisibility(GONE);
+        mFollowTv.setEnabled(false);
         if (mCurMicroMan.getUserInfo().isFriend() || mCurMicroMan.getUserInfo().isFollow()) {
-            mFollowTv.setVisibility(GONE);
+            mFollowTv.setVisibility(VISIBLE);
+            mFollowTv.setBackground(mHasFollowDrawable);
+            mFollowTv.setText("已关注");
+            mFollowTv.setTextColor(U.getColor(R.color.white_trans_50));
         } else {
             mRelationTask = ApiMethods.subscribe(mUserInfoServerApi.getRelation(mCurMicroMan.getUserID()), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult obj) {
                     if (obj.getErrno() == 0) {
+                        mFollowTv.setVisibility(VISIBLE);
+
                         boolean isFriend = obj.getData().getBooleanValue("isFriend");
                         boolean isFollow = obj.getData().getBooleanValue("isFollow");
                         mCurMicroMan.getUserInfo().setFriend(isFriend);
                         mCurMicroMan.getUserInfo().setFollow(isFollow);
 
                         if (!mCurMicroMan.getUserInfo().isFollow() && !mCurMicroMan.getUserInfo().isFriend()) {
-                            mFollowTv.setVisibility(VISIBLE);
+                            mFollowTv.setEnabled(true);
+                            mFollowTv.setBackground(mNeedFollowDrawable);
+                            mFollowTv.setText("+关注");
+                            mFollowTv.setTextColor(Color.parseColor("#ff3b4e79"));
                         } else {
-                            mFollowTv.setVisibility(GONE);
+                            mFollowTv.setBackground(mHasFollowDrawable);
+                            mFollowTv.setText("已关注");
+                            mFollowTv.setTextColor(U.getColor(R.color.white_trans_50));
                         }
                     }
                 }
