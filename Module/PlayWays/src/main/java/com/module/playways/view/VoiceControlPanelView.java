@@ -12,9 +12,9 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
-import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.playways.R;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -101,9 +101,9 @@ public class VoiceControlPanelView extends ScrollView {
         mPeopleVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                EngineManager.getInstance().adjustPlaybackSignalVolume(progress);
+//                ZqEngineKit.getInstance().adjustPlaybackSignalVolume(progress);
                 mAfterPeopleVoice = progress;
-                EngineManager.getInstance().adjustRecordingSignalVolume(progress);
+                ZqEngineKit.getInstance().adjustRecordingSignalVolume(progress);
             }
 
             @Override
@@ -121,7 +121,7 @@ public class VoiceControlPanelView extends ScrollView {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mAfterMusicVoice = progress;
-                EngineManager.getInstance().adjustAudioMixingVolume(progress);
+                ZqEngineKit.getInstance().adjustAudioMixingVolume(progress);
             }
 
             @Override
@@ -142,19 +142,19 @@ public class VoiceControlPanelView extends ScrollView {
                 MyLog.d(TAG, "onCheckedChanged" + " group=" + group + " checkedId=" + checkedId);
                 if (checkedId == R.id.default_sbtn) {
                     mAfterMode = Params.AudioEffect.none;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.none);
+                    ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.none);
                 } else if (checkedId == R.id.ktv_sbtn) {
                     mAfterMode = Params.AudioEffect.ktv;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.ktv);
+                    ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.ktv);
                 } else if (checkedId == R.id.rock_sbtn) {
                     mAfterMode = Params.AudioEffect.rock;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.rock);
+                    ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.rock);
                 } else if (checkedId == R.id.dianyin_sbtn) {
                     mAfterMode = Params.AudioEffect.dianyin;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.dianyin);
+                    ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.dianyin);
                 } else if (checkedId == R.id.kongling_sbtn) {
                     mAfterMode = Params.AudioEffect.kongling;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.kongling);
+                    ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.kongling);
                 }
             }
         });
@@ -167,8 +167,8 @@ public class VoiceControlPanelView extends ScrollView {
 
     public void bindData() {
         Params.AudioEffect styleEnum = null;
-        if (EngineManager.getInstance().getParams() != null) {
-            styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
+        if (ZqEngineKit.getInstance().getParams() != null) {
+            styleEnum = ZqEngineKit.getInstance().getParams().getStyleEnum();
         }
         if (styleEnum == Params.AudioEffect.dianyin) {
             mScenesBtnGroup.check(R.id.dianyin_sbtn);
@@ -181,16 +181,16 @@ public class VoiceControlPanelView extends ScrollView {
         } else {
             mScenesBtnGroup.check(R.id.default_sbtn);
         }
-        mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
-        mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
+        mPeopleVoiceSeekbar.setProgress(ZqEngineKit.getInstance().getParams().getRecordingSignalVolume());
+        mMusicVoiceSeekbar.setProgress(ZqEngineKit.getInstance().getParams().getAudioMixingVolume());
 
         mBeforeMode = styleEnum;
-        mBeforePeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
-        mBeforeMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
+        mBeforePeopleVoice = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
+        mBeforeMusicVoice = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
 
         mAfterMode = styleEnum;
-        mAfterPeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
-        mAfterMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
+        mAfterPeopleVoice = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
+        mAfterMusicVoice = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
     }
 
     public boolean isChange() {
@@ -204,7 +204,7 @@ public class VoiceControlPanelView extends ScrollView {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         // 停止播放混音
-//        EngineManager.getInstance().pauseAudioMixing();
+//        ZqEngineKit.getInstance().pauseAudioMixing();
         EventBus.getDefault().unregister(this);
     }
 

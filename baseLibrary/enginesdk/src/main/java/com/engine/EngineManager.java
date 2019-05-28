@@ -288,7 +288,7 @@ public class EngineManager implements AgoraOutCallback {
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
     }
 
-    public static final EngineManager getInstance() {
+    private static final EngineManager getInstance() {
         return EngineManagerHolder.INSTANCE;
     }
 

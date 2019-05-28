@@ -87,6 +87,7 @@ import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.lyrics.utils.SongResUtils;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -171,11 +172,11 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
                 Params params = Params.getFromPref();
 //            params.setStyleEnum(Params.AudioEffect.none);
                 params.setScene(Params.Scene.grab);
-                EngineManager.getInstance().init("grabroom", params);
+                ZqEngineKit.getInstance().init("grabroom", params);
             }
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), mRoomData.isOwner(), mRoomData.getAgoraToken());
+            ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), mRoomData.isOwner(), mRoomData.getAgoraToken());
             // 不发送本地音频, 会造成第一次抢没声音
-            EngineManager.getInstance().muteLocalAudioStream(true);
+            ZqEngineKit.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
             for (GrabPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
@@ -313,8 +314,8 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             }
         }
         if (!mRoomData.isOwner()) {
-            EngineManager.getInstance().setClientRole(true);
-            EngineManager.getInstance().muteLocalAudioStream(false);
+            ZqEngineKit.getInstance().setClientRole(true);
+            ZqEngineKit.getInstance().muteLocalAudioStream(false);
             if (needAcc) {
                 // 如果需要播放伴奏，一定要在角色切换成功才能播
                 mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
@@ -325,7 +326,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             mUiHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    EngineManager.getInstance().muteLocalAudioStream(false);
+                    ZqEngineKit.getInstance().muteLocalAudioStream(false);
                     onChangeBroadcastSuccess();
                 }
             }, 500);
@@ -343,7 +344,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         }
         // 开始acr打分
         if (ScoreConfig.isAcrEnable() && now != null && now.getMusic() != null) {
-            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+            ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
                     .setSongName(now.getMusic().getItemName())
                     .setArtist(now.getMusic().getOwner())
                     .setMode(RecognizeConfig.MODE_MANUAL)
@@ -360,7 +361,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         //开始录制声音
         if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_GRAB)) {
             // 需要上传音频伪装成机器人
-            EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+            ZqEngineKit.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
             if (now != null) {
                 if (mRobotScoreHelper == null) {
                     mRobotScoreHelper = new RobotScoreHelper();
@@ -488,7 +489,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         if (fromUser) {
             mRoomData.setMute(mute);
         }
-        EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
+        ZqEngineKit.getInstance().muteAllRemoteAudioStreams(mute);
         // 如果是机器人的话
         if (mute) {
             // 如果是静音
@@ -514,7 +515,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             //属于需要上传音频文件的状态
             // 上一轮是我的轮次，暂停录音
             if (mRoomData.getGameId() > 0) {
-                EngineManager.getInstance().stopAudioRecording();
+                ZqEngineKit.getInstance().stopAudioRecording();
             }
             // 上传打分
             if (mRobotScoreHelper != null) {
@@ -539,7 +540,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "destroy begin");
         super.destroy();
         mDestroyed = true;
-        Params.save2Pref(EngineManager.getInstance().getParams());
+        Params.save2Pref(ZqEngineKit.getInstance().getParams());
         if (!mRoomData.isHasExitGame()) {
             exitRoom();
         }
@@ -547,7 +548,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        EngineManager.getInstance().destroy("grabroom");
+        ZqEngineKit.getInstance().destroy("grabroom");
         mUiHandler.removeCallbacksAndMessages(null);
         if (mExoPlayer != null) {
             mExoPlayer.release();
@@ -620,7 +621,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "GrabGameOverEvent");
         estimateOverTsThisRound();
         tryStopRobotPlay();
-        EngineManager.getInstance().stopRecognize();
+        ZqEngineKit.getInstance().stopRecognize();
         mRoomData.setIsGameFinish(true);
         // 游戏结束了,处理相应的ui逻辑
         mUiHandler.post(new Runnable() {
@@ -630,7 +631,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             }
         });
         // 销毁引擎，减小成本
-        EngineManager.getInstance().destroy("grabroom");
+        ZqEngineKit.getInstance().destroy("grabroom");
         mUiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -650,7 +651,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
         closeEngine();
         tryStopRobotPlay();
-        EngineManager.getInstance().stopRecognize();
+        ZqEngineKit.getInstance().stopRecognize();
         GrabRoundInfoModel now = event.newRoundInfo;
         if (now != null) {
             EventBus.getDefault().post(new GrabPlaySeatUpdateEvent(now.getPlayUsers()));
@@ -785,16 +786,16 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
 
     private void closeEngine() {
         if (mRoomData.getGameId() > 0) {
-            EngineManager.getInstance().stopAudioMixing();
+            ZqEngineKit.getInstance().stopAudioMixing();
             if (mRoomData.isSpeaking()) {
                 MyLog.d(TAG, "closeEngine 正在抢麦说话，无需闭麦");
             } else {
                 if (mRoomData.isOwner()) {
                     MyLog.d(TAG, "closeEngine 是房主 mute即可");
-                    EngineManager.getInstance().muteLocalAudioStream(true);
+                    ZqEngineKit.getInstance().muteLocalAudioStream(true);
                 } else {
-                    if (EngineManager.getInstance().getParams().isAnchor()) {
-                        EngineManager.getInstance().setClientRole(false);
+                    if (ZqEngineKit.getInstance().getParams().isAnchor()) {
+                        ZqEngineKit.getInstance().setClientRole(false);
                     }
                 }
             }
@@ -856,10 +857,10 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
                     int songBeginTs = songModel.getBeginMs();
                     if (accFile != null && accFile.exists()) {
                         // 伴奏文件存在
-                        EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
+                        ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
                                 , midiFile.getAbsolutePath(), songBeginTs, false, false, 1);
                     } else {
-                        EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), songModel.getAcc()
+                        ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), songModel.getAcc()
                                 , midiFile.getAbsolutePath(), songBeginTs, false, false, 1);
                     }
                 }
@@ -1348,7 +1349,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
         // 这有时是个耗时操作
-//        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+//        long ts = ZqEngineKit.getInstance().getAudioMixingCurrentPosition();
         long ts = -1;
         machineScoreItem.setTs(ts);
         machineScoreItem.setNo(line);

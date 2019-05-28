@@ -840,7 +840,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (setConfig) {
                         mConfig.setRecordingSignalVolume(volume);
                     }
-                    mAgoraRTCAdapter.adjustRecordingSignalVolume(volume);
+                    if (mConfig.isUseExternalAudio()) {
+                        mAudioCapture.setVolume(volume / 100.0f);
+                    } else {
+                        mAgoraRTCAdapter.adjustRecordingSignalVolume(volume);
+                    }
                 }
             });
         }
@@ -1223,7 +1227,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (setConfig) {
                         mConfig.setAudioMixingVolume(volume);
                     }
-                    mAgoraRTCAdapter.adjustAudioMixingVolume(volume);
+                    if (mConfig.isUseExternalAudio()) {
+                        mAudioPlayerCapture.setVolume(volume / 100.f);
+                    } else {
+                        mAgoraRTCAdapter.adjustAudioMixingVolume(volume);
+                    }
                 }
             });
         }

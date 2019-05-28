@@ -18,6 +18,7 @@ import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.UserStatus;
 import com.module.playways.R;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,7 +50,7 @@ public class VoiceRightOpView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 mVoiceTips.setVisibility(GONE);
-                Params params = EngineManager.getInstance().getParams();
+                Params params = ZqEngineKit.getInstance().getParams();
                 if (params != null) {
                     if (params.isLocalAudioStreamMute()) {
                         mMicIv.setImageResource(R.drawable.jingyin_changtai);
@@ -57,23 +58,23 @@ public class VoiceRightOpView extends RelativeLayout {
                     } else {
                         mMicIv.setImageResource(R.drawable.jingyin_anxia);
                     }
-                    EngineManager.getInstance().muteLocalAudioStream(!params.isLocalAudioStreamMute());
+                    ZqEngineKit.getInstance().muteLocalAudioStream(!params.isLocalAudioStreamMute());
                 }
             }
         });
         mSpeakerIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                Params params = EngineManager.getInstance().getParams();
+                Params params = ZqEngineKit.getInstance().getParams();
                 if (params != null) {
                     if (params.isAllRemoteAudioStreamsMute()) {
                         mSpeakerIv.setImageResource(R.drawable.guanbishengyin);
-                        EngineManager.getInstance().muteAllRemoteAudioStreams(false);
+                        ZqEngineKit.getInstance().muteAllRemoteAudioStreams(false);
                     } else {
                         mSpeakerIv.setImageResource(R.drawable.guanbishengyin_anxia);
                         mMicIv.setImageResource(R.drawable.jingyin_anxia);
-                        EngineManager.getInstance().muteAllRemoteAudioStreams(true);
-                        EngineManager.getInstance().muteLocalAudioStream(true);
+                        ZqEngineKit.getInstance().muteAllRemoteAudioStreams(true);
+                        ZqEngineKit.getInstance().muteLocalAudioStream(true);
                     }
                 }
             }
@@ -90,7 +91,7 @@ public class VoiceRightOpView extends RelativeLayout {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        Params params = EngineManager.getInstance().getParams();
+        Params params = ZqEngineKit.getInstance().getParams();
         if (params != null) {
             MyLog.d(TAG, "onAttachedToWindow audioMute=" + params.isLocalAudioStreamMute());
             if (params.isLocalAudioStreamMute()) {
