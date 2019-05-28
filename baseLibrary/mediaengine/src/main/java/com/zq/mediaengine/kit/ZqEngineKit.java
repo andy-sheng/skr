@@ -35,6 +35,7 @@ import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.AudioCodecFormat;
+import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.kit.agora.AgoraRTCAdapter;
 import com.zq.mediaengine.kit.filter.AcrRecognizer;
@@ -44,6 +45,7 @@ import com.zq.mediaengine.kit.filter.CbAudioScorer;
 import com.zq.mediaengine.kit.filter.TbAudioAgcFilter;
 import com.zq.mediaengine.kit.filter.TbAudioEffectFilter;
 import com.zq.mediaengine.publisher.MediaMuxerPublisher;
+import com.zq.mediaengine.publisher.RawFrameWriter;
 import com.zq.mediaengine.util.audio.AudioUtil;
 import com.zq.mediaengine.util.gles.GLRender;
 
@@ -115,6 +117,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     // 自采集相关
     private AudioCapture mAudioCapture;
     private AudioPlayerCapture mAudioPlayerCapture;
+    private SrcPin<AudioBufFrame> mAudioRemoteSrcPin;
 
     // 对远端音频及bgm进行混音
     private AudioMixer mRemoteAudioMixer;
@@ -126,6 +129,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AudioMixer mAudioMixer;
     private MediaCodecAudioEncoder mAudioEncoder;
     private MediaMuxerPublisher mFilePublisher;
+    private RawFrameWriter mRawFrameWriter;
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -261,15 +265,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     @Override
-    public void onRecordingBuffer(final byte[] samples) {
-        if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    saveRecordingFrame(samples);
-                }
-            });
-        }
+    public void onRecordingBuffer(byte[] samples) {
+        // TODO: remove this later
     }
 
     @Override
@@ -397,16 +394,18 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void initModules() {
         mAudioFilterMgt = new AudioFilterMgt();
         mCbAudioScorer = new CbAudioScorer();
+        // 单mic数据PCM录制
+        mRawFrameWriter = new RawFrameWriter();
 
         MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
                 " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord());
 
         SrcPin<AudioBufFrame> audioLocalSrcPin;
-        SrcPin<AudioBufFrame> audioRemoteSrcPin;
         if (mConfig.isUseExternalAudio()) {
             mAudioCapture = new AudioCapture(U.app().getApplicationContext());
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
@@ -422,10 +421,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioMixer.getSinkPin(0));
                 mAudioPlayerCapture.getSrcPin().connect(mRemoteAudioMixer.getSinkPin(1));
                 mRemoteAudioMixer.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
-                audioRemoteSrcPin = mRemoteAudioMixer.getSrcPin();
+                mAudioRemoteSrcPin = mRemoteAudioMixer.getSrcPin();
             } else {
                 mAudioPlayerCapture.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
-                audioRemoteSrcPin = mAudioPlayerCapture.getSrcPin();
+                mAudioRemoteSrcPin = mAudioPlayerCapture.getSrcPin();
             }
 
             mAPMFilter.enableAEC(true);
@@ -434,7 +433,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAPMFilter.setNsLevel(APMFilter.NS_LEVEL_1);
         } else {
             audioLocalSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
-            audioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
+            mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
         }
 
         if (SCORE_DEBUG) {
@@ -451,13 +450,18 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         if (mConfig.isUseExternalAudio() || mConfig.isUseExternalAudioRecord()) {
             mAudioResampleFilter = new AudioResampleFilter();
+            // 使用声网采集时，需要做buffer数据的隔离
             mAudioResampleFilter.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
-                    mConfig.getAudioSampleRate(), mConfig.getAudioChannels()));
+                    mConfig.getAudioSampleRate(), mConfig.getAudioChannels()), !mConfig.isUseExternalAudio());
             mAudioMixer = new AudioMixer();
 
-            mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
+            if (mConfig.isUseExternalAudio()) {
+                // 用声网采集，需要录制的时候再连接
+                mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
+            }
+            mAudioResampleFilter.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
             mAudioResampleFilter.getSrcPin().connect(mAudioMixer.getSinkPin(0));
-            audioRemoteSrcPin.connect(mAudioMixer.getSinkPin(1));
+            mAudioRemoteSrcPin.connect(mAudioMixer.getSinkPin(1));
 
             // 自采集发送
             if (mConfig.isUseExternalAudio()) {
@@ -469,6 +473,8 @@ public class ZqEngineKit implements AgoraOutCallback {
             mFilePublisher = new MediaMuxerPublisher();
             mAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
             mAudioEncoder.getSrcPin().connect(mFilePublisher.getAudioSink());
+        } else {
+            mAudioFilterMgt.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
         }
     }
 
@@ -1289,8 +1295,14 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (file.exists()) {
                         file.delete();
                     }
+
+                    if (!mConfig.isUseExternalAudio()) {
+                        // 用声网采集，需要录制的时候再连接
+                        mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
+                    }
                     if (fromRecodFrameCallback) {
                         mConfig.setRecordingFromCallbackSavePath(saveAudioForAiFilePath);
+                        mRawFrameWriter.start(saveAudioForAiFilePath);
                     } else {
                         if (mConfig.isUseExternalAudioRecord()) {
                             AudioCodecFormat audioCodecFormat =
@@ -1309,33 +1321,6 @@ public class ZqEngineKit implements AgoraOutCallback {
                     }
                 }
             });
-        }
-    }
-
-    private void saveRecordingFrame(byte[] newBuffer) {
-        String path = mConfig.getRecordingFromCallbackSavePath();
-        if (TextUtils.isEmpty(path)) {
-            return;
-        }
-        File file = new File(path);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        BufferedSink bufferedSink = null;
-        try {
-            Sink sink = Okio.appendingSink(file);
-            bufferedSink = Okio.buffer(sink);
-            bufferedSink.write(newBuffer);
-            MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (null != bufferedSink) {
-                bufferedSink.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -1370,7 +1355,12 @@ public class ZqEngineKit implements AgoraOutCallback {
                             mAgoraRTCAdapter.stopAudioRecording();
                         }
                     } else {
+                        mRawFrameWriter.stop();
                         mConfig.setRecordingFromCallbackSavePath(null);
+                    }
+                    if (!mConfig.isUseExternalAudio()) {
+                        // 用声网采集，录制完成断开连接
+                        mAudioFilterMgt.getSrcPin().disconnect(mAudioResampleFilter.getSinkPin(), false);
                     }
                 }
             });

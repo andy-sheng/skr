@@ -38,7 +38,18 @@ public class AudioResample {
      * @param channels   output channel number
      */
     public void setOutputFormat(int sampleFmt, int sampleRate, int channels) {
-        _setOutputFormat(mInstance, sampleFmt, sampleRate, channels);
+        _setOutputFormat(mInstance, sampleFmt, sampleRate, channels, false);
+    }
+
+    /**
+     * Set output audio format, must set before {@link #config(int, int, int)}.
+     *
+     * @param sampleRate output sample rate
+     * @param channels   output channel number
+     * @param useDiffMemory force output different memory
+     */
+    public void setOutputFormat(int sampleFmt, int sampleRate, int channels, boolean useDiffMemory) {
+        _setOutputFormat(mInstance, sampleFmt, sampleRate, channels, useDiffMemory);
     }
 
     /**
@@ -82,7 +93,8 @@ public class AudioResample {
     }
 
     private native long _init();
-    private native void _setOutputFormat(long instance, int sampleFmt, int sampleRate, int channels);
+    private native void _setOutputFormat(long instance, int sampleFmt, int sampleRate,
+                                         int channels, boolean useDiffMemory);
     private native int _config(long instance, int sampleFormat, int sampleRate, int channels);
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
     private native int _read(long instance, ByteBuffer buffer, int size);

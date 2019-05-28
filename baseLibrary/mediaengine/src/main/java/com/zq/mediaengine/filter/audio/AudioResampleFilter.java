@@ -31,6 +31,12 @@ public class AudioResampleFilter extends AudioFilterBase {
         mAudioResample.setOutputFormat(outFormat.sampleFormat, outFormat.sampleRate, outFormat.channels);
     }
 
+    public void setOutFormat(@NonNull AudioBufFormat outFormat, boolean useDiffMemory) {
+        mOutFormat = outFormat;
+        mAudioResample.setOutputFormat(outFormat.sampleFormat, outFormat.sampleRate,
+                outFormat.channels, useDiffMemory);
+    }
+
     @Override
     protected long getNativeInstance() {
         return mAudioResample.getNativeInstance();

@@ -18,8 +18,9 @@ jlong Java_com_zq_mediaengine_filter_audio_AudioResample__1init
 }
 
 void Java_com_zq_mediaengine_filter_audio_AudioResample__1setOutputFormat
-        (JNIEnv *env, jobject obj, jlong instance, jint sampleFmt, jint sampleRate, jint channels) {
-    getInstance(instance)->setOutputFormat(sampleFmt, sampleRate, channels);
+        (JNIEnv *env, jobject obj, jlong instance, jint sampleFmt, jint sampleRate,
+                jint channels, jboolean useDiffMemory) {
+    getInstance(instance)->setOutputFormat(sampleFmt, sampleRate, channels, useDiffMemory);
 }
 
 jint Java_com_zq_mediaengine_filter_audio_AudioResample__1config

@@ -17,7 +17,7 @@ public:
     ~AudioResample();
 
     // config output format, must be set before config
-    int setOutputFormat(int sampleFmt, int sampleRate, int channels);
+    int setOutputFormat(int sampleFmt, int sampleRate, int channels, bool useDiffMemory);
     // config input format and init resample instance
     int config(int sampleFormat, int sampleRate, int channels);
     // do resample
@@ -38,6 +38,10 @@ private:
     int mOutSampleRate;
     int mOutChannels;
     int mOutBufferSamples;
+
+    bool mUseDiffMemory;
+    uint8_t *mOutBuf;
+    int mOutBufSize;
 };
 
 

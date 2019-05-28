@@ -17,7 +17,10 @@ AudioResample::AudioResample():
         mOutSampleFmt(0),
         mOutSampleRate(0),
         mOutChannels(0),
-        mOutBufferSamples(1024) {
+        mOutBufferSamples(1024),
+        mUseDiffMemory(false),
+        mOutBuf(NULL),
+        mOutBufSize(0) {
     pthread_mutex_init(&mLock, NULL);
 }
 
@@ -27,15 +30,20 @@ AudioResample::~AudioResample() {
         ksy_swr_release(mSwr);
         mSwr = NULL;
     }
+    if (mOutBuf) {
+        free(mOutBuf);
+        mOutBuf = NULL;
+    }
     pthread_mutex_unlock(&mLock);
     pthread_mutex_destroy(&mLock);
 }
 
-int AudioResample::setOutputFormat(int sampleFmt, int sampleRate, int channels) {
+int AudioResample::setOutputFormat(int sampleFmt, int sampleRate, int channels, bool useDiffMemory) {
     pthread_mutex_lock(&mLock);
     mOutSampleFmt = sampleFmt;
     mOutSampleRate = sampleRate;
     mOutChannels = channels;
+    mUseDiffMemory = useDiffMemory;
     pthread_mutex_unlock(&mLock);
     return 0;
 }
@@ -58,6 +66,10 @@ int AudioResample::config(int sampleFormat, int sampleRate, int channels) {
             LOGE("create audio resample failed!");
             ret = -1;
         }
+    } else if (mUseDiffMemory) {
+        // 不需要resample的时候，重新copy一次，做隔离
+        mOutBufSize = sampleRate * channels * getBytesPerSample(sampleFormat) * 300 / 1000;
+        mOutBuf = (uint8_t*) malloc((size_t) mOutBufSize);
     }
     pthread_mutex_unlock(&mLock);
     return ret;
@@ -67,14 +79,21 @@ int AudioResample::resample(uint8_t **out, uint8_t *in, int in_size) {
     int ret = 0;
     pthread_mutex_lock(&mLock);
     if (mSwr) {
-        uint8_t **ppOut = NULL;
         ret = ksy_swr_convert(mSwr, &out, &in, in_size);
-        if (ppOut) {
-            *out = ppOut[0];
-        }
     } else {
-        *out = in;
-        ret = in_size;
+        if (mUseDiffMemory) {
+            if (mOutBufSize < in_size) {
+                mOutBuf = (uint8_t*) realloc((void*) mOutBuf, (size_t) in_size);
+                LOGI("realloc mOutBuf from %d to %d", mOutBufSize, in_size);
+                mOutBufSize = in_size;
+            }
+            memcpy(mOutBuf, in, (size_t) in_size);
+            *out = mOutBuf;
+            ret = in_size;
+        } else {
+            *out = in;
+            ret = in_size;
+        }
     }
     pthread_mutex_unlock(&mLock);
     return ret;
