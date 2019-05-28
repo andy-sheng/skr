@@ -6,7 +6,6 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -17,6 +16,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.event.GrabChangeRoomEvent;
+import com.component.busilib.GrabJoinRoomFailEvent;
 import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
@@ -24,7 +24,6 @@ import com.module.playways.grab.room.guide.model.GrabGuideInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
-import com.module.playways.R;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -86,12 +85,14 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 } else {
                     if (result.getErrno() == 8344135) {
                         // 房间已满
+                        EventBus.getDefault().post(new GrabJoinRoomFailEvent(roomID, GrabJoinRoomFailEvent.TYPE_FULL_ROOM));
                         U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                                 .setImage(R.drawable.grab_room_fill_player)
                                 .setText("" + result.getErrmsg())
                                 .build());
                     } else if (result.getErrno() == 8344141) {
                         // 房间解散
+                        EventBus.getDefault().post(new GrabJoinRoomFailEvent(roomID, GrabJoinRoomFailEvent.TYPE_DISSOLVE_ROOM));
                         U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                                 .setImage(R.drawable.grab_room_dissolve)
                                 .setText("" + result.getErrmsg())
