@@ -787,12 +787,14 @@ public class UserInfoManager {
                         queryList.add(lll);
                         lll = new ArrayList<>();
                     }
-                    lll.add(id);
                 }
+                lll.add(id);
+                index++;
             }
             if (!lll.isEmpty()) {
                 queryList.add(lll);
             }
+            final HashMap<Integer, OnlineModel> onlineMap = new HashMap<>();
             for (List<Integer> qqq : queryList) {
                 Observable<HashMap<Integer, OnlineModel>> observable = null;
                 if (pullGameStatus) {
@@ -800,15 +802,11 @@ public class UserInfoManager {
                 } else {
                     observable = checkUserOnlineStatusByIds(qqq);
                 }
+
                 observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
                     @Override
                     public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
-                        for (UserInfoModel userInfoModel : list) {
-                            if (idSets.contains(userInfoModel.getUserId())) {
-                                OnlineModel onlineModel = map.get(userInfoModel.getUserId());
-                                fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
-                            }
-                        }
+                        onlineMap.putAll(map);
                         return list;
                     }
                 })
@@ -823,6 +821,12 @@ public class UserInfoManager {
 
                             }
                         });
+            }
+            for (UserInfoModel userInfoModel : list) {
+                if (idSets.contains(userInfoModel.getUserId())) {
+                    OnlineModel onlineModel = onlineMap.get(userInfoModel.getUserId());
+                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                }
             }
         }
         Collections.sort(list, new Comparator<UserInfoModel>() {
@@ -854,7 +858,7 @@ public class UserInfoManager {
 
     private void fillUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
         // 认为状态缓存有效，不去这个id的状态了
-        if (onlineModel.isOnline()) {
+        if (onlineModel!=null && onlineModel.isOnline()) {
             userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
             userInfoModel.setStatusTs(onlineModel.getOnlineTime());
             if (pullGameStatus) {
