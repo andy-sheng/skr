@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
+import com.zq.live.proto.Common.MiniGameInfo;
 import com.zq.live.proto.Common.StandPlayType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;
@@ -61,6 +62,7 @@ public class SongModel implements Serializable {
     @JSONField(name = "SPKMusic")
     private List<SongModel> pkMusicList;
     private int singCount;
+    private MiniGameInfoModel miniGame;
 
     public int getSingCount() {
         return singCount;
@@ -279,6 +281,14 @@ public class SongModel implements Serializable {
         this.playType = playType;
     }
 
+    public MiniGameInfoModel getMiniGame() {
+        return miniGame;
+    }
+
+    public void setMiniGame(MiniGameInfoModel miniGame) {
+        this.miniGame = miniGame;
+    }
+
     public void parse(MusicInfo musicInfo) {
         if (musicInfo == null) {
             MyLog.e("SongModel MusicInfo == null");
@@ -319,6 +329,12 @@ public class SongModel implements Serializable {
                 this.pkMusicList.add(songModel);
             }
         }
+        if (musicInfo.getMiniGame() != null) {
+            MiniGameInfoModel gameInfoModel = new MiniGameInfoModel();
+            gameInfoModel.parse(musicInfo.getMiniGame());
+            this.setMiniGame(gameInfoModel);
+        }
+
     }
 
     public SongModel getPkMusic() {
