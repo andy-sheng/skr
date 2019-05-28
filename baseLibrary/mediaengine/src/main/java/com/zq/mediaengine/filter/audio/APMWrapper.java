@@ -191,10 +191,10 @@ public class APMWrapper {
     static {
         LibraryLoader.load();
         try {
-            System.loadLibrary("ksyapm");
+            System.loadLibrary("zqapm");
         } catch (UnsatisfiedLinkError error) {
             mNativeLibraryLoad = false;
-            Log.e(TAG, "No libksyapm.so! Please check ");
+            Log.e(TAG, "No libzqapm.so! Please check ");
         }
     }
 }

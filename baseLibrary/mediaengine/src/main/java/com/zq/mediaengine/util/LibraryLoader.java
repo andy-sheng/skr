@@ -11,9 +11,9 @@ public class LibraryLoader {
 
     public static void load() {
         try {
-            System.loadLibrary("ksylive");
+            System.loadLibrary("zqlive");
         } catch (UnsatisfiedLinkError error) {
-            Log.e(TAG, "No libksylive.so! Please check");
+            Log.e(TAG, "No libzqlive.so! Please check");
         }
     }
 }

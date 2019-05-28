@@ -93,7 +93,7 @@ STREAMER_STATIC_LIBRARIES += yuv_static swresample avutil \
 
 # build shared library
 include $(CLEAR_VARS)
-LOCAL_MODULE := ksylive
+LOCAL_MODULE := zqlive
 LOCAL_LDLIBS := -llog -landroid -lOpenSLES -lEGL -lGLESv2 -ljnigraphics -lz
 
 LOCAL_CONLYFLAGS := $(STREAMER_CONLYFLAGS)
