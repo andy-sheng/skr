@@ -326,10 +326,10 @@ public interface UserInfoServerApi {
                                    @Query("cnt") int cnt);
 
 
-    @POST("/v1/mate/multi-check-user-online-status")
+    @POST("/v2/mate/multi-check-user-online-status")
     Observable<ApiResult> checkUserOnlineStatus(@Body RequestBody body);
 
-    @POST("/v1/mate/multi-check-user-game-status")
+    @POST("/v2/mate/multi-check-user-game-status")
     Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
 
     @GET("v1/mate/search-fans")

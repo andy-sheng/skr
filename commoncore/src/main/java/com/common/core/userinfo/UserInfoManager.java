@@ -476,9 +476,23 @@ public class UserInfoManager {
                 for (UserInfoModel userInfoModel : resutlSet) {
                     resultList.add(userInfoModel);
                 }
+                mStatusMap.resize(resultList.size());
+
                 if (pullOnlineStatus == ONLINE_PULL_GAME) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, true);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, false);
                 } else {
 
@@ -519,8 +533,20 @@ public class UserInfoManager {
                     }
                 }
                 if (pullOnlineStatus == ONLINE_PULL_GAME) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, true);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, false);
                 } else {
 
@@ -722,44 +748,82 @@ public class UserInfoManager {
                 idSets.add(userInfoModel.getUserId());
             } else {
                 long t = System.currentTimeMillis() - onlineModel.getRecordTs();
-                if (Math.abs(t) < 30 * 1000) {
-                    // 认为状态缓存有效，不去这个id的状态了
-                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                if (onlineModel.isOnline()) {
+                    if (Math.abs(t) < 30 * 1000) {
+                        // 认为状态缓存有效，不去这个id的状态了
+                        fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                    } else {
+                        idSets.add(userInfoModel.getUserId());
+                    }
                 } else {
-                    idSets.add(userInfoModel.getUserId());
+                    //如果用户离线了
+                    if (System.currentTimeMillis() - onlineModel.getOfflineTime() > 15 * 24 * 3600 * 1000) {
+                        // 已经离线超出15天了，没道理这会就上线了，缓存久一点
+                        if (Math.abs(t) < 5 * 60 * 1000) {
+                            // 认为状态缓存有效，不去这个id的状态了
+                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                        } else {
+                            idSets.add(userInfoModel.getUserId());
+                        }
+                    } else {
+                        if (Math.abs(t) < 60 * 1000) {
+                            // 认为状态缓存有效，不去这个id的状态了
+                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                        } else {
+                            idSets.add(userInfoModel.getUserId());
+                        }
+                    }
                 }
             }
         }
         if (!idSets.isEmpty()) {
-            Observable<HashMap<Integer, OnlineModel>> observable = null;
-            if (pullGameStatus) {
-                observable = checkUserGameStatusByIds(idSets);
-            } else {
-                observable = checkUserOnlineStatusByIds(idSets);
-            }
-            observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
-                @Override
-                public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
-                    for (UserInfoModel userInfoModel : list) {
-                        if (idSets.contains(userInfoModel.getUserId())) {
-                            OnlineModel onlineModel = map.get(userInfoModel.getUserId());
-                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
-                        }
+            List<List<Integer>> queryList = new ArrayList<>();
+
+            List<Integer> lll = new ArrayList<>();
+            int index = 0;
+            for (Integer id : idSets) {
+                if (index % 50 == 0) {
+                    if (!lll.isEmpty()) {
+                        queryList.add(lll);
+                        lll = new ArrayList<>();
                     }
-                    return list;
+                    lll.add(id);
                 }
-            })
-                    .subscribe(new Consumer<List<UserInfoModel>>() {
-                        @Override
-                        public void accept(List<UserInfoModel> userInfoModels) throws Exception {
-
+            }
+            if (!lll.isEmpty()) {
+                queryList.add(lll);
+            }
+            for (List<Integer> qqq : queryList) {
+                Observable<HashMap<Integer, OnlineModel>> observable = null;
+                if (pullGameStatus) {
+                    observable = checkUserGameStatusByIds(qqq);
+                } else {
+                    observable = checkUserOnlineStatusByIds(qqq);
+                }
+                observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
+                    @Override
+                    public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
+                        for (UserInfoModel userInfoModel : list) {
+                            if (idSets.contains(userInfoModel.getUserId())) {
+                                OnlineModel onlineModel = map.get(userInfoModel.getUserId());
+                                fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                            }
                         }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
+                        return list;
+                    }
+                })
+                        .subscribe(new Consumer<List<UserInfoModel>>() {
+                            @Override
+                            public void accept(List<UserInfoModel> userInfoModels) throws Exception {
 
-                        }
-                    });
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+                            }
+                        });
+            }
         }
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
@@ -829,7 +893,6 @@ public class UserInfoManager {
      * @return
      */
     public Observable<HashMap<Integer, OnlineModel>> checkUserOnlineStatusByIds(Collection<Integer> list) {
-
         HashMap<String, Object> map = new HashMap<>();
         map.put("userIDs", list);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
