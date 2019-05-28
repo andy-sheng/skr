@@ -109,8 +109,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_58_dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_16_dp">
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_12_dp">
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/iv_recharge"
