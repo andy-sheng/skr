@@ -1,0 +1,48 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/voice_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/voice_tips_bg"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_8_dp"
+        android:paddingRight="@dimen/view_8_dp"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="开启语音，更好交流"
+        android:textColor="#B2B6D6"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mic_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/voice_tips"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:scaleType="center"
+        android:src="@drawable/jingyin_changtai" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/speaker_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mic_iv"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:scaleType="center"
+        android:src="@drawable/guanbishengyin" />
+
+
+</merge>

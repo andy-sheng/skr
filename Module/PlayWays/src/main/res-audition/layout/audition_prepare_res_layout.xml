@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_34_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_5_dp"
+        android:src="@drawable/img_back" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_song_name"
+        android:textSize="@dimen/textsize_20_dp"
+        android:layout_marginTop="@dimen/view_36_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/iv_carton"
+        android:layout_marginTop="@dimen/view_200_dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/jiazaigequ_xiaoren"
+        android:layout_width="@dimen/view_107_dp"
+        android:layout_height="@dimen/view_114_dp"
+         />
+
+    <com.common.view.ex.ExTextView
+        android:layout_marginTop="@dimen/view_32_dp"
+        android:layout_centerHorizontal="true"
+        android:text="0%歌曲加载中..."
+        android:textSize="@dimen/textsize_16_dp"
+        android:textColor="#FF447D"
+        android:id="@+id/tv_res_progress"
+        android:layout_below="@+id/iv_carton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

@@ -1,0 +1,231 @@
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/smart_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7088FF"
+    app:srlEnablePreviewInEditMode="true">
+
+    <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        android:id="@+id/classics_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.scwang.smartrefresh.layout.header.ClassicsHeader>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
+
+            <!--只是做一下刘海屏幕的适配-->
+            <com.common.view.titlebar.CommonTitleBar
+                android:id="@+id/titlebar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:showBottomLine="false"
+                app:statusBarColor="@color/transparent"
+                app:titleBarHeight="@dimen/view_0_dp"></com.common.view.titlebar.CommonTitleBar>
+
+            <com.module.home.widget.UserInfoTitleView
+                android:id="@+id/user_info_title"
+                android:layout_below="@+id/titlebar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/medal_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_145_dp"
+                android:layout_below="@+id/user_info_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginTop="@dimen/view_30_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@drawable/duanwei">
+
+                <com.zq.level.view.NormalLevelView2
+                    android:id="@+id/level_view"
+                    android:layout_width="@dimen/view_125_dp"
+                    android:layout_height="@dimen/view_109_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_d_30_dp"
+                    levelView2:mainHeight2="@dimen/view_109_dp"
+                    levelView2:mainWidth2="@dimen/view_125_dp"
+                    levelView2:subBottom2="@dimen/view_6_dp"
+                    levelView2:subHeight2="@dimen/view_13_dp"
+                    levelView2:subWidth2="@dimen/view_24_dp"></com.zq.level.view.NormalLevelView2>
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/level_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/level_view"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#0C2275"
+                    android:textSize="@dimen/textsize_14_dp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="@dimen/view_70_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/view_30_dp"
+                    android:layout_marginTop="@dimen/view_15_dp">
+
+                    <ImageView
+                        android:id="@+id/paiwei_img"
+                        android:layout_width="@dimen/view_70_dp"
+                        android:layout_height="@dimen/view_61_dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/gerenzhuye_paiweisai" />
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/rank_num_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/view_15_dp"
+                        android:gravity="center"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_14_dp" />
+
+                    <com.common.view.ex.ExTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/paiwei_img"
+                        android:layout_marginTop="@dimen/view_5_dp"
+                        android:gravity="center"
+                        android:text="排位赛"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_12_dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/view_70_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/view_15_dp"
+                    android:layout_marginRight="@dimen/view_30_dp">
+
+                    <ImageView
+                        android:id="@+id/singend_img"
+                        android:layout_width="@dimen/view_70_dp"
+                        android:layout_height="@dimen/view_61_dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/gerenzhuye_yicangdaodi" />
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/singend_num_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/view_15_dp"
+                        android:gravity="center"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_14_dp" />
+
+                    <com.common.view.ex.ExTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/singend_img"
+                        android:layout_marginTop="@dimen/view_5_dp"
+                        android:gravity="center"
+                        android:text="一唱到底"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_12_dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rank_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_34_dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/view_d_12_dp"
+                    android:background="@drawable/pk_info_paiming"
+                    android:paddingLeft="@dimen/view_42_dp"
+                    android:paddingRight="@dimen/view_12_dp">
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/rank_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/view_20_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/view_12_dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_14_dp" />
+
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/rank_diff_iv"
+                        android:layout_width="@dimen/view_8_dp"
+                        android:layout_height="@dimen/view_10_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/view_3_dp"
+                        android:layout_toRightOf="@id/rank_text" />
+
+                    <com.common.view.ex.ExImageView
+                        android:layout_width="@dimen/view_7_dp"
+                        android:layout_height="@dimen/view_8_dp"
+                        android:layout_marginLeft="@dimen/view_9_dp"
+                        android:layout_marginTop="@dimen/view_20_dp"
+                        android:layout_marginRight="@dimen/view_24_dp"
+                        android:layout_toRightOf="@id/rank_diff_iv"
+                        android:background="@drawable/gengduo_btn"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/medal_iv"
+                    android:layout_width="@dimen/view_42_dp"
+                    android:layout_height="@dimen/view_42_dp"
+                    android:layout_alignLeft="@+id/rank_area"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/view_12_dp"
+                    android:layout_marginBottom="@dimen/view_d_17_dp" />
+
+            </com.common.view.ex.ExRelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/medal_layout"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginTop="@dimen/view_36_dp"
+                android:layout_marginRight="@dimen/view_16_dp">
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_athletics_pk"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/view_232_dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/paiweisai" />
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_voice_room"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/view_232_dp"
+                    android:layout_marginLeft="@dimen/view_15_dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/liangefang" />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

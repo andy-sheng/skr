@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        app:centerText="修改昵称"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_18_dp"
+        app:centerTextStyle="BOLD"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText="完成"
+        app:rightTextColor="@color/white_trans_70"
+        app:rightTextSize="@dimen/textsize_18_dp"
+        app:rightType="textView"
+        app:rightTextStyle="BOLD"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:background="@drawable/common_dialog_bg"
+        android:paddingLeft="@dimen/view_3_dp"
+        android:paddingTop="@dimen/view_3_dp"
+        android:paddingRight="@dimen/view_3_dp"
+        android:paddingBottom="@dimen/view_5_dp">
+
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/nickname_et"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginTop="@dimen/view_30_dp"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:background="@drawable/edit_info_single_input_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/view_14_dp"
+            android:paddingRight="@dimen/view_14_dp"
+            android:singleLine="true"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/view_16_dp"
+            android:textStyle="bold" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nickname_et"
+            android:layout_marginLeft="@dimen/view_27_dp"
+            android:layout_marginTop="@dimen/view_8_dp"
+            android:text="每3个月才能更改一次昵称喔～"
+            android:visibility="gone"
+            android:textColor="#993B4E79"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

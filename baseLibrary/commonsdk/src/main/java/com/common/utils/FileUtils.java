@@ -6,10 +6,14 @@ import com.common.log.MyLog;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -37,7 +41,32 @@ public class FileUtils {
     }
 
     /**
-     * 传入一个文件路径，返回文件夹路径
+     * 返回该文件夹内所有文件的大小
+     *
+     * @param path
+     * @return
+     */
+    public long getDirSize(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            if (file.isFile()) {
+                return file.length();
+            } else if (file.isDirectory()) {
+                long len = 0;
+                File[] files = file.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        len += getDirSize(f.getAbsolutePath());
+                    }
+                }
+                return len;
+            }
+        }
+        return 0L;
+    }
+
+    /**
+     * 传入一个文件路径，文件后缀入 /sdcard/a.jpg 返回 jpg
      *
      * @param path
      * @return
@@ -55,7 +84,28 @@ public class FileUtils {
     }
 
     /**
-     * 传入一个文件路径，返回文件名
+     * 传入一个文件路径，文件后缀入 http://www.baidu.com/a.jpg 返回 jpg
+     *
+     * @param path
+     * @return
+     */
+    public String getSuffixFromUrl(String path, String defaultExt) {
+        String extension = "";
+        if (!TextUtils.isEmpty(path)) {
+            int indexOfSlash = path.lastIndexOf('/');
+            int indexOfDot = path.lastIndexOf('.');
+            if (indexOfDot > indexOfSlash) {
+                extension = path.substring(indexOfDot + 1);
+            }
+        }
+        if (TextUtils.isEmpty(extension)) {
+            return defaultExt;
+        }
+        return extension;
+    }
+
+    /**
+     * 传入一个文件路径，返回文件名  /sdcard/a.jpg 返回 a.jpg
      *
      * @param path
      * @return
@@ -66,6 +116,27 @@ public class FileUtils {
             int indexOfSlash = path.lastIndexOf('/');
             if (indexOfSlash != -1) {
                 extension = path.substring(indexOfSlash + 1);
+            }
+        }
+        return extension;
+    }
+
+    /**
+     * 传入一个文件路径，返回文件名  /sdcard/aa.jpg 返回 aa
+     *
+     * @param path
+     * @return
+     */
+    public String getFileNameFromFilePathWithoutExt(String path) {
+        String extension = path;
+        if (!TextUtils.isEmpty(path)) {
+            int indexOfSlash = path.lastIndexOf('/');
+            int indexOfDot = path.lastIndexOf('.');
+            if (indexOfDot == -1) {
+                return path.substring(indexOfSlash + 1);
+            }
+            if (indexOfDot > indexOfSlash) {
+                return path.substring(indexOfSlash + 1, indexOfDot);
             }
         }
         return extension;
@@ -139,6 +210,7 @@ public class FileUtils {
 
     /**
      * 得到一个文件的sha1签名摘要
+     *
      * @param fileName
      * @return
      * @throws NoSuchAlgorithmException
@@ -166,5 +238,121 @@ public class FileUtils {
 
         return md.digest();
     }
+
+
+    /**
+     * 拷贝assets中的文件到sdcard
+     *
+     * @param srcPath  文件或者文件夹 如 effect
+     * @param dstPath  目录
+     * @param override 是否覆盖
+     */
+    public void copyAssetsToSdcard(String srcPath, String dstPath, boolean override) {
+        try {
+            String fileNames[] = U.app().getAssets().list(srcPath);
+            if (fileNames.length > 0) {
+                File file = new File(dstPath);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                for (String fileName : fileNames) {
+                    if (!srcPath.equals("")) { // assets 文件夹下的目录
+                        copyAssetsToSdcard(srcPath + File.separator + fileName, dstPath + File.separator + fileName, override);
+                    } else { // assets 文件夹
+                        copyAssetsToSdcard(fileName, dstPath + File.separator + fileName, override);
+                    }
+                }
+            } else {
+                File outFile = new File(dstPath);
+                if (!override && outFile.exists()) {
+                    MyLog.w("FileUtils", outFile.getAbsolutePath() + " exist,override is false,cancel");
+                    return;
+                }
+                InputStream is = U.app().getAssets().open(srcPath);
+                FileOutputStream fos = new FileOutputStream(outFile);
+                byte[] buffer = new byte[1024];
+                int byteCount;
+                while ((byteCount = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, byteCount);
+                }
+                fos.flush();
+                is.close();
+                fos.close();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void deleteAllFiles(String srcPath) {
+        if (TextUtils.isEmpty(srcPath)) {
+            MyLog.w("FileUtils", "deleteAllFiles srcPath is null");
+            return;
+        }
+
+        File file = new File(srcPath);
+        deleteAllFiles(file);
+    }
+
+    public void deleteAllFiles(File root) {
+        if (root == null || !root.exists()) {
+            MyLog.w("FileUtils", "deleteAllFiles root error");
+            return;
+        }
+        if (root.isFile()) {
+            root.delete();
+            return;
+        }
+        File files[] = root.listFiles();
+        if (files != null)
+            for (File f : files) {
+                if (f.isDirectory()) { // 判断是否为文件夹
+                    deleteAllFiles(f);
+                    try {
+                        f.delete();
+                    } catch (Exception e) {
+                    }
+                } else {
+                    if (f.exists()) { // 判断是否存在
+                        deleteAllFiles(f);
+                        try {
+                            f.delete();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+            }
+    }
+
+    /**
+     * @param file
+     * @param left
+     */
+    public void deleteEarlyFiles(File file, int left) {
+        if (file.isFile()) {
+            file.delete();
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] childFile = file.listFiles();
+            // 文件修改时间排序
+            Arrays.sort(childFile, new Comparator<File>() {
+                public int compare(File f1, File f2) {
+                    long diff = f1.lastModified() - f2.lastModified();
+                    if (diff > 0)
+                        return 1;
+                    else if (diff == 0)
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
+            for (int i = 0; i < childFile.length - left; i++) {
+                File f = childFile[i];
+                U.getFileUtils().deleteAllFiles(f);
+            }
+        }
+    }
+
+
 }
 

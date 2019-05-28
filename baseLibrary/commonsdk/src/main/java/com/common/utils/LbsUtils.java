@@ -1,14 +1,20 @@
 package com.common.utils;
 
+import android.app.Activity;
+import android.text.TextUtils;
+
 import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.common.log.MyLog;
+import com.common.permission.PermissionUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Location Base Service
@@ -131,21 +137,64 @@ public class LbsUtils {
      */
     public void getLocation(boolean strict, Callback callback) {
         if (strict) {
-            mLocationClient.start();
-            mOneTimeCallback = callback;
+            getLocationInner(callback);
         } else {
             /**
              * 5分钟内 可以拿来用
              */
-            if (mLocation != null) {
-                if (System.currentTimeMillis() - mLastSyncTs < 20 * 60 * 1000) {
+            if (mLocation != null && mLocation.isValid()) {
+                if (System.currentTimeMillis() - mLastSyncTs < 5 * 60 * 1000) {
                     callback.onReceive(mLocation);
                     return;
                 }
             }
             // 还是同步查
-            mLocationClient.start();
+            getLocationInner(callback);
+        }
+    }
+
+    /**
+     * 返回可用的地理位置
+     * strict  true 为严格模式，每次必定实时去查
+     * false 时 如果 间隔5分钟内就不会同步了，用上一次的结果
+     *
+     * @return
+     */
+    private void getLocationInner(Callback callback) {
+        Activity activity = U.getActivityUtils().getTopActivity();
+        if(activity == null){
+            if (callback != null) {
+                callback.onReceive(null);
+            }
+            return;
+        }
+        if (!U.getPermissionUtils().checkLocation(activity)) {
+            U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    mOneTimeCallback = callback;
+                    mLocationClient.start();
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+                    callback.onReceive(null);
+                    if (MyLog.isDebugLogOpen()) {
+                        U.getToastUtil().showShort("定位权限请求失败");
+                    }
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                    callback.onReceive(null);
+                    if (MyLog.isDebugLogOpen()) {
+                        U.getToastUtil().showShort("定位权限请求失败,不再询问");
+                    }
+                }
+            }, U.getActivityUtils().getTopActivity());
+        } else {
             mOneTimeCallback = callback;
+            mLocationClient.start();
         }
     }
 
@@ -241,6 +290,9 @@ public class LbsUtils {
             this.locationDesc = locationDesc;
         }
 
+        public boolean isValid(){
+            return !TextUtils.isEmpty(addressDesc);
+        }
 
         @Override
         public String toString() {
@@ -278,6 +330,9 @@ public class LbsUtils {
         }
 
         public static Location parseFromJsonStr(String str) {
+            if (str == null && "".equals(str)){
+                return null;
+            }
 
             try {
                 JSONObject jsonObject = new JSONObject(str);

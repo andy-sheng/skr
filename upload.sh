@@ -1,6 +1,68 @@
+#! /bin/bash
+function findChannel()
+{  
+  for file in `ls app/build/outputs/channels`  
+  do  
+    local path=app/build/outputs/channels/$file  
+    if [ -d $path ]  
+     then  
+      echo "DIR $path"  
+      walk $path  
+    else  
+      echo "FILE $path"
+	  #echo "filename: ${path%.*}"
+	  ext=${path##*.}
+	  echo $ext
+	  if [[ $ext = "apk" ]]; then
+	  	if [[ $path == *"-$1-"* ]]; then
+	  		if [[ $path == *"-release-"* ]]; then
+	  			echo 找到$path
+	  			uploadFile=$path
+	  		fi
+		fi
+	  fi
+    fi  
+  done  
+}
+
+function findChannel2()
+{
+  for file in `ls ./publish`
+  do
+    local path=./publish/$file
+    if [ -d $path ]
+     then
+      echo "DIR $path"
+      walk $path
+    else
+      echo "FILE $path"
+	  #echo "filename: ${path%.*}"
+	  ext=${path##*.}
+	  echo $ext
+	  if [[ $ext = "apk" ]]; then
+	  	if [[ $path == *"-$1-"* ]]; then
+	  		if [[ $path == *"-release-"* ]]; then
+	  			echo 找到$path
+	  			uploadFile=$path
+	  		fi
+		fi
+	  fi
+    fi
+  done
+}
+if [ x$2 = x"build" ]; then
+    ./ins.sh app release all
+fi
+
+findChannel $1
+if [[ x$uploadFile = x"" ]]; then
+    findChannel2 $1
+fi
+if [[ x$uploadFile = x"" ]]; then
+    echo "请选择某个渠道的release包，输入如 ./upload.sh TEST"
+fi
 time=$(date "+%Y%m%d-%H:%M:%S")
 apiKey=3dd7d2a8ab6591ca44fb8cbbe1333785
-uploadFile=app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
 echo apiKey=$apiKey
 echo uploadFile=$uploadFile
 echo $time

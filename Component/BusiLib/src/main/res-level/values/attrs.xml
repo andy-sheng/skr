@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--NormalLevelView的属性-->
+    <declare-styleable name="levelView">
+        <!--主段位宽度-->
+        <attr name="mainWidth" format="dimension" />
+        <!--主段位高度-->
+        <attr name="mainHeight" format="dimension" />
+        <!--子段位宽度-->
+        <attr name="subWidth" format="dimension" />
+        <!--子段位高度-->
+        <attr name="subHeight" format="dimension" />
+        <!--子段位距离主段位底部距离-->
+        <attr name="subBottom" format="dimension" />
+        <!--正常星星的大小-->
+        <attr name="normalStar" format="dimension" />
+        <!--大星星的大小-->
+        <attr name="largeStar" format="dimension" />
+        <!--相邻两颗星星高度差-->
+        <attr name="starDiffH" format="dimension" />
+        <!--所有星星高度总长度-->
+        <attr name="starTotalWidth" format="dimension" />
+        <!--横向星星文本的颜色-->
+        <attr name="txtColor" format="color|reference" />
+        <!--横向星星文本的字大小-->
+        <attr name="txtSize" format="dimension" />
+        <!--横向星星的大小-->
+        <attr name="horizonStar" format="dimension" />
+    </declare-styleable>
+
+    <!--NormalLevelView2的属性-->
+    <declare-styleable name="levelView2">
+        <!--主段位宽度-->
+        <attr name="mainWidth2" format="dimension" />
+        <!--主段位高度-->
+        <attr name="mainHeight2" format="dimension" />
+        <!--子段位宽度-->
+        <attr name="subWidth2" format="dimension" />
+        <!--子段位高度-->
+        <attr name="subHeight2" format="dimension" />
+        <!--子段位距离主段位底部距离-->
+        <attr name="subBottom2" format="dimension" />
+    </declare-styleable>
+</resources>

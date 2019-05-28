@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:topContainer="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2E3041"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:text="《世上》"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_18_dp" />
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_55_dp"
+        android:layout_alignParentBottom="true"
+        android:background="#2A2C3E"
+        android:orientation="horizontal">
+
+        <!--返回-->
+        <RelativeLayout
+            android:id="@+id/back_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_back"
+                android:drawablePadding="@dimen/view_3_dp"
+                android:text="返回"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+        </RelativeLayout>
+
+        <!--播放暂停-->
+        <RelativeLayout
+            android:id="@+id/opt_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/opt_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_zanting"
+                android:drawablePadding="@dimen/view_3_dp"
+                android:text="暂停"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+
+        </RelativeLayout>
+
+        <!--完成-->
+        <RelativeLayout
+            android:id="@+id/reset_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_chongchang"
+                android:drawablePadding="@dimen/view_3_dp"
+                android:text="重唱"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+        </RelativeLayout>
+
+        <!--保存-->
+        <RelativeLayout
+            android:id="@+id/save_share_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/save_share_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_save"
+                android:drawablePadding="@dimen/view_3_dp"
+                android:text="保存分享"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!--正在唱的人的歌词-->
+    <com.zq.lyrics.widget.ManyLyricsView
+        android:id="@+id/many_lyrics_view"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="@dimen/view_70_dp"
+        app:ly_eable_scroll="false"
+        app:ly_eable_verbatim="true"
+        app:ly_high_light_paint_color_from="#EF5E85"
+        app:ly_high_light_paint_color_to="#EF5E85"
+        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
+        app:ly_high_light_sub_paint_color="#EF5E85"
+        app:ly_outline_paint_color="@color/black"
+        app:ly_paint_color_from="@color/white_trans_50"
+        app:ly_paint_color_to="@color/white_trans_50"
+        app:ly_paint_text_size="@dimen/textsize_dimen_20" />
+</RelativeLayout>

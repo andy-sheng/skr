@@ -3,7 +3,12 @@ if (isBuildModule.toBoolean()) {
 } else {
     apply plugin: 'com.android.library'
 }
-
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
+//kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -63,21 +68,46 @@ android {
             java.srcDirs += 'src/main/java-gen-db'
             java.srcDirs += 'src/main/java-gen-pb'
 
+            java.srcDirs += 'src/main/java-personcenter'
+            res.srcDirs += 'src/main/res-personcenter'
+
             java.srcDirs += 'src/main/java'
             res.srcDirs += ['src/main/res']
 
+            java.srcDirs += 'src/main/java-setting'
+            res.srcDirs += 'src/main/res-setting'
+
+            java.srcDirs += 'src/main/java-updateinfo'
+            res.srcDirs += 'src/main/res-updateinfo'
+
+            java.srcDirs += 'src/main/java-feedback'
+            res.srcDirs += 'src/main/res-feedback'
+
+            java.srcDirs += 'src/main/java-musictest'
+            res.srcDirs += 'src/main/res-musictest'
+
+            java.srcDirs += 'src/main/java-wallet'
+            res.srcDirs += 'src/main/res-wallet'
         }
     }
 }
 
 dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
-    api project(":commoncore")
-    api project(":commonservice")
+    api project(":Component:BusiLib")
+
     if (isBuildModule.toBoolean()) {
 //        tools
-        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
     } else {
-        compileOnly rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
+    }
+
+    if (aliFeedback.toBoolean()) {
+        // feedback 的依赖
+        implementation 'com.aliyun.ams:alicloud-android-feedback:3.1.8'
+        implementation 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
+//        implementation 'com.aliyun.ams:alicloud-android-ut:5.2.0'
+        implementation 'com.aliyun.ams:alicloud-android-utils:1.1.3'
     }
 }

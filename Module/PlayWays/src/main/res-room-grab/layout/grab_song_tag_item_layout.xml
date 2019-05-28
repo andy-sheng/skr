@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_selected_tag"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_54_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingRight="@dimen/textsize_16_dp"
+        android:text="经典回忆杀"
+        android:textColor="@color/black_trans_70"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"></com.common.view.ex.ExTextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white_trans_20" />
+</LinearLayout>

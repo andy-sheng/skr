@@ -49,12 +49,33 @@ public class AppInfoUtils {
             return mainFile;
         }
         if (U.getDeviceUtils().existSDCard()) {
-            return new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE");
+            mainFile = new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE");
+            return mainFile;
         } else {
             return U.app().getFilesDir();
         }
     }
 
+    /**
+     * 返回 类似 /ZQ_Live/logs/
+     * @param dirName
+     * @return
+     */
+    public String getSubDirPath(String dirName){
+        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator;
+    }
+
+    public File getSubDirFile(String dirName){
+        return new File(getMainDir().getAbsolutePath()+File.separator+dirName+File.separator);
+    }
+    /**
+     * 返回 类似 /ZQ_Live/logs/aaa.png
+     * @param dirName
+     * @return
+     */
+    public String getFilePathInSubDir(String dirName,String fileName){
+        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator+fileName;
+    }
     /**
      * 获取应用程序名称
      * 如 直播助手
@@ -112,7 +133,7 @@ public class AppInfoUtils {
                             PackageManager.GET_META_DATA);
             return appInfo.metaData.getString(params);
         } catch (Exception e) {
-            System.out.println("获取渠道失败:" + e);
+            System.out.println("getMetaInfo:" + e);
             e.printStackTrace();
         }
         return null;

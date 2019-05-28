@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:text="开启调试悬浮球"
+        android:textColor="@color/black"
+        android:textSize="@dimen/view_dimen_50" />
+
+    <com.kyleduo.switchbutton.SwitchButton
+        android:id="@+id/swtich_btn"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:checked="true" />
+</RelativeLayout>

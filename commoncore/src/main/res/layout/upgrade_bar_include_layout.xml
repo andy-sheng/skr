@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/download_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/view_38_dp"
+    android:visibility="visible">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/old_version_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v1.1.0"
+        android:textColor="#ff8e8e8e"
+        android:textSize="@dimen/view_12_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/new_version_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/download_apk_progressbar"
+        android:text="v1.1.0"
+        android:textColor="#ffca2c60"
+        android:textSize="@dimen/view_12_dp" />
+
+    <com.common.core.upgrade.DownloadApkProgressBar
+        android:id="@+id/download_apk_progressbar"
+        android:layout_width="@dimen/view_175_dp"
+        android:layout_height="@dimen/view_34_dp"
+        android:layout_below="@+id/old_version_tv"
+        android:layout_marginTop="@dimen/view_1_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/cancel_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/download_apk_progressbar"
+        android:layout_marginLeft="@dimen/view_23_dp"
+        android:layout_toRightOf="@+id/download_apk_progressbar"
+        android:background="@drawable/quxiao_btn"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/view_13_dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

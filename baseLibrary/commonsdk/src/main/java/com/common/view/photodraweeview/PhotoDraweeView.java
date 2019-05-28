@@ -202,9 +202,9 @@ public class PhotoDraweeView extends BaseImageView implements IAttacher {
         IFrescoCallBack origin = baseImage.getCallBack();
         baseImage.setCallBack(new IFrescoCallBack() {
             @Override
-            public void processWithInfo(ImageInfo info) {
+            public void processWithInfo(ImageInfo info, Animatable animatable) {
                 if (origin != null) {
-                    origin.processWithInfo(info);
+                    origin.processWithInfo(info,animatable);
                 }
                 update(info.getWidth(), info.getHeight());
                 mEnableDraweeMatrix = true;

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="@dimen/view_18_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:background="@drawable/img_back"
+        android:padding="@dimen/view_16_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/add_friend_iv"
+        android:layout_width="@dimen/view_27_dp"
+        android:layout_height="@dimen/view_27_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:background="@drawable/tianjia_friend_icon"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_28_dp"
+        android:orientation="vertical">
+
+        <com.common.view.viewpager.SlidingTabLayout
+            android:id="@+id/relation_tab"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_52_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/view_50_dp"
+            android:layout_marginRight="@dimen/view_50_dp" />
+
+        <com.common.view.viewpager.NestViewPager
+            android:id="@+id/relation_vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="none" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_marginLeft="@dimen/view_50_dp"
+        android:layout_marginTop="@dimen/view_28_dp"
+        android:layout_marginRight="@dimen/view_50_dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/friend_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="好友"
+                android:textSize="@dimen/textsize_15_dp"
+                app:bl_selected_textColor="@color/white"
+                app:bl_unSelected_textColor="@color/white_trans_50" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/friend_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/friend"
+                android:layout_alignRight="@+id/friend"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/follow_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="关注"
+                android:textSize="@dimen/textsize_15_dp"
+                app:bl_selected_textColor="@color/white"
+                app:bl_unSelected_textColor="@color/white_trans_50" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fans_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/fans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="粉丝"
+                android:textSize="@dimen/textsize_15_dp"
+                app:bl_selected_textColor="@color/white"
+                app:bl_unSelected_textColor="@color/white_trans_50" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/fans_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/fans"
+                android:layout_alignRight="@+id/fans"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

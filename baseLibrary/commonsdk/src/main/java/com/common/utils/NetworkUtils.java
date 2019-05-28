@@ -133,7 +133,7 @@ public class NetworkUtils {
      */
     public static class NetworkChangeEvent {
         public int oldType;
-        public int type;
+        public int type; // -1 代表没网
 
         public NetworkChangeEvent(int oldType, int type) {
             this.oldType = oldType;

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7088FF">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/grab_back" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_48_dp"
+        android:gravity="center"
+        android:text="房间属性"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_marginRight="-20dp"
+        android:layout_marginLeft="-20dp"
+        android:src="@drawable/grab_create_specail_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_alignParentBottom="true"
+         />
+
+    <com.module.playways.grab.createroom.view.SpecialSelectView
+        android:id="@+id/special_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_marginRight="@dimen/view_16_dp"></com.module.playways.grab.createroom.view.SpecialSelectView>
+
+</com.common.view.ex.ExRelativeLayout>

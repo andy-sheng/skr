@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 rm -rf guard-res-apk
 apkPath=app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
@@ -8,7 +9,7 @@ java -jar baseLibrary/AndResGuard/AndResGuard-cli-1.2.15.jar $apkPath \
 -7zip /usr/local/bin/7z \
 -zipalign /Users/chengsimin/my_dev_utils/android-sdk-macosx-24.4/build-tools/28.0.2/zipalign \
 -signatureType v1 \
--signature app/com.xiaomi.debug.keystore XiaomiIs#1 XiaomiIs#1 release_key
+-signature app/zq.keystore zq123456 zq123456 release_key
 
 
 adb install -r guard-res-apk/app-channel_default-release_signed_7zip_aligned.apk

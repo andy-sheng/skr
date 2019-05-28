@@ -18,11 +18,14 @@ package com.common.base;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.common.base.ConfigModule;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -45,27 +48,62 @@ public final class ManifestParser {
         this.context = context;
     }
 
+    static class ConfigModuleWrapForSort {
+        int index = 1000;
+        ConfigModule configModule;
+
+        public ConfigModuleWrapForSort(ConfigModule configModule) {
+            this.configModule = configModule;
+        }
+    }
+
     public List<ConfigModule> parse() {
-        List<ConfigModule> modules = new ArrayList<ConfigModule>();
+        List<ConfigModuleWrapForSort> modules = new ArrayList<ConfigModuleWrapForSort>();
         try {
             ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(
                     context.getPackageName(), PackageManager.GET_META_DATA);
             if (appInfo.metaData != null) {
-                Log.d(TAG,"appInfo.metaData != null");
+                Log.d(TAG, "appInfo.metaData != null");
                 for (String key : appInfo.metaData.keySet()) {
-                    Log.w(TAG,"key:"+key);
-                    if (MODULE_VALUE.equals(appInfo.metaData.get(key))) {
-                        modules.add(parseModule(key));
+                    Object valueO =  appInfo.metaData.get(key);
+                    Log.w(TAG, "key:" + key+" value:"+valueO);
+                    if(valueO instanceof String){
+                        String value = (String)valueO;
+                        if (!TextUtils.isEmpty(value)) {
+                            if (value.equals(MODULE_VALUE)
+                                    || value.startsWith(MODULE_VALUE + "_")) {
+                                ConfigModule configModule = parseModule(key);
+                                ConfigModuleWrapForSort configModuleWrapForSort = new ConfigModuleWrapForSort(configModule);
+                                String t[] = value.split("_");
+                                if (t.length == 2) {
+                                    configModuleWrapForSort.index = Integer.parseInt(t[1]);
+                                }
+                                modules.add(configModuleWrapForSort);
+                            }
+                        }
                     }
                 }
-            }else{
-                Log.d(TAG,"appInfo.metaData == null");
+            } else {
+                Log.d(TAG, "appInfo.metaData == null");
             }
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException("Unable to find metadata to parse ConfigModule", e);
         }
 
-        return modules;
+        /**
+         * 排个序
+         */
+        Collections.sort(modules, new Comparator<ConfigModuleWrapForSort>() {
+            @Override
+            public int compare(ConfigModuleWrapForSort t1, ConfigModuleWrapForSort t2) {
+                return t1.index - t2.index;
+            }
+        });
+        List<ConfigModule> rl = new ArrayList<>();
+        for (ConfigModuleWrapForSort wrapForSort : modules) {
+            rl.add(wrapForSort.configModule);
+        }
+        return rl;
     }
 
     private static ConfigModule parseModule(String className) {

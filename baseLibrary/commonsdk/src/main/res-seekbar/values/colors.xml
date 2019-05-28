@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryForBar">#607D8B</color>
+    <color name="colorAccentForBar">#FF9800</color>
+</resources>

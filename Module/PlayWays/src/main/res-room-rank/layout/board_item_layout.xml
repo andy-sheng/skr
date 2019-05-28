@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_80_dp"
+    android:background="#F9F4F1"
+    android:orientation="vertical">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_rank"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:gravity="center"
+        android:textColor="#6868A1"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_icon"
+        android:layout_width="@dimen/view_48_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_70_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_19_dp"
+        android:layout_marginTop="@dimen/view_17_dp"
+        android:layout_toLeftOf="@+id/level_view"
+        android:layout_toRightOf="@+id/sdv_icon"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_segment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_19_dp"
+        android:layout_marginBottom="@dimen/view_18_dp"
+        android:layout_toRightOf="@+id/sdv_icon"
+        android:textColor="#800C2275"
+        android:textSize="@dimen/textsize_12_dp" />
+
+    <com.zq.level.view.NormalLevelView2
+        android:id="@+id/level_view"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_28_dp"
+        levelView2:mainHeight2="@dimen/view_48_dp"
+        levelView2:mainWidth2="@dimen/view_56_dp"
+        levelView2:subBottom2="@dimen/view_3_dp"
+        levelView2:subHeight2="@dimen/view_6_dp"
+        levelView2:subWidth2="@dimen/view_11_dp">
+    </com.zq.level.view.NormalLevelView2>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_alignParentBottom="true"
+        android:background="#E6E2DF" />
+</RelativeLayout>

@@ -50,7 +50,8 @@ public class DialogPlusBuilder {
   private int outAnimation = INVALID;
   private boolean expanded;
   private int defaultContentHeight;
-  private int overlayBackgroundResource = R.color.blue;
+  private int overlayBackgroundResource = R.color.transparent;
+  private int mPriority;
 
   private DialogPlusBuilder() {
   }
@@ -294,6 +295,19 @@ public class DialogPlusBuilder {
   }
 
   /**
+   * Dialog 目前只支持同一时刻显示一个
+   * 这里设置显示的优先级 优先级高的能顶掉低的
+   * A 优先级为 2 B 为1
+   * A show 时能使B 消失
+   * A show 时 B 无法显示
+   * @param priority
+   */
+  public DialogPlusBuilder setPriority(int priority) {
+    mPriority = priority;
+    return this;
+  }
+
+  /**
    * Create the dialog using this builder
    */
   @NonNull public DialogPlus create() {
@@ -430,5 +444,9 @@ public class DialogPlusBuilder {
 
   public boolean isFixedFooter() {
     return fixedFooter;
+  }
+
+  public int getPriority() {
+    return mPriority;
   }
 }

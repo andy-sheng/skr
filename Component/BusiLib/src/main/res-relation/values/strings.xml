@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="friends_num">好友(%d)</string>
+    <string name="follows_num">关注(%d)</string>
+    <string name="fans_num">粉丝(%d)</string>
+</resources>

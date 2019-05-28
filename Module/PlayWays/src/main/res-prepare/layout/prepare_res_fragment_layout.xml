@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_124_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
+        android:layout_marginBottom="@dimen/view_15_dp"
+        android:background="@drawable/img_kaishipipei_bg">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/song_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/view_30_dp"
+            android:layout_marginTop="@dimen/view_80_dp"
+            android:layout_marginRight="@dimen/view_30_dp"
+            android:gravity="center"
+            android:text="你好"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/song_name"
+            android:layout_centerHorizontal="true"
+            android:alpha="0.5"
+            android:text="02:14"
+            android:textColor="#0C2275" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_lyric"
+            android:layout_alignLeft="@+id/tv_lyric"
+            android:layout_marginBottom="@dimen/view_36_dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_duration"
+            android:layout_alignLeft="@+id/tv_lyric"
+            android:layout_marginLeft="@dimen/view_2_dp"
+            android:layout_marginTop="@dimen/view_28_dp">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="@dimen/view_6_dp"
+                android:layout_height="@dimen/view_6_dp"
+                app:bl_corners_radius="@dimen/view_3_dp"
+                app:bl_solid_color="#CA2C60" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="@dimen/view_6_dp"
+                android:layout_height="@dimen/view_6_dp"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                app:bl_corners_radius="@dimen/view_3_dp"
+                app:bl_solid_color="#CA2C60" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="@dimen/view_6_dp"
+                android:layout_height="@dimen/view_6_dp"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                app:bl_corners_radius="@dimen/view_3_dp"
+                app:bl_solid_color="#CA2C60" />
+        </LinearLayout>
+
+        <com.common.view.ex.ExTextView
+            android:textSize="@dimen/textsize_16_dp"
+            android:id="@+id/tv_lyric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_duration"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_36_dp"
+            android:gravity="center"
+            android:lineSpacingExtra="6dp"
+            android:text=""
+            android:textColor="#0C2275"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/song_res_progressbar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="@dimen/view_190_dp"
+            android:layout_height="@dimen/view_39_dp"
+            android:layout_alignLeft="@+id/iv_start_match"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/view_2_dp"
+            android:layout_marginBottom="@dimen/view_63_dp"
+            android:progressDrawable="@drawable/download_apk_progress_bg" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/iv_start_match"
+            android:layout_width="@dimen/view_200_dp"
+            android:layout_height="@dimen/view_48_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_56_dp"
+            android:background="@drawable/img_btn_bg_loukong"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_5_dp"
+            android:text="开始匹配"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_top"
+        android:layout_width="@dimen/view_218_dp"
+        android:layout_height="@dimen/view_106_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_29_dp"
+        android:background="@drawable/img_top_kaishipipei_bg" />
+
+</RelativeLayout>

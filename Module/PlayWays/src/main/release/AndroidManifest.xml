@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.module.playways">
+
+
+    <application>
+        <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
+        <meta-data
+            android:name="com.module.playways.PlayWaysConfiguration"
+            android:value="ConfigModule" />
+
+        <activity
+            android:name="com.module.playways.audition.AudioRoomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name="com.module.playways.PlayWaysActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.room.room.activity.RankRoomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.grab.room.activity.GrabCreateRoomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+
+        <activity
+            android:name="com.module.playways.grab.room.activity.GrabRoomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.grab.room.guide.activity.GrabGuideActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.grab.room.guide.activity.GrabGuideResultActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+
+        <activity
+            android:name="com.module.playways.audition.AuditionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.grab.room.activity.GrabResultActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.grab.room.activity.GrabMatchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.voice.activity.VoiceRoomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+    </application>
+
+</manifest>

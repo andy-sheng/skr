@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/recharge_pay_way_switch_dialog_last_list_item_shape_pressed" android:state_pressed="true"/>
-    <item android:drawable="@drawable/recharge_pay_way_switch_dialog_last_list_item_shape_normal"/>
-</selector>

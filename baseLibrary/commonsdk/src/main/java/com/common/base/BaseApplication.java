@@ -25,9 +25,10 @@ import android.util.Log;
 import com.common.base.delegate.AppDelegate;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.delegate.PluginAppDelegate;
+import com.common.log.MyLog;
+import com.common.umeng.UmengInit;
 import com.common.utils.U;
-import com.mi.milink.sdk.base.Global;
-import com.mi.milink.sdk.data.ClientAppInfo;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
@@ -57,7 +58,6 @@ public class BaseApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        Log.d(TAG, "base.getPackageName:"+base.getPackageName() + " Application.getPackageName:"+BaseApplication.this.getPackageName());
         TAG += hashCode();
         /**
          * 这里可以了解一下 多dex 安装的原理
@@ -68,13 +68,12 @@ public class BaseApplication extends Application {
         }
         U.setApp(this);
         // 不能用MyLog 它还没初始化好
-        Log.d(TAG, "attachBaseContext");
-
+        MyLog.w(TAG,"attachBaseContext begin");
 //        U.getToastUtil().showShort(TAG + " attachBaseContext");
         // 判断是不是主进程，主进程才需要后续逻辑
         ActivityManager activityManager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
         if (activityManager == null) {
-            Log.d(TAG, "activityManager == null return");
+            MyLog.d(TAG, "activityManager == null return");
             return;
         }
         int pid = android.os.Process.myPid();
@@ -85,53 +84,57 @@ public class BaseApplication extends Application {
             }
             // DroidPlugin 会新建进程 所以不是核心进程
             Log.d(TAG, "getPackageName=" + getPackageName() + "  info.processName=" + info.processName);
+            U.setProcessName(info.processName);
             if (getPackageName().equals(info.processName)) {
                 U.setCoreProcess(true);
             } else {
-                //TODO: 非主线程需要初始化的代码
                 U.setCoreProcess(false);
             }
             break;
         }
 
-        if (U.isCoreProcess()) {
-            if (mAppDelegate == null) {
-                this.mAppDelegate = new AppDelegate(base);
-            }
-            this.mAppDelegate.attachBaseContext(base);
-        } else {
-            Log.d(TAG, "not coreProcess");
+        if (mAppDelegate == null) {
+            this.mAppDelegate = new AppDelegate(base);
         }
+        this.mAppDelegate.attachBaseContext(base);
+        // 这里耗费 50 ms
+        MyLog.w(TAG,"attachBaseContext over");
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "onCreate");
+        MyLog.w(TAG,"onCreate begin");
+        // Normal app init code...
+
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onCreate(this);
         }
-//        U.getToastUtil().showShort(TAG + " onCreate");
         // 为了 milink 的初始化
-        Global.init(this, getClientAppInfo());
+//        Global.init(this, getClientAppInfo());
         if (U.isCoreProcess()) {
             if (mAppDelegate != null) {
-                this.mAppDelegate.onCreate(this);
+                this.mAppDelegate.onMainProcessCreate(this);
+            }
+        } else {
+            if (mAppDelegate != null) {
+                this.mAppDelegate.onOtherProcessCreate(this);
             }
         }
+        MyLog.w(TAG,"onCreate over");
     }
 
-    private ClientAppInfo getClientAppInfo() {
-        return new ClientAppInfo.Builder(10008)
-                .setAppName("WALI_LIVE_SDK")
-                .setPackageName("com.mi.liveassistant")
-                .setReleaseChannel("DEBUG")
-                .setVersionName("4.51.1")
-                .setVersionCode(451001)
-                .setLanguageCode("ZH-CN")
-                .setServiceProcessName("com.mi.liveassistant:remote")
-                .build();
-    }
+//    private ClientAppInfo getClientAppInfo() {
+//        return new ClientAppInfo.Builder(10008)
+//                .setAppName("WALI_LIVE_SDK")
+//                .setPackageName("com.mi.liveassistant")
+//                .setReleaseChannel("DEBUG")
+//                .setVersionName("4.51.1")
+//                .setVersionCode(451001)
+//                .setLanguageCode("ZH-CN")
+//                .setServiceProcessName("com.mi.liveassistant:remote")
+//                .build();
+//    }
 
     /**
      * 在模拟环境中程序终止时会被调用

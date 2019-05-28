@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-       android:shape="rectangle">
-    <corners android:radius="@dimen/view_dimen_45"/>
-    <stroke
-        android:width="@dimen/view_dimen_5"
-        android:color="@color/color_contest_theme"/>
-</shape>

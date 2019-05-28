@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.zq.live">
 
     <application
@@ -8,22 +9,37 @@
         android:label="@string/app_name"
         android:largeHeap="@bool/largeheap"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme_All">
+        android:theme="@style/AppTheme_Swipe"
+        tools:replace="android:allowBackup">
 
         <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
         <meta-data
-            android:name="com.wali.live.newlivesdk.MainConfiguration"
+            android:name="com.zq.live.MainConfiguration"
             android:value="ConfigModule" />
 
         <activity
-            android:name="com.wali.live.moduletest.activity.TestSdkActivity"
-            android:theme="@style/AppTheme_MainActivity">
+            android:name="com.module.home.HomeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_MainActivity"
+            android:windowSoftInputMode="adjustResize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.zq.live.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/rc_file_path" />
+        </provider>
 
     </application>
 </manifest>

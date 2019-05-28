@@ -1,0 +1,66 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.module.playways.grab.room.top.CircleAnimationView
+        android:id="@+id/circle_animation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/avatar_iv"
+        android:layout_alignTop="@+id/avatar_iv"
+        android:layout_alignRight="@+id/avatar_iv"
+        android:layout_alignBottom="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_d_5_dp"
+        android:layout_marginTop="@dimen/view_d_5_dp"
+        android:layout_marginRight="@dimen/view_d_5_dp"
+        android:layout_marginBottom="@dimen/view_d_5_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_icon_bg"
+        android:layout_width="@dimen/view_43_dp"
+        android:layout_height="@dimen/view_46_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_8_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="#6EBDFF"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_39_dp"
+        android:layout_height="@dimen/view_39_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_10_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/owner_icon_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_alignBottom="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_d_8_dp"
+        android:background="@drawable/ycdi_fangzhubiaoqian"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.top.SpeakingTipsAnimationView
+        android:id="@+id/speaker_animation_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/avatar_iv"
+        android:layout_alignTop="@+id/avatar_iv"
+        android:layout_marginLeft="-7dp"
+        android:layout_marginTop="-7dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/flag_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-10dp"
+        android:src="@drawable/ycdd_biaoqian_qiangchang"
+        android:visibility="gone" />
+</merge>

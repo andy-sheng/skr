@@ -1,0 +1,41 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <!--这里面是软键盘弹出时 需要上移的布局-->
+    <com.common.view.ex.ExTextView
+        android:id="@+id/quick_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:drawableRight="@drawable/kuaijiehuifu_btn"
+        android:drawablePadding="@dimen/view_4_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:text="快捷"
+        android:textColor="#B2B6D6"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#3C3F57"
+        app:bl_stroke_color="#202239"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/show_input_container_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_marginLeft="-2dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_toRightOf="@id/quick_btn"
+        app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
+        app:bl_corners_topRightRadius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#3C3F57"
+        app:bl_stroke_color="#202239"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+</merge>

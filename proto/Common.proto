@@ -1,57 +1,149 @@
-package com.wali.live.proto;
+syntax = "proto3";
 
-option java_package = "com.wali.live.proto.Common";
-option java_outer_classname = "CommonProto";
+package com.zq.live.proto.Common;
 
-message Attachment {
-    required uint32 type            = 1; //附件的类型 1:文本 2:图片 3:视频 4:地理位置
-    optional string text            = 2; //文本内容
-    optional string url             = 3; //富媒体url
-    optional uint32 duration        = 4; //音频或者视频的长度
-    optional uint32 size            = 5; //富媒体文件大小
-    optional uint64 exttype         = 6; //业务扩展类型
-    optional bytes extdata          = 7; //业务扩展二进制数据.客户端和业务服务器协商
-    optional uint32 width           = 8; //图片宽度
-    optional uint32 height          = 9; //图片的高度`
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./commoncore/src/main/java-gen-pb/ Common.proto
+
+*/
+
+// 用户信息
+message UserInfo {
+    uint32 userID = 1; //用户ID
+    string nickName = 2; //发信者昵称
+    string avatar = 3; //头像地址
+    ESex sex = 4; //性别
+    string description = 5; //个人描述
+    bool isSystem = 6; //是否为系统
+    uint32 mainLevel = 7; //主段位
 }
 
-message Location {
-    optional double lon        = 1; //经度
-    optional double lat        = 2; //纬度
-    optional string country    = 3; //国家
-    optional string province   = 4; //省份
-    optional string city       = 5; //市
-    optional uint32 type       = 6; //地址定位的地图类型:0:百度,1:ios原生,2:高德,3:其他
+// 音乐信息
+message MusicInfo {
+    uint32 itemID = 1; //音乐条目标识
+    string itemName = 2; //音乐条目名称
+    string cover = 3; //音乐条目封页图片
+    string owner = 4; //音乐条目所属（歌手）
+    string lyric = 5; //音乐条目对应歌词
+    string ori = 6; //原唱:origin
+    string acc = 7; //伴奏:accompany
+    string midi = 8; //音乐条目对应midi文件
+    string zip = 9; //资源压缩文件
+    string rankBgm = 10; //匹配玩法的伴奏
+    uint32 beginMs = 11; //beginTimeMs,匹配玩法的伴奏开始毫秒
+    uint32 endMs = 12; //endTimeMs,匹配玩法的伴奏结束毫秒
+    string standIntro = 13; //standIntro,一唱到底的导唱
+    uint32 standIntroBeginT = 14; //standIntroBeginT,一唱到底导唱的开始毫秒
+    uint32 standIntroEndT = 15; //standIntroEndT,一唱到底导唱的结束毫秒
+    uint32 totalMs = 16; //totalTimeMs,匹配玩法伴奏总时长
+    uint32 rankLrcBeginT = 17; //rankLrcBeginT,匹配玩法第一句歌词开始时间,毫秒
+    uint32 standLrcBeginT = 18; //standLrcBeginT,一唱到底第一句歌词的开始毫秒
+    uint32 standLrcEndT = 19; //standLrcEndT,一唱到底歌词的结束毫秒
+    bool isBlank = 20; //isBlank,是否一唱到底的白板item
+    string standLrc = 21; //standLrc,一唱到底歌词URL
+    string rankUserVoice = 22; //rankUserVoice,匹配进入游戏前的背景音乐
+    uint32 rankLrcEndT = 23; //rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
+    uint32 task = 24; //任务等级，若为0，表示非任务歌曲
+    uint32 standTotalMs = 25; //一唱到底伴奏模式的时长
+    bool challengeAvailable = 26; //是否支持挑战模式
+    StandPlayType playType = 27; //一唱到底演唱类型
+    repeated MusicInfo SPKMusic = 28; //一唱到底模式下spk歌曲信息
+    MiniGameInfo miniGame       = 29; //连麦小游戏演唱类型
 }
 
-// C2S 命令字： zhibo.upgrade.get ...............................
-message GetUpgradeInfoReq {
-    optional string app      = 1;           //walilive
-    optional string platform = 2;           //android
-    optional int32 system    = 3;           //android sdk version
-    required string channel  = 4;           //debug 渠道
-    optional string device   = 5;           //MI NOTE LTE 设备
-    required int32 currentVersion = 6;      //当前版本
-    optional string language      = 7;      //zh_CN
-    optional int64 uid            = 8;      //用户id
-    optional string md5           = 9;      //当前apk的md5值
-    optional string local        = 10;      //地区
+message MiniGameInfo
+{
+    uint32 gameID   = 1;
+    string gameName = 2;
+    string gameRule = 3;
+    EMiniGamePlayType gamePlayType = 4;
+    string keyWord = 5;
+    string fixedTxt = 6;
+    string songURL  = 7;
 }
-//只有err_code == 0 , 并且has_update == true才需要更新，其他情况不更新
-//当err_code == 0 && has_update == true
-//   如果设置了addtionalUrl 使用差分包升级，
-//   否则使用全量包
-message GetUpgradeInfoRsp {
-    optional int32 err_code = 1;             //
-    optional string err_msg = 2;
-    optional bool hasUpdate = 3;             //是否有升级
-    optional int32 toVersion = 4;            //目标版本号
-    optional string apkUrl = 5;              //完整apk下载地址
-    optional string remark = 6;              //修复了几个bug 升级文案
-    optional string additionalUrl = 7;       //差分包下载地址，没有就走全量升级
-    optional string additionalSize = 8;      //差分包大小
-    optional int32 fullSize = 9;             //完整apk大小，供展示用
-    optional string fullHash = 10;           //完整apk的md5值
-    optional bool forced = 11;               //是否是强制升级
-    optional string additionalMd5 = 12;      //增量包的md5
+
+enum EMiniGamePlayType
+{
+    EMGP_UNKNOWN  = 0; //未知展示类型
+    EMGP_KEYWORD  = 1; //关键词展示
+    EMGP_FIXED_TXT = 2; //固定文案
+    EMGP_SONG_DETAIL = 3; //歌曲详情
 }
+
+message GiftInfo
+{
+    uint32 giftID      = 1; //礼物id
+    string giftName    = 2; //礼物名称
+    string giftURL     = 3; //礼物的图片
+    uint64 price       = 4; //1000分之一钻单位 或者金币
+    string sourceURL   = 5; //礼物资源，使用效果
+    uint32 sortID      = 6; //排序id
+    EGiftType giftType = 7; //礼物类型，钻石礼物、金币礼物
+    bool canContinue   = 8; //是否可以连击
+    string description = 9; //礼物描述
+    float realPrice    = 10; //真实价格
+    bool play                    = 11; //是否需要播放
+    sint32 textContinueCount     = 12;
+    EGiftDisplayType displayType = 13;
+    GiftExtraInfo extra          = 14;
+}
+
+
+message GiftExtraInfo
+{
+    sint64 duration = 1;
+    sint32 width    = 2;
+    sint32 height   = 3;
+    sint32 left     = 4;
+    sint32 right    = 5;
+    sint32 top      = 6;
+    sint32 bottom   = 7;
+    bool isFullScreen = 8; //是否全屏
+    bool isFullX      = 9; //true 水平平铺  false 垂直平铺
+}
+
+// 礼物展示类型
+enum EGiftDisplayType {
+    EGDT_Unknown = 0;
+    EGDT_Big     = 1;
+    EGDT_Medium  = 2;
+    EGDT_Small   = 3;
+    EGDT_Free    = 4;
+}
+
+
+
+// 礼物类型
+enum EGiftType {
+    EG_Unknown = 0;
+    EG_Coin    = 1;
+    EG_Zuan    = 2;
+}
+
+
+// 一唱到底playType
+enum StandPlayType {
+    PT_INVALID_TYPE = 0; //无效
+    PT_COMMON_TYPE  = 1; //普通玩法
+    PT_SPK_TYPE     = 2; //PK玩法
+    PT_CHO_TYPE     = 3; //合唱玩法
+    PT_MINI_GAME_TYPE = 4; //连麦进行小游戏玩法
+}
+
+enum ESex {
+    SX_UNKNOWN = 0; // 未知
+    SX_MALE = 1; //男性
+    SX_FEMALE = 2; // 女性
+    SX_SECRET = 3; //保密
+}
+
+message ResourceInfo {
+    uint32 resourceID = 1; //资源id
+    uint32 itemID = 2; //音乐条目id
+    string audioURL = 3; //声音资源URL
+    string midiURL = 4; //打分资源URL
+    sint32 sysScore = 5; //系统打分分值
+}
+

@@ -1,9 +1,14 @@
 package com.imagebrowse;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.common.image.model.BaseImage;
+import com.common.log.MyLog;
+import com.common.view.photodraweeview.OnPhotoTapListener;
+import com.common.view.photodraweeview.OnViewTapListener;
 import com.common.view.photodraweeview.PhotoDraweeView;
 
 /**
@@ -28,16 +33,40 @@ public class ImageBrowseView extends EnhancedImageView {
     @Override
     protected void createFrescoView() {
         mPhotoDraweeView = new PhotoDraweeView(getContext());
+        /**
+         * 点击照片回调
+         */
+        ((PhotoDraweeView) mPhotoDraweeView).setOnPhotoTapListener(new OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
+                MyLog.d(TAG, "onPhotoTap" + " view=" + view + " x=" + x + " y=" + y);
+                if (mClickListener != null) {
+                    mClickListener.onClick(view);
+                }
+
+            }
+        });
+        /**
+         * 点击黑色部分回调
+         */
+        ((PhotoDraweeView) mPhotoDraweeView).setOnViewTapListener(new OnViewTapListener() {
+            @Override
+            public void onViewTap(View view, float x, float y) {
+                MyLog.d(TAG, "onViewTap" + " view=" + view + " x=" + x + " y=" + y);
+                if (mClickListener != null) {
+                    mClickListener.onClick(view);
+                }
+            }
+        });
     }
 
     @Override
-    protected boolean useSubSampleView(){
+    protected boolean useSubSampleView() {
         return true;
     }
 
     @Override
-    protected void realLoadByFresco(BaseImage baseImage){
-        ((PhotoDraweeView)mPhotoDraweeView).load(baseImage);
+    protected void realLoadByFresco(BaseImage baseImage) {
+        ((PhotoDraweeView) mPhotoDraweeView).load(baseImage);
     }
-
 }

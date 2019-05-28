@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7187FF"
+    android:orientation="vertical">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="收益"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#7187FF"
+        app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
+
+    <com.common.view.ex.ExFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_214_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        app:bl_corners_radius="12dp"
+        app:bl_solid_color="#77C7F0"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp">
+
+        <com.common.view.ex.ExRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/view_2_dp"
+            android:layout_marginTop="@dimen/view_2_dp"
+            android:layout_marginRight="@dimen/view_2_dp"
+            android:layout_marginBottom="@dimen/view_8_dp"
+            app:bl_corners_radius="11dp"
+            app:bl_solid_color="#D0EFFF">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_24_dp"
+                android:text="钱包"
+                android:textColor="#3B4E79"
+                android:textSize="@dimen/textsize_20_dp"
+                android:textStyle="bold" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_cash_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/view_26_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:text="余额明细"
+                android:textColor="#3B4E79"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_68_dp"
+                android:orientation="horizontal">
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/tv_cash_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.00"
+                    android:textSize="@dimen/textsize_40_dp" />
+
+                <com.common.view.ex.ExTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:paddingBottom="@dimen/view_9_dp"
+                    android:text="元"
+                    android:textSize="@dimen/textsize_14_dp" />
+            </LinearLayout>
+
+            <com.dialog.view.StrokeTextView
+                android:id="@+id/stv_withdraw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_138_dp"
+                android:background="@drawable/chongzuzuanshi_anniu"
+                android:gravity="center"
+                android:paddingBottom="@dimen/view_4_dp"
+                android:text="提现"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_18_dp" />
+        </com.common.view.ex.ExRelativeLayout>
+    </com.common.view.ex.ExFrameLayout>
+
+    <com.common.view.ex.ExFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_214_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        app:bl_corners_radius="12dp"
+        app:bl_solid_color="#77C7F0"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp">
+
+        <com.common.view.ex.ExRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/view_2_dp"
+            android:layout_marginTop="@dimen/view_2_dp"
+            android:layout_marginRight="@dimen/view_2_dp"
+            android:layout_marginBottom="@dimen/view_8_dp"
+            app:bl_corners_radius="11dp"
+            app:bl_solid_color="#D0EFFF">
+
+            <ImageView
+                android:id="@+id/iv_attention"
+                android:layout_width="@dimen/view_24_dp"
+                android:layout_height="@dimen/view_28_dp"
+                android:layout_marginLeft="@dimen/view_14_dp"
+                android:layout_marginTop="@dimen/view_14_dp"
+                android:background="@drawable/dianquan_guize" />
+
+            <com.common.view.ex.ExTextView
+                android:drawablePadding="@dimen/view_4_dp"
+                android:drawableRight="@drawable/shouyi_xiaohongzuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_24_dp"
+                android:text="红钻"
+                android:textColor="#3B4E79"
+                android:textSize="@dimen/textsize_20_dp"
+                android:textStyle="bold" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_dq_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/view_26_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:text="红钻明细"
+                android:textColor="#3B4E79"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold" />
+
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_dq_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_68_dp"
+                android:text="0.0"
+                android:textSize="@dimen/textsize_40_dp" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <com.dialog.view.StrokeTextView
+                    android:id="@+id/btn_exchange_diamond"
+                    android:layout_width="@dimen/view_128_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_138_dp"
+                    android:background="@drawable/chongzuzuanshi_anniu"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/view_4_dp"
+                    android:text="兑换钻石"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_18_dp" />
+
+                <com.dialog.view.StrokeTextView
+                    android:id="@+id/btn_exchange_cash"
+                    android:layout_width="@dimen/view_128_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/view_16_dp"
+                    android:layout_marginTop="@dimen/view_138_dp"
+                    android:background="@drawable/chongzuzuanshi_anniu"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/view_4_dp"
+                    android:text="兑换现金"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_18_dp" />
+            </LinearLayout>
+
+        </com.common.view.ex.ExRelativeLayout>
+    </com.common.view.ex.ExFrameLayout>
+
+</LinearLayout>

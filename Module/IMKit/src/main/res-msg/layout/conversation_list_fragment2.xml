@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        app:centerText="消息"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerTextStyle="BOLD"
+        app:centerType="textView"
+        app:leftText="通讯录"
+        app:leftTextColor="@color/white"
+        app:leftTextSize="@dimen/textsize_16_dp"
+        app:leftType="textView"
+        app:rightText="+添加"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/common_bg_2"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/latest_follow_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_70_dp">
+
+            <ImageView
+                android:id="@+id/follow_area_icon"
+                android:layout_width="@dimen/view_48_dp"
+                android:layout_height="@dimen/view_48_dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_14_dp"
+                android:background="@drawable/last_follow_icon" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/follow_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/follow_area_icon"
+                android:layout_alignRight="@+id/follow_area_icon"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/follow_area_icon"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginTop="@dimen/view_5_dp"
+                android:layout_toRightOf="@id/follow_area_icon"
+                android:text="最新关注"
+                android:textColor="#3B4E79"
+                android:textSize="@dimen/textsize_16_dp" />
+
+            <TextView
+                android:id="@+id/follow_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/follow_area_icon"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginBottom="@dimen/view_2_dp"
+                android:layout_toRightOf="@id/follow_area_icon"
+                android:text="暂无消息"
+                android:textColor="#993B4E79"
+                android:textSize="@dimen/textsize_12_dp" />
+
+            <TextView
+                android:id="@+id/follow_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/follow_area_icon"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/view_8_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/textsize_12_dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_alignParentBottom="true"
+                android:background="#333E5181" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/view_3_dp"
+            android:layout_marginRight="@dimen/view_3_dp"></RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

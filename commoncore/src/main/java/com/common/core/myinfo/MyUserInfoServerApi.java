@@ -1,28 +1,33 @@
 package com.common.core.myinfo;
 
-import com.common.milink.MiLinkClientAdapter;
-import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.proto.User.GetOwnInfoReq;
-import com.wali.live.proto.User.GetOwnInfoRsp;
 
-public class MyUserInfoServerApi {
-    public static GetOwnInfoRsp getOwnInfoRsp(long uid) {
-        GetOwnInfoReq request = new GetOwnInfoReq.Builder()
-                .setZuid(uid)
-                .build();
-        PacketData data = new PacketData();
-        data.setCommand("zhibo.user.getowninfo");
-        data.setData(request.toByteArray());
-        PacketData response = MiLinkClientAdapter.getInstance().sendSync(data, 10 * 1000);
-        GetOwnInfoRsp rsp = null;
-        if (response != null) {
-            try {
-                rsp = GetOwnInfoRsp.parseFrom(response.getData());
-            } catch (Exception e) {
+import com.common.rxretrofit.ApiResult;
 
-            }
-        }
-        return rsp;
-    }
+import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
+public interface MyUserInfoServerApi {
+
+    @GET("v1/uprofile/information")
+    Call<ApiResult> getUserInfo(@Query("userID") int userID);
+
+    @PUT("v1/uprofile/information")
+    Observable<ApiResult> updateInfo(@Body RequestBody body);
+
+    /**
+     *  检查昵称
+     * @param nickname 昵称
+     * @return
+     */
+    @GET("v1/uprofile/nickname-verification")
+    Observable<ApiResult> checkNickName(@Query("nickname") String nickname);
+
+
+    @GET("v1/uprofile/verify-sensitive-name")
+    Observable<ApiResult> verifyName(@Query("nickname") String nickname);
 }

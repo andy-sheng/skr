@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+        }
+
+        debug {
+            java.srcDirs += 'src/main/java-debugOnly'
+            res.srcDirs += 'src/main/res-debugOnly'
+        }
+
+        release {
+            java.srcDirs += 'src/main/java-releaseOnly'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly project(":baseLibrary:commonsdk")
+    implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["recyclerview-v7"]
+    implementation rootProject.ext.dependencies["constraint-layout"]
+    implementation rootProject.ext.dependencies["okhttp3"]
+
+    // 执行里面的 adb 命令需要
+    implementation 'com.didichuxing.doraemonkit:adb:1.0.0'
+
+    // 检查root相关功能需要
+    implementation('com.scottyab:rootbeer-lib:0.0.6') {
+        exclude group: 'com.android.support'
+    }
+
+
+    //compileOnly 'com.squareup.okio:okio:1.11.0'
+    // hooker需要
+    debugCompileOnly 'com.didichuxing.doraemonkit:compiler:1.0.0'
+}
+
+

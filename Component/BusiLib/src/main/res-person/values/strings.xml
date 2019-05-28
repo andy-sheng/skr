@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fans_num_tag">粉丝 %d</string>
+    <string name="age_tag">%d岁</string>
+</resources>

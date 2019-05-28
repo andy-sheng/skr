@@ -31,6 +31,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 
 import com.common.base.R;
+import com.common.log.MyLog;
 
 class SlidingTabStrip extends LinearLayout {
 
@@ -54,9 +55,13 @@ class SlidingTabStrip extends LinearLayout {
 
     private SlidingTabLayout.TabColorizer mCustomTabColorizer;
     private final SimpleTabColorizer mDefaultTabColorizer;
-    /**指示器图标底部与TabStrip底部之间的距离*/
+    /**
+     * 指示器图标底部与TabStrip底部之间的距离
+     */
     private int mIndicatorBottomMargin;
-    /**指示器图标顶部与Tab标题底部之间的距离*/
+    /**
+     * 指示器图标顶部与Tab标题底部之间的距离
+     */
     private int mIndicatorTopMargin;
     private SlidingTabLayout.ITabNameBottomPositionGetter mTabNameBottomPositionGetter;
     private int mIndicatorWidth;
@@ -92,7 +97,7 @@ class SlidingTabStrip extends LinearLayout {
 
         mIndicatorCornorRadius = getResources().getDimension(R.dimen.view_dimen_2);
 
-        mSelectedIndicatorThickness =  (SELECTED_INDICATOR_THICKNESS_DIPS * density);
+        mSelectedIndicatorThickness = (SELECTED_INDICATOR_THICKNESS_DIPS * density);
         mSelectedIndicatorPaint = new Paint();
     }
 
@@ -109,21 +114,20 @@ class SlidingTabStrip extends LinearLayout {
     }
 
     /**
-     *
-     * @param position tabPosition, not child index
+     * @param position       tabPosition, not child index
      * @param positionOffset
      */
-    void onViewPagerPageChanged(int position, float positionOffset) {
+    void onViewPagerPageChanged(int position, float positionOffset, boolean fromSrolling) {
         mSelectedPosition = getChildIndex(position);
 
         float right = -1;
         if (getChildCount() > 0) {
             View v = getChildAt(mSelectedPosition);
-            if(null != v) {
+            if (null != v) {
                 right = v.getRight();
             }
-         }
-        if (positionOffset == 0) { // 防抖动
+        }
+        if (positionOffset == 0 && mIndicatorAnimationMode!=SlidingTabLayout.ANI_MODE_NONE) { // 防抖动
             if (mSelectionOffset > 0 && right != -1 && Math.abs(mLastRight - right) >= AVOID_DITHERING_THRESHOLD) {
                 ValueAnimator animator = ValueAnimator.ofFloat(1, 0);
                 animator.setDuration(100);
@@ -142,7 +146,14 @@ class SlidingTabStrip extends LinearLayout {
             }
         }
         mSelectionOffset = positionOffset;
-        invalidate();
+        if (mIndicatorAnimationMode == SlidingTabLayout.ANI_MODE_NONE) {
+            if (!fromSrolling) {
+                invalidate();
+            }
+        } else {
+            invalidate();
+        }
+
     }
 
     @Override
@@ -152,14 +163,15 @@ class SlidingTabStrip extends LinearLayout {
         final SlidingTabLayout.TabColorizer tabColorizer = mCustomTabColorizer != null
                 ? mCustomTabColorizer
                 : mDefaultTabColorizer;
+        MyLog.d("SlidingTabStrip","mSelectedPosition="+mSelectedPosition);
 
         // Thick colored underline below the current selection
         if (childCount > 0) {
             View selectedTitle = getChildAt(mSelectedPosition);
-            if(null != selectedTitle) {
+            if (null != selectedTitle) {
                 float left = selectedTitle.getLeft();
                 float right = selectedTitle.getRight();
-                float leftMargin = 0 ;
+                float leftMargin = 0;
                 if (mIndicatorAnimationMode == SlidingTabLayout.ANI_MODE_TAIL && mIndicatorWidth > 0) {
                     leftMargin = (right - left - mIndicatorWidth) / 2.0f;
                 }
@@ -196,7 +208,10 @@ class SlidingTabStrip extends LinearLayout {
                     mLastRight = right;
                 }
 
-                if (mIndicatorAnimationMode == SlidingTabLayout.ANI_MODE_NORMAL && mIndicatorWidth > 0) {
+
+                if ((mIndicatorAnimationMode == SlidingTabLayout.ANI_MODE_NORMAL
+                        || mIndicatorAnimationMode == SlidingTabLayout.ANI_MODE_NONE)
+                        && mIndicatorWidth > 0) {
                     leftMargin = (right - left - mIndicatorWidth) / 2.0f;
                 }
                 // 绘制Indicator（指示器）
@@ -323,5 +338,7 @@ class SlidingTabStrip extends LinearLayout {
     public void setIndicatorAnimationMode(int mode) {
         mIndicatorAnimationMode = mode;
     }
-
+    public int getIndicatorAnimationMode() {
+        return mIndicatorAnimationMode;
+    }
 }

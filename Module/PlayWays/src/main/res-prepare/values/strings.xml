@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="song_time_info">准备竞演 %s / %s</string>
+    <string name="match_time_info">已经匹配 %ds</string>
+    <string name="ready_time_info">%ds</string>
+    <string name="evaluation_time_info">%ds</string>
+
+    <string-array name="match_quotations">
+        <item>多次不准备的人会被惩罚哦～</item>
+        <item>听说每局都有小姐姐诶～</item>
+        <item>上了榜单怎么辣么多人关注我～</item>
+        <item>段位竟然超过隔壁村赵铁柱了！</item>
+        <item>和一个唱《后来》的菇凉互相关注啦～</item>
+        <item>震惊！！排位竟然还有隐藏分？</item>
+        <item>唱歌太好听被产品小姐姐勾搭了诶～</item>
+        <item>《一唱到底》证明了自己很持久诶～</item>
+        <item>可以到个人中心的试音间调音量哦</item>
+        <item>谁在排位赛的时候给我扔的屎粑粑！！</item>
+        <item>一唱到底没人吐槽我跟不上调了～</item>
+        <item>排位赛选歌轮唱，一唱到底抢歌清唱～</item>
+        <item>回首页看看自己段位升了还是降了吧～</item>
+        <item>去调音间自己随便哼哼歌吧～</item>
+        <item>音乐测试可以帮助你更好的匹配队友呢～</item>
+        <item>遇到好听的声音记得狂扔爱心哦～</item>
+    </string-array>
+</resources>

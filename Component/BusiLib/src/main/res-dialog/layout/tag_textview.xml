@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:paddingLeft="@dimen/view_14_dp"
+    android:paddingTop="@dimen/view_5_dp"
+    android:paddingRight="@dimen/view_14_dp"
+    android:paddingBottom="@dimen/view_5_dp"
+    android:textColor="@color/black_trans_50"
+    android:textSize="@dimen/view_16_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#80F4CA4E">
+
+</com.common.view.ex.ExTextView>

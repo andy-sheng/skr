@@ -33,7 +33,17 @@ import android.support.annotation.NonNull;
 public interface AppLifecycles {
     void attachBaseContext(@NonNull Context base);
 
-    void onCreate(@NonNull Application application);
+    /**
+     * 主进程create
+     * @param application
+     */
+    void onMainProcessCreate(@NonNull Application application);
+
+    /**
+     * 非主进程create
+     * @param application
+     */
+    void onOtherProcessCreate(@NonNull Application application);
 
     void onTerminate(@NonNull Application application);
 

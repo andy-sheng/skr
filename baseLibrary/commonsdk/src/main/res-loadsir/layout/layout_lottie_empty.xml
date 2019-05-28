@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/ll_loading"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center">
+
+    <ImageView
+        android:layout_marginBottom="4dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:background="@drawable/error"/>
+
+    <TextView
+        android:textSize="18sp"
+        android:textColor="#333333"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boss! Empty"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="click me to retry!"/>
+</LinearLayout>

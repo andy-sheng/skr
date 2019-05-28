@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ranking_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2E3041">
+
+    <ImageView
+        android:layout_width="@dimen/view_182_dp"
+        android:layout_height="@dimen/view_207_dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-35dp"
+        android:layout_marginRight="-20dp"
+        android:background="@drawable/yuyinfang_bj" />
+
+    <ImageView
+        android:layout_width="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_126_dp"
+        android:background="@drawable/liaotianshi" />
+
+    <!--这里面是软键盘弹出时 需要上移的布局-->
+    <com.module.playways.voice.view.VoiceBottomContainerView
+        android:id="@+id/bottom_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/input_container_view"
+        android:layout_marginBottom="@dimen/view_22_dp" />
+
+    <com.module.playways.room.room.comment.CommentView
+        android:id="@+id/comment_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_100_dp"
+        android:layout_marginBottom="@dimen/view_66_dp"
+        android:paddingLeft="@dimen/view_18_dp"
+        android:paddingBottom="@dimen/view_7_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/cover_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_10_dp"
+        android:layout_alignTop="@+id/comment_view"
+        android:layout_marginRight="@dimen/view_128_dp"
+        android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
+
+    <com.module.playways.voice.view.VoiceTopContainerView
+        android:id="@+id/top_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_marginTop="@dimen/view_5_dp" />
+
+    <com.module.playways.voice.view.VoiceUserStatusContainerView
+        android:id="@+id/user_status_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/comment_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_72_dp" />
+
+    <com.module.playways.voice.view.VoiceRightOpView
+        android:id="@+id/voice_right_op_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/comment_view"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/view_3_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/game_result_iv"
+        android:layout_width="@dimen/view_46_dp"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="235dp"
+        android:background="@drawable/yuyinfang_zhanjibtn" />
+
+    <com.module.playways.room.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+
+</RelativeLayout>

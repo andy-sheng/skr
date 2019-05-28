@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/view_15_dp"
+    android:layout_marginRight="@dimen/view_15_dp"
+    android:orientation="vertical"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_solid_color="#3C3F57"
+    app:bl_stroke_color="#202239"
+    app:bl_stroke_width="@dimen/view_2_dp">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:background="@drawable/pingfenguize" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_title"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginTop="@dimen/view_21_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_20_dp"
+            android:background="@drawable/guize1" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:text="爆灯表示喜欢，对应分值为1分。"
+            android:textColor="#B2B6D6"
+            android:textSize="@dimen/textsize_14_dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_13_dp"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_20_dp"
+            android:background="@drawable/guize2" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:text="AI裁判会根据选手受欢迎度和演唱水平给出最终打分。"
+            android:textColor="#B2B6D6"
+            android:textSize="@dimen/textsize_14_dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_13_dp"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_20_dp"
+            android:background="@drawable/guize3" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:text="逃跑用户自动判负，当局不计分。"
+            android:textColor="#B2B6D6"
+            android:textSize="@dimen/textsize_14_dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_20_dp"></LinearLayout>
+</com.common.view.ex.ExLinearLayout>

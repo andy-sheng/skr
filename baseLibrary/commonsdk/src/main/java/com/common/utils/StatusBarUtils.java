@@ -56,17 +56,29 @@ public class StatusBarUtils {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void setColorBar(Activity activity, @ColorInt int color, int alpha) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(calculateColor(color, alpha));
+            Window window = null;
+            if (activity != null) {
+                window = activity.getWindow();
+            }
+            if (window != null) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.setStatusBarColor(calculateColor(color, alpha));
+            } else {
+                MyLog.d(TAG, "setColorBar Build.VERSION_CODES.LOLLIPOP" + " window = null ");
+            }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = activity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            int alphaColor = alpha == 0 ? color : calculateColor(color, alpha);
-            ViewGroup decorView = (ViewGroup) window.getDecorView();
-            decorView.addView(createStatusBarView(activity, alphaColor));
-            setRootView(activity, true);
+            if (window != null) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                int alphaColor = alpha == 0 ? color : calculateColor(color, alpha);
+                ViewGroup decorView = (ViewGroup) window.getDecorView();
+                decorView.addView(createStatusBarView(activity, alphaColor));
+                setRootView(activity, true);
+            } else {
+                MyLog.d(TAG, "setColorBar Build.VERSION_CODES.KITKAT" + " window = null ");
+            }
+
         }
     }
 
@@ -152,6 +164,23 @@ public class StatusBarUtils {
                     || Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean supportTransparentStatusBar() {
+
+        if (U.getDeviceUtils().isMiui()
+                || U.getDeviceUtils().isFlyme()
+                || (U.getDeviceUtils().isOppo() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                || Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (U.getDeviceUtils().isEmui() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return true;
+        }
+        if (U.getDeviceUtils().isVivo() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return true;
         }
         return false;
     }

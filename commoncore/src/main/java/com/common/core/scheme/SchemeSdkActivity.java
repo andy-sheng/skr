@@ -1,5 +1,6 @@
 package com.common.core.scheme;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,26 +9,39 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.utils.PreferenceUtils;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
-import com.common.core.RouterConstants;
-import com.common.core.cta.CTANotifyFragment;
-import com.common.core.scheme.processor.WaliliveProcessor;
-import com.common.core.scheme.specific.SpecificProcessor;
+import com.common.core.login.interceptor.JudgeLoginInterceptor;
+import com.common.core.scheme.processor.ZqSchemeProcessorManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.RouterConstants;
+import com.module.home.IHomeService;
 
-@Route(path = RouterConstants.ACTIVITY_SCHEME)
+/**
+ * 所有的push，不管是umeng的还是厂家的
+ * 最终都会走到这
+ */
+@Route(path = RouterConstants.ACTIVITY_SCHEME, extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
 public class SchemeSdkActivity extends BaseActivity {
 
-    private Intent mIntent;
     private Uri mUri;
     private Handler mHandler = new Handler();
 
     @Override
-    public int initView(@Nullable Bundle savedInstanceState) {
+    protected void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                process(intent);
+            }
+        });
+    }
 
+    @Override
+    public int initView(@Nullable Bundle savedInstanceState) {
         return 0;
     }
 
@@ -35,33 +49,12 @@ public class SchemeSdkActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         U.getStatusBarUtil().setTransparentBar(this, true);
         overridePendingTransition(R.anim.slide_in_right, 0);
-
-        if (isNeedShowCtaDialog()) {
-            CTANotifyFragment.openFragment(this, new CTANotifyFragment.CTANotifyButtonClickListener() {
-
-                @Override
-                public void onClickCancelButton() {
-                    finish();
-                }
-
-                @Override
-                public void onClickConfirmButton() {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            process();
-                        }
-                    });
-                }
-            });
-        } else {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    process();
-                }
-            });
-        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                process(getIntent());
+            }
+        });
     }
 
     @Override
@@ -69,110 +62,74 @@ public class SchemeSdkActivity extends BaseActivity {
         return false;
     }
 
-    private void process() {
-        mIntent = getIntent();
-        if (mIntent == null) {
+    private void process(Intent intent) {
+        if (intent == null) {
             MyLog.w(TAG, "process intent is null");
             finish();
             return;
         }
 
-        String uri = mIntent.getStringExtra("uri");
+        String uri = intent.getStringExtra("uri");
+        if (TextUtils.isEmpty(uri)) {
+            uri = getIntent().getDataString();
+            if(TextUtils.isEmpty(uri)){
+                MyLog.w(TAG, "uri is null");
+                finish();
+                return;
+            }
+        }
         mUri = Uri.parse(uri);
+        ZqSchemeProcessorManager.getInstance().process(mUri,this,true);
+        if (!isHomeActivityExist()) {
+            MyLog.w(TAG, "HomeActivity不存在，需要先启动HomeActivity");
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                    .withString("from_scheme", uri)
+                    .navigation();
+            finish();
+            return;
+        } else {
+            MyLog.w(TAG, "HomeActivity存在");
+        }
+
+        if (TextUtils.isEmpty(uri)) {
+            MyLog.w(TAG, "process uri is empty or null");
+            finish();
+            return;
+        }
+
+
         if (mUri == null) {
             MyLog.w(TAG, "process intent data uri is null");
             finish();
+            return;
         }
+
         try {
             process(mUri);
         } catch (Exception e) {
+            MyLog.e(TAG, e);
+        } finally {
             finish();
         }
+    }
+
+    private boolean isHomeActivityExist() {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
     }
 
     private void process(final Uri uri) throws Exception {
         MyLog.w(TAG, "process uri=" + uri);
-        if (uri == null) {
-            finish();
-            return;
-        }
-
-        String scheme = uri.getScheme();
-        MyLog.w(TAG, "process scheme=" + scheme);
-        if (TextUtils.isEmpty(scheme)) {
-            finish();
-            return;
-        }
-
-        final String host = uri.getHost();
-        MyLog.w(TAG, "process host=" + host);
-        if (TextUtils.isEmpty(host)) {
-            finish();
-            return;
-        }
-
-        if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)
-                || host.equals(SchemeConstants.HOST_ZHIBO_COM)) {
-            final int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL, 0);
-            String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
-            String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
-            if (channelSecret == null) {
-                channelSecret = "";
-            }
-
-//            MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
-//                    new SecureCommonCallBack() {
-//                        @Override
-//                        public void postSuccess() {
-//                            MyLog.w(TAG, "postSuccess callback");
-//                            if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
-//                                // activity finish 内置处理
-//                                String key = String.format(StatisticsKey.KEY_VIEW_COUNT, channelId);
-//                                MyLog.d(TAG, "scheme process statistics=" + key);
-//                                if (!TextUtils.isEmpty(key)) {
-//                                    MilinkStatistics.getInstance().statisticsOtherActive(key, 1, channelId);
-//                                }
-//                            } else {
-//                                finish();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void postError() {
-//                            MyLog.w(TAG, "postError");
-//                            finish();
-//                        }
-//
-//                        @Override
-//                        public void processFailure() {
-//                            MyLog.w(TAG, "processFailure");
-//                            finish();
-//                        }
-//                    });
-        } else if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
-            // 内部处理，不对外暴露
-            if (WaliliveProcessor.process(uri, host, this, true)) {
-                // activity finish 内置处理
-            } else {
-                finish();
-            }
-        } else if (SpecificProcessor.process(uri, scheme, this)) {
-            finish();
-        } else {
-            finish();
-        }
+        ZqSchemeProcessorManager.getInstance().process(mUri,this,false);
     }
 
-    /**
-     * 是否工信部的包
-     * "5005_1_android".equalsIgnoreCase(Constants.ReleaseChannel)
-     *
-     * @return
-     */
-    public boolean isNeedShowCtaDialog() {
-        if ("5005_1_android".equals(U.getChannelUtils().getChannel())) {
-            return U.getPreferenceUtils().getSettingBoolean(CTANotifyFragment.PREF_KEY_NEED_SHOW_CTA, true);
-        }
-        return false;
-    }
 }

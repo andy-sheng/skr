@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch.Vertical"
+    android:background="@android:color/white">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="RxRetrofit"
+        app:centerType="textView" />
+
+    <TextView
+        android:id="@+id/test_rxretrofit_encap1"
+        style="@style/MatchWrapTv"
+        android:text="rx+retrofit封装" />
+
+    <TextView
+        android:id="@+id/test_rxretrofit_encap2"
+        style="@style/MatchWrapTv"
+        android:text="rx+retrofit封装" />
+
+
+    <TextView
+        android:id="@+id/test_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/test_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

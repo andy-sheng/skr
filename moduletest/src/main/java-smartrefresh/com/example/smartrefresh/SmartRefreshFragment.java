@@ -174,7 +174,7 @@ public class SmartRefreshFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(getActivity());
+        U.getFragmentUtils().popFragment(this);
         return true;
     }
 

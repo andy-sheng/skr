@@ -1,0 +1,28 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.module.playways.room.room.score.bar.ScorePrograssBar2
+        android:id="@+id/score_progress_bar2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/score_animation_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        app:source="score_a.svga" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/star_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        app:source="star.svga" />
+
+</merge>

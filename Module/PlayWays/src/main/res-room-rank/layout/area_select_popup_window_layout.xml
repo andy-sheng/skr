@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_other_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_48_dp"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        app:bl_corners_radius="@dimen/view_6_dp"
+        app:bl_selected_drawable="#B51A4D"
+        app:bl_unSelected_drawable="#6868A1" />
+</LinearLayout>

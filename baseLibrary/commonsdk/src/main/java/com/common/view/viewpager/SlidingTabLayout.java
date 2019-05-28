@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 
 
 /**
@@ -73,31 +74,46 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private static final int TAB_VIEW_PADDING_DIPS = 16;
     private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
 
-    /**不对加入TabStrip的每个Tab的LayoutParams做任何处理*/
+    /**
+     * 不对加入TabStrip的每个Tab的LayoutParams做任何处理
+     */
     public static final int DISTRIBUTE_MODE_NONE = 0;
-    /**如果有n个Tab，则把屏幕宽度分为n部分，Tab的标题在每部分居中*/
+    /**
+     * 如果有n个Tab，则把屏幕宽度分为n部分，Tab的标题在每部分居中
+     */
     public static final int DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER = 1;
-    /**如果有n个Tab，则把屏幕宽度分为n+1部分，Tab的标题的中线与每部分的分隔线重合*/
+    /**
+     * 如果有n个Tab，则把屏幕宽度分为n+1部分，Tab的标题的中线与每部分的分隔线重合
+     */
     public static final int DISTRIBUTE_MODE_TAB_AS_DIVIDER = 2;
 
-    /**无变化平移，非一级界面用的效果*/
+    /**
+     * 正常的平移变化效果
+     */
     public static final int ANI_MODE_NORMAL = 0;
-    /**带小尾巴效果，一级界面用的效果，@author zhaomin*/
+    /**
+     * 带小尾巴效果，一级界面用的效果，@author zhaomin
+     */
     public static final int ANI_MODE_TAIL = 1;
+    /**
+     * 无平移过渡效果
+     */
+    public static final int ANI_MODE_NONE = 2;
 
     private int mTitleOffset;
 
     private int mTabViewLayoutId;
     private int mTabViewTextViewId;
     private int mDistributeMode = DISTRIBUTE_MODE_NONE;
-    private float titleSize=0;
+    private float titleSize = 0;
     private ViewPager mViewPager;
     private SparseArray<String> mContentDescriptions = new SparseArray<String>();
     private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
     private CustomUiListener mCustomUiListener;
 
     private final SlidingTabStrip mTabStrip;
-    public SlidingTabStrip getTabStrip(){
+
+    public SlidingTabStrip getTabStrip() {
         return mTabStrip;
     }
 
@@ -145,7 +161,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
     public void setSelectedIndicatorColors(@ColorInt int... colors) {
         mTabStrip.setSelectedIndicatorColors(colors);
     }
+
     ColorStateList titleColorRes = null;
+
     public void setSelectedTitleColor(ColorStateList titleColor) {
         this.titleColorRes = titleColor;
     }
@@ -156,6 +174,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
      * 设置把屏幕宽度分为和Tab数目相等的等份
+     *
      * @see #DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER
      * @see #setDistributeMode(int)
      */
@@ -165,12 +184,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
      * 设置Tab全宽度分割模式
+     *
      * @param distributeMode 可选值：
-     * <ul>
-     *    <li>{@link #DISTRIBUTE_MODE_NONE}默认</li>
-     *    <li>{@link #DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER}</li>
-     *    <li>{@link #DISTRIBUTE_MODE_TAB_AS_DIVIDER}</li>
-     * </ul>
+     *                       <ul>
+     *                       <li>{@link #DISTRIBUTE_MODE_NONE}默认</li>
+     *                       <li>{@link #DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER}</li>
+     *                       <li>{@link #DISTRIBUTE_MODE_TAB_AS_DIVIDER}</li>
+     *                       </ul>
      */
     public void setDistributeMode(int distributeMode) {
         mDistributeMode = distributeMode;
@@ -215,6 +235,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
      * 设置自定义title listener ,外部好灵活控制显示隐藏title的一部分
+     *
      * @param mCustomUiListener
      */
     public void setCustomUiListener(CustomUiListener mCustomUiListener) {
@@ -267,8 +288,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 tabView = createDefaultTabView(getContext());
             }
 
-            if (tabView!=null && mCustomUiListener!=null) {
-                mCustomUiListener.onCustomTitle(tabView,i);
+            if (tabView != null && mCustomUiListener != null) {
+                mCustomUiListener.onCustomTitle(tabView, i);
             }
 
             if (tabTitleView == null && TextView.class.isInstance(tabView)) {
@@ -280,10 +301,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 distributeTab(lp);
             }
 
-            if(titleSize>0){
+            if (titleSize > 0) {
                 tabTitleView.setTextSize(titleSize);
             }
-            if(titleColorRes !=null){
+            if (titleColorRes != null) {
                 tabTitleView.setTextColor(titleColorRes);
             }
 
@@ -348,7 +369,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         View selectedChild = mTabStrip.getChildAt(getTabStripChildIndex(viewPagerTabIndex));
         if (selectedChild != null) {
-            
+
             int targetScrollX = selectedChild.getLeft() + positionOffset;
 
             if (viewPagerTabIndex > 0 || positionOffset > 0) {
@@ -391,7 +412,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 return;
             }
 
-            mTabStrip.onViewPagerPageChanged(position, positionOffset);
+            mTabStrip.onViewPagerPageChanged(position, positionOffset, true);
             View selectedTitle = mTabStrip.getChildAt(getTabStripChildIndex(position));
             int extraOffset = (selectedTitle != null)
                     ? (int) (positionOffset * selectedTitle.getWidth())
@@ -407,7 +428,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
         @Override
         public void onPageScrollStateChanged(int state) {
             mScrollState = state;
-
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageScrollStateChanged(state);
             }
@@ -415,9 +435,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         @Override
         public void onPageSelected(int position) {
-            if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                mTabStrip.onViewPagerPageChanged(position, 0f);
-                scrollToTab(position, 0);
+            if (mTabStrip.getIndicatorAnimationMode() == SlidingTabLayout.ANI_MODE_NONE) {
+                mTabStrip.onViewPagerPageChanged(position, 0f, false);
+            } else {
+                if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+                    mTabStrip.onViewPagerPageChanged(position, 0f, false);
+                    scrollToTab(position, 0);
+                }
             }
             int tabStripPosition = getTabStripChildIndex(position);
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
@@ -430,12 +454,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     }
 
-    private class TabClickListener implements OnClickListener {
+    private class TabClickListener extends DebounceViewClickListener {
         @Override
-        public void onClick(View tabView) {
-            if(U.getCommonUtils().isFastDoubleClick()){
-                return;
-            }
+        public void clickValid(View tabView) {
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                 if (tabView == mTabStrip.getChildAt(i)) {
                     mViewPager.setCurrentItem(getViewPagerPosition(i));
@@ -450,12 +471,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
         public void onCustomTitle(View titleView, int position);
     }
 
-    /**获取Tab名称底部坐标的接口*/
+    /**
+     * 获取Tab名称底部坐标的接口
+     */
     public interface ITabNameBottomPositionGetter {
         int getTabNameBottomPosition(@Nullable View selectedTitle);
     }
 
-    public void notifyDataChange(){
+    public void notifyDataChange() {
         mTabStrip.removeAllViews();
         populateTabStrip();
     }
@@ -472,14 +495,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
         if (isTabAsDividerMode()) {
             viewPagerPosition++;
         }
-        return  viewPagerPosition;
+        return viewPagerPosition;
     }
 
     private int getViewPagerPosition(int tabStripIndex) {
         if (isTabAsDividerMode()) {
             tabStripIndex--;
         }
-        return  tabStripIndex;
+        return tabStripIndex;
     }
 
     private boolean isTabAsDividerMode() {
@@ -488,9 +511,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
      * <ul>
-     *     <li>{@link #ANI_MODE_NORMAL}默认</li>
-     *     <li>{@link #ANI_MODE_TAIL}</li>
+     * <li>{@link #ANI_MODE_NORMAL}默认</li>
+     * <li>{@link #ANI_MODE_TAIL}</li>
      * </ul>
+     *
      * @param mode
      */
     public void setIndicatorAnimationMode(int mode) {

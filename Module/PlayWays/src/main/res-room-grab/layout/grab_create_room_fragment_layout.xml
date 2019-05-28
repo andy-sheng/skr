@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7088FF">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/grab_back" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_48_dp"
+        android:gravity="center"
+        android:text="创建房间"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/friends_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/chuangjianfangjian_haoyoufangrukou">
+
+    </com.common.view.ex.ExImageView>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/secret_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friends_room"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/chuangjianfangjian_simifangrukou">
+
+    </com.common.view.ex.ExImageView>
+
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/public_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/secret_room"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/chuangjianhaoyou_haohuapaiduirukou">
+
+    </com.common.view.ex.ExImageView>
+
+</com.common.view.ex.ExRelativeLayout>

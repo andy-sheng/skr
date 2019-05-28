@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="max_len_notice">最多只能输入30个字哦～</string>
-    <string name="voice_tips">仅播放声音</string>
-    <string name="not_insteresting">不感兴趣</string>
-    <string name="report">举报</string>
-</resources>

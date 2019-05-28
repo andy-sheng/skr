@@ -1,0 +1,18 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/back_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_28_dp"
+        android:drawableLeft="@drawable/img_back"
+        android:drawablePadding="@dimen/view_16_dp"
+        android:text="返回大厅"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_16_dp" />
+
+</merge>

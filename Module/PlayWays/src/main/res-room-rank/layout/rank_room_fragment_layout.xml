@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:topContainer="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ranking_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2E3041">
+
+    <com.module.playways.room.room.view.RankTopContainerView2
+        android:id="@+id/rank_top_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        topContainer:mode="rank" />
+
+    <RelativeLayout
+        android:id="@+id/middle_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/view_365_dp">
+
+        <com.zq.lyrics.widget.ManyLyricsView
+            android:id="@+id/many_lyrics_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_150_dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/view_147_dp"
+            android:visibility="gone"
+            app:ly_eable_scroll="false"
+            app:ly_eable_verbatim="true"
+            app:ly_high_light_paint_color_from="#EF5E85"
+            app:ly_high_light_paint_color_to="#EF5E85"
+            app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
+            app:ly_high_light_sub_paint_color="@color/white"
+            app:ly_outline_paint_color="@color/black"
+            app:ly_paint_color_from="@color/white_trans_50"
+            app:ly_paint_color_to="@color/white_trans_50"
+            app:ly_paint_text_size="@dimen/textsize_dimen_16"
+            app:ly_top_line_num="2" />
+
+        <com.zq.lyrics.widget.VoiceScaleView
+            android:id="@+id/voice_scale_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_61_dp"
+            android:layout_below="@+id/many_lyrics_view"
+            android:layout_marginTop="@dimen/view_4_dp"
+            android:visibility="gone" />
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/stage_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_180_dp"
+            android:layout_marginTop="@dimen/view_170_dp"
+            android:visibility="gone"
+            app:antiAlias="true"
+            app:autoPlay="false" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/sing_avatar_view"
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_90_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_215_dp"
+            android:visibility="gone" />
+
+        <com.module.playways.room.room.view.ArcProgressBar
+            android:id="@+id/count_down_process"
+            android:layout_width="@dimen/view_116_dp"
+            android:layout_height="@dimen/view_116_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_202_dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <!--这里面是软键盘弹出时 需要上移的布局-->
+    <com.module.playways.room.room.bottom.RankBottomContainerView
+        android:id="@+id/bottom_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/input_container_view"
+        android:layout_marginBottom="@dimen/view_16_dp" />
+
+    <com.module.playways.room.room.comment.CommentView
+        android:id="@+id/comment_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/middle_area"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/view_35_dp"
+        android:layout_marginRight="@dimen/view_100_dp"
+        android:layout_marginBottom="@dimen/view_63_dp"
+        android:paddingLeft="@dimen/view_18_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/cover_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_10_dp"
+        android:layout_alignTop="@+id/comment_view"
+        android:layout_marginRight="@dimen/view_128_dp"
+        android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
+
+    <!--<com.module.playways.room.room.gift.GiftContinueViewGroup-->
+        <!--android:id="@+id/gift_continue_vg"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="@dimen/view_75_dp"-->
+        <!--android:layout_alignTop="@+id/comment_view"-->
+        <!--android:layout_marginLeft="@dimen/view_16_dp"-->
+        <!--android:layout_marginTop="-30dp"-->
+        <!--android:layout_marginBottom="@dimen/view_10_dp" />-->
+
+    <com.module.playways.room.room.gift.GiftContinueViewGroup
+        android:id="@+id/gift_continue_vg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/comment_view"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="-50dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        />
+
+    <com.module.playways.room.room.view.TurnChangeCardView
+        android:id="@+id/turn_change_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
+        android:id="@+id/gift_big_animation_vg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--爆灭等大礼物区域-->
+    <com.module.playways.grab.room.view.GrabDengBigAnimationView
+        android:id="@+id/deng_big_animation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <com.module.playways.room.room.view.RankOpView
+        android:id="@+id/rank_op_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_160_dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/end_game_iv"
+        android:layout_width="@dimen/view_324_dp"
+        android:layout_height="@dimen/view_160_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_178_dp"
+        android:src="@drawable/img_top_duizhanjieshu_bg"
+        android:visibility="gone" />
+
+    <com.module.playways.room.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

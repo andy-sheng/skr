@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rank_quick_msg_arr">
+        <item>兄dei，唱歌这件事要走心喔</item>
+        <item>好好唱，我可要灭灯啦！</item>
+        <item>大点声，俺听不见。。</item>
+        <item>my god 这是什么神仙嗓音？</item>
+        <item>完了，耳朵要怀孕了</item>
+        <item>声音这么好听，人长的也很美吧？</item>
+        <item>这是原唱吗？简直和放CD一样！</item>
+        <item>这首歌送给你</item>
+        <item>我关注你，你就关注我好不好呀？？</item>
+    </string-array>
+    
+    <string-array name="grab_quick_msg_arr">
+        <item>糟了，这是心动的感觉～</item>
+        <item>好听！我关注你你也关注我好不好呀？</item>
+        <item>厉害了，简直原唱水准啊～</item>
+        <item>朋友，唱歌这件事要走心哦~</item>
+        <item>求求各位爷让我吼一嗓子</item>
+        <item>兄die，您这是实力改编呢？</item>
+        <item>这是什么魔鬼手速？！</item>
+        <item>快来救救这孩子。。。</item>
+    </string-array>
+
+</resources>

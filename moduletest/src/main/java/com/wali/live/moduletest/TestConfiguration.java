@@ -57,9 +57,14 @@ public class TestConfiguration implements ConfigModule {
             }
 
             @Override
-            public void onCreate(@NonNull Application application) {
+            public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
                 //这里必须在super.onCreate方法之后，顺序不能变
+
+            }
+
+            @Override
+            public void onOtherProcessCreate(@NonNull Application application) {
 
             }
 

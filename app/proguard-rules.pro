@@ -1,13 +1,23 @@
+#ProGuard 都会输出一些文件在项目模块 /build/outputs/mapping/release/下：
+#dump.txt ：描述 APK 中所有类文件的内部结构
+#mapping.txt ：提供原始和混淆后类、方法、字段名的映射对照
+#seeds.txt ：列出未混淆的类和成员
+#usage.txt ：列出从 APK 中移除的代码
+
 #1.基本指令区
--optimizationpasses 5
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
--dontskipnonpubliclibraryclassmembers
--dontpreverify
--verbose
+-optimizationpasses 5 #代码混淆压缩比， 在0~7之间，默认为5，一般不需要改
+-dontusemixedcaseclassnames #不使用大小写混合，混淆后类名称为小写
+-dontskipnonpubliclibraryclasses #指定不去忽略非公共的库类
+-dontskipnonpubliclibraryclassmembers #指定不去忽略包可见的库类的成员
+-dontpreverify # 混淆时是否做预校验，Android平台上不需要这项功能，去掉之后还可以加快混淆速度。
+-verbose # 混淆时是否记录日志
 -ignorewarning
+#-dontshrink #关闭shrink,默认开启，用以减小应用体积，移除未被使用的类和成员，并且会在优化动作执行之后再次执行
+#-dontoptimize #关闭优化,默认开启，在字节码级别执行优化，让应用运行的更快。
+#-dontobfuscate #关闭混淆,默认开启，增大反编译难度，类和类成员会被随机命名，除非用keep保护。
+
 -printmapping proguardMapping.txt
--optimizations !code/simplification/cast,!field/*,!class/merging/*
+-optimizations !code/simplification/cast,!field/*,!class/merging/* # 混淆时所采用的算法
 -keepattributes *Annotation*,InnerClasses
 -keepattributes Signature
 -keepattributes SourceFile,LineNumberTable
@@ -61,17 +71,8 @@
 }
 
 #proto
--keep public class com.wali.live.proto.** { *; }
+-keep public class com.zq.live.proto.** { *; }
 
-#galileo
--keep class com.xiaomi.conferencemanager.**{ *; }
--keep class com.xiaomi.broadcaster.**{ *; }
--keep class org.webrtc.**{ *; }
--keep class org.xplatform_util.**{ *;}
--keep class com.xiaomi.devicemanager.**{ *; }
--keep class com.xiaomi.rendermanager.**{ *; }
--keep class com.xiaomi.player.** { *; }
--keep class com.xiaomi.transport.**{ *; }
 
 -keep class com.xiaomi.mibi.** {
  *;
@@ -142,8 +143,6 @@
 ##---------------Begin: proguard configuration for Gson  ----------
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
--keepattributes Signature
-
 # For using GSON @Expose annotation
 -keepattributes *Annotation*
 
@@ -201,7 +200,6 @@
 -dontwarn com.google.appengine.api.urlfetch.**
 -dontwarn rx.**
 -dontwarn retrofit.**
--keepattributes Signature
 -keepattributes *Annotation*
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
@@ -211,7 +209,6 @@
 }
 
 #阿里百川sdk
--keepattributes Signature
 -keep class sun.misc.Unsafe {*;}
 -keep class com.taobao.* {*;}
 -keep class com.alibaba.** {*;}
@@ -259,9 +256,11 @@ public static java.lang.String TABLENAME;
 
 -keep class **.BuildConfig {*;}
 
+-keep class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
 -keep class com.common.statistics.TimeStatistics{*;}
 #蒲公英
--libraryjars ../baseLibrary/commonsdk/libs/pgyer_sdk_3.0.2.jar
+#-libraryjars ../baseLibrary/commonsdk/libs/pgyer_sdk_3.0.2.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
 
@@ -279,4 +278,229 @@ public static java.lang.String TABLENAME;
 -keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
 
 # 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
-# -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+-keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+
+
+# 为了 fastjson 反序列化
+-keepclassmembers class * implements java.io.Serializable{*;}
+
+#cookie相关
+-dontwarn com.common.rxretrofit.cookie.**
+-keep class com.common.rxretrofit.cookie.**
+
+#融云相关
+-keepattributes Exceptions,InnerClasses
+
+-keepattributes Signature
+
+# RongCloud SDK 相关
+-keep class io.rong.** {*;}
+-keep class cn.rongcloud.** {*;}
+-keep class * implements io.rong.imlib.model.MessageContent {*;}
+-dontwarn io.rong.push.**
+-dontnote com.xiaomi.**
+-dontnote com.google.android.gms.gcm.**
+-dontnote io.rong.**
+
+
+#唱吧引擎
+-keep class com.changba.songstudio.recording.camera.preview.ChangbaRecordingPreviewScheduler{*;}
+-keep class com.changba.songstudio.recording.camera.preview.CameraConfigInfo{*;}
+-keep class com.changba.songstudio.Videostudio{*;}
+-keep class com.changba.songstudio.audioeffect.** {*;}
+
+#loadsir
+-dontwarn com.kingja.loadsir.**
+-keep class com.kingja.loadsir.** {*;}
+
+
+#alifeedback
+-keep class com.taobao.** {*;}
+-keep class com.alibaba.** {*;}
+-dontwarn com.taobao.**
+-dontwarn com.alibaba.**
+-keep class com.ut.** {*;}
+-dontwarn com.ut.**
+-keep class com.ta.** {*;}
+-dontwarn com.ta.**
+
+#极光push 小米
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+
+-dontwarn com.xiaomi.push.**
+-keep class com.xiaomi.push.**{*;}
+
+-keep class com.huawei.hms.**{*;}
+
+-dontwarn com.coloros.mcsdk.**
+-keep class com.coloros.mcsdk.** { *; }
+
+-dontwarn com.vivo.push.**
+-keep class com.vivo.push.**{*; }
+-keep class com.vivo.vms.**{*; }
+
+#腾讯bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
+#腾讯matrix
+-keep public class com.tencent.matrix.**{*;}
+
+-keep public class pl.droidsonroids.gif.GifIOException{<init>(int, java.lang.String);}
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+-dontwarn com.google.android.maps.**
+-dontwarn android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
+-keep public class javax.**
+-keep public class android.webkit.**
+-dontwarn android.support.v4.**
+-keep enum com.facebook.**
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+
+-keep public class com.umeng.socialize.* {*;}
+
+
+-keep class com.facebook.**
+-keep class com.facebook.** { *; }
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+-keep class com.umeng.socialize.handler.**
+-keep class com.umeng.socialize.handler.*
+-keep class com.umeng.weixin.handler.**
+-keep class com.umeng.weixin.handler.*
+-keep class com.umeng.qq.handler.**
+-keep class com.umeng.qq.handler.*
+-keep class UMMoreHandler{*;}
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+-keep class com.tencent.mm.sdk.** {
+   *;
+}
+-keep class com.tencent.mm.opensdk.** {
+   *;
+}
+-keep class com.tencent.wxop.** {
+   *;
+}
+-keep class com.tencent.mm.sdk.** {
+   *;
+}
+-dontwarn twitter4j.**
+-keep class twitter4j.** { *; }
+
+-keep class com.tencent.** {*;}
+-dontwarn com.tencent.**
+-keep class com.kakao.** {*;}
+-dontwarn com.kakao.**
+-keep public class com.umeng.com.umeng.soexample.R$*{
+    public static final int *;
+}
+-keep public class com.linkedin.android.mobilesdk.R$*{
+    public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class com.tencent.open.TDialog$*
+-keep class com.tencent.open.TDialog$* {*;}
+-keep class com.tencent.open.PKDialog
+-keep class com.tencent.open.PKDialog {*;}
+-keep class com.tencent.open.PKDialog$*
+-keep class com.tencent.open.PKDialog$* {*;}
+-keep class com.umeng.socialize.impl.ImageImpl {*;}
+-keep class com.sina.** {*;}
+-dontwarn com.sina.**
+-keep class  com.alipay.share.sdk.** {
+   *;
+}
+
+-keepnames class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+-keep class com.linkedin.** { *; }
+-keep class com.android.dingtalk.share.ddsharemodule.** { *; }
+
+-keep class com.umeng.** {*;}
+
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep public class android.aspectjdemo.R$*{
+public static final int *;
+}
+-dontwarn com.umeng.**
+-dontwarn com.taobao.**
+-dontwarn anet.channel.**
+-dontwarn anetwork.channel.**
+-dontwarn org.android.**
+-dontwarn org.apache.thrift.**
+-dontwarn com.xiaomi.**
+-dontwarn com.huawei.**
+-dontwarn com.meizu.**
+
+-keepattributes *Annotation*
+
+-keep class com.taobao.** {*;}
+-keep class org.android.** {*;}
+-keep class anet.channel.** {*;}
+-keep class com.umeng.** {*;}
+-keep class com.xiaomi.** {*;}
+-keep class com.huawei.** {*;}
+-keep class com.meizu.** {*;}
+-keep class org.apache.thrift.** {*;}
+
+-keep class com.alibaba.sdk.android.**{*;}
+-keep class com.ut.**{*;}
+-keep class com.ta.**{*;}
+
+-keep public class **.R$*{
+   public static final int *;
+}
+
+-keep class com.opensource.svgaplayer.proto.** { *; }
+-ignorewarnings

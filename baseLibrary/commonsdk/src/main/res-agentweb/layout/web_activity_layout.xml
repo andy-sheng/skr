@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!--<com.common.view.titlebar.CommonTitleBar-->
+    <!--android:id="@+id/titlebar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:centerText="余额明细"-->
+    <!--app:centerTextColor="@color/white"-->
+    <!--app:centerTextSize="@dimen/textsize_20_dp"-->
+    <!--app:centerType="textView"-->
+    <!--app:leftDrawable="@drawable/img_back"-->
+    <!--app:leftType="textView"-->
+    <!--app:rightImageResource="@drawable/gerenzhuye_fenxiang"-->
+    <!--app:rightTextColor="@color/white"-->
+    <!--app:rightTextSize="@dimen/textsize_14_dp"-->
+    <!--app:rightType="textView"-->
+    <!--app:showBottomLine="false"-->
+    <!--app:statusBarColor="#7187FF"-->
+    <!--app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>-->
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/h5_back"
+        app:leftTextColor="@color/white"
+        app:leftType="textView"
+        app:rightImageResource="@drawable/gerenzhuye_fenxiang"
+        app:rightType="imageButton"
+        app:showBottomLine="false"
+        app:statusBarColor="#7187FF"
+        app:titleBarColor="#7187FF">
+
+    </com.common.view.titlebar.CommonTitleBar>
+
+    <RelativeLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar"></RelativeLayout>
+</RelativeLayout>

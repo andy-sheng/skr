@@ -36,18 +36,28 @@
         <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
         <meta-data
             android:name="com.common.core.CoreConfiguration"
-            android:value="ConfigModule" />
+            android:value="ConfigModule_1" />
 
-        <activity android:name="com.common.core.login.LoginActivity" />
+        <activity
+            android:name="com.common.core.login.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
+
+        <activity
+            android:name="com.debugcore.DebugCoreActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <activity
             android:name="com.common.core.scheme.SchemeSdkActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:launchMode="singleTask"
             android:noHistory="true"
-            android:screenOrientation="portrait"
             android:theme="@style/TransparentTheme">
 
             <intent-filter>
@@ -56,47 +66,113 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="livesdk" />
+                <data android:scheme="inframeskr" />
             </intent-filter>
         </activity>
 
+
         <!-- milinkservice -->
-        <service
-            android:name="com.mi.milink.sdk.service.MiLinkService"
+        <!--<service-->
+        <!--android:name="com.mi.milink.sdk.service.MiLinkService"-->
+        <!--android:exported="false"-->
+        <!--android:process=":remote">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.mi.milink.sdk.service.MiLinkService" />-->
+        <!--</intent-filter>-->
+        <!--</service>-->
+
+        <!--<receiver-->
+        <!--android:name="com.mi.milink.sdk.receiver.AlarmReceiver"-->
+        <!--android:process=":remote">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.milink.sdk.heartbeat" />-->
+        <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.xiaomi.push.PING_TIMER" />-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
+
+
+        <!--<receiver-->
+        <!--android:name="com.mi.milink.sdk.receiver.NetworkReceiver"-->
+        <!--android:process=":remote">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <!--<receiver-->
+        <!--android:name="com.mi.milink.sdk.receiver.BootReceiver"-->
+        <!--android:process=":remote">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <activity
+            android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="com.mi.milink.sdk.service.MiLinkService" />
-            </intent-filter>
-        </service>
+            android:windowSoftInputMode="adjustResize">
 
-        <receiver
-            android:name="com.mi.milink.sdk.receiver.AlarmReceiver"
-            android:process=":remote" >
+        </activity>
+        <activity
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
-                <action android:name="com.milink.sdk.heartbeat" />
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.push.PING_TIMER" />
-            </intent-filter>
-        </receiver>
 
+        </activity>
 
-        <receiver
-            android:name="com.mi.milink.sdk.receiver.NetworkReceiver"
-            android:process=":remote" >
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+                <action android:name="android.intent.action.VIEW" />
 
-        <receiver
-            android:name="com.mi.milink.sdk.receiver.BootReceiver"
-            android:process=":remote" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent100424468" />
             </intent-filter>
-        </receiver>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name="com.zq.live.wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 微信支付 -->
+        <activity
+            android:name="com.zq.live.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+
+        <activity
+            android:name="com.umeng.socialize.media.WBShareCallBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+        <activity
+            android:name="com.common.webview.AgentWebActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name="com.common.webview.ExpendWebActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
 
     </application>
 

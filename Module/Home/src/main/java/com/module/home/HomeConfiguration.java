@@ -24,6 +24,7 @@ import android.util.Log;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.ConfigModule;
+import com.common.core.share.ShareManager;
 
 import java.util.List;
 
@@ -56,8 +57,13 @@ public class HomeConfiguration implements ConfigModule {
             }
 
             @Override
-            public void onCreate(@NonNull Application application) {
+            public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+            }
+
+            @Override
+            public void onOtherProcessCreate(@NonNull Application application) {
+
             }
 
             @Override
@@ -65,6 +71,8 @@ public class HomeConfiguration implements ConfigModule {
 
             }
         });
+
+        ShareManager.init();
     }
 
     @Override

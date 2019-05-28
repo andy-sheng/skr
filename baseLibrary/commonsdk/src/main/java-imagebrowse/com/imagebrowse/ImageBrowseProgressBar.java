@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.common.log.MyLog;
 import com.common.utils.DisplayUtils;
 import com.common.utils.U;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
@@ -21,9 +22,9 @@ public class ImageBrowseProgressBar extends ProgressBarDrawable {
 
     int radius = U.getDisplayUtils().dip2px(30);
 
-    public ImageBrowseProgressBar(){
+    public ImageBrowseProgressBar() {
         paint.setStrokeWidth(U.getDisplayUtils().dip2px(1));
-        paint.setStyle(Paint.Style.STROKE);
+        paint.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -41,12 +42,17 @@ public class ImageBrowseProgressBar extends ProgressBarDrawable {
         drawCircle(canvas, level, color);
     }
 
-
+    /**
+     * level=9900.0 color=-1 angle=3564000.0
+     *
+     * @param canvas
+     * @param level
+     * @param color
+     */
     private void drawCircle(Canvas canvas, float level, int color) {
         paint.setColor(color);
-        float angle;
-        angle = 360 / 1f;
-        angle = level * angle;
-        canvas.drawArc(oval, 0, Math.round(angle), false, paint);
+        float angle = 360 * level / 10000.0f;
+        MyLog.d("ImageBrowseProgressBar", "drawCircle canvas=" + canvas + " level=" + level + " color=" + color + " angle=" + angle);
+        canvas.drawArc(oval, 0, Math.round(angle), true, paint);
     }
 }

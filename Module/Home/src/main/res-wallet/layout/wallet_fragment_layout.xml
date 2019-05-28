@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="我的钱包"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText="提现记录"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/blance_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0288D0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:text="账户余额"
+            android:textColor="@color/white_trans_60"
+            android:textSize="@dimen/textsize_14_dp" />
+
+        <TextView
+            android:id="@+id/balance_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_50_dp"
+            android:text="0.00元"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_50_dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/withdraw_tv"
+            android:layout_width="@dimen/view_151_dp"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_130_dp"
+            android:background="@drawable/img_btn_bg_yellow"
+            android:gravity="center"
+            android:paddingRight="@dimen/view_6_dp"
+            android:paddingBottom="@dimen/view_6_dp"
+            android:text="提现"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/blance_area">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+</RelativeLayout>

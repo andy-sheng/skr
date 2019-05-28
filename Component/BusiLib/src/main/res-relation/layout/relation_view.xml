@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/search_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_39_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/friend_search_bg">
+
+        <ImageView
+            android:id="@+id/search_icon_iv"
+            android:layout_width="@dimen/view_23_dp"
+            android:layout_height="@dimen/view_23_dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:background="@drawable/common_search_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_toRightOf="@id/search_icon_iv"
+            android:text="输入用户昵称、备注或ID"
+            android:textColor="@color/white_trans_30"
+            android:textSize="@dimen/textsize_16_dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_area"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/common_bg_2"
+        android:paddingLeft="@dimen/view_3_dp"
+        android:paddingRight="@dimen/view_3_dp">
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

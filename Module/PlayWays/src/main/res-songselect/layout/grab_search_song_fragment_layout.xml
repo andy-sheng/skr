@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerSearchBg="@drawable/friend_search_bg"
+        app:centerSearchDeleteIcon="@drawable/common_search_delete"
+        app:centerSearchEditable="true"
+        app:centerSearchHint="请输入歌曲名称或歌手名字"
+        app:centerSearchHintColor="#80B2B6D6"
+        app:centerSearchMaxLength="20"
+        app:centerSearchNormalIcon="@drawable/grab_search_icon"
+        app:centerSearchRightType="delete"
+        app:centerSearchTextColor="#B2B6D6"
+        app:centerType="searchView"
+        app:rightText="取消"
+        app:rightTextColor="@color/white"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:layout_marginBottom="@dimen/view_32_dp"
+        android:background="@drawable/friend_search_bg">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"></android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

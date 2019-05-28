@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp"
+    android:orientation="vertical"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_solid_color="#7187FF"
+    app:bl_stroke_color="#3B4E79"
+    app:bl_stroke_width="@dimen/view_2_dp">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:background="@drawable/grab_guize_title" />
+
+    <com.common.view.ex.ExLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:orientation="vertical"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#576FE3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_title"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_21_dp"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_1" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="点击【抢唱】、【合唱】或【PK】按钮抢机会"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_2" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="完成演唱或收到爆灯即可一唱到底"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_3" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="演唱中超过半数用户灭灯即挑战失败"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_4" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="单人一唱到底加金币，合唱成功、PK获胜加更多金币，给别人爆灯减金币"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:layout_marginBottom="@dimen/view_30_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_23_dp"
+                android:layout_height="@dimen/view_25_dp"
+                android:background="@drawable/grab_guize_5" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="1人练习房金币不加减、段位不升降"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+    </com.common.view.ex.ExLinearLayout>
+
+</com.common.view.ex.ExLinearLayout>

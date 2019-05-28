@@ -1,6 +1,7 @@
 package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,7 +20,11 @@ import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
-import com.common.core.RouterConstants;
+import com.common.core.share.ShareManager;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
+import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -32,20 +37,21 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
-import com.common.utils.PermissionUtils;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.dialog.DialogsFragment;
 import com.example.drawer.DrawerFragment;
 import com.example.emoji.EmojiFragment;
 import com.example.qrcode.QrcodeTestFragment;
+import com.example.rxretrofit.fragment.RxRetrofitFragment;
 import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.wxcontact.PickContactFragment;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.fragment.ImagePickerFragment;
-import com.imagepicker.fragment.ImagePreviewFragment;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.view.CropImageView;
+import com.respicker.ResPicker;
+import com.respicker.fragment.ResPickerFragment;
+import com.respicker.preview.image.ImagePreviewFragment;
+import com.respicker.model.ImageItem;
+import com.respicker.view.CropImageView;
 import com.module.home.IHomeService;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.pgyersdk.feedback.PgyerFeedbackManager;
@@ -53,6 +59,8 @@ import com.pgyersdk.update.DownloadFileListener;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.pgyersdk.update.javabean.AppBean;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
@@ -76,12 +84,12 @@ public class TestSdkActivity extends BaseActivity {
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.test_main_layout;
+        return R.layout.debug_core_activity_layout;
     }
 
     void loadAccountInfo() {
         if (UserAccountManager.getInstance().hasAccount()) {
-            mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
+            mTitlebar.getCenterTextView().setText("id:" + MyUserInfoManager.getInstance().getUid() + " name:" + MyUserInfoManager.getInstance().getNickName());
         } else {
             mTitlebar.getCenterTextView().setText("未登陆");
         }
@@ -89,17 +97,17 @@ public class TestSdkActivity extends BaseActivity {
         BaseImageView baseImageView = view.findViewById(R.id.head_img);
 
         AvatarUtils.loadAvatarByUrl(baseImageView,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .setBorderWidth(2)
+                        .setBorderColor(Color.BLUE)
                         .build());
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MyUserInfoEvent.UserInfoChangeEvent event) {
         loadAccountInfo();
     }
-
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
@@ -133,11 +141,112 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
+//        mDataList.add(new H("测试Dialog", new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                TipsDialogView tipsDialogView = new TipsDialogView.Builder(TestSdkActivity.this).build();
+//                DialogPlus.newDialog(TestSdkActivity.this)
+//                        .setContentHolder(new ViewHolder(tipsDialogView))
+//                        .setGravity(Gravity.BOTTOM)
+//                        .setContentBackgroundResource(R.color.red)
+//                        .setOverlayBackgroundResource(R.color.black_trans_50)
+//                        .setExpanded(false)
+//                        .create().show();
+//                UserAccountManager.getInstance().logoff(true);
+//            }
+//        }));
+
+
         mDataList.add(new H("进入首页", new Runnable() {
             @Override
             public void run() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
                         .navigation();
+            }
+        }));
+
+        mDataList.add(new H("打开webview", new Runnable() {
+
+            @Override
+            public void run() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString(RouterConstants.KEY_WEB_URL,"http://www.mi.com")
+                        .navigation();
+            }
+        }));
+
+        mDataList.add(new H("上传到oss，指定文件名", new Runnable() {
+
+            @Override
+            public void run() {
+                UploadParams.newBuilder("/sdcard/main_stage_leave.svga")
+                        .setFileName("main_stage_leave.svga")
+                        .startUploadAsync(new UploadCallback() {
+                            @Override
+                            public void onProgress(long currentSize, long totalSize) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(String url) {
+                                MyLog.w(TAG, "onSuccess" + " url=" + url);
+                                U.getToastUtil().showShort("url:" + url);
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+
+                            }
+                        });
+
+//                UploadParams.newBuilder("/sdcard/dabian.svga")
+//                        .setFileName("dabian1.svga")
+//                        .startUploadAsync(new UploadCallback() {
+//                            @Override
+//                            public void onProgress(long currentSize, long totalSize) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onSuccess(String url) {
+//                                MyLog.w(TAG, "onSuccess" + " url=" + url);
+//                                U.getToastUtil().showShort("url:" + url);
+//                            }
+//
+//                            @Override
+//                            public void onFailure(String msg) {
+//
+//                            }
+//                        });
+            }
+        }));
+
+        mDataList.add(new H("分享面板", new Runnable() {
+
+            @Override
+            public void run() {
+                ShareManager.openSharePanel(TestSdkActivity.this, new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+                        U.getToastUtil().showShort(share_media.toString());
+                    }
+
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+
+                    }
+                });
             }
         }));
 
@@ -406,7 +515,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, SmartRefreshFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, SmartRefreshFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -417,7 +526,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, DrawerFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, DrawerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -441,7 +550,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, EmojiFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, EmojiFragment.class)
                         .setAddToBackStack(true)
                         .build());
             }
@@ -451,7 +560,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, ShowTextViewFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, ShowTextViewFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -473,7 +582,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, DialogsFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, DialogsFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -484,19 +593,48 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 Bundle bundle = new Bundle();
-                ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+                ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                         .setSelectLimit(8)
                         .setCropStyle(CropImageView.Style.CIRCLE)
                         .build()
                 );
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePickerFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, ResPickerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .setBundle(bundle)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
-                                U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
+                                List<ImageItem> list = ResPicker.getInstance().getSelectedImageList();
+
+                                U.getToastUtil().showShort("拿到数据 size:" + list.size());
+                                if (list.size() > 0) {
+                                    ImageItem imageItem = list.get(0);
+                                    UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+                                            .setNeedCompress(true)
+                                            .startUploadAsync(new UploadCallback() {
+                                                @Override
+                                                public void onProgress(long currentSize, long totalSize) {
+
+                                                }
+
+                                                @Override
+                                                public void onSuccess(String url) {
+                                                    U.getToastUtil().showShort("上传成功 url:" + url);
+                                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                                            .setAvatar(url)
+                                                            .build());
+                                                }
+
+                                                @Override
+                                                public void onFailure(String msg) {
+
+                                                }
+
+                                            });
+
+                                }
+
                             }
                         })
                         .build());
@@ -525,14 +663,14 @@ public class TestSdkActivity extends BaseActivity {
                     list.add(imageItem);
                 }
 
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePreviewFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, ImagePreviewFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .setDataBeforeAdd(1, list)
+                        .addDataBeforeAdd(1, list)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
-                                U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
+                                U.getToastUtil().showShort("拿到数据 size:" + ResPicker.getInstance().getSelectedResList().size());
                             }
                         })
                         .build());
@@ -542,7 +680,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("类微信带拼音索引的联系人列表", new Runnable() {
             @Override
             public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, PickContactFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, PickContactFragment.class)
                         .setHasAnimation(true)
                         .build());
             }
@@ -551,7 +689,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("二维码实验", new Runnable() {
             @Override
             public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, QrcodeTestFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, QrcodeTestFragment.class)
                         .setHasAnimation(true)
                         .build());
             }
@@ -568,6 +706,15 @@ public class TestSdkActivity extends BaseActivity {
                         StatisticsAdapter.recordPropertyEvent(StatConstants.CATEGORY_USER_INFO, StatConstants.KEY_DISTRICT, location.getDistrict());
                     }
                 });
+            }
+        }));
+
+        mDataList.add(new H("Rxretrofit实验", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, RxRetrofitFragment.class)
+                        .setHasAnimation(true)
+                        .build());
             }
         }));
 
@@ -649,10 +796,11 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("agora测试", new Runnable() {
+        mDataList.add(new H("日志全开", new Runnable() {
             @Override
             public void run() {
-
+                MyLog.setForceOpenFlag(true);
+                MyLog.setLogcatTraceLevel(0);
             }
         }));
     }

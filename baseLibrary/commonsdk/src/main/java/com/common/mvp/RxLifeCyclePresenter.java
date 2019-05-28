@@ -58,7 +58,7 @@ public abstract class RxLifeCyclePresenter implements Presenter ,PresenterLifecy
         return mBehaviorSubject;
     }
 
-    protected final <T> LifecycleTransformer<T> bindUntilEvent(PresenterEvent event) {
+    public final <T> LifecycleTransformer<T> bindUntilEvent(PresenterEvent event) {
         if (!hasAddToLifeCycle) {
             throw new IllegalStateException("please add present to lifeCycle before call bindUntilEvent");
         }

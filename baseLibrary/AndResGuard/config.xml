@@ -47,13 +47,13 @@
     <!--if you use -signature to set sign property in cammand line, these setting will be overlayed-->
     <issue id="sign" isactive="true">
         <!--the signature file path, in window use \, in linux use /, and the default path is the running location-->
-        <path value="app/com.xiaomi.debug.keystore"/>
+        <path value="app/zq.keystore"/>
         <!--storepass-->
-        <storepass value="XiaomiIs#1"/>
+        <storepass value="zq123456"/>
         <!--keypass-->
-        <keypass value="XiaomiIs#1"/>
+        <keypass value="zq123456"/>
         <!--alias-->
-        <alias value="release_key"/>
+        <alias value="zq_android_key"/>
     </issue>
 
 </resproguard>

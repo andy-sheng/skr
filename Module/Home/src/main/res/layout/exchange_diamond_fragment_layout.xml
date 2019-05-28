@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7187FF"
+    android:orientation="vertical">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="红钻兑换钻石"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText=""
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#7187FF"
+        app:titleBarColor="#7187FF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/chongzhizuanshi_beijingban"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_56_dp"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_marginTop="@dimen/view_56_dp"
+            android:layout_marginRight="@dimen/view_16_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/big_diamond_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/duihuan_dahongzuan"
+                android:textColor="#ff41547e"
+                android:textSize="@dimen/textsize_20_dp"
+                android:textStyle="bold" />
+
+            <com.common.view.ex.NoLeakEditText
+                android:id="@+id/edit_cash_num"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginRight="@dimen/view_100_dp"
+                android:layout_toRightOf="@+id/big_diamond_iv"
+                android:background="@null"
+                android:hint="请输入红钻数量"
+                android:inputType="numberDecimal"
+                android:maxLength="11"
+                android:textColor="#0C2275"
+                android:textSize="@dimen/textsize_16_dp" />
+
+            <ImageView
+                android:id="@+id/clear_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_70_dp"
+                android:background="@drawable/duihuan_clear"
+                android:visibility="gone" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_exchange_whole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="全部兑换"
+                android:textColor="#ff7187ff"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_marginRight="@dimen/view_25_dp"
+            android:background="#77C7F0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:layout_marginBottom="@dimen/view_47_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.8"
+                android:text="红钻余额23.1"
+                android:textColor="#3B4E79"
+                android:textSize="@dimen/textsize_14_dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_exchange_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_30_dp"
+            android:layout_marginTop="@dimen/view_18_dp"
+            android:layout_marginBottom="@dimen/view_30_dp"
+            android:gravity="center_vertical"
+            android:text="兑换汇率：1红钻兑换1钻石"
+            android:textColor="#7f3B4E79"
+            android:textSize="@dimen/textsize_13_dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.dialog.view.StrokeTextView
+        android:id="@+id/iv_exchange_btn"
+        android:layout_width="@dimen/view_180_dp"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="立即兑换"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        app:bl_enabled_drawable="@drawable/chongzuzuanshi_anniu"
+        app:bl_unEnabled_drawable="@drawable/chongzhijiemian_bukeyidianji" />
+</LinearLayout>

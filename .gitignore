@@ -1,6 +1,11 @@
+memory/
+anr/
+logs/
+Crash_Doraemon/
 guard-res-apk/
 local_maven/
 build/
+publish.zip
 .DS_Store
 .gradle
 .idea/*
@@ -15,6 +20,7 @@ app/.idea
 app/gradle/
 captures
 projectFilesBackup/
+publish/
 
 # Windows thumbnail db
 Thumbs.db
@@ -36,6 +42,7 @@ Thumbs.db
 bin/
 gen/
 build/
+.externalNativeBuild/
 
 # Local configuration file (sdk path, etc)
 local.properties

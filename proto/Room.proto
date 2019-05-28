@@ -1,0 +1,765 @@
+syntax = "proto3";
+
+import "Common.proto";
+
+package com.zq.live.proto.Room;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ Room.proto
+
+*/
+
+// 房间消息：此结构会通过pb编码后，通过聊天室通道到达客户端
+message RoomMsg {
+    sint64 timeMs = 1; //房间消息产生时间，单位毫秒
+    ERoomMsgType msgType = 2; //消息类型
+    uint32 roomID = 3; //房间ID
+    sint64 no = 4; //房间内的消息序号，每个房间有自己的消息序号,不存在则系统生成,一般情况下调用方不必设置
+    EMsgPosType posType = 5; //消息显示位置类型
+    Common.UserInfo sender = 6; //发送者简要信息
+
+    CommentMsg commentMsg = 10; // 评论消息 msgType == RM_COMMENT
+    SpecialEmojiMsg specialEmojiMsg = 11; // 特殊表情消息  msgType == RM_SPECIAL_EMOJI
+    DynamicEmojiMsg dynamicemojiMsg = 12; // 动态表情消息  msgType == RM_DYNAMIC_EMOJI
+
+    JoinActionMsg joinActionMsg = 100; //加入游戏指令消息 msgType == RM_JOIN_ACTION
+    JoinNoticeMsg joinNoticeMsg = 101; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
+    ReadyNoticeMsg readyNoticeMsg = 102; //准备游戏通知消息 msgType == RM_READY_NOTICE
+    RoundOverMsg roundOverMsg = 103; //游戏轮次结束通知消息 msgType == RM_ROUND_OVER
+    RoundAndGameOverMsg roundAndGameOverMsg = 104; //轮次和游戏结束通知消息 msgType == RM_ROUND_AND_GAME_OVER
+    AppSwapMsg appSwapMsg = 105; //app进程后台通知  msgType ==  RM_APP_SWAP
+    SyncStatusMsg syncStatusMsg = 106; //状态同步消息 msgType == RM_SYNC_STATUS
+    ExitGameBeforePlayMsg exitGameBeforePlayMsg = 107; //再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
+    ExitGameAfterPlayMsg exitGameAfterPlayMsg = 108; //游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
+    ExitGameOutRoundMsg exitGameOutRoundMsg = 109; //游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
+    VoteResultMsg voteResultMsg = 110; //游戏投票结果消息 msgType == RM_VOTE_RESULT
+    MachineScore machineScore = 111; //实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
+
+    QWantSingChanceMsg qWantSingChanceMsg = 112; //一唱到底：想唱消息,即抢唱
+    QGetSingChanceMsg qGetSingChanceMsg = 113; //一唱到底：获得轮次机会,即抢唱成功
+    QSyncStatusMsg qSyncStatusMsg = 114; //一唱到底：同步状态
+    QRoundOverMsg qRoundOverMsg = 115; //一唱到底：轮次结束
+    QRoundAndGameOverMsg qRoundAndGameOverMsg = 116; //一唱到底：最后轮次结束，即游戏结束，游戏结果数据
+    QNoPassSingMsg qNoPassSingMsg = 117; //一唱到底：使用QMLightMsg代替
+    QExitGameMsg qExitGameMsg = 118; //一唱到底：退出游戏
+
+    PKBLightMsg pkBLightMsg = 119; //排位赛：爆灯通知
+    PKMLightMsg pkMLightMsg = 120; //排位赛：灭灯通知
+
+    QBLightMsg qBLightMsg = 121; //一唱到底：爆灯通知
+    QMLightMsg qMLightMsg = 122; //一唱到底：灭灯通知
+    QJoinNoticeMsg qJoinNoticeMsg = 123; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
+    QJoinActionMsg qJoinActionMsg = 124; //一唱到底：加入游戏指令消息
+
+    QKickUserRequestMsg qKickUserRequestMsg = 125; //一唱到底：踢人请求信令消息
+    QKickUserResultMsg qKickUserResultMsg = 126; //一唱到底：踢人结果信令消息
+
+    QGameBeginMsg qGameBeginMsg = 127; //一唱到底：通知房间用户游戏开始
+    QChangeMusicTag qChangeMusicTag = 128; //一唱到底：切换专场提示消息
+    QCoinChangeMsg qCoinChangeMsg = 129; //一唱到底：金币变动信息
+
+    QCHOGiveUpMsg qCHOGiveUpMsg = 131; //一唱到底：合唱模式放弃演唱
+    QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg = 132; //一唱到底：spk模式内部轮次结束
+    QChangeRoomName qChangeRoomName = 133; //一唱到底：房主修改房间名称
+    GPrensentGiftMsg gPrensentGiftMsg           = 134; //送礼物
+}
+
+// ERoomMsgType 房间消息类型
+enum ERoomMsgType {
+    RM_UNKNOWN = 0; //未知消息
+
+    RM_COMMENT = 10; //普通评论消息
+    RM_SPECIAL_EMOJI = 11; //特殊表情消息
+    RM_DYNAMIC_EMOJI = 12; //动态表情消息
+
+    RM_JOIN_ACTION = 100; //加入游戏指令消息
+    RM_JOIN_NOTICE = 101; //加入游戏通知消息
+    RM_READY_NOTICE = 102; //准备游戏通知消息
+    RM_ROUND_OVER = 103; //游戏轮次结束通知消息
+    RM_ROUND_AND_GAME_OVER = 104; //轮次和游戏结束通知消息
+    RM_APP_SWAP = 105; //app进程后台切换通知
+    RM_SYNC_STATUS = 106; //状态同步
+    RM_EXIT_GAME_BEFORE_PLAY = 107; //在开始游戏前退出
+    RM_EXIT_GAME_AFTER_PLAY = 108; //在完成游戏后退出
+    RM_EXIT_GAME_OUT_ROUND = 109; //在游戏中,但不再round时退出
+    RM_VOTE_RESULT = 110; //游戏投票结果消息
+    RM_ROUND_MACHINE_SCORE = 111; //实时机器评分
+
+    RM_Q_WANT_SING_CHANCE = 112; //一唱到底：想唱消息
+    RM_Q_GET_SING_CHANCE = 113; //一唱到底：获得轮次机会
+    RM_Q_SYNC_STATUS = 114; //一唱到底：同步状态
+    RM_Q_ROUND_OVER = 115; //一唱到底：轮次结束
+    RM_Q_ROUND_AND_GAME_OVER = 116; //一唱到底：最后轮次结束，即游戏结束，游戏结果数据
+    RM_Q_NO_PASS_SING = 117; //一唱到底：演唱不通过，即灭灯
+    RM_Q_EXIT_GAME = 118; //一唱到底：退出游戏
+
+    RM_PK_BLIGHT = 119; //排位赛：爆灯通知
+    RM_PK_MLIGHT = 120; //排位赛：灭灯通知
+
+    RM_Q_BLIGHT = 121; //一唱到底：爆灯通知
+    RM_Q_MLIGHT = 122; //一唱到底：灭灯通知
+    RM_Q_JOIN_NOTICE = 123; //一唱到底：加入游戏通知消息
+    RM_Q_JOIN_ACTION = 124; //一唱到底：加入游戏指令消息
+
+    RM_Q_KICK_USER_REQUEST = 125; //一唱到底：踢人请求信令消息
+    RM_Q_KICK_USER_RESULT = 126; //一唱到底：踢人结果信令消息
+
+    RM_Q_GAME_BEGIN = 127; //一唱到底：通知房间用户游戏开始
+    RM_Q_CHANGE_MUSIC_TAG = 128; //一唱到底：切换专场提示消息
+    RM_Q_COIN_CHANGE = 129; //一唱到底：金币变动消息
+
+    RM_Q_CHO_GIVEUP = 131; //一唱到底：合唱模式放弃演唱
+    RM_Q_PK_INNER_ROUND_OVER = 132; //一唱到底：spk模式内部轮次结束
+    RM_Q_CHANGE_ROOM_NAME = 133; //一唱到底：房主修改房间名称
+    RM_G_PRESENT_GIFT        = 134; //送礼
+
+    RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
+}
+
+// 用户金币、红钻资产, -1 表示没有变动
+message Property
+{
+    uint32 userID         = 1;
+    float coinBalance     = 2;
+    float hongZuanBalance = 3;
+    int64 lastChangeMs    = 4;
+}
+
+
+message GPrensentGiftMsg
+{
+    Common.GiftInfo giftInfo        = 1;
+        uint32 count             = 2;
+        Common.UserInfo sendUserInfo    = 3;
+        Common.UserInfo receiveUserInfo = 4;
+        uint32 roomID            = 5;
+        sint64 continueID        = 6;
+        uint32 continueCnt       = 7;
+        float receiveUserCoin    = 8;
+        repeated Property propertyChangeList = 9; // 资产变动列表
+
+}
+
+message QChangeRoomName {
+    string newRoomName = 1; //房间名称
+}
+
+message QCoinChangeMsg {
+    uint32 userID = 1; //用户id
+    int32 changeCoin = 2; //变动金币数量
+    uint32 remainCoin = 3; //最终金币数量
+    EQCoinChangeReason reason = 4; //变动原因
+    string desc = 5; //描述信息
+}
+
+enum EQCoinChangeReason {
+    OAR_UNKNOWN = 0; //未知
+    OAR_OWNER_ROUD_AWARD = 1; //达到指定轮次后，给予房主金币奖励
+}
+
+message QChangeMusicTag {
+    uint32 tagID = 1; //分类标识
+    string tagName = 2; //分类名称
+}
+
+message QGameBeginMsg {
+    uint32 roomID = 1; // 房间id
+    QRoundInfo currentRound = 2; //当前轮次信息
+    QGameConfig config = 3; //配置信息
+}
+
+message QKickUserRequestMsg {
+    uint32 sourceUserID = 1; //发起者id
+    uint32 kickUserID = 2; //被踢者id
+    repeated uint32 otherOnlineUserIDs = 3; //其他在线用户id
+}
+
+message QKickUserResultMsg {
+    uint32 sourceUserID = 1; //发起者id
+    uint32 kickUserID = 2; //被踢者id
+    repeated uint32 giveYesVoteUserIDs = 3; //投同意票用户id
+    repeated uint32 giveNoVoteUserIDs = 4; //投不同意票用户id
+    repeated uint32 giveUnknownVoteUserIDs = 5; //未知票用户id
+    bool isKickSuccess = 6; //踢人是否成功
+    EQKickFailedReason kickFailedReason = 7; //踢人失败原因
+    string kickResultContent = 8; //踢人结果信息内容
+}
+
+enum EQKickFailedReason {
+    KFR_UNKNOWN = 0; //未知
+    KFR_KICK_USER_NOT_IN_ROOM = 1; //被踢用户不在房间内
+    KFR_MOST_USER_NOT_AGREE = 2; //多数人不同意
+}
+
+
+message QJoinNoticeMsg {
+    Common.UserInfo user = 1; //加入游戏的信息
+    sint64 joinTimeMs = 2; //加入毫秒时间戳
+    EQUserRole role = 3; //角色
+    uint32 roundSeq = 4; //轮次顺序
+    repeated OnlineInfo waitUsers = 5; //等待中用户列表
+}
+
+message PKBLightMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message PKMLightMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message QWantSingChanceMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+    EWantSingType wantSingType = 3; //抢唱方式
+}
+
+message QGetSingChanceMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+    QRoundInfo currentRound = 3; //当前轮次信息
+}
+
+enum EWantSingType {
+    EWST_DEFAULT = 0; //QSyncStatusMsg默认抢唱类型：普通
+    EWST_ACCOMPANY = 1; //带伴奏抢唱
+    EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
+    EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
+    EWST_CHORUS = 4; //合唱模式
+    EWST_SPK = 5; //一唱到底spk模式
+    EWST_MIN_GAME= 6; //一唱到底连麦小游戏模式
+}
+
+message QSyncStatusMsg {
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    sint64 gameOverTimeMs = 2; //游戏结束时间
+    QRoundInfo currentRound = 3; //当前轮次信息
+    QRoundInfo nextRound = 4; //下个轮次信息
+}
+
+message QRoundOverMsg {
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    QRoundInfo currentRound = 2; //当前轮次信息
+    QRoundInfo nextRound = 3; //下个轮次信息
+    repeated QUserCoin qUserCoin = 4; //有金币变化的用户列表
+    uint32 totalGameRoundSeq = 5; //轮次总数
+}
+
+message QSPKInnerRoundOverMsg {
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    QRoundInfo currentRound = 2; //当前轮次信息
+}
+
+message QCHOGiveUpMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message QRoundAndGameOverMsg {
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    QRoundInfo currentRound = 2; //当前轮次信息
+    repeated QResultInfo resultInfo = 3; //最终结果信息
+    repeated QUserCoin qUserCoin = 4; //有金币变化的用户列表
+    EQGameOverReason overReason = 5; //游戏结束原因
+}
+
+enum EQGameOverReason {
+    GOR_UNKNOWN = 0; //未知
+    GOR_NORMAL = 1; //正常结束游戏
+    GOR_OWNER_EXIT = 2; //房主退出结束游戏
+}
+
+message QUserCoin {
+    uint32 userID = 1; //用户ID
+    uint32 coin = 2; //金币数量
+}
+
+enum EQRoundResultType {
+    ROT_UNKNOWN = 0; //未知
+    ROT_TYPE_1 = 1; //有种优秀叫一唱到底（全部唱完）
+    ROT_TYPE_2 = 2; //有种结束叫刚刚开始（t<30%）
+    ROT_TYPE_3 = 3; //有份悲伤叫都没及格(30%<=t <60%)
+    ROT_TYPE_4 = 4; //有种遗憾叫明明可以（60%<=t<90%）
+    ROT_TYPE_5 = 5; //有种可惜叫我觉得你行（90%<=t<=100%)
+    ROT_TYPE_6 = 6; //自己放弃演唱
+}
+
+enum EQRoundOverReason {
+    ROR_UNKNOWN = 0; //未知
+    ROR_LAST_ROUND_OVER = 1; //上个轮次结束
+    ROR_NO_ONE_SING = 2; //没人抢唱
+    ROR_IN_ROUND_PLAYER_EXIT = 3; //当前玩家退出
+    ROR_MULTI_NO_PASS = 4; //多人灭灯
+    ROR_SELF_GIVE_UP = 5; //自己放弃演唱
+    ROR_CHO_SUCCESS          = 6; //合唱成功
+    ROR_CHO_FAILED           = 7; //合唱失败
+    ROR_CHO_NOT_ENOUTH_PLAYER = 8; //合唱人数不够
+    ROR_SPK_NOT_ENOUTH_PLAYER = 9; //SPK人数不够
+    ROR_MIN_GAME_NOT_ENOUTH_PLAYER = 10; //连麦小游戏人数不够
+    ROR_MIN_GAME_OWNER_END_ROUND = 11; //连麦小游戏房主结束轮次
+    ROR_MIN_GAME_NOT_PLAY        = 12; //用户不玩了
+
+}
+
+message QResultInfo {
+    uint32 userID = 1; //用户标识
+    uint32 wantSingChanceCnt = 2; //想唱歌数量
+    uint32 getSingChanceCnt = 3; //演唱机会数量
+    uint32 wholeTimeSingCnt = 4; //一唱到底数量
+    float wholeTimeSingRatio = 5; //一唱到底成功率
+    float beyondSkrerRatio = 6; //超过同段位
+    uint32 otherBlightCntTotal = 7; //其他人给予爆灯的数量
+}
+
+message QNoPassSingMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message QExitGameMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; //轮次顺
+}
+
+message MachineScore {
+    uint32 userID = 1; // 演唱者
+    uint32 itemID = 2; // 演唱曲目
+    uint32 score = 3; // 机器分数 (游戏开始后，使用特殊值999向其他端同步歌词行数)
+    uint32 no = 4; // 对应截断后的歌词行号
+    uint32 lineNum = 5; // 歌词行数 总分为 100*lineNum*Percent
+}
+
+// 投票结果
+message VoteResultMsg {
+    repeated VoteInfo voteInfo = 1; //投票打分信息
+    repeated UserScoreResult scoreResults = 2; //所有参与者的评分结果，应该使用这个结构
+    repeated UserGameResult gameResults = 3;
+}
+
+message UserScoreResult {
+    uint32 userID = 1;
+    repeated ScoreState states = 2; //分值状态：初始、中间、最终状态，第0个为占位用
+    repeated ScoreItem starChange = 3; //星星变动详情，通过累加可以判断是加星还是减星
+    repeated ScoreItem battleIndexChange = 4; //战力值变动详情，累加可以判断是增加还是减少
+    EWinType winType = 5; //胜负平等等
+    uint32 sss = 6; //战斗评价, sss or ss or s or a...
+    repeated ScoreItem expChange = 7; //经验值变动详情
+}
+
+// 某个时刻的分值状态
+message ScoreState {
+    uint32 userID = 1;
+    int32 seq = 2; // 分值状态的时间顺序, 数字越大越晚
+    int64 mainRanking = 3; // 主段位数值
+    int64 subRanking = 4; // 子段位数值
+    int64 currStar = 5; // 子段位当前星星数
+    int64 maxStar = 6; // 子段位星星数上限
+    int64 protectBattleIndex = 7; //掉段保护所需战力分值
+    int64 currBattleIndex = 8; //当前战力分值
+    int64 maxBattleIndex = 9; //战力分值上限
+    int64 totalScore = 10; //用在段位排行榜中的总分值
+    int64 currExp = 11; //子段位当前经验值
+    int64 maxExp = 12; //子段位经验值上限
+    string rankingDesc = 13; //白银歌者2段
+}
+
+enum EWinType {
+    InvalidEWinType = 0;
+    Win = 1;
+    Draw = 2;
+    Lose = 3;
+}
+
+enum EExpWhy {
+    InvalidEExpWhy = 0;
+    GameWin = 1; // 赢
+    GameLose = 2; // 输
+    GameBonus = 3; // 玩一局加经验值
+}
+
+// 分值变动条目
+message ScoreItem {
+    string why = 1; //分值变动原因
+    int32 score = 2; //分值变动
+    int32 index = 3; //原因标识
+}
+
+//投票信息
+message VoteInfo {
+    uint32 userID = 1; //用户标识
+    uint32 itemID = 2; //演唱曲目ID
+    sint32 rank = 3; //排名
+    bool sysVote = 4; //系统是否投票
+    sint32 sysScore = 5; //系统打分分值
+    repeated uint32 voter = 6; //给我投票的用户IDs
+    bool isEscape = 7; //是否逃跑
+    bool hasVote = 8; //是否给出投票
+    repeated uint32 otherVoters = 9; //投票给哪些用户IDs
+}
+
+//本局综合评分信息
+message UserGameResult {
+    uint32 userID = 1; //用户标识
+    uint32 itemID = 2; //演唱曲目ID
+    sint32 rank = 3; //排名
+    repeated AudienceScore audienceScores = 4; //观众评分
+    float totalScore = 5; //综合评分
+    EWinType winType = 6; //胜负平等等
+    bool isEscape = 7; //是否逃跑
+    uint32 sss = 8; //战斗评价, sss or ss or s or a...
+}
+
+message AudienceScore {
+    uint32 userID = 1;
+    ELightType lightType = 2;
+    float score = 3;
+}
+
+enum ELightType {
+    ELT_UNKNOWN = 0; // 未知
+    ELT_B_LIGHT = 1; //爆灯
+    ELT_M_LIGHT = 2; //灭灯
+    ELT_X_LIGHT = 3; //没有灯
+}
+
+// 消息位置类型
+enum EMsgPosType {
+    EPT_UNKNOWN = 0; // 未知位置
+    EPT_NORMAL = 1; // 一般评论消息
+    EPT_CENTER = 2; // 在整个页面中心区域显示的消息
+    EPT_TOP = 3; // 页面上方
+    EPT_BOTTOM = 4; // 页面底部
+}
+
+// 准备并开始游戏通知消息
+message ReadyAndStartNoticeMsg {
+    uint32 readyUserID = 1; //准备用户ID
+    sint64 readyTimeMs = 2; //准备的毫秒时间戳
+    sint64 startTimeMS = 3; //开始的毫秒时间戳
+    uint32 firstUserID = 4; //第一个用户ID
+    uint32 firstMusicID = 5; //第一首歌曲ID
+}
+
+// 普通评论消息
+message CommentMsg {
+    string text = 1; //发表内容
+    repeated Common.UserInfo receiver = 2; //接收者信息
+}
+
+message QJoinActionMsg {
+    uint32 gameID = 1; //游戏ID
+    sint64 createTimeMs = 2; //创建毫秒时间戳
+    QGameConfig config = 3; //配置信息
+}
+
+message QGameConfig {
+    uint32 TotalGameRoundSeq = 1; //轮次总数
+    uint32 EnableShowBLightWaitTimeMs = 2; //爆灯等待时间(毫秒)
+    uint32 EnableShowMLightWaitTimeMs = 3; //灭灯等待时间(毫秒)
+    uint32 WantSingDelayTimeMs = 4; //想唱延迟时间(毫秒)
+    repeated QScoreTipMsg qScoreTipMsg = 5; //反馈分提示语
+    uint32 KickUserConsumCoinCnt = 6; //踢人消耗金币数
+    repeated PKScoreTipMsg qPKScoreTipMsg = 7; //反馈分提示语
+}
+// 加入指令
+message JoinActionMsg {
+    uint32 gameID = 1; //游戏ID
+    sint64 createTimeMs = 2; //创建毫秒时间戳
+    repeated PlayerInfo players = 3; //玩家信息
+    repeated Common.MusicInfo music = 4; //共同演唱音乐信息
+    GameConfig config = 5; //配置信息
+    repeated AgoraTokenInfo tokens = 6; //声网token
+}
+
+message AgoraTokenInfo {
+    uint32 userID = 1; //用户id
+    string token = 2; //声网token
+}
+
+message GameConfig {
+    uint32 PKMaxShowBLightTimes = 1; //最大爆灯次数
+    uint32 PKMaxShowMLightTimes = 2; //最大灭灯次数
+    uint32 PKEnableShowBLightWaitTimeMs = 3; //爆灯等待时间(毫秒)
+    uint32 PKEnableShowMLightWaitTimeMs = 4; //灭灯等待时间(毫秒)
+    repeated PKScoreTipMsg pkScoreTipMsg = 5; //反馈分提示语
+    float PKFullEnergyPercentage = 6; //满能量比例
+    float PKBLightEnergyPercentage = 7; //爆灯加能量比例
+    float PKMLightEnergyPercentage = 8; //灭灯减能量比例
+}
+
+message PKScoreTipMsg {
+    ScoreTipType tipType = 1;
+    string tipDesc = 2;
+    uint32 fromScore = 3;
+    uint32 toScore = 4;
+}
+
+enum ScoreTipType {
+    ST_UNKNOWN = 0; //未知
+    ST_TOO_BAD = 1; //丢人了
+    ST_NOT_BAD = 2; //不错哦
+    ST_VERY_GOOD = 3; //太棒了
+    ST_NICE_PERFECT = 4; //超完美
+}
+
+message QScoreTipMsg {
+    QScoreTipType tipType = 1;
+    string tipDesc = 2;
+    uint32 fromScore = 3;
+    uint32 toScore = 4;
+}
+
+enum QScoreTipType {
+    QST_UNKNOWN = 0; //未知
+    QST_Tip_1 = 1; //认真点
+    QST_Tip_2 = 2; //加油哦
+    QST_Tip_3 = 3; //不错哦
+    QST_Tip_4 = 4; //太棒了
+    QST_Tip_5 = 5; //超完美
+}
+
+message PlayerInfo {
+    Common.UserInfo userInfo = 1; //玩家信息
+    repeated Common.MusicInfo musicInfo = 2; //演唱信息
+    bool isSkrer = 3; //是否为机器人
+    repeated Common.ResourceInfo resource = 4; //资源信息
+    bool isAIUser = 5; //是否为ai裁判用户
+}
+
+enum SpecialEmojiMsgType {
+    SP_EMOJI_TYPE_UNKNOWN = 0;
+    SP_EMOJI_TYPE_LIKE = 1; // 喜欢
+    SP_EMOJI_TYPE_UNLIKE = 2; // 不喜欢
+}
+
+// 特殊表情消息
+message SpecialEmojiMsg {
+    SpecialEmojiMsgType emojiType = 1; // 表情
+    uint32 count = 2; // 数量
+    string emojiAction = 3; // 动作
+    uint64 continueId = 4; // 用来标记属于哪一组连送，一般设置为 X1 的时间戳
+}
+
+// 动态表情消息
+message DynamicEmojiMsg {
+    uint32 id = 1; //表情包id
+    string smallEmojiURL = 2; //小图
+    string bigEmojiURL = 3; //大图
+}
+
+// 加入通知消息
+message JoinNoticeMsg {
+    repeated JoinInfo joinInfo = 1; //加入游戏的信息
+    uint32 hasJoinedUserCnt = 2; //已经加入游戏的人数
+    sint32 readyClockResMs = 3; //准备时钟剩余秒数,最后一个玩家加入后，赋值
+}
+
+message JoinInfo {
+    uint32 userID = 1; //用户ID
+    uint32 joinSeq = 2; //加入顺序
+    sint64 joinTimeMs = 3; //加入毫秒时间戳
+    Common.UserInfo userInfo = 4; //用户详细资料，一唱到底会用到
+    bool isSkrer = 5; //是否机器人
+}
+
+message RoundInfo {
+    uint32 userID = 1; //玩家id
+    uint32 playbookID = 2; //曲库id
+    uint32 roundSeq = 3; //轮次顺序
+    uint32 singBeginMs = 4; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs = 5; //演唱结束相对时间（相对于startTimeMs时间）
+
+    repeated BLightInfo bLightInfos = 6; //爆灯列表
+    repeated MLightInfo mLightInfos = 7; //灭灯列表
+    ERoundOverReason overReason = 8; //结束原因
+}
+
+enum EQRoundStatus {
+    QRS_UNKNOWN = 0; //轮次状态位置
+    QRS_UNBEGIN = 1; //轮次未开始
+    QRS_INTRO = 2; //轮次进入导唱阶段
+    QRS_SING = 3; //轮次进入演唱阶段
+    QRS_END = 4; //轮次已结束
+    QRS_CHO_SING = 5; //合唱演唱阶段
+    QRS_SPK_FIRST_PEER_SING = 6; //spk第一位用户演唱
+    QRS_SPK_SECOND_PEER_SING = 7; //spk第二位用户演唱
+}
+
+message BLightInfo {
+    uint32 userID = 1; //玩家id
+    sint64 timeMs = 2; //爆灯时间戳
+    float score = 3; //得分
+}
+
+message MLightInfo {
+    uint32 userID = 1; //玩家id
+    sint64 timeMs = 2; //灭灯时间戳
+    float score = 3; //得分
+}
+
+message WantSingInfo {
+    uint32 userID = 1; //玩家id
+    sint64 timeMs = 2; //抢唱时间戳
+}
+
+message QRoundInfo {
+    uint32 userID = 1; //抢唱成功的玩家id
+    uint32 playbookID = 2; //曲库id
+    uint32 roundSeq = 3; //轮次顺序
+    uint32 introBeginMs = 4; //导唱开始相对时间（相对于startTimeMs时间）
+    uint32 introEndMs = 5; //导唱结束相对时间（相对于startTimeMs时间）
+    uint32 singBeginMs = 6; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs = 7; //演唱结束相对时间（相对于startTimeMs时间）
+    EQRoundStatus status = 8; //轮次状态
+    repeated WantSingInfo wantSingInfos = 9; //抢唱列表。兵营告知，服务器没存，所以这个列表是没东西的。
+    EQRoundOverReason overReason = 10; //切换轮次原因
+    EQRoundResultType resultType = 11; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
+    Common.MusicInfo music = 12; //本轮次的歌曲信息
+    repeated QBLightMsg bLightInfos = 13; //爆灭灯列表
+    repeated QMLightMsg mLightInfos = 14; //灭灭灯列表
+    Common.ResourceInfo skrResource = 15; //机器人资源
+    repeated OnlineInfo waitUsers = 16; //等待中用户列表
+    repeated OnlineInfo playUsers = 17; //当局玩的用户列表
+    bool isInChallenge = 18; //是否在挑战中
+    EWantSingType wantSingType = 19; //抢唱方式
+    repeated QCHOInnerRoundInfo CHORoundInfos = 20; //一唱到底合唱：内部轮次信息
+    repeated QSPKInnerRoundInfo SPKRoundInfos = 21; //一唱到底spk：内部轮次信息
+    repeated QMINIGameInnerRoundInfo MINIGAMERoundInfos = 22; //一唱到底连麦小游戏：内部轮次信息
+}
+
+message QCHOInnerRoundInfo {
+    uint32 userID = 1; //抢唱成功的玩家id
+    bool hasGiveUp = 2; //是否已经放弃
+    bool hasExit   = 3; //是否已经退出
+}
+
+message QSPKInnerRoundInfo {
+    uint32 userID = 1; //抢唱成功的玩家id
+    uint32 singBeginMs = 2; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs = 3; //演唱结束相对时间（相对于startTimeMs时间）
+    repeated QBLightMsg bLightInfos = 4; //爆灭灯列表
+    repeated QMLightMsg mLightInfos = 5; //灭灭灯列表
+    EQRoundOverReason overReason = 6; //切换轮次原因
+    EQRoundResultType resultType = 7; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
+    float SPKFinalScore          = 8; //最终得分
+    bool  isWin                     = 9; //是否获胜
+}
+
+message QMINIGameInnerRoundInfo
+{
+    uint32 userID  = 1; //抢唱成功的玩家id
+}
+
+
+message QBLightMsg {
+    uint32 userID = 1; //玩家id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message QMLightMsg {
+    uint32 userID = 1; //玩家id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message RoundInit {
+    uint32 userCnt = 1; //轮次初始的人数
+}
+
+message ReadyInfo {
+    uint32 userID = 1; //用户id
+    uint32 readySeq = 2; //准备顺序
+    sint64 readyTimeMs = 3; //准备时间戳
+}
+
+message OnlineInfo {
+    uint32 userID = 1; //用户id
+    bool isOnline = 2; //是否在线
+    Common.UserInfo userInfo = 3; //一唱到底使用：带入用户信息
+    bool isSkrer = 4; //一唱到底使用：是否机器人
+    EQUserRole role = 5; //一唱到底使用：用户角色
+}
+
+enum EQUserRole {
+    EQUR_UNKNOWN = 0; //未知角色
+    EQUR_PLAY_USER = 1; //在玩的用户角色
+    EQUR_WAIT_USER = 2; //等待的用户角色
+}
+
+message GameStartInfo {
+    sint64 startTimeMs = 1; //开始时间戳
+    sint64 startPassedMs = 2; //已经开始时间
+}
+
+// 准备游戏通知消息
+message ReadyNoticeMsg {
+    repeated ReadyInfo readyInfo = 1; //准备信息
+    sint32 hasReadyedUserCnt = 2; //已经准备人数
+    bool isGameStart = 3; //游戏是否开始
+    repeated RoundInfo roundInfo = 4; //轮次信息
+    GameStartInfo gameStartInfo = 5; //游戏信息
+    repeated QRoundInfo qRoundInfo = 6; //一场到底轮次信息
+}
+
+// 游戏轮次结束通知消息
+message RoundOverMsg {
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    RoundInfo currentRound = 2; //当前轮次信息
+    RoundInfo nextRound = 3; //下个轮次信息
+    uint32 exitUserID = 4; //退出用户的ID
+    uint32 lastMLightUserID = 5; //最后一个灭灯的用户ID
+}
+
+enum ERoundOverReason {
+    EROR_UNKNOWN = 0; //未知
+    EROR_NORMAL = 1; //正常
+    EROR_ON_ROUND_USER_EXIT = 2; //玩家退出
+    EROR_ENOUGH_M_LIGHT = 3; //足够多灭灯
+}
+
+// 轮次和游戏结束通知消息
+message RoundAndGameOverMsg {
+    sint64 roundOverTimeMs = 1; //轮次结束的毫秒时间戳
+    RoundInfo currentRound = 2; //当前轮次信息
+    uint32 exitUserID = 3; //退出用户的ID
+
+    repeated VoteInfo voteInfo = 4; //投票打分信息
+    repeated UserScoreResult scoreResults = 5; //所有参与者的评分结果，应该使用这个结构
+
+    repeated UserGameResult gameResults = 6; //游戏结果评分数据
+
+    uint32 lastMLightUserID = 7; //最后一个灭灯的用户ID
+}
+
+message ExitGameBeforePlayMsg {
+    uint32 exitUserID = 1; //退出玩家ID
+    sint64 exitTimeMs = 2; //退出毫秒时间戳
+}
+
+message ExitGameAfterPlayMsg {
+    uint32 exitUserID = 1; //退出玩家ID
+    sint64 exitTimeMs = 2; //退出毫秒时间戳
+}
+
+message ExitGameOutRoundMsg {
+    uint32 exitUserID = 1; //退出玩家ID
+    sint64 exitTimeMs = 2; //退出毫秒时间戳
+}
+
+message AppSwapMsg {
+    uint32 swapUserID = 1; //玩家ID
+    sint64 swapTimsMs = 2; //切换时间戳
+    bool swapOut = 3; //后台运行
+    bool swapIn = 4; // 前台运行
+}
+
+message SyncStatusMsg {
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    sint64 gameOverTimeMs = 2; //游戏结束时间
+    repeated OnlineInfo onlineInfo = 3; //在线状态
+    RoundInfo currentRound = 4; //当前轮次信息
+    RoundInfo nextRound = 5; //下个轮次信息
+}

@@ -1,6 +1,9 @@
 package com.common.utils;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
+
+import com.common.permission.PermissionUtils;
 
 /**
  * 每个工具类都必须由U引用来调用，以防止工具类混乱难以管理的问题，
@@ -8,6 +11,8 @@ import android.app.Application;
  */
 public class U {
     private static boolean sCoreProcess = true;
+
+    private static String sProcessName = "";
 
     private static Application application;
 
@@ -69,6 +74,16 @@ public class U {
 
     private static UriUtils uriUtils;
 
+    private static ReflectUtils reflectUtils;
+
+    private static SoundUtils soundUtils;
+
+    private static LogUploadUtils logUploadUtils;
+
+    private static MediaUtils mediaUtils;
+
+    private static ColorUtils colorUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -85,6 +100,13 @@ public class U {
             appInfoUtils = new AppInfoUtils();
         }
         return appInfoUtils;
+    }
+
+    public static ColorUtils getColorUtils() {
+        if (colorUtils == null) {
+            colorUtils = new ColorUtils();
+        }
+        return colorUtils;
     }
 
     public static DeviceUtils getDeviceUtils() {
@@ -269,18 +291,46 @@ public class U {
         return lbsUtils;
     }
 
-    public static ZipUtils getZipUtils(){
-        if(zipUtils==null){
+    public static ZipUtils getZipUtils() {
+        if (zipUtils == null) {
             zipUtils = new ZipUtils();
         }
         return zipUtils;
     }
 
-    public static UriUtils getUriUtils(){
-        if(uriUtils==null){
+    public static UriUtils getUriUtils() {
+        if (uriUtils == null) {
             uriUtils = new UriUtils();
         }
         return uriUtils;
+    }
+
+    public static ReflectUtils getReflectUtils() {
+        if (reflectUtils == null) {
+            reflectUtils = new ReflectUtils();
+        }
+        return reflectUtils;
+    }
+
+    public static SoundUtils getSoundUtils() {
+        if (soundUtils == null) {
+            soundUtils = new SoundUtils();
+        }
+        return soundUtils;
+    }
+
+    public static LogUploadUtils getLogUploadUtils() {
+        if (logUploadUtils == null) {
+            logUploadUtils = new LogUploadUtils();
+        }
+        return logUploadUtils;
+    }
+
+    public static MediaUtils getMediaUtils() {
+        if (mediaUtils == null) {
+            mediaUtils = new MediaUtils();
+        }
+        return mediaUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;
@@ -304,5 +354,24 @@ public class U {
 
     public static boolean isCoreProcess() {
         return sCoreProcess;
+    }
+
+    public static int getColor(int colorId) {
+        return U.app().getResources().getColor(colorId);
+    }
+
+    public static Drawable getDrawable(int drawableId) {
+        return U.app().getResources().getDrawable(drawableId);
+    }
+
+    public static float getDimension(int dimenId) {
+        return U.app().getResources().getDimension(dimenId);
+    }
+    public static void setProcessName(String processName) {
+        sProcessName = processName;
+    }
+
+    public static String getProcessName() {
+        return sProcessName;
     }
 }

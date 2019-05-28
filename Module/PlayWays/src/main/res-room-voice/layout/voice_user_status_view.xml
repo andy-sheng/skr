@@ -1,0 +1,41 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/speaker_svga"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_150_dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_centerInParent="true" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mute_mic_iv"
+        android:layout_width="@dimen/view_20_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_alignBottom="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginBottom="-10dp"
+        android:src="@drawable/jingyin_anxia" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/invite_tv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_alignBottom="@id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-10dp"
+        android:src="@drawable/voice_room_leave"
+        android:visibility="gone" />
+
+</merge>

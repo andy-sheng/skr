@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ceshi_bj">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="小测验"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:showBottomLine="true"
+        app:bottomLineColor="#0C2275"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlebar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/textsize_20_dp"
+        android:background="@drawable/timu_bj" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlebar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_211_dp"
+        android:gravity="center"
+        android:text="2个小题目"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_26_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/hint_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlebar"
+        android:layout_marginTop="@dimen/view_300_dp"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/view_4_dp"
+        android:text="为了更好的给你推荐喜欢的歌曲\n找到音乐风格更相近的小伙伴\n撕歌邀请您参与以下音乐测试\n题目很短，赶紧开始吧~"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/start_tv"
+        android:layout_width="@dimen/view_151_dp"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_below="@+id/hint_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_33_dp"
+        android:background="@drawable/img_btn_bg_red"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_6_dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp" />
+
+
+</RelativeLayout>

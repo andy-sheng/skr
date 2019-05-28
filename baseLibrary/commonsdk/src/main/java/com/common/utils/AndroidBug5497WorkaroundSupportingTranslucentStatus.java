@@ -3,6 +3,7 @@ package com.common.utils;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -25,11 +26,11 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
     private String mFrom = "";
     // 我们页面的根布局以及layoutparams
     private View mChildOfContent;
-    private FrameLayout.LayoutParams frameLayoutParams;
+    private FrameLayout.LayoutParams mFrameLayoutParams;
 
     // 我们视图view先前的高度
-    private int usableHeightPrevious;
-
+    private int mUsableHeightPrevious = 0;
+    private boolean mLogSwitch = false;
 
     ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         public void onGlobalLayout() {
@@ -62,17 +63,21 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
          * 所以这里就有一个bug
          */
         mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
-        frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
+        mFrameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
     }
 
     /**
      * 以下数据，以米8手机，虚拟按键开启为例子，让情况尽可能复杂
      */
     private void possiblyResizeChildOfContent() {
-        MyLog.d(TAG, "possiblyResizeChildOfContent mFrom:" + mFrom);
+        if(mLogSwitch) {
+            MyLog.d(TAG, "possiblyResizeChildOfContent mFrom:" + mFrom);
+        }
         Activity curActivity = U.getActivityUtils().getCurrentActivity();
         if (curActivity != mBaseActivityRef.get()) {
-            MyLog.d(TAG, "not curActivity ,return");
+            if(mLogSwitch) {
+                MyLog.d(TAG, "not curActivity ,return");
+            }
             /**
              * 如果不是当前acitivity发出的就忽略吧。
              */
@@ -89,24 +94,37 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
          * 未弹出键盘时
          *  r.top=110
          *  r.bottom=2118
+         *
+         *  红米NOTE 7 全面屏时
+         *  0 110 1080 2340
+         *  开启虚拟导航键时
+         *  0 110 1080 2210
          */
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
-
         int usableHeightNow = r.bottom;
-        MyLog.d(TAG, "possiblyResizeChildOfContent r.top:" + r.top + " r.bottom:" + r.bottom
-                + " usableHeightNow:" + usableHeightNow
-                + " screenHeight:" + U.getDisplayUtils().getScreenHeight()
-                + " phoneHeight:" + U.getDisplayUtils().getPhoneHeight()
-        );
-        if (usableHeightNow != usableHeightPrevious) {
+        if(mLogSwitch) {
+            MyLog.d(TAG, "possiblyResizeChildOfContent r.top:" + r.top + " r.bottom:" + r.bottom
+                    + " usableHeightNow:" + usableHeightNow
+                    + " screenHeight:" + U.getDisplayUtils().getScreenHeight()
+                    + " phoneHeight:" + U.getDisplayUtils().getPhoneHeight()
+            );
+        }
+        if (usableHeightNow != mUsableHeightPrevious) {
             /**
              * usableHeightSansKeyboard 这里为 2248 手机高度。
              * getSoftButtonsBarHeight = 130。 这里会算上虚拟按键的高度
              */
             int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
-            if (U.getKeyBoardUtils().hasNavigationBar()) {
-                usableHeightSansKeyboard -= U.getKeyBoardUtils().getSoftButtonsBarHeight();
+//            if (mChildOfContent.getParent() == null) {
+//                usableHeightSansKeyboard = mChildOfContent.getHeight();
+//            } else {
+//                usableHeightSansKeyboard = ((ViewGroup) mChildOfContent.getParent()).getHeight();
+//            }
+            if (U.getDeviceUtils().hasNavigationBar()) {
+                int navBarHeight = U.getDeviceUtils().getVirtualNavBarHeight();
+                MyLog.d(TAG, "possiblyResizeChildOfContent navBarHeight=" + navBarHeight);
+                usableHeightSansKeyboard -= navBarHeight;
             }
             /**
              * heightDifference = 2188-1280 = 908 可以认为是键盘高度
@@ -116,6 +134,9 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
              * 已经减去了虚拟按键的高度，已经就是键盘高度了
              */
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
+            if (heightDifference < 0) {
+                heightDifference = 0;
+            }
             /**
              * 是否自己控制布局，当有键盘事件时
              */
@@ -137,7 +158,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
                     KeyboardEvent keyboardEvent = new KeyboardEvent(mFrom, KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE, heightDifference);
                     EventBus.getDefault().post(keyboardEvent);
                 } else {
-                    frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                    mFrameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
                 }
             } else {
                 MyLog.d(TAG, "键盘变为不可见");
@@ -146,10 +167,10 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
                     KeyboardEvent keyboardEvent = new KeyboardEvent(mFrom, KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN, 0);
                     EventBus.getDefault().post(keyboardEvent);
                 }
-                frameLayoutParams.height = usableHeightSansKeyboard;
+                mFrameLayoutParams.height = usableHeightSansKeyboard;
             }
             mChildOfContent.requestLayout();
-            usableHeightPrevious = usableHeightNow;
+            mUsableHeightPrevious = usableHeightNow;
         }
     }
 

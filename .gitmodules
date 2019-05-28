@@ -1,0 +1,12 @@
+[submodule "pb"]
+	path = pb
+	url = http://git.inframe.club/skrer/pb.git
+[submodule "pbgit"]
+	path = pbgit
+	url = git@git.inframe.club:skrer/pb.git
+[submodule "pbgit1"]
+	path = pbgit1
+	url = http://git.inframe.club/skrer/pb.git
+[submodule "pm"]
+	path = pm
+	url = git@git.inframe.club:skrer/pm.git

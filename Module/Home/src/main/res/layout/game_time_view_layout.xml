@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/view_345_dp"
+    android:layout_height="@dimen/view_362_dp"
+    android:background="@drawable/qiangzhigengxin_bj">
+
+    <com.common.view.ex.ExTextView
+        android:lineSpacingExtra="@dimen/view_10_dp"
+        android:id="@+id/content_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_35_dp"
+        android:layout_marginTop="@dimen/view_155_dp"
+        android:layout_marginRight="@dimen/view_35_dp"
+        android:gravity="center"
+        android:text="撕歌正处于内测阶段\n等待开服后欢迎来体验"
+        android:textColor="#ff0c2275"
+        android:textSize="@dimen/view_17_dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/op_container"
+        android:layout_width="@dimen/view_151_dp"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_25_dp"
+        android:background="@drawable/ok_btn"
+        >
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/update_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_4_dp"
+            android:text="好的"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/view_20_dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -43,13 +43,16 @@ public interface IPlayer {
 
     void setVolume(float volume);
 
+    void setVolume(float volume,boolean set);
+
     void setSurface(Surface surface);
 
-    void setVideoPath(String path);
+    void startPlay(String path);
 
-    void prepare(boolean realTime);
+    void startPlayPcm(String path, int channels, int sampleRate, int byteRate);
+//    void prepare(boolean realTime);
 
-    void start();
+//    void start();
 
     void pause();
 
@@ -65,4 +68,7 @@ public interface IPlayer {
 
     void reconnect();
 
+    float getVolume();
+
+    void setDecreaseVolumeEnd(boolean b);
 }

@@ -1,105 +1,70 @@
 package com.common.core.account;
 
-import android.text.TextUtils;
-
-import com.common.log.MyLog;
-import com.common.milink.MiLinkClientAdapter;
-import com.common.milink.command.MiLinkCommand;
-import com.common.milink.constant.MiLinkConstant;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.proto.Account.LoginReq;
-import com.wali.live.proto.Account.LoginRsp;
-import com.wali.live.proto.Account.MiSsoLoginReq;
-import com.wali.live.proto.Account.MiSsoLoginRsp;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Query;
 
 /**
  * Created by chengsimin on 16/7/1.
  */
-public class UserAccountServerApi {
-    public final static String TAG = "UserAccountServerApi";
-
+public interface UserAccountServerApi {
+    /**
+     * 发送短信验证码
+     *
+     * @return
+     */
+    @Headers(ApiManager.NO_NEED_LOGIN_TAG)
+    @GET("v1/passport/login-sms-code")
+    Observable<ApiResult> sendSmsVerifyCode(@Query("phoneNum") String phoneNum,
+                                            @Query("timeMs") long timeMs,
+                                            @Query("sign") String sign);
 
     /**
-     * 小米帐号sso登录
+     * 登陆
+     *
+     * @param loginType
+     * @param phoneNum
+     * @param verifyCode
+     * @return
      */
-    public static MiSsoLoginRsp loginByMiSso(final long miid, final String miservicetoken, final int channelId) {
-
-        MiSsoLoginReq.Builder builder = new MiSsoLoginReq.Builder();
-        builder.setAccountType(4);
-        builder.setMid(miid);
-        builder.setMiservicetoken(miservicetoken);
-        MiSsoLoginReq req = builder.build();
-
-        PacketData data = new PacketData();
-        data.setCommand("zhibo.account.missologin");
-        data.setData(req.toByteArray());
-        data.setChannelId(String.valueOf(channelId));
-
-        MyLog.w(TAG, "missologin request : \n" + req.toString());
-        PacketData rspData = MiLinkClientAdapter.getInstance().sendDataByChannel(data, MiLinkConstant.TIME_OUT);
-        MyLog.w(TAG, "missologin rspData =" + rspData);
-        if (rspData != null) {
-            try {
-                MiSsoLoginRsp rsp = MiSsoLoginRsp.parseFrom(rspData.getData());
-                MyLog.w(TAG, "missologin response : \n" + rsp.toString());
-                return rsp;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
+    @Headers(ApiManager.NO_NEED_LOGIN_TAG)
+    @GET("v1/passport/login")
+    Observable<ApiResult> login(@Query("mode") int loginType,
+                                @Query("sign") String phoneNum,
+                                @Query("code") String verifyCode,
+                                @Query("platform") int platform,
+                                @Query("channel") String channel,
+                                @Query("deviceID") String deviceID);
 
     /**
-     * 小米帐号sso登录
+     * 微信登录
+     *
+     * @param loginType
+     * @param accessToken
+     * @param openID
+     * @return
      */
-    public static LoginRsp loginByThirdPartyOauthloginReq(int accountType, String code, String openId, String accessToken, String expires_in, String refreshToken, String channelId) {
-        LoginReq.Builder builder = new LoginReq.Builder();
-        builder.setAccountType(accountType);
+    @Headers(ApiManager.NO_NEED_LOGIN_TAG)
+    @GET("v1/passport/login")
+    Observable<ApiResult> loginWX(@Query("mode") int loginType,
+                                  @Query("accessToken") String accessToken,
+                                  @Query("openID") String openID,
+                                  @Query("platform") int platform,
+                                  @Query("channel") String channel,
+                                  @Query("deviceID") String deviceID);
 
-        if (!TextUtils.isEmpty(code)) {
-            builder.setCode(code);
-        }
-        if (!TextUtils.isEmpty(openId)) {
-            builder.setOpenid(openId);
-        }
-        if (!TextUtils.isEmpty(accessToken)) {
-            builder.setAccessToken(accessToken);
-        }
-        if (!TextUtils.isEmpty(expires_in)) {
-            builder.setExpiresIn(Integer.parseInt(expires_in));
-        }
-        if (!TextUtils.isEmpty(refreshToken)) {
-            builder.setRefreshToken(refreshToken);
-        }
-        return loginRspFromServer(builder, channelId);
-    }
+    /**
+     * 获取IMToken
+     *
+     * @return
+     */
+    @GET("v1/messenger/token")
+    Observable<ApiResult> getIMToken();
 
-
-    private static LoginRsp loginRspFromServer(LoginReq.Builder builder, String channelId) {
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_LOGIN);
-        data.setData(builder.build().toByteArray());
-        data.setChannelId(channelId);
-
-        MyLog.w(TAG, "loginRspFromServer request : \n" + builder.build().toString());
-        long start = System.currentTimeMillis();
-        PacketData rspData = MiLinkClientAdapter.getInstance().sendDataByChannel(data, MiLinkConstant.TIME_OUT);
-        MyLog.w(TAG, "start=" + start + "end=" + System.currentTimeMillis() + "serverTime = end - start =" + (System.currentTimeMillis() - start));
-        MyLog.w(TAG, "loginRspFromServer rspData =" + rspData);
-        if (rspData != null) {
-            try {
-                LoginRsp rsp = LoginRsp.parseFrom(rspData.getData());
-                MyLog.w(TAG, "loginRspFromServer response : \n" + rsp.toString());
-
-                return rsp;
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-        return null;
-    }
+    @GET("v1/passport/logout")
+    Observable<ApiResult> loginOut();
 }

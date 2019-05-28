@@ -19,25 +19,15 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import java.util.zip.Inflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -53,35 +43,109 @@ public class ZipUtils {
 
     }
 
-    /**
-     * @param srcFiles    源文件路径
-     * @param zipFilePath 压缩的zip路径
-     * @return
-     * @throws IOException
-     */
-    public boolean zipFiles(final Collection<String> srcFiles,
-                            final String zipFilePath)
-            throws IOException {
-        return zipFiles(srcFiles, zipFilePath, null);
+    public static boolean zip(String src, String dest) throws IOException {
+        //定义压缩输出流
+        ZipOutputStream out = null;
+        try {
+            //传入源文件
+            File outFile = new File(dest);
+            File fileOrDirectory = new File(src);
+            //传入压缩输出流
+            out = new ZipOutputStream(new FileOutputStream(outFile));
+            //判断是否是一个文件或目录
+            //如果是文件则压缩
+            if (fileOrDirectory.isFile()) {
+                zipFileOrDirectory(out, fileOrDirectory, "");
+            } else {
+                //否则列出目录中的所有文件递归进行压缩
+                File[] entries = fileOrDirectory.listFiles();
+                for (int i = 0; i < entries.length; i++) {
+                    zipFileOrDirectory(out, entries[i], "");
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return true;
     }
 
-
-    public boolean zipFiles(final Collection<String> srcFilePaths,
-                            final String zipFilePath,
-                            final String comment)
-            throws IOException {
-        if (srcFilePaths == null || zipFilePath == null) return false;
-        ZipOutputStream zos = null;
+    public static boolean zip(List<String> fileList, String dest) throws IOException {
+        //定义压缩输出流
+        ZipOutputStream out = null;
         try {
-            zos = new ZipOutputStream(new FileOutputStream(zipFilePath));
-            for (String srcFile : srcFilePaths) {
-                if (!zipFile(getFileByPath(srcFile), "", zos, comment)) return false;
+            //传入源文件
+            File outFile = new File(dest);
+            //传入压缩输出流
+            out = new ZipOutputStream(new FileOutputStream(outFile));
+            //判断是否是一个文件或目录
+            for (int i = 0; i < fileList.size(); i++) {
+                zipFileOrDirectory(out, new File(fileList.get(i)), "");
             }
-            return true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
         } finally {
-            if (zos != null) {
-                zos.finish();
-                zos.close();
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static void zipFileOrDirectory(ZipOutputStream out, File fileOrDirectory, String curPath) throws IOException {
+        FileInputStream in = null;
+        try {
+            //判断目录是否为null
+            if (!fileOrDirectory.isDirectory()) {
+                byte[] buffer = new byte[4096];
+                int bytes_read;
+                in = new FileInputStream(fileOrDirectory);
+                //归档压缩目录
+                ZipEntry entry = new ZipEntry(curPath + fileOrDirectory.getName());
+                //将压缩目录写到输出流中
+                out.putNextEntry(entry);
+                while ((bytes_read = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytes_read);
+                }
+                out.closeEntry();
+            } else {
+                //列出目录中的所有文件
+                File[] entries = fileOrDirectory.listFiles();
+                for (int i = 0; i < entries.length; i++) {
+                    //递归压缩
+                    zipFileOrDirectory(out, entries[i], curPath + fileOrDirectory.getName() + "/");
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }

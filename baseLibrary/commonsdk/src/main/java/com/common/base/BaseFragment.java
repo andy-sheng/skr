@@ -17,6 +17,8 @@ package com.common.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,7 @@ import android.view.ViewGroup;
 import com.common.base.delegate.IFragment;
 import com.common.cache.Cache;
 import com.common.cache.IntelligentCache;
+import com.common.image.model.BaseImage;
 import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
 import com.common.lifecycle.FragmentLifecycleable;
 import com.common.log.MyLog;
@@ -39,6 +42,8 @@ import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import io.reactivex.subjects.BehaviorSubject;
@@ -58,6 +63,8 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     protected final String TAG = this.getClass().getSimpleName();
     private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
     private Cache<String, Object> mCache;
+
+    private HashMap<Integer, Object> mNeedSaveWhenLowMemory = new HashMap<>();
 
     private HashSet<Presenter> mPresenterSet = new HashSet<>();
 
@@ -106,18 +113,23 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     }
 
     /**
-     * 可以在此恢复数据
-     *
+     * 不可以在此恢复数据
+     * Fragment 生命周期
+     * onAttach()
+     * onCreate()
+     * onCreateView()
+     * onActivityCreated()
      * @param savedInstanceState
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        MyLog.d(TAG, "onActivityCreated" + " savedInstanceState=" + savedInstanceState);
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             boolean firstStart = savedInstanceState.getBoolean("firstStart", true);
             if (!firstStart) {
                 // 需要恢复状态
-                onRestoreInstanceState(savedInstanceState);
+                onRestoreInstanceState("onActivityCreated", savedInstanceState);
             }
         }
     }
@@ -127,8 +139,18 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      *
      * @param savedInstanceState
      */
-    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-
+    public void onRestoreInstanceState(String from, @NonNull Bundle savedInstanceState) {
+        MyLog.d(TAG, "onRestoreInstanceState" + " from=" + from + " savedInstanceState=" + savedInstanceState);
+        if (savedInstanceState != null && mNeedSaveWhenLowMemory.isEmpty()) {
+            for (String key : savedInstanceState.keySet()) {
+                if (key.startsWith("type_")) {
+                    Object v = savedInstanceState.get(key);
+                    String typeStr = key.substring("type_".length());
+                    int type = Integer.parseInt(typeStr);
+                    setData(type, v);
+                }
+            }
+        }
     }
 
     /**
@@ -139,15 +161,35 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        MyLog.d(TAG, "onSaveInstanceState" + " outState=" + outState);
         super.onSaveInstanceState(outState);
         if (outState != null) {
             outState.putBoolean("firstStart", false);
+            for (int type : mNeedSaveWhenLowMemory.keySet()) {
+                Object object = mNeedSaveWhenLowMemory.get(type);
+                if (object instanceof Serializable) {
+                    outState.putSerializable("type_" + type, (Serializable) object);
+                } else if (object instanceof Parcelable) {
+                    outState.putParcelable("type_" + type, (Parcelable) object);
+                } else if (object instanceof String) {
+                    outState.putString("type_" + type, (String) object);
+                } else if (object instanceof Integer) {
+                    outState.putInt("type_" + type, (Integer) object);
+                } else if (object instanceof Long) {
+                    outState.putLong("type_" + type, (Long) object);
+                } else if (object instanceof Double) {
+                    outState.putDouble("type_" + type, (Double) object);
+                } else if (object instanceof Float) {
+                    outState.putDouble("type_" + type, (Float) object);
+                }
+            }
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        MyLog.w(TAG, "onCreateView");
         int layoutId = initView();
         if (layoutId != 0) {
             mRootView = inflater.inflate(layoutId, container, false);
@@ -159,9 +201,24 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
              */
             mRootView.setClickable(true);
         }
-        return mRootView;
+        View loadSirInjectView = loadSirReplaceRootView();
+        if (loadSirInjectView == null) {
+            return mRootView;
+        } else {
+            return loadSirInjectView;
+        }
     }
 
+    /**
+     * 只有LoadSir想要register mRootView 时才需要覆盖这个方法
+     * <p>
+     * 其他的不需要
+     *
+     * @return
+     */
+    protected View loadSirReplaceRootView() {
+        return null;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,6 +227,13 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         if (useEventBus()) {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this);
+            }
+        }
+        if (savedInstanceState != null) {
+            boolean firstStart = savedInstanceState.getBoolean("firstStart", true);
+            if (!firstStart) {
+                // 需要恢复状态
+                onRestoreInstanceState("onCreate", savedInstanceState);
             }
         }
     }
@@ -185,16 +249,40 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     @Override
     public void onResume() {
-        MyLog.d(TAG, "onResume fragmentVisible=" + fragmentVisible + " isHidden()" + isHidden());
+        MyLog.d(TAG, "onResume fragmentVisible=" + fragmentVisible
+                + " isHidden()" + isHidden()
+                + " getUserVisibleHint=" + getUserVisibleHint()
+                + " isVisible=" + isVisible()
+        );
         super.onResume();
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
         }
 
+        /**
+         * 区分几种情况
+         * A B C Fragment 在 viewpager 里
+         * 返回时 getTopFragment 为C 其实是A可见，这就要将
+         * BaseFragment baseFragment = U.getFragmentUtils().getTopFragment(getActivity()); 去掉
+         *
+         * 如果去掉
+         * 还有一种是 A B C 正常的叠在 Activity 中，返回时
+         * A B C onResume 都会触发
+         * 所以需要标示出 这个是否在 viewpager里
+         * {@link isInViewPager()}
+         */
         if (fragmentVisible) {
-            onFragmentVisible();
+            if (isInViewPager()) {
+                onFragmentVisible();
+            } else {
+                BaseFragment baseFragment = U.getFragmentUtils().getTopFragment(getActivity());
+                if (baseFragment == this) {
+                    onFragmentVisible();
+                } else {
+                    MyLog.d(TAG, "onResume 不在顶部");
+                }
+            }
         }
-
     }
 
     @Override
@@ -228,8 +316,10 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     public void onDestroyView() {
         MyLog.w(TAG, "onDestroyView");
         super.onDestroyView();
+        fragmentOnCreated = false;
     }
 
+    @CallSuper
     public void destroy() {
         MyLog.w(TAG, "destroy");
         for (Presenter presenter : mPresenterSet) {
@@ -240,11 +330,22 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         }
     }
 
+    //通知你，你要准备显示了
+    public void notifyToShow() {
+        U.getFragmentUtils().showFragment(this);
+    }
+
+    //通知你，你要准备隐藏了
+    public void notifyToHide() {
+        U.getFragmentUtils().hideFragment(this);
+    }
+
     /**
      * 不要继承onDestroy 这个执行慢
      */
     @Override
     public final void onDestroy() {
+        MyLog.d(TAG, "onDestroy");
         super.onDestroy();
         if (!isDestroyed) {
             destroy();
@@ -257,7 +358,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     protected void onFragmentVisible() {
         MyLog.d(TAG, "onFragmentVisible");
-        StatisticsAdapter.recordPageStart(getContext(), this.getClass().getSimpleName());
+        StatisticsAdapter.recordPageStart(getActivity(), this.getClass().getSimpleName());
     }
 
     /**
@@ -265,7 +366,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     protected void onFragmentInvisible() {
         MyLog.d(TAG, "onFragmentInvisible");
-        StatisticsAdapter.recordPageEnd(getContext(), this.getClass().getSimpleName());
+        StatisticsAdapter.recordPageEnd(getActivity(), this.getClass().getSimpleName());
     }
 
     /**
@@ -338,7 +439,8 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public void setData(int type, @Nullable Object data) {
-
+        MyLog.d(TAG, "setData" + " type=" + type + " data=" + data);
+        mNeedSaveWhenLowMemory.put(type, data);
     }
 
     /**
@@ -361,4 +463,15 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         return RxLifecycle.bindUntilEvent(provideLifecycleSubject(), event);
     }
 
+    public void finish() {
+        U.getFragmentUtils().popFragment(this);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+    }
+
+    public boolean isInViewPager() {
+        return false;
+    }
 }

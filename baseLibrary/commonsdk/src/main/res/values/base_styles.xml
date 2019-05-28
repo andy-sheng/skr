@@ -10,8 +10,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!--
@@ -26,25 +24,14 @@
 
     <!--支持右滑推出的activity的设置-->
     <style name="AppTheme_Swipe" parent="AppTheme_Base">
+        <item name="android:windowIsTranslucent">@bool/translucent_no_bug</item>
+        <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
+    </style>
+
+    <style name="TransparentTheme" parent="AppTheme_Base">
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
-
-    <!--application 默认的设置-->
-    <style name="AppTheme_All" parent="AppTheme_Swipe">
-
-    </style>
-    <!--首页Activity的设置-->
-    <style name="AppTheme_MainActivity" parent="AppTheme_Base">
-
-    </style>
-
-    <style name="Activity_Animation">
-        <item name="android:activityOpenEnterAnimation">@anim/translate_right_to_center</item>
-        <item name="android:activityOpenExitAnimation">@anim/translate_center_to_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/translate_left_to_center</item>
-        <item name="android:activityCloseExitAnimation">@anim/translate_center_to_right</item>
-    </style>
-
 
 </resources>

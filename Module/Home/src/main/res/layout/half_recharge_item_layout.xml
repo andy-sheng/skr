@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_69_dp"
+    android:orientation="vertical"
+    android:background="@drawable/chongzhijiemian_dianjiuxuanzhongtai"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_12_dp">
+
+        <TextView
+            android:id="@+id/tv_recharge_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_20_dp" />
+
+        <ImageView
+            android:layout_width="@dimen/view_14_dp"
+            android:layout_height="@dimen/view_17_dp"
+            android:layout_marginLeft="@dimen/view_5_dp"
+            android:layout_marginTop="@dimen/view_5_dp"
+            android:layout_toRightOf="@+id/tv_recharge_num"
+            android:background="@drawable/yue_zuanshiyue" />
+    </LinearLayout>
+
+    <TextView
+
+        android:id="@+id/tv_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_recharge_num"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/view_5_dp"
+        android:text="1"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp" />
+</FrameLayout>

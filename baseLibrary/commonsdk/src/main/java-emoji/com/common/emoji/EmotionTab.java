@@ -43,7 +43,7 @@ public class EmotionTab extends RelativeLayout {
         if (TextUtils.isEmpty(mStickerCoverImgPath)) {
             mIvIcon.setImageResource(mIconSrc);
         } else {
-            FrescoWorker.loadImage(mIvIcon,ImageFactory.newLocalImage(mStickerCoverImgPath).build());
+            FrescoWorker.loadImage(mIvIcon,ImageFactory.newPathImage(mStickerCoverImgPath).build());
         }
     }
 

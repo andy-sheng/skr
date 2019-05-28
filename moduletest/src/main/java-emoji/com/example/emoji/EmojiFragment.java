@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
@@ -60,7 +59,7 @@ public class EmojiFragment extends BaseFragment {
             });
         }
 
-        LQREmotionKit.init(U.app());
+        LQREmotionKit.tryInit(U.app());
         mLlContent =  mRootView.findViewById(R.id.llContent);
         mEtContent =  mRootView.findViewById(R.id.etContent);
         mIvEmo =  mRootView.findViewById(R.id.ivEmo);

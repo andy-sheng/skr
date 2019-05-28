@@ -1,0 +1,17 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/chorus_sing_begin_svga"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_154_dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="1" />
+</merge>

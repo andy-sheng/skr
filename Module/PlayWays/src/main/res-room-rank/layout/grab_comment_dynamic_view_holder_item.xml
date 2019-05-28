@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/view_7_dp"
+    android:layout_marginBottom="@dimen/view_7_dp"
+    android:paddingRight="@dimen/view_10_dp">
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_28_dp"
+        android:layout_height="@dimen/view_28_dp" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/comment_sdv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_80_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_11_dp"
+        android:layout_toRightOf="@+id/avatar_iv" />
+
+</RelativeLayout>

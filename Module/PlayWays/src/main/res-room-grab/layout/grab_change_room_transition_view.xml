@@ -1,0 +1,25 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/change_room_tip_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="正在进入下一个房间"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/change_room_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/change_room_tip_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/huanfangjian_loading" />
+</merge>

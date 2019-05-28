@@ -1,7 +1,13 @@
 package com.common.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MD5Utils {
@@ -36,11 +42,51 @@ public class MD5Utils {
         return strbuf.toString();
     }
 
+    public String signReq(HashMap<String, Object> map) {
+        String[] stringArray = new String[map.size()];
+        {
+            int i = 0;
+            for (String key : map.keySet()) {
+                stringArray[i++] = key;
+            }
+        }
+
+        Arrays.sort(stringArray);
+
+        StringBuffer stringBuffer = new StringBuffer();
+
+        try {
+            for (int i = 0; i < stringArray.length; i++) {
+                stringBuffer.append(URLEncoder.encode(stringArray[i], "UTF-8") + "=" + URLEncoder.encode(String.valueOf(map.get(stringArray[i])), "UTF-8"));
+                if (i != stringArray.length - 1) {
+                    stringBuffer.append("&");
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        return MD5_32(stringBuffer.toString());
+    }
+
     /**
      * 这里MD5_16取了MD5_32的中间16位
      */
     public String MD5_16(String passwd) {
         return MD5_32(passwd).subSequence(8, 24).toString();
     }
+
+
+    //    public static String getMd5Digest(byte[] bytes) {
+//        try {
+//            MessageDigest lDigest = MessageDigest.getInstance("MD5");
+//            lDigest.update(bytes);
+//            BigInteger lHashInt = new BigInteger(1, lDigest.digest());
+//            return String.format(Locale.US, "%1$032X", lHashInt);
+//        } catch (NoSuchAlgorithmException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 }

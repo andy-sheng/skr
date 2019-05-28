@@ -1,0 +1,82 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+                includeCompileClasspath true
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs += 'src/main/java-gen-db'
+
+            java.srcDirs += 'src/main/java-room-msg'
+            java.srcDirs += 'src/main/java-lyrics'
+            res.srcDirs += 'src/main/res-lyrics'
+
+            java.srcDirs += 'src/main/java-dialog'
+            res.srcDirs += 'src/main/res-dialog'
+
+            java.srcDirs += 'src/main/java-toast'
+            res.srcDirs += 'src/main/res-toast'
+
+            java.srcDirs += 'src/main/java-relation'
+            res.srcDirs += 'src/main/res-relation'
+
+            java.srcDirs += 'src/main/java-person'
+            res.srcDirs += 'src/main/res-person'
+
+            java.srcDirs += 'src/main/java-level'
+            res.srcDirs += 'src/main/res-level'
+
+            java.srcDirs += 'src/main/java-report'
+            res.srcDirs += 'src/main/res-report'
+
+            java.srcDirs += 'src/main/java-notification'
+            res.srcDirs += 'src/main/res-notification'
+        }
+    }
+}
+
+dependencies {
+    api project(":commoncore")
+    if (isBuildModule.toBoolean()) {
+//        tools
+        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    } else {
+        compileOnly rootProject.ext.dependencies["arouter-compiler"]
+    }
+//    implementation 'com.github.zhangliangming:Register:v1.1'
+}
+
+//与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
+greendao {
+
+    schemaVersion 6//数据库版本号
+
+    daoPackage 'com.component.busilib.db'//设置DaoMaster、DaoSession、Dao包名
+
+    targetGenDir 'src/main/java-gen-db'//设置DaoMaster、DaoSession、Dao目录
+
+    //targetGenDirTest：设置生成单元测试目录
+
+    //generateTests：设置自动生成单元测试用例
+
+}

@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -33,39 +36,59 @@ android {
         main {
             java.srcDirs += 'src/main/java-gen-db'
             java.srcDirs += 'src/main/java-gen-pb'
+            //java.srcDirs += 'src/main/java-milink'
 
             java.srcDirs += 'src/main/java-engine'
             res.srcDirs += ['src/main/res-engine']
+
+            java.srcDirs += 'src/main/java-debugcore'
+            res.srcDirs += ['src/main/res-debugcore']
 
             res.srcDirs += ['src/main/res']
             res.srcDirs += ['src/main/res-login']
             res.srcDirs += ['src/main/res-cta']
             res.srcDirs += ['src/main/res-config']
+            res.srcDirs += ['src/main/res-umeng']
+
+            // doraemonkit 滴滴开源一款app内调试工具
+            java.srcDirs += 'src/main/java-doraemonkit'
+
+            java.srcDirs += 'src/main/java-notification'
         }
     }
 
-    useLibrary 'org.apache.http.legacy'
+//    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
     // commonsdk 也能远程 maven 依赖
 //    api "com.mi.live:common-sdk:2.0"
-    api project(":baseLibrary:commonsdk")
     // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    api project(":baseLibrary:commonsdk")
+    api project(":baseLibrary:enginesdk")
+    // doraemonkit 滴滴开源一款app内调试工具
+    api project(":baseLibrary:doraemonkit")
+    api project(":commonservice")
+
 
     api files('libs/protobuf-java-2.6.0.jar')
     // 小米oauth登录用
     api files('libs/oauth.jar')
-    api files('libs/ks3-android-sdk-v-1.4.6.jar')
-    api files('libs/agora-rtc-sdk.jar')
+//    api files('libs/ks3-android-sdk-v-1.4.6.jar')
 
+    api files('libs/umeng-share-core-6.9.3.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.3.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.3.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
+    api files('libs/umeng-shareboard-widget-6.9.3.jar')
+    api files('libs/umeng-sharetool-6.9.3.jar')
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
 greendao {
 
-    schemaVersion 4//数据库版本号
+    schemaVersion 8//数据库版本号
 
     daoPackage 'com.common.core.db'//设置DaoMaster、DaoSession、Dao包名
 

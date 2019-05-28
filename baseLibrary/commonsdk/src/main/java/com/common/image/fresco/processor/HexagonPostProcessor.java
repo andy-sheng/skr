@@ -10,6 +10,7 @@ import android.graphics.PorterDuffXfermode;
 
 import com.facebook.imagepipeline.nativecode.Bitmaps;
 import com.facebook.imagepipeline.request.BasePostprocessor;
+import com.glidebitmappool.BitmapPoolAdapter;
 
 /**
  * Created by liuyanyan on 2017/12/8.
@@ -25,7 +26,7 @@ public class HexagonPostProcessor extends BasePostprocessor {
         int width = sourceBitmap.getWidth();
         int height = sourceBitmap.getHeight();
         Bitmap.Config localConfig = Bitmap.Config.ARGB_8888;
-        Bitmap localBitmap = Bitmap.createBitmap(width, height, localConfig);
+        Bitmap localBitmap = BitmapPoolAdapter.getBitmap(width, height, localConfig);
         Canvas localCanvas = new Canvas(localBitmap);
         Paint localPaint = new Paint(1);
         localPaint.setColor(Color.BLACK);

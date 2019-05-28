@@ -22,12 +22,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.common.base.delegate.IActivity;
@@ -37,6 +41,7 @@ import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
 import com.common.lifecycle.ActivityLifecycleable;
 import com.common.log.MyLog;
 import com.common.mvp.Presenter;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.AndroidBug5497WorkaroundSupportingTranslucentStatus;
 import com.common.utils.U;
 import com.jude.swipbackhelper.SwipeBackHelper;
@@ -47,6 +52,7 @@ import com.trello.rxlifecycle2.android.ActivityEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashSet;
+import java.util.List;
 
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
@@ -68,6 +74,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     // 想加入activity生命周期管理的presenter放在这里
     private HashSet<Presenter> mPresenterSet = new HashSet<>();
+
+    //protected boolean mOnlyForFragmentContainer = true; // 是否只是fragment 的容器，会影响打点统计，如果只是容器，不统计Activity的session
 
     protected boolean mIsDestroyed = false;
 
@@ -125,12 +133,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        MyLog.d(TAG, "onCreate" + hashCode());
         /**
          * 解决虚拟按键遮挡布局问题
          * 只会让虚拟按键变透明，布局没有动
          */
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-
+        //animationEnter();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -176,11 +185,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             SwipeBackHelper.onCreate(this);
         }
 
-        if (useEventBus()) {
-            if (!EventBus.getDefault().isRegistered(this)) {
-                EventBus.getDefault().register(this);
-            }
-        }
         int layoutResID = initView(savedInstanceState);
         //如果initView返回0,框架则不会调用setContentView(),当然也不会 Bind ButterKnife
 //        if (layoutResID != 0) {
@@ -194,7 +198,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             layoutResID = R.layout.empty_activity_layout;
         }
         setContentView(layoutResID);
+//        ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
+//        View parentView = contentFrameLayout.getChildAt(0);
+//        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
+//            parentView.setFitsSystemWindows(true);
+//        }
         initData(savedInstanceState);
+        if (useEventBus()) {
+            if (!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this);
+            }
+        }
     }
 
     @Override
@@ -236,7 +250,14 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
 
     @Override
+    protected void onRestart() {
+        MyLog.d(TAG, "onRestart" + hashCode());
+        super.onRestart();
+    }
+
+    @Override
     protected void onStart() {
+        MyLog.d(TAG, "onStart" + hashCode());
         super.onStart();
         for (Presenter presenter : mPresenterSet) {
             presenter.start();
@@ -245,6 +266,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onResume() {
+        MyLog.d(TAG, "onResume" + hashCode());
+        StatisticsAdapter.recordSessionStart(this, this.getClass().getSimpleName());
         super.onResume();
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
@@ -253,7 +276,25 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onPause() {
+        MyLog.d(TAG, "onPause" + hashCode());
         super.onPause();
+        /**
+         * 02-22 21:39:58.831 D/PlayWaysActivity(20945): onPause137180481
+         * 02-22 21:39:58.831 D/UmengStatistics(20945): recordSessionEnd key=PlayWaysActivity
+         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onPause
+         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onFragmentInvisible
+         * 02-22 21:39:58.832 D/UmengStatistics(20945): recordPageEnd pageName=SongSelectFragment
+         *
+         * 这么改因为先调用 Activity 的onPause 在调用 Fragment 的 onPause
+         * 导致统计顺序可能有问题
+         */
+//        mUiHanlder.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                StatisticsAdapter.recordSessionEnd(activity, activity.getClass().getSimpleName());
+//            }
+//        });
+        StatisticsAdapter.recordSessionEnd(this, this.getClass().getSimpleName());
         for (Presenter presenter : mPresenterSet) {
             presenter.pause();
         }
@@ -261,6 +302,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onStop() {
+        MyLog.d(TAG, "onStop" + hashCode());
         super.onStop();
         for (Presenter presenter : mPresenterSet) {
             presenter.stop();
@@ -273,19 +315,48 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected final void onDestroy() {
-        super.onDestroy();
-        if (!mIsDestroyed) {
-            destroy();
-            mIsDestroyed = true;
+        MyLog.d(TAG, "onDestroy" + hashCode());
+        if (MyLog.isDebugLogOpen()) {
+            super.onDestroy();
+            if (!mIsDestroyed) {
+                destroy();
+                mIsDestroyed = true;
+            }
+        } else {
+            try {
+                super.onDestroy();
+                if (!mIsDestroyed) {
+                    destroy();
+                    mIsDestroyed = true;
+                }
+            } catch (Exception e) {
+                MyLog.e(e);
+            }
         }
     }
 
+    @Override
+    public void finish() {
+        MyLog.d(TAG, "start finish");
+        super.finish();
+        //animationOut();
+    }
+
+    protected void animationEnter() {
+        overridePendingTransition(R.anim.translate_right_to_center, R.anim.translate_center_to_left);
+    }
+
+    protected void animationOut() {
+        overridePendingTransition(R.anim.translate_left_to_center, R.anim.translate_center_to_right);
+    }
+
     protected void destroy() {
-        if (canSlide()) {
-            SwipeBackHelper.onDestroy(this);
-        }
+        MyLog.d(TAG, "destroy");
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+        if (canSlide()) {
+            SwipeBackHelper.onDestroy(this);
         }
         for (Presenter presenter : mPresenterSet) {
             presenter.destroy();
@@ -300,8 +371,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         }
     }
 
+
     @Override
-    public void onBackPressed() {
+    public final void onBackPressed() {
+        if (U.getCommonUtils().isFastDoubleClick()) {
+            return;
+        }
+
         /**
          * 先看看有没有顶层的 fragment 要处理这个事件的
          * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
@@ -309,14 +385,32 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         BaseFragment fragment = U.getFragmentUtils().getTopFragment(this);
         if (fragment != null) {
             if (fragment.onBackPressed()) {
+                // 以及消费掉了
                 return;
             }
         }
+
         /**
-         * 如果 Fragment addToBackStack 会在这里被弹出
+         * 这里有个问题，就是如果是首页Activity 的Fragment 很可能走不到 super.onBackPressed() 因为被拦截了
+         * 所以首页 onBackPressedForActivity 自己特殊处理下
          */
+        if (onBackPressedForActivity()) {
+            // activity也消费掉了
+            return;
+        }
+        // 才能走系统的消费
         super.onBackPressed();
     }
+
+    /**
+     * activity 请只覆盖这个方法 不覆盖onBackPressed
+     *
+     * @return
+     */
+    public boolean onBackPressedForActivity() {
+        return false;
+    }
+
 
     /**
      * 是否使用eventBus,默认为使用(true)，
@@ -328,8 +422,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return true;
     }
 
+    static boolean canSlide = U.app().getResources().getBoolean(R.bool.translucent_no_bug);  //保存结果
+
     public boolean canSlide() {
-        return true;
+        return canSlide;
     }
 
     /**
@@ -349,10 +445,33 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
          * 先看看有没有顶层的 fragment 要处理这个事件的
          * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
          */
-        BaseFragment fragment = U.getFragmentUtils().getTopFragment(this);
-        if (fragment != null) {
-            if (fragment.onActivityResultReal(requestCode, resultCode, data)) {
-                return;
+        FragmentManager fm = this.getSupportFragmentManager();
+        if (fm != null) {
+            List<Fragment> fls = fm.getFragments();
+            BaseFragment topFragmentNotInViewPager = null;
+            for (int i = fls.size() - 1; i >= 0; i--) {
+                Fragment f = fls.get(i);
+                if (f instanceof BaseFragment) {
+                    BaseFragment bf = (BaseFragment) f;
+                    // 如果Fragment 在ViewPager 是是否可见判断顶部
+                    if (bf.isInViewPager()) {
+                        if (bf.fragmentVisible) {
+                            if (bf.onActivityResultReal(requestCode, resultCode, data)) {
+                                return;
+                            }
+                        }
+                    } else {
+                        if (topFragmentNotInViewPager == null) {
+                            topFragmentNotInViewPager = bf;
+                        }
+                    }
+                }
+            }
+            // 如果Fragment 不在viewPager中 则 最后一个就是顶部的
+            if (topFragmentNotInViewPager != null) {
+                if (topFragmentNotInViewPager.onActivityResultReal(requestCode, resultCode, data)) {
+                    return;
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

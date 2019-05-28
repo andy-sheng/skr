@@ -26,7 +26,7 @@ public class DisplayUtils {
                 sMetrics = U.app().getResources().getDisplayMetrics();
             }
         }
-        if(sRealMetrics==null){
+        if (sRealMetrics == null) {
             WindowManager windowManager = (WindowManager) U.app().getSystemService(Context.WINDOW_SERVICE);
             Display display = windowManager.getDefaultDisplay();
             sRealMetrics = new DisplayMetrics();
@@ -83,7 +83,8 @@ public class DisplayUtils {
     public int getScreenWidth() {
         initialize();
 //        MyLog.v("PicViewFragment" + " getScreenWidth sMetrics == " + sMetrics.hashCode());
-        return sMetrics.widthPixels;
+        int w = sMetrics.widthPixels;
+        return w;
     }
 
     /**
@@ -93,13 +94,39 @@ public class DisplayUtils {
      */
     public int getScreenHeight() {
         initialize();
-//        MyLog.v("PicViewFragment" + " getScreenHeight sMetrics == " + sMetrics.hashCode());
-        return sMetrics.heightPixels;
+        int h = sMetrics.heightPixels;
+        /**
+         * 在小米8青春版 这个值计算得不对
+         * 修复米8青春版本
+         * 开启虚拟导航按键，返回键盘高度不对的问题
+         * 一般都是2118，这里返回2028,莫名其妙的
+         */
+        if (U.getDeviceUtils().hasNavigationBar()
+                && U.getDeviceUtils().getProductModel().equals("MI 8 SE")) {
+            if (h == 2028) {
+                return 2118;
+            }
+        }
+        if (U.getDeviceUtils().getProductModel().equals("Redmi Note 7")) {
+            if (U.getDeviceUtils().hasNavigationBar()) {
+                if (h == 2120) {
+                    return 2210;
+                }
+            } else {
+                if (h == 2120) {
+                    return 2340;
+                }
+            }
+        }
+        if(U.getDeviceUtils().getProductModel().equals("HMA-AL00")){
+        }
+        return h;
     }
 
 
     /**
      * 会算上虚拟按键的高度
+     *
      * @return
      */
     public int getPhoneWidth() {

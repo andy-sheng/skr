@@ -1,630 +1,337 @@
 package com.common.core.userinfo;
 
-import android.text.TextUtils;
+import com.common.rxretrofit.ApiResult;
 
-import com.common.log.MyLog;
-import com.common.milink.MiLinkClientAdapter;
-import com.common.milink.command.MiLinkCommand;
-import com.common.milink.constant.MiLinkConstant;
-import com.common.utils.U;
-import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.proto.Relation.BlockRequest;
-import com.wali.live.proto.Relation.BlockResponse;
-import com.wali.live.proto.Relation.BlockerListRequest;
-import com.wali.live.proto.Relation.BlockerListResponse;
-import com.wali.live.proto.Relation.FollowRequest;
-import com.wali.live.proto.Relation.FollowResponse;
-import com.wali.live.proto.Relation.FollowerListRequest;
-import com.wali.live.proto.Relation.FollowerListResponse;
-import com.wali.live.proto.Relation.FollowingListRequest;
-import com.wali.live.proto.Relation.FollowingListResponse;
-import com.wali.live.proto.Relation.GetMultiOnlineUserRequest;
-import com.wali.live.proto.Relation.GetMultiOnlineUserResponse;
-import com.wali.live.proto.Relation.GetSubscribeInfoRequest;
-import com.wali.live.proto.Relation.GetSubscribeInfoResponse;
-import com.wali.live.proto.Relation.MicUserListRequest;
-import com.wali.live.proto.Relation.MicUserListResponse;
-import com.wali.live.proto.Relation.PkUserListRequest;
-import com.wali.live.proto.Relation.PkUserListResponse;
-import com.wali.live.proto.Relation.RoomKickViewerReq;
-import com.wali.live.proto.Relation.RoomKickViewerRsp;
-import com.wali.live.proto.Relation.SetPushRequest;
-import com.wali.live.proto.Relation.SetPushResponse;
-import com.wali.live.proto.Relation.SubscribeRequest;
-import com.wali.live.proto.Relation.SubscribeResponse;
-import com.wali.live.proto.Relation.UnBlockRequest;
-import com.wali.live.proto.Relation.UnBlockResponse;
-import com.wali.live.proto.Relation.UnFollowRequest;
-import com.wali.live.proto.Relation.UnFollowResponse;
-import com.wali.live.proto.User.GetHomepageReq;
-import com.wali.live.proto.User.GetHomepageResp;
-import com.wali.live.proto.User.GetUserInfoByIdReq;
-import com.wali.live.proto.User.GetUserInfoByIdRsp;
-import com.wali.live.proto.User.MutiGetUserInfoReq;
-import com.wali.live.proto.User.MutiGetUserInfoRsp;
-
-import java.util.ArrayList;
-import java.util.List;
+import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 /**
- * 服务器请求关系,提供给RelationManager使用
+ *
  */
-public class UserInfoServerApi {
-
-    public static final String PRE_KEY_SIX_LOAD_BY_WATER = "pre_key_six_load_by_water";//通过水位拉取用户信息
+public interface UserInfoServerApi {
 
     /**
-     * 获取一个用户的信息
+     * 拿到某个人基本的信息
      *
-     * @param uuid
+     * @param userID
      * @return
      */
-    public static GetUserInfoByIdRsp getUserInfoByUuid(long uuid) {
-        if (uuid <= 0) {
-            MyLog.w("getUserInfoByUuid Illegal parameter");
-            return null;
-        }
-        GetUserInfoByIdReq req = new GetUserInfoByIdReq.Builder().setZuid(uuid).build();
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_GET_USER_INFO_BY_ID);
-        data.setData(req.toByteArray());
-        PacketData result = MiLinkClientAdapter.getInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+    @GET("v1/uprofile/information")
+    Observable<ApiResult> getUserInfo(@Query("userID") int userID);
 
-        if (result != null && result.getData() != null) {
-            try {
-                GetUserInfoByIdRsp response = GetUserInfoByIdRsp.parseFrom(result.getData());
-                return response;
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-
-        return null;
-    }
 
     /**
-     * 获取一个用户个人主页信息
+     * 拿到某些人的信息
      *
-     * @param needPullLiveInfo 是否需要拉取直播信息
-     * @uuid 用户id
-     */
-    public static GetHomepageResp getHomepageByUuid(long uuid, boolean needPullLiveInfo) {
-        if (uuid <= 0) {
-            MyLog.w("getUserInfoByUuid Illegal parameter");
-            return null;
-        }
-        GetHomepageReq req = new GetHomepageReq.Builder().setZuid(uuid).setGetLiveInfo(needPullLiveInfo).build();
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_GET_HOMEPAGE);
-        data.setData(req.toByteArray());
-        PacketData result = MiLinkClientAdapter.getInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-
-        if (result != null && result.getData() != null) {
-            try {
-                GetHomepageResp response = GetHomepageResp.parseFrom(result.getData());
-                return response;
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * 获取用户列表的信息
-     *
-     * @param uuidList
+     * @param body body: {
+     *             "userIDs": [1982416,1156569]
+     *             }
      * @return
      */
-    public static MutiGetUserInfoRsp getHomepageListById(List<Long> uuidList) {
-        if (uuidList == null || uuidList.size() <= 0) {
-            MyLog.w("getUserListById Illegal parameter");
-            return null;
-        }
-        MutiGetUserInfoReq req = new MutiGetUserInfoReq.Builder()
-                .addAllZuid(uuidList)
-                .build();
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_GET_USER_LIST_BY_ID);
-        data.setData(req.toByteArray());
-        PacketData result = MiLinkClientAdapter.getInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+    @POST("/v1/query/uprofiles")
+    Observable<ApiResult> getUserInfos(@Body RequestBody body);
 
-        if (result != null && result.getData() != null) {
-            try {
-                MutiGetUserInfoRsp rsp = MutiGetUserInfoRsp.parseFrom(result.getData());
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-
-        return null;
-    }
 
     /**
-     * 获取在线的用户列表
-     * "zhibo.relation.getmultionlineuser"
+     * 拿到某个人的个人主页
      *
-     * @param uuids
+     * @param userID
      * @return
      */
-    public static GetMultiOnlineUserResponse getMultiOnlineUserResponse(List<Long> uuids) {
-        if (uuids == null || uuids.size() <= 0) {
-            MyLog.w("getMultiOnlineUserResponse Illegal parameter");
-            return null;
-        }
-        GetMultiOnlineUserRequest getMultiOnlineUserRequest = new GetMultiOnlineUserRequest.Builder()
-                .addAllUids(uuids).build();
+    @GET("/v1/skr/homepage")
+    Observable<ApiResult> getHomePage(@Query("userID") long userID);
 
-        PacketData packetData = new PacketData();
-        packetData.setCommand("zhibo.relation.getmultionlineuser");
-        packetData.setData(getMultiOnlineUserRequest.toByteArray());
-
-        PacketData result = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        if (result != null && result.getData() != null) {
-            try {
-                GetMultiOnlineUserResponse response = GetMultiOnlineUserResponse.parseFrom(result.getData());
-                return response;
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-        return null;
-    }
 
     /**
-     * 查询某个主播的订阅情况
+     * 处理关系
      *
-     * @param uid
-     * @param targetId
+     * @param body "toUserID" : 关系被动接受者id
+     *             "action" :  创建关系 or 解除关系
+     *             0  未知 RA_UNKNOWN
+     *             1  创建关系 RA_BUILD
+     *             2  解除关系 RA_UNBUILD
      * @return
      */
-    public static GetSubscribeInfoResponse getSubscribeInfo(final long uid,
-                                                            final long targetId) {
-        if (uid <= 0 || targetId <= 0) {
-            MyLog.w("getSubscribeInfo Illegal parameter");
-            return null;
-        }
-        GetSubscribeInfoRequest request = new GetSubscribeInfoRequest.Builder()
-                .setUserId(uid)
-                .setTargetId(targetId)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_SUBSCRIBE_INFO_REQUEST);
-        packetData.setData(request.toByteArray());
-        PacketData result = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        if (result != null && result.getData() != null) {
-            try {
-                GetSubscribeInfoResponse response = GetSubscribeInfoResponse.parseFrom(result.getData());
-                return response;
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-
-        return null;
-    }
+    @PUT("/v1/mate/relation")
+    Observable<ApiResult> mateRelation(@Body RequestBody body);
 
     /**
-     * 订阅请求
+     * 成为好友
      *
-     * @param uid
-     * @param targetId
+     * @param body "toUserID" : 关系被动接受者id
      * @return
      */
-    public static SubscribeResponse subscribe(final long uid, final long targetId) {
-        if (uid <= 0 || targetId <= 0) {
-            MyLog.w("getSubscribeInfo Illegal parameter");
-            return null;
-        }
-
-        SubscribeRequest request = new SubscribeRequest.Builder()
-                .setUserId(uid)
-                .setTargetId(targetId)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_SUBSCRIBE_REQUEST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                SubscribeResponse response = SubscribeResponse.parseFrom(responseData.getData());
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
+    @PUT("/v1/mate/mutual-follow")
+    Observable<ApiResult> beFriend(@Body RequestBody body);
 
     /**
-     * 踢人
+     * 获取指定关系列表
      *
-     * @param roomId     房间ID
-     * @param anchorId   主播ID
-     * @param operatorId 操作人
-     * @param kickedId   被踢人ID
+     * @param relation [必选]关系类型   0 未知  RC_UNKNOWN
+     *                 1 关注  RC_Follow
+     *                 2 粉丝  RC_Fans
+     *                 3 好友  RC_Friend
+     * @param offset   [必选]偏移
+     * @param limit    [必选]限制数量,最大50
      * @return
      */
-    public static RoomKickViewerRsp kickViewer(String roomId, long anchorId, long operatorId,
-                                               long kickedId) {
-        if (TextUtils.isEmpty(roomId) || anchorId == 0 || operatorId == 0 || kickedId == 0) {
-            MyLog.w("kickViewer Illegal parameter");
-            return null;
-        }
+    @GET("/v1/mate/relation")
+    Observable<ApiResult> getRelationList(@Query("relation") int relation,
+                                          @Query("offset") int offset,
+                                          @Query("limit") int limit);
 
-        List<Long> kickedIds = new ArrayList<>();
-        kickedIds.add(kickedId);
-        RoomKickViewerReq request = new RoomKickViewerReq.Builder()
-                .setLiveId(roomId)
-                .setZuid(anchorId)
-                .setOperatorId(operatorId)
-                .addAllKickedId(kickedIds)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_KICK_VIEWER);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                RoomKickViewerRsp response = RoomKickViewerRsp.parseFrom(responseData.getData());
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
 
     /**
-     * 查询可以连麦的用户列表
+     * 搜索好友列表
      *
-     * @param uuid
-     * @param liveId
+     * @param searchContent 搜索好友
+     * @param offset        [必选]偏移
+     * @param limit         [必选]限制数量,最大50
      * @return
      */
-    public static MicUserListResponse getMICUserListResponse(long uuid, String liveId) {
-        if (TextUtils.isEmpty(liveId) || uuid <= 0) {
-            MyLog.w("getMICUserListResponse Illegal parameter");
-            return null;
-        }
+    @GET("/v1/user/search-users")
+    Observable<ApiResult> searchFriendsList(@Query("searchContent") String searchContent,
+                                            @Query("offset") int offset,
+                                            @Query("limit") int limit);
 
-        MicUserListRequest request = new MicUserListRequest.Builder()
-                .setUserId(uuid)
-                .setRoomId(liveId)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_MICUSER_LIST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                return MicUserListResponse.parseFrom(responseData.getData());
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
+    @GET("/v1/mate/contacts")
+    Observable<ApiResult> getFriendStatusList(@Query("offset") int offset,
+                                              @Query("limit") int limit);
 
     /**
-     * 查询可以PK的用户列表
-     */
-    public static PkUserListResponse getPkUserListResponse(long uuid) {
-        if (uuid <= 0) {
-            MyLog.w("getPkUserListResponse Illegal parameter");
-            return null;
-        }
-
-        PkUserListRequest request = new PkUserListRequest.Builder()
-                .setUserId(uuid)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_PKUSER_LIST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                return PkUserListResponse.parseFrom(responseData.getData());
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
-
-    /**
-     * 查询黑名单列表
+     * 获取指定用户的关系数量
      *
-     * @param uuid   用户id
-     * @param count  拉取数量
-     * @param offset 偏移量
+     * @param userID
      * @return
      */
-    public static BlockerListResponse getBlockerListResponse(long uuid, int count,
-                                                             int offset) {
-        if (uuid <= 0 || count <= 0) {
-            MyLog.w("getBlockerListResponse Illegal parameter");
-            return null;
-        }
+    @GET("/v1/mate/cnt")
+    Observable<ApiResult> getRelationNum(@Query("userID") int userID);
 
-        BlockerListRequest request = new BlockerListRequest.Builder()
-                .setUserId(uuid)
-                .setLimit(count)
-                .setOffset(offset)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_BLOCK_LIST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                return BlockerListResponse.parseFrom(responseData.getData());
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
 
     /**
-     * 查询粉丝列表
+     * 判断和指定某人的社交关系
      *
-     * @param uuid   用户id
-     * @param count  拉取数量
-     * @param offset 偏移量
+     * @param toUserID 指定人的id
      * @return
      */
-    public static FollowerListResponse getFollowerListResponse(long uuid, int count,
-                                                               int offset) {
-        if (uuid <= 0 || count <= 0) {
-            MyLog.w("getFollowerListResponse Illegal parameter");
-            return null;
-        }
+    @GET("/v1/mate/has-relation")
+    Observable<ApiResult> getRelation(@Query("toUserID") int toUserID);
 
-        FollowerListRequest request = new FollowerListRequest.Builder()
-                .setUserId(uuid)
-                .setLimit(count)
-                .setOffset(offset)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_FOLLOWER_LIST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                return FollowerListResponse.parseFrom(responseData.getData());
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
 
     /**
-     * 查询关注列表
+     * 获取某人具体的分数
      *
-     * @param uuid
-     * @param count
+     * @param userID
+     * @return
+     */
+    @GET("/v1/score/detail")
+    Observable<ApiResult> getScoreDetail(@Query("userID") int userID);
+
+
+    /**
+     * 获取地域排行榜列表
+     * (包含自己的)
+     *
+     * @param category 地域类别 1国家  2省会  3市级  4区级
+     * @param offset   偏移量
+     * @param limit    数量
+     * @return
+     */
+    @GET("/v1/rank/region-list")
+    Observable<ApiResult> getReginRankList(@Query("category") int category,
+                                           @Query("offset") int offset,
+                                           @Query("limit") int limit);
+
+    /**
+     * 获取好友排行榜列表
+     * (包含自己的)
+     *
+     * @return
+     */
+    @GET("/v1/rank/friend-list")
+    Observable<ApiResult> getFriendRankList();
+
+
+    /**
+     * 拿到自己的排名
+     *
+     * @return
+     */
+    @GET("/v1/rank/region-mine")
+    Observable<ApiResult> getMyRegion(@Query("category") int category);
+
+
+    /**
+     * 获得某人的地域排行榜名次
+     *
+     * @param userID
+     * @return
+     */
+    @GET("/v1/rank/region-seq")
+    Observable<ApiResult> getReginRank(@Query("userID") long userID);
+
+
+    /**
+     * 获取自己的排行榜升降
+     *
+     * @return
+     */
+    @GET("/v1/rank/region-diff")
+    Observable<ApiResult> getReginDiff();
+
+
+    /**
+     * 举报
+     *
+     * @param body
+     * @return
+     */
+    @PUT("v1/report/upload")
+    Observable<ApiResult> report(@Body RequestBody body);
+
+    /**
+     * 获取某人的金币
+     *
+     * @param userID
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/stand/coin-cnt")
+    Observable<ApiResult> getCoinNum(@Query("userID") long userID);
+
+
+    /**
+     * 查询照片墙
+     *
+     * @param userID
      * @param offset
-     * @param bothway
-     * @param loadByWater
+     * @param cnt
      * @return
      */
-    public static FollowingListResponse getFollowingListResponse(long uuid, int count,
-                                                                 int offset, boolean bothway, boolean loadByWater) {
-        long syncTime = 0;
-        // todo 等引入Preference再补全
-        if (loadByWater) {
-            syncTime = U.getPreferenceUtils().getSettingLong(PRE_KEY_SIX_LOAD_BY_WATER, 0);
-        }
-        FollowingListRequest request = new FollowingListRequest.Builder()
-                .setUserId(uuid)
-                .setLimit(count)
-                .setIsBothway(bothway)
-                .setOffset(offset)
-                .setSyncTime(syncTime)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_FOLLOWING_LIST);
-        packetData.setData(request.toByteArray());
-
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-        try {
-            if (responseData != null) {
-                FollowingListResponse response = FollowingListResponse.parseFrom(responseData.getData());
-                if (response != null) {
-                    U.getPreferenceUtils().setSettingLong(PRE_KEY_SIX_LOAD_BY_WATER, response.getSyncTime());
-                }
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
+    @GET("/v1/profile/query-pic")
+    Observable<ApiResult> getPhotos(@Query("userID") long userID,
+                                    @Query("offset") int offset,
+                                    @Query("cnt") int cnt);
 
     /**
-     * 关注推送设置
+     * 查询照片墙
      *
-     * @param uuid
-     * @param target
-     * @param pushable
+     * @param userID
+     * @param offset
+     * @param cnt
      * @return
      */
-    public static SetPushResponse setPushRequest(long uuid, long target, boolean pushable) {
-        if (uuid <= 0 || target <= 0) {
-            MyLog.w("setPushRequest Illegal parameter");
-            return null;
-        }
-
-        SetPushRequest request = new SetPushRequest.Builder()
-                .setUserId(uuid)
-                .setTargetId(target)
-                .setPushable(pushable)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_SET_PUSH);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-
-            if (responseData != null) {
-                SetPushResponse response = SetPushResponse.parseFrom(responseData.getData());
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
+    @GET("/v1/profile/query-pic")
+    Call<ApiResult> getPhotosSync(@Query("userID") long userID,
+                                  @Query("offset") int offset,
+                                  @Query("cnt") int cnt);
 
     /**
-     * 拉黑
+     * 新增照片墙
      *
-     * @param uuid
-     * @param target
+     * @param body "picPath": "string"
      * @return
      */
-    protected static BlockResponse block(long uuid, long target) {
-        if (uuid <= 0 || target <= 0) {
-            MyLog.w("block Illegal parameter");
-            return null;
-        }
+    @PUT("/v1/profile/add-pic")
+    Observable<ApiResult> addPhoto(@Body RequestBody body);
 
-        BlockRequest request = new BlockRequest.Builder()
-                .setUserId(uuid)
-                .setTargetId(target)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_BLOCK_REQUEST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                BlockResponse response = BlockResponse.parseFrom(responseData.getData());
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
 
     /**
-     * 取消拉黑
+     * 删除照片墙
      *
-     * @param uuid
-     * @param target
+     * @param body "picID": 0
      * @return
      */
-    protected static UnBlockResponse unBlock(long uuid, long target) {
-        if (uuid <= 0 || target <= 0) {
-            MyLog.w("unBlock Illegal parameter");
-            return null;
-        }
-
-        UnBlockRequest request = new UnBlockRequest.Builder()
-                .setUserId(uuid)
-                .setTargetId(target)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_UNBLOCK_REQUEST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        try {
-            if (responseData != null) {
-                UnBlockResponse response = UnBlockResponse.parseFrom(responseData.getData());
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
+    @PUT("/v1/profile/del-pic")
+    Observable<ApiResult> deletePhoto(@Body RequestBody body);
 
     /**
-     * 关注
-     *
-     * @param uuid
-     * @param target
-     * @param roomId 仅在房间关注主播时设置
+     * @param cnt 获取第一条传1 列表最大值100
      * @return
      */
-    protected static FollowResponse follow(final long uuid, final long target,
-                                           final String roomId) {
-        if (uuid <= 0 || target <= 0) {
-            MyLog.w("follow Illegal parameter");
-            return null;
-        }
+    @GET("/v1/mate/latest-relation")
+    Observable<ApiResult> getLatestRelation(@Query("cnt") int cnt);
 
-        FollowRequest.Builder builder = new FollowRequest.Builder()
-                .setUserId(uuid)
-                .setTargetId(target);
-        if (!TextUtils.isEmpty(roomId)) {
-            builder.setRoomId(roomId);
-        }
-        FollowRequest request = builder.build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_FOLLOW_REQUEST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
 
-        try {
-            if (responseData != null) {
-                FollowResponse response = FollowResponse.parseFrom(responseData.getData());
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
+    @GET("/v1/mate/list-follows-by-page")
+    Call<ApiResult> listFollowsByPage(@Query("offset") int offset, @Query("cnt") int cnt);
 
-        return null;
-    }
+    @GET("/v1/mate/list-follows-by-index-id")
+    Call<ApiResult> listFollowsByIndexId(@Query("lastIndexID") long lastIndexID);
+
+    @GET("/v1/mate/list-fans-by-page")
+    Observable<ApiResult> listFansByPage(@Query("offset") int offset, @Query("cnt") int cnt);
+
+
+    @GET("/v1/mate/list-remark-by-index-id")
+    Call<ApiResult> listRemarkByIndexId(@Query("lastIndexID") long lastIndexID);
+
+    @GET("/v1/mate/list-remark-by-page")
+    Call<ApiResult> listRemarkByPage(@Query("offset") int offset, @Query("cnt") int cnt);
+
+    @PUT("/v1/mate/write-user-remark")
+    Observable<ApiResult> writeUserRemark(@Body RequestBody body);
+
 
     /**
-     * 取消关注
+     * 新增作品
      *
-     * @param uuid
-     * @param target
+     * @param body "category": EPC_Stand_Normal	1一唱到底
+     *                         EPC_Stand_Highlight	2一唱到底高光时刻
+     *                         EPC_Practice	3 练歌房
+     *                         EPC_Team	4 团队赛
+     *             "duration": "string",
+     *             "songID": 0,
+     *             "worksURL": "string"
      * @return
      */
-    protected static UnFollowResponse unFollow(long uuid, long target) {
-        if (uuid <= 0 || target <= 0) {
-            MyLog.w("unFollow Illegal parameter");
-            return null;
-        }
+    @PUT("/v1/profile/add-works")
+    Observable<ApiResult> addWorks(@Body RequestBody body);
 
-        UnFollowRequest request = new UnFollowRequest.Builder()
-                .setUserId(uuid)
-                .setTargetId(target)
-                .build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_UNFOLLOW_REQUEST);
-        packetData.setData(request.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+    /**
+     * 删除作品
+     *
+     * @param body  "worksID": 0
+     * @return
+     */
+    @PUT("/v1/profile/del-works")
+    Observable<ApiResult> deleWorks(@Body RequestBody body);
 
-        try {
-            if (responseData != null) {
-                UnFollowResponse response = UnFollowResponse.parseFrom(responseData.getData());
-                return response;
-            }
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
-        return null;
-    }
+    /**
+     * 播放作品
+     *
+     * @param body  "toUserID": 0,
+     *              "worksID": 0
+     * @return
+     */
+    @PUT("/v1/profile/play-works")
+    Observable<ApiResult> playWorks(@Body RequestBody body);
 
 
+    /**
+     * 查看作品
+     * @param toUserID  查看用户ID（别人必填，自己选填）
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/profile/query-works")
+    Observable<ApiResult> getWorks(@Query("toUserID") int toUserID,
+                                   @Query("offset") int offset,
+                                   @Query("cnt") int cnt);
+
+
+    @POST("/v2/mate/multi-check-online-status")
+    Observable<ApiResult> checkUserOnlineStatus(@Body RequestBody body);
+
+    @POST("/v2/mate/multi-check-game-status")
+    Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);
+
+    @GET("v1/mate/search-fans")
+    Observable<ApiResult> searchFans(@Query("searchContent") String searchContent);
 }

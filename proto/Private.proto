@@ -1,0 +1,35 @@
+syntax = "proto3";
+import "Common.proto";
+package com.zq.live.proto.Private;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ Private.proto
+
+*/
+
+// 私聊消息：此结构会通过pb编码后，通过IM单聊通道到达客户端
+message PrivateMsg {
+    sint64 timeMs = 1; //房间消息产生时间，单位毫秒
+    EPrivateMsgType msgType = 2; //消息类型
+    uint32 toUserID = 3; //消息接受者的ID
+    sint64 no = 4; //消息序号
+    Common.UserInfo sender = 5; //发送者简要信息
+    TextMsg textMsg = 10; //文字消息，当MsgType == PM_TEXT 时应存在
+}
+
+// EPrivateMsgType 私聊消息类型
+enum EPrivateMsgType {
+    PM_UNKNOWN = 0; //未知消息
+
+    ///////////////////////////// 通用的消息类型 1-99 Start ////////////////////////////////////////
+    PM_TEXT = 1; //文字消息
+    ///////////////////////////// 通用的消息类型 1-99 End ////////////////////////////////////////
+}
+
+// 文字消息
+message TextMsg {
+    string text = 1; //文字内容
+    // TODO: 添加其他字段
+}

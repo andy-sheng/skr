@@ -1,0 +1,74 @@
+logs/
+Crash_Doraemon/
+guard-res-apk/
+local_maven/
+build/
+publish.zip
+.DS_Store
+.gradle
+.idea/*
+gradle/*
+gradlew*
+.git/*
+*.iml
+local.properties
+app/ship/*
+app/.DS_Store
+app/.idea
+app/gradle/
+captures
+projectFilesBackup/
+publish/
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+build/
+.externalNativeBuild/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Android Studio
+.idea
+.gradle
+.gradletasknamecache
+/*/local.properties
+/*/out
+/*/*/build
+build
+/*/*/production
+*.iml
+*.iws
+*.ipr
+*~
+*.swp
+
+*/**/local_setting.py*
+
+# freeline
+freeline.py
+freeline/*
+freeline_*.json
+
+# python pyc
+*.pyc
+a.txt
+DEBUG
+*.vcxproj

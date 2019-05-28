@@ -1,0 +1,25 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <!--<com.opensource.svgaplayer.SVGAImageView-->
+        <!--android:id="@+id/none_sing_svga"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/view_560_dp"-->
+        <!--android:visibility="gone"-->
+        <!--app:antiAlias="true"-->
+        <!--app:autoPlay="false" />-->
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/sing_result_svga"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_180_dp"
+        android:layout_marginTop="@dimen/view_139_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+</merge>

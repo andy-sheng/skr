@@ -21,10 +21,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
-import com.common.base.ConfigModule;
+import com.common.core.crash.SkrCrashHandler;
+import com.common.notification.NotificationMsgProcess;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
+import com.common.utils.U;
+import com.doraemon.DoraemonManager;
+import com.module.ModuleServiceManager;
+import com.module.msg.IMsgService;
 
 import java.util.List;
 
@@ -54,12 +62,26 @@ public class CoreConfiguration implements ConfigModule {
 
             @Override
             public void attachBaseContext(@NonNull Context base) {
+                SkrCrashHandler.getInstance().register(base);
             }
 
             @Override
-            public void onCreate(@NonNull Application application) {
+            public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+                // todo 服务器暂时无人对接，先屏蔽
+                ApiManager.getInstance().addInterceptor(new CoreInfoInterceptor());
+                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                if (msgService != null) {
+                    msgService.initRongIM(U.app());
+                    msgService.addMsgProcessor(new NotificationMsgProcess());
+                }
                 UserAccountManager.getInstance().init();
+                DoraemonManager.init();
+            }
+
+            @Override
+            public void onOtherProcessCreate(@NonNull Application application) {
+
             }
 
             @Override

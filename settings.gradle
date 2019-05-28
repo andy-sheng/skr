@@ -1,21 +1,26 @@
-include ':app', ':baseLibrary:commonsdk', ':commonservice', ':commoncore',  ':moduletest'
+include ':app',  ':commonservice', ':commoncore', ':moduletest'
+include ':baseLibrary:commonsdk',':baseLibrary:enginesdk',':baseLibrary:android-gif-drawable'
 //include ':modulewatch', ':modulechannel'
-include ':Module:Home', ':Module:RankingMode'
+include ':Module:Home',':Module:PlayWays',':Module:IMKit'
 
-include ':plugindemo'
+include ':Component:IMLib',':Component:BusiLib'
+//include ':plugindemo'
 
 include ':baseLibrary:my-utils-gradle'
-
 
 if (droidPluginEnable.toBoolean()) {
     include ':baseLibrary:DroidPlugin'
 }
-
 if (repluginHostEnable.toBoolean()) {
     include ':baseLibrary:replugin-host-gradle', ':baseLibrary:replugin-host-library'
 }
 if (repluginPluginEnable.toBoolean()) {
     include ':baseLibrary:replugin-plugin-gradle', ':baseLibrary:replugin-plugin-library'
 }
+if (arcCloud.toBoolean()) {
+    include ':baseLibrary:arcCloud'
+}
+
+include ':baseLibrary:doraemonkit'
 
 

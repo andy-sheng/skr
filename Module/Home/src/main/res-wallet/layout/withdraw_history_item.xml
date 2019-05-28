@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/tv_with_draw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:text="提现"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <TextView
+        android:id="@+id/tv_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_with_draw"
+        android:layout_alignLeft="@+id/tv_with_draw"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:text="2019-02-14"
+        android:textColor="#B7BED5"
+        android:textSize="@dimen/textsize_12_dp" />
+
+    <TextView
+        android:id="@+id/tv_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:text="-50.00"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_cash"
+        android:layout_alignRight="@+id/tv_cash"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:text="提现成功"
+        android:textColor="#B7BED5"
+        android:textSize="@dimen/textsize_12_dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_alignParentBottom="true"
+        android:background="#D8D8D8" />
+</RelativeLayout>

@@ -1,12 +1,8 @@
 package com.example.qrcode;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
@@ -17,9 +13,9 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.fragment.ImagePickerFragment;
-import com.imagepicker.model.ImageItem;
+import com.respicker.ResPicker;
+import com.respicker.fragment.ResPickerFragment;
+import com.respicker.model.ImageItem;
 import com.wali.live.moduletest.R;
 
 import java.util.ArrayList;
@@ -209,16 +205,16 @@ public class TestScanActivity extends BaseActivity implements QRCodeView.Delegat
                 https://github.com/bingoogolapple/BGAPhotoPicker-Android
                 这个库来从图库中选择二维码图片，这个库不是必须的，你也可以通过自己的方式从图库中选择图片
                  */
-            ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+            ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                     .setMultiMode(false)
                     .setCrop(false)
                     .build()
             );
-            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, ImagePickerFragment.class)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ResPickerFragment.class)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
-                            ArrayList<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
+                            ArrayList<ImageItem> list = ResPicker.getInstance().getSelectedImageList();
                             mZXingView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                             mZXingView.decodeQRCode(list.get(0).getPath());
                         }

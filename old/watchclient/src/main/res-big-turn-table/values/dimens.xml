@@ -1,9 +1,0 @@
-<resources>
-    <dimen name="view_dimen_1000">333.33dp</dimen>
-    <dimen name="view_dimen_495">165dp</dimen>
-    <dimen name="view_dimen_1190">396.66dip</dimen>
-    <dimen name="view_dimen_690">230dip</dimen>
-    <dimen name="view_dimen_860">286.67dp</dimen>
-    <dimen name="view_dimen_893">297.67dp</dimen>
-    <dimen name="view_big_turn_table_tips_width">204.67dp</dimen>
-</resources>

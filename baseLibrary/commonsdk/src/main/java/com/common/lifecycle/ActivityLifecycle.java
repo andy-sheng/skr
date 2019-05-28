@@ -17,19 +17,24 @@ package com.common.lifecycle;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.common.base.BaseFragment;
 import com.common.base.ConfigModule;
 import com.common.base.delegate.IActivity;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 /**
@@ -65,8 +70,9 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     }
 
 
-    int resumeNum;
-    int pauseNum;
+    int mActivityCount = 0;
+
+    Handler mUiHanlder = new Handler();
 
     public ActivityLifecycle() {
 
@@ -89,33 +95,33 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
             U.getActivityUtils().addActivity(activity);
 
         registerFragmentCallbacks(activity);
+        //PushAgent.getInstance(U.app()).onAppStart();
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
+        mActivityCount++;
+        if (mActivityCount == 1) {
+            U.getActivityUtils().setAppForeground(true);
+        }
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
         U.getActivityUtils().setCurrentActivity(activity);
-        resumeNum++;
-        if (resumeNum > pauseNum) {
-            U.getActivityUtils().setAppForeground(true);
-        }
-        StatisticsAdapter.recordPageStart(activity, activity.getClass().getSimpleName());
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        pauseNum++;
-        if (resumeNum <= pauseNum) {
-            U.getActivityUtils().setAppForeground(false);
-        }
-        StatisticsAdapter.recordPageEnd(activity, activity.getClass().getSimpleName());
+
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
+        mActivityCount--;
+        if (mActivityCount == 0) {
+            U.getActivityUtils().setAppForeground(false);
+        }
         if (U.getActivityUtils().getCurrentActivity() == activity) {
             U.getActivityUtils().setCurrentActivity(null);
         }
@@ -128,6 +134,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityDestroyed(Activity activity) {
         U.getActivityUtils().removeActivity(activity);
+        fixSoftInputLeaks(activity);
     }
 
     /**
@@ -157,6 +164,29 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
             for (FragmentManager.FragmentLifecycleCallbacks fragmentLifecycle : getExtraFragmentLifecycles()) {
                 ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentLifecycle, true);
             }
+        }
+    }
+
+    private static void fixSoftInputLeaks(final Activity activity) {
+        if (activity == null) return;
+        InputMethodManager imm =
+                (InputMethodManager) U.app().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+        String[] leakViews = new String[]{"mLastSrvView", "mCurRootView", "mServedView", "mNextServedView"};
+        for (String leakView : leakViews) {
+            try {
+                Field leakViewField = InputMethodManager.class.getDeclaredField(leakView);
+                if (leakViewField == null) continue;
+                if (!leakViewField.isAccessible()) {
+                    leakViewField.setAccessible(true);
+                }
+                Object obj = leakViewField.get(imm);
+                if (!(obj instanceof View)) continue;
+                View view = (View) obj;
+                if (view.getRootView() == activity.getWindow().getDecorView().getRootView()) {
+                    leakViewField.set(imm, null);
+                }
+            } catch (Throwable ignore) { /**/ }
         }
     }
 

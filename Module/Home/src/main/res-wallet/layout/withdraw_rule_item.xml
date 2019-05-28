@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/textsize_8_dp"
+    android:paddingLeft="@dimen/view_26_dp"
+    android:paddingRight="@dimen/view_26_dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#0C2275"
+        android:text="1."
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#0C2275"
+        android:text="你好索朗多吉发啊顺利解放啦时间到了放假啊谁来打飞机啊来教室里放水淀粉撒的发生"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/live_shootitem_pay_button_bg9_close_3" android:state_pressed="true" />
-
-    <item android:drawable="@drawable/live_shootitem_pay_button_bg9_open"  android:state_enabled="true" />
-
-    <item android:drawable="@drawable/live_barrage_send_button_bg_null" android:state_enabled="false"/>
-</selector>

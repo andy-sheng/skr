@@ -3,7 +3,9 @@ package com.common.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -11,8 +13,13 @@ import com.common.log.MyLog;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ActivityUtils {
     public final static String TAG = "ActivityUtils";
@@ -20,6 +27,8 @@ public class ActivityUtils {
     ActivityUtils() {
 
     }
+
+    final Map<Activity, Set<OnActivityDestroyedListener>> mDestroyedListenerMap = new HashMap<>();
 
     //    //true 为不需要加入到 Activity 容器进行统一管理,默认为 false
     public static final String IS_NOT_ADD_ACTIVITY_LIST = "is_not_add_activity_list";
@@ -32,6 +41,7 @@ public class ActivityUtils {
     //当前在前台的 Activity
     private Activity mCurrentActivity;
     private boolean mIsAppForeground;
+    private long mIsAppForegroundChangeTs;
     //提供给外部扩展 AppManager 的 onReceive 方法
 //    private HandleListener mHandleListener;
 //
@@ -254,15 +264,64 @@ public class ActivityUtils {
                 mActivityList.remove(activity);
             }
         }
+        consumeOnActivityDestroyedListener(activity);
+    }
+
+
+    /**
+     * 监听activity的destroy
+     *
+     * @param activity
+     * @param listener
+     */
+    public void addOnActivityDestroyedListener(final Activity activity,
+                                               final OnActivityDestroyedListener listener) {
+        if (activity == null || listener == null) return;
+        Set<OnActivityDestroyedListener> listeners;
+        if (!mDestroyedListenerMap.containsKey(activity)) {
+            listeners = new HashSet<>();
+            mDestroyedListenerMap.put(activity, listeners);
+        } else {
+            listeners = mDestroyedListenerMap.get(activity);
+            if (listeners.contains(listener)) return;
+        }
+        listeners.add(listener);
+    }
+
+    /**
+     * 移除activity的监听
+     *
+     * @param activity
+     */
+    private void consumeOnActivityDestroyedListener(Activity activity) {
+        Iterator<Map.Entry<Activity, Set<OnActivityDestroyedListener>>> iterator
+                = mDestroyedListenerMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Activity, Set<OnActivityDestroyedListener>> entry = iterator.next();
+            if (entry.getKey() == activity) {
+                Set<OnActivityDestroyedListener> value = entry.getValue();
+                for (OnActivityDestroyedListener listener : value) {
+                    listener.onActivityDestroyed(activity);
+                }
+                iterator.remove();
+            }
+        }
     }
 
 
     /**
      * 由 ActivityLifecycle 来判断是否在前台
+     *
      * @param isAppForeground
      */
     public void setAppForeground(boolean isAppForeground) {
-        this.mIsAppForeground = isAppForeground;
+        if (this.mIsAppForeground != isAppForeground) {
+            MyLog.d(TAG, "发生前后台切换" + " isAppForeground=" + isAppForeground);
+            this.mIsAppForeground = isAppForeground;
+            mIsAppForegroundChangeTs = System.currentTimeMillis();
+            EventBus.getDefault().post(new ForeOrBackgroundChange(mIsAppForeground));
+        }
+
     }
 
     /**
@@ -272,189 +331,73 @@ public class ActivityUtils {
         return this.mIsAppForeground;
     }
 
-//    /**
-//     * 删除集合里的指定位置的 {@link Activity}
-//     *
-//     * @param location
-//     */
-//    public Activity removeActivity(int location) {
-//        if (mActivityList == null) {
-//            MyLog.w(TAG, "mActivityList == null when removeActivity(int)");
-//            return null;
-//        }
-//        synchronized (AppManager.class) {
-//            if (location > 0 && location < mActivityList.size()) {
-//                return mActivityList.remove(location);
-//            }
-//        }
-//        return null;
-//    }
-//
-//    /**
-//     * 关闭指定的 {@link Activity} class 的所有的实例
-//     *
-//     * @param activityClass
-//     */
-//    public void killActivity(Class<?> activityClass) {
-//        if (mActivityList == null) {
-//            MyLog.w(TAG, "mActivityList == null when killActivity(Class)");
-//            return;
-//        }
-//        synchronized (AppManager.class) {
-//            Iterator<Activity> iterator = getActivityList().iterator();
-//            while (iterator.hasNext()) {
-//                Activity next = iterator.next();
-//
-//                if (next.getClass().equals(activityClass)) {
-//                    iterator.remove();
-//                    next.finish();
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    /**
-//     * 指定的 {@link Activity} 实例是否存活
-//     *
-//     * @param {@link Activity}
-//     * @return
-//     */
-//    public boolean activityInstanceIsLive(Activity activity) {
-//        if (mActivityList == null) {
-//            MyLog.w(TAG, "mActivityList == null when activityInstanceIsLive(Activity)");
-//            return false;
-//        }
-//        return mActivityList.contains(activity);
-//    }
-//
-//
-//    /**
-//     * 指定的 {@link Activity} class 是否存活(同一个 {@link Activity} class 可能有多个实例)
-//     *
-//     * @param activityClass
-//     * @return
-//     */
-//    public boolean activityClassIsLive(Class<?> activityClass) {
-//        if (mActivityList == null) {
-//            MyLog.w(TAG, "mActivityList == null when activityClassIsLive(Class)");
-//            return false;
-//        }
-//        for (Activity activity : mActivityList) {
-//            if (activity.getClass().equals(activityClass)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//
-//    /**
-//     * 获取指定 {@link Activity} class 的实例,没有则返回 null(同一个 {@link Activity} class 有多个实例,则返回最早创建的实例)
-//     *
-//     * @param activityClass
-//     * @return
-//     */
-//    public Activity findActivity(Class<?> activityClass) {
-//        if (mActivityList == null) {
-//            MyLog.w(TAG, "mActivityList == null when findActivity(Class)");
-//            return null;
-//        }
-//        for (Activity activity : mActivityList) {
-//            if (activity.getClass().equals(activityClass)) {
-//                return activity;
-//            }
-//        }
-//        return null;
-//    }
-//
-//
-//    /**
-//     * 关闭所有 {@link Activity}
-//     */
-//    public void killAll() {
-////        while (getActivityList().size() != 0) { //此方法只能兼容LinkedList
-////            getActivityList().remove(0).finish();
-////        }
-//        synchronized (AppManager.class) {
-//            Iterator<Activity> iterator = getActivityList().iterator();
-//            while (iterator.hasNext()) {
-//                Activity next = iterator.next();
-//                iterator.remove();
-//                next.finish();
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 关闭所有 {@link Activity},排除指定的 {@link Activity}
-//     *
-//     * @param excludeActivityClasses activity class
-//     */
-//    public void killAll(Class<?>... excludeActivityClasses) {
-//        List<Class<?>> excludeList = Arrays.asList(excludeActivityClasses);
-//        synchronized (AppManager.class) {
-//            Iterator<Activity> iterator = getActivityList().iterator();
-//            while (iterator.hasNext()) {
-//                Activity next = iterator.next();
-//
-//                if (excludeList.contains(next.getClass()))
-//                    continue;
-//
-//                iterator.remove();
-//                next.finish();
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 关闭所有 {@link Activity},排除指定的 {@link Activity}
-//     *
-//     * @param excludeActivityName {@link Activity} 的完整全路径
-//     */
-//    public void killAll(String... excludeActivityName) {
-//        List<String> excludeList = Arrays.asList(excludeActivityName);
-//        synchronized (AppManager.class) {
-//            Iterator<Activity> iterator = getActivityList().iterator();
-//            while (iterator.hasNext()) {
-//                Activity next = iterator.next();
-//
-//                if (excludeList.contains(next.getClass().getName()))
-//                    continue;
-//
-//                iterator.remove();
-//                next.finish();
-//            }
-//        }
-//    }
-//
-//
-//    /**
-//     * 退出应用程序
-//     * <p>
-//     * 此方法经测试在某些机型上并不能完全杀死 App 进程, 几乎试过市面上大部分杀死进程的方式, 但都发现没卵用, 所以此
-//     * 方法如果不能百分之百保证能杀死进程, 就不能贸然调用 {@link #release()} 释放资源, 否则会造成其他问题, 如果您
-//     * 有测试通过的并能适用于绝大多数机型的杀死进程的方式, 望告知
-//     */
-//    public void appExit() {
-//        try {
-//            killAll();
-//            android.os.Process.killProcess(android.os.Process.myPid());
-//            System.exit(0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public interface HandleListener {
-//        void handleMessage(AppManager appManager, Message message);
-//    }
-//
-//    public static class MessageEvent {
-//        public Message msg;
-//
-//        public MessageEvent(Message msg) {
-//            this.msg = msg;
-//        }
-//    }
+    public long getIsAppForegroundChangeTs() {
+        return mIsAppForegroundChangeTs;
+    }
+
+    public Intent getLaunchIntentForPackage(String s) {
+        Intent intent = U.app().getPackageManager().getLaunchIntentForPackage(s);
+        return intent;
+    }
+
+    public boolean isHomeActivity(Activity activity) {
+        if (activity != null && activity.getClass().getSimpleName().equals("HomeActivity")) {
+            return true;
+        }
+        return false;
+    }
+
+    public Activity getHomeActivity() {
+        for (Activity activity : getActivityList()) {
+            if (isHomeActivity(activity)) {
+                return activity;
+            }
+        }
+        return null;
+    }
+
+    public boolean goHomeActivity() {
+        boolean homeExist = false;
+        for (Activity activity : getActivityList()) {
+            if (isHomeActivity(activity)) {
+                homeExist = true;
+            } else {
+                activity.finish();
+            }
+        }
+        if (!homeExist) {
+
+        }
+        return homeExist;
+    }
+
+    public boolean isHomeActivityExist() {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if(U.getActivityUtils().isHomeActivity(activity)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void safeGo(Intent intent) {
+        if (U.app().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
+            getTopActivity().startActivity(intent);
+        }
+    }
+
+    /**
+     * 是否在后台回调
+     */
+    public static class ForeOrBackgroundChange {
+        public boolean foreground;
+
+        public ForeOrBackgroundChange(boolean foreground) {
+            this.foreground = foreground;
+        }
+    }
+
+    public interface OnActivityDestroyedListener {
+        void onActivityDestroyed(Activity activity);
+    }
 }

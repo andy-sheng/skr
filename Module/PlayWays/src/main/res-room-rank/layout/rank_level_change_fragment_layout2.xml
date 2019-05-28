@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_trans_80">
+
+    <ImageView
+        android:id="@+id/background_iv"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_375_dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/win_guangmang"
+        android:visibility="gone" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/result_svga"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_600_dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+    <RelativeLayout
+        android:id="@+id/rank_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_360_dp"
+        android:visibility="gone">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/level_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_20_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_17_dp"
+            android:gravity="center"
+            android:text="钻石巨星5段"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_14_dp" />
+
+        <com.zq.level.view.LevelStarProgressBar
+            android:id="@+id/level_progress"
+            android:layout_width="@dimen/view_140_dp"
+            android:layout_height="@dimen/view_34_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_35_dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_80_dp">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/result_text"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_20_dp"
+                android:gravity="center_vertical"
+                android:text="平局:"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp" />
+
+            <ImageView
+                android:layout_width="@dimen/view_12_dp"
+                android:layout_height="@dimen/view_11_dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_4_dp"
+                android:layout_toRightOf="@+id/result_text"
+                android:src="@drawable/level_xingxing" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/result_num"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_marginLeft="@dimen/view_20_dp"
+                android:layout_toRightOf="@+id/result_text"
+                android:gravity="center_vertical"
+                android:text="+0"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_104_dp">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/exper_text_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_20_dp"
+                android:gravity="center_vertical"
+                android:text="经验:"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp" />
+
+            <ImageView
+                android:layout_width="@dimen/view_12_dp"
+                android:layout_height="@dimen/view_11_dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_4_dp"
+                android:layout_toRightOf="@+id/exper_text_tv"
+                android:src="@drawable/level_xingxing" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/exper_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_marginLeft="@dimen/view_20_dp"
+                android:layout_toRightOf="@+id/exper_text_tv"
+                android:gravity="center_vertical"
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_14_dp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
