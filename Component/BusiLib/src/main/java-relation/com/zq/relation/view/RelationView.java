@@ -78,7 +78,6 @@ public class RelationView extends RelativeLayout {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
         mSearchArea = (RelativeLayout) this.findViewById(R.id.search_area);
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view);
         mRefreshLayout = (SmartRefreshLayout) this.findViewById(R.id.refreshLayout);
