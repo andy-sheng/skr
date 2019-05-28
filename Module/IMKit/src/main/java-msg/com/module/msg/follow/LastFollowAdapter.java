@@ -1,6 +1,7 @@
 package com.module.msg.follow;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -27,8 +29,24 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
 
     RecyclerOnItemClickListener<LastFollowModel> mItemClickListener;
 
+    Drawable mUnFollowDrawable;
+    Drawable mFollowDrawable;
+
     public LastFollowAdapter(RecyclerOnItemClickListener<LastFollowModel> listener) {
         this.mItemClickListener = listener;
+
+        mUnFollowDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#FFC15B"))
+                .setStrokeColor(Color.parseColor("#3B4E79"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setCornersRadius(U.getDisplayUtils().dip2px(16))
+                .build();
+
+        mFollowDrawable = new DrawableCreator.Builder()
+                .setStrokeColor(Color.parseColor("#3B4E79"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setCornersRadius(U.getDisplayUtils().dip2px(16))
+                .build();
     }
 
     @NonNull
@@ -100,7 +118,7 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
                     AvatarUtils.newParamsBuilder(lastFollowModel.getAvatar())
                             .setCircle(true)
                             .build());
-            mNameTv.setText(UserInfoManager.getInstance().getRemarkName(lastFollowModel.getUserID(),lastFollowModel.getNickname()));
+            mNameTv.setText(UserInfoManager.getInstance().getRemarkName(lastFollowModel.getUserID(), lastFollowModel.getNickname()));
             mStatusDescTv.setText(lastFollowModel.getStatusDesc());
             if (lastFollowModel.getSex() == ESex.SX_MALE.getValue()) {
                 mSexIv.setVisibility(View.VISIBLE);
@@ -120,20 +138,20 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setText("已互关");
                     mFollowTv.setClickable(false);
-                    mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
-                    mFollowTv.setBackground(null);
+                    mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
+                    mFollowTv.setBackground(mFollowDrawable);
                 } else if (lastFollowModel.isIsFollow()) {
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setText("已关注");
                     mFollowTv.setClickable(false);
-                    mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
-                    mFollowTv.setBackground(null);
+                    mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
+                    mFollowTv.setBackground(mFollowDrawable);
                 } else {
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setClickable(true);
                     mFollowTv.setText("+关注");
                     mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
-                    mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), com.component.busilib.R.drawable.yellow_button_icon));
+                    mFollowTv.setBackground(mUnFollowDrawable);
                 }
             }
         }

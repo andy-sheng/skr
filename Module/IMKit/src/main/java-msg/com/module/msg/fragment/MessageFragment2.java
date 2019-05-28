@@ -113,7 +113,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
             }
         });
 
-        mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mPopupWindow != null && mPopupWindow.isShowing()) {

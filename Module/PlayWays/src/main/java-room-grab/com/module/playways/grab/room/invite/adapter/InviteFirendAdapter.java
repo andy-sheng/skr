@@ -28,9 +28,34 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
     private static final int ITEM_TYPE_NORMAL = 1;
     private static final int ITEM_TYPE_SEARCH = 2;
 
+    Drawable mBusyCircleDrawable;
+    Drawable mAIDLCircleDrawable;
+    Drawable mOffLineCircleDrawable;
+    Drawable mGameCircleDrawable;
+
     public InviteFirendAdapter(OnInviteClickListener onInviteClickListener, boolean hasSearch) {
         this.mOnInviteClickListener = onInviteClickListener;
         this.mHasSearch = hasSearch;
+
+        mBusyCircleDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#FFC300"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .build();
+
+        mAIDLCircleDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#7ED321"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .build();
+
+        mOffLineCircleDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#8EA0A9"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .build();
+
+        mGameCircleDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#FF8C9A"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .build();
     }
 
     @NonNull
@@ -109,11 +134,6 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
 
         UserInfoModel mGrabFriendModel;
 
-        Drawable mBusyCircleDrawable;
-        Drawable mAIDLCircleDrawable;
-        Drawable mOffLineCircleDrawable;
-        Drawable mGameCircleDrawable;
-
         public ItemHolder(View itemView) {
             super(itemView);
             mIvFriendIcon = (BaseImageView) itemView.findViewById(R.id.iv_friend_icon);
@@ -130,27 +150,6 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
                     }
                 }
             });
-
-            mBusyCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                    .setSolidColor(Color.parseColor("#FFC300"))
-                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
-                    .build();
-
-            mAIDLCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                    .setSolidColor(Color.parseColor("#7ED321"))
-                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
-                    .build();
-
-            mOffLineCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                    .setSolidColor(Color.parseColor("#8EA0A9"))
-                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
-                    .build();
-
-            mGameCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                    .setSolidColor(Color.parseColor("#FF8C9A"))
-                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
-                    .build();
-
         }
 
         public void bind(UserInfoModel model) {
