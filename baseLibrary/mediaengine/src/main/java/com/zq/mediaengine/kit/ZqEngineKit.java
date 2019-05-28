@@ -898,7 +898,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         // 针对不同场景，处理agc
         switch (mConfig.getScene()) {
             case grab:
-                filters.add(new TbAudioAgcFilter());
+                // 只有单人清唱才走天宝的agc
+                if (mConfig.isGrabSingNoAcc()) {
+                    filters.add(new TbAudioAgcFilter());
+                }
                 break;
             case voice:
                 break;
