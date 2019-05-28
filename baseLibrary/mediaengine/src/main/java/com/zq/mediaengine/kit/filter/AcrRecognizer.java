@@ -79,6 +79,8 @@ public class AcrRecognizer extends AudioFilterBase {
     @Override
     protected void doRelease() {
         mAudioData = null;
-        mArcCloudManager.destroy();
+        if (mArcCloudManager != null) {
+            mArcCloudManager.destroy();
+        }
     }
 }
