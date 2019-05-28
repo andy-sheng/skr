@@ -21,7 +21,7 @@ void ResampleReset_API(Resample_ID *mResample)
 		mResample->memL.mempy[i]=0;
 	}
 	mResample->memL.memDindex = 0;
-	mResample->memL.memk = mResample->I - 1;//×¢Òâ£¡Ã¿´ÎcalcuºóÈÔÈ»Òªreset mem£¬ÒòÎªÕâ¸öË÷ÒýºÅÊÇÕë¶ÔÉÏÒ»´ÎD¡¢IµÄÄ³Ö¡Ä©½á¹û£¬´ËºÅ¿ÉÄÜ³¬³öÐÂD¡¢IË÷Òý±í³¤¶È¡£µ«ÊÇ¿ÉÒÔÏÈreset...
+	mResample->memL.memk = mResample->I - 1;//æ³¨æ„ï¼æ¯æ¬¡calcuåŽä»ç„¶è¦reset memï¼Œå› ä¸ºè¿™ä¸ªç´¢å¼•å·æ˜¯é’ˆå¯¹ä¸Šä¸€æ¬¡Dã€Içš„æŸå¸§æœ«ç»“æžœï¼Œæ­¤å·å¯èƒ½è¶…å‡ºæ–°Dã€Iç´¢å¼•è¡¨é•¿åº¦ã€‚ä½†æ˜¯å¯ä»¥å…ˆreset...
 	mResample->memL.memLindex = 0;
 
 	mResample->memR.meminput[0] = 0;
@@ -48,7 +48,7 @@ void ResampleCalcu_API(Resample_ID *mResample)
 		return;
 	}
 	
-	//¼ÆËã£¬D£¬I
+	//è®¡ç®—ï¼ŒDï¼ŒI
 	gcd = Gcd(mResample->insamplerate,mResample->outsamplerate);
 	mResample->I = mResample->outsamplerate/gcd;
 	mResample->D = mResample->insamplerate/gcd;
@@ -57,10 +57,10 @@ void ResampleCalcu_API(Resample_ID *mResample)
 	{
 //		assert(0);
 	}
-	//¸ù¾ÝD,IËã
+	//æ ¹æ®D,Iç®—
 
 	
-	switch(mResample->LinearOption)//Îª0Ê±²»ÐíÏßÐÔÄÚ²å£¬Îª1Ê±ÔÊÐíÏßÐÔÄÚ²å£¬Îª2ÒÔºó±ã²ÉÓÃÏßÐÔÄÚ²å£¬Îª3Ê±²»ÂË¾µÏñ£¬Îª4Ê±²»È¥»ìµþ£¬Îª5Ê±²»×öÈÎºÎÂË²¨
+	switch(mResample->LinearOption)//ä¸º0æ—¶ä¸è®¸çº¿æ€§å†…æ’ï¼Œä¸º1æ—¶å…è®¸çº¿æ€§å†…æ’ï¼Œä¸º2ä»¥åŽä¾¿é‡‡ç”¨çº¿æ€§å†…æ’ï¼Œä¸º3æ—¶ä¸æ»¤é•œåƒï¼Œä¸º4æ—¶ä¸åŽ»æ··å ï¼Œä¸º5æ—¶ä¸åšä»»ä½•æ»¤æ³¢
 	{
 	case 0:
 		if (1 == mResample->D)
@@ -83,7 +83,7 @@ void ResampleCalcu_API(Resample_ID *mResample)
 			mResample->resample = I_D_Shannon;
 		}
 		break;
-	case 1://ÔÝÊ±²»ÅÐ¶ÏÆôÓÃÌõ¼þÁË£¬ÔÊÐí¾ÍÓÃ
+	case 1://æš‚æ—¶ä¸åˆ¤æ–­å¯ç”¨æ¡ä»¶äº†ï¼Œå…è®¸å°±ç”¨
 	case 2:
 		if (mResample->D>mResample->I)
 		{
@@ -120,7 +120,7 @@ void ResampleCalcu_API(Resample_ID *mResample)
 	}
 	if(mResample->resample == D_Shannon||mResample->resample == I_Shannon||mResample->resample == I_D_Shannon)
 	{
-		//¼ÆËãÂË²¨ÏµÍ³½ØÖ¹ÆµÂÊ
+		//è®¡ç®—æ»¤æ³¢ç³»ç»Ÿæˆªæ­¢é¢‘çŽ‡
 		internalfL/*guiyihua*/ = 1.0/(2*THEMAXOF(mResample->D,mResample->I));
 		ChebyII_Lowpassc(mResample->filterOrder,internalfL*TRANSITIONBAND,internalfL,ATTENUATION_DB,mResample->bj,mResample->aj);
 		for (i=0;i<2+1;i++)
@@ -193,7 +193,7 @@ void ResampleRun_API
 			inL[j] = input[i];
 			inR[j] = input[i+1];
 		}
-		outL = (short *)malloc((int)(sizeof(short)*inRlen*((float)mResample->I/mResample->D + 1)));//+1¾ÍÓ¦¸Ã¿ÉÒÔÁË
+		outL = (short *)malloc((int)(sizeof(short)*inRlen*((float)mResample->I/mResample->D + 1)));//+1å°±åº”è¯¥å¯ä»¥äº†
 		outR = (short *)malloc((int)(sizeof(short)*inRlen*((float)mResample->I/mResample->D + 1)));
 	
 		mResample->resample(&mResample->memL,mResample,inL,inRlen,outL,outLen);

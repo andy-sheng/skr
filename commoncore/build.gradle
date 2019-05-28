@@ -67,6 +67,7 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     api project(":baseLibrary:commonsdk")
     api project(":baseLibrary:enginesdk")
+    api project(":baseLibrary:mediaengine")
     // doraemonkit 滴滴开源一款app内调试工具
     api project(":baseLibrary:doraemonkit")
     api project(":commonservice")

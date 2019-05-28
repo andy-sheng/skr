@@ -74,6 +74,7 @@ import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.lyrics.event.LrcEvent;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -177,14 +178,14 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
             params.setScene(Params.Scene.rank);
-            EngineManager.getInstance().init("rankingroom", params);
+            ZqEngineKit.getInstance().init("rankingroom", params);
             boolean isAnchor = false;
 //            if(RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())){
 //                isAnchor = true;
 //            }
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, mRoomData.getAgoraToken());
+            ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, mRoomData.getAgoraToken());
             // 不发送本地音频
-//            EngineManager.getInstance().muteLocalAudioStream(true);
+//            ZqEngineKit.getInstance().muteLocalAudioStream(true);
             // 系统提示
             pretenSystemMsg();
             // 伪装AI裁判
@@ -202,7 +203,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
 
             if (ScoreConfig.isAcrEnable()) {
-                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
                         .setMode(RecognizeConfig.MODE_MANUAL)
                         .setSongName(mRoomData.getSongModel().getItemName())
                         .setArtist(mRoomData.getSongModel().getOwner())
@@ -293,7 +294,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (!mRoomData.hasGoVoiceRoom()) {
             exitGame();
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
-            EngineManager.getInstance().destroy("rankingroom");
+            ZqEngineKit.getInstance().destroy("rankingroom");
         } else {
             MyLog.w(TAG, "跳转到语音房，暂时不退出融云聊天室");
         }
@@ -700,7 +701,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         public void run() {
                             //再次确认
                             if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                                EngineManager.getInstance().setClientRole(true);
+                                ZqEngineKit.getInstance().setClientRole(true);
                                 // 等待角色变换成功回调
                                 Message msg = mUiHandler.obtainMessage(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
                                 mUiHandler.sendMessageDelayed(msg, 2000);
@@ -722,7 +723,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_CLASSIC_RANK)) {
                     //属于需要上传音频文件的状态
                     // 上一轮是我的轮次，暂停录音
-                    EngineManager.getInstance().stopAudioRecording();
+                    ZqEngineKit.getInstance().stopAudioRecording();
                     BaseRoundInfoModel myRoundInfoModel = event.getLastRoundInfoModel();
                     if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
                         myRoundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
@@ -733,9 +734,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 sendRoundScoreInfo(event.getLastRoundInfoModel().getRoundSeq());
             }
 
-            EngineManager.getInstance().stopAudioMixing();
-            EngineManager.getInstance().setClientRole(false);
-//            EngineManager.getInstance().muteLocalAudioStream(true);
+            ZqEngineKit.getInstance().stopAudioMixing();
+            ZqEngineKit.getInstance().setClientRole(false);
+//            ZqEngineKit.getInstance().muteLocalAudioStream(true);
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
             if (mRoomData.getRealRoundInfo() != null) {
                 // 其他人演唱
@@ -797,7 +798,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = new ExoPlayer();
         }
         mExoPlayer.startPlay(skrerUrl);
-        if (!EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
+        if (!ZqEngineKit.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
             mExoPlayer.setVolume(1);
         } else {
             mExoPlayer.setVolume(0);
@@ -914,7 +915,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         cancelHeartBeatTask("gameIsFinish");
         cancelSyncGameStateTask();
         // 游戏结束，直接关闭引擎，节省计费
-        EngineManager.getInstance().destroy("rankingroom");
+        ZqEngineKit.getInstance().destroy("rankingroom");
         EventBus.getDefault().isRegistered(this);
     }
 
@@ -931,7 +932,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (fromUser) {
             mRoomData.setMute(mute);
         }
-        EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
+        ZqEngineKit.getInstance().muteAllRemoteAudioStreams(mute);
         // 如果是机器人的话
         if (mute) {
             // 如果是静音
@@ -1178,13 +1179,13 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
 
                 if (accFile != null && accFile.exists()) {
-//                                    EngineManager.getInstance().muteLocalAudioStream(false);
-                    EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
+//                                    ZqEngineKit.getInstance().muteLocalAudioStream(false);
+                    ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
                             , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
                     /**
                      * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
                      */
-                    EngineManager.getInstance().setAudioMixingPosition(0);
+                    ZqEngineKit.getInstance().setAudioMixingPosition(0);
                     // 还应开始播放歌词
                     mIGameRuleView.playLyric(mRoomData.getSongModel());
                     mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
@@ -1193,7 +1194,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     //开始录制声音
                     if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_CLASSIC_RANK)) {
                         // 需要上传音频伪装成机器人
-                        EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                        ZqEngineKit.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
                     }
                     mRobotScoreHelper = new RobotScoreHelper();
                     //尝试再用融云通知对端
@@ -1309,7 +1310,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void sendTotalScoreToOthers(int lineNum) {
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(999);// 与ios约定，如果传递是分数是999就代表只是想告诉这首歌的总分
-        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        long ts = ZqEngineKit.getInstance().getAudioMixingCurrentPosition();
         machineScoreItem.setTs(ts);
         machineScoreItem.setNo(lineNum);
         sendScoreToOthers(machineScoreItem);
@@ -1516,7 +1517,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
-        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        long ts = ZqEngineKit.getInstance().getAudioMixingCurrentPosition();
         machineScoreItem.setTs(ts);
         machineScoreItem.setNo(line);
         mRoomData.setCurSongTotalScore(mRoomData.getCurSongTotalScore() + score);

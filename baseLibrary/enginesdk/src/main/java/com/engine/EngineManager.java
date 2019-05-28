@@ -288,7 +288,7 @@ public class EngineManager implements AgoraOutCallback {
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
     }
 
-    public static final EngineManager getInstance() {
+    private static final EngineManager getInstance() {
         return EngineManagerHolder.INSTANCE;
     }
 
@@ -416,10 +416,10 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     public void startRecord() {
-        if (mConfig.isUseCbEngine()) {
+        if (mConfig.isUseExternalAudio()) {
 //            CbEngineAdapter.getInstance().startRecord();
         } else {
-            U.getToastUtil().showShort("mConfig.isUseCbEngine is false ，cancel");
+            U.getToastUtil().showShort("mConfig.isUseZqEngine is false ，cancel");
         }
     }
 
@@ -574,7 +574,7 @@ public class EngineManager implements AgoraOutCallback {
      * 这个view也是之后的本地view
      */
     public void startPreview(SurfaceView surfaceView) {
-        if (mConfig.isUseCbEngine()) {
+        if (mConfig.isUseExternalVideo()) {
 //            CbEngineAdapter.getInstance().startPreview(surfaceView);
         } else {
             // agora引擎好像加入房间后，预览才有效果
@@ -587,7 +587,7 @@ public class EngineManager implements AgoraOutCallback {
      * 开启唱吧引擎的自采集视频预览
      */
     public void stopPreview() {
-        if (mConfig.isUseCbEngine()) {
+        if (mConfig.isUseExternalVideo()) {
 //            CbEngineAdapter.getInstance().stopPreview();
         } else {
             AgoraEngineAdapter.getInstance().stopPreview();

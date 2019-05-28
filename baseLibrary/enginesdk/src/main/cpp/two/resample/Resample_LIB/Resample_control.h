@@ -25,7 +25,7 @@ typedef struct Resample_channel_memory{
 	float w1[RESAMPLE_I_MAX];
 	float w2[RESAMPLE_I_MAX];
 	void (*resample)(Resample_MEM *mem,struct Resample_channel_memory *mResample,short *input,int inLen,short *output,int *outLen);
-	//float b[RESAMPLE_MAXORDER+1];Î´²ÉÓÃÖ±½ÓIĞÍ¡£¡£
+	//float b[RESAMPLE_MAXORDER+1];æœªé‡‡ç”¨ç›´æ¥Iå‹ã€‚ã€‚
 	//float a[RESAMPLE_MAXORDER+1];
 
 	/*settings:*/
@@ -33,9 +33,9 @@ typedef struct Resample_channel_memory{
 	int chanel;
 	int outsamplerate;
 	int filterOrder;
-	int DDSampling;//µ±I=1Ê±£¬Ö»ÓĞ³éÈ¡£¬ÕâÊ±ÊÇÖ±½Ó³é»¹ÊÇÂË²¨ºó³é£¬ÓÉ´Ë¾ö¶¨¡£ÒòÎª¿ÉÄÜ±»³éÈ¡ĞòÁĞ¿ÉÄÜ²»ĞèÒªµÍÍ¨£¬Õâ¸öÓĞÓÃ»§¾ö¶¨...
-	int LinearOption;//Îª0Ê±²»ĞíÏßĞÔÄÚ²å£¬Îª1Ê±ÔÊĞíÏßĞÔÄÚ²å£¬Îª2Ê±²ÉÓÃÏßĞÔÄÚ²å£¬Îª3Ê±²»ÂË¾µÏñ£¬Îª4Ê±²»È¥»ìµş£¬Îª5Ê±²»×öÈÎºÎÂË²¨
-	//int IThreshold;//ÆôÓÃÏßĞÔÄÚ²åµÄÌõ¼ş
+	int DDSampling;//å½“I=1æ—¶ï¼Œåªæœ‰æŠ½å–ï¼Œè¿™æ—¶æ˜¯ç›´æ¥æŠ½è¿˜æ˜¯æ»¤æ³¢åæŠ½ï¼Œç”±æ­¤å†³å®šã€‚å› ä¸ºå¯èƒ½è¢«æŠ½å–åºåˆ—å¯èƒ½ä¸éœ€è¦ä½é€šï¼Œè¿™ä¸ªæœ‰ç”¨æˆ·å†³å®š...
+	int LinearOption;//ä¸º0æ—¶ä¸è®¸çº¿æ€§å†…æ’ï¼Œä¸º1æ—¶å…è®¸çº¿æ€§å†…æ’ï¼Œä¸º2æ—¶é‡‡ç”¨çº¿æ€§å†…æ’ï¼Œä¸º3æ—¶ä¸æ»¤é•œåƒï¼Œä¸º4æ—¶ä¸å»æ··å ï¼Œä¸º5æ—¶ä¸åšä»»ä½•æ»¤æ³¢
+	//int IThreshold;//å¯ç”¨çº¿æ€§å†…æ’çš„æ¡ä»¶
 	//int DThreshold;
 }Resample_ID;
 

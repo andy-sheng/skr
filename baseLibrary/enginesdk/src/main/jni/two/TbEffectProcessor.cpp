@@ -28,16 +28,12 @@ Java_com_engine_effect_ITbEffectProcessor_init(JNIEnv *env, jobject ins) {
     return flag;
 }
 
-extern "C"
-JNIEXPORT jint JNICALL
-Java_com_engine_effect_ITbEffectProcessor_process1(JNIEnv *env, jobject ins, jbyteArray samplesJni,
-                                                   jint len,
-                                                   jint channels, jint sampleRate) {
+static void process1(uint8_t* data, int len, int channels, int sampleRate) {
     if (FILEOPEN) {
         LOGI("Java_com_engine_effect_ITbEffectProcessor_process1 flag=%d", flag);
     }
     if (flag == -1) {
-        return flag;
+        return;
     }
     if (flag != 1) {
         if (flag == 2) {
@@ -60,9 +56,6 @@ Java_com_engine_effect_ITbEffectProcessor_process1(JNIEnv *env, jobject ins, jby
     if (outputFile == NULL && FILEOPEN) {
         outputFile = fopen("/mnt/sdcard/tb_output.pcm", "wb+");
     }
-
-    //无符号整型，加起来和testIn不一定对得上
-    unsigned char *data = (unsigned char *) env->GetByteArrayElements(samplesJni, 0);
 
     if (FILEOPEN) {
         int t = 0;
@@ -90,32 +83,38 @@ Java_com_engine_effect_ITbEffectProcessor_process1(JNIEnv *env, jobject ins, jby
     if (FILEOPEN) {
         fwrite(samples, sizeof(short), len / 2, outputFile);
     }
-
-    // Release<Type>ArrayElements(<Type>Array arr , <Type>* array , jint mode)
-    //
-    //用这个函数可以选择将如何处理Java跟C++的数组，是提交，还是撤销等，内存释放还是不释放等
-    //
-    //mode可以取下面的值:
-    //
-    //0 ：对Java的数组进行更新并释放C/C++的数组
-    //
-    //JNI_COMMIT ：对Java的数组进行更新但是不释放C/C++的数组
-    //
-    //JNI_ABORT：对Java的数组不进行更新,释放C/C++的数组
-    env->ReleaseByteArrayElements(samplesJni, reinterpret_cast<jbyte *>(data), 0);
-    return flag;
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jbyteArray samplesJni,
-                                                   jint len,
+Java_com_engine_effect_ITbEffectProcessor_process1(JNIEnv *env, jobject ins, jbyteArray samplesJni,
+                                                   jobject byteBuffer, jint len,
                                                    jint channels, jint sampleRate) {
+    uint8_t *data = NULL;
+
+    if (samplesJni) {
+        data = (uint8_t *) env->GetByteArrayElements(samplesJni, 0);
+    } else if (byteBuffer) {
+        data = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    }
+
+    if (data) {
+        process1(data, len, channels, sampleRate);
+    }
+
+    if (samplesJni) {
+        // 对Java的数组进行更新并释放C/C++的数组
+        env->ReleaseByteArrayElements(samplesJni, (jbyte *) data, 0);
+    }
+    return flag;
+}
+
+static void process2(uint8_t* data, int len, int channels, int sampleRate) {
     if (FILEOPEN) {
         LOGI("Java_com_engine_effect_ITbEffectProcessor_process2 flag=%d", flag);
     }
     if (flag == -1) {
-        return flag;
+        return;
     }
     if (flag != 2) {
         if (FILEOPEN) {
@@ -162,7 +161,6 @@ Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jby
         outputFile = fopen("/mnt/sdcard/tb_output.pcm", "wb+");
     }
 
-    unsigned char *data = (unsigned char *) env->GetByteArrayElements(samplesJni, 0);
     if (FILEOPEN) {
         int t = 0;
         for (int i = 0; i < len; i++) {
@@ -186,20 +184,28 @@ Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jby
     if (FILEOPEN) {
         fwrite(samples, sizeof(short), len / 2, outputFile);
     }
-    // Release<Type>ArrayElements(<Type>Array arr , <Type>* array , jint mode)
-    //
-    //用这个函数可以选择将如何处理Java跟C++的数组，是提交，还是撤销等，内存释放还是不释放等
-    //
-    //mode可以取下面的值:
-    //
-    //0 ：对Java的数组进行更新并释放C/C++的数组D/EngineManager
-    //
-    //JNI_COMMIT ：对Java的数组进行更新但是不释放C/C++的数组
-    //
-    //JNI_ABORT：对Java的数组不进行更新,释放C/C++的数组
-    env->ReleaseByteArrayElements(samplesJni, reinterpret_cast<jbyte *>(data), 0);
-    if (FILEOPEN) {
-        LOGI("19");
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jbyteArray samplesJni,
+                                                   jobject byteBuffer, jint len,
+                                                   jint channels, jint sampleRate) {
+    uint8_t *data = NULL;
+
+    if (samplesJni) {
+        data = (uint8_t *) env->GetByteArrayElements(samplesJni, 0);
+    } else if (byteBuffer) {
+        data = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    }
+
+    if (data) {
+        process2(data, len, channels, sampleRate);
+    }
+
+    if (samplesJni) {
+        // 对Java的数组进行更新并释放C/C++的数组
+        env->ReleaseByteArrayElements(samplesJni, (jbyte *) data, 0);
     }
     return flag;
 }

@@ -19,8 +19,8 @@ Java_com_engine_effect_IFAudioEffectEngine_destroyAudioEffect
 
 JNIEXPORT
 void JNICALL Java_com_engine_effect_IFAudioEffectEngine_processAudioEffect
-        (JNIEnv *env, jobject obj, jbyteArray samplesJni, jint len,
-         jint channels, jint sampleRate);
+        (JNIEnv *env, jobject obj, jbyteArray samplesJni, jobject byteBuffer,
+         jint len, jint channels, jint sampleRate);
 
 
 #ifdef __cplusplus

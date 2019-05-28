@@ -22,6 +22,7 @@ import com.zq.live.proto.Room.EWantSingType;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import java.util.List;
 
@@ -137,7 +138,7 @@ public class SelfSingLyricView extends RelativeLayout {
             }
 
         });
-        EngineManager.getInstance().setRecognizeListener(new ArcRecognizeListener() {
+        ZqEngineKit.getInstance().setRecognizeListener(new ArcRecognizeListener() {
             @Override
             public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                 mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);
