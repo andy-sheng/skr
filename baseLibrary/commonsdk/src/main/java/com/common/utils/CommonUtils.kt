@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -26,15 +25,11 @@ class CommonUtils internal constructor() {
 
     private var sLastClickTime: Long = 0
 
-    private val sMainHandler: Handler by lazy {
+    private val uiHandler: Handler by lazy {
         Handler(Looper.getMainLooper())
     }
 
     fun isMainThread():Boolean = Looper.getMainLooper() == Looper.myLooper()
-
-    fun getUiHandler():Handler{
-        return sMainHandler
-    }
 
     /**
      * 判断是否是快速点击
@@ -51,7 +46,6 @@ class CommonUtils internal constructor() {
         if (time <= 0) {
             return true
         }
-
         val now = System.currentTimeMillis()
         val delta = now - sLastClickTime
         if (delta > 0 && delta < time) {
