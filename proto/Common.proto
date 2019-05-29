@@ -61,8 +61,15 @@ message MiniGameInfo
     EMiniGamePlayType gamePlayType = 4;
     string keyWord = 5;
     string fixedTxt = 6;
-    string songURL  = 7;
+    MiniGameSongInfo songInfo  = 7;
 }
+
+message MiniGameSongInfo
+{
+    string songURL  = 1;
+    string songName = 2;
+}
+
 
 enum EMiniGamePlayType
 {

@@ -1,6 +1,10 @@
 package com.module.playways.room.song.model;
 
+import com.common.log.MyLog;
+import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.live.proto.Common.MiniGameInfo;
+
+import org.apache.commons.lang3.text.StrBuilder;
 
 import java.io.Serializable;
 
@@ -12,7 +16,7 @@ public class MiniGameInfoModel implements Serializable {
     int gamePlayType;
     String keyWord;
     String fixedTxt;
-    String songURL;
+    MiniGameSongInfoModel songInfo;
 
     public int getGameID() {
         return gameID;
@@ -62,35 +66,41 @@ public class MiniGameInfoModel implements Serializable {
         this.fixedTxt = fixedTxt;
     }
 
-    public String getSongURL() {
-        return songURL;
+    public MiniGameSongInfoModel getSongInfo() {
+        return songInfo;
     }
 
-    public void setSongURL(String songURL) {
-        this.songURL = songURL;
+    public void setSongInfo(MiniGameSongInfoModel songInfo) {
+        this.songInfo = songInfo;
     }
 
-    public void parse(MiniGameInfo miniGameInfo) {
-        this.setGameID(miniGameInfo.getGameID());
-        this.setGameName(miniGameInfo.getGameName());
-        this.setGameRule(miniGameInfo.getGameRule());
-        this.setGamePlayType(miniGameInfo.getGamePlayType().getValue());
-        this.setKeyWord(miniGameInfo.getKeyWord());
-        this.setFixedTxt(miniGameInfo.getFixedTxt());
-        this.setSongURL(miniGameInfo.getSongURL());
+    /**
+     * 展示的游戏规则
+     * @return
+     */
+    public String getDisplayGameRule() {
+        StrBuilder result = new StrBuilder();
+        result.append(gameRule);
+        result.append("\n");
+        if (gamePlayType == EMiniGamePlayType.EMGP_KEYWORD.getValue()) {
+            result.append("关键字：" + keyWord);
+        } else if (gamePlayType == EMiniGamePlayType.EMGP_FIXED_TXT.getValue()) {
+            result.append(fixedTxt);
+        } else if (gamePlayType == EMiniGamePlayType.EMGP_SONG_DETAIL.getValue()) {
+            result.append("《" + songInfo.getSongName() + "》");
+        }
+        return result.build();
     }
 
-
-    @Override
-    public String toString() {
-        return "MiniGameInfoModel{" +
-                "gameID=" + gameID +
-                ", gameName='" + gameName + '\'' +
-                ", gameRule='" + gameRule + '\'' +
-                ", gamePlayType=" + gamePlayType +
-                ", keyWord='" + keyWord + '\'' +
-                ", fixedTxt='" + fixedTxt + '\'' +
-                ", songURL='" + songURL + '\'' +
-                '}';
+    public static MiniGameInfoModel parse(MiniGameInfo miniGameInfo) {
+        MiniGameInfoModel gameInfoModel = new MiniGameInfoModel();
+        gameInfoModel.setGameID(miniGameInfo.getGameID());
+        gameInfoModel.setGameName(miniGameInfo.getGameName());
+        gameInfoModel.setGameRule(miniGameInfo.getGameRule());
+        gameInfoModel.setGamePlayType(miniGameInfo.getGamePlayType().getValue());
+        gameInfoModel.setKeyWord(miniGameInfo.getKeyWord());
+        gameInfoModel.setFixedTxt(miniGameInfo.getFixedTxt());
+        gameInfoModel.setSongInfo(MiniGameSongInfoModel.parse(miniGameInfo.getSongInfo()));
+        return gameInfoModel;
     }
 }

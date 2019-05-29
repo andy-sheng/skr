@@ -26,6 +26,8 @@ import com.common.rx.RxRetryAssist;
 import com.common.utils.ImageUtils;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
+import com.module.playways.room.song.model.MiniGameInfoModel;
+import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -214,20 +216,30 @@ public class SongInfoCardView extends RelativeLayout {
 
     public void playLyric(SongModel songModel) {
         if (songModel == null) {
-            MyLog.d(TAG, "songModel 是空的");
+            MyLog.w(TAG, "songModel 是空的");
             return;
         }
 
-        File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-
-        if (file == null || !file.exists()) {
-            MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask(songModel);
+        if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+            MiniGameInfoModel gameInfoModel = songModel.getMiniGame();
+            if (gameInfoModel != null) {
+                mSongLyrics.setText(gameInfoModel.getDisplayGameRule());
+            } else {
+                MyLog.w(TAG, "miniGameInfo 是空的");
+            }
         } else {
-            MyLog.w(TAG, "playLyric is exist");
-            final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-            drawLyric(fileName);
+            File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+
+            if (file == null || !file.exists()) {
+                MyLog.w(TAG, "playLyric is not in local file");
+                fetchLyricTask(songModel);
+            } else {
+                MyLog.w(TAG, "playLyric is exist");
+                final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+                drawLyric(fileName);
+            }
         }
+
     }
 
     private void fetchLyricTask(SongModel songModel) {

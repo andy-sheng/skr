@@ -34,8 +34,6 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
 
   public static final String DEFAULT_FIXEDTXT = "";
 
-  public static final String DEFAULT_SONGURL = "";
-
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
@@ -74,17 +72,17 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
 
   @WireField(
       tag = 7,
-      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+      adapter = "com.zq.live.proto.Common.MiniGameSongInfo#ADAPTER"
   )
-  private final String songURL;
+  private final MiniGameSongInfo songInfo;
 
   public MiniGameInfo(Integer gameID, String gameName, String gameRule,
-      EMiniGamePlayType gamePlayType, String keyWord, String fixedTxt, String songURL) {
-    this(gameID, gameName, gameRule, gamePlayType, keyWord, fixedTxt, songURL, ByteString.EMPTY);
+      EMiniGamePlayType gamePlayType, String keyWord, String fixedTxt, MiniGameSongInfo songInfo) {
+    this(gameID, gameName, gameRule, gamePlayType, keyWord, fixedTxt, songInfo, ByteString.EMPTY);
   }
 
   public MiniGameInfo(Integer gameID, String gameName, String gameRule,
-      EMiniGamePlayType gamePlayType, String keyWord, String fixedTxt, String songURL,
+      EMiniGamePlayType gamePlayType, String keyWord, String fixedTxt, MiniGameSongInfo songInfo,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.gameID = gameID;
@@ -93,7 +91,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
     this.gamePlayType = gamePlayType;
     this.keyWord = keyWord;
     this.fixedTxt = fixedTxt;
-    this.songURL = songURL;
+    this.songInfo = songInfo;
   }
 
   @Override
@@ -105,7 +103,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
     builder.gamePlayType = gamePlayType;
     builder.keyWord = keyWord;
     builder.fixedTxt = fixedTxt;
-    builder.songURL = songURL;
+    builder.songInfo = songInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -122,7 +120,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
         && Internal.equals(gamePlayType, o.gamePlayType)
         && Internal.equals(keyWord, o.keyWord)
         && Internal.equals(fixedTxt, o.fixedTxt)
-        && Internal.equals(songURL, o.songURL);
+        && Internal.equals(songInfo, o.songInfo);
   }
 
   @Override
@@ -136,7 +134,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
       result = result * 37 + (gamePlayType != null ? gamePlayType.hashCode() : 0);
       result = result * 37 + (keyWord != null ? keyWord.hashCode() : 0);
       result = result * 37 + (fixedTxt != null ? fixedTxt.hashCode() : 0);
-      result = result * 37 + (songURL != null ? songURL.hashCode() : 0);
+      result = result * 37 + (songInfo != null ? songInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -151,7 +149,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
     if (gamePlayType != null) builder.append(", gamePlayType=").append(gamePlayType);
     if (keyWord != null) builder.append(", keyWord=").append(keyWord);
     if (fixedTxt != null) builder.append(", fixedTxt=").append(fixedTxt);
-    if (songURL != null) builder.append(", songURL=").append(songURL);
+    if (songInfo != null) builder.append(", songInfo=").append(songInfo);
     return builder.replace(0, 2, "MiniGameInfo{").append('}').toString();
   }
 
@@ -207,11 +205,11 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
     return fixedTxt;
   }
 
-  public String getSongURL() {
-    if(songURL==null){
-        return DEFAULT_SONGURL;
+  public MiniGameSongInfo getSongInfo() {
+    if(songInfo==null){
+        return new MiniGameSongInfo.Builder().build();
     }
-    return songURL;
+    return songInfo;
   }
 
   public boolean hasGameID() {
@@ -238,8 +236,8 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
     return fixedTxt!=null;
   }
 
-  public boolean hasSongURL() {
-    return songURL!=null;
+  public boolean hasSongInfo() {
+    return songInfo!=null;
   }
 
   public static final class Builder extends Message.Builder<MiniGameInfo, Builder> {
@@ -255,7 +253,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
 
     private String fixedTxt;
 
-    private String songURL;
+    private MiniGameSongInfo songInfo;
 
     public Builder() {
     }
@@ -290,14 +288,14 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
       return this;
     }
 
-    public Builder setSongURL(String songURL) {
-      this.songURL = songURL;
+    public Builder setSongInfo(MiniGameSongInfo songInfo) {
+      this.songInfo = songInfo;
       return this;
     }
 
     @Override
     public MiniGameInfo build() {
-      return new MiniGameInfo(gameID, gameName, gameRule, gamePlayType, keyWord, fixedTxt, songURL, super.buildUnknownFields());
+      return new MiniGameInfo(gameID, gameName, gameRule, gamePlayType, keyWord, fixedTxt, songInfo, super.buildUnknownFields());
     }
   }
 
@@ -314,7 +312,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
           + EMiniGamePlayType.ADAPTER.encodedSizeWithTag(4, value.gamePlayType)
           + ProtoAdapter.STRING.encodedSizeWithTag(5, value.keyWord)
           + ProtoAdapter.STRING.encodedSizeWithTag(6, value.fixedTxt)
-          + ProtoAdapter.STRING.encodedSizeWithTag(7, value.songURL)
+          + MiniGameSongInfo.ADAPTER.encodedSizeWithTag(7, value.songInfo)
           + value.unknownFields().size();
     }
 
@@ -326,7 +324,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
       EMiniGamePlayType.ADAPTER.encodeWithTag(writer, 4, value.gamePlayType);
       ProtoAdapter.STRING.encodeWithTag(writer, 5, value.keyWord);
       ProtoAdapter.STRING.encodeWithTag(writer, 6, value.fixedTxt);
-      ProtoAdapter.STRING.encodeWithTag(writer, 7, value.songURL);
+      MiniGameSongInfo.ADAPTER.encodeWithTag(writer, 7, value.songInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -349,7 +347,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
           }
           case 5: builder.setKeyWord(ProtoAdapter.STRING.decode(reader)); break;
           case 6: builder.setFixedTxt(ProtoAdapter.STRING.decode(reader)); break;
-          case 7: builder.setSongURL(ProtoAdapter.STRING.decode(reader)); break;
+          case 7: builder.setSongInfo(MiniGameSongInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -364,6 +362,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
     @Override
     public MiniGameInfo redact(MiniGameInfo value) {
       Builder builder = value.newBuilder();
+      if (builder.songInfo != null) builder.songInfo = MiniGameSongInfo.ADAPTER.redact(builder.songInfo);
       builder.clearUnknownFields();
       return builder.build();
     }
