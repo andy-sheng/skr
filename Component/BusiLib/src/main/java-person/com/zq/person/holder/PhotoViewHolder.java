@@ -79,7 +79,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(PhotoModel photoModel, int position) {
-        MyLog.d(TAG, "bindData" + " photoModel=" + photoModel + " position=" + position);
+        //MyLog.d(TAG, "bindData" + " photoModel=" + photoModel + " position=" + position);
 
         this.mPhotoModel = photoModel;
         this.position = position;
