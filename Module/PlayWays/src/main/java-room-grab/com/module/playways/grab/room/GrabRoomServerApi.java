@@ -190,6 +190,10 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.stand.inframe.mobi/v1/stand/give-up")
     Observable<ApiResult> giveUpSing(@Body RequestBody body);
 
+    //房主控制结束小游戏
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-mini-game")
+    Observable<ApiResult> stopMiniGameByOwner(@Body RequestBody body);
+
     /**
      * @param body "kickUserID": 0,
      *             "roomID": 0,

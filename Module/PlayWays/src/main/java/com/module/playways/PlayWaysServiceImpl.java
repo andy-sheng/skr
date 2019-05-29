@@ -6,21 +6,19 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.event.GrabChangeRoomEvent;
-import com.component.busilib.GrabJoinRoomFailEvent;
 import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
-import com.module.playways.grab.room.guide.model.GrabGuideInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -150,17 +148,17 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public void tryGoGrabGuide(int tagId) {
         GrabGuideServerApi grabGuideServerApi = ApiManager.getInstance().createService(GrabGuideServerApi.class);
         if (grabGuideServerApi != null) {
-            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1, (int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult obj) {
-                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(), GrabGuideInfoModel.class);
-
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
-                            .withSerializable("guide_data", grabGuideInfoModel)
-                            .withInt("tag_id", tagId)
-                            .navigation();
-                }
-            }, new ApiMethods.RequestControl("getGuideRes", ApiMethods.ControlType.CancelThis));
+//            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1, (int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+//                @Override
+//                public void process(ApiResult obj) {
+//                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(), GrabGuideInfoModel.class);
+//
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
+//                            .withSerializable("guide_data", grabGuideInfoModel)
+//                            .withInt("tag_id", tagId)
+//                            .navigation();
+//                }
+//            }, new ApiMethods.RequestControl("getGuideRes", ApiMethods.ControlType.CancelThis));
         }
     }
 

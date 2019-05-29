@@ -19,7 +19,7 @@ public class GrabRoundChangeEvent {
     public String toString() {
         return "GrabRoundChangeEvent{" +
                 "lastRoundInfo=" + lastRoundInfo +
-                "newRoundInfo=" + newRoundInfo +
+                "\nnewRoundInfo=" + newRoundInfo +
                 '}';
     }
 }

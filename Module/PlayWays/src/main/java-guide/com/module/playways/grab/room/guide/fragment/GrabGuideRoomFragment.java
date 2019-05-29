@@ -13,12 +13,9 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -33,7 +30,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.guide.presenter.GrabGuidePresenter;
-import com.module.playways.grab.room.inter.IGrabGuideView;
+import com.module.playways.grab.room.guide.IGrabGuideView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.top.GrabTopContainerView;
@@ -66,7 +63,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideView {
@@ -456,7 +452,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
         mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_pass_view);
         mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
-            public void giveUp() {
+            public void giveUp(boolean b) {
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
 //                if (infoModel != null) {
 //                    HashMap map = new HashMap();
@@ -773,7 +769,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (now.singBySelf()) {
-                mGrabGiveupView.delayShowGiveUpView();
+                mGrabGiveupView.delayShowGiveUpView(false);
                 mCorePresenter.beginSing();
                 // 自己唱
                 mSelfSingCardView.setVisibility(View.VISIBLE);

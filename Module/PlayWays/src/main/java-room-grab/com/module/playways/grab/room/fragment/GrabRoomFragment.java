@@ -141,7 +141,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
 //    GrabVoiceControlPanelView mVoiceControlView;
 
-    RedPkgCountDownView mRedPkgView;
+//    RedPkgCountDownView mRedPkgView;
 
     CommentView mCommentView;
 
@@ -168,6 +168,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
 
     GrabGiveupView mGrabGiveupView;
+
+    ExImageView mMiniOwnerMicIv;
 
     GrabGameOverView mGrabGameOverView;
 
@@ -281,7 +283,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         initGrabOpView();
         initSingStageView();
         initChangeRoomTransitionView();
-        initCountDownView();
+//        initCountDownView();
         initScoreView();
         initGiftPanelView();
 
@@ -634,9 +636,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         //mSkrAudioPermission.ensurePermission(null, true);
     }
 
-    private void initCountDownView() {
-        mRedPkgView = (RedPkgCountDownView) mRootView.findViewById(R.id.red_pkg_view);
-    }
+//    private void initCountDownView() {
+//        mRedPkgView = (RedPkgCountDownView) mRootView.findViewById(R.id.red_pkg_view);
+//    }
 
     private void initBgView() {
         mGrabRoomBgFlag = mRootView.findViewById(R.id.grab_room_bg_flag);
@@ -1144,7 +1146,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_pass_view);
         mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
-            public void giveUp() {
+            public void giveUp(boolean ownerControl) {
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
 //                if (infoModel != null) {
 //                    HashMap map = new HashMap();
@@ -1152,10 +1154,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
 //                            "give_up_sing", map);
 //                }
-                mCorePresenter.giveUpSing();
+                mCorePresenter.giveUpSing(ownerControl);
             }
         });
         mGrabGiveupView.hideWithAnimation(false);
+
+        mMiniOwnerMicIv = mRootView.findViewById(R.id.mini_owner_mic_iv);
     }
 
     private void initSingStageView() {
@@ -1413,7 +1417,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (now.singBySelf()) {
-                mGrabGiveupView.delayShowGiveUpView();
+                mGrabGiveupView.delayShowGiveUpView(false);
                 mCorePresenter.beginSing();
                 // 显示歌词
                 mSelfSingCardView.setVisibility(View.VISIBLE);
@@ -1441,6 +1445,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     }
                 }
             } else {
+                if(mRoomData.isOwner() && now.isMiniGameRound()){
+                    mGrabGiveupView.delayShowGiveUpView(true);
+                }
                 // 显示收音机
                 mSelfSingCardView.setVisibility(View.GONE);
                 mOthersSingCardView.setVisibility(View.VISIBLE);
@@ -1490,17 +1497,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
     }
 
-    @Override
-    public void redPkgCountDown(long duration) {
-        mRedPkgView.setVisibility(View.VISIBLE);
-        mRedPkgView.startCountDown(duration);
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRedPkgView.setVisibility(View.GONE);
-            }
-        }, duration);
-    }
+//    @Override
+//    public void redPkgCountDown(long duration) {
+//        mRedPkgView.setVisibility(View.VISIBLE);
+//        mRedPkgView.startCountDown(duration);
+//        mUiHanlder.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mRedPkgView.setVisibility(View.GONE);
+//            }
+//        }, duration);
+//    }
 
     @Override
     public boolean useEventBus() {

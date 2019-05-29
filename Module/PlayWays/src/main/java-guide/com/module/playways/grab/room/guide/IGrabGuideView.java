@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.inter;
+package com.module.playways.grab.room.guide;
 
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.OnlineInfoModel;

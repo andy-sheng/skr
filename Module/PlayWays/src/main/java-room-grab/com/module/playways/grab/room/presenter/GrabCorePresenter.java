@@ -458,7 +458,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         .setMode(RecognizeConfig.MODE_MANUAL)
                         .build());
             } else {
-                if(needScore){
+                if (needScore) {
                     // 清唱还需要打分，那就只用 acr 打分
                     ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
                             .setSongName(now.getMusic().getItemName())
@@ -476,7 +476,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                 }
                             })
                             .build());
-                }else{
+                } else {
 
                 }
             }
@@ -1081,43 +1081,73 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 放弃演唱接口
      */
-    public void giveUpSing() {
-        MyLog.w(TAG, "我放弃演唱");
-        estimateOverTsThisRound();
-
-        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if (now == null || !now.singBySelf()) {
-            return;
-        }
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", mRoomData.getGameId());
-        map.put("roundSeq", now.getRoundSeq());
-        if (now.getMusic() != null) {
-            map.put("playType", now.getMusic().getPlayType());
-        }
-        if (now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
-            map.put("subRoundSeq", 0);
-        } else if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-            map.put("subRoundSeq", 1);
-        }
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mIGrabView.giveUpSuccess(now.getRoundSeq());
-                    closeEngine();
-                    MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.getTraceId());
-                } else {
-                    MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.getTraceId());
+    public void giveUpSing(boolean ownerControl) {
+        if (ownerControl) {
+            MyLog.w(TAG, "房主结束小游戏");
+            estimateOverTsThisRound();
+            GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+            if (now == null || !now.singBySelf()) {
+                return;
+            }
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("roomID", mRoomData.getGameId());
+            map.put("roundSeq", now.getRoundSeq());
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+            ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        mIGrabView.giveUpSuccess(now.getRoundSeq());
+                        closeEngine();
+                        MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+                    } else {
+                        MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                MyLog.w(TAG, "giveUpSing" + " error " + e);
+                @Override
+                public void onError(Throwable e) {
+                    MyLog.w(TAG, "stopMiniGameByOwner error " + e);
+                }
+            }, this);
+
+        } else {
+            MyLog.w(TAG, "我放弃演唱");
+            estimateOverTsThisRound();
+            GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+            if (now == null || !now.singBySelf()) {
+                return;
             }
-        }, this);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("roomID", mRoomData.getGameId());
+            map.put("roundSeq", now.getRoundSeq());
+            if (now.getMusic() != null) {
+                map.put("playType", now.getMusic().getPlayType());
+            }
+            if (now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+                map.put("subRoundSeq", 0);
+            } else if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                map.put("subRoundSeq", 1);
+            }
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+            ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        mIGrabView.giveUpSuccess(now.getRoundSeq());
+                        closeEngine();
+                        MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.getTraceId());
+                    } else {
+                        MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.getTraceId());
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    MyLog.w(TAG, "giveUpSing" + " error " + e);
+                }
+            }, this);
+        }
     }
 
     /**

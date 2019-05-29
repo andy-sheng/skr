@@ -99,14 +99,14 @@ public class GrabOpView extends RelativeLayout {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
-                    if (mGrabRoomData.getGrabGuideInfoModel() == null) {
+//                    if (mGrabRoomData.getGrabGuideInfoModel() == null) {
                         hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
                         if (mListener != null) {
                             mListener.grabCountDownOver();
                         }
-                    } else {
-                        MyLog.d(TAG, "新手引导不隐藏抢唱按钮");
-                    }
+//                    } else {
+//                        MyLog.d(TAG, "新手引导不隐藏抢唱按钮");
+//                    }
                     break;
                 case MSG_HIDE:
                     mIvLightOff.setVisibility(GONE);

@@ -39,7 +39,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
-import com.module.playways.grab.room.inter.IGrabGuideView;
+import com.module.playways.grab.room.guide.IGrabGuideView;
 import com.module.playways.grab.room.model.BLightInfoModel;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;

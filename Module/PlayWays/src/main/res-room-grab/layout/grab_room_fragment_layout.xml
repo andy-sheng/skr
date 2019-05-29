@@ -58,6 +58,17 @@
             android:layout_marginRight="@dimen/view_100_dp"
             android:background="@drawable/ycdd_zhezhao" />
 
+        <com.common.view.ex.ExImageView
+            android:id="@+id/mini_owner_mic_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:visibility="visible"
+            android:layout_above="@+id/bottom_container_view"
+            android:layout_marginBottom="@dimen/view_5_dp"
+            app:src_enabled_drawable="@drawable/mini_owner_normal"
+            app:src_unEnabled_drawable="@drawable/mini_owner_mute" />
+
     </com.common.view.ex.ExRelativeLayout>
 
 
@@ -150,15 +161,15 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.RedPkgCountDownView
-        android:id="@+id/red_pkg_view"
-        android:layout_width="@dimen/view_54_dp"
-        android:layout_height="@dimen/view_54_dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/view_26_dp"
-        android:layout_marginBottom="@dimen/view_79_dp"
-        android:visibility="gone" />
+    <!--<com.module.playways.grab.room.view.RedPkgCountDownView-->
+    <!--android:id="@+id/red_pkg_view"-->
+    <!--android:layout_width="@dimen/view_54_dp"-->
+    <!--android:layout_height="@dimen/view_54_dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginRight="@dimen/view_26_dp"-->
+    <!--android:layout_marginBottom="@dimen/view_79_dp"-->
+    <!--android:visibility="gone" />-->
 
     <com.module.playways.room.gift.view.ContinueSendView
         android:id="@+id/continue_send_view"
