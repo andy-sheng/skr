@@ -170,7 +170,7 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
             mRightMINIGameRoundInfoModel = list.get(1);
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftMINIGameRoundInfoModel.getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightMINIGameRoundInfoModel.getUserID());
-            mMiniGameInfoModel = mGrabRoomData.getSongModel().getMiniGame();
+            mMiniGameInfoModel = now.getMusic().getMiniGame();
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftMINIGameRoundInfoModel != null && mRightMINIGameRoundInfoModel != null) {
