@@ -1294,7 +1294,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
-        MyLog.d(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
+        MyLog.w(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
         if (mCustomHandlerThread != null) {
             mConfig.setRecording(true);
             mCustomHandlerThread.post(new Runnable() {
@@ -1355,7 +1355,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        MyLog.d(TAG, "stopAudioRecording");
+        MyLog.w(TAG, "stopAudioRecording");
         if (mCustomHandlerThread != null && mConfig.isRecording()) {
             mConfig.setRecording(false);
             mCustomHandlerThread.post(new Runnable() {
