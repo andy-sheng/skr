@@ -2,14 +2,18 @@ package com.module.playways.grab.room.view;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
@@ -20,6 +24,7 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.ImageUtils;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
@@ -55,8 +60,7 @@ public class SongInfoCardView extends RelativeLayout {
 
     //    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
-    ExTextView mChorusSongTag;
-    ExTextView mPkSongTag;
+    TextView mSongTagTv;
     //    ExTextView mSongSingerTv;
     BitmapTextView mCurrentSeq;
     BitmapTextView mTotalSeq;
@@ -70,6 +74,10 @@ public class SongInfoCardView extends RelativeLayout {
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
     Disposable mDisposable;
+
+    Drawable mChorusDrawable;
+    Drawable mPKDrawable;
+    Drawable mMiniGameDrawable;
 
     public SongInfoCardView(Context context) {
         super(context);
@@ -90,8 +98,7 @@ public class SongInfoCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_song_info_card_layout, this);
 //        mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
-        mChorusSongTag = (ExTextView) findViewById(R.id.chorus_song_tag);
-        mPkSongTag = (ExTextView) findViewById(R.id.pk_song_tag);
+        mSongTagTv = (TextView) findViewById(R.id.song_tag_tv);
 //        mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
         mCurrentSeq = (BitmapTextView) findViewById(R.id.current_seq);
         mTotalSeq = (BitmapTextView) findViewById(R.id.total_seq);
@@ -99,6 +106,21 @@ public class SongInfoCardView extends RelativeLayout {
         mGrabCd = (ImageView) findViewById(R.id.grab_cd);
         mGrabChorus = (ImageView) findViewById(R.id.grab_chorus);
         mGrabPk = (ImageView) findViewById(R.id.grab_pk);
+
+        mChorusDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#7088FF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .build();
+
+        mPKDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#E55088"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .build();
+
+        mMiniGameDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#61B14F"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .build();
     }
 
     // 该动画需要循环播放
@@ -135,8 +157,13 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
-            mChorusSongTag.setVisibility(VISIBLE);
-            mPkSongTag.setVisibility(GONE);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+            layoutParams.width = U.getDisplayUtils().dip2px(42);
+            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(42);
+            mSongTagTv.setLayoutParams(layoutParams);
+            mSongTagTv.setText("合唱");
+            mSongTagTv.setVisibility(VISIBLE);
+            mSongTagTv.setBackground(mChorusDrawable);
             // 入场动画
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
@@ -146,13 +173,30 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(VISIBLE);
-            mChorusSongTag.setVisibility(GONE);
-            mPkSongTag.setVisibility(VISIBLE);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+            U.getDisplayUtils().dip2px(42);
+            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(42);
+            mSongTagTv.setLayoutParams(layoutParams);
+            mSongTagTv.setText("PK");
+            mSongTagTv.setVisibility(VISIBLE);
+            mSongTagTv.setBackground(mPKDrawable);
             // 入场动画
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             // 小游戏
-
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68), 0);
+            mSongNameTv.setText("[" + songModel.getMiniGame().getGameName() + "]");
+            mGrabCd.setVisibility(GONE);
+            // 和合唱一样的卡片
+            mGrabChorus.setVisibility(VISIBLE);
+            mGrabPk.setVisibility(GONE);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+            U.getDisplayUtils().dip2px(68);
+            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(68);
+            mSongTagTv.setLayoutParams(layoutParams);
+            mSongTagTv.setText("双人游戏");
+            mSongTagTv.setVisibility(VISIBLE);
+            mSongTagTv.setBackground(mMiniGameDrawable);
             // 入场动画
             animationGo(false);
         } else {
@@ -161,8 +205,7 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(VISIBLE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(GONE);
-            mChorusSongTag.setVisibility(GONE);
-            mPkSongTag.setVisibility(GONE);
+            mSongTagTv.setVisibility(GONE);
             // 入场动画
             animationGo(true);
         }
