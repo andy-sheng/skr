@@ -55,6 +55,7 @@ abstract public class MediaCodecEncoderBase<I extends AVFrameBase, O extends AVP
 
     // null buffer means EOS
     protected void fillEncoder(ByteBuffer buffer, long ptsUs) {
+        if (VERBOSE) Log.d(TAG, "fillEncoder(" + buffer + ", " + ptsUs/1000 + ")");
         ByteBuffer[] inputBuffers = mEncoder.getInputBuffers();
         int index = mEncoder.dequeueInputBuffer(0);
 

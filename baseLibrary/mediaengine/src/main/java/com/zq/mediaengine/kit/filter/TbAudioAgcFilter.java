@@ -24,7 +24,7 @@ public class TbAudioAgcFilter extends AudioFilterBase {
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
         mAgcProcessor.processV1(frame.buf, frame.buf.limit(),
                 frame.format.channels, frame.format.sampleRate);
-        return null;
+        return frame;
     }
 
     @Override
