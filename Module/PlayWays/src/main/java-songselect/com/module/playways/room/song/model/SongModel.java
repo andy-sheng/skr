@@ -329,12 +329,10 @@ public class SongModel implements Serializable {
                 this.pkMusicList.add(songModel);
             }
         }
-        if (musicInfo.getMiniGame() != null) {
-            MiniGameInfoModel gameInfoModel = new MiniGameInfoModel();
-            gameInfoModel.parse(musicInfo.getMiniGame());
-            this.setMiniGame(gameInfoModel);
-        }
 
+        if (musicInfo.getMiniGame() != null) {
+            this.setMiniGame(MiniGameInfoModel.parse(musicInfo.getMiniGame()));
+        }
     }
 
     public SongModel getPkMusic() {
