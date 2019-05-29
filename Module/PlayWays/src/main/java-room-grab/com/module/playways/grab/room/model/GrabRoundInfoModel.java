@@ -631,6 +631,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             if (getsPkRoundInfoModels().size() > 1) {
                 return getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid();
             }
+        } else if (getStatus() == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()) {
+            for (MINIGameRoundInfoModel miniGameRoundInfoModel : mMINIGameRoundInfoModels) {
+                // TODO: 2019-05-29 需不需要加 isParticipant的判断
+                if (miniGameRoundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    return true;
+                }
+            }
         } else if (getStatus() == EQRoundStatus.QRS_END.getValue()) {
             // 如果轮次都结束了 还要判断出这个轮次是不是自己唱的
             if (getUserID() == MyUserInfoManager.getInstance().getUid()) {
