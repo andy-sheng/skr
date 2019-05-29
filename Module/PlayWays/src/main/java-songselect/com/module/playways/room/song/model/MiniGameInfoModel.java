@@ -1,6 +1,5 @@
 package com.module.playways.room.song.model;
 
-import com.common.log.MyLog;
 import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.live.proto.Common.MiniGameInfo;
 
@@ -102,5 +101,18 @@ public class MiniGameInfoModel implements Serializable {
         gameInfoModel.setFixedTxt(miniGameInfo.getFixedTxt());
         gameInfoModel.setSongInfo(MiniGameSongInfoModel.parse(miniGameInfo.getSongInfo()));
         return gameInfoModel;
+    }
+
+    @Override
+    public String toString() {
+        return "MiniGameInfoModel{" +
+                "gameID=" + gameID +
+                ", gameName='" + gameName + '\'' +
+                ", gameRule='" + gameRule + '\'' +
+                ", gamePlayType=" + gamePlayType +
+                ", keyWord='" + keyWord + '\'' +
+                ", fixedTxt='" + fixedTxt + '\'' +
+                ", songInfo=" + songInfo +
+                '}';
     }
 }

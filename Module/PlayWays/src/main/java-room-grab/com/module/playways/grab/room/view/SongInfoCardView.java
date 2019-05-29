@@ -128,7 +128,7 @@ public class SongInfoCardView extends RelativeLayout {
     // 该动画需要循环播放
     public void bindSongModel(int curRoundSeq, int totalSeq, SongModel songModel) {
         MyLog.d(TAG, "bindSongModel" + " songModel=" + songModel);
-        if (songModel == null || TextUtils.isEmpty(songModel.getCover())) {
+        if (songModel == null) {
             return;
         }
 

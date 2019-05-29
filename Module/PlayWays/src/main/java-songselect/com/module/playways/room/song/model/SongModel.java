@@ -423,6 +423,8 @@ public class SongModel implements Serializable {
                 ", challengeAvailable=" + challengeAvailable +
                 ", playType=" + playType +
                 ", pkMusicList=" + pkMusicList +
+                ", singCount=" + singCount +
+                ", miniGame=" + miniGame +
                 '}';
     }
 
