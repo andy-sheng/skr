@@ -78,7 +78,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     @JSONField(name = "SPKRoundInfos")
     List<SPkRoundInfoModel> sPkRoundInfoModels = new ArrayList<>();
 
-    // TODO: 2019-05-28 等服务器信令加句柄
+    @JSONField(name = "MINIGAMERoundInfos")
     List<MINIGameRoundInfoModel> mMINIGameRoundInfoModels = new ArrayList<>();
 
     public GrabRoundInfoModel() {
@@ -393,6 +393,22 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 }
             }
         }
+
+        // 更新游戏信息
+        if (wantSingType == EWantSingType.EWST_MIN_GAME.getValue()) {
+            if (this.getMINIGameRoundInfoModels().size() <= 1) {
+                // 不满足两人通知全量更新
+                this.getMINIGameRoundInfoModels().clear();
+                this.getMINIGameRoundInfoModels().addAll(roundInfo.getMINIGameRoundInfoModels());
+            } else {
+                for (int i = 0; i < this.getMINIGameRoundInfoModels().size() && i < roundInfo.getMINIGameRoundInfoModels().size(); i++) {
+                    MINIGameRoundInfoModel miniGameRoundInfoModel1 = this.getMINIGameRoundInfoModels().get(i);
+                    MINIGameRoundInfoModel miniGameRoundInfoModel2 = roundInfo.getMINIGameRoundInfoModels().get(i);
+                    miniGameRoundInfoModel1.tryUpdateRoundInfoModel(miniGameRoundInfoModel2);
+                }
+            }
+        }
+
         updateStatus(notify, roundInfo.getStatus());
         return;
     }
@@ -701,6 +717,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue();
     }
 
+    public boolean isMiniGame() {
+        return status == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue();
+    }
+
     /**
      * 返回当前演唱者的id信息
      *
@@ -785,6 +805,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", enterStatus=" + enterStatus +
                 ",chorusRoundInfoModels=" + chorusRoundInfoModels +
                 ", sPkRoundInfoModels=" + sPkRoundInfoModels +
+                ", mMINIGameRoundInfoModels" + mMINIGameRoundInfoModels +
                 '}';
     }
 

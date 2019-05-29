@@ -46,7 +46,12 @@ public enum EQRoundStatus implements WireEnum {
   /**
    * spk第二位用户演唱
    */
-  QRS_SPK_SECOND_PEER_SING(7);
+  QRS_SPK_SECOND_PEER_SING(7),
+
+  /**
+   * 连麦小游戏进行中
+   */
+  QRS_MIN_GAME_PLAY(8);
 
   public static final ProtoAdapter<EQRoundStatus> ADAPTER = new ProtoAdapter_EQRoundStatus();
 
@@ -69,6 +74,7 @@ public enum EQRoundStatus implements WireEnum {
       case 5: return QRS_CHO_SING;
       case 6: return QRS_SPK_FIRST_PEER_SING;
       case 7: return QRS_SPK_SECOND_PEER_SING;
+      case 8: return QRS_MIN_GAME_PLAY;
       default: return null;
     }
   }

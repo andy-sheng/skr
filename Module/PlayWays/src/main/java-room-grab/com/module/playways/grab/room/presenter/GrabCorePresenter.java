@@ -579,6 +579,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         } else if (songModel != null && songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_CHORUS.getValue();
+        } else if (songModel != null && songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+            wantSingType = EWantSingType.EWST_MIN_GAME.getValue();
         } else {
             if (challenge) {
                 if (mRoomData.getCoin() < 1) {
@@ -1602,7 +1604,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else if (now.getStatus() == EQRoundStatus.QRS_SING.getValue()
                 || now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()
                 || now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                || now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
+                || now.getStatus() == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()) {
             // 演唱阶段
             if (now.singBySelf()) {
                 mUiHandler.post(new Runnable() {

@@ -21,4 +21,11 @@ public class MINIGameRoundInfoModel implements Serializable {
         miniGameRoundInfoModel.setUserID(qminiGameInnerRoundInfo.getUserID());
         return miniGameRoundInfoModel;
     }
+
+    public void tryUpdateRoundInfoModel(MINIGameRoundInfoModel roundInfo) {
+        if (roundInfo.getUserID() == userID) {
+            setUserID(roundInfo.getUserID());
+            // TODO: 2019-05-29 无状态更新
+        }
+    }
 }

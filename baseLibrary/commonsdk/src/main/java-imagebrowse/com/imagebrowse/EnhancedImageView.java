@@ -160,7 +160,6 @@ public class EnhancedImageView extends RelativeLayout {
         if (baseImage == null || baseImage.getUri() == null) {
             return;
         }
-
         String path = baseImage.getUri().toString();
         if (path.startsWith("http://") || path.startsWith("https://")) {
             Uri uri = Uri.parse(path);
