@@ -350,6 +350,7 @@ public class AgoraRTCAdapter {
             }
             mRtcEngine.setAudioProfile(a, b);
 
+//            mRtcEngine.setParameters("{\"che.audio.opensl\": true}");
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 

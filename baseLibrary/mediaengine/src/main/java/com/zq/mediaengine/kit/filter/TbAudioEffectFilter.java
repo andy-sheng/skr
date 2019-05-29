@@ -26,7 +26,7 @@ public class TbAudioEffectFilter extends AudioFilterBase {
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
         mEffectProcessor.process(mType, frame.buf, frame.buf.limit(),
                 frame.format.channels, frame.format.sampleRate);
-        return null;
+        return frame;
     }
 
     @Override
