@@ -159,6 +159,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
                 if (isJSON2(o)) {
                     NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
                     mTvLyric.append(mMiniGameInfoModel.getDisplayGameRule());
+                    mTvLyric.append("\n");
                     for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
                         mTvLyric.append(newChorusLyricModel.getItems().get(i).getWords());
                         if (i == 0) {
@@ -167,7 +168,8 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
                     }
                 } else {
                     mTvLyric.append(mMiniGameInfoModel.getDisplayGameRule());
-                    mTvLyric.setText(o);
+                    mTvLyric.append("\n");
+                    mTvLyric.append(o);
                 }
             }
         }, throwable -> MyLog.e(TAG, throwable));
