@@ -26,7 +26,8 @@
         android:overScrollMode="never"
         android:paddingTop="@dimen/view_45_dp"
         android:paddingBottom="@dimen/view_10_dp"
-        android:scrollbarThumbVertical="@drawable/jindutiao">
+        android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+        android:scrollbars="vertical">
 
         <TextView
             android:id="@+id/tv_lyric"

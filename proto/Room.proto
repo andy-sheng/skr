@@ -587,6 +587,7 @@ enum EQRoundStatus {
     QRS_CHO_SING = 5; //合唱演唱阶段
     QRS_SPK_FIRST_PEER_SING = 6; //spk第一位用户演唱
     QRS_SPK_SECOND_PEER_SING = 7; //spk第二位用户演唱
+    QRS_MIN_GAME_PLAY        = 8; //连麦小游戏进行中
 }
 
 message BLightInfo {

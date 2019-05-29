@@ -33,4 +33,13 @@
         android:layout_marginTop="@dimen/view_d_185_dp"
         android:visibility="gone"/>
 
+    <com.module.playways.grab.room.view.minigame.MiniGameOtherSingCardView
+        android:id="@+id/mini_game_other_sing_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/top_container_view"
+        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:visibility="gone"/>
+
 </merge>

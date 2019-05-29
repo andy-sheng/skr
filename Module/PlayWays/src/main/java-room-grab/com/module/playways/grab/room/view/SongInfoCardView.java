@@ -53,11 +53,11 @@ public class SongInfoCardView extends RelativeLayout {
 
     public final static String TAG = "SongInfoCardView";
 
-//    SimpleDraweeView mSongCoverIv;
+    //    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
     ExTextView mChorusSongTag;
     ExTextView mPkSongTag;
-//    ExTextView mSongSingerTv;
+    //    ExTextView mSongSingerTv;
     BitmapTextView mCurrentSeq;
     BitmapTextView mTotalSeq;
     ExTextView mSongLyrics;
@@ -150,6 +150,11 @@ public class SongInfoCardView extends RelativeLayout {
             mPkSongTag.setVisibility(VISIBLE);
             // 入场动画
             animationGo(false);
+        } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+            // 小游戏
+
+            // 入场动画
+            animationGo(false);
         } else {
             // 普通
             mSongNameTv.setText("《" + songModel.getItemName() + "》");
@@ -192,11 +197,11 @@ public class SongInfoCardView extends RelativeLayout {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), newName,true, null);
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), newName, true, null);
 
                 if (isSuccess) {
-                        emitter.onNext(newName);
-                        emitter.onComplete();
+                    emitter.onNext(newName);
+                    emitter.onComplete();
                 } else {
                     emitter.onError(new IgnoreException("下载失败" + TAG));
                 }

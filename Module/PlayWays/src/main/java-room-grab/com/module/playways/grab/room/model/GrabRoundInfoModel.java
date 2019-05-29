@@ -701,6 +701,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue();
     }
 
+    public boolean isMiniGame() {
+        return status == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue();
+    }
+
     /**
      * 返回当前演唱者的id信息
      *
