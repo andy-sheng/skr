@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.minigame;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -10,10 +11,15 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
+import com.common.core.account.UserAccountManager;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.crash.IgnoreException;
+import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -52,6 +58,8 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
 
     ImageView mIvBg;
     ScrollView mSvLyric;
+    SimpleDraweeView mAvatarIv;
+    TextView mFirstTipsTv;
     TextView mTvLyric;    //用来显示游戏内容
     SingCountDownView mSingCountDownView;
 
@@ -76,6 +84,8 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_mini_game_selft_sing_layout, this);
 
         mIvBg = findViewById(R.id.iv_bg);
+        mAvatarIv = findViewById(R.id.avatar_iv);
+        mFirstTipsTv = findViewById(R.id.first_tips_tv);
         mSvLyric = findViewById(R.id.sv_lyric);
         mTvLyric = findViewById(R.id.tv_lyric);
         mSingCountDownView = findViewById(R.id.sing_count_down_view);
@@ -113,6 +123,27 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
         int totalTs = infoModel.getSingTotalMs();
         mSingCountDownView.setTagTvText(mMiniGameInfoModel.getGameName());
         mSingCountDownView.startPlay(0, totalTs, true);
+
+        if (infoModel.getMINIGameRoundInfoModels() != null && infoModel.getMINIGameRoundInfoModels().size() > 0) {
+            UserInfoModel userInfoModel = mGrabRoomData.getUserInfo(infoModel.getMINIGameRoundInfoModels().get(0).getUserID());
+            if (userInfoModel != null) {
+                AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(Color.WHITE)
+                        .build());
+                String name = UserInfoManager.getInstance().getRemarkName(userInfoModel.getUserId(), userInfoModel.getNickname());
+                if (name.length() > 9) {
+                    name = name.substring(0, 9);
+                }
+                mFirstTipsTv.setText("[" + name + "]" + "先开始");
+            } else {
+                MyLog.w(TAG, "playLyric userInfoModel = null");
+            }
+        } else {
+            MyLog.w(TAG, "playLyric getMINIGameRoundInfoModels = null");
+        }
+
 
         if (mMiniGameInfoModel.getGamePlayType() == EMiniGamePlayType.EMGP_SONG_DETAIL.getValue()) {
             // TODO: 2019-05-29 带歌词的
@@ -187,8 +218,8 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
     }
 
     private void fetchLyricTask() {
-        if(TextUtils.isEmpty(mMiniGameSongUrl)){
-            MyLog.w(TAG, "fetchLyricTask mMiniGameSongUrl = null" );
+        if (TextUtils.isEmpty(mMiniGameSongUrl)) {
+            MyLog.w(TAG, "fetchLyricTask mMiniGameSongUrl = null");
             return;
         }
         if (mDisposable != null) {
