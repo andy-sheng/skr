@@ -63,7 +63,7 @@ public class AcrRecognizer extends AudioFilterBase {
     @Override
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
         if (mArcCloudManager != null && mConfig != null) {
-            if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+            if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart() || mConfig.isGrabSingNoAcc()) {
                 int len = frame.buf.limit();
                 if (mAudioData == null || mAudioData.length < len) {
                     mAudioData = new byte[len];

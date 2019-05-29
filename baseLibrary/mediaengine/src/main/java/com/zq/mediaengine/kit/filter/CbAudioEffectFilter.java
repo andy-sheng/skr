@@ -25,7 +25,7 @@ public class CbAudioEffectFilter extends AudioFilterBase {
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
         mAudioEffectEngine.process(mType, frame.buf, frame.buf.limit(),
                 frame.format.channels, frame.format.sampleRate);
-        return null;
+        return frame;
     }
 
     @Override

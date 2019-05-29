@@ -117,7 +117,7 @@ public class MediaMuxerPublisher extends Publisher {
     @Override
     protected void doStop() {
         try {
-            Log.e(TAG, "doStop");
+            Log.d(TAG, "doStop");
             mMediaMuxer.stop();
             mMediaMuxer.release();
             mMediaMuxer = null;
