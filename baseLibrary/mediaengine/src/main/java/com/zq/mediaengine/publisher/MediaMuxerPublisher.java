@@ -15,6 +15,7 @@ import java.io.IOException;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class MediaMuxerPublisher extends Publisher {
     private static final String TAG = "MediaMuxerPublisher";
+    private static boolean VERBOSE = false;
 
     private MediaMuxer mMediaMuxer;
     private int mAudioTrackIndex;
@@ -88,6 +89,9 @@ public class MediaMuxerPublisher extends Publisher {
     @Override
     protected int doWriteAudioPacket(AudioPacket packet) {
         try {
+            if (VERBOSE) {
+                Log.d(TAG, "doWriteAudioPacket size: " + packet.buf.limit() + " pts: " + packet.pts);
+            }
             MediaCodec.BufferInfo bufferInfo = packet.toBufferInfo();
             mMediaMuxer.writeSampleData(mAudioTrackIndex, packet.buf, bufferInfo);
         } catch (Exception e) {
@@ -100,6 +104,9 @@ public class MediaMuxerPublisher extends Publisher {
     @Override
     protected int doWriteVideoPacket(ImgPacket packet) {
         try {
+            if (VERBOSE) {
+                Log.d(TAG, "doWriteVideoPacket size: " + packet.buf.limit() + " pts: " + packet.pts);
+            }
             MediaCodec.BufferInfo bufferInfo = packet.toBufferInfo();
             mMediaMuxer.writeSampleData(mVideoTrackIndex, packet.buf, bufferInfo);
         } catch (Exception e) {

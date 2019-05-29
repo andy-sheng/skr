@@ -66,7 +66,7 @@ int AudioResample::config(int sampleFormat, int sampleRate, int channels) {
             LOGE("create audio resample failed!");
             ret = -1;
         }
-    } else if (mUseDiffMemory) {
+    } else if (mUseDiffMemory && !mOutBuf) {
         // 不需要resample的时候，重新copy一次，做隔离
         mOutBufSize = sampleRate * channels * getBytesPerSample(sampleFormat) * 300 / 1000;
         mOutBuf = (uint8_t*) malloc((size_t) mOutBufSize);

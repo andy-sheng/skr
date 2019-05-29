@@ -907,9 +907,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 break;
             case rank:
             case audiotest:
-                if (mConfig.getAccTs() > 0) {
-                    filters.add(new TbAudioAgcFilter());
-                }
+                filters.add(new TbAudioAgcFilter());
                 break;
         }
 

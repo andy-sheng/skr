@@ -1,6 +1,7 @@
 package com.zq.mediaengine.filter.audio;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -14,6 +15,7 @@ import java.nio.ByteBuffer;
  */
 
 public class AudioResampleFilter extends AudioFilterBase {
+    private static final String TAG = "AudioResampleFilter";
     private AudioResample mAudioResample;
     private AudioBufFormat mOutFormat;
 
