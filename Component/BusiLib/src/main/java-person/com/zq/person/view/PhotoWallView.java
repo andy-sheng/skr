@@ -183,7 +183,7 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
                 .setShowCamera(true)
                 .setCrop(false)
                 .setSelectLimit(9)
-                .setIncludeGif(true)
+                .setIncludeGif(false)
                 .build()
         );
         ResPickerActivity.open(mFragment.getActivity());
