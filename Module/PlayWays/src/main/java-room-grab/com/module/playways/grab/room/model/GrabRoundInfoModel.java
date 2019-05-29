@@ -21,6 +21,7 @@ import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QCHOInnerRoundInfo;
+import com.zq.live.proto.Room.QMINIGameInnerRoundInfo;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.QSPKInnerRoundInfo;
@@ -76,6 +77,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     @JSONField(name = "SPKRoundInfos")
     List<SPkRoundInfoModel> sPkRoundInfoModels = new ArrayList<>();
+
+    // TODO: 2019-05-28 等服务器信令加句柄
+    List<MINIGameRoundInfoModel> mMINIGameRoundInfoModels = new ArrayList<>();
 
     public GrabRoundInfoModel() {
 
@@ -467,6 +471,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             SPkRoundInfoModel pkRoundInfoModel = SPkRoundInfoModel.parse(qspkInnerRoundInfo);
             roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel);
         }
+
+        for (QMINIGameInnerRoundInfo qminiGameInnerRoundInfo : roundInfo.getMINIGAMERoundInfosList()) {
+            MINIGameRoundInfoModel miniGameRoundInfoModel = MINIGameRoundInfoModel.parse(qminiGameInnerRoundInfo);
+            roundInfoModel.getMINIGameRoundInfoModels().add(miniGameRoundInfoModel);
+        }
         return roundInfoModel;
     }
 
@@ -574,6 +583,15 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public void setsPkRoundInfoModels(List<SPkRoundInfoModel> sPkRoundInfoModels) {
         this.sPkRoundInfoModels = sPkRoundInfoModels;
     }
+
+    public List<MINIGameRoundInfoModel> getMINIGameRoundInfoModels() {
+        return mMINIGameRoundInfoModels;
+    }
+
+    public void setMINIGameRoundInfoModels(List<MINIGameRoundInfoModel> MINIGameRoundInfoModels) {
+        mMINIGameRoundInfoModels = MINIGameRoundInfoModels;
+    }
+
 
     /**
      * 判断当前是否是自己的演唱轮次
