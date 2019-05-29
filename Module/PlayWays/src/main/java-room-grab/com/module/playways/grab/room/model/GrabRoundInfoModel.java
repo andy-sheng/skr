@@ -78,7 +78,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     @JSONField(name = "SPKRoundInfos")
     List<SPkRoundInfoModel> sPkRoundInfoModels = new ArrayList<>();
 
-    // TODO: 2019-05-28 等服务器信令加句柄
+    @JSONField(name = "MINIGAMERoundInfos")
     List<MINIGameRoundInfoModel> mMINIGameRoundInfoModels = new ArrayList<>();
 
     public GrabRoundInfoModel() {
@@ -789,6 +789,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", enterStatus=" + enterStatus +
                 ",chorusRoundInfoModels=" + chorusRoundInfoModels +
                 ", sPkRoundInfoModels=" + sPkRoundInfoModels +
+                ", mMINIGameRoundInfoModels" + mMINIGameRoundInfoModels +
                 '}';
     }
 

@@ -78,7 +78,7 @@ public class MiniGameInfoModel implements Serializable {
      * @return
      */
     public String getDisplayGameRule() {
-        StrBuilder result = new StrBuilder();
+        StringBuilder result = new StringBuilder();
         result.append(gameRule);
         result.append("\n");
         if (gamePlayType == EMiniGamePlayType.EMGP_KEYWORD.getValue()) {
@@ -88,7 +88,7 @@ public class MiniGameInfoModel implements Serializable {
         } else if (gamePlayType == EMiniGamePlayType.EMGP_SONG_DETAIL.getValue()) {
             result.append("《" + songInfo.getSongName() + "》");
         }
-        return result.build();
+        return result.toString();
     }
 
     public static MiniGameInfoModel parse(MiniGameInfo miniGameInfo) {
