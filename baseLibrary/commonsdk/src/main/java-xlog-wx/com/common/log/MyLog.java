@@ -25,7 +25,7 @@ public class MyLog {
             System.loadLibrary("marsxlog");
             sForceOpenFlag = U.getPreferenceUtils().getSettingBoolean("key_forceOpenFlag", false);
             Log.e("MyLog", "forceOpenFlag:" + sForceOpenFlag);
-            String cachePath = U.app().getFilesDir()+"/xlog";
+            String cachePath = U.app().getFilesDir() + "/xlog";
             String logPath = U.getAppInfoUtils().getSubDirPath("logs");
 
             if (isDebugLogOpen() || U.getChannelUtils().isStaging()) {
@@ -36,6 +36,7 @@ public class MyLog {
                 Xlog.setConsoleLogOpen(false);
             }
             com.tencent.mars.xlog.Log.setLogImp(new Xlog());
+            com.tencent.mars.xlog.Log.appenderFlush(false);
         }
         sHasInit = true;
     }
@@ -45,15 +46,15 @@ public class MyLog {
     // ------------------------------------------------------------------------------
     public static final void v(String msg) {
         if (!sHasInit) {
-            android.util.Log.v(TAG,msg);
+            android.util.Log.v(TAG, msg);
             return;
         }
-        Log.v(TAG,msg);
+        Log.v(TAG, msg);
     }
 
     public static final void d(String msg) {
         if (!sHasInit) {
-            android.util.Log.d(TAG,msg);
+            android.util.Log.d(TAG, msg);
             return;
         }
         Log.d(TAG, msg);
@@ -61,16 +62,16 @@ public class MyLog {
 
     public static final void w(String msg) {
         if (!sHasInit) {
-            android.util.Log.w(TAG,msg);
+            android.util.Log.w(TAG, msg);
             return;
         }
-        Log.w(TAG,msg);
+        Log.w(TAG, msg);
     }
 
 
     public static final void e(String msg) {
         if (!sHasInit) {
-            android.util.Log.e(TAG,msg);
+            android.util.Log.e(TAG, msg);
             return;
         }
         Log.e(TAG, msg);
@@ -80,7 +81,7 @@ public class MyLog {
 
     public static final void v(String tag, String msg) {
         if (!sHasInit) {
-            android.util.Log.v(tag,msg);
+            android.util.Log.v(tag, msg);
             return;
         }
         Log.v(tag, msg);
@@ -88,7 +89,7 @@ public class MyLog {
 
     public static final void d(String tag, String msg) {
         if (!sHasInit) {
-            android.util.Log.d(tag,msg);
+            android.util.Log.d(tag, msg);
             return;
         }
         Log.d(tag, msg);
@@ -97,7 +98,7 @@ public class MyLog {
 
     public static final void w(String tag, String msg) {
         if (!sHasInit) {
-            android.util.Log.w(tag,msg);
+            android.util.Log.w(tag, msg);
             return;
         }
         Log.w(tag, msg);
@@ -106,7 +107,7 @@ public class MyLog {
 
     public static final void i(String tag, String msg) {
         if (!sHasInit) {
-            android.util.Log.i(tag,msg);
+            android.util.Log.i(tag, msg);
             return;
         }
         Log.i(tag, msg);
@@ -114,7 +115,7 @@ public class MyLog {
 
     public static final void e(String tag, String msg) {
         if (!sHasInit) {
-            android.util.Log.e(tag,msg);
+            android.util.Log.e(tag, msg);
             return;
         }
         Log.e(tag, msg);
@@ -125,7 +126,7 @@ public class MyLog {
 
     public static final void d(String tag, String msg, Throwable tr) {
         if (!sHasInit) {
-            android.util.Log.d(tag,msg,tr);
+            android.util.Log.d(tag, msg, tr);
             return;
         }
         Log.d(tag, android.util.Log.getStackTraceString(tr));
@@ -133,7 +134,7 @@ public class MyLog {
 
     public static final void d(String tag, Throwable tr) {
         if (!sHasInit) {
-            android.util.Log.d(tag,"",tr);
+            android.util.Log.d(tag, "", tr);
             return;
         }
         Log.d(tag, android.util.Log.getStackTraceString(tr));
@@ -141,7 +142,7 @@ public class MyLog {
 
     public static final void d(Throwable tr) {
         if (!sHasInit) {
-            android.util.Log.d(TAG,"",tr);
+            android.util.Log.d(TAG, "", tr);
             return;
         }
         Log.d(TAG, android.util.Log.getStackTraceString(tr));
@@ -149,7 +150,7 @@ public class MyLog {
 
     public static final void e(String tag, String msg, Throwable tr) {
         if (!sHasInit) {
-            android.util.Log.e(tag,msg,tr);
+            android.util.Log.e(tag, msg, tr);
             return;
         }
         Log.e(tag, android.util.Log.getStackTraceString(tr));
@@ -157,7 +158,7 @@ public class MyLog {
 
     public static final void e(String tag, Throwable tr) {
         if (!sHasInit) {
-            android.util.Log.e(tag,"",tr);
+            android.util.Log.e(tag, "", tr);
             return;
         }
         Log.e(tag, android.util.Log.getStackTraceString(tr));
@@ -165,10 +166,24 @@ public class MyLog {
 
     public static final void e(Throwable tr) {
         if (!sHasInit) {
-            android.util.Log.e(TAG,"",tr);
+            android.util.Log.e(TAG, "", tr);
             return;
         }
         Log.e(TAG, android.util.Log.getStackTraceString(tr));
+    }
+
+    public static final void flushLog() {
+        if (!sHasInit) {
+            return;
+        }
+        Log.appenderFlush(true);
+    }
+
+    public static void closeLog() {
+        if (!sHasInit) {
+            return;
+        }
+        Log.appenderClose();
     }
 
     // ------------------------------------------------------------------------------
@@ -209,6 +224,6 @@ public class MyLog {
 
     public static boolean isDebugLogOpen() {
 //        return BuildConfig.DEBUG || sForceOpenFlag || U.getChannelUtils().isStaging();
-        return BuildConfig.DEBUG || sForceOpenFlag ;
+        return BuildConfig.DEBUG || sForceOpenFlag;
     }
 }
