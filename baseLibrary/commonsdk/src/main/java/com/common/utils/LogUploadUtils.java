@@ -36,6 +36,7 @@ public class LogUploadUtils {
         mUploadLogTask = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
+                MyLog.flushLog();
                 File logDir = new File(U.getAppInfoUtils().getMainDir() + File.separator + "logs/");
                 if (logDir == null) {
                     emitter.onError(new Throwable("没有log文件夹"));

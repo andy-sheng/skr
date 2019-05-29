@@ -108,6 +108,7 @@ public class SkrCrashHandler implements UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         MyLog.e(TAG, "uncaughtException", ex);
+        MyLog.closeLog();
         if (mOldHandler != null) {
             mOldHandler.uncaughtException(thread,ex);
         }
