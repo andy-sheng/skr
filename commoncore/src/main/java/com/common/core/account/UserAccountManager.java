@@ -34,6 +34,9 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -245,8 +248,19 @@ public class UserAccountManager {
                             UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
+                            HashMap map = new HashMap();
+                            map.put("error",obj.getErrno()+"");
+                            StatisticsAdapter.recordCountEvent("signup","login_failed",map);
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
+                    }
+
+                    @Override
+                    public void onNetworkError(ErrorType errorType) {
+                        super.onNetworkError(errorType);
+                        HashMap map = new HashMap();
+                        map.put("error","network_error");
+                        StatisticsAdapter.recordCountEvent("signup","login_failed",map);
                     }
                 });
 
@@ -283,7 +297,18 @@ public class UserAccountManager {
                             }
                         } else {
                             U.getToastUtil().showShort(obj.getErrmsg());
+                            HashMap map = new HashMap();
+                            map.put("error",obj.getErrno()+"");
+                            StatisticsAdapter.recordCountEvent("signup","login_failed",map);
                         }
+                    }
+
+                    @Override
+                    public void onNetworkError(ErrorType errorType) {
+                        super.onNetworkError(errorType);
+                        HashMap map = new HashMap();
+                        map.put("error","network_error");
+                        StatisticsAdapter.recordCountEvent("signup","login_failed",map);
                     }
                 });
     }
@@ -305,6 +330,9 @@ public class UserAccountManager {
         if (isFirstLogin) {
             U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
         }
+        HashMap map = new HashMap();
+        map.put("isFirstLogin",""+isFirstLogin);
+        StatisticsAdapter.recordCountEvent("signup","login_success",map);
         boolean needBeginnerGuide = jsonObject.getBooleanValue("needBeginnerGuide");
 
         // 设置个人信息

@@ -102,12 +102,13 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
-                HashMap map = new HashMap();
+                final HashMap map = new HashMap();
                 map.put("type","Phone");
                 StatisticsAdapter.recordCountEvent("signup", "click", map);
                 mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                     @Override
                     public void run() {
+                        StatisticsAdapter.recordCountEvent("signup", "shouquan", map);
                         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
@@ -123,10 +124,11 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
-                HashMap map = new HashMap();
+                final HashMap map = new HashMap();
                 map.put("type","WeiXin");
                 StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
+                    StatisticsAdapter.recordCountEvent("signup", "noinstall", map);
                     U.getToastUtil().showShort("你没有安装微信");
                     return;
                 }
@@ -148,6 +150,7 @@ public class LoginFragment extends BaseFragment {
                     mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
+                            StatisticsAdapter.recordCountEvent("signup", "shouquan", map);
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
@@ -162,14 +165,14 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
-                HashMap map = new HashMap();
+                final HashMap map = new HashMap();
                 map.put("type","QQ");
                 StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
+                    StatisticsAdapter.recordCountEvent("signup", "noinstall", map);
                     U.getToastUtil().showShort("你没有安装QQ");
                     return;
                 }
-
                 if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
                     // 小米商店渠道，需要获取读取imei权限
                     mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
@@ -188,6 +191,7 @@ public class LoginFragment extends BaseFragment {
                     mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
+                            StatisticsAdapter.recordCountEvent("signup", "shouquan", map);
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
@@ -218,6 +222,9 @@ public class LoginFragment extends BaseFragment {
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             MyLog.d(TAG, "onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
             showLoginingBar(false);
+            final HashMap map = new HashMap();
+            map.put("type",platform.toString());
+            StatisticsAdapter.recordCountEvent("signup", "shouquan_success", map);
             if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
                 String accessToken = data.get("access_token");
@@ -235,6 +242,9 @@ public class LoginFragment extends BaseFragment {
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
             MyLog.d(TAG, "onError" + " platform=" + platform + " action=" + action + " t=" + t);
             showLoginingBar(false);
+            final HashMap map = new HashMap();
+            map.put("type",platform.toString());
+            StatisticsAdapter.recordCountEvent("signup", "shouquan_failed", map);
             if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
             } else if (platform == SHARE_MEDIA.QQ) {
