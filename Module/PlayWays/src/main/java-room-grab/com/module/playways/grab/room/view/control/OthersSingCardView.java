@@ -49,7 +49,7 @@ public class OthersSingCardView {
                 mChorusOtherSingCardView.setVisibility(View.GONE);
                 mNormalOthersSingCardView.setVisibility(View.GONE);
                 mMiniGameOtherSingView.setVisibility(View.GONE);
-            } else if (RoomDataUtils.isMiniGame(mRoomData)) {
+            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
                 mNormalOthersSingCardView.setVisibility(View.GONE);
                 mChorusOtherSingCardView.setVisibility(View.GONE);
                 mPKOtherSingCardView.setVisibility(View.GONE);
@@ -68,7 +68,7 @@ public class OthersSingCardView {
             mChorusOtherSingCardView.bindData();
         } else if (RoomDataUtils.isPKRound(mRoomData)) {
             mPKOtherSingCardView.bindData();
-        } else if (RoomDataUtils.isMiniGame(mRoomData)) {
+        } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
             mMiniGameOtherSingView.bindData();
         } else {
             mNormalOthersSingCardView.bindData();

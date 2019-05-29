@@ -396,6 +396,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     void preOpWhenSelfRound() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         boolean needAcc = false;
+        boolean needScore = false;
         if (now != null) {
             Params p = ZqEngineKit.getInstance().getParams();
             if (p != null) {
@@ -403,13 +404,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             if (now.getWantSingType() == EWantSingType.EWST_SPK.getValue()) {
                 needAcc = true;
+                needScore = true;
             } else if (now.getWantSingType() == EWantSingType.EWST_CHORUS.getValue()) {
                 needAcc = false;
+                needScore = false;
+            } else if (now.getWantSingType() == EWantSingType.EWST_MIN_GAME.getValue()) {
+                needAcc = false;
+                needScore = false;
             } else if (mRoomData.isAccEnable()) {
                 needAcc = true;
+                needScore = true;
             } else {
                 if (p != null) {
                     p.setGrabSingNoAcc(true);
+                    needScore = true;
                 }
             }
         }
@@ -450,22 +458,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         .setMode(RecognizeConfig.MODE_MANUAL)
                         .build());
             } else {
-                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                        .setSongName(now.getMusic().getItemName())
-                        .setArtist(now.getMusic().getOwner())
-                        .setMode(RecognizeConfig.MODE_AUTO)
-                        .setAutoTimes(3)
-                        .setMResultListener(new ArcRecognizeListener() {
-                            @Override
-                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                                int mAcrScore = 0;
-                                if (targetSongInfo != null) {
-                                    mAcrScore = (int) (targetSongInfo.getScore() * 100);
+                if(needScore){
+                    // 清唱还需要打分，那就只用 acr 打分
+                    ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                            .setSongName(now.getMusic().getItemName())
+                            .setArtist(now.getMusic().getOwner())
+                            .setMode(RecognizeConfig.MODE_AUTO)
+                            .setAutoTimes(3)
+                            .setMResultListener(new ArcRecognizeListener() {
+                                @Override
+                                public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                                    int mAcrScore = 0;
+                                    if (targetSongInfo != null) {
+                                        mAcrScore = (int) (targetSongInfo.getScore() * 100);
+                                    }
+                                    EventBus.getDefault().post(new LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound", -1, mAcrScore, 0));
                                 }
-                                EventBus.getDefault().post(new LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound", -1, mAcrScore, 0));
-                            }
-                        })
-                        .build());
+                            })
+                            .build());
+                }else{
+
+                }
             }
         }
     }
@@ -475,10 +488,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void beginSing() {
         // 打开引擎，变为主播
-        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (mRoomData.openAudioRecording()) {
             // 需要上传音频伪装成机器人
-            if (now != null) {
+            if (now != null && !now.isMiniGameRound()) {
                 String fileName = String.format("wm_%s_%s.aac", mRoomData.getGameId(), now.getRoundSeq());
                 String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
                 ZqEngineKit.getInstance().startAudioRecording(savePath, Constants.AUDIO_RECORDING_QUALITY_HIGH);
@@ -842,7 +855,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mGrabRedPkgPresenter.getRedPkg();
         }
 
-        if (mRoomData.openAudioRecording()) {
+        if (mRoomData.openAudioRecording() && !roundInfoModel.isMiniGameRound()) {
             SongModel songModel = null;
             boolean baodeng = false;
             if (roundInfoModel.getOverReason() == EQRoundOverReason.ROR_CHO_SUCCESS.getValue() ||
@@ -1536,10 +1549,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     }
                 });
             }
-        } else if (now.getStatus() == EQRoundStatus.QRS_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+        } else if (now.isSingStatus()) {
             // 演唱阶段
             if (now.singBySelf()) {
                 mUiHandler.post(new Runnable() {
@@ -1601,11 +1611,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
                 }
             });
-        } else if (now.getStatus() == EQRoundStatus.QRS_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
-                || now.getStatus() == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()) {
+        } else if (now.isSingStatus()) {
             // 演唱阶段
             if (now.singBySelf()) {
                 mUiHandler.post(new Runnable() {
@@ -1624,9 +1630,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 });
                 checkMachineUser(now.getUserID());
             }
-//            if (now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
-//                pretendSystemMsg("合唱配对成功");
-//            }
         }
     }
 
@@ -2348,11 +2351,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             /**
              * pk 与 普通 都发送
              */
-            if (now.isPKRound()) {
-                sendScoreToServer(score, line);
-            } else if (now.isChorusRound()) {
-
-            } else {
+            if (now.isPKRound() || now.isNormalRound()) {
                 sendScoreToServer(score, line);
             }
         }

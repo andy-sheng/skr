@@ -317,11 +317,11 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static boolean isMiniGame(GrabRoomData roomData) {
+    public static boolean isMiniGameRound(GrabRoomData roomData) {
         if (roomData != null) {
             GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
             if (infoModel != null) {
-                return infoModel.isMiniGame();
+                return infoModel.isMiniGameRound();
             }
         }
         return false;

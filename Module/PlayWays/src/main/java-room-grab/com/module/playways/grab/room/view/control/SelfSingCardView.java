@@ -51,7 +51,7 @@ public class SelfSingCardView {
                 mNormalSelfSingCardView.setVisibility(View.GONE);
                 mChorusSelfSingCardView.setVisibility(View.GONE);
                 mMiniGameSelfSingView.setVisibility(View.GONE);
-            } else if (RoomDataUtils.isMiniGame(mRoomData)) {
+            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
                 mMiniGameSelfSingView.setVisibility(View.VISIBLE);
                 mNormalSelfSingCardView.setVisibility(View.GONE);
                 mChorusSelfSingCardView.setVisibility(View.GONE);
@@ -70,7 +70,7 @@ public class SelfSingCardView {
             mChorusSelfSingCardView.playLyric();
         } else if (RoomDataUtils.isPKRound(mRoomData)) {
             mPKSelfSingCardView.playLyric();
-        } else if (RoomDataUtils.isMiniGame(mRoomData)) {
+        } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
             mMiniGameSelfSingView.playLyric();
         } else {
             mNormalSelfSingCardView.playLyric();

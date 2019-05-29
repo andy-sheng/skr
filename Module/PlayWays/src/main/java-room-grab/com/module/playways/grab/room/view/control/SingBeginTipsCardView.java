@@ -52,7 +52,7 @@ public class SingBeginTipsCardView {
                 mNormalSingBeginTipsCardView.setVisibility(View.GONE);
                 mChorusSingBeginTipsCardView.setVisibility(View.GONE);
                 mMiniGameSingBegin.setVisibility(View.GONE);
-            } else if (RoomDataUtils.isMiniGame(mRoomData)) {
+            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
                 mMiniGameSingBegin.setVisibility(View.VISIBLE);
                 mPKSingBeginTipsCardView.setVisibility(View.GONE);
                 mNormalSingBeginTipsCardView.setVisibility(View.GONE);
@@ -83,7 +83,7 @@ public class SingBeginTipsCardView {
                     UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
                     mPKSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
                 }
-            } else if (RoomDataUtils.isMiniGame(mRoomData)) {
+            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
                 List<MINIGameRoundInfoModel> list = grabRoundInfoModel.getMINIGameRoundInfoModels();
                 if (list != null && list.size() >= 2) {
                     UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
