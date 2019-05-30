@@ -21,13 +21,11 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -66,7 +64,6 @@ import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
-import com.module.playways.grab.room.view.RedPkgCountDownView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.grab.room.view.control.OthersSingCardView;
@@ -104,7 +101,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView {
@@ -1166,9 +1162,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             public void clickValid(View v) {
                 mute = !mute;
                 if(mute){
-                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
+                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute1);
                 }else{
-                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_normal);
+                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
                 }
                 mCorePresenter.miniOwnerMic(mute);
             }
