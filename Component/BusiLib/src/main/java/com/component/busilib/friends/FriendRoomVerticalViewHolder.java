@@ -135,7 +135,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                 MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
             }
 
-            if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayDesc()) && TextUtils.isEmpty(mFriendRoomModel.getUserInfo().getNickname())) {
+            if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayDesc()) && !TextUtils.isEmpty(mFriendRoomModel.getUserInfo().getNickname())) {
                 String remark = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getUserInfo().getNickname());
                 if (!TextUtils.isEmpty(remark) && remark.length() > 7) {
                     remark = remark.substring(0, 7) + "...";
