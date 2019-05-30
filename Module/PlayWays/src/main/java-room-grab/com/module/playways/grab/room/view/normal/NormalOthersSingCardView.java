@@ -23,6 +23,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.R;
+import com.module.playways.grab.room.view.CharmsView;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -47,6 +48,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
 
     SVGAImageView mGrabStageView;
     BaseImageView mSingAvatarView;
+    CharmsView mCharmsView;
     CircleCountDownView mCircleCountDownView;
     ExTextView mTvSingerName;
 
@@ -86,6 +88,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
         inflate(context, R.layout.grab_normal_others_sing_card_layout, this);
         mGrabStageView = (SVGAImageView) findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
+        mCharmsView = (CharmsView) findViewById(R.id.charms_view);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
         mTvSingerName = (ExTextView) findViewById(R.id.tv_singer_name);
 
@@ -118,6 +121,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mTvSingerName.setText(userInfoModel.getNicknameRemark());
+            mCharmsView.bindData(mUseId);
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }
@@ -132,9 +136,9 @@ public class NormalOthersSingCardView extends RelativeLayout {
         mGrabStageView.setVisibility(View.VISIBLE);
         mGrabStageView.setLoops(1);
 
-        SvgaParserAdapter.parse( "grab_main_stage.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse("grab_main_stage.svga", new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete( SVGAVideoEntity videoItem) {
+            public void onComplete(SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 mGrabStageView.setLoops(-1);
                 mGrabStageView.setImageDrawable(drawable);
@@ -165,7 +169,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
     }
 
     public void tryStartCountDown() {
-        if(getVisibility() == GONE){
+        if (getVisibility() == GONE) {
             return;
         }
         MyLog.d(TAG, "tryStartCountDown");

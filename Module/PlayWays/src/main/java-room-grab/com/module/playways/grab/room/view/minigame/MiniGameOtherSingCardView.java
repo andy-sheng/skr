@@ -29,6 +29,7 @@ import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
+import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -62,9 +63,11 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
     LinearLayout mChorusOtherArea;
 
     SimpleDraweeView mLeftIv;
+    CharmsView mLeftCharms;
     ExTextView mLeftName;
 
     SimpleDraweeView mRightIv;
+    CharmsView mRightCharms;
     ExTextView mRightName;
 
     SingCountDownView mSingCountDownView;
@@ -119,9 +122,11 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
         mRightSingSvga = (SVGAImageView) findViewById(R.id.right_sing_svga);
 
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
+        mLeftCharms = (CharmsView) findViewById(R.id.left_charms);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
 
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
+        mRightCharms = (CharmsView) findViewById(R.id.right_charms);
         mRightName = (ExTextView) findViewById(R.id.right_name);
 
         mSingCountDownView = findViewById(R.id.sing_count_down_view);
@@ -171,6 +176,8 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftMINIGameRoundInfoModel.getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightMINIGameRoundInfoModel.getUserID());
             mMiniGameInfoModel = now.getMusic().getMiniGame();
+            mLeftCharms.bindData(mLeftMINIGameRoundInfoModel.getUserID());
+            mRightCharms.bindData(mRightMINIGameRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftMINIGameRoundInfoModel != null && mRightMINIGameRoundInfoModel != null) {

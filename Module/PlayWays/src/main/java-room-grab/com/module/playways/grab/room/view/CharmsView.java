@@ -14,6 +14,8 @@ public class CharmsView extends RelativeLayout {
     ImageView mCharmIv;
     TextView mCharmTv;
 
+    long mUserID;
+
     public CharmsView(Context context) {
         super(context);
         init();
@@ -34,5 +36,10 @@ public class CharmsView extends RelativeLayout {
 
         mCharmIv = (ImageView) findViewById(R.id.charm_iv);
         mCharmTv = (TextView) findViewById(R.id.charm_tv);
+    }
+
+
+    public void bindData(long useID) {
+        this.mUserID = useID;
     }
 }

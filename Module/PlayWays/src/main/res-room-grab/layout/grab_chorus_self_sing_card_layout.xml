@@ -26,6 +26,16 @@
             android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
             android:scrollbars="vertical" />
 
+        <com.module.playways.grab.room.view.CharmsView
+            android:id="@+id/charms_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/view_7_dp"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
     <com.module.playways.grab.room.view.normal.view.SingCountDownView

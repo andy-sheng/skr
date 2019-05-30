@@ -14,6 +14,7 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.crash.IgnoreException;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -24,6 +25,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
+import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
@@ -57,6 +59,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
     SelfSingCardView.Listener mListener;
 
     ImageView mIvBg;
+    CharmsView mCharmsView;
     ScrollView mSvLyric;
     SimpleDraweeView mAvatarIv;
     TextView mFirstTipsTv;
@@ -84,6 +87,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_mini_game_selft_sing_layout, this);
 
         mIvBg = findViewById(R.id.iv_bg);
+        mCharmsView = findViewById(R.id.charms_view);
         mAvatarIv = findViewById(R.id.avatar_iv);
         mFirstTipsTv = findViewById(R.id.first_tips_tv);
         mSvLyric = findViewById(R.id.sv_lyric);
@@ -94,6 +98,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mGrabRoomData = roomData;
+        mCharmsView.bindData(MyUserInfoManager.getInstance().getUid());
     }
 
     public void setListener(SelfSingCardView.Listener l) {

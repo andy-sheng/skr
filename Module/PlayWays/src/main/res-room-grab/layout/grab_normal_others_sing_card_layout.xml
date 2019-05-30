@@ -37,22 +37,31 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_207_dp" />
 
+    <com.module.playways.grab.room.view.CharmsView
+        android:id="@+id/charms_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/sing_avatar_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:visibility="gone" />
+
     <com.common.view.ex.ExTextView
-        android:singleLine="true"
-        android:textStyle="bold"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textColor="#FFC15B"
         android:id="@+id/tv_singer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sing_avatar_view"
         android:layout_centerHorizontal="true"
-        android:maxWidth="@dimen/view_200_dp"
         android:layout_marginTop="@dimen/view_32_dp"
+        android:maxWidth="@dimen/view_200_dp"
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingTop="@dimen/view_2_dp"
         android:paddingRight="@dimen/view_10_dp"
         android:paddingBottom="@dimen/view_2_dp"
+        android:singleLine="true"
+        android:textColor="#FFC15B"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_43_dp"
         app:bl_solid_color="@color/black_trans_20" />
 

@@ -27,6 +27,7 @@ import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -61,11 +62,13 @@ public class ChorusOthersSingCardView extends RelativeLayout {
 
     SimpleDraweeView mLeftIv;
     ExRelativeLayout mLeftStatusArea;
+    CharmsView mLeftCharms;
     ExTextView mLeftStatus;
     ExTextView mLeftName;
 
     SimpleDraweeView mRightIv;
     ExRelativeLayout mRightStatusArea;
+    CharmsView mRightCharms;
     ExTextView mRightStatus;
     ExTextView mRightName;
 
@@ -120,11 +123,13 @@ public class ChorusOthersSingCardView extends RelativeLayout {
 
         mLeftStatusArea = (ExRelativeLayout) findViewById(R.id.left_status_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
+        mLeftCharms = (CharmsView) findViewById(R.id.left_charms);
         mLeftStatus = (ExTextView) findViewById(R.id.left_status);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
 
         mRightStatusArea = (ExRelativeLayout) findViewById(R.id.right_status_area);
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
+        mRightCharms = (CharmsView) findViewById(R.id.right_charms);
         mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightName = (ExTextView) findViewById(R.id.right_name);
 
@@ -178,6 +183,8 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             mRightChorusRoundInfoModel = list.get(1);
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftChorusRoundInfoModel.getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightChorusRoundInfoModel.getUserID());
+            mLeftCharms.bindData(mLeftChorusRoundInfoModel.getUserID());
+            mRightCharms.bindData(mRightChorusRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftChorusRoundInfoModel != null && mRightChorusRoundInfoModel != null) {
@@ -397,7 +404,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                     if (uid == 0) {
                         uid = (int) UserAccountManager.getInstance().getUuidAsLong();
                     }
-                    if(u.getVolume()>30) {
+                    if (u.getVolume() > 30) {
                         if (mLeftUserInfoModel != null && mLeftUserInfoModel.getUserId() == uid) {
                             mUiHandler.removeMessages(MSG_LEFT_SPEAK_OVER);
                             mUiHandler.sendEmptyMessageDelayed(MSG_LEFT_SPEAK_OVER, 2000);
