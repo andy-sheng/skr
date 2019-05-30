@@ -2523,21 +2523,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GiftPresentEvent giftPresentEvent) {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
-        if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
-            EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
-        }
+        EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
 
         for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
             if (property.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 if (property.getCoinBalance() != -1) {
                     EventBus.getDefault().post(new UpdateCoinEvent((int) property.getCoinBalance(), property.getLastChangeMs()));
                 }
-
                 if (property.getHongZuanBalance() != -1) {
                     mRoomData.setHzCount(property.getHongZuanBalance(), property.getLastChangeMs());
                 }
-
-                break;
+            } else {
+                // 他人的只关心魅力值的变化
             }
         }
 
