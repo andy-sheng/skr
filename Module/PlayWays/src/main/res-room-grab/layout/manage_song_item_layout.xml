@@ -17,57 +17,18 @@
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_16_dp" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/chorus_song_tag"
-        android:layout_width="@dimen/view_34_dp"
-        android:layout_height="@dimen/view_16_dp"
-        android:layout_alignTop="@id/tv_song_name"
-        android:layout_marginLeft="-142dp"
-        android:layout_marginTop="@dimen/view_3_dp"
+    <TextView
+        android:id="@+id/song_tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_alignBottom="@id/tv_song_name"
         android:layout_toRightOf="@id/tv_song_name"
         android:gravity="center"
-        android:text="合唱"
+        android:paddingLeft="@dimen/view_6_dp"
+        android:paddingRight="@dimen/view_6_dp"
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_10_dp"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_10_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#7088FF"
-        app:bl_stroke_color="@color/white_trans_70"
-        app:bl_stroke_width="@dimen/view_1_dp" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/pk_song_tag"
-        android:layout_width="@dimen/view_34_dp"
-        android:layout_height="@dimen/view_16_dp"
-        android:layout_alignTop="@id/tv_song_name"
-        android:layout_marginLeft="-142dp"
-        android:layout_marginTop="@dimen/view_3_dp"
-        android:layout_toRightOf="@id/tv_song_name"
-        android:gravity="center"
-        android:text="PK"
-        android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_10_dp"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_10_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#E55088"
-        app:bl_stroke_color="@color/white_trans_70"
-        app:bl_stroke_width="@dimen/view_1_dp" />
-
-    <!--<com.common.view.ex.ExTextView-->
-    <!--android:id="@+id/tv_auther"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/tv_song_name"-->
-    <!--android:layout_alignLeft="@+id/tv_song_name"-->
-    <!--android:layout_alignRight="@+id/tv_song_name"-->
-    <!--android:layout_marginTop="@dimen/view_2_dp"-->
-    <!--android:alpha="0.6"-->
-    <!--android:ellipsize="end"-->
-    <!--android:singleLine="true"-->
-    <!--android:textColor="@color/white_trans_80"-->
-    <!--android:textSize="@dimen/textsize_12_dp" />-->
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_manage"
