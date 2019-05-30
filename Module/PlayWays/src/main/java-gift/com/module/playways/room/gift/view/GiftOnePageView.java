@@ -9,7 +9,10 @@ import com.common.utils.U;
 import com.common.view.ex.ExFrameLayout;
 import com.module.playways.R;
 import com.module.playways.room.gift.adapter.GiftDisplayAdapter;
+import com.module.playways.room.gift.event.CancelGiftCountDownEvent;
 import com.module.playways.room.gift.event.GIftNotifyEvent;
+import com.module.playways.room.gift.event.StartGiftCountDownEvent;
+import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
 import com.module.playways.room.gift.model.BaseGift;
 import com.respicker.view.GridSpacingItemDecoration;
 
@@ -71,5 +74,27 @@ public class GiftOnePageView extends ExFrameLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GIftNotifyEvent bigGiftMsgEvent) {
         mGiftAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CancelGiftCountDownEvent cancelGiftCountDownEvent) {
+        mGiftAdapter.setCountDownCircleShow(false);
+        mGiftAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(StartGiftCountDownEvent startGiftCountDownEvent) {
+        mGiftAdapter.setCountDownCircleShow(true);
+        mGiftAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateMeiGuiFreeCountEvent updateMeiGuiFreeCountEvent) {
+        for (BaseGift baseGift : mGiftAdapter.getDataList()) {
+            if (baseGift.getGiftID() == 1) {
+                baseGift.setBalance(updateMeiGuiFreeCountEvent.getCount());
+                break;
+            }
+        }
     }
 }

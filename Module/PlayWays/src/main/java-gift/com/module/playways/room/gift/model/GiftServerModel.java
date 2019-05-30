@@ -38,6 +38,15 @@ public class GiftServerModel implements Serializable {
     private int textContinueCount;
     private int displayType;
     private String extra;
+    private int balance;
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 
     public long getGiftID() {
         return giftID;

@@ -127,6 +127,7 @@ enum EGiftType {
     EG_Unknown = 0;
     EG_Coin    = 1;
     EG_Zuan    = 2;
+    EG_SYS_Handsel = 3; // 系统赠送礼物（鲜花）
 }
 
 

@@ -2452,7 +2452,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param line
      */
     public void sendScoreToServer(int score, int line) {
-        //score = (int) (Math.random()*100);
+        //score = (int) (Math.mRandom()*100);
         HashMap<String, Object> map = new HashMap<>();
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (infoModel == null) {

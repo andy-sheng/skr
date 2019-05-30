@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.util.AttributeSet;
+import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 
 import com.common.base.R;
@@ -128,6 +129,7 @@ public class CircleCountDownView extends ProgressBar {
 
         mRecordAnimator = ValueAnimator.ofInt(startD, 360);
         mRecordAnimator.setDuration(leave > 0 ? leave : 0);
+        mRecordAnimator.setInterpolator(new LinearInterpolator());
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

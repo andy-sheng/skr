@@ -14,14 +14,16 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.room.gift.GiftServerApi;
-import com.module.playways.room.gift.event.UpdateDiamondEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
+import com.module.playways.room.gift.event.UpdateDiamondEvent;
+import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.GiftPresentEvent;
+import com.zq.live.proto.Common.EGiftType;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -123,10 +125,24 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     if (baseGift.isCanContinue()) {
                         mContinueSendScheduler.sendGiftSuccess();
                     }
+
                     int coin = result.getData().getIntValue("coinBalance");
+                    if (coin >= 0) {
+                        long ts = result.getData().getLongValue("coinBalanceLastChangeMs");
+                        EventBus.getDefault().post(new UpdateCoinEvent(coin, ts));
+                    }
+
                     float diamond = result.getData().getFloatValue("zuanBalance");
-                    EventBus.getDefault().post(new UpdateDiamondEvent(diamond));
-                    EventBus.getDefault().post(new UpdateCoinEvent(coin));
+                    if (diamond >= 0) {
+                        long ts = result.getData().getLongValue("zuanBalanceLastChangeMs");
+                        UpdateDiamondEvent.sendEvent(diamond, ts);
+                    }
+
+                    if (baseGift.getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
+                        int sysHandselBalance = result.getData().getInteger("sysHandselBalance");
+                        long sysHandselBalanceLastChangeMs = result.getData().getLongValue("sysHandselBalanceLastChangeMs");
+                        UpdateMeiGuiFreeCountEvent.sendEvent(sysHandselBalance, sysHandselBalanceLastChangeMs);
+                    }
 
                     UserInfoModel own = new UserInfoModel();
                     own.setUserId((int) MyUserInfoManager.getInstance().getUid());

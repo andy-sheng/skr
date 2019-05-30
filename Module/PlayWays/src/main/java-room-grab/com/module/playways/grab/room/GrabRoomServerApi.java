@@ -419,4 +419,13 @@ message STCommitSegmentResultReq
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
     Observable<ApiResult> getListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
+
+
+    /**
+     * 礼物60秒打卡
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi//v1/bonus/ask-for-flower")
+    Observable<ApiResult> punch(@Query("timestamp") long offset, @Query("signV2") String signV2);
 }

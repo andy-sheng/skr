@@ -51,6 +51,7 @@ import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.grab.room.presenter.GiftTimerPresenter;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.fragment.OwnerManageFragment;
@@ -64,6 +65,7 @@ import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
+import com.module.playways.grab.room.view.IUpdateFreeGiftCountView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.grab.room.view.control.OthersSingCardView;
@@ -72,7 +74,9 @@ import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView;
 import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
+import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
 import com.module.playways.room.gift.view.ContinueSendView;
+import com.module.playways.room.gift.view.GiftDisplayView;
 import com.module.playways.room.gift.view.GiftPanelView;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
@@ -103,7 +107,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView {
+public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
 
     public final static String TAG = "GrabRoomFragment";
 
@@ -134,6 +138,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     ViewGroup mBottomBgVp;
     GrabBottomContainerView mBottomContainerView;
+
+    GiftTimerPresenter mGiftTimerPresenter;
 
 //    GrabVoiceControlPanelView mVoiceControlView;
 
@@ -291,6 +297,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
         mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
+        mGiftTimerPresenter = new GiftTimerPresenter(this);
+        addPresent(mGiftTimerPresenter);
+        mGiftTimerPresenter.startTimer();
 
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
@@ -660,6 +669,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mBottomContainerView.setOpVisible(!isVisible);
             }
         });
+
+        mGiftPanelView.setIGetGiftCountDownListener(new GiftDisplayView.IGetGiftCountDownListener() {
+            @Override
+            public long getCountDownTs() {
+                return mGiftTimerPresenter.getCountDownSecond();
+            }
+        });
     }
 
     private void initInputView() {
@@ -700,9 +716,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void showGiftPanel() {
                 if (mRoomData.getRealRoundInfo() != null) {
-                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
+                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()), mGiftTimerPresenter.getCountDownSecond());
                 } else {
-                    mGiftPanelView.show(null);
+                    mGiftPanelView.show(null, mGiftTimerPresenter.getCountDownSecond());
                 }
 
                 mContinueSendView.setVisibility(View.GONE);
@@ -964,6 +980,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
     }
 
+    @Override
+    public void updateGiftCount(int count, long ts) {
+        UpdateMeiGuiFreeCountEvent.sendEvent(count, ts);
+    }
+
     GrabTopContainerView.Listener mTopListener = new GrabTopContainerView.Listener() {
         @Override
         public void closeBtnClick() {
@@ -1208,7 +1229,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS();
-                                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
+                                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()), mGiftTimerPresenter.getCountDownSecond());
+
                                 }
                             }
                         })

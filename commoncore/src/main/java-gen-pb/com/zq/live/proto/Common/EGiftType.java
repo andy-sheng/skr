@@ -15,7 +15,12 @@ public enum EGiftType implements WireEnum {
 
   EG_Coin(1),
 
-  EG_Zuan(2);
+  EG_Zuan(2),
+
+  /**
+   * 系统赠送礼物（鲜花）
+   */
+  EG_SYS_Handsel(3);
 
   public static final ProtoAdapter<EGiftType> ADAPTER = new ProtoAdapter_EGiftType();
 
@@ -33,6 +38,7 @@ public enum EGiftType implements WireEnum {
       case 0: return EG_Unknown;
       case 1: return EG_Coin;
       case 2: return EG_Zuan;
+      case 3: return EG_SYS_Handsel;
       default: return null;
     }
   }

@@ -16,12 +16,12 @@ public interface GiftServerApi {
      *
      * @return
      */
-    @GET("/v1/gift/list")
+    @GET("/v2/gift/list")
     Observable<ApiResult> getGiftList(@Query("offset") int offset,
                                       @Query("limit") int limit
     );
 
-    @PUT("/v1/gift/present-gift")
+    @PUT("/v2/gift/present-gift")
     Observable<ApiResult> buyGift(@Body RequestBody body);
 
     /**

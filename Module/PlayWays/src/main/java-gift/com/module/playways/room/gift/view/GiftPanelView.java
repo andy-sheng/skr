@@ -42,7 +42,9 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.adapter.GiftAllPlayersAdapter;
 import com.module.playways.room.gift.event.BuyGiftEvent;
+import com.module.playways.room.gift.event.CancelGiftCountDownEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
+import com.module.playways.room.gift.event.StartGiftCountDownEvent;
 import com.module.playways.room.gift.event.UpdateDiamondEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,11 +75,12 @@ public class GiftPanelView extends FrameLayout {
     RelativeLayout mRlPlayerSelectArea;
     ExTextView mFollowTv;
 
-    GiftDisplayView mGiftView;
+    GiftDisplayView mGiftDisplayView;
     Disposable mRelationTask;
 
     GiftAllPlayersAdapter mGiftAllPlayersAdapter;
     UserInfoServerApi mUserInfoServerApi;
+    GiftDisplayView.IGetGiftCountDownListener mIGetGiftCountDownListener;
 
     //当前迈上的人
     GrabPlayerInfoModel mCurMicroMan;
@@ -143,11 +146,12 @@ public class GiftPanelView extends FrameLayout {
         mIvRecharge = (ExImageView) findViewById(R.id.iv_recharge);
         mIvDiamondIcon = (ImageView) findViewById(R.id.iv_diamond_icon);
         mIvSend = (ExImageView) findViewById(R.id.iv_send);
-        mGiftView = (GiftDisplayView) findViewById(R.id.gift_view);
+        mGiftDisplayView = (GiftDisplayView) findViewById(R.id.gift_view);
         mAllPlayersRV = (RecyclerView) findViewById(R.id.all_players_rv);
         mLlSelectedMan = (RelativeLayout) findViewById(R.id.ll_selected_man);
         mTvDiamond = (ExTextView) findViewById(R.id.tv_diamond);
         mFollowTv = (ExTextView) findViewById(R.id.follow_tv);
+        mGiftDisplayView.setIGetGiftCountDownListener(mIGetGiftCountDownListener);
 
         mGiftAllPlayersAdapter = new GiftAllPlayersAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -200,7 +204,7 @@ public class GiftPanelView extends FrameLayout {
         mIvSend.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mGiftView.getSelectedGift() == null) {
+                if (mGiftDisplayView.getSelectedGift() == null) {
                     ToastUtils.showShort("请选择礼物");
                     return;
                 }
@@ -211,7 +215,7 @@ public class GiftPanelView extends FrameLayout {
                 }
 
                 hide();
-                EventBus.getDefault().post(new BuyGiftEvent(mGiftView.getSelectedGift(), mCurMicroMan.getUserInfo()));
+                EventBus.getDefault().post(new BuyGiftEvent(mGiftDisplayView.getSelectedGift(), mCurMicroMan.getUserInfo()));
             }
         });
 
@@ -281,6 +285,10 @@ public class GiftPanelView extends FrameLayout {
         }
 
         bindSelectedPlayerData();
+    }
+
+    public void setIGetGiftCountDownListener(GiftDisplayView.IGetGiftCountDownListener IGetGiftCountDownListener) {
+        mIGetGiftCountDownListener = IGetGiftCountDownListener;
     }
 
     public void collapsePlayerList() {
@@ -365,12 +373,13 @@ public class GiftPanelView extends FrameLayout {
         startAnimation(animation);
 
         mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(HIDE_PANEL), ANIMATION_DURATION);
+        EventBus.getDefault().post(new CancelGiftCountDownEvent());
     }
 
     /**
      * @param grabPlayerInfoModel 麦上的人
      */
-    public void show(GrabPlayerInfoModel grabPlayerInfoModel) {
+    public void show(GrabPlayerInfoModel grabPlayerInfoModel, long passedTime) {
         MyLog.d(TAG, "show" + " grabPlayerInfoModel=" + grabPlayerInfoModel);
         if (!mHasInit) {
             inflate();
@@ -380,6 +389,8 @@ public class GiftPanelView extends FrameLayout {
             MyLog.d(TAG, "show" + " getVisibility() == VISIBLE");
             return;
         }
+
+        EventBus.getDefault().post(new StartGiftCountDownEvent());
 
         setSelectArea(grabPlayerInfoModel);
         mUiHandler.removeMessages(HIDE_PANEL);
@@ -553,8 +564,8 @@ public class GiftPanelView extends FrameLayout {
     }
 
     public void destroy() {
-        if (mGiftView != null) {
-            mGiftView.destroy();
+        if (mGiftDisplayView != null) {
+            mGiftDisplayView.destroy();
         }
         EventBus.getDefault().unregister(this);
         if (mRelationTask != null && !mRelationTask.isDisposed()) {
