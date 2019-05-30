@@ -1230,7 +1230,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS();
                                     mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()), mGiftTimerPresenter.getCountDownSecond());
-
                                 }
                             }
                         })
@@ -1481,6 +1480,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 if (mRoomData.isOwner() && now.isMiniGameRound()) {
                     mGrabGiveupView.delayShowGiveUpView(true);
                     mMiniOwnerMicIv.setVisibility(View.VISIBLE);
+                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
                 }
                 // 显示收音机
                 mSelfSingCardView.setVisibility(View.GONE);
