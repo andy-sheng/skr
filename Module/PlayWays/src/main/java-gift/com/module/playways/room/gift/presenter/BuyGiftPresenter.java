@@ -138,7 +138,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         long ts = result.getData().getLongValue("zuanBalanceLastChangeMs");
                         UpdateDiamondEvent.sendEvent(diamond, ts);
                     }
-                    float receiverMeili = result.getData().getFloatValue("ReceiveUserCurRoundSeqMeili");
+                    float receiverMeili = result.getData().getFloatValue("receiveUserCurRoundSeqMeili");
                     if(receiverMeili > 0 ){
                         EventBus.getDefault().post(new UpdateMeiliEvent(userInfoModel.getUserId(),(int)receiverMeili,System.currentTimeMillis()));;
                     }
