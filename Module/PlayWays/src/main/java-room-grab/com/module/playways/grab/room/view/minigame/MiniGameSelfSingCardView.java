@@ -141,7 +141,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
                 if (name.length() > 9) {
                     name = name.substring(0, 9);
                 }
-                mFirstTipsTv.setText("[" + name + "]" + "先开始");
+                mFirstTipsTv.setText("【" + name + "】" + "先开始");
             } else {
                 MyLog.w(TAG, "playLyric userInfoModel = null");
             }
