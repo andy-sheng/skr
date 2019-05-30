@@ -15,6 +15,7 @@ import com.module.playways.room.gift.event.StartGiftCountDownEvent;
 import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
 import com.module.playways.room.gift.model.BaseGift;
 import com.respicker.view.GridSpacingItemDecoration;
+import com.zq.live.proto.Common.EGiftType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -79,13 +80,21 @@ public class GiftOnePageView extends ExFrameLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CancelGiftCountDownEvent cancelGiftCountDownEvent) {
         mGiftAdapter.setCountDownCircleShow(false);
-        mGiftAdapter.notifyDataSetChanged();
+        updateSysHandselGift();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StartGiftCountDownEvent startGiftCountDownEvent) {
         mGiftAdapter.setCountDownCircleShow(true);
-        mGiftAdapter.notifyDataSetChanged();
+        updateSysHandselGift();
+    }
+
+    private void updateSysHandselGift() {
+        for (int i = 0; i < mGiftAdapter.getDataList().size(); i++) {
+            if (mGiftAdapter.getDataList().get(i).getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
+                mGiftAdapter.notifyItemChanged(i);
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
