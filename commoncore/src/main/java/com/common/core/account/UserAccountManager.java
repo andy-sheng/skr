@@ -109,7 +109,7 @@ public class UserAccountManager {
 
             if (!MyUserInfoManager.getInstance().isFirstLogin()) {
                 // 是个老用户，打个点
-                StatisticsAdapter.recordCountEvent("signup","oldid",null,true);
+                StatisticsAdapter.recordCountEvent("signup", "oldid", null, true);
             }
         }
     }
@@ -249,8 +249,8 @@ public class UserAccountManager {
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
                             HashMap map = new HashMap();
-                            map.put("error",obj.getErrno()+"");
-                            StatisticsAdapter.recordCountEvent("signup","login_failed",map);
+                            map.put("error", obj.getErrno() + "");
+                            StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
                     }
@@ -259,8 +259,8 @@ public class UserAccountManager {
                     public void onNetworkError(ErrorType errorType) {
                         super.onNetworkError(errorType);
                         HashMap map = new HashMap();
-                        map.put("error","network_error");
-                        StatisticsAdapter.recordCountEvent("signup","login_failed",map);
+                        map.put("error", "network_error");
+                        StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
                     }
                 });
 
@@ -298,8 +298,8 @@ public class UserAccountManager {
                         } else {
                             U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
-                            map.put("error",obj.getErrno()+"");
-                            StatisticsAdapter.recordCountEvent("signup","login_failed",map);
+                            map.put("error", obj.getErrno() + "");
+                            StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
                         }
                     }
 
@@ -307,8 +307,8 @@ public class UserAccountManager {
                     public void onNetworkError(ErrorType errorType) {
                         super.onNetworkError(errorType);
                         HashMap map = new HashMap();
-                        map.put("error","network_error");
-                        StatisticsAdapter.recordCountEvent("signup","login_failed",map);
+                        map.put("error", "network_error");
+                        StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
                     }
                 });
     }
@@ -331,8 +331,8 @@ public class UserAccountManager {
             U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
         }
         HashMap map = new HashMap();
-        map.put("isFirstLogin",""+isFirstLogin);
-        StatisticsAdapter.recordCountEvent("signup","login_success",map);
+        map.put("isFirstLogin", "" + isFirstLogin);
+        StatisticsAdapter.recordCountEvent("signup", "login_success", map);
         boolean needBeginnerGuide = jsonObject.getBooleanValue("needBeginnerGuide");
 
         // 设置个人信息
@@ -585,9 +585,9 @@ public class UserAccountManager {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
             com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
-            if(U.getChannelUtils().isStaging()){
-                CrashReport.setUserId("dev_"+UserAccountManager.getInstance().getUuid());
-            }else{
+            if (U.getChannelUtils().isStaging()) {
+                CrashReport.setUserId("dev_" + UserAccountManager.getInstance().getUuid());
+            } else {
                 CrashReport.setUserId(UserAccountManager.getInstance().getUuid());
             }
 

@@ -2,4 +2,5 @@
 <resources>
     <string name="fans_num_tag">粉丝 %d</string>
     <string name="age_tag">%d岁</string>
+    <string name="meili_tag">魅力：%d</string>
 </resources>
