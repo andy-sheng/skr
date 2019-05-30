@@ -112,15 +112,6 @@ public class GPrensentGiftMsgModel {
         int roundSeq;
         float curRoundSeqMeiliTotal;
 
-        public PropertyModel(int userID, float coinBalance, float hongZuanBalance, long lastChangeMs, int roundSeq, float curRoundSeqMeiliTotal) {
-            this.userID = userID;
-            this.coinBalance = coinBalance;
-            this.hongZuanBalance = hongZuanBalance;
-            this.lastChangeMs = lastChangeMs;
-            this.roundSeq = roundSeq;
-            this.curRoundSeqMeiliTotal = curRoundSeqMeiliTotal;
-        }
-
         public int getUserID() {
             return userID;
         }
@@ -137,15 +128,23 @@ public class GPrensentGiftMsgModel {
             return lastChangeMs;
         }
 
+        public static PropertyModel parse(Property property){
+            PropertyModel propertyModel = new PropertyModel();
+            propertyModel.userID = property.getUserID();
+            propertyModel.coinBalance = property.getCoinBalance();
+            propertyModel.hongZuanBalance = property.getHongZuanBalance();
+            propertyModel.lastChangeMs = property.getLastChangeMs();
+            propertyModel.roundSeq = property.getRoundSeq();
+            propertyModel.curRoundSeqMeiliTotal = property.getCurRoundSeqMeiliTotal();
+            return propertyModel;
+        }
+
         public static List<PropertyModel> toModel(List<Property> propertyList) {
             ArrayList<PropertyModel> propertyModelArrayList = new ArrayList<>();
             for (Property property : propertyList) {
-                PropertyModel propertyModel = new PropertyModel(property.getUserID(),
-                        property.getCoinBalance(), property.getHongZuanBalance(), property.getLastChangeMs(),
-                        property.getRoundSeq(), property.getCurRoundSeqMeiliTotal());
+                PropertyModel propertyModel = PropertyModel.parse(property);
                 propertyModelArrayList.add(propertyModel);
             }
-
             return propertyModelArrayList;
         }
     }

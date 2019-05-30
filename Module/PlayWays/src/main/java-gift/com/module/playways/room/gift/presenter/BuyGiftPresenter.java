@@ -137,6 +137,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     BasePushInfo basePushInfo = new BasePushInfo();
                     basePushInfo.setRoomID((int) roomId);
 
+                    //TODO 短链接还要带着魅力值
                     GPrensentGiftMsgModel gPrensentGiftMsgModel = new GPrensentGiftMsgModel();
                     gPrensentGiftMsgModel.setGiftInfo(baseGift);
                     gPrensentGiftMsgModel.setSendUserInfo(own);

@@ -62,12 +62,13 @@
             android:id="@+id/mini_owner_mic_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:visibility="visible"
             android:layout_above="@+id/bottom_container_view"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_5_dp"
-            app:src_enabled_drawable="@drawable/mini_owner_normal"
-            app:src_unEnabled_drawable="@drawable/mini_owner_mute" />
+            android:enabled="false"
+            android:src="@drawable/mini_owner_mute1"
+            android:visibility="visible" />
 
     </com.common.view.ex.ExRelativeLayout>
 
