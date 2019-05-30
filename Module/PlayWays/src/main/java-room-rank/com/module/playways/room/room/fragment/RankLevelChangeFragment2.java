@@ -20,6 +20,7 @@ import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
@@ -252,7 +253,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
     private SVGADynamicEntity requestDynamicItem() {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
 
-        HttpImage image = ImageFactory.newPathImage(MyUserInfoManager.getInstance().getAvatar())
+        BaseImage baseImage = ImageFactory.newPathImage(MyUserInfoManager.getInstance().getAvatar())
                 .addOssProcessors(OssImgFactory.newResizeBuilder()
                                 .setW(ImageUtils.SIZE.SIZE_160.getW())
                                 .build()
@@ -261,18 +262,21 @@ public class RankLevelChangeFragment2 extends BaseFragment {
                                 .build()
                 )
                 .build();
-        if (!TextUtils.isEmpty(image.getUrl())) {
-            File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
-            if (file != null && file.exists()) {
-                Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
-                //防止用户不给sd权限导致 bitmap为null
-                if(bitmap!=null){
-                    dynamicEntity.setDynamicImage(bitmap, "avatar");
-                }else{
+        if(baseImage instanceof HttpImage) {
+            HttpImage image = (HttpImage) baseImage;
+            if (!TextUtils.isEmpty(image.getUrl())) {
+                File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
+                if (file != null && file.exists()) {
+                    Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
+                    //防止用户不给sd权限导致 bitmap为null
+                    if (bitmap != null) {
+                        dynamicEntity.setDynamicImage(bitmap, "avatar");
+                    } else {
+                        dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
+                    }
+                } else {
                     dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
                 }
-            } else {
-                dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
             }
         }
         if (LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking()) != 0) {
