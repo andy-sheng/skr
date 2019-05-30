@@ -71,8 +71,15 @@ public class LoginFragment extends BaseFragment {
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission(){
         @Override
+        public void onRequestPermissionFailureWithAskNeverAgain1(Activity activity, boolean goSettingIfRefuse) {
+            super.onRequestPermissionFailureWithAskNeverAgain1(activity, goSettingIfRefuse);
+            StatisticsAdapter.recordCountEvent("signup","sdcard_refuse",null);
+        }
+
+        @Override
         public void onRequestPermissionFailure1(Activity activity, boolean goSettingIfRefuse) {
             // 点击拒绝但不是不再询问 不弹去设置的弹窗
+            StatisticsAdapter.recordCountEvent("signup","sdcard_refuse",null);
         }
     };
 
@@ -108,7 +115,7 @@ public class LoginFragment extends BaseFragment {
                 mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                     @Override
                     public void run() {
-                        StatisticsAdapter.recordCountEvent("signup", "shouquan", map);
+                        StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
                         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
@@ -150,7 +157,7 @@ public class LoginFragment extends BaseFragment {
                     mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
-                            StatisticsAdapter.recordCountEvent("signup", "shouquan", map);
+                            StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
@@ -191,7 +198,7 @@ public class LoginFragment extends BaseFragment {
                     mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
                         public void run() {
-                            StatisticsAdapter.recordCountEvent("signup", "shouquan", map);
+                            StatisticsAdapter.recordCountEvent("signup", "sdcard_agree", map);
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
@@ -216,6 +223,9 @@ public class LoginFragment extends BaseFragment {
     UMAuthListener mAuthListener = new UMAuthListener() {
         @Override
         public void onStart(SHARE_MEDIA platform) {
+            final HashMap map = new HashMap();
+            map.put("type",platform.toString());
+            StatisticsAdapter.recordCountEvent("signup", "shouquan_begin", map);
         }
 
         @Override
