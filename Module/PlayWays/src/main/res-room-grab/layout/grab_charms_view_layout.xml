@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_5_dp"
         android:layout_toRightOf="@id/charm_iv"
         android:gravity="center"
         android:textColor="@color/textColorPrimary"

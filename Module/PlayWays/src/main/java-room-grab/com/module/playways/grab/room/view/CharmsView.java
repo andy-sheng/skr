@@ -7,6 +7,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.module.playways.R;
+import com.module.playways.room.gift.event.UpdateMeiliEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 // 展示魅力值的view
 public class CharmsView extends RelativeLayout {
@@ -38,8 +43,35 @@ public class CharmsView extends RelativeLayout {
         mCharmTv = (TextView) findViewById(R.id.charm_tv);
     }
 
-
     public void bindData(long useID) {
         this.mUserID = useID;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateMeiliEvent event) {
+        if (event.userID == mUserID) {
+            if (event.value > 0) {
+                setVisibility(VISIBLE);
+                mCharmTv.setText("魅力+" + event.value);
+            } else {
+                setVisibility(GONE);
+            }
+        }
     }
 }
