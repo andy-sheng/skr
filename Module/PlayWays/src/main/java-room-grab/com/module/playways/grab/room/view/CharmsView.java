@@ -19,7 +19,8 @@ public class CharmsView extends RelativeLayout {
     ImageView mCharmIv;
     TextView mCharmTv;
 
-    long mUserID;
+    int mUserID;
+    int mCharmValue;
 
     public CharmsView(Context context) {
         super(context);
@@ -43,8 +44,10 @@ public class CharmsView extends RelativeLayout {
         mCharmTv = (TextView) findViewById(R.id.charm_tv);
     }
 
-    public void bindData(long useID) {
+    public void bindData(int useID) {
         this.mUserID = useID;
+        this.mCharmValue = 0;
+        setVisibility(GONE);
     }
 
     @Override
@@ -68,10 +71,15 @@ public class CharmsView extends RelativeLayout {
         if (event.userID == mUserID) {
             if (event.value > 0) {
                 setVisibility(VISIBLE);
-                mCharmTv.setText("魅力+" + event.value);
+                mCharmValue = event.value;
+                updateUi();
             } else {
                 setVisibility(GONE);
             }
         }
+    }
+
+    private void updateUi() {
+        mCharmTv.setText("魅力+" + mCharmValue);
     }
 }
