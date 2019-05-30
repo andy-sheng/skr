@@ -135,15 +135,19 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                 MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
             }
 
-            String remark = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getUserInfo().getNickname());
-            if (!TextUtils.isEmpty(remark) && remark.length() > 7) {
-                remark = remark.substring(0, 7) + "...";
+            if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayDesc()) && TextUtils.isEmpty(mFriendRoomModel.getUserInfo().getNickname())) {
+                String remark = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getUserInfo().getNickname());
+                if (!TextUtils.isEmpty(remark) && remark.length() > 7) {
+                    remark = remark.substring(0, 7) + "...";
+                }
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(remark).setForegroundColor(Color.parseColor("#7088FF"))
+                        .append(mFriendRoomModel.getDisplayDesc()).setForegroundColor(U.getColor(R.color.textColorPrimary))
+                        .create();
+                mTipsTv.setText(stringBuilder);
+            } else {
+                MyLog.w(TAG, "bindData" + " 服务器bug 啥都没有让我显示什么");
             }
-            SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(remark).setForegroundColor(Color.parseColor("#7088FF"))
-                    .append(mFriendRoomModel.getDisplayDesc()).setForegroundColor(U.getColor(R.color.textColorPrimary))
-                    .create();
-            mTipsTv.setText(stringBuilder);
         } else {
             MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);
         }
