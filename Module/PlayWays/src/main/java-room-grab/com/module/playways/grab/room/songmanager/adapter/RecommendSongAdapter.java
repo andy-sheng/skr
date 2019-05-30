@@ -25,16 +25,23 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
     GrabRoomData mGrabRoomData;
     Drawable pk = new DrawableCreator.Builder()
             .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
             .setCornersRadius(U.getDisplayUtils().dip2px(70))
             .setSolidColor(Color.parseColor("#CB5883"))
             .build();
 
     Drawable togather = new DrawableCreator.Builder()
             .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
             .setCornersRadius(U.getDisplayUtils().dip2px(70))
             .setSolidColor(Color.parseColor("#7088FF"))
+            .build();
+
+    Drawable game = new DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#61B14F"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setStrokeColor(U.getColor(R.color.white_trans_70))
             .build();
 
     @NonNull
@@ -95,6 +102,9 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
             } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
                 mSongTag.setBackground(togather);
                 mSongTag.setText("合唱");
+            } else if (model.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+                mSongTag.setBackground(game);
+                mSongTag.setText("双人游戏");
             } else {
                 mSongTag.setVisibility(View.GONE);
             }
