@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -65,14 +66,16 @@ public class RecommendSongFragment extends BaseFragment {
             }
         });
 
+        Bundle bundle = getArguments();
+        mRecommendTagModel = (RecommendTagModel) bundle.getSerializable("tag_model");
         getSongList();
     }
 
-    public void setRecommendTagModel(RecommendTagModel recommendTagModel) {
-        mRecommendTagModel = recommendTagModel;
-    }
-
     private void getSongList() {
+        if (mRecommendTagModel == null) {
+            MyLog.e(TAG, "getSongList mRecommendTagModel is null");
+            return;
+        }
         ApiMethods.subscribe(mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
