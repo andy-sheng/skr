@@ -17,6 +17,7 @@ import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.module.playways.room.gift.event.UpdateDiamondEvent;
 import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
+import com.module.playways.room.gift.event.UpdateMeiliEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
@@ -137,7 +138,10 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         long ts = result.getData().getLongValue("zuanBalanceLastChangeMs");
                         UpdateDiamondEvent.sendEvent(diamond, ts);
                     }
-
+                    float receiverMeili = result.getData().getFloatValue("ReceiveUserCurRoundSeqMeili");
+                    if(receiverMeili > 0 ){
+                        EventBus.getDefault().post(new UpdateMeiliEvent(userInfoModel.getUserId(),(int)receiverMeili,System.currentTimeMillis()));;
+                    }
                     if (baseGift.getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
                         int sysHandselBalance = result.getData().getInteger("sysHandselBalance");
                         long sysHandselBalanceLastChangeMs = result.getData().getLongValue("sysHandselBalanceLastChangeMs");
@@ -153,7 +157,6 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     BasePushInfo basePushInfo = new BasePushInfo();
                     basePushInfo.setRoomID((int) roomId);
 
-                    //TODO 短链接还要带着魅力值
                     GPrensentGiftMsgModel gPrensentGiftMsgModel = new GPrensentGiftMsgModel();
                     gPrensentGiftMsgModel.setGiftInfo(baseGift);
                     gPrensentGiftMsgModel.setSendUserInfo(own);
