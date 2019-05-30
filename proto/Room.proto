@@ -125,6 +125,8 @@ message Property
     float coinBalance     = 2;
     float hongZuanBalance = 3;
     int64 lastChangeMs    = 4;
+    uint32 roundSeq       = 5;
+    float curRoundSeqMeiliTotal = 6; //当前轮次魅力值累加和
 }
 
 

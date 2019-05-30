@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <ImageView
+        android:id="@+id/charm_iv"
+        android:layout_width="@dimen/view_15_dp"
+        android:layout_height="@dimen/view_13_dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/grab_charm_icon" />
+
+    <TextView
+        android:id="@+id/charm_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/charm_iv"
+        android:gravity="center"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/textsize_14_dp" />
+
+</merge>

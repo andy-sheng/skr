@@ -109,12 +109,16 @@ public class GPrensentGiftMsgModel {
         float coinBalance;
         float hongZuanBalance;
         long lastChangeMs;
+        int roundSeq;
+        float curRoundSeqMeiliTotal;
 
-        public PropertyModel(int userID, float coinBalance, float hongZuanBalance, long lastChangeMs) {
+        public PropertyModel(int userID, float coinBalance, float hongZuanBalance, long lastChangeMs, int roundSeq, float curRoundSeqMeiliTotal) {
             this.userID = userID;
             this.coinBalance = coinBalance;
             this.hongZuanBalance = hongZuanBalance;
             this.lastChangeMs = lastChangeMs;
+            this.roundSeq = roundSeq;
+            this.curRoundSeqMeiliTotal = curRoundSeqMeiliTotal;
         }
 
         public int getUserID() {
@@ -136,7 +140,9 @@ public class GPrensentGiftMsgModel {
         public static List<PropertyModel> toModel(List<Property> propertyList) {
             ArrayList<PropertyModel> propertyModelArrayList = new ArrayList<>();
             for (Property property : propertyList) {
-                PropertyModel propertyModel = new PropertyModel(property.getUserID(), property.getCoinBalance(), property.getHongZuanBalance(), property.getLastChangeMs());
+                PropertyModel propertyModel = new PropertyModel(property.getUserID(),
+                        property.getCoinBalance(), property.getHongZuanBalance(), property.getLastChangeMs(),
+                        property.getRoundSeq(), property.getCurRoundSeqMeiliTotal());
                 propertyModelArrayList.add(propertyModel);
             }
 
