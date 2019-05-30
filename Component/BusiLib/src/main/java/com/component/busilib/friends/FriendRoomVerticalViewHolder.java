@@ -1,9 +1,11 @@
 package com.component.busilib.friends;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
@@ -30,38 +32,31 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     int position;
 
     ExRelativeLayout mBackground;
-    SimpleDraweeView mAvatarIv;
-    ExTextView mNameTv;
-    SimpleDraweeView mRecommendTagSdv;
-    ExTextView mRoomInfoTv;
-    ExTextView mRoomPlayerNumTv;
     SimpleDraweeView mIv1;
     SimpleDraweeView mIv2;
     SimpleDraweeView mIv3;
-    SimpleDraweeView mIv4;
-    SimpleDraweeView mIv5;
-    SimpleDraweeView mIv6;
+    ImageView mMoreUserIv;
+    ExTextView mRoomPlayerNumTv;
+    SimpleDraweeView mRecommendTagSdv;
+    ExTextView mRoomInfoTv;
+    ExTextView mTipsTv;
 
     SimpleDraweeView[] mSimpleDraweeViewList;
-
-//    ExImageView mEnterRoomIv;
 
     public FriendRoomVerticalViewHolder(View itemView) {
         super(itemView);
 
         mBackground = (ExRelativeLayout) itemView.findViewById(R.id.background);
-        mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
-        mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
-        mRecommendTagSdv = (SimpleDraweeView) itemView.findViewById(R.id.recommend_tag_sdv);
-        mRoomInfoTv = (ExTextView) itemView.findViewById(R.id.room_info_tv);
-        mRoomPlayerNumTv = (ExTextView) itemView.findViewById(R.id.room_player_num_tv);
         mIv1 = (SimpleDraweeView) itemView.findViewById(R.id.iv_1);
         mIv2 = (SimpleDraweeView) itemView.findViewById(R.id.iv_2);
         mIv3 = (SimpleDraweeView) itemView.findViewById(R.id.iv_3);
-        mIv4 = (SimpleDraweeView) itemView.findViewById(R.id.iv_4);
-        mIv5 = (SimpleDraweeView) itemView.findViewById(R.id.iv_5);
-        mIv6 = (SimpleDraweeView) itemView.findViewById(R.id.iv_6);
-        mSimpleDraweeViewList = new SimpleDraweeView[]{mIv1, mIv2, mIv3, mIv4, mIv5, mIv6};
+        mMoreUserIv = (ImageView) itemView.findViewById(R.id.more_user_iv);
+        mRoomPlayerNumTv = (ExTextView) itemView.findViewById(R.id.room_player_num_tv);
+        mRecommendTagSdv = (SimpleDraweeView) itemView.findViewById(R.id.recommend_tag_sdv);
+        mRoomInfoTv = (ExTextView) itemView.findViewById(R.id.room_info_tv);
+        mTipsTv = (ExTextView) itemView.findViewById(R.id.tips_tv);
+
+        mSimpleDraweeViewList = new SimpleDraweeView[]{mIv1, mIv2, mIv3};
 
         itemView.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -95,7 +90,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                     AvatarUtils.newParamsBuilder(friendRoomModel.getPlayUsers().get(i).getAvatar())
                             .setCircle(true)
                             .setGray(false)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(1))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(1.5f))
                             .setBorderColor(U.getColor(R.color.white))
                             .build());
         }
@@ -108,19 +103,6 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         setPlayerUserList(friendRoomModel);
 
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getDisplayAvatar())
-                            .setCircle(true)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white))
-                            .build());
-            String disName = mFriendRoomModel.getDisplayName();
-            if (mFriendRoomModel.getUserInfo() != null &&
-                    (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM || mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM)) {
-                disName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getDisplayName());
-            }
-            mNameTv.setText(disName);
-
             if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
                 mRecommendTagSdv.setVisibility(View.VISIBLE);
                 FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getDisplayURL())
@@ -130,13 +112,18 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                 mRecommendTagSdv.setVisibility(View.GONE);
             }
 
+            if (mFriendRoomModel.getRoomInfo().getInPlayersNum() > 3) {
+                mMoreUserIv.setVisibility(View.VISIBLE);
+            } else {
+                mMoreUserIv.setVisibility(View.GONE);
+            }
+
             mRoomPlayerNumTv.setText(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum());
 
             if (mFriendRoomModel.getTagInfo() != null) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
                         .append(mFriendRoomModel.getTagInfo().getTagName())
                         .create();
-
                 mRoomInfoTv.setText(stringBuilder);
             } else if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayName())) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
@@ -148,6 +135,15 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                 MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
             }
 
+            String remark = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getUserInfo().getNickname());
+            if (!TextUtils.isEmpty(remark) && remark.length() > 7) {
+                remark = remark.substring(0, 7) + "...";
+            }
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(remark).setForegroundColor(Color.parseColor("#7088FF"))
+                    .append(mFriendRoomModel.getDisplayDesc()).setForegroundColor(U.getColor(R.color.textColorPrimary))
+                    .create();
+            mTipsTv.setText(stringBuilder);
         } else {
             MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);
         }
