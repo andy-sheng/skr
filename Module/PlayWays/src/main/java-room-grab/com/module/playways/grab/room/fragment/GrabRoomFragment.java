@@ -1162,9 +1162,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             public void clickValid(View v) {
                 mute = !mute;
                 if(mute){
-                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute1);
-                }else{
                     mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
+                }else{
+                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_normal);
                 }
                 mCorePresenter.miniOwnerMic(mute);
             }

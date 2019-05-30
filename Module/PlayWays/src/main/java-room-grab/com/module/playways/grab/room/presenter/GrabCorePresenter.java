@@ -69,6 +69,7 @@ import com.module.playways.grab.room.model.WorksUploadModel;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
+import com.module.playways.room.gift.event.UpdateMeiliEvent;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
@@ -2520,21 +2521,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mIGrabView.showKickVoteDialog(qKickUserReqEvent.kickUserID, qKickUserReqEvent.sourceUserID);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GiftPresentEvent giftPresentEvent) {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
 
         for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
-            if (property.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                if (property.getCoinBalance() != -1) {
-                    EventBus.getDefault().post(new UpdateCoinEvent((int) property.getCoinBalance(), property.getLastChangeMs()));
+            if (property.userID == MyUserInfoManager.getInstance().getUid()) {
+                if (property.coinBalance != -1) {
+                    EventBus.getDefault().post(new UpdateCoinEvent((int) property.coinBalance, property.lastChangeMs));
                 }
-                if (property.getHongZuanBalance() != -1) {
-                    mRoomData.setHzCount(property.getHongZuanBalance(), property.getLastChangeMs());
+                if (property.hongZuanBalance != -1) {
+                    mRoomData.setHzCount(property.hongZuanBalance, property.lastChangeMs);
                 }
-            } else {
+            }
+            if(property.curRoundSeqMeiliTotal>0){
                 // 他人的只关心魅力值的变化
+                EventBus.getDefault().post(new UpdateMeiliEvent(property.userID,(int)property.curRoundSeqMeiliTotal,property.lastChangeMs));
             }
         }
 

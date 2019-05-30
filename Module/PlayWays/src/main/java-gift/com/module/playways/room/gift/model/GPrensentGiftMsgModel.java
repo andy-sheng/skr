@@ -105,28 +105,12 @@ public class GPrensentGiftMsgModel {
     }
 
     public static class PropertyModel {
-        int userID;
-        float coinBalance;
-        float hongZuanBalance;
-        long lastChangeMs;
-        int roundSeq;
-        float curRoundSeqMeiliTotal;
-
-        public int getUserID() {
-            return userID;
-        }
-
-        public float getCoinBalance() {
-            return coinBalance;
-        }
-
-        public float getHongZuanBalance() {
-            return hongZuanBalance;
-        }
-
-        public long getLastChangeMs() {
-            return lastChangeMs;
-        }
+        public int userID;
+        public float coinBalance;
+        public float hongZuanBalance;
+        public long lastChangeMs;
+        public int roundSeq;
+        public float curRoundSeqMeiliTotal;
 
         public static PropertyModel parse(Property property){
             PropertyModel propertyModel = new PropertyModel();
