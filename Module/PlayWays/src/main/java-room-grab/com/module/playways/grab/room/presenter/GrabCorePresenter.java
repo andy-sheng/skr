@@ -1086,7 +1086,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "房主结束小游戏");
             estimateOverTsThisRound();
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-            if (now == null || !now.singBySelf()) {
+            if (now == null || !mRoomData.isOwner()) {
                 return;
             }
             HashMap<String, Object> map = new HashMap<>();
@@ -1148,6 +1148,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
             }, this);
         }
+    }
+
+    /**
+     * 房主小游戏控场 开麦 闭麦
+     *
+     * @param mute true 开麦
+     */
+    public void miniOwnerMic(boolean mute) {
+        MyLog.d(TAG, "miniOwnerMic" + " mute=" + mute);
+        ZqEngineKit.getInstance().muteLocalAudioStream(mute);
     }
 
     /**
@@ -1728,7 +1738,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     if (uid == 0) {
                         uid = (int) MyUserInfoManager.getInstance().getUid();
                     }
-                    if (mRoomData != null && uid == mRoomData.getOwnerId() && !mRoomData.isOwner()) {
+                    if (mRoomData != null
+                            && uid == mRoomData.getOwnerId()
+                            && uv.getVolume() > 40
+                            && !mRoomData.isOwner()) {
                         MyLog.d(TAG, "房主在说话");
                         weakVolume(1000);
                     }
