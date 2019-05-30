@@ -187,7 +187,9 @@ public class SongInfoCardView extends RelativeLayout {
         } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             // 小游戏
             mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68), 0);
-            mSongNameTv.setText("【" + songModel.getMiniGame().getGameName() + "】");
+            if (songModel.getMiniGame() != null) {
+                mSongNameTv.setText("【" + songModel.getMiniGame().getGameName() + "】");
+            }
             mGrabCd.setVisibility(GONE);
             // 和合唱一样的卡片
             mGrabChorus.setVisibility(VISIBLE);
