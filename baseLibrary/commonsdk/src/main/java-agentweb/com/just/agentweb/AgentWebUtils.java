@@ -106,7 +106,7 @@ public class AgentWebUtils {
 	}
 
 
-	static final void clearWebView(WebView m) {
+	static final void  clearWebView(WebView m) {
 
 		if (m == null) {
 			return;

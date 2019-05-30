@@ -32,6 +32,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.R;
 import com.common.core.BuildConfig;
+import com.common.log.MyLog;
 import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -304,10 +305,15 @@ public class AgentWebActivity extends CameraAdapWebActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (mAgentWeb != null && mAgentWeb.handleKeyEvent(keyCode, event)) {
+        try {
+            if (mAgentWeb != null && mAgentWeb.handleKeyEvent(keyCode, event)) {
+                return true;
+            }
+            return super.onKeyDown(keyCode, event);
+        }catch (Exception e){
+            MyLog.e(TAG,e);
             return true;
         }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override
