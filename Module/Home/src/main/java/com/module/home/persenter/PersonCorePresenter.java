@@ -86,9 +86,11 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                    MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true,"getHomePage");
+                    MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true, "getHomePage");
 
-                    mView.showHomePageInfo(relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
+                    int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
+
+                    mView.showHomePageInfo(relationNumModes, userRankModels, userLevelModels, userGameStatisModels, meiLiCntTotal);
                 } else {
                     mView.loadHomePageFailed();
                 }

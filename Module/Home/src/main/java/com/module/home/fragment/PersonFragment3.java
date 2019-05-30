@@ -108,6 +108,8 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     BitmapTextView mSingendNumTv;
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
+    RelativeLayout mCharmArea;
+    TextView mCharmTv;
     ExImageView mIncomeIv;
 
     AppBarLayout mAppbar;
@@ -365,6 +367,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
+
+        mCharmArea = (RelativeLayout) mRootView.findViewById(R.id.charm_area);
+        mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
     }
 
     private void initPersonArea() {
@@ -494,12 +499,17 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
 
     @Override
     public void showHomePageInfo(List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels
-            , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels) {
+            , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels, int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showRelationNum(relationNumModels);
         showReginRank(userRankModels);
         showUserLevel(userLevelModels);
         showGameStatic(gameStatisModels);
+        showCharmsTotal(meiLiCntTotal);
+    }
+
+    private void showCharmsTotal(int meiLiCntTotal) {
+        mCharmTv.setText("魅力：" + meiLiCntTotal);
     }
 
     @Override

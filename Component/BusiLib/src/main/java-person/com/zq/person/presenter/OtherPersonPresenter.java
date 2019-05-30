@@ -42,8 +42,10 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels, isFriend, isFollow);
-                }else {
+                    int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
+
+                    view.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels, isFriend, isFollow, meiLiCntTotal);
+                } else {
                     view.getHomePageFail();
                 }
             }

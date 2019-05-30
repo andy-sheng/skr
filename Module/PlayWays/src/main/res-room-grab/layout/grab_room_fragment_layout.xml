@@ -67,7 +67,7 @@
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_5_dp"
             android:enabled="false"
-            android:src="@drawable/mini_owner_mute1"
+            android:src="@drawable/mini_owner_mute"
             android:visibility="visible" />
 
     </com.common.view.ex.ExRelativeLayout>
