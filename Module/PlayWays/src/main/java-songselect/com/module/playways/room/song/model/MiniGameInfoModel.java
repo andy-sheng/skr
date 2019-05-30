@@ -75,6 +75,7 @@ public class MiniGameInfoModel implements Serializable {
 
     /**
      * 展示的游戏规则
+     *
      * @return
      */
     public String getDisplayGameRule() {
@@ -82,7 +83,7 @@ public class MiniGameInfoModel implements Serializable {
         result.append(gameRule);
         result.append("\n");
         if (gamePlayType == EMiniGamePlayType.EMGP_KEYWORD.getValue()) {
-            result.append("关键字：" + keyWord);
+            result.append(keyWord);
         } else if (gamePlayType == EMiniGamePlayType.EMGP_FIXED_TXT.getValue()) {
             result.append(fixedTxt);
         } else if (gamePlayType == EMiniGamePlayType.EMGP_SONG_DETAIL.getValue()) {

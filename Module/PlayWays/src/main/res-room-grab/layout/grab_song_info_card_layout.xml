@@ -100,18 +100,6 @@
             android:layout_marginTop="@dimen/view_58_dp"
             android:background="#CC7F00" />
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/song_lyrics"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginTop="@dimen/view_72_dp"
-            android:layout_marginRight="@dimen/view_72_dp"
-            android:lineSpacingExtra="@dimen/view_6_dp"
-            android:maxLines="2"
-            android:textColor="@color/black_trans_60"
-            android:textSize="@dimen/view_16_dp" />
-
         <ImageView
             android:id="@+id/grab_cd"
             android:layout_width="@dimen/view_92_dp"
@@ -139,6 +127,19 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/view_5_dp"
             android:background="@drawable/grab_pk_song_icon" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/song_lyrics"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_50_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginTop="@dimen/view_72_dp"
+            android:layout_marginRight="@dimen/view_72_dp"
+            android:lineSpacingExtra="@dimen/view_6_dp"
+            android:maxLines="2"
+            android:textColor="@color/black_trans_60"
+            android:textSize="@dimen/view_16_dp" />
+
 
         <ImageView
             android:layout_width="match_parent"
