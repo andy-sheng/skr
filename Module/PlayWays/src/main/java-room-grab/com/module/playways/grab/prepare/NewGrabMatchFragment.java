@@ -143,7 +143,8 @@ public class NewGrabMatchFragment extends BaseFragment implements IGrabMatchingV
     private HandlerTaskTimer mControlTask;
 
     private void startMatchQuotationTask() {
-        mControlTask = HandlerTaskTimer.newBuilder().delay(1000)
+        mControlTask = HandlerTaskTimer.newBuilder()
+                .delay(1000)
                 .interval(ANIMATION_DURATION * 2 + 300)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
