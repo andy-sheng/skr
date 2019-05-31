@@ -249,6 +249,7 @@ public class UserAccountManager {
                             UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
+                            U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);

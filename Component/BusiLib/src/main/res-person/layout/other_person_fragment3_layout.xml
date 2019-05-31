@@ -214,7 +214,7 @@
                                     android:layout_marginLeft="@dimen/view_11_dp"
                                     android:layout_marginTop="@dimen/view_10_dp"
                                     android:layout_marginRight="@dimen/view_11_dp"
-                                    android:layout_marginBottom="@dimen/view_80_dp"></com.common.flowlayout.TagFlowLayout>
+                                    android:layout_marginBottom="@dimen/view_80_dp"/>
 
 
                             </RelativeLayout>
@@ -315,7 +315,7 @@
                                 levelView2:mainWidth2="@dimen/view_125_dp"
                                 levelView2:subBottom2="@dimen/view_6_dp"
                                 levelView2:subHeight2="@dimen/view_13_dp"
-                                levelView2:subWidth2="@dimen/view_24_dp"></com.zq.level.view.NormalLevelView2>
+                                levelView2:subWidth2="@dimen/view_24_dp"/>
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/level_tv"
@@ -421,7 +421,6 @@
             </android.support.design.widget.AppBarLayout>
 
         </android.support.design.widget.CoordinatorLayout>
-
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
