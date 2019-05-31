@@ -22,7 +22,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
@@ -2483,17 +2482,19 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
         }
 
-        for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
-            if (property.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                if (property.getCoinBalance() != -1) {
-                    EventBus.getDefault().post(new UpdateCoinEvent((int) property.getCoinBalance(), property.getLastChangeMs()));
-                }
+        if (giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList() != null) {
+            for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
+                if (property.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    if (property.getCoinBalance() != -1) {
+                        EventBus.getDefault().post(new UpdateCoinEvent((int) property.getCoinBalance(), property.getLastChangeMs()));
+                    }
 
-                if (property.getHongZuanBalance() != -1) {
-                    mRoomData.setHzCount(property.getHongZuanBalance(), property.getLastChangeMs());
-                }
+                    if (property.getHongZuanBalance() != -1) {
+                        mRoomData.setHzCount(property.getHongZuanBalance(), property.getLastChangeMs());
+                    }
 
-                break;
+                    break;
+                }
             }
         }
 
