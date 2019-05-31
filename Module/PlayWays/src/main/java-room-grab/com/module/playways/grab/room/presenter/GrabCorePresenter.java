@@ -2526,18 +2526,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsgModel));
 
-        for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
-            if (property.userID == MyUserInfoManager.getInstance().getUid()) {
-                if (property.coinBalance != -1) {
-                    EventBus.getDefault().post(new UpdateCoinEvent((int) property.coinBalance, property.lastChangeMs));
+        if (giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList() != null) {
+            for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
+                if (property.userID == MyUserInfoManager.getInstance().getUid()) {
+                    if (property.coinBalance != -1) {
+                        EventBus.getDefault().post(new UpdateCoinEvent((int) property.coinBalance, property.lastChangeMs));
+                    }
+                    if (property.hongZuanBalance != -1) {
+                        mRoomData.setHzCount(property.hongZuanBalance, property.lastChangeMs);
+                    }
                 }
-                if (property.hongZuanBalance != -1) {
-                    mRoomData.setHzCount(property.hongZuanBalance, property.lastChangeMs);
+                if (property.curRoundSeqMeiliTotal > 0) {
+                    // 他人的只关心魅力值的变化
+                    EventBus.getDefault().post(new UpdateMeiliEvent(property.userID, (int) property.curRoundSeqMeiliTotal, property.lastChangeMs));
                 }
-            }
-            if(property.curRoundSeqMeiliTotal>0){
-                // 他人的只关心魅力值的变化
-                EventBus.getDefault().post(new UpdateMeiliEvent(property.userID,(int)property.curRoundSeqMeiliTotal,property.lastChangeMs));
             }
         }
 
