@@ -5,6 +5,8 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 import android.view.SoundEffectConstants;
 
+import com.common.log.MyLog;
+
 /**
  * ================================================
  * 作    者：jeasonlzy（廖子尧 Github地址：https://github.com/jeasonlzy0216
@@ -32,9 +34,11 @@ public class SuperCheckBox extends AppCompatCheckBox {
     public boolean performClick() {
         final boolean handled = super.performClick();
         if (!handled) {
-            // View only makes a sound effect if the onClickListener was
-            // called, so we'll need to make one here instead.
-            playSoundEffect(SoundEffectConstants.CLICK);
+            try{
+                playSoundEffect(SoundEffectConstants.CLICK);
+            }catch (Exception e){
+                MyLog.e(e);
+            }
         }
         return handled;
     }
