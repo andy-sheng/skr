@@ -302,13 +302,19 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (verticalOffset == 0) {
                     // 展开状态
-                    mToolbar.setVisibility(GONE);
+                    if (mToolbar.getVisibility() != GONE) {
+                        mToolbar.setVisibility(GONE);
+                    }
                 } else if (Math.abs(verticalOffset) >= (appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(70))) {
                     // 完全收缩状态
-                    mToolbar.setVisibility(VISIBLE);
+                    if (mToolbar.getVisibility() != VISIBLE) {
+                        mToolbar.setVisibility(VISIBLE);
+                    }
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                    mToolbar.setVisibility(GONE);
+                    if (mToolbar.getVisibility() != GONE) {
+                        mToolbar.setVisibility(GONE);
+                    }
                 }
             }
         });

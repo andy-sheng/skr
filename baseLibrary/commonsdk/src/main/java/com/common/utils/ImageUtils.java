@@ -109,7 +109,7 @@ public class ImageUtils {
         options.inJustDecodeBounds = true;//这个参数设置为true才有效，
         Bitmap bmp = BitmapFactory.decodeFile(path, options);//这里的bitmap是个空
         if (bmp == null) {
-            MyLog.e("通过options获取到的bitmap为空", "===");
+            MyLog.e("通过options获取到的bitmap为空" + path);
         }
         option[0] = options.outHeight;
         option[1] = options.outWidth;
