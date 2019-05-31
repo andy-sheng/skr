@@ -300,7 +300,7 @@ public class FeedbackFragment extends BaseFragment {
                         .build());
                 U.getFragmentUtils().popFragment(FeedbackFragment.this);
             }
-        });
+        },new ApiMethods.RequestControl("feedback",ApiMethods.ControlType.CancelThis));
     }
 
     private void submitReport(List<Integer> typeList, String content, List<String> picUrls) {
@@ -331,7 +331,7 @@ public class FeedbackFragment extends BaseFragment {
                     U.getFragmentUtils().popFragment(FeedbackFragment.this);
                 }
             }
-        }, this);
+        }, this,new ApiMethods.RequestControl("feedback",ApiMethods.ControlType.CancelThis));
     }
 
     @Override
