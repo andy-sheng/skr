@@ -122,17 +122,14 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
             mRoomPlayerNumTv.setText(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum());
 
             if (mFriendRoomModel.getTagInfo() != null) {
+                // 只显示专场名称
                 SpannableStringBuilder stringBuilder = new SpanUtils()
                         .append(mFriendRoomModel.getTagInfo().getTagName())
                         .create();
-                mRoomInfoTv.setText(stringBuilder);
-            } else if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayName())) {
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(mFriendRoomModel.getDisplayName())
-                        .create();
-
+                mRoomInfoTv.setVisibility(View.VISIBLE);
                 mRoomInfoTv.setText(stringBuilder);
             } else {
+                mRoomInfoTv.setVisibility(View.GONE);
                 MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
             }
 
