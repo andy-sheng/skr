@@ -184,7 +184,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                 mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(34 + 84), 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
                 layoutParams.width = U.getDisplayUtils().dip2px(34);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34);
+                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34 + 84);
                 mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("合唱");
                 mSongTagTv.setVisibility(View.VISIBLE);
