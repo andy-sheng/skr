@@ -14,6 +14,7 @@ import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.utils.VideoUtils;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -144,8 +145,10 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                         .append(remark).setForegroundColor(Color.parseColor("#7088FF"))
                         .append(mFriendRoomModel.getDisplayDesc()).setForegroundColor(U.getColor(R.color.textColorPrimary))
                         .create();
+                mTipsTv.setVisibility(View.VISIBLE);
                 mTipsTv.setText(stringBuilder);
             } else {
+                mTipsTv.setVisibility(View.GONE);
                 MyLog.w(TAG, "bindData" + " 服务器bug 啥都没有让我显示什么");
             }
         } else {
