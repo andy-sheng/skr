@@ -85,7 +85,7 @@ public class SelfSingLyricView extends RelativeLayout {
             return;
         }
 
-        mCharmsView.bindData(MyUserInfoManager.getInstance().getUid());
+        mCharmsView.bindData((int)MyUserInfoManager.getInstance().getUid());
         if (infoModel.getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue()
                 || infoModel.getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()) {
             mIvChallengeIcon.setVisibility(VISIBLE);

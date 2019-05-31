@@ -67,7 +67,7 @@ public class GiftDisplayAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewH
         } else if (baseGift.getGiftType() == EGiftType.EG_Zuan.getValue()) {
             return NORMAL;
         } else if (baseGift.getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
-            return FREE_COUNT_DOWN;
+            return NORMAL;
         }
 
         return UNKNOWN;

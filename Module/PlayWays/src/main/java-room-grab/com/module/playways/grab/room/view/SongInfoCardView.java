@@ -189,6 +189,8 @@ public class SongInfoCardView extends RelativeLayout {
             mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68), 0);
             if (songModel.getMiniGame() != null) {
                 mSongNameTv.setText("【" + songModel.getMiniGame().getGameName() + "】");
+            } else {
+                MyLog.w(TAG, "bindSongModel" + " 给的是小游戏类型，但是结构给的空？？？服务器BYD和佳胜");
             }
             mGrabCd.setVisibility(GONE);
             // 和合唱一样的卡片
