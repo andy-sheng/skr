@@ -36,6 +36,11 @@ public class GrabResultActivity extends BaseActivity {
 //            WonderfulMomentModel wonderfulMomentModel = new WonderfulMomentModel(url, songModel, true);
 //            mRoomData.getWonderfulMomentList().add(wonderfulMomentModel);
 //        }
+        if (mRoomData == null) {
+            finish();
+            return;
+        }
+
         if (mRoomData.getWorksUploadModel() != null && mRoomData.getWorksUploadModel().size() > 0) {
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabProductionFragment.class)
                     .setAddToBackStack(false)
