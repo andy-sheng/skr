@@ -25,6 +25,7 @@ public class RecommendModel implements Serializable {
     private String displayName;
     private String displayURL;
     private String displayAvatar;
+    private String displayDesc;
     List<PlayUser> playUsers;
 
     public List<PlayUser> getPlayUsers() {
@@ -93,6 +94,15 @@ public class RecommendModel implements Serializable {
         this.displayAvatar = displayAvatar;
     }
 
+    public String getDisplayDesc() {
+        return displayDesc;
+    }
+
+    public void setDisplayDesc(String displayDesc) {
+        this.displayDesc = displayDesc;
+    }
+
+
     @Override
     public String toString() {
         return "RecommendModel{" +
@@ -103,6 +113,8 @@ public class RecommendModel implements Serializable {
                 ", displayName='" + displayName + '\'' +
                 ", displayURL='" + displayURL + '\'' +
                 ", displayAvatar='" + displayAvatar + '\'' +
+                ", displayDesc='" + displayDesc + '\'' +
+                ", playUsers=" + playUsers +
                 '}';
     }
 

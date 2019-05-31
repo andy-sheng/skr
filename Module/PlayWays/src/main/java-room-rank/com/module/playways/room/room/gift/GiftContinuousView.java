@@ -211,7 +211,11 @@ public class GiftContinuousView extends RelativeLayout {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    step2(mCurGiftPlayModel.getBeginCount());
+                    if (mCurGiftPlayModel != null) {
+                        step2(mCurGiftPlayModel.getBeginCount());
+                    } else {
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+                    }
                 }
             });
         }

@@ -231,6 +231,7 @@ public class UserAccountManager {
 
     // 手机登录
     public void loginByPhoneNum(final String phoneNum, String verifyCode, final Callback callback) {
+        StatisticsAdapter.recordCountEvent("signup", "api_begin", null);
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
         String deviceId = U.getDeviceUtils().getImei();
@@ -250,7 +251,7 @@ public class UserAccountManager {
                         } else {
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
-                            StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
+                            StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
                     }
@@ -260,7 +261,7 @@ public class UserAccountManager {
                         super.onNetworkError(errorType);
                         HashMap map = new HashMap();
                         map.put("error", "network_error");
-                        StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
+                        StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                     }
                 });
 
@@ -274,6 +275,7 @@ public class UserAccountManager {
      * @param openId
      */
     public void loginByThirdPart(final int mode, String accessToken, String openId) {
+        StatisticsAdapter.recordCountEvent("signup", "api_begin", null);
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         String deviceId = U.getDeviceUtils().getImei();
 //        MyLog.d(TAG, "mimusic md5 = " + getMd5Digest(deviceId.getBytes()));
@@ -299,7 +301,7 @@ public class UserAccountManager {
                             U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
-                            StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
+                            StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                         }
                     }
 
@@ -308,7 +310,7 @@ public class UserAccountManager {
                         super.onNetworkError(errorType);
                         HashMap map = new HashMap();
                         map.put("error", "network_error");
-                        StatisticsAdapter.recordCountEvent("signup", "login_failed", map);
+                        StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                     }
                 });
     }
@@ -332,7 +334,7 @@ public class UserAccountManager {
         }
         HashMap map = new HashMap();
         map.put("isFirstLogin", "" + isFirstLogin);
-        StatisticsAdapter.recordCountEvent("signup", "login_success", map);
+        StatisticsAdapter.recordCountEvent("signup", "api_success", map);
         boolean needBeginnerGuide = jsonObject.getBooleanValue("needBeginnerGuide");
 
         // 设置个人信息

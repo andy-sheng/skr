@@ -381,6 +381,9 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 //    }
 
     public boolean openAudioRecording() {
+        if(true){
+            return false;
+        }
         if (mOpenRecording == -1) {
             if (U.getDeviceUtils().getLevel().equals(DeviceUtils.LEVEL.BAD)) {
                 MyLog.w(TAG, "设备太差，不开启录制");
