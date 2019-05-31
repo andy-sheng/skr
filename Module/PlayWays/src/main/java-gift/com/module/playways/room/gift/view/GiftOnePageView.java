@@ -77,33 +77,33 @@ public class GiftOnePageView extends ExFrameLayout {
         mGiftAdapter.notifyDataSetChanged();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(CancelGiftCountDownEvent cancelGiftCountDownEvent) {
-        mGiftAdapter.setCountDownCircleShow(false);
-        updateSysHandselGift();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(StartGiftCountDownEvent startGiftCountDownEvent) {
-        mGiftAdapter.setCountDownCircleShow(true);
-        updateSysHandselGift();
-    }
-
-    private void updateSysHandselGift() {
-        for (int i = 0; i < mGiftAdapter.getDataList().size(); i++) {
-            if (mGiftAdapter.getDataList().get(i).getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
-                mGiftAdapter.notifyItemChanged(i);
-            }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(UpdateMeiGuiFreeCountEvent updateMeiGuiFreeCountEvent) {
-        for (BaseGift baseGift : mGiftAdapter.getDataList()) {
-            if (baseGift.getGiftID() == 1) {
-                baseGift.setBalance(updateMeiGuiFreeCountEvent.getCount());
-                break;
-            }
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(CancelGiftCountDownEvent cancelGiftCountDownEvent) {
+//        mGiftAdapter.setCountDownCircleShow(false);
+//        updateSysHandselGift();
+//    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(StartGiftCountDownEvent startGiftCountDownEvent) {
+//        mGiftAdapter.setCountDownCircleShow(true);
+//        updateSysHandselGift();
+//    }
+//
+//    private void updateSysHandselGift() {
+//        for (int i = 0; i < mGiftAdapter.getDataList().size(); i++) {
+//            if (mGiftAdapter.getDataList().get(i).getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
+//                mGiftAdapter.notifyItemChanged(i);
+//            }
+//        }
+//    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(UpdateMeiGuiFreeCountEvent updateMeiGuiFreeCountEvent) {
+//        for (BaseGift baseGift : mGiftAdapter.getDataList()) {
+//            if (baseGift.getGiftID() == 1) {
+//                baseGift.setBalance(updateMeiGuiFreeCountEvent.getCount());
+//                break;
+//            }
+//        }
+//    }
 }

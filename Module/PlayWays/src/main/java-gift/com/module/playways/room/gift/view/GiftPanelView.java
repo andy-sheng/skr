@@ -379,7 +379,7 @@ public class GiftPanelView extends FrameLayout {
     /**
      * @param grabPlayerInfoModel 麦上的人
      */
-    public void show(GrabPlayerInfoModel grabPlayerInfoModel, long passedTime) {
+    public void show(GrabPlayerInfoModel grabPlayerInfoModel) {
         MyLog.d(TAG, "show" + " grabPlayerInfoModel=" + grabPlayerInfoModel);
         if (!mHasInit) {
             inflate();
