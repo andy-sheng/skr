@@ -183,7 +183,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
                 mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(34 + 84), 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(34 + 84);
+                layoutParams.width = U.getDisplayUtils().dip2px(34);
                 layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34);
                 mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("合唱");
