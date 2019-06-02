@@ -79,7 +79,13 @@ int AudioResample::resample(uint8_t **out, uint8_t *in, int in_size) {
     int ret = 0;
     pthread_mutex_lock(&mLock);
     if (mSwr) {
-        ret = ksy_swr_convert(mSwr, &out, &in, in_size);
+        uint8_t **p = NULL;
+        ret = ksy_swr_convert(mSwr, &p, &in, in_size);
+        if (p) {
+            *out = p[0];
+        } else {
+            *out = NULL;
+        }
     } else {
         if (mUseDiffMemory) {
             if (mOutBufSize < in_size) {

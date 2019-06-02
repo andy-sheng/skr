@@ -16,7 +16,7 @@ jlong Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1init
 int Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1config
         (JNIEnv *env, jobject obj, jlong instance, jint sampleFmt, jint sampleRate, jint channels,
          jint bufferSamples, jint fifoSizeInMs) {
-    return getInstance(instance)->config(sampleRate, channels, bufferSamples, fifoSizeInMs);
+    return getInstance(instance)->config(sampleFmt, sampleRate, channels, bufferSamples, fifoSizeInMs);
 }
 
 void Java_com_zq_mediaengine_filter_audio_AudioSLPlayer__1attachTo
