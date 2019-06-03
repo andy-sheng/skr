@@ -1,11 +1,14 @@
 package com.common.webview;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,28 +17,31 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.base.BaseActivity;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.common.base.R;
 import com.common.core.BuildConfig;
+import com.common.core.WebIpcCallback;
+import com.common.core.WebIpcService;
+import com.common.core.scheme.SchemeSdkActivity;
 import com.common.log.MyLog;
 import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.common.webview.aidl.BinderCursor;
+import com.common.webview.aidl.WebIpcClient;
+import com.common.webview.aidl.WebIpcProvider;
+import com.common.webview.aidl.WebIpcServer;
 import com.jsbridge.BridgeWebView;
 import com.jsbridge.BridgeWebViewClient;
 import com.jsbridge.CallBackFunction;
@@ -54,11 +60,12 @@ import okhttp3.Cookie;
 
 import static android.os.Build.VERSION_CODES.M;
 import static com.common.core.scheme.SchemeConstants.SCHEME_INFRAMESKER;
-import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 import static com.common.webview.JsBridgeImpl.getJsonObj;
 
-
-public class AgentWebActivity extends CameraAdapWebActivity {
+/**
+ * 注意！！运行在 :tools 进程，要使用 aidl 进行通信
+ */
+class AgentWebActivity extends CameraAdapWebActivity {
 
     protected AgentWeb mAgentWeb;
     private AgentWebUIControllerImplBase mAgentWebUIController;
@@ -66,7 +73,7 @@ public class AgentWebActivity extends CameraAdapWebActivity {
     private MiddlewareWebChromeBase mMiddleWareWebChrome;
     private MiddlewareWebClientBase mMiddleWareWebClient;
 
-    private SharedPrefsCookiePersistor mSharedPrefsCookiePersistor;
+    //    private SharedPrefsCookiePersistor mSharedPrefsCookiePersistor;
     CommonTitleBar mTitlebar;
     RelativeLayout mContentContainer;
 
@@ -80,10 +87,9 @@ public class AgentWebActivity extends CameraAdapWebActivity {
                                     String acceptType, boolean paramBoolean) {
 
 
-
-
             // TODO Auto-generated method stub
         }
+
         //for  Android 4.0+
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
 
@@ -117,6 +123,7 @@ public class AgentWebActivity extends CameraAdapWebActivity {
                 }
             }
         }
+
         @SuppressLint("NewApi")
         @Override
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
@@ -222,11 +229,13 @@ public class AgentWebActivity extends CameraAdapWebActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!TextUtils.isEmpty(url) && url.startsWith(SCHEME_INFRAMESKER)) { //
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                            .withString("uri", url)
-                            .navigation();
-
+                if (!TextUtils.isEmpty(url) && url.startsWith(SCHEME_INFRAMESKER)) {
+                    Intent intent = new Intent(AgentWebActivity.this, SchemeSdkActivity.class);
+                    intent.putExtra("uri", url);
+                    U.app().startActivity(intent);
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+//                            .withString("uri", url)
+//                            .navigation();
                     return true;
                 }
 
@@ -260,17 +269,41 @@ public class AgentWebActivity extends CameraAdapWebActivity {
     private void setCookie(String url) {
         //种cookie，先注释掉
         if (!TextUtils.isEmpty(url) && url.contains("inframe.mobi")) {
-            mSharedPrefsCookiePersistor = new SharedPrefsCookiePersistor(this);
-            List<Cookie> cookies = mSharedPrefsCookiePersistor.loadAll();
-            if (cookies != null && cookies.size() > 0) {
-                CookieSyncManager.createInstance(this);
-                CookieManager cookieManager = CookieManager.getInstance();
-                cookieManager.setAcceptCookie(true);
-                for (Cookie cookie : cookies) {
-                    cookieManager.setCookie("inframe.mobi", cookie.toString());//cookies是在HttpClient中获得的cookie
+            WebIpcClient.getServer(new WebIpcClient.GetCallback() {
+                @Override
+                public void get(WebIpcService webIpcService) {
+                    try {
+                        webIpcService.call(WebIpcServer.TYPE_GET_COOKIES, null, new WebIpcCallback.Stub() {
+                            @Override
+                            public void callback(String json) throws RemoteException {
+                                JSONArray jsonArray = JSON.parseArray(json);
+                                if (jsonArray != null && jsonArray.size() > 0) {
+                                    CookieSyncManager.createInstance(AgentWebActivity.this);
+                                    CookieManager cookieManager = CookieManager.getInstance();
+                                    cookieManager.setAcceptCookie(true);
+                                    for (int i = 0; i < jsonArray.size(); i++) {
+                                        cookieManager.setCookie("inframe.mobi", jsonArray.getString(i));//cookies是在HttpClient中获得的cookie
+                                    }
+                                    CookieSyncManager.getInstance().sync();
+                                }
+                            }
+                        });
+                    } catch (RemoteException e) {
+                        MyLog.e(e);
+                        SharedPrefsCookiePersistor mSharedPrefsCookiePersistor = new SharedPrefsCookiePersistor(AgentWebActivity.this);
+                        List<Cookie> cookies = mSharedPrefsCookiePersistor.loadAll();
+                        if (cookies != null && cookies.size() > 0) {
+                            CookieSyncManager.createInstance(AgentWebActivity.this);
+                            CookieManager cookieManager = CookieManager.getInstance();
+                            cookieManager.setAcceptCookie(true);
+                            for (Cookie cookie : cookies) {
+                                cookieManager.setCookie("inframe.mobi", cookie.toString());//cookies是在HttpClient中获得的cookie
+                            }
+                            CookieSyncManager.getInstance().sync();
+                        }
+                    }
                 }
-                CookieSyncManager.getInstance().sync();
-            }
+            });
         }
     }
 
@@ -310,8 +343,8 @@ public class AgentWebActivity extends CameraAdapWebActivity {
                 return true;
             }
             return super.onKeyDown(keyCode, event);
-        }catch (Exception e){
-            MyLog.e(TAG,e);
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
             return true;
         }
     }
@@ -373,4 +406,5 @@ public class AgentWebActivity extends CameraAdapWebActivity {
     public boolean useEventBus() {
         return false;
     }
+
 }

@@ -44,7 +44,7 @@ public class JsRegister {
 
     public void register() {
         //所有H5来的需要跳转的都从这里
-        mBridgeWebView.registerHandler("callNative", new BridgeHandler() {
+        mBridgeWebView.registerHandler("callNative",  new BridgeHandler() {
             @Override
             public void handler(String data, CallBackFunction function) {
                 processOpt(data, function);
@@ -52,6 +52,11 @@ public class JsRegister {
         });
     }
 
+    /**
+     * 这些都运行在 webview 进程 :tools
+     * @param data
+     * @param callBackFunction
+     */
     private void processOpt(String data, final CallBackFunction callBackFunction) {
         MyLog.w(TAG, "processOpt" + " data is =" + data);
         JSONObject jsonObject = JSONObject.parseObject(data);
@@ -74,7 +79,7 @@ public class JsRegister {
             mJsBridgeImpl.finish(callBackFunction);
         } else if (CHECK_CAMERA_PERM.equals(opt)) {
 //            mJsBridgeImpl.checkCameraPerm(callBackFunction);
-             mBaseActivity.getSkrCameraPermission().ensurePermission(new Runnable() {
+             mBaseActivity.getSkrCameraPermission().ensurePermission(mBaseActivity,new Runnable() {
                  @Override
                  public void run() {
                      callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),

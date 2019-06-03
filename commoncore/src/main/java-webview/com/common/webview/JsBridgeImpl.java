@@ -1,14 +1,11 @@
 package com.common.webview;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Pair;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
-
 import com.common.clipboard.ClipboardUtils;
 import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
@@ -25,8 +22,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.List;
 import java.util.Map;
-
-import static android.content.Context.CLIPBOARD_SERVICE;
 
 
 public class JsBridgeImpl {

@@ -20,7 +20,7 @@ import java.util.Locale;
 
 import static android.os.Build.VERSION_CODES.M;
 
-public abstract class CameraAdapWebActivity extends BaseActivity {
+abstract class CameraAdapWebActivity extends BaseActivity {
     public ValueCallback<Uri[]> mFilePathCallback;
     public ValueCallback<Uri> nFilePathCallback;
     public String mCameraPhotoPath;

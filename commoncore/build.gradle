@@ -38,22 +38,24 @@ android {
             java.srcDirs += 'src/main/java-gen-pb'
             //java.srcDirs += 'src/main/java-milink'
 
-            java.srcDirs += 'src/main/java-engine'
-            res.srcDirs += ['src/main/res-engine']
+            java.srcDirs += 'src/main/java-webview'
+            res.srcDirs += ['src/main/res-webview']
 
             java.srcDirs += 'src/main/java-debugcore'
             res.srcDirs += ['src/main/res-debugcore']
 
             res.srcDirs += ['src/main/res']
             res.srcDirs += ['src/main/res-login']
+
             res.srcDirs += ['src/main/res-cta']
             res.srcDirs += ['src/main/res-config']
             res.srcDirs += ['src/main/res-umeng']
 
             // doraemonkit 滴滴开源一款app内调试工具
             java.srcDirs += 'src/main/java-doraemonkit'
-
             java.srcDirs += 'src/main/java-notification'
+
+//            aidl.srcDirs += 'src/main/java-webview'
         }
     }
 

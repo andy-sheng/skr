@@ -1,11 +1,9 @@
 package com.common.webview;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -22,6 +20,9 @@ import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 import static com.common.view.titlebar.CommonTitleBar.ACTION_RIGHT_BUTTON;
 import static com.common.webview.JsBridgeImpl.getJsonObj;
 
+/**
+ * 注意！！运行在 :tools 进程，要使用 aidl 进行通信
+ */
 @Route(path = "/common/ExpendWebActivity")
 public class ExpendWebActivity extends AgentWebActivity {
     public final static String TAG = "ExpendWebActivity";
@@ -38,7 +39,7 @@ public class ExpendWebActivity extends AgentWebActivity {
         super.initData(savedInstanceState);
 
         mUrl = getIntent().getStringExtra("url");
-        mShowShareBtn = getIntent().getBooleanExtra("showShare", false);
+        mShowShareBtn = getIntent().getBooleanExtra("showShare", true);
 
         if (!mShowShareBtn) {
             mTitlebar.getRightImageButton().setVisibility(View.GONE);
@@ -47,6 +48,7 @@ public class ExpendWebActivity extends AgentWebActivity {
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
+
                 if (action == ACTION_LEFT_TEXT) {
                     if (mBridgeWebView != null && mBridgeWebView.canGoBack()) {
                         mBridgeWebView.goBack();
@@ -78,4 +80,5 @@ public class ExpendWebActivity extends AgentWebActivity {
             }
         });
     }
+
 }
