@@ -183,7 +183,9 @@ public class OtherPhotoWallView extends RelativeLayout {
         }
 
         if (list != null && list.size() > 0) {
-            mPhotoView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            if (!(mPhotoView.getLayoutManager() instanceof GridLayoutManager)) {
+                mPhotoView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            }
             mHasMore = true;
             mPhotoAdapter.getDataList().addAll(list);
             mPhotoAdapter.notifyDataSetChanged();

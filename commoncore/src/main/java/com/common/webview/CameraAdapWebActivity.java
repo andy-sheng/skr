@@ -1,28 +1,15 @@
 package com.common.webview;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
-import android.webkit.ConsoleMessage;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.core.BuildConfig;
 import com.common.core.permission.SkrCameraPermission;
 
 import java.io.File;
@@ -56,7 +43,7 @@ public abstract class CameraAdapWebActivity extends BaseActivity {
         return image;
     }
 
-    public SkrCameraPermission getSkrCameraPermission(){
+    public SkrCameraPermission getSkrCameraPermission() {
         return mSkrCameraPermission;
     }
 
@@ -82,10 +69,10 @@ public abstract class CameraAdapWebActivity extends BaseActivity {
         Uri mUri = null;
         if (resultCode == Activity.RESULT_OK && requestCode == INPUT_FILE_REQUEST_CODE) {
             if (data == null) {
-                if(Build.VERSION.SDK_INT > M) {
-                    mUri=photoURI;
-                    results=new Uri[]{mUri};
-                }else{
+                if (Build.VERSION.SDK_INT > M) {
+                    mUri = photoURI;
+                    results = new Uri[]{mUri};
+                } else {
                     if (mCameraPhotoPath != null) {
                         mUri = Uri.parse(mCameraPhotoPath);
                         results = new Uri[]{Uri.parse(mCameraPhotoPath)};
@@ -94,7 +81,7 @@ public abstract class CameraAdapWebActivity extends BaseActivity {
             } else {
                 Uri nUri = data.getData();
                 if (nUri != null) {
-                    mUri =nUri;
+                    mUri = nUri;
                     results = new Uri[]{nUri};
                 }
             }
@@ -103,12 +90,16 @@ public abstract class CameraAdapWebActivity extends BaseActivity {
             results = new Uri[]{mUri};
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            nFilePathCallback.onReceiveValue(mUri);
-            nFilePathCallback = null;
+            if (nFilePathCallback != null) {
+                nFilePathCallback.onReceiveValue(mUri);
+                nFilePathCallback = null;
+            }
             return;
         } else {
-            mFilePathCallback.onReceiveValue(results);
-            mFilePathCallback = null;
+            if (mFilePathCallback != null) {
+                mFilePathCallback.onReceiveValue(results);
+                mFilePathCallback = null;
+            }
             return;
         }
     }

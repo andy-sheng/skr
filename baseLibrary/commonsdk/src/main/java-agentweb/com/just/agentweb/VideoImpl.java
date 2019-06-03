@@ -54,7 +54,6 @@ public class VideoImpl implements IVideo, EventInterceptor {
     }
 
 
-
     @Override
     public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
 
@@ -121,10 +120,11 @@ public class VideoImpl implements IVideo, EventInterceptor {
         }
 
         mMoiveView.setVisibility(View.GONE);
-        if (mMoiveParentView != null && mMoiveView != null) {
+        if (mMoiveParentView != null && mMoiveView != null
+                && mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
             mMoiveParentView.removeView(mMoiveView);
-
         }
+        
         if (mMoiveParentView != null) {
             mMoiveParentView.setVisibility(View.GONE);
         }

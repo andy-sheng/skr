@@ -128,7 +128,9 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
         for (RecommendTagModel recommendTagModel : recommendTagModelList) {
             RecommendSongFragment recommendSongFragment = new RecommendSongFragment();
-            recommendSongFragment.setRecommendTagModel(recommendTagModel);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("tag_model", recommendTagModel);
+            recommendSongFragment.setArguments(bundle);
             mRecommendSongFragmentList.add(recommendSongFragment);
         }
 

@@ -17,8 +17,12 @@ package com.common.base;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
@@ -174,5 +178,30 @@ public class BaseApplication extends Application {
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onTrimMemory(level);
         }
+    }
+
+    @Override
+    public Intent registerReceiver(
+            BroadcastReceiver receiver, IntentFilter filter) {
+        MyLog.w(TAG,"registerReceiver" + " receiver=" + receiver + " filter=" + filter);
+        return super.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, String broadcastPermission, Handler scheduler) {
+        MyLog.w(TAG,"registerReceiver" + " receiver=" + receiver + " filter=" + filter + " broadcastPermission=" + broadcastPermission + " scheduler=" + scheduler);
+        return super.registerReceiver(receiver, filter, broadcastPermission, scheduler);
+    }
+
+    @Override
+    public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, String broadcastPermission, Handler scheduler, int flags) {
+        MyLog.w(TAG,"registerReceiver" + " receiver=" + receiver + " filter=" + filter + " broadcastPermission=" + broadcastPermission + " scheduler=" + scheduler + " flags=" + flags);
+        return super.registerReceiver(receiver, filter, broadcastPermission, scheduler, flags);
+    }
+
+    @Override
+    public void unregisterReceiver(BroadcastReceiver receiver) {
+        MyLog.w(TAG,"unregisterReceiver" + " receiver=" + receiver);
+        super.unregisterReceiver(receiver);
     }
 }

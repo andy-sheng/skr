@@ -30,6 +30,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 
 import com.common.base.R;
+import com.common.log.MyLog;
 
 
 /**
@@ -302,7 +303,7 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * SwitchButton use this formula to determine the final size of thumb, background and itself.
-     *
+     * <p>
      * textWidth = max(onWidth, offWidth)
      * thumbRange = thumbWidth * rangeRatio
      * textExtraSpace = textWidth + textExtra - (moveRange - thumbWidth + max(thumbMargin.left, thumbMargin.right) + textThumbInset)
@@ -719,7 +720,11 @@ public class SwitchButton extends CompoundButton {
                 } else {
                     boolean nextStatus = getStatusBasedOnPos();
                     if (nextStatus != isChecked()) {
-                        playSoundEffect(SoundEffectConstants.CLICK);
+                        try {
+                            playSoundEffect(SoundEffectConstants.CLICK);
+                        } catch (Exception e) {
+                            MyLog.d(e);
+                        }
                         setChecked(nextStatus);
                     } else {
                         animateToState(nextStatus);

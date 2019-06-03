@@ -233,6 +233,9 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     private void loadHttpByFresco(BaseImage httpImage) {
+        if (httpImage == null) {
+            return;
+        }
         showFrescoViewIfNeed();
         IFrescoCallBack preCallback = httpImage.getCallBack();
         httpImage.setCallBack(new IFrescoCallBack() {
@@ -285,6 +288,9 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     private void loadLocalByFresco(BaseImage localImage) {
+        if (localImage == null) {
+            return;
+        }
         showFrescoViewIfNeed();
         IFrescoCallBack preCallback = localImage.getCallBack();
 
