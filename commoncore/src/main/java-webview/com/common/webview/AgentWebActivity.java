@@ -233,7 +233,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
                 if (!TextUtils.isEmpty(url) && url.startsWith(SCHEME_INFRAMESKER)) {
                     Intent intent = new Intent(AgentWebActivity.this, SchemeSdkActivity.class);
                     intent.putExtra("uri", url);
-                    U.app().startActivity(intent);
+                    AgentWebActivity.this.startActivity(intent);
                     Uri uri = Uri.parse(url);
                     if (uri != null) {
                         /**
