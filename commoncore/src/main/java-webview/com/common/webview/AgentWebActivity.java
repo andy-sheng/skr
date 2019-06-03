@@ -3,7 +3,7 @@ package com.common.webview;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
+
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,18 +17,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
-import android.view.ViewGroup;
-import android.webkit.ConsoleMessage;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import android.widget.LinearLayout;
+
 import com.common.base.R;
 import com.common.core.BuildConfig;
 import com.common.core.WebIpcCallback;
@@ -45,11 +39,18 @@ import com.common.webview.aidl.WebIpcServer;
 import com.jsbridge.BridgeWebView;
 import com.jsbridge.BridgeWebViewClient;
 import com.jsbridge.CallBackFunction;
-import com.just.agentweb.AgentWeb;
-import com.just.agentweb.AgentWebUIControllerImplBase;
-import com.just.agentweb.MiddlewareWebChromeBase;
-import com.just.agentweb.MiddlewareWebClientBase;
+import com.just.agentweb.AgentWebX5;
+import com.just.agentweb.DefaultWebClient;
+import com.just.agentweb.MiddleWareWebClientBase;
+import com.just.agentweb.MiddleWareWebChromeBase;
 import com.module.RouterConstants;
+import com.tencent.smtt.export.external.interfaces.ConsoleMessage;
+import com.tencent.smtt.sdk.CookieManager;
+import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
@@ -67,11 +68,11 @@ import static com.common.webview.JsBridgeImpl.getJsonObj;
  */
 class AgentWebActivity extends CameraAdapWebActivity {
 
-    protected AgentWeb mAgentWeb;
-    private AgentWebUIControllerImplBase mAgentWebUIController;
+    protected AgentWebX5 mAgentWeb;
+    //    private AgentWebUIControllerImplBase mAgentWebUIController;
     private ErrorLayoutEntity mErrorLayoutEntity;
-    private MiddlewareWebChromeBase mMiddleWareWebChrome;
-    private MiddlewareWebClientBase mMiddleWareWebClient;
+    private MiddleWareWebChromeBase mMiddleWareWebChrome;
+    private MiddleWareWebClientBase mMiddleWareWebClient;
 
     //    private SharedPrefsCookiePersistor mSharedPrefsCookiePersistor;
     CommonTitleBar mTitlebar;
@@ -81,13 +82,12 @@ class AgentWebActivity extends CameraAdapWebActivity {
 
     JsRegister mJsRegister;
 
-    protected WebChromeClient mWebChromeClient = mWebChromeClient = new WebChromeClient() {
+    protected WebChromeClient mWebChromeClient = new WebChromeClient() {
         // Work on Android 4.4.2 Zenfone 5
         public void showFileChooser(ValueCallback<String[]> filePathCallback,
                                     String acceptType, boolean paramBoolean) {
 
 
-            // TODO Auto-generated method stub
         }
 
         //for  Android 4.0+
@@ -219,6 +219,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
     protected void buildAgentWeb() {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
+//        String url = "http://test.app.inframe.mobi/test/bridge";
 
         BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView) {
             @Override
@@ -253,19 +254,36 @@ class AgentWebActivity extends CameraAdapWebActivity {
             }
         };
 
-        setCookie(url);
 
-        mAgentWeb = AgentWeb.with(this)//
-                .setAgentWebParent((ViewGroup) mContentContainer, new RelativeLayout.LayoutParams(-1, -1))//
-                .useDefaultIndicator(-1, 2)//
-//                .setAgentWebWebSettings(getSettings())//
-                .setWebViewClient(mBridgeWebViewClient)
+
+//        mAgentWeb = AgentWebX5.with(this)//
+//                .setAgentWebParent((ViewGroup) mContentContainer, new RelativeLayout.LayoutParams(-1, -1))//
+//                .useDefaultIndicator()//
+////                .setAgentWebWebSettings(getSettings())//
+//                .setWebViewClient(mBridgeWebViewClient)
+//                .setWebChromeClient(mWebChromeClient)
+//                .setWebView(mBridgeWebView)
+//                .setSecurityType(AgentWebX5.SecurityType.strict)
+////                .setDownloadListener(mDownloadListener) 4.0.0 删除该API
+//                .createAgentWeb()//
+//                .ready()//
+//                .go(url);
+
+        mAgentWeb = AgentWebX5.with(this)//
+                .setAgentWebParent(mContentContainer, new LinearLayout.LayoutParams(-1, -1))//
+                .useDefaultIndicator()//
+                .defaultProgressBarColor()
                 .setWebChromeClient(mWebChromeClient)
+                .setWebViewClient(mBridgeWebViewClient)
                 .setWebView(mBridgeWebView)
-                .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-//                .setDownloadListener(mDownloadListener) 4.0.0 删除该API
+                .useMiddleWareWebChrome(getMiddleWareWebChrome())
+                .useMiddleWareWebClient(getMiddleWareWebClient())
+                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
+                .interceptUnkownScheme()
+                .setSecutityType(AgentWebX5.SecurityType.strict)
+//                .setWebLayout(new WebLayout(this))
                 .createAgentWeb()//
-                .ready()//
+                .ready()
                 .go(url);
 
         WebSettings settings = mBridgeWebView.getSettings();
@@ -274,6 +292,8 @@ class AgentWebActivity extends CameraAdapWebActivity {
 
         mJsRegister = new JsRegister(mBridgeWebView, this);
         mJsRegister.register();
+
+        setCookie(url);
     }
 
     private void setCookie(String url) {
@@ -401,14 +421,14 @@ class AgentWebActivity extends CameraAdapWebActivity {
     }
 
     protected @NonNull
-    MiddlewareWebChromeBase getMiddleWareWebChrome() {
-        return this.mMiddleWareWebChrome = new MiddlewareWebChromeBase() {
+    MiddleWareWebChromeBase getMiddleWareWebChrome() {
+        return this.mMiddleWareWebChrome = new MiddleWareWebChromeBase() {
         };
     }
 
     protected @NonNull
-    MiddlewareWebClientBase getMiddleWareWebClient() {
-        return this.mMiddleWareWebClient = new MiddlewareWebClientBase() {
+    MiddleWareWebClientBase getMiddleWareWebClient() {
+        return this.mMiddleWareWebClient = new MiddleWareWebClientBase() {
         };
     }
 
