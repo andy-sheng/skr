@@ -39,7 +39,7 @@ public class ExpendWebActivity extends AgentWebActivity {
         super.initData(savedInstanceState);
 
         mUrl = getIntent().getStringExtra("url");
-        mShowShareBtn = getIntent().getBooleanExtra("showShare", true);
+        mShowShareBtn = getIntent().getBooleanExtra("showShare", false);
 
         if (!mShowShareBtn) {
             mTitlebar.getRightImageButton().setVisibility(View.GONE);
