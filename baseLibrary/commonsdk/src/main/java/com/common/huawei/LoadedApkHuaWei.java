@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import java.lang.reflect.Field;
@@ -64,6 +65,7 @@ public final class LoadedApkHuaWei {
             }
         } catch (Throwable ignored) {
             // ignore it
+            MyLog.e(ignored);
         }
     }
 
@@ -98,6 +100,7 @@ public final class LoadedApkHuaWei {
                 }
             } catch (Throwable ignored) {
                 // ignore it
+                MyLog.e(ignored);
             }
         }
 
@@ -210,6 +213,7 @@ public final class LoadedApkHuaWei {
                     return U.getReflectUtils().readField(receiverResourceObject, whiteList);
                 }
             } catch (Throwable ignored) {
+                MyLog.e(ignored);
             }
             return null;
         }
@@ -227,6 +231,7 @@ public final class LoadedApkHuaWei {
                     }
                 }
             } catch (Throwable ignored) {
+                MyLog.e(ignored);
             }
             return null;
         }
