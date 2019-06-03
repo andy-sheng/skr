@@ -233,12 +233,22 @@ class AgentWebActivity extends CameraAdapWebActivity {
                     Intent intent = new Intent(AgentWebActivity.this, SchemeSdkActivity.class);
                     intent.putExtra("uri", url);
                     U.app().startActivity(intent);
-//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-//                            .withString("uri", url)
-//                            .navigation();
+                    Uri uri = Uri.parse(url);
+                    if (uri != null) {
+                        /**
+                         * 改成双进程后，WebViewActivity 不会加到主进程 的Activity 列表中
+                         * 所以 如果跳到首页的话，这里要主动 finish自己 。
+                         */
+                        String au = uri.getAuthority();
+                        String pa = uri.getPath();
+                        if (("home".equals(au) && "/jump".equals(pa))
+                                || ("person".equals(au) && "/jump_person_center".equals(pa))
+                        ) {
+                            finish();
+                        }
+                    }
                     return true;
                 }
-
                 return super.shouldOverrideUrlLoading(view, url);
             }
         };
