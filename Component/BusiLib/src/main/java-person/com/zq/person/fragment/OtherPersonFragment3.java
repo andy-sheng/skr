@@ -628,8 +628,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 
         if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
             mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
-        } else {
-            mHashMap.put(LOCATION_TAG, "未知星球");
         }
 
         if (!TextUtils.isEmpty(model.getBirthday())) {
