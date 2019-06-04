@@ -221,6 +221,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
+                    if (isFollow) {
+                        userInfoModel.setFollow(isFollow);
+                        userInfoModel.setFriend(isFriend);
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel);
+                    }
                     showUserInfo(userInfoModel);
                     showUserRelationNum(relationNumModes);
                     showUserLevel(userLevelModels);

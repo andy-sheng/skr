@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.core.userinfo.model.OnlineModel;
@@ -274,12 +275,13 @@ public class UserInfoManager {
         }
     }
 
-    private void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
+    public void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
             @Override
             public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                 // 写入数据库
                 UserInfoLocalApi.insertOrUpdate(userInfoModel);
+                BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfoModel));
 
                 if (userInfoModel != null) {
                     emitter.onNext(userInfoModel);
@@ -288,7 +290,8 @@ public class UserInfoManager {
             }
         })
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     public void mateRelation(final int userId, final int action, final boolean isOldFriend) {
