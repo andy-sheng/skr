@@ -10,4 +10,13 @@ public class UpdateMeiliEvent {
         this.value = coinBalance;
         this.ts = ts;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateMeiliEvent{" +
+                "userID=" + userID +
+                ", value=" + value +
+                ", ts=" + ts +
+                '}';
+    }
 }

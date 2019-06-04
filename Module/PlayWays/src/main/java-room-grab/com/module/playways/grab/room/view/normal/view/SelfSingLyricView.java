@@ -75,6 +75,7 @@ public class SelfSingLyricView extends RelativeLayout {
     }
 
     public void initLyric() {
+        mCharmsView.bindData((int)MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             MyLog.w(TAG, "playLyric mRoomData = null");
             return;
@@ -85,12 +86,11 @@ public class SelfSingLyricView extends RelativeLayout {
             return;
         }
 
-        mCharmsView.bindData((int)MyUserInfoManager.getInstance().getUid());
         if (infoModel.getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue()
                 || infoModel.getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()) {
             mIvChallengeIcon.setVisibility(VISIBLE);
         } else {
-            mIvChallengeIcon.setVisibility(INVISIBLE);
+            mIvChallengeIcon.setVisibility(GONE);
         }
         mSongModel = infoModel.getMusic();
         mTvLyric.setText("歌词加载中...");

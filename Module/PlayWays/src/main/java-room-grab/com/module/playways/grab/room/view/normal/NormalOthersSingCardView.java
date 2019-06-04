@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -121,7 +122,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mTvSingerName.setText(userInfoModel.getNicknameRemark());
-            mCharmsView.bindData(mUseId);
+            mCharmsView.bindData(userInfoModel.getUserId(), Color.parseColor("#FFFFFF"));
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }
