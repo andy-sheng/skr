@@ -120,7 +120,7 @@ public class DoraemonManager {
                     @Override
                     public void clickValid(View v) {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                .withString("uri", "http://debugtbs.qq.com").navigation();
+                                .withString("url", "http://debugtbs.qq.com").navigation();
                     }
                 }));
                 return extras;
