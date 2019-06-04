@@ -114,15 +114,15 @@ public class UserInfoDataUtils {
                 userInfoModel.setNickname(jsonObject.getString("nickname"));
                 userInfoModel.setSex(jsonObject.getIntValue("sex"));
 
-                int status = jsonObject.getIntValue("status");
+                int statusFromServer = jsonObject.getIntValue("status");
                 boolean isOnline = jsonObject.getBooleanValue("isOnline");
+                int status = 0;
                 if (isOnline) {
-                    status = UserInfoModel.EF_ONLINE;
                     // status: 1.可邀请 2.忙碌中 3.已加入游戏
-                    if (status == 2) {
+                    if (statusFromServer == 2) {
                         status = UserInfoModel.EF_ONLINE_BUSY;
                         userInfoModel.setStatusDesc("忙碌中");
-                    } else if (status == 3) {
+                    } else if (statusFromServer == 3) {
                         status = UserInfoModel.EF_ONLiNE_JOINED;
                         userInfoModel.setStatusDesc("已加入游戏");
                     } else {
