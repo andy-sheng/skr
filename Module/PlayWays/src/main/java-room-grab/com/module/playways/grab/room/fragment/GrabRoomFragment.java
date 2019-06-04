@@ -1447,6 +1447,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mGrabScoreTipsView.reset();
+        if (RoomDataUtils.isMiniGameRound(mRoomData) && !RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            // TODO: 2019-06-04 展示控麦和气泡
+            mMiniOwnerMicIv.setVisibility(View.VISIBLE);
+        } else {
+            mMiniOwnerMicIv.setVisibility(View.GONE);
+        }
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (now.singBySelf()) {
@@ -1509,6 +1515,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
+        mMiniOwnerMicIv.setVisibility(View.GONE);
+        // TODO: 2019-06-04 移除麦克的气泡
         removeNoAccSrollTipsView();
         removeGrabSelfSingTipView();
         mTopContainerView.setVisibility(View.VISIBLE);
