@@ -4,7 +4,7 @@ if (isBuildModule.toBoolean()) {
     apply plugin: 'com.android.library'
 }
 android {
-    // 融云 2.9.14-stable版本
+    // 融云 2.9.17-stable版本
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
