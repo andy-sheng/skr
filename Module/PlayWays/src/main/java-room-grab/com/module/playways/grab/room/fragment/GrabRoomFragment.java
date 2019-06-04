@@ -1447,12 +1447,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mGrabScoreTipsView.reset();
-        if (RoomDataUtils.isMiniGameRound(mRoomData) && !RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            // TODO: 2019-06-04 展示控麦和气泡
-            mMiniOwnerMicIv.setVisibility(View.VISIBLE);
-        } else {
-            mMiniOwnerMicIv.setVisibility(View.GONE);
-        }
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (now.singBySelf()) {
@@ -1484,11 +1478,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     }
                 }
             } else {
-                if (mRoomData.isOwner() && now.isMiniGameRound()) {
-                    mGrabGiveupView.delayShowGiveUpView(true);
+
+                if (mRoomData.isOwner() && now.isMiniGameRound() && !RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
                     mMiniOwnerMicIv.setVisibility(View.VISIBLE);
                     mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
+                    mGrabGiveupView.delayShowGiveUpView(true);
+                } else {
+                    mMiniOwnerMicIv.setVisibility(View.GONE);
                 }
+
                 // 显示收音机
                 mSelfSingCardView.setVisibility(View.GONE);
                 mOthersSingCardView.setVisibility(View.VISIBLE);
@@ -1516,7 +1514,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
         mMiniOwnerMicIv.setVisibility(View.GONE);
-        // TODO: 2019-06-04 移除麦克的气泡
         removeNoAccSrollTipsView();
         removeGrabSelfSingTipView();
         mTopContainerView.setVisibility(View.VISIBLE);
