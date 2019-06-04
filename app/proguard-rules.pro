@@ -351,27 +351,7 @@ public static java.lang.String TABLENAME;
 -keep public class com.tencent.matrix.**{*;}
 
 -keep public class pl.droidsonroids.gif.GifIOException{<init>(int, java.lang.String);}
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
-
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
 -dontwarn com.google.android.maps.**
 -dontwarn android.webkit.WebView
 -dontwarn com.umeng.**
@@ -503,4 +483,8 @@ public static final int *;
 }
 
 -keep class com.opensource.svgaplayer.proto.** { *; }
+
+# 腾讯webview x5 内核
+-libraryjars ../baseLibrary/commonsdk/libs/tbs_sdk_thirdapp_v3.5.0.1004_43500_sharewithdownload_withoutGame_obfs_20170801_113025.jar
+
 -ignorewarnings

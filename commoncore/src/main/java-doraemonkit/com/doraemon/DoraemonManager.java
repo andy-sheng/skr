@@ -3,6 +3,7 @@ package com.doraemon;
 import android.os.SystemClock;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.R;
 import com.common.log.MyLog;
 import com.common.matrix.MatrixInit;
@@ -12,6 +13,7 @@ import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
 import com.module.ModuleServiceManager;
+import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -59,7 +61,7 @@ public class DoraemonManager {
                 extras.add(new SysInfoItem("Matrix", MatrixInit.isOpen() + "", new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
-                        if(MatrixInit.isOpen()){
+                        if (MatrixInit.isOpen()) {
                             MatrixInit.goIssueList();
                         }
                     }
@@ -100,8 +102,8 @@ public class DoraemonManager {
                     @Override
                     public void clickValid(View v) {
                         try {
-                            Boolean a = (Boolean) U.getReflectUtils().readField(MiPushClient.class,null,"isCrashHandlerSuggested");
-                            U.getToastUtil().showShort("MiPushClient.isCrashHandlerSuggested="+a);
+                            Boolean a = (Boolean) U.getReflectUtils().readField(MiPushClient.class, null, "isCrashHandlerSuggested");
+                            U.getToastUtil().showShort("MiPushClient.isCrashHandlerSuggested=" + a);
                         } catch (NoSuchFieldException e) {
                             e.printStackTrace();
                         } catch (IllegalAccessException e) {
@@ -110,10 +112,17 @@ public class DoraemonManager {
 
                         v = null;
                         int h = v.getHeight();
-                        MyLog.e(TAG,"h="+h);
+                        MyLog.e(TAG, "h=" + h);
                     }
                 }));
 
+                extras.add(new SysInfoItem("x5 内核调试", "查看", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("uri", "http://debugtbs.qq.com").navigation();
+                    }
+                }));
                 return extras;
             }
 
