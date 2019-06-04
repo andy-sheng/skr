@@ -193,7 +193,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             } else if (model.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
                 mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(58 + 84), 0);
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                U.getDisplayUtils().dip2px(58);
+                layoutParams.width = U.getDisplayUtils().dip2px(58);
                 layoutParams.leftMargin = -U.getDisplayUtils().dip2px(58 + 84);
                 mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("双人游戏");

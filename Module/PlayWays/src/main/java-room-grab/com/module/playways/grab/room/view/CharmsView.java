@@ -18,8 +18,6 @@ import org.greenrobot.eventbus.ThreadMode;
 // 展示魅力值的view
 public class CharmsView extends RelativeLayout {
 
-    public final static String TAG = "CharmsView";
-
     ImageView mCharmIv;
     TextView mCharmTv;
 
@@ -82,8 +80,6 @@ public class CharmsView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpdateMeiliEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
-        MyLog.d(TAG, "onEvent" + " mUserID=" + mUserID);
         if (event.userID == mUserID) {
             if (event.value >= 0) {
                 setVisibility(VISIBLE);
