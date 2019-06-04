@@ -97,10 +97,10 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
-        mCharmsView.bindData((int)MyUserInfoManager.getInstance().getUid());
     }
 
     public void playLyric() {
+        mCharmsView.bindData((int)MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             return;
         }
