@@ -99,13 +99,13 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         mBaseGift = baseGift;
         mReceiver = receiver;
         if (baseGift.isCanContinue()) {
-            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiver);
+            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), mBaseRoomData.getRealRoundSeq(), receiver);
             setVisibility(VISIBLE);
 
             mHandler.removeMessages(MSG_HIDE);
             mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
         } else {
-            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiver);
+            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), mBaseRoomData.getRealRoundSeq(), receiver);
         }
     }
 
@@ -121,7 +121,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBuyGiftPresenter.buyGift(mBaseGift, mBaseRoomData.getGameId(), mReceiver);
+                mBuyGiftPresenter.buyGift(mBaseGift, mBaseRoomData.getGameId(), mBaseRoomData.getRealRoundSeq(), mReceiver);
 
                 if (mScaleAnimatorSet != null) {
                     mScaleAnimatorSet.cancel();

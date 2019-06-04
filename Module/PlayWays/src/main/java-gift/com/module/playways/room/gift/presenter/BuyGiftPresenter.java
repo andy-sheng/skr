@@ -67,7 +67,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
         addToLifeCycle();
     }
 
-    public void buyGift(BaseGift baseGift, long roomId, UserInfoModel userInfoModel) {
+    public void buyGift(BaseGift baseGift, long roomId, int seq, UserInfoModel userInfoModel) {
         MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userInfoModel.getUserId());
 
         final int[] continueCount = new int[1];
@@ -95,6 +95,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 map.put("receiveUserID", userInfoModel.getUserId());
                 map.put("roomID", roomId);
                 map.put("timestamp", ts);
+                map.put("roundSeq", seq);
 
                 HashMap<String, Object> signMap = new HashMap<>(map);
                 signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
@@ -107,7 +108,8 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         + " count=" + 1
                         + " receiveUserID=" + userInfoModel.getUserId()
                         + " roomID=" + roomId
-                        + " timestamp=" + ts);
+                        + " timestamp=" + ts
+                        + " roundSeq=" + seq);
 
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 emitter.onNext(body);
@@ -139,8 +141,9 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         UpdateDiamondEvent.sendEvent(diamond, ts);
                     }
                     float receiverMeili = result.getData().getFloatValue("receiveUserCurRoundSeqMeili");
-                    if(receiverMeili > 0 ){
-                        EventBus.getDefault().post(new UpdateMeiliEvent(userInfoModel.getUserId(),(int)receiverMeili,System.currentTimeMillis()));;
+                    if (receiverMeili > 0) {
+                        EventBus.getDefault().post(new UpdateMeiliEvent(userInfoModel.getUserId(), (int) receiverMeili, System.currentTimeMillis()));
+                        ;
                     }
                     if (baseGift.getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
                         int sysHandselBalance = result.getData().getInteger("sysHandselBalance");
