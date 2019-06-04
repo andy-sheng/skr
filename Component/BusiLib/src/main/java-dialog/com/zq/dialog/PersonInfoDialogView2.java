@@ -112,7 +112,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     private static final int CHARMS_TAG = 1;
     private static final int LOCATION_TAG = 2;           //城市标签
     private static final int CONSTELLATION_TAG = 3;      //星座标签
-//    private static final int FANS_NUM_TAG = 2;      //粉丝数标签
+    private static final int FANS_NUM_TAG = 4;      //粉丝数标签
 
     private List<String> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
@@ -632,8 +632,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
             if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
                 mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
-            } else {
-                mHashMap.put(LOCATION_TAG, "未知星球");
             }
 
             if (!TextUtils.isEmpty(model.getBirthday())) {
@@ -646,18 +644,18 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
 
     private void showUserRelationNum(List<RelationNumModel> relationNumModes) {
-//        int fansNum = 0;
-//        if (relationNumModes != null && relationNumModes.size() > 0) {
-//            for (RelationNumModel mode : relationNumModes) {
-//                if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
-//                    fansNum = mode.getCnt();
-//                }
-//            }
-//        }
-//
-//        mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
-//
-//        refreshTag();
+        int fansNum = 0;
+        if (relationNumModes != null && relationNumModes.size() > 0) {
+            for (RelationNumModel mode : relationNumModes) {
+                if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
+                    fansNum = mode.getCnt();
+                }
+            }
+        }
+
+        mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
+
+        refreshTag();
     }
 
     private void showCharmsTag(int meiLiCntTotal) {
@@ -747,9 +745,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 mTags.add(mHashMap.get(CONSTELLATION_TAG));
             }
 
-//            if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
-//                mTags.add(mHashMap.get(FANS_NUM_TAG));
-//            }
+            if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
+                mTags.add(mHashMap.get(FANS_NUM_TAG));
+            }
 
         }
         mTagAdapter.setTagDatas(mTags);
