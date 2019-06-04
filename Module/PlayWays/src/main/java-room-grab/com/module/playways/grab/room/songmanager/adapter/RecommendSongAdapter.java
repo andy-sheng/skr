@@ -71,7 +71,6 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
 
     private class ItemHolder extends RecyclerView.ViewHolder {
         ExTextView mSongNameTv;
-        ExTextView mHasSingNumTv;
         ExTextView mSelectTv;
         ExTextView mSongTag;
 
@@ -80,7 +79,6 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
         public ItemHolder(View itemView) {
             super(itemView);
             mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
-            mHasSingNumTv = (ExTextView) itemView.findViewById(R.id.has_sing_num_tv);
             mSelectTv = (ExTextView) itemView.findViewById(R.id.select_tv);
             mSongTag = (ExTextView) itemView.findViewById(R.id.song_tag);
             mSelectTv.setOnClickListener(new DebounceViewClickListener() {
@@ -94,7 +92,6 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
         public void bind(SongModel model, int position) {
             mSongModel = model;
             mSongNameTv.setText("《" + model.getDisplaySongName() + "》");
-            mHasSingNumTv.setText(model.getSingCount() + "人唱过");
             mSongTag.setVisibility(View.VISIBLE);
             if (model.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
                 mSongTag.setBackground(pk);

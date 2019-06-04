@@ -26,8 +26,8 @@
 
         <ImageView
             android:id="@+id/iv_arrow"
-            android:layout_width="@dimen/view_14_dp"
-            android:layout_height="@dimen/view_16_dp"
+            android:layout_width="@dimen/view_13_dp"
+            android:layout_height="@dimen/view_13_dp"
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="@dimen/view_13_dp"
             android:background="@drawable/fz_shuxing_xia" />
