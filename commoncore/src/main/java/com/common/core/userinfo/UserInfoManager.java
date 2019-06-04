@@ -141,6 +141,12 @@ public class UserInfoManager {
         }
     }
 
+    public void clearRemark() {
+        if (mRemarkMap != null) {
+            mRemarkMap.clear();
+        }
+    }
+
     private static class UserAccountManagerHolder {
         private static final UserInfoManager INSTANCE = new UserInfoManager();
     }
@@ -858,7 +864,7 @@ public class UserInfoManager {
 
     private void fillUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
         // 认为状态缓存有效，不去这个id的状态了
-        if (onlineModel!=null && onlineModel.isOnline()) {
+        if (onlineModel != null && onlineModel.isOnline()) {
             userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
             userInfoModel.setStatusTs(onlineModel.getOnlineTime());
             if (pullGameStatus) {

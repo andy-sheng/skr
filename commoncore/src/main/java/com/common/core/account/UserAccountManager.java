@@ -17,7 +17,9 @@ import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.remark.RemarkLocalApi;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -430,9 +432,10 @@ public class UserAccountManager {
                     U.getPreferenceUtils().clearPreference();
                     UserInfoLocalApi.deleteAll();
                     RemarkLocalApi.deleteAll();
+                    // 清除备注的缓存
+                    UserInfoManager.getInstance().clearRemark();
                     UmengStatistics.onProfileSignOff();
-                    //com.common.umeng.UmengPush.UmengPush.clearAlias(userId);
-                    com.common.jiguang.JiGuangPush.clearAlias(userId);
+                    JiGuangPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
