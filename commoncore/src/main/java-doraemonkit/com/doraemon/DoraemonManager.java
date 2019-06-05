@@ -1,6 +1,5 @@
 package com.doraemon;
 
-import android.os.SystemClock;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -16,21 +15,14 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.schedulers.Schedulers;
 
 public class DoraemonManager {
     public final static String TAG = "DoraemonManager";
@@ -123,6 +115,7 @@ public class DoraemonManager {
                                 .withString("url", "http://debugtbs.qq.com").navigation();
                     }
                 }));
+
                 return extras;
             }
 

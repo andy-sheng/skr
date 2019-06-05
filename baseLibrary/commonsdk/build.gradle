@@ -23,8 +23,6 @@ android {
 
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
 
-        multiDexEnabled true
-
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -172,16 +170,7 @@ android {
 //        }
     }
 
-//    dexOptions {
-//        javaMaxHeapSize "1g"
-//        preDexLibraries = false
-//        additionalParameters = [    //配置multidex参数
-//                                    '--multi-dex',//多dex分包
-//                                    '--set-max-idx-number=30000',//每个包内方法数上限
-//                                    '--main-dex-list='+projectDir+'/main-dex-rule', //打包到主classes.dex的文件列表
-//                                    '--minimal-main-dex'
-//        ]
-//    }
+
 }
 
 dependencies {

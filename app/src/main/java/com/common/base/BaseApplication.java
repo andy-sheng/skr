@@ -24,15 +24,15 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.common.base.delegate.AppDelegate;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.delegate.PluginAppDelegate;
 import com.common.log.MyLog;
-import com.common.umeng.UmengInit;
 import com.common.utils.U;
-import com.squareup.leakcanary.LeakCanary;
+import com.component.busilib.BusiLibConfiguration;
 
 import java.util.List;
 
@@ -67,6 +67,7 @@ public class BaseApplication extends Application {
          * 这里可以了解一下 多dex 安装的原理
          */
         MultiDex.install(this);
+        //MultiDex.install(this);
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.attachBaseContext(this);
         }
@@ -103,6 +104,7 @@ public class BaseApplication extends Application {
         this.mAppDelegate.attachBaseContext(base);
         // 这里耗费 50 ms
         MyLog.w(TAG,"attachBaseContext over");
+        //MyLog.e(TAG,BusiLibConfiguration.TAG);
     }
 
     @Override

@@ -26,8 +26,6 @@ android {
 
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
 
-        multiDexEnabled true
-
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {

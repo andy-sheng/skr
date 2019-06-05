@@ -143,7 +143,10 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+
         multiDexEnabled true
+        multiDexKeepProguard file('maindexlist.pro')
+        multiDexKeepFile file('maindexlist.txt')
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -210,6 +213,7 @@ android {
             //没用引用的drawable资源，也会删除变成0字节，
             // proguard 任务很耗时
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
             //启用代码压缩
             minifyEnabled true
             //Zipalign优化
@@ -250,6 +254,16 @@ android {
             res.srcDirs += ['src/main/res']
         }
     }
+
+    dexOptions{
+        preDexLibraries = false
+    }
+//    dexOptions {
+//        javaMaxHeapSize "4g"
+//        preDexLibraries = false
+//        additionalParameters = ['--multi-dex', '--main-dex-list=' + project.rootDir.absolutePath + '/app/maindexlist.pro', '--minimal-main-dex',
+//                                '--set-max-idx-number=1000']
+//    }
 }
 
 dependencies {
@@ -266,6 +280,7 @@ dependencies {
         implementation project(":Module:Home")
         implementation project(":Module:PlayWays")
         implementation project(":Module:IMKit")
+        api(rootProject.ext.dependencies["multidex"])
 //        implementation project(":Module:IMLib")
         //  tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
