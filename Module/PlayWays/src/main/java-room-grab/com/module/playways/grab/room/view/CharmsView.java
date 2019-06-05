@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.common.log.MyLog;
 import com.module.playways.R;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.room.gift.event.UpdateMeiliEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +26,7 @@ public class CharmsView extends RelativeLayout {
 
     int mUserID;
     int mCharmValue;
+    GrabRoomData grabRoomData;
 
     public CharmsView(Context context) {
         super(context);
@@ -46,17 +50,23 @@ public class CharmsView extends RelativeLayout {
         mCharmTv = (TextView) findViewById(R.id.charm_tv);
     }
 
-    public void bindData(int userID) {
-        this.mUserID = userID;
-        this.mCharmValue = 0;
-        setVisibility(VISIBLE);
-        mCharmTv.setTextColor(Color.parseColor("#3B4E79"));
-        updateUi();
+    public void bindData(GrabRoomData grabRoomData, int userID) {
+        bindData(grabRoomData, userID, Color.parseColor("#3B4E79"));
     }
 
-    public void bindData(int userID, int color) {
+    public void bindData(GrabRoomData grabRoomData, int userID, int color) {
+        this.grabRoomData = grabRoomData;
         this.mUserID = userID;
+
         this.mCharmValue = 0;
+        GrabRoundInfoModel roundInfoModel = grabRoomData.getRealRoundInfo();
+        if (roundInfoModel != null && roundInfoModel.isPKRound()) {
+            for (SPkRoundInfoModel sPkRoundInfoModel : roundInfoModel.getsPkRoundInfoModels()) {
+                if (sPkRoundInfoModel.getUserID() == userID) {
+                    this.mCharmValue = sPkRoundInfoModel.getMeiliTotal();
+                }
+            }
+        }
         setVisibility(VISIBLE);
         mCharmTv.setTextColor(color);
         updateUi();

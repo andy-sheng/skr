@@ -75,7 +75,7 @@ public class SelfSingLyricView extends RelativeLayout {
     }
 
     public void initLyric() {
-        mCharmsView.bindData((int)MyUserInfoManager.getInstance().getUid());
+        mCharmsView.bindData(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             MyLog.w(TAG, "playLyric mRoomData = null");
             return;

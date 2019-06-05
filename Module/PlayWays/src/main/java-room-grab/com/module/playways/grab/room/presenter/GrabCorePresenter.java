@@ -64,6 +64,7 @@ import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
+import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
 import com.module.playways.others.LyricAndAccMatchManager;
@@ -2251,6 +2252,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         startSyncGameStateTask(sSyncStateTaskInterval * 2);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound(), event.getInfo().getRoomID());
 //        fetchAcc(event.getNextRound());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateMeiliEvent event) {
+        // TODO: 2019-06-05 暂时只对pk做个特殊处理
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel != null && grabRoundInfoModel.isPKRound()) {
+            for (SPkRoundInfoModel roundInfoModel : grabRoundInfoModel.getsPkRoundInfoModels()) {
+                if (roundInfoModel.getUserID() == event.userID) {
+                    roundInfoModel.setMeiliTotal(event.value);
+                    return;
+                }
+            }
+        }
     }
 
     private void onGameOver(String from, long gameOverTs) {

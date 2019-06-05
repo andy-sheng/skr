@@ -176,8 +176,8 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftMINIGameRoundInfoModel.getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightMINIGameRoundInfoModel.getUserID());
             mMiniGameInfoModel = now.getMusic().getMiniGame();
-            mLeftCharms.bindData(mLeftMINIGameRoundInfoModel.getUserID());
-            mRightCharms.bindData(mRightMINIGameRoundInfoModel.getUserID());
+            mLeftCharms.bindData(mGrabRoomData, mLeftMINIGameRoundInfoModel.getUserID());
+            mRightCharms.bindData(mGrabRoomData, mRightMINIGameRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftMINIGameRoundInfoModel != null && mRightMINIGameRoundInfoModel != null) {

@@ -122,7 +122,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mTvSingerName.setText(userInfoModel.getNicknameRemark());
-            mCharmsView.bindData(userInfoModel.getUserId(), Color.parseColor("#FFFFFF"));
+            mCharmsView.bindData(mGrabRoomData, userInfoModel.getUserId(), Color.parseColor("#FFFFFF"));
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }

@@ -98,7 +98,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mGrabRoomData = roomData;
-        mCharmsView.bindData((int)MyUserInfoManager.getInstance().getUid());
+        mCharmsView.bindData(roomData, (int) MyUserInfoManager.getInstance().getUid());
     }
 
     public void setListener(SelfSingCardView.Listener l) {

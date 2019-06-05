@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
+import com.module.playways.room.gift.event.UpdateMeiliEvent;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
@@ -15,6 +16,8 @@ import com.zq.live.proto.Room.QSPKInnerRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -34,6 +37,8 @@ public class SPkRoundInfoModel implements Serializable {
     @JSONField(name = "SPKFinalScore")
     private float score;
     private boolean isWin;
+
+    private int meiliTotal;   //用来记录魅力值
 
     public static SPkRoundInfoModel parse(QSPKInnerRoundInfo roundInfo) {
         SPkRoundInfoModel roundInfoModel = new SPkRoundInfoModel();
@@ -127,6 +132,14 @@ public class SPkRoundInfoModel implements Serializable {
 
     public void setWin(boolean win) {
         isWin = win;
+    }
+
+    public int getMeiliTotal() {
+        return meiliTotal;
+    }
+
+    public void setMeiliTotal(int meiliTotal) {
+        this.meiliTotal = meiliTotal;
     }
 
     public void tryUpdateRoundInfoModel(SPkRoundInfoModel roundInfo, boolean notify, GrabRoundInfoModel grabRoundInfoModel) {

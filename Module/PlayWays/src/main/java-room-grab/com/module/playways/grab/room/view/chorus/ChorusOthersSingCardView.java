@@ -183,8 +183,8 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             mRightChorusRoundInfoModel = list.get(1);
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftChorusRoundInfoModel.getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightChorusRoundInfoModel.getUserID());
-            mLeftCharms.bindData(mLeftChorusRoundInfoModel.getUserID());
-            mRightCharms.bindData(mRightChorusRoundInfoModel.getUserID());
+            mLeftCharms.bindData(mGrabRoomData, mLeftChorusRoundInfoModel.getUserID());
+            mRightCharms.bindData(mGrabRoomData, mRightChorusRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftChorusRoundInfoModel != null && mRightChorusRoundInfoModel != null) {
