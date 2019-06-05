@@ -144,6 +144,8 @@ public class UserAccountManager {
         } else {
 
         }
+
+        UserInfoManager.getInstance().initRemark();
         EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         // 只有非游客模式才发已有账号的事件
     }

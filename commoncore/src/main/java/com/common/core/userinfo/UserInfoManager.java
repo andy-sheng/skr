@@ -112,6 +112,10 @@ public class UserInfoManager {
 
     private UserInfoManager() {
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        initRemark();
+    }
+
+    public void initRemark() {
         if (!hasLoadRemarkFromDB) {
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
@@ -130,7 +134,7 @@ public class UserInfoManager {
             hasLoadRemarkFromDB = true;
         }
         // 从数据库加载
-        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK, false)) {
+        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK, false)) {
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
