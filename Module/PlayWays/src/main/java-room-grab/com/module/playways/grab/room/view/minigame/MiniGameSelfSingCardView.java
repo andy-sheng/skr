@@ -118,6 +118,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
             MyLog.w(TAG, "songModel 是空的");
             return;
         }
+        mSvLyric.scrollTo(0, 0);
         mCharmsView.bindData(mGrabRoomData, (int) MyUserInfoManager.getInstance().getUid());
         mMiniGameInfoModel = infoModel.getMusic().getMiniGame();
         if (mMiniGameInfoModel == null) {
