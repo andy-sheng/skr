@@ -197,7 +197,7 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-            U.getDisplayUtils().dip2px(68);
+            layoutParams.width = U.getDisplayUtils().dip2px(68);
             layoutParams.leftMargin = -U.getDisplayUtils().dip2px(68);
             mSongTagTv.setLayoutParams(layoutParams);
             mSongTagTv.setText("双人游戏");
