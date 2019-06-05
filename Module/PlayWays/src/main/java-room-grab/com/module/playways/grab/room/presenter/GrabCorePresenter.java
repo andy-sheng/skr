@@ -2210,6 +2210,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (event.totalRoundNum > 0) {
                 mRoomData.getGrabConfigModel().setTotalGameRoundSeq(event.totalRoundNum);
             }
+
+            //非PK和合唱轮次 加上不唱了弹幕 产品又让加回来了
+            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+            if (!infoModel.isPKRound() && !infoModel.isChorusRound()) {
+                if (infoModel.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                    pretendGiveUp(mRoomData.getUserInfo(infoModel.getUserID()));
+                }
+            }
         }
         if (!mRoomData.hasGameBegin()) {
             MyLog.w(TAG, "收到 QRoundOverMsgEvent，游戏未开始？将游戏设置为开始状态");
