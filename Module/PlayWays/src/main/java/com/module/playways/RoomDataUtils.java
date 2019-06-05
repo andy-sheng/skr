@@ -362,15 +362,4 @@ public class RoomDataUtils {
         return false;
 
     }
-
-    /**
-     * 获取某个人当前轮次的魅力值
-     * @param grabRoomData
-     * @param uid
-     * @return
-     */
-    public static int getCharmByUid(GrabRoomData grabRoomData, long uid) {
-        // TODO: 2019-05-29 待补充完整
-        return 0;
-    }
 }
