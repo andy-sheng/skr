@@ -1159,13 +1159,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void miniOwnerMic(boolean mute) {
         MyLog.d(TAG, "miniOwnerMic" + " mute=" + mute);
-        if(mute){
-            if(ZqEngineKit.getInstance().getParams().isAnchor()){
+        if (mute) {
+            if (ZqEngineKit.getInstance().getParams().isAnchor()) {
                 ZqEngineKit.getInstance().setClientRole(false);
             }
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
-        }else{
-            if(!ZqEngineKit.getInstance().getParams().isAnchor()){
+        } else {
+            if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
                 ZqEngineKit.getInstance().setClientRole(true);
             }
             ZqEngineKit.getInstance().muteLocalAudioStream(false);
@@ -1339,6 +1339,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onChangeRoomSuccess(JoinGrabRoomRspModel joinGrabRoomRspModel) {
         MyLog.d(TAG, "onChangeRoomSuccess" + " joinGrabRoomRspModel=" + joinGrabRoomRspModel);
         if (joinGrabRoomRspModel != null) {
+            stopGuide();
             mRoomData.loadFromRsp(joinGrabRoomRspModel);
             joinRoomAndInit(false);
             mRoomData.checkRoundInEachMode();
@@ -1697,9 +1698,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //                    MyLog.d(TAG, "closeEngine 是房主 mute即可");
 //                    ZqEngineKit.getInstance().muteLocalAudioStream(true);
 //                } else {
-                    if (ZqEngineKit.getInstance().getParams().isAnchor()) {
-                        ZqEngineKit.getInstance().setClientRole(false);
-                    }
+                if (ZqEngineKit.getInstance().getParams().isAnchor()) {
+                    ZqEngineKit.getInstance().setClientRole(false);
+                }
 //                }
             }
         }
@@ -2265,6 +2266,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
+        if (event.getInfo().getRoomID() != mRoomData.getGameId()) {
+            MyLog.w(TAG, "onEvent QSyncStatusMsgEvent， current roomid is " + mRoomData.getGameId() + ", event.getInfo().getRoomID() is " + event.getInfo().getRoomID());
+            return;
+        }
+
         ensureInRcRoom();
         MyLog.w(TAG, "收到服务器 sync push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
         // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
