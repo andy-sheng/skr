@@ -57,9 +57,18 @@ public class MD5Utils {
 
         try {
             for (int i = 0; i < stringArray.length; i++) {
-                stringBuffer.append(URLEncoder.encode(stringArray[i], "UTF-8") + "=" + URLEncoder.encode(String.valueOf(map.get(stringArray[i])), "UTF-8"));
-                if (i != stringArray.length - 1) {
-                    stringBuffer.append("&");
+                // TODO: 2019-06-05 优化一下吧，看着别扭
+                if (map.get(stringArray[i]) instanceof Boolean) {
+                    Boolean b = (Boolean) map.get(stringArray[i]);
+                    stringBuffer.append(URLEncoder.encode(stringArray[i], "UTF-8") + "=" + URLEncoder.encode(String.valueOf(b ? 1 : 0), "UTF-8"));
+                    if (i != stringArray.length - 1) {
+                        stringBuffer.append("&");
+                    }
+                } else {
+                    stringBuffer.append(URLEncoder.encode(stringArray[i], "UTF-8") + "=" + URLEncoder.encode(String.valueOf(map.get(stringArray[i])), "UTF-8"));
+                    if (i != stringArray.length - 1) {
+                        stringBuffer.append("&");
+                    }
                 }
             }
         } catch (UnsupportedEncodingException e) {
