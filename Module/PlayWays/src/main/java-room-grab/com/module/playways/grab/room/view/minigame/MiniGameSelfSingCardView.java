@@ -98,7 +98,6 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mGrabRoomData = roomData;
-        mCharmsView.bindData(roomData, (int) MyUserInfoManager.getInstance().getUid());
     }
 
     public void setListener(SelfSingCardView.Listener l) {
@@ -119,6 +118,7 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
             MyLog.w(TAG, "songModel 是空的");
             return;
         }
+        mCharmsView.bindData(mGrabRoomData, (int) MyUserInfoManager.getInstance().getUid());
         mMiniGameInfoModel = infoModel.getMusic().getMiniGame();
         if (mMiniGameInfoModel == null) {
             MyLog.w(TAG, "MiniGame 是空的");
