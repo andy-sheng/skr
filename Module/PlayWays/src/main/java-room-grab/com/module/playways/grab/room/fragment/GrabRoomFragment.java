@@ -159,9 +159,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
     TurnInfoCardView mTurnInfoCardView; //歌曲次序 以及 对战开始卡片
-
     SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
-
 
     RoundOverCardView mRoundOverCardView;
     OthersSingCardView mOthersSingCardView;
@@ -1288,8 +1286,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
-        mOthersSingCardView.setVisibility(GONE);
-        mSelfSingCardView.setVisibility(GONE);
+
+        // 保持只有一张卡片
+        hideAllCardView();
+
         mMiniOwnerMicIv.setVisibility(GONE);
         mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
@@ -1326,7 +1326,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     void onSongInfoCardPlayOver(String from, PendingPlaySongCardData pendingPlaySongCardData) {
         MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData + " from=" + from);
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
-        mSingBeginTipsCardView.setVisibility(GONE);
+
+        // 保持只有一张卡片
+        hideAllCardView();
         mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
 
         mGrabGiveupView.hideWithAnimation(false);
@@ -1350,8 +1352,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         // 第二轮不播这个动画
         mTopContainerView.setModeSing();
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
-        mSongInfoCardView.hide();
 
+        // 保持只有一张卡片
+        hideAllCardView();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mGrabOpBtn.hide("singBySelf");
@@ -1447,7 +1450,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     private void onSingBeginTipsPlayOver() {
         MyLog.d(TAG, "onSingBeginTipsPlayOver");
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-        mSingBeginTipsCardView.setVisibility(GONE);
+        // 保持只有一张卡片
+        hideAllCardView();
+
         mGrabScoreTipsView.reset();
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
@@ -1456,7 +1461,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mCorePresenter.beginSing();
                 // 显示歌词
                 mSelfSingCardView.setVisibility(View.VISIBLE);
-                mOthersSingCardView.setVisibility(GONE);
                 mSelfSingCardView.playLyric();
                 if (mRoomData.isNewUser()) {
                     if (!mIsShowSelfSingTips) {
@@ -1490,7 +1494,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 }
 
                 // 显示收音机
-                mSelfSingCardView.setVisibility(GONE);
                 mOthersSingCardView.setVisibility(View.VISIBLE);
                 mOthersSingCardView.bindData();
             }
@@ -1514,13 +1517,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSelfSingCardView.setVisibility(GONE);
+
+        // 保持只有一张卡片
+        hideAllCardView();
+
         mMiniOwnerMicIv.setVisibility(GONE);
         removeNoAccSrollTipsView();
         removeGrabSelfSingTipView();
         mTopContainerView.setVisibility(View.VISIBLE);
-        mOthersSingCardView.hide();
-        mSongInfoCardView.hide();
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
         mRoundOverCardView.bindData(lastInfoModel, new SVGAListener() {
@@ -1877,10 +1881,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     @Override
     public void hideAllCardView() {
-        mRoundOverCardView.setVisibility(GONE);
-        mOthersSingCardView.setVisibility(GONE);
-        mSelfSingCardView.setVisibility(GONE);
+        mTurnInfoCardView.setVisibility(GONE);
         mSingBeginTipsCardView.setVisibility(GONE);
+        mSongInfoCardView.hide();
+        mOthersSingCardView.hide();
+        mSelfSingCardView.setVisibility(GONE);
+        mRoundOverCardView.setVisibility(GONE);
     }
 
     static class PendingPlaySongCardData {

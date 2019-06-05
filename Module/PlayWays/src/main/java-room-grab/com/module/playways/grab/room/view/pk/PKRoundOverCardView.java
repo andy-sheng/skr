@@ -120,6 +120,7 @@ public class PKRoundOverCardView extends RelativeLayout {
 
     public void bindData(GrabRoundInfoModel roundInfoModel, SVGAListener svgaListener) {
         mSVGAListener = svgaListener;
+        setVisibility(VISIBLE);
         reset();
         List<SPkRoundInfoModel> list = roundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
