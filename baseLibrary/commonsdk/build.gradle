@@ -156,6 +156,8 @@ android {
             if(JPushEnable.toBoolean()) {
                 // 极光push
                 java.srcDirs += 'src/main/java-push-jiguang'
+            }else{
+                java.srcDirs += 'src/main/java-push-jiguang-noop'
             }
             if(MatrixEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-matrix'
