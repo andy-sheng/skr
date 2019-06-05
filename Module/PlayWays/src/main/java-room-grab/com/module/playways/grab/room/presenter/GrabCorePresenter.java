@@ -1969,11 +1969,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "pretendLightMsgComment" + " singerId=" + singerModel + " uid=" + playerInfoModel + " isBao=" + isBao);
         if (singerModel != null && playerInfoModel != null) {
             boolean isChorus = false;
+            boolean isMiniGame = false;
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
             if (now != null) {
+                isMiniGame = now.isMiniGameRound();
                 isChorus = now.isChorusRound();
             }
-            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), playerInfoModel, singerModel, isBao, isChorus);
+            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), playerInfoModel, singerModel, isBao, isChorus, isMiniGame);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
         }
     }

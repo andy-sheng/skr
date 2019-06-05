@@ -292,7 +292,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         PlayerInfoModel voter = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
         if (voter != null && model != null) {
-            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), voter, model, isBao, false);
+            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), voter, model, isBao, false, false);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
         }
     }
