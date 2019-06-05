@@ -36,4 +36,8 @@ public class BuglyInit {
         strategy.setEnableNativeCrashMonitor(true);
         CrashReport.initCrashReport(U.app(), "75917797f3", MyLog.isDebugLogOpen());
     }
+
+    public static void setUserId(String uuid) {
+        CrashReport.setUserId(uuid);
+    }
 }

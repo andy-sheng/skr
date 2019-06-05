@@ -7,11 +7,11 @@ if (walleEnable.toBoolean()) {
     apply plugin: 'walle'
 }
 
-if(MatrixEnable.toBoolean()){
+if (MatrixEnable.toBoolean()) {
     apply plugin: 'com.tencent.matrix-plugin'
     matrix {
         trace {
-            enable = true	//if you don't want to use trace canary, set false
+            enable = true    //if you don't want to use trace canary, set false
             /**
              * 每一行的格式是：方法id，方法accessType，类名，方法名，方法描述；
              * stack每行的格式：stack层级，方法id，方法执行次数，方法执行总耗时。
@@ -161,22 +161,22 @@ android {
 
         // 只支持中文，对减包有一定作用
         resConfigs "zh"
-        if(JPushEnable.toBoolean()){
-            manifestPlaceholders=[
-                    JPUSH_PKGNAME:"com.zq.live",
-                    JPUSH_APPKEY : "9172d83ddf6a6a1ab46d6dc3", //JPush 上注册的包名对应的 Appkey.
+        if (JPushEnable.toBoolean()) {
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME : "com.zq.live",
+                    JPUSH_APPKEY  : "9172d83ddf6a6a1ab46d6dc3", //JPush 上注册的包名对应的 Appkey.
                     JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
-                    XIAOMI_APPKEY:"MI‐5701793259750",//小米平台注册的appkey
-                    XIAOMI_APPID:"MI‐2882303761517932750",//小米平台注册的appid
-                    HUAWEI_APPID:"100590735",//华为平台注册的appid
-                    MEIZU_APPKEY:"MZ‐5c60db9001484b70adfad7321133c051",//魅族平台注册的appkey
-                    MEIZU_APPID:"MZ‐120073",//魅族平台注册的appid
-                    OPPO_APPKEY : "OP‐b6476d0350bf448da381e589e232add8", // OPPO平台注册的appkey
-                    OPPO_APPID : "OP‐3733726", // OPPO平台注册的appid
+                    XIAOMI_APPKEY : "MI‐5701793259750",//小米平台注册的appkey
+                    XIAOMI_APPID  : "MI‐2882303761517932750",//小米平台注册的appid
+                    HUAWEI_APPID  : "100590735",//华为平台注册的appid
+                    MEIZU_APPKEY  : "MZ‐5c60db9001484b70adfad7321133c051",//魅族平台注册的appkey
+                    MEIZU_APPID   : "MZ‐120073",//魅族平台注册的appid
+                    OPPO_APPKEY   : "OP‐b6476d0350bf448da381e589e232add8", // OPPO平台注册的appkey
+                    OPPO_APPID    : "OP‐3733726", // OPPO平台注册的appid
                     OPPO_APPSECRET: "OP‐1b038723163d485b9d739ad9ee0fbe8e",//OPPO平台注册的appsecret
                     //TODO vivo 平台 push 通道 申请失败。目前用的测试的推送类型
-                    VIVO_APPKEY : "7fe32b5b-91e0-499e-98fc-1cf2076256c0", // VIVO平台注册的appkey
-                    VIVO_APPID : "12021", // VIVO平台注册的appid
+                    VIVO_APPKEY   : "7fe32b5b-91e0-499e-98fc-1cf2076256c0", // VIVO平台注册的appkey
+                    VIVO_APPID    : "12021", // VIVO平台注册的appid
             ]
         }
     }
@@ -255,15 +255,12 @@ android {
         }
     }
 
-    dexOptions{
+    dexOptions {
+        javaMaxHeapSize "4g"
         preDexLibraries = false
+        additionalParameters = ['--multi-dex', '--minimal-main-dex',
+                                '--set-max-idx-number=1000']
     }
-//    dexOptions {
-//        javaMaxHeapSize "4g"
-//        preDexLibraries = false
-//        additionalParameters = ['--multi-dex', '--main-dex-list=' + project.rootDir.absolutePath + '/app/maindexlist.pro', '--minimal-main-dex',
-//                                '--set-max-idx-number=1000']
-//    }
 }
 
 dependencies {

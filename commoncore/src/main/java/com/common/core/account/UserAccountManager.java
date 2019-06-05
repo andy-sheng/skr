@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.bugly.BuglyInit;
 import com.common.callback.Callback;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
@@ -31,13 +32,10 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
-import com.tencent.bugly.crashreport.CrashReport;
-
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -592,11 +590,11 @@ public class UserAccountManager {
     void trySetAlias() {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
-            com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
+            BuglyInit.setUserId(UserAccountManager.getInstance().getUuid());
             if (U.getChannelUtils().isStaging()) {
-                CrashReport.setUserId("dev_" + UserAccountManager.getInstance().getUuid());
+                com.common.jiguang.JiGuangPush.setAlias("dev_"+UserAccountManager.getInstance().getUuid());
             } else {
-                CrashReport.setUserId(UserAccountManager.getInstance().getUuid());
+                com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
             }
 
         }

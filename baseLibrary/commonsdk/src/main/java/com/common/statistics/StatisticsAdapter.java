@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.common.cache.LruCache;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import java.util.HashMap;
 
@@ -20,7 +19,7 @@ public class StatisticsAdapter {
 
     public final static String TAG = "StatisticsAdapter";
 
-    static boolean useXiaomi = false;
+//    static boolean useXiaomi = false;
     static boolean userUmeng = true;
     /**
      * 去抖动，防止因为某些bug，快速的重复打某个点，
@@ -29,36 +28,36 @@ public class StatisticsAdapter {
     static LruCache<String, Long> debounceLruCache = new LruCache<>(10);
 
     public static void recordSessionStart(Activity activity, String simpleName) {
-        if (useXiaomi) {
-            XiaoMiStatistics.recordPageStart(activity, simpleName);
-        }
+//        if (useXiaomi) {
+//            XiaoMiStatistics.recordPageStart(activity, simpleName);
+//        }
         if (userUmeng) {
             UmengStatistics.recordSessionStart(activity, simpleName);
         }
     }
 
     public static void recordSessionEnd(Activity activity, String simpleName) {
-        if (useXiaomi) {
-            XiaoMiStatistics.recordPageEnd(activity, simpleName);
-        }
+//        if (useXiaomi) {
+//            XiaoMiStatistics.recordPageEnd(activity, simpleName);
+//        }
         if (userUmeng) {
             UmengStatistics.recordSessionEnd(activity, simpleName);
         }
     }
 
     public static void recordPageStart(Activity activity, String pageName) {
-        if (useXiaomi) {
-            XiaoMiStatistics.recordPageStart(activity, pageName);
-        }
+//        if (useXiaomi) {
+//            XiaoMiStatistics.recordPageStart(activity, pageName);
+//        }
         if (userUmeng) {
             UmengStatistics.recordPageStart(pageName);
         }
     }
 
     public static void recordPageEnd(Activity activity, String pageName) {
-        if (useXiaomi) {
-            XiaoMiStatistics.recordPageEnd(activity, pageName);
-        }
+//        if (useXiaomi) {
+//            XiaoMiStatistics.recordPageEnd(activity, pageName);
+//        }
         if (userUmeng) {
             UmengStatistics.recordPageEnd(pageName);
         }
@@ -92,9 +91,9 @@ public class StatisticsAdapter {
      * @param onlyOneTimeInAppLifeCycle 在app生命周期内这个点只会打一次，除非app卸载，常用于注册 登录等漏斗转化
      */
     public static void recordCountEvent(String category, String key, HashMap<String,String> params,boolean onlyOneTimeInAppLifeCycle) {
-        if (useXiaomi) {
-            MiStatInterface.recordCountEvent(category, key, params);
-        }
+//        if (useXiaomi) {
+//            MiStatInterface.recordCountEvent(category, key, params);
+//        }
         if (userUmeng) {
             String s = key;
             if (!TextUtils.isEmpty(category)) {
@@ -131,9 +130,9 @@ public class StatisticsAdapter {
      * @param params
      */
     public static void recordCalculateEvent(String category, String key, long value, HashMap params) {
-        if (useXiaomi) {
-            MiStatInterface.recordCalculateEvent(category, key, value, params);
-        }
+//        if (useXiaomi) {
+//            MiStatInterface.recordCalculateEvent(category, key, value, params);
+//        }
         if (userUmeng) {
             String s = key;
             if (!TextUtils.isEmpty(category)) {
@@ -145,9 +144,9 @@ public class StatisticsAdapter {
     }
 
     public static void recordPropertyEvent(String category, String key, String value) {
-        if (useXiaomi) {
-            MiStatInterface.recordStringPropertyEvent(category, key, value);
-        }
+//        if (useXiaomi) {
+//            MiStatInterface.recordStringPropertyEvent(category, key, value);
+//        }
         if (userUmeng) {
 
         }
