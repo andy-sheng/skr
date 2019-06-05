@@ -44,11 +44,21 @@ public class RoundOverCardView {
                 }
             }
         }
-        if (RoomDataUtils.isMiniGameRound(mRoomData)) {
-            mMiniGameOverCardView.bindData(lastRoundInfo, svgaListener);
-        } else {
-            mNormalRoundOverCardView.bindData(lastRoundInfo, svgaListener);
+
+        if (lastRoundInfo != null) {
+            if (lastRoundInfo.getMusic() != null && lastRoundInfo.getMusic().getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+                // 是小游戏的轮次 并且 两个轮次 userId 有效 ，说明有人玩了
+                if (lastRoundInfo.getMINIGameRoundInfoModels().size() >= 2) {
+                    if (lastRoundInfo.getMINIGameRoundInfoModels().get(0).getUserID() != 0
+                            && lastRoundInfo.getMINIGameRoundInfoModels().get(1).getUserID() != 0) {
+                        mMiniGameOverCardView.bindData(lastRoundInfo, svgaListener);
+                        return;
+                    }
+                }
+            }
         }
+
+        mNormalRoundOverCardView.bindData(lastRoundInfo, svgaListener);
     }
 
     public void setVisibility(int visibility) {
