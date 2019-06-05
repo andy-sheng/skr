@@ -5,35 +5,24 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.common.core.account.UserAccountManager;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.component.busilib.constans.GameModeType;
 import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.BaseRoomData;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
-import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
-import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.room.view.BottomContainerView;
-import com.module.playways.R;
-import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.HashMap;
 
 public class GrabBottomContainerView extends BottomContainerView {
 
@@ -164,41 +153,41 @@ public class GrabBottomContainerView extends BottomContainerView {
     void adjustUi(boolean grabOwner) {
         if (grabOwner) {
             mIvRoomManage.setVisibility(VISIBLE);
-            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
-            mQuickBtn.setEnabled(true);
-            mQuickBtn.setOnClickListener(null);
-
-            mShowInputContainerBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDimension(R.dimen.textsize_13_dp));
-
-            mQuickBtn.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (!mQuickBtn.isEnabled()) {
-                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                            U.getToastUtil().showShort("演唱阶段不能说话哦");
-                        }
-                        return true;
-                    }
-                    switch (event.getActionMasked()) {
-                        case MotionEvent.ACTION_DOWN: {
-                            mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
-                            mSpeakingDotAnimationView.setVisibility(VISIBLE);
-                            mShowInputContainerBtn.setText("");
-                            EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
-                        }
-                        break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_UP: {
-                            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
-                            mSpeakingDotAnimationView.setVisibility(GONE);
-                            mShowInputContainerBtn.setText("夸赞是一种美德");
-                            EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
-                        }
-                        break;
-                    }
-                    return true;
-                }
-            });
+//            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+//            mQuickBtn.setEnabled(true);
+//            mQuickBtn.setOnClickListener(null);
+//
+//            mShowInputContainerBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDimension(R.dimen.textsize_13_dp));
+//
+//            mQuickBtn.setOnTouchListener(new OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    if (!mQuickBtn.isEnabled()) {
+//                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+//                            U.getToastUtil().showShort("演唱阶段不能说话哦");
+//                        }
+//                        return true;
+//                    }
+//                    switch (event.getActionMasked()) {
+//                        case MotionEvent.ACTION_DOWN: {
+//                            mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
+//                            mSpeakingDotAnimationView.setVisibility(VISIBLE);
+//                            mShowInputContainerBtn.setText("");
+//                            EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
+//                        }
+//                        break;
+//                        case MotionEvent.ACTION_CANCEL:
+//                        case MotionEvent.ACTION_UP: {
+//                            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+//                            mSpeakingDotAnimationView.setVisibility(GONE);
+//                            mShowInputContainerBtn.setText("夸赞是一种美德");
+//                            EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
+//                        }
+//                        break;
+//                    }
+//                    return true;
+//                }
+//            });
         } else {
             mIvRoomManage.setVisibility(GONE);
             mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
@@ -208,29 +197,29 @@ public class GrabBottomContainerView extends BottomContainerView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundStatusChangeEvent event) {
         //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
-        GrabRoundInfoModel now = event.roundInfo;
-        if (now != null && now.isSingStatus() && mGrabRoomData.isOwner()) {
-            if (mGrabRoomData.isSpeaking() && !now.singBySelf()) {
-                U.getToastUtil().showShort("有人上麦了,暂时不能说话哦", 0, Gravity.CENTER);
-            }
-            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
-            mQuickBtn.setEnabled(false);
-            mSpeakingDotAnimationView.setVisibility(GONE);
-            mShowInputContainerBtn.setText("夸赞是一种美德");
-            EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
-        }
+//        GrabRoundInfoModel now = event.roundInfo;
+//        if (now != null && now.isSingStatus() && mGrabRoomData.isOwner()) {
+//            if (mGrabRoomData.isSpeaking() && !now.singBySelf()) {
+//                U.getToastUtil().showShort("有人上麦了,暂时不能说话哦", 0, Gravity.CENTER);
+//            }
+//            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
+//            mQuickBtn.setEnabled(false);
+//            mSpeakingDotAnimationView.setVisibility(GONE);
+//            mShowInputContainerBtn.setText("夸赞是一种美德");
+//            EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        if (mGrabRoomData != null && mGrabRoomData.isOwner()) {
-            mQuickBtn.setEnabled(true);
-            if (mGrabRoomData.isSpeaking()) {
-                // 正在说话，就算了
-            } else {
-                mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
-            }
-        }
+//        if (mGrabRoomData != null && mGrabRoomData.isOwner()) {
+//            mQuickBtn.setEnabled(true);
+//            if (mGrabRoomData.isSpeaking()) {
+//                // 正在说话，就算了
+//            } else {
+//                mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+//            }
+//        }
     }
 
     @Override
