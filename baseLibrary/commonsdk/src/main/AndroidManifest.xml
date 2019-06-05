@@ -193,6 +193,16 @@
             android:theme="@style/TransparentTheme" />
 
         <activity
+            android:name="com.just.agentweb.ActionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:theme="@style/actionActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
+
+        </activity>
+
+        <activity
             android:name="com.common.core.scheme.ThirdPushActivity"
             android:exported="true"
             android:theme="@style/TransparentTheme">

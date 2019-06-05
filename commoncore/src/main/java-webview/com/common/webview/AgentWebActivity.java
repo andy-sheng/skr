@@ -1,30 +1,24 @@
 package com.common.webview;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Intent;
-
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import android.widget.LinearLayout;
-
 import com.common.base.R;
-import com.common.core.BuildConfig;
 import com.common.core.WebIpcCallback;
 import com.common.core.WebIpcService;
 import com.common.core.scheme.SchemeSdkActivity;
@@ -32,18 +26,16 @@ import com.common.log.MyLog;
 import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.common.webview.aidl.BinderCursor;
 import com.common.webview.aidl.WebIpcClient;
-import com.common.webview.aidl.WebIpcProvider;
 import com.common.webview.aidl.WebIpcServer;
 import com.jsbridge.BridgeWebView;
 import com.jsbridge.BridgeWebViewClient;
 import com.jsbridge.CallBackFunction;
 import com.just.agentweb.AgentWebX5;
+import com.just.agentweb.AgentWebX5Utils;
 import com.just.agentweb.DefaultWebClient;
-import com.just.agentweb.MiddleWareWebClientBase;
 import com.just.agentweb.MiddleWareWebChromeBase;
-import com.module.RouterConstants;
+import com.just.agentweb.MiddleWareWebClientBase;
 import com.tencent.smtt.export.external.interfaces.ConsoleMessage;
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
@@ -98,15 +90,15 @@ class AgentWebActivity extends CameraAdapWebActivity {
             }
             nFilePathCallback = uploadMsg;
             if ("image/*".equals(acceptType)) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Log.e("TAG", "Unable to create Image File", ex);
+                }
+
+                Intent takePictureIntent = AgentWebX5Utils.getIntentCaptureCompat(U.app(), photoFile);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                        takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
-                    } catch (IOException ex) {
-                        Log.e("TAG", "Unable to create Image File", ex);
-                    }
                     if (photoFile != null) {
                         mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
@@ -134,22 +126,18 @@ class AgentWebActivity extends CameraAdapWebActivity {
             mFilePathCallback = filePathCallback;
             String[] acceptTypes = fileChooserParams.getAcceptTypes();
             if (acceptTypes[0].equals("image/*")) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Log.e("TAG", "Unable to create Image File", ex);
+                }
+
+                Intent takePictureIntent = AgentWebX5Utils.getIntentCaptureCompat(U.app(), photoFile);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                        takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
-                    } catch (IOException ex) {
-                        Log.e("TAG", "Unable to create Image File", ex);
-                    }
-                    //适配7.0
                     if (Build.VERSION.SDK_INT > M) {
                         if (photoFile != null) {
-                            photoURI = FileProvider.getUriForFile(AgentWebActivity.this,
-                                    BuildConfig.APPLICATION_ID + ".fileprovider", photoFile);
-                            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                            photoURI = takePictureIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT);
                         }
                     } else {
                         if (photoFile != null) {
@@ -161,6 +149,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
                         }
                     }
                 }
+
                 startActivityForResult(takePictureIntent, INPUT_FILE_REQUEST_CODE);
             } else if (acceptTypes[0].equals("video/*")) {
                 Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -253,7 +242,6 @@ class AgentWebActivity extends CameraAdapWebActivity {
                 return super.shouldOverrideUrlLoading(view, url);
             }
         };
-
 
 
 //        mAgentWeb = AgentWebX5.with(this)//

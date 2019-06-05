@@ -194,10 +194,10 @@ public class AgentWebX5Utils {
     private static String getMIMEType(File f) {
         String type = "";
         String fName = f.getName();
-      /* 取得扩展名 */
+        /* 取得扩展名 */
         String end = fName.substring(fName.lastIndexOf(".") + 1, fName.length()).toLowerCase();
 
-      /* 依扩展名的类型决定MimeType */
+        /* 依扩展名的类型决定MimeType */
         if (end.equals("pdf")) {
             type = "application/pdf";//
         } else if (end.equals("m4a") || end.equals("mp3") || end.equals("mid") ||
@@ -209,7 +209,7 @@ public class AgentWebX5Utils {
                 end.equals("jpeg") || end.equals("bmp")) {
             type = "image/*";
         } else if (end.equals("apk")) {
-        /* android.permission.INSTALL_PACKAGES */
+            /* android.permission.INSTALL_PACKAGES */
             type = "application/vnd.android.package-archive";
         }
 //      else if(end.equals("pptx")||end.equals("ppt")){
@@ -408,12 +408,12 @@ public class AgentWebX5Utils {
         return mQueue;
     }
 
-    private static Handler mHandler=null;
+    private static Handler mHandler = null;
 
 
-    public static void runInUiThread(Runnable runnable){
-        if(mHandler==null)
-            mHandler=new Handler(Looper.getMainLooper());
+    public static void runInUiThread(Runnable runnable) {
+        if (mHandler == null)
+            mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(runnable);
     }
 
@@ -430,6 +430,7 @@ public class AgentWebX5Utils {
         }
         return mFile;
     }
+
     static File createFileByName(Context context, String name, boolean cover) throws IOException {
 
         String path = getAgentWebFilePath(context);
@@ -447,6 +448,7 @@ public class AgentWebX5Utils {
 
         return mFile;
     }
+
     static String getAgentWebFilePath(Context context) {
         if (!TextUtils.isEmpty(AGENTWEB_FILE_PATH))
             return AGENTWEB_FILE_PATH;
@@ -477,12 +479,22 @@ public class AgentWebX5Utils {
         return mIntent;
     }
 
-    static Intent getIntentCaptureCompat(Context context, File file) {
+    //直接调用相机
+    public static Intent getIntentCaptureCompat(Context context, File file) {
         Intent mIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Uri mUri = getUriFromFile(context, file);
         mIntent.addCategory(Intent.CATEGORY_DEFAULT);
         mIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
         return mIntent;
+    }
+
+    //直接使用相册
+    public static Intent getIntentGetContentCompat(Context context, File file) {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("image/*");
+
+        return i;
     }
 
     static void setIntentDataAndType(Context context,
@@ -608,7 +620,7 @@ public class AgentWebX5Utils {
             String path = fileUri.getPath();
             int index = path.lastIndexOf("/");
             return getAgentWebFilePath(context) + File.separator + path.substring(index + 1, path.length());
-        }else if ("content".equalsIgnoreCase(fileUri.getScheme())) {
+        } else if ("content".equalsIgnoreCase(fileUri.getScheme())) {
             // Return the remote address
             if (isGooglePhotosUri(fileUri))
                 return fileUri.getLastPathSegment();
@@ -807,7 +819,6 @@ public class AgentWebX5Utils {
         }
         return "";
     }
-
 
 
     static List<String> getDeniedPermissions(Activity activity, String[] permissions) {
