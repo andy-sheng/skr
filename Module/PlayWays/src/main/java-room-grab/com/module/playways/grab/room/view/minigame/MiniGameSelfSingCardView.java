@@ -138,8 +138,8 @@ public class MiniGameSelfSingCardView extends RelativeLayout {
                         .setBorderColor(Color.WHITE)
                         .build());
                 String name = UserInfoManager.getInstance().getRemarkName(userInfoModel.getUserId(), userInfoModel.getNickname());
-                if (name.length() > 9) {
-                    name = name.substring(0, 9);
+                if (name.length() > 7) {
+                    name = name.substring(0, 7);
                 }
                 mFirstTipsTv.setText("【" + name + "】" + "先开始");
             } else {

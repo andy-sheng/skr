@@ -63,7 +63,10 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/avatar_iv"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="#364E7C"
                     android:textSize="@dimen/view_18_dp" />
 
