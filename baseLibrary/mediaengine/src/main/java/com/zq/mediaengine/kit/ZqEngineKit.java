@@ -530,6 +530,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void run() {
                     if (from.equals(mInitFrom)) {
+                        mConfig.setAnchor(false);
                         destroyInner(mStatus);
                         mCustomHandlerThread.destroy();
                         mStatus = STATUS_UNINIT;

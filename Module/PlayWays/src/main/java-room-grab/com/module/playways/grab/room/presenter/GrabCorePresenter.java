@@ -273,7 +273,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 params.setScene(Params.Scene.grab);
                 ZqEngineKit.getInstance().init("grabroom", params);
             }
-            ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), mRoomData.isOwner(), mRoomData.getAgoraToken());
+            ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false, mRoomData.getAgoraToken());
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
         }
@@ -432,7 +432,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         }
-        if (!mRoomData.isOwner()) {
+        if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
             ZqEngineKit.getInstance().setClientRole(true);
             ZqEngineKit.getInstance().muteLocalAudioStream(false);
             if (needAcc) {
@@ -1159,7 +1159,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void miniOwnerMic(boolean mute) {
         MyLog.d(TAG, "miniOwnerMic" + " mute=" + mute);
-        ZqEngineKit.getInstance().muteLocalAudioStream(mute);
+        if(mute){
+            if(ZqEngineKit.getInstance().getParams().isAnchor()){
+                ZqEngineKit.getInstance().setClientRole(false);
+            }
+            ZqEngineKit.getInstance().muteLocalAudioStream(true);
+        }else{
+            if(!ZqEngineKit.getInstance().getParams().isAnchor()){
+                ZqEngineKit.getInstance().setClientRole(true);
+            }
+            ZqEngineKit.getInstance().muteLocalAudioStream(false);
+        }
+
     }
 
     /**
@@ -1682,14 +1693,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (mRoomData.isSpeaking()) {
                 MyLog.d(TAG, "closeEngine 正在抢麦说话，无需闭麦");
             } else {
-                if (mRoomData.isOwner()) {
-                    MyLog.d(TAG, "closeEngine 是房主 mute即可");
-                    ZqEngineKit.getInstance().muteLocalAudioStream(true);
-                } else {
+//                if (mRoomData.isOwner()) {
+//                    MyLog.d(TAG, "closeEngine 是房主 mute即可");
+//                    ZqEngineKit.getInstance().muteLocalAudioStream(true);
+//                } else {
                     if (ZqEngineKit.getInstance().getParams().isAnchor()) {
                         ZqEngineKit.getInstance().setClientRole(false);
                     }
-                }
+//                }
             }
         }
     }
