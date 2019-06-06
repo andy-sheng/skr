@@ -299,11 +299,15 @@ public class GiftPanelView extends FrameLayout {
         mAllPlayersTv.setEnabled(false);
         for (int i = firstItemPosition; i <= lastItemPosition; i++) {
             View view = linearManager.getChildAt(i);
-            TranslateAnimation translateAnimation = new TranslateAnimation(0, -i * U.getDisplayUtils().dip2px(46), 0, 0);
-            translateAnimation.setDuration(300);
-            translateAnimation.setInterpolator(new DecelerateInterpolator());
-            view.setAnimation(translateAnimation);
-            view.startAnimation(translateAnimation);
+            if (view != null) {
+                TranslateAnimation translateAnimation = new TranslateAnimation(0, -i * U.getDisplayUtils().dip2px(46), 0, 0);
+                translateAnimation.setDuration(300);
+                translateAnimation.setInterpolator(new DecelerateInterpolator());
+                view.setAnimation(translateAnimation);
+                view.startAnimation(translateAnimation);
+            } else {
+                MyLog.w(TAG, "collapsePlayerList view = null" );
+            }
         }
 
         Drawable drawable = U.getDrawable(R.drawable.suoyouren_right);
