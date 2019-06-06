@@ -845,13 +845,16 @@ public class UserInfoManager {
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
+                MyLog.d(TAG,"compare" + " u1=" + u1 + " u2=" + u2);
                 if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
                     // 两者都是离线
                     // 按离线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else {
+                    } else if(u1.getStatusTs() < u2.getStatusTs()){
                         return 1;
+                    }else{
+                        return 0;
                     }
                 }
                 if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
@@ -859,8 +862,10 @@ public class UserInfoManager {
                     // 按在线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else {
+                    } else if(u1.getStatusTs() < u2.getStatusTs()){
                         return 1;
+                    }else{
+                        return 0;
                     }
                 }
                 int r = u2.getStatus() - u1.getStatus();
