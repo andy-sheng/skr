@@ -3,6 +3,7 @@ package com.module.home.setting.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -15,10 +16,10 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.setting.InviteServerApi;
 
@@ -76,37 +77,28 @@ public class InviteCodeFragment extends BaseFragment {
             }
         });
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        U.getFragmentUtils().popFragment(InviteCodeFragment.this);
-                    }
-                });
-
-        RxView.clicks(mGetCodeTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        mPhoneNumber = mPhoneInputTv.getText().toString().trim();
-                        if (check(mPhoneNumber, mInviteCode)) {
-                            getInviteSmsCode(mPhoneNumber, mInviteCode);
-                        }
-                    }
-                });
-
-        RxView.clicks(mSubmitTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        sumbitInvite();
-                    }
-                });
-
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                U.getFragmentUtils().popFragment(InviteCodeFragment.this);
+            }
+        });
+        mGetCodeTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mPhoneNumber = mPhoneInputTv.getText().toString().trim();
+                if (check(mPhoneNumber, mInviteCode)) {
+                    getInviteSmsCode(mPhoneNumber, mInviteCode);
+                }
+            }
+        });
+        mSubmitTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                sumbitInvite();
+            }
+        });
 
         mSubmitTv.setClickable(false);
     }

@@ -28,9 +28,9 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
+import com.common.view.DebounceViewClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -485,15 +485,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             }
         });
 
-        RxView.clicks(mSingAvatarView)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        showPersonInfoView(userId);
-                    }
-                });
-
+        mSingAvatarView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                showPersonInfoView(userId);
+            }
+        });
     }
 
 //    private void playWebpMainStage() {

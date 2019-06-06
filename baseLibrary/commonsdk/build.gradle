@@ -303,10 +303,10 @@ dependencies {
     // SVGA YY的动画播放框架
     //api rootProject.ext.dependencies["svga"]
 
-    api rootProject.ext.dependencies["rxbinding"]
-    api rootProject.ext.dependencies["rxbinding-support-v4"]
-    api rootProject.ext.dependencies["rxbinding-appcompat-v7"]
-    api rootProject.ext.dependencies["cardview-v7"]
+    //api rootProject.ext.dependencies["rxbinding"]
+    //api rootProject.ext.dependencies["rxbinding-support-v4"]
+    //api rootProject.ext.dependencies["rxbinding-appcompat-v7"]
+    //api rootProject.ext.dependencies["cardview-v7"]
 //    api rootProject.ext.dependencies["lzyzsd-jsbridge"]
 //    api 'com.youth.banner:banner:1.4.10'
 

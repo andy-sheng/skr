@@ -25,18 +25,12 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
-import com.module.home.updateinfo.EditInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.toast.CommonToastView;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 // 昵称编辑
 public class EditInfoNameFragment extends BaseFragment {

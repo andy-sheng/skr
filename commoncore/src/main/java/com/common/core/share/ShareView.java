@@ -2,16 +2,12 @@ package com.common.core.share;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.core.R;
-import com.jakewharton.rxbinding2.view.RxView;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
+import com.common.view.DebounceViewClickListener;
 
 public class ShareView extends FrameLayout {
 
@@ -46,38 +42,32 @@ public class ShareView extends FrameLayout {
         mTvWechatCircleShare = (TextView)findViewById(R.id.tv_wechat_circle_share);
         mTvQqShare = (TextView)findViewById(R.id.tv_qq_share);
 
-        RxView.clicks(mTvWechatShare)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
+        mTvWechatShare.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void accept(Object o) {
+            public void clickValid(View v) {
                 if(mOnClickShareListener != null){
                     mOnClickShareListener.click(SharePlatform.WEIXIN);
                 }
             }
         });
 
-        RxView.clicks(mTvWechatCircleShare)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if(mOnClickShareListener != null){
-                            mOnClickShareListener.click(SharePlatform.WEIXIN_CIRCLE);
-                        }
-                    }
-                });
+        mTvWechatCircleShare.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if(mOnClickShareListener != null){
+                    mOnClickShareListener.click(SharePlatform.WEIXIN_CIRCLE);
+                }
+            }
+        });
 
-        RxView.clicks(mTvQqShare)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if(mOnClickShareListener != null){
-                            mOnClickShareListener.click(SharePlatform.QQ);
-                        }
-                    }
-                });
+        mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if(mOnClickShareListener != null){
+                    mOnClickShareListener.click(SharePlatform.QQ);
+                }
+            }
+        });
     }
 
     public interface OnClickShareListener{
