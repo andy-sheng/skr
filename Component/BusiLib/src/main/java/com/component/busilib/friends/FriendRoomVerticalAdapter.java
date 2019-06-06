@@ -36,4 +36,24 @@ public class FriendRoomVerticalAdapter extends DiffAdapter<RecommendModel, Frien
     public int getItemCount() {
         return mDataList.size();
     }
+
+    public void deleteRoomModel(int roomID) {
+        for (RecommendModel recommendModel : mDataList) {
+            if (recommendModel.getRoomInfo().getRoomID() == roomID) {
+                delete(recommendModel);
+                return;
+            }
+        }
+
+    }
+
+    public void updateFullRoom(int roomID) {
+        for (RecommendModel recommendModel : mDataList) {
+            if (recommendModel.getRoomInfo().getRoomID() == roomID) {
+                recommendModel.getRoomInfo().setInPlayersNum(recommendModel.getRoomInfo().getTotalPlayersNum());
+                update(recommendModel);
+                return;
+            }
+        }
+    }
 }

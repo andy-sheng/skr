@@ -19,6 +19,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.R;
 import com.module.RouterConstants;
 import com.module.playways.IPlaywaysModeService;
@@ -26,6 +27,9 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -112,7 +116,18 @@ public class GrabFriendsRoomFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabJoinRoomFailEvent event) {
+        if (event.getType() == GrabJoinRoomFailEvent.TYPE_DISSOLVE_ROOM) {
+            // 解散了
+            mFriendRoomVeritAdapter.deleteRoomModel(event.getRoomID());
+        } else if (event.getType() == GrabJoinRoomFailEvent.TYPE_FULL_ROOM) {
+            // 房间满了
+            mFriendRoomVeritAdapter.updateFullRoom(event.getRoomID());
+        }
     }
 
     private void loadData() {
@@ -130,6 +145,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
 
     /**
      * 刷新数据
+     *
      * @param list
      */
     private void refreshView(List<RecommendModel> list) {

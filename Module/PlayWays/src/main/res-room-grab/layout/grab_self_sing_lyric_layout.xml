@@ -26,7 +26,8 @@
         android:overScrollMode="never"
         android:paddingTop="@dimen/view_45_dp"
         android:paddingBottom="@dimen/view_10_dp"
-        android:scrollbarThumbVertical="@drawable/jindutiao">
+        android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+        android:scrollbars="vertical">
 
         <TextView
             android:id="@+id/tv_lyric"
@@ -38,8 +39,7 @@
             android:paddingLeft="@dimen/view_40_dp"
             android:paddingRight="@dimen/view_40_dp"
             android:textColor="#364E7C"
-            android:textSize="@dimen/textsize_18_dp"
-            />
+            android:textSize="@dimen/textsize_18_dp" />
     </ScrollView>
 
     <com.zq.lyrics.widget.ManyLyricsView
@@ -63,16 +63,33 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
         app:ly_top_line_num="2" />
 
-    <ImageView
-        android:id="@+id/iv_challenge_icon"
-        android:layout_width="@dimen/view_64_dp"
-        android:layout_height="@dimen/view_64_dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/iv_bg"
         android:layout_alignRight="@+id/iv_bg"
-        android:layout_marginTop="@dimen/view_1_33_dp"
-        android:layout_marginRight="@dimen/view_1_33_dp"
-        android:background="@drawable/biaoqian_jiashi"
-        android:visibility="invisible" />
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <com.module.playways.grab.room.view.CharmsView
+            android:id="@+id/charms_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_7_dp"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_challenge_icon"
+            android:layout_width="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_64_dp"
+            android:layout_marginTop="@dimen/view_1_33_dp"
+            android:layout_marginRight="@dimen/view_1_33_dp"
+            android:background="@drawable/biaoqian_jiashi"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
 
     <com.zq.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"

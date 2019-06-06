@@ -14,14 +14,17 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.room.gift.GiftServerApi;
-import com.module.playways.room.gift.event.UpdateDiamondEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
+import com.module.playways.room.gift.event.UpdateDiamondEvent;
+import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
+import com.module.playways.room.gift.event.UpdateMeiliEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.GiftPresentEvent;
+import com.zq.live.proto.Common.EGiftType;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -64,7 +67,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
         addToLifeCycle();
     }
 
-    public void buyGift(BaseGift baseGift, long roomId, UserInfoModel userInfoModel) {
+    public void buyGift(BaseGift baseGift, long roomId, int seq, boolean isSingBegin, UserInfoModel userInfoModel) {
         MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userInfoModel.getUserId());
 
         final int[] continueCount = new int[1];
@@ -92,6 +95,8 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 map.put("receiveUserID", userInfoModel.getUserId());
                 map.put("roomID", roomId);
                 map.put("timestamp", ts);
+                map.put("roundSeq", seq);
+                map.put("isSingBegin", isSingBegin);
 
                 HashMap<String, Object> signMap = new HashMap<>(map);
                 signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
@@ -104,7 +109,9 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         + " count=" + 1
                         + " receiveUserID=" + userInfoModel.getUserId()
                         + " roomID=" + roomId
-                        + " timestamp=" + ts);
+                        + " timestamp=" + ts
+                        + " roundSeq=" + seq
+                        + " isSingBegin=" + isSingBegin);
 
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 emitter.onNext(body);
@@ -123,10 +130,28 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     if (baseGift.isCanContinue()) {
                         mContinueSendScheduler.sendGiftSuccess();
                     }
+
                     int coin = result.getData().getIntValue("coinBalance");
+                    if (coin >= 0) {
+                        long ts = result.getData().getLongValue("coinBalanceLastChangeMs");
+                        EventBus.getDefault().post(new UpdateCoinEvent(coin, ts));
+                    }
+
                     float diamond = result.getData().getFloatValue("zuanBalance");
-                    EventBus.getDefault().post(new UpdateDiamondEvent(diamond));
-                    EventBus.getDefault().post(new UpdateCoinEvent(coin));
+                    if (diamond >= 0) {
+                        long ts = result.getData().getLongValue("zuanBalanceLastChangeMs");
+                        UpdateDiamondEvent.sendEvent(diamond, ts);
+                    }
+                    float receiverMeili = result.getData().getFloatValue("receiveUserCurRoundSeqMeili");
+                    if (receiverMeili > 0) {
+                        EventBus.getDefault().post(new UpdateMeiliEvent(userInfoModel.getUserId(), (int) receiverMeili, System.currentTimeMillis()));
+                        ;
+                    }
+                    if (baseGift.getGiftType() == EGiftType.EG_SYS_Handsel.getValue()) {
+                        int sysHandselBalance = result.getData().getInteger("sysHandselBalance");
+                        long sysHandselBalanceLastChangeMs = result.getData().getLongValue("sysHandselBalanceLastChangeMs");
+                        UpdateMeiGuiFreeCountEvent.sendEvent(sysHandselBalance, sysHandselBalanceLastChangeMs);
+                    }
 
                     UserInfoModel own = new UserInfoModel();
                     own.setUserId((int) MyUserInfoManager.getInstance().getUid());

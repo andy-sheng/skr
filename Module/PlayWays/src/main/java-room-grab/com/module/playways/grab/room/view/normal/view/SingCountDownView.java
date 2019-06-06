@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.view.countdown.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
@@ -16,9 +18,12 @@ import com.module.playways.grab.room.view.control.SelfSingCardView;
  */
 public class SingCountDownView extends RelativeLayout {
 
+    public final static String TAG = "SingCountDownView";
+
     SelfSingCardView.Listener mListener;
 
     ImageView mIvTag;
+    TextView mTvTag;
     CircleCountDownView mCircleCountDownView;
     BitmapTextView mCountDownTv;
 
@@ -37,6 +42,7 @@ public class SingCountDownView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_sing_count_down_view_layout, this);
         mIvTag = (ImageView) this.findViewById(R.id.iv_tag);
+        mTvTag = (TextView) this.findViewById(R.id.tv_tag);
         mCircleCountDownView = (CircleCountDownView) this.findViewById(R.id.circle_count_down_view);
         mCountDownTv = (BitmapTextView) this.findViewById(R.id.count_down_tv);
     }
@@ -93,8 +99,18 @@ public class SingCountDownView extends RelativeLayout {
         }
     }
 
+    // 设置倒计时底图
     public void setTagImgRes(int resId) {
+        mIvTag.setVisibility(VISIBLE);
+        mTvTag.setVisibility(GONE);
         mIvTag.setBackgroundResource(resId);
+    }
+
+    // 设置倒计时背景文本(主要用来做游戏)
+    public void setTagTvText(String text) {
+        mIvTag.setVisibility(GONE);
+        mTvTag.setVisibility(VISIBLE);
+        mTvTag.setText(text);
     }
 
     public void setListener(SelfSingCardView.Listener listener) {

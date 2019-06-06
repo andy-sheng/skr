@@ -135,9 +135,10 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     ExTextView mLevelTv;
 
     RelativeLayout mRankArea;
-    ExTextView mRankText;
-    ExImageView mRankDiffIv;
-    ExImageView mMedalIv;
+    TextView mCharmTv;
+//    ExTextView mRankText;
+//    ExImageView mRankDiffIv;
+//    ExImageView mMedalIv;
 
     SlidingTabLayout mPersonTab;
     NestViewPager mPersonVp;
@@ -184,9 +185,10 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 
     private void initMedalInfoArea() {
         mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
-        mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
-        mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
-        mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
+        mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
+//        mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
+//        mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
+//        mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
     }
 
 
@@ -576,7 +578,10 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     }
 
     @Override
-    public void showHomePageInfo(UserInfoModel userInfoModel, List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels, List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels, boolean isFriend, boolean isFollow) {
+    public void showHomePageInfo(UserInfoModel userInfoModel, List<RelationNumModel> relationNumModels,
+                                 List<UserRankModel> userRankModels, List<UserLevelModel> userLevelModels,
+                                 List<GameStatisModel> gameStatisModels, boolean isFriend, boolean isFollow,
+                                 int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showUserInfo(userInfoModel);
         showRelationNum(relationNumModels);
@@ -584,6 +589,11 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         showReginRank(userRankModels);
         showGameStatic(gameStatisModels);
         showUserRelation(isFriend, isFollow);
+        showCharms(meiLiCntTotal);
+    }
+
+    private void showCharms(int meiLiCntTotal) {
+        mCharmTv.setText("魅力：" + meiLiCntTotal);
     }
 
     @Override
@@ -618,8 +628,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 
         if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
             mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
-        } else {
-            mHashMap.put(LOCATION_TAG, "未知星球");
         }
 
         if (!TextUtils.isEmpty(model.getBirthday())) {
@@ -675,27 +683,27 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 
 
     public void showReginRank(List<UserRankModel> list) {
-        mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        UserRankModel reginRankModel = new UserRankModel();
-        UserRankModel countryRankModel = new UserRankModel();
-        if (list != null && list.size() > 0) {
-            for (UserRankModel model : list) {
-                if (model.getCategory() == UserRankModel.REGION) {
-                    reginRankModel = model;
-                }
-                if (model.getCategory() == UserRankModel.COUNTRY) {
-                    countryRankModel = model;
-                }
-            }
-        }
-
-        if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
-            mRankText.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
-        } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
-            mRankText.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
-        } else {
-            mRankText.setText(getResources().getString(R.string.default_rank_text));
-        }
+//        mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
+//        UserRankModel reginRankModel = new UserRankModel();
+//        UserRankModel countryRankModel = new UserRankModel();
+//        if (list != null && list.size() > 0) {
+//            for (UserRankModel model : list) {
+//                if (model.getCategory() == UserRankModel.REGION) {
+//                    reginRankModel = model;
+//                }
+//                if (model.getCategory() == UserRankModel.COUNTRY) {
+//                    countryRankModel = model;
+//                }
+//            }
+//        }
+//
+//        if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
+//            mRankText.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
+//        } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
+//            mRankText.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
+//        } else {
+//            mRankText.setText(getResources().getString(R.string.default_rank_text));
+//        }
     }
 
 

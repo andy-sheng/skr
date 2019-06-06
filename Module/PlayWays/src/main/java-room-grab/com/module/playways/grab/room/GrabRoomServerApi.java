@@ -190,6 +190,10 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.stand.inframe.mobi/v1/stand/give-up")
     Observable<ApiResult> giveUpSing(@Body RequestBody body);
 
+    //房主控制结束小游戏
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-mini-game")
+    Observable<ApiResult> stopMiniGameByOwner(@Body RequestBody body);
+
     /**
      * @param body "kickUserID": 0,
      *             "roomID": 0,
@@ -415,4 +419,13 @@ message STCommitSegmentResultReq
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
     Observable<ApiResult> getListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
+
+
+    /**
+     * 礼物60秒打卡
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi//v1/bonus/ask-for-flower")
+    Observable<ApiResult> punch(@Query("timestamp") long offset, @Query("signV2") String signV2);
 }

@@ -29,6 +29,7 @@ import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.common.utils.ActivityUtils;
 import com.component.busilib.SkrConfig;
+import com.engine.Params;
 import com.zq.dialog.ShareWorksDialog;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
@@ -41,6 +42,7 @@ import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.mediaengine.kit.ZqEngineKit;
 import com.zq.person.model.ProducationModel;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -313,11 +315,12 @@ public class PlayRecordFragment extends BaseFragment {
 
         mIsPlay = true;
         if (AuditionFragment.RECORD_BY_CALLBACK) {
-            mPlayer.startPlayPcm(AuditionFragment.PCM_SAVE_PATH, 2, 44100, 44100 * 2);
+            Params params = ZqEngineKit.getInstance().getParams();
+            mPlayer.startPlayPcm(AuditionFragment.PCM_SAVE_PATH, params.getAudioChannels(),
+                    params.getAudioSampleRate(), params.getAudioSampleRate() * params.getAudioChannels());
         } else {
             mPlayer.startPlay(AuditionFragment.AAC_SAVE_PATH);
         }
-
     }
 
     private void saveWorksStep1() {

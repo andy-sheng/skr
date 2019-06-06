@@ -15,7 +15,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.utils.SpanUtils;
 import com.engine.EngineEvent;
-import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.UserStatus;
 import com.module.ModuleServiceManager;
@@ -29,6 +28,7 @@ import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.voice.inter.IVoiceView;
 import com.zq.live.proto.Room.RoomMsg;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -76,9 +76,9 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             params.setScene(Params.Scene.voice);
             params.setStyleEnum(Params.AudioEffect.none);
             params.setSelfUid((int) MyUserInfoManager.getInstance().getUid());
-            EngineManager.getInstance().init("voiceroom", params);
-            EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true,null);
-            EngineManager.getInstance().muteLocalAudioStream(true);
+            ZqEngineKit.getInstance().init("voiceroom", params);
+            ZqEngineKit.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true,null);
+            ZqEngineKit.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
             for (RankPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
@@ -126,7 +126,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         super.destroy();
         mDestroyed = true;
         EventBus.getDefault().unregister(this);
-        EngineManager.getInstance().destroy("voiceroom");
+        ZqEngineKit.getInstance().destroy("voiceroom");
         mUiHanlder.removeCallbacksAndMessages(null);
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         exitGame();

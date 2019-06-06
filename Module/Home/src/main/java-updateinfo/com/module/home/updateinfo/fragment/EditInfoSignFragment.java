@@ -15,12 +15,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 // 签名编辑
 public class EditInfoSignFragment extends BaseFragment {

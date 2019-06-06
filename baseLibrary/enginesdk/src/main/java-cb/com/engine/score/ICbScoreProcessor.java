@@ -134,15 +134,15 @@ public class ICbScoreProcessor {
         return 0;
     }
 
-    public native int process1(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
+    private native int process1(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
 
-    public native int getScore1();
+    private native int getScore1();
 
-    public native int process2(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
+    private native int process2(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
 
-    public native int getScore2();
+    private native int getScore2();
 
-    public native void destroyScoreProcessor();
+    private native void destroyScoreProcessor();
 
     public static class Holder {
         boolean needScore;

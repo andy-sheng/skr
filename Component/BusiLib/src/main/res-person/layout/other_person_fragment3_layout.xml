@@ -110,7 +110,7 @@
                             android:visibility="gone"
                             app:showBottomLine="false"
                             app:statusBarColor="@color/colorPrimary"
-                            app:titleBarHeight="@dimen/view_0_dp"></com.common.view.titlebar.CommonTitleBar>
+                            app:titleBarHeight="@dimen/view_0_dp" />
 
                         <RelativeLayout
                             android:id="@+id/user_top_area"
@@ -214,7 +214,7 @@
                                     android:layout_marginLeft="@dimen/view_11_dp"
                                     android:layout_marginTop="@dimen/view_10_dp"
                                     android:layout_marginRight="@dimen/view_11_dp"
-                                    android:layout_marginBottom="@dimen/view_80_dp"></com.common.flowlayout.TagFlowLayout>
+                                    android:layout_marginBottom="@dimen/view_80_dp"/>
 
 
                             </RelativeLayout>
@@ -315,7 +315,7 @@
                                 levelView2:mainWidth2="@dimen/view_125_dp"
                                 levelView2:subBottom2="@dimen/view_6_dp"
                                 levelView2:subHeight2="@dimen/view_13_dp"
-                                levelView2:subWidth2="@dimen/view_24_dp"></com.zq.level.view.NormalLevelView2>
+                                levelView2:subWidth2="@dimen/view_24_dp"/>
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/level_tv"
@@ -335,42 +335,52 @@
                                 android:id="@+id/rank_area"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/view_34_dp"
-                                android:layout_alignBottom="@id/game_layout"
+                                android:layout_below="@id/game_layout"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="@dimen/view_d_12_dp"
-                                android:background="@drawable/pk_info_paiming"
-                                android:paddingLeft="@dimen/view_42_dp"
-                                android:paddingRight="@dimen/view_12_dp">
+                                android:layout_marginTop="-17dp"
+                                android:background="@drawable/pk_info_paiming">
 
-                                <com.common.view.ex.ExTextView
-                                    android:id="@+id/rank_text"
+                                <TextView
+                                    android:id="@+id/charm_tv"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/view_20_dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginLeft="@dimen/view_12_dp"
-                                    android:gravity="center_vertical"
-                                    android:textColor="#0C2275"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginLeft="@dimen/view_32_dp"
+                                    android:layout_marginRight="@dimen/view_32_dp"
+                                    android:drawableLeft="@drawable/grab_charm_icon"
+                                    android:drawablePadding="@dimen/textsize_5_dp"
+                                    android:textColor="@color/textColorPrimary"
                                     android:textSize="@dimen/textsize_14_dp" />
 
-                                <com.common.view.ex.ExImageView
-                                    android:id="@+id/rank_diff_iv"
-                                    android:layout_width="@dimen/view_8_dp"
-                                    android:layout_height="@dimen/view_10_dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginLeft="@dimen/view_3_dp"
-                                    android:layout_toRightOf="@id/rank_text" />
+                                <!--<com.common.view.ex.ExTextView-->
+                                    <!--android:id="@+id/rank_text"-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="@dimen/view_20_dp"-->
+                                    <!--android:layout_centerVertical="true"-->
+                                    <!--android:layout_marginLeft="@dimen/view_12_dp"-->
+                                    <!--android:gravity="center_vertical"-->
+                                    <!--android:textColor="#0C2275"-->
+                                    <!--android:textSize="@dimen/textsize_14_dp" />-->
+
+                                <!--<com.common.view.ex.ExImageView-->
+                                    <!--android:id="@+id/rank_diff_iv"-->
+                                    <!--android:layout_width="@dimen/view_8_dp"-->
+                                    <!--android:layout_height="@dimen/view_10_dp"-->
+                                    <!--android:layout_centerVertical="true"-->
+                                    <!--android:layout_marginLeft="@dimen/view_3_dp"-->
+                                    <!--android:layout_toRightOf="@id/rank_text" />-->
 
                             </RelativeLayout>
 
-                            <com.common.view.ex.ExImageView
-                                android:id="@+id/medal_iv"
-                                android:layout_width="@dimen/view_42_dp"
-                                android:layout_height="@dimen/view_42_dp"
-                                android:layout_alignLeft="@+id/rank_area"
-                                android:layout_alignTop="@id/rank_area"
-                                android:layout_marginLeft="@dimen/view_12_dp"
-                                android:layout_marginTop="-4dp"
-                                android:background="@drawable/paihang" />
+                            <!--<com.common.view.ex.ExImageView-->
+                                <!--android:id="@+id/medal_iv"-->
+                                <!--android:layout_width="@dimen/view_42_dp"-->
+                                <!--android:layout_height="@dimen/view_42_dp"-->
+                                <!--android:layout_alignLeft="@+id/rank_area"-->
+                                <!--android:layout_alignTop="@id/rank_area"-->
+                                <!--android:layout_marginLeft="@dimen/view_12_dp"-->
+                                <!--android:layout_marginTop="-4dp"-->
+                                <!--android:background="@drawable/paihang" />-->
 
                         </RelativeLayout>
 
@@ -411,7 +421,6 @@
             </android.support.design.widget.AppBarLayout>
 
         </android.support.design.widget.CoordinatorLayout>
-
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

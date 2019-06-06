@@ -248,6 +248,7 @@ public class ProducationWallView extends RelativeLayout {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mAdapter.delete(model);
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         }, mFragment);

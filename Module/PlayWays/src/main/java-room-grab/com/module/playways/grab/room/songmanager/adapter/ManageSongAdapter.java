@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -25,21 +27,45 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     GrabRoomData mGrabRoomData;
 
     Drawable mGrayDrawable;
-
     Drawable mRedDrawable;
+
+    Drawable mChorusDrawable;
+    Drawable mPKDrawable;
+    Drawable mMiniGameDrawable;
 
     public ManageSongAdapter() {
         mGrayDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                 .setSolidColor(Color.parseColor("#B1AC99"))
                 .setStrokeColor(Color.parseColor("#3B4E79"))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
                 .setCornersRadius(U.getDisplayUtils().dip2px(16))
                 .build();
         mRedDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                 .setSolidColor(Color.parseColor("#FF8AB6"))
                 .setStrokeColor(Color.parseColor("#3B4E79"))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
                 .setCornersRadius(U.getDisplayUtils().dip2px(16))
+                .build();
+
+        mChorusDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#7088FF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setStrokeColor(U.getColor(R.color.white_trans_70))
+                .build();
+
+        mPKDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#E55088"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setStrokeColor(U.getColor(R.color.white_trans_70))
+                .build();
+
+        mMiniGameDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#61B14F"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setStrokeColor(U.getColor(R.color.white_trans_70))
                 .build();
     }
 
@@ -91,9 +117,8 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
     private class ItemHolder extends RecyclerView.ViewHolder {
         ExTextView mTvSongName;
+        TextView mSongTagTv;
         ExTextView mTvManage;
-        ExTextView mChorusSongTag;
-        ExTextView mPkSongTag;
 
         GrabRoomSongModel mSongModel;
         int mPosition;
@@ -101,11 +126,8 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         public ItemHolder(View itemView) {
             super(itemView);
             mTvSongName = (ExTextView) itemView.findViewById(R.id.tv_song_name);
-//            mTvAuther = (ExTextView) itemView.findViewById(R.id.tv_auther);
+            mSongTagTv = (TextView) itemView.findViewById(R.id.song_tag_tv);
             mTvManage = (ExTextView) itemView.findViewById(R.id.tv_manage);
-            mChorusSongTag = (ExTextView) itemView.findViewById(R.id.chorus_song_tag);
-            mPkSongTag = (ExTextView) itemView.findViewById(R.id.pk_song_tag);
-
             mTvManage.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
@@ -116,9 +138,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
         public void bind(GrabRoomSongModel model, int position) {
             this.mSongModel = model;
-            mPosition = position;
-            mTvSongName.setText("《" + model.getDisplaySongName() + "》");
-//            mTvAuther.setText(model.getOwner());
+            this.mPosition = position;
 
             if (mGrabRoomData.hasGameBegin()) {
                 if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
@@ -151,17 +171,39 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             }
 
             if (model.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(142), 0);
-                mPkSongTag.setVisibility(View.VISIBLE);
-                mChorusSongTag.setVisibility(View.GONE);
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(34 + 84), 0);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(34);
+                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34 + 84);
+                mSongTagTv.setLayoutParams(layoutParams);
+                mSongTagTv.setText("PK");
+                mSongTagTv.setVisibility(View.VISIBLE);
+                mSongTagTv.setBackground(mPKDrawable);
+                mTvSongName.setText("《" + model.getDisplaySongName() + "》");
             } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(142), 0);
-                mPkSongTag.setVisibility(View.GONE);
-                mChorusSongTag.setVisibility(View.VISIBLE);
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(34 + 84), 0);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(34);
+                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34 + 84);
+                mSongTagTv.setLayoutParams(layoutParams);
+                mSongTagTv.setText("合唱");
+                mSongTagTv.setVisibility(View.VISIBLE);
+                mSongTagTv.setBackground(mChorusDrawable);
+                mTvSongName.setText("《" + model.getDisplaySongName() + "》");
+            } else if (model.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(58 + 84), 0);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(58);
+                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(58 + 84);
+                mSongTagTv.setLayoutParams(layoutParams);
+                mSongTagTv.setText("双人游戏");
+                mSongTagTv.setVisibility(View.VISIBLE);
+                mSongTagTv.setBackground(mMiniGameDrawable);
+                mTvSongName.setText("【" + model.getItemName() + "】");
             } else {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(142), 0);
-                mPkSongTag.setVisibility(View.GONE);
-                mChorusSongTag.setVisibility(View.GONE);
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(84), 0);
+                mSongTagTv.setVisibility(View.GONE);
+                mTvSongName.setText("《" + model.getDisplaySongName() + "》");
             }
         }
     }

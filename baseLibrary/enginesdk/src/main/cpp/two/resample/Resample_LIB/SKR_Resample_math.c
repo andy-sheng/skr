@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-int Gcd(int m,int n)//计算m，n的最大公约数http://zhidao.baidu.com/question/335690846.html
+int Gcd(int m,int n)//璁＄畻m锛宯鐨勬渶澶у叕绾︽暟http://zhidao.baidu.com/question/335690846.html
 {
 	int b,c;
 	if(m>n)

@@ -25,7 +25,6 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-        multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [moduleName: project.getName()]
@@ -92,7 +91,8 @@ android {
             java.srcDirs += 'src/main/java-gift'
             res.srcDirs += 'src/main/res-gift'
 
-            res.srcDirs += 'src/main/res-guide'
+//            java.srcDirs += 'src/main/java-guide'
+//            res.srcDirs += 'src/main/res-guide'
         }
     }
 }

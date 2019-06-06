@@ -205,7 +205,7 @@ public class PermissionUtils {
      * 请求录音权限
      */
     public void requestRecordAudio(RequestPermission requestPermission, Activity activity) {
-        requestPermission(requestPermission, activity, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO);
+        requestPermission(requestPermission, activity, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS);
     }
 
     /**

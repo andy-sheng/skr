@@ -20,13 +20,12 @@ import com.component.busilib.friends.SpecialModel;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
-import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
-import com.module.playways.grab.room.songmanager.presenter.GrabSongManagePresenter;
 import com.module.playways.grab.room.songmanager.adapter.ManageSongAdapter;
 import com.module.playways.grab.room.songmanager.event.SongNumChangeEvent;
+import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.presenter.GrabSongManagePresenter;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
 import com.module.playways.grab.room.songmanager.tags.GrabTagsAdapter;
-import com.orhanobut.dialogplus.DialogPlus;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -136,7 +135,13 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     @Override
     public void showNum(int num) {
+        if (num < 0) {
+            mGrabSongManagePresenter.getPlayBookList();
+            return;
+        }
+
         EventBus.getDefault().post(new SongNumChangeEvent(num));
+
     }
 
     @Override

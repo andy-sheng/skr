@@ -34,6 +34,8 @@ import com.common.utils.CommonReceiver;
 import com.common.utils.U;
 import com.glidebitmappool.BitmapPoolAdapter;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.smtt.sdk.TbsListener;
 
 import java.util.List;
 
@@ -94,7 +96,7 @@ public class CommonConfiguration implements ConfigModule {
                          */
                         JiGuangPush.init(true);
                     }
-                },5000);
+                }, 5000);
 
                 MyLog.w(TAG, "Bugly begin");
                 BuglyInit.init(true);
@@ -125,6 +127,39 @@ public class CommonConfiguration implements ConfigModule {
                         }
                     }
                 }, 20 * 1000);
+
+                QbSdk.setTbsListener(new TbsListener() {
+                    @Override
+                    public void onDownloadFinish(int i) {
+                        MyLog.w(TAG, "x5 onDownloadFinish" + " i=" + i);
+                    }
+
+                    @Override
+                    public void onInstallFinish(int i) {
+                        MyLog.w(TAG, "x5 onInstallFinish" + " i=" + i);
+                    }
+
+                    @Override
+                    public void onDownloadProgress(int i) {
+                        MyLog.w(TAG, "x5 onDownloadProgress" + " i=" + i);
+                    }
+                });
+                //x5内核初始化接口
+                QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+
+                    @Override
+                    public void onViewInitFinished(boolean arg0) {
+                        //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                        MyLog.w(TAG, " x5 onViewInitFinished is " + arg0);
+                    }
+
+                    @Override
+                    public void onCoreInitFinished() {
+                        MyLog.w(TAG, "x5 onCoreInitFinished");
+                    }
+                };
+                QbSdk.initX5Environment(application, cb);
+
                 // 这里耗费 900ms
                 MyLog.w(TAG, "onMainProcessCreate over");
             }

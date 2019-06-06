@@ -39,7 +39,7 @@ void I_D_Shannon
 	x = (float*)malloc((inLen*mResample->I)*sizeof(float));
 	x16 = (short*)malloc((inLen*mResample->I)*sizeof(short));
 	
-	//≤Â¡„
+	//ÊèíÈõ∂
 	for (i=0;i<inLen*mResample->I;i++)
 	{
 		x[i]=0;
@@ -49,14 +49,14 @@ void I_D_Shannon
 		x[i*mResample->I]=input[i];
 	}
 	
-	//¬À≤®
+	//Êª§Ê≥¢
 	filterc(mResample->bj,mResample->aj,2,mResample->filterOrder/2,x,inLen*mResample->I,mem->mempx,mem->mempy);
 	for(i=0;i<inLen*mResample->I;i++)
 	{
 		x16[i]= stoshort(x[i]);
 	}
 	
-	//≥È»°
+	//ÊäΩÂèñ
 	DD_Resample(mem,mResample,x16,inLen*mResample->I,output,outLen);
 	
 	free(x);
@@ -77,7 +77,7 @@ void I_Shannon
 		
 	x = (float*)malloc((inLen*mResample->I)*sizeof(float));
 	
-	//≤Â¡„
+	//ÊèíÈõ∂
 	for (i=0;i<inLen*mResample->I;i++)
 	{
 		x[i]=0;
@@ -85,14 +85,14 @@ void I_Shannon
 	/*for (i=0;i<inLen*mResample->I;i++)
 	{	
 		internalinput[i]=input[i/mResample->I];
-	}*∆Ω∂•PAM*/
+	}*Âπ≥È°∂PAM*/
 	
 	for (i=0;i<inLen;i++)
 	{	
 		x[i*mResample->I]=(float)input[i];
 	}
 
-	//¬À≤®
+	//Êª§Ê≥¢
 	filterc(mResample->bj,mResample->aj,2,mResample->filterOrder/2,x,inLen*mResample->I,mem->mempx,mem->mempy);
 	for (i=0;i<inLen*mResample->I;i++)
 	{
@@ -124,7 +124,7 @@ void D_Shannon
 	{
 		x[i]= (float)input[i];
 	}
-	//¬À≤®
+	//Êª§Ê≥¢
 		
 	filterc(mResample->bj,mResample->aj,2,mResample->filterOrder/2,x,inLen,mem->mempx,mem->mempy);
 	for(i=0;i<inLen;i++)
@@ -132,7 +132,7 @@ void D_Shannon
 		x16[i]= stoshort(x[i]);
 	}
 
-	//≥È»°
+	//ÊäΩÂèñ
 	DD_Resample(mem,mResample,x16,inLen,output,outLen);
 
 	free(x);

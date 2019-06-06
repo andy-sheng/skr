@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -12,17 +13,14 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-
+import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
-import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.R;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
-
-import com.common.view.ex.ExTextView;
-
-import com.module.playways.R;
 import com.zq.live.proto.Room.EWantSingType;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,21 +71,20 @@ public class GrabTopItemView extends RelativeLayout {
         mTvIconBg = (ExTextView) findViewById(R.id.tv_icon_bg);
         mSpeakingTipsAnimationView = findViewById(R.id.speaker_animation_iv);
 
-        RxView.clicks(mAvatarIv)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if (mShowEmptySeat && mCanShowInviteWhenEmpty) {
-                            EventBus.getDefault().post(new GrabWantInviteEvent());
-                        } else {
-                            if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
-                                if (!mShowEmptySeat) {
-                                    EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
-                                }
-                            }
+        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mShowEmptySeat && mCanShowInviteWhenEmpty) {
+                    EventBus.getDefault().post(new GrabWantInviteEvent());
+                } else {
+                    if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
+                        if (!mShowEmptySeat) {
+                            EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
                         }
                     }
-                });
+                }
+            }
+        });
     }
 
     public void tryAddParent(LinearLayout grabTopRv) {

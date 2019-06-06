@@ -14,7 +14,7 @@
         android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_31_dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:background="@drawable/qiehuanmoshi_bj"
         android:gravity="center"
         android:paddingBottom="@dimen/view_4_dp"
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_32_dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_toRightOf="@+id/tv_change_room"
         android:paddingLeft="@dimen/view_6_dp"
         android:paddingRight="@dimen/view_6_dp"
@@ -120,6 +120,6 @@
         android:layout_height="@dimen/view_31_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_66_dp"
+        android:layout_marginRight="@dimen/view_53_dp"
         android:background="@drawable/grab_acc_setting_icon" />
 </merge>

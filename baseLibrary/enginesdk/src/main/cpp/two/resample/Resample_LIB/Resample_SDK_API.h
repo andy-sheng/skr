@@ -8,9 +8,9 @@ extern "C"
 {
 #endif
 
-void ResampleReset_API(Resample_ID *mResample);//×¢Òâ±ØĞëÔÚCalcuºóReset
+void ResampleReset_API(Resample_ID *mResample);//æ³¨æ„å¿…é¡»åœ¨CalcuåReset
 
-void ResampleCalcu_API(Resample_ID *mResample);//Calcuºó±ØĞëReset----ÒÑ¾­¸ÄÎªÄ©Î²¼ÓresetÁË
+void ResampleCalcu_API(Resample_ID *mResample);//Calcuåå¿…é¡»Reset----å·²ç»æ”¹ä¸ºæœ«å°¾åŠ resetäº†
 
 void ResampleInit_API(Resample_ID *mResample);
 

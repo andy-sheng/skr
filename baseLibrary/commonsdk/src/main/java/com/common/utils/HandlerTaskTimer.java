@@ -9,7 +9,6 @@ import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
-import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
@@ -126,6 +125,10 @@ public final class HandlerTaskTimer {
         }
         mHandler = null;
         consumer = null;
+    }
+
+    public boolean isDisposed() {
+        return hasCancel;
     }
 
     public static Builder newBuilder() {

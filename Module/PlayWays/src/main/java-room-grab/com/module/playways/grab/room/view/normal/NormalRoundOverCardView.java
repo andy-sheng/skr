@@ -61,6 +61,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
         if (lastRoundInfo == null) {
             return;
         }
+        setVisibility(VISIBLE);
         int songId = 0;
         if (lastRoundInfo.getMusic() != null) {
             songId = lastRoundInfo.getMusic().getItemID();
@@ -68,7 +69,6 @@ public class NormalRoundOverCardView extends RelativeLayout {
         int reason = lastRoundInfo.getOverReason();
         int resultType = lastRoundInfo.getResultType();
         this.mSVGAListener = listener;
-        setVisibility(VISIBLE);
 
         if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
             // 无人想唱
@@ -92,6 +92,10 @@ public class NormalRoundOverCardView extends RelativeLayout {
             startChorusNoneWith(songId);
         } else if (reason == EQRoundOverReason.ROR_SPK_NOT_ENOUTH_PLAYER.getValue()) {
             // pk人数不够
+            assetsName = "grab_sing_none_with.svga";
+            startOKNoneWith(songId);
+        } else if (reason == EQRoundOverReason.ROR_MIN_GAME_NOT_ENOUTH_PLAYER.getValue()) {
+            // 连麦小游戏人数不够
             assetsName = "grab_sing_none_with.svga";
             startOKNoneWith(songId);
         } else {

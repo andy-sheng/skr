@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -16,6 +17,7 @@ import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
+import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
@@ -41,6 +43,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     public final static String TAG = "ChorusSelfSingCardView";
 
     RecyclerView mLyricRecycleView;
+    CharmsView mCharmsView;
     ChorusSelfLyricAdapter mChorusSelfLyricAdapter;
     SingCountDownView mSingCountDownView;
 
@@ -82,6 +85,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_chorus_self_sing_card_layout, this);
         mLyricRecycleView = findViewById(R.id.lyric_recycle_view);
+        mCharmsView = (CharmsView) findViewById(R.id.charms_view);
         mSingCountDownView = findViewById(R.id.sing_count_down_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
@@ -96,6 +100,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     }
 
     public void playLyric() {
+        mCharmsView.bindData(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             return;
         }

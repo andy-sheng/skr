@@ -63,7 +63,7 @@ message RoomMsg {
     QCHOGiveUpMsg qCHOGiveUpMsg = 131; //一唱到底：合唱模式放弃演唱
     QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg = 132; //一唱到底：spk模式内部轮次结束
     QChangeRoomName qChangeRoomName = 133; //一唱到底：房主修改房间名称
-    GPrensentGiftMsg gPrensentGiftMsg           = 134; //送礼物
+    GPrensentGiftMsg gPrensentGiftMsg = 134; //送礼物
 }
 
 // ERoomMsgType 房间消息类型
@@ -113,32 +113,32 @@ enum ERoomMsgType {
     RM_Q_CHO_GIVEUP = 131; //一唱到底：合唱模式放弃演唱
     RM_Q_PK_INNER_ROUND_OVER = 132; //一唱到底：spk模式内部轮次结束
     RM_Q_CHANGE_ROOM_NAME = 133; //一唱到底：房主修改房间名称
-    RM_G_PRESENT_GIFT        = 134; //送礼
+    RM_G_PRESENT_GIFT = 134; //送礼
 
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
 }
 
 // 用户金币、红钻资产, -1 表示没有变动
-message Property
-{
-    uint32 userID         = 1;
-    float coinBalance     = 2;
+message Property {
+    uint32 userID = 1;
+    float coinBalance = 2;
     float hongZuanBalance = 3;
-    int64 lastChangeMs    = 4;
+    int64 lastChangeMs = 4;
+    uint32 roundSeq = 5;
+    float curRoundSeqMeiliTotal = 6; //当前轮次魅力值累加和
 }
 
 
-message GPrensentGiftMsg
-{
-    Common.GiftInfo giftInfo        = 1;
-        uint32 count             = 2;
-        Common.UserInfo sendUserInfo    = 3;
-        Common.UserInfo receiveUserInfo = 4;
-        uint32 roomID            = 5;
-        sint64 continueID        = 6;
-        uint32 continueCnt       = 7;
-        float receiveUserCoin    = 8;
-        repeated Property propertyChangeList = 9; // 资产变动列表
+message GPrensentGiftMsg {
+    Common.GiftInfo giftInfo = 1;
+    uint32 count = 2;
+    Common.UserInfo sendUserInfo = 3;
+    Common.UserInfo receiveUserInfo = 4;
+    uint32 roomID = 5;
+    sint64 continueID = 6;
+    uint32 continueCnt = 7;
+    float receiveUserCoin = 8;
+    repeated Property propertyChangeList = 9; // 资产变动列表
 
 }
 
@@ -231,6 +231,7 @@ enum EWantSingType {
     EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
     EWST_CHORUS = 4; //合唱模式
     EWST_SPK = 5; //一唱到底spk模式
+    EWST_MIN_GAME = 6; //一唱到底连麦小游戏模式
 }
 
 message QSyncStatusMsg {
@@ -294,10 +295,14 @@ enum EQRoundOverReason {
     ROR_IN_ROUND_PLAYER_EXIT = 3; //当前玩家退出
     ROR_MULTI_NO_PASS = 4; //多人灭灯
     ROR_SELF_GIVE_UP = 5; //自己放弃演唱
-    ROR_CHO_SUCCESS          = 6; //合唱成功
-    ROR_CHO_FAILED           = 7; //合唱失败
+    ROR_CHO_SUCCESS = 6; //合唱成功
+    ROR_CHO_FAILED = 7; //合唱失败
     ROR_CHO_NOT_ENOUTH_PLAYER = 8; //合唱人数不够
     ROR_SPK_NOT_ENOUTH_PLAYER = 9; //SPK人数不够
+    ROR_MIN_GAME_NOT_ENOUTH_PLAYER = 10; //连麦小游戏人数不够
+    ROR_MIN_GAME_OWNER_END_ROUND = 11; //连麦小游戏房主结束轮次
+    ROR_MIN_GAME_NOT_PLAY = 12; //用户不玩了
+
 }
 
 message QResultInfo {
@@ -582,6 +587,7 @@ enum EQRoundStatus {
     QRS_CHO_SING = 5; //合唱演唱阶段
     QRS_SPK_FIRST_PEER_SING = 6; //spk第一位用户演唱
     QRS_SPK_SECOND_PEER_SING = 7; //spk第二位用户演唱
+    QRS_MIN_GAME_PLAY = 8; //连麦小游戏进行中
 }
 
 message BLightInfo {
@@ -623,12 +629,13 @@ message QRoundInfo {
     EWantSingType wantSingType = 19; //抢唱方式
     repeated QCHOInnerRoundInfo CHORoundInfos = 20; //一唱到底合唱：内部轮次信息
     repeated QSPKInnerRoundInfo SPKRoundInfos = 21; //一唱到底spk：内部轮次信息
+    repeated QMINIGameInnerRoundInfo MINIGAMERoundInfos = 22; //一唱到底连麦小游戏：内部轮次信息
 }
 
 message QCHOInnerRoundInfo {
     uint32 userID = 1; //抢唱成功的玩家id
     bool hasGiveUp = 2; //是否已经放弃
-    bool hasExit   = 3; //是否已经退出
+    bool hasExit = 3; //是否已经退出
 }
 
 message QSPKInnerRoundInfo {
@@ -639,9 +646,14 @@ message QSPKInnerRoundInfo {
     repeated QMLightMsg mLightInfos = 5; //灭灭灯列表
     EQRoundOverReason overReason = 6; //切换轮次原因
     EQRoundResultType resultType = 7; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
-    float SPKFinalScore          = 8; //最终得分
-    bool  isWin                     = 9; //是否获胜
+    float SPKFinalScore = 8; //最终得分
+    bool isWin = 9; //是否获胜
 }
+
+message QMINIGameInnerRoundInfo {
+    uint32 userID = 1; //抢唱成功的玩家id
+}
+
 
 message QBLightMsg {
     uint32 userID = 1; //玩家id

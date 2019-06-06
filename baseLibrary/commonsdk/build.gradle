@@ -23,8 +23,6 @@ android {
 
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
 
-        multiDexEnabled true
-
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -70,7 +68,7 @@ android {
 //            java.srcDirs += 'src/main/java-paginate'
 //            res.srcDirs += 'src/main/res-paginate'
 
-            // 直接引入支持下拉加载 recyclerView
+            //  相册选取 视频选取
             java.srcDirs += 'src/main/java-respicker'
             res.srcDirs += 'src/main/res-respicker'
 
@@ -79,8 +77,8 @@ android {
             res.srcDirs += 'src/main/res-imagebrowse'
 
             // 带拼音索引的列表 类似微信联系人
-            java.srcDirs += 'src/main/java-indexrecyclerview'
-            res.srcDirs += 'src/main/res-indexrecyclerview'
+            //java.srcDirs += 'src/main/java-indexrecyclerview'
+            //res.srcDirs += 'src/main/res-indexrecyclerview'
 
             // 扩展的一些view 可以自定义一些属性，方便使用
             java.srcDirs += 'src/main/java-exview'
@@ -90,17 +88,13 @@ android {
             java.srcDirs += 'src/main/java-emoji'
             res.srcDirs += 'src/main/res-emoji'
 
-            // 二维码的库
-//            java.srcDirs += 'src/main/java-gif-drawable'
-//            res.srcDirs += 'src/main/res-'
-
             // dialog库
             java.srcDirs += 'src/main/java-dialog'
             res.srcDirs += 'src/main/res-dialog'
 
             // bubbleSeekbar
-            java.srcDirs += 'src/main/java-seekbar'
-            res.srcDirs += 'src/main/res-seekbar'
+            //java.srcDirs += 'src/main/java-seekbar'
+            //res.srcDirs += 'src/main/res-seekbar'
 
             // loadsir
             java.srcDirs += 'src/main/java-loadsir'
@@ -126,8 +120,8 @@ android {
             res.srcDirs += 'src/main/res-agentweb'
 
             // 滚轮时间、地址等选择器
-            java.srcDirs += 'src/main/java-picker'
-            res.srcDirs += 'src/main/res-picker'
+            //java.srcDirs += 'src/main/java-picker'
+            //res.srcDirs += 'src/main/res-picker'
 
             // 标签布局
             java.srcDirs += 'src/main/java-flowlayout'
@@ -158,6 +152,8 @@ android {
             if(JPushEnable.toBoolean()) {
                 // 极光push
                 java.srcDirs += 'src/main/java-push-jiguang'
+            }else{
+                java.srcDirs += 'src/main/java-push-jiguang-noop'
             }
             if(MatrixEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-matrix'
@@ -172,16 +168,7 @@ android {
 //        }
     }
 
-//    dexOptions {
-//        javaMaxHeapSize "1g"
-//        preDexLibraries = false
-//        additionalParameters = [    //配置multidex参数
-//                                    '--multi-dex',//多dex分包
-//                                    '--set-max-idx-number=30000',//每个包内方法数上限
-//                                    '--main-dex-list='+projectDir+'/main-dex-rule', //打包到主classes.dex的文件列表
-//                                    '--minimal-main-dex'
-//        ]
-//    }
+
 }
 
 dependencies {
@@ -236,9 +223,9 @@ dependencies {
     //api(rootProject.ext.dependencies["fresco-okhttp"])
     // 流畅的gif
     //api(rootProject.ext.dependencies["android-gif-drawable"])
-    api project(":baseLibrary:android-gif-drawable")
+    implementation project(":baseLibrary:android-gif-drawable")
     // 超大图加载
-    api(rootProject.ext.dependencies["scale-image-view"])
+    implementation(rootProject.ext.dependencies["scale-image-view"])
 
     //greendao
     api rootProject.ext.dependencies["greendao"]
@@ -246,7 +233,7 @@ dependencies {
     //wire pb
     api rootProject.ext.dependencies["wire"]
 
-    api rootProject.ext.dependencies["swipebackhelper"]
+    implementation rootProject.ext.dependencies["swipebackhelper"]
 
     debugApi rootProject.ext.dependencies["debug-db"]
 
@@ -269,40 +256,40 @@ dependencies {
     //api rootProject.ext.dependencies["loadsir"]
 
     // 友盟统计
-    api rootProject.ext.dependencies['umeng-common']
-    api rootProject.ext.dependencies['umeng-analytics']
+    implementation rootProject.ext.dependencies['umeng-common']
+    implementation rootProject.ext.dependencies['umeng-analytics']
 
     // 腾讯 bugly sdk
-    api 'com.tencent.bugly:crashreport:2.8.6' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    api 'com.tencent.bugly:nativecrashreport:3.6.0' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    implementation 'com.tencent.bugly:crashreport:2.8.6' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    implementation 'com.tencent.bugly:nativecrashreport:3.6.0' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     // 友盟push
     if(UmengPushEnable.toBoolean()){
-        api rootProject.ext.dependencies['umeng-push']
-        api rootProject.ext.dependencies['umeng-utdid']
+        implementation rootProject.ext.dependencies['umeng-push']
+        implementation rootProject.ext.dependencies['umeng-utdid']
 //
 //    // 友盟push 集成小米push
-        api rootProject.ext.dependencies['umeng-xiaomi-push']
-        api rootProject.ext.dependencies['umeng-xiaomi-umengaccs']
+        implementation rootProject.ext.dependencies['umeng-xiaomi-push']
+        implementation rootProject.ext.dependencies['umeng-xiaomi-umengaccs']
 //
 //    // 友盟push 集成华为push
-        api rootProject.ext.dependencies['umeng-huawei-basetb']
-        api rootProject.ext.dependencies['umeng-huawei-pushtb']
-        api rootProject.ext.dependencies['umeng-huawei-umengaccs']
+        implementation rootProject.ext.dependencies['umeng-huawei-basetb']
+        implementation rootProject.ext.dependencies['umeng-huawei-pushtb']
+        implementation rootProject.ext.dependencies['umeng-huawei-umengaccs']
 
         // 友盟push 集成魅族push
-        api rootProject.ext.dependencies['umeng-meizu-push']
-        api rootProject.ext.dependencies['umeng-meizu-umengaccs']
+        implementation rootProject.ext.dependencies['umeng-meizu-push']
+        implementation rootProject.ext.dependencies['umeng-meizu-umengaccs']
     }
 
     // 极光推送
     if(JPushEnable.toBoolean()){
-        api 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
-        api 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
-        api 'cn.jiguang.sdk.plugin:xiaomi:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        api 'cn.jiguang.sdk.plugin:huawei:3.2.1'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        api 'cn.jiguang.sdk.plugin:meizu:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        api 'cn.jiguang.sdk.plugin:oppo:3.2.0'//此版本插件仅支持JPushSDK3.1.8及以上版本
-        api 'cn.jiguang.sdk.plugin:vivo:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        implementation 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
+        implementation 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
+        implementation 'cn.jiguang.sdk.plugin:xiaomi:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        implementation 'cn.jiguang.sdk.plugin:huawei:3.2.1'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        implementation 'cn.jiguang.sdk.plugin:meizu:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        implementation 'cn.jiguang.sdk.plugin:oppo:3.2.0'//此版本插件仅支持JPushSDK3.1.8及以上版本
+        implementation 'cn.jiguang.sdk.plugin:vivo:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
     }
 
 //  debugApi rootProject.ext.dependencies["stetho"]
@@ -312,10 +299,10 @@ dependencies {
     // SVGA YY的动画播放框架
     //api rootProject.ext.dependencies["svga"]
 
-    api rootProject.ext.dependencies["rxbinding"]
-    api rootProject.ext.dependencies["rxbinding-support-v4"]
-    api rootProject.ext.dependencies["rxbinding-appcompat-v7"]
-    api rootProject.ext.dependencies["cardview-v7"]
+    //api rootProject.ext.dependencies["rxbinding"]
+    //api rootProject.ext.dependencies["rxbinding-support-v4"]
+    //api rootProject.ext.dependencies["rxbinding-appcompat-v7"]
+    //api rootProject.ext.dependencies["cardview-v7"]
 //    api rootProject.ext.dependencies["lzyzsd-jsbridge"]
 //    api 'com.youth.banner:banner:1.4.10'
 
@@ -335,7 +322,7 @@ dependencies {
     }
 
     // 小米统计sdk
-    api files('libs/MiStats_SDK_Client_1_4_0.jar')
+    //api files('libs/MiStats_SDK_Client_1_4_0.jar')
     // 蒲公英 用户反馈 与 崩溃收集
     //api files('libs/pgyer_sdk_3.0.2.jar')
 
@@ -343,8 +330,10 @@ dependencies {
 
     api files('libs/BaiduLBS_Android.jar')
 
+    api files('libs/tbs_sdk_thirdapp_v4.3.0.1072_43646_sharewithdownloadwithfile_withoutGame_obfs_20190429_175122.jar')
+
     // 阿里支付
-    api files("libs/alipaySdk-20170922.jar")
+//    api files("libs/alipaySdk-20170922.jar")
 
     // 微信支付
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'

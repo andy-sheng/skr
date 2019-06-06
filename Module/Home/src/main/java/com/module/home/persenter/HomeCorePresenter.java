@@ -14,6 +14,7 @@ import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.NetworkUtils;
 import com.common.utils.U;

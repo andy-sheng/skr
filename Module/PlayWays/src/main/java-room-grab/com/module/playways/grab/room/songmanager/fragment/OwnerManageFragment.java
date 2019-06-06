@@ -70,7 +70,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mOwnerTitleView = (OwnerViewPagerTitleView) mRootView.findViewById(R.id.owner_title_view);
         mViewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
         mOwnerTitleView.setViewPager(mViewpager);
-        mViewpager.setOffscreenPageLimit(3);
+        mViewpager.setOffscreenPageLimit(100);
         mCommonTitleBar.getCenterTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {

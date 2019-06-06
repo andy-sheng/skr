@@ -29,6 +29,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.top.CircleAnimationView;
 import com.module.playways.R;
+import com.module.playways.grab.room.view.CharmsView;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -55,6 +56,7 @@ public class PKSingCardView extends RelativeLayout {
     RelativeLayout mLeftArea;
     SimpleDraweeView mLeftIv;
     ExRelativeLayout mLeftStatusArea;
+    CharmsView mLeftCharms;
     ExTextView mLeftName;
     ExTextView mLeftStatus;
     CircleAnimationView mLeftCircleAnimationView;
@@ -63,6 +65,7 @@ public class PKSingCardView extends RelativeLayout {
     RelativeLayout mRightArea;
     SimpleDraweeView mRightIv;
     ExRelativeLayout mRightStatusArea;
+    CharmsView mRightCharms;
     ExTextView mRightName;
     ExTextView mRightStatus;
     CircleAnimationView mRightCircleAnimationView;
@@ -108,6 +111,7 @@ public class PKSingCardView extends RelativeLayout {
         mLeftArea = (RelativeLayout) findViewById(R.id.left_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
         mLeftStatusArea = (ExRelativeLayout) findViewById(R.id.left_status_area);
+        mLeftCharms = (CharmsView) findViewById(R.id.left_charms);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
         mLeftStatus = (ExTextView) findViewById(R.id.left_status);
         mLeftCircleAnimationView = (CircleAnimationView) findViewById(R.id.left_circle_animation_view);
@@ -116,6 +120,7 @@ public class PKSingCardView extends RelativeLayout {
         mRightArea = (RelativeLayout) findViewById(R.id.right_area);
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
         mRightStatusArea = (ExRelativeLayout) findViewById(R.id.right_status_area);
+        mRightCharms = (CharmsView) findViewById(R.id.right_charms);
         mRightName = (ExTextView) findViewById(R.id.right_name);
         mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightCircleAnimationView = (CircleAnimationView) findViewById(R.id.right_circle_animation_view);
@@ -162,6 +167,9 @@ public class PKSingCardView extends RelativeLayout {
 
             mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
             mRightOverReason = list.get(1).getOverReason();
+
+            mLeftCharms.bindData(mGrabRoomData, list.get(0).getUserID());
+            mRightCharms.bindData(mGrabRoomData, list.get(1).getUserID());
         }
         setVisibility(VISIBLE);
         if (mLeftUserInfoModel != null) {
@@ -275,6 +283,7 @@ public class PKSingCardView extends RelativeLayout {
             }
         }
     }
+
     /**
      * @param uid        播放谁的动画
      * @param isPlaySVGA 是否播放声纹SVGA

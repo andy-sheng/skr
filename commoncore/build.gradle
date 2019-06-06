@@ -38,22 +38,24 @@ android {
             java.srcDirs += 'src/main/java-gen-pb'
             //java.srcDirs += 'src/main/java-milink'
 
-            java.srcDirs += 'src/main/java-engine'
-            res.srcDirs += ['src/main/res-engine']
+            java.srcDirs += 'src/main/java-webview'
+            res.srcDirs += ['src/main/res-webview']
 
             java.srcDirs += 'src/main/java-debugcore'
             res.srcDirs += ['src/main/res-debugcore']
 
             res.srcDirs += ['src/main/res']
             res.srcDirs += ['src/main/res-login']
+
             res.srcDirs += ['src/main/res-cta']
             res.srcDirs += ['src/main/res-config']
             res.srcDirs += ['src/main/res-umeng']
 
             // doraemonkit 滴滴开源一款app内调试工具
             java.srcDirs += 'src/main/java-doraemonkit'
-
             java.srcDirs += 'src/main/java-notification'
+
+//            aidl.srcDirs += 'src/main/java-webview'
         }
     }
 
@@ -67,19 +69,20 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     api project(":baseLibrary:commonsdk")
     api project(":baseLibrary:enginesdk")
+    api project(":baseLibrary:mediaengine")
     // doraemonkit 滴滴开源一款app内调试工具
     api project(":baseLibrary:doraemonkit")
     api project(":commonservice")
 
 
-    api files('libs/protobuf-java-2.6.0.jar')
+    //api files('libs/protobuf-java-2.6.0.jar')
     // 小米oauth登录用
-    api files('libs/oauth.jar')
+    //api files('libs/oauth.jar')
 //    api files('libs/ks3-android-sdk-v-1.4.6.jar')
 
     api files('libs/umeng-share-core-6.9.3.jar')
     api files('libs/umeng-share-QQ-simplify-6.9.3.jar')
-    api files('libs/umeng-share-sina-simplify-6.9.3.jar')
+    //api files('libs/umeng-share-sina-simplify-6.9.3.jar')
     api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
     api files('libs/umeng-shareboard-widget-6.9.3.jar')
     api files('libs/umeng-sharetool-6.9.3.jar')

@@ -3,20 +3,19 @@ package com.module.home.setting.fragment;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.manager.BgMusicManager;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.module.home.R;
 
@@ -104,19 +103,17 @@ public class VolumeFragment extends BaseFragment {
             }
         });
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                                .setPopFragment(VolumeFragment.this)
-                                .setPopAbove(true)
-                                .setHasAnimation(true)
-                                .build());
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                        .setPopFragment(VolumeFragment.this)
+                        .setPopAbove(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }

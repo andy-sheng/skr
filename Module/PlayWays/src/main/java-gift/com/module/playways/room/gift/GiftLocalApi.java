@@ -4,7 +4,6 @@ import com.module.playways.db.GiftDBDao;
 import com.module.playways.db.GreenDaoManager;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GiftServerModel;
-import com.umeng.socialize.media.Base;
 
 import java.util.ArrayList;
 import java.util.List;

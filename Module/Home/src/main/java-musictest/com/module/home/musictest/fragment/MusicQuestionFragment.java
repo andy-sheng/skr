@@ -8,11 +8,11 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.callback.LoadingCallback;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -58,17 +58,15 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mQuestionArea = (RelativeLayout) mRootView.findViewById(R.id.question_area);
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
 
         mMusicTestPresenter = new MusicQuestionPresenter(this);
         addPresent(mMusicTestPresenter);

@@ -9,10 +9,6 @@ public class UpdateCoinEvent {
         this.coinBalance = coinBalance;
     }
 
-    public UpdateCoinEvent(int coinBalance) {
-        this.coinBalance = coinBalance;
-    }
-
     public int getCoinBalance() {
         return coinBalance;
     }

@@ -109,9 +109,10 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     ExTextView mPhotoNumTv;
     ExTextView mEmptyMyPhoto;
 
-    private static final int LOCATION_TAG = 0;           //城市标签
-    private static final int CONSTELLATION_TAG = 1;      //星座标签
-    private static final int FANS_NUM_TAG = 2;      //粉丝数标签
+    private static final int CHARMS_TAG = 1;
+    private static final int LOCATION_TAG = 2;           //城市标签
+    private static final int CONSTELLATION_TAG = 3;      //星座标签
+    private static final int FANS_NUM_TAG = 4;      //粉丝数标签
 
     private List<String> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
@@ -218,10 +219,18 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
 
+                    int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
+
+                    if (isFollow) {
+                        userInfoModel.setFollow(isFollow);
+                        userInfoModel.setFriend(isFriend);
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel);
+                    }
                     showUserInfo(userInfoModel);
                     showUserRelationNum(relationNumModes);
                     showUserLevel(userLevelModels);
                     showUserRelation(isFriend, isFollow);
+                    showCharmsTag(meiLiCntTotal);
                 }
             }
         }, (BaseActivity) mContext);
@@ -628,8 +637,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
             if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
                 mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
-            } else {
-                mHashMap.put(LOCATION_TAG, "未知星球");
             }
 
             if (!TextUtils.isEmpty(model.getBirthday())) {
@@ -652,6 +659,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
 
         mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
+
+        refreshTag();
+    }
+
+    private void showCharmsTag(int meiLiCntTotal) {
+        mHashMap.put(CHARMS_TAG, String.format(getResources().getString(R.string.meili_tag), meiLiCntTotal));
 
         refreshTag();
     }
@@ -724,6 +737,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     private void refreshTag() {
         mTags.clear();
         if (mHashMap != null) {
+
+            if (!TextUtils.isEmpty(mHashMap.get(CHARMS_TAG))) {
+                mTags.add(mHashMap.get(CHARMS_TAG));
+            }
+
             if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
                 mTags.add(mHashMap.get(LOCATION_TAG));
             }

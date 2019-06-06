@@ -22,13 +22,9 @@ Java_com_engine_effect_ITbAgcProcessor_init(JNIEnv *env, jobject ins) {
     return flag2;
 }
 
-extern "C"
-JNIEXPORT jint JNICALL
-Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject ins, jbyteArray samplesJni,
-                                               jint len,
-                                               jint channels, jint sampleRate) {
+static void process(uint8_t* data, int len, int channels, int sampleRate) {
     if (flag2 == -1) {
-        return flag2;
+        return;
     }
     if (flag2 <= 0) {
         SKR_agc_create(&pvoln);
@@ -41,9 +37,6 @@ Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject ins, jbyteAr
         SKR_agc_config(pvoln, sampleRate, channels, dykind, maxgaindB, fstgaindB, needDC);
         flag2 = 1;
     }
-
-    //无符号整型，加起来和testIn不一定对得上
-    unsigned char *data = (unsigned char *) env->GetByteArrayElements(samplesJni, 0);
 
     // 2048 512 下来
     short *samples = (short *) data; // 长度只有1024了
@@ -61,7 +54,29 @@ Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject ins, jbyteAr
     if (FILEOPEN) {
         fwrite(samples, sizeof(short), len / 2, outputFile2);
     }
-    env->ReleaseByteArrayElements(samplesJni, reinterpret_cast<jbyte *>(data), 0);
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject ins, jbyteArray samplesJni,
+                                               jobject byteBuffer, jint len,
+                                               jint channels, jint sampleRate) {
+    uint8_t *data = NULL;
+
+    if (samplesJni) {
+        data = (uint8_t *) env->GetByteArrayElements(samplesJni, 0);
+    } else if (byteBuffer) {
+        data = (uint8_t*)env->GetDirectBufferAddress(byteBuffer);
+    }
+
+    if (data) {
+        process(data, len, channels, sampleRate);
+    }
+
+    if (samplesJni) {
+        // 对Java的数组进行更新并释放C/C++的数组
+        env->ReleaseByteArrayElements(samplesJni, (jbyte *) data, 0);
+    }
     return flag2;
 }
 

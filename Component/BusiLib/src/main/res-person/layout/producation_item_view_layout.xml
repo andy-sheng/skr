@@ -85,6 +85,29 @@
         android:layout_marginTop="@dimen/view_69_dp"
         android:background="#333B4E79" />
 
+    <RelativeLayout
+        android:id="@+id/play_num_area"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_70_dp">
+
+        <TextView
+            android:id="@+id/play_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:alpha="0.6"
+            android:clickable="false"
+            android:drawableLeft="@drawable/works_listener_icon"
+            android:drawablePadding="@dimen/view_6_dp"
+            android:text="播放次数"
+            android:textColor="#993B4E79"
+            android:textSize="@dimen/textsize_12_dp" />
+
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/share_area"
@@ -113,12 +136,9 @@
         android:id="@+id/dele_area"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_70_dp"
-        android:gravity="left"
-        android:visibility="gone">
-
+        android:layout_marginRight="@dimen/view_22_dp"
+        android:layout_toLeftOf="@id/share_area">
 
         <TextView
             android:layout_width="wrap_content"
@@ -126,27 +146,8 @@
             android:layout_centerVertical="true"
             android:drawableLeft="@drawable/work_dele_icon"
             android:drawablePadding="@dimen/view_6_dp"
+            android:gravity="center"
             android:text="删除"
-            android:textColor="#993B4E79"
-            android:textSize="@dimen/textsize_12_dp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/play_num_area"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_70_dp">
-
-        <TextView
-            android:id="@+id/play_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:drawableLeft="@drawable/works_listener_icon"
-            android:drawablePadding="@dimen/view_6_dp"
-            android:text="播放次数"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp" />
 

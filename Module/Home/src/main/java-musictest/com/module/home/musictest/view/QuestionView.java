@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.musictest.model.Answer;
 import com.module.home.musictest.model.Question;
@@ -63,33 +63,24 @@ public class QuestionView extends RelativeLayout {
         mNextTv = (ExTextView) findViewById(R.id.next_tv);
         mCompleteTv = (ExTextView) findViewById(R.id.complete_tv);
 
-        RxView.clicks(mNextTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        clickNext();
-                    }
-                });
-
-        RxView.clicks(mLastTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        clickLast();
-                    }
-                });
-
-        RxView.clicks(mCompleteTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        clickComplete();
-                    }
-                });
-
+        mNextTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                clickNext();
+            }
+        });
+        mLastTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                clickLast();
+            }
+        });
+        mCompleteTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                clickComplete();
+            }
+        });
     }
 
     public void setMaxNum(int maxNum) {

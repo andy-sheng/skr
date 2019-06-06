@@ -20,9 +20,6 @@ public class JiGuangPush {
             return;
         }
         MyLog.d(TAG, "init coreProcess=" + coreProcess);
-        JPushInterface.setDebugMode(MyLog.isDebugLogOpen());
-        JPushInterface.init(U.app());
-        JPushInterface.stopCrashHandler(U.app());
         try {
             /**
              * 强制关闭 MiPush 的日志捕获
@@ -33,6 +30,10 @@ public class JiGuangPush {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        JPushInterface.setDebugMode(MyLog.isDebugLogOpen());
+        JPushInterface.init(U.app());
+        JPushInterface.stopCrashHandler(U.app());
+
         if (!TextUtils.isEmpty(sAlias)) {
             JPushInterface.setAlias(U.app(), 2, sAlias);
             U.getPreferenceUtils().setSettingBoolean("jpush_alias_set", true);

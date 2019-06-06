@@ -21,13 +21,11 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -66,7 +64,7 @@ import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
-import com.module.playways.grab.room.view.RedPkgCountDownView;
+import com.module.playways.grab.room.view.IUpdateFreeGiftCountView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.grab.room.view.control.OthersSingCardView;
@@ -75,7 +73,9 @@ import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView;
 import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
+import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
 import com.module.playways.room.gift.view.ContinueSendView;
+import com.module.playways.room.gift.view.GiftDisplayView;
 import com.module.playways.room.gift.view.GiftPanelView;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
@@ -104,10 +104,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView {
+import static android.view.View.GONE;
+
+public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
 
     public final static String TAG = "GrabRoomFragment";
 
@@ -139,9 +140,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     ViewGroup mBottomBgVp;
     GrabBottomContainerView mBottomContainerView;
 
+//    GiftTimerPresenter mGiftTimerPresenter;
+
 //    GrabVoiceControlPanelView mVoiceControlView;
 
-    RedPkgCountDownView mRedPkgView;
+//    RedPkgCountDownView mRedPkgView;
 
     CommentView mCommentView;
 
@@ -156,9 +159,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
     TurnInfoCardView mTurnInfoCardView; //歌曲次序 以及 对战开始卡片
-
     SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
-
 
     RoundOverCardView mRoundOverCardView;
     OthersSingCardView mOthersSingCardView;
@@ -168,6 +169,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
 
     GrabGiveupView mGrabGiveupView;
+
+    ExImageView mMiniOwnerMicIv;
 
     GrabGameOverView mGrabGameOverView;
 
@@ -281,7 +284,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         initGrabOpView();
         initSingStageView();
         initChangeRoomTransitionView();
-        initCountDownView();
+//        initCountDownView();
         initScoreView();
         initGiftPanelView();
 
@@ -293,6 +296,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
         mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
+//        mGiftTimerPresenter = new GiftTimerPresenter(this);
+//        addPresent(mGiftTimerPresenter);
+//        mGiftTimerPresenter.startTimer();
 
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
@@ -634,9 +640,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         //mSkrAudioPermission.ensurePermission(null, true);
     }
 
-    private void initCountDownView() {
-        mRedPkgView = (RedPkgCountDownView) mRootView.findViewById(R.id.red_pkg_view);
-    }
+//    private void initCountDownView() {
+//        mRedPkgView = (RedPkgCountDownView) mRootView.findViewById(R.id.red_pkg_view);
+//    }
 
     private void initBgView() {
         mGrabRoomBgFlag = mRootView.findViewById(R.id.grab_room_bg_flag);
@@ -660,6 +666,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void onVisible(boolean isVisible) {
                 mBottomContainerView.setOpVisible(!isVisible);
+            }
+        });
+
+        mGiftPanelView.setIGetGiftCountDownListener(new GiftDisplayView.IGetGiftCountDownListener() {
+            @Override
+            public long getCountDownTs() {
+//                return mGiftTimerPresenter.getCountDownSecond();
+                return 0;
             }
         });
     }
@@ -702,12 +716,26 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void showGiftPanel() {
                 if (mRoomData.getRealRoundInfo() != null) {
-                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
+                    GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+                    if (now != null) {
+                        if (now.isPKRound() && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                            if (now.getsPkRoundInfoModels().size() == 2) {
+                                int userId = now.getsPkRoundInfoModels().get(1).getUserID();
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, userId));
+                            } else {
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, now.getUserID()));
+                            }
+                        } else {
+                            mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, now.getUserID()));
+                        }
+                    } else {
+                        mGiftPanelView.show(null);
+                    }
                 } else {
                     mGiftPanelView.show(null);
                 }
 
-                mContinueSendView.setVisibility(View.GONE);
+                mContinueSendView.setVisibility(GONE);
             }
         });
         mBottomContainerView.setRoomData(mRoomData);
@@ -733,7 +761,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void initChangeRoomTransitionView() {
         mGrabChangeRoomTransitionView = mRootView.findViewById(R.id.change_room_transition_view);
-        mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+        mGrabChangeRoomTransitionView.setVisibility(GONE);
     }
 
     @Override
@@ -966,6 +994,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
     }
 
+    @Override
+    public void updateGiftCount(int count, long ts) {
+        UpdateMeiGuiFreeCountEvent.sendEvent(count, ts);
+    }
+
     GrabTopContainerView.Listener mTopListener = new GrabTopContainerView.Listener() {
         @Override
         public void closeBtnClick() {
@@ -1144,7 +1177,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_pass_view);
         mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
-            public void giveUp() {
+            public void giveUp(boolean ownerControl) {
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
 //                if (infoModel != null) {
 //                    HashMap map = new HashMap();
@@ -1152,10 +1185,26 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
 //                            "give_up_sing", map);
 //                }
-                mCorePresenter.giveUpSing();
+                mCorePresenter.giveUpSing(ownerControl);
             }
         });
         mGrabGiveupView.hideWithAnimation(false);
+
+        mMiniOwnerMicIv = mRootView.findViewById(R.id.mini_owner_mic_iv);
+        mMiniOwnerMicIv.setOnClickListener(new DebounceViewClickListener() {
+            boolean mute = true;
+
+            @Override
+            public void clickValid(View v) {
+                mute = !mute;
+                if (mute) {
+                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
+                } else {
+                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_normal);
+                }
+                mCorePresenter.miniOwnerMic(mute);
+            }
+        });
     }
 
     private void initSingStageView() {
@@ -1230,7 +1279,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void onBattleBeginPlayOver() {
         mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
-        mTurnInfoCardView.setVisibility(View.GONE);
+        mTurnInfoCardView.setVisibility(GONE);
         mCorePresenter.onOpeningAnimationOver();
     }
 
@@ -1251,8 +1300,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
-        mOthersSingCardView.setVisibility(View.GONE);
-        mSelfSingCardView.setVisibility(View.GONE);
+
+        // 保持只有一张卡片
+        hideAllCardView();
+
+        mMiniOwnerMicIv.setVisibility(GONE);
         mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
@@ -1271,13 +1323,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
-            mTurnInfoCardView.setVisibility(View.GONE);
+            mTurnInfoCardView.setVisibility(GONE);
             onSongInfoCardPlayOver("中途进来", pendingPlaySongCardData);
         } else {
             mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
                 @Override
                 public void onFinished() {
-                    mTurnInfoCardView.setVisibility(View.GONE);
+                    mTurnInfoCardView.setVisibility(GONE);
                     onSongInfoCardPlayOver("动画结束进来", pendingPlaySongCardData);
                 }
             });
@@ -1288,7 +1340,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     void onSongInfoCardPlayOver(String from, PendingPlaySongCardData pendingPlaySongCardData) {
         MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData + " from=" + from);
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
-        mSingBeginTipsCardView.setVisibility(View.GONE);
+
+        // 保持只有一张卡片
+        hideAllCardView();
         mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
 
         mGrabGiveupView.hideWithAnimation(false);
@@ -1312,8 +1366,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         // 第二轮不播这个动画
         mTopContainerView.setModeSing();
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
-        mSongInfoCardView.hide();
 
+        // 保持只有一张卡片
+        hideAllCardView();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mGrabOpBtn.hide("singBySelf");
@@ -1363,7 +1418,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mGrabOpBtn.toOtherSingState();
             } else {
                 mGrabOpBtn.hide("singByOthers2");
-                MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
             }
             onSingBeginTipsPlayOver();
         } else {
@@ -1371,19 +1425,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 @Override
                 public void run() {
                     GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                    if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant()
+                    if (grabRoundInfoModel != null
+                            && grabRoundInfoModel.isParticipant()
                             && mRoomData.isInPlayerList()
-                            && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().getUid())) {
+                            && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().getUid())
+                            && !(grabRoundInfoModel.isMiniGameRound() && mRoomData.isOwner())
+                    ) {
+                        // 参与者 & 游戏列表中 & 不是本轮演唱者 &  不是小游戏中的房主
                         mGrabOpBtn.toOtherSingState();
                     } else {
                         mGrabOpBtn.hide("singByOthers2");
-                        MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
                     }
                     onSingBeginTipsPlayOver();
                 }
             });
         }
-
     }
 
     private void singBeginTipsPlay(Runnable runnable) {
@@ -1408,16 +1464,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     private void onSingBeginTipsPlayOver() {
         MyLog.d(TAG, "onSingBeginTipsPlayOver");
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-        mSingBeginTipsCardView.setVisibility(View.GONE);
+        // 保持只有一张卡片
+        hideAllCardView();
+
         mGrabScoreTipsView.reset();
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (now.singBySelf()) {
-                mGrabGiveupView.delayShowGiveUpView();
+                mGrabGiveupView.delayShowGiveUpView(false);
                 mCorePresenter.beginSing();
                 // 显示歌词
                 mSelfSingCardView.setVisibility(View.VISIBLE);
-                mOthersSingCardView.setVisibility(View.GONE);
                 mSelfSingCardView.playLyric();
                 if (mRoomData.isNewUser()) {
                     if (!mIsShowSelfSingTips) {
@@ -1441,8 +1498,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     }
                 }
             } else {
+
+                if (mRoomData.isOwner() && now.isMiniGameRound() && !RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+                    mMiniOwnerMicIv.setVisibility(View.VISIBLE);
+                    mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
+                    mGrabGiveupView.delayShowGiveUpView(true);
+                } else {
+                    mMiniOwnerMicIv.setVisibility(GONE);
+                }
+
                 // 显示收音机
-                mSelfSingCardView.setVisibility(View.GONE);
                 mOthersSingCardView.setVisibility(View.VISIBLE);
                 mOthersSingCardView.bindData();
             }
@@ -1466,12 +1531,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSelfSingCardView.setVisibility(View.GONE);
+
+        // 保持只有一张卡片
+        hideAllCardView();
+
+        mMiniOwnerMicIv.setVisibility(GONE);
         removeNoAccSrollTipsView();
         removeGrabSelfSingTipView();
         mTopContainerView.setVisibility(View.VISIBLE);
-        mOthersSingCardView.hide();
-        mSongInfoCardView.hide();
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
         mRoundOverCardView.bindData(lastInfoModel, new SVGAListener() {
@@ -1484,23 +1551,23 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void onRoundOverPlayOver(boolean playNextSongInfoCard, BaseRoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
-        mRoundOverCardView.setVisibility(View.GONE);
+        mRoundOverCardView.setVisibility(GONE);
         if (playNextSongInfoCard) {
             grabBegin(now.getRoundSeq(), now.getMusic());
         }
     }
 
-    @Override
-    public void redPkgCountDown(long duration) {
-        mRedPkgView.setVisibility(View.VISIBLE);
-        mRedPkgView.startCountDown(duration);
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRedPkgView.setVisibility(View.GONE);
-            }
-        }, duration);
-    }
+//    @Override
+//    public void redPkgCountDown(long duration) {
+//        mRedPkgView.setVisibility(View.VISIBLE);
+//        mRedPkgView.startCountDown(duration);
+//        mUiHanlder.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mRedPkgView.setVisibility(View.GONE);
+//            }
+//        }, duration);
+//    }
 
     @Override
     public boolean useEventBus() {
@@ -1634,11 +1701,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
 //        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
 //        mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSelfSingCardView.setVisibility(View.GONE);
+        mSelfSingCardView.setVisibility(GONE);
         mOthersSingCardView.hide();
-        mTurnInfoCardView.setVisibility(View.GONE);
-        mSingBeginTipsCardView.setVisibility(View.GONE);
-        mRoundOverCardView.setVisibility(View.GONE);
+        mTurnInfoCardView.setVisibility(GONE);
+        mSingBeginTipsCardView.setVisibility(GONE);
+        mRoundOverCardView.setVisibility(GONE);
         mGrabGameOverView.setVisibility(View.VISIBLE);
         mTopContainerView.onGameFinish();
         mGrabGameOverView.starAnimation(new SVGAListener() {
@@ -1665,7 +1732,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     public void onChangeRoomResult(boolean success, String errMsg) {
         long t = System.currentTimeMillis() - mBeginChangeRoomTs;
         if (t > 1500) {
-            mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+            mGrabChangeRoomTransitionView.setVisibility(GONE);
             if (!success) {
                 U.getToastUtil().showShort(errMsg);
             }
@@ -1676,7 +1743,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     if (!success) {
                         U.getToastUtil().showShort(errMsg);
                     }
-                    mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+                    mGrabChangeRoomTransitionView.setVisibility(GONE);
                 }
             }, 1500 - t);
         }
@@ -1706,7 +1773,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 getActivity().finish();
 //                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
 //                        StatConstants.KEY_GAME_FINISH, null);
-            }else{
+            } else {
                 MyLog.d(TAG, "onGrabGameOver activity hasdestroy");
             }
         } else {
@@ -1812,7 +1879,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         if (flag) {
             mPracticeFlagIv.setVisibility(View.VISIBLE);
         } else {
-            mPracticeFlagIv.setVisibility(View.GONE);
+            mPracticeFlagIv.setVisibility(GONE);
         }
     }
 
@@ -1824,6 +1891,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     @Override
     public void hideManageTipView() {
         removeManageSongTipView();
+    }
+
+    @Override
+    public void hideAllCardView() {
+        mTurnInfoCardView.setVisibility(GONE);
+        mSingBeginTipsCardView.setVisibility(GONE);
+        mSongInfoCardView.hide();
+        mOthersSingCardView.hide();
+        mSelfSingCardView.setVisibility(GONE);
+        mRoundOverCardView.setVisibility(GONE);
     }
 
     static class PendingPlaySongCardData {

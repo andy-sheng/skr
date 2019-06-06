@@ -26,7 +26,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.common.base.BaseApplication;
 import com.common.base.GlobalParams;
 import com.common.base.ConfigModule;
 import com.common.base.ManifestParser;
@@ -45,7 +44,6 @@ import java.util.List;
  * 这时就不用再继承 BaseApplication,只用在自定义Application中对应的生命周期调用AppDelegate对应的方法
  * (Application一定要实现APP接口),框架就能照常运行
  *
- * @see BaseApplication
  * @see <a href="https://github.com/JessYanCoding/MVPArms/wiki#3.12">AppDelegate wiki 官方文档</a>
  * Created by JessYan on 24/04/2017 09:44
  * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>

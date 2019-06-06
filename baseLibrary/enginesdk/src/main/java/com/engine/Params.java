@@ -19,6 +19,8 @@ import io.agora.rtc.video.VideoEncoderConfiguration;
  * 对于含义不清楚的参数，要看这个参数在哪里使用的
  */
 public class Params implements Serializable {
+    public final static String TAG = "Params";
+    public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
@@ -26,13 +28,16 @@ public class Params implements Serializable {
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
     @JSONField(serialize=false)
     private Scene scene = Scene.audiotest;
-    // 是否使用唱吧的引擎
-    @JSONField(serialize=false)
-    private boolean useCbEngine = false;
     @JSONField(serialize=false)
     private boolean enableVideo = false;
     @JSONField(serialize=false)
     private boolean enableAudio = true;
+    @JSONField(serialize=false)
+    private boolean useExternalVideo = true;
+    @JSONField(serialize=false)
+    private boolean useExternalAudio = false;
+    @JSONField(serialize=false)
+    private boolean useExternalAudioRecord = true;
     @JSONField(serialize=false)
     private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
     @JSONField(serialize=false)
@@ -130,6 +135,11 @@ public class Params implements Serializable {
     @JSONField(serialize=false)
     private boolean mRecording; // 是否在录制
 
+    @JSONField(serialize=false)
+    private int mAudioSampleRate = 44100; // 输出的音频采样率
+    @JSONField(serialize=false)
+    private int mAudioChannels = 2; // 输出的音频声道数
+
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
     }
@@ -142,12 +152,28 @@ public class Params implements Serializable {
         this.channelProfile = channelProfile;
     }
 
-    public boolean isUseCbEngine() {
-        return useCbEngine;
+    public boolean isUseExternalAudio() {
+        return useExternalAudio;
     }
 
-    public void setUseCbEngine(boolean useCbEngine) {
-        this.useCbEngine = useCbEngine;
+    public void setUseExternalAudio(boolean useExternalAudio) {
+        this.useExternalAudio = useExternalAudio;
+    }
+
+    public boolean isUseExternalVideo() {
+        return useExternalVideo;
+    }
+
+    public void setUseExternalVideo(boolean useExternalVideo) {
+        this.useExternalVideo = useExternalVideo;
+    }
+
+    public boolean isUseExternalAudioRecord() {
+        return useExternalAudioRecord;
+    }
+
+    public void setUseExternalAudioRecord(boolean useExternalAudioRecord) {
+        this.useExternalAudioRecord = useExternalAudioRecord;
     }
 
     public boolean isEnableVideo() {
@@ -510,6 +536,36 @@ public class Params implements Serializable {
         mRecording = recording;
     }
 
+    public int getAudioSampleRate() {
+        return mAudioSampleRate;
+    }
+
+    public void setAudioSampleRate(int sampleRate) {
+        mAudioSampleRate = sampleRate;
+    }
+
+    public int getAudioChannels() {
+        return mAudioChannels;
+    }
+
+    public void setAudioChannels(int channels) {
+        mAudioChannels = channels;
+    }
+
+    public int getAudioBitrate() {
+        return mAudioChannels == 1 ? 48*1000 : 96*1000;
+    }
+
+    // 工具方法，获取歌曲播放的实际时间戳
+    public long getAccTs() {
+        long accTs = 0;
+        if (isMixMusicPlaying() && getLrcHasStart()) {
+            accTs = getCurrentMusicTs() + getMixMusicBeginOffset() +
+                    (System.currentTimeMillis() - getRecordCurrentMusicTsTs());
+        }
+        return accTs;
+    }
+
     public static class Builder {
         Params mParams = new Params();
 
@@ -521,8 +577,18 @@ public class Params implements Serializable {
             return this;
         }
 
-        public Builder setUseCbEngine(boolean useCbEngine) {
-            mParams.setUseCbEngine(useCbEngine);
+        public Builder setUseExternalAudio(boolean useExternalAudio) {
+            mParams.setUseExternalAudio(useExternalAudio);
+            return this;
+        }
+
+        public Builder setUseExternalVideo(boolean useExternalVideo) {
+            mParams.setUseExternalVideo(useExternalVideo);
+            return this;
+        }
+
+        public Builder setUseExternalAudioRecord(boolean useExternalAudioRecord) {
+            mParams.setUseExternalAudioRecord(useExternalAudioRecord);
             return this;
         }
 
@@ -651,6 +717,16 @@ public class Params implements Serializable {
             return this;
         }
 
+        public Builder setAudioSampleRate(int sampleRate) {
+            mParams.setAudioSampleRate(sampleRate);
+            return this;
+        }
+
+        public Builder setAudioChannels(int channels) {
+            mParams.setAudioChannels(channels);
+            return this;
+        }
+
         public Params build() {
             return mParams;
         }
@@ -664,7 +740,7 @@ public class Params implements Serializable {
     public static void save2Pref(Params params) {
         if (params != null) {
             String s = JSON.toJSONString(params);
-            MyLog.w(EngineManager.TAG, "save2Pref " + s);
+            MyLog.w(TAG, "save2Pref " + s);
             U.getPreferenceUtils().setSettingString("engine_pref_params3", s);
         }
     }
@@ -676,7 +752,7 @@ public class Params implements Serializable {
      */
     public static Params getFromPref() {
         String s = U.getPreferenceUtils().getSettingString("engine_pref_params3", "");
-        MyLog.w(EngineManager.TAG, "getFromPref " + s);
+        MyLog.w(TAG, "getFromPref " + s);
         Params params;
         if (!TextUtils.isEmpty(s)) {
             params = JSON.parseObject(s, Params.class);
@@ -684,7 +760,9 @@ public class Params implements Serializable {
             params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(false)
                     .setEnableAudio(true)
-                    .setUseCbEngine(false)
+                    .setUseExternalAudio(false)
+                    .setUseExternalVideo(true)
+                    .setUseExternalAudioRecord(true)
                     .setStyleEnum(AudioEffect.none)
                     .build();
         }

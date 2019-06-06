@@ -17,7 +17,8 @@ public interface IPersonView {
     void showHomePageInfo(List<RelationNumModel> relationNumModels,
                           List<UserRankModel> userRankModels,
                           List<UserLevelModel> userLevelModels,
-                          List<GameStatisModel> gameStatisModels);
+                          List<GameStatisModel> gameStatisModels,
+                          int meiLiCntTotal);
 
     void loadHomePageFailed();
 

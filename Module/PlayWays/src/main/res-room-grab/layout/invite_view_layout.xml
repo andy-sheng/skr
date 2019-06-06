@@ -5,8 +5,8 @@
     android:layout_marginLeft="@dimen/view_16_dp"
     android:layout_marginRight="@dimen/view_16_dp"
     android:background="@drawable/common_dialog_bg"
-    android:paddingTop="@dimen/view_5_dp"
-    android:paddingBottom="@dimen/view_5_dp"
+    android:paddingTop="@dimen/view_3_dp"
+    android:paddingBottom="@dimen/view_7_dp"
     android:paddingLeft="@dimen/view_3_dp"
     android:paddingRight="@dimen/view_3_dp">
 

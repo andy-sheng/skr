@@ -25,15 +25,16 @@
         titlebar:leftType="imageButton"
         titlebar:rightCustomView="@layout/picker_okbtn_layout"
         titlebar:rightType="customView"
-        titlebar:statusBarColor="#0288D0"
-        titlebar:titleBarColor="#0288D0" />
+        titlebar:showBottomLine="false"
+        titlebar:statusBarColor="@color/colorPrimary"
+        titlebar:titleBarColor="@color/colorPrimary" />
 
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#cc22292c"
+        android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">

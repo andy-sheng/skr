@@ -22,6 +22,7 @@ public class GrabGiveupView extends RelativeLayout {
     public final static String TAG = "GrabPassView";
     public static final int MSG_ANIMATION_SHOW = 1;
     ExImageView mIvPass;
+    ExImageView mOwnerStopIv;
 
     Listener mListener;
 
@@ -63,18 +64,34 @@ public class GrabGiveupView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_pass_view_layout, this);
-        mIvPass = (ExImageView) findViewById(R.id.pass_iv);
+        mIvPass = (ExImageView) findViewById(R.id.give_up_iv);
         mIvPass.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    mListener.giveUp();
+                    mListener.giveUp(false);
+                }
+            }
+        });
+        mOwnerStopIv = findViewById(R.id.owner_stop_iv);
+        mOwnerStopIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.giveUp(true);
                 }
             }
         });
     }
 
-    public void delayShowGiveUpView() {
+    public void delayShowGiveUpView(boolean ownerControl) {
+        if(ownerControl){
+            mOwnerStopIv.setVisibility(VISIBLE);
+            mIvPass.setVisibility(GONE);
+        }else{
+            mOwnerStopIv.setVisibility(GONE);
+            mIvPass.setVisibility(VISIBLE);
+        }
         hideWithAnimation(false);
         mUiHandler.removeMessages(MSG_ANIMATION_SHOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW,5000);
@@ -106,6 +123,6 @@ public class GrabGiveupView extends RelativeLayout {
     }
 
     public interface Listener {
-        void giveUp();
+        void giveUp(boolean ownerControl);
     }
 }

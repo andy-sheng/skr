@@ -33,7 +33,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.room.room.adapter.LeaderBoardAdapter;
@@ -434,9 +433,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             .setBorderColor(0xFFFFD958)
                             .build());
 
-            RxView.clicks(mSdvChampainIcon).subscribe(new Consumer<Object>() {
+            mSdvChampainIcon.setOnClickListener(new DebounceViewClickListener() {
                 @Override
-                public void accept(Object o) {
+                public void clickValid(View v) {
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
@@ -450,10 +449,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
                             .setBorderColor(0xFFA2C9DA)
                             .build());
-
-            RxView.clicks(mSdvRightChampainIcon).subscribe(new Consumer<Object>() {
+            mSdvRightChampainIcon.setOnClickListener(new DebounceViewClickListener() {
                 @Override
-                public void accept(Object o) {
+                public void clickValid(View v) {
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
@@ -469,9 +467,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             .setBorderColor(0xFFEEB874)
                             .build());
 
-            RxView.clicks(mSdvLeftChampainIcon).subscribe(new Consumer<Object>() {
+            mSdvLeftChampainIcon.setOnClickListener(new DebounceViewClickListener() {
                 @Override
-                public void accept(Object o) {
+                public void clickValid(View v) {
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });

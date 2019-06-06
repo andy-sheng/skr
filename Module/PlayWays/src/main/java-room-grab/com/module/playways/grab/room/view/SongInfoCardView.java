@@ -2,14 +2,18 @@ package com.module.playways.grab.room.view;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
@@ -20,7 +24,10 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.ImageUtils;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
+import com.module.playways.room.song.model.MiniGameInfoModel;
+import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -53,11 +60,10 @@ public class SongInfoCardView extends RelativeLayout {
 
     public final static String TAG = "SongInfoCardView";
 
-//    SimpleDraweeView mSongCoverIv;
+    //    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
-    ExTextView mChorusSongTag;
-    ExTextView mPkSongTag;
-//    ExTextView mSongSingerTv;
+    TextView mSongTagTv;
+    //    ExTextView mSongSingerTv;
     BitmapTextView mCurrentSeq;
     BitmapTextView mTotalSeq;
     ExTextView mSongLyrics;
@@ -70,6 +76,10 @@ public class SongInfoCardView extends RelativeLayout {
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
     Disposable mDisposable;
+
+    Drawable mChorusDrawable;
+    Drawable mPKDrawable;
+    Drawable mMiniGameDrawable;
 
     public SongInfoCardView(Context context) {
         super(context);
@@ -90,8 +100,7 @@ public class SongInfoCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_song_info_card_layout, this);
 //        mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
-        mChorusSongTag = (ExTextView) findViewById(R.id.chorus_song_tag);
-        mPkSongTag = (ExTextView) findViewById(R.id.pk_song_tag);
+        mSongTagTv = (TextView) findViewById(R.id.song_tag_tv);
 //        mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
         mCurrentSeq = (BitmapTextView) findViewById(R.id.current_seq);
         mTotalSeq = (BitmapTextView) findViewById(R.id.total_seq);
@@ -99,12 +108,27 @@ public class SongInfoCardView extends RelativeLayout {
         mGrabCd = (ImageView) findViewById(R.id.grab_cd);
         mGrabChorus = (ImageView) findViewById(R.id.grab_chorus);
         mGrabPk = (ImageView) findViewById(R.id.grab_pk);
+
+        mChorusDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#7088FF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .build();
+
+        mPKDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#E55088"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .build();
+
+        mMiniGameDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#61B14F"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .build();
     }
 
     // 该动画需要循环播放
     public void bindSongModel(int curRoundSeq, int totalSeq, SongModel songModel) {
         MyLog.d(TAG, "bindSongModel" + " songModel=" + songModel);
-        if (songModel == null || TextUtils.isEmpty(songModel.getCover())) {
+        if (songModel == null) {
             return;
         }
 
@@ -135,8 +159,13 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
-            mChorusSongTag.setVisibility(VISIBLE);
-            mPkSongTag.setVisibility(GONE);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+            layoutParams.width = U.getDisplayUtils().dip2px(42);
+            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(42);
+            mSongTagTv.setLayoutParams(layoutParams);
+            mSongTagTv.setText("合唱");
+            mSongTagTv.setVisibility(VISIBLE);
+            mSongTagTv.setBackground(mChorusDrawable);
             // 入场动画
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
@@ -146,8 +175,34 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(VISIBLE);
-            mChorusSongTag.setVisibility(GONE);
-            mPkSongTag.setVisibility(VISIBLE);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+            layoutParams.width = U.getDisplayUtils().dip2px(42);
+            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(42);
+            mSongTagTv.setLayoutParams(layoutParams);
+            mSongTagTv.setText("PK");
+            mSongTagTv.setVisibility(VISIBLE);
+            mSongTagTv.setBackground(mPKDrawable);
+            // 入场动画
+            animationGo(false);
+        } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+            // 小游戏
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68), 0);
+            if (songModel.getMiniGame() != null) {
+                mSongNameTv.setText("【" + songModel.getMiniGame().getGameName() + "】");
+            } else {
+                MyLog.w(TAG, "bindSongModel" + " 给的是小游戏类型，但是结构给的空？？？服务器BYD和佳胜");
+            }
+            mGrabCd.setVisibility(GONE);
+            // 和合唱一样的卡片
+            mGrabChorus.setVisibility(VISIBLE);
+            mGrabPk.setVisibility(GONE);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+            layoutParams.width = U.getDisplayUtils().dip2px(68);
+            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(68);
+            mSongTagTv.setLayoutParams(layoutParams);
+            mSongTagTv.setText("双人游戏");
+            mSongTagTv.setVisibility(VISIBLE);
+            mSongTagTv.setBackground(mMiniGameDrawable);
             // 入场动画
             animationGo(false);
         } else {
@@ -156,8 +211,7 @@ public class SongInfoCardView extends RelativeLayout {
             mGrabCd.setVisibility(VISIBLE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(GONE);
-            mChorusSongTag.setVisibility(GONE);
-            mPkSongTag.setVisibility(GONE);
+            mSongTagTv.setVisibility(GONE);
             // 入场动画
             animationGo(true);
         }
@@ -166,20 +220,30 @@ public class SongInfoCardView extends RelativeLayout {
 
     public void playLyric(SongModel songModel) {
         if (songModel == null) {
-            MyLog.d(TAG, "songModel 是空的");
+            MyLog.w(TAG, "songModel 是空的");
             return;
         }
 
-        File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-
-        if (file == null || !file.exists()) {
-            MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask(songModel);
+        if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+            MiniGameInfoModel gameInfoModel = songModel.getMiniGame();
+            if (gameInfoModel != null) {
+                mSongLyrics.setText(gameInfoModel.getDisplayGameRule());
+            } else {
+                MyLog.w(TAG, "miniGameInfo 是空的");
+            }
         } else {
-            MyLog.w(TAG, "playLyric is exist");
-            final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-            drawLyric(fileName);
+            File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+
+            if (file == null || !file.exists()) {
+                MyLog.w(TAG, "playLyric is not in local file");
+                fetchLyricTask(songModel);
+            } else {
+                MyLog.w(TAG, "playLyric is exist");
+                final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+                drawLyric(fileName);
+            }
         }
+
     }
 
     private void fetchLyricTask(SongModel songModel) {
@@ -192,11 +256,11 @@ public class SongInfoCardView extends RelativeLayout {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), newName,true, null);
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), newName, true, null);
 
                 if (isSuccess) {
-                        emitter.onNext(newName);
-                        emitter.onComplete();
+                    emitter.onNext(newName);
+                    emitter.onComplete();
                 } else {
                     emitter.onError(new IgnoreException("下载失败" + TAG));
                 }

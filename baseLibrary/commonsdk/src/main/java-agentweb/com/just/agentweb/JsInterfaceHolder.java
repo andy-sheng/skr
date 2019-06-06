@@ -1,34 +1,18 @@
-/*
- * Copyright (C)  Justson(https://github.com/Justson/AgentWeb)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.just.agentweb;
 
-import java.util.Map;
+import android.support.v4.util.ArrayMap;
 
 /**
- * @author cenxiaozhong
- * @date 2017/5/13
- * @since 1.0.0
+ * Created by cenxiaozhong on 2017/5/13.
+ * source CODE  https://github.com/Justson/AgentWebX5
  */
+
 public interface JsInterfaceHolder {
 
-    JsInterfaceHolder addJavaObjects(Map<String, Object> maps);
+    JsInterfaceHolder addJavaObjects(ArrayMap<String, Object> maps);
 
     JsInterfaceHolder addJavaObject(String k, Object v);
 
-    boolean checkObject(Object v);
+    boolean checkObject(Object v) ;
 
 }

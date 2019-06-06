@@ -6,18 +6,39 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <ImageView
-        android:id="@+id/iv_tag"
-        android:layout_width="@dimen/view_144_dp"
-        android:layout_height="@dimen/view_67_dp"
-        android:background="@drawable/ycdd_daojishi_chorus" />
+    <RelativeLayout
+        android:id="@+id/background_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_tag"
+            android:layout_width="@dimen/view_144_dp"
+            android:layout_height="@dimen/view_67_dp"
+            android:background="@drawable/ycdd_daojishi_chorus" />
+
+        <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_67_dp"
+            android:background="@drawable/circle_count_down_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/view_70_dp"
+            android:paddingRight="@dimen/view_22_dp"
+            android:textColor="#FFC15B"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
 
     <com.common.view.countdown.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_60_dp"
-        android:layout_alignLeft="@+id/iv_tag"
-        android:layout_alignTop="@+id/iv_tag"
+        android:layout_alignLeft="@+id/background_area"
+        android:layout_alignTop="@+id/background_area"
         android:layout_marginLeft="@dimen/view_3_dp"
         android:layout_marginTop="@dimen/view_3_dp"
         app:inner_color="#FFC15B"
@@ -27,8 +48,8 @@
     <FrameLayout
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_40_dp"
-        android:layout_alignLeft="@+id/iv_tag"
-        android:layout_alignTop="@+id/iv_tag"
+        android:layout_alignLeft="@+id/background_area"
+        android:layout_alignTop="@+id/background_area"
         android:layout_marginLeft="@dimen/view_6_dp"
         android:layout_marginTop="@dimen/view_12_dp">
 

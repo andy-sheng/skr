@@ -1,31 +1,21 @@
-/*
- * Copyright (C)  Justson(https://github.com/Justson/AgentWeb)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.just.agentweb;
 
-import android.webkit.WebView;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
+
 /**
- * @author cenxiaozhong
- * @since 1.0.0
+ * <b>@项目名：</b> agentwebX5<br>
+ * <b>@包名：</b>com.just.library<br>
+ * <b>@创建者：</b> cxz --  just<br>
+ * <b>@创建时间：</b> &{DATE}<br>
+ * <b>@公司：</b> <br>
+ * <b>@邮箱：</b> cenxiaozhong.qqcom@qq.com<br>
+ * <b>@描述:source CODE  https://github.com/Justson/AgentWebX5</b><br>
  */
-public interface WebCreator extends IWebIndicator {
+
+public interface WebCreator extends ProgressManager {
     WebCreator create();
 
-    WebView getWebView();
+    com.tencent.smtt.sdk.WebView get();
 
-    FrameLayout getWebParentLayout();
+    ViewGroup getGroup();
 }

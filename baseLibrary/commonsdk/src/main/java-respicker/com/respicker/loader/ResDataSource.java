@@ -206,7 +206,9 @@ public class ResDataSource {
         String selections = null;
         String[] selectionArgs = null;
         if (ResPicker.getInstance().getParams().isIncludeGif()) {
-
+            selections = new StringBuilder()
+                    .append(MediaStore.Images.Media.SIZE)
+                    .append("< " + 1024 * 1024 * 10).toString();
         } else {
             // 不要gif
             selections = new StringBuilder()
@@ -215,6 +217,9 @@ public class ResDataSource {
                     .append(" and ")
                     .append(MediaStore.Images.Media.MIME_TYPE)
                     .append("!=?")
+                    .append(" and ")
+                    .append(MediaStore.Images.Media.SIZE)
+                    .append("< " + 1024 * 1024 * 10)
                     .toString();
             selectionArgs = new String[]{
                     "image/gif",
@@ -257,10 +262,10 @@ public class ResDataSource {
                 // 再根据真正的类型判断一下是不是gif
                 if (ResPicker.getInstance().getParams().isIncludeGif()) {
                     allImages.add(imageItem);
-                } else{
-                    if(U.getImageUtils().getImageType(imagePath) == ImageUtils.TYPE.GIF){
+                } else {
+                    if (U.getImageUtils().getImageType(imagePath) == ImageUtils.TYPE.GIF) {
 
-                    }else{
+                    } else {
                         allImages.add(imageItem);
                     }
                 }
