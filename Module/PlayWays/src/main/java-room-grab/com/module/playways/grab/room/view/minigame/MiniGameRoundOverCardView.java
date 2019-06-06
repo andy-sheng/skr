@@ -48,7 +48,6 @@ public class MiniGameRoundOverCardView extends RelativeLayout {
         if (lastRoundInfo == null) {
             return;
         }
-        setVisibility(VISIBLE);
         int songId = 0;
         if (lastRoundInfo.getMusic() != null) {
             songId = lastRoundInfo.getMusic().getItemID();
@@ -56,6 +55,7 @@ public class MiniGameRoundOverCardView extends RelativeLayout {
         int reason = lastRoundInfo.getOverReason();
         int resultType = lastRoundInfo.getResultType();
         this.mSVGAListener = listener;
+        setVisibility(VISIBLE);
 
 //        if (reason == EQRoundOverReason.ROR_MIN_GAME_NOT_ENOUTH_PLAYER.getValue()) {
 //            // 连麦小游戏人数不够

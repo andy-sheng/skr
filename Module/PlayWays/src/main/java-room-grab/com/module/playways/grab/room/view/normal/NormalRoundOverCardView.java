@@ -61,7 +61,6 @@ public class NormalRoundOverCardView extends RelativeLayout {
         if (lastRoundInfo == null) {
             return;
         }
-        setVisibility(VISIBLE);
         int songId = 0;
         if (lastRoundInfo.getMusic() != null) {
             songId = lastRoundInfo.getMusic().getItemID();
@@ -69,6 +68,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
         int reason = lastRoundInfo.getOverReason();
         int resultType = lastRoundInfo.getResultType();
         this.mSVGAListener = listener;
+        setVisibility(VISIBLE);
 
         if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
             // 无人想唱
