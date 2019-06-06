@@ -716,7 +716,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void showGiftPanel() {
                 if (mRoomData.getRealRoundInfo() != null) {
-                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
+                    GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+                    if (now != null) {
+                        if (now.isPKRound() && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                            if (now.getsPkRoundInfoModels().size() == 2) {
+                                int userId = now.getsPkRoundInfoModels().get(1).getUserID();
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, userId));
+                            } else {
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, now.getUserID()));
+                            }
+                        } else {
+                            mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, now.getUserID()));
+                        }
+                    } else {
+                        mGiftPanelView.show(null);
+                    }
                 } else {
                     mGiftPanelView.show(null);
                 }
