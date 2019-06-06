@@ -15,9 +15,9 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
-import com.alipay.sdk.app.H5PayCallback;
-import com.alipay.sdk.app.PayTask;
-import com.alipay.sdk.util.H5PayResultModel;
+//import com.alipay.sdk.app.H5PayCallback;
+//import com.alipay.sdk.app.PayTask;
+//import com.alipay.sdk.util.H5PayResultModel;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
@@ -239,41 +239,41 @@ public class DefaultWebClient extends WrapperWebViewClient {
 
 	private boolean isAlipay(final android.webkit.WebView view, String url) {
 
-		try {
-
-			Activity mActivity = null;
-			if ((mActivity = mWeakReference.get()) == null)
-				return false;
-			/**
-			 * 推荐采用的新的二合一接口(payInterceptorWithUrl),只需调用一次
-			 */
-			if (mPayTask == null) {
-				Class clazz = Class.forName("com.alipay.sdk.app.PayTask");
-				Constructor<?> mConstructor = clazz.getConstructor(Activity.class);
-				mPayTask = mConstructor.newInstance(mActivity);
-			}
-			final PayTask task = (PayTask) mPayTask;
-			boolean isIntercepted = task.payInterceptorWithUrl(url, true, new H5PayCallback() {
-				@Override
-				public void onPayResult(final H5PayResultModel result) {
-					final String url = result.getReturnUrl();
-					if (!TextUtils.isEmpty(url)) {
-						AgentWebX5Utils.runInUiThread(new Runnable() {
-							@Override
-							public void run() {
-								view.loadUrl(url);
-							}
-						});
-					}
-				}
-			});
-			LogUtils.i(TAG, "alipay-isIntercepted:" + isIntercepted + "  url:" + url);
-			return isIntercepted;
-		} catch (Throwable ignore) {
-			if (AgentWebX5Config.DEBUG) {
-				ignore.printStackTrace();
-			}
-		}
+//		try {
+//
+//			Activity mActivity = null;
+//			if ((mActivity = mWeakReference.get()) == null)
+//				return false;
+//			/**
+//			 * 推荐采用的新的二合一接口(payInterceptorWithUrl),只需调用一次
+//			 */
+//			if (mPayTask == null) {
+//				Class clazz = Class.forName("com.alipay.sdk.app.PayTask");
+//				Constructor<?> mConstructor = clazz.getConstructor(Activity.class);
+//				mPayTask = mConstructor.newInstance(mActivity);
+//			}
+//			final PayTask task = (PayTask) mPayTask;
+//			boolean isIntercepted = task.payInterceptorWithUrl(url, true, new H5PayCallback() {
+//				@Override
+//				public void onPayResult(final H5PayResultModel result) {
+//					final String url = result.getReturnUrl();
+//					if (!TextUtils.isEmpty(url)) {
+//						AgentWebX5Utils.runInUiThread(new Runnable() {
+//							@Override
+//							public void run() {
+//								view.loadUrl(url);
+//							}
+//						});
+//					}
+//				}
+//			});
+//			LogUtils.i(TAG, "alipay-isIntercepted:" + isIntercepted + "  url:" + url);
+//			return isIntercepted;
+//		} catch (Throwable ignore) {
+//			if (AgentWebX5Config.DEBUG) {
+//				ignore.printStackTrace();
+//			}
+//		}
 		return false;
 	}
 
@@ -305,32 +305,32 @@ public class DefaultWebClient extends WrapperWebViewClient {
 
 	private boolean isAlipay(final WebView view, String url) {
 
-		Activity mActivity = null;
-		if ((mActivity = mWeakReference.get()) == null)
-			return false;
-		final PayTask task = new PayTask(mActivity);
-		final String ex = task.fetchOrderInfoFromH5PayUrl(url);
-		LogUtils.i("Info", "alipay:" + ex);
-		if (!TextUtils.isEmpty(ex)) {
-			//System.out.println("paytask:::::" + url);
-			AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
-				public void run() {
-					System.out.println("payTask:::" + ex);
-					final H5PayResultModel result = task.h5Pay(ex, true);
-					if (!TextUtils.isEmpty(result.getReturnUrl())) {
-						AgentWebX5Utils.runInUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								view.loadUrl(result.getReturnUrl());
-							}
-						});
-					}
-				}
-			});
-
-			return true;
-		}
+//		Activity mActivity = null;
+//		if ((mActivity = mWeakReference.get()) == null)
+//			return false;
+//		final PayTask task = new PayTask(mActivity);
+//		final String ex = task.fetchOrderInfoFromH5PayUrl(url);
+//		LogUtils.i("Info", "alipay:" + ex);
+//		if (!TextUtils.isEmpty(ex)) {
+//			//System.out.println("paytask:::::" + url);
+//			AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+//				public void run() {
+//					System.out.println("payTask:::" + ex);
+//					final H5PayResultModel result = task.h5Pay(ex, true);
+//					if (!TextUtils.isEmpty(result.getReturnUrl())) {
+//						AgentWebX5Utils.runInUiThread(new Runnable() {
+//
+//							@Override
+//							public void run() {
+//								view.loadUrl(result.getReturnUrl());
+//							}
+//						});
+//					}
+//				}
+//			});
+//
+//			return true;
+//		}
 		return false;
 	}
 
