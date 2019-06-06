@@ -35,6 +35,7 @@
             android:layout_below="@+id/title_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_10_dp"
+            android:textIsSelectable="true"
             android:gravity="center"
             android:textColor="#3B4E79"
             android:textSize="@dimen/textsize_14_dp" />
