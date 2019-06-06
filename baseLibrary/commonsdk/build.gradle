@@ -68,7 +68,7 @@ android {
 //            java.srcDirs += 'src/main/java-paginate'
 //            res.srcDirs += 'src/main/res-paginate'
 
-            // 直接引入支持下拉加载 recyclerView
+            //  相册选取 视频选取
             java.srcDirs += 'src/main/java-respicker'
             res.srcDirs += 'src/main/res-respicker'
 
@@ -77,8 +77,8 @@ android {
             res.srcDirs += 'src/main/res-imagebrowse'
 
             // 带拼音索引的列表 类似微信联系人
-            java.srcDirs += 'src/main/java-indexrecyclerview'
-            res.srcDirs += 'src/main/res-indexrecyclerview'
+            //java.srcDirs += 'src/main/java-indexrecyclerview'
+            //res.srcDirs += 'src/main/res-indexrecyclerview'
 
             // 扩展的一些view 可以自定义一些属性，方便使用
             java.srcDirs += 'src/main/java-exview'
@@ -88,17 +88,13 @@ android {
             java.srcDirs += 'src/main/java-emoji'
             res.srcDirs += 'src/main/res-emoji'
 
-            // 二维码的库
-//            java.srcDirs += 'src/main/java-gif-drawable'
-//            res.srcDirs += 'src/main/res-'
-
             // dialog库
             java.srcDirs += 'src/main/java-dialog'
             res.srcDirs += 'src/main/res-dialog'
 
             // bubbleSeekbar
-            java.srcDirs += 'src/main/java-seekbar'
-            res.srcDirs += 'src/main/res-seekbar'
+            //java.srcDirs += 'src/main/java-seekbar'
+            //res.srcDirs += 'src/main/res-seekbar'
 
             // loadsir
             java.srcDirs += 'src/main/java-loadsir'
@@ -124,8 +120,8 @@ android {
             res.srcDirs += 'src/main/res-agentweb'
 
             // 滚轮时间、地址等选择器
-            java.srcDirs += 'src/main/java-picker'
-            res.srcDirs += 'src/main/res-picker'
+            //java.srcDirs += 'src/main/java-picker'
+            //res.srcDirs += 'src/main/res-picker'
 
             // 标签布局
             java.srcDirs += 'src/main/java-flowlayout'
