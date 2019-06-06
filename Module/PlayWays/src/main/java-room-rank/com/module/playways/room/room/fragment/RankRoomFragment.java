@@ -7,7 +7,9 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +22,8 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
@@ -33,6 +37,7 @@ import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.others.LyricAndAccMatchManager;
@@ -61,11 +66,14 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialog;
+import com.zq.dialog.event.ShowEditRemarkEvent;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -148,6 +156,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     VoiceScaleView mVoiceScaleView;
 
     GrabDengBigAnimationView mDengBigAnimation;
+
+    DialogPlus mEditRemarkDialog;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -738,6 +748,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mLyricAndAccMatchManager.stop();
         }
 
+        if (mEditRemarkDialog != null) {
+            mEditRemarkDialog.dismiss(false);
+        }
+
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }
@@ -1046,6 +1060,60 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mDengBigAnimation.setTranslationY(0);
             mDengBigAnimation.playBurstAnimation(false);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ShowEditRemarkEvent event) {
+        if (event.mUserInfoModel != null) {
+            showRemarkDialog(event.mUserInfoModel);
+        }
+    }
+
+    private void showRemarkDialog(UserInfoModel mUserInfoModel) {
+        EditRemarkView editRemarkView = new EditRemarkView(RankRoomFragment.this, mUserInfoModel.getNickname(), mUserInfoModel.getNicknameRemark(null));
+        editRemarkView.setListener(new EditRemarkView.Listener() {
+            @Override
+            public void onClickCancel() {
+                if (mEditRemarkDialog != null) {
+                    mEditRemarkDialog.dismiss();
+                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+            }
+
+            @Override
+            public void onClickSave(String remarkName) {
+                if (mEditRemarkDialog != null) {
+                    mEditRemarkDialog.dismiss();
+                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(mUserInfoModel.getNicknameRemark())) {
+                    // 都为空
+                    return;
+                } else if (!TextUtils.isEmpty(mUserInfoModel.getNicknameRemark()) && (mUserInfoModel.getNicknameRemark()).equals(remarkName)) {
+                    // 相同
+                    return;
+                } else {
+                    UserInfoManager.getInstance().updateRemark(remarkName, mUserInfoModel.getUserId());
+                }
+            }
+        });
+
+        mEditRemarkDialog = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(editRemarkView))
+                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
+                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
+                .setInAnimation(com.component.busilib.R.anim.fade_in)
+                .setOutAnimation(com.component.busilib.R.anim.fade_out)
+                .setExpanded(false)
+                .setGravity(Gravity.BOTTOM)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    }
+                })
+                .create();
+        mEditRemarkDialog.show();
     }
 
     @Override
