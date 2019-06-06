@@ -277,7 +277,7 @@ dependencies {
         implementation project(":Module:Home")
         implementation project(":Module:PlayWays")
         implementation project(":Module:IMKit")
-        api(rootProject.ext.dependencies["multidex"])
+        //api(rootProject.ext.dependencies["multidex"])
 //        implementation project(":Module:IMLib")
         //  tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
