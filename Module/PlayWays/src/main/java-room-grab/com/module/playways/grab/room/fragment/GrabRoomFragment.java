@@ -1302,7 +1302,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mTopContainerView.setVisibility(View.VISIBLE);
 
         // 保持只有一张卡片
-//        hideAllCardView();
+        hideAllCardView();
 
         mMiniOwnerMicIv.setVisibility(GONE);
         mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
@@ -1342,7 +1342,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
 
         // 保持只有一张卡片
-//        hideAllCardView();
+        hideAllCardView();
         mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
 
         mGrabGiveupView.hideWithAnimation(false);
@@ -1368,7 +1368,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
 
         // 保持只有一张卡片
-//        hideAllCardView();
+        hideAllCardView();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mGrabOpBtn.hide("singBySelf");
@@ -1465,7 +1465,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         MyLog.d(TAG, "onSingBeginTipsPlayOver");
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         // 保持只有一张卡片
-//        hideAllCardView();
+        hideAllCardView();
 
         mGrabScoreTipsView.reset();
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
@@ -1533,7 +1533,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
         // 保持只有一张卡片
-//        hideAllCardView();
+        hideAllCardView();
 
         mMiniOwnerMicIv.setVisibility(GONE);
         removeNoAccSrollTipsView();
