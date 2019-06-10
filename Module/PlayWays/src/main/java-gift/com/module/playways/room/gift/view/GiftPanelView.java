@@ -246,8 +246,10 @@ public class GiftPanelView extends FrameLayout {
                         TranslateAnimation translateAnimation = new TranslateAnimation(-i * U.getDisplayUtils().dip2px(46), 0, 0, 0);
                         translateAnimation.setDuration(300);
                         translateAnimation.setInterpolator(new DecelerateInterpolator());
-                        view.setAnimation(translateAnimation);
-                        view.startAnimation(translateAnimation);
+                        if(view != null){
+                            view.setAnimation(translateAnimation);
+                            view.startAnimation(translateAnimation);
+                        }
                     }
 
                     Drawable drawable = U.getDrawable(R.drawable.suoyouren_left);
