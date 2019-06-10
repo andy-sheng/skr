@@ -160,7 +160,9 @@ public class CropImageView extends AppCompatImageView {
         initImage();
     }
 
-    /** 初始化图片和焦点框 */
+    /**
+     * 初始化图片和焦点框
+     */
     private void initImage() {
         Drawable d = getDrawable();
         if (!isInited || d == null) return;
@@ -206,7 +208,9 @@ public class CropImageView extends AppCompatImageView {
         invalidate();
     }
 
-    /** 计算边界缩放比例 isMinScale 是否最小比例，true 最小缩放比例， false 最大缩放比例 */
+    /**
+     * 计算边界缩放比例 isMinScale 是否最小比例，true 最小缩放比例， false 最大缩放比例
+     */
     private float getScale(int bitmapWidth, int bitmapHeight, int minWidth, int minHeight, boolean isMinScale) {
         float scale;
         float scaleX = (float) minWidth / bitmapWidth;
@@ -219,7 +223,9 @@ public class CropImageView extends AppCompatImageView {
         return scale;
     }
 
-    /** 绘制焦点框 */
+    /**
+     * 绘制焦点框
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -358,7 +364,9 @@ public class CropImageView extends AppCompatImageView {
         return true;
     }
 
-    /** 修正图片的缩放比 */
+    /**
+     * 修正图片的缩放比
+     */
     private void fixScale() {
         float imageMatrixValues[] = new float[9];
         matrix.getValues(imageMatrixValues);
@@ -376,7 +384,9 @@ public class CropImageView extends AppCompatImageView {
         }
     }
 
-    /** 修正图片的位移 */
+    /**
+     * 修正图片的位移
+     */
     private void fixTranslation() {
         RectF imageRect = new RectF(0, 0, mImageWidth, mImageHeight);
         matrix.mapRect(imageRect);  //获取当前图片（缩放以后的）相对于当前控件的位置区域，超过控件的上边缘或左边缘为负
@@ -394,7 +404,9 @@ public class CropImageView extends AppCompatImageView {
         matrix.postTranslate(deltaX, deltaY);
     }
 
-    /** 获取当前图片允许的最大缩放比 */
+    /**
+     * 获取当前图片允许的最大缩放比
+     */
     private float maxPostScale() {
         float imageMatrixValues[] = new float[9];
         matrix.getValues(imageMatrixValues);
@@ -402,19 +414,25 @@ public class CropImageView extends AppCompatImageView {
         return mMaxScale / curScale;
     }
 
-    /** 计算两点之间的距离 */
+    /**
+     * 计算两点之间的距离
+     */
     private float spacing(float x1, float y1, float x2, float y2) {
         float x = x1 - x2;
         float y = y1 - y2;
         return (float) Math.sqrt(x * x + y * y);
     }
 
-    /** 计算两点之间的距离 */
+    /**
+     * 计算两点之间的距离
+     */
     private float spacing(PointF pA, PointF pB) {
         return spacing(pA.x, pA.y, pB.x, pB.y);
     }
 
-    /** 双击触发的方法 */
+    /**
+     * 双击触发的方法
+     */
     private void doubleClick(float x, float y) {
         float p[] = new float[9];
         matrix.getValues(p);
@@ -487,7 +505,7 @@ public class CropImageView extends AppCompatImageView {
      * @return 裁剪后的图片的Bitmap
      */
     private Bitmap makeCropBitmap(Bitmap bitmap, RectF focusRect, RectF imageMatrixRect, int expectWidth, int exceptHeight, boolean isSaveRectangle) {
-        if (imageMatrixRect == null || bitmap == null){
+        if (imageMatrixRect == null || bitmap == null) {
             return null;
         }
         float scale = imageMatrixRect.width() / bitmap.getWidth();
@@ -500,6 +518,10 @@ public class CropImageView extends AppCompatImageView {
         if (top < 0) top = 0;
         if (left + width > bitmap.getWidth()) width = bitmap.getWidth() - left;
         if (top + height > bitmap.getHeight()) height = bitmap.getHeight() - top;
+
+        if (width <= 0 || height < 0) {
+            return null;
+        }
 
         try {
             bitmap = Bitmap.createBitmap(bitmap, left, top, width, height);
@@ -550,7 +572,9 @@ public class CropImageView extends AppCompatImageView {
         }.start();
     }
 
-    /** 根据系统时间、前缀、后缀产生一个文件 */
+    /**
+     * 根据系统时间、前缀、后缀产生一个文件
+     */
     private File createFile(File folder, String prefix, String suffix) {
         if (!folder.exists() || !folder.isDirectory()) folder.mkdirs();
         try {
@@ -564,10 +588,12 @@ public class CropImageView extends AppCompatImageView {
         return new File(folder, filename);
     }
 
-    /** 将图片保存在本地 */
+    /**
+     * 将图片保存在本地
+     */
     private void saveOutput(Bitmap croppedImage, Bitmap.CompressFormat outputFormat, File saveFile) {
         OutputStream outputStream = null;
-        if(croppedImage == null){
+        if (croppedImage == null) {
             return;
         }
         try {
@@ -609,7 +635,9 @@ public class CropImageView extends AppCompatImageView {
         }
     }
 
-    /** 图片保存完成的监听 */
+    /**
+     * 图片保存完成的监听
+     */
     private static OnBitmapSaveCompleteListener mListener;
 
     public interface OnBitmapSaveCompleteListener {
@@ -622,68 +650,92 @@ public class CropImageView extends AppCompatImageView {
         mListener = listener;
     }
 
-    /** 返回焦点框宽度 */
+    /**
+     * 返回焦点框宽度
+     */
     public int getFocusWidth() {
         return mFocusWidth;
     }
 
-    /** 设置焦点框的宽度 */
+    /**
+     * 设置焦点框的宽度
+     */
     public void setFocusWidth(int width) {
         mFocusWidth = width;
         initImage();
     }
 
-    /** 获取焦点框的高度 */
+    /**
+     * 获取焦点框的高度
+     */
     public int getFocusHeight() {
         return mFocusHeight;
     }
 
-    /** 设置焦点框的高度 */
+    /**
+     * 设置焦点框的高度
+     */
     public void setFocusHeight(int height) {
         mFocusHeight = height;
         initImage();
     }
 
-    /** 返回阴影颜色 */
+    /**
+     * 返回阴影颜色
+     */
     public int getMaskColor() {
         return mMaskColor;
     }
 
-    /** 设置阴影颜色 */
+    /**
+     * 设置阴影颜色
+     */
     public void setMaskColor(int color) {
         mMaskColor = color;
         invalidate();
     }
 
-    /** 返回焦点框边框颜色 */
+    /**
+     * 返回焦点框边框颜色
+     */
     public int getFocusColor() {
         return mBorderColor;
     }
 
-    /** 设置焦点框边框颜色 */
+    /**
+     * 设置焦点框边框颜色
+     */
     public void setBorderColor(int color) {
         mBorderColor = color;
         invalidate();
     }
 
-    /** 返回焦点框边框绘制宽度 */
+    /**
+     * 返回焦点框边框绘制宽度
+     */
     public float getBorderWidth() {
         return mBorderWidth;
     }
 
-    /** 设置焦点边框宽度 */
+    /**
+     * 设置焦点边框宽度
+     */
     public void setBorderWidth(int width) {
         mBorderWidth = width;
         invalidate();
     }
 
-    /** 设置焦点框的形状 */
+    /**
+     * 设置焦点框的形状
+     */
     public void setFocusStyle(Style style) {
         this.mStyle = style;
         invalidate();
     }
 
-    /** 获取焦点框的形状 */
+    /**
+     * 获取焦点框的形状
+     */
     public Style getFocusStyle() {
         return mStyle;
     }
