@@ -57,6 +57,7 @@ android {
 
 dependencies {
     api project(":commoncore")
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     if (isBuildModule.toBoolean()) {
 //        tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
