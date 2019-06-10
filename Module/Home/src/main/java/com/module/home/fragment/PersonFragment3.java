@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -95,10 +96,11 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     ExTextView mFansNumTv;
     ExImageView mFansRedDot;
 
-    LinearLayout mFunctionArea;
+    ExImageView mIncomeIv;
     ExImageView mWalletIv;
     ExImageView mMusicTestIv;
-    ExRelativeLayout mMedalLayout;
+
+    ConstraintLayout mMedalLayout;
     ImageView mPaiweiImg;
     BitmapTextView mRankNumTv;
     ImageView mSingendImg;
@@ -106,7 +108,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
     TextView mCharmTv;
-    ExImageView mIncomeIv;
+
 
     AppBarLayout mAppbar;
     Toolbar mToolbar;
@@ -323,7 +325,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initFunctionArea() {
-        mFunctionArea = (LinearLayout) mRootView.findViewById(R.id.function_area);
         mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
         mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
         mMusicTestIv = (ExImageView) mRootView.findViewById(R.id.music_test_iv);
@@ -357,7 +358,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initGameInfoArea() {
-        mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mMedalLayout = (ConstraintLayout) mRootView.findViewById(R.id.medal_layout);
         mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
         mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
         mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);

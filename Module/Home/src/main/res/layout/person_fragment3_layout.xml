@@ -186,7 +186,7 @@
                                     android:layout_height="@dimen/view_16_dp"
                                     app:layout_constraintBottom_toBottomOf="@id/name_tv"
                                     app:layout_constraintRight_toRightOf="@id/name_tv"
-                                    app:layout_constraintTop_toTopOf="@id/name_tv"/>
+                                    app:layout_constraintTop_toTopOf="@id/name_tv" />
 
                                 <com.common.view.ex.ExTextView
                                     android:id="@+id/userid_tv"
@@ -293,7 +293,7 @@
 
                             </android.support.constraint.ConstraintLayout>
 
-                            <com.common.view.ex.ExRelativeLayout
+                            <android.support.constraint.ConstraintLayout
                                 android:id="@+id/medal_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/view_130_dp"
@@ -304,79 +304,76 @@
                                 android:layout_marginRight="@dimen/view_16_dp"
                                 android:background="@drawable/person_medal_bg">
 
-                                <RelativeLayout
-                                    android:layout_width="@dimen/view_70_dp"
+                                <ImageView
+                                    android:id="@+id/paiwei_img"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_marginLeft="@dimen/view_30_dp"
-                                    android:layout_marginTop="@dimen/view_15_dp">
+                                    android:layout_marginLeft="@dimen/view_32_dp"
+                                    android:layout_marginTop="@dimen/view_16_dp"
+                                    android:background="@drawable/person_rank_num_bg"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                    <ImageView
-                                        android:id="@+id/paiwei_img"
-                                        android:layout_width="@dimen/view_68_dp"
-                                        android:layout_height="@dimen/view_66_dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:background="@drawable/person_rank_num_bg" />
-
-                                    <com.component.busilib.view.BitmapTextView
-                                        android:id="@+id/rank_num_tv"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="@dimen/view_20_dp"
-                                        BitmapTextView:scale="0.6"
-                                        BitmapTextView:text_color="#3E4E76" />
-
-                                    <com.common.view.ex.ExTextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@id/paiwei_img"
-                                        android:layout_marginTop="@dimen/view_5_dp"
-                                        android:gravity="center"
-                                        android:text="排位赛"
-                                        android:textColor="#0C2275"
-                                        android:textSize="@dimen/textsize_12_dp"
-                                        android:textStyle="bold" />
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="@dimen/view_70_dp"
+                                <com.component.busilib.view.BitmapTextView
+                                    android:id="@+id/rank_num_tv"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_marginTop="@dimen/view_15_dp"
-                                    android:layout_marginRight="@dimen/view_30_dp">
+                                    android:layout_marginTop="@dimen/view_18_dp"
+                                    BitmapTextView:scale="0.6"
+                                    BitmapTextView:text_color="#3E4E76"
+                                    app:layout_constraintLeft_toLeftOf="@id/paiwei_img"
+                                    app:layout_constraintRight_toRightOf="@id/paiwei_img"
+                                    app:layout_constraintTop_toTopOf="@id/paiwei_img" />
 
-                                    <ImageView
-                                        android:id="@+id/singend_img"
-                                        android:layout_width="@dimen/view_68_dp"
-                                        android:layout_height="@dimen/view_66_dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:background="@drawable/person_grab_num_bg" />
+                                <com.common.view.ex.ExTextView
+                                    android:id="@+id/exTextView3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="排位赛"
+                                    android:textColor="#0C2275"
+                                    android:textSize="@dimen/textsize_12_dp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintLeft_toLeftOf="@id/paiwei_img"
+                                    app:layout_constraintRight_toRightOf="@id/paiwei_img"
+                                    app:layout_constraintTop_toBottomOf="@id/paiwei_img" />
 
-                                    <com.component.busilib.view.BitmapTextView
-                                        android:id="@+id/singend_num_tv"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="@dimen/view_20_dp"
-                                        BitmapTextView:scale="0.6"
-                                        BitmapTextView:text_color="#3E4E76" />
 
-                                    <com.common.view.ex.ExTextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/singend_img"
-                                        android:layout_marginTop="@dimen/view_5_dp"
-                                        android:gravity="center"
-                                        android:text="一唱到底"
-                                        android:textColor="#0C2275"
-                                        android:textSize="@dimen/textsize_12_dp"
-                                        android:textStyle="bold" />
+                                <ImageView
+                                    android:id="@+id/singend_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/view_16_dp"
+                                    android:layout_marginRight="@dimen/view_32_dp"
+                                    android:background="@drawable/person_grab_num_bg"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                </RelativeLayout>
+                                <com.component.busilib.view.BitmapTextView
+                                    android:id="@+id/singend_num_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/view_18_dp"
+                                    BitmapTextView:scale="0.6"
+                                    BitmapTextView:text_color="#3E4E76"
+                                    app:layout_constraintLeft_toLeftOf="@id/singend_img"
+                                    app:layout_constraintRight_toRightOf="@id/singend_img"
+                                    app:layout_constraintTop_toTopOf="@id/singend_img" />
 
-                            </com.common.view.ex.ExRelativeLayout>
+                                <com.common.view.ex.ExTextView
+                                    android:id="@+id/exTextView4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="一唱到底"
+                                    android:textColor="#0C2275"
+                                    android:textSize="@dimen/textsize_12_dp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintLeft_toLeftOf="@id/singend_img"
+                                    app:layout_constraintRight_toRightOf="@id/singend_img"
+                                    app:layout_constraintTop_toBottomOf="@id/singend_img" />
+
+                            </android.support.constraint.ConstraintLayout>
 
 
                             <TextView
