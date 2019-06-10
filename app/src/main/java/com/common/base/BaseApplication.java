@@ -182,10 +182,18 @@ public class BaseApplication extends Application {
         }
     }
 
+    long registerTs = 0;
     @Override
     public Intent registerReceiver(
             BroadcastReceiver receiver, IntentFilter filter) {
         MyLog.w(TAG,"registerReceiver" + " receiver=" + receiver + " filter=" + filter);
+        if(receiver==null && filter.getAction(0).equals("android.intent.action.BATTERY_CHANGED")){
+            // 说明是声网的那个注册电量广播，做个保护，不让每次都执行，可能会崩溃
+            if(System.currentTimeMillis() - registerTs < 60*1000){
+                return null;
+            }
+            registerTs = System.currentTimeMillis();
+        }
         return super.registerReceiver(receiver, filter);
     }
 

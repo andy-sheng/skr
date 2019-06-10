@@ -31,6 +31,7 @@ public class JiGuangPush {
             e.printStackTrace();
         }
         JPushInterface.setDebugMode(MyLog.isDebugLogOpen());
+        //JPushInterface.stopCrashHandler(U.app());
         JPushInterface.init(U.app());
         JPushInterface.stopCrashHandler(U.app());
 
