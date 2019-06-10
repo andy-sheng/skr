@@ -89,7 +89,7 @@ public class ProducationWallView extends RelativeLayout {
         mAdapter = new ProducationAdapter(new ProducationAdapter.Listener() {
             @Override
             public void onClickDele(int position, ProducationModel model) {
-                if (position == mAdapter.getPlayPosition()) {
+                if (model.getWorksID() == mAdapter.getPlayingWorksIdPosition()) {
                     // 先停止播放
                     stopPlay();
                 }
@@ -100,7 +100,7 @@ public class ProducationWallView extends RelativeLayout {
             @Override
             public void onClickShare(int position, ProducationModel model) {
                 // TODO: 2019/5/22 弹出分享框 需不需要先停止音乐
-                if (position == mAdapter.getPlayPosition()) {
+                if (model.getWorksID() == mAdapter.getPlayingWorksIdPosition()) {
                     // 先停止播放
                     stopPlay();
                 }
@@ -128,7 +128,7 @@ public class ProducationWallView extends RelativeLayout {
                     playProducation(model, position);
                     // 开始播放当前postion，
                     // 清楚上一个
-                    mAdapter.setPlayPosition(position);
+                    mAdapter.setPlayPosition(model.getWorksID());
                 } else {
                     if (mIPlayer != null) {
                         //mIPlayer.setCallback(null);
@@ -265,7 +265,7 @@ public class ProducationWallView extends RelativeLayout {
                 if (result.getErrno() == 0) {
                     // TODO: 2019/5/22 播放次数客户端自己加一
                     model.setPlayCnt(model.getPlayCnt() + 1);
-                    mAdapter.updatePlaycnt(model, position);
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         }, mFragment);

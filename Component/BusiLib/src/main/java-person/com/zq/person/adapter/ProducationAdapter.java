@@ -24,7 +24,7 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerVi
     Listener mListener;
     boolean mIsSelf;
 
-    int mPlayPosition = -1;  //选中播放的id
+    int mProducationworksID = -1;  //选中播放的id
 
     LinearLayoutManager mLinearLayoutManager;
 
@@ -53,7 +53,7 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerVi
         if (mDataList != null && mDataList.size() > 0) {
             ProducationModel model = mDataList.get(position);
             ProducationHolder viewHolder = (ProducationHolder) holder;
-            if (mPlayPosition == position) {
+            if (mProducationworksID == model.getWorksID()) {
                 viewHolder.bindData(position, model, true);
             } else {
                 viewHolder.bindData(position, model, false);
@@ -82,39 +82,13 @@ public class ProducationAdapter extends DiffAdapter<ProducationModel, RecyclerVi
         }
     }
 
-    public int getPlayPosition() {
-        return mPlayPosition;
+    public int getPlayingWorksIdPosition() {
+        return mProducationworksID;
     }
 
-    public void setPlayPosition(int selectPlayPosition) {
-        if (mPlayPosition != selectPlayPosition) {
-            ProducationHolder holder1 = getHolderByPosition(mPlayPosition);
-            if (holder1 != null) {
-                holder1.setPlayBtn(false);
-            }
-            mPlayPosition = selectPlayPosition;
-            ProducationHolder holder2 = getHolderByPosition(mPlayPosition);
-            if (holder2 != null) {
-                holder2.setPlayBtn(true);
-            }
-        }
-    }
-
-    public void updatePlaycnt(ProducationModel model, int position) {
-        ProducationHolder holder = getHolderByPosition(position);
-        if (holder != null) {
-            holder.setPlaycnt(model.getPlayCnt());
-        }
-    }
-
-    ProducationHolder getHolderByPosition(int playPosition) {
-        if (playPosition >= 0) {
-            View view = mLinearLayoutManager.findViewByPosition(mPlayPosition);
-            if (view != null) {
-                return (ProducationHolder) view.getTag();
-            }
-        }
-        return null;
+    public void setPlayPosition(int workId) {
+        mProducationworksID = workId;
+        notifyDataSetChanged();
     }
 
     public interface Listener {
