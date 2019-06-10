@@ -36,6 +36,7 @@ import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
@@ -79,7 +80,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
 
     SmartRefreshLayout mSmartRefresh;
     ClassicsHeader mClassicsHeader;
-    RelativeLayout mUserInfoArea;
+    ConstraintLayout mUserInfoArea;
     CommonTitleBar mTitlebar;
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
@@ -108,7 +109,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
     TextView mCharmTv;
-
 
     AppBarLayout mAppbar;
     Toolbar mToolbar;
@@ -171,7 +171,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
+        mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
@@ -329,27 +329,27 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
         mMusicTestIv = (ExImageView) mRootView.findViewById(R.id.music_test_iv);
 
-        mWalletIv.setOnClickListener(new DebounceViewClickListener() {
+        mWalletIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_DIAMOND_BALANCE)
                         .navigation();
             }
         });
 
-        mIncomeIv.setOnClickListener(new DebounceViewClickListener() {
+        mIncomeIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_INCOME)
                         .navigation();
             }
         });
 
-        mMusicTestIv.setOnClickListener(new DebounceViewClickListener() {
+        mMusicTestIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_MUSIC_TEST)
                         .navigation();
