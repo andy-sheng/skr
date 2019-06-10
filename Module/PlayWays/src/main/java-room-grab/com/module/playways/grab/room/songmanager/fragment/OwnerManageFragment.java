@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OwnerManageFragment extends BaseFragment implements IOwnerManageView {
-    public final static String TAG = "GrabSongManageFragment";
+    public final static String TAG = "OwnerManageFragment";
 
     ExRelativeLayout mRlContent;
     ExTextView mSearchSongIv;
