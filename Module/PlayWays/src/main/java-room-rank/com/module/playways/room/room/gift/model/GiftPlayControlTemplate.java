@@ -309,11 +309,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
      */
     public void reset() {
         mHandlerGiftPlayModelhread.getHandler().removeCallbacksAndMessages(null);
-        mOwnerGiftMap.clear();
-        mMediumGiftMap.clear();
-        mSmallQueueMap.clear();
-        mFreeQueueMap.clear();
-        mHasContinueCount.clear();
+        clear();
         if (mUiHanlder != null) {
             mUiHanlder.removeCallbacksAndMessages(null);
         }
