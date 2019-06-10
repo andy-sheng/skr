@@ -101,13 +101,18 @@ public class DisplayUtils {
          * 开启虚拟导航按键，返回键盘高度不对的问题
          * 一般都是2118，这里返回2028,莫名其妙的
          */
+        String productModel = U.getDeviceUtils().getProductModel();
+        if (productModel == null) {
+            return h;
+        }
+
         if (U.getDeviceUtils().hasNavigationBar()
-                && U.getDeviceUtils().getProductModel().equals("MI 8 SE")) {
+                && productModel.equals("MI 8 SE")) {
             if (h == 2028) {
                 return 2118;
             }
         }
-        if (U.getDeviceUtils().getProductModel().equals("Redmi Note 7")) {
+        if (productModel.equals("Redmi Note 7")) {
             if (U.getDeviceUtils().hasNavigationBar()) {
                 if (h == 2120) {
                     return 2210;
@@ -118,7 +123,7 @@ public class DisplayUtils {
                 }
             }
         }
-        if(U.getDeviceUtils().getProductModel().equals("HMA-AL00")){
+        if (productModel.equals("HMA-AL00")) {
         }
         return h;
     }
