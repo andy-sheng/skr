@@ -1,19 +1,22 @@
 package com.module.playways.grab.room.songmanager.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
-import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.friends.SpecialModel;
@@ -34,8 +37,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-public class GrabSongManageFragment extends BaseFragment implements IGrabSongManageView {
-    public final static String TAG = "GrabSongManageFragment";
+public class GrabSongManageView extends FrameLayout implements IGrabSongManageView {
+    public final static String TAG = "GrabSongManageView";
 
     GrabRoomData mRoomData;
 
@@ -59,20 +62,34 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     int mSpecialModelId;
 
-    @Override
-    public int initView() {
-        return R.layout.grab_song_manage_fragment_layout;
+    public GrabSongManageView(Context context, GrabRoomData grabRoomData) {
+        super(context);
+        mRoomData = grabRoomData;
+        initView();
     }
 
-    @Override
-    public void initData(@Nullable Bundle savedInstanceState) {
-        mGrabSongManagePresenter = new GrabSongManagePresenter(this, mRoomData);
-        addPresent(mGrabSongManagePresenter);
+    public GrabSongManageView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initView();
+    }
 
-        mIvArrow = (ImageView) mRootView.findViewById(R.id.iv_arrow);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mTvSelectedTag = mRootView.findViewById(R.id.selected_tag);
+    public GrabSongManageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initView();
+    }
+
+    public void initView() {
+        inflate(getContext(), R.layout.grab_song_manage_fragment_layout, this);
+        initData();
+    }
+
+    public void initData() {
+        mGrabSongManagePresenter = new GrabSongManagePresenter(this, mRoomData);
+
+        mIvArrow = (ImageView) findViewById(R.id.iv_arrow);
+        mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mTvSelectedTag = findViewById(R.id.selected_tag);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mManageSongAdapter = new ManageSongAdapter();
@@ -198,6 +215,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                 mPopupWindow.setOutsideTouchable(true);
                 mPopupWindow.setFocusable(true);
 
+                MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
+                if (Build.VERSION.SDK_INT < 23) {
+                    mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                }
+
                 mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
@@ -222,26 +244,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mManageSongAdapter.setGrabRoomData(mRoomData);
     }
 
-    @Override
     public void destroy() {
-        super.destroy();
-    }
-
-    @Override
-    public void setData(int type, @Nullable Object data) {
-        super.setData(type, data);
-        if (type == 0) {
-            mRoomData = (GrabRoomData) data;
-        }
-    }
-
-    @Override
-    protected boolean onBackPressed() {
-        return super.onBackPressed();
-    }
-
-    @Override
-    public boolean useEventBus() {
-        return false;
+        mGrabSongManagePresenter.destroy();
     }
 }
