@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
@@ -27,7 +28,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-public class RecommendSongView extends ExFrameLayout {
+public class RecommendSongView extends FrameLayout {
     public final static String TAG = "GrabSongManageView";
     private RecyclerView mRecyclerView;
     private RecommendTagModel mRecommendTagModel;
