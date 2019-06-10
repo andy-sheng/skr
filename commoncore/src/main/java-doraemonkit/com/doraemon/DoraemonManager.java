@@ -89,9 +89,9 @@ public class DoraemonManager {
 //                    }
 //                }));
 
-//                extras.add(new SysInfoItem("模拟崩溃", "模拟", new DebounceViewClickListener() {
-//                    @Override
-//                    public void clickValid(View v) {
+                extras.add(new SysInfoItem("模拟崩溃", "模拟", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
 //                        try {
 //                            Boolean a = (Boolean) U.getReflectUtils().readField(MiPushClient.class, null, "isCrashHandlerSuggested");
 //                            U.getToastUtil().showShort("MiPushClient.isCrashHandlerSuggested=" + a);
@@ -100,12 +100,12 @@ public class DoraemonManager {
 //                        } catch (IllegalAccessException e) {
 //                            e.printStackTrace();
 //                        }
-//
-//                        v = null;
-//                        int h = v.getHeight();
-//                        MyLog.e(TAG, "h=" + h);
-//                    }
-//                }));
+
+                        v = null;
+                        int h = v.getHeight();
+                        MyLog.e(TAG, "h=" + h);
+                    }
+                }));
 
                 extras.add(new SysInfoItem("x5 内核调试", "查看", new DebounceViewClickListener() {
                     @Override

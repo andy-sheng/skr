@@ -2,7 +2,7 @@
 echo try send trim memory signal to com.zq.live  先保证进程在后台
 
 getPid(){
-	pid=`adb  shell ps | grep com.zq.live |grep -v :| awk '{print $2}'`
+	pid=`adb  shell ps | grep com.zq.live1 |grep -v :| awk '{print $2}'`
 }
 
 getPid
