@@ -310,7 +310,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
 
         if (buddyCacheEntry != null) {
-            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), UserInfoManager.getInstance().getRemarkName(buddyCacheEntry.getUuid(),buddyCacheEntry.getName()), Uri.parse(buddyCacheEntry.getAvatar()));
+            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), UserInfoManager.getInstance().getRemarkName(buddyCacheEntry.getUuid(), buddyCacheEntry.getName()), Uri.parse(buddyCacheEntry.getAvatar()));
         } else {
             // TODO: 2019/4/16 此时靠 RongIM.getInstance().refreshUserInfoCache去更新
             return null;
@@ -539,14 +539,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             if (RongContext.getInstance() == null) {
                 throw new ExceptionInInitializerError("RongCloud SDK not init");
             } else {
-                for(Activity activity  : U.getActivityUtils().getActivityList()){
-                    if(activity instanceof ConversationActivity){
+                for (Activity activity : U.getActivityUtils().getActivityList()) {
+                    if (activity instanceof ConversationActivity) {
                         // 已经有会话页面了
                         ConversationActivity conversationActivity = (ConversationActivity) activity;
-                        if(targetUserId.equals(conversationActivity.getUserId())){
+                        if (targetUserId.equals(conversationActivity.getUserId())) {
                             // 正好期望会话的人，已经有一个与这个人的会话Activity存在了
                             return true;
-                        }else{
+                        } else {
                             // 有一个会话，但是不是与当前人的，强制finish调
                             conversationActivity.finish();
                         }
@@ -566,14 +566,16 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         } else {
             throw new IllegalArgumentException();
         }
-        return  false;
+        return false;
     }
 
     public void updateCurrentUserInfo() {
         UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
                 MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
         RongIM.getInstance().setCurrentUserInfo(userInfo);
-        RongIM.getInstance().refreshUserInfoCache(userInfo);
+        if (RongContext.getInstance() != null) {
+            RongIM.getInstance().refreshUserInfoCache(userInfo);
+        }
     }
 
     public void addToBlacklist(String userId, ICallback callback) {
