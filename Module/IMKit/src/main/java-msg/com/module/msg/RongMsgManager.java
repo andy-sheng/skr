@@ -570,10 +570,10 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     }
 
     public void updateCurrentUserInfo() {
-        UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
-                MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
-        RongIM.getInstance().setCurrentUserInfo(userInfo);
         if (RongContext.getInstance() != null) {
+            UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
+                    MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
+            RongIM.getInstance().setCurrentUserInfo(userInfo);
             RongIM.getInstance().refreshUserInfoCache(userInfo);
         }
     }
