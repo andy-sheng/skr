@@ -82,22 +82,19 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     CommonTitleBar mTitlebar;
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
-    RelativeLayout mSettingArea;
+
     ImageView mSettingImgIv;
     ExImageView mSettingRedDot;
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mUseridTv;
     ExTextView mSignTv;
-    LinearLayout mRelationNumArea;
-    RelativeLayout mFriendsArea;
     ExTextView mFriendsNumTv;
     ExImageView mFriendRedDot;
-    RelativeLayout mFollowsArea;
     ExTextView mFollowsNumTv;
-    RelativeLayout mFansArea;
     ExTextView mFansNumTv;
     ExImageView mFansRedDot;
+
     LinearLayout mFunctionArea;
     ExImageView mWalletIv;
     ExImageView mMusicTestIv;
@@ -108,7 +105,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     BitmapTextView mSingendNumTv;
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
-    RelativeLayout mCharmArea;
     TextView mCharmTv;
     ExImageView mIncomeIv;
 
@@ -258,11 +254,10 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initSettingArea() {
-        mSettingArea = (RelativeLayout) mRootView.findViewById(R.id.setting_area);
         mSettingImgIv = (ImageView) mRootView.findViewById(R.id.setting_img_iv);
         mSettingRedDot = (ExImageView) mRootView.findViewById(R.id.setting_red_dot);
 
-        mSettingArea.setOnClickListener(new DebounceViewClickListener() {
+        mSettingImgIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance()
@@ -283,17 +278,13 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initRelationNumArea() {
-        mRelationNumArea = (LinearLayout) mRootView.findViewById(R.id.relation_num_area);
-        mFriendsArea = (RelativeLayout) mRootView.findViewById(R.id.friends_area);
         mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
         mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
-        mFollowsArea = (RelativeLayout) mRootView.findViewById(R.id.follows_area);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-        mFansArea = (RelativeLayout) mRootView.findViewById(R.id.fans_area);
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
 
-        mFriendsArea.setOnClickListener(new DebounceViewClickListener() {
+        mFriendsNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // 好友，双向关注
@@ -301,7 +292,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mFansArea.setOnClickListener(new DebounceViewClickListener() {
+        mFansNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // 粉丝，我关注的
@@ -309,7 +300,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mFollowsArea.setOnClickListener(new DebounceViewClickListener() {
+        mFollowsNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // 关注, 关注我的
@@ -374,7 +365,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
 
-        mCharmArea = (RelativeLayout) mRootView.findViewById(R.id.charm_area);
         mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
     }
 

@@ -94,6 +94,7 @@ android {
 dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
     api project(":Component:BusiLib")
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     if (isBuildModule.toBoolean()) {
 //        tools
