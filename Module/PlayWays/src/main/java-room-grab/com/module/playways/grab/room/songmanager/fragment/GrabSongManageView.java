@@ -2,6 +2,8 @@ package com.module.playways.grab.room.songmanager.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.friends.SpecialModel;
@@ -211,6 +214,11 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
                 mPopupWindow.setWidth(mTvSelectedTag.getWidth());
                 mPopupWindow.setOutsideTouchable(true);
                 mPopupWindow.setFocusable(true);
+
+                MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
+                if (Build.VERSION.SDK_INT < 23) {
+                    mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                }
 
                 mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
