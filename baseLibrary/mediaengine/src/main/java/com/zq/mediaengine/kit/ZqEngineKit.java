@@ -26,10 +26,11 @@ import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
-import com.zq.mediaengine.filter.audio.AudioAPMFilterMgt;
+import com.zq.mediaengine.filter.audio.AudioCopyFilter;
 import com.zq.mediaengine.filter.audio.AudioFilterBase;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
+import com.zq.mediaengine.filter.audio.AudioPreview;
 import com.zq.mediaengine.filter.audio.AudioResampleFilter;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
@@ -53,7 +54,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,9 +66,6 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSink;
-import okio.Okio;
-import okio.Sink;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -118,15 +115,18 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AudioCapture mAudioCapture;
     private AudioPlayerCapture mAudioPlayerCapture;
     private SrcPin<AudioBufFrame> mAudioRemoteSrcPin;
+    private AudioPreview mAudioPreview;
 
-    // 对远端音频及bgm进行混音
-    private AudioMixer mRemoteAudioMixer;
     // AEC/NS/AGC等处理
     private APMFilter mAPMFilter;
     // 输出前的重采样模块
     private AudioResampleFilter mAudioResampleFilter;
-    // 对近端及远端音频进行混音
-    private AudioMixer mAudioMixer;
+    // 对bgm, remote进行混音，用于回声消除
+    private AudioMixer mRemoteAudioMixer;
+    // 对mic, bgm进行混音，用于远端发送
+    private AudioMixer mLocalAudioMixer;
+    // 对mic, bgm, remote进行混音，用于录制
+    private AudioMixer mRecordAudioMixer;
     private MediaCodecAudioEncoder mAudioEncoder;
     private MediaMuxerPublisher mFilePublisher;
     private RawFrameWriter mRawFrameWriter;
@@ -410,6 +410,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture = new AudioCapture(U.app().getApplicationContext());
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
             mAudioPlayerCapture = new AudioPlayerCapture(U.app().getApplicationContext());
+            mAudioPreview = new AudioPreview(U.app().getApplicationContext());
             mAPMFilter = new APMFilter();
 
             mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
@@ -418,6 +419,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (mConfig.getScene() != Params.Scene.audiotest) {
                 mRemoteAudioMixer = new AudioMixer();
                 // 加入房间后，以声网远端数据作为主驱动
+                mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mAudioPreview.getSinkPin());
                 mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioMixer.getSinkPin(0));
                 mAudioPlayerCapture.getSrcPin().connect(mRemoteAudioMixer.getSinkPin(1));
                 mRemoteAudioMixer.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
@@ -431,6 +433,13 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAPMFilter.setRoutingMode(APMFilter.AEC_ROUTING_MODE_SPEAKER_PHONE);
             mAPMFilter.enableNs(true);
             mAPMFilter.setNsLevel(APMFilter.NS_LEVEL_1);
+
+            mAudioPlayerCapture.setOnCompletionListener(new AudioPlayerCapture.OnCompletionListener() {
+                @Override
+                public void onCompletion(AudioPlayerCapture audioPlayerCapture) {
+                    onAudioMixingFinished();
+                }
+            });
         } else {
             audioLocalSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
             mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
@@ -453,29 +462,44 @@ public class ZqEngineKit implements AgoraOutCallback {
             // 使用声网采集时，需要做buffer数据的隔离
             mAudioResampleFilter.setOutFormat(new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16,
                     mConfig.getAudioSampleRate(), mConfig.getAudioChannels()), !mConfig.isUseExternalAudio());
-            mAudioMixer = new AudioMixer();
+            mRecordAudioMixer = new AudioMixer();
 
-            if (mConfig.isUseExternalAudio()) {
-                // 用声网采集，需要录制的时候再连接
-                mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
-            }
+            // PCM dump, 需要在最前面连接
             mAudioResampleFilter.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
-            mAudioResampleFilter.getSrcPin().connect(mAudioMixer.getSinkPin(0));
-            mAudioRemoteSrcPin.connect(mAudioMixer.getSinkPin(1));
 
-            // 自采集发送
             if (mConfig.isUseExternalAudio()) {
-                mAudioMixer.getSrcPin().connect(mAgoraRTCAdapter.getAudioSinkPin());
+                // 自采集发送，需要做buffer数据的隔离
+                AudioCopyFilter audioCopyFilter = new AudioCopyFilter();
+                mLocalAudioMixer = new AudioMixer();
+                mAudioResampleFilter.getSrcPin().connect(audioCopyFilter.getSinkPin());
+                audioCopyFilter.getSrcPin().connect(mLocalAudioMixer.getSinkPin(0));
+                mAudioPlayerCapture.getSrcPin().connect(mLocalAudioMixer.getSinkPin(1));
+                mLocalAudioMixer.getSrcPin().connect(mAgoraRTCAdapter.getAudioSinkPin());
+
+                // 用声网采集，需要录制的时候再连接
+                connectRecord();
             }
 
             // 录制功能
             mAudioEncoder = new MediaCodecAudioEncoder();
             mFilePublisher = new MediaMuxerPublisher();
-            mAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
+            mRecordAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
             mAudioEncoder.getSrcPin().connect(mFilePublisher.getAudioSink());
         } else {
             mAudioFilterMgt.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
         }
+    }
+
+    private void connectRecord() {
+        mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
+        mAudioResampleFilter.getSrcPin().connect(mRecordAudioMixer.getSinkPin(0));
+        mAudioRemoteSrcPin.connect(mRecordAudioMixer.getSinkPin(1));
+    }
+
+    private void disconnectRecord() {
+        mAudioFilterMgt.getSrcPin().disconnect(mAudioResampleFilter.getSinkPin(), false);
+        mAudioResampleFilter.getSrcPin().disconnect(mRecordAudioMixer.getSinkPin(0), false);
+        mAudioRemoteSrcPin.disconnect(mRecordAudioMixer.getSinkPin(1), false);
     }
 
     public boolean isInit() {
@@ -507,6 +531,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 if (mConfig.isUseExternalAudio()) {
+                    mAudioPreview.stop();
                     mAudioCapture.stop();
                     mAudioPlayerCapture.stop();
                 }
@@ -691,6 +716,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             // 成功后，自采集模式下开启采集
             if (mConfig.isUseExternalAudio()) {
                 mAudioCapture.start();
+                mAudioPreview.start();
             }
 
             //告诉我成功
@@ -1039,7 +1065,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         EventBus.getDefault().post(engineEvent);
 
                         if (mConfig.isUseExternalAudio()) {
-                            mAudioPlayerCapture.start(filePath, cycle != 0);
+                            mAudioPlayerCapture.start(filePath, cycle == -1);
                         } else {
                             mAgoraRTCAdapter.startAudioMixing(filePath, midiPath, loopback, replace, cycle);
                         }
@@ -1309,7 +1335,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
                     if (!mConfig.isUseExternalAudio()) {
                         // 用声网采集，需要录制的时候再连接
-                        mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
+                        connectRecord();
                     }
                     if (fromRecodFrameCallback) {
                         mConfig.setRecordingFromCallbackSavePath(saveAudioForAiFilePath);
@@ -1372,7 +1398,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                     }
                     if (!mConfig.isUseExternalAudio()) {
                         // 用声网采集，录制完成断开连接
-                        mAudioFilterMgt.getSrcPin().disconnect(mAudioResampleFilter.getSinkPin(), false);
+                        disconnectRecord();
                     }
                 }
             });
