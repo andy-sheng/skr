@@ -10,13 +10,13 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
+import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
-import com.component.busilib.friends.SpecialModel;
-import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
+import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
 import com.module.playways.room.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -62,6 +62,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         mGrabRoomData = grabRoomData;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         mUiHandler = new Handler();
+        addToLifeCycle();
         EventBus.getDefault().register(this);
     }
 

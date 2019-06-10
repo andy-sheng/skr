@@ -5,12 +5,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
@@ -51,7 +51,8 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     ExTextView mSearchSongIv;
     OwnerViewPagerTitleView mOwnerTitleView;
     ViewPager mViewpager;
-    List<RecommendSongFragment> mRecommendSongFragmentList = new ArrayList<>();
+    List<RecommendSongView> mRecommendSongViews = new ArrayList<>();
+    GrabSongManageView mGrabSongManageView;
     DialogPlus mEditRoomDialog;
     GrabRoomData mRoomData;
     CommonTitleBar mCommonTitleBar;
@@ -127,31 +128,68 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         }
 
         for (RecommendTagModel recommendTagModel : recommendTagModelList) {
-            RecommendSongFragment recommendSongFragment = new RecommendSongFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("tag_model", recommendTagModel);
-            recommendSongFragment.setArguments(bundle);
-            mRecommendSongFragmentList.add(recommendSongFragment);
+            RecommendSongView recommendSongFragment = new RecommendSongView(getActivity());
+            recommendSongFragment.setData(recommendTagModel);
+            mRecommendSongViews.add(recommendSongFragment);
         }
 
-        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
+        mGrabSongManageView = new GrabSongManageView(getActivity(), mRoomData);
+
+        PagerAdapter pagerAdapter = new PagerAdapter() {
+
             @Override
-            public Fragment getItem(int position) {
-                MyLog.d(TAG, "getItem" + " position=" + position);
+            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                MyLog.d(TAG, "destroyItem" + " container=" + container + " position=" + position + " object=" + object);
+                container.removeView((View) object);
+            }
+
+            @NonNull
+            @Override
+            public Object instantiateItem(@NonNull ViewGroup container, int position) {
+                MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
+                View view = null;
                 if (position == 0) {
-                    GrabSongManageFragment grabSongManageFragment = new GrabSongManageFragment();
-                    grabSongManageFragment.setData(0, mRoomData);
-                    return grabSongManageFragment;
+                    view = mGrabSongManageView;
                 } else {
-                    return mRecommendSongFragmentList.get(position - 1);
+                    view = mRecommendSongViews.get(position - 1);
                 }
+
+                if (container.indexOfChild(view) == -1) {
+                    container.addView(view);
+                }
+
+                return view;
             }
 
             @Override
             public int getCount() {
-                return mRecommendSongFragmentList.size() + 1;
+                return mRecommendSongViews.size() + 1;
+            }
+
+            @Override
+            public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+                return view == (object);
             }
         };
+
+//        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
+//            @Override
+//            public Fragment getItem(int position) {
+//                MyLog.d(TAG, "getItem" + " position=" + position);
+//                if (position == 0) {
+//                    GrabSongManageView grabSongManageFragment = new GrabSongManageView();
+//                    grabSongManageFragment.setData(mRoomData);
+//                    return grabSongManageFragment;
+//                } else {
+//                    return mRecommendSongViews.get(position - 1);
+//                }
+//            }
+//
+//            @Override
+//            public int getCount() {
+//                return mRecommendSongViews.size() + 1;
+//            }
+//        };
 
         RecommendTagModel recommendTagModel = new RecommendTagModel();
         recommendTagModel.setType(-1);
@@ -159,8 +197,8 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         recommendTagModelList.add(0, recommendTagModel);
 
         mOwnerTitleView.setRecommendTagModelList(recommendTagModelList);
-        mViewpager.setAdapter(fragmentPagerAdapter);
-        fragmentPagerAdapter.notifyDataSetChanged();
+        mViewpager.setAdapter(pagerAdapter);
+        pagerAdapter.notifyDataSetChanged();
         mViewpager.setPageMargin(U.getDisplayUtils().dip2px(12));
     }
 
@@ -215,6 +253,18 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
                 .create();
         U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
         mEditRoomDialog.show();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        for (RecommendSongView recommendSongView : mRecommendSongViews) {
+            recommendSongView.destroy();
+        }
+
+        if (mGrabSongManageView != null) {
+            mGrabSongManageView.destroy();
+        }
     }
 
     @Override
