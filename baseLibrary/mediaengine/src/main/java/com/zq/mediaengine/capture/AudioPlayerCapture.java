@@ -384,11 +384,7 @@ public class AudioPlayerCapture {
      * @return current position in miliseconds
      */
     public long getPosition() {
-        long pos = mStcMgt.getCurrentStc();
-        long pos1 = 0;//(mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
-        Log.e(TAG, "getPosition: " + pos + " pos1: " + pos1);
-        return pos;
-//        return mStcMgt.getCurrentStc();
+        return mStcMgt.getCurrentStc();
     }
 
     private void initDecodeThread() {
@@ -566,17 +562,6 @@ public class AudioPlayerCapture {
                 int channels = mediaFormat.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
                 mOutFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, sampleRate, channels);
 
-//                // open pcm player
-//                if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
-//                    mPcmPlayer = new AudioSLPlayer();
-//                } else {
-//                    mPcmPlayer = new AudioTrackPlayer();
-//                }
-//                int atomSize = AudioUtil.getNativeBufferSize(mContext, sampleRate);
-//                mPcmPlayer.config(sampleRate, channels, atomSize, 40);
-//                mPcmPlayer.setMute(mMute);
-//                mPcmPlayer.start();
-
                 // open decoder
                 try {
                     mMediaCodec = MediaCodec.createDecoderByType(mime);
@@ -704,6 +689,7 @@ public class AudioPlayerCapture {
         if (!mPlayerTypeChanged) {
             return;
         }
+        // TODO: 支持动态切换audiotrack和opensles播放
         mPlayerTypeChanged = false;
         if ((mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES &&
                 mPcmPlayer instanceof AudioTrackPlayer) ||
@@ -750,11 +736,6 @@ public class AudioPlayerCapture {
             }
             if (outputBufferIndex >= 0) {
                 if (VERBOSE) Log.d(TAG, "drain decoder " + mBufferInfo.size);
-
-//                if (mBufferInfo.size < 512) {
-//                    mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
-//                    continue;
-//                }
 
                 ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
                 outputBuffer.position(mBufferInfo.offset);
