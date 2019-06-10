@@ -76,6 +76,10 @@ public class BitmapTextView extends View {
     protected void drawText(Canvas canvas, List<Bitmap> bitmaps) {
         float left = 0;
         for (Bitmap bitmap : bitmaps) {
+            if (bitmap.isRecycled()) {
+                continue;
+            }
+
             canvas.drawBitmap(bitmap, left, 0, new Paint());
             left = left + bitmap.getWidth() - diff * scale;
         }
