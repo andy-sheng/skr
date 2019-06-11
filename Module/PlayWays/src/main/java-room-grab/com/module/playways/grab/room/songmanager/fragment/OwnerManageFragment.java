@@ -127,12 +127,19 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             return;
         }
 
-        for (RecommendTagModel recommendTagModel : recommendTagModelList) {
-            RecommendSongView recommendSongFragment = new RecommendSongView(getActivity());
-            recommendSongFragment.setData(recommendTagModel);
-            mRecommendSongViews.add(recommendSongFragment);
+        for (RecommendSongView recommendSongView : mRecommendSongViews) {
+            recommendSongView.destroy();
         }
+        mRecommendSongViews.clear();
 
+        for (RecommendTagModel recommendTagModel : recommendTagModelList) {
+            RecommendSongView recommendSongView = new RecommendSongView(getActivity());
+            recommendSongView.setData(recommendTagModel);
+            mRecommendSongViews.add(recommendSongView);
+        }
+        if (mGrabSongManageView != null) {
+            mGrabSongManageView.destroy();
+        }
         mGrabSongManageView = new GrabSongManageView(getActivity(), mRoomData);
 
         PagerAdapter pagerAdapter = new PagerAdapter() {
@@ -238,6 +245,9 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             }
         });
 
+        if (mEditRoomDialog != null) {
+            mEditRoomDialog.dismiss(false);
+        }
         mEditRoomDialog = DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(grabEditView))
                 .setContentBackgroundResource(R.color.transparent)
@@ -269,6 +279,11 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     @Override
     protected boolean onBackPressed() {
+        if(mEditRoomDialog!=null && mEditRoomDialog.isShowing()){
+            mEditRoomDialog.dismiss(false);
+            mEditRoomDialog = null;
+            return true;
+        }
         return super.onBackPressed();
     }
 

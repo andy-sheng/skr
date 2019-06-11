@@ -125,6 +125,58 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
         mGrabSongManagePresenter.getPlayBookList();
     }
 
+    private void initListener() {
+        mTvSelectedTag.setOnClickListener(v -> {
+            if (mGrabSongTagsView == null) {
+                mGrabSongTagsView = new GrabSongTagsView(getContext());
+
+                mGrabSongTagsView.setOnTagClickListener(new GrabTagsAdapter.OnTagClickListener() {
+                    @Override
+                    public void onClick(SpecialModel specialModel) {
+                        mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.getGameId());
+                    }
+
+                    @Override
+                    public void dismissDialog() {
+                        if (mPopupWindow != null) {
+                            mPopupWindow.dismiss();
+                        }
+                    }
+                });
+                mPopupWindow = new PopupWindow(mGrabSongTagsView);
+                mPopupWindow.setWidth(mTvSelectedTag.getWidth());
+                mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setFocusable(true);
+
+                MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
+                if (Build.VERSION.SDK_INT < 23) {
+                    mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                }
+
+                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_xia));
+                    }
+                });
+            }
+
+            mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
+
+            if (mPopupWindow!=null && mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss();
+            } else {
+                mGrabSongManagePresenter.getTagList();
+            }
+        });
+
+        mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
+            mGrabSongManagePresenter.deleteSong(grabRoomSongModel);
+        });
+
+        mManageSongAdapter.setGrabRoomData(mRoomData);
+    }
+
     private void setTagTv(SpecialModel specialModel) {
         mRoomData.setSpecialModel(specialModel);
         mRoomData.setTagId(specialModel.getTagID());
@@ -182,58 +234,6 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
     @Override
     public void updateSongList(List<GrabRoomSongModel> grabRoomSongModelsList) {
         mManageSongAdapter.setDataList(grabRoomSongModelsList);
-    }
-
-    private void initListener() {
-        mTvSelectedTag.setOnClickListener(v -> {
-            if (mGrabSongTagsView == null) {
-                mGrabSongTagsView = new GrabSongTagsView(getContext());
-
-                mGrabSongTagsView.setOnTagClickListener(new GrabTagsAdapter.OnTagClickListener() {
-                    @Override
-                    public void onClick(SpecialModel specialModel) {
-                        mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.getGameId());
-                    }
-
-                    @Override
-                    public void dismissDialog() {
-                        if (mPopupWindow != null) {
-                            mPopupWindow.dismiss();
-                        }
-                    }
-                });
-                mPopupWindow = new PopupWindow(mGrabSongTagsView);
-                mPopupWindow.setWidth(mTvSelectedTag.getWidth());
-                mPopupWindow.setOutsideTouchable(true);
-                mPopupWindow.setFocusable(true);
-
-                MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
-                if (Build.VERSION.SDK_INT < 23) {
-                    mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-                }
-
-                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_xia));
-                    }
-                });
-            }
-
-            mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
-
-            if (mPopupWindow.isShowing()) {
-                mPopupWindow.dismiss();
-            } else {
-                mGrabSongManagePresenter.getTagList();
-            }
-        });
-
-        mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
-            mGrabSongManagePresenter.deleteSong(grabRoomSongModel);
-        });
-
-        mManageSongAdapter.setGrabRoomData(mRoomData);
     }
 
     public void destroy() {
