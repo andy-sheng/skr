@@ -69,7 +69,7 @@ public class CommonConfiguration implements ConfigModule {
 
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
-                MyLog.w(TAG, "onMainProcessCreate begin");
+                MyLog.e(TAG, "onMainProcessCreate begin");
                 MyLog.w(TAG, "MyLog begin");
                 MyLog.init();
                 // 无法异步延迟，因为 module 接口 还需要ARouter
@@ -161,7 +161,7 @@ public class CommonConfiguration implements ConfigModule {
                 QbSdk.initX5Environment(application, cb);
 
                 // 这里耗费 900ms
-                MyLog.w(TAG, "onMainProcessCreate over");
+                MyLog.e(TAG, "onMainProcessCreate over version="+U.getAppInfoUtils().getVersionName());
             }
 
             @Override

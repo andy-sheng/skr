@@ -24,6 +24,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.event.SongNumChangeEvent;
 import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
@@ -82,7 +83,13 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mCommonTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                finish();
+                if(getActivity() instanceof OwnerManagerActivity){
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                }else{
+                    finish();
+                }
             }
         });
 
@@ -284,7 +291,10 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             mEditRoomDialog = null;
             return true;
         }
-        return super.onBackPressed();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+        return true;
     }
 
     @Override
