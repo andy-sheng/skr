@@ -122,14 +122,6 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
             setTagTv(mRoomData.getSpecialModel());
         }
 
-        mUiHandler.postDelayed(() -> {
-            TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
-            animation.setDuration(400);
-            animation.setRepeatMode(Animation.REVERSE);
-            animation.setFillAfter(true);
-        }, 50);
-
         mGrabSongManagePresenter.getPlayBookList();
     }
 
