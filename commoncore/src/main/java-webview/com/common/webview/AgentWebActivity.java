@@ -80,8 +80,6 @@ class AgentWebActivity extends CameraAdapWebActivity {
 
     JsRegister mJsRegister;
 
-    Handler mUiHandler = new Handler(Looper.getMainLooper());
-
     protected WebChromeClient mWebChromeClient = new WebChromeClient() {
         // Work on Android 4.4.2 Zenfone 5
         public void showFileChooser(ValueCallback<String[]> filePathCallback,
