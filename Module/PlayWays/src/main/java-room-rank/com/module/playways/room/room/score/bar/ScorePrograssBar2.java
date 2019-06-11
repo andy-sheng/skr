@@ -82,11 +82,11 @@ public class ScorePrograssBar2 extends View {
         float bb = (h1 - U.getDisplayUtils().dip2px(25)) / 2.0f;
         extendX = (float) (Math.tan(Math.PI / 4) * bb);
 
-        mPaintCircle = new Paint();
+        mPaintCircle = new com.common.view.ExPaint();
         mPaintCircle.setAntiAlias(true);
         mPaintCircle.setDither(true);
 
-        mPaintCircleBar = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintCircleBar = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
         mPaintCircleBar.setDither(true);
         mPaintCircleBar.setStyle(Paint.Style.STROKE);//设置填充样式
         mPaintCircleBar.setAntiAlias(true);//抗锯齿功能
@@ -109,7 +109,7 @@ public class ScorePrograssBar2 extends View {
 
         float r = h2 / 2.0f - strokeWidth / 2.0f;
         mRectF = new RectF(cx - r, cy - r, cx + r, cy + r);
-//        mPaintProgressBar = new Paint();//这个是画矩形的画笔，方便大家理解这个圆弧
+//        mPaintProgressBar = new com.common.view.ExPaint();//这个是画矩形的画笔，方便大家理解这个圆弧
 //        mPaintProgressBar.setStyle(Paint.Style.STROKE);
 //        mPaintProgressBar.setColor(Color.RED);
 //

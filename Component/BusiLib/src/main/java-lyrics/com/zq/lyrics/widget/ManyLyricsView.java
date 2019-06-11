@@ -252,19 +252,19 @@ public class ManyLyricsView extends AbstractLrcView {
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
 
         //画指时间示器
-        mPaintIndicator = new Paint();
+        mPaintIndicator = new com.common.view.ExPaint();
         mPaintIndicator.setDither(true);
         mPaintIndicator.setAntiAlias(true);
 
         //画线
-        mPaintLine = new Paint();
+        mPaintLine = new com.common.view.ExPaint();
         mPaintLine.setDither(true);
         mPaintLine.setAntiAlias(true);
         mPaintLine.setStyle(Paint.Style.FILL);
 
 
         //绘画播放按钮
-        mPaintPlay = new Paint();
+        mPaintPlay = new com.common.view.ExPaint();
         mPaintPlay.setDither(true);
         mPaintPlay.setAntiAlias(true);
         mPaintPlay.setStrokeWidth(2);
@@ -426,7 +426,7 @@ public class ManyLyricsView extends AbstractLrcView {
         float textX = (getWidth() - textWidth) * 0.5f + 10;
         int textHeight = LyricsUtils.getTextHeight(getPaintHL());
 
-        Paint circlePaint = new Paint();
+        Paint circlePaint = new com.common.view.ExPaint();
         circlePaint.setColor(getPaintHLColors()[0]);
 //        MyLog.v(TAG, "degree " + degree);
 

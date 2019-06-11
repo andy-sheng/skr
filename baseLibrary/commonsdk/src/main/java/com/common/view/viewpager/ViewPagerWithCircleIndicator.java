@@ -51,7 +51,7 @@ public class ViewPagerWithCircleIndicator extends ViewPager {
     }
 
     private void init(Context context) {
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
     }
 
     public void setDrawCycleGravity(int mode) {

@@ -22,7 +22,7 @@ public class SideBar extends View {
     private io.rong.imkit.mention.SideBar.OnTouchingLetterChangedListener onTouchingLetterChangedListener;
     public static String[] b = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"};
     private int choose = -1;
-    private Paint paint = new Paint();
+    private Paint paint = new com.common.view.ExPaint();
     private TextView mTextDialog;
 
     public void setTextView(TextView mTextDialog) {

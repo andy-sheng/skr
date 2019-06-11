@@ -14,7 +14,7 @@ public class ImageBrowseProgressBar extends ProgressBarDrawable {
 
     float level;
 
-    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint paint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
 
     int color = Color.WHITE;
 

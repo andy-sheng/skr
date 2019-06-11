@@ -35,8 +35,8 @@ class IndexBar extends View {
     private int mSelectionPosition;
     private float mIndexHeight;
 
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mFocusPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mFocusPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
 
     public IndexBar(Context context) {
         super(context);

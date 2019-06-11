@@ -93,7 +93,7 @@ public class RecordCircleView extends View {
         mCalibrationWidth = dp2px(10);
         mSparkleWidth = U.getDisplayUtils().dip2px(8);
 
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setAntiAlias(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
 

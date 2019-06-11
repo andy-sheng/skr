@@ -59,7 +59,7 @@ public class CircleCountDownView extends ProgressBar {
             typedArray.recycle();
         }
 
-        mBgPaint = new Paint();
+        mBgPaint = new com.common.view.ExPaint();
         Shader mBgShader = new SweepGradient(getWidth() / 2, getHeight() / 2,
                 new int[]{mBgColor,
                         mBgColor,
@@ -71,7 +71,7 @@ public class CircleCountDownView extends ProgressBar {
         mBgPaint.setStyle(Style.FILL);//实心
         mBgPaint.setStrokeWidth(strokeWidth);//线的宽度
 
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setStyle(Style.STROKE);//空心
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setDither(true);

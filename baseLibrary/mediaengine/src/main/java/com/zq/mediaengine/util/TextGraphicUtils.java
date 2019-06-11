@@ -17,7 +17,7 @@ public class TextGraphicUtils {
      * @return 给定文本的宽度
      */
     public static float getTextWidth(String text, float textSize){
-        Paint paint = new Paint();
+        Paint paint = new com.common.view.ExPaint();
         paint.setTextSize(textSize);
         return paint.measureText(text);
     }
@@ -38,7 +38,7 @@ public class TextGraphicUtils {
      * @return 文本的高度
      */
     public static float getTextHeight(float textSize){
-        Paint paint = new Paint();
+        Paint paint = new com.common.view.ExPaint();
         paint.setTextSize(textSize);
         Paint.FontMetrics fm = paint.getFontMetrics();
         return fm.descent - fm.ascent;
@@ -61,7 +61,7 @@ public class TextGraphicUtils {
      * @return 文本的宽度
      */
     public static int getTextWidthByBounds(String text, float textSize){
-        Paint paint = new Paint();
+        Paint paint = new com.common.view.ExPaint();
         Rect bounds = new Rect();
         paint.setTextSize(textSize);
         paint.getTextBounds(text, 0, text.length(), bounds);
@@ -75,7 +75,7 @@ public class TextGraphicUtils {
      * @return 文本的高度
      */
     public static int getTextHeightByBounds(String text, float textSize){
-        Paint paint = new Paint();
+        Paint paint = new com.common.view.ExPaint();
         Rect bounds = new Rect();
         paint.setTextSize(textSize);
         paint.getTextBounds(text, 0, text.length(), bounds);
@@ -101,7 +101,7 @@ public class TextGraphicUtils {
      */
     public static Bitmap getTextBitmap(String text, int textColor, float textSize, Bitmap leftBitmap){
         //创建并初始化画笔
-        Paint paint = new Paint();
+        Paint paint = new com.common.view.ExPaint();
         paint.setTypeface(Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD));
         paint.setColor(textColor);
         paint.setTextSize(textSize);

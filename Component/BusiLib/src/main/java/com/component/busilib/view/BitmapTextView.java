@@ -79,8 +79,7 @@ public class BitmapTextView extends View {
             if (bitmap.isRecycled()) {
                 continue;
             }
-
-            canvas.drawBitmap(bitmap, left, 0, new Paint());
+            canvas.drawBitmap(bitmap, left, 0, new com.common.view.ExPaint());
             left = left + bitmap.getWidth() - diff * scale;
         }
     }

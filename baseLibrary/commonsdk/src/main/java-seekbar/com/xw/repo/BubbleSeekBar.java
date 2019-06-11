@@ -195,7 +195,7 @@ public class BubbleSeekBar extends View {
         setEnabled(a.getBoolean(R.styleable.BubbleSeekBar_android_enabled, isEnabled()));
         a.recycle();
 
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setAntiAlias(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setTextAlign(Paint.Align.CENTER);
@@ -1436,7 +1436,7 @@ public class BubbleSeekBar extends View {
         BubbleView(Context context, AttributeSet attrs, int defStyleAttr) {
             super(context, attrs, defStyleAttr);
 
-            mBubblePaint = new Paint();
+            mBubblePaint = new com.common.view.ExPaint();
             mBubblePaint.setAntiAlias(true);
             mBubblePaint.setTextAlign(Paint.Align.CENTER);
 

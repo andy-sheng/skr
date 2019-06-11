@@ -53,6 +53,9 @@ public class SkrCrashHandler implements UncaughtExceptionHandler {
         return sMyCrashHandler;
     }
 
+    /**
+     * 保证这个是最后执行的 ，发生异常时第一个处理
+     */
     public void register() {
         MyLog.d(TAG, "register");
         mOldHandler = Thread.getDefaultUncaughtExceptionHandler();

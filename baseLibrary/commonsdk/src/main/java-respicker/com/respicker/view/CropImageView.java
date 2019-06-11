@@ -65,7 +65,7 @@ public class CropImageView extends AppCompatImageView {
     private int mDefaultStyleIndex = 0;    //默认焦点框的形状
 
     private Style mStyle = styles[mDefaultStyleIndex];
-    private Paint mBorderPaint = new Paint();
+    private Paint mBorderPaint = new com.common.view.ExPaint();
     private Path mFocusPath = new Path();
     private RectF mFocusRect = new RectF();
 
@@ -534,7 +534,7 @@ public class CropImageView extends AppCompatImageView {
                     Bitmap circleBitmap = Bitmap.createBitmap(length, length, Bitmap.Config.ARGB_8888);
                     Canvas canvas = new Canvas(circleBitmap);
                     BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-                    Paint paint = new Paint();
+                    Paint paint = new com.common.view.ExPaint();
                     paint.setShader(bitmapShader);
                     canvas.drawCircle(expectWidth / 2f, exceptHeight / 2f, radius, paint);
                     bitmap = circleBitmap;

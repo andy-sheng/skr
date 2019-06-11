@@ -992,7 +992,7 @@ public final class SpanUtils {
                                  final int spanstartv, final int v, final Paint.FontMetricsInt fm) {
 //            LogUtils.e(fm, sfm);
             if (sfm == null) {
-                sfm = new Paint.FontMetricsInt();
+                sfm = new com.common.view.ExPaint.FontMetricsInt();
                 sfm.top = fm.top;
                 sfm.ascent = fm.ascent;
                 sfm.descent = fm.descent;
