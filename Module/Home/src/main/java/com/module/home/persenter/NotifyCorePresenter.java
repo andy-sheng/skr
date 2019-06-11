@@ -25,6 +25,7 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.notification.event.SysWarnNotifyEvent;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SpanUtils;
@@ -39,6 +40,7 @@ import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
+import com.zq.dialog.NotifyDialogView;
 import com.zq.notification.FollowNotifyView;
 import com.zq.notification.GrabInviteNotifyView;
 
@@ -54,6 +56,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
 
     DialogPlus mBeFriendDialog;
+    DialogPlus mSysWarnDialogPlus;
 
     INotifyView mINotifyView;
 
@@ -120,6 +123,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
         if (mBeFriendDialog != null) {
             mBeFriendDialog.dismiss(false);
+        }
+        if (mSysWarnDialogPlus != null) {
+            mSysWarnDialogPlus.dismiss(false);
         }
     }
 
@@ -255,6 +261,24 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         StatisticsAdapter.recordCountEvent("social", "getfollow", null);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SysWarnNotifyEvent event) {
+        NotifyDialogView notifyDialogView = new NotifyDialogView(U.app(), event.getTitle(), event.getContent());
+        if (mSysWarnDialogPlus == null) {
+            Activity activity = U.getActivityUtils().getTopActivity();
+            if (activity instanceof SchemeSdkActivity) {
+                activity = U.getActivityUtils().getHomeActivity();
+            }
+            mSysWarnDialogPlus = DialogPlus.newDialog(activity)
+                    .setContentHolder(new ViewHolder(notifyDialogView))
+                    .setGravity(Gravity.CENTER)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+        EventBus.getDefault().post(new ShowDialogInHomeEvent(mSysWarnDialogPlus, 2));
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabInviteNotifyEvent event) {

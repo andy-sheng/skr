@@ -3,10 +3,12 @@ package com.common.notification;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.notification.event.SysWarnNotifyEvent;
 import com.zq.live.proto.Notification.ENotificationMsgType;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
 import com.zq.live.proto.Notification.NotificationMsg;
+import com.zq.live.proto.Notification.SysWarningMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,6 +44,8 @@ public class NotificationPushManager {
             processFollowMsg(baseNotiInfo, msg.getFollowMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_INVITE_STAND) {
             processInviteStandMsg(baseNotiInfo, msg.getInviteStandMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_SYS_WARNING_MSG) {
+            processSysWarnMsg(baseNotiInfo, msg.getSysWarningMsg());
         }
     }
 
@@ -58,6 +62,14 @@ public class NotificationPushManager {
         if (baseNotiInfo != null) {
             GrabInviteNotifyEvent grabInviteNotifyEvent = new GrabInviteNotifyEvent(baseNotiInfo, inviteStandMsg);
             EventBus.getDefault().post(grabInviteNotifyEvent);
+        }
+    }
+
+    // 处理系统警告消息
+    private void processSysWarnMsg(BaseNotiInfo baseNotiInfo, SysWarningMsg sysWarningMsg) {
+        if (baseNotiInfo != null) {
+            SysWarnNotifyEvent sysWarnNotifyEvent = new SysWarnNotifyEvent(baseNotiInfo, sysWarningMsg.getTitle(), sysWarningMsg.getContent());
+            EventBus.getDefault().post(sysWarnNotifyEvent);
         }
     }
 }
