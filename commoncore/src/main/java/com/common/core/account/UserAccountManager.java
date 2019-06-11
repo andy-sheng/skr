@@ -534,10 +534,10 @@ public class UserAccountManager {
                         MyLog.e(TAG, "getIMToken from Server is null");
                     }
                 } else {
-                    if (result.getErrno() == 8302102) {
-                        U.getToastUtil().showShort("GET融云token失败，测试用户账号超过100限度");
+                    if (MyLog.isDebugLogOpen() && result.getErrno() == 8302102) {
+                        U.getToastUtil().showShort("GET融云token失败  errorCode = 8302102 errmsg = " + result.getErrmsg());
                     } else {
-                        U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                        MyLog.e(TAG, "process" + " GET融云token error=" + result);
                     }
 
                 }
@@ -592,7 +592,7 @@ public class UserAccountManager {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
             BuglyInit.setUserId(UserAccountManager.getInstance().getUuid());
             if (U.getChannelUtils().isStaging()) {
-                com.common.jiguang.JiGuangPush.setAlias("dev_"+UserAccountManager.getInstance().getUuid());
+                com.common.jiguang.JiGuangPush.setAlias("dev_" + UserAccountManager.getInstance().getUuid());
             } else {
                 com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
             }
