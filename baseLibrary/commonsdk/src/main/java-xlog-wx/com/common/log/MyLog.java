@@ -32,7 +32,7 @@ public class MyLog {
                 Xlog.appenderOpen(Xlog.LEVEL_ALL, Xlog.AppednerModeAsync, cachePath, logPath, U.getAppInfoUtils().getPackageName(), 0, "");
                 Xlog.setConsoleLogOpen(true);
             } else {
-                Xlog.appenderOpen(Xlog.LEVEL_ERROR, Xlog.AppednerModeAsync, cachePath, logPath, U.getAppInfoUtils().getPackageName(), 0, "");
+                Xlog.appenderOpen(Xlog.LEVEL_WARNING, Xlog.AppednerModeAsync, cachePath, logPath, U.getAppInfoUtils().getPackageName(), 0, "");
                 Xlog.setConsoleLogOpen(false);
             }
             com.tencent.mars.xlog.Log.setLogImp(new Xlog());

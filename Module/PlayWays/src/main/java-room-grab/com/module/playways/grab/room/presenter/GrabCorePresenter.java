@@ -1296,7 +1296,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("sourceUserID", sourceUserId);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.repKickUser(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mRoomServerApi.rspKickUser(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
