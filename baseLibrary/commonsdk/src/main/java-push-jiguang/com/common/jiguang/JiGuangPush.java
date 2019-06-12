@@ -32,6 +32,7 @@ public class JiGuangPush {
         }
         JPushInterface.setDebugMode(MyLog.isDebugLogOpen());
         //JPushInterface.stopCrashHandler(U.app());
+        JPushInterface.setChannel(U.app(),U.getChannelUtils().getChannel());
         JPushInterface.init(U.app());
         JPushInterface.stopCrashHandler(U.app());
 
