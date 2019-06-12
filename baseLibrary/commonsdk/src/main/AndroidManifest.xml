@@ -231,6 +231,16 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name="com.common.jiguang.OpReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+                <category android:name="com.zq.live" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

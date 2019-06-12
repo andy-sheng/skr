@@ -295,7 +295,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
         }
-        joinRcRoom(0);
+        joinRcRoom(-1);
         if (mRoomData.getGameId() > 0) {
             for (GrabPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline()) {
@@ -330,7 +330,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     joinRcRoom(deep + 1);
                 }
             });
-            JiGuangPush.joinSkrRoomId(String.valueOf(mRoomData.getGameId()));
+            if(deep==-1){
+                /**
+                 * 说明是初始化时那次加入房间，这时加入极光房间做个备份，使用tag的方案
+                 */
+                JiGuangPush.joinSkrRoomId(String.valueOf(mRoomData.getGameId()));
+            }
         }
     }
 

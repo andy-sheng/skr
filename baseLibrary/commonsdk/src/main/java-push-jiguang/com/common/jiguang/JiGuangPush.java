@@ -1,5 +1,6 @@
 package com.common.jiguang;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.common.log.MyLog;
@@ -39,7 +40,7 @@ public class JiGuangPush {
         JPushInterface.stopCrashHandler(U.app());
 
         if (!TextUtils.isEmpty(sAlias)) {
-            JPushInterface.setAlias(U.app(), 2, sAlias);
+            JPushInterface.setAlias(U.app(), 1, sAlias);
             U.getPreferenceUtils().setSettingBoolean("jpush_alias_set", true);
             sAlias = null;
         }
@@ -72,24 +73,56 @@ public class JiGuangPush {
     }
 
     public static void clearAlias(String alias) {
-        JPushInterface.deleteAlias(U.app(), 2);
+        JPushInterface.deleteAlias(U.app(), 3);
     }
+
+    static String mPendingRoomId;
 
     public static void joinSkrRoomId(String roomid) {
         if (hasInit) {
-            if(U.getChannelUtils().isStaging()){
-                roomid = "dev_"+roomid;
+            MyLog.d(TAG, "joinSkrRoomId" + " roomid=" + roomid);
+            if (U.getChannelUtils().isStaging()) {
+                roomid = "dev_" + roomid;
             }
-            JPushInterface.cleanTags(U.app(), 3);
+            JPushInterface.cleanTags(U.app(), 4);
+            mPendingRoomId = roomid;
+        }
+    }
+
+    static void joinSkrRoomId2() {
+        if (!TextUtils.isEmpty(mPendingRoomId)) {
             HashSet<String> set = new HashSet<>();
-            set.add(roomid);
-            JPushInterface.setTags(U.app(), 4, set);
+            set.add(mPendingRoomId);
+            JPushInterface.setTags(U.app(), 5, set);
         }
     }
 
     public static void exitSkrRoomId(String roomid) {
         if (hasInit) {
-            JPushInterface.cleanTags(U.app(), 5);
+            MyLog.d(TAG, "exitSkrRoomId" + " roomid=" + roomid);
+            JPushInterface.cleanTags(U.app(), 6);
+            mPendingRoomId = null;
         }
+    }
+
+    public static void setCustomMsgListener(JPushCustomMsgListener l) {
+        sJPushCustomMsgListener = l;
+    }
+
+    public static void onReceiveCustomMsg(Bundle bundle) {
+        String msg = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+        String contentType = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
+        if (msg != null && contentType != null) {
+            byte[] data = U.getBase64Utils().decode(msg);
+            if (sJPushCustomMsgListener != null) {
+                sJPushCustomMsgListener.onReceive(contentType, data);
+            }
+        }
+    }
+
+    static JPushCustomMsgListener sJPushCustomMsgListener;
+
+    public interface JPushCustomMsgListener {
+        void onReceive(String contentType, byte[] data);
     }
 }

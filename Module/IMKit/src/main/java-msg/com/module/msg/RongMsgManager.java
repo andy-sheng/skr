@@ -16,6 +16,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.LogUploadUtils;
@@ -257,6 +258,29 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
             });
             RongIM.setOnReceiveMessageListener(mReceiveMessageListener);
+            /**
+             * 融云服务不可用时，用极光来补一下
+             */
+            JiGuangPush.setCustomMsgListener(new JiGuangPush.JPushCustomMsgListener() {
+                @Override
+                public void onReceive(String contentType,byte[] data) {
+                    if("SKR:CustomMsg".equals(contentType)){
+                        HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
+                        if (processors != null) {
+                            for (IPushMsgProcess process : processors) {
+                                process.process(MSG_TYPE_ROOM, data);
+                            }
+                        }
+                    }else if("SKR:NotificationMsg".equals(contentType)){
+                        HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_NOTIFICATION);
+                        if (processors != null) {
+                            for (IPushMsgProcess process : processors) {
+                                process.process(MSG_TYPE_NOTIFICATION, data);
+                            }
+                        }
+                    }
+                }
+            });
             setInputProvider();
         }
     }
