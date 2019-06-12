@@ -16,6 +16,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.engine.ScoreConfig;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.player.IPlayer;
@@ -329,6 +330,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     joinRcRoom(deep + 1);
                 }
             });
+            JiGuangPush.joinSkrRoomId(String.valueOf(mRoomData.getGameId()));
         }
     }
 
@@ -1068,6 +1070,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mZipUrlResourceManager.cancelAllTask();
         }
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
+        JiGuangPush.exitSkrRoomId(String.valueOf(mRoomData.getGameId()));
         MyLog.d(TAG, "destroy over");
     }
 

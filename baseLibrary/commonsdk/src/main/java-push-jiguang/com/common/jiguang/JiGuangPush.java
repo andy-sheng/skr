@@ -6,6 +6,8 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
+import java.util.HashSet;
+
 import cn.jpush.android.api.JPushInterface;
 
 public class JiGuangPush {
@@ -32,7 +34,7 @@ public class JiGuangPush {
         }
         JPushInterface.setDebugMode(MyLog.isDebugLogOpen());
         //JPushInterface.stopCrashHandler(U.app());
-        JPushInterface.setChannel(U.app(),U.getChannelUtils().getChannel());
+        JPushInterface.setChannel(U.app(), U.getChannelUtils().getChannel());
         JPushInterface.init(U.app());
         JPushInterface.stopCrashHandler(U.app());
 
@@ -71,5 +73,20 @@ public class JiGuangPush {
 
     public static void clearAlias(String alias) {
         JPushInterface.deleteAlias(U.app(), 2);
+    }
+
+    public static void joinSkrRoomId(String roomid) {
+        if (hasInit) {
+            JPushInterface.cleanTags(U.app(), 3);
+            HashSet<String> set = new HashSet<>();
+            set.add(roomid);
+            JPushInterface.setTags(U.app(), 4, set);
+        }
+    }
+
+    public static void exitSkrRoomId(String roomid) {
+        if (hasInit) {
+            JPushInterface.cleanTags(U.app(), 5);
+        }
     }
 }
