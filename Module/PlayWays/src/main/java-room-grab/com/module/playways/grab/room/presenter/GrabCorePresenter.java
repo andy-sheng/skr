@@ -6,8 +6,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -29,6 +33,8 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
+import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.UserStatus;
@@ -36,6 +42,7 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
+import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
@@ -105,6 +112,8 @@ import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.score.MachineScoreItem;
 import com.module.playways.room.room.score.RobotScoreHelper;
 import com.module.playways.room.song.model.SongModel;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.StandPlayType;
 import com.zq.live.proto.Common.UserInfo;
@@ -175,6 +184,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     EngineParamsTemp mEngineParamsTemp;
 
+    //需不需要认证
+    boolean mHasPassedCertify = false;
+
+    BaseActivity mBaseActivity;
+
+    DialogPlus mDialogPlus;
+
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -243,9 +259,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     GrabSongResPresenter mGrabSongResPresenter = new GrabSongResPresenter();
 
-    public GrabCorePresenter(@NotNull IGrabRoomView iGrabView, @NotNull GrabRoomData roomData) {
+    public GrabCorePresenter(@NotNull IGrabRoomView iGrabView, @NotNull GrabRoomData roomData, BaseActivity baseActivity) {
         mIGrabView = iGrabView;
         mRoomData = roomData;
+        mBaseActivity = baseActivity;
         TAG = "GrabCorePresenter";
         ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         joinRoomAndInit(true);
@@ -620,6 +637,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         map.put("wantSingType", wantSingType);
+        map.put("hasPassedCertify", mHasPassedCertify);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
@@ -627,21 +645,64 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.w(TAG, "grabThisRound erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    //抢成功了
-                    GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-                    if (now != null && now.getRoundSeq() == seq) {
-                        WantSingerInfo wantSingerInfo = new WantSingerInfo();
-                        wantSingerInfo.setWantSingType(wantSingType);
-                        wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
-                        wantSingerInfo.setTimeMs(System.currentTimeMillis());
-                        now.addGrabUid(true, wantSingerInfo);
+                    //true为已经认证过了或者无需认证，false为未认证
+                    mHasPassedCertify = result.getData().getBoolean("hasPassedCertify");
 
-                        if (result.getData().getBoolean("success")) {
-                            int coin = result.getData().getIntValue("coin");
-                            mRoomData.setCoin(coin);
+                    if (mHasPassedCertify) {
+                        //抢成功了
+                        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+                        if (now != null && now.getRoundSeq() == seq) {
+                            WantSingerInfo wantSingerInfo = new WantSingerInfo();
+                            wantSingerInfo.setWantSingType(wantSingType);
+                            wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
+                            wantSingerInfo.setTimeMs(System.currentTimeMillis());
+                            now.addGrabUid(true, wantSingerInfo);
+
+                            if (result.getData().getBoolean("success")) {
+                                int coin = result.getData().getIntValue("coin");
+                                mRoomData.setCoin(coin);
+                            }
+                        } else {
+                            MyLog.w(TAG, "now != null && now.getRoundSeq() == seq 条件不满足，" + result.getTraceId());
                         }
                     } else {
-                        MyLog.w(TAG, "now != null && now.getRoundSeq() == seq 条件不满足，" + result.getTraceId());
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+
+                        TipsDialogView tipsDialogView = new TipsDialogView.Builder(mBaseActivity)
+                                .setMessageTip("亲～实名认证通过后即可参与抢唱啦！")
+                                .setConfirmTip("立即认证")
+                                .setCancelTip("残忍拒绝")
+                                .setConfirmBtnClickListener(new AnimateClickListener() {
+                                    @Override
+                                    public void click(View view) {
+                                        if (mDialogPlus != null) {
+                                            mDialogPlus.dismiss();
+                                        }
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/mobile?from=singer"))
+                                                .greenChannel().navigation();
+                                    }
+                                })
+                                .setCancelBtnClickListener(new AnimateClickListener() {
+                                    @Override
+                                    public void click(View view) {
+                                        if (mDialogPlus != null) {
+                                            mDialogPlus.dismiss();
+                                        }
+                                    }
+                                })
+                                .build();
+
+                        mDialogPlus = DialogPlus.newDialog(mBaseActivity)
+                                .setContentHolder(new ViewHolder(tipsDialogView))
+                                .setGravity(Gravity.BOTTOM)
+                                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
+                                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_80)
+                                .setExpanded(false)
+                                .create();
+                        mDialogPlus.show();
                     }
                 } else if (result.getErrno() == 8346144) {
                     MyLog.w(TAG, "grabThisRound failed 没有充足金币 ");

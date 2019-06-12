@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -293,7 +294,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         mShowOwnerTipTimes = U.getPreferenceUtils().getSettingInt(KEY_OWNER_SHOW_TIMES, 0);
 
-        mCorePresenter = new GrabCorePresenter(this, mRoomData);
+        mCorePresenter = new GrabCorePresenter(this, mRoomData, (BaseActivity) getActivity());
         addPresent(mCorePresenter);
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
         addPresent(mGrabRedPkgPresenter);
