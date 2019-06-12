@@ -77,6 +77,9 @@ public class JiGuangPush {
 
     public static void joinSkrRoomId(String roomid) {
         if (hasInit) {
+            if(U.getChannelUtils().isStaging()){
+                roomid = "dev_"+roomid;
+            }
             JPushInterface.cleanTags(U.app(), 3);
             HashSet<String> set = new HashSet<>();
             set.add(roomid);
