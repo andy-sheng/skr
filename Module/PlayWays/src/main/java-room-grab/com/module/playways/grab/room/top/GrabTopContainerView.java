@@ -40,7 +40,6 @@ public class GrabTopContainerView extends RelativeLayout {
 
     Listener mListener;
     GrabRoomData mRoomData;
-    GrabAudienceView mGrabAudienceView;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -73,7 +72,6 @@ public class GrabTopContainerView extends RelativeLayout {
         mRelativeLayoutIconContainer = (RelativeLayout) this.findViewById(R.id.relativeLayout_icon_container);
         mTopContentRv = this.findViewById(R.id.top_content_rv);
         mGrabTopView = (GrabTopView) findViewById(R.id.grab_top_view);
-        mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
         mSkipGuideIv = (ImageView) this.findViewById(R.id.skip_guide_iv);
 
 
@@ -216,7 +214,6 @@ public class GrabTopContainerView extends RelativeLayout {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
         mGrabTopView.setRoomData(roomData);
-        mGrabAudienceView.setRoomData(roomData);
 
         if (roomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
             // 新手房

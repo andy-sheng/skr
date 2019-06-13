@@ -11,13 +11,21 @@
         android:layout_marginRight="@dimen/view_48_dp"
         android:orientation="horizontal" />
 
+    <com.module.playways.grab.room.top.GrabAudienceView
+        android:id="@+id/grab_audience_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_62_dp"
+        android:layout_marginRight="@dimen/view_10_dp" />
+
     <ImageView
-        android:background="@drawable/yichangdaodi_dingbushouqi"
         android:layout_width="@dimen/view_24_dp"
         android:layout_height="@dimen/view_24_dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_10_dp" />
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/yichangdaodi_dingbushouqi" />
 
     <!--<com.common.view.ex.ExImageView-->
     <!--android:id="@+id/erji_iv"-->
