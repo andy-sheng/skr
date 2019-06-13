@@ -1770,6 +1770,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mSingBeginTipsCardView.setVisibility(GONE);
     }
 
+    @Override
+    public void beginOuath() {
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/mobile?from=singer"))
+                .greenChannel().navigation();
+        getActivity().finish();
+    }
+
     static class PendingPlaySongCardData {
         int seq;
         SongModel songModel;
