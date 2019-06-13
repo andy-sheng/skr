@@ -9,6 +9,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -16,6 +17,7 @@ import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.component.busilib.constans.GrabRoomType;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
@@ -54,10 +56,13 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private GrabRoomData mRoomData;
     AnimatorSet mAnimatorAllSet;
     GrabAudienceView mGrabAudienceView;
+    ImageView mArrowIv;
 
     LinearLayout mContentLl;
 
     int mCurSeq = -2;
+
+    private boolean mIsOpen = true;
 
     volatile boolean mHasBurst = false;
 
@@ -81,10 +86,51 @@ public class GrabPlayerRv2 extends RelativeLayout {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
         mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
+        mArrowIv = (ImageView) this.findViewById(R.id.arrow_iv);
         addChildView();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        mArrowIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mArrowIv.setEnabled(false);
+                if (mIsOpen) {
+                    close();
+                } else {
+                    open();
+                }
+            }
+        });
+    }
+
+    private void open() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", -U.getDisplayUtils().dip2px(45), 0);
+        animator.setDuration(300);
+        animator.start();
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mArrowIv.setEnabled(true);
+                mIsOpen = true;
+                mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbuzhankai));
+            }
+        });
+    }
+
+    private void close() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", 0, -U.getDisplayUtils().dip2px(45));
+        animator.setDuration(300);
+        animator.start();
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mArrowIv.setEnabled(true);
+                mIsOpen = false;
+                mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbushouqi));
+            }
+        });
     }
 
     private void addChildView() {

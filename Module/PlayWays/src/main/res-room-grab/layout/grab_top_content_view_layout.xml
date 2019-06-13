@@ -3,7 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_148_dp"
+        android:background="#404A9A" />
+
     <LinearLayout
+        android:clipChildren="false"
         android:id="@+id/content_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,12 +26,13 @@
         android:layout_marginRight="@dimen/view_10_dp" />
 
     <ImageView
+        android:id="@+id/arrow_iv"
         android:layout_width="@dimen/view_24_dp"
         android:layout_height="@dimen/view_24_dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_19_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:background="@drawable/yichangdaodi_dingbushouqi" />
+        android:background="@drawable/yichangdaodi_dingbuzhankai" />
 
     <!--<com.common.view.ex.ExImageView-->
     <!--android:id="@+id/erji_iv"-->

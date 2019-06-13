@@ -240,7 +240,7 @@ public class GrabTopItemView extends RelativeLayout {
 //        MyLog.d(TAG, "setGrap" + " grap=" + grap);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(10);
+        lp.topMargin = -U.getDisplayUtils().dip2px(8);
         mFlagIv.setLayoutParams(lp);
         if (wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()
                 || wantSingType == EWantSingType.EWST_COMMON_OVER_TIME.getValue()) {
@@ -263,7 +263,7 @@ public class GrabTopItemView extends RelativeLayout {
         MyLog.d(TAG, "setLight" + " on=" + on);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(25);
+        lp.topMargin = -U.getDisplayUtils().dip2px(22);
         mFlagIv.setLayoutParams(lp);
         if (on) {
             mFlagIv.setImageResource(R.drawable.ycdd_liangdeng);
