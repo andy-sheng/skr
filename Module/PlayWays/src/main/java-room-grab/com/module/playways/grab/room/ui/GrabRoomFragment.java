@@ -12,8 +12,10 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -74,6 +76,7 @@ import com.module.playways.grab.room.view.control.OthersSingCardView;
 import com.module.playways.grab.room.view.control.RoundOverCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView;
+import com.module.playways.grab.room.view.video.GrabVideoView;
 import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
@@ -207,6 +210,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     ContinueSendView mContinueSendView;
 
+    GrabVideoView mGrabVideoView; // 视频view
+
     DialogPlus mVoiceControlDialog;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
@@ -293,6 +298,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //        initCountDownView();
         initScoreView();
         initGiftPanelView();
+        initVideoView();
+
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData, (BaseActivity) getActivity());
         addPresent(mCorePresenter);
@@ -575,6 +582,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         });
     }
 
+    private void initVideoView(){
+        ViewStub viewStub = mRootView.findViewById(R.id.video_view_stub);
+        mGrabVideoView = new GrabVideoView(viewStub);
+        mGrabVideoView.setRoomData(mRoomData);
+    }
+
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
@@ -804,7 +817,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         dialogPlus.show();
     }
 
-    DialogPlus getRedPkgFailed;
+    DialogPlus mGetRedPkgFailedDialog;
 
     @Override
     public void showGetRedPkgFailed() {
@@ -814,15 +827,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 .setOkBtnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (getRedPkgFailed != null) {
-                            getRedPkgFailed.dismiss();
+                        if (mGetRedPkgFailedDialog != null) {
+                            mGetRedPkgFailedDialog.dismiss();
                         }
                     }
                 })
                 .build();
 
-        if (getRedPkgFailed == null) {
-            getRedPkgFailed = DialogPlus.newDialog(getContext())
+        if (mGetRedPkgFailedDialog == null) {
+            mGetRedPkgFailedDialog = DialogPlus.newDialog(getContext())
                     .setContentHolder(new ViewHolder(tipsDialogView))
                     .setGravity(Gravity.BOTTOM)
                     .setContentBackgroundResource(R.color.transparent)
@@ -831,7 +844,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     .create();
         }
 
-        getRedPkgFailed.show();
+        mGetRedPkgFailedDialog.show();
     }
 
     private void initTopView() {

@@ -289,6 +289,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 Params params = Params.getFromPref();
 //            params.setStyleEnum(Params.AudioEffect.none);
                 params.setScene(Params.Scene.grab);
+                params.setEnableVideo(mRoomData.isVideoRoom());
                 ZqEngineKit.getInstance().init("grabroom", params);
             }
             ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false, mRoomData.getAgoraToken());
@@ -532,6 +533,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
          *                 mRobotScoreHelper.reset();
          *             }
          */
+
+
     }
 
     /**

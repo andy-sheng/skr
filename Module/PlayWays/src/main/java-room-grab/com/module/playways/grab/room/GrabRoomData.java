@@ -52,7 +52,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     private long lastHzTs = -1; // 红钻更新的时间戳
 
-    private boolean videoRoom = false;
+    private boolean videoRoom = true;
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);

@@ -966,7 +966,6 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
     }
 
     private void onGrabGameOver(String from) {
-        // TODO: 2019/5/8 跳到毕业页面
         MyLog.d(TAG, "onGrabGameOver " + from);
         //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
 

@@ -146,6 +146,15 @@
 
     <!--纯音频模式下特有的view 结束-->
 
+    <!--视频开始-->
+    <ViewStub
+        android:id="@+id/video_view_stub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout="@layout/grab_room_videoview_stub_layout" />
+    <!--视频结束-->
+
+
     <com.module.playways.grab.room.view.GrabGameOverView
         android:id="@+id/grab_game_over_view"
         android:layout_width="match_parent"
