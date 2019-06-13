@@ -3,88 +3,107 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_32_dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/view_34_dp"
     android:orientation="vertical"
-    tools:parentTag="android.widget.RelativeLayout">
+    tools:parentTag="android.widget.FrameLayout">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_change_room"
-        android:layout_width="@dimen/view_70_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:gravity="center"
-        android:text="换房间"
-        android:textColor="#404A9A"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_solid_color="#7E8AE6" />
+    <RelativeLayout
+        android:id="@+id/op_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_32_dp">
 
-    <ImageView
-        android:id="@+id/camera_iv"
-        android:layout_width="@dimen/view_35_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@+id/tv_change_room"
-        android:background="@drawable/yichangdaodi_shipin" />
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_change_room"
+            android:layout_width="@dimen/view_70_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:gravity="center"
+            android:text="换房间"
+            android:textColor="#404A9A"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold"
+            app:bl_corners_radius="@dimen/view_12_dp"
+            app:bl_solid_color="#7E8AE6" />
 
-    <ImageView
-        android:id="@+id/iv_voice_setting"
-        android:layout_width="@dimen/view_35_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/camera_iv"
-        android:background="@drawable/yichangdaodi_yinyue" />
+        <ImageView
+            android:id="@+id/camera_iv"
+            android:layout_width="@dimen/view_35_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_toRightOf="@+id/tv_change_room"
+            android:background="@drawable/yichangdaodi_shipin" />
 
-    <View
-        android:layout_width="@dimen/view_1_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="-0.33dp"
-        android:layout_toRightOf="@+id/camera_iv"
-        android:background="#404A9A" />
+        <ImageView
+            android:id="@+id/iv_voice_setting"
+            android:layout_width="@dimen/view_35_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/camera_iv"
+            android:background="@drawable/yichangdaodi_yinyue" />
 
-    <ImageView
-        android:id="@+id/game_rule_iv"
-        android:layout_width="@dimen/view_35_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@+id/iv_voice_setting"
-        android:background="@drawable/yichangdaddi_guize" />
+        <View
+            android:layout_width="@dimen/view_1_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-0.33dp"
+            android:layout_toRightOf="@+id/camera_iv"
+            android:background="#404A9A" />
 
-    <ImageView
-        android:id="@+id/feed_back_iv"
-        android:layout_width="@dimen/view_35_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/game_rule_iv"
-        android:background="@drawable/yichangdaodi_fankui" />
+        <ImageView
+            android:id="@+id/game_rule_iv"
+            android:layout_width="@dimen/view_35_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_toRightOf="@+id/iv_voice_setting"
+            android:background="@drawable/yichangdaddi_guize" />
 
-    <View
-        android:layout_width="@dimen/view_1_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="-0.33dp"
-        android:layout_toRightOf="@+id/game_rule_iv"
-        android:background="#404A9A" />
+        <ImageView
+            android:id="@+id/feed_back_iv"
+            android:layout_width="@dimen/view_35_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/game_rule_iv"
+            android:background="@drawable/yichangdaodi_fankui" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/exit_tv"
-        android:layout_width="@dimen/view_70_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:gravity="center"
-        android:text="退出房间"
-        android:textColor="#404A9A"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_solid_color="#7E8AE6" />
+        <View
+            android:layout_width="@dimen/view_1_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-0.33dp"
+            android:layout_toRightOf="@+id/game_rule_iv"
+            android:background="#404A9A" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/exit_tv"
+            android:layout_width="@dimen/view_70_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:gravity="center"
+            android:text="退出房间"
+            android:textColor="#404A9A"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold"
+            app:bl_corners_radius="@dimen/view_12_dp"
+            app:bl_solid_color="#7E8AE6" />
+    </RelativeLayout>
+
+    <ViewStub
+        android:id="@+id/chorus_lyric_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/video_chorus_selfcard_view_stub_layout" />
+
+    <ViewStub
+        android:id="@+id/video_self_lyric_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/video_self_lyric_view_stub_layout" />
+
 
 </merge>

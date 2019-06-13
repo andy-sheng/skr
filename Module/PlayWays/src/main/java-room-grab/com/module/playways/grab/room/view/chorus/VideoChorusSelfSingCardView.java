@@ -4,14 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
-import com.module.playways.grab.room.view.control.SelfSingCardView;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,30 +16,25 @@ import java.util.List;
 /**
  * 合唱的歌唱者看到的板子
  */
-public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
+public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
 
-    public final static String TAG = "ChorusSelfSingCardView";
+    public final static String TAG = "VideoChorusSelfSingCardView";
 
-    CharmsView mCharmsView;
-    SingCountDownView mSingCountDownView;
-
-    public ChorusSelfSingCardView(Context context) {
+    public VideoChorusSelfSingCardView(Context context) {
         super(context);
     }
 
-    public ChorusSelfSingCardView(Context context, AttributeSet attrs) {
+    public VideoChorusSelfSingCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ChorusSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public VideoChorusSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     protected void init() {
-        inflate(getContext(), R.layout.grab_chorus_self_sing_card_layout, this);
+        inflate(getContext(), R.layout.video_grab_chorus_self_sing_card_layout, this);
         mLyricRecycleView = findViewById(R.id.lyric_recycle_view);
-        mCharmsView = (CharmsView) findViewById(R.id.charms_view);
-        mSingCountDownView = findViewById(R.id.sing_count_down_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
@@ -54,7 +44,6 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
     }
 
     public void playLyric() {
-        mCharmsView.bindData(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             return;
         }
@@ -73,20 +62,6 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
             }
             mSongModel = infoModel.getMusic();
             playWithNoAcc();
-            mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
-        }
-    }
-
-    public void setListener(SelfSingCardView.Listener listener) {
-        super.setListener(listener);
-        mSingCountDownView.setListener(listener);
-    }
-
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
-            mSingCountDownView.reset();
         }
     }
 }
