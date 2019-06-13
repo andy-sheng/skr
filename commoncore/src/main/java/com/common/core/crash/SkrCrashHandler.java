@@ -63,21 +63,22 @@ public class SkrCrashHandler implements UncaughtExceptionHandler {
          * 其实没什么用，handler 已经被别的sdk注册了
          */
         Thread.setDefaultUncaughtExceptionHandler(this);
+        if (BuildConfig.DEBUG) {
+            //TODO 看的实现 RxJavaPlugins.onError
+            RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) throws Exception {
+                    MyLog.d(TAG, throwable);
+                    if (BuildConfig.DEBUG) {
+                        if (throwable instanceof IgnoreException || throwable.getCause() instanceof IgnoreException) {
 
-        //TODO 看的实现 RxJavaPlugins.onError
-        RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                MyLog.d(TAG, throwable);
-                if (BuildConfig.DEBUG) {
-                    if (throwable instanceof IgnoreException || throwable.getCause() instanceof IgnoreException) {
-
-                    } else {
-                        uncaught(new Throwable("来自的rx的异常,不会导致崩溃，但要分析下原因是否合理", throwable));
+                        } else {
+                            uncaught(new Throwable("来自的rx的异常,不会导致崩溃，但要分析下原因是否合理", throwable));
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
         try {
             if (U.getDeviceUtils().isOppo() || U.getDeviceUtils().isVivo()) {
