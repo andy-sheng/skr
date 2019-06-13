@@ -190,7 +190,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v2/stand/want-sing-chance")
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/want-sing-chance")
     Observable<ApiResult> wangSingChance(@Body RequestBody body);
 
     //放弃演唱

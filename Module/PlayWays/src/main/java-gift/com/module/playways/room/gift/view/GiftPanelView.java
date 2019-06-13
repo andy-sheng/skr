@@ -35,8 +35,10 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.component.busilib.view.BitmapTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.gift.GiftServerApi;
@@ -45,7 +47,9 @@ import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.CancelGiftCountDownEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.event.StartGiftCountDownEvent;
+import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.module.playways.room.gift.event.UpdateDiamondEvent;
+import com.module.playways.room.gift.event.UpdateHZEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,15 +69,22 @@ public class GiftPanelView extends FrameLayout {
     BaseImageView mIvSelectedIcon;
     ExTextView mTvSelectedName;
     ExTextView mAllPlayersTv;
-    ExImageView mIvRecharge;
+    ExTextView mIvRecharge;
     ImageView mIvDiamondIcon;
-    ExImageView mIvSend;
+    ExTextView mIvSend;
     ExRelativeLayout mGiftPanelArea;
     RecyclerView mAllPlayersRV;
     RelativeLayout mLlSelectedMan;
     ExTextView mTvDiamond;
     RelativeLayout mRlPlayerSelectArea;
     ExTextView mFollowTv;
+    BitmapTextView mTvHz;
+    BitmapTextView mTvCoin;
+    ExTextView mTvCoinChange;
+    ExImageView mIvHzIcon;
+    ExTextView mTvHzChange;
+    int mCoin = 0;
+    float mHz = 0;
 
     GiftDisplayView mGiftDisplayView;
     Disposable mRelationTask;
@@ -143,14 +154,19 @@ public class GiftPanelView extends FrameLayout {
         mIvSelectedIcon = (BaseImageView) findViewById(R.id.iv_selected_icon);
         mTvSelectedName = (ExTextView) findViewById(R.id.tv_selected_name);
         mAllPlayersTv = (ExTextView) findViewById(R.id.all_players_tv);
-        mIvRecharge = (ExImageView) findViewById(R.id.iv_recharge);
+        mIvRecharge = findViewById(R.id.iv_recharge);
         mIvDiamondIcon = (ImageView) findViewById(R.id.iv_diamond_icon);
-        mIvSend = (ExImageView) findViewById(R.id.iv_send);
+        mIvSend = findViewById(R.id.iv_send);
         mGiftDisplayView = (GiftDisplayView) findViewById(R.id.gift_view);
         mAllPlayersRV = (RecyclerView) findViewById(R.id.all_players_rv);
         mLlSelectedMan = (RelativeLayout) findViewById(R.id.ll_selected_man);
         mTvDiamond = (ExTextView) findViewById(R.id.tv_diamond);
         mFollowTv = (ExTextView) findViewById(R.id.follow_tv);
+        mTvCoin = (BitmapTextView) findViewById(R.id.tv_coin);
+        mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
+        mIvHzIcon = (ExImageView) findViewById(R.id.iv_hz_icon);
+        mTvHzChange = (ExTextView) findViewById(R.id.tv_hz_change);
+        mTvHz = (BitmapTextView) findViewById(R.id.tv_hz);
         mGiftDisplayView.setIGetGiftCountDownListener(mIGetGiftCountDownListener);
 
         mGiftAllPlayersAdapter = new GiftAllPlayersAdapter();
@@ -246,7 +262,7 @@ public class GiftPanelView extends FrameLayout {
                         TranslateAnimation translateAnimation = new TranslateAnimation(-i * U.getDisplayUtils().dip2px(46), 0, 0, 0);
                         translateAnimation.setDuration(300);
                         translateAnimation.setInterpolator(new DecelerateInterpolator());
-                        if(view != null){
+                        if (view != null) {
                             view.setAnimation(translateAnimation);
                             view.startAnimation(translateAnimation);
                         }
@@ -275,6 +291,11 @@ public class GiftPanelView extends FrameLayout {
         });
 
         getZSBalance();
+
+        mTvCoin.setText(mGrabRoomData.getCoin() + "");
+        mTvHz.setText(String.format("%.1f", mGrabRoomData.getHzCount()));
+        mCoin = mGrabRoomData.getCoin();
+        mHz = mGrabRoomData.getHzCount();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -308,7 +329,7 @@ public class GiftPanelView extends FrameLayout {
                 view.setAnimation(translateAnimation);
                 view.startAnimation(translateAnimation);
             } else {
-                MyLog.w(TAG, "collapsePlayerList view = null" );
+                MyLog.w(TAG, "collapsePlayerList view = null");
             }
         }
 
@@ -359,6 +380,30 @@ public class GiftPanelView extends FrameLayout {
     public void onEvent(UpdateDiamondEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         mTvDiamond.setText(String.format("%.1f", event.getZuanBalance()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateCoinEvent event) {
+        if (mCoin != event.getCoinBalance()) {
+            mCoin = event.getCoinBalance();
+            mTvCoin.setText(event.getCoinBalance() + "");
+        }
+
+        mGrabRoomData.setCoinNoEvent(mCoin);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateHZEvent event) {
+        if (mHz != event.getHz()) {
+            mHz = event.getHz();
+            mTvHz.setText(String.format("%.1f", event.getHz()));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabMyCoinChangeEvent event) {
+        mTvCoin.setText(event.coin + "");
+        mCoin = event.coin;
     }
 
     //外面不希望用这个函数

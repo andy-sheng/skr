@@ -2642,7 +2642,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
                 if (property.userID == MyUserInfoManager.getInstance().getUid()) {
                     if (property.coinBalance != -1) {
-                        EventBus.getDefault().post(new UpdateCoinEvent((int) property.coinBalance, property.lastChangeMs));
+                        UpdateCoinEvent.sendEvent((int) property.coinBalance, property.lastChangeMs);
                     }
                     if (property.hongZuanBalance != -1) {
                         mRoomData.setHzCount(property.hongZuanBalance, property.lastChangeMs);

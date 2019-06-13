@@ -1,9 +1,10 @@
 package com.module.playways.grab.room.bottom;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
@@ -11,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.R;
@@ -28,7 +29,7 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     View mIvRoomManage;
 
-    ExImageView mQuickBtn;
+    ExTextView mQuickBtn;
 
     View mSpeakingDotAnimationView;
 
@@ -66,7 +67,7 @@ public class GrabBottomContainerView extends BottomContainerView {
             }
         });
         mSpeakingDotAnimationView = this.findViewById(R.id.speaking_dot_animation_view);
-        mQuickBtn = (ExImageView) super.mQuickBtn;
+        mQuickBtn = (ExTextView) super.mQuickBtn;
 
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -126,9 +127,15 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     protected void onQuickMsgDialogShow(boolean show) {
         if (show) {
-            mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie_anxia);
+            Drawable drawable = U.getDrawable(R.drawable.kuaijiehuifu_fang);
+            drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+            mQuickBtn.setCompoundDrawables(null, null,
+                    drawable, null);
         } else {
-            mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
+            Drawable drawable = U.getDrawable(R.drawable.kuaijiehuifu_shou);
+            drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+            mQuickBtn.setCompoundDrawables(null, null,
+                    drawable, null);
         }
     }
 
@@ -190,7 +197,10 @@ public class GrabBottomContainerView extends BottomContainerView {
 //            });
         } else {
             mIvRoomManage.setVisibility(GONE);
-            mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
+            Drawable drawable = U.getDrawable(R.drawable.kuaijiehuifu_shou);
+            drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+            mQuickBtn.setCompoundDrawables(null, null,
+                    drawable, null);
         }
     }
 

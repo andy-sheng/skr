@@ -29,6 +29,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -55,7 +56,6 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
-import com.module.playways.grab.room.songmanager.fragment.OwnerManageFragment;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
@@ -714,7 +714,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //                        .setExitAnim(R.anim.slide_right_out)
 //                        .addDataBeforeAdd(0, mRoomData)
 //                        .build());
-                OwnerManagerActivity.open(getActivity(),mRoomData);
+                OwnerManagerActivity.open(getActivity(), mRoomData);
                 removeManageSongTipView();
             }
 
@@ -975,11 +975,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
 
             @Override
-            public void addFirend() {
-
-            }
-
-            @Override
             public void onClickVoiceAudition() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 if (mGrabVoiceControlPanelView == null) {
@@ -999,6 +994,57 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 }
                 mVoiceControlDialog.show();
             }
+
+            @Override
+            public void onClickFeedBack() {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, 0)
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build());
+            }
+
+            @Override
+            public void closeBtnClick() {
+                if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size() >= 2) {
+                    quitGame();
+                } else {
+                    mCorePresenter.exitRoom("closeBtnClick");
+                }
+            }
+
+            @Override
+            public void onVoiceChange(boolean voiceOpen) {
+                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
+//            if (!voiceOpen) {
+//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+//                        "game_muteon", null);
+//            }
+            }
+
+            @Override
+            public void onClickGameRule() {
+                if (mGameRuleDialog != null) {
+                    mGameRuleDialog.dismiss();
+                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                mGameRuleDialog = DialogPlus.newDialog(getContext())
+                        .setContentHolder(new ViewHolder(R.layout.grab_game_rule_view_layout))
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setExpanded(false)
+                        .setGravity(Gravity.CENTER)
+                        .create();
+                mGameRuleDialog.show();
+            }
+
+            @Override
+            public void onClickCamera() {
+                ToastUtils.showShort("camera");
+            }
         });
 
         mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
@@ -1011,75 +1057,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     GrabTopContainerView.Listener mTopListener = new GrabTopContainerView.Listener() {
         @Override
-        public void closeBtnClick() {
-            if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size() >= 2) {
-                quitGame();
-            } else {
-                mCorePresenter.exitRoom("closeBtnClick");
-            }
-        }
-
-        @Override
-        public void onVoiceChange(boolean voiceOpen) {
-            mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-//            if (!voiceOpen) {
-//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                        "game_muteon", null);
-//            }
-        }
-
-        @Override
-        public void onClickGameRule() {
-            if (mGameRuleDialog != null) {
-                mGameRuleDialog.dismiss();
-            }
-            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            mGameRuleDialog = DialogPlus.newDialog(getContext())
-                    .setContentHolder(new ViewHolder(R.layout.grab_game_rule_view_layout))
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_50)
-                    .setExpanded(false)
-                    .setGravity(Gravity.CENTER)
-                    .create();
-            mGameRuleDialog.show();
-        }
-
-        @Override
-        public void onClickVoiceVoiceAudition() {
-            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            if (mGrabVoiceControlPanelView == null) {
-                mGrabVoiceControlPanelView = new GrabVoiceControlPanelView(getContext());
-                mGrabVoiceControlPanelView.setRoomData(mRoomData);
-            }
-            mGrabVoiceControlPanelView.bindData();
-            if (mVoiceControlDialog == null) {
-                mVoiceControlDialog = DialogPlus.newDialog(getContext())
-                        .setContentHolder(new ViewHolder(mGrabVoiceControlPanelView))
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_50)
-                        .setExpanded(false)
-                        .setCancelable(true)
-                        .setGravity(Gravity.BOTTOM)
-                        .create();
-            }
-            mVoiceControlDialog.show();
-        }
-
-        @Override
         public void onClickSkipGuide() {
 
-        }
-
-        @Override
-        public void onClickFeedBack() {
-            U.getFragmentUtils().addFragment(
-                    FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .addDataBeforeAdd(0, 0)
-                            .setEnterAnim(R.anim.slide_in_bottom)
-                            .setExitAnim(R.anim.slide_out_bottom)
-                            .build());
         }
     };
 
@@ -1313,7 +1292,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mOthersSingCardView.setVisibility(GONE);
         mSelfSingCardView.setVisibility(GONE);
         mMiniOwnerMicIv.setVisibility(GONE);
-        mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
@@ -1371,7 +1349,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         // 第二轮不播这个动画
         mTopContainerView.setModeSing();
-        mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
 
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
@@ -1403,7 +1380,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mTopContainerView.setVisibility(View.VISIBLE);
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing();
-        mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("singByOthers");
         mGrabOpBtn.setGrabPreRound(false);

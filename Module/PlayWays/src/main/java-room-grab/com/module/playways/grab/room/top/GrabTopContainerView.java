@@ -34,8 +34,6 @@ public class GrabTopContainerView extends RelativeLayout {
     GrabTopView mGrabTopView;// 切房间按钮，金币
     RelativeLayout mRelativeLayoutIconContainer;
     MoreOpView mMoreOpView;
-    ExImageView mMoreBtn;
-    ExTextView mSongIndexTv;
     ImageView mSkipGuideIv;
 
     GrabPlayerRv2 mTopContentRv;
@@ -75,8 +73,6 @@ public class GrabTopContainerView extends RelativeLayout {
         mRelativeLayoutIconContainer = (RelativeLayout) this.findViewById(R.id.relativeLayout_icon_container);
         mTopContentRv = this.findViewById(R.id.top_content_rv);
         mGrabTopView = (GrabTopView) findViewById(R.id.grab_top_view);
-        mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
-        mSongIndexTv = (ExTextView) this.findViewById(R.id.song_index_tv);
         mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
         mSkipGuideIv = (ImageView) this.findViewById(R.id.skip_guide_iv);
 
@@ -85,46 +81,46 @@ public class GrabTopContainerView extends RelativeLayout {
 //        mGrabTopAdapter = new GrabTopAdapter();
 //        mTopContentRv.setAdapter(mGrabTopAdapter);
 
-        mMoreBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mMoreOpView == null) {
-                    mMoreOpView = new MoreOpView(getContext());
-                    mMoreOpView.setListener(new MoreOpView.Listener() {
-                        @Override
-                        public void onClostBtnClick() {
-                            if (mListener != null) {
-                                mListener.closeBtnClick();
-                            }
-                        }
-
-                        @Override
-                        public void onVoiceChange(boolean voiceOpen) {
-                            // 打开或者关闭声音 只是不听别人的声音
-                            if (mListener != null) {
-                                mListener.onVoiceChange(voiceOpen);
-                            }
-                        }
-
-                        @Override
-                        public void onClickGameRule() {
-                            if (mListener != null) {
-                                mListener.onClickGameRule();
-                            }
-                        }
-
-                        @Override
-                        public void onClickFeedback() {
-                            if (mListener != null) {
-                                mListener.onClickFeedBack();
-                            }
-                        }
-                    });
-                    mMoreOpView.setRoomData(mRoomData);
-                }
-                mMoreOpView.showAt(mMoreBtn);
-            }
-        });
+//        mMoreBtn.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mMoreOpView == null) {
+//                    mMoreOpView = new MoreOpView(getContext());
+//                    mMoreOpView.setListener(new MoreOpView.Listener() {
+//                        @Override
+//                        public void onClostBtnClick() {
+//                            if (mListener != null) {
+//                                mListener.closeBtnClick();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onVoiceChange(boolean voiceOpen) {
+//                            // 打开或者关闭声音 只是不听别人的声音
+//                            if (mListener != null) {
+//                                mListener.onVoiceChange(voiceOpen);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onClickGameRule() {
+//                            if (mListener != null) {
+//                                mListener.onClickGameRule();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onClickFeedback() {
+//                            if (mListener != null) {
+//                                mListener.onClickFeedBack();
+//                            }
+//                        }
+//                    });
+//                    mMoreOpView.setRoomData(mRoomData);
+//                }
+//                mMoreOpView.showAt(mMoreBtn);
+//            }
+//        });
 
         mSkipGuideIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -134,11 +130,6 @@ public class GrabTopContainerView extends RelativeLayout {
                 }
             }
         });
-    }
-
-    public void setSeqIndex(int seq, int size) {
-        String text = String.format("%s/%s", seq, size);
-        mSongIndexTv.setText(text);
     }
 
     public void setModeGrab() {
@@ -229,8 +220,6 @@ public class GrabTopContainerView extends RelativeLayout {
 
         if (roomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
             // 新手房
-            mMoreBtn.setVisibility(GONE);
-            mSongIndexTv.setVisibility(GONE);
             mSkipGuideIv.setVisibility(VISIBLE);
         }
     }
@@ -248,16 +237,6 @@ public class GrabTopContainerView extends RelativeLayout {
     }
 
     public interface Listener {
-        void closeBtnClick();
-
-        void onVoiceChange(boolean voiceOpen);
-
-        void onClickGameRule();
-
-        void onClickVoiceVoiceAudition();
-
         void onClickSkipGuide();
-
-        void onClickFeedBack();
     }
 }

@@ -201,7 +201,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         if (lastHzTs < ts) {
             lastHzTs = ts;
             mHzCount = hzCount;
-            EventBus.getDefault().post(new UpdateHZEvent(mHzCount, ts));
+            UpdateHZEvent.sendEvent(hzCount, ts);
         }
     }
 

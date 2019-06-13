@@ -186,7 +186,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
         RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(7);
-        lp.rightMargin = U.getDisplayUtils().dip2px(7);
+        lp.rightMargin = U.getDisplayUtils().dip2px(48);
         mContentLl.setLayoutParams(lp);
     }
 
@@ -229,7 +229,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
         RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(7);
-        lp.rightMargin = U.getDisplayUtils().dip2px(7);
+        lp.rightMargin = U.getDisplayUtils().dip2px(48);
         mContentLl.setLayoutParams(lp);
     }
 

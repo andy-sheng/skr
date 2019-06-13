@@ -134,7 +134,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     int coin = result.getData().getIntValue("coinBalance");
                     if (coin >= 0) {
                         long ts = result.getData().getLongValue("coinBalanceLastChangeMs");
-                        EventBus.getDefault().post(new UpdateCoinEvent(coin, ts));
+                        UpdateCoinEvent.sendEvent(coin, ts);
                     }
 
                     float diamond = result.getData().getFloatValue("zuanBalance");

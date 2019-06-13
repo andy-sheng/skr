@@ -160,12 +160,12 @@ public class GrabTopItemView extends RelativeLayout {
     //占位的View
     public void setToPlaceHolder() {
         if (mCanShowInviteWhenEmpty) {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_yaoqing));
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_yaoqing));
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
             }
         } else {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_kongwei));
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_guanzhong));
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
             }

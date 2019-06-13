@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:VoiceControlPanelView="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     xmlns:gameType="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ranking_container"
     android:layout_width="match_parent"
@@ -23,12 +22,7 @@
         android:layout_height="@dimen/view_284_dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_d_2_dp"
-        android:layout_marginRight="@dimen/view_d_2_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_20_dp"
-        app:bl_corners_topRightRadius="@dimen/view_20_dp"
-        app:bl_solid_color="#7088FF"
-        app:bl_stroke_color="#3B4E79"
-        app:bl_stroke_width="@dimen/view_2_dp">
+        android:layout_marginRight="@dimen/view_d_2_dp">
 
         <!--这里面是软键盘弹出时 需要上移的布局-->
         <com.module.playways.grab.room.bottom.GrabBottomContainerView
@@ -37,11 +31,10 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/input_container_view"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/view_25_dp"
+            android:layout_marginBottom="@dimen/view_18_dp"
             gameType:type="grab" />
 
-        <com.module.playways.room.room.comment.CommentView
-            android:id="@+id/comment_view"
+        <com.module.playways.view.EdgeTransparentView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
@@ -50,15 +43,24 @@
             android:layout_marginBottom="@dimen/view_66_dp"
             android:paddingLeft="@dimen/view_18_dp"
             android:paddingBottom="@dimen/view_7_dp"
-            gameType:type="grab" />
+            app:edge_position="top|bottom"
+            app:edge_width="30dp">
 
-        <com.common.view.ex.ExImageView
-            android:id="@+id/cover_iv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_alignTop="@+id/comment_view"
-            android:layout_marginRight="@dimen/view_100_dp"
-            android:background="@drawable/ycdd_zhezhao" />
+            <com.module.playways.room.room.comment.CommentView
+                android:id="@+id/comment_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                gameType:type="grab" />
+        </com.module.playways.view.EdgeTransparentView>
+
+
+        <!--<com.common.view.ex.ExImageView-->
+        <!--android:id="@+id/cover_iv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/view_22_dp"-->
+        <!--android:layout_alignTop="@+id/comment_view"-->
+        <!--android:layout_marginRight="@dimen/view_100_dp"-->
+        <!--android:background="@drawable/ycdd_zhezhao" />-->
 
         <com.common.view.ex.ExImageView
             android:id="@+id/mini_owner_mic_iv"
@@ -230,7 +232,8 @@
         android:id="@+id/change_room_transition_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_trans_80" />
+        android:background="@color/black_trans_80"
+        android:visibility="gone" />
 
 
     <com.module.playways.grab.room.view.GrabInputContainerView
