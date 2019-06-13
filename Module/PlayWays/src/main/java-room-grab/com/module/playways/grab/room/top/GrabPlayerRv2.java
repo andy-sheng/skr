@@ -106,7 +106,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
     private void open() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", -U.getDisplayUtils().dip2px(45), 0);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", -U.getDisplayUtils().dip2px(42), 0);
         animator.setDuration(300);
         animator.start();
         animator.addListener(new AnimatorListenerAdapter() {
@@ -120,7 +120,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
     private void close() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", 0, -U.getDisplayUtils().dip2px(45));
+        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", 0, -U.getDisplayUtils().dip2px(42));
         animator.setDuration(300);
         animator.start();
         animator.addListener(new AnimatorListenerAdapter() {
