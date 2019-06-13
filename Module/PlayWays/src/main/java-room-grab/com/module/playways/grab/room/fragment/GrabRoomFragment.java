@@ -55,7 +55,6 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
-import com.module.playways.grab.room.songmanager.fragment.OwnerManageFragment;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.GameTipsManager;
@@ -217,6 +216,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     ImageView mOwnerBeginGameIv;
 
+    GameTipsManager mGameTipsManager = new GameTipsManager();
+
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     Handler mUiHanlder = new Handler() {
@@ -353,184 +354,96 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowInviteTipView() {
-        if (isActivityExit()) {
-            GameTipsManager.GameTipsView gameTipsView = new GameTipsManager.Builder(getContext(), mRankingContainer)
-                    .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                    .setImgRes(R.drawable.fz_yaoqing_tishi)
-                    .setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0)
-                    .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
-                    .hasAnimation(true)
-                    .setShowCount(3)
-                    .setTag(TAG_INVITE_TIP_VIEW)
-                    .build();
-            if (gameTipsView != null) gameTipsView.show();
-        }
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_yaoqing_tishi)
+                .setActivity(getActivity())
+                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
+                .setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0)
+                .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
+                .hasAnimation(true)
+                .setShowCount(3)
+                .setTag(TAG_INVITE_TIP_VIEW)
+                .tryShow(mGameTipsManager);
     }
 
     private void tryShowManageSongTipView() {
-        if (isActivityExit()) {
-            GameTipsManager.GameTipsView gameTipsView = new GameTipsManager.Builder(getContext(), mRankingContainer)
-                    .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                    .setImgRes(R.drawable.fz_kongzhi_tishi)
-                    .setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78))
-                    .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
-                    .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1)
-                    .setIndex(mRankingContainer.indexOfChild(mBottomBgVp) + 1)
-                    .hasAnimation(true)
-                    .setShowCount(3)
-                    .setTag(TAG_MANAGE_SONG_TIP_VIEW)
-                    .build();
-            if (gameTipsView != null) gameTipsView.show();
-        }
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_kongzhi_tishi)
+                .setActivity(getActivity())
+                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78))
+                .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
+                .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1)
+                .setIndex(mRankingContainer.indexOfChild(mBottomBgVp) + 1)
+                .hasAnimation(true)
+                .setShowCount(3)
+                .setTag(TAG_MANAGE_SONG_TIP_VIEW)
+                .tryShow(mGameTipsManager);
 
     }
 
     private void tryShowChallengeTipView() {
-        if (isActivityExit()) {
-            GameTipsManager.GameTipsView gameTipsView = new GameTipsManager.Builder(getContext(), mRankingContainer)
-                    .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                    .setImgRes(R.drawable.fz_tiaozhan_tishi)
-                    .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0)
-                    .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
-                    .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
-                    .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
-                    .hasAnimation(true)
-                    .setShowCount(3)
-                    .setTag(TAG_CHANLLENGE_TIP_VIEW)
-                    .build();
-            if (gameTipsView != null) gameTipsView.show();
-        }
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_tiaozhan_tishi)
+                .setActivity(getActivity())
+                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
+                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0)
+                .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
+                .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
+                .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
+                .hasAnimation(true)
+                .setShowCount(3)
+                .setTag(TAG_CHANLLENGE_TIP_VIEW)
+                .tryShow(mGameTipsManager);
     }
 
     // 抢唱提示
     private void tryShowGrabTipView() {
-        if (isActivityExit()) {
-            GameTipsManager.GameTipsView gameTipsView = new GameTipsManager.Builder(getContext(), mRankingContainer)
-                    .setSize(U.getDisplayUtils().dip2px(202), U.getDisplayUtils().dip2px(91))
-                    .setImgRes(R.drawable.grab_grab_tips_icon)
-                    .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
-                    .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
-                    .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(48), 0)
-                    .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
-                    .hasAnimation(false)
-                    .setShowCount(2)
-                    .setTag(TAG_GRAB_ROB_TIP_VIEW)
-                    .build();
-            if (gameTipsView != null) gameTipsView.show();
-        }
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_grab_tips_icon)
+                .setActivity(getActivity())
+                .setSize(U.getDisplayUtils().dip2px(202), U.getDisplayUtils().dip2px(91))
+                .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
+                .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
+                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(48), 0)
+                .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
+                .hasAnimation(false)
+                .setShowCount(2)
+                .setTag(TAG_GRAB_ROB_TIP_VIEW)
+                .tryShow(mGameTipsManager);
     }
 
     // 爆灯提示
     private void tryShowBurstTipView() {
-        if (isActivityExit()) {
-            GameTipsManager.GameTipsView gameTipsView = new GameTipsManager.Builder(getContext(), mRankingContainer)
-                    .setSize(U.getDisplayUtils().dip2px(208), U.getDisplayUtils().dip2px(80))
-                    .setImgRes(R.drawable.grab_burst_tips_icon)
-                    .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
-                    .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
-                    .setMargins(0, 0, U.getDisplayUtils().dip2px(60), -U.getDisplayUtils().dip2px(10))
-                    .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
-                    .hasAnimation(false)
-                    .setTag(TAG_BURST_TIP_VIEW)
-                    .setShowCount(1)
-                    .build();
-            if (gameTipsView != null) gameTipsView.show();
-        }
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_burst_tips_icon)
+                .setActivity(getActivity())
+                .setSize(U.getDisplayUtils().dip2px(208), U.getDisplayUtils().dip2px(80))
+                .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
+                .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(60), -U.getDisplayUtils().dip2px(10))
+                .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
+                .hasAnimation(false)
+                .setTag(TAG_BURST_TIP_VIEW)
+                .setShowCount(1)
+                .tryShow(mGameTipsManager);
     }
 
     // 歌词提示
     private void tryShowGrabSelfSingTipView() {
-        if (isActivityExit()) {
-            GameTipsManager.GameTipsView gameTipsView = new GameTipsManager.Builder(getContext(), mRankingContainer)
-                    .setSize(U.getDisplayUtils().dip2px(250), U.getDisplayUtils().dip2px(96))
-                    .setImgRes(R.drawable.grab_self_sing_tips_icon)
-                    .addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1)
-                    .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
-                    .setMargins(U.getDisplayUtils().dip2px(55), U.getDisplayUtils().dip2px(60), 0, 0)
-                    .hasAnimation(false)
-                    .setTag(TAG_SELF_SING_TIP_VIEW)
-                    .setShowCount(1)
-                    .build();
-            if (gameTipsView != null) gameTipsView.show();
-        }
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_self_sing_tips_icon)
+                .setActivity(getActivity())
+                .setSize(U.getDisplayUtils().dip2px(250), U.getDisplayUtils().dip2px(96))
+                .addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1)
+                .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
+                .setMargins(U.getDisplayUtils().dip2px(55), U.getDisplayUtils().dip2px(60), 0, 0)
+                .hasAnimation(false)
+                .setTag(TAG_SELF_SING_TIP_VIEW)
+                .setShowCount(1)
+                .tryShow(mGameTipsManager);
     }
 
     // 清唱手势滑动
     private void tryShowNoAccSrollTipsView() {
-        if (isActivityExit()) {
-            GameTipsManager.GameTipsView gameTipsView = new GameTipsManager.Builder(getContext(), mRankingContainer)
-                    .setSize(U.getDisplayUtils().dip2px(64), U.getDisplayUtils().dip2px(54))
-                    .setImgRes(R.drawable.grab_sroll_finger_icon)
-                    .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
-                    .addRule(RelativeLayout.CENTER_HORIZONTAL, -1)
-                    .setMargins(0, U.getDisplayUtils().dip2px(285), 0, 0)
-                    .hasAnimation(false)
-                    .setTag(TAG_NOACC_SROLL_TIP_VIEW)
-                    .setShowCount(1)
-                    .build();
-            if (gameTipsView != null) {
-                gameTipsView.show();
-                startFingerTipViewAnimator(gameTipsView.getImageView());
-            }
-        }
-    }
 
-    private void removeNoAccSrollTipsView() {
-        if (mFingerTipViewAnimator != null) {
-            mFingerTipViewAnimator.removeAllListeners();
-            mFingerTipViewAnimator.cancel();
-        }
-        if (isActivityExit())
-            GameTipsManager.getInstance().dismiss(TAG_NOACC_SROLL_TIP_VIEW);
-    }
-
-    private void removeGrabSelfSingTipView() {
-        if (isActivityExit())
-            GameTipsManager.getInstance().dismiss(TAG_SELF_SING_TIP_VIEW);
-    }
-
-    private void removeBurstTipView() {
-        if (isActivityExit())
-            GameTipsManager.getInstance().dismiss(TAG_BURST_TIP_VIEW);
-    }
-
-    private void removeGrabTipView() {
-        if (isActivityExit())
-            GameTipsManager.getInstance().dismiss(TAG_GRAB_ROB_TIP_VIEW);
-    }
-
-    private void removeInviteTipView() {
-        if (isActivityExit())
-            GameTipsManager.getInstance().dismiss(TAG_INVITE_TIP_VIEW);
-    }
-
-    private void removeManageSongTipView() {
-        if (isActivityExit())
-            GameTipsManager.getInstance().dismiss(TAG_MANAGE_SONG_TIP_VIEW);
-    }
-
-    private void removeChallengeTipView() {
-        if (isActivityExit())
-            GameTipsManager.getInstance().dismiss(TAG_CHANLLENGE_TIP_VIEW);
-    }
-
-    private boolean isActivityExit() {
-        Activity activity = getActivity();
-        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-            return true;
-        }
-        return false;
-    }
-
-
-    ObjectAnimator mFingerTipViewAnimator;
-
-    private void startFingerTipViewAnimator(View view) {
-        if (mFingerTipViewAnimator != null) {
-            mFingerTipViewAnimator.removeAllListeners();
-            mFingerTipViewAnimator.cancel();
-        }
-        mFingerTipViewAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0, -U.getDisplayUtils().dip2px(80));
+        ObjectAnimator mFingerTipViewAnimator = new ObjectAnimator();
+        mFingerTipViewAnimator.setProperty(View.TRANSLATION_Y);
+        mFingerTipViewAnimator.setFloatValues(0, -U.getDisplayUtils().dip2px(80));
         mFingerTipViewAnimator.setRepeatCount(2);
         mFingerTipViewAnimator.setDuration(1500);
         mFingerTipViewAnimator.setRepeatMode(ValueAnimator.RESTART);
@@ -555,8 +468,56 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             }
         });
-        mFingerTipViewAnimator.start();
+
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_sroll_finger_icon)
+                .setActivity(getActivity())
+                .setSize(U.getDisplayUtils().dip2px(64), U.getDisplayUtils().dip2px(54))
+                .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
+                .addRule(RelativeLayout.CENTER_HORIZONTAL, -1)
+                .setMargins(0, U.getDisplayUtils().dip2px(285), 0, 0)
+                .hasAnimation(true)
+                .setAniamtion(mFingerTipViewAnimator)
+                .setTag(TAG_NOACC_SROLL_TIP_VIEW)
+                .setShowCount(1)
+                .tryShow(mGameTipsManager);
     }
+
+    private void removeNoAccSrollTipsView() {
+        mGameTipsManager.dismiss(TAG_NOACC_SROLL_TIP_VIEW, getActivity());
+    }
+
+    private void removeGrabSelfSingTipView() {
+        mGameTipsManager.dismiss(TAG_SELF_SING_TIP_VIEW, getActivity());
+    }
+
+    private void removeBurstTipView() {
+        mGameTipsManager.dismiss(TAG_BURST_TIP_VIEW, getActivity());
+    }
+
+    private void removeGrabTipView() {
+        mGameTipsManager.dismiss(TAG_GRAB_ROB_TIP_VIEW, getActivity());
+    }
+
+    private void removeInviteTipView() {
+        mGameTipsManager.dismiss(TAG_INVITE_TIP_VIEW, getActivity());
+    }
+
+    private void removeManageSongTipView() {
+        mGameTipsManager.dismiss(TAG_MANAGE_SONG_TIP_VIEW, getActivity());
+    }
+
+    private void removeChallengeTipView() {
+        mGameTipsManager.dismiss(TAG_CHANLLENGE_TIP_VIEW, getActivity());
+    }
+
+//    private boolean isActivityExit() {
+//        Activity activity = getActivity();
+//        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+//            return true;
+//        }
+//        return false;
+//    }
+
 
     @Override
     public void onStart() {
@@ -1523,10 +1484,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mAnimatorList.clear();
         }
 
-        if (mFingerTipViewAnimator != null) {
-            mFingerTipViewAnimator.cancel();
-        }
-
         if (mContinueSendView != null) {
             mContinueSendView.destroy();
         }
@@ -1535,7 +1492,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mGiftPanelView.destroy();
         }
 
-        GameTipsManager.getInstance().destory();
+        mGameTipsManager.destory();
 
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);

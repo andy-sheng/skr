@@ -52,6 +52,7 @@ import com.zq.mediaengine.util.gles.GLRender;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -765,15 +766,15 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param event
      */
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DeviceUtils.HeadsetPlugEvent event) {
-//        if (event.on) {
-//            setEnableSpeakerphone(false);
-//            enableInEarMonitoring(false);
-//        } else {
-//            setEnableSpeakerphone(true);
-//            enableInEarMonitoring(false);
-//        }
+        if (event.on) {
+            setEnableSpeakerphone(false);
+            enableInEarMonitoring(false);
+        } else {
+            setEnableSpeakerphone(true);
+            enableInEarMonitoring(false);
+        }
     }
 
     /**

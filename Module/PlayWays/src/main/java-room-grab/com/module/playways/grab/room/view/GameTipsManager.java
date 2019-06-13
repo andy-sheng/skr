@@ -1,11 +1,13 @@
 package com.module.playways.grab.room.view;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -17,42 +19,45 @@ import java.util.Map;
 // 提示
 public class GameTipsManager {
 
-    private static Map<String, GameTipsView> mGameTipsViewMap;
-    private static Map<String, Integer> mGameTipsTimeMap;  // 记录每个tag已经展示的次数
+    private Map<String, GameTipsView> mGameTipsViewMap;
 
-    private static class GameTipsManagerHolder {
-        private static final GameTipsManager INSTANCE = new GameTipsManager();
-    }
-
-    public static final GameTipsManager getInstance() {
-        return GameTipsManagerHolder.INSTANCE;
-    }
-
-    private GameTipsManager() {
-
+    private boolean isShowing(String tag) {
+        if (mGameTipsViewMap != null) {
+            return mGameTipsViewMap.containsKey(tag);
+        }
+        return false;
     }
 
     public void dismiss(String tag) {
+        dismiss(tag,null);
+    }
+
+    public void dismiss(String tag,Activity activity) {
         if (mGameTipsViewMap == null || !mGameTipsViewMap.containsKey(tag)) {
             return;
         }
-
         GameTipsView gameTipsView = mGameTipsViewMap.get(tag);
         if (gameTipsView != null) {
-            gameTipsView.dismiss();
-            mGameTipsViewMap.remove(tag);
+            if(activity!=null){
+                if(activity.isDestroyed() || activity.isFinishing()){
+
+                }else{
+                    gameTipsView.dismiss();
+                    mGameTipsViewMap.remove(tag);
+                }
+            }else{
+                gameTipsView.dismiss();
+                mGameTipsViewMap.remove(tag);
+            }
         }
     }
 
-    public void show(String tag) {
-        if (mGameTipsViewMap == null || !mGameTipsViewMap.containsKey(tag)) {
-            return;
+    private void save(String tag, GameTipsView view) {
+        dismiss(tag);
+        if (mGameTipsViewMap == null) {
+            mGameTipsViewMap = new HashMap<>();
         }
-
-        GameTipsView gameTipsView = mGameTipsViewMap.get(tag);
-        if (gameTipsView != null) {
-            gameTipsView.show();
-        }
+        mGameTipsViewMap.put(tag, view);
     }
 
     public void destory() {
@@ -65,68 +70,114 @@ public class GameTipsManager {
         }
 
         mGameTipsViewMap = null;
-        mGameTipsTimeMap = null;
     }
 
 
-    public static final class Builder {
-        private Context mContext;
-        private int mWidth;
-        private int mHeight;
+    public static final class GameTipsView {
+        private View tipsView; // view 本体，如果不特殊设置的话，就是imageView
+        private int width = U.getDisplayUtils().dip2px(100);
+        private int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         private int resId;
-        private int leftMargin;
-        private int rightMargin;
-        private int topMargin;
-        private int bottomMargin;
-
-        private ViewGroup mViewGroup;
-        private Map<Integer, Integer> mMap = new HashMap<>();
+        private int leftMargin = 0;
+        private int rightMargin = 0;
+        private int topMargin = 0;
+        private int bottomMargin = 0;
+        private ViewGroup parentView;
+        private Map<Integer, Integer> rulesMap = new HashMap<>();
         private int index = -1;
+        private View indexView = null;
+        private String tag;
+        private boolean hasAnimation = false;
+        private int maxShowCount = -1; // 最大显示次数，绑定app生命周期，会存入sharepref，-1代表不限制
+        private Animator tipViewAnimator; // 该view 的显示的动画，如果不特殊设置就是抖动动画
+        private Activity activity;
 
-        private String mTag;
-
-        private boolean mHasAnimation;
-        ValueAnimator mTipViewAnimator;
-
-        private int mCount = -1;
-
-        public Builder(Context context, ViewGroup viewGroup) {
-            mContext = context;
-            mViewGroup = viewGroup;
+        public GameTipsView(ViewGroup viewGroup,int resId) {
+            this.parentView = viewGroup;
+            this.resId = resId;
         }
 
-        public Builder setSize(int width, int height) {
-            mWidth = width;
-            mHeight = height;
+        public GameTipsView(ViewGroup viewGroup,View tipsView) {
+            this.parentView = viewGroup;
+            this.tipsView = tipsView;
+        }
+
+        public GameTipsView setActivity(Activity activity) {
+            this.activity = activity;
             return this;
         }
 
-        public Builder setImgRes(int val) {
+        public GameTipsManager.GameTipsView setTipsView(View tipsView) {
+            this.tipsView = tipsView;
+            return this;
+        }
+
+        public View getTipsView() {
+            return tipsView;
+        }
+
+        public GameTipsManager.GameTipsView setSize(int width, int height) {
+            this.width = width;
+            this.height = height;
+            return this;
+        }
+
+        public GameTipsManager.GameTipsView setImgRes(int val) {
             resId = val;
             return this;
         }
 
-        public Builder setIndex(int val) {
+        public GameTipsManager.GameTipsView setIndex(int val) {
             index = val;
             return this;
         }
 
-        public Builder setTag(String tag) {
-            mTag = tag;
+        public GameTipsManager.GameTipsView setIndexView(View view) {
+            indexView = view;
             return this;
         }
 
-        public Builder addRule(int verb, int subject) {
-            mMap.put(verb, subject);
+        public GameTipsManager.GameTipsView setTag(String tag) {
+            this.tag = tag;
             return this;
         }
 
-        public Builder hasAnimation(boolean hasAnimation) {
-            mHasAnimation = hasAnimation;
+        public GameTipsManager.GameTipsView addRule(int verb, int subject) {
+            rulesMap.put(verb, subject);
             return this;
         }
 
-        public Builder setMargins(int left, int top, int right, int bottom) {
+        public GameTipsManager.GameTipsView hasAnimation(boolean hasAnimation) {
+            this.hasAnimation = hasAnimation;
+            return this;
+        }
+
+        public GameTipsManager.GameTipsView setAniamtion(Animator aniamtion){
+            this.tipViewAnimator = aniamtion;
+            return this;
+        }
+
+        public GameTipsManager.GameTipsView setLeftMargin(int leftMargin) {
+            this.leftMargin = leftMargin;
+            return this;
+        }
+
+        public GameTipsManager.GameTipsView setRightMargin(int rightMargin) {
+            this.rightMargin = rightMargin;
+            return this;
+        }
+
+        public GameTipsManager.GameTipsView setTopMargin(int topMargin) {
+            this.topMargin = topMargin;
+            return this;
+        }
+
+        public GameTipsManager.GameTipsView setBottomMargin(int bottomMargin) {
+            this.bottomMargin = bottomMargin;
+            return this;
+        }
+
+        public GameTipsManager.GameTipsView setMargins(int left, int top, int right, int bottom) {
             leftMargin = left;
             topMargin = top;
             rightMargin = right;
@@ -134,164 +185,121 @@ public class GameTipsManager {
             return this;
         }
 
-        public Builder setShowCount(int count) {
-            this.mCount = count;
+        public GameTipsManager.GameTipsView setShowCount(int count) {
+            this.maxShowCount = count;
             return this;
         }
 
-        // TODO: 2019-06-12 可能返回一个空
-        public GameTipsView build() {
-            if (mCount != -1 && !TextUtils.isEmpty(mTag)) {
-                if (mGameTipsTimeMap != null && mGameTipsTimeMap.containsKey(mTag)) {
-                    if (mGameTipsTimeMap.get(mTag) < mCount) {
-                        // 次数还够
-                    } else {
-                        return null;
+        protected void startAnimation() {
+            if (tipViewAnimator != null && tipViewAnimator.isRunning()) {
+                if(tipViewAnimator instanceof  ValueAnimator){
+                    ((ValueAnimator) tipViewAnimator).removeAllUpdateListeners();
+                }
+                tipViewAnimator.removeAllListeners();
+                tipViewAnimator.cancel();
+            }
+            if (tipViewAnimator == null) {
+                ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 20, 0);
+                valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+                valueAnimator.setDuration(2500);
+                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        boolean hasSetableView = false;
+                        if (tipsView != null && tipsView.getParent() != null) {
+                            hasSetableView = true;
+                            tipsView.setTranslationY((int) animation.getAnimatedValue());
+                        }
+
+                        if (!hasSetableView) {
+                            tipViewAnimator.cancel();
+                        }
                     }
-                } else {
-                    int showTimes = U.getPreferenceUtils().getSettingInt(mTag, 0);
-                    if (mGameTipsTimeMap == null) {
-                        mGameTipsTimeMap = new HashMap<>();
-                    }
-                    mGameTipsTimeMap.put(mTag, showTimes);
-                    if (showTimes < mCount) {
-                        // 次数还够
-                    } else {
-                        return null;
-                    }
+                });
+                tipViewAnimator = valueAnimator;
+            }else{
+                tipViewAnimator.setTarget(tipsView);
+            }
+            tipViewAnimator.start();
+        }
+
+        protected void dismiss() {
+            if (tipViewAnimator != null) {
+                if(tipViewAnimator instanceof  ValueAnimator){
+                    ((ValueAnimator) tipViewAnimator).removeAllUpdateListeners();
+                }
+                tipViewAnimator.removeAllListeners();
+                tipViewAnimator.cancel();
+            }
+            if (parentView != null) {
+                parentView.removeView(tipsView);
+            }
+        }
+
+        public GameTipsView tryShow(GameTipsManager gameTipsManager) {
+            if(activity!=null){
+                if(activity.isFinishing() || activity.isDestroyed()){
+                    return null;
                 }
             }
+            // 判断是否已经显示了
+            if (gameTipsManager.isShowing(tag)) {
+                // 已经显示了
+                return null;
+            }
+            boolean needShow = true;
+            if (maxShowCount <= 0) {
+                // 不限制显示次数
+            } else {
+                // 会限制显示次数
+                if (!TextUtils.isEmpty(tag)) {
+                    int showTimes = U.getPreferenceUtils().getSettingInt(tag, 0);
+                    if (showTimes < maxShowCount) {
+                        // 次数还有
+                        U.getPreferenceUtils().setSettingInt(tag, showTimes + 1);
+                    } else {
+                        needShow = false;
+                    }
+                } else {
 
-            ImageView imageView = new ImageView(mContext);
-            imageView.setImageResource(resId);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(mWidth, mHeight);
+                }
+            }
+            if (!needShow) {
+                return null;
+            }
+
+            if(tipsView==null){
+                ImageView imageView = new ImageView(parentView.getContext());
+                imageView.setImageResource(resId);
+                tipsView = imageView;
+            }
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
             layoutParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
-            for (Map.Entry<Integer, Integer> entry : mMap.entrySet()) {
+            for (Map.Entry<Integer, Integer> entry : rulesMap.entrySet()) {
                 layoutParams.addRule(entry.getKey(), entry.getValue());
             }
-            imageView.setLayoutParams(layoutParams);
+            tipsView.setLayoutParams(layoutParams);
 
-            GameTipsView gameTipsView = new GameTipsView(imageView, this);
-            if (mGameTipsViewMap == null) {
-                mGameTipsViewMap = new HashMap<>();
+            if (indexView != null) {
+                index = parentView.indexOfChild(indexView);
             }
-            if (mGameTipsViewMap.containsKey(mTag)) {
-                mGameTipsViewMap.get(mTag).dismiss();
+            if (index == -1) {
+                parentView.addView(tipsView);
+            } else {
+                parentView.addView(tipsView, index);
             }
-            mGameTipsViewMap.put(mTag, gameTipsView);
+            gameTipsManager.save(tag, this);
 
-            return gameTipsView;
+            if (hasAnimation) {
+                startAnimation();
+            }
+            return this;
         }
+
+
     }
 
-
-    public static class GameTipsView {
-        Activity mActivity;
-        ImageView mImageView;
-        ViewGroup mViewGroup;
-        int index;
-        boolean hasAnimation;
-        ValueAnimator mTipViewAnimator;
-        int mCount;
-        String mTag;
-
-        public GameTipsView(ImageView imageView, Builder builder) {
-            this.mImageView = imageView;
-            this.mViewGroup = builder.mViewGroup;
-            this.index = builder.index;
-            this.hasAnimation = builder.mHasAnimation;
-            this.mTipViewAnimator = builder.mTipViewAnimator;
-
-            this.mCount = builder.mCount;
-            this.mTag = builder.mTag;
-        }
-
-        public ImageView getImageView() {
-            return mImageView;
-        }
-
-        public void setImageView(ImageView imageView) {
-            mImageView = imageView;
-        }
-
-        public ViewGroup getViewGroup() {
-            return mViewGroup;
-        }
-
-        public void setViewGroup(ViewGroup viewGroup) {
-            mViewGroup = viewGroup;
-        }
-
-        public void dismiss() {
-            if (mTipViewAnimator != null) {
-                mTipViewAnimator.removeAllUpdateListeners();
-                mTipViewAnimator.cancel();
-            }
-            if (mImageView != null && mViewGroup != null) {
-                mViewGroup.removeView(mImageView);
-                mImageView = null;
-            }
-        }
-
-        public void show() {
-            if (mImageView != null && mViewGroup != null) {
-                if (mCount != -1 && !TextUtils.isEmpty(mTag)) {
-                    if (mGameTipsTimeMap != null && mGameTipsTimeMap.containsKey(mTag)) {
-                        int showTime = mGameTipsTimeMap.get(mTag);
-                        if (showTime < mCount) {
-                            mGameTipsTimeMap.put(mTag, showTime + 1);
-                            U.getPreferenceUtils().setSettingInt(mTag, showTime + 1);
-                        } else {
-                            return;
-                        }
-                    } else {
-                        int showTime = U.getPreferenceUtils().getSettingInt(mTag, 0);
-                        if (mGameTipsTimeMap == null) {
-                            mGameTipsTimeMap = new HashMap<>();
-                        }
-                        mGameTipsTimeMap.put(mTag, showTime + 1);
-                        U.getPreferenceUtils().setSettingInt(mTag, showTime + 1);
-                    }
-                }
-
-                if (index == -1) {
-                    mViewGroup.addView(mImageView);
-                } else {
-                    mViewGroup.addView(mImageView, index);
-                }
-                if (hasAnimation) {
-                    tipViewAnimate(mImageView);
-                }
-            }
-        }
-
-        public void tipViewAnimate(View... viewList) {
-            if (mTipViewAnimator != null) {
-                mTipViewAnimator.removeAllUpdateListeners();
-                mTipViewAnimator.cancel();
-            }
-            mTipViewAnimator = ValueAnimator.ofInt(0, 20, 0);
-            mTipViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
-            mTipViewAnimator.setDuration(2500);
-            mTipViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    boolean hasSetableView = false;
-                    for (View view : viewList) {
-                        if (view != null && view.getParent() != null) {
-                            hasSetableView = true;
-                            view.setTranslationY((int) animation.getAnimatedValue());
-                        }
-                    }
-
-                    if (!hasSetableView) {
-                        mTipViewAnimator.cancel();
-                    }
-                }
-            });
-            mTipViewAnimator.start();
-        }
-    }
 }
 
 
