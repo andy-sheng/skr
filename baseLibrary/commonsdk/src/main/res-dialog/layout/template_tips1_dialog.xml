@@ -44,7 +44,7 @@
 
     <com.dialog.view.StrokeTextView
         android:id="@+id/ok_btn"
-        android:layout_width="@dimen/view_240_dp"
+        android:layout_width="@dimen/view_128_dp"
         android:layout_height="@dimen/view_50_dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
