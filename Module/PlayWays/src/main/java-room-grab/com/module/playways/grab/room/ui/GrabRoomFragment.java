@@ -974,7 +974,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     private void initTurnChangeView() {
         mTurnInfoCardView = mRootView.findViewById(R.id.turn_info_iv);
         mSongInfoCardView = mRootView.findViewById(R.id.turn_change_song_info_card_view);
-        mSingBeginTipsCardView = new SingBeginTipsCardView(mRootView, mRoomData);
+
+        mSingBeginTipsCardView = new SingBeginTipsCardView(mRootView.findViewById(R.id.grab_sing_begin_tips_card_stub), mRoomData);
 
         mRoundOverCardView = new RoundOverCardView(mRootView, mRoomData);
 

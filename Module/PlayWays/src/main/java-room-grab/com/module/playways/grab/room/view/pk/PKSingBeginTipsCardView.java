@@ -29,43 +29,18 @@ import java.io.File;
 /**
  * PK开始的板子
  */
-public class PKSingBeginTipsCardView extends RelativeLayout {
+public class PKSingBeginTipsCardView {
 
     public final static String TAG = "PKSingBeginTipsCardView";
 
-    SVGAImageView mPkSingBeginSvga;
-    SVGAListener mSVGAListener;
 
-    public PKSingBeginTipsCardView(Context context) {
-        super(context);
-        init();
-    }
-
-    public PKSingBeginTipsCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public PKSingBeginTipsCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_pk_sing_begin_tips_card_layout, this);
-        mPkSingBeginSvga = findViewById(R.id.pk_sing_begin_svga);
-    }
-
-    public void bindData(UserInfoModel left, UserInfoModel right, SVGAListener listener) {
+    public void bindData(SVGAImageView mPkSingBeginSvga, UserInfoModel left, UserInfoModel right, SVGAListener mSVGAListener) {
         if (left == null || right == null) {
-            MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + listener);
+            MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + mSVGAListener);
             return;
         }
-        this.mSVGAListener = listener;
-        setVisibility(VISIBLE);
-        
+
         String assetsName = "grab_pk_sing_chance.svga";
-        mPkSingBeginSvga.setVisibility(VISIBLE);
         try {
             SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
@@ -126,9 +101,9 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
             if (file != null) {
                 Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
                 //防止用户不给sd权限导致 bitmap为null
-                if(bitmap!=null){
+                if (bitmap != null) {
                     dynamicEntity.setDynamicImage(bitmap, "avatar_1081");
-                }else{
+                } else {
                     dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1081");
                 }
             } else {
@@ -154,9 +129,9 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
             if (file != null) {
                 Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
                 //防止用户不给sd权限导致 bitmap为null
-                if(bitmap!=null){
+                if (bitmap != null) {
                     dynamicEntity.setDynamicImage(bitmap, "avatar_1082");
-                }else{
+                } else {
                     dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1082");
                 }
             } else {
@@ -173,29 +148,6 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
             dynamicEntity.setDynamicText(text, rightPaint, "text_442");
         }
         return dynamicEntity;
-    }
-
-
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
-            this.mSVGAListener = null;
-            if (mPkSingBeginSvga != null) {
-                mPkSingBeginSvga.setCallback(null);
-                mPkSingBeginSvga.stopAnimation(true);
-            }
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        this.mSVGAListener = null;
-        if (mPkSingBeginSvga != null) {
-            mPkSingBeginSvga.setCallback(null);
-            mPkSingBeginSvga.stopAnimation(true);
-        }
     }
 
 }

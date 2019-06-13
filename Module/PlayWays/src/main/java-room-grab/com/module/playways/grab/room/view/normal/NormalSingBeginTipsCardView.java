@@ -1,13 +1,10 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
@@ -20,14 +17,12 @@ import com.common.utils.U;
 import com.glidebitmappool.BitmapFactoryAdapter;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-
 
 import java.io.File;
 
@@ -36,59 +31,29 @@ import java.io.File;
  * 轮到你唱了
  * 演唱提示cardview
  */
-public class NormalSingBeginTipsCardView extends RelativeLayout {
+public class NormalSingBeginTipsCardView {
 
     public final static String TAG = "SingBeginTipsCardView";
 
-    SVGAImageView mSingBeginSvga;
-    SVGAListener mSVGAListener;
-
-    public NormalSingBeginTipsCardView(Context context) {
-        super(context);
-        init();
-    }
-
-    public NormalSingBeginTipsCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public NormalSingBeginTipsCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_normal_sing_begin_tips_card_layout, this);
-        mSingBeginSvga = (SVGAImageView) findViewById(R.id.sing_begin_svga);
-    }
-
-    public void bindData(UserInfoModel info, SongModel songModel, SVGAListener listener, boolean isChallenge) {
+    public void bindData(SVGAImageView mSingBeginSvga, UserInfoModel info, SongModel songModel, SVGAListener mSVGAListener, boolean isChallenge) {
         if (info == null || songModel == null) {
-            MyLog.e(TAG, "bindData" + " info=" + info + " songModel=" + songModel + " listener=" + listener);
+            MyLog.e(TAG, "bindData" + " info=" + info + " songModel=" + songModel + " listener=" + mSVGAListener);
             return;
         }
-        this.mSVGAListener = listener;
-        setVisibility(VISIBLE);
         String assetsName = isChallenge ? "grab_challenge_sing_chance.svga" : "grab_sing_chance.svga";
-        mSingBeginSvga.setVisibility(VISIBLE);
-        try {
-            SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(info, songModel));
-                    mSingBeginSvga.setImageDrawable(drawable);
-                    mSingBeginSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(info, songModel));
+                mSingBeginSvga.setImageDrawable(drawable);
+                mSingBeginSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
         mSingBeginSvga.setCallback(new SVGACallback() {
             @Override
@@ -155,9 +120,9 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
             if (file != null) {
                 Bitmap bitmap = BitmapFactoryAdapter.decodeFile(file.getPath());
                 //防止用户不给sd权限导致 bitmap为null
-                if(bitmap!=null){
+                if (bitmap != null) {
                     dynamicEntity.setDynamicImage(bitmap, "avatar_104");
-                }else{
+                } else {
                     dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
                 }
             } else {
@@ -171,25 +136,4 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
         return dynamicEntity;
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
-            this.mSVGAListener = null;
-            if (mSingBeginSvga != null) {
-                mSingBeginSvga.setCallback(null);
-                mSingBeginSvga.stopAnimation(true);
-            }
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        this.mSVGAListener = null;
-        if (mSingBeginSvga != null) {
-            mSingBeginSvga.setCallback(null);
-            mSingBeginSvga.stopAnimation(true);
-        }
-    }
 }

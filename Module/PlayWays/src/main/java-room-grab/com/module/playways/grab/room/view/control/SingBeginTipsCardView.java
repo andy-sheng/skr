@@ -1,8 +1,11 @@
 package com.module.playways.grab.room.view.control;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.utils.U;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -15,54 +18,48 @@ import com.module.playways.grab.room.view.minigame.MiniGameSingBeginTipsCardView
 import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView;
 import com.module.playways.grab.room.view.pk.PKSingBeginTipsCardView;
 import com.module.playways.R;
+import com.opensource.svgaplayer.SVGAImageView;
 
 import java.util.List;
 
 public class SingBeginTipsCardView {
 
-    NormalSingBeginTipsCardView mNormalSingBeginTipsCardView; // 提示xxx演唱开始的卡片
-    ChorusSingBeginTipsCardView mChorusSingBeginTipsCardView; // 合唱对战开始
-    PKSingBeginTipsCardView mPKSingBeginTipsCardView;         // pk对战开始
-    MiniGameSingBeginTipsCardView mMiniGameSingBegin;         // 小游戏开始
+    NormalSingBeginTipsCardView mNormalSingBeginTipsCardView = new NormalSingBeginTipsCardView(); // 提示xxx演唱开始的卡片
+    ChorusSingBeginTipsCardView mChorusSingBeginTipsCardView = new ChorusSingBeginTipsCardView(); // 合唱对战开始
+    PKSingBeginTipsCardView mPKSingBeginTipsCardView = new PKSingBeginTipsCardView();         // pk对战开始
+    MiniGameSingBeginTipsCardView mMiniGameSingBegin = new MiniGameSingBeginTipsCardView();         // 小游戏开始
 
+    ViewStub mViewStub;
+    ViewGroup mParentView;
+    SVGAImageView mSVGAImageView;
     GrabRoomData mRoomData;
 
-    public SingBeginTipsCardView(View mRootView, GrabRoomData roomData) {
+    public SingBeginTipsCardView(ViewStub viewStub, GrabRoomData roomData) {
         mRoomData = roomData;
-        mNormalSingBeginTipsCardView = mRootView.findViewById(R.id.normla_sing_beign);
-        mChorusSingBeginTipsCardView = mRootView.findViewById(R.id.chorus_sing_begin);
-        mPKSingBeginTipsCardView = mRootView.findViewById(R.id.pk_sing_begin);
-        mMiniGameSingBegin = mRootView.findViewById(R.id.mini_game_sing_begin);
+        mViewStub = viewStub;
+    }
+
+    void inflate() {
+        mParentView = (ViewGroup) mViewStub.inflate();
+        mSVGAImageView = mParentView.findViewById(R.id.sing_begin_svga);
+        mViewStub = null;
     }
 
     public void setVisibility(int visibility) {
         if (visibility == View.GONE) {
-            mNormalSingBeginTipsCardView.setVisibility(View.GONE);
-            mChorusSingBeginTipsCardView.setVisibility(View.GONE);
-            mPKSingBeginTipsCardView.setVisibility(View.GONE);
-            mMiniGameSingBegin.setVisibility(View.GONE);
-        } else if (visibility == View.VISIBLE) {
-            if (RoomDataUtils.isChorusRound(mRoomData)) {
-                mChorusSingBeginTipsCardView.setVisibility(View.VISIBLE);
-                mNormalSingBeginTipsCardView.setVisibility(View.GONE);
-                mPKSingBeginTipsCardView.setVisibility(View.GONE);
-                mMiniGameSingBegin.setVisibility(View.GONE);
-            } else if (RoomDataUtils.isPKRound(mRoomData)) {
-                mPKSingBeginTipsCardView.setVisibility(View.VISIBLE);
-                mNormalSingBeginTipsCardView.setVisibility(View.GONE);
-                mChorusSingBeginTipsCardView.setVisibility(View.GONE);
-                mMiniGameSingBegin.setVisibility(View.GONE);
-            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
-                mMiniGameSingBegin.setVisibility(View.VISIBLE);
-                mPKSingBeginTipsCardView.setVisibility(View.GONE);
-                mNormalSingBeginTipsCardView.setVisibility(View.GONE);
-                mChorusSingBeginTipsCardView.setVisibility(View.GONE);
-            } else {
-                mNormalSingBeginTipsCardView.setVisibility(View.VISIBLE);
-                mPKSingBeginTipsCardView.setVisibility(View.GONE);
-                mChorusSingBeginTipsCardView.setVisibility(View.GONE);
-                mMiniGameSingBegin.setVisibility(View.GONE);
+            if (mParentView != null) {
+                mParentView.setVisibility(View.GONE);
             }
+            if (mSVGAImageView != null) {
+                mSVGAImageView.setCallback(null);
+                mSVGAImageView.stopAnimation(true);
+            }
+        } else if (visibility == View.VISIBLE) {
+            if (mParentView == null) {
+                inflate();
+            }
+            mParentView.setVisibility(View.VISIBLE);
+            mSVGAImageView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -74,25 +71,35 @@ public class SingBeginTipsCardView {
                 if (list != null && list.size() >= 2) {
                     UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
                     UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
-                    mChorusSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
+                    ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
+                    lp.height = U.getDisplayUtils().dip2px(154);
+                    mChorusSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener);
                 }
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
                 List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
                 if (list != null && list.size() >= 2) {
                     UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
                     UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
-                    mPKSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
+                    ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
+                    lp.height = U.getDisplayUtils().dip2px(181);
+                    mPKSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener);
                 }
             } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
                 List<MINIGameRoundInfoModel> list = grabRoundInfoModel.getMINIGameRoundInfoModels();
                 if (list != null && list.size() >= 2) {
                     UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
                     UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
-                    mMiniGameSingBegin.bindData(userInfoModel1, userInfoModel2, svgaListener);
+                    ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
+                    lp.height = U.getDisplayUtils().dip2px(154);
+                    mMiniGameSingBegin.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener);
                 }
             } else {
-                mNormalSingBeginTipsCardView.bindData(mRoomData.getUserInfo(grabRoundInfoModel.getUserID()), grabRoundInfoModel.getMusic(), svgaListener, grabRoundInfoModel.isChallengeRound());
+                ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
+                lp.height = U.getDisplayUtils().dip2px(181);
+                mNormalSingBeginTipsCardView.bindData(mSVGAImageView, mRoomData.getUserInfo(grabRoundInfoModel.getUserID()), grabRoundInfoModel.getMusic(), svgaListener, grabRoundInfoModel.isChallengeRound());
             }
         }
     }
+
+
 }

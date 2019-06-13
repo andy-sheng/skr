@@ -115,10 +115,21 @@
     <!-- 纯音频模式下特有的view 开始 -->
 
     <!--演唱开始页面-->
-    <include
-        layout="@layout/grab_sing_begin_tips_card_layout"
+    <ViewStub
+        android:id="@+id/grab_sing_begin_tips_card_stub"
+        android:inflatedId="@+id/grab_sing_begin_tips_card"
+        android:layout="@layout/grab_sing_begin_tips_card_stub_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_175_dp"
+        android:visibility="gone"
+        />
+
+    <!--<include-->
+        <!--layout="@layout/grab_sing_begin_tips_card_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
 
     <!--他人唱歌时场景-->
     <include
