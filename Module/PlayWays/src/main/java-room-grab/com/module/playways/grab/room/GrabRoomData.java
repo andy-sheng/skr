@@ -50,7 +50,9 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     private List<WorksUploadModel> mWorksUploadList = new ArrayList<>();// 作品时刻本地录音文件路径
 
-    long lastHzTs = -1;
+    private long lastHzTs = -1; // 红钻更新的时间戳
+
+    private boolean videoRoom = false;
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -402,5 +404,13 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public List<WorksUploadModel> getWorksUploadModel() {
         return mWorksUploadList;
+    }
+
+    public boolean isVideoRoom() {
+        return videoRoom;
+    }
+
+    public void setVideoRoom(boolean videoRoom) {
+        this.videoRoom = videoRoom;
     }
 }

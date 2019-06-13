@@ -112,6 +112,8 @@
         android:layout_marginTop="@dimen/view_182_dp"
         android:visibility="gone" />
 
+    <!-- 纯音频模式下特有的view 开始 -->
+
     <!--演唱开始页面-->
     <include
         layout="@layout/grab_sing_begin_tips_card_layout"
@@ -141,6 +143,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="@dimen/view_30_dp" />
+
+    <!--纯音频模式下特有的view 结束-->
 
     <com.module.playways.grab.room.view.GrabGameOverView
         android:id="@+id/grab_game_over_view"

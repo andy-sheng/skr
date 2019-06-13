@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.fragment;
+package com.module.playways.grab.room.ui;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -221,6 +221,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
+    GrabAudioUiController mGrabAudioUiController = new GrabAudioUiController(this);
+
+    GrabVideoUiController mGrabVideoUiController = new GrabVideoUiController(this);
+
+    GrabBaseUiController mGrabBaseUiController = mGrabAudioUiController;
+
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -298,6 +304,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //        addPresent(mGiftTimerPresenter);
 //        mGiftTimerPresenter.startTimer();
 
+        if(mRoomData.isVideoRoom()){
+            mGrabBaseUiController = mGrabVideoUiController;
+        }else{
+            mGrabBaseUiController = mGrabAudioUiController;
+        }
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
                 R.raw.grab_nobodywants, R.raw.grab_readygo,
@@ -426,7 +437,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     // 歌词提示
-    private void tryShowGrabSelfSingTipView() {
+     void tryShowGrabSelfSingTipView() {
         new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_self_sing_tips_icon)
                 .setActivity(getActivity())
                 .setSize(U.getDisplayUtils().dip2px(250), U.getDisplayUtils().dip2px(96))
@@ -440,7 +451,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     // 清唱手势滑动
-    private void tryShowNoAccSrollTipsView() {
+     void tryShowNoAccSrollTipsView() {
 
         ObjectAnimator mFingerTipViewAnimator = new ObjectAnimator();
         mFingerTipViewAnimator.setProperty(View.TRANSLATION_Y);
@@ -1334,27 +1345,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             if (now.singBySelf()) {
                 mGrabGiveupView.delayShowGiveUpView(false);
                 mCorePresenter.beginSing();
-                // 显示歌词
-                mSelfSingCardView.setVisibility(View.VISIBLE);
-                mOthersSingCardView.setVisibility(GONE);
-                mSelfSingCardView.playLyric();
-                if (mRoomData.isNewUser()) {
-                    tryShowGrabSelfSingTipView();
-
-                    GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-                    if (infoModel == null) {
-                        return;
-                    }
-                    boolean withAcc = false;
-                    if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
-                        withAcc = true;
-                    }
-                    if (!withAcc) {
-                        tryShowNoAccSrollTipsView();
-                    }
-                }
+                mGrabBaseUiController.singBySelf();
             } else {
-
                 if (mRoomData.isOwner() && now.isMiniGameRound() && !RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
                     mMiniOwnerMicIv.setVisibility(View.VISIBLE);
                     mMiniOwnerMicIv.setImageResource(R.drawable.mini_owner_mute);
@@ -1362,11 +1354,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 } else {
                     mMiniOwnerMicIv.setVisibility(GONE);
                 }
-
-                // 显示收音机
-                mSelfSingCardView.setVisibility(GONE);
-                mOthersSingCardView.setVisibility(View.VISIBLE);
-                mOthersSingCardView.bindData();
+                mGrabBaseUiController.singByOthers();
             }
         }
     }

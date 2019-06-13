@@ -5,11 +5,8 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
-import com.common.core.account.UserAccountManager;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
-import com.module.playways.grab.room.fragment.GrabRoomFragment;
+import com.module.playways.grab.room.ui.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.R;
@@ -20,9 +17,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
-
-
-import java.util.HashMap;
 
 /**
  * 轮次结束 合唱和正常结束都用此板
