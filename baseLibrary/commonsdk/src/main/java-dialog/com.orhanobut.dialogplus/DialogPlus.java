@@ -73,6 +73,11 @@ public class DialogPlus {
     private final OnBackPressListener onBackPressListener;
 
     /**
+     * 监听dialog的dissmiss
+     */
+    public View.OnAttachStateChangeListener mOnAttachStateChangeListener;
+
+    /**
      * Content
      */
     private final Holder holder;
@@ -195,6 +200,26 @@ public class DialogPlus {
             }
         }
         return view != null && !destroyed;
+    }
+
+    /**
+     * dialog所依赖的activity是否存在
+     *
+     * @return
+     */
+    public boolean isDependActivityExit() {
+        if (decorView == null) {
+            return false;
+        }
+
+        boolean isExit = false;
+        if (decorView.getContext() instanceof Activity) {
+            Activity activity = (Activity) decorView.getContext();
+            if (activity != null) {
+                isExit = !activity.isDestroyed() && !activity.isFinishing();
+            }
+        }
+        return isExit;
     }
 
     /**
@@ -441,6 +466,7 @@ public class DialogPlus {
             MyLog.d("DialogPlus", "无法重复添加某个view");
             return;
         }
+        view.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
         decorView.addView(view);
         contentContainer.startAnimation(inAnim);
 
