@@ -1,9 +1,11 @@
 package com.zq.mediaengine.kit;
 
+import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 
 import com.common.log.MyLog;
@@ -24,6 +26,7 @@ import com.engine.score.Score2Callback;
 import com.engine.token.AgoraTokenApi;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
+import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
 import com.zq.mediaengine.filter.audio.AudioCopyFilter;
@@ -32,6 +35,9 @@ import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
 import com.zq.mediaengine.filter.audio.AudioResampleFilter;
+import com.zq.mediaengine.filter.imgtex.ImgTexMixer;
+import com.zq.mediaengine.filter.imgtex.ImgTexPreview;
+import com.zq.mediaengine.filter.imgtex.ImgTexScaleFilter;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -74,6 +80,13 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public final static String TAG = "ZqEngineKit";
     public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
+
+    public static final int VIDEO_RESOLUTION_360P = 0;
+    public static final int VIDEO_RESOLUTION_480P = 1;
+    public static final int VIDEO_RESOLUTION_540P = 2;
+    public static final int VIDEO_RESOLUTION_720P = 3;
+    public static final int VIDEO_RESOLUTION_1080P = 4;
+
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
@@ -106,6 +119,12 @@ public class ZqEngineKit implements AgoraOutCallback {
     private boolean mInChannel = false; // 是否已经在频道中
 
     private GLRender mGLRender;
+    private CameraCapture mCameraCapture;
+    private ImgTexScaleFilter mImgTexScaleFilter;
+    private ImgTexMixer mImgTexPreviewMixer;
+    private ImgTexMixer mImgTexMixer;
+    private ImgTexPreview mImgTexPreview;
+
     private AgoraRTCAdapter mAgoraRTCAdapter;
     private AudioDummyFilter mAudioDummyFilter;
     private AudioFilterMgt mAudioFilterMgt;
@@ -405,6 +424,11 @@ public class ZqEngineKit implements AgoraOutCallback {
         MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
                 " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord());
+
+        // Camera preview
+        mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
+        mImgTexMixer = new ImgTexMixer(mGLRender);
+        mImgTexPreview = new ImgTexPreview();
 
         SrcPin<AudioBufFrame> audioLocalSrcPin;
         if (mConfig.isUseExternalAudio()) {
@@ -1442,5 +1466,337 @@ public class ZqEngineKit implements AgoraOutCallback {
         public String token;
     }
 
+
+    // 视频相关接口
+    /**
+     * Set GLSurfaceView as camera previewer.<br/>
+     * Must set once before the GLSurfaceView created.
+     *
+     * @param surfaceView GLSurfaceView to be set.
+     */
+    public void setDisplayPreview(GLSurfaceView surfaceView) {
+    }
+
+    /**
+     * Set TextureView as camera previewer.<br/>
+     * Must set once before the TextureView ready.
+     *
+     * @param textureView TextureView to be set.
+     */
+    public void setDisplayPreview(TextureView textureView) {
+    }
+
+    /**
+     * Set rotate degrees in anti-clockwise of current Activity.
+     *
+     * @param degrees Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
+     * @throws IllegalArgumentException
+     */
+    @SuppressWarnings("SuspiciousNameCombination")
+    public void setRotateDegrees(int degrees) throws IllegalArgumentException {
+    }
+
+    /**
+     * get rotate degrees
+     *
+     * @return degrees Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
+     */
+    public int getRotateDegrees() {
+        return 0;
+    }
+
+    /**
+     * Set camera capture resolution.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call.<br/>
+     * <p>
+     * Both of the set width and height must be greater than 0.
+     *
+     * @param width  capture width
+     * @param height capture height
+     * @throws IllegalArgumentException
+     */
+    public void setCameraCaptureResolution(int width, int height) throws IllegalArgumentException {
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Invalid resolution");
+        }
+        mCameraCapture.setPreviewSize(width, height);
+    }
+
+    /**
+     * Set camera capture resolution.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call.<br/>
+     *
+     * @param idx Resolution index.<br/>
+     * @throws IllegalArgumentException
+     * @see #VIDEO_RESOLUTION_360P
+     * @see #VIDEO_RESOLUTION_480P
+     * @see #VIDEO_RESOLUTION_540P
+     * @see #VIDEO_RESOLUTION_720P
+     * @see #VIDEO_RESOLUTION_1080P
+     */
+    public void setCameraCaptureResolution(int idx) throws IllegalArgumentException {
+        if (idx < VIDEO_RESOLUTION_360P ||
+                idx > VIDEO_RESOLUTION_1080P) {
+            throw new IllegalArgumentException("Invalid resolution index");
+        }
+//        int height = getShortEdgeLength(idx);
+//        int width = height * 16 / 9;
+//        mCameraCapture.setPreviewSize(width, height);
+    }
+
+    /**
+     * Set preview resolution.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call, if called not in previewing mode.<br/>
+     * If called in previewing mode, it would take effect immediately.<br/>
+     * <p>
+     * The set width and height must not be 0 at same time.
+     * If one of the params is 0, the other would calculated by the actual preview view size
+     * to keep the ratio of the preview view.
+     *
+     * @param width  preview width.
+     * @param height preview height.
+     * @throws IllegalArgumentException
+     */
+    public void setPreviewResolution(int width, int height) throws IllegalArgumentException {
+        if (width < 0 || height < 0 || (width == 0 && height == 0)) {
+            throw new IllegalArgumentException("Invalid resolution");
+        }
+//        mPreviewWidth = width;
+//        mPreviewHeight = height;
+//
+//        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+//            calResolution();
+//            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+//            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+//        }
+    }
+
+    /**
+     * Set preview resolution index.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call, if called not in previewing mode.<br/>
+     * If called in previewing mode, it would take effect immediately.<br/>
+     *
+     * @param idx Resolution index.<br/>
+     * @throws IllegalArgumentException
+     * @see #VIDEO_RESOLUTION_360P
+     * @see #VIDEO_RESOLUTION_480P
+     * @see #VIDEO_RESOLUTION_540P
+     * @see #VIDEO_RESOLUTION_720P
+     * @see #VIDEO_RESOLUTION_1080P
+     */
+    public void setPreviewResolution(int idx) throws IllegalArgumentException {
+        if (idx < VIDEO_RESOLUTION_360P ||
+                idx > VIDEO_RESOLUTION_1080P) {
+            throw new IllegalArgumentException("Invalid resolution index");
+        }
+//        mPreviewResolution = idx;
+//        mPreviewWidth = 0;
+//        mPreviewHeight = 0;
+//
+//        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+//            calResolution();
+//            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+//            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+//        }
+    }
+
+    /**
+     * get preview width
+     *
+     * @return preview width
+     */
+    public int getPreviewWidth() {
+        return 0;
+    }
+
+    /**
+     * get preview height
+     *
+     * @return preview height
+     */
+    public int getPreviewHeight() {
+        return 0;
+    }
+
+    /**
+     * Set preview fps.<br/>
+     * <p>
+     * The set fps would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call.<br/>
+     * <p>
+     * The actual preview fps depends on the running device, may be different with the set value.
+     *
+     * @param fps frame rate to be set.
+     * @throws IllegalArgumentException
+     */
+    public void setPreviewFps(float fps) throws IllegalArgumentException {
+    }
+
+    /**
+     * get preview frame rate
+     *
+     * @return preview frame rate
+     */
+    public float getPreviewFps() {
+        return 0;
+    }
+
+    /**
+     * Get current camera preview frame rate.
+     *
+     * @return current camera preview frame rate
+     */
+    public float getCurrentPreviewFps() {
+        return mCameraCapture.getCurrentPreviewFps();
+    }
+
+    /**
+     * Set enable front camera mirror or not while streaming.<br/>
+     * Would take effect immediately while streaming.
+     *
+     * @param mirror true to enable, false to disable.
+     */
+    public void setFrontCameraMirror(boolean mirror) {
+//        mFrontCameraMirror = mirror;
+//        updateFrontMirror();
+//        StatsLogReport.getInstance().setIsFrontCameraMirror(mirror);
+    }
+
+    /**
+     * check if front camera mirror enabled or not.
+     *
+     * @return true if mirror enabled, false if mirror disabled.
+     */
+    public boolean isFrontCameraMirrorEnabled() {
+        return false;
+    }
+
+    /**
+     * Set initial camera facing.<br/>
+     * Set before {@link #startCameraPreview()}, give a chance to set initial camera facing,
+     * equals {@link #startCameraPreview(int)}.<br/>
+     *
+     * @param facing camera facing.
+     * @see CameraCapture#FACING_FRONT
+     * @see CameraCapture#FACING_BACK
+     */
+    public void setCameraFacing(int facing) {
+//        mCameraFacing = facing;
+    }
+
+    /**
+     * get camera facing.
+     *
+     * @return camera facing
+     */
+    public int getCameraFacing() {
+        return 0;
+    }
+
+    /**
+     * Start camera preview with given facing.
+     *
+     * @param facing camera facing.
+     * @see CameraCapture#FACING_FRONT
+     * @see CameraCapture#FACING_BACK
+     */
+    public void startCameraPreview(int facing) {
+    }
+
+    /**
+     * Stop camera preview.
+     */
+    public void stopCameraPreview() {
+        mCameraCapture.stop();
+    }
+
+    /**
+     * Switch camera facing between front and back.
+     */
+    public void switchCamera() {
+        mCameraCapture.switchCamera();
+    }
+
+    /**
+     * Get if current camera in use is front camera.<br/>
+     *
+     * @return true if front camera in use false otherwise.
+     */
+    public boolean isFrontCamera() {
+        return true;
+//        return mCameraFacing == CameraCapture.FACING_FRONT;
+    }
+
+    /**
+     * Get if torch supported on current camera facing.
+     *
+     * @return true if supported, false if not.
+     * @see #getCameraCapture()
+     * @see CameraCapture#isTorchSupported()
+     */
+    public boolean isTorchSupported() {
+        return mCameraCapture.isTorchSupported();
+    }
+
+    /**
+     * Toggle torch of current camera.
+     *
+     * @param open true to turn on, false to turn off.
+     * @return true if success, false if failed or on invalid mState.
+     * @see #getCameraCapture()
+     * @see CameraCapture#toggleTorch(boolean)
+     */
+    public boolean toggleTorch(boolean open) {
+        return mCameraCapture.toggleTorch(open);
+    }
+
+    /**
+     * Set local video shown rect.
+     *
+     * @param x     x position for left top of logo relative to the video, between 0~1.0.
+     * @param y     y position for left top of logo relative to the video, between 0~1.0.
+     * @param w     width of logo relative to the video, between 0~1.0, if set to 0,
+     *              width would be calculated by h and logo image radio.
+     * @param h     height of logo relative to the video, between 0~1.0, if set to 0,
+     *              height would be calculated by w and logo image radio.
+     * @param alpha alpha value，between 0~1.0
+     */
+    public void setLocalVideoRect(float x, float y, float w, float h, float alpha) {
+//        alpha = Math.max(0.0f, alpha);
+//        alpha = Math.min(alpha, 1.0f);
+//        mImgTexMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
+//        mImgTexPreviewMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
+//        mVideoEncoderMgt.getImgBufMixer().setRenderRect(1, x, y, w, h, alpha);
+//        mWaterMarkCapture.showLogo(mContext, path, w, h);
+    }
+
+    /**
+     * Set remote video shown rect with user id.
+     *
+     * @param userId which user to show
+     * @param x     x position for left top of logo relative to the video, between 0~1.0.
+     * @param y     y position for left top of logo relative to the video, between 0~1.0.
+     * @param w     width of logo relative to the video, between 0~1.0, if set to 0,
+     *              width would be calculated by h and logo image radio.
+     * @param h     height of logo relative to the video, between 0~1.0, if set to 0,
+     *              height would be calculated by w and logo image radio.
+     * @param alpha alpha value，between 0~1.0
+     */
+    public void setRemoteVideoRect(int userId, float x, float y, float w, float h, float alpha) {
+//        alpha = Math.max(0.0f, alpha);
+//        alpha = Math.min(alpha, 1.0f);
+//        mImgTexMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
+//        mImgTexPreviewMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
+//        mVideoEncoderMgt.getImgBufMixer().setRenderRect(1, x, y, w, h, alpha);
+//        mWaterMarkCapture.showLogo(mContext, path, w, h);
+    }
 }
 
