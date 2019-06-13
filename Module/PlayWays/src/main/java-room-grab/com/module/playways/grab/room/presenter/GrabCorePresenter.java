@@ -644,6 +644,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         map.put("wantSingType", wantSingType);
+        if (MyLog.isDebugLogOpen()) {
+            mHasPassedCertify = true;
+        }
         map.put("hasPassedCertify", mHasPassedCertify);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
