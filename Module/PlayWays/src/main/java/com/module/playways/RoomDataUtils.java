@@ -317,6 +317,16 @@ public class RoomDataUtils {
         return false;
     }
 
+    public static boolean isMiniGameRound(GrabRoomData roomData) {
+        if (roomData != null) {
+            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
+            if (infoModel != null) {
+                return infoModel.isMiniGameRound();
+            }
+        }
+        return false;
+    }
+
     /**
      * 这个轮次的演唱者
      *
@@ -345,7 +355,7 @@ public class RoomDataUtils {
             }
         }
         {
-            if(now.getUserID() == uid){
+            if (now.getUserID() == uid) {
                 return true;
             }
         }

@@ -32,7 +32,7 @@ public class AimCircleView extends View {
     }
 
     public void init() {
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setAntiAlias(true);
     }
 

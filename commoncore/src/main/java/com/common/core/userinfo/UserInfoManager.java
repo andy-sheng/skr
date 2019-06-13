@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.core.userinfo.model.OnlineModel;
@@ -111,6 +112,10 @@ public class UserInfoManager {
 
     private UserInfoManager() {
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        initRemark();
+    }
+
+    public void initRemark() {
         if (!hasLoadRemarkFromDB) {
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
@@ -129,7 +134,7 @@ public class UserInfoManager {
             hasLoadRemarkFromDB = true;
         }
         // 从数据库加载
-        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK, false)) {
+        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_HAS_PULL_REMARK, false)) {
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
@@ -138,6 +143,12 @@ public class UserInfoManager {
                 }
             }).subscribeOn(U.getThreadUtils().singleThreadPoll())
                     .subscribe();
+        }
+    }
+
+    public void clearRemark() {
+        if (mRemarkMap != null) {
+            mRemarkMap.clear();
         }
     }
 
@@ -268,12 +279,13 @@ public class UserInfoManager {
         }
     }
 
-    private void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
+    public void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
             @Override
             public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                 // 写入数据库
                 UserInfoLocalApi.insertOrUpdate(userInfoModel);
+                BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfoModel));
 
                 if (userInfoModel != null) {
                     emitter.onNext(userInfoModel);
@@ -282,7 +294,8 @@ public class UserInfoManager {
             }
         })
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     public void mateRelation(final int userId, final int action, final boolean isOldFriend) {
@@ -476,9 +489,23 @@ public class UserInfoManager {
                 for (UserInfoModel userInfoModel : resutlSet) {
                     resultList.add(userInfoModel);
                 }
+                mStatusMap.resize(resultList.size());
+
                 if (pullOnlineStatus == ONLINE_PULL_GAME) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, true);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, false);
                 } else {
 
@@ -519,8 +546,20 @@ public class UserInfoManager {
                     }
                 }
                 if (pullOnlineStatus == ONLINE_PULL_GAME) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, true);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
+                    if (resultList.size() > 100) {
+                        // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
+                        if (userInfoListCallback != null) {
+                            userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
+                        }
+                    }
                     fillUserOnlineStatus(resultList, false);
                 } else {
 
@@ -722,55 +761,100 @@ public class UserInfoManager {
                 idSets.add(userInfoModel.getUserId());
             } else {
                 long t = System.currentTimeMillis() - onlineModel.getRecordTs();
-                if (Math.abs(t) < 30 * 1000) {
-                    // 认为状态缓存有效，不去这个id的状态了
-                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                if (onlineModel.isOnline()) {
+                    if (Math.abs(t) < 30 * 1000) {
+                        // 认为状态缓存有效，不去这个id的状态了
+                        fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                    } else {
+                        idSets.add(userInfoModel.getUserId());
+                    }
                 } else {
-                    idSets.add(userInfoModel.getUserId());
+                    //如果用户离线了
+                    if (System.currentTimeMillis() - onlineModel.getOfflineTime() > 15 * 24 * 3600 * 1000) {
+                        // 已经离线超出15天了，没道理这会就上线了，缓存久一点
+                        if (Math.abs(t) < 5 * 60 * 1000) {
+                            // 认为状态缓存有效，不去这个id的状态了
+                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                        } else {
+                            idSets.add(userInfoModel.getUserId());
+                        }
+                    } else {
+                        if (Math.abs(t) < 60 * 1000) {
+                            // 认为状态缓存有效，不去这个id的状态了
+                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                        } else {
+                            idSets.add(userInfoModel.getUserId());
+                        }
+                    }
                 }
             }
         }
         if (!idSets.isEmpty()) {
-            Observable<HashMap<Integer, OnlineModel>> observable = null;
-            if (pullGameStatus) {
-                observable = checkUserGameStatusByIds(idSets);
-            } else {
-                observable = checkUserOnlineStatusByIds(idSets);
-            }
-            observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
-                @Override
-                public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
-                    for (UserInfoModel userInfoModel : list) {
-                        if (idSets.contains(userInfoModel.getUserId())) {
-                            OnlineModel onlineModel = map.get(userInfoModel.getUserId());
-                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
-                        }
+            List<List<Integer>> queryList = new ArrayList<>();
+
+            List<Integer> lll = new ArrayList<>();
+            int index = 0;
+            for (Integer id : idSets) {
+                if (index % 50 == 0) {
+                    if (!lll.isEmpty()) {
+                        queryList.add(lll);
+                        lll = new ArrayList<>();
                     }
-                    return list;
                 }
-            })
-                    .subscribe(new Consumer<List<UserInfoModel>>() {
-                        @Override
-                        public void accept(List<UserInfoModel> userInfoModels) throws Exception {
+                lll.add(id);
+                index++;
+            }
+            if (!lll.isEmpty()) {
+                queryList.add(lll);
+            }
+            final HashMap<Integer, OnlineModel> onlineMap = new HashMap<>();
+            for (List<Integer> qqq : queryList) {
+                Observable<HashMap<Integer, OnlineModel>> observable = null;
+                if (pullGameStatus) {
+                    observable = checkUserGameStatusByIds(qqq);
+                } else {
+                    observable = checkUserOnlineStatusByIds(qqq);
+                }
 
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
+                observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
+                    @Override
+                    public List<UserInfoModel> apply(HashMap<Integer, OnlineModel> map) {
+                        onlineMap.putAll(map);
+                        return list;
+                    }
+                })
+                        .subscribe(new Consumer<List<UserInfoModel>>() {
+                            @Override
+                            public void accept(List<UserInfoModel> userInfoModels) throws Exception {
 
-                        }
-                    });
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+                            }
+                        });
+            }
+            for (UserInfoModel userInfoModel : list) {
+                if (idSets.contains(userInfoModel.getUserId())) {
+                    OnlineModel onlineModel = onlineMap.get(userInfoModel.getUserId());
+                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                }
+            }
         }
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
+                MyLog.d(TAG,"compare" + " u1=" + u1 + " u2=" + u2);
                 if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
                     // 两者都是离线
                     // 按离线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else {
+                    } else if(u1.getStatusTs() < u2.getStatusTs()){
                         return 1;
+                    }else{
+                        return 0;
                     }
                 }
                 if (u1.getStatus() >= UserInfoModel.EF_ONLINE && u2.getStatus() >= UserInfoModel.EF_ONLINE) {
@@ -778,8 +862,10 @@ public class UserInfoManager {
                     // 按在线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else {
+                    } else if(u1.getStatusTs() < u2.getStatusTs()){
                         return 1;
+                    }else{
+                        return 0;
                     }
                 }
                 int r = u2.getStatus() - u1.getStatus();
@@ -790,7 +876,7 @@ public class UserInfoManager {
 
     private void fillUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
         // 认为状态缓存有效，不去这个id的状态了
-        if (onlineModel.isOnline()) {
+        if (onlineModel != null && onlineModel.isOnline()) {
             userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
             userInfoModel.setStatusTs(onlineModel.getOnlineTime());
             if (pullGameStatus) {
@@ -829,7 +915,6 @@ public class UserInfoManager {
      * @return
      */
     public Observable<HashMap<Integer, OnlineModel>> checkUserOnlineStatusByIds(Collection<Integer> list) {
-
         HashMap<String, Object> map = new HashMap<>();
         map.put("userIDs", list);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));

@@ -38,11 +38,11 @@ public class ColorPickerView extends View {
     }
 
     private void init() {
-        mRingPaint = new Paint();
+        mRingPaint = new com.common.view.ExPaint();
         mRingPaint.setAntiAlias(true);
         mRingPaint.setStyle(Paint.Style.STROKE);
 
-        mFocusPaint = new Paint();
+        mFocusPaint = new com.common.view.ExPaint();
         mFocusPaint.setAntiAlias(true);
         mFocusPaint.setColor(getResources().getColor(R.color.dk_color_333333));
     }

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -25,16 +26,23 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
     GrabRoomData mGrabRoomData;
     Drawable pk = new DrawableCreator.Builder()
             .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1))
-            .setCornersRadius(U.getDisplayUtils().dip2px(70))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
             .setSolidColor(Color.parseColor("#CB5883"))
             .build();
 
     Drawable togather = new DrawableCreator.Builder()
             .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1))
-            .setCornersRadius(U.getDisplayUtils().dip2px(70))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
             .setSolidColor(Color.parseColor("#7088FF"))
+            .build();
+
+    Drawable game = new DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#61B14F"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setStrokeColor(U.getColor(R.color.white_trans_70))
             .build();
 
     @NonNull
@@ -64,7 +72,6 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
 
     private class ItemHolder extends RecyclerView.ViewHolder {
         ExTextView mSongNameTv;
-        ExTextView mHasSingNumTv;
         ExTextView mSelectTv;
         ExTextView mSongTag;
 
@@ -73,7 +80,6 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
         public ItemHolder(View itemView) {
             super(itemView);
             mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
-            mHasSingNumTv = (ExTextView) itemView.findViewById(R.id.has_sing_num_tv);
             mSelectTv = (ExTextView) itemView.findViewById(R.id.select_tv);
             mSongTag = (ExTextView) itemView.findViewById(R.id.song_tag);
             mSelectTv.setOnClickListener(new DebounceViewClickListener() {
@@ -87,14 +93,25 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
         public void bind(SongModel model, int position) {
             mSongModel = model;
             mSongNameTv.setText("《" + model.getDisplaySongName() + "》");
-            mHasSingNumTv.setText(model.getSingCount() + "人唱过");
             mSongTag.setVisibility(View.VISIBLE);
             if (model.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(34);
+                mSongTag.setLayoutParams(layoutParams);
                 mSongTag.setBackground(pk);
                 mSongTag.setText("PK");
             } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(34);
+                mSongTag.setLayoutParams(layoutParams);
                 mSongTag.setBackground(togather);
                 mSongTag.setText("合唱");
+            } else if (model.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(58);
+                mSongTag.setLayoutParams(layoutParams);
+                mSongTag.setBackground(game);
+                mSongTag.setText("双人游戏");
             } else {
                 mSongTag.setVisibility(View.GONE);
             }

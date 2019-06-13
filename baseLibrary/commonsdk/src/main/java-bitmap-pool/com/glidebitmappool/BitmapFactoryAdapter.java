@@ -20,13 +20,7 @@ package com.glidebitmappool;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.os.Build;
-import android.util.TypedValue;
 
-import com.glidebitmappool.internal.Util;
-
-import java.io.FileDescriptor;
 import java.io.InputStream;
 
 /**

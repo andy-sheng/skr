@@ -2,9 +2,11 @@ package com.module.home.setting.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.RomUtils;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -42,6 +45,7 @@ import com.zq.relation.fragment.BlackListFragment;
 import com.zq.toast.CommonToastView;
 
 import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -74,6 +78,7 @@ public class SettingFragment extends BaseFragment {
 
     RelativeLayout mInviteCode;
     RelativeLayout mUserBlacklist;
+    RelativeLayout mUploadMusicArea;
     RelativeLayout mUserFeedback;
     RelativeLayout mComment;
     RelativeLayout mServiceAgreen;
@@ -116,6 +121,7 @@ public class SettingFragment extends BaseFragment {
 
         mInviteCode = (RelativeLayout) mRootView.findViewById(R.id.invite_code);
         mUserBlacklist = (RelativeLayout) mRootView.findViewById(R.id.user_blacklist);
+        mUploadMusicArea = (RelativeLayout) mRootView.findViewById(R.id.upload_music_area);
         mUserFeedback = (RelativeLayout) mRootView.findViewById(R.id.user_feedback);
         mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
@@ -247,6 +253,13 @@ public class SettingFragment extends BaseFragment {
                         .build());
             }
         });
+
+        mUploadMusicArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                showMusicWeb();
+            }
+        });
     }
 
     private void checkTuiGuang() {
@@ -344,6 +357,35 @@ public class SettingFragment extends BaseFragment {
                 .setExpanded(false)
                 .create();
         mDialogPlus.show();
+    }
+
+    private void showMusicWeb() {
+        SpannableStringBuilder messageTips = new SpanUtils().append("使用电脑端打开网址\n").setForegroundColor(Color.parseColor("#3B4E79"))
+                .append("www.skrer.net").setForegroundColor(Color.parseColor("#7088FF"))
+                .append("上传你的音乐").setForegroundColor(Color.parseColor("#3B4E79"))
+                .create();
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip(messageTips)
+                .setOkBtnTip("确认")
+                .setOkBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .create();
+        mDialogPlus.show();
+
     }
 
     void computeCache() {

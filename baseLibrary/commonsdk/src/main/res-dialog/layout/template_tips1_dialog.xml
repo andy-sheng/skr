@@ -35,6 +35,7 @@
             android:layout_below="@+id/title_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_10_dp"
+            android:textIsSelectable="true"
             android:gravity="center"
             android:textColor="#3B4E79"
             android:textSize="@dimen/textsize_14_dp" />
@@ -43,7 +44,7 @@
 
     <com.dialog.view.StrokeTextView
         android:id="@+id/ok_btn"
-        android:layout_width="@dimen/view_240_dp"
+        android:layout_width="@dimen/view_128_dp"
         android:layout_height="@dimen/view_50_dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

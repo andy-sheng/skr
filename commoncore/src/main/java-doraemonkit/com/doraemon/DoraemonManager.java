@@ -1,8 +1,8 @@
 package com.doraemon;
 
-import android.os.SystemClock;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.R;
 import com.common.log.MyLog;
 import com.common.matrix.MatrixInit;
@@ -12,23 +12,16 @@ import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
 import com.module.ModuleServiceManager;
+import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
-import com.tencent.bugly.crashreport.CrashReport;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.schedulers.Schedulers;
 
 public class DoraemonManager {
     public final static String TAG = "DoraemonManager";
@@ -59,7 +52,7 @@ public class DoraemonManager {
                 extras.add(new SysInfoItem("Matrix", MatrixInit.isOpen() + "", new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
-                        if(MatrixInit.isOpen()){
+                        if (MatrixInit.isOpen()) {
                             MatrixInit.goIssueList();
                         }
                     }
@@ -99,18 +92,26 @@ public class DoraemonManager {
                 extras.add(new SysInfoItem("模拟崩溃", "模拟", new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
-                        try {
-                            Boolean a = (Boolean) U.getReflectUtils().readField(MiPushClient.class,null,"isCrashHandlerSuggested");
-                            U.getToastUtil().showShort("MiPushClient.isCrashHandlerSuggested="+a);
-                        } catch (NoSuchFieldException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            Boolean a = (Boolean) U.getReflectUtils().readField(MiPushClient.class, null, "isCrashHandlerSuggested");
+//                            U.getToastUtil().showShort("MiPushClient.isCrashHandlerSuggested=" + a);
+//                        } catch (NoSuchFieldException e) {
+//                            e.printStackTrace();
+//                        } catch (IllegalAccessException e) {
+//                            e.printStackTrace();
+//                        }
 
                         v = null;
                         int h = v.getHeight();
-                        MyLog.e(TAG,"h="+h);
+                        MyLog.e(TAG, "h=" + h);
+                    }
+                }));
+
+                extras.add(new SysInfoItem("x5 内核调试", "查看", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("url", "http://debugtbs.qq.com").navigation();
                     }
                 }));
 

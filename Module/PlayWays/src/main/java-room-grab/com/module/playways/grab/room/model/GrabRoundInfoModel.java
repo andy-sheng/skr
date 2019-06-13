@@ -16,11 +16,13 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Common.StandPlayType;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QCHOInnerRoundInfo;
+import com.zq.live.proto.Room.QMINIGameInnerRoundInfo;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.QSPKInnerRoundInfo;
@@ -76,6 +78,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     @JSONField(name = "SPKRoundInfos")
     List<SPkRoundInfoModel> sPkRoundInfoModels = new ArrayList<>();
+
+    @JSONField(name = "MINIGAMERoundInfos")
+    List<MINIGameRoundInfoModel> mMINIGameRoundInfoModels = new ArrayList<>();
 
     public GrabRoundInfoModel() {
 
@@ -389,6 +394,22 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 }
             }
         }
+
+        // 更新游戏信息
+        if (wantSingType == EWantSingType.EWST_MIN_GAME.getValue()) {
+            if (this.getMINIGameRoundInfoModels().size() <= 1) {
+                // 不满足两人通知全量更新
+                this.getMINIGameRoundInfoModels().clear();
+                this.getMINIGameRoundInfoModels().addAll(roundInfo.getMINIGameRoundInfoModels());
+            } else {
+                for (int i = 0; i < this.getMINIGameRoundInfoModels().size() && i < roundInfo.getMINIGameRoundInfoModels().size(); i++) {
+                    MINIGameRoundInfoModel miniGameRoundInfoModel1 = this.getMINIGameRoundInfoModels().get(i);
+                    MINIGameRoundInfoModel miniGameRoundInfoModel2 = roundInfo.getMINIGameRoundInfoModels().get(i);
+                    miniGameRoundInfoModel1.tryUpdateRoundInfoModel(miniGameRoundInfoModel2);
+                }
+            }
+        }
+
         updateStatus(notify, roundInfo.getStatus());
         return;
     }
@@ -467,6 +488,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             SPkRoundInfoModel pkRoundInfoModel = SPkRoundInfoModel.parse(qspkInnerRoundInfo);
             roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel);
         }
+
+        for (QMINIGameInnerRoundInfo qminiGameInnerRoundInfo : roundInfo.getMINIGAMERoundInfosList()) {
+            MINIGameRoundInfoModel miniGameRoundInfoModel = MINIGameRoundInfoModel.parse(qminiGameInnerRoundInfo);
+            roundInfoModel.getMINIGameRoundInfoModels().add(miniGameRoundInfoModel);
+        }
         return roundInfoModel;
     }
 
@@ -536,6 +562,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 || enterStatus == EQRoundStatus.QRS_CHO_SING.getValue()
                 || enterStatus == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
                 || enterStatus == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
+                || enterStatus == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()
                 ;
     }
 
@@ -575,6 +602,15 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.sPkRoundInfoModels = sPkRoundInfoModels;
     }
 
+    public List<MINIGameRoundInfoModel> getMINIGameRoundInfoModels() {
+        return mMINIGameRoundInfoModels;
+    }
+
+    public void setMINIGameRoundInfoModels(List<MINIGameRoundInfoModel> MINIGameRoundInfoModels) {
+        mMINIGameRoundInfoModels = MINIGameRoundInfoModels;
+    }
+
+
     /**
      * 判断当前是否是自己的演唱轮次
      *
@@ -597,6 +633,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             if (getsPkRoundInfoModels().size() > 1) {
                 return getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid();
             }
+        } else if (getStatus() == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()) {
+            for (MINIGameRoundInfoModel miniGameRoundInfoModel : mMINIGameRoundInfoModels) {
+                if (miniGameRoundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    return true;
+                }
+            }
         } else if (getStatus() == EQRoundStatus.QRS_END.getValue()) {
             // 如果轮次都结束了 还要判断出这个轮次是不是自己唱的
             if (getUserID() == MyUserInfoManager.getInstance().getUid()) {
@@ -611,10 +653,20 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 if (getsPkRoundInfoModels().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     return true;
                 }
+                if (getsPkRoundInfoModels().size() > 1) {
+                    if (getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                        return true;
+                    }
+                }
             }
-            if (getsPkRoundInfoModels().size() > 1) {
-                if (getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (getMINIGameRoundInfoModels().size() > 0) {
+                if (getMINIGameRoundInfoModels().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     return true;
+                }
+                if (getMINIGameRoundInfoModels().size() > 1) {
+                    if (getMINIGameRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                        return true;
+                    }
                 }
             }
         }
@@ -645,6 +697,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             if (getsPkRoundInfoModels().size() > 1) {
                 return getsPkRoundInfoModels().get(1).getUserID() == userId;
             }
+        }else if (getStatus() == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()) {
+            for (MINIGameRoundInfoModel roundInfoModel : mMINIGameRoundInfoModels) {
+                if (roundInfoModel.getUserID() == userId) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -658,29 +716,60 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (status == EQRoundStatus.QRS_SING.getValue()
                 || status == EQRoundStatus.QRS_CHO_SING.getValue()
                 || status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
-                || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
+                || status == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()
+        ) {
             return true;
         }
         return false;
     }
 
+
     /**
-     * 是否是合唱轮次
+     * 是否是pk 游戏中 轮次
+     *
+     * @return
+     */
+    public boolean isNormalRound() {
+        if (music != null) {
+            return  music.getPlayType() == StandPlayType.PT_COMMON_TYPE.getValue();
+        }
+        return false;
+    }
+
+    /**
+     * 是否是合唱 游戏中 轮次
      *
      * @return
      */
     public boolean isChorusRound() {
-        return status == EQRoundStatus.QRS_CHO_SING.getValue();
+        if (music != null) {
+            return  music.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue();
+        }
+        return false;
     }
 
     /**
-     * 是否是pk轮次
+     * 是否是pk 游戏中 轮次
      *
      * @return
      */
     public boolean isPKRound() {
-        return status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
-                || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue();
+        if (music != null) {
+            return  music.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue();
+        }
+        return false;
+    }
+
+    /**
+     * 当前是小游戏 游戏中 轮次
+     * @return
+     */
+    public boolean isMiniGameRound() {
+        if (music != null) {
+            return  music.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue();
+        }
+        return false;
     }
 
     /**
@@ -696,6 +785,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             }
         } else if (isChorusRound()) {
             for (ChorusRoundInfoModel infoModel : getChorusRoundInfoModels()) {
+                singerUserIds.add(infoModel.getUserID());
+            }
+        } else if (isMiniGameRound()) {
+            for (MINIGameRoundInfoModel infoModel : getMINIGameRoundInfoModels()) {
                 singerUserIds.add(infoModel.getUserID());
             }
         } else {
@@ -734,6 +827,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 totalTs = 40 * 1000;
             } else if (getWantSingType() == EWantSingType.EWST_SPK.getValue()) {
                 totalTs = 30 * 1000;
+            }else if (getWantSingType() == EWantSingType.EWST_MIN_GAME.getValue()) {
+                totalTs = 90 * 1000;
             }
         }
         return totalTs;
@@ -767,6 +862,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", enterStatus=" + enterStatus +
                 ",chorusRoundInfoModels=" + chorusRoundInfoModels +
                 ", sPkRoundInfoModels=" + sPkRoundInfoModels +
+                ", mMINIGameRoundInfoModels" + mMINIGameRoundInfoModels +
                 '}';
     }
 

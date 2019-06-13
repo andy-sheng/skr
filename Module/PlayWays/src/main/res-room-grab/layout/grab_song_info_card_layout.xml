@@ -43,39 +43,19 @@
                 android:textColor="@color/black_trans_70"
                 android:textSize="@dimen/textsize_18_dp" />
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/chorus_song_tag"
-                android:layout_width="@dimen/view_42_dp"
+            <TextView
+                android:id="@+id/song_tag_tv"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_20_dp"
-                android:layout_alignTop="@id/song_name_tv"
-                android:layout_marginLeft="-42dp"
-                android:layout_marginTop="@dimen/view_1_dp"
+                android:layout_alignBottom="@id/song_name_tv"
                 android:layout_toRightOf="@id/song_name_tv"
                 android:gravity="center"
-                android:text="合唱"
+                android:paddingLeft="@dimen/view_6_dp"
+                android:paddingRight="@dimen/view_6_dp"
                 android:textColor="#FFDCA2"
                 android:textSize="@dimen/textsize_14_dp"
-                android:visibility="gone"
-                app:bl_corners_radius="@dimen/view_10_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#7088FF" />
+                android:visibility="gone" />
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/pk_song_tag"
-                android:layout_width="@dimen/view_42_dp"
-                android:layout_height="@dimen/view_20_dp"
-                android:layout_alignTop="@id/song_name_tv"
-                android:layout_marginLeft="-42dp"
-                android:layout_marginTop="@dimen/view_1_dp"
-                android:layout_toRightOf="@id/song_name_tv"
-                android:gravity="center"
-                android:text="PK"
-                android:textColor="#FFDCA2"
-                android:textSize="@dimen/textsize_14_dp"
-                android:visibility="gone"
-                app:bl_corners_radius="@dimen/view_10_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#E55088" />
         </RelativeLayout>
 
         <LinearLayout
@@ -120,18 +100,6 @@
             android:layout_marginTop="@dimen/view_58_dp"
             android:background="#CC7F00" />
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/song_lyrics"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginTop="@dimen/view_72_dp"
-            android:layout_marginRight="@dimen/view_72_dp"
-            android:lineSpacingExtra="@dimen/view_6_dp"
-            android:maxLines="2"
-            android:textColor="@color/black_trans_60"
-            android:textSize="@dimen/view_16_dp" />
-
         <ImageView
             android:id="@+id/grab_cd"
             android:layout_width="@dimen/view_92_dp"
@@ -159,6 +127,19 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/view_5_dp"
             android:background="@drawable/grab_pk_song_icon" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/song_lyrics"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_50_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginTop="@dimen/view_72_dp"
+            android:layout_marginRight="@dimen/view_72_dp"
+            android:lineSpacingExtra="@dimen/view_6_dp"
+            android:maxLines="2"
+            android:textColor="@color/black_trans_60"
+            android:textSize="@dimen/view_16_dp" />
+
 
         <ImageView
             android:layout_width="match_parent"

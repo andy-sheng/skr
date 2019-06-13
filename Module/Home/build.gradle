@@ -7,6 +7,8 @@ if (isBuildModule.toBoolean()) {
 apply plugin: 'kotlin-android'
 //kotlin-android-extensions用于扩展绑定关系.
 apply plugin: 'kotlin-android-extensions'
+//kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -22,7 +24,6 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-        multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [moduleName: project.getName()]
@@ -96,9 +97,9 @@ dependencies {
 
     if (isBuildModule.toBoolean()) {
 //        tools
-        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
     } else {
-        compileOnly rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
     }
 
     if (aliFeedback.toBoolean()) {

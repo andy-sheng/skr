@@ -24,7 +24,12 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 一唱到底邀请
    */
-  NM_INVITE_STAND(2);
+  NM_INVITE_STAND(2),
+
+  /**
+   * 系统警告
+   */
+  NM_SYS_WARNING_MSG(3);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -42,6 +47,7 @@ public enum ENotificationMsgType implements WireEnum {
       case 0: return NM_UNKNOWN;
       case 1: return NM_FOLLOW;
       case 2: return NM_INVITE_STAND;
+      case 3: return NM_SYS_WARNING_MSG;
       default: return null;
     }
   }

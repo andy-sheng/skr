@@ -18,7 +18,8 @@ public interface IOtherPersonView {
                           List<UserRankModel> userRankModels,
                           List<UserLevelModel> userLevelModels,
                           List<GameStatisModel> gameStatisModels,
-                          boolean isFriend, boolean isFollow);
+                          boolean isFriend, boolean isFollow,
+                          int meiLiCntTotal);
 
     void getHomePageFail();
 //    // 展示照片墙

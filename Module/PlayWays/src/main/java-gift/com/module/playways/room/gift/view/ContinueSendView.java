@@ -19,10 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
@@ -38,6 +40,8 @@ import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrSystem
 import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrZSNotEnough;
 
 public class ContinueSendView extends FrameLayout implements IContinueSendView {
+    public final static String TAG = "ContinueSendView";
+
     public static final int MSG_HIDE = 101;
     public static final int MSG_SHOW_RECHARGE = 102;
 
@@ -98,14 +102,19 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
     public void startBuy(BaseGift baseGift, UserInfoModel receiver) {
         mBaseGift = baseGift;
         mReceiver = receiver;
-        if (baseGift.isCanContinue()) {
-            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiver);
-            setVisibility(VISIBLE);
+        GrabRoundInfoModel infoModel = mBaseRoomData.getRealRoundInfo();
+        if (infoModel != null) {
+            if (baseGift.isCanContinue()) {
+                mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), mBaseRoomData.getRealRoundSeq(), infoModel.isSingStatus(), receiver);
+                setVisibility(VISIBLE);
 
-            mHandler.removeMessages(MSG_HIDE);
-            mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
+                mHandler.removeMessages(MSG_HIDE);
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
+            } else {
+                mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), mBaseRoomData.getRealRoundSeq(), infoModel.isSingStatus(), receiver);
+            }
         } else {
-            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiver);
+            MyLog.w(TAG, "startBuy" + " baseGift=" + baseGift + " receiver=" + receiver);
         }
     }
 
@@ -121,21 +130,26 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBuyGiftPresenter.buyGift(mBaseGift, mBaseRoomData.getGameId(), mReceiver);
+                GrabRoundInfoModel grabRoundInfoModel = mBaseRoomData.getRealRoundInfo();
+                if (grabRoundInfoModel != null) {
+                    mBuyGiftPresenter.buyGift(mBaseGift, mBaseRoomData.getGameId(), mBaseRoomData.getRealRoundSeq(), grabRoundInfoModel.isSingStatus(), mReceiver);
 
-                if (mScaleAnimatorSet != null) {
-                    mScaleAnimatorSet.cancel();
+                    if (mScaleAnimatorSet != null) {
+                        mScaleAnimatorSet.cancel();
+                    }
+
+                    ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(ContinueSendView.this, "scaleX", 1.0f, 0.8f, 1.0f);
+                    ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(ContinueSendView.this, "scaleY", 1.0f, 0.8f, 1.0f);
+                    mScaleAnimatorSet = new AnimatorSet();
+                    mScaleAnimatorSet.play(objectAnimator1).with(objectAnimator2);
+                    mScaleAnimatorSet.setDuration(500);
+                    mScaleAnimatorSet.start();
+
+                    mHandler.removeMessages(MSG_HIDE);
+                    mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
+                } else {
+                    MyLog.w(TAG, "ContinueSendView" + " mBaseRoomData.getRealRoundInfo()=null");
                 }
-
-                ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(ContinueSendView.this, "scaleX", 1.0f, 0.8f, 1.0f);
-                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(ContinueSendView.this, "scaleY", 1.0f, 0.8f, 1.0f);
-                mScaleAnimatorSet = new AnimatorSet();
-                mScaleAnimatorSet.play(objectAnimator1).with(objectAnimator2);
-                mScaleAnimatorSet.setDuration(500);
-                mScaleAnimatorSet.start();
-
-                mHandler.removeMessages(MSG_HIDE);
-                mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
             }
         });
     }

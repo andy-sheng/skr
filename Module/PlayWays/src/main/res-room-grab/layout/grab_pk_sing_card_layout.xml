@@ -70,7 +70,6 @@
                 android:textSize="@dimen/textsize_14_dp"
                 android:visibility="gone" />
 
-
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_name"
                 android:layout_width="wrap_content"
@@ -91,6 +90,15 @@
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <com.module.playways.grab.room.view.CharmsView
+                android:id="@+id/left_charms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/left_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="-24dp"
+                android:visibility="gone" />
 
 
             <com.module.playways.grab.room.top.CircleAnimationView
@@ -177,6 +185,15 @@
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <com.module.playways.grab.room.view.CharmsView
+                android:id="@+id/right_charms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/right_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="-24dp"
+                android:visibility="gone" />
 
             <com.module.playways.grab.room.top.CircleAnimationView
                 android:id="@+id/right_circle_animation_view"

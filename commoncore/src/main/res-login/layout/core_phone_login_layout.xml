@@ -61,7 +61,8 @@
             <com.common.view.ex.ExTextView
                 android:id="@+id/error_hint"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_20_dp"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/view_20_dp"
                 android:layout_below="@+id/code_input_tv"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
@@ -89,9 +90,9 @@
                 android:id="@+id/login_iv"
                 android:layout_width="@dimen/view_176_dp"
                 android:layout_height="@dimen/view_62_dp"
-                android:layout_below="@+id/code_input_tv"
+                android:layout_below="@+id/error_hint"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_40_dp"
+                android:layout_marginTop="@dimen/view_6_dp"
                 android:background="@drawable/login_unclick_icon" />
 
         </RelativeLayout>

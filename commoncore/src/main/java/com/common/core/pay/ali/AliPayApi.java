@@ -2,25 +2,12 @@ package com.common.core.pay.ali;
 
 import android.app.Activity;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alipay.sdk.app.PayTask;
-import com.common.core.pay.EPayPlatform;
 import com.common.core.pay.IPayApi;
 import com.common.core.pay.PayBaseReq;
-import com.common.core.pay.event.PayResultEvent;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
-import java.util.Map;
 
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class AliPayApi implements IPayApi {
     Activity mActivity;
@@ -37,42 +24,42 @@ public class AliPayApi implements IPayApi {
             disposable.dispose();
         }
 
-        final AliPayReq aliPayReq = (AliPayReq) payBaseResp;
-        io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> emitter) {
-                PayTask alipay = new PayTask(mActivity);
-                Map<String, String> result = alipay.payV2(aliPayReq.getOrderInfo(), true);
-
-                PayResult payResult = new PayResult(result);
-                JSONObject jsonObject = JSON.parseObject(payResult.getResult());
-                AlipayResponse alipayResponse = JSON.parseObject(jsonObject.getString("alipay_trade_app_pay_response"), AlipayResponse.class);
-                EventBus.getDefault().post(new PayResultEvent(EPayPlatform.ALI_PAY, alipayResponse.getSub_msg(), alipayResponse.getCode()));
-                emitter.onComplete();
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Object>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        EventBus.getDefault().post(new PayResultEvent(EPayPlatform.ALI_PAY, e.getMessage(), -1));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//        final AliPayReq aliPayReq = (AliPayReq) payBaseResp;
+//        io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Object> emitter) {
+//                PayTask alipay = new PayTask(mActivity);
+//                Map<String, String> result = alipay.payV2(aliPayReq.getOrderInfo(), true);
+//
+//                PayResult payResult = new PayResult(result);
+//                JSONObject jsonObject = JSON.parseObject(payResult.getResult());
+//                AlipayResponse alipayResponse = JSON.parseObject(jsonObject.getString("alipay_trade_app_pay_response"), AlipayResponse.class);
+//                EventBus.getDefault().post(new PayResultEvent(EPayPlatform.ALI_PAY, alipayResponse.getSub_msg(), alipayResponse.getCode()));
+//                emitter.onComplete();
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<Object>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        disposable = d;
+//                    }
+//
+//                    @Override
+//                    public void onNext(Object o) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        EventBus.getDefault().post(new PayResultEvent(EPayPlatform.ALI_PAY, e.getMessage(), -1));
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 
     public static class AlipayResponse implements Serializable {

@@ -30,7 +30,7 @@ public class SkrConfig {
     }
 
     public boolean worksShareOpen(){
-        return false;
+        return true;
     }
 
 }

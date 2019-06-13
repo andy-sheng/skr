@@ -30,4 +30,12 @@
         android:layout_marginTop="@dimen/view_175_dp"
         android:visibility="gone" />
 
+    <com.module.playways.grab.room.view.minigame.MiniGameSingBeginTipsCardView
+        android:id="@+id/mini_game_sing_begin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_175_dp"
+        android:visibility="gone" />
+
 </merge>

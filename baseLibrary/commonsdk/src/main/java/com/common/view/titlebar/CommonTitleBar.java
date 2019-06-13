@@ -304,6 +304,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             mainParams.addRule(RelativeLayout.BELOW, viewStatusBarFill.getId());
         } else {
             mainParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            mainParams.topMargin = U.getStatusBarUtil().getStatusBarHeight(U.app());
         }
         // 计算主布局高度
         if (showBottomLine) {

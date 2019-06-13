@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
+import com.common.base.InitManager;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.core.crash.SkrCrashHandler;
@@ -62,7 +63,7 @@ public class CoreConfiguration implements ConfigModule {
 
             @Override
             public void attachBaseContext(@NonNull Context base) {
-                SkrCrashHandler.getInstance().register(base);
+
             }
 
             @Override
@@ -77,6 +78,13 @@ public class CoreConfiguration implements ConfigModule {
                 }
                 UserAccountManager.getInstance().init();
                 DoraemonManager.init();
+                InitManager.initMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SkrCrashHandler.getInstance().register();
+                    }
+                },20000);
+
             }
 
             @Override

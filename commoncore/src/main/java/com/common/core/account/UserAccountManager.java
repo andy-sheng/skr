@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.bugly.BuglyInit;
 import com.common.callback.Callback;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
@@ -17,7 +18,9 @@ import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.remark.RemarkLocalApi;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -29,13 +32,10 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
-import com.tencent.bugly.crashreport.CrashReport;
-
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -142,6 +142,8 @@ public class UserAccountManager {
         } else {
 
         }
+
+        UserInfoManager.getInstance().initRemark();
         EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         // 只有非游客模式才发已有账号的事件
     }
@@ -249,6 +251,7 @@ public class UserAccountManager {
                             UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
+                            U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
@@ -335,7 +338,6 @@ public class UserAccountManager {
         HashMap map = new HashMap();
         map.put("isFirstLogin", "" + isFirstLogin);
         StatisticsAdapter.recordCountEvent("signup", "api_success", map);
-
         boolean needBeginnerGuide = jsonObject.getBooleanValue("needBeginnerGuide");
 
         // 设置个人信息
@@ -430,9 +432,10 @@ public class UserAccountManager {
                     U.getPreferenceUtils().clearPreference();
                     UserInfoLocalApi.deleteAll();
                     RemarkLocalApi.deleteAll();
+                    // 清除备注的缓存
+                    UserInfoManager.getInstance().clearRemark();
                     UmengStatistics.onProfileSignOff();
-                    //com.common.umeng.UmengPush.UmengPush.clearAlias(userId);
-                    com.common.jiguang.JiGuangPush.clearAlias(userId);
+                    JiGuangPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
@@ -531,10 +534,10 @@ public class UserAccountManager {
                         MyLog.e(TAG, "getIMToken from Server is null");
                     }
                 } else {
-                    if (result.getErrno() == 8302102) {
-                        U.getToastUtil().showShort("GET融云token失败，测试用户账号超过100限度");
+                    if (MyLog.isDebugLogOpen() && result.getErrno() == 8302102) {
+                        U.getToastUtil().showShort("GET融云token失败  errorCode = 8302102 errmsg = " + result.getErrmsg());
                     } else {
-                        U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                        MyLog.e(TAG, "process" + " GET融云token error=" + result);
                     }
 
                 }
@@ -587,11 +590,11 @@ public class UserAccountManager {
     void trySetAlias() {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
-            com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
+            BuglyInit.setUserId(UserAccountManager.getInstance().getUuid());
             if (U.getChannelUtils().isStaging()) {
-                CrashReport.setUserId("dev_" + UserAccountManager.getInstance().getUuid());
+                com.common.jiguang.JiGuangPush.setAlias("dev_" + UserAccountManager.getInstance().getUuid());
             } else {
-                CrashReport.setUserId(UserAccountManager.getInstance().getUuid());
+                com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
             }
 
         }

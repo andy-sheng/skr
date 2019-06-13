@@ -18,6 +18,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
+import com.zq.relation.adapter.RelationAdapter;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
     RelativeLayout mContent;
@@ -96,20 +97,20 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已互关");
                         mFollowTv.setClickable(false);
-                        mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
-                        mFollowTv.setBackground(null);
+                        mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
+                        mFollowTv.setBackground(RelationAdapter.mFollowDrawable);
                     } else if (userInfoModel.isFollow()) {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已关注");
                         mFollowTv.setClickable(false);
-                        mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
-                        mFollowTv.setBackground(null);
+                        mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
+                        mFollowTv.setBackground(RelationAdapter.mFollowDrawable);
                     } else {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("+关注");
                         mFollowTv.setClickable(true);
                         mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
-                        mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yellow_button_icon));
+                        mFollowTv.setBackground(RelationAdapter.mUnFollowDrawable);
                     }
                 } else {
                     mFollowTv.setVisibility(View.GONE);

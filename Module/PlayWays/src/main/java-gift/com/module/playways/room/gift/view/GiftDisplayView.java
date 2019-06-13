@@ -20,11 +20,8 @@ import com.module.playways.room.gift.inter.IGiftDisplayView;
 import com.module.playways.room.gift.loadsir.GiftEmptyCallback;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.presenter.GiftViewPresenter;
-import com.module.playways.room.room.gift.model.GiftPlayModel;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +40,8 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
 
     GiftDisplayAdapter.GiftUpdateListner mGiftUpdateListner;
 
+    IGetGiftCountDownListener mIGetGiftCountDownListener;
+
     LoadService mLoadService;
 
     public GiftDisplayView(Context context) {
@@ -58,6 +57,10 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
     public GiftDisplayView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    public void setIGetGiftCountDownListener(IGetGiftCountDownListener IGetGiftCountDownListener) {
+        mIGetGiftCountDownListener = IGetGiftCountDownListener;
     }
 
     IGiftOpListener mIGiftOpListener = new IGiftOpListener() {
@@ -76,6 +79,11 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
 
             mSelectedGift = baseGift;
             mGiftUpdateListner = giftUpdateListner;
+        }
+
+        @Override
+        public long getCountDownTs() {
+            return mIGetGiftCountDownListener.getCountDownTs();
         }
     };
 
@@ -143,5 +151,11 @@ public class GiftDisplayView extends ExFrameLayout implements IGiftDisplayView {
 
         //选中礼物
         void select(BaseGift baseGift, GiftDisplayAdapter.GiftUpdateListner giftUpdateListner);
+
+        long getCountDownTs();
+    }
+
+    public interface IGetGiftCountDownListener {
+        long getCountDownTs();
     }
 }

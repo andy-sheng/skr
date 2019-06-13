@@ -23,6 +23,7 @@ message NotificationMsg
 
     FollowMsg followMsg           = 10;
     InviteStandMsg inviteStandMsg = 11;
+    SysWarningMsg sysWarningMsg   = 12;
 }
 
 // ENotificationMsgType 房间消息类型
@@ -31,6 +32,7 @@ enum ENotificationMsgType {
 
     NM_FOLLOW       = 1; //关注类型
     NM_INVITE_STAND = 2; //一唱到底邀请
+    NM_SYS_WARNING_MSG = 3; //系统警告
 }
 
 message FollowMsg
@@ -45,6 +47,13 @@ message InviteStandMsg
     Common.UserInfo user = 1; //发起邀请的用户详情
     uint32 roomID = 2; //房间id
 }
+
+message SysWarningMsg
+{
+    string title   = 1; //系统警告标题
+    string content = 2; //系统警告内容
+}
+
 
 // 消息位置类型
 enum EMsgPosType {

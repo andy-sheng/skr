@@ -10,7 +10,6 @@ android {
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionName rootProject.ext.android["versionName"]
         versionCode rootProject.ext.android["versionCode"]
-        multiDexEnabled true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

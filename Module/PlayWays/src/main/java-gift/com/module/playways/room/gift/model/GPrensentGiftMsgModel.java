@@ -105,41 +105,30 @@ public class GPrensentGiftMsgModel {
     }
 
     public static class PropertyModel {
-        int userID;
-        float coinBalance;
-        float hongZuanBalance;
-        long lastChangeMs;
+        public int userID;
+        public float coinBalance;
+        public float hongZuanBalance;
+        public long lastChangeMs;
+        public int roundSeq;
+        public float curRoundSeqMeiliTotal;
 
-        public PropertyModel(int userID, float coinBalance, float hongZuanBalance, long lastChangeMs) {
-            this.userID = userID;
-            this.coinBalance = coinBalance;
-            this.hongZuanBalance = hongZuanBalance;
-            this.lastChangeMs = lastChangeMs;
-        }
-
-        public int getUserID() {
-            return userID;
-        }
-
-        public float getCoinBalance() {
-            return coinBalance;
-        }
-
-        public float getHongZuanBalance() {
-            return hongZuanBalance;
-        }
-
-        public long getLastChangeMs() {
-            return lastChangeMs;
+        public static PropertyModel parse(Property property){
+            PropertyModel propertyModel = new PropertyModel();
+            propertyModel.userID = property.getUserID();
+            propertyModel.coinBalance = property.getCoinBalance();
+            propertyModel.hongZuanBalance = property.getHongZuanBalance();
+            propertyModel.lastChangeMs = property.getLastChangeMs();
+            propertyModel.roundSeq = property.getRoundSeq();
+            propertyModel.curRoundSeqMeiliTotal = property.getCurRoundSeqMeiliTotal();
+            return propertyModel;
         }
 
         public static List<PropertyModel> toModel(List<Property> propertyList) {
             ArrayList<PropertyModel> propertyModelArrayList = new ArrayList<>();
             for (Property property : propertyList) {
-                PropertyModel propertyModel = new PropertyModel(property.getUserID(), property.getCoinBalance(), property.getHongZuanBalance(), property.getLastChangeMs());
+                PropertyModel propertyModel = PropertyModel.parse(property);
                 propertyModelArrayList.add(propertyModel);
             }
-
             return propertyModelArrayList;
         }
     }

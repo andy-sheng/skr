@@ -66,6 +66,8 @@
     </LinearLayout>
 
     <View
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:layout_alignParentBottom="true"

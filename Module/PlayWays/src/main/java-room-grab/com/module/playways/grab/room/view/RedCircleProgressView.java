@@ -44,7 +44,7 @@ public class RedCircleProgressView extends ProgressBar {
     @Override
     protected void onDraw(Canvas canvas) {
         if (mPaint == null) {
-            mPaint = new Paint();
+            mPaint = new com.common.view.ExPaint();
         }
         canvas.drawColor(getResources().getColor(R.color.transparent));//画布背景色
 

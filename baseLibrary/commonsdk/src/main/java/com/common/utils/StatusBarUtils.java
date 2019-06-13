@@ -182,6 +182,9 @@ public class StatusBarUtils {
         if (U.getDeviceUtils().isVivo() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return true;
         }
+        if (U.getDeviceUtils().isVivo() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return true;
+        }
         return false;
     }
 

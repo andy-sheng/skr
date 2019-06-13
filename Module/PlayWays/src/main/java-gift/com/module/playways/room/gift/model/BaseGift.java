@@ -1,16 +1,9 @@
 package com.module.playways.room.gift.model;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.module.playways.room.gift.GiftDB;
-import com.module.playways.room.prepare.model.BaseRoundInfoModel;
-import com.module.playways.room.room.gift.model.GiftPlayModel;
-import com.zq.live.proto.Common.EGiftDisplayType;
 import com.zq.live.proto.Common.GiftExtraInfo;
 import com.zq.live.proto.Common.GiftInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class BaseGift {
 
@@ -44,6 +37,16 @@ public abstract class BaseGift {
     private int displayType;
     //附加信息
 //    private String extra;
+
+    private int balance;
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 
     public float getRealPrice() {
         return realPrice;
@@ -228,6 +231,7 @@ public abstract class BaseGift {
         setSourceURL(giftServerModel.getSourceURL());
         setPlay(giftServerModel.isPlay());
         setDisplayType(giftServerModel.getDisplayType());
+        setBalance(giftServerModel.getBalance());
         // 解析
         parseFromJson(giftServerModel.getExtra());
     }

@@ -34,7 +34,7 @@ public class ViewCheckRectView extends View {
     }
 
     private void initView() {
-        mRectPaint = new Paint();
+        mRectPaint = new com.common.view.ExPaint();
         mRectPaint.setStyle(Paint.Style.STROKE);
         mRectPaint.setColor(Color.RED);
         mRectPaint.setStrokeWidth(2);

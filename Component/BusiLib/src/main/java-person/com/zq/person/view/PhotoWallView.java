@@ -1,6 +1,5 @@
 package com.zq.person.view;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -183,7 +182,7 @@ public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
                 .setShowCamera(true)
                 .setCrop(false)
                 .setSelectLimit(9)
-                .setIncludeGif(true)
+                .setIncludeGif(false)
                 .build()
         );
         ResPickerActivity.open(mFragment.getActivity());

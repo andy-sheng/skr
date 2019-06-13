@@ -3,6 +3,7 @@ package com.zq.dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -84,19 +85,16 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
-    RelativeLayout mUserInfoArea;
+    ConstraintLayout mUserInfoArea;
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExImageView mMoreBtn;
-    RelativeLayout mNameArea;
     NormalLevelView2 mLevelView;
     ExTextView mNameTv;
     ImageView mSexIv;
     MarqueeTextView mSignTv;
     TagFlowLayout mFlowlayout;
 
-    LinearLayout mFunctionArea;
-    RelativeLayout mFollowArea;
     ImageView mFollowIv;
 
     Toolbar mToolbar;
@@ -109,9 +107,10 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     ExTextView mPhotoNumTv;
     ExTextView mEmptyMyPhoto;
 
-    private static final int LOCATION_TAG = 0;           //城市标签
-    private static final int CONSTELLATION_TAG = 1;      //星座标签
-    private static final int FANS_NUM_TAG = 2;      //粉丝数标签
+    private static final int CHARMS_TAG = 1;
+    private static final int LOCATION_TAG = 2;           //城市标签
+    private static final int CONSTELLATION_TAG = 3;      //星座标签
+    private static final int FANS_NUM_TAG = 4;      //粉丝数标签
 
     private List<String> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
@@ -195,7 +194,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             isShowKick = false;
             mMoreBtn.setVisibility(GONE);
             mToolbar.setVisibility(GONE);
-            mFunctionArea.setVisibility(View.GONE);
+            mFollowIv.setVisibility(View.GONE);
             mSrlFollowIv.setVisibility(GONE);
         }
 
@@ -218,10 +217,18 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
 
+                    int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
+
+                    if (isFollow) {
+                        userInfoModel.setFollow(isFollow);
+                        userInfoModel.setFriend(isFriend);
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel);
+                    }
                     showUserInfo(userInfoModel);
                     showUserRelationNum(relationNumModes);
                     showUserLevel(userLevelModels);
                     showUserRelation(isFriend, isFollow);
+                    showCharmsTag(meiLiCntTotal);
                 }
             }
         }, (BaseActivity) mContext);
@@ -317,12 +324,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initUserInfo() {
-        mUserInfoArea = (RelativeLayout) this.findViewById(R.id.user_info_area);
+        mUserInfoArea = (ConstraintLayout) this.findViewById(R.id.user_info_area);
         mAvatarBg = (ImageView) this.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
-        mNameArea = (RelativeLayout) this.findViewById(R.id.name_area);
         mLevelView = (NormalLevelView2) this.findViewById(R.id.level_view);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mSexIv = (ImageView) this.findViewById(R.id.sex_iv);
@@ -424,8 +430,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initOpretaArea() {
-        mFunctionArea = (LinearLayout) this.findViewById(R.id.function_area);
-        mFollowArea = (RelativeLayout) this.findViewById(R.id.follow_area);
         mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
 
         mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
@@ -628,8 +632,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
             if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
                 mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
-            } else {
-                mHashMap.put(LOCATION_TAG, "未知星球");
             }
 
             if (!TextUtils.isEmpty(model.getBirthday())) {
@@ -652,6 +654,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
 
         mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
+
+        refreshTag();
+    }
+
+    private void showCharmsTag(int meiLiCntTotal) {
+        mHashMap.put(CHARMS_TAG, String.format(getResources().getString(R.string.meili_tag), meiLiCntTotal));
 
         refreshTag();
     }
@@ -724,6 +732,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     private void refreshTag() {
         mTags.clear();
         if (mHashMap != null) {
+
+            if (!TextUtils.isEmpty(mHashMap.get(CHARMS_TAG))) {
+                mTags.add(mHashMap.get(CHARMS_TAG));
+            }
+
             if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
                 mTags.add(mHashMap.get(LOCATION_TAG));
             }

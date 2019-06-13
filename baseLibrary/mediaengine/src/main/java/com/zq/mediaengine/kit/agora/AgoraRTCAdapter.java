@@ -44,7 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * 对声网SDK的封装，以适合当前的SrcPin/SinkPin框架.
- *
+ * <p>
  * 只封装声网SDK内的功能.
  */
 
@@ -449,7 +449,12 @@ public class AgoraRTCAdapter {
                         mAudioCBSamples = 0;
                     }
 
-                    long pts = curTime - (long) numOfSamples * 1000 / samplesPerSec;
+                    long pts = curTime;
+                    if (samplesPerSec != 0) {
+                        pts = curTime - (long) numOfSamples * 1000 / samplesPerSec;
+                    } else {
+                        MyLog.w(TAG, "onRecordFrame" + " samplesPerSec = 0");
+                    }
                     int size = numOfSamples * bytesPerSample * channels;
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
                     byteBuffer.order(ByteOrder.nativeOrder());
@@ -710,7 +715,7 @@ public class AgoraRTCAdapter {
 
     /**
      * 添加对应uid的远程视频流的SrcPin.
-     *
+     * <p>
      * 添加后可以通过 {@link #getRemoteVideoSrcPin(int)} 方法来获取该SrcPin.
      *
      * @param uid uid

@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.util.AttributeSet;
+import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 
 import com.common.base.R;
@@ -58,7 +59,7 @@ public class CircleCountDownView extends ProgressBar {
             typedArray.recycle();
         }
 
-        mBgPaint = new Paint();
+        mBgPaint = new com.common.view.ExPaint();
         Shader mBgShader = new SweepGradient(getWidth() / 2, getHeight() / 2,
                 new int[]{mBgColor,
                         mBgColor,
@@ -70,7 +71,7 @@ public class CircleCountDownView extends ProgressBar {
         mBgPaint.setStyle(Style.FILL);//实心
         mBgPaint.setStrokeWidth(strokeWidth);//线的宽度
 
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setStyle(Style.STROKE);//空心
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setDither(true);
@@ -128,6 +129,7 @@ public class CircleCountDownView extends ProgressBar {
 
         mRecordAnimator = ValueAnimator.ofInt(startD, 360);
         mRecordAnimator.setDuration(leave > 0 ? leave : 0);
+        mRecordAnimator.setInterpolator(new LinearInterpolator());
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

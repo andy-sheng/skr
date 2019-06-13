@@ -36,11 +36,11 @@ public class AlignInfoView extends View {
     }
 
     private void init() {
-        mLinePaint = new Paint();
+        mLinePaint = new com.common.view.ExPaint();
         mLinePaint.setAntiAlias(true);
         mLinePaint.setColor(getResources().getColor(R.color.dk_color_CC3A4B));
 
-        mTextPaint = new Paint();
+        mTextPaint = new com.common.view.ExPaint();
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.dk_font_size_14));
         mTextPaint.setColor(getResources().getColor(R.color.dk_color_333333));

@@ -35,6 +35,10 @@ public final class Property extends Message<Property, Property.Builder> {
 
   public static final Long DEFAULT_LASTCHANGEMS = 0L;
 
+  public static final Integer DEFAULT_ROUNDSEQ = 0;
+
+  public static final Float DEFAULT_CURROUNDSEQMEILITOTAL = 0.0f;
+
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
@@ -59,17 +63,35 @@ public final class Property extends Message<Property, Property.Builder> {
   )
   private final Long lastChangeMs;
 
-  public Property(Integer userID, Float coinBalance, Float hongZuanBalance, Long lastChangeMs) {
-    this(userID, coinBalance, hongZuanBalance, lastChangeMs, ByteString.EMPTY);
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer roundSeq;
+
+  /**
+   * 当前轮次魅力值累加和
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
+  )
+  private final Float curRoundSeqMeiliTotal;
+
+  public Property(Integer userID, Float coinBalance, Float hongZuanBalance, Long lastChangeMs,
+      Integer roundSeq, Float curRoundSeqMeiliTotal) {
+    this(userID, coinBalance, hongZuanBalance, lastChangeMs, roundSeq, curRoundSeqMeiliTotal, ByteString.EMPTY);
   }
 
   public Property(Integer userID, Float coinBalance, Float hongZuanBalance, Long lastChangeMs,
-      ByteString unknownFields) {
+      Integer roundSeq, Float curRoundSeqMeiliTotal, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.coinBalance = coinBalance;
     this.hongZuanBalance = hongZuanBalance;
     this.lastChangeMs = lastChangeMs;
+    this.roundSeq = roundSeq;
+    this.curRoundSeqMeiliTotal = curRoundSeqMeiliTotal;
   }
 
   @Override
@@ -79,6 +101,8 @@ public final class Property extends Message<Property, Property.Builder> {
     builder.coinBalance = coinBalance;
     builder.hongZuanBalance = hongZuanBalance;
     builder.lastChangeMs = lastChangeMs;
+    builder.roundSeq = roundSeq;
+    builder.curRoundSeqMeiliTotal = curRoundSeqMeiliTotal;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -92,7 +116,9 @@ public final class Property extends Message<Property, Property.Builder> {
         && Internal.equals(userID, o.userID)
         && Internal.equals(coinBalance, o.coinBalance)
         && Internal.equals(hongZuanBalance, o.hongZuanBalance)
-        && Internal.equals(lastChangeMs, o.lastChangeMs);
+        && Internal.equals(lastChangeMs, o.lastChangeMs)
+        && Internal.equals(roundSeq, o.roundSeq)
+        && Internal.equals(curRoundSeqMeiliTotal, o.curRoundSeqMeiliTotal);
   }
 
   @Override
@@ -104,6 +130,8 @@ public final class Property extends Message<Property, Property.Builder> {
       result = result * 37 + (coinBalance != null ? coinBalance.hashCode() : 0);
       result = result * 37 + (hongZuanBalance != null ? hongZuanBalance.hashCode() : 0);
       result = result * 37 + (lastChangeMs != null ? lastChangeMs.hashCode() : 0);
+      result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
+      result = result * 37 + (curRoundSeqMeiliTotal != null ? curRoundSeqMeiliTotal.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -116,6 +144,8 @@ public final class Property extends Message<Property, Property.Builder> {
     if (coinBalance != null) builder.append(", coinBalance=").append(coinBalance);
     if (hongZuanBalance != null) builder.append(", hongZuanBalance=").append(hongZuanBalance);
     if (lastChangeMs != null) builder.append(", lastChangeMs=").append(lastChangeMs);
+    if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
+    if (curRoundSeqMeiliTotal != null) builder.append(", curRoundSeqMeiliTotal=").append(curRoundSeqMeiliTotal);
     return builder.replace(0, 2, "Property{").append('}').toString();
   }
 
@@ -157,6 +187,23 @@ public final class Property extends Message<Property, Property.Builder> {
     return lastChangeMs;
   }
 
+  public Integer getRoundSeq() {
+    if(roundSeq==null){
+        return DEFAULT_ROUNDSEQ;
+    }
+    return roundSeq;
+  }
+
+  /**
+   * 当前轮次魅力值累加和
+   */
+  public Float getCurRoundSeqMeiliTotal() {
+    if(curRoundSeqMeiliTotal==null){
+        return DEFAULT_CURROUNDSEQMEILITOTAL;
+    }
+    return curRoundSeqMeiliTotal;
+  }
+
   public boolean hasUserID() {
     return userID!=null;
   }
@@ -173,6 +220,17 @@ public final class Property extends Message<Property, Property.Builder> {
     return lastChangeMs!=null;
   }
 
+  public boolean hasRoundSeq() {
+    return roundSeq!=null;
+  }
+
+  /**
+   * 当前轮次魅力值累加和
+   */
+  public boolean hasCurRoundSeqMeiliTotal() {
+    return curRoundSeqMeiliTotal!=null;
+  }
+
   public static final class Builder extends Message.Builder<Property, Builder> {
     private Integer userID;
 
@@ -181,6 +239,10 @@ public final class Property extends Message<Property, Property.Builder> {
     private Float hongZuanBalance;
 
     private Long lastChangeMs;
+
+    private Integer roundSeq;
+
+    private Float curRoundSeqMeiliTotal;
 
     public Builder() {
     }
@@ -205,9 +267,22 @@ public final class Property extends Message<Property, Property.Builder> {
       return this;
     }
 
+    public Builder setRoundSeq(Integer roundSeq) {
+      this.roundSeq = roundSeq;
+      return this;
+    }
+
+    /**
+     * 当前轮次魅力值累加和
+     */
+    public Builder setCurRoundSeqMeiliTotal(Float curRoundSeqMeiliTotal) {
+      this.curRoundSeqMeiliTotal = curRoundSeqMeiliTotal;
+      return this;
+    }
+
     @Override
     public Property build() {
-      return new Property(userID, coinBalance, hongZuanBalance, lastChangeMs, super.buildUnknownFields());
+      return new Property(userID, coinBalance, hongZuanBalance, lastChangeMs, roundSeq, curRoundSeqMeiliTotal, super.buildUnknownFields());
     }
   }
 
@@ -222,6 +297,8 @@ public final class Property extends Message<Property, Property.Builder> {
           + ProtoAdapter.FLOAT.encodedSizeWithTag(2, value.coinBalance)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.hongZuanBalance)
           + ProtoAdapter.INT64.encodedSizeWithTag(4, value.lastChangeMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.roundSeq)
+          + ProtoAdapter.FLOAT.encodedSizeWithTag(6, value.curRoundSeqMeiliTotal)
           + value.unknownFields().size();
     }
 
@@ -231,6 +308,8 @@ public final class Property extends Message<Property, Property.Builder> {
       ProtoAdapter.FLOAT.encodeWithTag(writer, 2, value.coinBalance);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.hongZuanBalance);
       ProtoAdapter.INT64.encodeWithTag(writer, 4, value.lastChangeMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.roundSeq);
+      ProtoAdapter.FLOAT.encodeWithTag(writer, 6, value.curRoundSeqMeiliTotal);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -244,6 +323,8 @@ public final class Property extends Message<Property, Property.Builder> {
           case 2: builder.setCoinBalance(ProtoAdapter.FLOAT.decode(reader)); break;
           case 3: builder.setHongZuanBalance(ProtoAdapter.FLOAT.decode(reader)); break;
           case 4: builder.setLastChangeMs(ProtoAdapter.INT64.decode(reader)); break;
+          case 5: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: builder.setCurRoundSeqMeiliTotal(ProtoAdapter.FLOAT.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

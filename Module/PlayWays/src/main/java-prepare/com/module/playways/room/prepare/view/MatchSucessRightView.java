@@ -26,7 +26,7 @@ public class MatchSucessRightView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint p = new Paint();
+        Paint p = new com.common.view.ExPaint();
 
         p.setColor(0xff0288D0);
         //实例化路径

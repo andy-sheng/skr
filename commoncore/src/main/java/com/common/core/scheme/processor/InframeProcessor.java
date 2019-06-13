@@ -206,6 +206,8 @@ public class InframeProcessor implements ISchemeProcessor {
         String path = uri.getPath();
         if ("/jump".equals(path)) {
             EventBus.getDefault().post(new JumpHomeFromSchemeEvent(0));
+        }else if("trywakeup".equals(path)){
+            // 不做任何操作，只是唤启app
         }
     }
 

@@ -19,9 +19,9 @@
         titlebar:centerType="textView"
         titlebar:rightCustomView="@layout/picker_okbtn_layout"
         titlebar:rightType="customView"
-        titlebar:bottomLineColor="#0C2275"
-        titlebar:statusBarColor="#0288D0"
-        titlebar:titleBarColor="#0288D0"/>
+        titlebar:showBottomLine="false"
+        titlebar:statusBarColor="@color/colorPrimary"
+        titlebar:titleBarColor="@color/colorPrimary"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
-            android:background="#0288D0">
+            android:background="@color/colorPrimary">
 
             <RelativeLayout
                 android:id="@+id/ll_dir"

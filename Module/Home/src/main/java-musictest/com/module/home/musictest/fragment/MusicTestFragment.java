@@ -14,13 +14,8 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.musictest.MusicTestServerApi;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 // 音乐测试首页
 public class MusicTestFragment extends BaseFragment {

@@ -4,4 +4,5 @@
     <item name="agentweb_webview_id" type="id"></item>
     <item name="mainframe_error_viewsub_id" type="id"></item>
     <item name="mainframe_error_container_id" type="id"></item>
+    <item name="ex_header" type="id"/>
 </resources>

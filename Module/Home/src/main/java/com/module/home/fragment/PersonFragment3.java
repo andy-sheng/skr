@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -35,6 +36,7 @@ import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
@@ -78,37 +80,35 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
 
     SmartRefreshLayout mSmartRefresh;
     ClassicsHeader mClassicsHeader;
-    RelativeLayout mUserInfoArea;
+    ConstraintLayout mUserInfoArea;
     CommonTitleBar mTitlebar;
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
-    RelativeLayout mSettingArea;
+
     ImageView mSettingImgIv;
     ExImageView mSettingRedDot;
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mUseridTv;
     ExTextView mSignTv;
-    LinearLayout mRelationNumArea;
-    RelativeLayout mFriendsArea;
     ExTextView mFriendsNumTv;
     ExImageView mFriendRedDot;
-    RelativeLayout mFollowsArea;
     ExTextView mFollowsNumTv;
-    RelativeLayout mFansArea;
     ExTextView mFansNumTv;
     ExImageView mFansRedDot;
-    LinearLayout mFunctionArea;
+
+    ExImageView mIncomeIv;
     ExImageView mWalletIv;
     ExImageView mMusicTestIv;
-    ExRelativeLayout mMedalLayout;
+
+    ConstraintLayout mMedalLayout;
     ImageView mPaiweiImg;
     BitmapTextView mRankNumTv;
     ImageView mSingendImg;
     BitmapTextView mSingendNumTv;
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
-    ExImageView mIncomeIv;
+    TextView mCharmTv;
 
     AppBarLayout mAppbar;
     Toolbar mToolbar;
@@ -171,7 +171,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
+        mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
@@ -256,11 +256,10 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initSettingArea() {
-        mSettingArea = (RelativeLayout) mRootView.findViewById(R.id.setting_area);
         mSettingImgIv = (ImageView) mRootView.findViewById(R.id.setting_img_iv);
         mSettingRedDot = (ExImageView) mRootView.findViewById(R.id.setting_red_dot);
 
-        mSettingArea.setOnClickListener(new DebounceViewClickListener() {
+        mSettingImgIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance()
@@ -281,17 +280,13 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initRelationNumArea() {
-        mRelationNumArea = (LinearLayout) mRootView.findViewById(R.id.relation_num_area);
-        mFriendsArea = (RelativeLayout) mRootView.findViewById(R.id.friends_area);
         mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
         mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
-        mFollowsArea = (RelativeLayout) mRootView.findViewById(R.id.follows_area);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-        mFansArea = (RelativeLayout) mRootView.findViewById(R.id.fans_area);
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
 
-        mFriendsArea.setOnClickListener(new DebounceViewClickListener() {
+        mFriendsNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // 好友，双向关注
@@ -299,7 +294,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mFansArea.setOnClickListener(new DebounceViewClickListener() {
+        mFansNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // 粉丝，我关注的
@@ -307,7 +302,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mFollowsArea.setOnClickListener(new DebounceViewClickListener() {
+        mFollowsNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // 关注, 关注我的
@@ -330,32 +325,31 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initFunctionArea() {
-        mFunctionArea = (LinearLayout) mRootView.findViewById(R.id.function_area);
         mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
         mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
         mMusicTestIv = (ExImageView) mRootView.findViewById(R.id.music_test_iv);
 
-        mWalletIv.setOnClickListener(new DebounceViewClickListener() {
+        mWalletIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_DIAMOND_BALANCE)
                         .navigation();
             }
         });
 
-        mIncomeIv.setOnClickListener(new DebounceViewClickListener() {
+        mIncomeIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_INCOME)
                         .navigation();
             }
         });
 
-        mMusicTestIv.setOnClickListener(new DebounceViewClickListener() {
+        mMusicTestIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_MUSIC_TEST)
                         .navigation();
@@ -364,13 +358,15 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initGameInfoArea() {
-        mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mMedalLayout = (ConstraintLayout) mRootView.findViewById(R.id.medal_layout);
         mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
         mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
         mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
         mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
+
+        mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
     }
 
     private void initPersonArea() {
@@ -500,12 +496,17 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
 
     @Override
     public void showHomePageInfo(List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels
-            , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels) {
+            , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels, int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showRelationNum(relationNumModels);
         showReginRank(userRankModels);
         showUserLevel(userLevelModels);
         showGameStatic(gameStatisModels);
+        showCharmsTotal(meiLiCntTotal);
+    }
+
+    private void showCharmsTotal(int meiLiCntTotal) {
+        mCharmTv.setText("魅力：" + meiLiCntTotal);
     }
 
     @Override

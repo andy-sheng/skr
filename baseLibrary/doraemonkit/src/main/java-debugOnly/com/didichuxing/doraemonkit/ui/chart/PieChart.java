@@ -80,10 +80,10 @@ public class PieChart extends View {
      * 初始化画笔
      */
     private void initPaint() {
-        mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRenderPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Paint.Style.FILL);
 
-        mTransparentCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTransparentCirclePaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
         mTransparentCirclePaint.setColor(Color.WHITE);
         mTransparentCirclePaint.setStyle(Paint.Style.FILL);
     }

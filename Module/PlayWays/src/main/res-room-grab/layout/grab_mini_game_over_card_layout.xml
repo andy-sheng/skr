@@ -1,0 +1,18 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <ImageView
+        android:id="@+id/mini_game_bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_155_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_182_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/grab_mini_game_over_bg" />
+
+</merge>

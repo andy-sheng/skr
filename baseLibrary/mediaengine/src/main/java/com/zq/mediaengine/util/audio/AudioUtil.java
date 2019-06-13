@@ -3,6 +3,8 @@ package com.zq.mediaengine.util.audio;
 import android.content.Context;
 import android.media.AudioManager;
 
+import com.common.log.MyLog;
+
 /**
  * Audio utils.
  */
@@ -14,8 +16,13 @@ public class AudioUtil {
                 .VERSION_CODES.JELLY_BEAN_MR1) {
             AudioManager audioManager = (AudioManager) context.getSystemService(
                     Context.AUDIO_SERVICE);
-            sampleRate = Integer.parseInt(audioManager.getProperty(
-                    AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
+            try {
+                sampleRate = Integer.parseInt(audioManager.getProperty(
+                        AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
+            } catch (NumberFormatException e) {
+                MyLog.w("AudioUtil", "NumberFormatException" + audioManager.getProperty(
+                        AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
+            }
         }
         return sampleRate;
     }

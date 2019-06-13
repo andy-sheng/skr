@@ -8,8 +8,10 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.view.chorus.ChorusSingBeginTipsCardView;
+import com.module.playways.grab.room.view.minigame.MiniGameSingBeginTipsCardView;
 import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView;
 import com.module.playways.grab.room.view.pk.PKSingBeginTipsCardView;
 import com.module.playways.R;
@@ -21,6 +23,7 @@ public class SingBeginTipsCardView {
     NormalSingBeginTipsCardView mNormalSingBeginTipsCardView; // 提示xxx演唱开始的卡片
     ChorusSingBeginTipsCardView mChorusSingBeginTipsCardView; // 合唱对战开始
     PKSingBeginTipsCardView mPKSingBeginTipsCardView;         // pk对战开始
+    MiniGameSingBeginTipsCardView mMiniGameSingBegin;         // 小游戏开始
 
     GrabRoomData mRoomData;
 
@@ -29,6 +32,7 @@ public class SingBeginTipsCardView {
         mNormalSingBeginTipsCardView = mRootView.findViewById(R.id.normla_sing_beign);
         mChorusSingBeginTipsCardView = mRootView.findViewById(R.id.chorus_sing_begin);
         mPKSingBeginTipsCardView = mRootView.findViewById(R.id.pk_sing_begin);
+        mMiniGameSingBegin = mRootView.findViewById(R.id.mini_game_sing_begin);
     }
 
     public void setVisibility(int visibility) {
@@ -36,19 +40,28 @@ public class SingBeginTipsCardView {
             mNormalSingBeginTipsCardView.setVisibility(View.GONE);
             mChorusSingBeginTipsCardView.setVisibility(View.GONE);
             mPKSingBeginTipsCardView.setVisibility(View.GONE);
+            mMiniGameSingBegin.setVisibility(View.GONE);
         } else if (visibility == View.VISIBLE) {
             if (RoomDataUtils.isChorusRound(mRoomData)) {
                 mChorusSingBeginTipsCardView.setVisibility(View.VISIBLE);
                 mNormalSingBeginTipsCardView.setVisibility(View.GONE);
                 mPKSingBeginTipsCardView.setVisibility(View.GONE);
+                mMiniGameSingBegin.setVisibility(View.GONE);
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
                 mPKSingBeginTipsCardView.setVisibility(View.VISIBLE);
+                mNormalSingBeginTipsCardView.setVisibility(View.GONE);
+                mChorusSingBeginTipsCardView.setVisibility(View.GONE);
+                mMiniGameSingBegin.setVisibility(View.GONE);
+            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
+                mMiniGameSingBegin.setVisibility(View.VISIBLE);
+                mPKSingBeginTipsCardView.setVisibility(View.GONE);
                 mNormalSingBeginTipsCardView.setVisibility(View.GONE);
                 mChorusSingBeginTipsCardView.setVisibility(View.GONE);
             } else {
                 mNormalSingBeginTipsCardView.setVisibility(View.VISIBLE);
                 mPKSingBeginTipsCardView.setVisibility(View.GONE);
                 mChorusSingBeginTipsCardView.setVisibility(View.GONE);
+                mMiniGameSingBegin.setVisibility(View.GONE);
             }
         }
     }
@@ -68,7 +81,14 @@ public class SingBeginTipsCardView {
                 if (list != null && list.size() >= 2) {
                     UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
                     UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
-                    mPKSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2,svgaListener);
+                    mPKSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
+                }
+            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
+                List<MINIGameRoundInfoModel> list = grabRoundInfoModel.getMINIGameRoundInfoModels();
+                if (list != null && list.size() >= 2) {
+                    UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
+                    UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
+                    mMiniGameSingBegin.bindData(userInfoModel1, userInfoModel2, svgaListener);
                 }
             } else {
                 mNormalSingBeginTipsCardView.bindData(mRoomData.getUserInfo(grabRoundInfoModel.getUserID()), grabRoundInfoModel.getMusic(), svgaListener, grabRoundInfoModel.isChallengeRound());

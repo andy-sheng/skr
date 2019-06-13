@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
@@ -12,9 +13,9 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.audition.presenter.PrepareAuditionResPresenter;
 import com.module.playways.room.song.model.SongModel;
@@ -44,8 +45,11 @@ public class AuditionPrepareResFragment extends BaseFragment {
         mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
         mTvResProgress = (ExTextView) mRootView.findViewById(R.id.tv_res_progress);
 
-        RxView.clicks(mIvBack).subscribe(o -> {
-            onBack();
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                onBack();
+            }
         });
 
         mTvSongName.setText("《" + mPrepareData.getSongModel().getItemName() + "》");

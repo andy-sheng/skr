@@ -50,6 +50,33 @@ message MusicInfo {
     bool challengeAvailable = 26; //是否支持挑战模式
     StandPlayType playType = 27; //一唱到底演唱类型
     repeated MusicInfo SPKMusic = 28; //一唱到底模式下spk歌曲信息
+    MiniGameInfo miniGame       = 29; //连麦小游戏演唱类型
+}
+
+message MiniGameInfo
+{
+    uint32 gameID   = 1;
+    string gameName = 2;
+    string gameRule = 3;
+    EMiniGamePlayType gamePlayType = 4;
+    string keyWord = 5;
+    string fixedTxt = 6;
+    MiniGameSongInfo songInfo  = 7;
+}
+
+message MiniGameSongInfo
+{
+    string songURL  = 1;
+    string songName = 2;
+}
+
+
+enum EMiniGamePlayType
+{
+    EMGP_UNKNOWN  = 0; //未知展示类型
+    EMGP_KEYWORD  = 1; //关键词展示
+    EMGP_FIXED_TXT = 2; //固定文案
+    EMGP_SONG_DETAIL = 3; //歌曲详情
 }
 
 message GiftInfo
@@ -100,6 +127,7 @@ enum EGiftType {
     EG_Unknown = 0;
     EG_Coin    = 1;
     EG_Zuan    = 2;
+    EG_SYS_Handsel = 3; // 系统赠送礼物（鲜花）
 }
 
 
@@ -109,6 +137,7 @@ enum StandPlayType {
     PT_COMMON_TYPE  = 1; //普通玩法
     PT_SPK_TYPE     = 2; //PK玩法
     PT_CHO_TYPE     = 3; //合唱玩法
+    PT_MINI_GAME_TYPE = 4; //连麦进行小游戏玩法
 }
 
 enum ESex {

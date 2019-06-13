@@ -161,19 +161,26 @@
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-        <activity
-            android:name="com.common.webview.AgentWebActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <!--<activity-->
+            <!--android:name="com.common.webview.AgentWebActivity"-->
+            <!--android:configChanges="orientation|screenSize"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"/>-->
 
         <activity
             android:name="com.common.webview.ExpendWebActivity"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:process=":tools"
+            android:screenOrientation="portrait"/>
 
+        <provider
+            android:name="com.common.webview.aidl.WebIpcProvider"
+            android:authorities="com.zq.live.web.binder.service"
+             />
     </application>
 
 </manifest>

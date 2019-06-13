@@ -105,14 +105,21 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   )
   private final InviteStandMsg inviteStandMsg;
 
+  @WireField(
+      tag = 12,
+      adapter = "com.zq.live.proto.Notification.SysWarningMsg#ADAPTER"
+  )
+  private final SysWarningMsg sysWarningMsg;
+
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
-      EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, ByteString.EMPTY);
+      EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
+      SysWarningMsg sysWarningMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, ByteString.EMPTY);
   }
 
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
-      ByteString unknownFields) {
+      SysWarningMsg sysWarningMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -122,6 +129,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     this.sender = sender;
     this.followMsg = followMsg;
     this.inviteStandMsg = inviteStandMsg;
+    this.sysWarningMsg = sysWarningMsg;
   }
 
   @Override
@@ -135,6 +143,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     builder.sender = sender;
     builder.followMsg = followMsg;
     builder.inviteStandMsg = inviteStandMsg;
+    builder.sysWarningMsg = sysWarningMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -152,7 +161,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
         && Internal.equals(posType, o.posType)
         && Internal.equals(sender, o.sender)
         && Internal.equals(followMsg, o.followMsg)
-        && Internal.equals(inviteStandMsg, o.inviteStandMsg);
+        && Internal.equals(inviteStandMsg, o.inviteStandMsg)
+        && Internal.equals(sysWarningMsg, o.sysWarningMsg);
   }
 
   @Override
@@ -168,6 +178,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       result = result * 37 + (sender != null ? sender.hashCode() : 0);
       result = result * 37 + (followMsg != null ? followMsg.hashCode() : 0);
       result = result * 37 + (inviteStandMsg != null ? inviteStandMsg.hashCode() : 0);
+      result = result * 37 + (sysWarningMsg != null ? sysWarningMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -184,6 +195,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     if (sender != null) builder.append(", sender=").append(sender);
     if (followMsg != null) builder.append(", followMsg=").append(followMsg);
     if (inviteStandMsg != null) builder.append(", inviteStandMsg=").append(inviteStandMsg);
+    if (sysWarningMsg != null) builder.append(", sysWarningMsg=").append(sysWarningMsg);
     return builder.replace(0, 2, "NotificationMsg{").append('}').toString();
   }
 
@@ -271,6 +283,13 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return inviteStandMsg;
   }
 
+  public SysWarningMsg getSysWarningMsg() {
+    if(sysWarningMsg==null){
+        return new SysWarningMsg.Builder().build();
+    }
+    return sysWarningMsg;
+  }
+
   /**
    * 消息产生时间，单位毫秒
    */
@@ -321,6 +340,10 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return inviteStandMsg!=null;
   }
 
+  public boolean hasSysWarningMsg() {
+    return sysWarningMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<NotificationMsg, Builder> {
     private Long timeMs;
 
@@ -337,6 +360,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     private FollowMsg followMsg;
 
     private InviteStandMsg inviteStandMsg;
+
+    private SysWarningMsg sysWarningMsg;
 
     public Builder() {
     }
@@ -399,9 +424,14 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       return this;
     }
 
+    public Builder setSysWarningMsg(SysWarningMsg sysWarningMsg) {
+      this.sysWarningMsg = sysWarningMsg;
+      return this;
+    }
+
     @Override
     public NotificationMsg build() {
-      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, super.buildUnknownFields());
+      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, super.buildUnknownFields());
     }
   }
 
@@ -420,6 +450,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           + UserInfo.ADAPTER.encodedSizeWithTag(6, value.sender)
           + FollowMsg.ADAPTER.encodedSizeWithTag(10, value.followMsg)
           + InviteStandMsg.ADAPTER.encodedSizeWithTag(11, value.inviteStandMsg)
+          + SysWarningMsg.ADAPTER.encodedSizeWithTag(12, value.sysWarningMsg)
           + value.unknownFields().size();
     }
 
@@ -433,6 +464,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       UserInfo.ADAPTER.encodeWithTag(writer, 6, value.sender);
       FollowMsg.ADAPTER.encodeWithTag(writer, 10, value.followMsg);
       InviteStandMsg.ADAPTER.encodeWithTag(writer, 11, value.inviteStandMsg);
+      SysWarningMsg.ADAPTER.encodeWithTag(writer, 12, value.sysWarningMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -464,6 +496,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           case 6: builder.setSender(UserInfo.ADAPTER.decode(reader)); break;
           case 10: builder.setFollowMsg(FollowMsg.ADAPTER.decode(reader)); break;
           case 11: builder.setInviteStandMsg(InviteStandMsg.ADAPTER.decode(reader)); break;
+          case 12: builder.setSysWarningMsg(SysWarningMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -481,6 +514,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       if (builder.sender != null) builder.sender = UserInfo.ADAPTER.redact(builder.sender);
       if (builder.followMsg != null) builder.followMsg = FollowMsg.ADAPTER.redact(builder.followMsg);
       if (builder.inviteStandMsg != null) builder.inviteStandMsg = InviteStandMsg.ADAPTER.redact(builder.inviteStandMsg);
+      if (builder.sysWarningMsg != null) builder.sysWarningMsg = SysWarningMsg.ADAPTER.redact(builder.sysWarningMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

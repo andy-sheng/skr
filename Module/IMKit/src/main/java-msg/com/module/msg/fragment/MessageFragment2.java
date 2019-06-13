@@ -121,7 +121,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
                 }
                 mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
                 mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
-                mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
+                mPopupWindow.showAsDropDown(mTitlebar.getRightTextView(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
             }
         });
 

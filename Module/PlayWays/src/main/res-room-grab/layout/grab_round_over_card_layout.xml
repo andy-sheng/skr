@@ -20,4 +20,12 @@
         android:layout_centerHorizontal="true"
         android:visibility="gone"/>
 
+    <com.module.playways.grab.room.view.minigame.MiniGameRoundOverCardView
+        android:id="@+id/mini_game_over_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        />
+
 </merge>

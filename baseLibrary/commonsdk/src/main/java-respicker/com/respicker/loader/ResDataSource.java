@@ -5,6 +5,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import com.common.base.BaseFragment;
 import com.common.base.R;
@@ -206,7 +207,9 @@ public class ResDataSource {
         String selections = null;
         String[] selectionArgs = null;
         if (ResPicker.getInstance().getParams().isIncludeGif()) {
-
+            selections = new StringBuilder()
+                    .append(MediaStore.Images.Media.SIZE)
+                    .append("< " + 1024 * 1024 * 10).toString();
         } else {
             // 不要gif
             selections = new StringBuilder()
@@ -215,6 +218,9 @@ public class ResDataSource {
                     .append(" and ")
                     .append(MediaStore.Images.Media.MIME_TYPE)
                     .append("!=?")
+                    .append(" and ")
+                    .append(MediaStore.Images.Media.SIZE)
+                    .append("< " + 1024 * 1024 * 10)
                     .toString();
             selectionArgs = new String[]{
                     "image/gif",
@@ -235,6 +241,9 @@ public class ResDataSource {
                 //查询数据
                 String imageName = data.getString(i0);
                 String imagePath = data.getString(i1);
+                if (TextUtils.isEmpty(imagePath)) {
+                    continue;
+                }
                 File file = new File(imagePath);
                 if (!file.exists() || file.length() <= 0) {
                     continue;
@@ -257,10 +266,10 @@ public class ResDataSource {
                 // 再根据真正的类型判断一下是不是gif
                 if (ResPicker.getInstance().getParams().isIncludeGif()) {
                     allImages.add(imageItem);
-                } else{
-                    if(U.getImageUtils().getImageType(imagePath) == ImageUtils.TYPE.GIF){
+                } else {
+                    if (U.getImageUtils().getImageType(imagePath) == ImageUtils.TYPE.GIF) {
 
-                    }else{
+                    } else {
                         allImages.add(imageItem);
                     }
                 }

@@ -42,7 +42,6 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
-    public final static String KEY_SHOW_CHALLENGE_TIME = "showChallengeTime";
     public long mShowBurstTime = 15000;
     public long mShowLightOffTime = 5000;
 
@@ -72,10 +71,6 @@ public class GrabOpView extends RelativeLayout {
     RoundRectangleView mRrl2Progress;
     ExImageView mCoinFlagIv;
 
-    int mShowChallengeTime = 0;
-    int mShowGrabTipsTime = 0; // 展示抢唱气泡次数
-    boolean mIsShowBurstTips = false;  // 是否展示过爆灯tips
-
     int mStatus;
 
     ExTextView mIvLightOff;
@@ -99,14 +94,14 @@ public class GrabOpView extends RelativeLayout {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
-                    if (mGrabRoomData.getGrabGuideInfoModel() == null) {
-                        hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
-                        if (mListener != null) {
-                            mListener.grabCountDownOver();
-                        }
-                    } else {
-                        MyLog.d(TAG, "新手引导不隐藏抢唱按钮");
+//                    if (mGrabRoomData.getGrabGuideInfoModel() == null) {
+                    hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
+                    if (mListener != null) {
+                        mListener.grabCountDownOver();
                     }
+//                    } else {
+//                        MyLog.d(TAG, "新手引导不隐藏抢唱按钮");
+//                    }
                     break;
                 case MSG_HIDE:
                     mIvLightOff.setVisibility(GONE);
@@ -130,11 +125,10 @@ public class GrabOpView extends RelativeLayout {
                     mIvBurst.setVisibility(VISIBLE);
                     mIvBurst.startAnimation(animation);
                     mIvBurst.setEnabled(true);
-                    if (mGrabRoomData.isNewUser() && !mIsShowBurstTips) {
+                    if (mGrabRoomData.isNewUser()) {
                         if (mListener != null) {
                             mListener.showBurstTipView();
                         }
-                        mIsShowBurstTips = true;
                     }
                     break;
             }
@@ -225,7 +219,6 @@ public class GrabOpView extends RelativeLayout {
             }
         });
 
-        mShowChallengeTime = U.getPreferenceUtils().getSettingInt(KEY_SHOW_CHALLENGE_TIME, 0);
     }
 
     public void setGrabRoomData(GrabRoomData grabRoomData) {
@@ -353,22 +346,14 @@ public class GrabOpView extends RelativeLayout {
                     mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_tiaozhan_bg));
                     mCoinFlagIv.setVisibility(GONE);
 
-
-                    if (mShowChallengeTime < 3) {
-                        if (mListener != null) {
-                            mListener.showChallengeTipView();
-                        }
-
-                        U.getPreferenceUtils().setSettingInt(KEY_SHOW_CHALLENGE_TIME, ++mShowChallengeTime);
+                    if (mListener != null) {
+                        mListener.showChallengeTipView();
                     }
                 }
 
                 if (mGrabRoomData.isNewUser()) {
-                    if (mShowGrabTipsTime < 2) {
-                        if (mListener != null) {
-                            mListener.showGrabTipView();
-                        }
-                        ++mShowGrabTipsTime;
+                    if (mListener != null) {
+                        mListener.showGrabTipView();
                     }
                 }
                 break;

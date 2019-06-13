@@ -2,7 +2,6 @@ package com.module.playways.grab.room.inter;
 
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
-import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
 
 import java.util.List;
@@ -31,9 +30,8 @@ public interface IGrabRoomView {
 
     /**
      * 轮次结束
-     *
      */
-    void roundOver(GrabRoundInfoModel lastRoundInfo,boolean playNextSongInfoCard,GrabRoundInfoModel now);
+    void roundOver(GrabRoundInfoModel lastRoundInfo, boolean playNextSongInfoCard, GrabRoundInfoModel now);
 
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
 
@@ -48,7 +46,7 @@ public interface IGrabRoomView {
 
     void onGetGameResult(boolean success);
 
-    void onChangeRoomResult(boolean success,String errorMsg);
+    void onChangeRoomResult(boolean success, String errorMsg);
 
     void giveUpSuccess(int seq);
 
@@ -58,6 +56,7 @@ public interface IGrabRoomView {
 
     /**
      * 是否被房主踢出去
+     *
      * @param isOwner
      */
     void kickBySomeOne(boolean isOwner);
@@ -72,4 +71,10 @@ public interface IGrabRoomView {
     void hideInviteTipView();
 
     void hideManageTipView();
+
+    //切换房间了，把所有的板子Gone掉，重新显示
+    void hideAllCardView();
+
+    //开始实名认证
+    void beginOuath();
 }

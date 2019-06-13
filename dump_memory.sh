@@ -34,7 +34,7 @@ getPid
 echo pid:$pid
 
 #force GC
-adb root
+#adb root
 adb shell kill -10 $pid
 
 sleep 2s

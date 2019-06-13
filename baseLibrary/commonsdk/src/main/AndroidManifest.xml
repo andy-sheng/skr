@@ -113,6 +113,16 @@
             android:enabled="true"
             android:process=":remote"></service>
 
+        <provider
+            android:name="com.just.agentweb.AgentWebX5FileProvider"
+            android:authorities="${applicationId}.AgentWebX5FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/web_download_paths"/>
+        </provider>
+
 
         <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
         <meta-data
@@ -128,26 +138,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
-        <provider
-            android:name="com.just.agentweb.AgentWebFileProvider"
-            android:authorities="${applicationId}.AgentWebFileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/web_files_paths" />
-        </provider>
-
-        <activity
-            android:name="com.just.agentweb.ActionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:launchMode="standard"
-            android:theme="@style/actionActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
-
-        </activity>
 
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -173,8 +163,10 @@
         <!--android:launchMode="standard"-->
         <!--android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>-->
         <!---->
+        <!-- 尝试修复hwui 问题 -->
         <activity
             android:name="com.imagebrowse.big.BigImageBrowseActivity"
+            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
 
         <!--魅族push应用定义消息receiver声明 -->
@@ -203,6 +195,16 @@
             android:theme="@style/TransparentTheme" />
 
         <activity
+            android:name="com.just.agentweb.ActionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:theme="@style/actionActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
+
+        </activity>
+
+        <activity
             android:name="com.common.core.scheme.ThirdPushActivity"
             android:exported="true"
             android:theme="@style/TransparentTheme">
@@ -225,6 +227,16 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
                 <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.zq.live" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.common.jiguang.OpReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
                 <category android:name="com.zq.live" />
             </intent-filter>
         </receiver>

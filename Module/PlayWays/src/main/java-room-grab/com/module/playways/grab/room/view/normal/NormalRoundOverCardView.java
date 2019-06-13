@@ -94,6 +94,10 @@ public class NormalRoundOverCardView extends RelativeLayout {
             // pk人数不够
             assetsName = "grab_sing_none_with.svga";
             startOKNoneWith(songId);
+        } else if (reason == EQRoundOverReason.ROR_MIN_GAME_NOT_ENOUTH_PLAYER.getValue()) {
+            // 连麦小游戏人数不够
+            assetsName = "grab_sing_none_with.svga";
+            startOKNoneWith(songId);
         } else {
             // 放弃不用单独处理，看在哪个阶段点击放弃的
             if (resultType == EQRoundResultType.ROT_TYPE_1.getValue()) {

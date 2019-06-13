@@ -191,20 +191,20 @@ public class WheelView extends View {
     }
 
     private void initPaints() {
-        paintOuterText = new Paint();
+        paintOuterText = new com.common.view.ExPaint();
         paintOuterText.setColor(textColorOut);
         paintOuterText.setAntiAlias(true);
         paintOuterText.setTypeface(typeface);
         paintOuterText.setTextSize(textSize);
 
-        paintCenterText = new Paint();
+        paintCenterText = new com.common.view.ExPaint();
         paintCenterText.setColor(textColorCenter);
         paintCenterText.setAntiAlias(true);
         paintCenterText.setTextScaleX(1.1F);
         paintCenterText.setTypeface(typeface);
         paintCenterText.setTextSize(textSize);
 
-        paintIndicator = new Paint();
+        paintIndicator = new com.common.view.ExPaint();
         paintIndicator.setColor(dividerColor);
         paintIndicator.setAntiAlias(true);
 

@@ -101,6 +101,11 @@ public class ImageCropFragment extends ImageBaseFragment {
         mCropImageView.setFocusHeight(mImagePicker.getParams().getFocusHeight());
 
         mImageItems = mImagePicker.getSelectedResList();
+        if(mImageItems == null || mImageItems.size() == 0){
+            U.getFragmentUtils().popFragment(this);
+            return;
+        }
+
         String imagePath = mImageItems.get(0).getPath();
 
         //缩放图片

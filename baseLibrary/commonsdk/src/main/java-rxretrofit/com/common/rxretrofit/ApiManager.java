@@ -203,7 +203,7 @@ public class ApiManager {
                     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                         @Override
                         public void log(String message) {
-                            MyLog.w(TAG, message);
+                            MyLog.d(TAG, message);
                         }
                     });
                     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

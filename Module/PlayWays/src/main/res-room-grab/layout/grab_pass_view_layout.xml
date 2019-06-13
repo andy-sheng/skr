@@ -7,11 +7,19 @@
 
     <com.common.view.ex.ExImageView
         android:layout_marginRight="@dimen/view_10_dp"
-        android:id="@+id/pass_iv"
+        android:id="@+id/give_up_iv"
         android:layout_width="@dimen/view_87_dp"
         android:layout_height="@dimen/view_53_dp"
         android:layout_alignParentRight="true"
         app:bl_pressed_drawable="@drawable/ycdd_buchangle_anxia"
         app:bl_unPressed_drawable="@drawable/ycdd_buchangle" />
 
+    <com.common.view.ex.ExImageView
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:id="@+id/owner_stop_iv"
+        android:layout_width="@dimen/view_87_dp"
+        android:layout_height="@dimen/view_53_dp"
+        android:layout_alignParentRight="true"
+        app:bl_pressed_drawable="@drawable/mini_owner_stop_pressed"
+        app:bl_unPressed_drawable="@drawable/mini_owner_stop" />
 </merge>

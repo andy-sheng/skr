@@ -1,6 +1,7 @@
 package com.zq.person.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -42,8 +43,16 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels, isFriend, isFollow);
-                }else {
+                    if (isFollow) {
+                        userInfoModel.setFriend(isFriend);
+                        userInfoModel.setFollow(isFollow);
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel);
+                    }
+
+                    int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
+
+                    view.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels, isFriend, isFollow, meiLiCntTotal);
+                } else {
                     view.getHomePageFail();
                 }
             }

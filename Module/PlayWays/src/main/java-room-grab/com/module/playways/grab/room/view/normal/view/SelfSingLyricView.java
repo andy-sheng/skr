@@ -7,14 +7,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.engine.EngineManager;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
@@ -36,6 +37,7 @@ public class SelfSingLyricView extends RelativeLayout {
 
     public final static String TAG = "SelfSingLyricView";
 
+    CharmsView mCharmsView;
     TextView mTvLyric;
     ManyLyricsView mManyLyricsView;
     VoiceScaleView mVoiceScaleView;
@@ -65,6 +67,7 @@ public class SelfSingLyricView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_self_sing_lyric_layout, this);
 
+        mCharmsView = findViewById(R.id.charms_view);
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = findViewById(R.id.many_lyrics_view);
         mVoiceScaleView = findViewById(R.id.voice_scale_view);
@@ -72,6 +75,7 @@ public class SelfSingLyricView extends RelativeLayout {
     }
 
     public void initLyric() {
+        mCharmsView.bindData(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             MyLog.w(TAG, "playLyric mRoomData = null");
             return;
@@ -81,11 +85,12 @@ public class SelfSingLyricView extends RelativeLayout {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
+
         if (infoModel.getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue()
                 || infoModel.getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()) {
             mIvChallengeIcon.setVisibility(VISIBLE);
         } else {
-            mIvChallengeIcon.setVisibility(INVISIBLE);
+            mIvChallengeIcon.setVisibility(GONE);
         }
         mSongModel = infoModel.getMusic();
         mTvLyric.setText("歌词加载中...");

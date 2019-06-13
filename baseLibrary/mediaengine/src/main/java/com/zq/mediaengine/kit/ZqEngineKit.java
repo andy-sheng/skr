@@ -58,6 +58,7 @@ import com.zq.mediaengine.util.gles.GLRender;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -579,6 +580,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                 @Override
                 public void run() {
                     if (from.equals(mInitFrom)) {
+                        mConfig.setAnchor(false);
                         destroyInner(mStatus);
                         mCustomHandlerThread.destroy();
                         mStatus = STATUS_UNINIT;
@@ -788,15 +790,15 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param event
      */
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DeviceUtils.HeadsetPlugEvent event) {
-//        if (event.on) {
-//            setEnableSpeakerphone(false);
-//            enableInEarMonitoring(false);
-//        } else {
-//            setEnableSpeakerphone(true);
-//            enableInEarMonitoring(false);
-//        }
+        if (event.on) {
+            setEnableSpeakerphone(false);
+            enableInEarMonitoring(false);
+        } else {
+            setEnableSpeakerphone(true);
+            enableInEarMonitoring(false);
+        }
     }
 
     /**
@@ -1342,8 +1344,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
-        MyLog.d(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
+        MyLog.w(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
         if (mCustomHandlerThread != null) {
+            mConfig.setRecording(true);
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1402,8 +1405,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        MyLog.d(TAG, "stopAudioRecording");
-        if (mCustomHandlerThread != null) {
+        MyLog.w(TAG, "stopAudioRecording");
+        if (mCustomHandlerThread != null && mConfig.isRecording()) {
+            mConfig.setRecording(false);
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {

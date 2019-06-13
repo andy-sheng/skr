@@ -29,7 +29,12 @@ public enum StandPlayType implements WireEnum {
   /**
    * 合唱玩法
    */
-  PT_CHO_TYPE(3);
+  PT_CHO_TYPE(3),
+
+  /**
+   * 连麦进行小游戏玩法
+   */
+  PT_MINI_GAME_TYPE(4);
 
   public static final ProtoAdapter<StandPlayType> ADAPTER = new ProtoAdapter_StandPlayType();
 
@@ -48,6 +53,7 @@ public enum StandPlayType implements WireEnum {
       case 1: return PT_COMMON_TYPE;
       case 2: return PT_SPK_TYPE;
       case 3: return PT_CHO_TYPE;
+      case 4: return PT_MINI_GAME_TYPE;
       default: return null;
     }
   }

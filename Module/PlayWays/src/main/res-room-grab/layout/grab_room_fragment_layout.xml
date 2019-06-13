@@ -12,7 +12,9 @@
         android:id="@+id/grab_room_bg_flag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_bg_vp" />
+        android:layout_above="@+id/bottom_bg_vp"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_2_dp" />
 
     <!-- 会在代码中按比例动态适配 -->
     <com.common.view.ex.ExRelativeLayout
@@ -57,6 +59,18 @@
             android:layout_alignTop="@+id/comment_view"
             android:layout_marginRight="@dimen/view_100_dp"
             android:background="@drawable/ycdd_zhezhao" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/mini_owner_mic_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/comment_view"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:layout_marginBottom="@dimen/view_10_dp"
+            android:enabled="false"
+            android:src="@drawable/mini_owner_mute"
+            android:visibility="gone" />
 
     </com.common.view.ex.ExRelativeLayout>
 
@@ -150,15 +164,15 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.RedPkgCountDownView
-        android:id="@+id/red_pkg_view"
-        android:layout_width="@dimen/view_54_dp"
-        android:layout_height="@dimen/view_54_dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/view_26_dp"
-        android:layout_marginBottom="@dimen/view_79_dp"
-        android:visibility="gone" />
+    <!--<com.module.playways.grab.room.view.RedPkgCountDownView-->
+    <!--android:id="@+id/red_pkg_view"-->
+    <!--android:layout_width="@dimen/view_54_dp"-->
+    <!--android:layout_height="@dimen/view_54_dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginRight="@dimen/view_26_dp"-->
+    <!--android:layout_marginBottom="@dimen/view_79_dp"-->
+    <!--android:visibility="gone" />-->
 
     <com.module.playways.room.gift.view.ContinueSendView
         android:id="@+id/continue_send_view"

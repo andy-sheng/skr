@@ -3,6 +3,7 @@ package com.module.msg.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
@@ -12,10 +13,10 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.NetworkUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
@@ -71,25 +72,18 @@ public class ConversationActivity extends BaseActivity {
 
         msgService = ModuleServiceManager.getInstance().getMsgService();
 
-        RxView.clicks(mTitleBar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                        finish();
-                    }
-                });
-
-
-        RxView.clicks(mTitleBar.getRightImageButton())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        showConfirmOptions();
-                    }
-                });
+        mTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                finish();
+            }
+        });
+        mTitleBar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                showConfirmOptions();
+            }
+        });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
         RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {

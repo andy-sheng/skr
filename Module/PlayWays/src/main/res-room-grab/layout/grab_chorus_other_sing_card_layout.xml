@@ -75,7 +75,7 @@
                 android:layout_below="@id/left_iv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginTop="@dimen/view_30_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:ellipsize="end"
                 android:gravity="center"
@@ -88,6 +88,15 @@
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <com.module.playways.grab.room.view.CharmsView
+                android:id="@+id/left_charms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/left_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="-24dp"
+                android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_status"
@@ -129,7 +138,7 @@
                 android:layout_below="@id/right_iv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginTop="@dimen/view_30_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:ellipsize="end"
                 android:gravity="center"
@@ -142,6 +151,15 @@
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <com.module.playways.grab.room.view.CharmsView
+                android:id="@+id/right_charms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/right_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="-24dp"
+                android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_status"

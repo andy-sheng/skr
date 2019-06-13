@@ -18,7 +18,7 @@ public class ShadowHelper {
     private static final float RATIO = 1.3f;//绘制矩形的区域至少要距离view边框Ratio倍blur,否定导致裁剪掉
 
     private static Path sPath = new Path();
-    private static Paint sPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private static Paint sPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
     private static RectF sRectF = new RectF();
 
 

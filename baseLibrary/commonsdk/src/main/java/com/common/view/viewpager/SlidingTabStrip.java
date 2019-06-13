@@ -92,13 +92,13 @@ class SlidingTabStrip extends LinearLayout {
         mDefaultTabColorizer.setIndicatorColors(DEFAULT_SELECTED_INDICATOR_COLOR);
 
         mBottomBorderThickness = (int) (DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS * density);
-        mBottomBorderPaint = new Paint();
+        mBottomBorderPaint = new com.common.view.ExPaint();
         mBottomBorderPaint.setColor(mDefaultBottomBorderColor);
 
         mIndicatorCornorRadius = getResources().getDimension(R.dimen.view_dimen_2);
 
         mSelectedIndicatorThickness = (SELECTED_INDICATOR_THICKNESS_DIPS * density);
-        mSelectedIndicatorPaint = new Paint();
+        mSelectedIndicatorPaint = new com.common.view.ExPaint();
     }
 
     void setCustomTabColorizer(SlidingTabLayout.TabColorizer customTabColorizer) {

@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -53,6 +57,7 @@ android {
 
 dependencies {
     api project(":commoncore")
+
     if (isBuildModule.toBoolean()) {
 //        tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
