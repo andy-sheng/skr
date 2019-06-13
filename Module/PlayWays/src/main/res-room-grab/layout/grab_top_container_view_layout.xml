@@ -14,14 +14,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/grab_top_view" />
 
-    <com.module.playways.grab.room.top.GrabAudienceView
-        android:id="@+id/grab_audience_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_102_dp"
-        android:layout_marginRight="@dimen/view_24_dp" />
-
     <ImageView
         android:id="@+id/skip_guide_iv"
         android:layout_width="@dimen/view_60_dp"

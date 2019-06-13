@@ -53,6 +53,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private ArrayList<VP> mGrabTopItemViewArrayList = new ArrayList<>(PLAYER_COUNT);
     private GrabRoomData mRoomData;
     AnimatorSet mAnimatorAllSet;
+    GrabAudienceView mGrabAudienceView;
 
     LinearLayout mContentLl;
 
@@ -79,6 +80,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
+        mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
         addChildView();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -606,6 +608,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
+        mGrabAudienceView.setRoomData(mRoomData);
         if (mGrabTopItemViewArrayList.size() != 0) {
             VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
             if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
