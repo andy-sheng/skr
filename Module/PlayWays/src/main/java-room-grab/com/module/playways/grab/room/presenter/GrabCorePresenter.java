@@ -694,7 +694,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                             mDialogPlus.dismiss();
                                         }
                                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/mobile?from=singer"))
+                                                .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/mobile?from=singer"))
                                                 .greenChannel().navigation();
                                     }
                                 })
