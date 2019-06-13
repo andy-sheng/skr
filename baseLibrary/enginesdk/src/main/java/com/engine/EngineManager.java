@@ -50,6 +50,7 @@ import retrofit2.Response;
 /**
  * 关于音视频引擎的都放在这个类里
  */
+@Deprecated
 public class EngineManager implements AgoraOutCallback {
 
     public final static String TAG = "EngineManager";
