@@ -216,20 +216,18 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                 }
                             })
                             .build();
-                    if (mBeFriendDialog == null) {
-                        Activity activity = U.getActivityUtils().getTopActivity();
-                        if (activity instanceof SchemeSdkActivity) {
-                            activity = U.getActivityUtils().getHomeActivity();
-                        }
-                        mBeFriendDialog = DialogPlus.newDialog(activity)
-                                .setContentHolder(new ViewHolder(tipsDialogView))
-                                .setGravity(Gravity.BOTTOM)
-                                .setContentBackgroundResource(R.color.transparent)
-                                .setOverlayBackgroundResource(R.color.black_trans_80)
-                                .setExpanded(false)
-                                .create();
-                    }
 
+                    Activity activity = U.getActivityUtils().getTopActivity();
+                    if (activity instanceof SchemeSdkActivity) {
+                        activity = U.getActivityUtils().getHomeActivity();
+                    }
+                    mBeFriendDialog = DialogPlus.newDialog(activity)
+                            .setContentHolder(new ViewHolder(tipsDialogView))
+                            .setGravity(Gravity.BOTTOM)
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_80)
+                            .setExpanded(false)
+                            .create();
                     EventBus.getDefault().post(new ShowDialogInHomeEvent(mBeFriendDialog, 30));
                 }
                 return false;
@@ -264,19 +262,17 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SysWarnNotifyEvent event) {
         NotifyDialogView notifyDialogView = new NotifyDialogView(U.app(), event.getTitle(), event.getContent());
-        if (mSysWarnDialogPlus == null) {
-            Activity activity = U.getActivityUtils().getTopActivity();
-            if (activity instanceof SchemeSdkActivity) {
-                activity = U.getActivityUtils().getHomeActivity();
-            }
-            mSysWarnDialogPlus = DialogPlus.newDialog(activity)
-                    .setContentHolder(new ViewHolder(notifyDialogView))
-                    .setGravity(Gravity.CENTER)
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_80)
-                    .setExpanded(false)
-                    .create();
+        Activity activity = U.getActivityUtils().getTopActivity();
+        if (activity instanceof SchemeSdkActivity) {
+            activity = U.getActivityUtils().getHomeActivity();
         }
+        mSysWarnDialogPlus = DialogPlus.newDialog(activity)
+                .setContentHolder(new ViewHolder(notifyDialogView))
+                .setGravity(Gravity.CENTER)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .create();
         EventBus.getDefault().post(new ShowDialogInHomeEvent(mSysWarnDialogPlus, 2));
     }
 
