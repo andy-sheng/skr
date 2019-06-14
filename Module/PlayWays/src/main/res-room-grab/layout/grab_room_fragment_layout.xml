@@ -136,6 +136,11 @@
         layout="@layout/grab_other_sing_card_layout"
          />
 
+    <!--视频模式下自己演唱时歌词面板 合唱小游戏歌词 以及 清唱 伴奏歌词-->
+    <include
+        layout="@layout/grab_video_self_sing_card_layout"
+        />
+
     <!--自己唱歌场景-->
     <include
         layout="@layout/grab_self_sing_card_view_layout"
