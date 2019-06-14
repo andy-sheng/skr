@@ -106,56 +106,41 @@ public class ShareWorksDialog {
 
     private void shareUrl(SharePlatform sharePlatform) {
         if (!TextUtils.isEmpty(mUrl) && mWorksId > 0) {
-            if (sharePlatform == SharePlatform.WEIXIN) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("http://www.skrer.mobi/user/work")
-                        .append("?skerId=").append(mUserId)
-                        .append("&workId=").append(mWorksId);
-                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-                UMWeb music = new UMWeb(mUrl);
-                music.setTitle("" + mSongName);
-                music.setDescription(mNickName + "在撕歌演唱获得了一个精彩时刻，来听听吧");
-                music.setThumb(new UMImage(mFragment.getActivity(), mCover));
-                new ShareAction(mFragment.getActivity()).withMedia(music)
-                        .setPlatform(SHARE_MEDIA.WEIXIN)
-                        .share();
-            } else {
-                UMusic music = new UMusic(mUrl);
-                music.setTitle("" + mSongName);
-                music.setDescription(mNickName + "的撕歌精彩时刻");
-                music.setThumb(new UMImage(mFragment.getActivity(), mCover));
+            UMusic music = new UMusic(mUrl);
+            music.setTitle("" + mSongName);
+            music.setDescription(mNickName + "的撕歌精彩时刻");
+            music.setThumb(new UMImage(mFragment.getActivity(), mCover));
 
-                StringBuilder sb = new StringBuilder();
-                sb.append("http://www.skrer.mobi/user/work")
-                        .append("?skerId=").append(String.valueOf(mUserId))
-                        .append("&workId=").append(String.valueOf(mWorksId));
-                String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
-                // TODO: 2019/5/22 微信分享不成功的原因可能是mUrl未上线，微信会检测这个
-                music.setmTargetUrl(mUrl);
+            StringBuilder sb = new StringBuilder();
+            sb.append("http://www.skrer.mobi/user/work")
+                    .append("?skerId=").append(String.valueOf(mUserId))
+                    .append("&workId=").append(String.valueOf(mWorksId));
+            String mUrl = sb.toString();
+            // TODO: 2019/5/22 微信分享不成功的原因可能是mUrl未上线，微信会检测这个
+            music.setmTargetUrl(mUrl);
 
-                switch (sharePlatform) {
-                    case QQ:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.QQ)
-                                .share();
-                        break;
-                    case QZONE:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.QZONE)
-                                .share();
-                        break;
-                    case WEIXIN:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.WEIXIN)
-                                .share();
-                        break;
+            switch (sharePlatform) {
+                case QQ:
+                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.QQ)
+                            .share();
+                    break;
+                case QZONE:
+                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.QZONE)
+                            .share();
+                    break;
+                case WEIXIN:
+                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.WEIXIN)
+                            .share();
+                    break;
 
-                    case WEIXIN_CIRCLE:
-                        new ShareAction(mFragment.getActivity()).withMedia(music)
-                                .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                                .share();
-                        break;
-                }
+                case WEIXIN_CIRCLE:
+                    new ShareAction(mFragment.getActivity()).withMedia(music)
+                            .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                            .share();
+                    break;
             }
         } else {
             MyLog.w(TAG, "shareUrl" + " sharePlatform=" + sharePlatform);
