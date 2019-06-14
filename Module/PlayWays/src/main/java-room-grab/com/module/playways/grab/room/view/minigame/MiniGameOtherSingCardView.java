@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
@@ -17,19 +19,17 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
-import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
 import com.module.playways.grab.room.view.CharmsView;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -46,7 +46,7 @@ import java.util.List;
 /**
  * 小游戏别人视角的我，和合唱板子
  */
-public class MiniGameOtherSingCardView extends RelativeLayout {
+public class MiniGameOtherSingCardView extends ExViewStub {
 
     public final static String TAG = "ChorusOthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
@@ -57,6 +57,7 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
     final static int COUNT_DOWN_STATUS_PLAYING = 3;
 
     int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
+
 
     SVGAImageView mLeftSingSvga;
     SVGAImageView mRightSingSvga;
@@ -98,38 +99,59 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
     MINIGameRoundInfoModel mRightMINIGameRoundInfoModel;
     MiniGameInfoModel mMiniGameInfoModel;
 
-
-    public MiniGameOtherSingCardView(Context context) {
-        super(context);
-        init();
+    public MiniGameOtherSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
+        mGrabRoomData = roomData;
     }
 
-    public MiniGameOtherSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
+    @Override
+    protected void init(View parentView) {
+        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                if (!EventBus.getDefault().isRegistered(this)) {
+                    EventBus.getDefault().register(this);
+                }
+            }
 
-    public MiniGameOtherSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                if (mEnterTranslateAnimation != null) {
+                    mEnterTranslateAnimation.setAnimationListener(null);
+                    mEnterTranslateAnimation.cancel();
+                }
+                if (mLeaveTranslateAnimation != null) {
+                    mLeaveTranslateAnimation.setAnimationListener(null);
+                    mLeaveTranslateAnimation.cancel();
+                }
+                if (mLeftSingSvga != null) {
+                    mLeftSingSvga.setCallback(null);
+                    mRightSingSvga.stopAnimation(true);
+                }
+                if (mRightSingSvga != null) {
+                    mRightSingSvga.setCallback(null);
+                    mRightSingSvga.stopAnimation(true);
+                }
+                if (EventBus.getDefault().isRegistered(this)) {
+                    EventBus.getDefault().unregister(this);
+                }
 
-    private void init() {
-        inflate(getContext(), R.layout.grab_mini_game_other_self_sing_layout, this);
+                mUiHandler.removeCallbacksAndMessages(null);
+            }
+        });
+        mChorusOtherArea = (LinearLayout) mParentView.findViewById(R.id.chorus_other_area);
+        mLeftSingSvga = (SVGAImageView) mParentView.findViewById(R.id.left_sing_svga);
+        mRightSingSvga = (SVGAImageView) mParentView.findViewById(R.id.right_sing_svga);
 
-        mChorusOtherArea = (LinearLayout) findViewById(R.id.chorus_other_area);
-        mLeftSingSvga = (SVGAImageView) findViewById(R.id.left_sing_svga);
-        mRightSingSvga = (SVGAImageView) findViewById(R.id.right_sing_svga);
+        mLeftIv = (SimpleDraweeView) mParentView.findViewById(R.id.left_iv);
+        mLeftCharms = (CharmsView) mParentView.findViewById(R.id.left_charms);
+        mLeftName = (ExTextView) mParentView.findViewById(R.id.left_name);
 
-        mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
-        mLeftCharms = (CharmsView) findViewById(R.id.left_charms);
-        mLeftName = (ExTextView) findViewById(R.id.left_name);
+        mRightIv = (SimpleDraweeView) mParentView.findViewById(R.id.right_iv);
+        mRightCharms = (CharmsView) mParentView.findViewById(R.id.right_charms);
+        mRightName = (ExTextView) mParentView.findViewById(R.id.right_name);
 
-        mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
-        mRightCharms = (CharmsView) findViewById(R.id.right_charms);
-        mRightName = (ExTextView) findViewById(R.id.right_name);
-
-        mSingCountDownView = findViewById(R.id.sing_count_down_view);
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
 
         int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
         mLeftSingSvga.setTranslationX(-offsetX);
@@ -154,16 +176,12 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
         });
     }
 
-    public void setRoomData(GrabRoomData roomData) {
-        mGrabRoomData = roomData;
-    }
-
     public void bindData() {
         GrabRoundInfoModel now = mGrabRoomData.getRealRoundInfo();
         if (now == null) {
             return;
         }
-
+        tryInflate();
         mLeftMINIGameRoundInfoModel = null;
         mRightMINIGameRoundInfoModel = null;
         mLeftUserInfoModel = null;
@@ -183,7 +201,7 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftMINIGameRoundInfoModel != null && mRightMINIGameRoundInfoModel != null) {
             mHasPlayFullAnimation = false;
             mUiHandler.removeCallbacksAndMessages(null);
-            setVisibility(VISIBLE);
+            mParentView.setVisibility(View.VISIBLE);
             AvatarUtils.loadAvatarByUrl(mLeftIv,
                     AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
@@ -271,11 +289,11 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
 
         svgaImageView.setCallback(null);
         svgaImageView.stopAnimation(true);
-        svgaImageView.setVisibility(GONE);
+        svgaImageView.setVisibility(View.GONE);
     }
 
     public void tryStartCountDown() {
-        if (getVisibility() == GONE) {
+        if (mParentView == null || mParentView.getVisibility() == View.GONE) {
             return;
         }
         MyLog.d(TAG, "tryStartCountDown");
@@ -312,45 +330,47 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
         }
-        this.startAnimation(mEnterTranslateAnimation);
+        mParentView.startAnimation(mEnterTranslateAnimation);
     }
 
     /**
      * 离场动画
      */
     public void hide() {
-        if (this != null && this.getVisibility() == VISIBLE) {
-            if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
-                mLeaveTranslateAnimation.setDuration(200);
+        if (mParentView != null) {
+            if (mParentView.getVisibility() == View.VISIBLE) {
+                if (mLeaveTranslateAnimation == null) {
+                    mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                    mLeaveTranslateAnimation.setDuration(200);
+                }
+                mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mParentView.clearAnimation();
+                        mParentView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mParentView.startAnimation(mLeaveTranslateAnimation);
+            } else {
+                mParentView.clearAnimation();
+                mParentView.setVisibility(View.GONE);
             }
-            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    clearAnimation();
-                    setVisibility(GONE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            this.startAnimation(mLeaveTranslateAnimation);
-        } else {
-            clearAnimation();
-            setVisibility(GONE);
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EngineEvent event) {
-        if (getVisibility() == GONE) {
+        if (mParentView == null || mParentView.getVisibility() == View.GONE) {
             return;
         }
         switch (event.getType()) {
@@ -392,37 +412,4 @@ public class MiniGameOtherSingCardView extends RelativeLayout {
         }
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (mEnterTranslateAnimation != null) {
-            mEnterTranslateAnimation.setAnimationListener(null);
-            mEnterTranslateAnimation.cancel();
-        }
-        if (mLeaveTranslateAnimation != null) {
-            mLeaveTranslateAnimation.setAnimationListener(null);
-            mLeaveTranslateAnimation.cancel();
-        }
-        if (mLeftSingSvga != null) {
-            mLeftSingSvga.setCallback(null);
-            mRightSingSvga.stopAnimation(true);
-        }
-        if (mRightSingSvga != null) {
-            mRightSingSvga.setCallback(null);
-            mRightSingSvga.stopAnimation(true);
-        }
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-
-        mUiHandler.removeCallbacksAndMessages(null);
-    }
 }

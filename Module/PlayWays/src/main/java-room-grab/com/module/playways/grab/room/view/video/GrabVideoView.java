@@ -2,14 +2,15 @@ package com.module.playways.grab.room.view.video;
 
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
-public class GrabVideoView {
-    ViewStub mViewStub;
+public class GrabVideoView extends ExViewStub {
     //    RelativeLayout mParentView;
     TextureView mMainVideoView;
 //    TextureView mSubVideoView;
@@ -17,23 +18,20 @@ public class GrabVideoView {
     private GrabRoomData mRoomData;
 
     public GrabVideoView(ViewStub viewStub) {
-        mViewStub = viewStub;
+        super(viewStub);
+    }
+
+    @Override
+    protected void init(View parentView) {
+        mMainVideoView = (TextureView) mParentView;
     }
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
     }
 
-    void infalte() {
-        mMainVideoView = (TextureView) mViewStub.inflate();
-//        mMainVideoView = mParentView.findViewById(R.id.main_video_view);
-//        mSubVideoView = mParentView.findViewById(R.id.sub_video_view);
-    }
-
     public void bindVideoStream(int userId) {
-        if (mMainVideoView == null) {
-            infalte();
-        }
+        tryInflate();
         mMainVideoView.setVisibility(View.VISIBLE);
 //        mSubVideoView.setVisibility(View.GONE);
         ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
@@ -48,9 +46,7 @@ public class GrabVideoView {
     }
 
     public void bindVideoStream(int userID1, int userID2) {
-        if (mMainVideoView == null) {
-            infalte();
-        }
+        tryInflate();
         mMainVideoView.setVisibility(View.VISIBLE);
 //        mSubVideoView.setVisibility(View.GONE);
     }

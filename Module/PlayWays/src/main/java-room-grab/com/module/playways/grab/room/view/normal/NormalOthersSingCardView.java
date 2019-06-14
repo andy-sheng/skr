@@ -1,15 +1,14 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
@@ -20,11 +19,12 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.R;
 import com.module.playways.grab.room.view.CharmsView;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -36,7 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * 其他人主场景
  */
-public class NormalOthersSingCardView extends RelativeLayout {
+public class NormalOthersSingCardView extends ExViewStub {
     public final static String TAG = "OthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
 
@@ -70,28 +70,39 @@ public class NormalOthersSingCardView extends RelativeLayout {
 
     boolean mHasPlayFullAnimation = false;
 
-    public NormalOthersSingCardView(Context context) {
-        super(context);
-        init(context);
+    public NormalOthersSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
+        mGrabRoomData = roomData;
     }
 
-    public NormalOthersSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
+    @Override
+    protected void init(View parentView) {
+        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
 
-    public NormalOthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
-    }
+            }
 
-    private void init(Context context) {
-        inflate(context, R.layout.grab_normal_others_sing_card_layout, this);
-        mGrabStageView = (SVGAImageView) findViewById(R.id.grab_stage_view);
-        mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
-        mCharmsView = (CharmsView) findViewById(R.id.charms_view);
-        mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
-        mTvSingerName = (ExTextView) findViewById(R.id.tv_singer_name);
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                if (mEnterAlphaAnimation != null) {
+                    mEnterAlphaAnimation.setAnimationListener(null);
+                    mEnterAlphaAnimation.cancel();
+                }
+                if (mLeaveTranslateAnimation != null) {
+                    mLeaveTranslateAnimation.setAnimationListener(null);
+                    mLeaveTranslateAnimation.cancel();
+                }
+                if (mUiHandler != null) {
+                    mUiHandler.removeCallbacksAndMessages(null);
+                }
+            }
+        });
+        mGrabStageView = (SVGAImageView) mParentView.findViewById(R.id.grab_stage_view);
+        mSingAvatarView = (BaseImageView) mParentView.findViewById(R.id.sing_avatar_view);
+        mCharmsView = (CharmsView) mParentView.findViewById(R.id.charms_view);
+        mCircleCountDownView = (CircleCountDownView) mParentView.findViewById(R.id.circle_count_down_view);
+        mTvSingerName = (ExTextView) mParentView.findViewById(R.id.tv_singer_name);
 
         mSingAvatarView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -103,16 +114,13 @@ public class NormalOthersSingCardView extends RelativeLayout {
         });
     }
 
-    public void setRoomData(GrabRoomData roomData) {
-        mGrabRoomData = roomData;
-    }
-
     public void bindData() {
+        tryInflate();
         GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
         UserInfoModel userInfoModel = mGrabRoomData.getUserInfo(infoModel.getUserID());
         mUiHandler.removeCallbacksAndMessages(null);
         mHasPlayFullAnimation = false;
-        setVisibility(VISIBLE);
+        setVisibility(View.VISIBLE);
         if (userInfoModel != null) {
             this.mUseId = userInfoModel.getUserId();
             AvatarUtils.loadAvatarByUrl(mSingAvatarView,
@@ -132,7 +140,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
             mEnterAlphaAnimation = new AlphaAnimation(0f, 1f);
             mEnterAlphaAnimation.setDuration(1000);
         }
-        this.startAnimation(mEnterAlphaAnimation);
+        mParentView.startAnimation(mEnterAlphaAnimation);
 
         mGrabStageView.setVisibility(View.VISIBLE);
         mGrabStageView.setLoops(1);
@@ -170,7 +178,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
     }
 
     public void tryStartCountDown() {
-        if (getVisibility() == GONE) {
+        if (mParentView==null || mParentView.getVisibility() == View.GONE) {
             return;
         }
         MyLog.d(TAG, "tryStartCountDown");
@@ -203,63 +211,43 @@ public class NormalOthersSingCardView extends RelativeLayout {
     }
 
     public void hide() {
-        if (this != null && this.getVisibility() == VISIBLE) {
-            if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
-                mLeaveTranslateAnimation.setDuration(200);
+        mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
+        mHasPlayFullAnimation = false;
+        mUiHandler.removeCallbacksAndMessages(null);
+        if(mParentView != null){
+            if ( mParentView.getVisibility() == View.VISIBLE) {
+                if (mLeaveTranslateAnimation == null) {
+                    mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                    mLeaveTranslateAnimation.setDuration(200);
+                }
+                mParentView.startAnimation(mLeaveTranslateAnimation);
+                mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mParentView.clearAnimation();
+                        setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            } else {
+                setVisibility(View.GONE);
             }
-            this.startAnimation(mLeaveTranslateAnimation);
-            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
+            if (mCircleCountDownView != null) {
+                mCircleCountDownView.cancelAnim();
+                mCircleCountDownView.setMax(360);
+                mCircleCountDownView.setProgress(0);
 
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    clearAnimation();
-                    setVisibility(GONE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-        } else {
-            clearAnimation();
-            setVisibility(GONE);
-        }
-        mCircleCountDownView.cancelAnim();
-        mCircleCountDownView.setMax(360);
-        mCircleCountDownView.setProgress(0);
-
-        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
-    }
-
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
-            mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
-            mHasPlayFullAnimation = false;
-            mUiHandler.removeCallbacksAndMessages(null);
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (mEnterAlphaAnimation != null) {
-            mEnterAlphaAnimation.setAnimationListener(null);
-            mEnterAlphaAnimation.cancel();
-        }
-        if (mLeaveTranslateAnimation != null) {
-            mLeaveTranslateAnimation.setAnimationListener(null);
-            mLeaveTranslateAnimation.cancel();
-        }
-        if (mUiHandler != null) {
-            mUiHandler.removeCallbacksAndMessages(null);
+                mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+            }
         }
     }
 }

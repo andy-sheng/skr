@@ -13,6 +13,7 @@ import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.chorus.ChorusSingBeginTipsCardView;
 import com.module.playways.grab.room.view.minigame.MiniGameSingBeginTipsCardView;
 import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView;
@@ -22,49 +23,53 @@ import com.opensource.svgaplayer.SVGAImageView;
 
 import java.util.List;
 
-public class SingBeginTipsCardView {
+public class SingBeginTipsCardView extends ExViewStub {
 
     NormalSingBeginTipsCardView mNormalSingBeginTipsCardView = new NormalSingBeginTipsCardView(); // 提示xxx演唱开始的卡片
     ChorusSingBeginTipsCardView mChorusSingBeginTipsCardView = new ChorusSingBeginTipsCardView(); // 合唱对战开始
     PKSingBeginTipsCardView mPKSingBeginTipsCardView = new PKSingBeginTipsCardView();         // pk对战开始
     MiniGameSingBeginTipsCardView mMiniGameSingBegin = new MiniGameSingBeginTipsCardView();         // 小游戏开始
 
-    ViewStub mViewStub;
-    ViewGroup mParentView;
     SVGAImageView mSVGAImageView;
     GrabRoomData mRoomData;
 
     public SingBeginTipsCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
         mRoomData = roomData;
-        mViewStub = viewStub;
     }
 
-    void inflate() {
-        mParentView = (ViewGroup) mViewStub.inflate();
+    @Override
+    protected void init(View parentView) {
         mSVGAImageView = mParentView.findViewById(R.id.sing_begin_svga);
-        mViewStub = null;
+        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                if (mSVGAImageView != null) {
+                    mSVGAImageView.setCallback(null);
+                    mSVGAImageView.stopAnimation(true);
+                }
+            }
+        });
     }
 
     public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
         if (visibility == View.GONE) {
-            if (mParentView != null) {
-                mParentView.setVisibility(View.GONE);
-            }
             if (mSVGAImageView != null) {
                 mSVGAImageView.setCallback(null);
                 mSVGAImageView.stopAnimation(true);
             }
-        } else if (visibility == View.VISIBLE) {
-            if (mParentView == null) {
-                inflate();
-            }
-            mParentView.setVisibility(View.VISIBLE);
-            mSVGAImageView.setVisibility(View.VISIBLE);
         }
     }
 
     public void bindData(SVGAListener svgaListener) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        tryInflate();
         if (grabRoundInfoModel != null) {
             if (RoomDataUtils.isChorusRound(mRoomData)) {
                 List<ChorusRoundInfoModel> list = grabRoundInfoModel.getChorusRoundInfoModels();

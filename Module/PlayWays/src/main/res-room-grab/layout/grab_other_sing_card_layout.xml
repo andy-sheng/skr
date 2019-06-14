@@ -7,15 +7,42 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <!--演唱时两个主场景view-->
-    <com.module.playways.grab.room.view.normal.NormalOthersSingCardView
-        android:id="@+id/other_sing_card_view"
+    <ViewStub
+        android:id="@+id/normal_other_sing_card_view_stub"
+        android:inflatedId="@+id/normal_other_sing_card_view"
+        android:layout="@layout/grab_normal_other_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
-    <com.module.playways.grab.room.view.chorus.ChorusOthersSingCardView
-        android:id="@+id/chorus_other_sing_card_view"
+    <!--演唱时两个主场景view-->
+    <ViewStub
+        android:id="@+id/chorus_other_sing_card_view_stub"
+        android:inflatedId="@+id/chorus_other_sing_card_view"
+        android:layout="@layout/grab_chorus_other_sing_card_stub_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/top_container_view"
+        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:visibility="gone"
+        />
+
+    <!--<com.module.playways.grab.room.view.chorus.ChorusOthersSingCardView-->
+        <!--android:id="@+id/chorus_other_sing_card_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@+id/top_container_view"-->
+        <!--android:layout_marginTop="@dimen/view_d_185_dp"-->
+        <!--android:visibility="gone"/>-->
+
+    <ViewStub
+        android:id="@+id/pk_other_sing_card_view_stub"
+        android:inflatedId="@+id/pk_other_sing_card_view"
+        android:layout="@layout/grab_pk_other_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -23,18 +50,10 @@
         android:layout_marginTop="@dimen/view_d_185_dp"
         android:visibility="gone"/>
 
-
-    <com.module.playways.grab.room.view.pk.PKOthersSingCardView
-        android:id="@+id/pk_other_sing_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/top_container_view"
-        android:layout_marginTop="@dimen/view_d_185_dp"
-        android:visibility="gone"/>
-
-    <com.module.playways.grab.room.view.minigame.MiniGameOtherSingCardView
-        android:id="@+id/mini_game_other_sing_view"
+    <ViewStub
+        android:id="@+id/mini_game_other_sing_card_view_stub"
+        android:inflatedId="@+id/mini_game_other_sing_card_view"
+        android:layout="@layout/grab_mini_game_other_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

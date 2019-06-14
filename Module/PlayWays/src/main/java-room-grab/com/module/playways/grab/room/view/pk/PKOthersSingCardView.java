@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
@@ -15,6 +18,7 @@ import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
 import com.module.playways.R;
@@ -26,7 +30,7 @@ import java.util.List;
 /**
  * 别人唱歌PK时，自己看到的板子
  */
-public class PKOthersSingCardView extends RelativeLayout {
+public class PKOthersSingCardView extends ExViewStub {
     public final static String TAG = "PKOthersSingCardView";
 
     final static int COUNT_DOWN_STATUS_WAIT = 2;
@@ -53,30 +57,27 @@ public class PKOthersSingCardView extends RelativeLayout {
         }
     };
 
-    public PKOthersSingCardView(Context context) {
-        super(context);
-        init();
-    }
-
-    public PKOthersSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public PKOthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_pk_other_sing_card_layout, this);
-        mPkCardView = (PKSingCardView) findViewById(R.id.pk_card_view);
-        mSingCountDownView = findViewById(R.id.sing_count_down_view);
-    }
-
-    public void setRoomData(GrabRoomData roomData) {
+    public PKOthersSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
         mGrabRoomData = roomData;
-        mPkCardView.setRoomData(roomData);
+    }
+
+    @Override
+    protected void init(View parentView) {
+        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                destoryAnimation();
+            }
+        });
+        mPkCardView = (PKSingCardView) mParentView.findViewById(R.id.pk_card_view);
+        mPkCardView.setRoomData(mGrabRoomData);
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
     }
 
     public void bindData() {
@@ -84,6 +85,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
+        tryInflate();
         mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_pk);
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
@@ -94,7 +96,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         }
         mHasPlayFullAnimation = false;
         mUiHandler.removeCallbacksAndMessages(null);
-        setVisibility(VISIBLE);
+        mParentView.setVisibility(View.VISIBLE);
         // 绑定数据
         mPkCardView.bindData();
         if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
@@ -164,43 +166,47 @@ public class PKOthersSingCardView extends RelativeLayout {
 
             }
         });
-        this.startAnimation(mEnterTranslateAnimation);
+        if (mParentView != null) {
+            mParentView.startAnimation(mEnterTranslateAnimation);
+        }
     }
 
     /**
      * 离场动画
      */
     public void hide() {
-        if (this != null && this.getVisibility() == VISIBLE) {
-            if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
-                mLeaveTranslateAnimation.setDuration(200);
+        if(mParentView!=null){
+            if (mParentView.getVisibility() == View.VISIBLE) {
+                if (mLeaveTranslateAnimation == null) {
+                    mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                    mLeaveTranslateAnimation.setDuration(200);
+                }
+                mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        destoryAnimation();
+                        mSingCountDownView.reset();
+                        mParentView.clearAnimation();
+                        mParentView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mParentView.startAnimation(mLeaveTranslateAnimation);
+            } else {
+                destoryAnimation();
+                mSingCountDownView.reset();
+                mParentView.clearAnimation();
+                mParentView.setVisibility(View.GONE);
             }
-            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    destoryAnimation();
-                    mSingCountDownView.reset();
-                    clearAnimation();
-                    setVisibility(GONE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            this.startAnimation(mLeaveTranslateAnimation);
-        } else {
-            destoryAnimation();
-            mSingCountDownView.reset();
-            clearAnimation();
-            setVisibility(GONE);
         }
     }
 
@@ -223,12 +229,6 @@ public class PKOthersSingCardView extends RelativeLayout {
             leaveTime = totalMs;
         }
         mSingCountDownView.startPlay(progress, leaveTime, true);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        destoryAnimation();
     }
 
     private void destoryAnimation() {
