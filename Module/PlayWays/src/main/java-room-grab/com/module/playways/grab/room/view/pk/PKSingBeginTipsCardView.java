@@ -34,32 +34,28 @@ public class PKSingBeginTipsCardView {
     public final static String TAG = "PKSingBeginTipsCardView";
 
 
-    public void bindData(SVGAImageView mPkSingBeginSvga, UserInfoModel left, UserInfoModel right, SVGAListener mSVGAListener) {
+    public void bindData(SVGAImageView svagaImageView, UserInfoModel left, UserInfoModel right, SVGAListener listener) {
         if (left == null || right == null) {
-            MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + mSVGAListener);
+            MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + listener);
             return;
         }
 
         String assetsName = "grab_pk_sing_chance.svga";
-        try {
-            SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamic(left, right));
-                    mPkSingBeginSvga.setImageDrawable(drawable);
-                    mPkSingBeginSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamic(left, right));
+                svagaImageView.setImageDrawable(drawable);
+                svagaImageView.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
-        mPkSingBeginSvga.setCallback(new SVGACallback() {
+        svagaImageView.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -67,19 +63,19 @@ public class PKSingBeginTipsCardView {
 
             @Override
             public void onFinished() {
-                if (mPkSingBeginSvga != null) {
-                    mPkSingBeginSvga.setCallback(null);
-                    mPkSingBeginSvga.stopAnimation(true);
+                if (svagaImageView != null) {
+                    svagaImageView.setCallback(null);
+                    svagaImageView.stopAnimation(true);
                 }
-                if (mSVGAListener != null) {
-                    mSVGAListener.onFinished();
+                if (listener != null) {
+                    listener.onFinished();
                 }
             }
 
             @Override
             public void onRepeat() {
-                if (mPkSingBeginSvga != null && mPkSingBeginSvga.isAnimating()) {
-                    mPkSingBeginSvga.stopAnimation(false);
+                if (svagaImageView != null && svagaImageView.isAnimating()) {
+                    svagaImageView.stopAnimation(false);
                 }
             }
 

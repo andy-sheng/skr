@@ -77,27 +77,6 @@ public class NormalOthersSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                if (mEnterAlphaAnimation != null) {
-                    mEnterAlphaAnimation.setAnimationListener(null);
-                    mEnterAlphaAnimation.cancel();
-                }
-                if (mLeaveTranslateAnimation != null) {
-                    mLeaveTranslateAnimation.setAnimationListener(null);
-                    mLeaveTranslateAnimation.cancel();
-                }
-                if (mUiHandler != null) {
-                    mUiHandler.removeCallbacksAndMessages(null);
-                }
-            }
-        });
         mGrabStageView = (SVGAImageView) mParentView.findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) mParentView.findViewById(R.id.sing_avatar_view);
         mCharmsView = (CharmsView) mParentView.findViewById(R.id.charms_view);
@@ -112,6 +91,22 @@ public class NormalOthersSingCardView extends ExViewStub {
                 }
             }
         });
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
+        if (mEnterAlphaAnimation != null) {
+            mEnterAlphaAnimation.setAnimationListener(null);
+            mEnterAlphaAnimation.cancel();
+        }
+        if (mLeaveTranslateAnimation != null) {
+            mLeaveTranslateAnimation.setAnimationListener(null);
+            mLeaveTranslateAnimation.cancel();
+        }
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     public void bindData() {

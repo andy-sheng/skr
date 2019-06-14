@@ -34,9 +34,9 @@ public class ChorusSingBeginTipsCardView {
 
     public final static String TAG = "ChorusSingBeginTipsCardView";
 
-    public void bindData(SVGAImageView mChorusSingBeginSvga, UserInfoModel left, UserInfoModel right, SVGAListener mSVGAListener) {
+    public void bindData(SVGAImageView svgaImageView, UserInfoModel left, UserInfoModel right, SVGAListener listener) {
         if (left == null || right == null) {
-            MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + mSVGAListener);
+            MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + listener);
             return;
         }
 
@@ -45,8 +45,8 @@ public class ChorusSingBeginTipsCardView {
             @Override
             public void onComplete(SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamic(left, right));
-                mChorusSingBeginSvga.setImageDrawable(drawable);
-                mChorusSingBeginSvga.startAnimation();
+                svgaImageView.setImageDrawable(drawable);
+                svgaImageView.startAnimation();
             }
 
             @Override
@@ -55,7 +55,7 @@ public class ChorusSingBeginTipsCardView {
             }
         });
 
-        mChorusSingBeginSvga.setCallback(new SVGACallback() {
+        svgaImageView.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -63,19 +63,19 @@ public class ChorusSingBeginTipsCardView {
 
             @Override
             public void onFinished() {
-                if (mChorusSingBeginSvga != null) {
-                    mChorusSingBeginSvga.setCallback(null);
-                    mChorusSingBeginSvga.stopAnimation(true);
+                if (svgaImageView != null) {
+                    svgaImageView.setCallback(null);
+                    svgaImageView.stopAnimation(true);
                 }
-                if (mSVGAListener != null) {
-                    mSVGAListener.onFinished();
+                if (listener != null) {
+                    listener.onFinished();
                 }
             }
 
             @Override
             public void onRepeat() {
-                if (mChorusSingBeginSvga != null && mChorusSingBeginSvga.isAnimating()) {
-                    mChorusSingBeginSvga.stopAnimation(false);
+                if (svgaImageView != null && svgaImageView.isAnimating()) {
+                    svgaImageView.stopAnimation(false);
                 }
             }
 

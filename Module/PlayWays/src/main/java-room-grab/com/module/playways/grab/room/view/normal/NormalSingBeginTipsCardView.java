@@ -35,9 +35,9 @@ public class NormalSingBeginTipsCardView {
 
     public final static String TAG = "SingBeginTipsCardView";
 
-    public void bindData(SVGAImageView mSingBeginSvga, UserInfoModel info, SongModel songModel, SVGAListener mSVGAListener, boolean isChallenge) {
+    public void bindData(SVGAImageView svgaImageView, UserInfoModel info, SongModel songModel, SVGAListener listener, boolean isChallenge) {
         if (info == null || songModel == null) {
-            MyLog.e(TAG, "bindData" + " info=" + info + " songModel=" + songModel + " listener=" + mSVGAListener);
+            MyLog.e(TAG, "bindData" + " info=" + info + " songModel=" + songModel + " listener=" + listener);
             return;
         }
         String assetsName = isChallenge ? "grab_challenge_sing_chance.svga" : "grab_sing_chance.svga";
@@ -45,8 +45,8 @@ public class NormalSingBeginTipsCardView {
             @Override
             public void onComplete(SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(info, songModel));
-                mSingBeginSvga.setImageDrawable(drawable);
-                mSingBeginSvga.startAnimation();
+                svgaImageView.setImageDrawable(drawable);
+                svgaImageView.startAnimation();
             }
 
             @Override
@@ -55,7 +55,7 @@ public class NormalSingBeginTipsCardView {
             }
         });
 
-        mSingBeginSvga.setCallback(new SVGACallback() {
+        svgaImageView.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -63,19 +63,19 @@ public class NormalSingBeginTipsCardView {
 
             @Override
             public void onFinished() {
-                if (mSingBeginSvga != null) {
-                    mSingBeginSvga.setCallback(null);
-                    mSingBeginSvga.stopAnimation(true);
+                if (svgaImageView != null) {
+                    svgaImageView.setCallback(null);
+                    svgaImageView.stopAnimation(true);
                 }
-                if (mSVGAListener != null) {
-                    mSVGAListener.onFinished();
+                if (listener != null) {
+                    listener.onFinished();
                 }
             }
 
             @Override
             public void onRepeat() {
-                if (mSingBeginSvga != null && mSingBeginSvga.isAnimating()) {
-                    mSingBeginSvga.stopAnimation(false);
+                if (svgaImageView != null && svgaImageView.isAnimating()) {
+                    svgaImageView.stopAnimation(false);
                 }
             }
 

@@ -7,7 +7,7 @@ import android.view.ViewStub;
 /**
  * 包裹懒加载view的一些常用方法
  */
-public abstract class ExViewStub {
+public abstract class ExViewStub implements View.OnAttachStateChangeListener {
     protected ViewStub mViewStub;
     protected View mParentView;
 
@@ -18,6 +18,8 @@ public abstract class ExViewStub {
     public void tryInflate() {
         if (mParentView == null) {
             mParentView = mViewStub.inflate();
+            mParentView.addOnAttachStateChangeListener(this);
+            onViewAttachedToWindow(mParentView);
             init(mParentView);
             mViewStub = null;
         }
@@ -35,5 +37,15 @@ public abstract class ExViewStub {
             tryInflate();
             mParentView.setVisibility(visibility);
         }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(View v) {
+
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+
     }
 }

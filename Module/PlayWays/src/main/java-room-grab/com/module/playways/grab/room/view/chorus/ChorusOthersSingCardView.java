@@ -106,39 +106,6 @@ public class ChorusOthersSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-                if (!EventBus.getDefault().isRegistered(this)) {
-                    EventBus.getDefault().register(this);
-                }
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                if (mEnterTranslateAnimation != null) {
-                    mEnterTranslateAnimation.setAnimationListener(null);
-                    mEnterTranslateAnimation.cancel();
-                }
-                if (mLeaveTranslateAnimation != null) {
-                    mLeaveTranslateAnimation.setAnimationListener(null);
-                    mLeaveTranslateAnimation.cancel();
-                }
-                if (mLeftSingSvga != null) {
-                    mLeftSingSvga.setCallback(null);
-                    mRightSingSvga.stopAnimation(true);
-                }
-                if (mRightSingSvga != null) {
-                    mRightSingSvga.setCallback(null);
-                    mRightSingSvga.stopAnimation(true);
-                }
-                if (EventBus.getDefault().isRegistered(this)) {
-                    EventBus.getDefault().unregister(this);
-                }
-
-                mUiHandler.removeCallbacksAndMessages(null);
-            }
-        });
         mChorusOtherArea = (LinearLayout) mParentView.findViewById(R.id.chorus_other_area);
         mLeftSingSvga = (SVGAImageView) mParentView.findViewById(R.id.left_sing_svga);
         mRightSingSvga = (SVGAImageView) mParentView.findViewById(R.id.right_sing_svga);
@@ -178,6 +145,38 @@ public class ChorusOthersSingCardView extends ExViewStub {
                 }
             }
         });
+    }
+
+    @Override
+    public void onViewAttachedToWindow(View v) {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        if (mEnterTranslateAnimation != null) {
+            mEnterTranslateAnimation.setAnimationListener(null);
+            mEnterTranslateAnimation.cancel();
+        }
+        if (mLeaveTranslateAnimation != null) {
+            mLeaveTranslateAnimation.setAnimationListener(null);
+            mLeaveTranslateAnimation.cancel();
+        }
+        if (mLeftSingSvga != null) {
+            mLeftSingSvga.setCallback(null);
+            mRightSingSvga.stopAnimation(true);
+        }
+        if (mRightSingSvga != null) {
+            mRightSingSvga.setCallback(null);
+            mRightSingSvga.stopAnimation(true);
+        }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     public void bindData() {

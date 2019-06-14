@@ -64,20 +64,15 @@ public class PKOthersSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                destoryAnimation();
-            }
-        });
         mPkCardView = (PKSingCardView) mParentView.findViewById(R.id.pk_card_view);
         mPkCardView.setRoomData(mGrabRoomData);
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
+        destoryAnimation();
     }
 
     public void bindData() {

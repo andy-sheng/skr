@@ -70,6 +70,8 @@ public class SingBeginTipsCardView extends ExViewStub {
     public void bindData(SVGAListener svgaListener) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         tryInflate();
+        setVisibility(View.VISIBLE);
+        mSVGAImageView.setVisibility(View.VISIBLE);
         if (grabRoundInfoModel != null) {
             if (RoomDataUtils.isChorusRound(mRoomData)) {
                 List<ChorusRoundInfoModel> list = grabRoundInfoModel.getChorusRoundInfoModels();
