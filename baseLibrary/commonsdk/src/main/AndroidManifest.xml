@@ -166,7 +166,6 @@
         <!-- 尝试修复hwui 问题 -->
         <activity
             android:name="com.imagebrowse.big.BigImageBrowseActivity"
-            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
 
         <!--魅族push应用定义消息receiver声明 -->
