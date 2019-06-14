@@ -25,13 +25,11 @@ public class CommentTextModel extends CommentModel {
         commentModel.setUserId(event.info.getSender().getUserID());
         if (!TextUtils.isEmpty(event.info.getSender().getNickName())) {
             commentModel.setUserName(event.info.getSender().getNickName());
-        } else {
-            UserInfoModel userInfoModel = roomData.getUserInfo(event.info.getSender().getUserID());
-            commentModel.setUserName(userInfoModel.getNicknameRemark());
         }
 
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
+            commentModel.setUserName(sender.getNicknameRemark());
             commentModel.setAvatarColor(Color.WHITE);
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
