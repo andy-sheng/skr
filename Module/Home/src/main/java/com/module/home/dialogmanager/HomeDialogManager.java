@@ -34,20 +34,20 @@ public class HomeDialogManager {
                     if (dialogPlus != null) {
                         if (dialogPlus.isDependActivityExit()) {
                             MyLog.d(TAG, "accept" + "isDependActivityExit cur=" + cur);
-                            OnDismissListener oriListener = dialogPlus.onDismissListener;
-                            dialogPlus.onDismissListener = new OnDismissListener() {
-                                @Override
-                                public void onDismiss(@NonNull DialogPlus dialog) {
-                                    MyLog.d(TAG, "onDismiss" + " dialog=" + dialog);
-                                    if (oriListener != null) {
-                                        oriListener.onDismiss(dialog);
-                                    }
-                                    if (mHasShowDialog) {
-                                        mHasShowDialog = false;
-                                        mObjectPlayControlTemplate.endCurrent(cur);
-                                    }
-                                }
-                            };
+//                            OnDismissListener oriListener = dialogPlus.onDismissListener;
+//                            dialogPlus.onDismissListener = new OnDismissListener() {
+//                                @Override
+//                                public void onDismiss(@NonNull DialogPlus dialog) {
+//                                    MyLog.d(TAG, "onDismiss" + " dialog=" + dialog);
+//                                    if (oriListener != null) {
+//                                        oriListener.onDismiss(dialog);
+//                                    }
+//                                    if (mHasShowDialog) {
+//                                        mHasShowDialog = false;
+//                                        mObjectPlayControlTemplate.endCurrent(cur);
+//                                    }
+//                                }
+//                            };
                             dialogPlus.mOnAttachStateChangeListener = new View.OnAttachStateChangeListener() {
                                 @Override
                                 public void onViewAttachedToWindow(View v) {
