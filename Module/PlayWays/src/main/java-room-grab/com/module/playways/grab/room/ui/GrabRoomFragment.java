@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -76,7 +75,8 @@ import com.module.playways.grab.room.view.control.OthersSingCardView;
 import com.module.playways.grab.room.view.control.RoundOverCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView;
-import com.module.playways.grab.room.view.video.GrabVideoView;
+import com.module.playways.grab.room.view.video.GrabVideoDisplayView;
+import com.module.playways.grab.room.view.video.GrabVideoSelfSingCardView;
 import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
@@ -174,11 +174,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
 
+    RoundOverCardView mRoundOverCardView; // 轮次结束卡片
 
-    RoundOverCardView mRoundOverCardView;
-    OthersSingCardView mOthersSingCardView;
-    SelfSingCardView mSelfSingCardView;
-    SingBeginTipsCardView mSingBeginTipsCardView;
+    OthersSingCardView mOthersSingCardView; // 他人演唱卡片
+
+    SelfSingCardView mSelfSingCardView; // 自己演唱卡片
+
+    SingBeginTipsCardView mSingBeginTipsCardView;// 演唱提示卡片
 
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
 
@@ -210,9 +212,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     ContinueSendView mContinueSendView;
 
-    GrabVideoView mGrabVideoView; // 视频view
-
     DialogPlus mVoiceControlDialog;
+
+    GrabVideoDisplayView mGrabVideoDisplayView; // 视频展示view
+
+    GrabVideoSelfSingCardView mGrabVideoSelfSingCardView; // 视频模式下 自己演唱时的歌词面板view
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -584,8 +588,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void initVideoView(){
         ViewStub viewStub = mRootView.findViewById(R.id.video_view_stub);
-        mGrabVideoView = new GrabVideoView(viewStub);
-        mGrabVideoView.setRoomData(mRoomData);
+        mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub,mRoomData);
+        mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView,mRoomData);
     }
 
     private void initInputView() {

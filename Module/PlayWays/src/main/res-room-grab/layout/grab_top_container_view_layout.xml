@@ -2,11 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <!-- 包括 顶部操作菜单栏 -->
     <com.module.playways.grab.room.top.GrabTopView
         android:id="@+id/grab_top_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_38_dp" />
 
+    <!--包括嘉宾栏 和 观众栏-->
     <com.module.playways.grab.room.top.GrabPlayerRv2
         android:id="@+id/top_content_rv"
         android:layout_width="match_parent"

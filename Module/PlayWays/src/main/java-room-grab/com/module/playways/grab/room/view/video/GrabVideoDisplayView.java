@@ -10,15 +10,16 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.view.ExViewStub;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
-public class GrabVideoView extends ExViewStub {
+public class GrabVideoDisplayView extends ExViewStub {
     //    RelativeLayout mParentView;
     TextureView mMainVideoView;
 //    TextureView mSubVideoView;
 
     private GrabRoomData mRoomData;
 
-    public GrabVideoView(ViewStub viewStub) {
+    public GrabVideoDisplayView(ViewStub viewStub,GrabRoomData roomData) {
         super(viewStub);
+        mRoomData = roomData;
     }
 
     @Override

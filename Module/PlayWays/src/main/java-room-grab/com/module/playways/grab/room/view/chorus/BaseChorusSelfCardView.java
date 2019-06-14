@@ -98,6 +98,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
         }
 
         tryInflate();
+        setVisibility(View.VISIBLE);
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }

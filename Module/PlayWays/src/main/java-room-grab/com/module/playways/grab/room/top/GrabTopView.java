@@ -16,7 +16,6 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.view.chorus.VideoChorusSelfSingCardView;
 import com.module.playways.grab.room.view.normal.VideoNormalSelfSingCardView;
-import com.module.playways.grab.room.view.normal.view.VideoSelfSingLyricView;
 
 public class GrabTopView extends FrameLayout {
 
@@ -146,7 +145,7 @@ public class GrabTopView extends FrameLayout {
             mIvVoiceSetting.setVisibility(GONE);
         }
         mVideoNormalSelfSingCardView = new VideoNormalSelfSingCardView(findViewById(R.id.video_grab_self_lyric_view_stub),mGrabRoomData);
-        mVideoChorusSelfSingCardView = new VideoChorusSelfSingCardView(findViewById(R.id.video_grab_chorus_lyric_view_stub),mGrabRoomData);
+        mVideoChorusSelfSingCardView = new VideoChorusSelfSingCardView(findViewById(R.id.grab_video_chorus_lyric_view_stub),mGrabRoomData);
     }
 
     /**
