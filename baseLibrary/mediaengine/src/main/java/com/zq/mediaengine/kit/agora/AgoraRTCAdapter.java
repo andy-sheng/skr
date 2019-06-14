@@ -172,6 +172,8 @@ public class AgoraRTCAdapter {
             if (mOutCallback != null) {
                 mOutCallback.onUserOffline(uid, reason);
             }
+            // 回调后再移除远端渲染视图
+            removeRemoteVideo(uid);
         }
 
         @Override
@@ -234,8 +236,8 @@ public class AgoraRTCAdapter {
         @Override
         public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
             super.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
+            // 绑定远端渲染视图
             addRemoteVideo(uid);
-            // 一般可以在这里绑定视图
             if (mOutCallback != null) {
                 mOutCallback.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
             }
@@ -723,10 +725,15 @@ public class AgoraRTCAdapter {
      *
      * @param uid uid
      */
-    public void addRemoteVideo(int uid) {
+    private void addRemoteVideo(int uid) {
         AgoraImgTexSrcPin srcPin = new AgoraImgTexSrcPin(mGLRender);
         mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
         mRemoteVideoSrcPins.put(uid, srcPin);
+    }
+
+    private void removeRemoteVideo(int uid) {
+        mRtcEngine.setRemoteVideoRenderer(uid, null);
+        mRemoteVideoSrcPins.remove(uid);
     }
 
     /**
