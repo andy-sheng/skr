@@ -36,8 +36,10 @@ public class NormalSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mSelfSingLyricView = mParentView.findViewById(R.id.self_sing_lyric_view);
-        mSelfSingLyricView.setRoomData(mRoomData);
+        {
+            ViewStub viewStub = mParentView.findViewById(R.id.self_sing_lyric_view_stub);
+            mSelfSingLyricView = new SelfSingLyricView(viewStub, mRoomData);
+        }
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mListener);
     }
@@ -59,7 +61,6 @@ public class NormalSelfSingCardView extends ExViewStub {
             return;
         }
         tryInflate();
-        mSelfSingLyricView.initLyric();
         if (infoModel.getMusic() == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;

@@ -385,7 +385,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAcrRecognizer = new AcrRecognizer();
         mMainHandler = new Handler(Looper.getMainLooper());
 
-//        mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+        mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
 
         // TODO: 开启视频才初始化
         initVideoModules();

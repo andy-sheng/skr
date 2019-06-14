@@ -57,8 +57,8 @@ public class AgoraRTCAdapter {
 
     static {
         if (U.getChannelUtils().isStaging()) {
-//            APP_ID = "f23bd32ce6484113b02d14bd878e694c";
-            APP_ID = "9624261076ba437c9eac190e88c3403e";
+            APP_ID = "f23bd32ce6484113b02d14bd878e694c";
+//            APP_ID = "9624261076ba437c9eac190e88c3403e";
         } else {
             APP_ID = "2cceda2dbb2d46d28cab627f30c1a6f7";
         }

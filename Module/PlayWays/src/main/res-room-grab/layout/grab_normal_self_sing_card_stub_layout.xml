@@ -6,10 +6,13 @@
     tools:parentTag="android.widget.RelativeLayout">
 
 
-    <com.module.playways.grab.room.view.normal.view.SelfSingLyricView
-        android:id="@+id/self_sing_lyric_view"
+    <ViewStub
+        android:id="@+id/self_sing_lyric_view_stub"
+        android:inflatedId="@+id/self_sing_lyric_view"
+        android:layout="@layout/grab_self_sing_lyric_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 
     <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"

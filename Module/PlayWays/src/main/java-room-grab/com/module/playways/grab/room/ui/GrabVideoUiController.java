@@ -1,8 +1,5 @@
 package com.module.playways.grab.room.ui;
 
-
-import android.view.View;
-
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
 public class GrabVideoUiController extends GrabBaseUiController {
@@ -16,6 +13,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
         if (infoModel != null) {
             // 显示歌词view
             mF.mGrabVideoSelfSingCardView.playLyric();
+            mF.mGrabWidgetAnimationController.openBelowLyricView();
             if(infoModel.isNormalRound()){
                 // 普通轮次
                 mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
@@ -40,10 +38,6 @@ public class GrabVideoUiController extends GrabBaseUiController {
             }
         }
         // ZqEngineKit.getInstance().startPreview(mF.mMainVideoView);
-
-
-
-
     }
 
     @Override

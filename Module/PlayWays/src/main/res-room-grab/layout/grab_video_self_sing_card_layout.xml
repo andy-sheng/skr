@@ -6,18 +6,18 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <!--<ViewStub-->
-        <!--android:id="@+id/video_grab_self_lyric_view_stub"-->
-        <!--android:inflatedId="@+id/video_grab_self_lyric_view"-->
-        <!--android:layout="@layout/video_grab_self_sing_lyric_stub_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--/>-->
-
     <ViewStub
         android:id="@+id/grab_video_chorus_lyric_view_stub"
         android:inflatedId="@+id/video_grab_chorus_lyric_view"
-        android:layout="@layout/video_grab_chorus_self_sing_card_stub_layout"
+        android:layout="@layout/grab_video_chorus_self_sing_card_stub_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <ViewStub
+        android:id="@+id/grab_video_normal_lyric_view_stub"
+        android:inflatedId="@+id/grab_video_normal_lyric_view"
+        android:layout="@layout/grab_video_normal_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

@@ -57,8 +57,8 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
-import com.module.playways.grab.room.top.GrabTopContainerView;
-import com.module.playways.grab.room.top.GrabTopView;
+import com.module.playways.grab.room.top.GrabTopContentView;
+import com.module.playways.grab.room.top.GrabTopOpView;
 import com.module.playways.grab.room.view.GameTipsManager;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
@@ -150,6 +150,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     InputContainerView mInputContainerView;
 
     ViewGroup mBottomBgVp;
+
     GrabBottomContainerView mBottomContainerView;
 
 //    GiftTimerPresenter mGiftTimerPresenter;
@@ -160,7 +161,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     CommentView mCommentView;
 
-    GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
+//    GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
+    GrabTopOpView mGrabTopOpView;
+
+    GrabTopContentView mGrabTopContentView;
 
     ExImageView mPracticeFlagIv; // 练习中
 
@@ -235,6 +239,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabVideoUiController mGrabVideoUiController = new GrabVideoUiController(this);
 
     GrabBaseUiController mGrabBaseUiController = mGrabAudioUiController;
+
+    GrabWidgetAnimationController mGrabWidgetAnimationController = new GrabWidgetAnimationController(this);
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -852,19 +858,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initTopView() {
-        // 加上状态栏的高度
-        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
-
-        mTopContainerView = mRootView.findViewById(R.id.top_container_view);
-        mTopContainerView.setRoomData(mRoomData);
-
-        {
-            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
-            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-        }
-
-        mTopContainerView.setListener(mTopListener);
-        mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
+        mGrabTopOpView = mRootView.findViewById(R.id.grab_top_op_view);
+        mGrabTopOpView.setRoomData(mRoomData);
+        mGrabTopContentView = mRootView.findViewById(R.id.grab_top_content_view);
+        mGrabTopContentView.setRoomData(mRoomData);
+        mGrabTopOpView.setListener(new GrabTopOpView.Listener() {
             @Override
             public void changeRoom() {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
@@ -956,21 +954,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 ToastUtils.showShort("camera");
             }
         });
-
         mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
+
+        // 加上状态栏的高度
+        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
+
+        {
+            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mGrabTopOpView.getLayoutParams();
+            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+        }
     }
 
     @Override
     public void updateGiftCount(int count, long ts) {
         UpdateMeiGuiFreeCountEvent.sendEvent(count, ts);
     }
-
-    GrabTopContainerView.Listener mTopListener = new GrabTopContainerView.Listener() {
-        @Override
-        public void onClickSkipGuide() {
-
-        }
-    };
 
     /**
      * 转场动画相关初始化
@@ -1199,7 +1197,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mRankingContainer.removeView(mOwnerBeginGameIv);
         }
         // 播放3秒导唱
-        mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.setVisibility(GONE);
         mSelfSingCardView.setVisibility(GONE);
         mMiniOwnerMicIv.setVisibility(GONE);
@@ -1231,7 +1228,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 }
             });
         }
-        mTopContainerView.setModeGrab();
+        mGrabTopContentView.setModeGrab();
     }
 
     void onSongInfoCardPlayOver(String from, PendingPlaySongCardData pendingPlaySongCardData) {
@@ -1259,7 +1256,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mCorePresenter.stopGuide();
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         // 第二轮不播这个动画
-        mTopContainerView.setModeSing();
+        mGrabTopContentView.setModeSing();
         mSongInfoCardView.hide();
 
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
@@ -1288,9 +1285,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     @Override
     public void singByOthers() {
         removeAllEnsureMsg();
-        mTopContainerView.setVisibility(View.VISIBLE);
         mCorePresenter.stopGuide();
-        mTopContainerView.setModeSing();
+        mGrabTopContentView.setModeSing();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("singByOthers");
         mGrabOpBtn.setGrabPreRound(false);
@@ -1398,7 +1394,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mMiniOwnerMicIv.setVisibility(GONE);
         removeNoAccSrollTipsView();
         removeGrabSelfSingTipView();
-        mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("roundOver");
@@ -1559,7 +1554,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mSingBeginTipsCardView.setVisibility(GONE);
         mRoundOverCardView.setVisibility(GONE);
         mGrabGameOverView.setVisibility(View.VISIBLE);
-        mTopContainerView.onGameFinish();
         mGrabGameOverView.starAnimation(new SVGAListener() {
             @Override
             public void onFinished() {

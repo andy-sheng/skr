@@ -45,11 +45,11 @@ public class PKSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mPkSelfSingLyricView = mParentView.findViewById(R.id.pk_self_sing_lyric_view);
+        ViewStub viewStub = mParentView.findViewById(R.id.pk_self_sing_lyric_view_stub);
+        mPkSelfSingLyricView = new SelfSingLyricView(viewStub,mRoomData);
         mPkSingCardView = mParentView.findViewById(R.id.pk_sing_card_view);
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mListener);
-        mPkSelfSingLyricView.setRoomData(mRoomData);
         mPkSingCardView.setRoomData(mRoomData);
     }
 
@@ -115,7 +115,6 @@ public class PKSelfSingCardView extends ExViewStub {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-        mPkSelfSingLyricView.initLyric();
         int totalTs = infoModel.getSingTotalMs();
         mPkSelfSingLyricView.playWithAcc(infoModel, totalTs);
         mSingCountDownView.startPlay(0, totalTs, true);

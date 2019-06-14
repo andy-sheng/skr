@@ -6,12 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/view_34_dp"
     android:orientation="vertical"
-    tools:parentTag="android.widget.FrameLayout">
-
-    <RelativeLayout
-        android:id="@+id/op_container"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_32_dp">
+    tools:parentTag="android.widget.RelativeLayout">
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_change_room"
@@ -91,6 +86,5 @@
             android:textStyle="bold"
             app:bl_corners_radius="@dimen/view_12_dp"
             app:bl_solid_color="#7E8AE6" />
-    </RelativeLayout>
 
 </merge>

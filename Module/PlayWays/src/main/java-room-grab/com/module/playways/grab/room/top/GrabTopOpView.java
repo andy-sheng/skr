@@ -14,10 +14,8 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.view.chorus.VideoChorusSelfSingCardView;
-import com.module.playways.grab.room.view.normal.VideoNormalSelfSingCardView;
 
-public class GrabTopView extends FrameLayout {
+public class GrabTopOpView extends RelativeLayout {
 
     ExTextView mTvChangeRoom;
 
@@ -36,21 +34,18 @@ public class GrabTopView extends FrameLayout {
     AnimatorSet mAnimatorSet;  //金币加减的动画
     AnimatorSet mHzAnimatorSet;  //金币加减的动画
 
-    VideoChorusSelfSingCardView mVideoChorusSelfSingCardView;
-    VideoNormalSelfSingCardView mVideoNormalSelfSingCardView;
-    RelativeLayout mOpContainer;
 
-    public GrabTopView(Context context) {
+    public GrabTopOpView(Context context) {
         super(context);
         init();
     }
 
-    public GrabTopView(Context context, AttributeSet attrs) {
+    public GrabTopOpView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GrabTopView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GrabTopOpView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -61,7 +56,6 @@ public class GrabTopView extends FrameLayout {
 
     public void init() {
         inflate(getContext(), R.layout.grab_top_view, this);
-        mOpContainer = (RelativeLayout) findViewById(R.id.op_container);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mCameraIv = (ImageView) findViewById(R.id.camera_iv);
         mGameRuleIv = (ImageView) findViewById(R.id.game_rule_iv);
@@ -144,8 +138,6 @@ public class GrabTopView extends FrameLayout {
             setChangeRoomBtnVisiable(false);
             mIvVoiceSetting.setVisibility(GONE);
         }
-        mVideoNormalSelfSingCardView = new VideoNormalSelfSingCardView(findViewById(R.id.video_grab_self_lyric_view_stub),mGrabRoomData);
-        mVideoChorusSelfSingCardView = new VideoChorusSelfSingCardView(findViewById(R.id.grab_video_chorus_lyric_view_stub),mGrabRoomData);
     }
 
     /**

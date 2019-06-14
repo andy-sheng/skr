@@ -39,6 +39,18 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
         }
     }
 
+    public int getVisibility() {
+        if (mParentView != null) {
+            return mParentView.getVisibility();
+        } else {
+            return View.GONE;
+        }
+    }
+
+    public View getRealView() {
+        return mParentView;
+    }
+
     @Override
     public void onViewAttachedToWindow(View v) {
 
@@ -48,4 +60,6 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
     public void onViewDetachedFromWindow(View v) {
 
     }
+
+
 }

@@ -10,8 +10,6 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
-import com.module.playways.grab.room.view.normal.view.VideoSelfSingLyricView;
 
 /**
  * 你的主场景歌词
@@ -21,7 +19,7 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
 
     GrabRoomData mRoomData;
 
-    VideoSelfSingLyricView mSelfSingLyricView;
+    SelfSingLyricView mSelfSingLyricView;
 
     public VideoNormalSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
@@ -30,10 +28,8 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mSelfSingLyricView =  mParentView.findViewById(R.id.self_sing_lyric_view);
-        if (mSelfSingLyricView != null) {
-            mSelfSingLyricView.setRoomData(mRoomData);
-        }
+        ViewStub viewStub = mParentView.findViewById(R.id.grab_video_self_sing_lyric_view_stub);
+        mSelfSingLyricView = new SelfSingLyricView(viewStub, mRoomData);
     }
 
     @Override
@@ -53,7 +49,7 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
             return;
         }
         tryInflate();
-        mSelfSingLyricView.initLyric();
+        setVisibility(View.VISIBLE);
         if (infoModel.getMusic() == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;

@@ -25,7 +25,11 @@ import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
+import com.module.playways.grab.room.event.SomeOneGrabEvent;
+import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
@@ -48,7 +52,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GrabPlayerRv2 extends RelativeLayout {
+public class GrabTopContentView extends RelativeLayout {
     public final static String TAG = "GrabPlayerRv2";
     public final static int PLAYER_COUNT = 7;
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
@@ -67,17 +71,17 @@ public class GrabPlayerRv2 extends RelativeLayout {
     volatile boolean mHasBurst = false;
 
 
-    public GrabPlayerRv2(Context context) {
+    public GrabTopContentView(Context context) {
         super(context);
         init();
     }
 
-    public GrabPlayerRv2(Context context, @Nullable AttributeSet attrs) {
+    public GrabTopContentView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GrabPlayerRv2(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GrabTopContentView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -95,42 +99,17 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mArrowIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mArrowIv.setEnabled(false);
-                if (mIsOpen) {
-                    close();
-                } else {
-                    open();
-                }
+
             }
         });
     }
 
-    private void open() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", -U.getDisplayUtils().dip2px(42), 0);
-        animator.setDuration(300);
-        animator.start();
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mArrowIv.setEnabled(true);
-                mIsOpen = true;
-                mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbuzhankai));
-            }
-        });
-    }
-
-    private void close() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(GrabPlayerRv2.this, "translationY", 0, -U.getDisplayUtils().dip2px(42));
-        animator.setDuration(300);
-        animator.start();
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mArrowIv.setEnabled(true);
-                mIsOpen = false;
-                mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbushouqi));
-            }
-        });
+    public void setArrowIcon(boolean open) {
+        if(open){
+            mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbushouqi));
+        }else{
+            mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbuzhankai));
+        }
     }
 
     private void addChildView() {
@@ -147,7 +126,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             vp.grabTopItemView.setToPlaceHolder();
             vp.SVGAImageView = new SVGAImageView(getContext());
             LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
-            GrabPlayerRv2.this.addView(vp.SVGAImageView, lp);
+            GrabTopContentView.this.addView(vp.SVGAImageView, lp);
             mGrabTopItemViewArrayList.add(vp);
         }
         resetAllGrabTopItemView();
@@ -701,6 +680,27 @@ public class GrabPlayerRv2 extends RelativeLayout {
             }
         }
         EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneGrabEvent event) {
+        grap(event.mWantSingerInfo);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSomeOneLightOffEvent event) {
+        lightOff(event.uid);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSomeOneLightBurstEvent event) {
+        toBurstState();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneOnlineChangeEvent event) {
+        onlineChange(event.playerInfoModel);
     }
 
     static class VP {

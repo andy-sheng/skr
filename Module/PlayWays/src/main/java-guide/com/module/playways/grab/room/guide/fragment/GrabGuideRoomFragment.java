@@ -34,7 +34,7 @@ import com.module.playways.grab.room.guide.IGrabGuideView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.top.GrabTopContainerView;
-import com.module.playways.grab.room.top.GrabTopView;
+import com.module.playways.grab.room.top.GrabTopOpView;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabGiveupView;

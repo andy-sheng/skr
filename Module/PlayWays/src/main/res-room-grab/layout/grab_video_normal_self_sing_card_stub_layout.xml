@@ -5,11 +5,11 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-
-    <com.module.playways.grab.room.view.normal.view.VideoSelfSingLyricView
-        android:id="@+id/self_sing_lyric_view"
+    <ViewStub
+        android:id="@+id/grab_video_self_sing_lyric_view_stub"
+        android:inflatedId="@+id/grab_video_self_sing_lyric_view"
+        android:layout="@layout/grab_video_self_sing_lyric_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
 </RelativeLayout>
