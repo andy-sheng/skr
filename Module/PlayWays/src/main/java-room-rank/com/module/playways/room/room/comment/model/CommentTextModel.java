@@ -26,6 +26,7 @@ public class CommentTextModel extends CommentModel {
 
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
+            commentModel.setUserName(sender.getNicknameRemark());
             commentModel.setAvatarColor(Color.WHITE);
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
