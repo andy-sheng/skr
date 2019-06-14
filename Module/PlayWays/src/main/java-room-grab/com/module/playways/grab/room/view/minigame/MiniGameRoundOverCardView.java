@@ -74,38 +74,40 @@ public class MiniGameRoundOverCardView extends ExViewStub {
      * 离场动画
      */
     public void animationLeave() {
-        if (mParentView != null && mParentView.getVisibility() == View.VISIBLE) {
-            if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
-                mLeaveTranslateAnimation.setDuration(200);
-            }
-            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
+        if (mParentView != null) {
+            if (mParentView.getVisibility() == View.VISIBLE) {
+                if (mLeaveTranslateAnimation == null) {
+                    mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                    mLeaveTranslateAnimation.setDuration(200);
                 }
+                mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    mParentView.clearAnimation();
-                    setVisibility(View.GONE);
-                    if (mSVGAListener != null) {
-                        mSVGAListener.onFinished();
                     }
 
-                }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mParentView.clearAnimation();
+                        setVisibility(View.GONE);
+                        if (mSVGAListener != null) {
+                            mSVGAListener.onFinished();
+                        }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
+                    }
 
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mParentView.startAnimation(mLeaveTranslateAnimation);
+            } else {
+                mParentView.clearAnimation();
+                setVisibility(View.GONE);
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
-            });
-            mParentView.startAnimation(mLeaveTranslateAnimation);
-        } else {
-            mParentView.clearAnimation();
-            setVisibility(View.GONE);
-            if (mSVGAListener != null) {
-                mSVGAListener.onFinished();
             }
         }
     }

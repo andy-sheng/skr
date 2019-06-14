@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:inflatedId="@+id/normal_round_over_card_view"
-        android:layout="@layout/grab_normal_round_over_card_layout"
+        android:layout="@layout/grab_normal_round_over_card_stub_layout"
         android:visibility="gone" />
 
     <ViewStub
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:inflatedId="@+id/pk_round_over_card_view"
-        android:layout="@layout/grab_pk_round_over_card_layout"
+        android:layout="@layout/grab_pk_round_over_card_stub_layout"
         android:visibility="gone" />
 
     <ViewStub
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:inflatedId="@+id/mini_game_over_card_view"
-        android:layout="@layout/grab_mini_game_over_card_layout"
+        android:layout="@layout/grab_mini_game_over_card_stub_layout"
         android:visibility="gone" />
 
 </merge>
