@@ -33,7 +33,7 @@ public class SpeakingDotAnimationView extends View {
     }
 
     protected void init() {
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.WHITE);
         mR = U.getDisplayUtils().dip2px(3);

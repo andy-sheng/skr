@@ -46,7 +46,7 @@ public class WebProgress extends BaseIndicatorView implements BaseProgressSpec {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
 
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mColor = Color.parseColor("#1aad19");
 
         mPaint.setAntiAlias(true);

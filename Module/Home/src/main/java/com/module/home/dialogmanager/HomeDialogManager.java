@@ -1,6 +1,7 @@
 package com.module.home.dialogmanager;
 
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.log.MyLog;
@@ -31,20 +32,43 @@ public class HomeDialogManager {
                 } else {
                     DialogPlus dialogPlus = cur.mDialogPlus;
                     if (dialogPlus != null) {
-                        OnDismissListener oriListener = dialogPlus.onDismissListener;
-                        dialogPlus.onDismissListener = new OnDismissListener() {
-                            @Override
-                            public void onDismiss(@NonNull DialogPlus dialog) {
-                                MyLog.d(TAG, "onDismiss" + " dialog=" + dialog);
-                                if (oriListener != null) {
-                                    oriListener.onDismiss(dialog);
+                        if (dialogPlus.isDependActivityExit()) {
+                            MyLog.d(TAG, "accept" + "isDependActivityExit cur=" + cur);
+//                            OnDismissListener oriListener = dialogPlus.onDismissListener;
+//                            dialogPlus.onDismissListener = new OnDismissListener() {
+//                                @Override
+//                                public void onDismiss(@NonNull DialogPlus dialog) {
+//                                    MyLog.d(TAG, "onDismiss" + " dialog=" + dialog);
+//                                    if (oriListener != null) {
+//                                        oriListener.onDismiss(dialog);
+//                                    }
+//                                    if (mHasShowDialog) {
+//                                        mHasShowDialog = false;
+//                                        mObjectPlayControlTemplate.endCurrent(cur);
+//                                    }
+//                                }
+//                            };
+                            dialogPlus.mOnAttachStateChangeListener = new View.OnAttachStateChangeListener() {
+                                @Override
+                                public void onViewAttachedToWindow(View v) {
+
                                 }
-                                mHasShowDialog = false;
-                                mObjectPlayControlTemplate.endCurrent(cur);
-                            }
-                        };
-                        mHasShowDialog = true;
-                        return HomeDialogManager.this;
+
+                                @Override
+                                public void onViewDetachedFromWindow(View v) {
+                                    // 被移除了
+                                    if (mHasShowDialog) {
+                                        mHasShowDialog = false;
+                                        mObjectPlayControlTemplate.endCurrent(cur);
+                                    }
+                                }
+                            };
+                            mHasShowDialog = true;
+                            return HomeDialogManager.this;
+                        } else {
+                            MyLog.d(TAG, "accept" + "isDependActivityNotExit cur=" + cur);
+                            return HomeDialogManager.this;
+                        }
                     } else {
                         return null;
                     }
@@ -53,7 +77,7 @@ public class HomeDialogManager {
 
             @Override
             public void onStart(ExDialogData exDialogData, HomeDialogManager manager) {
-                if (exDialogData.mDialogPlus != null) {
+                if (exDialogData.mDialogPlus != null && exDialogData.mDialogPlus.isDependActivityExit()) {
                     exDialogData.mDialogPlus.show();
                 }
             }

@@ -66,6 +66,6 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
                 }
 
             }
-        }, this);
+        }, this,new ApiMethods.RequestControl("getStandBillBoards",ApiMethods.ControlType.CancelThis));
     }
 }

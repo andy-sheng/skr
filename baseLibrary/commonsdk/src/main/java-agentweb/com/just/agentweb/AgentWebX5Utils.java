@@ -489,7 +489,7 @@ public class AgentWebX5Utils {
     }
 
     //直接使用相册
-    public static Intent getIntentGetContentCompat(Context context, File file) {
+    public static Intent getIntentGetContentCompat() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("image/*");

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -110,10 +111,8 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     ClassicsHeader mClassicsHeader;
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
-    RelativeLayout mUserInfoArea;
+    ConstraintLayout mUserInfoArea;
     CommonTitleBar mTitlebar;
-    Toolbar mToolbar;
-    TextView mSrlNameTv;
 
     ExImageView mIvBack;
     ExImageView mMoreBtn;
@@ -126,19 +125,17 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     ExTextView mUseridTv;
     ExTextView mSignTv;
     TagFlowLayout mFlowlayout;
-    ExRelativeLayout mGameLayout;
+
     ImageView mPaiweiImg;
     BitmapTextView mRankNumTv;
     ImageView mSingendImg;
     BitmapTextView mSingendNumTv;
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
-
-    RelativeLayout mRankArea;
     TextView mCharmTv;
-//    ExTextView mRankText;
-//    ExImageView mRankDiffIv;
-//    ExImageView mMedalIv;
+
+    Toolbar mToolbar;
+    TextView mSrlNameTv;
 
     SlidingTabLayout mPersonTab;
     NestViewPager mPersonVp;
@@ -184,11 +181,13 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     }
 
     private void initMedalInfoArea() {
-        mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
+        mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
+        mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
+        mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
+        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
         mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
-//        mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
-//        mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
-//        mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
     }
 
 
@@ -197,7 +196,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.toolbar_layout);
-        mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
+        mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
         mSrlNameTv = (TextView) mRootView.findViewById(R.id.srl_name_tv);
@@ -383,13 +382,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
-        mGameLayout = (ExRelativeLayout) mRootView.findViewById(R.id.game_layout);
-        mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
-        mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
-        mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
-        mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
 
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override

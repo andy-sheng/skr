@@ -184,7 +184,7 @@ public class BitmapUtils {
         }
         Bitmap outBitmap = BitmapPoolAdapter.getBitmap(inBitmap.getWidth(), inBitmap.getHeight(), inBitmap.getConfig());
         Canvas canvas = new Canvas(outBitmap);
-        Paint paint = new Paint();
+        Paint paint = new com.common.view.ExPaint();
         paint.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(inBitmap, 0, 0, paint);
         return outBitmap;
@@ -201,7 +201,7 @@ public class BitmapUtils {
 //        Canvas c = new Canvas(newBmp);
 //
 //        // get the int for the colour which needs to be removed
-//        Paint paint = new Paint();// 去锯齿
+//        Paint paint = new com.common.view.ExPaint();// 去锯齿
 //        paint.setAntiAlias(true);// 防抖动
 //        paint.setDither(true);// 图像过滤
 //        paint.setFilterBitmap(true);

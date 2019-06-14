@@ -28,7 +28,7 @@ public class HexagonPostProcessor extends BasePostprocessor {
         Bitmap.Config localConfig = Bitmap.Config.ARGB_8888;
         Bitmap localBitmap = BitmapPoolAdapter.getBitmap(width, height, localConfig);
         Canvas localCanvas = new Canvas(localBitmap);
-        Paint localPaint = new Paint(1);
+        Paint localPaint = new com.common.view.ExPaint(1);
         localPaint.setColor(Color.BLACK);
         float centerX = width / 2;
         float centerY = height / 2;

@@ -1,19 +1,20 @@
 package com.module.playways.grab.room.songmanager.fragment;
 
-import android.os.Bundle;
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
+import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSONObject;
-import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.ex.ExFrameLayout;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.songmanager.adapter.RecommendSongAdapter;
@@ -25,25 +26,42 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.List;
 
-public class RecommendSongFragment extends BaseFragment {
-    public final static String TAG = "GrabSongManageFragment";
+import io.reactivex.disposables.Disposable;
+
+public class RecommendSongView extends FrameLayout {
+    public final static String TAG = "GrabSongManageView";
     private RecyclerView mRecyclerView;
     private RecommendTagModel mRecommendTagModel;
     RecommendSongAdapter mRecommendSongAdapter;
     GrabRoomServerApi mGrabRoomServerApi;
     SmartRefreshLayout mRefreshLayout;
+    Disposable mDisposable;
     int mOffset = 0;
     int mLimit = 20;
 
-    @Override
-    public int initView() {
-        return R.layout.recommend_song_fragment_layout;
+    public RecommendSongView(Context context) {
+        super(context);
+        initView();
     }
 
-    @Override
-    public void initData(@Nullable Bundle savedInstanceState) {
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
+    public RecommendSongView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initView();
+    }
+
+    public RecommendSongView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initView();
+    }
+
+    public void initView() {
+        inflate(getContext(), R.layout.recommend_song_fragment_layout, this);
+        initData();
+    }
+
+    public void initData() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
         mRecommendSongAdapter = new RecommendSongAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mRecommendSongAdapter);
@@ -65,9 +83,10 @@ public class RecommendSongFragment extends BaseFragment {
 
             }
         });
+    }
 
-        Bundle bundle = getArguments();
-        mRecommendTagModel = (RecommendTagModel) bundle.getSerializable("tag_model");
+    public void setData(RecommendTagModel recommendTagModel) {
+        mRecommendTagModel = recommendTagModel;
         getSongList();
     }
 
@@ -76,7 +95,12 @@ public class RecommendSongFragment extends BaseFragment {
             MyLog.e(TAG, "getSongList mRecommendTagModel is null");
             return;
         }
-        ApiMethods.subscribe(mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), mOffset, mLimit), new ApiObserver<ApiResult>() {
+
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+
+        mDisposable = ApiMethods.subscribe(mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 mRefreshLayout.finishLoadMore();
@@ -96,16 +120,12 @@ public class RecommendSongFragment extends BaseFragment {
                 }
 
             }
-        }, this);
+        });
     }
 
-    @Override
-    protected boolean onBackPressed() {
-        return super.onBackPressed();
-    }
-
-    @Override
-    public boolean useEventBus() {
-        return false;
+    public void destroy() {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
     }
 }

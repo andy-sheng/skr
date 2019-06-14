@@ -33,7 +33,7 @@ public class PolyLineItemView extends View {
     private String label;
     private float lastValue;
     private float nextValue;
-    private Paint mPaint = new Paint();
+    private Paint mPaint = new com.common.view.ExPaint();
     private float viewHeight;
     private float viewWidth;
 
@@ -94,7 +94,7 @@ public class PolyLineItemView extends View {
         pointY = (1 - (currentValue / (maxValue - minValue))) * (pointBottomY - pointTopY) + pointTopY;
 
         if (mGradientPaint == null) {
-            mGradientPaint = new Paint();
+            mGradientPaint = new com.common.view.ExPaint();
             mGradientPaint.setShader(new LinearGradient(0, 0, viewWidth, viewHeight, getResources().getColor(R.color.dk_color_3300BFFF),
                     getResources().getColor(R.color.dk_color_33434352), Shader.TileMode.CLAMP));
         }

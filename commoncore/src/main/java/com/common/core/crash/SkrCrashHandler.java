@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeoutException;
 
 import io.reactivex.annotations.NonNull;
+import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -53,6 +54,9 @@ public class SkrCrashHandler implements UncaughtExceptionHandler {
         return sMyCrashHandler;
     }
 
+    /**
+     * 保证这个是最后执行的 ，发生异常时第一个处理
+     */
     public void register() {
         MyLog.d(TAG, "register");
         mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -60,14 +64,13 @@ public class SkrCrashHandler implements UncaughtExceptionHandler {
          * 其实没什么用，handler 已经被别的sdk注册了
          */
         Thread.setDefaultUncaughtExceptionHandler(this);
-
         //TODO 看的实现 RxJavaPlugins.onError
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
-            public void accept(Throwable throwable) throws Exception {
+            public void accept(Throwable throwable) {
                 MyLog.d(TAG, throwable);
                 if (BuildConfig.DEBUG) {
-                    if (throwable instanceof IgnoreException || throwable.getCause() instanceof IgnoreException) {
+                    if (throwable!=null && throwable.getCause() instanceof IgnoreException) {
 
                     } else {
                         uncaught(new Throwable("来自的rx的异常,不会导致崩溃，但要分析下原因是否合理", throwable));

@@ -416,6 +416,19 @@ public class AgoraRTCAdapter {
                                              int channels,// 2
                                              int samplesPerSec//44100
                 ) {
+                    if (VERBOSE) {
+                        Log.d(TAG, "onRecordFrame" +
+                                " samples=" + samples +
+                                " numOfSamples=" + numOfSamples +
+                                " bytesPerSample=" + bytesPerSample +
+                                " channels=" + channels +
+                                " samplesPerSec=" + samplesPerSec);
+                    }
+
+                    if (samples == null || numOfSamples <= 0 || samplesPerSec == 0) {
+                        return true;
+                    }
+
                     long curTime = System.nanoTime() / 1000 / 1000;
                     if (mLocalAudioFormat == null) {
                         MyLog.i(TAG, "mLocalAudioFormat changed");
@@ -465,6 +478,10 @@ public class AgoraRTCAdapter {
                                 " bytesPerSample=" + bytesPerSample +
                                 " channels=" + channels +
                                 " samplesPerSec=" + samplesPerSec);
+                    }
+
+                    if (samples == null || numOfSamples <= 0 || samplesPerSec == 0) {
+                        return true;
                     }
 
                     long curTime = System.nanoTime() / 1000 / 1000;

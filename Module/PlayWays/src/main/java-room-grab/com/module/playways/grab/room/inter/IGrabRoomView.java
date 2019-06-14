@@ -74,4 +74,7 @@ public interface IGrabRoomView {
 
     //切换房间了，把所有的板子Gone掉，重新显示
     void hideAllCardView();
+
+    //开始实名认证
+    void beginOuath();
 }

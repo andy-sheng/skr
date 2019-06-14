@@ -154,7 +154,7 @@ public class RoundRectangleView extends View {
     }
 
     public void init() {
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setAntiAlias(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(mProgressWidth);

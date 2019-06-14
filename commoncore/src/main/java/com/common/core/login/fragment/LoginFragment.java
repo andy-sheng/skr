@@ -69,17 +69,17 @@ public class LoginFragment extends BaseFragment {
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
-    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission(){
+    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission() {
         @Override
         public void onRequestPermissionFailureWithAskNeverAgain1(Activity activity, boolean goSettingIfRefuse) {
             super.onRequestPermissionFailureWithAskNeverAgain1(activity, goSettingIfRefuse);
-            StatisticsAdapter.recordCountEvent("signup","sdcard_refuse",null);
+            StatisticsAdapter.recordCountEvent("signup", "sdcard_refuse", null);
         }
 
         @Override
         public void onRequestPermissionFailure1(Activity activity, boolean goSettingIfRefuse) {
             // 点击拒绝但不是不再询问 不弹去设置的弹窗
-            StatisticsAdapter.recordCountEvent("signup","sdcard_refuse",null);
+            StatisticsAdapter.recordCountEvent("signup", "sdcard_refuse", null);
         }
     };
 
@@ -110,7 +110,7 @@ public class LoginFragment extends BaseFragment {
                     return;
                 }
                 final HashMap map = new HashMap();
-                map.put("type","Phone");
+                map.put("type", "Phone");
                 StatisticsAdapter.recordCountEvent("signup", "click", map);
                 mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                     @Override
@@ -121,7 +121,7 @@ public class LoginFragment extends BaseFragment {
                                 .setHasAnimation(true)
                                 .build());
                     }
-                },true);
+                }, true);
             }
         });
 
@@ -132,7 +132,7 @@ public class LoginFragment extends BaseFragment {
                     return;
                 }
                 final HashMap map = new HashMap();
-                map.put("type","WeiXin");
+                map.put("type", "WeiXin");
                 StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
                     StatisticsAdapter.recordCountEvent("signup", "noinstall", map);
@@ -152,7 +152,7 @@ public class LoginFragment extends BaseFragment {
                                 }
                             }, true);
                         }
-                    },true);
+                    }, true);
                 } else {
                     mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
@@ -161,7 +161,7 @@ public class LoginFragment extends BaseFragment {
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
-                    },true);
+                    }, true);
                 }
             }
         });
@@ -173,7 +173,7 @@ public class LoginFragment extends BaseFragment {
                     return;
                 }
                 final HashMap map = new HashMap();
-                map.put("type","QQ");
+                map.put("type", "QQ");
                 StatisticsAdapter.recordCountEvent("signup", "click", map);
                 if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
                     StatisticsAdapter.recordCountEvent("signup", "noinstall", map);
@@ -193,7 +193,7 @@ public class LoginFragment extends BaseFragment {
                                 }
                             }, true);
                         }
-                    },true);
+                    }, true);
                 } else {
                     mSkrSdcardPermission.ensurePermission(getActivity(), new Runnable() {
                         @Override
@@ -202,7 +202,7 @@ public class LoginFragment extends BaseFragment {
                             showLoginingBar(true);
                             UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
-                    },true);
+                    }, true);
                 }
             }
         });
@@ -224,7 +224,7 @@ public class LoginFragment extends BaseFragment {
         @Override
         public void onStart(SHARE_MEDIA platform) {
             final HashMap map = new HashMap();
-            map.put("type",platform.toString());
+            map.put("type", platform.toString());
             StatisticsAdapter.recordCountEvent("signup", "shouquan_begin", map);
         }
 
@@ -233,15 +233,15 @@ public class LoginFragment extends BaseFragment {
             MyLog.d(TAG, "onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
             showLoginingBar(false);
             final HashMap map = new HashMap();
-            map.put("type",platform.toString());
+            map.put("type", platform.toString());
             StatisticsAdapter.recordCountEvent("signup", "shouquan_success", map);
             if (platform == SHARE_MEDIA.WEIXIN) {
-                Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
+                U.getToastUtil().showLong("微信授权成功");
                 String accessToken = data.get("access_token");
                 String openid = data.get("openid");
                 loginWithThirdPard(WX_MODE, accessToken, openid);
             } else if (platform == SHARE_MEDIA.QQ) {
-                Toast.makeText(getContext(), "QQ授权成功", Toast.LENGTH_LONG).show();
+                U.getToastUtil().showLong("QQ授权成功");
                 String accessToken = data.get("accessToken");
                 String openid = data.get("openid");
                 loginWithThirdPard(QQ_MODE, accessToken, openid);
@@ -253,12 +253,12 @@ public class LoginFragment extends BaseFragment {
             MyLog.d(TAG, "onError" + " platform=" + platform + " action=" + action + " t=" + t);
             showLoginingBar(false);
             final HashMap map = new HashMap();
-            map.put("type",platform.toString());
+            map.put("type", platform.toString());
             StatisticsAdapter.recordCountEvent("signup", "shouquan_failed", map);
             if (platform == SHARE_MEDIA.WEIXIN) {
-                Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
+                U.getToastUtil().showLong("微信授权失败：" + t.getMessage());
             } else if (platform == SHARE_MEDIA.QQ) {
-                Toast.makeText(getContext(), "QQ授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
+                U.getToastUtil().showLong("QQ授权失败：" + t.getMessage());
             }
         }
 
@@ -292,7 +292,7 @@ public class LoginFragment extends BaseFragment {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         StatisticsAdapter.recordCountEvent("login", "expose", null);
-        StatisticsAdapter.recordCountEvent("signup", "expose", null,true);
+        StatisticsAdapter.recordCountEvent("signup", "expose", null, true);
     }
 
     @Override

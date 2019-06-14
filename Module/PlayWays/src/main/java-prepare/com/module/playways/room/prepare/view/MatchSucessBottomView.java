@@ -27,7 +27,7 @@ public class MatchSucessBottomView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint p = new Paint();
+        Paint p = new com.common.view.ExPaint();
 
         p.setColor(0xFFFFED61);
         //实例化路径

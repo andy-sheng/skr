@@ -466,7 +466,7 @@ public abstract class AbstractLrcView extends View {
             mEnableVerbatim = typedArray.getBoolean(R.styleable.lrc_view_ly_eable_verbatim, true);
         }
         //默认画笔
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
         mFontSize = U.getDisplayUtils().dip2px(typedArray.getDimension(R.styleable.lrc_view_ly_paint_text_size, 10));
@@ -474,7 +474,7 @@ public abstract class AbstractLrcView extends View {
         mPaint.setTextSize(mFontSize);
 
         //高亮画笔
-        mPaintHL = new Paint();
+        mPaintHL = new com.common.view.ExPaint();
         mPaintHL.setDither(true);
         mPaintHL.setAntiAlias(true);
         float hlSize = U.getDisplayUtils().dip2px(typedArray.getDimension(R.styleable.lrc_view_ly_high_light_paint_text_size, 10));
@@ -482,7 +482,7 @@ public abstract class AbstractLrcView extends View {
         mPaintHL.setTextSize(hlSize);
 
         //高亮画笔,画不高亮的部分
-        mSubPaintHL = new Paint();
+        mSubPaintHL = new com.common.view.ExPaint();
         mSubPaintHL.setDither(true);
         mSubPaintHL.setAntiAlias(true);
         mSubPaintHL.setFakeBoldText(true);
@@ -491,7 +491,7 @@ public abstract class AbstractLrcView extends View {
         mSubPaintHL.setTextSize(hlSize);
 
         //轮廓画笔
-        mPaintOutline = new Paint();
+        mPaintOutline = new com.common.view.ExPaint();
         mPaintOutline.setDither(true);
         mPaintOutline.setAntiAlias(true);
         int color = typedArray.getColor(R.styleable.lrc_view_ly_outline_paint_color, Color.BLACK);
@@ -499,32 +499,32 @@ public abstract class AbstractLrcView extends View {
         mPaintOutline.setTextSize(mFontSize);
         typedArray.recycle();
         //额外歌词画笔
-        mExtraLrcPaint = new Paint();
+        mExtraLrcPaint = new com.common.view.ExPaint();
         mExtraLrcPaint.setDither(true);
         mExtraLrcPaint.setAntiAlias(true);
         mExtraLrcPaint.setTextSize(mExtraLrcFontSize);
 
         //额外高亮歌词画笔
-        mExtraLrcPaintHL = new Paint();
+        mExtraLrcPaintHL = new com.common.view.ExPaint();
         mExtraLrcPaintHL.setDither(true);
         mExtraLrcPaintHL.setAntiAlias(true);
         mExtraLrcPaintHL.setTextSize(mExtraLrcFontSize);
 
         //额外画笔轮廓
-        mExtraLrcPaintOutline = new Paint();
+        mExtraLrcPaintOutline = new com.common.view.ExPaint();
         mExtraLrcPaintOutline.setDither(true);
         mExtraLrcPaintOutline.setAntiAlias(true);
         mExtraLrcPaintOutline.setColor(Color.BLACK);
         mExtraLrcPaintOutline.setTextSize(mExtraLrcFontSize);
 
         //绘画去搜索歌词画笔
-        mGotoSearchTextPaint = new Paint();
+        mGotoSearchTextPaint = new com.common.view.ExPaint();
         mGotoSearchTextPaint.setDither(true);
         mGotoSearchTextPaint.setAntiAlias(true);
         mGotoSearchTextPaint.setTextSize(mFontSize);
 
         //绘画去搜索歌词矩形画笔
-        mGotoSearchRectPaint = new Paint();
+        mGotoSearchRectPaint = new com.common.view.ExPaint();
         mGotoSearchRectPaint.setDither(true);
         mGotoSearchRectPaint.setAntiAlias(true);
         mGotoSearchRectPaint.setStrokeWidth(2);

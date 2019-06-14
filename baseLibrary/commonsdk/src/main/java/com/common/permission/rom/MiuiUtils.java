@@ -212,6 +212,11 @@ public class MiuiUtils {
             GoSettingPage.getAppDetailSettingIntent(context);
             return;
         }
-        context.startActivity(intent);
+
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            GoSettingPage.getAppDetailSettingIntent(context);
+        }
     }
 }

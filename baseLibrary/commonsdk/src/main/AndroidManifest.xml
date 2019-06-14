@@ -163,8 +163,10 @@
         <!--android:launchMode="standard"-->
         <!--android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>-->
         <!---->
+        <!-- 尝试修复hwui 问题 -->
         <activity
             android:name="com.imagebrowse.big.BigImageBrowseActivity"
+            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
 
         <!--魅族push应用定义消息receiver声明 -->
@@ -225,6 +227,16 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
                 <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.zq.live" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.common.jiguang.OpReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
                 <category android:name="com.zq.live" />
             </intent-filter>
         </receiver>

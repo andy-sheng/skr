@@ -49,8 +49,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
-
 /**
  * 排行榜
  */
@@ -492,7 +490,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     @Override
     public void destroy() {
         super.destroy();
-        mPopupWindow.dismiss();
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+        }
         U.getSoundUtils().release(TAG);
     }
 

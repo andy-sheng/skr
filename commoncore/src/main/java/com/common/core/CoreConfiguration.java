@@ -83,7 +83,7 @@ public class CoreConfiguration implements ConfigModule {
                     public void run() {
                         SkrCrashHandler.getInstance().register();
                     }
-                },3000);
+                },20000);
 
             }
 

@@ -34,7 +34,7 @@ public class CircleAnimationView extends View {
     int mStrokeWitdh = U.getDisplayUtils().dip2px(2);
 
     void init() {
-        mPaint = new Paint();//这个是画矩形的画笔，方便大家理解这个圆弧
+        mPaint = new com.common.view.ExPaint();//这个是画矩形的画笔，方便大家理解这个圆弧
         mPaint.setStyle(Paint.Style.STROKE);
 
         mPaint.setAntiAlias(true);//取消锯齿

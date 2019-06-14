@@ -32,10 +32,10 @@ public class LineRender {
     private float minValue;//最低值
     private String label;//显示值
     private float nextValue;//下一个值
-    private Paint mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mGradientPaint = new Paint();
-    private Paint mPointPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mLinePaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mLabelPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mGradientPaint = new com.common.view.ExPaint();
+    private Paint mPointPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
     private float viewHeight;
     private float viewWidth;
 

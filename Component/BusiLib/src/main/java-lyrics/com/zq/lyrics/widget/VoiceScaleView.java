@@ -79,28 +79,28 @@ public class VoiceScaleView extends View {
 
         setLayerType(LAYER_TYPE_SOFTWARE, null);
 
-        mLeftBgPaint = new Paint();
+        mLeftBgPaint = new com.common.view.ExPaint();
         mLeftBgPaint.setColor(mLeftBgPaintColor);
 
-        mRightBgPaint = new Paint();
+        mRightBgPaint = new com.common.view.ExPaint();
         mRightBgPaint.setColor(mRightBgPaintColor);
 
-        mRedLinePaint = new Paint();
+        mRedLinePaint = new com.common.view.ExPaint();
         mRedLinePaint.setColor(mRedLinePaintColor);
 
-        mRedOutpaint = new Paint(); //外圈
+        mRedOutpaint = new com.common.view.ExPaint(); //外圈
         mRedOutpaint.setColor(mRedOutpaintColor);
         mRedOutpaint.setAntiAlias(true);
 
-        mRedInnerpaint = new Paint(); //内圈
+        mRedInnerpaint = new com.common.view.ExPaint(); //内圈
         mRedInnerpaint.setColor(mRedInnerpaintColor);
         mRedInnerpaint.setAntiAlias(true);
 
-        mLeftPaint = new Paint();
+        mLeftPaint = new com.common.view.ExPaint();
         mLeftPaint.setMaskFilter(new BlurMaskFilter(U.getDisplayUtils().dip2px(5), BlurMaskFilter.Blur.SOLID));
         mLeftPaint.setColor(mLeftPaintColor);
 
-        mRightPaint = new Paint();
+        mRightPaint = new com.common.view.ExPaint();
         mRightPaint.setColor(mRightPaintColor);
     }
 

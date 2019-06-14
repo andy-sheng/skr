@@ -1,11 +1,13 @@
 package com.module.playways.grab.room;
 
+import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
@@ -30,6 +32,7 @@ public interface GrabRoomServerApi {
      * @param body 游戏标识 gameID (必选)
      * @return
      */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v2/room/join-room")
     Observable<ApiResult> joinGrabRoom(@Body RequestBody body);
 
@@ -43,6 +46,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     //创建房间
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v2/room/create-room")
     Observable<ApiResult> createRoom(@Body RequestBody body);
 
@@ -58,6 +62,7 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v2/room/exit-room")
     Observable<ApiResult> exitRoom(@Body RequestBody body);
 
@@ -70,6 +75,7 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v2/room/change-room")
     Observable<ApiResult> changeRoom(@Body RequestBody body);
 
@@ -183,14 +189,17 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.stand.inframe.mobi/v1/stand/want-sing-chance")
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v2/stand/want-sing-chance")
     Observable<ApiResult> wangSingChance(@Body RequestBody body);
 
     //放弃演唱
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/give-up")
     Observable<ApiResult> giveUpSing(@Body RequestBody body);
 
     //房主控制结束小游戏
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-mini-game")
     Observable<ApiResult> stopMiniGameByOwner(@Body RequestBody body);
 
@@ -200,6 +209,7 @@ public interface GrabRoomServerApi {
      *             "roundSeq": 0
      * @return
      */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/req-kick-user")
     Observable<ApiResult> reqKickUser(@Body RequestBody body);
 
@@ -212,8 +222,9 @@ public interface GrabRoomServerApi {
      *             "sourceUserID": 0
      * @return
      */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/agree-kick-user")
-    Observable<ApiResult> repKickUser(@Body RequestBody body);
+    Observable<ApiResult> rspKickUser(@Body RequestBody body);
 
 
     /**
@@ -381,6 +392,7 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.api.inframe.mobi/v1/redbag/trigger-newbie-task")
     Observable<ApiResult> triggerNewBieTask(@Body RequestBody body);
 
@@ -401,6 +413,7 @@ message STCommitSegmentResultReq
     string sign      = 10; //[必传]签名 md5(skrer|userID|itemID|score|no|gameID|mainLevel|singSecond|roundSeq|timeMs)
 }
       */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/pk-commit-segment-result")
     Observable<ApiResult> sendPkPerSegmentResult(@Body RequestBody body);
 
@@ -426,6 +439,7 @@ message STCommitSegmentResultReq
      *
      * @return
      */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @GET("http://dev.api.inframe.mobi//v1/bonus/ask-for-flower")
     Observable<ApiResult> punch(@Query("timestamp") long offset, @Query("signV2") String signV2);
 }
