@@ -1,33 +1,29 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.ExViewStub;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
-import com.module.playways.R;
+import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.module.playways.grab.room.view.normal.view.VideoSelfSingLyricView;
 
 /**
  * 你的主场景歌词
  */
-public class NormalSelfSingCardView extends ExViewStub {
+public class VideoNormalSelfSingCardView extends ExViewStub {
     public final static String TAG = "SelfSingCardView2";
 
     GrabRoomData mRoomData;
 
-    SelfSingLyricView mSelfSingLyricView;
-    SingCountDownView2 mSingCountDownView;
+    VideoSelfSingLyricView mSelfSingLyricView;
 
-    public NormalSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+    public VideoNormalSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
         mRoomData = roomData;
     }
@@ -35,7 +31,6 @@ public class NormalSelfSingCardView extends ExViewStub {
     @Override
     protected void init(View parentView) {
         mSelfSingLyricView =  mParentView.findViewById(R.id.self_sing_lyric_view);
-        mSingCountDownView =  mParentView.findViewById(R.id.sing_count_down_view);
         if (mSelfSingLyricView != null) {
             mSelfSingLyricView.setRoomData(mRoomData);
         }
@@ -74,14 +69,12 @@ public class NormalSelfSingCardView extends ExViewStub {
         } else {
             mSelfSingLyricView.playWithAcc(infoModel, totalTs);
         }
-        mSingCountDownView.startPlay(0, totalTs, true);
     }
 
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == View.GONE) {
-            mSingCountDownView.reset();
             mSelfSingLyricView.reset();
         }
     }
@@ -96,9 +89,6 @@ public class NormalSelfSingCardView extends ExViewStub {
 
     public void setListener(SelfSingCardView.Listener l) {
         mListener = l;
-        if (mSingCountDownView != null) {
-            mSingCountDownView.setListener(mListener);
-        }
     }
 
 }

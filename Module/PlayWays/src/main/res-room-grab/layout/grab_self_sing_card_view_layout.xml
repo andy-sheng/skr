@@ -6,8 +6,10 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.grab.room.view.normal.NormalSelfSingCardView
-        android:id="@+id/self_sing_card_view"
+    <ViewStub
+        android:id="@+id/normal_self_sing_card_view_stub"
+        android:inflatedId="@+id/normal_self_sing_card_view"
+        android:layout="@layout/grab_normal_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_container_view"
@@ -15,8 +17,10 @@
         android:layout_marginTop="@dimen/view_d_185_dp"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.chorus.ChorusSelfSingCardView
-        android:id="@+id/chorus_self_sing_card_view"
+    <ViewStub
+        android:id="@+id/chorus_self_sing_card_view_stub"
+        android:inflatedId="@+id/chorus_self_sing_card_view"
+        android:layout="@layout/grab_chorus_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_container_view"
@@ -24,8 +28,10 @@
         android:layout_marginTop="@dimen/view_d_185_dp"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.pk.PKSelfSingCardView
-        android:id="@+id/pk_self_sing_card_view"
+    <ViewStub
+        android:id="@+id/pk_self_sing_card_view_stub"
+        android:inflatedId="@+id/pk_self_sing_card_view"
+        android:layout="@layout/grab_pk_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_container_view"
@@ -33,8 +39,10 @@
         android:layout_marginTop="@dimen/view_d_185_dp"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.minigame.MiniGameSelfSingCardView
-        android:id="@+id/mini_game_self_sing_view"
+    <ViewStub
+        android:id="@+id/mini_game_self_sing_card_view_stub"
+        android:inflatedId="@+id/mini_game_self_sing_view"
+        android:layout="@layout/grab_mini_game_self_sing_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_container_view"

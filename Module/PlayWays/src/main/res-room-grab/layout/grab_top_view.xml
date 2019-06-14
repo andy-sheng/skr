@@ -93,17 +93,22 @@
             app:bl_solid_color="#7E8AE6" />
     </RelativeLayout>
 
-    <ViewStub
-        android:id="@+id/chorus_lyric_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout="@layout/video_chorus_selfcard_view_stub_layout" />
 
     <ViewStub
-        android:id="@+id/video_self_lyric_view_stub"
+        android:id="@+id/video_grab_self_lyric_view_stub"
+        android:inflatedId="@+id/video_grab_self_lyric_view"
+        android:layout="@layout/video_grab_self_sing_lyric_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout="@layout/video_self_lyric_view_stub_layout" />
+        />
+
+    <ViewStub
+        android:id="@+id/video_grab_chorus_lyric_view_stub"
+        android:inflatedId="@+id/video_grab_chorus_lyric_view"
+        android:layout="@layout/video_grab_chorus_self_sing_card_stub_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 
 </merge>

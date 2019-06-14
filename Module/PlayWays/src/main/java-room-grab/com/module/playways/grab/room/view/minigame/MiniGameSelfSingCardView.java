@@ -2,6 +2,8 @@ package com.module.playways.grab.room.view.minigame;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewStub;
 
 import com.common.log.MyLog;
 import com.module.playways.R;
@@ -19,32 +21,13 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
 
     SingCountDownView2 mSingCountDownView;
 
-    public MiniGameSelfSingCardView(Context context) {
-        super(context);
-    }
-
-    public MiniGameSelfSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public MiniGameSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public MiniGameSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub, roomData);
     }
 
     @Override
-    protected void init() {
-        inflate(getContext(), R.layout.grab_mini_game_selft_sing_layout, this);
-
-        mAvatarIv = findViewById(R.id.avatar_iv);
-        mFirstTipsTv = findViewById(R.id.first_tips_tv);
-        mSvLyric = findViewById(R.id.sv_lyric);
-        mTvLyric = findViewById(R.id.tv_lyric);
-        mSingCountDownView = findViewById(R.id.sing_count_down_view);
-
-    }
-
-    public void setRoomData(GrabRoomData roomData) {
-        mGrabRoomData = roomData;
+    protected void init(View parentView) {
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
     }
 
     public void setListener(SelfSingCardView.Listener l) {
@@ -80,7 +63,7 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (visibility == GONE) {
+        if (visibility == View.GONE) {
             mSingCountDownView.reset();
         }
     }

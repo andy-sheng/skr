@@ -1,17 +1,13 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.grab.room.view.normal.view.SelfSingLyricView
-        android:id="@+id/pk_self_sing_lyric_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <com.module.playways.grab.room.view.pk.view.PKSingCardView
-        android:id="@+id/pk_sing_card_view"
+    <com.module.playways.grab.room.view.normal.view.SelfSingLyricView
+        android:id="@+id/self_sing_lyric_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -22,4 +18,4 @@
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_78_dp" />
 
-</merge>
+</RelativeLayout>

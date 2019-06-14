@@ -4,7 +4,6 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,6 +15,7 @@ import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.view.chorus.VideoChorusSelfSingCardView;
+import com.module.playways.grab.room.view.normal.VideoNormalSelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.VideoSelfSingLyricView;
 
 public class GrabTopView extends FrameLayout {
@@ -38,7 +38,7 @@ public class GrabTopView extends FrameLayout {
     AnimatorSet mHzAnimatorSet;  //金币加减的动画
 
     VideoChorusSelfSingCardView mVideoChorusSelfSingCardView;
-    VideoSelfSingLyricView mVideoSelfSingLyricView;
+    VideoNormalSelfSingCardView mVideoNormalSelfSingCardView;
     RelativeLayout mOpContainer;
 
     public GrabTopView(Context context) {
@@ -128,7 +128,6 @@ public class GrabTopView extends FrameLayout {
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
-
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
             setChangeRoomBtnVisiable(false);
@@ -141,30 +140,13 @@ public class GrabTopView extends FrameLayout {
                 setChangeRoomBtnVisiable(true);
             }
         }
-
         if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_GUIDE) {
             // 新手房
             setChangeRoomBtnVisiable(false);
             mIvVoiceSetting.setVisibility(GONE);
         }
-    }
-
-    public void playModel() {
-
-    }
-
-    private void inflateChorusSelfCardView() {
-        if (mVideoChorusSelfSingCardView == null) {
-            ((ViewStub) (findViewById(R.id.chorus_lyric_view_stub))).inflate();
-            mVideoChorusSelfSingCardView = findViewById(R.id.video_chorus_card_view);
-        }
-    }
-
-    private void inflateVideoSelfSingLyricView() {
-        if (mVideoSelfSingLyricView == null) {
-            ((ViewStub) (findViewById(R.id.video_self_lyric_view_stub))).inflate();
-            mVideoSelfSingLyricView = findViewById(R.id.video_self_lyric_view);
-        }
+        mVideoNormalSelfSingCardView = new VideoNormalSelfSingCardView(findViewById(R.id.video_grab_self_lyric_view_stub),mGrabRoomData);
+        mVideoChorusSelfSingCardView = new VideoChorusSelfSingCardView(findViewById(R.id.video_grab_chorus_lyric_view_stub),mGrabRoomData);
     }
 
     /**

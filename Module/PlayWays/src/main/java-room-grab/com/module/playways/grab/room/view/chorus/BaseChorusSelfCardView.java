@@ -1,19 +1,20 @@
 package com.module.playways.grab.room.view.chorus;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.view.View;
+import android.view.ViewStub;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
@@ -28,7 +29,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public abstract class BaseChorusSelfCardView extends RelativeLayout {
+public abstract class BaseChorusSelfCardView extends ExViewStub {
     public final static String TAG = "ChorusSelfSingCardView";
 
     RecyclerView mLyricRecycleView;
@@ -53,25 +54,20 @@ public abstract class BaseChorusSelfCardView extends RelativeLayout {
 
     SelfSingCardView.Listener mListener;
 
-    public BaseChorusSelfCardView(Context context) {
-        super(context);
-        init();
-    }
 
-    public BaseChorusSelfCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public BaseChorusSelfCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    protected abstract void init();
-
-    public void setRoomData(GrabRoomData roomData) {
+    public BaseChorusSelfCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
         mRoomData = roomData;
+    }
+
+    @Override
+    protected void init(View parentView) {
+        mLyricRecycleView = mParentView.findViewById(R.id.lyric_recycle_view);
+        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
+        mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public abstract void playLyric();
@@ -80,6 +76,7 @@ public abstract class BaseChorusSelfCardView extends RelativeLayout {
         if (mSongModel == null) {
             return;
         }
+        tryInflate();
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
@@ -151,14 +148,19 @@ public abstract class BaseChorusSelfCardView extends RelativeLayout {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void onViewAttachedToWindow(View v) {
+        super.onViewAttachedToWindow(v);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
         EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabChorusUserStatusChangeEvent event) {
-        if (getVisibility() == GONE) {
+        if (mParentView == null || mParentView.getVisibility() == View.GONE) {
             return;
         }
         if (mLeft.mUserInfoModel != null) {

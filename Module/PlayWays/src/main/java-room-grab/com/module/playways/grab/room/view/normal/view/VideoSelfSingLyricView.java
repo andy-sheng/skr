@@ -21,7 +21,7 @@ public class VideoSelfSingLyricView extends BaseSelfSingLyricView {
     }
 
     protected void init() {
-        inflate(getContext(), R.layout.video_grab_self_sing_lyric_layout, this);
+        inflate(getContext(), R.layout.video_grab_self_sing_lyric_stub_layout, this);
 
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = findViewById(R.id.many_lyrics_view);

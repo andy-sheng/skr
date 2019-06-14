@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewStub;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -19,9 +21,11 @@ import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -41,7 +45,7 @@ import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSource;
 import okio.Okio;
 
-public abstract class BaseMiniGameSelfSingCardView extends RelativeLayout {
+public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
     public final static String TAG = "BaseMiniGameSelfSingCardView";
 
     GrabRoomData mGrabRoomData;
@@ -58,25 +62,17 @@ public abstract class BaseMiniGameSelfSingCardView extends RelativeLayout {
 
     Disposable mDisposable;
 
-    public BaseMiniGameSelfSingCardView(Context context) {
-        super(context);
-        init();
-    }
-
-    public BaseMiniGameSelfSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public BaseMiniGameSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    protected abstract void init();
-
-    public void setRoomData(GrabRoomData roomData) {
+    public BaseMiniGameSelfSingCardView(ViewStub viewStub,GrabRoomData roomData) {
+        super(viewStub);
         mGrabRoomData = roomData;
+    }
+
+    @Override
+    protected void init(View parentView) {
+        mAvatarIv = mParentView.findViewById(R.id.avatar_iv);
+        mFirstTipsTv = mParentView.findViewById(R.id.first_tips_tv);
+        mSvLyric = mParentView.findViewById(R.id.sv_lyric);
+        mTvLyric = mParentView.findViewById(R.id.tv_lyric);
     }
 
     public void setListener(SelfSingCardView.Listener l) {
@@ -94,6 +90,7 @@ public abstract class BaseMiniGameSelfSingCardView extends RelativeLayout {
             MyLog.w(TAG, "songModel 是空的");
             return;
         }
+        tryInflate();
         mSvLyric.scrollTo(0, 0);
 //        mCharmsView.bindData(mGrabRoomData, (int) MyUserInfoManager.getInstance().getUid());
         mMiniGameInfoModel = infoModel.getMusic().getMiniGame();
@@ -163,7 +160,8 @@ public abstract class BaseMiniGameSelfSingCardView extends RelativeLayout {
 
                 emitter.onComplete();
             }
-        }).compose(((BaseActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+        })
+                .compose(((BaseActivity) mParentView.getContext()).bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
             @Override
@@ -222,7 +220,6 @@ public abstract class BaseMiniGameSelfSingCardView extends RelativeLayout {
                 }
             }
         }).subscribeOn(Schedulers.io())
-                .compose(((BaseActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RxRetryAssist(5, 1, false))
                 .subscribe(file -> {
@@ -234,8 +231,8 @@ public abstract class BaseMiniGameSelfSingCardView extends RelativeLayout {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
         if (mDisposable != null) {
             mDisposable.dispose();
         }

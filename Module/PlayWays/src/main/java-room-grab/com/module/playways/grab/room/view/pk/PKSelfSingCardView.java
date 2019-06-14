@@ -1,10 +1,9 @@
 package com.module.playways.grab.room.view.pk;
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -14,14 +13,16 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.view.SingCountDownView2;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
+import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
 import com.zq.live.proto.Room.EQRoundStatus;
 
 import java.util.List;
 
-public class PKSelfSingCardView extends RelativeLayout {
+public class PKSelfSingCardView extends ExViewStub {
 
     public final static String TAG = "PKSelfSingCardView";
 
@@ -36,26 +37,16 @@ public class PKSelfSingCardView extends RelativeLayout {
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
 //    TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
-    public PKSelfSingCardView(Context context) {
-        super(context);
-        init();
+    public PKSelfSingCardView(ViewStub viewStub,GrabRoomData roomData) {
+        super(viewStub);
+        mRoomData = roomData;
     }
 
-    public PKSelfSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public PKSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_pk_self_sing_card_layout, this);
-        mPkSelfSingLyricView = (SelfSingLyricView) findViewById(R.id.pk_self_sing_lyric_view);
-        mPkSingCardView = (PKSingCardView) findViewById(R.id.pk_sing_card_view);
-        mSingCountDownView = (SingCountDownView2) findViewById(R.id.sing_count_down_view);
+    @Override
+    protected void init(View parentView) {
+        mPkSelfSingLyricView =  mParentView.findViewById(R.id.pk_self_sing_lyric_view);
+        mPkSingCardView =  mParentView.findViewById(R.id.pk_sing_card_view);
+        mSingCountDownView =  mParentView.findViewById(R.id.sing_count_down_view);
     }
 
     public void playLyric() {
@@ -63,6 +54,7 @@ public class PKSelfSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
+        tryInflate();
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
@@ -70,15 +62,15 @@ public class PKSelfSingCardView extends RelativeLayout {
             mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
             mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
         }
-        setVisibility(VISIBLE);
+        setVisibility(View.VISIBLE);
         // 绑定数据
         mPkSingCardView.bindData();
         if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
             // pk第一个人唱
-            mPkSingCardView.setVisibility(VISIBLE);
+            mPkSingCardView.setVisibility(View.VISIBLE);
             playCardEnterAnimation();
         } else if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-            mPkSingCardView.setVisibility(VISIBLE);
+            mPkSingCardView.setVisibility(View.VISIBLE);
             if (mRightUserInfoModel != null) {
                 playIndicateAnimation(mRightUserInfoModel.getUserId());
             }
@@ -151,7 +143,7 @@ public class PKSelfSingCardView extends RelativeLayout {
 
             }
         });
-        this.startAnimation(mEnterTranslateAnimation);
+        mParentView.startAnimation(mEnterTranslateAnimation);
     }
 
     public void setRoomData(GrabRoomData roomData) {
@@ -203,7 +195,7 @@ public class PKSelfSingCardView extends RelativeLayout {
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (visibility == GONE) {
+        if (visibility == View.GONE) {
             mSingCountDownView.reset();
             mPkSelfSingLyricView.reset();
             mPkSingCardView.reset();
@@ -215,8 +207,8 @@ public class PKSelfSingCardView extends RelativeLayout {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
         if (mEnterTranslateAnimation != null) {
             mEnterTranslateAnimation.setAnimationListener(null);
             mEnterTranslateAnimation.cancel();

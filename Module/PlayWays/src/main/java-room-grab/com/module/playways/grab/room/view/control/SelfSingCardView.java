@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.control;
 
 import android.view.View;
+import android.view.ViewStub;
 
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
@@ -21,17 +22,22 @@ public class SelfSingCardView {
 
     public SelfSingCardView(View mRootView, GrabRoomData roomData) {
         mRoomData = roomData;
-        mNormalSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
-        mNormalSelfSingCardView.setRoomData(mRoomData);
-
-        mChorusSelfSingCardView = mRootView.findViewById(R.id.chorus_self_sing_card_view);
-        mChorusSelfSingCardView.setRoomData(mRoomData);
-
-        mPKSelfSingCardView = mRootView.findViewById(R.id.pk_self_sing_card_view);
-        mPKSelfSingCardView.setRoomData(mRoomData);
-
-        mMiniGameSelfSingView = mRootView.findViewById(R.id.mini_game_self_sing_view);
-        mMiniGameSelfSingView.setRoomData(mRoomData);
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.normal_self_sing_card_view_stub);
+            mNormalSelfSingCardView = new NormalSelfSingCardView(viewStub, mRoomData);
+        }
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.chorus_self_sing_card_view_stub);
+            mChorusSelfSingCardView = new ChorusSelfSingCardView(viewStub, mRoomData);
+        }
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.pk_self_sing_card_view_stub);
+            mPKSelfSingCardView = new PKSelfSingCardView(viewStub, mRoomData);
+        }
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.mini_game_self_sing_card_view_stub);
+            mMiniGameSelfSingView = new MiniGameSelfSingCardView(viewStub, mRoomData);
+        }
     }
 
     public void setVisibility(int visibility) {

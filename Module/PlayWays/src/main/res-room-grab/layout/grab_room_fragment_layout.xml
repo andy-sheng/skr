@@ -134,20 +134,17 @@
     <!--他人唱歌时场景-->
     <include
         layout="@layout/grab_other_sing_card_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+         />
 
     <!--自己唱歌场景-->
     <include
         layout="@layout/grab_self_sing_card_view_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+       />
 
     <!--轮次结束卡片-->
     <include
         layout="@layout/grab_round_over_card_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        />
 
     <com.module.playways.grab.room.view.GrabScoreTipsView
         android:id="@+id/grab_score_tips_view"

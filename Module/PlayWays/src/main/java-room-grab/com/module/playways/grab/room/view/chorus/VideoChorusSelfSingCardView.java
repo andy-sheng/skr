@@ -1,14 +1,12 @@
 package com.module.playways.grab.room.view.chorus;
 
-import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewStub;
 
-import com.module.playways.R;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-
-import org.greenrobot.eventbus.EventBus;
+import com.module.playways.grab.room.view.chorus.BaseChorusSelfCardView;
 
 import java.util.List;
 
@@ -20,33 +18,20 @@ public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
 
     public final static String TAG = "VideoChorusSelfSingCardView";
 
-    public VideoChorusSelfSingCardView(Context context) {
-        super(context);
+    public VideoChorusSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub, roomData);
     }
 
-    public VideoChorusSelfSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public VideoChorusSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    protected void init() {
-        inflate(getContext(), R.layout.video_grab_chorus_self_sing_card_layout, this);
-        mLyricRecycleView = findViewById(R.id.lyric_recycle_view);
-        mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
-        mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+    @Override
+    protected void init(View parentView) {
+        super.init(parentView);
     }
 
     public void playLyric() {
         if (mRoomData == null) {
             return;
         }
+        tryInflate();
         mLeft.reset();
         mRight.reset();
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
