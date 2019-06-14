@@ -37,16 +37,19 @@ public class PKSelfSingCardView extends ExViewStub {
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
 //    TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
-    public PKSelfSingCardView(ViewStub viewStub,GrabRoomData roomData) {
+    SelfSingCardView.Listener mListener;
+
+    public PKSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
         mRoomData = roomData;
     }
 
     @Override
     protected void init(View parentView) {
-        mPkSelfSingLyricView =  mParentView.findViewById(R.id.pk_self_sing_lyric_view);
-        mPkSingCardView =  mParentView.findViewById(R.id.pk_sing_card_view);
-        mSingCountDownView =  mParentView.findViewById(R.id.sing_count_down_view);
+        mPkSelfSingLyricView = mParentView.findViewById(R.id.pk_self_sing_lyric_view);
+        mPkSingCardView = mParentView.findViewById(R.id.pk_sing_card_view);
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView.setListener(mListener);
     }
 
     public void playLyric() {
@@ -220,13 +223,8 @@ public class PKSelfSingCardView extends ExViewStub {
 //        }
     }
 
-    SelfSingCardView.Listener mListener;
-
     public void setListener(SelfSingCardView.Listener l) {
         mListener = l;
-        if (mSingCountDownView != null) {
-            mSingCountDownView.setListener(mListener);
-        }
     }
 
 }

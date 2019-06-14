@@ -18,7 +18,6 @@ public class SelfSingCardView {
     PKSelfSingCardView mPKSelfSingCardView;             // pk自己唱歌
     MiniGameSelfSingCardView mMiniGameSelfSingView;     // 小游戏时卡片效果
     GrabRoomData mRoomData;
-    SelfSingCardView.Listener mListener;
 
     public SelfSingCardView(View mRootView, GrabRoomData roomData) {
         mRoomData = roomData;
@@ -91,7 +90,6 @@ public class SelfSingCardView {
     }
 
     public void setListener(SelfSingCardView.Listener listener) {
-        mListener = listener;
         mNormalSelfSingCardView.setListener(listener);
         mChorusSelfSingCardView.setListener(listener);
         mPKSelfSingCardView.setListener(listener);

@@ -28,13 +28,11 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
     @Override
     protected void init(View parentView) {
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView.setListener(mListener);
     }
 
     public void setListener(SelfSingCardView.Listener l) {
         super.setListener(l);
-        if (mSingCountDownView != null) {
-            mSingCountDownView.setListener(mListener);
-        }
     }
 
     public void playLyric() {

@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.view.chorus;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -63,6 +64,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
     @Override
     protected void init(View parentView) {
         mLyricRecycleView = mParentView.findViewById(R.id.lyric_recycle_view);
+        mLyricRecycleView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
         if (!EventBus.getDefault().isRegistered(this)) {

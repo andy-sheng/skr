@@ -27,6 +27,8 @@ public class NormalSelfSingCardView extends ExViewStub {
     SelfSingLyricView mSelfSingLyricView;
     SingCountDownView2 mSingCountDownView;
 
+    SelfSingCardView.Listener mListener;
+
     public NormalSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
         mRoomData = roomData;
@@ -34,11 +36,10 @@ public class NormalSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mSelfSingLyricView =  mParentView.findViewById(R.id.self_sing_lyric_view);
-        mSingCountDownView =  mParentView.findViewById(R.id.sing_count_down_view);
-        if (mSelfSingLyricView != null) {
-            mSelfSingLyricView.setRoomData(mRoomData);
-        }
+        mSelfSingLyricView = mParentView.findViewById(R.id.self_sing_lyric_view);
+        mSelfSingLyricView.setRoomData(mRoomData);
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView.setListener(mListener);
     }
 
     @Override
@@ -92,13 +93,8 @@ public class NormalSelfSingCardView extends ExViewStub {
         }
     }
 
-    SelfSingCardView.Listener mListener;
-
     public void setListener(SelfSingCardView.Listener l) {
         mListener = l;
-        if (mSingCountDownView != null) {
-            mSingCountDownView.setListener(mListener);
-        }
     }
 
 }

@@ -35,7 +35,7 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
     protected void init(View parentView) {
         super.init(parentView);
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
-        mLyricRecycleView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(), LinearLayoutManager.VERTICAL, false));
+        mSingCountDownView.setListener(mListener);
     }
 
     public void playLyric() {
@@ -64,7 +64,6 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
 
     public void setListener(SelfSingCardView.Listener listener) {
         super.setListener(listener);
-        mSingCountDownView.setListener(listener);
     }
 
     @Override
