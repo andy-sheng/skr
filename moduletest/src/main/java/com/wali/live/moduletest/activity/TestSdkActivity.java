@@ -46,26 +46,18 @@ import com.example.emoji.EmojiFragment;
 import com.example.qrcode.QrcodeTestFragment;
 import com.example.rxretrofit.fragment.RxRetrofitFragment;
 import com.example.smartrefresh.SmartRefreshFragment;
-import com.example.wxcontact.PickContactFragment;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ResPickerFragment;
 import com.respicker.preview.image.ImagePreviewFragment;
 import com.respicker.model.ImageItem;
 import com.respicker.view.CropImageView;
 import com.module.home.IHomeService;
-import com.pgyersdk.crash.PgyCrashManager;
-import com.pgyersdk.feedback.PgyerFeedbackManager;
-import com.pgyersdk.update.DownloadFileListener;
-import com.pgyersdk.update.PgyUpdateManager;
-import com.pgyersdk.update.UpdateManagerListener;
-import com.pgyersdk.update.javabean.AppBean;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
 import com.wali.live.moduletest.fragment.ShowTextViewFragment;
-import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -84,7 +76,7 @@ public class TestSdkActivity extends BaseActivity {
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.debug_core_activity_layout;
+        return R.layout.test_main_layout;
     }
 
     void loadAccountInfo() {
@@ -250,76 +242,6 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("检查更新", new Runnable() {
-            @Override
-            public void run() {
-                new PgyUpdateManager.Builder()
-                        .setForced(false)                //设置是否强制更新
-                        .setUserCanRetry(false)         //失败后是否提示重新下载
-                        .setDeleteHistroyApk(true)     // 检查更新前是否删除本地历史 Apk
-                        .register();
-            }
-        }));
-
-        mDataList.add(new H("检查更新(自定义过程)", new Runnable() {
-            @Override
-            public void run() {
-                new PgyUpdateManager.Builder()
-                        .setForced(true)                //设置是否强制更新,非自定义回调更新接口此方法有用
-                        .setUserCanRetry(false)         //失败后是否提示重新下载，非自定义下载 apk 回调此方法有用
-                        .setDeleteHistroyApk(false)     // 检查更新前是否删除本地历史 Apk
-                        .setUpdateManagerListener(new UpdateManagerListener() {
-                            @Override
-                            public void onNoUpdateAvailable() {
-                                //没有更新是回调此方法
-                                MyLog.d("pgyer", "there is no new version");
-                                U.getToastUtil().showShort("没有更新的了");
-                            }
-
-                            @Override
-                            public void onUpdateAvailable(AppBean appBean) {
-                                //没有更新是回调此方法
-                                MyLog.d("pgyer", "there is new version can update"
-                                        + "new versionCode is " + appBean.getVersionCode());
-
-                                //调用以下方法，DownloadFileListener 才有效；如果完全使用自己的下载方法，不需要设置DownloadFileListener
-                                U.getToastUtil().showShort("有更新开始下载");
-                                PgyUpdateManager.downLoadApk(appBean.getDownloadURL());
-                            }
-
-                            @Override
-                            public void checkUpdateFailed(Exception e) {
-                                //更新检测失败回调
-                                MyLog.e("pgyer", "check update failed ", e);
-
-                            }
-                        })
-                        //注意 ：下载方法调用 PgyUpdateManager.downLoadApk(appBean.getDownloadURL()); 此回调才有效
-                        .setDownloadFileListener(new DownloadFileListener() {   // 使用蒲公英提供的下载方法，这个接口才有效。
-                            @Override
-                            public void downloadFailed() {
-                                //下载失败
-                                MyLog.e("pgyer", "download apk failed");
-                            }
-
-                            @Override
-                            public void downloadSuccessful(Uri uri) {
-                                MyLog.e("pgyer", "download apk failed");
-                                // 默认存放的目录
-                                // /storage/emulated/0/Android/data/com.zq.live/files/pgySdk/downloadApk/apk-1600434156.apk
-                                PgyUpdateManager.installApk(uri);  // 使用蒲公英提供的安装方法提示用户 安装apk
-                            }
-
-                            @Override
-                            public void onProgressUpdate(Integer... integers) {
-                                MyLog.e("pgyer", "update download apk progress : " + integers[0]);
-                            }
-                        })
-                        .register();
-
-            }
-        }));
-
         mDataList.add(new H("显示当前设备信息", new Runnable() {
             @Override
             public void run() {
@@ -329,6 +251,14 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
+        mDataList.add(new H("视频测试页", new Runnable() {
+            @Override
+            public void run() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_TEST_VIDEO)
+                        .greenChannel()
+                        .navigation();
+            }
+        }));
 
         mDataList.add(new H("跳转到LoginActivity", new Runnable() {
 
@@ -677,15 +607,6 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("类微信带拼音索引的联系人列表", new Runnable() {
-            @Override
-            public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, PickContactFragment.class)
-                        .setHasAnimation(true)
-                        .build());
-            }
-        }));
-
         mDataList.add(new H("二维码实验", new Runnable() {
             @Override
             public void run() {
@@ -718,89 +639,10 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("崩溃收集", new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    throw new IllegalStateException("测试，我是主动抛出的一个异常，使用 PgyCrashManager 上报");
-                } catch (Exception e) {
-                    PgyCrashManager.reportCaughtException(e);
-                    U.getToastUtil().showShort("已上报一个自定义崩溃");
-                }
-            }
-        }));
-
-        mDataList.add(new H("用户反馈(Activity)", new Runnable() {
-            @Override
-            public void run() {
-                new PgyerFeedbackManager.PgyerFeedbackBuilder()
-                        .setShakeInvoke(true)           //设置是否摇一摇的方式激活反馈，默认为 true
-                        .setBarBackgroundColor("")      // 设置顶部按钮和底部背景色，默认颜色为 #2E2D2D
-                        .setBarButtonPressedColor("")        //设置顶部按钮和底部按钮按下时的反馈色 默认颜色为 #383737
-                        .setColorPickerBackgroundColor("")   //设置颜色选择器的背景色,默认颜色为 #272828
-                        .setBarImmersive(true)              //设置activity 是否以沉浸式的方式打开，默认为 false
-                        .setDisplayType(PgyerFeedbackManager.TYPE.ACTIVITY_TYPE)   //设置以Dialog 的方式打开
-                        .setMoreParam("渠道号", U.getChannelUtils().getChannel())
-                        .setMoreParam("KEY2", "VALUE2")
-                        .builder()
-                        .invoke();                  //激活直接显示的方式
-
-            }
-        }));
-        mDataList.add(new H("用户反馈(Dialog)", new Runnable() {
-            @Override
-            public void run() {
-                new PgyerFeedbackManager.PgyerFeedbackBuilder()
-                        .setShakeInvoke(true)       //设置是否摇一摇的方式激活反馈，默认为 true
-//                        .setColorDialogTitle("")    //设置Dialog 标题栏的背景色，默认为颜色为#ffffff
-//                        .setColorTitleBg("")        //设置Dialog 标题的字体颜色，默认为颜色为#2E2D2D
-                        .setDisplayType(PgyerFeedbackManager.TYPE.DIALOG_TYPE)   //设置以Dialog 的方式打开
-                        .setMoreParam("渠道号", U.getChannelUtils().getChannel())
-                        .setMoreParam("KEY2", "VALUE2")
-                        .builder()
-                        .invoke();                  //激活直接显示的方式
-
-            }
-        }));
-        mDataList.add(new H("激活摇一摇用户反馈(Dialog)", new Runnable() {
-            @Override
-            public void run() {
-                new PgyerFeedbackManager.PgyerFeedbackBuilder()
-                        .setShakeInvoke(true)       //设置是否摇一摇的方式激活反馈，默认为 true
-//                        .setColorDialogTitle("")    //设置Dialog 标题栏的背景色，默认为颜色为#ffffff
-//                        .setColorTitleBg("")        //设置Dialog 标题的字体颜色，默认为颜色为#2E2D2D
-                        .setDisplayType(PgyerFeedbackManager.TYPE.DIALOG_TYPE)   //设置以Dialog 的方式打开
-                        .setMoreParam("渠道号", U.getChannelUtils().getChannel())
-                        .setMoreParam("KEY2", "VALUE2")
-                        .builder()
-                        .register();                //注册摇一摇的方式
-                U.getToastUtil().showShort("注册成功，晃动手机可弹出反馈页面");
-
-            }
-        }));
-
-//        mDataList.add(new H("Span 测试", new Runnable() {
-//            @Override
-//            public void run() {
-//                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, QrcodeTestFragment.class)
-//                        .setHasAnimation(true)
-//                        .build());
-//            }
-//        }));
-
-        mDataList.add(new H("手动触发小米统计上报", new Runnable() {
-            @Override
-            public void run() {
-                MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_DEVELOPMENT, 0);
-                MiStatInterface.triggerUploadManually();
-            }
-        }));
-
         mDataList.add(new H("日志全开", new Runnable() {
             @Override
             public void run() {
                 MyLog.setForceOpenFlag(true);
-                MyLog.setLogcatTraceLevel(0);
             }
         }));
     }

@@ -57,7 +57,8 @@ public class AgoraRTCAdapter {
 
     static {
         if (U.getChannelUtils().isStaging()) {
-            APP_ID = "f23bd32ce6484113b02d14bd878e694c";
+//            APP_ID = "f23bd32ce6484113b02d14bd878e694c";
+            APP_ID = "9624261076ba437c9eac190e88c3403e";
         } else {
             APP_ID = "2cceda2dbb2d46d28cab627f30c1a6f7";
         }
@@ -233,6 +234,7 @@ public class AgoraRTCAdapter {
         @Override
         public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
             super.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
+            addRemoteVideo(uid);
             // 一般可以在这里绑定视图
             if (mOutCallback != null) {
                 mOutCallback.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
@@ -1301,7 +1303,7 @@ public class AgoraRTCAdapter {
             vf.transform = frame.texMatrix;
             vf.rotation = 0;
             boolean ret = mRtcEngine.pushExternalVideoFrame(vf);
-            MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + frame.textureId + " ret=" + ret);
+//            MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + frame.textureId + " ret=" + ret);
         }
     }
 }

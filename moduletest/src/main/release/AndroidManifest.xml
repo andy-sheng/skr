@@ -19,6 +19,8 @@
         <activity android:name=".activity.DeviceInfoActivity"/>
 
         <activity android:name="com.example.emoji.EmojiActivity"></activity>
+
+        <activity android:name="com.example.videortc.BaseCameraActivity"/>
     </application>
 
 </manifest>

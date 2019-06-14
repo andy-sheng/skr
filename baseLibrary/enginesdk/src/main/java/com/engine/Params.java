@@ -758,7 +758,7 @@ public class Params implements Serializable {
             params = JSON.parseObject(s, Params.class);
         } else {
             params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                    .setEnableVideo(false)
+                    .setEnableVideo(true)
                     .setEnableAudio(true)
                     .setUseExternalAudio(false)
                     .setUseExternalVideo(true)

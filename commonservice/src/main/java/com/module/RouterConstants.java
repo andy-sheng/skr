@@ -43,6 +43,7 @@ public interface RouterConstants {
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";
+    String ACTIVITY_TEST_VIDEO = "/test/BaseCameraActivity";
 
     String ACTIVITY_WATCH = "/watch/WatchSdkAcitivity";
     //VideoDetailSdkActivity
