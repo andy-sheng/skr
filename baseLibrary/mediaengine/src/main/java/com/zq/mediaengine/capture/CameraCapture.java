@@ -67,11 +67,11 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
     /**
      * Source pin transfer ImgTexFrame, used for gpu path and preview
      */
-    public final SrcPin<ImgTexFrame> mImgTexSrcPin;
+    private final SrcPin<ImgTexFrame> mImgTexSrcPin;
     /**
      * Source pin transfer ImgBufFrame, used for fallback cpu path
      */
-    public final SrcPin<ImgBufFrame> mImgBufSrcPin;
+    private final SrcPin<ImgBufFrame> mImgBufSrcPin;
 
     private Context mContext;
     private OnCameraCaptureListener mOnCameraCaptureListener;
@@ -136,6 +136,14 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
         mGLRender.addListener(mGLSizeChangedListener);
         mGLRender.addListener(mGLDrawFrameListener);
         mGLRender.addListener(mGLReleasedListener);
+    }
+
+    public SrcPin<ImgTexFrame> getImgTexSrcPin() {
+        return mImgTexSrcPin;
+    }
+
+    public SrcPin<ImgBufFrame> getImgBufSrcPin() {
+        return mImgBufSrcPin;
     }
 
     /**

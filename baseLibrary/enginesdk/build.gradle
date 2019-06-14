@@ -51,8 +51,8 @@ android {
 
 dependencies {
     compileOnly project(":baseLibrary:commonsdk")
-    api files('libs/agora-rtc-sdk.jar')
-//    api 'io.agora.rtc:full-sdk:2.4.0'
+//    api files('libs/agora-rtc-sdk.jar')
+    api 'io.agora.rtc:full-sdk:2.4.0'
     if (arcCloud.toBoolean()) {
         api project(":baseLibrary:arcCloud")
     }

@@ -2,15 +2,9 @@ package com.wali.live.moduletest.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.TextView;
 
 import com.common.base.BaseFragment;
-import com.common.base.BuildConfig;
-import com.common.statistics.TimeStatistics;
-import com.common.utils.U;
 import com.common.view.ex.ExTextView;
-import com.wali.live.moduletest.R;
-import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 public class BFragment extends BaseFragment {
 

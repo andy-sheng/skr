@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.TextureView;
+import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 
 import com.common.log.MyLog;
@@ -35,6 +37,7 @@ import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
 import com.zq.mediaengine.filter.audio.AudioResampleFilter;
+import com.zq.mediaengine.filter.imgtex.ImgTexFilterMgt;
 import com.zq.mediaengine.filter.imgtex.ImgTexMixer;
 import com.zq.mediaengine.filter.imgtex.ImgTexPreview;
 import com.zq.mediaengine.filter.imgtex.ImgTexScaleFilter;
@@ -87,6 +90,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     public static final int VIDEO_RESOLUTION_720P = 3;
     public static final int VIDEO_RESOLUTION_1080P = 4;
 
+    private static final int DEFAULT_PREVIEW_WIDTH = 720;
+    private static final int DEFAULT_PREVIEW_HEIGHT = 1280;
+
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
@@ -111,6 +117,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private String mInitFrom;
 
+    private Handler mMainHandler;
     private CustomHandlerThread mCustomHandlerThread;
 
     private boolean mTokenEnable = false; // 是否开启token校验
@@ -121,6 +128,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private GLRender mGLRender;
     private CameraCapture mCameraCapture;
     private ImgTexScaleFilter mImgTexScaleFilter;
+    private ImgTexFilterMgt mImgTexFilterMgt;
     private ImgTexMixer mImgTexPreviewMixer;
     private ImgTexMixer mImgTexMixer;
     private ImgTexPreview mImgTexPreview;
@@ -150,6 +158,24 @@ public class ZqEngineKit implements AgoraOutCallback {
     private MediaCodecAudioEncoder mAudioEncoder;
     private MediaMuxerPublisher mFilePublisher;
     private RawFrameWriter mRawFrameWriter;
+
+    // 视频相关参数
+    protected int mScreenRenderWidth = 0;
+    protected int mScreenRenderHeight = 0;
+    protected int mPreviewResolution = VIDEO_RESOLUTION_360P;
+    protected int mPreviewWidth = 0;
+    protected int mPreviewHeight = 0;
+    protected float mPreviewFps = 0;
+    protected int mTargetResolution = VIDEO_RESOLUTION_360P;
+    protected int mTargetWidth = 0;
+    protected int mTargetHeight = 0;
+    protected float mTargetFps = 0;
+    protected int mRotateDegrees = 0;
+
+    protected boolean mFrontCameraMirror = false;
+    protected int mCameraFacing = CameraCapture.FACING_FRONT;
+    protected boolean mIsCaptureStarted = false;
+    protected boolean mDelayedStartCameraPreview = false;
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -192,7 +218,11 @@ public class ZqEngineKit implements AgoraOutCallback {
         status.setFirstVideoDecoded(true);
         status.setFirstVideoWidth(width);
         status.setFirstVideoHeight(height);
+
         // TODO: tryBindRemoteViewAutoOnMainThread("onFirstRemoteVideoDecoded");
+        // 渲染远程图像
+        mAgoraRTCAdapter.getRemoteVideoSrcPin(uid).connect(mImgTexPreviewMixer.getSinkPin(1));
+
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_VIDEO_DECODED, status));
     }
 
@@ -350,8 +380,12 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAgoraRTCAdapter = AgoraRTCAdapter.create(mGLRender);
         mAgoraRTCAdapter.setOutCallback(this);
         mAcrRecognizer = new AcrRecognizer();
+        mMainHandler = new Handler(Looper.getMainLooper());
 
-        mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+//        mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+
+        // TODO: 开启视频才初始化
+        initVideoModules();
     }
 
     public static ZqEngineKit getInstance() {
@@ -414,21 +448,22 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void initModules() {
-        mAudioFilterMgt = new AudioFilterMgt();
-        mCbAudioScorer = new CbAudioScorer();
-        // 单mic数据PCM录制
-        mRawFrameWriter = new RawFrameWriter();
-
         MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
                 " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
                 " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord());
 
-        // Camera preview
-        mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
-        mImgTexMixer = new ImgTexMixer(mGLRender);
-        mImgTexPreview = new ImgTexPreview();
+        if (mConfig.isEnableAudio()) {
+            initAudioModules();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initAudioModules() {
+        mAudioFilterMgt = new AudioFilterMgt();
+        mCbAudioScorer = new CbAudioScorer();
+        // 单mic数据PCM录制
+        mRawFrameWriter = new RawFrameWriter();
 
         SrcPin<AudioBufFrame> audioLocalSrcPin;
         if (mConfig.isUseExternalAudio()) {
@@ -1469,12 +1504,82 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     // 视频相关接口
     /**
+     * Get {@link GLRender} instance.
+     *
+     * @return GLRender instance.
+     */
+    public GLRender getGLRender() {
+        return mGLRender;
+    }
+
+    /**
+     * Get {@link CameraCapture} module instance.
+     *
+     * @return CameraCapture instance.
+     */
+    public CameraCapture getCameraCapture() {
+        return mCameraCapture;
+    }
+
+    private void initVideoModules() {
+        // Camera preview
+        mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
+        mImgTexScaleFilter = new ImgTexScaleFilter(mGLRender);
+        mImgTexFilterMgt = new ImgTexFilterMgt(U.app().getApplicationContext());
+        mImgTexMixer = new ImgTexMixer(mGLRender);
+        mImgTexPreviewMixer = new ImgTexMixer(mGLRender);
+        mImgTexPreviewMixer.setScalingMode(0, ImgTexMixer.SCALING_MODE_CENTER_CROP);
+        mImgTexPreview = new ImgTexPreview();
+
+        mCameraCapture.getImgTexSrcPin().connect(mImgTexScaleFilter.getSinkPin());
+        mImgTexScaleFilter.getSrcPin().connect(mImgTexFilterMgt.getSinkPin());
+        mImgTexFilterMgt.getSrcPin().connect(mImgTexPreviewMixer.getSinkPin(0));
+        mImgTexFilterMgt.getSrcPin().connect(mImgTexMixer.getSinkPin(0));
+        mImgTexPreviewMixer.getSrcPin().connect(mImgTexPreview.getSinkPin());
+        mImgTexMixer.getSrcPin().connect(mAgoraRTCAdapter.getVideoSinkPin());
+
+        // set listeners
+        mGLRender.addListener(new GLRender.OnReadyListener() {
+            @Override
+            public void onReady() {
+                mImgTexPreview.setEGL10Context(mGLRender.getEGL10Context());
+            }
+        });
+
+        mCameraCapture.setOnCameraCaptureListener(new CameraCapture.OnCameraCaptureListener() {
+            @Override
+            public void onStarted() {
+                Log.d(TAG, "CameraCapture ready");
+                // TODO: notify to app
+            }
+
+            @Override
+            public void onFacingChanged(int facing) {
+                mCameraFacing = facing;
+                updateFrontMirror();
+                // TODO: notify to app
+            }
+
+            @Override
+            public void onError(int err) {
+                Log.e(TAG, "CameraCapture error: " + err);
+                // TODO: notify to app
+            }
+        });
+
+        // init with offscreen GLRender
+        mGLRender.init(1, 1);
+    }
+
+    /**
      * Set GLSurfaceView as camera previewer.<br/>
      * Must set once before the GLSurfaceView created.
      *
      * @param surfaceView GLSurfaceView to be set.
      */
     public void setDisplayPreview(GLSurfaceView surfaceView) {
+        mImgTexPreview.setDisplayPreview(surfaceView);
+        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
     }
 
     /**
@@ -1484,6 +1589,8 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param textureView TextureView to be set.
      */
     public void setDisplayPreview(TextureView textureView) {
+        mImgTexPreview.setDisplayPreview(textureView);
+        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
     }
 
     /**
@@ -1494,6 +1601,25 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     @SuppressWarnings("SuspiciousNameCombination")
     public void setRotateDegrees(int degrees) throws IllegalArgumentException {
+        degrees %= 360;
+        if (degrees % 90 != 0) {
+            throw new IllegalArgumentException("Invalid rotate degrees");
+        }
+        if (mRotateDegrees == degrees) {
+            return;
+        }
+        boolean isLastLandscape = (mRotateDegrees % 180) != 0;
+        boolean isLandscape = (degrees % 180) != 0;
+        if (isLastLandscape != isLandscape) {
+            if (mPreviewWidth > 0 || mPreviewHeight > 0) {
+                setPreviewResolution(mPreviewHeight, mPreviewWidth);
+            }
+            if (mTargetWidth > 0 || mTargetHeight > 0) {
+                setTargetResolution(mTargetHeight, mTargetWidth);
+            }
+        }
+        mRotateDegrees = degrees;
+        mCameraCapture.setOrientation(degrees);
     }
 
     /**
@@ -1502,7 +1628,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return degrees Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
      */
     public int getRotateDegrees() {
-        return 0;
+        return mRotateDegrees;
     }
 
     /**
@@ -1543,9 +1669,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-//        int height = getShortEdgeLength(idx);
-//        int width = height * 16 / 9;
-//        mCameraCapture.setPreviewSize(width, height);
+        int height = getShortEdgeLength(idx);
+        int width = height * 16 / 9;
+        mCameraCapture.setPreviewSize(width, height);
     }
 
     /**
@@ -1567,14 +1693,14 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (width < 0 || height < 0 || (width == 0 && height == 0)) {
             throw new IllegalArgumentException("Invalid resolution");
         }
-//        mPreviewWidth = width;
-//        mPreviewHeight = height;
-//
-//        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
-//            calResolution();
-//            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
-//            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
-//        }
+        mPreviewWidth = width;
+        mPreviewHeight = height;
+
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            calResolution();
+            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+        }
     }
 
     /**
@@ -1597,15 +1723,15 @@ public class ZqEngineKit implements AgoraOutCallback {
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-//        mPreviewResolution = idx;
-//        mPreviewWidth = 0;
-//        mPreviewHeight = 0;
-//
-//        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
-//            calResolution();
-//            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
-//            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
-//        }
+        mPreviewResolution = idx;
+        mPreviewWidth = 0;
+        mPreviewHeight = 0;
+
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            calResolution();
+            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+        }
     }
 
     /**
@@ -1614,7 +1740,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return preview width
      */
     public int getPreviewWidth() {
-        return 0;
+        return mPreviewWidth;
     }
 
     /**
@@ -1623,7 +1749,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return preview height
      */
     public int getPreviewHeight() {
-        return 0;
+        return mPreviewHeight;
     }
 
     /**
@@ -1638,6 +1764,13 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @throws IllegalArgumentException
      */
     public void setPreviewFps(float fps) throws IllegalArgumentException {
+        if (fps <= 0) {
+            throw new IllegalArgumentException("the fps must > 0");
+        }
+        mPreviewFps = fps;
+        if (mTargetFps == 0) {
+            mTargetFps = mPreviewFps;
+        }
     }
 
     /**
@@ -1646,7 +1779,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return preview frame rate
      */
     public float getPreviewFps() {
-        return 0;
+        return mPreviewFps;
     }
 
     /**
@@ -1659,15 +1792,118 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     /**
+     * Set streaming resolution.<br/>
+     * <p>
+     * The set resolution would take effect immediately if streaming started.<br/>
+     * <p>
+     * The set width and height must not be 0 at same time.
+     * If one of the params is 0, the other would calculated by the actual preview view size
+     * to keep the ratio of the preview view.
+     *
+     * @param width  streaming width.
+     * @param height streaming height.
+     * @throws IllegalArgumentException
+     */
+    public void setTargetResolution(int width, int height) throws IllegalArgumentException {
+        if (width < 0 || height < 0 || (width == 0 && height == 0)) {
+            throw new IllegalArgumentException("Invalid resolution");
+        }
+        mTargetWidth = width;
+        mTargetHeight = height;
+
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            calResolution();
+            mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+        }
+    }
+
+    /**
+     * Set streaming resolution index.<br/>
+     * <p>
+     * The set resolution would take effect immediately if streaming started.<br/>
+     *
+     * @param idx Resolution index.<br/>
+     * @throws IllegalArgumentException
+     * @see #VIDEO_RESOLUTION_360P
+     * @see #VIDEO_RESOLUTION_480P
+     * @see #VIDEO_RESOLUTION_540P
+     * @see #VIDEO_RESOLUTION_720P
+     * @see #VIDEO_RESOLUTION_1080P
+     */
+    public void setTargetResolution(int idx) throws IllegalArgumentException {
+        if (idx < VIDEO_RESOLUTION_360P ||
+                idx > VIDEO_RESOLUTION_1080P) {
+            throw new IllegalArgumentException("Invalid resolution index");
+        }
+        mTargetResolution = idx;
+        mTargetWidth = 0;
+        mTargetHeight = 0;
+
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            calResolution();
+            mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+        }
+    }
+
+    /**
+     * get streaming width
+     *
+     * @return streaming width
+     */
+    public int getTargetWidth() {
+        return mTargetWidth;
+    }
+
+    /**
+     * get streaming height
+     *
+     * @return streaming height
+     */
+    public int getTargetHeight() {
+        return mTargetHeight;
+    }
+
+    /**
+     * Set streaming fps.<br/>
+     * <p>
+     * The set fps would take effect after next streaming started.<br/>
+     * <p>
+     * If actual preview fps is larger than set value,
+     * the extra frames will be dropped before encoding,
+     * and if is smaller than set value, nothing will be done.
+     * default value : 15
+     *
+     * @param fps frame rate.
+     * @throws IllegalArgumentException
+     */
+    public void setTargetFps(float fps) throws IllegalArgumentException {
+        if (fps <= 0) {
+            throw new IllegalArgumentException("the fps must > 0");
+        }
+        mTargetFps = fps;
+        if (mPreviewFps == 0) {
+            mPreviewFps = mTargetFps;
+        }
+    }
+
+    /**
+     * get streaming fps
+     *
+     * @return streaming fps
+     */
+    public float getTargetFps() {
+        return mTargetFps;
+    }
+
+    /**
      * Set enable front camera mirror or not while streaming.<br/>
      * Would take effect immediately while streaming.
      *
      * @param mirror true to enable, false to disable.
      */
     public void setFrontCameraMirror(boolean mirror) {
-//        mFrontCameraMirror = mirror;
-//        updateFrontMirror();
-//        StatsLogReport.getInstance().setIsFrontCameraMirror(mirror);
+        mFrontCameraMirror = mirror;
+        updateFrontMirror();
     }
 
     /**
@@ -1676,7 +1912,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return true if mirror enabled, false if mirror disabled.
      */
     public boolean isFrontCameraMirrorEnabled() {
-        return false;
+        return mFrontCameraMirror;
     }
 
     /**
@@ -1689,7 +1925,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see CameraCapture#FACING_BACK
      */
     public void setCameraFacing(int facing) {
-//        mCameraFacing = facing;
+        mCameraFacing = facing;
     }
 
     /**
@@ -1702,6 +1938,14 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     /**
+     * Start camera preview with default facing, or facing set by
+     * {@link #setCameraFacing(int)} before.
+     */
+    public void startCameraPreview() {
+        startCameraPreview(mCameraFacing);
+    }
+
+    /**
      * Start camera preview with given facing.
      *
      * @param facing camera facing.
@@ -1709,6 +1953,18 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see CameraCapture#FACING_BACK
      */
     public void startCameraPreview(int facing) {
+        mCameraFacing = facing;
+        if ((mPreviewWidth == 0 || mPreviewHeight == 0) &&
+                (mScreenRenderWidth == 0 || mScreenRenderHeight == 0)) {
+            if (mImgTexPreview.getDisplayPreview() != null) {
+                mDelayedStartCameraPreview = true;
+                return;
+            }
+            mScreenRenderWidth = DEFAULT_PREVIEW_WIDTH;
+            mScreenRenderHeight = DEFAULT_PREVIEW_HEIGHT;
+        }
+        setPreviewParams();
+        mCameraCapture.start(mCameraFacing);
     }
 
     /**
@@ -1731,8 +1987,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return true if front camera in use false otherwise.
      */
     public boolean isFrontCamera() {
-        return true;
-//        return mCameraFacing == CameraCapture.FACING_FRONT;
+        return mCameraFacing == CameraCapture.FACING_FRONT;
     }
 
     /**
@@ -1770,12 +2025,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha alpha value，between 0~1.0
      */
     public void setLocalVideoRect(float x, float y, float w, float h, float alpha) {
-//        alpha = Math.max(0.0f, alpha);
-//        alpha = Math.min(alpha, 1.0f);
-//        mImgTexMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
-//        mImgTexPreviewMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
-//        mVideoEncoderMgt.getImgBufMixer().setRenderRect(1, x, y, w, h, alpha);
-//        mWaterMarkCapture.showLogo(mContext, path, w, h);
+        alpha = Math.max(0.0f, alpha);
+        alpha = Math.min(alpha, 1.0f);
+        mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, alpha);
     }
 
     /**
@@ -1791,12 +2043,114 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha alpha value，between 0~1.0
      */
     public void setRemoteVideoRect(int userId, float x, float y, float w, float h, float alpha) {
-//        alpha = Math.max(0.0f, alpha);
-//        alpha = Math.min(alpha, 1.0f);
-//        mImgTexMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
-//        mImgTexPreviewMixer.setRenderRect(mIdxWmLogo, x, y, w, h, alpha);
-//        mVideoEncoderMgt.getImgBufMixer().setRenderRect(1, x, y, w, h, alpha);
-//        mWaterMarkCapture.showLogo(mContext, path, w, h);
+        alpha = Math.max(0.0f, alpha);
+        alpha = Math.min(alpha, 1.0f);
+        // TODO: 添加多用户支持
+        mImgTexPreviewMixer.setScalingMode(1, ImgTexMixer.SCALING_MODE_CENTER_CROP);
+        mImgTexPreviewMixer.setRenderRect(1, x, y, w, h, alpha);
     }
+
+    private int getShortEdgeLength(int resolution) {
+        switch (resolution) {
+            case VIDEO_RESOLUTION_360P:
+                return 360;
+            case VIDEO_RESOLUTION_480P:
+                return 480;
+            case VIDEO_RESOLUTION_540P:
+                return 540;
+            case VIDEO_RESOLUTION_720P:
+                return 720;
+            case VIDEO_RESOLUTION_1080P:
+                return 1080;
+            default:
+                return 720;
+        }
+    }
+
+    private int align(int val, int align) {
+        return (val + align - 1) / align * align;
+    }
+
+    private void calResolution() {
+        if (mPreviewWidth == 0 && mPreviewHeight == 0) {
+            int val = getShortEdgeLength(mPreviewResolution);
+            if (mScreenRenderWidth > mScreenRenderHeight) {
+                mPreviewHeight = val;
+            } else {
+                mPreviewWidth = val;
+            }
+        }
+        if (mTargetWidth == 0 && mTargetHeight == 0) {
+            int val = getShortEdgeLength(mTargetResolution);
+            if (mScreenRenderWidth > mScreenRenderHeight) {
+                mTargetHeight = val;
+            } else {
+                mTargetWidth = val;
+            }
+        }
+
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            if (mPreviewWidth == 0) {
+                mPreviewWidth = mPreviewHeight * mScreenRenderWidth / mScreenRenderHeight;
+            } else if (mPreviewHeight == 0) {
+                mPreviewHeight = mPreviewWidth * mScreenRenderHeight / mScreenRenderWidth;
+            }
+            if (mTargetWidth == 0) {
+                mTargetWidth = mTargetHeight * mScreenRenderWidth / mScreenRenderHeight;
+            } else if (mTargetHeight == 0) {
+                mTargetHeight = mTargetWidth * mScreenRenderHeight / mScreenRenderWidth;
+            }
+        }
+        mPreviewWidth = align(mPreviewWidth, 8);
+        mPreviewHeight = align(mPreviewHeight, 8);
+        mTargetWidth = align(mTargetWidth, 8);
+        mTargetHeight = align(mTargetHeight, 8);
+    }
+
+    private void updateFrontMirror() {
+        if (mCameraFacing == CameraCapture.FACING_FRONT) {
+            mImgTexMixer.setMirror(0, !mFrontCameraMirror);
+        } else {
+            mImgTexMixer.setMirror(0, false);
+        }
+    }
+
+    private void setPreviewParams() {
+        calResolution();
+        mCameraCapture.setOrientation(mRotateDegrees);
+        if (mPreviewFps == 0) {
+            mPreviewFps = CameraCapture.DEFAULT_PREVIEW_FPS;
+        }
+        mCameraCapture.setPreviewFps(mPreviewFps);
+
+        mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+        mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+        mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+    }
+
+    private GLRender.OnSizeChangedListener mPreviewSizeChangedListener =
+            new GLRender.OnSizeChangedListener() {
+        @Override
+        public void onSizeChanged(int width, int height) {
+            boolean notifySizeChanged = mScreenRenderWidth != 0 && mScreenRenderHeight != 0;
+            mScreenRenderWidth = width;
+            mScreenRenderHeight = height;
+            setPreviewParams();
+            if (mDelayedStartCameraPreview) {
+                mCameraCapture.start(mCameraFacing);
+                mDelayedStartCameraPreview = false;
+            }
+            if (notifySizeChanged) {
+                if (mMainHandler != null) {
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // TODO: notify preview size changed
+                        }
+                    });
+                }
+            }
+        }
+    };
 }
 
