@@ -186,6 +186,10 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserOffline(int uid, int reason) {
+        // 断开视频连接
+        if (mAgoraRTCAdapter.getRemoteVideoSrcPin(uid) != null) {
+            mAgoraRTCAdapter.getRemoteVideoSrcPin(uid).disconnect(false);
+        }
         // 用户离开
         UserStatus userStatus = mUserStatusMap.remove(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_LEAVE, userStatus));
@@ -219,7 +223,6 @@ public class ZqEngineKit implements AgoraOutCallback {
         status.setFirstVideoWidth(width);
         status.setFirstVideoHeight(height);
 
-        // TODO: tryBindRemoteViewAutoOnMainThread("onFirstRemoteVideoDecoded");
         // 渲染远程图像
         mAgoraRTCAdapter.getRemoteVideoSrcPin(uid).connect(mImgTexPreviewMixer.getSinkPin(1));
 

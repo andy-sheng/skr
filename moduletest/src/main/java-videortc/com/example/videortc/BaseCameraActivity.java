@@ -340,6 +340,9 @@ public class BaseCameraActivity extends Activity implements
             int userId = event.getUserStatus().getUserId();
             mEngineKit.setLocalVideoRect(0, 0.5f, 1.0f, 0.5f, 1.0f);
             mEngineKit.setRemoteVideoRect(userId,0, 0, 1.0f, 0.5f, 1.0f);
+        } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
+            int userId = event.getUserStatus().getUserId();
+            mEngineKit.setLocalVideoRect(0, 0, 1.0f, 1.0f, 1.0f);
         }
     }
 
