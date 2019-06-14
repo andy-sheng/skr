@@ -354,6 +354,7 @@ public class AgoraRTCAdapter {
             mRtcEngine.setAudioProfile(a, b);
 
 //            mRtcEngine.setParameters("{\"che.audio.opensl\": true}");
+            mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUS\"}");
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
