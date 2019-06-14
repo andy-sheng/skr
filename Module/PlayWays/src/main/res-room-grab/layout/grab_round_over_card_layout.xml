@@ -6,26 +6,31 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.grab.room.view.normal.NormalRoundOverCardView
-        android:id="@+id/normal_round_over_card_view"
+    <ViewStub
+        android:id="@+id/normal_round_over_card_view_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:inflatedId="@+id/normal_round_over_card_view"
+        android:layout="@layout/grab_normal_round_over_card_layout"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.pk.PKRoundOverCardView
-        android:id="@+id/pk_round_over_card_view"
+    <ViewStub
+        android:id="@+id/pk_round_over_card_view_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+        android:inflatedId="@+id/pk_round_over_card_view"
+        android:layout="@layout/grab_pk_round_over_card_layout"
+        android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.minigame.MiniGameRoundOverCardView
-        android:id="@+id/mini_game_over_card_view"
+    <ViewStub
+        android:id="@+id/mini_game_over_card_view_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        />
+        android:inflatedId="@+id/mini_game_over_card_view"
+        android:layout="@layout/grab_mini_game_over_card_layout"
+        android:visibility="gone" />
 
 </merge>

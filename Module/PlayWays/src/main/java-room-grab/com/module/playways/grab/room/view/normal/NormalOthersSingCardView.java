@@ -229,6 +229,7 @@ public class NormalOthersSingCardView extends ExViewStub {
                     }
                 });
             } else {
+                mParentView.clearAnimation();
                 setVisibility(View.GONE);
             }
             if (mCircleCountDownView != null) {

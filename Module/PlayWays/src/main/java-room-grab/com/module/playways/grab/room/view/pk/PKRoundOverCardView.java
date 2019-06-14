@@ -1,14 +1,12 @@
 package com.module.playways.grab.room.view.pk;
 
-import android.content.Context;
 import android.os.Handler;
-import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.anim.svga.SvgaParserAdapter;
@@ -24,6 +22,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
+import com.module.playways.grab.room.view.ExViewStub;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -37,7 +36,7 @@ import java.util.List;
 /**
  * PK 结果卡片
  */
-public class PKRoundOverCardView extends RelativeLayout {
+public class PKRoundOverCardView extends ExViewStub {
 
     public final static String TAG = "PKRoundOverCardView";
 
@@ -79,48 +78,38 @@ public class PKRoundOverCardView extends RelativeLayout {
     private GrabRoomData mRoomData;
     SVGAListener mSVGAListener;
 
-    public PKRoundOverCardView(Context context) {
-        super(context);
-        init();
+    public PKRoundOverCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
+        mRoomData = roomData;
     }
 
-    public PKRoundOverCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
+    @Override
+    protected void init(View parentView) {
+        mPkArea = (LinearLayout) parentView.findViewById(R.id.pk_area);
+        mLeftAvatarBg = (ImageView) parentView.findViewById(R.id.left_avatar_bg);
+        mLeftAvatarIv = (SimpleDraweeView) parentView.findViewById(R.id.left_avatar_iv);
+        mLeftName = (ExTextView) parentView.findViewById(R.id.left_name);
+        mLeftOverReasonIv = (ImageView) parentView.findViewById(R.id.left_over_reason_iv);
+        mRightAvatarBg = (ImageView) parentView.findViewById(R.id.right_avatar_bg);
+        mRightAvatarIv = (SimpleDraweeView) parentView.findViewById(R.id.right_avatar_iv);
+        mRightName = (ExTextView) parentView.findViewById(R.id.right_name);
+        mRightOverReasonIv = (ImageView) parentView.findViewById(R.id.right_over_reason_iv);
+        mSroreArea = (LinearLayout) parentView.findViewById(R.id.srore_area);
+        mLeftTipsTv = (TextView) parentView.findViewById(R.id.left_tips_tv);
+        mLeftScoreBtv = (BitmapTextView) parentView.findViewById(R.id.left_score_btv);
+        mRightScoreBtv = (BitmapTextView) parentView.findViewById(R.id.right_score_btv);
+        mRightTipsTv = (TextView) parentView.findViewById(R.id.right_tips_tv);
 
-    public PKRoundOverCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_pk_round_over_card_layout, this);
-
-        mPkArea = (LinearLayout) findViewById(R.id.pk_area);
-        mLeftAvatarBg = (ImageView) findViewById(R.id.left_avatar_bg);
-        mLeftAvatarIv = (SimpleDraweeView) findViewById(R.id.left_avatar_iv);
-        mLeftName = (ExTextView) findViewById(R.id.left_name);
-        mLeftOverReasonIv = (ImageView) findViewById(R.id.left_over_reason_iv);
-        mRightAvatarBg = (ImageView) findViewById(R.id.right_avatar_bg);
-        mRightAvatarIv = (SimpleDraweeView) findViewById(R.id.right_avatar_iv);
-        mRightName = (ExTextView) findViewById(R.id.right_name);
-        mRightOverReasonIv = (ImageView) findViewById(R.id.right_over_reason_iv);
-        mSroreArea = (LinearLayout) findViewById(R.id.srore_area);
-        mLeftTipsTv = (TextView) findViewById(R.id.left_tips_tv);
-        mLeftScoreBtv = (BitmapTextView) findViewById(R.id.left_score_btv);
-        mRightScoreBtv = (BitmapTextView) findViewById(R.id.right_score_btv);
-        mRightTipsTv = (TextView) findViewById(R.id.right_tips_tv);
-
-        mLeftWinIv = (ImageView) findViewById(R.id.left_win_iv);
-        mRightWinIv = (ImageView) findViewById(R.id.right_win_iv);
-        mLeftSvga = (SVGAImageView) findViewById(R.id.left_svga);
-        mRightSvga = (SVGAImageView) findViewById(R.id.right_svga);
+        mLeftWinIv = (ImageView) parentView.findViewById(R.id.left_win_iv);
+        mRightWinIv = (ImageView) parentView.findViewById(R.id.right_win_iv);
+        mLeftSvga = (SVGAImageView) parentView.findViewById(R.id.left_svga);
+        mRightSvga = (SVGAImageView) parentView.findViewById(R.id.right_svga);
     }
 
     public void bindData(GrabRoundInfoModel roundInfoModel, SVGAListener svgaListener) {
-        mSVGAListener = svgaListener;
+        tryInflate();
         reset();
+        this.mSVGAListener = svgaListener;
         List<SPkRoundInfoModel> list = roundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
@@ -160,8 +149,8 @@ public class PKRoundOverCardView extends RelativeLayout {
     private void reset() {
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
-        mLeftWinIv.setVisibility(GONE);
-        mRightWinIv.setVisibility(GONE);
+        mLeftWinIv.setVisibility(View.GONE);
+        mRightWinIv.setVisibility(View.GONE);
         if (mLeftSvga != null) {
             mLeftSvga.setCallback(null);
             mLeftSvga.stopAnimation(true);
@@ -181,24 +170,24 @@ public class PKRoundOverCardView extends RelativeLayout {
             return;
         }
         if (overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
-            bitmapTextView.setVisibility(GONE);
-            scoreTv.setVisibility(GONE);
-            overReasonIv.setVisibility(VISIBLE);
+            bitmapTextView.setVisibility(View.GONE);
+            scoreTv.setVisibility(View.GONE);
+            overReasonIv.setVisibility(View.VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_buchangle);
         } else if (overReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
-            bitmapTextView.setVisibility(GONE);
-            scoreTv.setVisibility(GONE);
-            overReasonIv.setVisibility(VISIBLE);
+            bitmapTextView.setVisibility(View.GONE);
+            scoreTv.setVisibility(View.GONE);
+            overReasonIv.setVisibility(View.VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_miedeng);
         } else if (overReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
-            bitmapTextView.setVisibility(GONE);
-            scoreTv.setVisibility(GONE);
-            overReasonIv.setVisibility(VISIBLE);
+            bitmapTextView.setVisibility(View.GONE);
+            scoreTv.setVisibility(View.GONE);
+            overReasonIv.setVisibility(View.VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_diaoxianle);
         } else {
-            scoreTv.setVisibility(VISIBLE);
-            bitmapTextView.setVisibility(VISIBLE);
-            overReasonIv.setVisibility(GONE);
+            scoreTv.setVisibility(View.VISIBLE);
+            bitmapTextView.setVisibility(View.VISIBLE);
+            overReasonIv.setVisibility(View.GONE);
         }
     }
 
@@ -206,7 +195,7 @@ public class PKRoundOverCardView extends RelativeLayout {
      * 入场动画
      */
     private void playCardEnterAnimation() {
-        setVisibility(VISIBLE);
+        mParentView.setVisibility(View.VISIBLE);
         if (mEnterTranslateAnimation == null) {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
@@ -227,7 +216,7 @@ public class PKRoundOverCardView extends RelativeLayout {
 
             }
         });
-        this.startAnimation(mEnterTranslateAnimation);
+        mParentView.startAnimation(mEnterTranslateAnimation);
 
         mUiHandler.postDelayed(new Runnable() {
             @Override
@@ -239,12 +228,12 @@ public class PKRoundOverCardView extends RelativeLayout {
 
     private void showPkResult() {
         if (mLeftWin) {
-            mLeftWinIv.setVisibility(VISIBLE);
+            mLeftWinIv.setVisibility(View.VISIBLE);
             playWinSVGA(mLeftSvga);
         }
 
         if (mRightWin) {
-            mRightWinIv.setVisibility(VISIBLE);
+            mRightWinIv.setVisibility(View.VISIBLE);
             playWinSVGA(mRightSvga);
         }
     }
@@ -311,7 +300,7 @@ public class PKRoundOverCardView extends RelativeLayout {
      */
     public void hide() {
         mUiHandler.removeCallbacksAndMessages(null);
-        if (this != null && this.getVisibility() == VISIBLE) {
+        if (mParentView != null && mParentView.getVisibility() == View.VISIBLE) {
             if (mLeaveTranslateAnimation == null) {
                 mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
                 mLeaveTranslateAnimation.setDuration(200);
@@ -324,8 +313,8 @@ public class PKRoundOverCardView extends RelativeLayout {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    clearAnimation();
-                    setVisibility(GONE);
+                    mParentView.clearAnimation();
+                    setVisibility(View.GONE);
                     if (mSVGAListener != null) {
                         mSVGAListener.onFinished();
                     }
@@ -336,24 +325,25 @@ public class PKRoundOverCardView extends RelativeLayout {
 
                 }
             });
-            this.startAnimation(mLeaveTranslateAnimation);
+            mParentView.startAnimation(mLeaveTranslateAnimation);
         } else {
-            clearAnimation();
-            setVisibility(GONE);
+            mParentView.clearAnimation();
+            setVisibility(View.GONE);
         }
     }
+
 
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (visibility == GONE) {
+        if (visibility == View.GONE) {
             destory();
         }
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
         destory();
     }
 
@@ -375,14 +365,5 @@ public class PKRoundOverCardView extends RelativeLayout {
             mLeftSvga.stopAnimation(true);
         }
         mUiHandler.removeCallbacksAndMessages(null);
-        clearAnimation();
-    }
-
-    public void setRoomData(GrabRoomData roomData) {
-        mRoomData = roomData;
-    }
-
-    public GrabRoomData getRoomData() {
-        return mRoomData;
     }
 }

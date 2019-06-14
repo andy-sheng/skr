@@ -1,4 +1,4 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,4 +15,4 @@
         android:layout_marginRight="@dimen/view_16_dp"
         android:background="@drawable/grab_mini_game_over_bg" />
 
-</merge>
+</RelativeLayout>
