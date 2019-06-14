@@ -37,15 +37,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_207_dp" />
 
-    <com.module.playways.grab.room.view.CharmsView
-        android:id="@+id/charms_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/sing_avatar_view"
-        android:layout_marginTop="-40dp"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone" />
-
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_singer_name"
         android:layout_width="wrap_content"

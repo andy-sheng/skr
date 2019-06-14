@@ -58,24 +58,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_32_dp" />
 
-            <!--<com.common.view.ex.ExRelativeLayout-->
-                <!--android:id="@+id/left_status_area"-->
-                <!--android:layout_width="@dimen/view_86_dp"-->
-                <!--android:layout_height="@dimen/view_86_dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="@dimen/view_34_dp"-->
-                <!--android:visibility="gone"-->
-                <!--app:bl_shape="oval"-->
-                <!--app:bl_solid_color="@color/black_trans_50" />-->
-
-            <com.module.playways.grab.room.view.CharmsView
-                android:id="@+id/left_charms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/left_iv"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone" />
-
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_name"
                 android:layout_width="wrap_content"
@@ -97,15 +79,6 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
 
-            <!--<com.common.view.ex.ExTextView-->
-                <!--android:id="@+id/left_status"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="@dimen/view_88_dp"-->
-                <!--android:textColor="@color/white_trans_80"-->
-                <!--android:textSize="@dimen/textsize_14_dp"-->
-                <!--android:visibility="gone" />-->
         </RelativeLayout>
 
         <RelativeLayout
@@ -119,24 +92,6 @@
                 android:layout_height="@dimen/view_90_dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_32_dp" />
-
-            <!--<com.common.view.ex.ExRelativeLayout-->
-                <!--android:id="@+id/right_status_area"-->
-                <!--android:layout_width="@dimen/view_86_dp"-->
-                <!--android:layout_height="@dimen/view_86_dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="@dimen/view_34_dp"-->
-                <!--android:visibility="gone"-->
-                <!--app:bl_shape="oval"-->
-                <!--app:bl_solid_color="@color/black_trans_50" />-->
-
-            <com.module.playways.grab.room.view.CharmsView
-                android:id="@+id/right_charms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/right_iv"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_name"
@@ -173,12 +128,11 @@
 
     </LinearLayout>
 
-    <com.module.playways.grab.room.view.normal.view.SingCountDownView
+    <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/chorus_other_area"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="-34dp" />
+        android:layout_marginTop="@dimen/view_78_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"/>
 
 </RelativeLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,41 +7,33 @@
     tools:parentTag="android.widget.RelativeLayout">
 
 
-    <RelativeLayout
+    <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_200_dp"
-        android:layout_marginLeft="@dimen/view_18_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_18_dp"
-        android:background="@drawable/self_lyric_bg">
+        android:layout_height="@dimen/view_220_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_133_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFE0AD">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/lyric_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/view_40_dp"
-            android:layout_marginBottom="@dimen/view_15_dp"
-            android:paddingRight="@dimen/view_12_dp"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginBottom="@dimen/view_20_dp"
+            android:paddingRight="@dimen/view_10_dp"
             android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
             android:scrollbars="vertical" />
 
-        <com.module.playways.grab.room.view.CharmsView
-            android:id="@+id/charms_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/view_7_dp"
-            android:layout_marginRight="@dimen/view_15_dp"
-            android:visibility="gone" />
+    </com.common.view.ex.ExRelativeLayout>
 
-    </RelativeLayout>
-
-    <com.module.playways.grab.room.view.normal.view.SingCountDownView
+    <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_98_dp" />
+        android:layout_marginTop="@dimen/view_78_dp" />
 
 </merge>

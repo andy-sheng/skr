@@ -1,16 +1,12 @@
 package com.module.playways.grab.room.view.minigame;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.account.UserAccountManager;
@@ -28,9 +24,8 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.grab.room.view.ExViewStub;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -64,14 +59,12 @@ public class MiniGameOtherSingCardView extends ExViewStub {
     LinearLayout mChorusOtherArea;
 
     SimpleDraweeView mLeftIv;
-    CharmsView mLeftCharms;
     ExTextView mLeftName;
 
     SimpleDraweeView mRightIv;
-    CharmsView mRightCharms;
     ExTextView mRightName;
 
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
@@ -111,11 +104,9 @@ public class MiniGameOtherSingCardView extends ExViewStub {
         mRightSingSvga = (SVGAImageView) mParentView.findViewById(R.id.right_sing_svga);
 
         mLeftIv = (SimpleDraweeView) mParentView.findViewById(R.id.left_iv);
-        mLeftCharms = (CharmsView) mParentView.findViewById(R.id.left_charms);
         mLeftName = (ExTextView) mParentView.findViewById(R.id.left_name);
 
         mRightIv = (SimpleDraweeView) mParentView.findViewById(R.id.right_iv);
-        mRightCharms = (CharmsView) mParentView.findViewById(R.id.right_charms);
         mRightName = (ExTextView) mParentView.findViewById(R.id.right_name);
 
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
@@ -195,8 +186,6 @@ public class MiniGameOtherSingCardView extends ExViewStub {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftMINIGameRoundInfoModel.getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightMINIGameRoundInfoModel.getUserID());
             mMiniGameInfoModel = now.getMusic().getMiniGame();
-            mLeftCharms.bindData(mGrabRoomData, mLeftMINIGameRoundInfoModel.getUserID());
-            mRightCharms.bindData(mGrabRoomData, mRightMINIGameRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftMINIGameRoundInfoModel != null && mRightMINIGameRoundInfoModel != null) {
@@ -223,7 +212,6 @@ public class MiniGameOtherSingCardView extends ExViewStub {
 
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
             mSingCountDownView.reset();
-            mSingCountDownView.setTagTvText(mMiniGameInfoModel.getGameName());
 
             GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
             if (grabRoundInfoModel == null) {

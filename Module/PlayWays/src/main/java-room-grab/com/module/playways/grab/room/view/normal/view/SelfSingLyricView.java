@@ -5,11 +5,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.R;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
 import com.zq.live.proto.Room.EWantSingType;
 
 /**
@@ -18,8 +16,6 @@ import com.zq.live.proto.Room.EWantSingType;
 public class SelfSingLyricView extends BaseSelfSingLyricView {
 
     public final static String TAG = "SelfSingLyricView";
-
-    CharmsView mCharmsView;
 
     ImageView mIvChallengeIcon;
 
@@ -38,7 +34,6 @@ public class SelfSingLyricView extends BaseSelfSingLyricView {
     protected void init() {
         inflate(getContext(), R.layout.grab_self_sing_lyric_layout, this);
 
-        mCharmsView = findViewById(R.id.charms_view);
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = findViewById(R.id.many_lyrics_view);
         mVoiceScaleView = findViewById(R.id.voice_scale_view);
@@ -48,7 +43,6 @@ public class SelfSingLyricView extends BaseSelfSingLyricView {
     public void initLyric() {
         super.initLyric();
 
-        mCharmsView.bindData(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             MyLog.w(TAG, "playLyric mRoomData = null");
             return;

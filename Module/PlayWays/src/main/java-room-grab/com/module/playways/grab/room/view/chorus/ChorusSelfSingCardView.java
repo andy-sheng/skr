@@ -4,14 +4,11 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,8 +22,7 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
 
     public final static String TAG = "ChorusSelfSingCardView";
 
-    CharmsView mCharmsView;
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
     public ChorusSelfSingCardView(Context context) {
         super(context);
@@ -43,7 +39,6 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
     protected void init() {
         inflate(getContext(), R.layout.grab_chorus_self_sing_card_layout, this);
         mLyricRecycleView = findViewById(R.id.lyric_recycle_view);
-        mCharmsView = (CharmsView) findViewById(R.id.charms_view);
         mSingCountDownView = findViewById(R.id.sing_count_down_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
@@ -54,7 +49,6 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
     }
 
     public void playLyric() {
-        mCharmsView.bindData(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (mRoomData == null) {
             return;
         }

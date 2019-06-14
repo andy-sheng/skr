@@ -1,15 +1,12 @@
 package com.module.playways.grab.room.view.pk;
 
-import android.content.Context;
+
 import android.os.Handler;
 import android.os.Message;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -19,7 +16,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.view.ExViewStub;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
 import com.module.playways.R;
 import com.zq.live.proto.Room.EQRoundStatus;
@@ -39,7 +36,7 @@ public class PKOthersSingCardView extends ExViewStub {
     int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
 
     PKSingCardView mPkCardView;
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
@@ -81,7 +78,6 @@ public class PKOthersSingCardView extends ExViewStub {
             return;
         }
         tryInflate();
-        mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_pk);
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();

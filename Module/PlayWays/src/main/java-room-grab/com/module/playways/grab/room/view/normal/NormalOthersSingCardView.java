@@ -1,10 +1,9 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.graphics.Color;
+
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -23,7 +22,6 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.grab.room.view.ExViewStub;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -49,7 +47,6 @@ public class NormalOthersSingCardView extends ExViewStub {
 
     SVGAImageView mGrabStageView;
     BaseImageView mSingAvatarView;
-    CharmsView mCharmsView;
     CircleCountDownView mCircleCountDownView;
     ExTextView mTvSingerName;
 
@@ -79,7 +76,6 @@ public class NormalOthersSingCardView extends ExViewStub {
     protected void init(View parentView) {
         mGrabStageView = (SVGAImageView) mParentView.findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) mParentView.findViewById(R.id.sing_avatar_view);
-        mCharmsView = (CharmsView) mParentView.findViewById(R.id.charms_view);
         mCircleCountDownView = (CircleCountDownView) mParentView.findViewById(R.id.circle_count_down_view);
         mTvSingerName = (ExTextView) mParentView.findViewById(R.id.tv_singer_name);
 
@@ -125,7 +121,6 @@ public class NormalOthersSingCardView extends ExViewStub {
                             .setCircle(true)
                             .build());
             mTvSingerName.setText(userInfoModel.getNicknameRemark());
-            mCharmsView.bindData(mGrabRoomData, userInfoModel.getUserId(), Color.parseColor("#FFFFFF"));
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }

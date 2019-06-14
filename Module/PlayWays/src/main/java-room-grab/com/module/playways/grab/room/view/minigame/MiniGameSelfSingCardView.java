@@ -3,14 +3,12 @@ package com.module.playways.grab.room.view.minigame;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 
 /**
  * 小游戏自己视角的卡片
@@ -19,8 +17,7 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
 
     public final static String TAG = "MiniGameSelfSingCardView";
 
-    CharmsView mCharmsView;
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
     public MiniGameSelfSingCardView(Context context) {
         super(context);
@@ -38,7 +35,6 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
     protected void init() {
         inflate(getContext(), R.layout.grab_mini_game_selft_sing_layout, this);
 
-        mCharmsView = findViewById(R.id.charms_view);
         mAvatarIv = findViewById(R.id.avatar_iv);
         mFirstTipsTv = findViewById(R.id.first_tips_tv);
         mSvLyric = findViewById(R.id.sv_lyric);
@@ -71,7 +67,6 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
         }
 
         super.playLyric();
-        mCharmsView.bindData(mGrabRoomData, (int) MyUserInfoManager.getInstance().getUid());
         mMiniGameInfoModel = infoModel.getMusic().getMiniGame();
         if (mMiniGameInfoModel == null) {
             MyLog.w(TAG, "MiniGame 是空的");
@@ -79,7 +74,6 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
         }
 
         int totalTs = infoModel.getSingTotalMs();
-        mSingCountDownView.setTagTvText(mMiniGameInfoModel.getGameName());
         mSingCountDownView.startPlay(0, totalTs, true);
     }
 

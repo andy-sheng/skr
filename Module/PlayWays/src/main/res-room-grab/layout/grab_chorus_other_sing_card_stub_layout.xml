@@ -8,6 +8,7 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <ImageView
+        android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_194_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
@@ -89,15 +90,6 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
 
-            <com.module.playways.grab.room.view.CharmsView
-                android:id="@+id/left_charms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/left_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="-24dp"
-                android:visibility="gone" />
-
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_status"
                 android:layout_width="wrap_content"
@@ -152,15 +144,6 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
 
-            <com.module.playways.grab.room.view.CharmsView
-                android:id="@+id/right_charms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/right_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="-24dp"
-                android:visibility="gone" />
-
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_status"
                 android:layout_width="wrap_content"
@@ -175,12 +158,11 @@
 
     </LinearLayout>
 
-    <com.module.playways.grab.room.view.normal.view.SingCountDownView
+    <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/chorus_other_area"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="-34dp" />
+        android:layout_marginTop="@dimen/view_78_dp" />
 
 </RelativeLayout>

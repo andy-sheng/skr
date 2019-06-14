@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 import com.module.playways.R;
@@ -21,7 +21,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
     GrabRoomData mRoomData;
 
     SelfSingLyricView mSelfSingLyricView;
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
     public NormalSelfSingCardView(Context context) {
         super(context);
@@ -42,7 +42,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_normal_self_sing_card_layout, this);
 
         mSelfSingLyricView = (SelfSingLyricView) findViewById(R.id.self_sing_lyric_view);
-        mSingCountDownView = (SingCountDownView) findViewById(R.id.sing_count_down_view);
+        mSingCountDownView = (SingCountDownView2) findViewById(R.id.sing_count_down_view);
     }
 
     public void playLyric() {
@@ -64,10 +64,8 @@ public class NormalSelfSingCardView extends RelativeLayout {
             withAcc = true;
         }
         if (!withAcc) {
-            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_qingchang);
             mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
         } else {
-            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_banzou);
             mSelfSingLyricView.playWithAcc(infoModel, totalTs);
         }
         mSingCountDownView.startPlay(0, totalTs, true);

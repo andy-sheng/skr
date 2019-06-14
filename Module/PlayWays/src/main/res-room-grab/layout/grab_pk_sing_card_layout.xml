@@ -16,9 +16,9 @@
         <RelativeLayout
             android:id="@+id/left_pk_area"
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_200_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginTop="@dimen/view_125_dp"
+            android:layout_height="@dimen/view_220_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_marginTop="@dimen/view_133_dp"
             android:layout_weight="1"
             android:background="@drawable/pk_banzi_bg_blue">
 
@@ -91,16 +91,6 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
 
-            <com.module.playways.grab.room.view.CharmsView
-                android:id="@+id/left_charms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/left_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="-24dp"
-                android:visibility="gone" />
-
-
             <com.module.playways.grab.room.top.CircleAnimationView
                 android:id="@+id/left_circle_animation_view"
                 android:layout_width="@dimen/view_100_dp"
@@ -112,9 +102,9 @@
         <RelativeLayout
             android:id="@+id/right_pk_area"
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_200_dp"
-            android:layout_marginTop="@dimen/view_125_dp"
-            android:layout_marginRight="@dimen/view_16_dp"
+            android:layout_height="@dimen/view_220_dp"
+            android:layout_marginTop="@dimen/view_133_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
             android:layout_weight="1"
             android:background="@drawable/pk_banzi_bg_red">
 
@@ -185,15 +175,6 @@
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
-
-            <com.module.playways.grab.room.view.CharmsView
-                android:id="@+id/right_charms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/right_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="-24dp"
-                android:visibility="gone" />
 
             <com.module.playways.grab.room.top.CircleAnimationView
                 android:id="@+id/right_circle_animation_view"

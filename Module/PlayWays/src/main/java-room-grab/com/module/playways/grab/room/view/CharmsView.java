@@ -51,10 +51,6 @@ public class CharmsView extends RelativeLayout {
     }
 
     public void bindData(GrabRoomData grabRoomData, int userID) {
-        bindData(grabRoomData, userID, Color.parseColor("#3B4E79"));
-    }
-
-    public void bindData(GrabRoomData grabRoomData, int userID, int color) {
         this.grabRoomData = grabRoomData;
         this.mUserID = userID;
 
@@ -68,7 +64,6 @@ public class CharmsView extends RelativeLayout {
             }
         }
         setVisibility(VISIBLE);
-        mCharmTv.setTextColor(color);
         updateUi();
     }
 

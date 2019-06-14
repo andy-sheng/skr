@@ -3,7 +3,6 @@ package com.module.playways.grab.room.view.chorus;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -27,9 +26,8 @@ import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.grab.room.view.ExViewStub;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -62,17 +60,15 @@ public class ChorusOthersSingCardView extends ExViewStub {
 
     SimpleDraweeView mLeftIv;
     ExRelativeLayout mLeftStatusArea;
-    CharmsView mLeftCharms;
     ExTextView mLeftStatus;
     ExTextView mLeftName;
 
     SimpleDraweeView mRightIv;
     ExRelativeLayout mRightStatusArea;
-    CharmsView mRightCharms;
     ExTextView mRightStatus;
     ExTextView mRightName;
 
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
@@ -112,13 +108,11 @@ public class ChorusOthersSingCardView extends ExViewStub {
 
         mLeftStatusArea = (ExRelativeLayout) mParentView.findViewById(R.id.left_status_area);
         mLeftIv = (SimpleDraweeView) mParentView.findViewById(R.id.left_iv);
-        mLeftCharms = (CharmsView) mParentView.findViewById(R.id.left_charms);
         mLeftStatus = (ExTextView) mParentView.findViewById(R.id.left_status);
         mLeftName = (ExTextView) mParentView.findViewById(R.id.left_name);
 
         mRightStatusArea = (ExRelativeLayout) mParentView.findViewById(R.id.right_status_area);
         mRightIv = (SimpleDraweeView) mParentView.findViewById(R.id.right_iv);
-        mRightCharms = (CharmsView) mParentView.findViewById(R.id.right_charms);
         mRightStatus = (ExTextView) mParentView.findViewById(R.id.right_status);
         mRightName = (ExTextView) mParentView.findViewById(R.id.right_name);
 
@@ -200,8 +194,6 @@ public class ChorusOthersSingCardView extends ExViewStub {
             mRightChorusRoundInfoModel = list.get(1);
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftChorusRoundInfoModel.getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightChorusRoundInfoModel.getUserID());
-            mLeftCharms.bindData(mGrabRoomData, mLeftChorusRoundInfoModel.getUserID());
-            mRightCharms.bindData(mGrabRoomData, mRightChorusRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftChorusRoundInfoModel != null && mRightChorusRoundInfoModel != null) {

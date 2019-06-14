@@ -15,11 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.module.playways.grab.room.view.normal.view.SingCountDownView
+    <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_98_dp" />
+        android:layout_marginTop="@dimen/view_78_dp" />
 
 </merge>
