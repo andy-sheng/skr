@@ -466,7 +466,9 @@ public class DialogPlus {
             MyLog.d("DialogPlus", "无法重复添加某个view");
             return;
         }
-        view.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
+        if (mOnAttachStateChangeListener != null) {
+            view.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
+        }
         decorView.addView(view);
         contentContainer.startAnimation(inAnim);
 
