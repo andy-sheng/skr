@@ -6,7 +6,6 @@ import android.view.ViewStub;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.chorus.BaseChorusSelfCardView;
 
 import java.util.List;
 
@@ -27,26 +26,7 @@ public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
         super.init(parentView);
     }
 
-    public void playLyric() {
-        if (mRoomData == null) {
-            return;
-        }
-        tryInflate();
-        mLeft.reset();
-        mRight.reset();
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (infoModel != null) {
-            List<ChorusRoundInfoModel> chorusRoundInfoModelList = infoModel.getChorusRoundInfoModels();
-            if (chorusRoundInfoModelList != null && chorusRoundInfoModelList.size() >= 2) {
-                int uid1 = chorusRoundInfoModelList.get(0).getUserID();
-                int uid2 = chorusRoundInfoModelList.get(1).getUserID();
-                mLeft.mUserInfoModel = mRoomData.getUserInfo(uid1);
-                mLeft.mChorusRoundInfoModel = chorusRoundInfoModelList.get(0);
-                mRight.mUserInfoModel = mRoomData.getUserInfo(uid2);
-                mRight.mChorusRoundInfoModel = chorusRoundInfoModelList.get(1);
-            }
-            mSongModel = infoModel.getMusic();
-            playWithNoAcc();
-        }
+    public boolean playLyric() {
+        return super.playLyric();
     }
 }

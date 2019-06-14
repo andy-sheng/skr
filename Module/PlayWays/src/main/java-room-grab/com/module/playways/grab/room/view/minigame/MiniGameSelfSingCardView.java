@@ -27,6 +27,7 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
 
     @Override
     protected void init(View parentView) {
+        super.init(parentView);
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mListener);
     }
@@ -35,34 +36,24 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
         super.setListener(l);
     }
 
-    public void playLyric() {
-        GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
-        if (infoModel == null) {
-            MyLog.w(TAG, "infoModel 是空的");
-            return;
+    public boolean playLyric() {
+        if(super.playLyric()){
+            GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
+            int totalTs = infoModel.getSingTotalMs();
+            mSingCountDownView.startPlay(0, totalTs, true);
+            return true;
+        }else{
+            return false;
         }
-
-        if (infoModel.getMusic() == null) {
-            MyLog.w(TAG, "songModel 是空的");
-            return;
-        }
-
-        super.playLyric();
-        mMiniGameInfoModel = infoModel.getMusic().getMiniGame();
-        if (mMiniGameInfoModel == null) {
-            MyLog.w(TAG, "MiniGame 是空的");
-            return;
-        }
-
-        int totalTs = infoModel.getSingTotalMs();
-        mSingCountDownView.startPlay(0, totalTs, true);
     }
 
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == View.GONE) {
-            mSingCountDownView.reset();
+            if (mSingCountDownView != null) {
+                mSingCountDownView.reset();
+            }
         }
     }
 }

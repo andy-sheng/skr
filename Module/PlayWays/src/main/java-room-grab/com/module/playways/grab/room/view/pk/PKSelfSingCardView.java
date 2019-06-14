@@ -12,11 +12,10 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
-import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.ExViewStub;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
 import com.zq.live.proto.Room.EQRoundStatus;
 
@@ -50,6 +49,8 @@ public class PKSelfSingCardView extends ExViewStub {
         mPkSingCardView = mParentView.findViewById(R.id.pk_sing_card_view);
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mListener);
+        mPkSelfSingLyricView.setRoomData(mRoomData);
+        mPkSingCardView.setRoomData(mRoomData);
     }
 
     public void playLyric() {
@@ -149,15 +150,6 @@ public class PKSelfSingCardView extends ExViewStub {
         mParentView.startAnimation(mEnterTranslateAnimation);
     }
 
-    public void setRoomData(GrabRoomData roomData) {
-        mRoomData = roomData;
-        if (mPkSelfSingLyricView != null) {
-            mPkSelfSingLyricView.setRoomData(roomData);
-        }
-        if (mPkSingCardView != null) {
-            mPkSingCardView.setRoomData(roomData);
-        }
-    }
 //
 //    /**
 //     * 离场动画，整个pk结束才执行
@@ -199,14 +191,22 @@ public class PKSelfSingCardView extends ExViewStub {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == View.GONE) {
-            mSingCountDownView.reset();
-            mPkSelfSingLyricView.reset();
-            mPkSingCardView.reset();
+            if (mSingCountDownView != null) {
+                mSingCountDownView.reset();
+            }
+            if (mPkSelfSingLyricView != null) {
+                mPkSelfSingLyricView.reset();
+            }
+            if (mPkSingCardView != null) {
+                mPkSingCardView.reset();
+            }
         }
     }
 
     public void destroy() {
-        mPkSelfSingLyricView.destroy();
+        if (mPkSelfSingLyricView != null) {
+            mPkSelfSingLyricView.destroy();
+        }
     }
 
     @Override

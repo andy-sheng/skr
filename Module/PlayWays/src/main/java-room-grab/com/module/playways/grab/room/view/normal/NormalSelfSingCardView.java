@@ -82,8 +82,12 @@ public class NormalSelfSingCardView extends ExViewStub {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == View.GONE) {
-            mSingCountDownView.reset();
-            mSelfSingLyricView.reset();
+            if (mSingCountDownView != null) {
+                mSingCountDownView.reset();
+            }
+            if (mSelfSingLyricView != null) {
+                mSelfSingLyricView.reset();
+            }
         }
     }
 

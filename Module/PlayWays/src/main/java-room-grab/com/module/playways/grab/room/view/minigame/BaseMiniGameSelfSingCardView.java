@@ -69,9 +69,9 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
+        mSvLyric = mParentView.findViewById(R.id.sv_lyric);
         mAvatarIv = mParentView.findViewById(R.id.avatar_iv);
         mFirstTipsTv = mParentView.findViewById(R.id.first_tips_tv);
-        mSvLyric = mParentView.findViewById(R.id.sv_lyric);
         mTvLyric = mParentView.findViewById(R.id.tv_lyric);
     }
 
@@ -79,26 +79,26 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
         mListener = l;
     }
 
-    public void playLyric() {
+    public boolean playLyric() {
         GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
         if (infoModel == null) {
             MyLog.w(TAG, "infoModel 是空的");
-            return;
+            return false;
         }
 
         if (infoModel.getMusic() == null) {
             MyLog.w(TAG, "songModel 是空的");
-            return;
+            return false;
         }
-        tryInflate();
-        mSvLyric.scrollTo(0, 0);
 //        mCharmsView.bindData(mGrabRoomData, (int) MyUserInfoManager.getInstance().getUid());
         mMiniGameInfoModel = infoModel.getMusic().getMiniGame();
         if (mMiniGameInfoModel == null) {
             MyLog.w(TAG, "MiniGame 是空的");
-            return;
+            return false;
         }
 
+        tryInflate();
+        mSvLyric.scrollTo(0, 0);
 //        int totalTs = infoModel.getSingTotalMs();
 //        mSingCountDownView.setTagTvText(mMiniGameInfoModel.getGameName());
 //        mSingCountDownView.startPlay(0, totalTs, true);
@@ -141,7 +141,7 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
             // TODO: 2019-05-29 不带歌词的,待补充
             mTvLyric.setText(mMiniGameInfoModel.getDisplayGameRule());
         }
-
+        return true;
     }
 
     protected void drawLyric(final File file) {

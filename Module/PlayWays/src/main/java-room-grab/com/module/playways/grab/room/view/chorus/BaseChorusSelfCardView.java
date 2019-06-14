@@ -14,6 +14,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
@@ -72,12 +73,30 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
         }
     }
 
-    public abstract void playLyric();
-
-    protected void playWithNoAcc() {
-        if (mSongModel == null) {
-            return;
+    protected boolean playLyric() {
+        if(mRoomData==null){
+            return false;
         }
+        mLeft.reset();
+        mRight.reset();
+
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (infoModel != null) {
+            List<ChorusRoundInfoModel> chorusRoundInfoModelList = infoModel.getChorusRoundInfoModels();
+            if (chorusRoundInfoModelList != null && chorusRoundInfoModelList.size() >= 2) {
+                int uid1 = chorusRoundInfoModelList.get(0).getUserID();
+                int uid2 = chorusRoundInfoModelList.get(1).getUserID();
+                mLeft.mUserInfoModel = mRoomData.getUserInfo(uid1);
+                mLeft.mChorusRoundInfoModel = chorusRoundInfoModelList.get(0);
+                mRight.mUserInfoModel = mRoomData.getUserInfo(uid2);
+                mRight.mChorusRoundInfoModel = chorusRoundInfoModelList.get(1);
+            }
+            mSongModel = infoModel.getMusic();
+        }
+        if(mSongModel==null){
+            return false;
+        }
+
         tryInflate();
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
@@ -132,6 +151,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
                         MyLog.e(TAG, "accept" + " throwable=" + throwable);
                     }
                 });
+        return true;
     }
 
     public boolean isJSON2(String str) {

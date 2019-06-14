@@ -65,12 +65,16 @@ getDeviceId(){
     devices=(${devstr//"device"/ })
 }
 
+
 #将apk安装到所有设备上
 installApkForAllDevices(){
     echo "注意包大小优化"
     ls -al $1
 	for data in ${devices[@]}  
-	do  
+	do
+	    if [ ${data} = "90bf00ba" ]; then
+	        myphone="90bf00ba"
+	    fi
     	echo "安装 $1 到 ${data}"
     	echo "adb -s ${data} install -r $1"
     	adb -s ${data} install -r $1
@@ -290,7 +294,12 @@ if [[ $1 = "app" ]]; then
 		        findChannel DEFAULT debug
 		    fi
 		    installApkForAllDevices $installApkPath
-		    myandroidlog.sh  com.zq.live
+		    if [ $myphone = "90bf00ba" ]; then
+		        echo "过滤自己手机日志"
+	            myandroidlog.sh  -s 90bf00ba com.zq.live
+	        else
+	            myandroidlog.sh  com.zq.live
+	        fi
 		else
 		   echo "app/build/outputs/apk/debug 为空"
         fi

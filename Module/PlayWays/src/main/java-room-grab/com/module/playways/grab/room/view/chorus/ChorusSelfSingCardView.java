@@ -1,8 +1,5 @@
 package com.module.playways.grab.room.view.chorus;
 
-import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
 
@@ -12,8 +9,6 @@ import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -38,27 +33,13 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
         mSingCountDownView.setListener(mListener);
     }
 
-    public void playLyric() {
-        if (mRoomData == null) {
-            return;
-        }
-        tryInflate();
-        mLeft.reset();
-        mRight.reset();
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (infoModel != null) {
-            List<ChorusRoundInfoModel> chorusRoundInfoModelList = infoModel.getChorusRoundInfoModels();
-            if (chorusRoundInfoModelList != null && chorusRoundInfoModelList.size() >= 2) {
-                int uid1 = chorusRoundInfoModelList.get(0).getUserID();
-                int uid2 = chorusRoundInfoModelList.get(1).getUserID();
-                mLeft.mUserInfoModel = mRoomData.getUserInfo(uid1);
-                mLeft.mChorusRoundInfoModel = chorusRoundInfoModelList.get(0);
-                mRight.mUserInfoModel = mRoomData.getUserInfo(uid2);
-                mRight.mChorusRoundInfoModel = chorusRoundInfoModelList.get(1);
-            }
-            mSongModel = infoModel.getMusic();
-            playWithNoAcc();
+    public boolean playLyric() {
+        if(super.playLyric()){
+            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
             mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -70,7 +51,9 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == View.GONE) {
-            mSingCountDownView.reset();
+            if (mSingCountDownView != null) {
+                mSingCountDownView.reset();
+            }
         }
     }
 }

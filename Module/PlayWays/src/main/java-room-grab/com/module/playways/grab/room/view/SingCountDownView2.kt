@@ -24,7 +24,7 @@ class SingCountDownView2 : RelativeLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     init {
-        View.inflate(context, R.layout.grab_sing_count_down2_view_layout, this)
+        inflate(context, R.layout.grab_sing_count_down2_view_layout, this)
     }
 
     fun reset() {
