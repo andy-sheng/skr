@@ -954,13 +954,26 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 ToastUtils.showShort("camera");
             }
         });
+        mGrabTopContentView.setListener(new GrabTopContentView.Listener() {
+            @Override
+            public void clickArrow(boolean open) {
+                if(open){
+                    mGrabWidgetAnimationController.open();
+                }else{
+                    mGrabWidgetAnimationController.close();
+                }
+            }
+        });
         mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
-
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
 
         {
             RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mGrabTopOpView.getLayoutParams();
+            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+        }
+        {
+            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mGrabTopContentView.getLayoutParams();
             topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
         }
     }

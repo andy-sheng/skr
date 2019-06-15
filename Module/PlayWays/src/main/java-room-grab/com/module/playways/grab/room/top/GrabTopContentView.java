@@ -61,15 +61,14 @@ public class GrabTopContentView extends RelativeLayout {
     AnimatorSet mAnimatorAllSet;
     GrabAudienceView mGrabAudienceView;
     ImageView mArrowIv;
-
+    boolean mIsOpen = true;
     LinearLayout mContentLl;
 
     int mCurSeq = -2;
 
-    private boolean mIsOpen = true;
-
     volatile boolean mHasBurst = false;
 
+    Listener mListener;
 
     public GrabTopContentView(Context context) {
         super(context);
@@ -99,16 +98,23 @@ public class GrabTopContentView extends RelativeLayout {
         mArrowIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                if (mListener != null) {
+                    mListener.clickArrow(!mIsOpen);
+                    // true 就要
+                }
             }
         });
     }
 
     public void setArrowIcon(boolean open) {
         if(open){
-            mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbushouqi));
-        }else{
+            // 展开状态
+            mIsOpen = true;
             mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbuzhankai));
+        }else{
+            // 折叠状态
+            mIsOpen = false;
+            mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbushouqi));
         }
     }
 
@@ -706,5 +712,13 @@ public class GrabTopContentView extends RelativeLayout {
     static class VP {
         GrabTopItemView grabTopItemView;
         SVGAImageView SVGAImageView;
+    }
+
+    public void setListener(Listener listener) {
+        mListener = listener;
+    }
+
+    public interface Listener{
+        void clickArrow(boolean open);
     }
 }
