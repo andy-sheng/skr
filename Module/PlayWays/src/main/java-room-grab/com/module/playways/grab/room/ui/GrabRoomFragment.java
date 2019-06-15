@@ -25,6 +25,7 @@ import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.core.permission.SkrCameraPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -233,6 +234,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GameTipsManager mGameTipsManager = new GameTipsManager();
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
+    SkrCameraPermission mSkrCameraPermission = new SkrCameraPermission();
 
     GrabAudioUiController mGrabAudioUiController = new GrabAudioUiController(this);
 
@@ -593,8 +596,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initVideoView() {
-        ViewStub viewStub = mRootView.findViewById(R.id.video_view_stub);
-        mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub, mRoomData);
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.grab_video_display_view_stub);
+            mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub, mRoomData);
+        }
         mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView, mRoomData);
     }
 
@@ -1025,8 +1030,18 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mSkrAudioPermission.ensurePermission(getActivity(), new Runnable() {
                     @Override
                     public void run() {
-                        U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
-                        mCorePresenter.grabThisRound(seq, challenge);
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
+                                mCorePresenter.grabThisRound(seq, challenge);
+                            }
+                        };
+                        if (mRoomData.isVideoRoom()) {
+                            mSkrCameraPermission.ensurePermission(getActivity(), r, true);
+                        } else {
+                            r.run();
+                        }
                     }
                 }, true);
             }
@@ -1403,14 +1418,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSelfSingCardView.setVisibility(GONE);
         mMiniOwnerMicIv.setVisibility(GONE);
         removeNoAccSrollTipsView();
         removeGrabSelfSingTipView();
-        mOthersSingCardView.hide();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
+        mGrabBaseUiController.roundOver();
+
         mRoundOverCardView.bindData(lastInfoModel, new SVGAListener() {
             @Override
             public void onFinished() {
@@ -1461,9 +1476,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mQuitTipsDialog.dismiss(false);
             mQuitTipsDialog = null;
         }
-        if (mSelfSingCardView != null) {
-            mSelfSingCardView.destroy();
-        }
+        mGrabAudioUiController.destroy();
+        mGrabVideoUiController.destroy();
         mUiHanlder.removeCallbacksAndMessages(null);
         mIsGameEndAniamtionShow = false;
         if (mAnimatorList != null) {

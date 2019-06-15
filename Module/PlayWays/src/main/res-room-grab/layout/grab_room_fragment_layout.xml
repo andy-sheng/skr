@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     android:background="@color/room_bg_color">
 
+    <!--视频开始-->
+    <ViewStub
+        android:id="@+id/grab_video_display_view_stub"
+        android:inflatedId="@+id/grab_video_display_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/grab_room_video_display_view_stub_layout" />
+    <!--视频结束-->
+
     <com.common.view.ex.ExImageView
         android:id="@+id/grab_room_bg_flag"
         android:layout_width="wrap_content"
@@ -90,7 +99,6 @@
     <com.module.playways.grab.room.top.GrabTopContentView
         android:id="@+id/grab_top_content_view"
         android:layout_width="match_parent"
-        android:background="@color/room_bg_color"
         android:layout_height="@dimen/view_120_dp"
         android:translationY="@dimen/view_32_dp"
          />
@@ -181,14 +189,6 @@
         android:layout_marginTop="@dimen/view_30_dp" />
 
     <!--纯音频模式下特有的view 结束-->
-
-    <!--视频开始-->
-    <ViewStub
-        android:id="@+id/video_view_stub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout="@layout/grab_room_videoview_stub_layout" />
-    <!--视频结束-->
 
 
     <com.module.playways.grab.room.view.GrabGameOverView

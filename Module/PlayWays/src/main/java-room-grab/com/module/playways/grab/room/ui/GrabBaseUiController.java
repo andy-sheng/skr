@@ -44,4 +44,8 @@ public abstract class GrabBaseUiController {
     public abstract void singBySelf();
 
     public abstract void singByOthers();
+
+    public abstract void roundOver();
+
+    public abstract void destroy();
 }

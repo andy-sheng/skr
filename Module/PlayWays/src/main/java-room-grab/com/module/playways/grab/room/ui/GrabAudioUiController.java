@@ -41,4 +41,17 @@ public class GrabAudioUiController extends GrabBaseUiController{
         mF.mOthersSingCardView.setVisibility(View.VISIBLE);
         mF.mOthersSingCardView.bindData();
     }
+
+    @Override
+    public void roundOver() {
+        mF.mSelfSingCardView.setVisibility(GONE);
+        mF.mOthersSingCardView.hide();
+    }
+
+    @Override
+    public void destroy() {
+        if (mF.mSelfSingCardView != null) {
+            mF.mSelfSingCardView.destroy();
+        }
+    }
 }

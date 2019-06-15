@@ -31,14 +31,15 @@ public class GrabWidgetAnimationController {
         mF = grabRoomFragment;
     }
 
-    private int getTranslateByOpenType(){
-        if(mOpenType == OPEN_TYPE_FOR_NORMAL){
+    private int getTranslateByOpenType() {
+        if (mOpenType == OPEN_TYPE_FOR_NORMAL) {
             return U.getDisplayUtils().dip2px(32);
-        }else if(mOpenType == OPEN_TYPE_FOR_LYRIC){
+        } else if (mOpenType == OPEN_TYPE_FOR_LYRIC) {
             return U.getDisplayUtils().dip2px(120);
         }
         return 0;
     }
+
     /**
      * 使得主区域下移到 view 的下方
      */
@@ -55,11 +56,17 @@ public class GrabWidgetAnimationController {
         List<View> viewList = new ArrayList<>();
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
-
+        viewList.add(mF.mGrabVideoDisplayView.getRealView());
         List<Animator> animators1 = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {
-                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType());
+                ObjectAnimator objectAnimator = null;
+                if (view == mF.mGrabVideoDisplayView.getRealView()) {
+                    // 要多下移一个顶部状态栏的高度，才能和 ContentView对齐
+                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() + U.getStatusBarUtil().getStatusBarHeight(U.app()));
+                } else {
+                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType());
+                }
                 animators1.add(objectAnimator);
             }
         }
@@ -70,13 +77,6 @@ public class GrabWidgetAnimationController {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-//                if(mOpenType == OPEN_TYPE_FOR_NORMAL){
-//                    mF.mGrabTopOpView.setVisibility(View.VISIBLE);
-//                    mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
-//                }else if(mOpenType == OPEN_TYPE_FOR_LYRIC){
-//                    mF.mGrabTopOpView.setVisibility(View.GONE);
-//                    mF.mGrabVideoSelfSingCardView.setVisibility(View.VISIBLE);
-//                }
             }
 
             @Override
@@ -88,6 +88,13 @@ public class GrabWidgetAnimationController {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mF.mGrabTopContentView.setArrowIcon(true);
+                if (mOpenType == OPEN_TYPE_FOR_NORMAL) {
+                    mF.mGrabTopOpView.setVisibility(View.VISIBLE);
+                    mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
+                } else if (mOpenType == OPEN_TYPE_FOR_LYRIC) {
+                    mF.mGrabTopOpView.setVisibility(View.GONE);
+                    mF.mGrabVideoSelfSingCardView.setVisibility(View.VISIBLE);
+                }
             }
         });
         mMainAnimatorSet.start();
@@ -104,7 +111,7 @@ public class GrabWidgetAnimationController {
         List<View> viewList = new ArrayList<>();
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
-
+        viewList.add(mF.mGrabVideoDisplayView.getRealView());
         List<Animator> animators1 = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {
@@ -116,6 +123,13 @@ public class GrabWidgetAnimationController {
         mMainAnimatorSet.playTogether(animators1);
         mMainAnimatorSet.setDuration(300);
         mMainAnimatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mF.mGrabTopOpView.setVisibility(View.GONE);
+                mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
+            }
+
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
@@ -130,12 +144,14 @@ public class GrabWidgetAnimationController {
         mMainAnimatorSet.start();
     }
 
+    public void setOpenType(int openType) {
+        this.mOpenType = openType;
+    }
 
     public void destroy() {
         if (mMainAnimatorSet != null) {
             mMainAnimatorSet.cancel();
         }
     }
-
 
 }

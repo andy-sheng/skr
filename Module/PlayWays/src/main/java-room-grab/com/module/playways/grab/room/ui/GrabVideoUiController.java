@@ -1,5 +1,7 @@
 package com.module.playways.grab.room.ui;
 
+import android.view.View;
+
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
 public class GrabVideoUiController extends GrabBaseUiController {
@@ -13,7 +15,6 @@ public class GrabVideoUiController extends GrabBaseUiController {
         if (infoModel != null) {
             // 显示歌词view
             mF.mGrabVideoSelfSingCardView.playLyric();
-            mF.mGrabWidgetAnimationController.openBelowLyricView();
             if(infoModel.isNormalRound()){
                 // 普通轮次
                 mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
@@ -36,6 +37,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     mF.mGrabVideoDisplayView.bindVideoStream(userID1,userID2);
                 }
             }
+            mF.mGrabWidgetAnimationController.openBelowLyricView();
         }
         // ZqEngineKit.getInstance().startPreview(mF.mMainVideoView);
     }
@@ -43,5 +45,23 @@ public class GrabVideoUiController extends GrabBaseUiController {
     @Override
     public void singByOthers() {
 
+    }
+
+    @Override
+    public void roundOver() {
+        // 轮次结束了
+        mF.mGrabVideoDisplayView.reset();
+        mF.mGrabVideoDisplayView.setVisibility(View.GONE);
+        mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
+        mF.mGrabWidgetAnimationController.close();//关闭
+        mF.mGrabWidgetAnimationController.setOpenType(GrabWidgetAnimationController.OPEN_TYPE_FOR_NORMAL);
+
+    }
+
+    @Override
+    public void destroy() {
+        if (mF.mGrabVideoSelfSingCardView != null) {
+            mF.mGrabVideoSelfSingCardView.destroy();
+        }
     }
 }
