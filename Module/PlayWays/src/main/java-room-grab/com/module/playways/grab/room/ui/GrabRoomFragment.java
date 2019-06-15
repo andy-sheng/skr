@@ -161,7 +161,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     CommentView mCommentView;
 
-//    GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
+    //    GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
     GrabTopOpView mGrabTopOpView;
 
     GrabTopContentView mGrabTopContentView;
@@ -321,9 +321,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //        addPresent(mGiftTimerPresenter);
 //        mGiftTimerPresenter.startTimer();
 
-        if(mRoomData.isVideoRoom()){
+        if (mRoomData.isVideoRoom()) {
             mGrabBaseUiController = mGrabVideoUiController;
-        }else{
+        } else {
             mGrabBaseUiController = mGrabAudioUiController;
         }
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
@@ -454,7 +454,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     // 歌词提示
-     void tryShowGrabSelfSingTipView() {
+    void tryShowGrabSelfSingTipView() {
         new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_self_sing_tips_icon)
                 .setActivity(getActivity())
                 .setSize(U.getDisplayUtils().dip2px(250), U.getDisplayUtils().dip2px(96))
@@ -468,7 +468,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     // 清唱手势滑动
-     void tryShowNoAccSrollTipsView() {
+    void tryShowNoAccSrollTipsView() {
 
         ObjectAnimator mFingerTipViewAnimator = new ObjectAnimator();
         mFingerTipViewAnimator.setProperty(View.TRANSLATION_Y);
@@ -592,10 +592,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         });
     }
 
-    private void initVideoView(){
+    private void initVideoView() {
         ViewStub viewStub = mRootView.findViewById(R.id.video_view_stub);
-        mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub,mRoomData);
-        mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView,mRoomData);
+        mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub, mRoomData);
+        mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView, mRoomData);
     }
 
     private void initInputView() {
@@ -957,9 +957,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGrabTopContentView.setListener(new GrabTopContentView.Listener() {
             @Override
             public void clickArrow(boolean open) {
-                if(open){
+                if (open) {
                     mGrabWidgetAnimationController.open();
-                }else{
+                } else {
                     mGrabWidgetAnimationController.close();
                 }
             }
@@ -1485,6 +1485,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         mGameTipsManager.destory();
 
+        if (mGrabWidgetAnimationController != null) {
+            mGrabWidgetAnimationController.destroy();
+        }
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }

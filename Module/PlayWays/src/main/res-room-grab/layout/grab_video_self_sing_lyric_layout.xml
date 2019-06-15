@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <ScrollView
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_180_dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_20_dp"
@@ -34,7 +33,7 @@
     <com.zq.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_170_dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_10_dp"

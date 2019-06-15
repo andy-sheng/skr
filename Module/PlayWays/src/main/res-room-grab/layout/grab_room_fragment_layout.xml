@@ -5,7 +5,7 @@
     android:id="@+id/ranking_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#404A9A">
+    android:background="@color/room_bg_color">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/grab_room_bg_flag"
@@ -90,7 +90,7 @@
     <com.module.playways.grab.room.top.GrabTopContentView
         android:id="@+id/grab_top_content_view"
         android:layout_width="match_parent"
-        android:background="#404A9A"
+        android:background="@color/room_bg_color"
         android:layout_height="@dimen/view_120_dp"
         android:translationY="@dimen/view_32_dp"
          />

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/room_bg_color"
     tools:parentTag="android.widget.RelativeLayout">
 
     <ViewStub
@@ -10,6 +11,6 @@
         android:inflatedId="@+id/grab_video_self_sing_lyric_view"
         android:layout="@layout/grab_video_self_sing_lyric_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

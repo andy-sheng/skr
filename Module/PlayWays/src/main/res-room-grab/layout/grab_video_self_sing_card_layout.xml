@@ -11,7 +11,7 @@
         android:inflatedId="@+id/video_grab_chorus_lyric_view"
         android:layout="@layout/grab_video_chorus_self_sing_card_stub_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_120_dp"
         />
 
     <ViewStub
@@ -19,7 +19,7 @@
         android:inflatedId="@+id/grab_video_normal_lyric_view"
         android:layout="@layout/grab_video_normal_self_sing_card_stub_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_120_dp"
         />
 
 </merge>

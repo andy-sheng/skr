@@ -2,8 +2,10 @@ package com.module.playways.grab.room.view.normal;
 
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -28,8 +30,16 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        ViewStub viewStub = mParentView.findViewById(R.id.grab_video_self_sing_lyric_view_stub);
-        mSelfSingLyricView = new SelfSingLyricView(viewStub, mRoomData);
+        {
+            ViewStub viewStub = mParentView.findViewById(R.id.grab_video_self_sing_lyric_view_stub);
+            mSelfSingLyricView = new SelfSingLyricView(viewStub, mRoomData);
+        }
+        mParentView.setClickable(true);
+        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(U.app());
+        {
+            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) parentView.getLayoutParams();
+            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+        }
     }
 
     @Override
