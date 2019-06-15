@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_8_dp"
+        android:paddingRight="@dimen/view_8_dp"
+        android:text="进入房间"
+        android:textColor="#404A9A"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#7E8AE6"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.moudule.playways.beauty.view.BeautyControlPanelView
+        android:id="@+id/beauty_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_168_dp"
+        android:background="#404A9A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_185_dp"
+        android:layout_marginBottom="@dimen/view_168_dp"
+        app:bl_gradient_angle="90"
+        app:bl_gradient_endColor="@color/transparent"
+        app:bl_gradient_startColor="#404A9A"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

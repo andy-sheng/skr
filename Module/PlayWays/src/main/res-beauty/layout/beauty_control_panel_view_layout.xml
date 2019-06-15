@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.common.view.viewpager.SlidingTabLayout
+        android:id="@+id/beauty_title_stl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/view_60_dp"
+        android:layout_marginRight="@dimen/view_60_dp" />
+
+    <com.common.view.viewpager.NestViewPager
+        android:id="@+id/beauty_vp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_below="@id/beauty_title_stl"
+        android:layout_marginLeft="@dimen/view_9_dp"
+        android:layout_marginRight="@dimen/view_9_dp"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none" />
+
+</RelativeLayout>

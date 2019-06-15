@@ -3,8 +3,6 @@ package com.module.playways.room.song.model;
 import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.live.proto.Common.MiniGameInfo;
 
-import org.apache.commons.lang3.text.StrBuilder;
-
 import java.io.Serializable;
 
 public class MiniGameInfoModel implements Serializable {
