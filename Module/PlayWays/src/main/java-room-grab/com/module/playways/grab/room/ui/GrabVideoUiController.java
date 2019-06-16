@@ -30,19 +30,23 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                 }
-            } else if (infoModel.isPKRound()) {
-                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
-                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
-                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
-                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
-                }
             } else if (infoModel.isMiniGameRound()) {
                 if (infoModel.getMINIGameRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getMINIGameRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getMINIGameRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabTopContentView.setVisibility(View.GONE);
+                }
+            } else if (infoModel.isPKRound()) {
+                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
+                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
+                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
+                    mF.mGrabTopContentView.setVisibility(View.GONE);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.setMarginTop(0);
+
                 }
             }
             mF.mGrabWidgetAnimationController.openBelowLyricView();
@@ -67,6 +71,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
         GrabRoundInfoModel infoModel = mF.mRoomData.getRealRoundInfo();
         if (infoModel != null) {
             // 显示歌词view
+            int halfVideoMarginTop = U.getDisplayUtils().dip2px(82);
             if (infoModel.isNormalRound()) {
                 // 普通轮次
                 mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
@@ -76,14 +81,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
-                    mF.mGrabVideoDisplayView.setMarginTop(U.getDisplayUtils().dip2px(78));
-                }
-            } else if (infoModel.isPKRound()) {
-                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
-                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
-                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
-                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
                 }
             } else if (infoModel.isMiniGameRound()) {
                 if (infoModel.getMINIGameRoundInfoModels().size() >= 2) {
@@ -91,6 +89,16 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID2 = infoModel.getMINIGameRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
+                }
+            }else if (infoModel.isPKRound()) {
+                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
+                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
+                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
+                    mF.mGrabTopContentView.setVisibility(View.VISIBLE);
                 }
             }
             if (mF.mGrabWidgetAnimationController.isOpen()) {
