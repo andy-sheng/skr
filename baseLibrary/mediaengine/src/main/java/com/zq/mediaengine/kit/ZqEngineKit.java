@@ -2156,14 +2156,33 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                SrcPin<ImgTexFrame> remoteVideoSrcPin = mAgoraRTCAdapter.getRemoteVideoSrcPin(userId);
-                if (remoteVideoSrcPin != null) {
-                    remoteVideoSrcPin.disconnect(false);
-                }
+                doUnbindRemoteVideo(userId);
                 mRemoteUserPinMap.remove(userId);
-                mAgoraRTCAdapter.removeRemoteVideo(userId);
             }
         });
+    }
+
+    /**
+     * Unbind and remove all remote video.
+     */
+    public void unbindAllRemoteVideo() {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                for (int userId : mRemoteUserPinMap.keySet()) {
+                    doUnbindRemoteVideo(userId);
+                }
+                mRemoteUserPinMap.clear();
+            }
+        });
+    }
+
+    private void doUnbindRemoteVideo(int userId) {
+        SrcPin<ImgTexFrame> remoteVideoSrcPin = mAgoraRTCAdapter.getRemoteVideoSrcPin(userId);
+        if (remoteVideoSrcPin != null) {
+            remoteVideoSrcPin.disconnect(false);
+        }
+        mAgoraRTCAdapter.removeRemoteVideo(userId);
     }
 
     /**
