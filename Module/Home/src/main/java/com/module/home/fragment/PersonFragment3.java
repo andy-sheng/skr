@@ -24,6 +24,7 @@ import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.permission.SkrCameraPermission;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -262,9 +263,19 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mSettingImgIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_SETTING)
-                        .navigation();
+//                ARouter.getInstance()
+//                        .build(RouterConstants.ACTIVITY_SETTING)
+//                        .navigation();
+                SkrCameraPermission skrCameraPermission = new SkrCameraPermission();
+                skrCameraPermission.ensurePermission(getActivity(), new Runnable() {
+                    @Override
+                    public void run() {
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                .navigation();
+                    }
+                }, true);
+
             }
         });
         updateSettingRedDot();

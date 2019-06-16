@@ -31,6 +31,6 @@ class BeautyPreviewActivity : BaseActivity() {
     }
 
     override fun canSlide(): Boolean {
-        return false;
+        return false
     }
 }

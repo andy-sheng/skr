@@ -25,13 +25,17 @@ public class BeautyFiterPaterView extends FrameLayout {
     SeekBar mProgressBar;
     BeautyFiterPaterAdapter mAdapter;
 
+    BeautyControlPanelView.Listener mListener;
+    BeautyControlPanelView.BeautyViewModel mSelectModel;
+
     int type;
     List<BeautyControlPanelView.BeautyViewModel> mDataList;
 
-    public BeautyFiterPaterView(Context context, int type, List<BeautyControlPanelView.BeautyViewModel> list) {
+    public BeautyFiterPaterView(Context context, int type, List<BeautyControlPanelView.BeautyViewModel> list, BeautyControlPanelView.Listener mListener) {
         super(context);
         this.type = type;
-        mDataList = list;
+        this.mDataList = list;
+        this.mListener = mListener;
         init();
     }
 
@@ -56,8 +60,14 @@ public class BeautyFiterPaterView extends FrameLayout {
         mAdapter = new BeautyFiterPaterAdapter(new RecyclerOnItemClickListener<BeautyControlPanelView.BeautyViewModel>() {
             @Override
             public void onItemClicked(View view, int position, BeautyControlPanelView.BeautyViewModel model) {
+                mSelectModel = model;
                 mAdapter.setSelectPosition(position);
-                // TODO: 2019-06-15 得根据选中，设置相应进度条得位置
+                // TODO: 2019-06-15 得根据选中，
+                if (type == BeautyControlPanelView.TYPE_PATER) {
+                    if (mListener != null) {
+                        mListener.onChangePater(mSelectModel.getId());
+                    }
+                }
             }
         }, layoutManager);
         mAdapter.setDataList(mDataList);
@@ -68,7 +78,18 @@ public class BeautyFiterPaterView extends FrameLayout {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    // 回调给前台页面
+                    // TODO: 2019-06-16 回调给前台页面
+                    if (mListener != null) {
+                        if (type == BeautyControlPanelView.TYPE_BEAUTY) {
+                            if (mListener != null) {
+                                mListener.onChangeBeauty(mSelectModel.getId(), progress);
+                            }
+                        } else if (type == BeautyControlPanelView.TYPE_FITER) {
+                            if (mListener != null) {
+                                mListener.onChangeFiter(mSelectModel.getId(), progress);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -82,16 +103,5 @@ public class BeautyFiterPaterView extends FrameLayout {
 
             }
         });
-    }
-
-    interface Listener {
-        // 美颜改变
-        void onChangeBeauty();
-
-        // 滤镜改变
-        void onChangeFiter();
-
-        // 贴纸改变
-        void onChangePater();
     }
 }

@@ -28,6 +28,8 @@ class BeautyControlPanelView : RelativeLayout {
 
     var mPagerAdapter: PagerAdapter? = null
 
+    lateinit var mListener: Listener
+
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
@@ -36,7 +38,9 @@ class BeautyControlPanelView : RelativeLayout {
 
     init {
         View.inflate(context, R.layout.beauty_control_panel_view_layout, this)
+    }
 
+    fun initData(){
         beauty_title_stl.setCustomTabView(R.layout.beauty_tab_view, R.id.tab_tv)
         beauty_title_stl.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
         beauty_title_stl.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
@@ -53,20 +57,20 @@ class BeautyControlPanelView : RelativeLayout {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 if (position == 0) {
                     // 美颜
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY))
+                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY), mListener)
                     if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
                         container.addView(mBeautyFiterPaterView)
                     }
                     return mBeautyFiterPaterView
                 } else if (position == 1) {
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_FITER, getViewModel(TYPE_FITER))
+                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_FITER, getViewModel(TYPE_FITER), mListener)
                     if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
                         container.addView(mBeautyFiterPaterView)
                     }
                     return mBeautyFiterPaterView
                     // 滤镜
                 } else if (position == 2) {
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_PATER, getViewModel(TYPE_PATER))
+                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_PATER, getViewModel(TYPE_PATER), mListener)
                     if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
                         container.addView(mBeautyFiterPaterView)
                     }
@@ -103,14 +107,12 @@ class BeautyControlPanelView : RelativeLayout {
         beauty_vp.setAdapter(mPagerAdapter)
         beauty_title_stl.setViewPager(beauty_vp)
         mPagerAdapter?.notifyDataSetChanged()
-
     }
 
-
-    fun setListener(listener: Listener){
-
+    fun setListener(listener: Listener) {
+        mListener = listener
+        initData()
     }
-
 
     fun getViewModel(type: Int): List<BeautyViewModel> {
         var mList = mutableListOf<BeautyViewModel>();
@@ -144,11 +146,14 @@ class BeautyControlPanelView : RelativeLayout {
     }
 
     interface Listener {
-        fun onBeautyChange(id: Int, progress: Int)
+        // 美颜改变
+        fun onChangeBeauty(id: Int, progress: Int)
 
-        fun onFiterChange(id: Int, progress: Int)
+        // 滤镜改变
+        fun onChangeFiter(id: Int, progress: Int)
 
-        fun onPaterChange(id: Int, progress: Int)
+        // 贴纸改变
+        fun onChangePater(id: Int)
     }
 
     open class BeautyViewModel(var id: Int // 唯一标识
