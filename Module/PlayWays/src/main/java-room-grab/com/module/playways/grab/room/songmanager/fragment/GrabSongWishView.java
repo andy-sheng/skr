@@ -9,36 +9,38 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.common.rxretrofit.ApiManager;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.room.songmanager.adapter.RecommendSongAdapter;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.inter.IGrabWishManageView;
 import com.module.playways.grab.room.songmanager.adapter.WishSongAdapter;
-import com.module.playways.grab.room.songmanager.presenter.GrabSongManagePresenter;
-import com.module.playways.room.song.model.SongModel;
+import com.module.playways.grab.room.songmanager.model.GrabWishSongModel;
+import com.module.playways.grab.room.songmanager.presenter.GrabWishSongPresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
-import io.reactivex.disposables.Disposable;
+import java.util.List;
 
 /**
  * 愿望歌单
  */
-public class GrabSongWishView extends FrameLayout {
+public class GrabSongWishView extends FrameLayout implements IGrabWishManageView {
 
     public final static String TAG = "GrabSongWishView";
 
     private RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
-    Disposable mDisposable;
     WishSongAdapter mWishSongAdapter;
-    int mOffset = 0;
-    int mLimit = 20;
+    GrabRoomData mGrabRoomData;
 
-    GrabRoomServerApi mGrabRoomServerApi;
-    GrabSongManagePresenter mGrabSongManagePresenter;
+    GrabWishSongPresenter mGrabWishSongPresenter;
 
+    public GrabSongWishView(Context context, GrabRoomData grabRoomData) {
+        super(context);
+        mGrabRoomData = grabRoomData;
+        mGrabWishSongPresenter = new GrabWishSongPresenter(this, mGrabRoomData);
+        initView();
+    }
 
     public GrabSongWishView(@NonNull Context context) {
         super(context);
@@ -63,18 +65,19 @@ public class GrabSongWishView extends FrameLayout {
 
         mWishSongAdapter = new WishSongAdapter(new WishSongAdapter.Listener() {
             @Override
-            public void onClickDeleteWish(View view, int position, SongModel songModel) {
-
+            public void onClickDeleteWish(View view, int position, GrabWishSongModel songModel) {
+                // 删除用户选的歌曲
+                mGrabWishSongPresenter.deleteWishSong(songModel);
             }
 
             @Override
-            public void onClickSelectWish(View view, int position, SongModel songModel) {
-
+            public void onClickSelectWish(View view, int position, GrabWishSongModel songModel) {
+                // 添加用户选的歌曲
+                mGrabWishSongPresenter.addWishSong(songModel);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mWishSongAdapter);
-        mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
@@ -84,7 +87,7 @@ public class GrabSongWishView extends FrameLayout {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+                mGrabWishSongPresenter.getListMusicSuggested();
             }
 
             @Override
@@ -93,11 +96,33 @@ public class GrabSongWishView extends FrameLayout {
             }
         });
 
+        mGrabWishSongPresenter.getListMusicSuggested();
     }
 
+
     public void destroy() {
-        if (mGrabSongManagePresenter != null) {
-            mGrabSongManagePresenter.destroy();
+        if (mGrabWishSongPresenter != null) {
+            mGrabWishSongPresenter.destroy();
         }
+    }
+
+    @Override
+    public void addGrabWishSongModels(List<GrabWishSongModel> grabWishSongModels) {
+        mRefreshLayout.finishLoadMore();
+        if (grabWishSongModels != null && grabWishSongModels.size() > 0) {
+            mWishSongAdapter.getDataList().addAll(grabWishSongModels);
+            mWishSongAdapter.notifyDataSetChanged();
+        }
+
+        if (mWishSongAdapter.getDataList() != null && mWishSongAdapter.getDataList().size() > 0) {
+            // 没有更多了
+        } else {
+            // 空页面
+        }
+    }
+
+    @Override
+    public void deleteWishSong(GrabWishSongModel grabWishSongModel) {
+        mWishSongAdapter.delete(grabWishSongModel);
     }
 }

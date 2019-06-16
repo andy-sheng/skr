@@ -164,7 +164,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             if (mGrabSongWishView != null) {
                 mGrabSongWishView.destroy();
             }
-            mGrabSongWishView = new GrabSongWishView(getContext());
+            mGrabSongWishView = new GrabSongWishView(getContext(), mRoomData);
         }
 
         PagerAdapter pagerAdapter = new PagerAdapter() {

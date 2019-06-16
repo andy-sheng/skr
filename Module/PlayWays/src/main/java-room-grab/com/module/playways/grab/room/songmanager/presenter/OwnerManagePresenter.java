@@ -8,11 +8,18 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
 import com.module.playways.grab.room.songmanager.view.IOwnerManageView;
+import com.module.playways.room.song.model.SongModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +36,9 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
         mIOwnerManageView = IOwnerManageView;
         mGrabRoomData = grabRoomData;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public void updateRoomName(int roomID, String roomName) {
@@ -66,6 +76,49 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
                 }
 
             }
-        }, this,new ApiMethods.RequestControl("getStandBillBoards",ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("getStandBillBoards", ApiMethods.ControlType.CancelThis));
+    }
+
+    // 向房主推荐新歌
+    private void suggestSong(SongModel songModel) {
+        MyLog.d(TAG, "suggestSong" + " songModel=" + songModel);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("itemID", songModel.getItemID());
+        map.put("roomID", mGrabRoomData.getGameId());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(mGrabRoomServerApi.suggestMusic(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
+                if (result.getErrno() == 0) {
+                    ToastUtils.showShort(songModel.getItemName() + " 推荐成功");
+                } else {
+                    MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
+                    ToastUtils.showShort(result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
+            }
+        }, this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddSongEvent event) {
+        if (!mGrabRoomData.isOwner()) {
+            suggestSong(event.getSongModel());
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

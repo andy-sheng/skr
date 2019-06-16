@@ -10,16 +10,17 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
-import com.module.playways.room.song.model.SongModel;
+import com.module.playways.grab.room.songmanager.model.GrabWishSongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
-public class WishSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
+public class WishSongAdapter extends DiffAdapter<GrabWishSongModel, RecyclerView.ViewHolder> {
 
     Drawable mChorusDrawable;
     Drawable mPKDrawable;
@@ -61,7 +62,7 @@ public class WishSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        SongModel model = mDataList.get(position);
+        GrabWishSongModel model = mDataList.get(position);
         ItemHolder itemHolder = (ItemHolder) holder;
         itemHolder.bind(model, position);
     }
@@ -72,9 +73,9 @@ public class WishSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHol
     }
 
     public interface Listener {
-        void onClickDeleteWish(View view, int position, SongModel songModel);
+        void onClickDeleteWish(View view, int position, GrabWishSongModel songModel);
 
-        void onClickSelectWish(View view, int position, SongModel songModel);
+        void onClickSelectWish(View view, int position, GrabWishSongModel songModel);
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder {
@@ -84,7 +85,7 @@ public class WishSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHol
         ExTextView mSelectTv;
         ExTextView mDeleteTv;
 
-        SongModel mSongModel;
+        GrabWishSongModel mSongModel;
         int mPosition;
 
         public ItemHolder(View itemView) {
@@ -114,7 +115,7 @@ public class WishSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHol
             });
         }
 
-        public void bind(SongModel model, int position) {
+        public void bind(GrabWishSongModel model, int position) {
             this.mSongModel = model;
             this.mPosition = position;
 
@@ -153,7 +154,10 @@ public class WishSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHol
                 mSongTagTv.setVisibility(View.GONE);
                 mSongNameTv.setText("《" + model.getDisplaySongName() + "》");
             }
-            mSingNameTv.setText(model.getOwner());
+
+            String remarkName = UserInfoManager.getInstance().getRemarkName(model.getSuggester().getUserId(), model.getSuggester().getNickname());
+            mSingNameTv.setText(remarkName);
+
         }
     }
 }

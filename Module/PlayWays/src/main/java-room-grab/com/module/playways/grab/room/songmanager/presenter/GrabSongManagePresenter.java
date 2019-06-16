@@ -16,7 +16,9 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
+import com.module.playways.grab.room.songmanager.event.AddSuggestSongEvent;
 import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.model.GrabWishSongModel;
 import com.module.playways.room.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -233,6 +235,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    // 添加新歌
     public void addSong(SongModel songModel) {
         MyLog.d(TAG, "addSong");
         HashMap<String, Object> map = new HashMap<>();
@@ -342,10 +345,30 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
     public void onEvent(AddSongEvent event) {
         if (mGrabRoomData.isOwner()) {
             addSong(event.getSongModel());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddSuggestSongEvent event) {
+        // 添加非房主想唱的歌曲
+        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
+        GrabWishSongModel grabWishSongModel = event.getGrabWishSongModel();
+        grabRoomSongModel.setOwner(grabWishSongModel.getOwner());
+        grabRoomSongModel.setItemName(grabWishSongModel.getItemName());
+        grabRoomSongModel.setItemID(grabWishSongModel.getItemID());
+        grabRoomSongModel.setPlayType(grabWishSongModel.getPlayType());
+        grabRoomSongModel.setChallengeAvailable(grabWishSongModel.isChallengeAvailable());
+
+        if (mGrabRoomSongModelList.size() <= 2) {
+            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
+            mGrabRoomSongModelList.add(grabRoomSongModel);
         } else {
-            // TODO: 2019-06-16 推荐歌单
+            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
+            mGrabRoomSongModelList.add(2, grabRoomSongModel);
         }
 
+        mIGrabSongManageView.showNum(++mTotalNum);
+        updateSongList();
     }
 
     @Override
