@@ -71,15 +71,15 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
         }
 
         int totalTs = infoModel.getSingTotalMs();
-        boolean withAcc = false;
-        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
-            withAcc = true;
-        }
-        if (!withAcc) {
-            mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
-        } else {
+//        boolean withAcc = false;
+//        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
+//            withAcc = true;
+//        }
+//        if (!withAcc) {
+//            mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
+//        } else {
             mSelfSingLyricView.playWithAcc(infoModel, totalTs);
-        }
+//        }
     }
 
     @Override
