@@ -381,9 +381,6 @@ public class ZqEngineKit implements AgoraOutCallback {
         mMainHandler = new Handler(Looper.getMainLooper());
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
-
-//        // TODO: 开启视频才初始化
-//        initVideoModules();
     }
 
     public static ZqEngineKit getInstance() {
@@ -1580,9 +1577,15 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param surfaceView GLSurfaceView to be set.
      */
-    public void setDisplayPreview(GLSurfaceView surfaceView) {
-        mImgTexPreview.setDisplayPreview(surfaceView);
-        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+    public void setDisplayPreview(final GLSurfaceView surfaceView) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(TAG, "setDisplayPreview");
+                mImgTexPreview.setDisplayPreview(surfaceView);
+                mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+            }
+        });
     }
 
     /**
@@ -1591,38 +1594,48 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param textureView TextureView to be set.
      */
-    public void setDisplayPreview(TextureView textureView) {
-        mImgTexPreview.setDisplayPreview(textureView);
-        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+    public void setDisplayPreview(final TextureView textureView) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mImgTexPreview.setDisplayPreview(textureView);
+                mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+            }
+        });
     }
 
     /**
      * Set rotate degrees in anti-clockwise of current Activity.
      *
-     * @param degrees Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
+     * @param rotate Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
      * @throws IllegalArgumentException
      */
     @SuppressWarnings("SuspiciousNameCombination")
-    public void setRotateDegrees(int degrees) throws IllegalArgumentException {
-        degrees %= 360;
-        if (degrees % 90 != 0) {
-            throw new IllegalArgumentException("Invalid rotate degrees");
-        }
-        if (mRotateDegrees == degrees) {
-            return;
-        }
-        boolean isLastLandscape = (mRotateDegrees % 180) != 0;
-        boolean isLandscape = (degrees % 180) != 0;
-        if (isLastLandscape != isLandscape) {
-            if (mPreviewWidth > 0 || mPreviewHeight > 0) {
-                setPreviewResolution(mPreviewHeight, mPreviewWidth);
+    public void setRotateDegrees(final int rotate) throws IllegalArgumentException {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                int degrees = rotate % 360;
+                if (degrees % 90 != 0) {
+                    throw new IllegalArgumentException("Invalid rotate degrees");
+                }
+                if (mRotateDegrees == degrees) {
+                    return;
+                }
+                boolean isLastLandscape = (mRotateDegrees % 180) != 0;
+                boolean isLandscape = (degrees % 180) != 0;
+                if (isLastLandscape != isLandscape) {
+                    if (mPreviewWidth > 0 || mPreviewHeight > 0) {
+                        setPreviewResolution(mPreviewHeight, mPreviewWidth);
+                    }
+                    if (mTargetWidth > 0 || mTargetHeight > 0) {
+                        setTargetResolution(mTargetHeight, mTargetWidth);
+                    }
+                }
+                mRotateDegrees = degrees;
+                mCameraCapture.setOrientation(mRotateDegrees);
             }
-            if (mTargetWidth > 0 || mTargetHeight > 0) {
-                setTargetResolution(mTargetHeight, mTargetWidth);
-            }
-        }
-        mRotateDegrees = degrees;
-        mCameraCapture.setOrientation(degrees);
+        });
     }
 
     /**
@@ -1646,11 +1659,16 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param height capture height
      * @throws IllegalArgumentException
      */
-    public void setCameraCaptureResolution(int width, int height) throws IllegalArgumentException {
+    public void setCameraCaptureResolution(final int width, final int height) throws IllegalArgumentException {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("Invalid resolution");
         }
-        mCameraCapture.setPreviewSize(width, height);
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mCameraCapture.setPreviewSize(width, height);
+            }
+        });
     }
 
     /**
@@ -1667,14 +1685,19 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see #VIDEO_RESOLUTION_720P
      * @see #VIDEO_RESOLUTION_1080P
      */
-    public void setCameraCaptureResolution(int idx) throws IllegalArgumentException {
+    public void setCameraCaptureResolution(final int idx) throws IllegalArgumentException {
         if (idx < VIDEO_RESOLUTION_360P ||
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-        int height = getShortEdgeLength(idx);
-        int width = height * 16 / 9;
-        mCameraCapture.setPreviewSize(width, height);
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                int height = getShortEdgeLength(idx);
+                int width = height * 16 / 9;
+                mCameraCapture.setPreviewSize(width, height);
+            }
+        });
     }
 
     /**
@@ -1692,18 +1715,22 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param height preview height.
      * @throws IllegalArgumentException
      */
-    public void setPreviewResolution(int width, int height) throws IllegalArgumentException {
+    public void setPreviewResolution(final int width, final int height) throws IllegalArgumentException {
         if (width < 0 || height < 0 || (width == 0 && height == 0)) {
             throw new IllegalArgumentException("Invalid resolution");
         }
-        mPreviewWidth = width;
-        mPreviewHeight = height;
-
-        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
-            calResolution();
-            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
-            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
-        }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mPreviewWidth = width;
+                mPreviewHeight = height;
+                if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+                    calResolution();
+                    mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+                    mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+                }
+            }
+        });
     }
 
     /**
@@ -1721,20 +1748,24 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see #VIDEO_RESOLUTION_720P
      * @see #VIDEO_RESOLUTION_1080P
      */
-    public void setPreviewResolution(int idx) throws IllegalArgumentException {
+    public void setPreviewResolution(final int idx) throws IllegalArgumentException {
         if (idx < VIDEO_RESOLUTION_360P ||
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-        mPreviewResolution = idx;
-        mPreviewWidth = 0;
-        mPreviewHeight = 0;
-
-        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
-            calResolution();
-            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
-            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
-        }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mPreviewResolution = idx;
+                mPreviewWidth = 0;
+                mPreviewHeight = 0;
+                if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+                    calResolution();
+                    mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+                    mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+                }
+            }
+        });
     }
 
     /**
@@ -1791,7 +1822,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return current camera preview frame rate
      */
     public float getCurrentPreviewFps() {
-        return mCameraCapture.getCurrentPreviewFps();
+        if (mCameraCapture != null) {
+            return mCameraCapture.getCurrentPreviewFps();
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -1807,17 +1842,21 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param height streaming height.
      * @throws IllegalArgumentException
      */
-    public void setTargetResolution(int width, int height) throws IllegalArgumentException {
+    public void setTargetResolution(final int width, final int height) throws IllegalArgumentException {
         if (width < 0 || height < 0 || (width == 0 && height == 0)) {
             throw new IllegalArgumentException("Invalid resolution");
         }
-        mTargetWidth = width;
-        mTargetHeight = height;
-
-        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
-            calResolution();
-            mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
-        }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mTargetWidth = width;
+                mTargetHeight = height;
+                if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+                    calResolution();
+                    mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+                }
+            }
+        });
     }
 
     /**
@@ -1833,19 +1872,23 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see #VIDEO_RESOLUTION_720P
      * @see #VIDEO_RESOLUTION_1080P
      */
-    public void setTargetResolution(int idx) throws IllegalArgumentException {
+    public void setTargetResolution(final int idx) throws IllegalArgumentException {
         if (idx < VIDEO_RESOLUTION_360P ||
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-        mTargetResolution = idx;
-        mTargetWidth = 0;
-        mTargetHeight = 0;
-
-        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
-            calResolution();
-            mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
-        }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mTargetResolution = idx;
+                mTargetWidth = 0;
+                mTargetHeight = 0;
+                if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+                    calResolution();
+                    mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+                }
+            }
+        });
     }
 
     /**
@@ -1904,9 +1947,14 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param mirror true to enable, false to disable.
      */
-    public void setFrontCameraMirror(boolean mirror) {
-        mFrontCameraMirror = mirror;
-        updateFrontMirror();
+    public void setFrontCameraMirror(final boolean mirror) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mFrontCameraMirror = mirror;
+                updateFrontMirror();
+            }
+        });
     }
 
     /**
@@ -1937,7 +1985,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @return camera facing
      */
     public int getCameraFacing() {
-        return 0;
+        return mCameraFacing;
     }
 
     /**
@@ -1955,33 +2003,48 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see CameraCapture#FACING_FRONT
      * @see CameraCapture#FACING_BACK
      */
-    public void startCameraPreview(int facing) {
-        mCameraFacing = facing;
-        if ((mPreviewWidth == 0 || mPreviewHeight == 0) &&
-                (mScreenRenderWidth == 0 || mScreenRenderHeight == 0)) {
-            if (mImgTexPreview.getDisplayPreview() != null) {
-                mDelayedStartCameraPreview = true;
-                return;
+    public void startCameraPreview(final int facing) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mCameraFacing = facing;
+                if ((mPreviewWidth == 0 || mPreviewHeight == 0) &&
+                        (mScreenRenderWidth == 0 || mScreenRenderHeight == 0)) {
+                    if (mImgTexPreview.getDisplayPreview() != null) {
+                        mDelayedStartCameraPreview = true;
+                        return;
+                    }
+                    mScreenRenderWidth = DEFAULT_PREVIEW_WIDTH;
+                    mScreenRenderHeight = DEFAULT_PREVIEW_HEIGHT;
+                }
+                setPreviewParams();
+                mCameraCapture.start(mCameraFacing);
             }
-            mScreenRenderWidth = DEFAULT_PREVIEW_WIDTH;
-            mScreenRenderHeight = DEFAULT_PREVIEW_HEIGHT;
-        }
-        setPreviewParams();
-        mCameraCapture.start(mCameraFacing);
+        });
     }
 
     /**
      * Stop camera preview.
      */
     public void stopCameraPreview() {
-        mCameraCapture.stop();
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mCameraCapture.stop();
+            }
+        });
     }
 
     /**
      * Switch camera facing between front and back.
      */
     public void switchCamera() {
-        mCameraCapture.switchCamera();
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mCameraCapture.switchCamera();
+            }
+        });
     }
 
     /**
@@ -2001,19 +2064,27 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see CameraCapture#isTorchSupported()
      */
     public boolean isTorchSupported() {
-        return mCameraCapture.isTorchSupported();
+        if (mCameraCapture != null) {
+            return mCameraCapture.isTorchSupported();
+        } else {
+            return false;
+        }
     }
 
     /**
      * Toggle torch of current camera.
      *
      * @param open true to turn on, false to turn off.
-     * @return true if success, false if failed or on invalid mState.
      * @see #getCameraCapture()
      * @see CameraCapture#toggleTorch(boolean)
      */
-    public boolean toggleTorch(boolean open) {
-        return mCameraCapture.toggleTorch(open);
+    public void toggleTorch(final boolean open) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mCameraCapture.toggleTorch(open);
+            }
+        });
     }
 
     /**
@@ -2027,10 +2098,16 @@ public class ZqEngineKit implements AgoraOutCallback {
      *              height would be calculated by w and logo image radio.
      * @param alpha alpha value，between 0~1.0
      */
-    public void setLocalVideoRect(float x, float y, float w, float h, float alpha) {
+    public void setLocalVideoRect(final float x, final float y, final float w, final float h, float alpha) {
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
-        mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, alpha);
+        final float a = alpha;
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, a);
+            }
+        });
     }
 
     /**
@@ -2045,24 +2122,29 @@ public class ZqEngineKit implements AgoraOutCallback {
      *              height would be calculated by w and logo image radio.
      * @param alpha alpha value，between 0~1.0
      */
-    public void bindRemoteVideoRect(int userId, float x, float y, float w, float h, float alpha) {
-        int idx = getAvailableVideoMixerSink();
-        if (idx < 0) {
-            Log.e(TAG, "bindRemoteVideoRect failed!");
-            return;
-        }
-
+    public void bindRemoteVideoRect(final int userId, final float x, final float y, final float w, final float h, float alpha) {
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
+        final float a = alpha;
 
-        mAgoraRTCAdapter.addRemoteVideo(userId);
-        mAgoraRTCAdapter.getRemoteVideoSrcPin(userId).connect(mImgTexPreviewMixer.getSinkPin(idx));
-        mRemoteUserPinMap.put(userId, idx);
-        mImgTexPreviewMixer.setScalingMode(idx, ImgTexMixer.SCALING_MODE_CENTER_CROP);
-        mImgTexPreviewMixer.setRenderRect(idx, x, y, w, h, alpha);
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                int idx = getAvailableVideoMixerSink();
+                if (idx < 0) {
+                    MyLog.e(TAG, "bindRemoteVideoRect failed!");
+                    return;
+                }
+                mAgoraRTCAdapter.addRemoteVideo(userId);
+                mAgoraRTCAdapter.getRemoteVideoSrcPin(userId).connect(mImgTexPreviewMixer.getSinkPin(idx));
+                mRemoteUserPinMap.put(userId, idx);
+                mImgTexPreviewMixer.setScalingMode(idx, ImgTexMixer.SCALING_MODE_CENTER_CROP);
+                mImgTexPreviewMixer.setRenderRect(idx, x, y, w, h, a);
 
-        // TODO: 仅在未开启本地视频，以及绑定了远端视图的情况下开启自动刷新
-        mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+                // TODO: 仅在未开启本地视频，以及绑定了远端视图的情况下开启自动刷新
+                mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+            }
+        });
     }
 
     /**
@@ -2070,13 +2152,18 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param userId which user to unbind
      */
-    public void unbindRemoteVideo(int userId) {
-        SrcPin<ImgTexFrame> remoteVideoSrcPin = mAgoraRTCAdapter.getRemoteVideoSrcPin(userId);
-        if (remoteVideoSrcPin != null) {
-            remoteVideoSrcPin.disconnect(false);
-        }
-        mRemoteUserPinMap.remove(userId);
-        mAgoraRTCAdapter.removeRemoteVideo(userId);
+    public void unbindRemoteVideo(final int userId) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                SrcPin<ImgTexFrame> remoteVideoSrcPin = mAgoraRTCAdapter.getRemoteVideoSrcPin(userId);
+                if (remoteVideoSrcPin != null) {
+                    remoteVideoSrcPin.disconnect(false);
+                }
+                mRemoteUserPinMap.remove(userId);
+                mAgoraRTCAdapter.removeRemoteVideo(userId);
+            }
+        });
     }
 
     /**
@@ -2086,8 +2173,13 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param muted
      */
-    public void muteLocalVideoStream(boolean muted) {
-        mAgoraRTCAdapter.muteLocalVideoStream(muted);
+    public void muteLocalVideoStream(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mAgoraRTCAdapter.muteLocalVideoStream(muted);
+            }
+        });
     }
 
     /**
@@ -2099,8 +2191,13 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param uid
      * @param muted
      */
-    public void muteRemoteVideoStream(int uid, boolean muted) {
-        mAgoraRTCAdapter.muteRemoteVideoStream(uid, muted);
+    public void muteRemoteVideoStream(final int uid, final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mAgoraRTCAdapter.muteRemoteVideoStream(uid, muted);
+            }
+        });
     }
 
     /**
@@ -2108,8 +2205,13 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param muted
      */
-    public void muteAllRemoteVideoStreams(boolean muted) {
-        mAgoraRTCAdapter.muteAllRemoteVideoStreams(muted);
+    public void muteAllRemoteVideoStreams(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mAgoraRTCAdapter.muteAllRemoteVideoStreams(muted);
+            }
+        });
     }
 
     private int getAvailableVideoMixerSink() {
