@@ -2,14 +2,11 @@ package com.module.playways.grab.room.view.video;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.support.constraint.ConstraintLayout;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -20,7 +17,7 @@ import com.engine.EngineEvent;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.zq.mediaengine.capture.CameraCapture;

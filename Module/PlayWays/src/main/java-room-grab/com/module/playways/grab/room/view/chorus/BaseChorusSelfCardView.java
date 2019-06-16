@@ -16,7 +16,7 @@ import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;

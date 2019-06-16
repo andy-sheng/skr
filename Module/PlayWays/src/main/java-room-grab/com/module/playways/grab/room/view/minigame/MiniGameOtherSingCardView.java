@@ -24,7 +24,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.opensource.svgaplayer.SVGADrawable;

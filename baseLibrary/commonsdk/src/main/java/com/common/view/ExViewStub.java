@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view;
+package com.common.view;
 
 import android.view.View;
 import android.view.ViewGroup;
