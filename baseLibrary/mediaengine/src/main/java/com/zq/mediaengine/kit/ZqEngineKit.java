@@ -44,6 +44,7 @@ import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.AudioCodecFormat;
+import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.kit.agora.AgoraRTCAdapter;
@@ -67,6 +68,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.Constants;
@@ -131,6 +133,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private ImgTexMixer mImgTexPreviewMixer;
     private ImgTexMixer mImgTexMixer;
     private ImgTexPreview mImgTexPreview;
+    private Map<Integer, Integer> mRemoteUserPinMap = new HashMap<>();
 
     private AgoraRTCAdapter mAgoraRTCAdapter;
     private AudioDummyFilter mAudioDummyFilter;
@@ -185,10 +188,6 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @Override
     public void onUserOffline(int uid, int reason) {
-        // 断开视频连接
-        if (mAgoraRTCAdapter.getRemoteVideoSrcPin(uid) != null) {
-            mAgoraRTCAdapter.getRemoteVideoSrcPin(uid).disconnect(false);
-        }
         // 用户离开
         UserStatus userStatus = mUserStatusMap.remove(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_LEAVE, userStatus));
@@ -221,9 +220,6 @@ public class ZqEngineKit implements AgoraOutCallback {
         status.setFirstVideoDecoded(true);
         status.setFirstVideoWidth(width);
         status.setFirstVideoHeight(height);
-
-        // 渲染远程图像
-        mAgoraRTCAdapter.getRemoteVideoSrcPin(uid).connect(mImgTexPreviewMixer.getSinkPin(1));
 
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED, status));
     }
@@ -385,6 +381,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mMainHandler = new Handler(Looper.getMainLooper());
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+
+//        // TODO: 开启视频才初始化
+//        initVideoModules();
     }
 
     public static ZqEngineKit getInstance() {
@@ -456,8 +455,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             initAudioModules();
         }
 
-        if(mConfig.isEnableVideo()){
-            // TODO: 开启视频才初始化
+        if (mConfig.isEnableVideo()) {
             initVideoModules();
         }
     }
@@ -646,6 +644,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAgoraRTCAdapter.destroy(true);
             mUserStatusMap.clear();
             mRemoteViewCache.clear();
+            mRemoteUserPinMap.clear();
             mUiHandler.removeCallbacksAndMessages(null);
             mConfig = new Params();
             mPendingStartMixAudioParams = null;
@@ -2035,7 +2034,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     /**
-     * Set remote video shown rect with user id.
+     * Bind remote video shown rect with user id.
      *
      * @param userId which user to show
      * @param x     x position for left top of logo relative to the video, between 0~1.0.
@@ -2046,12 +2045,53 @@ public class ZqEngineKit implements AgoraOutCallback {
      *              height would be calculated by w and logo image radio.
      * @param alpha alpha value，between 0~1.0
      */
-    public void setRemoteVideoRect(int userId, float x, float y, float w, float h, float alpha) {
+    public void bindRemoteVideoRect(int userId, float x, float y, float w, float h, float alpha) {
+        int idx = getAvailableVideoMixerSink();
+        if (idx < 0) {
+            Log.e(TAG, "bindRemoteVideoRect failed!");
+            return;
+        }
+
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
-        // TODO: 添加多用户支持
-        mImgTexPreviewMixer.setScalingMode(1, ImgTexMixer.SCALING_MODE_CENTER_CROP);
-        mImgTexPreviewMixer.setRenderRect(1, x, y, w, h, alpha);
+
+        mAgoraRTCAdapter.addRemoteVideo(userId);
+        mAgoraRTCAdapter.getRemoteVideoSrcPin(userId).connect(mImgTexPreviewMixer.getSinkPin(idx));
+        mRemoteUserPinMap.put(userId, idx);
+        mImgTexPreviewMixer.setScalingMode(idx, ImgTexMixer.SCALING_MODE_CENTER_CROP);
+        mImgTexPreviewMixer.setRenderRect(idx, x, y, w, h, alpha);
+
+        // TODO: 仅在未开启本地视频，以及绑定了远端视图的情况下开启自动刷新
+        mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+    }
+
+    /**
+     * Unbind and remove remote video with user id.
+     *
+     * @param userId which user to unbind
+     */
+    public void unbindRemoteVideo(int userId) {
+        SrcPin<ImgTexFrame> remoteVideoSrcPin = mAgoraRTCAdapter.getRemoteVideoSrcPin(userId);
+        if (remoteVideoSrcPin != null) {
+            remoteVideoSrcPin.disconnect(false);
+        }
+        mRemoteUserPinMap.remove(userId);
+        mAgoraRTCAdapter.removeRemoteVideo(userId);
+    }
+
+    private int getAvailableVideoMixerSink() {
+        int idx = -1;
+        for (int i = 1; i < mImgTexPreviewMixer.getSinkPinNum(); i++) {
+            if (!mRemoteUserPinMap.containsValue(i)) {
+                Log.d(TAG, "get available sink " + i);
+                idx = i;
+                break;
+            }
+        }
+        if (idx == -1) {
+            Log.e(TAG, "unable to get available mixer sink!");
+        }
+        return idx;
     }
 
     private int getShortEdgeLength(int resolution) {

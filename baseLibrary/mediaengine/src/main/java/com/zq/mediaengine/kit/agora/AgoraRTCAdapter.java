@@ -172,8 +172,6 @@ public class AgoraRTCAdapter {
             if (mOutCallback != null) {
                 mOutCallback.onUserOffline(uid, reason);
             }
-            // 回调后再移除远端渲染视图
-            removeRemoteVideo(uid);
         }
 
         @Override
@@ -236,8 +234,7 @@ public class AgoraRTCAdapter {
         @Override
         public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
             super.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
-            // 绑定远端渲染视图
-            addRemoteVideo(uid);
+            // 绑定远端渲染视图交由业务层处理
             if (mOutCallback != null) {
                 mOutCallback.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
             }
@@ -555,6 +552,7 @@ public class AgoraRTCAdapter {
         if (mRtcEngine != null) {
             mRtcEngine.getAudioEffectManager().stopAllEffects();
         }
+        mRemoteVideoSrcPins.clear();
         if (destroyAll) {
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
             RtcEngine.destroy();
@@ -725,13 +723,18 @@ public class AgoraRTCAdapter {
      *
      * @param uid uid
      */
-    private void addRemoteVideo(int uid) {
+    public void addRemoteVideo(int uid) {
         AgoraImgTexSrcPin srcPin = new AgoraImgTexSrcPin(mGLRender);
         mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
         mRemoteVideoSrcPins.put(uid, srcPin);
     }
 
-    private void removeRemoteVideo(int uid) {
+    /**
+     * 移除对应uid的远程视频流的SrcPin.
+     *
+     * @param uid uid
+     */
+    public void removeRemoteVideo(int uid) {
         mRtcEngine.setRemoteVideoRenderer(uid, null);
         mRemoteVideoSrcPins.remove(uid);
     }

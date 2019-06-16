@@ -99,7 +99,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else {
             // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
             // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().setRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
+            ZqEngineKit.getInstance().bindRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
         }
     }
 
@@ -112,7 +112,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else {
             // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
             // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().setRemoteVideoRect(mLeftUserId, 0, 0,0.5f, 1, 1);
+            ZqEngineKit.getInstance().bindRemoteVideoRect(mLeftUserId, 0, 0,0.5f, 1, 1);
         }
     }
 
@@ -125,7 +125,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else {
             // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
             // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().setRemoteVideoRect(mRightUserId, 0.5f, 0, 0.5f, 1, 1);
+            ZqEngineKit.getInstance().bindRemoteVideoRect(mRightUserId, 0.5f, 0, 0.5f, 1, 1);
         }
     }
 
@@ -142,7 +142,8 @@ public class GrabVideoDisplayView extends ExViewStub {
                 tryBindRightVideoStream();
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
-//            int userId = event.getUserStatus().getUserId();
+            int userId = event.getUserStatus().getUserId();
+            ZqEngineKit.getInstance().unbindRemoteVideo(userId);
 //            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1.0f, 1.0f, 1.0f);
         }
     }
