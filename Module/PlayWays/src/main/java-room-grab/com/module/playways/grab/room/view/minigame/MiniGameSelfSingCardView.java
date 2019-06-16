@@ -32,6 +32,11 @@ public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
         mSingCountDownView.setListener(mListener);
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_mini_game_self_sing_card_stub_layout;
+    }
+
     public void setListener(SelfSingCardView.Listener l) {
         super.setListener(l);
     }

@@ -1,15 +1,22 @@
 package com.module.playways.grab.room.view.video;
 
-import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.ImageView;
 
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
+import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.ExViewStub;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
@@ -20,14 +27,15 @@ import org.greenrobot.eventbus.ThreadMode;
 public class GrabVideoDisplayView extends ExViewStub {
     public final static String TAG = "GrabVideoDisplayView";
 
-    //    RelativeLayout mParentView;
     TextureView mMainVideoView;
-//    TextureView mSubVideoView;
+    SingCountDownView2 mSingCountDownView;
+    ImageView mBeautySettingBtn;
+    ExTextView mLeftNameTv;
+    ExTextView mRightNameTv;
 
     private GrabRoomData mRoomData;
 
     int mMainUserId = 0, mLeftUserId = 0, mRightUserId = 0;
-
 
     public GrabVideoDisplayView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
@@ -36,11 +44,26 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mMainVideoView = (TextureView) mParentView;
+        mMainVideoView = mParentView.findViewById(R.id.main_video_view);
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mBeautySettingBtn = mParentView.findViewById(R.id.beauty_setting_btn);
+        mBeautySettingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mLeftNameTv = mParentView.findViewById(R.id.left_name_tv);
+        mRightNameTv = mParentView.findViewById(R.id.right_name_tv);
         config();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_room_video_display_view_stub_layout;
     }
 
     protected void config() {
@@ -66,20 +89,41 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     public void bindVideoStream(int userId) {
         tryInflate();
+        setVisibility(View.VISIBLE);
+        mLeftNameTv.setVisibility(View.GONE);
+        mRightNameTv.setVisibility(View.GONE);
 
-        mMainVideoView.setVisibility(View.VISIBLE);
+        ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+        lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
         mMainUserId = userId;
         tryBindMainVideoStream();
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (mSingCountDownView != null) {
+            if (infoModel != null) {
+                mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
+            }
+        }
     }
 
-    public void bindVideoStream(int userID1, int userID2) {
+    public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2) {
         tryInflate();
-        mMainVideoView.setVisibility(View.VISIBLE);
-        mLeftUserId = userID1;
-        mRightUserId = userID2;
+        setVisibility(View.VISIBLE);
+        mLeftNameTv.setVisibility(View.VISIBLE);
+        mRightNameTv.setVisibility(View.VISIBLE);
+        mLeftNameTv.setText(userID1.getNicknameRemark());
+        mRightNameTv.setText(userID2.getNicknameRemark());
+        ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+        lp.height = U.getDisplayUtils().dip2px(315);
+        mLeftUserId = userID1.getUserId();
+        mRightUserId = userID2.getUserId();
         tryBindLeftVideoStream();
         tryBindRightVideoStream();
-//        mSubVideoView.setVisibility(View.GONE);
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (mSingCountDownView != null) {
+            if (infoModel != null) {
+                mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
+            }
+        }
     }
 
     public void reset() {
@@ -88,10 +132,13 @@ public class GrabVideoDisplayView extends ExViewStub {
         mMainUserId = 0;
         mLeftUserId = 0;
         mRightUserId = 0;
+        if (mSingCountDownView != null) {
+            mSingCountDownView.reset();
+        }
     }
 
     void tryBindMainVideoStream() {
-        MyLog.d(TAG,"tryBindMainVideoStream mMainUserId"+mMainUserId );
+        MyLog.d(TAG, "tryBindMainVideoStream mMainUserId" + mMainUserId);
         if (mMainUserId == MyUserInfoManager.getInstance().getUid()) {
             // 是自己
             ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
@@ -104,7 +151,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     void tryBindLeftVideoStream() {
-        MyLog.d(TAG,"tryBindLeftVideoStream mLeftUserId="+mLeftUserId );
+        MyLog.d(TAG, "tryBindLeftVideoStream mLeftUserId=" + mLeftUserId);
         if (mLeftUserId == MyUserInfoManager.getInstance().getUid()) {
             // 是自己
             ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 0.5f, 1, 1);
@@ -112,12 +159,12 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else {
             // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
             // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().bindRemoteVideoRect(mLeftUserId, 0, 0,0.5f, 1, 1);
+            ZqEngineKit.getInstance().bindRemoteVideoRect(mLeftUserId, 0, 0, 0.5f, 1, 1);
         }
     }
 
     void tryBindRightVideoStream() {
-        MyLog.d(TAG,"tryBindRightVideoStream mRightUserId="+mRightUserId );
+        MyLog.d(TAG, "tryBindRightVideoStream mRightUserId=" + mRightUserId);
         if (mRightUserId == MyUserInfoManager.getInstance().getUid()) {
             // 是自己
             ZqEngineKit.getInstance().setLocalVideoRect(0.5f, 0, 0.5f, 1, 1);

@@ -67,6 +67,11 @@ public class PKOthersSingCardView extends ExViewStub {
     }
 
     @Override
+    protected int layoutDesc() {
+        return R.layout.grab_pk_other_sing_card_stub_layout;
+    }
+
+    @Override
     public void onViewDetachedFromWindow(View v) {
         super.onViewDetachedFromWindow(v);
         destoryAnimation();

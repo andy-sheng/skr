@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <ScrollView
+        android:id="@+id/sv_lyric"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:fadeScrollbars="false"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/first_tips_area"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_30_dp"
+                android:layout_centerHorizontal="true">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/avatar_iv"
+                    android:layout_width="@dimen/view_30_dp"
+                    android:layout_height="@dimen/view_30_dp" />
+
+                <TextView
+                    android:id="@+id/first_tips_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/avatar_iv"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#364E7C"
+                    android:textSize="@dimen/view_18_dp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_lyric"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/first_tips_area"
+                android:gravity="center"
+                android:lineSpacingExtra="7dp"
+                android:textColor="#364E7C"
+                android:textSize="@dimen/textsize_18_dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

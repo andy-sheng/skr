@@ -142,6 +142,11 @@ public class ChorusOthersSingCardView extends ExViewStub {
     }
 
     @Override
+    protected int layoutDesc() {
+        return R.layout.grab_chorus_other_sing_card_stub_layout;
+    }
+
+    @Override
     public void onViewAttachedToWindow(View v) {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);

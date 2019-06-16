@@ -55,6 +55,11 @@ public class SelfSingLyricView extends ExViewStub {
         mIvChallengeIcon = mParentView.findViewById(R.id.iv_challenge_icon);
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_self_sing_lyric_layout;
+    }
+
     private void initLyric() {
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         mTvLyric.setVisibility(View.VISIBLE);

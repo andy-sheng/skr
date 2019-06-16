@@ -41,6 +41,11 @@ public class NormalRoundOverCardView extends ExViewStub {
         mSingResultSvga = (SVGAImageView) parentView.findViewById(R.id.sing_result_svga);
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_normal_round_over_card_stub_layout;
+    }
+
     public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener listener) {
         if (lastRoundInfo == null) {
             return;
