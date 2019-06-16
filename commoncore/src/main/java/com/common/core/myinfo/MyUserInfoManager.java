@@ -53,7 +53,8 @@ public class MyUserInfoManager {
     private boolean mUserInfoFromServer = false;
     private boolean needBeginnerGuide = false;
     private boolean mIsFirstLogin = false;    // 标记是否第一次登录
-//    private boolean mHasLoadFromDB = false;
+    //    private boolean mHasLoadFromDB = false;
+    private boolean mHasGrabCertifyPassed = false;
 
     public void init() {
         load();
@@ -151,7 +152,7 @@ public class MyUserInfoManager {
                             final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                             MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                            setMyUserInfo(myUserInfo, true,"syncMyInfoFromServer");
+                            setMyUserInfo(myUserInfo, true, "syncMyInfoFromServer");
                         } else if (obj.getErrno() == 107) {
                             UserAccountManager.getInstance().notifyAccountExpired();
                         }
@@ -281,7 +282,7 @@ public class MyUserInfoManager {
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(mUser, true,"updateInfo");
+                                setMyUserInfo(mUser, true, "updateInfo");
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
@@ -428,6 +429,22 @@ public class MyUserInfoManager {
         });
     }
 
+    public boolean hasGrabCertifyPassed() {
+        if (MyLog.isDebugLogOpen()) {
+            return true;
+        }
+        if (!mHasGrabCertifyPassed) {
+            mHasGrabCertifyPassed = U.getPreferenceUtils().getSettingBoolean("hasGrabCertifyPassed", false);
+        }
+        return mHasGrabCertifyPassed;
+    }
+
+    public void setGrabCertifyPassed(boolean mHasPassedCertify) {
+        if (!mHasPassedCertify) {
+            U.getPreferenceUtils().setSettingBoolean("hasGrabCertifyPassed", mHasPassedCertify);
+            mHasGrabCertifyPassed = true;
+        }
+    }
 
 //    public boolean hasLoadFromDB() {
 //        return mHasLoadFromDB;

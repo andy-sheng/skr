@@ -101,6 +101,9 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     mF.mGrabTopContentView.setVisibility(View.VISIBLE);
                 }
             }
+            /**
+             * 动画会做些歌词view的隐藏
+             */
             if (mF.mGrabWidgetAnimationController.isOpen()) {
                 // 重新调整下位置
                 mF.mGrabWidgetAnimationController.openBelowOpView();

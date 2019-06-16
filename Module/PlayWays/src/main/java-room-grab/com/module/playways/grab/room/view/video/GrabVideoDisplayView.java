@@ -232,18 +232,20 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     private int getTranslateY(boolean open, boolean topContentViewVisiable) {
         int ty = 0;
-        ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
-        if (open) {
-            if (topContentViewVisiable && lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
-                ty = U.getDisplayUtils().dip2px(58);
+        if (mParentView != null) {
+            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+            if (open) {
+                if (topContentViewVisiable && lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                    ty = U.getDisplayUtils().dip2px(58);
+                } else {
+                    ty = U.getDisplayUtils().dip2px(14);
+                }
             } else {
-                ty = U.getDisplayUtils().dip2px(14);
-            }
-        } else {
-            if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
-                ty = U.getDisplayUtils().dip2px(88);
-            } else {
-                ty = U.getDisplayUtils().dip2px(14);
+                if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                    ty = U.getDisplayUtils().dip2px(88);
+                } else {
+                    ty = U.getDisplayUtils().dip2px(14);
+                }
             }
         }
         return ty;
@@ -304,10 +306,14 @@ public class GrabVideoDisplayView extends ExViewStub {
             return U.getStatusBarUtil().getStatusBarHeight(U.app());
         } else {
             // 非演唱者
-            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
-            if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
-                return U.getStatusBarUtil().getStatusBarHeight(U.app());
-            } else {
+            if(mParentView!=null){
+                ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+                if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                    return U.getStatusBarUtil().getStatusBarHeight(U.app());
+                } else {
+                    return 0;
+                }
+            }else{
                 return 0;
             }
         }
