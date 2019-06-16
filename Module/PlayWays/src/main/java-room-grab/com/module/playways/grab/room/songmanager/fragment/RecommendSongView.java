@@ -32,12 +32,19 @@ public class RecommendSongView extends FrameLayout {
     public final static String TAG = "GrabSongManageView";
     private RecyclerView mRecyclerView;
     private RecommendTagModel mRecommendTagModel;
+    private boolean isOwner;
     RecommendSongAdapter mRecommendSongAdapter;
     GrabRoomServerApi mGrabRoomServerApi;
     SmartRefreshLayout mRefreshLayout;
     Disposable mDisposable;
     int mOffset = 0;
     int mLimit = 20;
+
+    public RecommendSongView(Context context, boolean isOwner) {
+        super(context);
+        this.isOwner = isOwner;
+        initView();
+    }
 
     public RecommendSongView(Context context) {
         super(context);
@@ -62,8 +69,9 @@ public class RecommendSongView extends FrameLayout {
     public void initData() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
-        mRecommendSongAdapter = new RecommendSongAdapter();
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecommendSongAdapter = new RecommendSongAdapter(isOwner);
         mRecyclerView.setAdapter(mRecommendSongAdapter);
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
 

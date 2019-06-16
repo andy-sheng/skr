@@ -340,7 +340,12 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddSongEvent event) {
-        addSong(event.getSongModel());
+        if (mGrabRoomData.isOwner()) {
+            addSong(event.getSongModel());
+        } else {
+            // TODO: 2019-06-16 推荐歌单
+        }
+
     }
 
     @Override

@@ -34,13 +34,17 @@
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_room_manage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/view_40_dp"
+            android:layout_height="@dimen/view_40_dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@id/emoji2_btn"
-            android:src="@drawable/fz_kongzhichouti"
-            android:visibility="gone" />
+            android:scaleType="center"
+            android:src="@drawable/ycdd_fangzhu"
+            android:visibility="gone"
+            app:bl_corners_radius="@dimen/view_20_dp"
+            app:bl_shape="oval"
+            app:bl_solid_color="#FFC15B" />
 
     </RelativeLayout>
 
@@ -71,15 +75,15 @@
         android:visibility="gone" />
 
     <com.common.view.ex.ExTextView
-        android:paddingRight="@dimen/view_12_dp"
-        android:drawableRight="@drawable/kuaijiehuifu_fang"
         android:id="@+id/quick_btn"
         android:layout_width="@dimen/view_68_dp"
         android:layout_height="@dimen/view_28_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_12_dp"
+        android:drawableRight="@drawable/kuaijiehuifu_fang"
         android:gravity="center_vertical"
         android:paddingLeft="14dp"
+        android:paddingRight="@dimen/view_12_dp"
         android:text="快捷"
         android:textColor="#333B7B"
         android:textSize="@dimen/textsize_14_dp"

@@ -23,7 +23,13 @@ import com.zq.live.proto.Common.StandPlayType;
 import org.greenrobot.eventbus.EventBus;
 
 public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
-    GrabRoomData mGrabRoomData;
+
+    boolean isOwner;
+
+    public RecommendSongAdapter(boolean isOwner) {
+        this.isOwner = isOwner;
+    }
+
     Drawable pk = new DrawableCreator.Builder()
             .setStrokeColor(U.getColor(R.color.white_trans_70))
             .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
@@ -49,7 +55,7 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recommend_song_item, parent, false);
-        ItemHolder viewHolder = new ItemHolder(view);
+        ItemHolder viewHolder = new ItemHolder(view, isOwner);
         return viewHolder;
     }
 
@@ -59,10 +65,6 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
 
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model, position);
-    }
-
-    public void setGrabRoomData(GrabRoomData grabRoomData) {
-        mGrabRoomData = grabRoomData;
     }
 
     @Override
@@ -77,11 +79,18 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
 
         SongModel mSongModel;
 
-        public ItemHolder(View itemView) {
+        public ItemHolder(View itemView, boolean isOwner) {
             super(itemView);
             mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
             mSelectTv = (ExTextView) itemView.findViewById(R.id.select_tv);
             mSongTag = (ExTextView) itemView.findViewById(R.id.song_tag);
+
+            if (isOwner) {
+                mSelectTv.setText("点歌");
+            } else {
+                mSelectTv.setText("想唱");
+            }
+
             mSelectTv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
