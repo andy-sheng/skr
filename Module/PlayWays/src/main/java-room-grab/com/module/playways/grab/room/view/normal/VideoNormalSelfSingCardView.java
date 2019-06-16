@@ -81,7 +81,9 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == View.GONE) {
-            mSelfSingLyricView.reset();
+            if (mSelfSingLyricView != null) {
+                mSelfSingLyricView.reset();
+            }
         }
     }
 

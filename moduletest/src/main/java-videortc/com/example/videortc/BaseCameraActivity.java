@@ -336,7 +336,7 @@ public class BaseCameraActivity extends Activity implements
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
         Log.e(TAG, "onEvent " + event);
-        if (event.getType() == EngineEvent.TYPE_FIRST_VIDEO_DECODED) {
+        if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {
             int userId = event.getUserStatus().getUserId();
             mEngineKit.setLocalVideoRect(0, 0.5f, 1.0f, 0.5f, 1.0f);
             mEngineKit.setRemoteVideoRect(userId,0, 0, 1.0f, 0.5f, 1.0f);

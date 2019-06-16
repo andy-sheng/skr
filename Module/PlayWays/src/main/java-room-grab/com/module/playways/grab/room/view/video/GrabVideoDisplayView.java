@@ -1,25 +1,35 @@
 package com.module.playways.grab.room.view.video;
 
-import android.content.pm.ActivityInfo;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
+import com.engine.EngineEvent;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.view.ExViewStub;
 import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 public class GrabVideoDisplayView extends ExViewStub {
+    public final static String TAG = "GrabVideoDisplayView";
+
     //    RelativeLayout mParentView;
     TextureView mMainVideoView;
 //    TextureView mSubVideoView;
 
     private GrabRoomData mRoomData;
 
-    public GrabVideoDisplayView(ViewStub viewStub,GrabRoomData roomData) {
+    int mMainUserId = 0, mLeftUserId = 0, mRightUserId = 0;
+
+
+    public GrabVideoDisplayView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
         mRoomData = roomData;
     }
@@ -28,6 +38,9 @@ public class GrabVideoDisplayView extends ExViewStub {
     protected void init(View parentView) {
         mMainVideoView = (TextureView) mParentView;
         config();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     protected void config() {
@@ -55,27 +68,96 @@ public class GrabVideoDisplayView extends ExViewStub {
         tryInflate();
 
         mMainVideoView.setVisibility(View.VISIBLE);
-//        mSubVideoView.setVisibility(View.GONE);
-        // 怎么解绑
-        if (userId == MyUserInfoManager.getInstance().getUid()) {
-            // 是自己
-            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
-            ZqEngineKit.getInstance().startCameraPreview();
-        } else {
-            // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
-            // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().setRemoteVideoRect(userId, 0, 1, 1, 1, 1);
-        }
+        mMainUserId = userId;
+        tryBindMainVideoStream();
     }
 
     public void bindVideoStream(int userID1, int userID2) {
         tryInflate();
         mMainVideoView.setVisibility(View.VISIBLE);
+        mLeftUserId = userID1;
+        mRightUserId = userID2;
+        tryBindLeftVideoStream();
+        tryBindRightVideoStream();
 //        mSubVideoView.setVisibility(View.GONE);
     }
 
     public void reset() {
         //TODO 停止摄像头预览 还要解绑VideoStream  等程乐提供
         ZqEngineKit.getInstance().stopCameraPreview();
+        mMainUserId = 0;
+        mLeftUserId = 0;
+        mRightUserId = 0;
+    }
+
+    void tryBindMainVideoStream() {
+        MyLog.d(TAG,"tryBindMainVideoStream mMainUserId"+mMainUserId );
+        if (mMainUserId == MyUserInfoManager.getInstance().getUid()) {
+            // 是自己
+            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
+            ZqEngineKit.getInstance().startCameraPreview();
+        } else {
+            // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
+            // 但如果set时别人的视频流还没过来，
+            ZqEngineKit.getInstance().setRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
+        }
+    }
+
+    void tryBindLeftVideoStream() {
+        MyLog.d(TAG,"tryBindLeftVideoStream mLeftUserId="+mLeftUserId );
+        if (mLeftUserId == MyUserInfoManager.getInstance().getUid()) {
+            // 是自己
+            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 0.5f, 1, 1);
+            ZqEngineKit.getInstance().startCameraPreview();
+        } else {
+            // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
+            // 但如果set时别人的视频流还没过来，
+            ZqEngineKit.getInstance().setRemoteVideoRect(mLeftUserId, 0, 0,0.5f, 1, 1);
+        }
+    }
+
+    void tryBindRightVideoStream() {
+        MyLog.d(TAG,"tryBindRightVideoStream mRightUserId="+mRightUserId );
+        if (mRightUserId == MyUserInfoManager.getInstance().getUid()) {
+            // 是自己
+            ZqEngineKit.getInstance().setLocalVideoRect(0.5f, 0, 0.5f, 1, 1);
+            ZqEngineKit.getInstance().startCameraPreview();
+        } else {
+            // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
+            // 但如果set时别人的视频流还没过来，
+            ZqEngineKit.getInstance().setRemoteVideoRect(mRightUserId, 0.5f, 0, 0.5f, 1, 1);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(EngineEvent event) {
+        MyLog.e(TAG, "onEvent " + event);
+        if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {
+            int userId = event.getUserStatus().getUserId();
+            if (userId == mMainUserId) {
+                tryBindMainVideoStream();
+            } else if (userId == mLeftUserId) {
+                tryBindLeftVideoStream();
+            } else if (userId == mRightUserId) {
+                tryBindRightVideoStream();
+            }
+        } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
+//            int userId = event.getUserStatus().getUserId();
+//            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1.0f, 1.0f, 1.0f);
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(View v) {
+        super.onViewAttachedToWindow(v);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
+        EventBus.getDefault().unregister(this);
     }
 }

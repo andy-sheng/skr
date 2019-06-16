@@ -44,7 +44,32 @@ public class GrabVideoUiController extends GrabBaseUiController {
 
     @Override
     public void singByOthers() {
-
+        GrabRoundInfoModel infoModel = mF.mRoomData.getRealRoundInfo();
+        if (infoModel != null) {
+            // 显示歌词view
+            if(infoModel.isNormalRound()){
+                // 普通轮次
+                mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
+            }else if(infoModel.isPKRound()){
+                if(infoModel.getsPkRoundInfoModels().size()>=2){
+                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
+                    mF.mGrabVideoDisplayView.bindVideoStream(userID1,userID2);
+                }
+            }else if(infoModel.isChorusRound()){
+                if(infoModel.getChorusRoundInfoModels().size()>=2){
+                    int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
+                    int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
+                    mF.mGrabVideoDisplayView.bindVideoStream(userID1,userID2);
+                }
+            }else if(infoModel.isMiniGameRound()){
+                if(infoModel.getMINIGameRoundInfoModels().size()>=2){
+                    int userID1 = infoModel.getMINIGameRoundInfoModels().get(0).getUserID();
+                    int userID2 = infoModel.getMINIGameRoundInfoModels().get(1).getUserID();
+                    mF.mGrabVideoDisplayView.bindVideoStream(userID1,userID2);
+                }
+            }
+        }
     }
 
     @Override
@@ -53,9 +78,10 @@ public class GrabVideoUiController extends GrabBaseUiController {
         mF.mGrabVideoDisplayView.reset();
         mF.mGrabVideoDisplayView.setVisibility(View.GONE);
         mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
-        mF.mGrabWidgetAnimationController.close();//关闭
-        mF.mGrabWidgetAnimationController.setOpenType(GrabWidgetAnimationController.OPEN_TYPE_FOR_NORMAL);
-
+        if(mF.mGrabWidgetAnimationController.isOpen() && mF.mGrabWidgetAnimationController.getOpenType() == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC){
+            mF.mGrabWidgetAnimationController.close();//关闭
+            mF.mGrabWidgetAnimationController.setOpenType(GrabWidgetAnimationController.OPEN_TYPE_FOR_NORMAL);
+        }
     }
 
     @Override

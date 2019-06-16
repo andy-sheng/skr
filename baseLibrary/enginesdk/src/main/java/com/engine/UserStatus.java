@@ -114,4 +114,21 @@ public class UserStatus {
     public int getFirstVideoHeight() {
         return mFirstVideoHeight;
     }
+
+    @Override
+    public String toString() {
+        return "UserStatus{" +
+                "userId=" + userId +
+//                ", enterTs=" + enterTs +
+                ", isVideoMute=" + isVideoMute +
+                ", isAudioMute=" + isAudioMute +
+                ", isFirstVideoDecoded=" + isFirstVideoDecoded +
+                ", mFirstVideoWidth=" + mFirstVideoWidth +
+                ", mFirstVideoHeight=" + mFirstVideoHeight +
+//                ", isSelf=" + isSelf +
+//                ", mView=" + mView +
+                ", enableVideo=" + enableVideo +
+//                ", isAnchor=" + isAnchor +
+                '}';
+    }
 }

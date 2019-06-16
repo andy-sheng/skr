@@ -7,7 +7,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.TextureView;
 import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 
 import com.common.log.MyLog;
@@ -226,7 +225,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         // 渲染远程图像
         mAgoraRTCAdapter.getRemoteVideoSrcPin(uid).connect(mImgTexPreviewMixer.getSinkPin(1));
 
-        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_VIDEO_DECODED, status));
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED, status));
     }
 
     @Override
@@ -386,9 +385,6 @@ public class ZqEngineKit implements AgoraOutCallback {
         mMainHandler = new Handler(Looper.getMainLooper());
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
-
-        // TODO: 开启视频才初始化
-        initVideoModules();
     }
 
     public static ZqEngineKit getInstance() {
@@ -458,6 +454,11 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         if (mConfig.isEnableAudio()) {
             initAudioModules();
+        }
+
+        if(mConfig.isEnableVideo()){
+            // TODO: 开启视频才初始化
+            initVideoModules();
         }
     }
 

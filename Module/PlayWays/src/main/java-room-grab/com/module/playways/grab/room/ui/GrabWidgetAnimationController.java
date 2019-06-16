@@ -24,7 +24,7 @@ public class GrabWidgetAnimationController {
     GrabRoomFragment mF;
 
     int mOpenType = OPEN_TYPE_FOR_NORMAL;
-
+    boolean mIsOpen = true;
     AnimatorSet mMainAnimatorSet;
 
     public GrabWidgetAnimationController(GrabRoomFragment grabRoomFragment) {
@@ -95,6 +95,7 @@ public class GrabWidgetAnimationController {
                     mF.mGrabTopOpView.setVisibility(View.GONE);
                     mF.mGrabVideoSelfSingCardView.setVisibility(View.VISIBLE);
                 }
+                mIsOpen = true;
             }
         });
         mMainAnimatorSet.start();
@@ -139,6 +140,7 @@ public class GrabWidgetAnimationController {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mF.mGrabTopContentView.setArrowIcon(false);
+                mIsOpen = false;
             }
         });
         mMainAnimatorSet.start();
@@ -146,6 +148,14 @@ public class GrabWidgetAnimationController {
 
     public void setOpenType(int openType) {
         this.mOpenType = openType;
+    }
+
+    public int getOpenType() {
+        return mOpenType;
+    }
+
+    public boolean isOpen() {
+        return mIsOpen;
     }
 
     public void destroy() {

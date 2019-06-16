@@ -13,7 +13,7 @@ import com.module.playways.grab.room.view.normal.VideoNormalSelfSingCardView;
 public class GrabVideoSelfSingCardView {
     GrabRoomData mRoomData;
     VideoChorusSelfSingCardView mVideoChorusSelfSingCardView;
-    VideoNormalSelfSingCardView mNormalSelfSingCardView;
+    VideoNormalSelfSingCardView mVideoNormalSelfSingCardView;
 
     public GrabVideoSelfSingCardView(View rootView, GrabRoomData roomData) {
         mRoomData = roomData;
@@ -23,21 +23,21 @@ public class GrabVideoSelfSingCardView {
         }
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_normal_lyric_view_stub);
-            mNormalSelfSingCardView = new VideoNormalSelfSingCardView(viewStub, roomData);
+            mVideoNormalSelfSingCardView = new VideoNormalSelfSingCardView(viewStub, roomData);
         }
     }
 
     public void setVisibility(int visibility) {
         if (visibility == View.GONE) {
             mVideoChorusSelfSingCardView.setVisibility(View.GONE);
-            mNormalSelfSingCardView.setVisibility(View.GONE);
+            mVideoNormalSelfSingCardView.setVisibility(View.GONE);
         } else if (visibility == View.VISIBLE) {
             if (RoomDataUtils.isChorusRound(mRoomData)) {
                 mVideoChorusSelfSingCardView.setVisibility(View.VISIBLE);
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
             } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
             } else {
-                mNormalSelfSingCardView.setVisibility(View.VISIBLE);
+                mVideoNormalSelfSingCardView.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -48,23 +48,23 @@ public class GrabVideoSelfSingCardView {
         } else if (RoomDataUtils.isPKRound(mRoomData)) {
         } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
         } else {
-            mNormalSelfSingCardView.playLyric();
+            mVideoNormalSelfSingCardView.playLyric();
         }
     }
 
     public void destroy() {
         mVideoChorusSelfSingCardView.destroy();
-        mNormalSelfSingCardView.destroy();
+        mVideoNormalSelfSingCardView.destroy();
     }
 
     public void setListener(SelfSingCardView.Listener listener) {
         mVideoChorusSelfSingCardView.setListener(listener);
-        mNormalSelfSingCardView.setListener(listener);
+        mVideoNormalSelfSingCardView.setListener(listener);
     }
 
     public View getRealView() {
-        if(mNormalSelfSingCardView.getVisibility()==View.VISIBLE){
-            return mNormalSelfSingCardView.getRealView();
+        if(mVideoNormalSelfSingCardView.getVisibility()==View.VISIBLE){
+            return mVideoNormalSelfSingCardView.getRealView();
         }
         if(mVideoChorusSelfSingCardView.getVisibility()==View.VISIBLE){
             return mVideoChorusSelfSingCardView.getRealView();

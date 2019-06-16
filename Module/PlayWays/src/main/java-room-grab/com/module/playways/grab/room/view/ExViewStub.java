@@ -48,6 +48,9 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
     }
 
     public View getRealView() {
+        if(mParentView==null){
+            return mViewStub;
+        }
         return mParentView;
     }
 
