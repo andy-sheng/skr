@@ -531,7 +531,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if(infoModel.isPKRound()){
                     if(infoModel.getsPkRoundInfoModels().size()>=2){
                         int userId1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
-                        int userId2 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+                        int userId2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
                         if(MyUserInfoManager.getInstance().getUid() == userId1 ||
                                 MyUserInfoManager.getInstance().getUid() == userId2){
                             //join房间也变成主播
@@ -1770,7 +1770,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // pk第二轮
             if(now.getsPkRoundInfoModels().size()>=2){
                 int userId1 = now.getsPkRoundInfoModels().get(0).getUserID();
-                int userId2 = now.getsPkRoundInfoModels().get(0).getUserID();
+                int userId2 = now.getsPkRoundInfoModels().get(1).getUserID();
                 if(MyUserInfoManager.getInstance().getUid() == userId1 ||
                         MyUserInfoManager.getInstance().getUid() == userId2){
                     needCloseEngine = false;
