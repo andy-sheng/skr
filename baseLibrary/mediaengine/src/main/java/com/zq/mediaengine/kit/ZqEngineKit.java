@@ -2079,6 +2079,39 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAgoraRTCAdapter.removeRemoteVideo(userId);
     }
 
+    /**
+     * 调用该方法时，SDK 不再发送本地视频流，但摄像头仍然处于工作状态。
+     * 相比于 enableLocalVideo (false) 用于控制本地视频流发送的方法，该方法响应速度更快。
+     * 该方法不影响本地视频流获取，没有禁用摄像头
+     *
+     * @param muted
+     */
+    public void muteLocalVideoStream(boolean muted) {
+        mAgoraRTCAdapter.muteLocalVideoStream(muted);
+    }
+
+    /**
+     * 接收/停止接收指定视频流
+     * 如果之前有调用过 muteAllRemoteVideoStreams (true) 停止接收所有远端视频流，
+     * 在调用本 API 之前请确保你已调用 muteAllRemoteVideoStreams (false)。 muteAllRemoteVideoStreams 是全局控制，
+     * muteRemoteVideoStream 是精细控制。
+     *
+     * @param uid
+     * @param muted
+     */
+    public void muteRemoteVideoStream(int uid, boolean muted) {
+        mAgoraRTCAdapter.muteRemoteVideoStream(uid, muted);
+    }
+
+    /**
+     * 你不想看其他人的了，但其他人还能互相看
+     *
+     * @param muted
+     */
+    public void muteAllRemoteVideoStreams(boolean muted) {
+        mAgoraRTCAdapter.muteAllRemoteVideoStreams(muted);
+    }
+
     private int getAvailableVideoMixerSink() {
         int idx = -1;
         for (int i = 1; i < mImgTexPreviewMixer.getSinkPinNum(); i++) {
