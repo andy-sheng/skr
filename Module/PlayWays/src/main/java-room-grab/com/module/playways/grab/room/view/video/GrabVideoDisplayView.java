@@ -261,8 +261,12 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void adjustViewPostion(boolean open, boolean topContentViewVisiable) {
-        int translateY = getTranslateY(open,topContentViewVisiable);
-        mSingCountDownView.setTranslationY(translateY);
-        mBeautySettingBtn.setTranslationY(translateY);
+        int translateY = getTranslateY(open, topContentViewVisiable);
+        if (mSingCountDownView != null) {
+            mSingCountDownView.setTranslationY(translateY);
+        }
+        if (mBeautySettingBtn != null) {
+            mBeautySettingBtn.setTranslationY(translateY);
+        }
     }
 }
