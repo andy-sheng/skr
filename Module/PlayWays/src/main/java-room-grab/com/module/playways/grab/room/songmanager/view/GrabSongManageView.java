@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.songmanager.fragment;
+package com.module.playways.grab.room.songmanager.view;
 
 import android.content.Context;
 import android.graphics.Color;
