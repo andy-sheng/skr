@@ -64,6 +64,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
     public void singByOthers() {
         GrabRoundInfoModel infoModel = mF.mRoomData.getRealRoundInfo();
         if (infoModel != null) {
+            mF.mGrabVideoDisplayView.adjustViewPostion(mF.mGrabWidgetAnimationController.isOpen(), mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
             // 显示歌词view
             if (infoModel.isNormalRound()) {
                 // 普通轮次

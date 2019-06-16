@@ -113,9 +113,9 @@ public class GrabVideoDisplayView extends ExViewStub {
                 mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
             }
         }
-        if(userId==MyUserInfoManager.getInstance().getUid()){
+        if (userId == MyUserInfoManager.getInstance().getUid()) {
             mBeautySettingBtn.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBeautySettingBtn.setVisibility(View.GONE);
         }
     }
@@ -139,9 +139,9 @@ public class GrabVideoDisplayView extends ExViewStub {
                 mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
             }
         }
-        if(mRightUserId==MyUserInfoManager.getInstance().getUid() || mLeftUserId == MyUserInfoManager.getInstance().getUid()){
+        if (mRightUserId == MyUserInfoManager.getInstance().getUid() || mLeftUserId == MyUserInfoManager.getInstance().getUid()) {
             mBeautySettingBtn.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBeautySettingBtn.setVisibility(View.GONE);
         }
     }
@@ -155,6 +155,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         if (mSingCountDownView != null) {
             mSingCountDownView.reset();
         }
+        //ZqEngineKit.getInstance()
     }
 
     void tryBindMainVideoStream() {
@@ -211,6 +212,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
             int userId = event.getUserStatus().getUserId();
             ZqEngineKit.getInstance().unbindRemoteVideo(userId);
+
 //            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1.0f, 1.0f, 1.0f);
         }
     }
@@ -229,32 +231,42 @@ public class GrabVideoDisplayView extends ExViewStub {
         EventBus.getDefault().unregister(this);
     }
 
-    public List<Animator> getInnerAnimator(boolean open,boolean topContentViewVisiable) {
-        if(mSingCountDownView==null){
-            return null;
-        }
+    private int getTranslateY(boolean open, boolean topContentViewVisiable) {
         int ty = 0;
-        if(open){
-            if(topContentViewVisiable){
+        if (open) {
+            if (topContentViewVisiable) {
                 ty = U.getDisplayUtils().dip2px(58);
-            }else{
+            } else {
                 ty = U.getDisplayUtils().dip2px(14);
             }
-        }else{
+        } else {
             ty = U.getDisplayUtils().dip2px(88);
         }
+        return ty;
+    }
 
+    public List<Animator> getInnerAnimator(boolean open, boolean topContentViewVisiable) {
+        if (mSingCountDownView == null) {
+            return null;
+        }
+        int ty = getTranslateY(open, topContentViewVisiable);
         List<Animator> list = new ArrayList<>();
 
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingCountDownView,View.TRANSLATION_Y,mSingCountDownView.getTranslationY(),ty);
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingCountDownView, View.TRANSLATION_Y, mSingCountDownView.getTranslationY(), ty);
         list.add(objectAnimator1);
 
-        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mBeautySettingBtn,View.TRANSLATION_Y,mSingCountDownView.getTranslationY(),ty);
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mBeautySettingBtn, View.TRANSLATION_Y, mSingCountDownView.getTranslationY(), ty);
         list.add(objectAnimator2);
         return list;
     }
 
     public void setListener(SelfSingCardView.Listener listener) {
         mListener = listener;
+    }
+
+    public void adjustViewPostion(boolean open, boolean topContentViewVisiable) {
+        int translateY = getTranslateY(open,topContentViewVisiable);
+        mSingCountDownView.setTranslationY(translateY);
+        mBeautySettingBtn.setTranslationY(translateY);
     }
 }
