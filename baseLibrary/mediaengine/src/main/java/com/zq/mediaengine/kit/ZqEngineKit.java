@@ -2004,6 +2004,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see CameraCapture#FACING_BACK
      */
     public void startCameraPreview(final int facing) {
+        MyLog.d(TAG,"startCameraPreview" + " facing=" + facing);
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -2027,6 +2028,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Stop camera preview.
      */
     public void stopCameraPreview() {
+         MyLog.d(TAG,"stopCameraPreview" );
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -2099,6 +2101,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha alpha value，between 0~1.0
      */
     public void setLocalVideoRect(final float x, final float y, final float w, final float h, float alpha) {
+        MyLog.d(TAG,"setLocalVideoRect" + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
         final float a = alpha;
@@ -2123,6 +2126,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha alpha value，between 0~1.0
      */
     public void bindRemoteVideoRect(final int userId, final float x, final float y, final float w, final float h, float alpha) {
+         MyLog.d(TAG,"bindRemoteVideoRect" + " userId=" + userId + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
         final float a = alpha;
@@ -2153,6 +2157,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param userId which user to unbind
      */
     public void unbindRemoteVideo(final int userId) {
+        MyLog.d(TAG,"unbindRemoteVideo" + " userId=" + userId);
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -2166,6 +2171,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Unbind and remove all remote video.
      */
     public void unbindAllRemoteVideo() {
+        MyLog.d(TAG,"unbindAllRemoteVideo" );
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
