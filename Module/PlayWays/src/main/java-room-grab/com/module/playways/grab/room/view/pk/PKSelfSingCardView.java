@@ -53,6 +53,11 @@ public class PKSelfSingCardView extends ExViewStub {
         mPkSingCardView.setRoomData(mRoomData);
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_pk_self_sing_card_stub_layout;
+    }
+
     public void playLyric() {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (grabRoundInfoModel == null) {

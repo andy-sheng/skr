@@ -43,6 +43,11 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
     }
 
     @Override
+    protected int layoutDesc() {
+        return R.layout.grab_video_normal_self_sing_card_stub_layout;
+    }
+
+    @Override
     public void onViewAttachedToWindow(View v) {
         super.onViewAttachedToWindow(v);
     }

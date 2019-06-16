@@ -90,6 +90,11 @@ public class NormalOthersSingCardView extends ExViewStub {
     }
 
     @Override
+    protected int layoutDesc() {
+        return R.layout.grab_normal_other_sing_card_stub_layout;
+    }
+
+    @Override
     public void onViewDetachedFromWindow(View v) {
         super.onViewDetachedFromWindow(v);
         if (mEnterAlphaAnimation != null) {

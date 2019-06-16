@@ -57,6 +57,12 @@ public class SingBeginTipsCardView extends ExViewStub {
         });
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_sing_begin_tips_card_stub_layout;
+    }
+
+
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == View.GONE) {

@@ -22,4 +22,11 @@
         android:layout_height="@dimen/view_120_dp"
         />
 
+    <ViewStub
+        android:id="@+id/grab_video_mini_game_lyric_view_stub"
+        android:inflatedId="@+id/grab_video_mini_game_lyric_view"
+        android:layout="@layout/grab_video_mini_game_self_sing_card_stub_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        />
 </merge>

@@ -135,6 +135,11 @@ public class MiniGameOtherSingCardView extends ExViewStub {
     }
 
     @Override
+    protected int layoutDesc() {
+        return R.layout.grab_mini_game_other_sing_card_stub_layout;
+    }
+
+    @Override
     public void onViewAttachedToWindow(View v) {
         super.onViewAttachedToWindow(v);
         if (!EventBus.getDefault().isRegistered(this)) {

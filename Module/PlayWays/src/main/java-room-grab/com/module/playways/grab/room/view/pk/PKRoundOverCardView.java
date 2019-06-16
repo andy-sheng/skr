@@ -106,6 +106,11 @@ public class PKRoundOverCardView extends ExViewStub {
         mRightSvga = (SVGAImageView) parentView.findViewById(R.id.right_svga);
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_pk_round_over_card_stub_layout;
+    }
+
     public void bindData(GrabRoundInfoModel roundInfoModel, SVGAListener svgaListener) {
         tryInflate();
         reset();

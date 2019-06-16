@@ -32,6 +32,11 @@ public class MiniGameRoundOverCardView extends ExViewStub {
         mMiniGameBgIv = (ImageView) parentView.findViewById(R.id.mini_game_bg_iv);
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_mini_game_over_card_stub_layout;
+    }
+
     public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener listener) {
         if (lastRoundInfo == null) {
             return;

@@ -33,6 +33,11 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
         mSingCountDownView.setListener(mListener);
     }
 
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_chorus_self_sing_card_stub_layout;
+    }
+
     public boolean playLyric() {
         if(super.playLyric()){
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
