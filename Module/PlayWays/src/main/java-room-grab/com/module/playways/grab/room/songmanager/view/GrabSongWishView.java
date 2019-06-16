@@ -44,6 +44,8 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
 
     LoadService mLoadService;
 
+    boolean hasInit;
+
     public GrabSongWishView(Context context, GrabRoomData grabRoomData) {
         super(context);
         mGrabRoomData = grabRoomData;
@@ -116,7 +118,13 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
             }
         });
 
-        mGrabWishSongPresenter.getListMusicSuggested();
+
+    }
+
+    public void initSuggestedMusicList() {
+        if (!hasInit) {
+            mGrabWishSongPresenter.getListMusicSuggested();
+        }
     }
 
 
@@ -128,6 +136,7 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
 
     @Override
     public void addGrabWishSongModels(List<GrabWishSongModel> grabWishSongModels) {
+        hasInit = true;
         mRefreshLayout.finishLoadMore();
         if (grabWishSongModels != null && grabWishSongModels.size() > 0) {
             mWishSongAdapter.getDataList().addAll(grabWishSongModels);

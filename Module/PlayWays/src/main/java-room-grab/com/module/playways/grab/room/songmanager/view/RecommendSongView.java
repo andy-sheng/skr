@@ -40,6 +40,8 @@ public class RecommendSongView extends FrameLayout {
     int mOffset = 0;
     int mLimit = 20;
 
+    boolean hasInit = false;
+
     public RecommendSongView(Context context, boolean isOwner) {
         super(context);
         this.isOwner = isOwner;
@@ -95,7 +97,12 @@ public class RecommendSongView extends FrameLayout {
 
     public void setData(RecommendTagModel recommendTagModel) {
         mRecommendTagModel = recommendTagModel;
-        getSongList();
+    }
+
+    public void initSongList() {
+        if (!hasInit) {
+            getSongList();
+        }
     }
 
     private void getSongList() {
@@ -114,6 +121,7 @@ public class RecommendSongView extends FrameLayout {
                 mRefreshLayout.finishLoadMore();
 
                 if (result.getErrno() == 0) {
+                    hasInit = true;
                     List<SongModel> recommendTagModelArrayList = JSONObject.parseArray(result.getData().getString("items"), SongModel.class);
                     if (recommendTagModelArrayList == null || recommendTagModelArrayList.size() == 0) {
                         mRefreshLayout.setEnableLoadMore(false);

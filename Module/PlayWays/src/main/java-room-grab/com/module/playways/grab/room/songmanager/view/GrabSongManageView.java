@@ -65,6 +65,8 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
     int mSpecialModelId;
 
+    boolean hasInit = false;
+
     public GrabSongManageView(Context context, GrabRoomData grabRoomData) {
         super(context);
         mRoomData = grabRoomData;
@@ -124,8 +126,12 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
         if (mRoomData.getSpecialModel() != null) {
             setTagTv(mRoomData.getSpecialModel());
         }
+    }
 
-        mGrabSongManagePresenter.getPlayBookList();
+    public void initPlayBookList() {
+        if (!hasInit) {
+            mGrabSongManagePresenter.getPlayBookList();
+        }
     }
 
     private void initListener() {
@@ -166,7 +172,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
             mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
 
-            if (mPopupWindow!=null && mPopupWindow.isShowing()) {
+            if (mPopupWindow != null && mPopupWindow.isShowing()) {
                 mPopupWindow.dismiss();
             } else {
                 mGrabSongManagePresenter.getTagList();
@@ -199,6 +205,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
     @Override
     public void showNum(int num) {
+        hasInit = true;
         if (num < 0) {
             mGrabSongManagePresenter.getPlayBookList();
             return;

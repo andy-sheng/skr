@@ -62,6 +62,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     CommonTitleBar mCommonTitleBar;
     OwnerManagePresenter mOwnerManagePresenter;
+    PagerAdapter mPagerAdapter;
 
     GrabRoomData mRoomData;
     boolean isOwner;    //是否是房主
@@ -151,12 +152,6 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         }
         mRecommendSongViews.clear();
 
-        for (RecommendTagModel recommendTagModel : recommendTagModelList) {
-            RecommendSongView recommendSongView = new RecommendSongView(getActivity(), isOwner);
-            recommendSongView.setData(recommendTagModel);
-            mRecommendSongViews.add(recommendSongView);
-        }
-
         if (isOwner) {
             if (mGrabSongManageView != null) {
                 mGrabSongManageView.destroy();
@@ -167,9 +162,19 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
                 mGrabSongWishView.destroy();
             }
             mGrabSongWishView = new GrabSongWishView(getContext(), mRoomData);
+
+            RecommendTagModel recommendModel = new RecommendTagModel();
+            recommendModel.setType(-1);
+            recommendModel.setName("愿望歌单");
+            recommendTagModelList.add(0, recommendModel);
+
+            RecommendTagModel recommendTagModel = new RecommendTagModel();
+            recommendTagModel.setType(-1);
+            recommendTagModel.setName("已点0");
+            recommendTagModelList.add(0, recommendTagModel);
         }
 
-        PagerAdapter pagerAdapter = new PagerAdapter() {
+        mPagerAdapter = new PagerAdapter() {
 
             @Override
             public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
@@ -185,13 +190,25 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
                 if (isOwner) {
                     if (position == 0) {
                         view = mGrabSongManageView;
+                        mGrabSongManageView.initPlayBookList();
                     } else if (position == 1) {
                         view = mGrabSongWishView;
                     } else {
-                        view = mRecommendSongViews.get(position - 2);
+                        RecommendSongView recommendSongView = new RecommendSongView(getActivity(), isOwner);
+                        RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
+                        recommendSongView.setData(recommendTagModel);
+                        view = recommendSongView;
+                        mRecommendSongViews.add(recommendSongView);
                     }
                 } else {
-                    view = mRecommendSongViews.get(position);
+                    RecommendSongView recommendSongView = new RecommendSongView(getActivity(), isOwner);
+                    RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
+                    recommendSongView.setData(recommendTagModel);
+                    if (position == 0) {
+                        recommendSongView.initSongList();
+                    }
+                    view = recommendSongView;
+                    mRecommendSongViews.add(recommendSongView);
                 }
 
                 if (container.indexOfChild(view) == -1) {
@@ -203,7 +220,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
             @Override
             public int getCount() {
-                return isOwner ? mRecommendSongViews.size() + 2 : mRecommendSongViews.size();
+                return recommendTagModelList.size();
             }
 
             @Override
@@ -212,40 +229,36 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             }
         };
 
-//        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
-//            @Override
-//            public Fragment getItem(int position) {
-//                MyLog.d(TAG, "getItem" + " position=" + position);
-//                if (position == 0) {
-//                    GrabSongManageView grabSongManageFragment = new GrabSongManageView();
-//                    grabSongManageFragment.setData(mRoomData);
-//                    return grabSongManageFragment;
-//                } else {
-//                    return mRecommendSongViews.get(position - 1);
-//                }
-//            }
-//
-//            @Override
-//            public int getCount() {
-//                return mRecommendSongViews.size() + 1;
-//            }
-//        };
+        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        if (isOwner) {
-            RecommendTagModel recommendTagModel = new RecommendTagModel();
-            recommendTagModel.setType(-1);
-            recommendTagModel.setName("已点0");
-            recommendTagModelList.add(0, recommendTagModel);
+            }
 
-            RecommendTagModel recommendModel = new RecommendTagModel();
-            recommendTagModel.setType(-1);
-            recommendTagModel.setName("愿望歌单");
-            recommendTagModelList.add(1, recommendTagModel);
-        }
+            @Override
+            public void onPageSelected(int position) {
+                if (isOwner) {
+                    if (position == 0) {
+                        mGrabSongManageView.initPlayBookList();
+                    } else if (position == 1) {
+                        mGrabSongWishView.initSuggestedMusicList();
+                    } else {
+                        mRecommendSongViews.get(position - 2).initSongList();
+                    }
+                } else {
+                    mRecommendSongViews.get(position).initSongList();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         mOwnerTitleView.setRecommendTagModelList(recommendTagModelList);
-        mViewpager.setAdapter(pagerAdapter);
-        pagerAdapter.notifyDataSetChanged();
+        mViewpager.setAdapter(mPagerAdapter);
+        mPagerAdapter.notifyDataSetChanged();
         mViewpager.setPageMargin(U.getDisplayUtils().dip2px(12));
     }
 
@@ -315,6 +328,10 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
         if (mGrabSongManageView != null) {
             mGrabSongManageView.destroy();
+        }
+
+        if (mGrabSongWishView != null) {
+            mGrabSongWishView.destroy();
         }
     }
 
