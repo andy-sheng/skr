@@ -147,15 +147,14 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void reset() {
-        //TODO 停止摄像头预览 还要解绑VideoStream  等程乐提供
         ZqEngineKit.getInstance().stopCameraPreview();
+        ZqEngineKit.getInstance().unbindAllRemoteVideo();
         mMainUserId = 0;
         mLeftUserId = 0;
         mRightUserId = 0;
         if (mSingCountDownView != null) {
             mSingCountDownView.reset();
         }
-        //ZqEngineKit.getInstance()
     }
 
     void tryBindMainVideoStream() {
