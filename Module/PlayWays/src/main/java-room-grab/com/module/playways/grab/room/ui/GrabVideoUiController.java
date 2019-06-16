@@ -64,7 +64,6 @@ public class GrabVideoUiController extends GrabBaseUiController {
     public void singByOthers() {
         GrabRoundInfoModel infoModel = mF.mRoomData.getRealRoundInfo();
         if (infoModel != null) {
-            mF.mGrabVideoDisplayView.adjustViewPostion(mF.mGrabWidgetAnimationController.isOpen(), mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
             // 显示歌词view
             if (infoModel.isNormalRound()) {
                 // 普通轮次
@@ -90,6 +89,9 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
                 }
+            }
+            if(mF.mGrabWidgetAnimationController.isOpen()){
+                mF.mGrabWidgetAnimationController.openBelowOpView();
             }
         }
     }

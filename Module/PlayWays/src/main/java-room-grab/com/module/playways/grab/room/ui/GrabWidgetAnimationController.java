@@ -48,6 +48,11 @@ public class GrabWidgetAnimationController {
         open();
     }
 
+    public void openBelowOpView() {
+        mOpenType = OPEN_TYPE_FOR_NORMAL;
+        open();
+    }
+
     public void open() {
         if (mMainAnimatorSet != null && mMainAnimatorSet.isRunning()) {
             mMainAnimatorSet.cancel();
