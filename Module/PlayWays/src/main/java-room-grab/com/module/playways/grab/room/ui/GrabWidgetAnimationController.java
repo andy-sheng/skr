@@ -57,7 +57,7 @@ public class GrabWidgetAnimationController {
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
         viewList.add(mF.mGrabVideoDisplayView.getRealView());
-        List<Animator> animators1 = new ArrayList<>();
+        List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {
                 ObjectAnimator objectAnimator = null;
@@ -67,11 +67,15 @@ public class GrabWidgetAnimationController {
                 } else {
                     objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType());
                 }
-                animators1.add(objectAnimator);
+                animators.add(objectAnimator);
             }
         }
+        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(true,mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
+        if(animators2!=null){
+            animators.addAll(animators2);
+        }
         mMainAnimatorSet = new AnimatorSet();
-        mMainAnimatorSet.playTogether(animators1);
+        mMainAnimatorSet.playTogether(animators);
         mMainAnimatorSet.setDuration(300);
         mMainAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -113,15 +117,19 @@ public class GrabWidgetAnimationController {
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
         viewList.add(mF.mGrabVideoDisplayView.getRealView());
-        List<Animator> animators1 = new ArrayList<>();
+        List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {
                 ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), 0);
-                animators1.add(objectAnimator);
+                animators.add(objectAnimator);
             }
         }
+        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(false,mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
+        if(animators2!=null){
+            animators.addAll(animators2);
+        }
         mMainAnimatorSet = new AnimatorSet();
-        mMainAnimatorSet.playTogether(animators1);
+        mMainAnimatorSet.playTogether(animators);
         mMainAnimatorSet.setDuration(300);
         mMainAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override

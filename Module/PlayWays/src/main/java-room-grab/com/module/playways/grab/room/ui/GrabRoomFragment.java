@@ -599,6 +599,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         {
             ViewStub viewStub = mRootView.findViewById(R.id.grab_video_display_view_stub);
             mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub, mRoomData);
+            mGrabVideoDisplayView.setListener(new SelfSingCardView.Listener() {
+                @Override
+                public void onSelfSingOver() {
+                    mCorePresenter.sendRoundOverInfo();
+                }
+            });
         }
         mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView, mRoomData);
     }
@@ -994,14 +1000,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     private void initTurnChangeView() {
         mTurnInfoCardView = mRootView.findViewById(R.id.turn_info_iv);
         mSongInfoCardView = mRootView.findViewById(R.id.turn_change_song_info_card_view);
-
         {
             ViewStub viewStub = mRootView.findViewById(R.id.grab_sing_begin_tips_card_stub);
             mSingBeginTipsCardView = new SingBeginTipsCardView(viewStub, mRoomData);
         }
-
         mRoundOverCardView = new RoundOverCardView(mRootView, mRoomData);
-
         mGrabGameOverView = mRootView.findViewById(R.id.grab_game_over_view);
     }
 
@@ -1147,7 +1150,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
         });
         mOthersSingCardView = new OthersSingCardView(mRootView, mRoomData);
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

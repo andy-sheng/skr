@@ -15,21 +15,27 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- open 模式  margin 是64 close 模式是 78-->
     <com.module.playways.grab.room.view.SingCountDownView2
         android:id="@+id/sing_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_78_dp"
-        app:layout_constraintLeft_toLeftOf="@id/main_video_view"
-        app:layout_constraintTop_toTopOf="@id/main_video_view" />
+        android:translationY="@dimen/view_88_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/beauty_setting_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_24_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:src="@drawable/grid_camera"
+        android:scaleType="centerInside"
+        android:src="@drawable/ycdd_shexiangtou"
+        android:translationY="@dimen/view_88_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#5C67C1"
         app:layout_constraintLeft_toRightOf="@id/sing_count_down_view"
         app:layout_constraintTop_toTopOf="@id/sing_count_down_view" />
 
