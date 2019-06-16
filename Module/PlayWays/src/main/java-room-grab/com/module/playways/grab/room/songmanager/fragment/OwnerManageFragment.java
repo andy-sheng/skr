@@ -22,6 +22,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.busilib.friends.RecommendModel;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
@@ -54,10 +55,14 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     ViewPager mViewpager;
     List<RecommendSongView> mRecommendSongViews = new ArrayList<>();
     GrabSongManageView mGrabSongManageView;
+    GrabSongWishView mGrabSongWishView;
     DialogPlus mEditRoomDialog;
-    GrabRoomData mRoomData;
+
     CommonTitleBar mCommonTitleBar;
     OwnerManagePresenter mOwnerManagePresenter;
+
+    GrabRoomData mRoomData;
+    boolean isOwner;    //是否是房主
 
     @Override
     public int initView() {
@@ -83,11 +88,11 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mCommonTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(getActivity() instanceof OwnerManagerActivity){
+                if (getActivity() instanceof OwnerManagerActivity) {
                     if (getActivity() != null) {
                         getActivity().finish();
                     }
-                }else{
+                } else {
                     finish();
                 }
             }
@@ -122,10 +127,15 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     @Override
     public void showRoomName(String roomName) {
         mCommonTitleBar.getCenterTextView().setText(roomName);
-        Drawable drawable = U.getDrawable(R.drawable.ycdd_edit_roomname_icon);
-        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-        mCommonTitleBar.getCenterTextView().setCompoundDrawables(null, null, drawable, null);
-        mCommonTitleBar.getCenterTextView().setCompoundDrawablePadding(U.getDisplayUtils().dip2px(7));
+        if (isOwner) {
+            Drawable drawable = U.getDrawable(R.drawable.ycdd_edit_roomname_icon);
+            drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+            mCommonTitleBar.getCenterTextView().setCompoundDrawables(null, null, drawable, null);
+            mCommonTitleBar.getCenterTextView().setCompoundDrawablePadding(U.getDisplayUtils().dip2px(7));
+            mCommonTitleBar.getCenterTextView().setClickable(true);
+        } else {
+            mCommonTitleBar.getCenterTextView().setClickable(false);
+        }
     }
 
     @Override
@@ -140,14 +150,22 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mRecommendSongViews.clear();
 
         for (RecommendTagModel recommendTagModel : recommendTagModelList) {
-            RecommendSongView recommendSongView = new RecommendSongView(getActivity());
+            RecommendSongView recommendSongView = new RecommendSongView(getActivity(), isOwner);
             recommendSongView.setData(recommendTagModel);
             mRecommendSongViews.add(recommendSongView);
         }
-        if (mGrabSongManageView != null) {
-            mGrabSongManageView.destroy();
+
+        if (isOwner) {
+            if (mGrabSongManageView != null) {
+                mGrabSongManageView.destroy();
+            }
+            mGrabSongManageView = new GrabSongManageView(getActivity(), mRoomData);
+
+            if (mGrabSongWishView != null) {
+                mGrabSongWishView.destroy();
+            }
+            mGrabSongWishView = new GrabSongWishView(getContext());
         }
-        mGrabSongManageView = new GrabSongManageView(getActivity(), mRoomData);
 
         PagerAdapter pagerAdapter = new PagerAdapter() {
 
@@ -162,10 +180,16 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
                 View view = null;
-                if (position == 0) {
-                    view = mGrabSongManageView;
+                if (isOwner) {
+                    if (position == 0) {
+                        view = mGrabSongManageView;
+                    } else if (position == 1) {
+                        view = mGrabSongWishView;
+                    } else {
+                        view = mRecommendSongViews.get(position - 2);
+                    }
                 } else {
-                    view = mRecommendSongViews.get(position - 1);
+                    view = mRecommendSongViews.get(position);
                 }
 
                 if (container.indexOfChild(view) == -1) {
@@ -177,7 +201,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
             @Override
             public int getCount() {
-                return mRecommendSongViews.size() + 1;
+                return isOwner ? mRecommendSongViews.size() + 2 : mRecommendSongViews.size();
             }
 
             @Override
@@ -205,10 +229,17 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 //            }
 //        };
 
-        RecommendTagModel recommendTagModel = new RecommendTagModel();
-        recommendTagModel.setType(-1);
-        recommendTagModel.setName("已点0");
-        recommendTagModelList.add(0, recommendTagModel);
+        if (isOwner) {
+            RecommendTagModel recommendTagModel = new RecommendTagModel();
+            recommendTagModel.setType(-1);
+            recommendTagModel.setName("已点0");
+            recommendTagModelList.add(0, recommendTagModel);
+
+            RecommendTagModel recommendModel = new RecommendTagModel();
+            recommendTagModel.setType(-1);
+            recommendTagModel.setName("愿望歌单");
+            recommendTagModelList.add(1, recommendTagModel);
+        }
 
         mOwnerTitleView.setRecommendTagModelList(recommendTagModelList);
         mViewpager.setAdapter(pagerAdapter);
@@ -221,6 +252,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         super.setData(type, data);
         if (type == 0) {
             mRoomData = (GrabRoomData) data;
+            isOwner = mRoomData.isOwner();
         }
     }
 
@@ -286,7 +318,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     @Override
     protected boolean onBackPressed() {
-        if(mEditRoomDialog!=null && mEditRoomDialog.isShowing()){
+        if (mEditRoomDialog != null && mEditRoomDialog.isShowing()) {
             mEditRoomDialog.dismiss(false);
             mEditRoomDialog = null;
             return true;

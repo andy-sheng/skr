@@ -1,10 +1,15 @@
 package com.module.playways.grab.room.view.video;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.support.constraint.ConstraintLayout;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -17,12 +22,16 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.ExViewStub;
 import com.module.playways.grab.room.view.SingCountDownView2;
+import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GrabVideoDisplayView extends ExViewStub {
     public final static String TAG = "GrabVideoDisplayView";
@@ -32,7 +41,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     ImageView mBeautySettingBtn;
     ExTextView mLeftNameTv;
     ExTextView mRightNameTv;
-
+    SelfSingCardView.Listener mListener;
     private GrabRoomData mRoomData;
 
     int mMainUserId = 0, mLeftUserId = 0, mRightUserId = 0;
@@ -46,6 +55,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     protected void init(View parentView) {
         mMainVideoView = mParentView.findViewById(R.id.main_video_view);
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView.setListener(mListener);
         mBeautySettingBtn = mParentView.findViewById(R.id.beauty_setting_btn);
         mBeautySettingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +113,11 @@ public class GrabVideoDisplayView extends ExViewStub {
                 mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
             }
         }
+        if(userId==MyUserInfoManager.getInstance().getUid()){
+            mBeautySettingBtn.setVisibility(View.VISIBLE);
+        }else{
+            mBeautySettingBtn.setVisibility(View.GONE);
+        }
     }
 
     public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2) {
@@ -123,6 +138,11 @@ public class GrabVideoDisplayView extends ExViewStub {
             if (infoModel != null) {
                 mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
             }
+        }
+        if(mRightUserId==MyUserInfoManager.getInstance().getUid() || mLeftUserId == MyUserInfoManager.getInstance().getUid()){
+            mBeautySettingBtn.setVisibility(View.VISIBLE);
+        }else{
+            mBeautySettingBtn.setVisibility(View.GONE);
         }
     }
 
@@ -207,5 +227,34 @@ public class GrabVideoDisplayView extends ExViewStub {
     public void onViewDetachedFromWindow(View v) {
         super.onViewDetachedFromWindow(v);
         EventBus.getDefault().unregister(this);
+    }
+
+    public List<Animator> getInnerAnimator(boolean open,boolean topContentViewVisiable) {
+        if(mSingCountDownView==null){
+            return null;
+        }
+        int ty = 0;
+        if(open){
+            if(topContentViewVisiable){
+                ty = U.getDisplayUtils().dip2px(58);
+            }else{
+                ty = U.getDisplayUtils().dip2px(14);
+            }
+        }else{
+            ty = U.getDisplayUtils().dip2px(88);
+        }
+
+        List<Animator> list = new ArrayList<>();
+
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingCountDownView,View.TRANSLATION_Y,mSingCountDownView.getTranslationY(),ty);
+        list.add(objectAnimator1);
+
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mBeautySettingBtn,View.TRANSLATION_Y,mSingCountDownView.getTranslationY(),ty);
+        list.add(objectAnimator2);
+        return list;
+    }
+
+    public void setListener(SelfSingCardView.Listener listener) {
+        mListener = listener;
     }
 }

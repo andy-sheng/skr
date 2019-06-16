@@ -37,6 +37,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+/**
+ * 房主已点
+ */
 public class GrabSongManageView extends FrameLayout implements IGrabSongManageView {
     public final static String TAG = "GrabSongManageView";
 

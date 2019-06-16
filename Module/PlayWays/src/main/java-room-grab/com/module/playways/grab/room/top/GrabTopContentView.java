@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,7 +53,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GrabTopContentView extends RelativeLayout {
+public class GrabTopContentView extends ConstraintLayout {
     public final static String TAG = "GrabPlayerRv2";
     public final static int PLAYER_COUNT = 7;
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
@@ -131,9 +132,9 @@ public class GrabTopContentView extends RelativeLayout {
             vp.grabTopItemView.hideGrabIcon();
             vp.grabTopItemView.tryAddParent(mContentLl);
             vp.grabTopItemView.setToPlaceHolder();
-            vp.SVGAImageView = new SVGAImageView(getContext());
-            LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
-            GrabTopContentView.this.addView(vp.SVGAImageView, lp);
+//            vp.SVGAImageView = new SVGAImageView(getContext());
+//            LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
+//            GrabTopContentView.this.addView(vp.SVGAImageView, lp);
             mGrabTopItemViewArrayList.add(vp);
         }
         resetAllGrabTopItemView();
@@ -218,7 +219,7 @@ public class GrabTopContentView extends RelativeLayout {
                 syncLight();
             }
         }
-        RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+        ConstraintLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(7);
         lp.rightMargin = U.getDisplayUtils().dip2px(48);
         mContentLl.setLayoutParams(lp);
@@ -261,7 +262,7 @@ public class GrabTopContentView extends RelativeLayout {
             }
         }
 
-        RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+        ConstraintLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(7);
         lp.rightMargin = U.getDisplayUtils().dip2px(48);
         mContentLl.setLayoutParams(lp);
@@ -541,65 +542,65 @@ public class GrabTopContentView extends RelativeLayout {
         grabTopItemView.setLight(false);
     }
 
-    /**
-     * 执行灭灯动画
-     *
-     * @param vp
-     */
-    private void setLightOffAnimation(VP vp) {
-        GrabTopItemView grabTopItemView = vp.grabTopItemView;
-        grabTopItemView.mFlagIv.setVisibility(GONE);
-
-        int[] position1 = new int[2];
-        grabTopItemView.mFlagIv.getLocationInWindow(position1);
-
-        int[] position2 = new int[2];
-        SVGAImageView mMieDengIv = vp.SVGAImageView;
-        mMieDengIv.getLocationInWindow(position2);
-
-        mMieDengIv.setTranslationX(position1[0] - U.getDisplayUtils().dip2px(32));
-        mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(12f));
-
-        SvgaParserAdapter.parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
-            @Override
-            public void onComplete(SVGAVideoEntity svgaVideoEntity) {
-                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                mMieDengIv.setVisibility(VISIBLE);
-                mMieDengIv.stopAnimation(true);
-                mMieDengIv.setImageDrawable(drawable);
-                mMieDengIv.startAnimation();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-
-        mMieDengIv.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                mMieDengIv.stopAnimation(true);
-                mMieDengIv.setVisibility(GONE);
-                grabTopItemView.setLight(false);
-            }
-
-            @Override
-            public void onRepeat() {
-                onFinished();
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-
-            }
-        });
-    }
+//    /**
+//     * 执行灭灯动画
+//     *
+//     * @param vp
+//     */
+//    private void setLightOffAnimation(VP vp) {
+//        GrabTopItemView grabTopItemView = vp.grabTopItemView;
+//        grabTopItemView.mFlagIv.setVisibility(GONE);
+//
+//        int[] position1 = new int[2];
+//        grabTopItemView.mFlagIv.getLocationInWindow(position1);
+//
+//        int[] position2 = new int[2];
+//        SVGAImageView mMieDengIv = vp.SVGAImageView;
+//        mMieDengIv.getLocationInWindow(position2);
+//
+//        mMieDengIv.setTranslationX(position1[0] - U.getDisplayUtils().dip2px(32));
+//        mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(12f));
+//
+//        SvgaParserAdapter.parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
+//            @Override
+//            public void onComplete(SVGAVideoEntity svgaVideoEntity) {
+//                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+//                mMieDengIv.setVisibility(VISIBLE);
+//                mMieDengIv.stopAnimation(true);
+//                mMieDengIv.setImageDrawable(drawable);
+//                mMieDengIv.startAnimation();
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//        });
+//
+//        mMieDengIv.setCallback(new SVGACallback() {
+//            @Override
+//            public void onPause() {
+//
+//            }
+//
+//            @Override
+//            public void onFinished() {
+//                mMieDengIv.stopAnimation(true);
+//                mMieDengIv.setVisibility(GONE);
+//                grabTopItemView.setLight(false);
+//            }
+//
+//            @Override
+//            public void onRepeat() {
+//                onFinished();
+//            }
+//
+//            @Override
+//            public void onStep(int i, double v) {
+//
+//            }
+//        });
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabPlaySeatUpdateEvent event) {
@@ -677,15 +678,15 @@ public class GrabTopContentView extends RelativeLayout {
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
         }
-        for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
-            VP vp = mGrabTopItemViewArrayList.get(i);
-            if (vp != null) {
-                if (vp.SVGAImageView != null) {
-                    vp.SVGAImageView.setCallback(null);
-                    vp.SVGAImageView.stopAnimation(true);
-                }
-            }
-        }
+//        for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
+//            VP vp = mGrabTopItemViewArrayList.get(i);
+//            if (vp != null) {
+//                if (vp.SVGAImageView != null) {
+//                    vp.SVGAImageView.setCallback(null);
+//                    vp.SVGAImageView.stopAnimation(true);
+//                }
+//            }
+//        }
         EventBus.getDefault().unregister(this);
     }
 
@@ -712,7 +713,7 @@ public class GrabTopContentView extends RelativeLayout {
 
     static class VP {
         GrabTopItemView grabTopItemView;
-        SVGAImageView SVGAImageView;
+        //SVGAImageView SVGAImageView;
     }
 
     public void setListener(Listener listener) {

@@ -101,8 +101,8 @@ public class GrabVideoUiController extends GrabBaseUiController {
         mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
         if (mF.mGrabWidgetAnimationController.isOpen() && mF.mGrabWidgetAnimationController.getOpenType() == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC) {
             mF.mGrabWidgetAnimationController.close();//关闭
-            mF.mGrabWidgetAnimationController.setOpenType(GrabWidgetAnimationController.OPEN_TYPE_FOR_NORMAL);
         }
+        mF.mGrabWidgetAnimationController.setOpenType(GrabWidgetAnimationController.OPEN_TYPE_FOR_NORMAL);
     }
 
     @Override
