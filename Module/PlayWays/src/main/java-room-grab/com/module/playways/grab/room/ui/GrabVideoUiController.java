@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.common.callback.Callback;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.utils.U;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
 public class GrabVideoUiController extends GrabBaseUiController {
@@ -21,17 +22,18 @@ public class GrabVideoUiController extends GrabBaseUiController {
             if (infoModel.isNormalRound()) {
                 // 普通轮次
                 mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
-            } else if (infoModel.isPKRound()) {
-                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
-                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
-                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
-                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
-                }
             } else if (infoModel.isChorusRound()) {
                 if (infoModel.getChorusRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
+                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabTopContentView.setVisibility(View.GONE);
+                }
+            } else if (infoModel.isPKRound()) {
+                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
+                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
                 }
@@ -68,17 +70,18 @@ public class GrabVideoUiController extends GrabBaseUiController {
             if (infoModel.isNormalRound()) {
                 // 普通轮次
                 mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
-            } else if (infoModel.isPKRound()) {
-                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
-                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
-                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
-                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
-                }
             } else if (infoModel.isChorusRound()) {
                 if (infoModel.getChorusRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
+                    Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.setMarginTop(U.getDisplayUtils().dip2px(78));
+                }
+            } else if (infoModel.isPKRound()) {
+                if (infoModel.getsPkRoundInfoModels().size() >= 2) {
+                    int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+                    int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
                 }
@@ -90,7 +93,8 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
                 }
             }
-            if(mF.mGrabWidgetAnimationController.isOpen()){
+            if (mF.mGrabWidgetAnimationController.isOpen()) {
+                // 重新调整下位置
                 mF.mGrabWidgetAnimationController.openBelowOpView();
             }
         }
@@ -102,6 +106,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
         mF.mGrabVideoDisplayView.reset();
         mF.mGrabVideoDisplayView.setVisibility(View.GONE);
         mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
+        mF.mGrabTopContentView.setVisibility(View.VISIBLE);
         if (mF.mGrabWidgetAnimationController.isOpen() && mF.mGrabWidgetAnimationController.getOpenType() == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC) {
             mF.mGrabWidgetAnimationController.close();//关闭
         }
@@ -112,6 +117,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
     public void destroy() {
         if (mF.mGrabVideoSelfSingCardView != null) {
             mF.mGrabVideoSelfSingCardView.destroy();
+//            mF.mGrabVideoDisplayView.destroy();
         }
     }
 }

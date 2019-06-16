@@ -66,12 +66,14 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
     protected void init(View parentView) {
         mLyricRecycleView = mParentView.findViewById(R.id.lyric_recycle_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(), LinearLayoutManager.VERTICAL, false));
-        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
+        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight,isForVideo());
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
+
+    protected abstract boolean isForVideo();
 
     protected boolean playLyric() {
         if(mRoomData==null){

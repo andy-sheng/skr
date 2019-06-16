@@ -2,11 +2,13 @@ package com.module.playways.grab.room.view.video;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.support.constraint.ConstraintLayout;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -18,6 +20,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.common.view.ExViewStub;
+import com.module.playways.grab.room.ui.GrabWidgetAnimationController;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.zq.mediaengine.capture.CameraCapture;
@@ -99,7 +102,6 @@ public class GrabVideoDisplayView extends ExViewStub {
         setVisibility(View.VISIBLE);
         mLeftNameTv.setVisibility(View.GONE);
         mRightNameTv.setVisibility(View.GONE);
-
         ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
         mMainUserId = userId;
@@ -152,6 +154,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         if (mSingCountDownView != null) {
             mSingCountDownView.reset();
         }
+        setMarginTop(0);
     }
 
     void tryBindMainVideoStream() {
@@ -229,23 +232,36 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     private int getTranslateY(boolean open, boolean topContentViewVisiable) {
         int ty = 0;
+        ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
         if (open) {
-            if (topContentViewVisiable) {
+            if (topContentViewVisiable && lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                 ty = U.getDisplayUtils().dip2px(58);
             } else {
                 ty = U.getDisplayUtils().dip2px(14);
             }
         } else {
-            ty = U.getDisplayUtils().dip2px(88);
+            if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                ty = U.getDisplayUtils().dip2px(88);
+            } else {
+                ty = U.getDisplayUtils().dip2px(14);
+            }
         }
         return ty;
     }
 
+    /**
+     * 内部的两个小部件的动画
+     *
+     * @param open
+     * @param topContentViewVisiable
+     * @return
+     */
     public List<Animator> getInnerAnimator(boolean open, boolean topContentViewVisiable) {
         if (mSingCountDownView == null) {
             return null;
         }
         int ty = getTranslateY(open, topContentViewVisiable);
+
         List<Animator> list = new ArrayList<>();
 
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingCountDownView, View.TRANSLATION_Y, mSingCountDownView.getTranslationY(), ty);
@@ -267,6 +283,33 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
         if (mBeautySettingBtn != null) {
             mBeautySettingBtn.setTranslationY(translateY);
+        }
+    }
+
+    public void setMarginTop(int px) {
+        if (mParentView != null) {
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mParentView.getLayoutParams();
+            lp.topMargin = px;
+        }
+    }
+
+    /**
+     * 需要额外往下移动的数值，如全屏到非全屏时，需要加个顶部栏
+     *
+     * @return
+     */
+    public int getExtraTranslateYWhenOpen(int openType) {
+        if (openType == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC) {
+            // 演唱者
+            return U.getStatusBarUtil().getStatusBarHeight(U.app());
+        } else {
+            // 非演唱者
+            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+            if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                return U.getStatusBarUtil().getStatusBarHeight(U.app());
+            } else {
+                return 0;
+            }
         }
     }
 }

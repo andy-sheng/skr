@@ -71,5 +71,4 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
 
     }
 
-
 }

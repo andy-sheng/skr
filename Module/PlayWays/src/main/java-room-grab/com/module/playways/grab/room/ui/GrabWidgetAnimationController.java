@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class GrabWidgetAnimationController {
 
-    static final int OPEN_TYPE_FOR_NORMAL = 1;
+    public static final int OPEN_TYPE_FOR_NORMAL = 1;
 
-    static final int OPEN_TYPE_FOR_LYRIC = 2;
+    public static final int OPEN_TYPE_FOR_LYRIC = 2;
 
     GrabRoomFragment mF;
 
@@ -68,7 +68,7 @@ public class GrabWidgetAnimationController {
                 ObjectAnimator objectAnimator = null;
                 if (view == mF.mGrabVideoDisplayView.getRealView()) {
                     // 要多下移一个顶部状态栏的高度，才能和 ContentView对齐
-                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() + U.getStatusBarUtil().getStatusBarHeight(U.app()));
+                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() +  mF.mGrabVideoDisplayView.getExtraTranslateYWhenOpen(mOpenType));
                 } else {
                     objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType());
                 }
