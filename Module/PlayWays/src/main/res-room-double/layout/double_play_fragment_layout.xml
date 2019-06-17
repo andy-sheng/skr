@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#404A9A">
+
+    <TextView
+        android:id="@+id/report_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_34_dp"
+        android:text="举报"
+        android:textColor="#FF8AB6"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/exit_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_35_dp"
+        android:layout_marginRight="@dimen/view_18_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/srf_guanbi"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/left_avatar_sdv"
+        android:layout_width="@dimen/view_67_dp"
+        android:layout_height="@dimen/view_67_dp"
+        android:layout_marginTop="@dimen/view_82_dp"
+        android:layout_marginRight="@dimen/view_40_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/right_avatar_sdv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/left_lock_icon"
+        android:layout_width="@dimen/view_19_dp"
+        android:layout_height="@dimen/view_19_dp"
+        app:layout_constraintBottom_toBottomOf="@id/left_avatar_sdv"
+        app:layout_constraintRight_toRightOf="@id/left_avatar_sdv"
+        android:background="@drawable/srf_suoding"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/left_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_18_dp"
+        android:paddingRight="@dimen/view_18_dp"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintLeft_toLeftOf="@id/left_avatar_sdv"
+        app:layout_constraintRight_toRightOf="@id/left_avatar_sdv"
+        app:layout_constraintTop_toBottomOf="@id/left_avatar_sdv" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/right_avatar_sdv"
+        android:layout_width="@dimen/view_67_dp"
+        android:layout_height="@dimen/view_67_dp"
+        app:layout_constraintLeft_toRightOf="@id/left_avatar_sdv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/left_avatar_sdv" />
+
+    <ImageView
+        android:id="@+id/right_lock_icon"
+        android:layout_width="@dimen/view_19_dp"
+        android:layout_height="@dimen/view_19_dp"
+        app:layout_constraintBottom_toBottomOf="@id/right_avatar_sdv"
+        app:layout_constraintRight_toRightOf="@id/right_avatar_sdv"
+        android:background="@drawable/srf_suoding"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/right_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_18_dp"
+        android:paddingRight="@dimen/view_18_dp"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#404A9A"
+        android:text="解锁资料"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFC15B"
+        app:layout_constraintLeft_toLeftOf="@id/right_avatar_sdv"
+        app:layout_constraintRight_toRightOf="@id/right_avatar_sdv"
+        app:layout_constraintTop_toBottomOf="@id/right_avatar_sdv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mic_iv"
+        android:layout_width="@dimen/view_42_dp"
+        android:layout_height="@dimen/view_42_dp"
+        android:layout_marginBottom="@dimen/view_54_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:src_unSelected_drawable="@drawable/srf_bimai"
+        app:src_selected_drawable="@drawable/srf_kaimai"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/pick_iv" />
+
+    <ImageView
+        android:id="@+id/pick_iv"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_marginBottom="@dimen/view_48_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/mic_iv"
+        app:layout_constraintRight_toLeftOf="@id/select_iv"
+        android:background="@drawable/srf_pick"/>
+
+    <ImageView
+        android:id="@+id/select_iv"
+        android:layout_width="@dimen/view_42_dp"
+        android:layout_height="@dimen/view_42_dp"
+        android:layout_marginBottom="@dimen/view_54_dp"
+        android:background="@drawable/srf_diange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/pick_iv"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/mic_iv"
+        app:layout_constraintRight_toRightOf="@id/mic_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="@color/white_trans_50"
+        android:text="开麦" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/select_iv"
+        app:layout_constraintRight_toRightOf="@id/select_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        android:text="点歌" />
+
+
+</android.support.constraint.ConstraintLayout>

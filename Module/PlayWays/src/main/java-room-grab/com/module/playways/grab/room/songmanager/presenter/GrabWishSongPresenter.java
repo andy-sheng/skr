@@ -70,6 +70,7 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("itemID", songModel.getItemID());
         map.put("roomID", mGrabRoomData.getGameId());
+        map.put("userID", songModel.getSuggester().getUserId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -98,10 +99,10 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
 
     public void deleteWishSong(GrabWishSongModel songModel) {
         MyLog.d(TAG, "deleteWishSong" + " songModel=" + songModel);
-        MyLog.d(TAG, "addWishSong" + " songModel=" + songModel);
         HashMap<String, Object> map = new HashMap<>();
         map.put("itemID", songModel.getItemID());
         map.put("roomID", mGrabRoomData.getGameId());
+        map.put("userID", songModel.getSuggester().getUserId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
