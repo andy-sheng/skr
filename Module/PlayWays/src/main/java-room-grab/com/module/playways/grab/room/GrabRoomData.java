@@ -408,9 +408,6 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     }
 
     public boolean isVideoRoom() {
-        if(true){
-            return true;
-        }
         return videoRoom;
     }
 
