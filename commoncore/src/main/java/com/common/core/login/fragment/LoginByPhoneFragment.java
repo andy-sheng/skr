@@ -127,9 +127,9 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                 stopTimeTask();
                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                         .setPopFragment(LoginByPhoneFragment.this)
-                        .setPopAbove(false)
+//                        .setPopAbove(false)
                         .setHasAnimation(true)
-                        .setNotifyShowFragment(LoginFragment.class)
+//                        .setNotifyShowFragment(LoginFragment.class)
                         .build());
             }
         });
@@ -141,7 +141,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
             public void run() {
                 U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
             }
-        },200);
+        }, 200);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
@@ -189,27 +189,28 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
         String sign = U.getMD5Utils().MD5_32("skrer|sms|" +
                 String.valueOf(phoneNumber) + "|" +
                 String.valueOf(timeMs));
-
-        ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber, timeMs, sign), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    // 发送验证码成功
-                    setHintText("验证码发送成功", false);
-                    U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
-                    mGetCodeTv.setSelected(true);
-                    mGetCodeTv.setClickable(false);
-                    mCodeInputTv.setFocusable(true);
-                    mCodeInputTv.setFocusableInTouchMode(true);
-                    mCodeInputTv.requestFocus();
-                    mLoginIv.setClickable(true);
-                    mLoginIv.setBackgroundResource(R.drawable.login_normal_icon);
-                    startTimeTask();
-                } else {
-                    setHintText(result.getErrmsg(), true);
+        if (userAccountServerApi != null) {
+            ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber, timeMs, sign), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        // 发送验证码成功
+                        setHintText("验证码发送成功", false);
+                        U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
+                        mGetCodeTv.setSelected(true);
+                        mGetCodeTv.setClickable(false);
+                        mCodeInputTv.setFocusable(true);
+                        mCodeInputTv.setFocusableInTouchMode(true);
+                        mCodeInputTv.requestFocus();
+                        mLoginIv.setClickable(true);
+                        mLoginIv.setBackgroundResource(R.drawable.login_normal_icon);
+                        startTimeTask();
+                    } else {
+                        setHintText(result.getErrmsg(), true);
+                    }
                 }
-            }
-        }, this);
+            }, this);
+        }
     }
 
 
@@ -249,8 +250,11 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
      * @return
      */
     private boolean checkPhoneNumber(String phoneNumber) {
-        if (!TextUtils.isEmpty(phoneNumber) && TextUtils.isDigitsOnly(phoneNumber)
-                && phoneNumber.length() == 11 && phoneNumber.startsWith("1")) {
+        if (!TextUtils.isEmpty(phoneNumber)
+                && phoneNumber.startsWith("1")
+                && phoneNumber.length() == 11
+                && TextUtils.isDigitsOnly(phoneNumber)
+        ) {
             return true;
         } else if (TextUtils.isEmpty(phoneNumber)) {
             setHintText("手机号为空", true);
@@ -280,12 +284,11 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     @Override
     protected boolean onBackPressed() {
-        stopTimeTask();
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                 .setPopFragment(LoginByPhoneFragment.this)
-                .setPopAbove(false)
+//                .setPopAbove(false)
                 .setHasAnimation(true)
-                .setNotifyShowFragment(LoginFragment.class)
+//                .setNotifyShowFragment(LoginFragment.class)
                 .build());
         return true;
     }
@@ -304,9 +307,8 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                             // 顶层的不是这个activity
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
                                     .greenChannel().navigation();
-                        }else
-                        {
-                            MyLog.d(TAG,"顶部已经是UploadAccountInfoActivity");
+                        } else {
+                            MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
                         }
                     }
                 }
