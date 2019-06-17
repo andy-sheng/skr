@@ -345,6 +345,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void run() {
                 onBattleBeginPlayOver();
+                mGrabWidgetAnimationController.open();
             }
         }, 500);
         BgMusicManager.getInstance().setRoom(true);
@@ -372,7 +373,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             tryShowManageSongTipView();
 
         }
-
         enterRoomEvent();
     }
 

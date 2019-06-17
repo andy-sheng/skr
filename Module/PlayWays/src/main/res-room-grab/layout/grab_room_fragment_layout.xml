@@ -99,8 +99,8 @@
     <com.module.playways.grab.room.top.GrabTopContentView
         android:id="@+id/grab_top_content_view"
         android:layout_width="match_parent"
+        android:background="@color/blue"
         android:layout_height="@dimen/view_120_dp"
-        android:translationY="@dimen/view_32_dp"
          />
 
     <!--<ImageView-->

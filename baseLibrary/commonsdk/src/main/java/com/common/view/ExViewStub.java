@@ -71,4 +71,11 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
 
     }
 
+    public void setTranslateY(float ty) {
+        if(mParentView==null){
+             mViewStub.setTranslationY(ty);
+             return;
+        }
+         mParentView.setTranslationY(ty);
+    }
 }

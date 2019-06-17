@@ -31,7 +31,7 @@ public class GrabWidgetAnimationController {
         mF = grabRoomFragment;
     }
 
-    private int getTranslateByOpenType() {
+    public int getTranslateByOpenType() {
         if (mOpenType == OPEN_TYPE_FOR_NORMAL) {
             return U.getDisplayUtils().dip2px(32);
         } else if (mOpenType == OPEN_TYPE_FOR_LYRIC) {
@@ -61,7 +61,13 @@ public class GrabWidgetAnimationController {
         List<View> viewList = new ArrayList<>();
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
-        viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        if(mF.mRoomData.isVideoRoom()){
+            viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        }else{
+            viewList.addAll(mF.mSelfSingCardView.getRealViews());
+            viewList.addAll(mF.mOthersSingCardView.getRealViews());
+        }
+
         List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {
@@ -121,7 +127,12 @@ public class GrabWidgetAnimationController {
         List<View> viewList = new ArrayList<>();
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
-        viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        if(mF.mRoomData.isVideoRoom()){
+            viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        }else{
+            viewList.addAll(mF.mSelfSingCardView.getRealViews());
+            viewList.addAll(mF.mOthersSingCardView.getRealViews());
+        }
         List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {

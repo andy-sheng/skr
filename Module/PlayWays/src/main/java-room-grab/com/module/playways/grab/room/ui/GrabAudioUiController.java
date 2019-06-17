@@ -17,6 +17,11 @@ public class GrabAudioUiController extends GrabBaseUiController{
         mF.mSelfSingCardView.setVisibility(View.VISIBLE);
         mF.mOthersSingCardView.setVisibility(GONE);
         mF.mSelfSingCardView.playLyric();
+        if(mF.mGrabWidgetAnimationController.isOpen()){
+            mF.mSelfSingCardView.setTranslateY(mF.mGrabWidgetAnimationController.getTranslateByOpenType());
+        }else{
+            mF.mSelfSingCardView.setTranslateY(0);
+        }
         if (mF.mRoomData.isNewUser()) {
             mF.tryShowGrabSelfSingTipView();
 
@@ -40,6 +45,11 @@ public class GrabAudioUiController extends GrabBaseUiController{
         mF.mSelfSingCardView.setVisibility(GONE);
         mF.mOthersSingCardView.setVisibility(View.VISIBLE);
         mF.mOthersSingCardView.bindData();
+        if(mF.mGrabWidgetAnimationController.isOpen()){
+            mF.mOthersSingCardView.setTranslateY(mF.mGrabWidgetAnimationController.getTranslateByOpenType());
+        }else{
+            mF.mOthersSingCardView.setTranslateY(0);
+        }
     }
 
     @Override
