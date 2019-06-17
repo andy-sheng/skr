@@ -7,6 +7,8 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.permission.SkrAudioPermission;
+import com.common.core.permission.SkrCameraPermission;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -36,6 +38,9 @@ public class GrabCreateSpecialFragment extends BaseFragment {
     ExImageView mIvBack;
     SpecialSelectView mSpecialView;
 
+    SkrAudioPermission mSkrAudioPermission;
+    SkrCameraPermission mCameraPermission;
+
     int mRoomType;
 
     @Override
@@ -53,6 +58,9 @@ public class GrabCreateSpecialFragment extends BaseFragment {
             mRoomType = bundle.getInt(GrabCreateRoomFragment.KEY_ROOM_TYPE);
         }
 
+        mSkrAudioPermission = new SkrAudioPermission();
+        mCameraPermission = new SkrCameraPermission();
+
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -63,8 +71,22 @@ public class GrabCreateSpecialFragment extends BaseFragment {
         mSpecialView.setSpecialSelectListner(new SpecialSelectView.SpecialSelectListner() {
             @Override
             public void onClickSpecial(SpecialModel model, List<String> music) {
-                if(getActivity() != null && !getActivity().isFinishing()){
-                    createRoom(model);
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    if (model.getTagType() == SpecialModel.TYPE_VIDEO) {
+                        mCameraPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                createRoom(model);
+                            }
+                        }, true);
+                    } else {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                createRoom(model);
+                            }
+                        }, true);
+                    }
                 }
             }
         });
