@@ -266,7 +266,20 @@ public class GrabVideoDisplayView extends ExViewStub {
             } else if (userId == mRightUserId) {
                 tryBindRightVideoStream();
             }
-        } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
+        } else if(event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE){
+            EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
+            if(roleChangeInfo.getNewRole()==2){
+                ZqEngineKit.getInstance().stopCameraPreview();
+                //变成观众了
+                if (MyUserInfoManager.getInstance().getUid() == mLeftUserId) {
+                    mLeftAvatarIv.setVisibility(View.VISIBLE);
+                    mLeftTipsTv.setVisibility(View.VISIBLE);
+                } else if (MyUserInfoManager.getInstance().getUid() == mRightUserId) {
+                    mRightAvatarIv.setVisibility(View.VISIBLE);
+                    mRightTipsTv.setVisibility(View.VISIBLE);
+                }
+            }
+        }else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
             int userId = event.getUserStatus().getUserId();
             ZqEngineKit.getInstance().unbindRemoteVideo(userId);
             if (userId == mLeftUserId) {

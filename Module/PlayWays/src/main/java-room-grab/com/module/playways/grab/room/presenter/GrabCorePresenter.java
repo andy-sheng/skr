@@ -525,27 +525,28 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         // 别人的轮次
-        if (mRoomData.isVideoRoom()) {
-            // 如果是语音房间
-            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-            if (infoModel != null) {
-                if (infoModel.isPKRound()) {
-                    if (infoModel.getsPkRoundInfoModels().size() >= 2) {
-                        int userId1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
-                        int userId2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
-                        if (MyUserInfoManager.getInstance().getUid() == userId1 ||
-                                MyUserInfoManager.getInstance().getUid() == userId2) {
-                            //join房间也变成主播
-                            if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
-                                ZqEngineKit.getInstance().setClientRole(true);
-                            }
-                            // 不发声
-                            ZqEngineKit.getInstance().muteLocalAudioStream(true);
-                        }
-                    }
-                }
-            }
-        }
+//        if (mRoomData.isVideoRoom()) {
+//            // 如果是语音房间
+//            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+//            if (infoModel != null) {
+//                if (infoModel.isPKRound()) {
+//                    if (infoModel.getsPkRoundInfoModels().size() >= 2) {
+//                        int userId1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+//                        int userId2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
+//                        if (MyUserInfoManager.getInstance().getUid() == userId1 ||
+//                                MyUserInfoManager.getInstance().getUid() == userId2) {
+//                            // 万一这个人是一个人 这个人点不唱了
+//                            //join房间也变成主播
+//                            if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
+//                                ZqEngineKit.getInstance().setClientRole(true);
+//                            }
+//                            // 不发声
+//                            ZqEngineKit.getInstance().muteLocalAudioStream(true);
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     /**
@@ -1768,21 +1769,45 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel now = event.roundInfo;
 
         boolean needCloseEngine = true;
-        if (mRoomData.isVideoRoom() && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-            // pk第二轮
-            if (now.getsPkRoundInfoModels().size() >= 2) {
-                int userId1 = now.getsPkRoundInfoModels().get(0).getUserID();
-                int userId2 = now.getsPkRoundInfoModels().get(1).getUserID();
-                if (MyUserInfoManager.getInstance().getUid() == userId1 ||
-                        MyUserInfoManager.getInstance().getUid() == userId2) {
-                    needCloseEngine = false;
+        if (mRoomData.isVideoRoom()) {
+            if (now.isPKRound() && now.getsPkRoundInfoModels().size() >= 2) {
+                if (now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+                    // pk的第一轮
+                    SPkRoundInfoModel pkRoundInfoModel2 = now.getsPkRoundInfoModels().get(1);
+                    if (MyUserInfoManager.getInstance().getUid() == pkRoundInfoModel2.getUserID()) {
+                        // 本人第二个唱
+                        if (pkRoundInfoModel2.getOverReason() == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()
+                                || pkRoundInfoModel2.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                            needCloseEngine = true;
+                        } else {
+                            needCloseEngine = false;
+                        }
+                    }
+                } else if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                    // pk第二轮
+                    SPkRoundInfoModel pkRoundInfoModel1 = now.getsPkRoundInfoModels().get(0);
+                    if (MyUserInfoManager.getInstance().getUid() == pkRoundInfoModel1.getUserID()) {
+                        // 本人第二个唱
+                        if (pkRoundInfoModel1.getOverReason() == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()
+                                || pkRoundInfoModel1.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                            needCloseEngine = true;
+                        } else {
+                            needCloseEngine = false;
+                        }
+                    }
                 }
             }
         }
+
         if (needCloseEngine) {
             closeEngine();
         } else {
             // pk第二轮，只把混音关了
+            if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
+                ZqEngineKit.getInstance().setClientRole(true);
+            }
+            // 不发声
+            ZqEngineKit.getInstance().muteLocalAudioStream(true);
             ZqEngineKit.getInstance().stopAudioMixing();
             ZqEngineKit.getInstance().stopAudioRecording();
         }
