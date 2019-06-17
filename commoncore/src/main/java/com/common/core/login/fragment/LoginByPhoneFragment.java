@@ -127,9 +127,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                 stopTimeTask();
                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                         .setPopFragment(LoginByPhoneFragment.this)
-//                        .setPopAbove(false)
                         .setHasAnimation(true)
-//                        .setNotifyShowFragment(LoginFragment.class)
                         .build());
             }
         });
@@ -286,9 +284,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     protected boolean onBackPressed() {
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                 .setPopFragment(LoginByPhoneFragment.this)
-//                .setPopAbove(false)
                 .setHasAnimation(true)
-//                .setNotifyShowFragment(LoginFragment.class)
                 .build());
         return true;
     }
