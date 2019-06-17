@@ -7,6 +7,7 @@ import com.common.callback.Callback;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 public class GrabVideoUiController extends GrabBaseUiController {
     public GrabVideoUiController(GrabRoomFragment f) {
@@ -27,7 +28,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                 }
             } else if (infoModel.isMiniGameRound()) {
@@ -35,7 +36,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getMINIGameRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getMINIGameRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                 }
             } else if (infoModel.isPKRound()) {
@@ -44,9 +45,12 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                    } else if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, false);
+                    }
                     mF.mGrabVideoDisplayView.setMarginTop(0);
-
                 }
             }
             mF.mGrabWidgetAnimationController.openBelowLyricView();
@@ -80,7 +84,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
                     mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
                 }
             } else if (infoModel.isMiniGameRound()) {
@@ -88,16 +92,28 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getMINIGameRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getMINIGameRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
                     mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
                 }
-            }else if (infoModel.isPKRound()) {
+            } else if (infoModel.isPKRound()) {
                 if (infoModel.getsPkRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second);
+                    if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+                        //pk第一轮
+                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                    } else if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                        //pk第二轮
+                        if (infoModel.isEnterInSingStatus() && !infoModel.isParticipant()) {
+                            // 是一个刚进来的用户
+                            mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                        } else {
+                            mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, false);
+                        }
+                    }
                     mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
+                    //可能是pk第一个人 手动visible一下
                     mF.mGrabTopContentView.setVisibility(View.VISIBLE);
                 }
             }
@@ -107,6 +123,8 @@ public class GrabVideoUiController extends GrabBaseUiController {
             if (mF.mGrabWidgetAnimationController.isOpen()) {
                 // 重新调整下位置
                 mF.mGrabWidgetAnimationController.openBelowOpView();
+            } else {
+                mF.mGrabVideoDisplayView.adjustViewPostion(false, mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
             }
         }
     }

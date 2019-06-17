@@ -34,6 +34,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.DebugLogView;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
@@ -312,7 +313,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         initScoreView();
         initGiftPanelView();
         initVideoView();
-
+        if(MyLog.isDebugLogOpen()){
+            ViewStub viewStub = mRootView.findViewById(R.id.debug_log_view_stub);
+            DebugLogView debugLogView = new DebugLogView(viewStub);
+            debugLogView.tryInflate();
+        }
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData, (BaseActivity) getActivity());
         addPresent(mCorePresenter);

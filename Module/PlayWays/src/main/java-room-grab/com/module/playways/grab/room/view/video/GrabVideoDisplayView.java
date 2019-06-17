@@ -9,11 +9,15 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebugLogView;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.module.playways.R;
@@ -37,6 +41,10 @@ public class GrabVideoDisplayView extends ExViewStub {
     public final static String TAG = "GrabVideoDisplayView";
 
     TextureView mMainVideoView;
+    BaseImageView mLeftAvatarIv;
+    BaseImageView mRightAvatarIv;
+    TextView mLeftTipsTv;
+    TextView mRightTipsTv;
     SingCountDownView2 mSingCountDownView;
     ImageView mBeautySettingBtn;
     ExTextView mLeftNameTv;
@@ -54,6 +62,20 @@ public class GrabVideoDisplayView extends ExViewStub {
     @Override
     protected void init(View parentView) {
         mMainVideoView = mParentView.findViewById(R.id.main_video_view);
+        {
+            mLeftAvatarIv = mParentView.findViewById(R.id.left_avatar_iv);
+            ViewGroup.LayoutParams lp = mLeftAvatarIv.getLayoutParams();
+            lp.width = U.getDisplayUtils().getScreenWidth() / 2;
+            mLeftTipsTv = mParentView.findViewById(R.id.left_tips_tv);
+            mLeftNameTv = mParentView.findViewById(R.id.left_name_tv);
+        }
+        {
+            mRightAvatarIv = mParentView.findViewById(R.id.right_avatar_iv);
+            ViewGroup.LayoutParams lp = mRightAvatarIv.getLayoutParams();
+            lp.width = U.getDisplayUtils().getScreenWidth() / 2;
+            mRightTipsTv = mParentView.findViewById(R.id.right_tips_tv);
+            mRightNameTv = mParentView.findViewById(R.id.right_name_tv);
+        }
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mListener);
         mBeautySettingBtn = mParentView.findViewById(R.id.beauty_setting_btn);
@@ -63,8 +85,6 @@ public class GrabVideoDisplayView extends ExViewStub {
 
             }
         });
-        mLeftNameTv = mParentView.findViewById(R.id.left_name_tv);
-        mRightNameTv = mParentView.findViewById(R.id.right_name_tv);
         config();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -100,8 +120,6 @@ public class GrabVideoDisplayView extends ExViewStub {
     public void bindVideoStream(int userId) {
         tryInflate();
         setVisibility(View.VISIBLE);
-        mLeftNameTv.setVisibility(View.GONE);
-        mRightNameTv.setVisibility(View.GONE);
         ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
         mMainUserId = userId;
@@ -119,7 +137,8 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
     }
 
-    public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2) {
+    public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2,boolean needBindVideo) {
+        MyLog.d(TAG,"bindVideoStream needBindVideo="+ needBindVideo);
         tryInflate();
         setVisibility(View.VISIBLE);
         mLeftNameTv.setVisibility(View.VISIBLE);
@@ -130,8 +149,20 @@ public class GrabVideoDisplayView extends ExViewStub {
         lp.height = U.getDisplayUtils().dip2px(315);
         mLeftUserId = userID1.getUserId();
         mRightUserId = userID2.getUserId();
-        tryBindLeftVideoStream();
-        tryBindRightVideoStream();
+        if(needBindVideo){
+            mLeftAvatarIv.setVisibility(View.VISIBLE);
+            AvatarUtils.loadAvatarByUrl(mLeftAvatarIv, AvatarUtils.newParamsBuilder(userID1.getAvatar())
+                    .setBlur(true)
+                    .build()
+            );
+            mRightAvatarIv.setVisibility(View.VISIBLE);
+            AvatarUtils.loadAvatarByUrl(mRightAvatarIv, AvatarUtils.newParamsBuilder(userID2.getAvatar())
+                    .setBlur(true)
+                    .build()
+            );
+            tryBindLeftVideoStream();
+            tryBindRightVideoStream();
+        }
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (mSingCountDownView != null) {
             if (infoModel != null) {
@@ -151,14 +182,19 @@ public class GrabVideoDisplayView extends ExViewStub {
         mMainUserId = 0;
         mLeftUserId = 0;
         mRightUserId = 0;
-        if (mSingCountDownView != null) {
+        if (mParentView != null) {
+            mLeftAvatarIv.setVisibility(View.GONE);
+            mLeftTipsTv.setVisibility(View.GONE);
+            mLeftNameTv.setVisibility(View.GONE);
+            mRightAvatarIv.setVisibility(View.GONE);
+            mRightTipsTv.setVisibility(View.GONE);
+            mRightNameTv.setVisibility(View.GONE);
             mSingCountDownView.reset();
+            setMarginTop(0);
         }
-        setMarginTop(0);
     }
 
     void tryBindMainVideoStream() {
-        MyLog.d(TAG, "tryBindMainVideoStream mMainUserId" + mMainUserId);
         if (mMainUserId == MyUserInfoManager.getInstance().getUid()) {
             // 是自己
             ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
@@ -171,34 +207,56 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     void tryBindLeftVideoStream() {
-        MyLog.d(TAG, "tryBindLeftVideoStream mLeftUserId=" + mLeftUserId);
         if (mLeftUserId == MyUserInfoManager.getInstance().getUid()) {
             // 是自己
             ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 0.5f, 1, 1);
             ZqEngineKit.getInstance().startCameraPreview();
+            mLeftAvatarIv.setVisibility(View.GONE);
+            mLeftTipsTv.setVisibility(View.GONE);
         } else {
             // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
             // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().bindRemoteVideoRect(mLeftUserId, 0, 0, 0.5f, 1, 1);
+            if (ZqEngineKit.getInstance().isFirstVideoDecoded(mLeftUserId)) {
+                ZqEngineKit.getInstance().bindRemoteVideoRect(mLeftUserId, 0, 0, 0.5f, 1, 1);
+                mLeftAvatarIv.setVisibility(View.GONE);
+                mLeftTipsTv.setVisibility(View.GONE);
+            } else {
+                DebugLogView.println(TAG,mLeftUserId+"首帧还没到!!!");
+                mLeftAvatarIv.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     void tryBindRightVideoStream() {
-        MyLog.d(TAG, "tryBindRightVideoStream mRightUserId=" + mRightUserId);
         if (mRightUserId == MyUserInfoManager.getInstance().getUid()) {
             // 是自己
             ZqEngineKit.getInstance().setLocalVideoRect(0.5f, 0, 0.5f, 1, 1);
             ZqEngineKit.getInstance().startCameraPreview();
+            mRightAvatarIv.setVisibility(View.GONE);
+            mRightTipsTv.setVisibility(View.GONE);
         } else {
             // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
             // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().bindRemoteVideoRect(mRightUserId, 0.5f, 0, 0.5f, 1, 1);
+            if (ZqEngineKit.getInstance().isFirstVideoDecoded(mRightUserId)) {
+                ZqEngineKit.getInstance().bindRemoteVideoRect(mRightUserId, 0.5f, 0, 0.5f, 1, 1);
+                mRightAvatarIv.setVisibility(View.GONE);
+                mRightTipsTv.setVisibility(View.GONE);
+            } else {
+                DebugLogView.println(TAG,mRightUserId+"首帧还没到!!!");
+                mRightAvatarIv.setVisibility(View.VISIBLE);
+            }
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EngineEvent event) {
-        MyLog.e(TAG, "onEvent " + event);
+        if (event.type != EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION
+                && event.type != EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
+            DebugLogView.println(TAG,  event.toString());
+        }
+        if (mParentView == null) {
+            return;
+        }
         if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {
             int userId = event.getUserStatus().getUserId();
             if (userId == mMainUserId) {
@@ -211,7 +269,13 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
             int userId = event.getUserStatus().getUserId();
             ZqEngineKit.getInstance().unbindRemoteVideo(userId);
-
+            if (userId == mLeftUserId) {
+                mLeftAvatarIv.setVisibility(View.VISIBLE);
+                mLeftTipsTv.setVisibility(View.VISIBLE);
+            } else if (userId == mRightUserId) {
+                mRightAvatarIv.setVisibility(View.VISIBLE);
+                mRightTipsTv.setVisibility(View.VISIBLE);
+            }
 //            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1.0f, 1.0f, 1.0f);
         }
     }
@@ -306,16 +370,17 @@ public class GrabVideoDisplayView extends ExViewStub {
             return U.getStatusBarUtil().getStatusBarHeight(U.app());
         } else {
             // 非演唱者
-            if(mParentView!=null){
+            if (mParentView != null) {
                 ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
                 if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                     return U.getStatusBarUtil().getStatusBarHeight(U.app());
                 } else {
                     return 0;
                 }
-            }else{
+            } else {
                 return 0;
             }
         }
     }
+
 }

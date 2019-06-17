@@ -34,6 +34,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
+import com.common.view.DebugLogView;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
@@ -326,7 +327,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     joinRcRoom(deep + 1);
                 }
             });
-            if(deep==-1){
+            if (deep == -1) {
                 /**
                  * 说明是初始化时那次加入房间，这时加入极光房间做个备份，使用tag的方案
                  */
@@ -524,16 +525,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         // 别人的轮次
-        if(mRoomData.isVideoRoom()){
+        if (mRoomData.isVideoRoom()) {
             // 如果是语音房间
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
             if (infoModel != null) {
-                if(infoModel.isPKRound()){
-                    if(infoModel.getsPkRoundInfoModels().size()>=2){
+                if (infoModel.isPKRound()) {
+                    if (infoModel.getsPkRoundInfoModels().size() >= 2) {
                         int userId1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
                         int userId2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
-                        if(MyUserInfoManager.getInstance().getUid() == userId1 ||
-                                MyUserInfoManager.getInstance().getUid() == userId2){
+                        if (MyUserInfoManager.getInstance().getUid() == userId1 ||
+                                MyUserInfoManager.getInstance().getUid() == userId2) {
                             //join房间也变成主播
                             if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
                                 ZqEngineKit.getInstance().setClientRole(true);
@@ -1663,6 +1664,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
+        DebugLogView.println(TAG, "---轮次" + event.newRoundInfo.getRoundSeq() + "开始--- ");
         MyLog.d(TAG, "GrabRoundChangeEvent" + " event=" + event);
         // 轮次变化尝试更新头像
         estimateOverTsThisRound();
@@ -1766,20 +1768,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel now = event.roundInfo;
 
         boolean needCloseEngine = true;
-        if(mRoomData.isVideoRoom() && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+        if (mRoomData.isVideoRoom() && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // pk第二轮
-            if(now.getsPkRoundInfoModels().size()>=2){
+            if (now.getsPkRoundInfoModels().size() >= 2) {
                 int userId1 = now.getsPkRoundInfoModels().get(0).getUserID();
                 int userId2 = now.getsPkRoundInfoModels().get(1).getUserID();
-                if(MyUserInfoManager.getInstance().getUid() == userId1 ||
-                        MyUserInfoManager.getInstance().getUid() == userId2){
+                if (MyUserInfoManager.getInstance().getUid() == userId1 ||
+                        MyUserInfoManager.getInstance().getUid() == userId2) {
                     needCloseEngine = false;
                 }
             }
         }
-        if(needCloseEngine){
+        if (needCloseEngine) {
             closeEngine();
-        }else{
+        } else {
             // pk第二轮，只把混音关了
             ZqEngineKit.getInstance().stopAudioMixing();
             ZqEngineKit.getInstance().stopAudioRecording();
