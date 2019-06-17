@@ -59,6 +59,8 @@ public interface RouterConstants {
     String ACTIVITY_RECHARGE = "RechargeActivity";
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
 
+    String ACTIVITY_DOUBLE_PLAY = "/doubleplaymode/DoublePlayActivity";
+
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";
     String ACTIVITY_DEBUG_CORE_ACTIVITY = "/debug/DebugCoreActivity";
@@ -68,6 +70,7 @@ public interface RouterConstants {
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
     String SERVICE_MSG = "/rongmsg/service1";
     String SERVICE_GRAB_SERVICE = "/game/grab_service1";
+    String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
 
 
 }

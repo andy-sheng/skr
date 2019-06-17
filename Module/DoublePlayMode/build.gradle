@@ -1,0 +1,82 @@
+if (isBuildModule.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+    apply plugin: 'org.greenrobot.greendao' // apply plugin
+}
+
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
+//kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+                includeCompileClasspath true
+            }
+        }
+    }
+
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+//    resourcePrefix "channel_" //给 Module 内的资源名增加前缀, 避免资源名冲突
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+        }
+
+        main {
+            java.srcDirs += 'src/main/java'
+        }
+    }
+}
+
+dependencies {
+    //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
+    api project(":Component:BusiLib")
+//    if (isBuildModule.toBoolean()) {
+//        tools
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+//    } else {
+//    kapt rootProject.ext.dependencies["arouter-compiler"]
+//    }
+}
