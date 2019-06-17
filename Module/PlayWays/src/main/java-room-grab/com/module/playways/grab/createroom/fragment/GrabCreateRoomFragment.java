@@ -141,6 +141,9 @@ public class GrabCreateRoomFragment extends BaseFragment {
             }
         });
 
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                .greenChannel().navigation();
+
     }
 
     public void showErrorMsgDialog(String string) {
