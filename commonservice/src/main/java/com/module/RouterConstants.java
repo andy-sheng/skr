@@ -59,7 +59,7 @@ public interface RouterConstants {
     String ACTIVITY_RECHARGE = "RechargeActivity";
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
 
-    String ACTIVITY_DOUBLE_PLAY = "/doubleplaymode/DoublePlayActivity";
+    String ACTIVITY_DOUBLE_PLAY = "/rankingmode/DoublePlayActivity";
 
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";

@@ -1,15 +1,15 @@
-package com.module.doubleplaymode.fragment;
+package com.module.playways.doubleplay.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.common.base.BaseFragment;
-import com.module.doubleplaymode.R;
+import com.module.playways.R;
 
-public class DoublePlayWaysFragment extends BaseFragment {
+public class EditInfoFragment extends BaseFragment {
     @Override
     public int initView() {
-        return R.layout.double_play_fragment_layout;
+        return R.layout.empty_activity_layout;
     }
 
     @Override
