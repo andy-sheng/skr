@@ -29,6 +29,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.busilib.beauty.JumpBeautyFromKt;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.component.busilib.view.BitmapTextView;
@@ -201,7 +202,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                                         // 进入视频预览 判断是否实名验证过
                                         ARouter.getInstance()
                                                 .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                                .withInt("from", 1)
+                                                .withInt("from", JumpBeautyFromKt.FROM_MATCH)
                                                 .withSerializable("SpecialModel", specialModel)
                                                 .navigation();
                                     }
@@ -241,7 +242,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                                         // 进入视频预览 判断是否实名验证过
                                         ARouter.getInstance()
                                                 .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                                .withInt("from", 2)
+                                                .withInt("from", JumpBeautyFromKt.FROM_FRIEND_RECOMMEND)
                                                 .withSerializable("RecommendModel", friendRoomModel)
                                                 .navigation();
                                     }

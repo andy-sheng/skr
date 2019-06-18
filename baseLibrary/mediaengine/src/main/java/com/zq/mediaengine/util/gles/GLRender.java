@@ -11,6 +11,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 import android.view.TextureView;
+import android.view.View;
 
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -243,7 +244,7 @@ public class GLRender {
         }
     }
 
-    public Object getCurrentView() {
+    public View getCurrentView() {
         if (mGLSurfaceView != null) {
             return mGLSurfaceView;
         } else if (mTextureView != null) {

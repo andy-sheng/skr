@@ -11,6 +11,11 @@ import com.common.view.ex.ExTextView
 import android.view.TextureView
 import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.view.DebounceViewClickListener
+import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
+import com.component.busilib.beauty.FROM_GRAB_ROOM
+import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.engine.Params
@@ -28,17 +33,31 @@ class BeautyPreviewFragment : BaseFragment() {
     var mFrom: Int? = 0
     var mSpecialModel: SpecialModel? = null
     var mRecommendModel: RecommendModel? = null
-
+    lateinit var mTitleBar: CommonTitleBar
+    lateinit var mBeautyOpenBtn: View
     override fun initView(): Int {
         return R.layout.beauty_preview_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        MyLog.d(TAG, "mFrom=${mFrom}")
+        mTitleBar = mRootView.findViewById<CommonTitleBar>(R.id.titlebar)
+        mTitleBar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                activity?.finish()
+            }
+        })
         mVideoTexture = mRootView.findViewById<View>(R.id.video_texture) as TextureView
         var viewStub = mRootView.findViewById<ViewStub>(R.id.beauty_control_panel_view_stub);
         mBeautyControlView = BeautyControlPanelView(viewStub)
         mEnterRoomTv = mRootView.findViewById<View>(R.id.enter_room_tv) as ExTextView
+        mBeautyOpenBtn = mRootView.findViewById<View>(R.id.beauty_open_btn)
 
+        mBeautyOpenBtn.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                mBeautyControlView.show()
+            }
+        })
         mBeautyControlView.setListener(object : BeautyControlPanelView.Listener {
             override fun onChangeBeauty(id: Int, progress: Int) {
                 MyLog.d("BeautyPreviewFragment", "onChangeBeauty id = " + id + "progress = " + progress)
@@ -56,7 +75,7 @@ class BeautyPreviewFragment : BaseFragment() {
 
         mEnterRoomTv.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                if (mFrom == 1) {
+                if (mFrom == FROM_MATCH) {
                     // 从匹配进入的继续去匹配页面
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     mSpecialModel?.run {
@@ -65,20 +84,29 @@ class BeautyPreviewFragment : BaseFragment() {
                     }?.run {
                         MyLog.d("mSpecialModel is null")
                     }
-                } else if (mFrom == 2) {
+                } else if (mFrom == FROM_FRIEND_RECOMMEND) {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     mRecommendModel?.let {
                         iRankingModeService?.tryGoGrabRoom(mRecommendModel!!.getRoomInfo()!!.getRoomID(), 0)
+                        activity?.finish()
                     }
                 }
             }
         })
-        mBeautyControlView.tryInflate()
-        var params = Params.getFromPref()
-        params.isEnableVideo = true;
-        ZqEngineKit.getInstance().init("BeautyPreview", params)
-        config()
-        ZqEngineKit.getInstance().startCameraPreview()
+
+
+        if (mFrom != FROM_GRAB_ROOM) {
+            var params = Params.getFromPref()
+            params.isEnableVideo = true;
+            ZqEngineKit.getInstance().init("BeautyPreview", params)
+            config()
+        } else {
+            mBeautyOpenBtn.visibility = View.GONE
+            mEnterRoomTv.visibility = View.GONE
+            mBeautyControlView.show()
+        }
+        // 设置预览View
+        ZqEngineKit.getInstance().setDisplayPreview(mVideoTexture)
         ZqEngineKit.getInstance().setLocalVideoRect(0f, 0f, 1f, 1f, 1f)
     }
 
@@ -99,16 +127,26 @@ class BeautyPreviewFragment : BaseFragment() {
         // 选择前后摄像头
         ZqEngineKit.getInstance().cameraFacing = CameraCapture.FACING_FRONT
 
-        // 设置预览View
-        ZqEngineKit.getInstance().setDisplayPreview(mVideoTexture)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ZqEngineKit.getInstance().startCameraPreview()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ZqEngineKit.getInstance().stopCameraPreview()
     }
 
     override fun destroy() {
         super.destroy()
+        ZqEngineKit.getInstance().setDisplayPreview(null as TextureView?)
         ZqEngineKit.getInstance().stopCameraPreview()
-        ZqEngineKit.getInstance().destroy("BeautyPreview")
+        if (mFrom != FROM_GRAB_ROOM) {
+            ZqEngineKit.getInstance().destroy("BeautyPreview")
+        }
     }
-
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)

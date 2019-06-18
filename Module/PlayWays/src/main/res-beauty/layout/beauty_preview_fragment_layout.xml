@@ -15,29 +15,59 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:statusBarColor="@color/transparent"
+        app:titleBarColor="@color/transparent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_168_dp"
+        android:background="#404A9A"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/beauty_open_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_58_dp"
+        android:drawableTop="@drawable/meiyan_kaiqi"
+        android:gravity="center"
+        android:text="美颜"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/enter_room_tv" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/enter_room_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_width="@dimen/view_202_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginLeft="@dimen/view_30_dp"
         android:gravity="center"
-        android:paddingLeft="@dimen/view_8_dp"
-        android:paddingRight="@dimen/view_8_dp"
         android:text="进入房间"
-        android:textColor="#404A9A"
-        app:bl_corners_radius="@dimen/view_12_dp"
+        android:textColor="#AD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#7E8AE6"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:bl_solid_color="#FFC15B"
+        app:layout_constraintBottom_toBottomOf="@+id/beauty_open_btn"
+        app:layout_constraintLeft_toRightOf="@+id/beauty_open_btn"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ViewStub
         android:id="@+id/beauty_control_panel_view_stub"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_168_dp"
+        android:layout_height="match_parent"
         android:inflatedId="@+id/beauty_control_panel_view"
-        android:layout="@layout/beauty_control_panel_view_stub_layout"
+        android:layout="@layout/grab_beauty_control_panel_view_stub_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -62,5 +92,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

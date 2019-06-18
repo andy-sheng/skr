@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.SurfaceView;
 import android.view.TextureView;
 import android.util.Log;
 import android.view.View;
@@ -640,6 +641,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.release();
                 mAudioPlayerCapture.release();
             }
+            if (mImgTexPreview != null) {
+                mImgTexPreview.setDisplayPreview((TextureView)null);
+                mImgTexPreview.setDisplayPreview((GLSurfaceView)null);
+            }
+
             mAgoraRTCAdapter.destroy(true);
             mUserStatusMap.clear();
             mRemoteViewCache.clear();
@@ -1585,7 +1591,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             public void run() {
                 Log.e(TAG, "setDisplayPreview");
                 mImgTexPreview.setDisplayPreview(surfaceView);
-                mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+                if (surfaceView != null) {
+                    mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+                }
             }
         });
     }
@@ -1601,11 +1609,19 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 mImgTexPreview.setDisplayPreview(textureView);
-                mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+                if(textureView!=null){
+                    mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+                }
             }
         });
     }
 
+    public View getDisplayPreview() {
+        if (mImgTexPreview != null) {
+            return mImgTexPreview.getDisplayPreview();
+        }
+        return null;
+    }
     /**
      * Set rotate degrees in anti-clockwise of current Activity.
      *

@@ -28,7 +28,7 @@ public interface RouterConstants {
 
     String ACTIVITY_WALLET = "/home/WalletActivity";
     String ACTIVITY_BALANCE = "/home/BalanceActivity";
-    String ACTIVITY_DIAMOND_BALANCE = "/home/DiamondBalanceActivity";
+    String ACTIVITY_DIAMOND_BALANCE = "/home/DiamondBallanceActivity";
     String ACTIVITY_INCOME = "/home/InComeActivity";
     String ACTIVITY_WITH_DRAW = "/home/WithDrawActivity";
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";

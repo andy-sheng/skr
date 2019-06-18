@@ -38,6 +38,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.DebugLogView;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+import com.component.busilib.beauty.JumpBeautyFromKt;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -1002,7 +1003,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void onClickCamera() {
-                ToastUtils.showShort("camera");
+                if(mRoomData.isVideoRoom()){
+                    // 进入视频预览 判断是否实名验证过
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                            .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
+                            .navigation();
+                }else{
+                    ToastUtils.showShort("只在视频房间才能开启视频设置");
+                }
             }
         });
         mGrabTopContentView.setListener(new GrabTopContentView.Listener() {

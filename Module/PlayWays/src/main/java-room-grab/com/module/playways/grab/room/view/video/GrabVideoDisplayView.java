@@ -115,11 +115,14 @@ public class GrabVideoDisplayView extends ExViewStub {
         ZqEngineKit.getInstance().setCameraFacing(CameraCapture.FACING_FRONT);
 
         // 设置预览View
-        ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
+        //ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
     }
 
     public void bindVideoStream(int userId) {
         tryInflate();
+        if (ZqEngineKit.getInstance().getDisplayPreview() != mMainVideoView) {
+            ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
+        }
         setVisibility(View.VISIBLE);
         ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -141,6 +144,9 @@ public class GrabVideoDisplayView extends ExViewStub {
     public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2, boolean needBindVideo) {
         MyLog.d(TAG, "bindVideoStream needBindVideo=" + needBindVideo);
         tryInflate();
+        if (ZqEngineKit.getInstance().getDisplayPreview() != mMainVideoView) {
+            ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
+        }
         setVisibility(View.VISIBLE);
         mLeftNameTv.setVisibility(View.VISIBLE);
         mRightNameTv.setVisibility(View.VISIBLE);
