@@ -20,7 +20,7 @@ class DoublePlayActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoublePlayWaysFragment::class.java)
-                .setAddToBackStack(true)
+                .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .build())
     }
