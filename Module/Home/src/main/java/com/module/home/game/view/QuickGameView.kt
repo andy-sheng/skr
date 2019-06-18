@@ -255,4 +255,13 @@ class QuickGameView : RelativeLayout, IGameView3 {
     override fun hideRedOperationView() {
         iv_red_pkg.setVisibility(View.GONE)
     }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        destory()
+    }
+
+    fun destory() {
+        mQuickGamePresenter?.destroy()
+    }
 }

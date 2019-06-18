@@ -87,7 +87,7 @@ class GameFragment3 : BaseFragment() {
                 } else if (position == 1) {
                     return "快速游戏"
                 } else if (position == 2) {
-                    return "双人唱聊"
+                    return "邂逅好声音"
                 }
                 return super.getPageTitle(position)
             }
@@ -104,7 +104,15 @@ class GameFragment3 : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 mGameTab.notifyDataChange()
-
+                if (position == 0) {
+                    mContent.setBackgroundColor(Color.parseColor("#7088FF"))
+                    mFriendRoomGameView?.initData()
+                } else if (position == 1) {
+                    mContent.setBackgroundColor(Color.parseColor("#7088FF"))
+                    mQuickGameView?.initData()
+                } else if (position == 2){
+                    mContent.setBackgroundColor(Color.parseColor("#1f0e26"))
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -116,7 +124,15 @@ class GameFragment3 : BaseFragment() {
         mGameTab.setViewPager(mGameVp)
         mTabPagerAdapter.notifyDataSetChanged()
         mGameVp.setCurrentItem(1, false)
-        mQuickGameView?.initData()
+    }
+
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        if (mGameVp.currentItem == 0) {
+            mFriendRoomGameView?.initData()
+        } else if (mGameVp.currentItem == 1) {
+            mQuickGameView?.initData()
+        }
     }
 
     override fun useEventBus(): Boolean {
@@ -125,6 +141,13 @@ class GameFragment3 : BaseFragment() {
 
     override fun isInViewPager(): Boolean {
         return true
+    }
+
+    override fun destroy() {
+        super.destroy()
+        mQuickGameView?.destory()
+        mFriendRoomGameView?.destory()
+        mDoubleRoomGameView?.destory()
     }
 }
 

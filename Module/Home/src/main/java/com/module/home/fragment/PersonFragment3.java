@@ -351,12 +351,8 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mMusicTestIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-//                ARouter.getInstance()
-//                        .build(RouterConstants.ACTIVITY_MUSIC_TEST)
-//                        .navigation();
-                // TODO: 2019-06-17 just for test
                 ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                        .build(RouterConstants.ACTIVITY_MUSIC_TEST)
                         .navigation();
             }
         });
