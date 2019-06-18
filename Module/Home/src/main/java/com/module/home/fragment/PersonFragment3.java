@@ -263,19 +263,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mSettingImgIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                ARouter.getInstance()
-//                        .build(RouterConstants.ACTIVITY_SETTING)
-//                        .navigation();
-                SkrCameraPermission skrCameraPermission = new SkrCameraPermission();
-                skrCameraPermission.ensurePermission(getActivity(), new Runnable() {
-                    @Override
-                    public void run() {
-                        ARouter.getInstance()
-                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                .navigation();
-                    }
-                }, true);
-
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_SETTING)
+                        .navigation();
             }
         });
         updateSettingRedDot();

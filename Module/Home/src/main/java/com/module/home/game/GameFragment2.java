@@ -190,16 +190,28 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void selectSpecial(SpecialModel specialModel) {
                 MyLog.d(TAG, "selectSpecial" + " specialModel=" + specialModel);
-                // TODO: 2019/3/29 选择专场，进入快速匹配
                 if (specialModel != null) {
                     if (specialModel.getTagType() == SpecialModel.TYPE_VIDEO) {
-                        mCameraPermission.ensurePermission(new Runnable() {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
                             @Override
                             public void run() {
-                                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                                if (iRankingModeService != null) {
-                                    iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
-                                }
+                                mCameraPermission.ensurePermission(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 进入视频预览
+                                        ARouter.getInstance()
+                                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                .withInt("from", 1)
+                                                .withSerializable("SpecialModel", specialModel)
+                                                .navigation();
+//
+//                                        // 判断是否实名验证过
+//                                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+//                                        if (iRankingModeService != null) {
+//                                            iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
+//                                        }
+                                    }
+                                }, true);
                             }
                         }, true);
                     } else {
@@ -208,7 +220,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                             public void run() {
                                 IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                                 if (iRankingModeService != null) {
-                                    iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
+                                    if (specialModel != null) {
+                                        iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
+                                    }
                                 }
                             }
                         }, true);
@@ -223,16 +237,40 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             public void enterRoom(RecommendModel friendRoomModel) {
                 MyLog.d(TAG, "enterRoom" + " friendRoomModel=" + friendRoomModel);
                 if (friendRoomModel != null) {
-                    mSkrAudioPermission.ensurePermission(new Runnable() {
-                        @Override
-                        public void run() {
-                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                            if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(), 0);
+                    if (friendRoomModel.getMediaType() == SpecialModel.TYPE_VIDEO) {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                mCameraPermission.ensurePermission(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 进入视频预览
+                                        ARouter.getInstance()
+                                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                .withInt("from", 2)
+                                                .withSerializable("RecommendModel", friendRoomModel)
+                                                .navigation();
+//
+//                                        // 判断是否实名验证过
+//                                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+//                                        if (iRankingModeService != null) {
+//                                            iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
+//                                        }
+                                    }
+                                }, true);
                             }
-                        }
-                    }, true);
-
+                        }, true);
+                    } else {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                if (iRankingModeService != null) {
+                                    iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(), 0);
+                                }
+                            }
+                        }, true);
+                    }
                 } else {
 
                 }
