@@ -12,8 +12,11 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
+import com.module.playways.doubleplay.DoubleCorePresenter;
+import com.module.playways.doubleplay.DoubleRoundInfo;
+import com.module.playways.doubleplay.inter.IDoublePlayView;
 
-public class DoublePlayWaysFragment extends BaseFragment {
+public class DoublePlayWaysFragment extends BaseFragment implements IDoublePlayView {
 
     TextView mReportTv;
     ImageView mExitIv;
@@ -26,6 +29,7 @@ public class DoublePlayWaysFragment extends BaseFragment {
     ExImageView mMicIv;
     ImageView mPickIv;
     ImageView mSelectIv;
+    DoubleCorePresenter mDoubleCorePresenter;
 
     @Override
     public int initView() {
@@ -87,6 +91,19 @@ public class DoublePlayWaysFragment extends BaseFragment {
                 // 点歌
             }
         });
+
+        mDoubleCorePresenter = new DoubleCorePresenter(this);
+        addPresent(mDoubleCorePresenter);
+    }
+
+    @Override
+    public void changeRound(DoubleRoundInfo pre, DoubleRoundInfo mCur) {
+
+    }
+
+    @Override
+    public void gameEnd(DoubleRoundInfo mCur) {
+
     }
 
     @Override
