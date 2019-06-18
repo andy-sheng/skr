@@ -274,6 +274,21 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                         .build(RouterConstants.ACTIVITY_FRIEND_ROOM)
                         .navigation();
             }
+
+            @Override
+            public void clickTask() {
+
+            }
+
+            @Override
+            public void clickRank() {
+
+            }
+
+            @Override
+            public void clickPractice() {
+
+            }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mGameAdapter);

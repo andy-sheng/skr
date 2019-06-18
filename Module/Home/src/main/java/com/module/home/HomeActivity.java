@@ -48,6 +48,7 @@ import com.module.home.fragment.GrabGuideHomePageFragment;
 import com.module.home.fragment.PersonFragment3;
 import com.module.home.game.GameFragment2;
 import com.module.home.fragment.PkInfoFragment;
+import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
@@ -156,7 +157,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             public Fragment getItem(int position) {
                 MyLog.d(TAG, "getItem" + " position=" + position);
                 if (position == 0) {
-                    return new GameFragment2();
+                    return new GameFragment3();
                 } else if (position == 1) {
                     return new PkInfoFragment();
                 } else if (position == 2) {

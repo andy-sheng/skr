@@ -7,13 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
 import com.module.home.game.model.BannerModel;
+import com.module.home.game.model.FuncationModel;
 import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.game.viewholder.BannerViewHolder;
+import com.module.home.game.viewholder.FuncationAreaViewHolder;
 import com.module.home.game.viewholder.QuickRoomViewHolder;
 import com.module.home.game.viewholder.RecommendRoomViewHolder;
 
@@ -22,16 +25,19 @@ import java.util.List;
 
 public class GameAdapter extends RecyclerView.Adapter {
 
+    public final static String TAG = "GameAdapter";
+
     BaseFragment mBaseFragment;
 
     GameAdapterListener mListener;
 
-    Object[] mObjArr = new Object[3];
+    Object[] mObjArr = new Object[4];
     List<Object> mDataList = new ArrayList<>();
 
     public static final int TYPE_BANNER_HOLDER = 0;       // 广告
-    public static final int TYPE_RECOMMEND_HOLDER = 1;    // 推荐房
-    public static final int TYPE_QUICK_ROOM_HOLDER = 2;   // 快速房
+    public static final int TYPE_FUNCATION_HOLDER = 1;    // 功能区域（做任务，排行榜，练歌房）
+    public static final int TYPE_RECOMMEND_HOLDER = 2;    // 推荐房
+    public static final int TYPE_QUICK_ROOM_HOLDER = 3;   // 快速房
 
     public GameAdapter(BaseFragment baseFragment, GameAdapterListener gameAdapterListener) {
         this.mBaseFragment = baseFragment;
@@ -40,6 +46,11 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     public void updateBanner(BannerModel bannerModel) {
         mObjArr[TYPE_BANNER_HOLDER] = bannerModel;
+        setDataList();
+    }
+
+    public void updateFuncation(FuncationModel funcationModel) {
+        mObjArr[TYPE_FUNCATION_HOLDER] = funcationModel;
         setDataList();
     }
 
@@ -70,6 +81,10 @@ public class GameAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_banner_item_view, parent, false);
             BannerViewHolder bannerViewHolder = new BannerViewHolder(view);
             return bannerViewHolder;
+        } else if (viewType == TYPE_FUNCATION_HOLDER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_funcation_item_view, parent, false);
+            FuncationAreaViewHolder funcationAreaViewHolder = new FuncationAreaViewHolder(view, mListener);
+            return funcationAreaViewHolder;
         } else if (viewType == TYPE_RECOMMEND_HOLDER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_recommend_room_item_view, parent, false);
             RecommendRoomViewHolder recommendRoomViewHolder = new RecommendRoomViewHolder(view, mBaseFragment, mListener);
@@ -87,6 +102,8 @@ public class GameAdapter extends RecyclerView.Adapter {
         Object obj = mDataList.get(position);
         if (obj instanceof BannerModel) {
             ((BannerViewHolder) holder).bindData((BannerModel) obj);
+        } else if (obj instanceof FuncationModel) {
+            ((FuncationAreaViewHolder) holder).bindData((FuncationModel) obj);
         } else if (obj instanceof RecommendRoomModel) {
             ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) obj);
         } else if (obj instanceof QuickJoinRoomModel) {
@@ -104,6 +121,8 @@ public class GameAdapter extends RecyclerView.Adapter {
         Object obj = mDataList.get(position);
         if (obj instanceof BannerModel) {
             return TYPE_BANNER_HOLDER;
+        } else if (obj instanceof FuncationModel) {
+            return TYPE_FUNCATION_HOLDER;
         } else if (obj instanceof RecommendRoomModel) {
             return TYPE_RECOMMEND_HOLDER;
         } else if (obj instanceof QuickJoinRoomModel) {
@@ -120,5 +139,11 @@ public class GameAdapter extends RecyclerView.Adapter {
         void enterRoom(RecommendModel friendRoomModel);   //进入房间
 
         void moreRoom();  //更多房间
+
+        void clickTask();  //做任务
+
+        void clickRank();  //排行榜
+
+        void clickPractice(); //练歌房
     }
 }

@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
+import com.common.utils.U;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -277,10 +278,10 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         updateSongList();
                     }
 
-                    ToastUtils.showShort(songModel.getItemName() + " 添加成功");
+                    U.getToastUtil().showShort(songModel.getItemName() + " 添加成功");
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
-                    ToastUtils.showShort(result.getErrmsg());
+                    U.getToastUtil().showShort(result.getErrmsg());
                 }
             }
 

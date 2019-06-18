@@ -93,10 +93,10 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    ToastUtils.showShort(songModel.getItemName() + " 推荐成功");
+                    U.getToastUtil().showShort(songModel.getItemName() + " 推荐成功");
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
-                    ToastUtils.showShort(result.getErrmsg());
+                    U.getToastUtil().showShort(result.getErrmsg());
                 }
             }
 

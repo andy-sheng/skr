@@ -83,10 +83,10 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
                     mView.deleteWishSong(songModel);
                     // 通知GrabSongManagePresenter 接受新的数据
                     EventBus.getDefault().post(new AddSuggestSongEvent(songModel));
-                    ToastUtils.showShort("添加成功");
+                    U.getToastUtil().showShort("添加成功");
                 } else {
                     MyLog.w(TAG, "addWishSong failed, " + " traceid is " + result.getTraceId());
-                    ToastUtils.showShort(result.getErrmsg());
+                    U.getToastUtil().showShort(result.getErrmsg());
                 }
             }
 
@@ -113,10 +113,10 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     // 通知本页面，删除该model
                     mView.deleteWishSong(songModel);
-                    ToastUtils.showShort("删除成功");
+                    U.getToastUtil().showShort("删除成功");
                 } else {
                     MyLog.w(TAG, "addWishSong failed, " + " traceid is " + result.getTraceId());
-                    ToastUtils.showShort(result.getErrmsg());
+                    U.getToastUtil().showShort(result.getErrmsg());
                 }
             }
 

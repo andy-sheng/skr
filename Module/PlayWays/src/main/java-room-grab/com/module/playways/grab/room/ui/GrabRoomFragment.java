@@ -1010,7 +1010,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                             .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
                             .navigation();
                 }else{
-                    ToastUtils.showShort("只在视频房间才能开启视频设置");
+                    U.getToastUtil().showShort("只在视频房间才能开启视频设置");
                 }
             }
         });

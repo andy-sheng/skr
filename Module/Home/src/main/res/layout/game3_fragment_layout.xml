@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7088FF"
     android:orientation="vertical">
 
+    <com.common.view.viewpager.SlidingTabLayout
+        android:id="@+id/game_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/view_40_dp" />
 
-    
-
-
+    <com.common.view.viewpager.NestViewPager
+        android:id="@+id/game_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none" />
 
 </LinearLayout>
