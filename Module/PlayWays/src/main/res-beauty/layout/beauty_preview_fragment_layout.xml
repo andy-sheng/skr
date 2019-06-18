@@ -32,14 +32,25 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.moudule.playways.beauty.view.BeautyControlPanelView
-        android:id="@+id/beauty_control_view"
+    <ViewStub
+        android:id="@+id/beauty_control_panel_view_stub"
+        android:inflatedId="@+id/beauty_control_panel_view"
+        android:layout="@layout/beauty_control_panel_view_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_168_dp"
-        android:background="#404A9A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <!--<com.moudule.playways.beauty.view.BeautyControlPanelView-->
+        <!--android:id="@+id/beauty_control_panel_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/view_168_dp"-->
+        <!--android:background="#404A9A"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent" />-->
 
     <com.common.view.ex.ExImageView
         android:layout_width="match_parent"

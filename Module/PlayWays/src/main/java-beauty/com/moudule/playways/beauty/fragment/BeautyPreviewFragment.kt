@@ -9,6 +9,7 @@ import com.module.playways.R
 import com.moudule.playways.beauty.view.BeautyControlPanelView
 import com.common.view.ex.ExTextView
 import android.view.TextureView
+import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
@@ -33,7 +34,8 @@ class BeautyPreviewFragment : BaseFragment() {
 
     override fun initData(savedInstanceState: Bundle?) {
         mVideoTexture = mRootView.findViewById<View>(R.id.video_texture) as TextureView
-        mBeautyControlView = mRootView.findViewById<View>(R.id.beauty_control_view) as BeautyControlPanelView
+        var viewStub = mRootView.findViewById<ViewStub>(R.id.beauty_control_panel_view_stub);
+        mBeautyControlView = BeautyControlPanelView(viewStub)
         mEnterRoomTv = mRootView.findViewById<View>(R.id.enter_room_tv) as ExTextView
 
         mBeautyControlView.setListener(object : BeautyControlPanelView.Listener {
@@ -70,6 +72,7 @@ class BeautyPreviewFragment : BaseFragment() {
                 }
             }
         })
+        mBeautyControlView.tryInflate()
         var params = Params.getFromPref()
         params.isEnableVideo = true;
         ZqEngineKit.getInstance().init("BeautyPreview", params)

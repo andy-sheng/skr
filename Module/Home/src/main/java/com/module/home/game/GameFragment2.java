@@ -198,18 +198,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                                 mCameraPermission.ensurePermission(new Runnable() {
                                     @Override
                                     public void run() {
-                                        // 进入视频预览
+                                        // 进入视频预览 判断是否实名验证过
                                         ARouter.getInstance()
                                                 .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
                                                 .withInt("from", 1)
                                                 .withSerializable("SpecialModel", specialModel)
                                                 .navigation();
-//
-//                                        // 判断是否实名验证过
-//                                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-//                                        if (iRankingModeService != null) {
-//                                            iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
-//                                        }
                                     }
                                 }, true);
                             }
@@ -244,18 +238,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                                 mCameraPermission.ensurePermission(new Runnable() {
                                     @Override
                                     public void run() {
-                                        // 进入视频预览
+                                        // 进入视频预览 判断是否实名验证过
                                         ARouter.getInstance()
                                                 .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
                                                 .withInt("from", 2)
                                                 .withSerializable("RecommendModel", friendRoomModel)
                                                 .navigation();
-//
-//                                        // 判断是否实名验证过
-//                                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-//                                        if (iRankingModeService != null) {
-//                                            iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
-//                                        }
                                     }
                                 }, true);
                             }

@@ -96,6 +96,7 @@ import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
+import com.moudule.playways.beauty.view.BeautyControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -223,6 +224,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabVideoDisplayView mGrabVideoDisplayView; // 视频展示view
 
     GrabVideoSelfSingCardView mGrabVideoSelfSingCardView; // 视频模式下 自己演唱时的歌词面板view
+
+    BeautyControlPanelView mBeautyControlPanelView;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -604,14 +607,42 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         {
             ViewStub viewStub = mRootView.findViewById(R.id.grab_video_display_view_stub);
             mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub, mRoomData);
-            mGrabVideoDisplayView.setListener(new SelfSingCardView.Listener() {
+            mGrabVideoDisplayView.setSelfSingCardListener(new SelfSingCardView.Listener() {
                 @Override
                 public void onSelfSingOver() {
                     mCorePresenter.sendRoundOverInfo();
                 }
             });
+            mGrabVideoDisplayView.setListener(new GrabVideoDisplayView.Listener() {
+                @Override
+                public void clickBeautyBtn() {
+                    mBeautyControlPanelView.show();
+                }
+            });
         }
         mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView, mRoomData);
+
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.beauty_control_panel_view_stub);
+            mBeautyControlPanelView = new BeautyControlPanelView(viewStub);
+            mBeautyControlPanelView.setListener(new BeautyControlPanelView.Listener() {
+                @Override
+                public void onChangeBeauty(int id, int progress) {
+
+                }
+
+                @Override
+                public void onChangeFiter(int id, int progress) {
+
+                }
+
+                @Override
+                public void onChangePater(int id) {
+
+                }
+            });
+        }
+
     }
 
     private void initInputView() {
@@ -1523,6 +1554,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
 
         if (mGiftPanelView.onBackPressed()) {
+            return true;
+        }
+        if(mBeautyControlPanelView.onBackPressed()){
             return true;
         }
         quitGame();

@@ -2,7 +2,6 @@ package com.module.playways.grab.room.view.video;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.support.constraint.ConstraintLayout;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +48,9 @@ public class GrabVideoDisplayView extends ExViewStub {
     ImageView mBeautySettingBtn;
     ExTextView mLeftNameTv;
     ExTextView mRightNameTv;
-    SelfSingCardView.Listener mListener;
+    SelfSingCardView.Listener mSelfSingCardListener;
+    Listener mListener;
     private GrabRoomData mRoomData;
-
     int mMainUserId = 0, mLeftUserId = 0, mRightUserId = 0;
 
     public GrabVideoDisplayView(ViewStub viewStub, GrabRoomData roomData) {
@@ -77,7 +76,7 @@ public class GrabVideoDisplayView extends ExViewStub {
             mRightNameTv = mParentView.findViewById(R.id.right_name_tv);
         }
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
-        mSingCountDownView.setListener(mListener);
+        mSingCountDownView.setListener(mSelfSingCardListener);
         mBeautySettingBtn = mParentView.findViewById(R.id.beauty_setting_btn);
         mBeautySettingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,8 +136,8 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
     }
 
-    public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2,boolean needBindVideo) {
-        MyLog.d(TAG,"bindVideoStream needBindVideo="+ needBindVideo);
+    public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2, boolean needBindVideo) {
+        MyLog.d(TAG, "bindVideoStream needBindVideo=" + needBindVideo);
         tryInflate();
         setVisibility(View.VISIBLE);
         mLeftNameTv.setVisibility(View.VISIBLE);
@@ -149,7 +148,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         lp.height = U.getDisplayUtils().dip2px(315);
         mLeftUserId = userID1.getUserId();
         mRightUserId = userID2.getUserId();
-        if(needBindVideo){
+        if (needBindVideo) {
             mLeftAvatarIv.setVisibility(View.VISIBLE);
             AvatarUtils.loadAvatarByUrl(mLeftAvatarIv, AvatarUtils.newParamsBuilder(userID1.getAvatar())
                     .setBlur(true)
@@ -221,7 +220,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                 mLeftAvatarIv.setVisibility(View.GONE);
                 mLeftTipsTv.setVisibility(View.GONE);
             } else {
-                DebugLogView.println(TAG,mLeftUserId+"首帧还没到!!!");
+                DebugLogView.println(TAG, mLeftUserId + "首帧还没到!!!");
                 mLeftAvatarIv.setVisibility(View.VISIBLE);
             }
         }
@@ -242,7 +241,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                 mRightAvatarIv.setVisibility(View.GONE);
                 mRightTipsTv.setVisibility(View.GONE);
             } else {
-                DebugLogView.println(TAG,mRightUserId+"首帧还没到!!!");
+                DebugLogView.println(TAG, mRightUserId + "首帧还没到!!!");
                 mRightAvatarIv.setVisibility(View.VISIBLE);
             }
         }
@@ -252,7 +251,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     public void onEvent(EngineEvent event) {
         if (event.type != EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION
                 && event.type != EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
-            DebugLogView.println(TAG,  event.toString());
+            DebugLogView.println(TAG, event.toString());
         }
         if (mParentView == null) {
             return;
@@ -266,9 +265,9 @@ public class GrabVideoDisplayView extends ExViewStub {
             } else if (userId == mRightUserId) {
                 tryBindRightVideoStream();
             }
-        } else if(event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE){
+        } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
             EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
-            if(roleChangeInfo.getNewRole()==2){
+            if (roleChangeInfo.getNewRole() == 2) {
                 ZqEngineKit.getInstance().stopCameraPreview();
                 //变成观众了
                 if (MyUserInfoManager.getInstance().getUid() == mLeftUserId) {
@@ -279,7 +278,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                     mRightTipsTv.setVisibility(View.VISIBLE);
                 }
             }
-        }else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
+        } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
             int userId = event.getUserStatus().getUserId();
             ZqEngineKit.getInstance().unbindRemoteVideo(userId);
             if (userId == mLeftUserId) {
@@ -351,8 +350,8 @@ public class GrabVideoDisplayView extends ExViewStub {
         return list;
     }
 
-    public void setListener(SelfSingCardView.Listener listener) {
-        mListener = listener;
+    public void setSelfSingCardListener(SelfSingCardView.Listener selfSingCardListener) {
+        mSelfSingCardListener = selfSingCardListener;
     }
 
     public void adjustViewPostion(boolean open, boolean topContentViewVisiable) {
@@ -396,4 +395,11 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
     }
 
+    public void setListener(Listener l) {
+        mListener = l;
+    }
+
+    public interface Listener {
+        void clickBeautyBtn();
+    }
 }
