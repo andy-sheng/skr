@@ -28,6 +28,7 @@ class BeautyPreviewFragment : BaseFragment() {
     var mFrom: Int? = 0
     var mSpecialModel: SpecialModel? = null
     var mRecommendModel: RecommendModel? = null
+
     override fun initView(): Int {
         return R.layout.beauty_preview_fragment_layout
     }

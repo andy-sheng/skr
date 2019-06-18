@@ -31,7 +31,7 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
     lateinit var mPagerAdapter: PagerAdapter
     lateinit var mListener: Listener
     lateinit var mBeautyVp: ViewPager
-    lateinit var mShowOrHideAnimator: Animator
+    var mShowOrHideAnimator: Animator?=null
     override fun init(parentView: View?) {
         mBeautyTitleStl = mParentView.findViewById(R.id.beauty_title_stl);
         mBeautyTitleStl.setCustomTabView(R.layout.beauty_tab_view, R.id.tab_tv)
@@ -149,14 +149,14 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
         mShowOrHideAnimator?.cancel()
 
         mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView,View.TRANSLATION_Y,mParentView.height.toFloat(),0f)
-        mShowOrHideAnimator.setDuration(300)
-        mShowOrHideAnimator.addListener(object :AnimatorListenerAdapter(){
+        mShowOrHideAnimator?.setDuration(300)
+        mShowOrHideAnimator?.addListener(object :AnimatorListenerAdapter(){
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)
                 mParentView.visibility = View.VISIBLE
             }
         })
-        mShowOrHideAnimator.start()
+        mShowOrHideAnimator?.start()
     }
 
 
@@ -165,8 +165,8 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
         mShowOrHideAnimator?.cancel()
 
         mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView,View.TRANSLATION_Y,0f,mParentView.height.toFloat())
-        mShowOrHideAnimator.setDuration(300)
-        mShowOrHideAnimator.addListener(object :AnimatorListenerAdapter(){
+        mShowOrHideAnimator?.setDuration(300)
+        mShowOrHideAnimator?.addListener(object :AnimatorListenerAdapter(){
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)
                 mParentView.visibility = View.VISIBLE
@@ -177,7 +177,7 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
                 mParentView.visibility = View.GONE
             }
         })
-        mShowOrHideAnimator.start()
+        mShowOrHideAnimator?.start()
     }
 
     override fun onViewDetachedFromWindow(v: View?) {
