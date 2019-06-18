@@ -140,10 +140,6 @@ public class GrabCreateRoomFragment extends BaseFragment {
                 }, GrabCreateRoomFragment.this);
             }
         });
-
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
-                .greenChannel().navigation();
-
     }
 
     public void showErrorMsgDialog(String string) {

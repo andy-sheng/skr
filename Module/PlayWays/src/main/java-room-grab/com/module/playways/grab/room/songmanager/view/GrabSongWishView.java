@@ -148,7 +148,7 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
             mLoadService.showSuccess();
         } else {
             // 空页面
-            mLoadService.showCallback(EmptyCallback.class);
+            mLoadService.showCallback(GrabWishEmptyCallback.class);
         }
     }
 
