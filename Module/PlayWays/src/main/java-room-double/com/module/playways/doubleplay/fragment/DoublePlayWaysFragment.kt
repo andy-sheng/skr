@@ -11,10 +11,11 @@ import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleCorePresenter
-import com.module.playways.doubleplay.DoubleRoundInfo
 import com.module.playways.doubleplay.inter.IDoublePlayView
+import com.module.playways.room.song.model.SongModel
 
 class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
+
     private var mReportTv: TextView? = null
     private var mExitIv: ImageView? = null
     private var mLeftAvatarSdv: SimpleDraweeView? = null
@@ -85,11 +86,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         addPresent(mDoubleCorePresenter)
     }
 
-    override fun changeRound(pre: DoubleRoundInfo, mCur: DoubleRoundInfo) {
+    override fun changeRound(mCur: SongModel, mNext: SongModel) {
 
     }
 
-    override fun gameEnd(mCur: DoubleRoundInfo) {
+    override fun gameEnd(mCur: SongModel) {
 
     }
 

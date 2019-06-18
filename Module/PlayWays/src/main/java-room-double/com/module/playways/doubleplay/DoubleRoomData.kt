@@ -1,8 +1,7 @@
 package com.module.playways.doubleplay
 
-import com.common.log.MyLog
+import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.Common.UserInfo
-
 import java.io.Serializable
 
 class DoubleRoomData(doubleGameState: DoubleGameState) : Serializable {
@@ -10,15 +9,16 @@ class DoubleRoomData(doubleGameState: DoubleGameState) : Serializable {
     internal var mDoubleGameState = DoubleGameState.HAS_NOT_START
     internal var mGuestUserInfo: UserInfo? = null
     internal var mGuestMicroState: Boolean = false
-    internal var mCurRoundInfo: DoubleRoundInfo? = null
+    internal var mCurRoundInfo: SongModel? = null
+    internal var mNextRoundInfo: SongModel? = null
 
     init {
         mDoubleGameState = doubleGameState
     }
 
-    fun updateRoundInfo(roundInfo: DoubleRoundInfo?) {
+    fun updateRoundInfo(mCurSongModel: SongModel?, mNextSongModel: SongModel?) {
         if (mDoubleGameState != DoubleGameState.END) {
-            if (roundInfo == null) {
+            if (mCurSongModel == null && mNextSongModel == null) {
                 //结束
                 mDoubleGameState = DoubleGameState.END
                 return
@@ -30,16 +30,12 @@ class DoubleRoomData(doubleGameState: DoubleGameState) : Serializable {
 
             if (mCurRoundInfo == null) {
                 //游戏开始
-            } else if (mCurRoundInfo!!.roundSeq == roundInfo.roundSeq) {
+                mCurRoundInfo = mCurSongModel
+                mNextRoundInfo = mNextSongModel
+            } else if (mCurRoundInfo!!.itemID != mCurSongModel!!.itemID) {
                 //更新
-            } else if (roundInfo.roundSeq > mCurRoundInfo!!.roundSeq) {
-                //切换
-            } else {
-                MyLog.d(TAG, "updateRoundInfo roundInfo=$roundInfo, mCurRoundInfo=$mCurRoundInfo")
             }
         }
-
-
     }
 
     fun updateGameState(doubleGameState: DoubleGameState) {
