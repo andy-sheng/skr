@@ -2,6 +2,7 @@ package com.module.playways.doubleplay.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.base.BaseFragment
@@ -11,7 +12,9 @@ import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleCorePresenter
+import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.inter.IDoublePlayView
+import com.module.playways.doubleplay.view.DoubleSingCardView
 import com.module.playways.room.song.model.SongModel
 
 class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
@@ -28,6 +31,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mPickIv: ImageView? = null
     private var mSelectIv: ImageView? = null
     private var mDoubleCorePresenter: DoubleCorePresenter? = null
+    private var mRoomData: DoubleRoomData? = null
+
+    private val mDoubleSingCardView: DoubleSingCardView by lazy {
+        DoubleSingCardView(mRootView.findViewById<View>(R.id.double_sing_card_view_layout_stub) as ViewStub)
+    }
 
     override fun initView(): Int {
         return R.layout.double_play_fragment_layout
@@ -87,7 +95,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun changeRound(mCur: SongModel, mNext: SongModel) {
-
+        mDoubleSingCardView.playLyric("", mCur, mNext)
     }
 
     override fun gameEnd(mCur: SongModel) {

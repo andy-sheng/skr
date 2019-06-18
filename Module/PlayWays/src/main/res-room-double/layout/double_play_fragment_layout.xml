@@ -98,6 +98,43 @@
         app:layout_constraintRight_toRightOf="@id/right_avatar_sdv"
         app:layout_constraintTop_toBottomOf="@id/right_avatar_sdv" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/word_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_243_dp"
+        android:layout_marginRight="@dimen/view_40_dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="@dimen/view_8_dp"
+        android:paddingTop="@dimen/view_30_dp"
+        android:paddingBottom="@dimen/view_59_dp"
+        android:text="茫茫人海中遇见你\n如同阳光照进心底\n这最美的时光有你相依\n我心情无法言喻"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_14_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_78_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:text="——因为遇见你"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/word_tv"
+        app:layout_constraintRight_toRightOf="@+id/word_tv" />
+
+    <ViewStub
+        android:id="@+id/double_sing_card_view_layout_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/double_sing_card_view_layout" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/mic_iv"
         android:layout_width="@dimen/view_42_dp"

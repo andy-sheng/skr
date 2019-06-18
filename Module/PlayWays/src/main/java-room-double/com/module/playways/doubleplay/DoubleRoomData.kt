@@ -4,8 +4,10 @@ import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.Common.UserInfo
 import java.io.Serializable
 
-class DoubleRoomData(doubleGameState: DoubleGameState) : Serializable {
-
+class DoubleRoomData() : Serializable {
+    val Tag = "DoubleRoomData"
+    internal var mGameId = -1
+    internal var mFrom = -1
     internal var mDoubleGameState = DoubleGameState.HAS_NOT_START
     internal var mGuestUserInfo: UserInfo? = null
     internal var mGuestMicroState: Boolean = false
@@ -13,7 +15,7 @@ class DoubleRoomData(doubleGameState: DoubleGameState) : Serializable {
     internal var mNextRoundInfo: SongModel? = null
 
     init {
-        mDoubleGameState = doubleGameState
+
     }
 
     fun updateRoundInfo(mCurSongModel: SongModel?, mNextSongModel: SongModel?) {
@@ -50,9 +52,5 @@ class DoubleRoomData(doubleGameState: DoubleGameState) : Serializable {
 
         val value: Int
             get() = status!!
-    }
-
-    companion object {
-        val TAG = "DoubleRoomData"
     }
 }
