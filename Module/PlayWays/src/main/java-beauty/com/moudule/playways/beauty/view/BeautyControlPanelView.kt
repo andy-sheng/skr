@@ -55,20 +55,20 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 if (position == 0) {
                     // 美颜
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(mBeautyVp.context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY), mListener)
+                    var mBeautyFiterPaterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY), mListener)
                     if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
                         container.addView(mBeautyFiterPaterView)
                     }
                     return mBeautyFiterPaterView
                 } else if (position == 1) {
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(mBeautyVp.context, TYPE_FITER, getViewModel(TYPE_FITER), mListener)
+                    var mBeautyFiterPaterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_FITER, getViewModel(TYPE_FITER), mListener)
                     if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
                         container.addView(mBeautyFiterPaterView)
                     }
                     return mBeautyFiterPaterView
                     // 滤镜
                 } else if (position == 2) {
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(mBeautyVp.context, TYPE_PATER, getViewModel(TYPE_PATER), mListener)
+                    var mBeautyFiterPaterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_PATER, getViewModel(TYPE_PATER), mListener)
                     if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
                         container.addView(mBeautyFiterPaterView)
                     }
