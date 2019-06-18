@@ -1004,11 +1004,25 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void onClickCamera() {
                 if(mRoomData.isVideoRoom()){
+                    GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+                    if (grabRoundInfoModel != null) {
+                        for (WantSingerInfo wantSingerInfo :
+                                grabRoundInfoModel.getWantSingInfos()) {
+                            if (wantSingerInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                                return;
+                            }
+                        }
+                    }
                     // 进入视频预览 判断是否实名验证过
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                            .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
-                            .navigation();
+                    mSkrCameraPermission.ensurePermission(new Runnable() {
+                        @Override
+                        public void run() {
+                            ARouter.getInstance()
+                                    .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                    .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
+                                    .navigation();
+                        }
+                    },true);
                 }else{
                     U.getToastUtil().showShort("只在视频房间才能开启视频设置");
                 }

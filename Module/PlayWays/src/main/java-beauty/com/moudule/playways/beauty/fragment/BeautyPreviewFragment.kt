@@ -21,8 +21,10 @@ import com.component.busilib.friends.SpecialModel
 import com.engine.Params
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
+import com.moudule.playways.beauty.event.ReturnFromBeautyActivityEvent
 import com.zq.mediaengine.capture.CameraCapture
 import com.zq.mediaengine.kit.ZqEngineKit
+import org.greenrobot.eventbus.EventBus
 
 
 class BeautyPreviewFragment : BaseFragment() {
@@ -44,7 +46,7 @@ class BeautyPreviewFragment : BaseFragment() {
         mTitleBar = mRootView.findViewById<CommonTitleBar>(R.id.titlebar)
         mTitleBar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                activity?.finish()
+                onBackPressed()
             }
         })
         mVideoTexture = mRootView.findViewById<View>(R.id.video_texture) as TextureView
@@ -106,6 +108,7 @@ class BeautyPreviewFragment : BaseFragment() {
             mBeautyControlView.show()
         }
         // 设置预览View
+        ZqEngineKit.getInstance().unbindAllRemoteVideo()
         ZqEngineKit.getInstance().setDisplayPreview(mVideoTexture)
         ZqEngineKit.getInstance().setLocalVideoRect(0f, 0f, 1f, 1f, 1f)
     }
@@ -136,16 +139,33 @@ class BeautyPreviewFragment : BaseFragment() {
 
     override fun onPause() {
         super.onPause()
-        ZqEngineKit.getInstance().stopCameraPreview()
+        if (activity?.isFinishing == false) {
+            ZqEngineKit.getInstance().stopCameraPreview()
+        }
     }
 
     override fun destroy() {
         super.destroy()
-        ZqEngineKit.getInstance().setDisplayPreview(null as TextureView?)
-        ZqEngineKit.getInstance().stopCameraPreview()
         if (mFrom != FROM_GRAB_ROOM) {
+            ZqEngineKit.getInstance().setDisplayPreview(null as TextureView?)
+            ZqEngineKit.getInstance().stopCameraPreview()
             ZqEngineKit.getInstance().destroy("BeautyPreview")
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (mFrom != FROM_GRAB_ROOM) {
+            if (mBeautyControlView.onBackPressed()) {
+                return true
+            }
+        }
+        activity?.finish()
+        if (mFrom == FROM_GRAB_ROOM) {
+            ZqEngineKit.getInstance().setDisplayPreview(null as TextureView?)
+            ZqEngineKit.getInstance().stopCameraPreview()
+            EventBus.getDefault().post(ReturnFromBeautyActivityEvent())
+        }
+        return true
     }
 
     override fun setArguments(args: Bundle?) {

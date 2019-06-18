@@ -26,6 +26,8 @@ import com.common.view.ExViewStub;
 import com.module.playways.grab.room.ui.GrabWidgetAnimationController;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
+import com.moudule.playways.beauty.BeautyPreviewActivity;
+import com.moudule.playways.beauty.event.ReturnFromBeautyActivityEvent;
 import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
@@ -120,9 +122,7 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     public void bindVideoStream(int userId) {
         tryInflate();
-        if (ZqEngineKit.getInstance().getDisplayPreview() != mMainVideoView) {
-            ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
-        }
+        ensureBindDisplayView();
         setVisibility(View.VISIBLE);
         ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -144,9 +144,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2, boolean needBindVideo) {
         MyLog.d(TAG, "bindVideoStream needBindVideo=" + needBindVideo);
         tryInflate();
-        if (ZqEngineKit.getInstance().getDisplayPreview() != mMainVideoView) {
-            ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
-        }
+        ensureBindDisplayView();
         setVisibility(View.VISIBLE);
         mLeftNameTv.setVisibility(View.VISIBLE);
         mRightNameTv.setVisibility(View.VISIBLE);
@@ -184,8 +182,10 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void reset() {
-        ZqEngineKit.getInstance().stopCameraPreview();
-        ZqEngineKit.getInstance().unbindAllRemoteVideo();
+        if (!isBeautyActivityVisiable()) {
+            ZqEngineKit.getInstance().stopCameraPreview();
+            ZqEngineKit.getInstance().unbindAllRemoteVideo();
+        }
         mMainUserId = 0;
         mLeftUserId = 0;
         mRightUserId = 0;
@@ -201,56 +201,83 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
     }
 
+    void ensureBindDisplayView() {
+        if (!isBeautyActivityVisiable()) {
+            // 美颜界面不在顶部
+            if (ZqEngineKit.getInstance().getDisplayPreview() != mMainVideoView) {
+                ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
+            }
+        }
+    }
+
     void tryBindMainVideoStream() {
-        if (mMainUserId == MyUserInfoManager.getInstance().getUid()) {
-            // 是自己
-            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
-            ZqEngineKit.getInstance().startCameraPreview();
-        } else {
-            // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
-            // 但如果set时别人的视频流还没过来，
-            ZqEngineKit.getInstance().bindRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
+        if (isBeautyActivityVisiable()) {
+            // 美颜界面在顶部 不操作
+            return;
+        }
+        if (mMainUserId != 0) {
+            if (mMainUserId == MyUserInfoManager.getInstance().getUid()) {
+                // 是自己
+                ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
+                ZqEngineKit.getInstance().startCameraPreview();
+            } else {
+                // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
+                // 但如果set时别人的视频流还没过来，
+                ZqEngineKit.getInstance().bindRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
+            }
         }
     }
 
     void tryBindLeftVideoStream() {
-        if (mLeftUserId == MyUserInfoManager.getInstance().getUid()) {
-            // 是自己
-            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 0.5f, 1, 1);
-            ZqEngineKit.getInstance().startCameraPreview();
-            mLeftAvatarIv.setVisibility(View.GONE);
-            mLeftTipsTv.setVisibility(View.GONE);
-        } else {
-            // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
-            // 但如果set时别人的视频流还没过来，
-            if (ZqEngineKit.getInstance().isFirstVideoDecoded(mLeftUserId)) {
-                ZqEngineKit.getInstance().bindRemoteVideoRect(mLeftUserId, 0, 0, 0.5f, 1, 1);
+        if (isBeautyActivityVisiable()) {
+            // 美颜界面在顶部 不操作
+            return;
+        }
+        if (mLeftUserId != 0) {
+            if (mLeftUserId == MyUserInfoManager.getInstance().getUid()) {
+                // 是自己
+                ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 0.5f, 1, 1);
+                ZqEngineKit.getInstance().startCameraPreview();
                 mLeftAvatarIv.setVisibility(View.GONE);
                 mLeftTipsTv.setVisibility(View.GONE);
             } else {
-                DebugLogView.println(TAG, mLeftUserId + "首帧还没到!!!");
-                mLeftAvatarIv.setVisibility(View.VISIBLE);
+                // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
+                // 但如果set时别人的视频流还没过来，
+                if (ZqEngineKit.getInstance().isFirstVideoDecoded(mLeftUserId)) {
+                    ZqEngineKit.getInstance().bindRemoteVideoRect(mLeftUserId, 0, 0, 0.5f, 1, 1);
+                    mLeftAvatarIv.setVisibility(View.GONE);
+                    mLeftTipsTv.setVisibility(View.GONE);
+                } else {
+                    DebugLogView.println(TAG, mLeftUserId + "首帧还没到!!!");
+                    mLeftAvatarIv.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
 
     void tryBindRightVideoStream() {
-        if (mRightUserId == MyUserInfoManager.getInstance().getUid()) {
-            // 是自己
-            ZqEngineKit.getInstance().setLocalVideoRect(0.5f, 0, 0.5f, 1, 1);
-            ZqEngineKit.getInstance().startCameraPreview();
-            mRightAvatarIv.setVisibility(View.GONE);
-            mRightTipsTv.setVisibility(View.GONE);
-        } else {
-            // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
-            // 但如果set时别人的视频流还没过来，
-            if (ZqEngineKit.getInstance().isFirstVideoDecoded(mRightUserId)) {
-                ZqEngineKit.getInstance().bindRemoteVideoRect(mRightUserId, 0.5f, 0, 0.5f, 1, 1);
+        if (isBeautyActivityVisiable()) {
+            // 美颜界面在顶部 不操作
+            return;
+        }
+        if (mRightUserId != 0) {
+            if (mRightUserId == MyUserInfoManager.getInstance().getUid()) {
+                // 是自己
+                ZqEngineKit.getInstance().setLocalVideoRect(0.5f, 0, 0.5f, 1, 1);
+                ZqEngineKit.getInstance().startCameraPreview();
                 mRightAvatarIv.setVisibility(View.GONE);
                 mRightTipsTv.setVisibility(View.GONE);
             } else {
-                DebugLogView.println(TAG, mRightUserId + "首帧还没到!!!");
-                mRightAvatarIv.setVisibility(View.VISIBLE);
+                // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
+                // 但如果set时别人的视频流还没过来，
+                if (ZqEngineKit.getInstance().isFirstVideoDecoded(mRightUserId)) {
+                    ZqEngineKit.getInstance().bindRemoteVideoRect(mRightUserId, 0.5f, 0, 0.5f, 1, 1);
+                    mRightAvatarIv.setVisibility(View.GONE);
+                    mRightTipsTv.setVisibility(View.GONE);
+                } else {
+                    DebugLogView.println(TAG, mRightUserId + "首帧还没到!!!");
+                    mRightAvatarIv.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -276,7 +303,10 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
             EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
             if (roleChangeInfo.getNewRole() == 2) {
-                ZqEngineKit.getInstance().stopCameraPreview();
+                if (!isBeautyActivityVisiable()) {
+                    // 美颜界面在顶部 不操作
+                    ZqEngineKit.getInstance().stopCameraPreview();
+                }
                 //变成观众了
                 if (MyUserInfoManager.getInstance().getUid() == mLeftUserId) {
                     mLeftAvatarIv.setVisibility(View.VISIBLE);
@@ -298,6 +328,30 @@ public class GrabVideoDisplayView extends ExViewStub {
             }
 //            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1.0f, 1.0f, 1.0f);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReturnFromBeautyActivityEvent event) {
+        if (mParentView != null) {
+            if (mParentView.getVisibility() == View.VISIBLE) {
+                ensureBindDisplayView();
+                tryBindMainVideoStream();
+                tryBindLeftVideoStream();
+                tryBindLeftVideoStream();
+            } else {
+                ZqEngineKit.getInstance().unbindAllRemoteVideo();
+            }
+        }
+    }
+
+    public boolean isBeautyActivityVisiable() {
+        /**
+         * 这里为什么不用 U.getActivityUtils().getTopActivity() instanceof BeautyPreviewActivity 判断呢
+         * 因为想从美颜界面返回时快速渲染出ui，所以在BeautyPreviewActivity finish时就可以渲染了，
+         * 但这时U.getActivityUtils().getTopActivity() 还是  BeautyPreviewActivity
+         */
+        //boolean topBeautyActivityVisiable = U.getActivityUtils().getTopActivity() instanceof BeautyPreviewActivity;
+        return BeautyPreviewActivity.hasCreate;
     }
 
     @Override
