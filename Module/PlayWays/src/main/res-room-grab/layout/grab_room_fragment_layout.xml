@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/tools"
     xmlns:gameType="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ranking_container"
@@ -10,9 +10,9 @@
     <!--视频开始-->
     <ViewStub
         android:id="@+id/grab_video_display_view_stub"
-        android:inflatedId="@+id/grab_video_display_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:inflatedId="@+id/grab_video_display_view"
         android:layout="@layout/grab_room_video_display_view_stub_layout" />
     <!--视频结束-->
 
@@ -99,24 +99,23 @@
     <com.module.playways.grab.room.top.GrabTopContentView
         android:id="@+id/grab_top_content_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_120_dp"
-         />
+        android:layout_height="@dimen/view_120_dp" />
 
     <!--<ImageView-->
-        <!--android:id="@+id/skip_guide_iv"-->
-        <!--android:layout_width="@dimen/view_60_dp"-->
-        <!--android:layout_height="@dimen/view_31_dp"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginTop="@dimen/view_2_dp"-->
-        <!--android:layout_marginRight="@dimen/view_24_dp"-->
-        <!--android:background="@drawable/xinshou_tiaoguo"-->
-        <!--android:visibility="gone" />-->
+    <!--android:id="@+id/skip_guide_iv"-->
+    <!--android:layout_width="@dimen/view_60_dp"-->
+    <!--android:layout_height="@dimen/view_31_dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_marginTop="@dimen/view_2_dp"-->
+    <!--android:layout_marginRight="@dimen/view_24_dp"-->
+    <!--android:background="@drawable/xinshou_tiaoguo"-->
+    <!--android:visibility="gone" />-->
     <!---->
     <!--<com.module.playways.grab.room.top.GrabTopContainerView-->
-        <!--android:id="@+id/top_container_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/view_200_dp"-->
-        <!--android:layout_marginTop="0dp" />-->
+    <!--android:id="@+id/top_container_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/view_200_dp"-->
+    <!--android:layout_marginTop="0dp" />-->
 
     <com.common.view.ex.ExImageView
         android:id="@+id/practice_flag_iv"
@@ -147,39 +146,30 @@
     <!--演唱开始页面-->
     <ViewStub
         android:id="@+id/grab_sing_begin_tips_card_stub"
-        android:inflatedId="@+id/grab_sing_begin_tips_card"
-        android:layout="@layout/grab_sing_begin_tips_card_stub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_175_dp"
-        android:visibility="gone"
-        />
+        android:inflatedId="@+id/grab_sing_begin_tips_card"
+        android:layout="@layout/grab_sing_begin_tips_card_stub_layout"
+        android:visibility="gone" />
 
     <!--<include-->
-        <!--layout="@layout/grab_sing_begin_tips_card_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" />-->
+    <!--layout="@layout/grab_sing_begin_tips_card_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
 
     <!--他人唱歌时场景-->
-    <include
-        layout="@layout/grab_other_sing_card_layout"
-         />
+    <include layout="@layout/grab_other_sing_card_layout" />
 
     <!--视频模式下自己演唱时歌词面板 合唱小游戏歌词 以及 清唱 伴奏歌词-->
-    <include
-        layout="@layout/grab_video_self_sing_card_layout"
-        />
+    <include layout="@layout/grab_video_self_sing_card_layout" />
 
     <!--自己唱歌场景-->
-    <include
-        layout="@layout/grab_self_sing_card_view_layout"
-       />
+    <include layout="@layout/grab_self_sing_card_view_layout" />
 
     <!--轮次结束卡片-->
-    <include
-        layout="@layout/grab_round_over_card_layout"
-        />
+    <include layout="@layout/grab_round_over_card_layout" />
 
     <com.module.playways.grab.room.view.GrabScoreTipsView
         android:id="@+id/grab_score_tips_view"
@@ -229,6 +219,7 @@
     <!--android:layout_marginBottom="@dimen/view_79_dp"-->
     <!--android:visibility="gone" />-->
 
+    <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
         android:id="@+id/continue_send_view"
         android:layout_width="@dimen/view_78_dp"
@@ -240,12 +231,13 @@
         android:paddingBottom="@dimen/view_8_dp"
         android:visibility="gone" />
 
-
+<!--大礼物动画-->
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--大礼物连送-->
     <com.module.playways.room.room.gift.GiftBigContinuousView
         android:id="@+id/gift_big_continue_view"
         android:layout_width="match_parent"
@@ -266,6 +258,7 @@
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_10_dp" />
 
+    <!--放弃演唱-->
     <com.module.playways.grab.room.view.GrabGiveupView
         android:id="@+id/grab_pass_view"
         android:layout_width="@dimen/view_97_dp"
@@ -275,14 +268,11 @@
         android:layout_marginTop="@dimen/view_20_dp" />
 
     <ViewStub
-        android:id="@+id/beauty_control_panel_view_stub"
-        android:inflatedId="@+id/beauty_control_panel_view"
-        android:layout="@layout/beauty_control_panel_view_stub_layout"
+        android:id="@+id/grab_beauty_control_panel_view_stub"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_168_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/grab_beauty_control_panel_view"
+        android:layout="@layout/grab_beauty_control_panel_view_stub_layout" />
 
     <com.module.playways.room.gift.view.GiftPanelView
         android:id="@+id/gift_panel_view"
@@ -308,10 +298,9 @@
 
     <ViewStub
         android:id="@+id/debug_log_view_stub"
-        android:inflatedId="@+id/debug_log_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/debug_log_view_stub_layout"
-        />
+        android:inflatedId="@+id/debug_log_view"
+        android:layout="@layout/debug_log_view_stub_layout" />
 
-</RelativeLayout>
+</com.common.view.ex.ExRelativeLayout>

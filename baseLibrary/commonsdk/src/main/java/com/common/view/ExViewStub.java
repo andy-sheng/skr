@@ -30,6 +30,7 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
     /**
      * 只要描述这个 ExViewStub 包裹的Layout到底是哪个
      * 方便查找维护，对代码逻辑不会有任何作用
+     *
      * @return
      */
     protected abstract int layoutDesc();
@@ -55,7 +56,7 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
     }
 
     public View getRealView() {
-        if(mParentView==null){
+        if (mParentView == null) {
             return mViewStub;
         }
         return mParentView;
@@ -72,10 +73,17 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
     }
 
     public void setTranslateY(float ty) {
-        if(mParentView==null){
-             mViewStub.setTranslationY(ty);
-             return;
+        if (mParentView == null) {
+            mViewStub.setTranslationY(ty);
+            return;
         }
-         mParentView.setTranslationY(ty);
+        mParentView.setTranslationY(ty);
+    }
+
+    public boolean isShow() {
+        if (mParentView != null && mParentView.getVisibility() == View.VISIBLE) {
+            return true;
+        }
+        return false;
     }
 }

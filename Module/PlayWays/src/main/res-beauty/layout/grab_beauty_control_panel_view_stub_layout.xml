@@ -2,8 +2,19 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#404A9A">
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/place_holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/beauty_title_stl" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_168_dp"
+        android:background="#404A9A"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.common.view.viewpager.SlidingTabLayout
         android:id="@+id/beauty_title_stl"

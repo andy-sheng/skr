@@ -81,7 +81,9 @@ public class GrabVideoDisplayView extends ExViewStub {
         mBeautySettingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (mListener != null) {
+                    mListener.clickBeautyBtn();
+                }
             }
         });
         config();

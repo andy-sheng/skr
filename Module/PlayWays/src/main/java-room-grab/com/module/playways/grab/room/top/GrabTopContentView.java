@@ -88,7 +88,7 @@ public class GrabTopContentView extends ConstraintLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
-        setClickable(true);
+//        setClickable(true);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
         mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
         mArrowIv = (ImageView) this.findViewById(R.id.arrow_iv);

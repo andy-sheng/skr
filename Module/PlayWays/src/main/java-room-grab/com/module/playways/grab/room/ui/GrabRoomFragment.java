@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -36,6 +37,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.DebugLogView;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -146,7 +148,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     GrabRoomData mRoomData;
 
-    RelativeLayout mRankingContainer;
+    ExRelativeLayout mRankingContainer;
 
     ExImageView mGrabRoomBgFlag;
 
@@ -316,7 +318,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         initScoreView();
         initGiftPanelView();
         initVideoView();
-        if(MyLog.isDebugLogOpen()){
+        if (MyLog.isDebugLogOpen()) {
             ViewStub viewStub = mRootView.findViewById(R.id.debug_log_view_stub);
             DebugLogView debugLogView = new DebugLogView(viewStub);
             debugLogView.tryInflate();
@@ -616,14 +618,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mGrabVideoDisplayView.setListener(new GrabVideoDisplayView.Listener() {
                 @Override
                 public void clickBeautyBtn() {
-                    mBeautyControlPanelView.show();
+                    if (mBeautyControlPanelView != null) {
+                        mBeautyControlPanelView.show();
+                    }
                 }
             });
         }
         mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView, mRoomData);
 
         {
-            ViewStub viewStub = mRootView.findViewById(R.id.beauty_control_panel_view_stub);
+            ViewStub viewStub = mRootView.findViewById(R.id.grab_beauty_control_panel_view_stub);
             mBeautyControlPanelView = new BeautyControlPanelView(viewStub);
             mBeautyControlPanelView.setListener(new BeautyControlPanelView.Listener() {
                 @Override
@@ -1556,7 +1560,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         if (mGiftPanelView.onBackPressed()) {
             return true;
         }
-        if(mBeautyControlPanelView.onBackPressed()){
+        if (mBeautyControlPanelView.onBackPressed()) {
             return true;
         }
         quitGame();

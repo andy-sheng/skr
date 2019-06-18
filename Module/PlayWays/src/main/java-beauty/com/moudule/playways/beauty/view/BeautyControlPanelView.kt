@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.ExViewStub
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.viewpager.SlidingTabLayout
@@ -32,6 +33,8 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
     lateinit var mListener: Listener
     lateinit var mBeautyVp: ViewPager
     var mShowOrHideAnimator: Animator?=null
+    var mPlaceHolderView:View? = null
+
     override fun init(parentView: View?) {
         mBeautyTitleStl = mParentView.findViewById(R.id.beauty_title_stl);
         mBeautyTitleStl.setCustomTabView(R.layout.beauty_tab_view, R.id.tab_tv)
@@ -102,6 +105,12 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
         mBeautyVp.setAdapter(mPagerAdapter)
         mBeautyTitleStl.setViewPager(mBeautyVp)
         mPagerAdapter?.notifyDataSetChanged()
+        mPlaceHolderView = mParentView.findViewById(R.id.place_holder_view)
+        mPlaceHolderView?.setOnClickListener(object:DebounceViewClickListener(){
+            override fun clickValid(v: View?) {
+                hide()
+            }
+        })
     }
 
     override fun layoutDesc(): Int {
@@ -161,7 +170,7 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
 
 
     fun hide() {
-        tryInflate()
+        //tryInflate()
         mShowOrHideAnimator?.cancel()
 
         mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView,View.TRANSLATION_Y,0f,mParentView.height.toFloat())
@@ -187,10 +196,10 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
 
     fun onBackPressed(): Boolean {
         if(mParentView!=null && mParentView.visibility == View.VISIBLE){
-            hide();
-            return true;
+            hide()
+            return true
         }
-        return false;
+        return false
     }
 
     interface Listener {
