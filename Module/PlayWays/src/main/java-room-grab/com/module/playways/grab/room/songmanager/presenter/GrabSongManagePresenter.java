@@ -16,6 +16,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.songmanager.event.AddCustomGameEvent;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.event.AddSuggestSongEvent;
@@ -90,7 +91,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 if (obj.getErrno() == 0) {
                     mSpecialModelList = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
                     if (mSpecialModelList != null && mSpecialModelList.size() > 0) {
-
                         mIGrabSongManageView.showTagList(mSpecialModelList);
                     }
                 } else {
@@ -223,11 +223,9 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     public void updateSongList() {
         Iterator<GrabRoomSongModel> iterator = mGrabRoomSongModelList.iterator();
-        int seq = mGrabRoomData.getRealRoundSeq();
-
         while (iterator.hasNext()) {
             GrabRoomSongModel grabRoomSongModel = iterator.next();
-            if (grabRoomSongModel.getRoundSeq() < seq) {
+            if (grabRoomSongModel.getRoundSeq() < mGrabRoomData.getRealRoundSeq()) {
                 iterator.remove();
             }
         }
@@ -333,6 +331,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         if (event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1) {
             mIGrabSongManageView.showNum(--mTotalNum);
         }
+        /**
+         * 因为现在用Activity 里，所以这里的 mGrabRoomData 跟之前不是一个引用了
+         */
+        mGrabRoomData.setExpectRoundInfo(event.newRoundInfo);
+        mGrabRoomData.setRealRoundInfo(event.newRoundInfo);
         updateSongList();
     }
 
