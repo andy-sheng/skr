@@ -3,19 +3,20 @@ package com.module.playways.grab.room.songmanager.presenter;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
+import com.module.playways.grab.room.songmanager.event.AddCustomGameEvent;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.event.AddSuggestSongEvent;
 import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
@@ -116,7 +117,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         } else {
             offset = mGrabRoomData.getRealRoundSeq() - 1;
         }
-
         if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
             offset = mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq();
         }
@@ -268,17 +268,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         grabRoomSongModel.setItemID(songModel.getItemID());
                         grabRoomSongModel.setPlayType(songModel.getPlayType());
                         grabRoomSongModel.setChallengeAvailable(songModel.isChallengeAvailable());
+                        addToUiList(grabRoomSongModel);
 
-                        if (mGrabRoomSongModelList.size() <= 2) {
-                            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
-                            mGrabRoomSongModelList.add(grabRoomSongModel);
-                        } else {
-                            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
-                            mGrabRoomSongModelList.add(2, grabRoomSongModel);
-                        }
-
-                        mIGrabSongManageView.showNum(++mTotalNum);
-                        updateSongList();
                     }
 
                     U.getToastUtil().showShort(songModel.getItemName() + " 添加成功");
@@ -347,6 +338,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     /**
      * 增加歌曲
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -358,6 +350,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     /**
      * 房主处理愿望清单
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -370,7 +363,27 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         grabRoomSongModel.setItemID(grabWishSongModel.getItemID());
         grabRoomSongModel.setPlayType(grabWishSongModel.getPlayType());
         grabRoomSongModel.setChallengeAvailable(grabWishSongModel.isChallengeAvailable());
+        addToUiList(grabRoomSongModel);
+    }
 
+    /**
+     * 添加自定义小游戏成功
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddCustomGameEvent event) {
+        // 添加非房主想唱的歌曲
+        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
+        grabRoomSongModel.setOwner(MyUserInfoManager.getInstance().getNickName());
+        grabRoomSongModel.setItemName("自定义小游戏");
+        grabRoomSongModel.setItemID(SongModel.ID_CUSTOM_GAME);
+        grabRoomSongModel.setPlayType(4);
+        grabRoomSongModel.setChallengeAvailable(false);
+        addToUiList(grabRoomSongModel);
+    }
+
+    void addToUiList(GrabRoomSongModel grabRoomSongModel) {
         if (mGrabRoomSongModelList.size() <= 2) {
             grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
             mGrabRoomSongModelList.add(grabRoomSongModel);

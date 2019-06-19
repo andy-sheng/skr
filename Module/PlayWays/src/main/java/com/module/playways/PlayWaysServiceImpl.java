@@ -112,11 +112,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     @Override
     public void tryGoCreateRoom() {
-        if(true)
-        {
-            new MakeGamePanelView(U.getActivityUtils().getTopActivity()).showByDialog(1);
-            return;
-        }
+//        if(true)
+//        {
+//            new MakeGamePanelView(U.getActivityUtils().getTopActivity()).showByDialog(1);
+//            return;
+//        }
         if (mJoinRoomDisposable != null && !mJoinRoomDisposable.isDisposed()) {
             MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
             return;

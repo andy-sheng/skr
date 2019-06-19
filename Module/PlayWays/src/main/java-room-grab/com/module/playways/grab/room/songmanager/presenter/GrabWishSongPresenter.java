@@ -38,7 +38,6 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
 
     Disposable mGetSuggestListTask;
 
-    int mOffset = 0;  //只给服务器用
     int mLimit = 20;
 
     public GrabWishSongPresenter(IGrabWishManageView view, GrabRoomData grabRoomData) {
@@ -48,18 +47,17 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
         addToLifeCycle();
     }
 
-    public void getListMusicSuggested() {
+    public void getListMusicSuggested(int offset) {
         if (mGetSuggestListTask != null && !mGetSuggestListTask.isDisposed()) {
             MyLog.w(TAG, "已经加载中了...");
             return;
         }
-        mGetSuggestListTask = ApiMethods.subscribe(mGrabRoomServerApi.getListMusicSuggested(mGrabRoomData.getGameId(), mOffset, mLimit), new ApiObserver<ApiResult>() {
+        mGetSuggestListTask = ApiMethods.subscribe(mGrabRoomServerApi.getListMusicSuggested(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<GrabWishSongModel> grabWishSongModels = JSONObject.parseArray(result.getData().getString("items"), GrabWishSongModel.class);
-                    mOffset = result.getData().getIntValue("offset");
-                    mView.addGrabWishSongModels(grabWishSongModels);
+                    mView.addGrabWishSongModels(offset,grabWishSongModels);
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
                 }

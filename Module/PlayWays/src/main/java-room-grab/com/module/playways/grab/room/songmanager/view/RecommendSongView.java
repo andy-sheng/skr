@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -15,9 +14,9 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.common.view.ex.ExFrameLayout;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.songmanager.adapter.RecommendSongAdapter;
 import com.module.playways.grab.room.songmanager.customgame.MakeGamePanelView;
@@ -34,38 +33,27 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
+/**
+ * 推荐歌曲view
+ */
 public class RecommendSongView extends FrameLayout {
     public final static String TAG = "GrabSongManageView";
     private RecyclerView mRecyclerView;
     private RecommendTagModel mRecommendTagModel;
-    private boolean isOwner;
     RecommendSongAdapter mRecommendSongAdapter;
     GrabRoomServerApi mGrabRoomServerApi;
     SmartRefreshLayout mRefreshLayout;
     Disposable mDisposable;
     int mOffset = 0;
     int mLimit = 20;
-    boolean hasInit = false;
+    //    boolean hasInit = false;
     MakeGamePanelView mMakeGamePanelView;
+    GrabRoomData mRoomData;
 
-    public RecommendSongView(Context context, boolean isOwner) {
+    public RecommendSongView(Context context, GrabRoomData roomData, RecommendTagModel recommendTagModel) {
         super(context);
-        this.isOwner = isOwner;
-        initView();
-    }
-
-    public RecommendSongView(Context context) {
-        super(context);
-        initView();
-    }
-
-    public RecommendSongView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    public RecommendSongView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        this.mRoomData = roomData;
+        this.mRecommendTagModel = recommendTagModel;
         initView();
     }
 
@@ -75,22 +63,21 @@ public class RecommendSongView extends FrameLayout {
     }
 
     public void initData() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mRefreshLayout = findViewById(R.id.refreshLayout);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecommendSongAdapter = new RecommendSongAdapter(isOwner, new RecyclerOnItemClickListener<SongModel>() {
+        mRecommendSongAdapter = new RecommendSongAdapter(mRoomData.isOwner(), new RecyclerOnItemClickListener<SongModel>() {
             @Override
             public void onItemClicked(View view, int position, SongModel model) {
-                    if(isOwner && model!=null && model.getItemID() == SongModel.ID_CUSTOM_GAME){
-                        // 弹出录音面板
-                        if (mMakeGamePanelView == null) {
-                            mMakeGamePanelView = new MakeGamePanelView(getContext());
-                        }
-                        mMakeGamePanelView.showByDialog(1);
-                    }else{
-                        EventBus.getDefault().post(new AddSongEvent(model));
+                if (mRoomData.isOwner() && model != null && model.getItemID() == SongModel.ID_CUSTOM_GAME) {
+                    if (mMakeGamePanelView == null) {
+                        mMakeGamePanelView = new MakeGamePanelView(getContext());
                     }
+                    mMakeGamePanelView.showByDialog(mRoomData.getGameId());
+                } else {
+                    EventBus.getDefault().post(new AddSongEvent(model));
+                }
             }
         });
         mRecyclerView.setAdapter(mRecommendSongAdapter);
@@ -104,27 +91,24 @@ public class RecommendSongView extends FrameLayout {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                getSongList();
+                getSongList(mOffset);
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+                getSongList(0);
             }
         });
+        getSongList(0);
     }
 
-    public void setData(RecommendTagModel recommendTagModel) {
-        mRecommendTagModel = recommendTagModel;
-    }
-
-    public void initSongList() {
-        if (!hasInit) {
-            getSongList();
+    public void tryLoad(){
+        if(mRecommendSongAdapter.getDataList().isEmpty()){
+            getSongList(0);
         }
     }
 
-    private void getSongList() {
+    private void getSongList(int offset) {
         if (mRecommendTagModel == null) {
             MyLog.e(TAG, "getSongList mRecommendTagModel is null");
             return;
@@ -133,27 +117,32 @@ public class RecommendSongView extends FrameLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-        mDisposable = ApiMethods.subscribe(mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), mOffset, mLimit), new ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe(mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), offset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 mRefreshLayout.finishLoadMore();
 
                 if (result.getErrno() == 0) {
-                    hasInit = true;
                     List<SongModel> recommendTagModelArrayList = JSONObject.parseArray(result.getData().getString("items"), SongModel.class);
                     if (recommendTagModelArrayList == null || recommendTagModelArrayList.size() == 0) {
                         mRefreshLayout.setEnableLoadMore(false);
                         return;
                     }
-                    if(mOffset ==0 && mRecommendTagModel.getType()==4){
-                        // 是双人游戏那一例
-                        SongModel songModel = new SongModel();
-                        songModel.setItemID(SongModel.ID_CUSTOM_GAME);
-                        songModel.setItemName("自制小游戏");
-                        mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);
+                    if (offset == 0) {
+                        mRecommendSongAdapter.getDataList().clear();
+                        if (mRecommendTagModel.getType() == 4) {
+                            // 是双人游戏那一例
+                            SongModel songModel = new SongModel();
+                            songModel.setItemID(SongModel.ID_CUSTOM_GAME);
+                            songModel.setItemName("自制小游戏");
+                            mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);
+                        }
                     }
                     mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);
                     mOffset = mRecommendSongAdapter.getDataList().size();
+                    if (mOffset > 0 && mRecommendSongAdapter.getDataList().get(0).getItemID() == SongModel.ID_CUSTOM_GAME) {
+                        mOffset--;
+                    }
                     mRecommendSongAdapter.notifyDataSetChanged();
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
@@ -161,6 +150,12 @@ public class RecommendSongView extends FrameLayout {
 
             }
         });
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        destroy();
     }
 
     public void destroy() {
