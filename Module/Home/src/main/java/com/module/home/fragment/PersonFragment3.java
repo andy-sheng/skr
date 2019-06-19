@@ -82,8 +82,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     SmartRefreshLayout mSmartRefresh;
     ClassicsHeader mClassicsHeader;
     ConstraintLayout mUserInfoArea;
-    CommonTitleBar mTitlebar;
-    ImageView mAvatarBg;
+
     SimpleDraweeView mAvatarIv;
 
     ImageView mSettingImgIv;
@@ -92,24 +91,10 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     ImageView mSexIv;
     ExTextView mUseridTv;
     ExTextView mSignTv;
-    ExTextView mFriendsNumTv;
-    ExImageView mFriendRedDot;
-    ExTextView mFollowsNumTv;
-    ExTextView mFansNumTv;
-    ExImageView mFansRedDot;
 
     ExImageView mIncomeIv;
     ExImageView mWalletIv;
-    ExImageView mMusicTestIv;
-
-    ConstraintLayout mMedalLayout;
-    ImageView mPaiweiImg;
-    BitmapTextView mRankNumTv;
-    ImageView mSingendImg;
-    BitmapTextView mSingendNumTv;
-    NormalLevelView2 mLevelView;
-    ExTextView mLevelTv;
-    TextView mCharmTv;
+    ExImageView mRechargeIv;
 
     AppBarLayout mAppbar;
     Toolbar mToolbar;
@@ -120,10 +105,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     SlidingTabLayout mPersonTab;
     NestViewPager mPersonVp;
     PagerAdapter mPersonTabAdapter;
-
-    int mFriendNum = 0;  // 好友数
-    int mFansNum = 0;    // 粉丝数
-    int mFocusNum = 0;   // 关注数
 
     PhotoWallView mPhotoWallView;
     ProducationWallView mProducationWallView;
@@ -141,9 +122,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         initBaseContainArea();
         initUserInfoArea();
         initSettingArea();
-        initRelationNumArea();
         initFunctionArea();
-        initGameInfoArea();
         initPersonArea();
 
         refreshUserInfoView();
@@ -173,24 +152,16 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
         mSrlNameTv = (TextView) mRootView.findViewById(R.id.srl_name_tv);
 
-
-        if (U.getDeviceUtils().hasNotch(getContext())) {
-            mTitlebar.setVisibility(View.VISIBLE);
-        } else {
-            mTitlebar.setVisibility(View.GONE);
-        }
-
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
-        mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
+        mClassicsHeader.setBackgroundColor(Color.parseColor("#1f0e26"));
         mSmartRefresh.setRefreshHeader(mClassicsHeader);
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -240,7 +211,6 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initUserInfoArea() {
-        mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
@@ -280,55 +250,11 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         }
     }
 
-    private void initRelationNumArea() {
-        mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
-        mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
-        mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-        mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
-        mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
-
-        mFriendsNumTv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                // 好友，双向关注
-                openRelationFragment(UserInfoManager.RELATION.FRIENDS.getValue());
-            }
-        });
-
-        mFansNumTv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                // 粉丝，我关注的
-                openRelationFragment(UserInfoManager.RELATION.FANS.getValue());
-            }
-        });
-
-        mFollowsNumTv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                // 关注, 关注我的
-                openRelationFragment(UserInfoManager.RELATION.FOLLOW.getValue());
-            }
-        });
-    }
-
-    private void openRelationFragment(int mode) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("from_page_key", mode);
-        bundle.putInt("friend_num_key", mFriendNum);
-        bundle.putInt("follow_num_key", mFocusNum);
-        bundle.putInt("fans_num_key", mFansNum);
-        ARouter.getInstance()
-                .build(RouterConstants.ACTIVITY_RELATION)
-                .with(bundle)
-                .navigation();
-
-    }
-
     private void initFunctionArea() {
         mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
         mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
-        mMusicTestIv = (ExImageView) mRootView.findViewById(R.id.music_test_iv);
+        mRechargeIv = (ExImageView)mRootView.findViewById(R.id.recharge_iv);
+
 
         mWalletIv.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -348,26 +274,12 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mMusicTestIv.setOnClickListener(new AnimateClickListener() {
+        mRechargeIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_MUSIC_TEST)
-                        .navigation();
+                // TODO: 2019-06-19 充值入口
             }
         });
-    }
-
-    private void initGameInfoArea() {
-        mMedalLayout = (ConstraintLayout) mRootView.findViewById(R.id.medal_layout);
-        mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
-        mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
-        mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
-        mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
-
-        mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
     }
 
     private void initPersonArea() {
@@ -499,15 +411,11 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     public void showHomePageInfo(List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels
             , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels, int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
-        showRelationNum(relationNumModels);
-        showReginRank(userRankModels);
-        showUserLevel(userLevelModels);
-        showGameStatic(gameStatisModels);
         showCharmsTotal(meiLiCntTotal);
     }
 
     private void showCharmsTotal(int meiLiCntTotal) {
-        mCharmTv.setText("魅力：" + meiLiCntTotal);
+        // TODO: 2019-06-19 魅力值
     }
 
     @Override
@@ -517,8 +425,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
 
     private void refreshUserInfoView() {
         if (MyUserInfoManager.getInstance().hasMyUserInfo()) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
-                    .getAvatar())
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                    .setBorderColor(Color.WHITE)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f))
                     .setCircle(true)
                     .build());
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
@@ -537,95 +446,21 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         }
     }
 
-    @Override
-    public void showRelationNum(List<RelationNumModel> list) {
-        for (RelationNumModel mode : list) {
-            if (mode.getRelation() == UserInfoManager.RELATION.FRIENDS.getValue()) {
-                mFriendNum = mode.getCnt();
-            } else if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
-                mFansNum = mode.getCnt();
-            } else if (mode.getRelation() == UserInfoManager.RELATION.FOLLOW.getValue()) {
-                mFocusNum = mode.getCnt();
-            }
-        }
-
-        refreshRelationNum();
-    }
-
-    private void refreshRelationNum() {
-        SpannableStringBuilder friendBuilder = new SpanUtils()
-                .append(String.valueOf(mFriendNum)).setFontSize(24, true)
-                .append("好友").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
-                .create();
-        mFriendsNumTv.setText(friendBuilder);
-
-        SpannableStringBuilder fansBuilder = new SpanUtils()
-                .append(String.valueOf(mFansNum)).setFontSize(24, true)
-                .append("粉丝").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
-                .create();
-        mFansNumTv.setText(fansBuilder);
-
-        SpannableStringBuilder focusBuilder = new SpanUtils()
-                .append(String.valueOf(mFocusNum)).setFontSize(24, true)
-                .append("关注").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
-                .create();
-        mFollowsNumTv.setText(focusBuilder);
-    }
-
-
-    private void showReginRank(List<UserRankModel> list) {
-
-    }
-
-
-    private void showUserLevel(List<UserLevelModel> list) {
-        int rank = 0;           //当前父段位
-        int subRank = 0;        //当前子段位
-        String levelDesc = "";
-        // 展示段位信息
-        for (UserLevelModel userLevelModel : list) {
-            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                rank = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                subRank = userLevelModel.getScore();
-                levelDesc = userLevelModel.getDesc();
-            }
-        }
-        mLevelView.bindData(rank, subRank);
-        mLevelTv.setText(levelDesc);
-    }
-
-
-    private void showGameStatic(List<GameStatisModel> list) {
-        for (GameStatisModel gameStatisModel : list) {
-            if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                mRankNumTv.setText("" + gameStatisModel.getTotalTimes());
-            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                mSingendNumTv.setText("" + gameStatisModel.getTotalTimes());
-            }
-        }
-    }
-
-    @Override
-    public void showRankView(UserRankModel userRankModel) {
-
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         refreshUserInfoView();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RelationChangeEvent event) {
-        mPresenter.getRelationNums();
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FollowNotifyEvent event) {
-        mPresenter.getRelationNums();
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(RelationChangeEvent event) {
+//        mPresenter.getRelationNums();
+//    }
+//
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(FollowNotifyEvent event) {
+//        mPresenter.getRelationNums();
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpgradeData.RedDotStatusEvent event) {

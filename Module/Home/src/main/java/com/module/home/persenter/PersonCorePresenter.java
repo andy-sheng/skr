@@ -104,18 +104,18 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getRelationNums() {
-        ApiMethods.subscribe(mUserInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
-                    mView.showRelationNum(relationNumModels);
-                }
-            }
-        }, this);
-
-    }
+//    public void getRelationNums() {
+//        ApiMethods.subscribe(mUserInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                if (result.getErrno() == 0) {
+//                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
+//                    mView.showRelationNum(relationNumModels);
+//                }
+//            }
+//        }, this);
+//
+//    }
 
     @Override
     public void destroy() {
