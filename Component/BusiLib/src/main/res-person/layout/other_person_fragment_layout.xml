@@ -39,6 +39,7 @@
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/function_area"
         app:srlFooterTranslationViewId="@id/photo_view">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -61,7 +62,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/view_1_dp"
-                    android:background="#4C3B4E79"/>
+                    android:background="#4C3B4E79" />
 
                 <com.common.view.viewpager.SlidingTabLayout
                     android:id="@+id/person_tab"
@@ -167,16 +168,6 @@
                             app:layout_constraintRight_toRightOf="@id/name_tv"
                             app:layout_constraintTop_toTopOf="@id/name_tv" />
 
-                        <ImageView
-                            android:id="@+id/business_card"
-                            android:layout_width="@dimen/view_48_dp"
-                            android:layout_height="@dimen/view_30_dp"
-                            android:layout_marginTop="@dimen/view_28_dp"
-                            android:layout_marginRight="@dimen/view_20_dp"
-                            android:background="@drawable/person_center_business_icon"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
                         <com.common.view.ex.ExTextView
                             android:id="@+id/charm_tv"
                             android:layout_width="wrap_content"
@@ -201,111 +192,43 @@
                             app:layout_constraintLeft_toLeftOf="@id/charm_tv"
                             app:layout_constraintTop_toTopOf="@id/charm_tv" />
 
-                        <com.common.view.ex.ExImageView
-                            android:id="@+id/wallet_iv"
-                            android:layout_width="@dimen/view_96_dp"
-                            android:layout_height="@dimen/view_37_dp"
-                            android:layout_marginTop="@dimen/view_15_dp"
-                            android:background="@drawable/person_center_wallet_icon"
+                        <com.common.flowlayout.TagFlowLayout
+                            android:id="@+id/flowlayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/income_iv"
-                            app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
-
-                        <com.common.view.ex.ExImageView
-                            android:id="@+id/income_iv"
-                            android:layout_width="@dimen/view_96_dp"
-                            android:layout_height="@dimen/view_37_dp"
-                            android:background="@drawable/person_center_income_icon"
-                            app:layout_constraintLeft_toRightOf="@id/wallet_iv"
-                            app:layout_constraintRight_toLeftOf="@id/recharge_iv"
-                            app:layout_constraintTop_toTopOf="@id/wallet_iv" />
-
-                        <com.common.view.ex.ExImageView
-                            android:id="@+id/recharge_iv"
-                            android:layout_width="@dimen/view_96_dp"
-                            android:layout_height="@dimen/view_37_dp"
-                            android:background="@drawable/person_center_recharge_icon"
-                            app:layout_constraintLeft_toRightOf="@id/income_iv"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/wallet_iv" />
+                            app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
 
                     </com.common.view.ex.ExConstraintLayout>
 
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/view_96_dp"
-                        android:layout_gravity="top"
+                        android:layout_height="@dimen/view_70_dp"
+                        android:layout_gravity="bottom|center_horizontal"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
                         app:layout_collapseMode="pin">
 
-
-                        <android.support.constraint.ConstraintLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="#7088FF">
 
-                            <com.facebook.drawee.view.SimpleDraweeView
-                                android:id="@+id/srl_avatar_iv"
-                                android:layout_width="@dimen/view_60_dp"
-                                android:layout_height="@dimen/view_60_dp"
-                                android:layout_marginLeft="@dimen/view_20_dp"
-                                android:layout_marginTop="@dimen/view_20_dp"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <com.common.view.ex.ExTextView
+                            <TextView
                                 android:id="@+id/srl_name_tv"
                                 android:layout_width="wrap_content"
-                                android:layout_height="@dimen/view_25_dp"
-                                android:layout_marginStart="@dimen/view_18_dp"
-                                android:layout_marginTop="@dimen/view_2_dp"
-                                android:ellipsize="end"
-                                android:gravity="left|center_vertical"
-                                android:maxEms="7"
-                                android:maxLines="1"
-                                android:paddingRight="@dimen/view_20_dp"
-                                android:singleLine="true"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="@dimen/view_10_dp"
+                                android:gravity="center"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/textsize_18_dp"
-                                android:textStyle="bold"
-                                app:layout_constraintLeft_toRightOf="@id/srl_avatar_iv"
-                                app:layout_constraintTop_toTopOf="@id/srl_avatar_iv" />
+                                android:textStyle="bold" />
 
-                            <ImageView
-                                android:id="@+id/srl_sex_iv"
-                                android:layout_width="@dimen/view_16_dp"
-                                android:layout_height="@dimen/view_16_dp"
-                                app:layout_constraintBottom_toBottomOf="@id/srl_name_tv"
-                                app:layout_constraintRight_toRightOf="@id/srl_name_tv"
-                                app:layout_constraintTop_toTopOf="@id/srl_name_tv" />
-
-                            <com.common.view.ex.ExTextView
-                                android:id="@+id/srl_charm_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/view_24_dp"
-                                android:layout_marginTop="@dimen/view_6_dp"
-                                android:gravity="center"
-                                android:paddingLeft="@dimen/view_28_dp"
-                                android:paddingRight="@dimen/view_11_dp"
-                                android:textColor="@color/white"
-                                app:bl_corners_radius="@dimen/view_12_dp"
-                                app:bl_shape="rectangle"
-                                app:bl_solid_color="@color/black_trans_10"
-                                app:layout_constraintLeft_toLeftOf="@id/srl_name_tv"
-                                app:layout_constraintTop_toBottomOf="@id/srl_name_tv" />
-
-                            <ImageView
-                                android:layout_width="@dimen/view_16_dp"
-                                android:layout_height="@dimen/view_15_dp"
-                                android:layout_marginLeft="@dimen/view_9_dp"
-                                android:background="@drawable/grab_charm_icon"
-                                app:layout_constraintBottom_toBottomOf="@id/srl_charm_tv"
-                                app:layout_constraintLeft_toLeftOf="@id/srl_charm_tv"
-                                app:layout_constraintTop_toTopOf="@id/srl_charm_tv" />
-
-                        </android.support.constraint.ConstraintLayout>
+                        </RelativeLayout>
 
                     </android.support.v7.widget.Toolbar>
 
@@ -315,26 +238,74 @@
 
         </android.support.design.widget.CoordinatorLayout>
 
-
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <!--设置-->
-    <ImageView
-        android:id="@+id/setting_img_iv"
-        android:layout_width="@dimen/view_27_dp"
-        android:layout_height="@dimen/view_27_dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:background="@drawable/gerenzhongxin_shezhi" />
-
     <com.common.view.ex.ExImageView
-        android:id="@+id/setting_red_dot"
+        android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/setting_img_iv"
-        android:layout_alignRight="@id/setting_img_iv"
-        android:src="@drawable/reddot" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/grab_back" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/more_btn"
+        android:layout_width="@dimen/view_26_dp"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_24_dp"
+        android:background="@drawable/common_more_icon" />
+
+    <LinearLayout
+        android:id="@+id/function_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_alignParentBottom="true"
+        android:background="#404A9A"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/follow_iv"
+                android:layout_width="@dimen/view_152_dp"
+                android:layout_height="@dimen/view_40_dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="关注Ta"
+                android:textColor="#AD6C00"
+                android:textSize="@dimen/textsize_16_dp"
+                app:bl_corners_radius="@dimen/view_20_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#FFC15B" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/message_iv"
+                android:layout_width="@dimen/view_152_dp"
+                android:layout_height="@dimen/view_40_dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="发消息"
+                android:textColor="#AD6C00"
+                android:textSize="@dimen/textsize_16_dp"
+                app:bl_corners_radius="@dimen/view_20_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#FFC15B" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

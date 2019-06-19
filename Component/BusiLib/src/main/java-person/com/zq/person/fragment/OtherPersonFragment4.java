@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -40,7 +39,6 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
@@ -80,10 +78,9 @@ import java.util.List;
 
 import model.RelationNumModel;
 
-import static android.content.Context.POWER_SERVICE;
 import static com.zq.person.activity.OtherPersonActivity.BUNDLE_USER_ID;
 
-public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonView, RequestCallBack {
+public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonView, RequestCallBack {
 
     public static final int RELATION_FOLLOWED = 1; // 已关注关系
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
@@ -112,7 +109,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
     ConstraintLayout mUserInfoArea;
-    CommonTitleBar mTitlebar;
 
     ExImageView mIvBack;
     ExImageView mMoreBtn;
@@ -122,16 +118,8 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     ImageView mSexIv;
-    ExTextView mUseridTv;
     ExTextView mSignTv;
     TagFlowLayout mFlowlayout;
-
-    ImageView mPaiweiImg;
-    BitmapTextView mRankNumTv;
-    ImageView mSingendImg;
-    BitmapTextView mSingendNumTv;
-    NormalLevelView2 mLevelView;
-    ExTextView mLevelTv;
     TextView mCharmTv;
 
     Toolbar mToolbar;
@@ -145,14 +133,14 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     ProducationWallView mProducationWallView;
 
     LinearLayout mFunctionArea;
-    ImageView mFollowIv;
-    ImageView mMessageIv;
+    ExTextView mFollowIv;
+    ExTextView mMessageIv;
 
     DialogPlus mEditRemarkDialog;
 
     @Override
     public int initView() {
-        return R.layout.other_person_fragment3_layout;
+        return R.layout.other_person_fragment_layout;
     }
 
     @Override
@@ -160,7 +148,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         initBaseContainArea();
         initTopArea();
         initUserInfoArea();
-        initMedalInfoArea();
         initPersonTabArea();
         initFunctionArea();
 
@@ -180,16 +167,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         }
     }
 
-    private void initMedalInfoArea() {
-        mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
-        mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
-        mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
-        mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
-        mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
-    }
-
 
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
@@ -197,15 +174,8 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.toolbar_layout);
         mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
         mSrlNameTv = (TextView) mRootView.findViewById(R.id.srl_name_tv);
-
-        if (U.getDeviceUtils().hasNotch(getContext())) {
-            mTitlebar.setVisibility(View.VISIBLE);
-        } else {
-            mTitlebar.setVisibility(View.GONE);
-        }
 
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(true);
@@ -327,7 +297,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     }
 
     private void showRemarkDialog() {
-        EditRemarkView editRemarkView = new EditRemarkView(OtherPersonFragment3.this, mUserInfoModel.getNickname(), mUserInfoModel.getNicknameRemark(null));
+        EditRemarkView editRemarkView = new EditRemarkView(OtherPersonFragment4.this, mUserInfoModel.getNickname(), mUserInfoModel.getNicknameRemark(null));
         editRemarkView.setListener(new EditRemarkView.Listener() {
             @Override
             public void onClickCancel() {
@@ -379,7 +349,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
-        mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
+        mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
 
@@ -445,7 +415,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                 if (position == 0) {
                     // 照片墙
                     if (mOtherPhotoWallView == null) {
-                        mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment3.this, mUserId, OtherPersonFragment3.this, null);
+                        mOtherPhotoWallView = new OtherPhotoWallView(OtherPersonFragment4.this, mUserId, OtherPersonFragment4.this, null);
                     }
                     if (container.indexOfChild(mOtherPhotoWallView) == -1) {
                         container.addView(mOtherPhotoWallView);
@@ -455,7 +425,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                 } else if (position == 1) {
                     // 作品
                     if (mProducationWallView == null) {
-                        mProducationWallView = new ProducationWallView(OtherPersonFragment3.this, mUserInfoModel, OtherPersonFragment3.this);
+                        mProducationWallView = new ProducationWallView(OtherPersonFragment4.this, mUserInfoModel, OtherPersonFragment4.this);
                     }
                     if (container.indexOfChild(mProducationWallView) == -1) {
                         container.addView(mProducationWallView);
@@ -522,9 +492,9 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
     }
 
     private void initFunctionArea() {
-        mFunctionArea = (LinearLayout) mRootView.findViewById(R.id.function_area);
-        mFollowIv = (ImageView) mRootView.findViewById(R.id.follow_iv);
-        mMessageIv = (ImageView) mRootView.findViewById(R.id.message_iv);
+        mFunctionArea = mRootView.findViewById(R.id.function_area);
+        mFollowIv = mRootView.findViewById(R.id.follow_iv);
+        mMessageIv = mRootView.findViewById(R.id.message_iv);
 
 
         mFollowIv.setOnClickListener(new AnimateClickListener() {
@@ -557,7 +527,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
                             mUserInfoModel.isFriend()
                     );
                     if (needPop) {
-                        U.getFragmentUtils().popFragment(OtherPersonFragment3.this);
+                        U.getFragmentUtils().popFragment(OtherPersonFragment4.this);
                     }
                 }
             }
@@ -577,9 +547,7 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         mSmartRefresh.finishRefresh();
         showUserInfo(userInfoModel);
         showRelationNum(relationNumModels);
-        showUserLevel(userLevelModels);
         showReginRank(userRankModels);
-        showGameStatic(gameStatisModels);
         showUserRelation(isFriend, isFollow);
         showCharms(meiLiCntTotal);
     }
@@ -615,7 +583,6 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
         }
 
         mSrlNameTv.setText(model.getNicknameRemark());
-        mUseridTv.setText("撕歌号：" + model.getUserId());
         mSignTv.setText(model.getSignature());
 
         if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
@@ -698,57 +665,26 @@ public class OtherPersonFragment3 extends BaseFragment implements IOtherPersonVi
 //        }
     }
 
-
-    public void showUserLevel(List<UserLevelModel> list) {
-        // 展示段位信息
-        int rank = 0;           //当前父段位
-        int subRank = 0;        //当前子段位
-        String rankDesc = "";       //段位描述
-        for (UserLevelModel userLevelModel : list) {
-            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                rank = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                subRank = userLevelModel.getScore();
-                rankDesc = userLevelModel.getDesc();
-            }
-        }
-        mLevelView.bindData(rank, subRank);
-        mLevelTv.setText(rankDesc);
-    }
-
-
     public void showUserRelation(boolean isFriend, boolean isFollow) {
         mUserInfoModel.setFriend(isFriend);
         mUserInfoModel.setFollow(isFollow);
         if (isFriend) {
             mFollowIv.setClickable(false);
             mFollowIv.setAlpha(0.5f);
-            mFollowIv.setBackgroundResource(R.drawable.other_person_friend);
+            mFollowIv.setText("互关");
             mFollowIv.setTag(RELATION_FOLLOWED);
         } else if (isFollow) {
             mFollowIv.setClickable(false);
             mFollowIv.setAlpha(0.5f);
-            mFollowIv.setBackgroundResource(R.drawable.other_person_followed);
+            mFollowIv.setText("已关注");
             mFollowIv.setTag(RELATION_FOLLOWED);
         } else {
             mFollowIv.setClickable(true);
             mFollowIv.setAlpha(1f);
-            mFollowIv.setBackgroundResource(R.drawable.other_person_follow);
+            mFollowIv.setText("关注Ta");
             mFollowIv.setTag(RELATION_UN_FOLLOW);
         }
     }
-
-
-    public void showGameStatic(List<GameStatisModel> list) {
-        for (GameStatisModel gameStatisModel : list) {
-            if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                mRankNumTv.setText("" + gameStatisModel.getTotalTimes());
-            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                mSingendNumTv.setText("" + gameStatisModel.getTotalTimes());
-            }
-        }
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {

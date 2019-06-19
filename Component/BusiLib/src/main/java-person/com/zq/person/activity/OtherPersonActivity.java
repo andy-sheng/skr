@@ -9,7 +9,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.module.RouterConstants;
-import com.zq.person.fragment.OtherPersonFragment3;
+import com.zq.person.fragment.OtherPersonFragment4;
 
 @Route(path = RouterConstants.ACTIVITY_OTHER_PERSON)
 public class OtherPersonActivity extends BaseActivity {
@@ -23,7 +23,7 @@ public class OtherPersonActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, OtherPersonFragment3.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, OtherPersonFragment4.class)
                 .setBundle(bundle)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
