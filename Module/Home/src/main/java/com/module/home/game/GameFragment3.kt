@@ -1,12 +1,12 @@
 package com.module.home.game
 
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 
 import com.common.base.BaseFragment
 import com.common.log.MyLog
@@ -17,25 +17,29 @@ import com.module.home.R
 import com.module.home.game.view.DoubleRoomGameView
 import com.module.home.game.view.FriendRoomGameView
 import com.module.home.game.view.QuickGameView
+import android.widget.ImageView
+import android.view.animation.AlphaAnimation
+
 
 class GameFragment3 : BaseFragment() {
 
-    lateinit var mContent: LinearLayout
+    lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
-
     lateinit var mTabPagerAdapter: PagerAdapter
 
     val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
     val mDoubleRoomGameView: DoubleRoomGameView by lazy { DoubleRoomGameView(context!!) }
 
+    private var alphaAnimation: AlphaAnimation? = null
+
     override fun initView(): Int {
         return R.layout.game3_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mContent = mRootView.findViewById<View>(R.id.content) as LinearLayout
+        mNavigationBgIv = mRootView.findViewById<View>(R.id.navigation_bg_iv) as ImageView
         mGameTab = mRootView.findViewById<View>(R.id.game_tab) as SlidingTabLayout
         mGameVp = mRootView.findViewById<View>(R.id.game_vp) as NestViewPager
 
@@ -103,15 +107,16 @@ class GameFragment3 : BaseFragment() {
             }
 
             override fun onPageSelected(position: Int) {
-                mGameTab.notifyDataChange()
+                val drawable = mNavigationBgIv.getBackground() as ColorDrawable
+                val color: Int = drawable.color
                 if (position == 0) {
-                    mContent.setBackgroundColor(Color.parseColor("#7088FF"))
+                    animation(color, Color.parseColor("#7088FF"))
                     mFriendRoomGameView?.initData()
                 } else if (position == 1) {
-                    mContent.setBackgroundColor(Color.parseColor("#7088FF"))
+                    animation(color, Color.parseColor("#7088FF"))
                     mQuickGameView?.initData()
-                } else if (position == 2){
-                    mContent.setBackgroundColor(Color.parseColor("#1f0e26"))
+                } else if (position == 2) {
+                    animation(color, Color.parseColor("#1f0e26"))
                 }
             }
 
@@ -124,6 +129,19 @@ class GameFragment3 : BaseFragment() {
         mGameTab.setViewPager(mGameVp)
         mTabPagerAdapter.notifyDataSetChanged()
         mGameVp.setCurrentItem(1, false)
+    }
+
+    fun animation(startColor: Int, endColor: Int) {
+        if (startColor == endColor) {
+            return
+        }
+        mNavigationBgIv.setBackgroundColor(endColor)
+
+        if (alphaAnimation == null) {
+            alphaAnimation = AlphaAnimation(0.9f, 1f)
+            alphaAnimation?.duration = 1000
+        }
+        mNavigationBgIv.startAnimation(alphaAnimation)
     }
 
     override fun onFragmentVisible() {
@@ -148,6 +166,7 @@ class GameFragment3 : BaseFragment() {
         mQuickGameView?.destory()
         mFriendRoomGameView?.destory()
         mDoubleRoomGameView?.destory()
+        alphaAnimation?.cancel()
     }
 }
 
