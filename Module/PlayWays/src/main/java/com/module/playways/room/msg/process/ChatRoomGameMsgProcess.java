@@ -12,13 +12,10 @@ import com.module.playways.room.msg.event.JoinNoticeEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
 import com.module.playways.room.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.room.msg.event.PkLightOffMsgEvent;
-
+import com.module.playways.room.msg.event.QChangeMusicTagEvent;
 import com.module.playways.room.msg.event.QChangeRoomNameEvent;
 import com.module.playways.room.msg.event.QChoGiveUpEvent;
 import com.module.playways.room.msg.event.QCoinChangeEvent;
-
-import com.module.playways.room.msg.event.QChangeMusicTagEvent;
-
 import com.module.playways.room.msg.event.QExitGameMsgEvent;
 import com.module.playways.room.msg.event.QGameBeginEvent;
 import com.module.playways.room.msg.event.QGetSingChanceMsgEvent;
@@ -51,13 +48,10 @@ import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QBLightMsg;
-
 import com.zq.live.proto.Room.QCHOGiveUpMsg;
+import com.zq.live.proto.Room.QChangeMusicTag;
 import com.zq.live.proto.Room.QChangeRoomName;
 import com.zq.live.proto.Room.QCoinChangeMsg;
-
-import com.zq.live.proto.Room.QChangeMusicTag;
-
 import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGameBeginMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
@@ -82,7 +76,7 @@ import com.zq.live.proto.Room.VoteResultMsg;
 import org.greenrobot.eventbus.EventBus;
 
 
-public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
+public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgType, RoomMsg> {
 
     public final static String TAG = "ChatRoomGameMsgProcess";
 

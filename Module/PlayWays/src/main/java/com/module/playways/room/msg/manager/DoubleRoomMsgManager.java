@@ -3,36 +3,37 @@ package com.module.playways.room.msg.manager;
 import com.common.log.MyLog;
 import com.module.playways.room.msg.filter.PushMsgFilter;
 import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
-import com.zq.live.proto.Room.ERoomMsgType;
-import com.zq.live.proto.Room.RoomMsg;
+import com.zq.live.proto.CombineRoom.CombineRoomMsg;
+import com.zq.live.proto.CombineRoom.ECombineRoomMsgType;
 
 import java.util.HashSet;
 
 /**
  * 处理所有的RoomMsg
  */
-public class ChatRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
+public class DoubleRoomMsgManager extends BaseMsgManager<ECombineRoomMsgType, CombineRoomMsg> {
 
-    public final static String TAG = "ChatRoomMsgManager";
+    public final static String TAG = "DoubleRoomMsgManager";
 
     private static class ChatRoomMsgAdapterHolder {
-        private static final ChatRoomMsgManager INSTANCE = new ChatRoomMsgManager();
+        private static final DoubleRoomMsgManager INSTANCE = new DoubleRoomMsgManager();
     }
 
-    private ChatRoomMsgManager() {
+    private DoubleRoomMsgManager() {
 
     }
 
-    public static final ChatRoomMsgManager getInstance() {
+    public static final DoubleRoomMsgManager getInstance() {
         return ChatRoomMsgAdapterHolder.INSTANCE;
     }
+
 
     /**
      * 处理消息分发
      *
      * @param msg
      */
-    public void processRoomMsg(RoomMsg msg) {
+    public void processRoomMsg(CombineRoomMsg msg) {
         boolean canGo = true;  //是否放行的flag
         for (PushMsgFilter filter : mPushMsgFilterList) {
             canGo = filter.doFilter(msg);

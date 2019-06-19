@@ -244,7 +244,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter<RoomMsg>() {
         @Override
         public boolean doFilter(RoomMsg msg) {
             if (msg != null && msg.getRoomID() == mRoomData.getGameId()) {

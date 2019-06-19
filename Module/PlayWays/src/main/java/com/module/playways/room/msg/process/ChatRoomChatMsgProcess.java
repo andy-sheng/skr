@@ -15,7 +15,7 @@ import com.zq.live.proto.Room.SpecialEmojiMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
+public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgType, RoomMsg> {
 
     public final static String TAG = "ChatRoomChatMsgProcess";
 

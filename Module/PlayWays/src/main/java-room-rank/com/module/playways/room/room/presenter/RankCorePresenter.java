@@ -128,7 +128,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     ExoPlayer mExoPlayer;
 
-    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter<RoomMsg>() {
         @Override
         public boolean doFilter(RoomMsg msg) {
             if (msg.getRoomID() == mRoomData.getGameId()) {
