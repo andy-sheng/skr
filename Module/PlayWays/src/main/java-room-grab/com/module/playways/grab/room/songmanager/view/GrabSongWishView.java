@@ -103,9 +103,9 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
     }
 
     public void tryLoad() {
-        if (mWishSongAdapter.getDataList().isEmpty()) {
+//        if (mWishSongAdapter.getDataList().isEmpty()) {
             mGrabWishSongPresenter.getListMusicSuggested(0);
-        }
+//        }
     }
 
     @Override
