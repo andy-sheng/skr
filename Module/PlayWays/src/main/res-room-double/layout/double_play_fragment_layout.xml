@@ -119,6 +119,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/word_auther"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_78_dp"
@@ -128,6 +129,13 @@
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="@+id/word_tv"
         app:layout_constraintRight_toRightOf="@+id/word_tv" />
+
+    <android.support.constraint.Group
+        android:id="@+id/word_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="word_tv,word_auther" />
 
     <ViewStub
         android:id="@+id/double_sing_card_view_layout_stub"

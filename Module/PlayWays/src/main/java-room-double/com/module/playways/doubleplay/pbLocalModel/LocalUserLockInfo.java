@@ -14,6 +14,18 @@ public class LocalUserLockInfo {
         this.hasLock = hasLock;
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public boolean isHasLock() {
+        return hasLock;
+    }
+
+    public void setHasLock(boolean hasLock) {
+        this.hasLock = hasLock;
+    }
+
     public static List<LocalUserLockInfo> toList(List<UserLockInfo> userLockInfoList) {
         ArrayList<LocalUserLockInfo> localUserLockInfos = new ArrayList<>();
         if (userLockInfoList == null) {

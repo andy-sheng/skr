@@ -18,6 +18,38 @@ public class DoubleStartCombineRoomByMatchPushEvent {
     List<LocalAgoraTokenInfo> tokens; //声网token
     boolean needMaskUserInfo; //是否需要隐藏用户信息
 
+    public BasePushInfo getBasePushInfo() {
+        return basePushInfo;
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public long getCreatedTimeMs() {
+        return createdTimeMs;
+    }
+
+    public long getPassedTimeMs() {
+        return passedTimeMs;
+    }
+
+    public List<UserInfoModel> getUsers() {
+        return users;
+    }
+
+    public LocalCombineRoomConfig getConfig() {
+        return config;
+    }
+
+    public List<LocalAgoraTokenInfo> getTokens() {
+        return tokens;
+    }
+
+    public boolean isNeedMaskUserInfo() {
+        return needMaskUserInfo;
+    }
+
     public DoubleStartCombineRoomByMatchPushEvent(BasePushInfo basePushInfo, StartCombineRoomByMatchMsg startCombineRoomByMatchMsg) {
         this.basePushInfo = basePushInfo;
         this.roomID = startCombineRoomByMatchMsg.getRoomID();

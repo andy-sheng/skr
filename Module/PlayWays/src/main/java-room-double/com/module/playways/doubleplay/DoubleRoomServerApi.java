@@ -1,0 +1,178 @@
+package com.module.playways.doubleplay;
+
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiResult;
+
+import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+
+public interface DoubleRoomServerApi {
+
+    /**
+     * {
+     * "roomID": 0
+     * }
+     * 时间到结束房间
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/magpie/close")
+    Observable<ApiResult> closeByTimerOver(@Body RequestBody body);
+
+    /**
+     * {
+     * "roomID": 0
+     * }
+     * 进入房间失败，需要让服务器知道
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/magpie/enter-failed")
+    Observable<ApiResult> enterRoomFailed(@Body RequestBody body);
+
+    /**
+     * {
+     * "roomID": 0
+     * }
+     * 直接退出房间
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.room.inframe.mobi/v1/magpie/exit")
+    Observable<ApiResult> exitRoom(@Body RequestBody body);
+
+    /**
+     * 获取用户游戏数据
+     * 例如，还剩多少个匹配次数
+     *
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/magpie/game-data")
+    Observable<ApiResult> getGameData();
+
+    /**
+     * 邀请完一个人之后需要轮询拉接口
+     *
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/magpie/invite-result")
+    Observable<ApiResult> getInviteEnterResult();
+
+    /**
+     * 被邀请的人进入房间时候调用
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/invite-user-enter")
+    Observable<ApiResult> toInvitedRoom(@Body RequestBody body);
+
+    /**
+     * {
+     * "birthday": "string",
+     * "sex": "unknown"
+     * }
+     *
+     * @param roomID
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/magpie/modify-user-info")
+    Observable<ApiResult> modifyUserInfo(@Query("roomID") int roomID);
+
+    /**
+     * {
+     * "roomID" : 11111,
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/next-music")
+    Observable<ApiResult> nextSong(@Body RequestBody body);
+
+    /**
+     * {
+     * "fromPickuserID": 0,
+     * "toPickUserID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/pick")
+    Observable<ApiResult> pickOther(@Body RequestBody body);
+
+    /**
+     * 请求匹配
+     * {
+     * "platform": "PF_UNKNOWN"
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/query-match")
+    Observable<ApiResult> quaryMatch(@Body RequestBody body);
+
+    /**
+     * 取消匹配
+     * {
+     * "platform": "PF_UNKNOWN"
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/cancel-match")
+    Observable<ApiResult> cancleMatch(@Body RequestBody body);
+
+    /**
+     * {
+     * "inviteUserID": 0
+     * }
+     * 邀请一个人畅聊
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/send-invite-user")
+    Observable<ApiResult> sendInvite(@Body RequestBody body);
+
+    /**
+     * 主动获取游戏状态
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/magpie/sync-status")
+    Observable<ApiResult> syncStatus();
+
+    /**
+     * 拉取已点歌曲
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/magpie/list-music")
+    Observable<ApiResult> getSongList();
+
+    /**
+     * {
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/magpie/unlock-user-info")
+    Observable<ApiResult> unLock(@Body RequestBody body);
+}
