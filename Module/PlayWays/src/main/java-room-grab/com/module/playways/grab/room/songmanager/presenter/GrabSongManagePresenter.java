@@ -35,6 +35,9 @@ import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+/**
+ * 房主可以看到的 所有轮次 的歌曲 view
+ */
 public class GrabSongManagePresenter extends RxLifeCyclePresenter {
     public final static String TAG = "GrabSongManagePresenter";
 
@@ -342,6 +345,10 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         updateSongList();
     }
 
+    /**
+     * 增加歌曲
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddSongEvent event) {
         if (mGrabRoomData.isOwner()) {
@@ -349,6 +356,10 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 房主处理愿望清单
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddSuggestSongEvent event) {
         // 添加非房主想唱的歌曲

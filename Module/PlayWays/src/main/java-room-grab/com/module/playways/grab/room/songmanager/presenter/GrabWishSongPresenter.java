@@ -25,6 +25,9 @@ import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+/**
+ * 愿望清单这个view 的 presenter
+ */
 public class GrabWishSongPresenter extends RxLifeCyclePresenter {
 
     public final static String TAG = "GrabWishSongPresenter";

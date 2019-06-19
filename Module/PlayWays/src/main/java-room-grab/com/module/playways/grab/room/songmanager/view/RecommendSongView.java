@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSONObject;
@@ -15,14 +16,19 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.ex.ExFrameLayout;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.songmanager.adapter.RecommendSongAdapter;
+import com.module.playways.grab.room.songmanager.customgame.MakeGamePanelView;
+import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
 import com.module.playways.room.song.model.SongModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -39,8 +45,8 @@ public class RecommendSongView extends FrameLayout {
     Disposable mDisposable;
     int mOffset = 0;
     int mLimit = 20;
-
     boolean hasInit = false;
+    MakeGamePanelView mMakeGamePanelView;
 
     public RecommendSongView(Context context, boolean isOwner) {
         super(context);
@@ -73,7 +79,20 @@ public class RecommendSongView extends FrameLayout {
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecommendSongAdapter = new RecommendSongAdapter(isOwner);
+        mRecommendSongAdapter = new RecommendSongAdapter(isOwner, new RecyclerOnItemClickListener<SongModel>() {
+            @Override
+            public void onItemClicked(View view, int position, SongModel model) {
+                    if(isOwner && model!=null && model.getItemID() == SongModel.ID_CUSTOM_GAME){
+                        // 弹出录音面板
+                        if (mMakeGamePanelView == null) {
+                            mMakeGamePanelView = new MakeGamePanelView(getContext());
+                        }
+                        mMakeGamePanelView.showByDialog();
+                    }else{
+                        EventBus.getDefault().post(new AddSongEvent(model));
+                    }
+            }
+        });
         mRecyclerView.setAdapter(mRecommendSongAdapter);
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
 
@@ -114,7 +133,6 @@ public class RecommendSongView extends FrameLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-
         mDisposable = ApiMethods.subscribe(mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -127,7 +145,13 @@ public class RecommendSongView extends FrameLayout {
                         mRefreshLayout.setEnableLoadMore(false);
                         return;
                     }
-
+                    if(mOffset ==0 && mRecommendTagModel.getType()==4){
+                        // 是双人游戏那一例
+                        SongModel songModel = new SongModel();
+                        songModel.setItemID(SongModel.ID_CUSTOM_GAME);
+                        songModel.setItemName("自制小游戏");
+                        mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);
+                    }
                     mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);
                     mOffset = mRecommendSongAdapter.getDataList().size();
                     mRecommendSongAdapter.notifyDataSetChanged();

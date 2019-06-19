@@ -19,6 +19,7 @@ import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
+import com.module.playways.grab.room.songmanager.customgame.MakeGamePanelView;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -111,6 +112,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     @Override
     public void tryGoCreateRoom() {
+        if(true)
+        {
+            new MakeGamePanelView(U.getActivityUtils().getTopActivity()).showByDialog();
+            return;
+        }
         if (mJoinRoomDisposable != null && !mJoinRoomDisposable.isDisposed()) {
             MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
             return;

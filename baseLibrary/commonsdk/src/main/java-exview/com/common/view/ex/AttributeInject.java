@@ -35,6 +35,9 @@ public class AttributeInject {
             GradientDrawable drawable = null;
             StateListDrawable stateListDrawable = null;
             if (selectorTa.getIndexCount() > 0) {
+                /**
+                 * 有么有drawable
+                 */
                 stateListDrawable = DrawableFactory.getSelectorDrawable(typedArray, selectorTa);
                 view.setClickable(true);
                 if (view instanceof RadioButton) {
@@ -50,6 +53,9 @@ public class AttributeInject {
                 view.setClickable(true);
                 view.setBackground(stateListDrawable);
             } else {
+                /**
+                 * 常用的color属性
+                 */
                 drawable = DrawableFactory.getDrawable(typedArray);
                 view.setBackground(drawable);
             }

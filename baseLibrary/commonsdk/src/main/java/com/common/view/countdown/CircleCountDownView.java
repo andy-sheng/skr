@@ -140,6 +140,14 @@ public class CircleCountDownView extends ProgressBar {
         mRecordAnimator.start();
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if(visibility==GONE){
+            cancelAnim();
+        }
+    }
+
     public void cancelAnim() {
         if (mRecordAnimator != null) {
             mRecordAnimator.removeAllUpdateListeners();

@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongModel implements Serializable {
+
+    public static final int ID_FREE_MIC = 9277;
+    public static final int ID_CUSTOM_GAME = 9276;
     /**
      * itemID : 44
      * itemName : 过火
