@@ -7,7 +7,7 @@ import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public abstract class BaseMsgManager<T, R> {
+public abstract class BaseMsgManager<T, M> {
     public final static String TAG = "BaseMsgManager";
 
     /**
@@ -42,5 +42,5 @@ public abstract class BaseMsgManager<T, R> {
      *
      * @param msg
      */
-    public abstract void processRoomMsg(R msg);
+    public abstract void processRoomMsg(M msg);
 }
