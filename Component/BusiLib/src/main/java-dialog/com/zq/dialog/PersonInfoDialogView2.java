@@ -1,6 +1,8 @@
 package com.zq.dialog;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -43,6 +45,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.component.busilib.view.MarqueeTextView;
@@ -88,22 +91,20 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExImageView mMoreBtn;
-    NormalLevelView2 mLevelView;
+
     ExTextView mNameTv;
     ImageView mSexIv;
     MarqueeTextView mSignTv;
     TagFlowLayout mFlowlayout;
 
-    ImageView mFollowIv;
+    ConstraintLayout mFunctionArea;
+    ExTextView mInviteIv;
+    ExTextView mFollowIv;
 
     Toolbar mToolbar;
-    ImageView mSrlFollowIv;
-    RelativeLayout mSrlAvatarArea;
-    ImageView mSrlAvatarBg;
     SimpleDraweeView mSrlAvatarIv;
 
     RecyclerView mPhotoView;
-    ExTextView mPhotoNumTv;
     ExTextView mEmptyMyPhoto;
 
     private static final int CHARMS_TAG = 1;
@@ -138,8 +139,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     PersonInfoDialog.PersonCardClickListener mClickListener;
 
+    Drawable mBackground = new DrawableCreator.Builder()
+            .setCornersRadius(U.getDisplayUtils().dip2px(16f))
+            .setSolidColor(Color.parseColor("#D0EFFF"))
+            .build();
+
     PersonInfoDialogView2(Context context, int userID, boolean showReport, boolean showKick) {
         super(context);
+
         initView();
         initData(context, userID, showReport, showKick);
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -170,11 +177,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     private void initView() {
         inflate(getContext(), R.layout.person_info_card_view_layout, this);
-
         initBaseContainInfo();
         initUserInfo();
-        initOpretaArea();
+        initToolBarArea();
         initPhotoArea();
+        initFuncationArea();
     }
 
     private void initData(Context context, int userID, boolean showReport, boolean showKick) {
@@ -193,8 +200,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             isShowKick = false;
             mMoreBtn.setVisibility(GONE);
             mToolbar.setVisibility(GONE);
-            mFollowIv.setVisibility(View.GONE);
-            mSrlFollowIv.setVisibility(GONE);
+            mFunctionArea.setVisibility(GONE);
+        }
+
+        if (mFunctionArea.getVisibility() == VISIBLE) {
+            mPhotoView.setPadding(0, 0, 0, U.getDisplayUtils().dip2px(60f));
         }
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
@@ -225,7 +235,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     }
                     showUserInfo(userInfoModel);
                     showUserRelationNum(relationNumModes);
-                    showUserLevel(userLevelModels);
+//                    showUserLevel(userLevelModels);
                     showUserRelation(isFriend, isFollow);
                     showCharmsTag(meiLiCntTotal);
                 }
@@ -279,6 +289,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         });
 
         mSmartRefresh = (SmartRefreshLayout) this.findViewById(R.id.smart_refresh);
+        mSmartRefresh.setBackground(mBackground);
         mCoordinator = (CoordinatorLayout) this.findViewById(R.id.coordinator);
         mAppbar = (AppBarLayout) this.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) this.findViewById(R.id.toolbar_layout);
@@ -328,7 +339,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
-        mLevelView = (NormalLevelView2) this.findViewById(R.id.level_view);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mSexIv = (ImageView) this.findViewById(R.id.sex_iv);
         mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
@@ -428,32 +438,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         });
     }
 
-    private void initOpretaArea() {
-        mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
-
+    private void initToolBarArea() {
         mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
-        mSrlFollowIv = (ImageView) this.findViewById(R.id.srl_follow_iv);
-        mSrlAvatarArea = (RelativeLayout) this.findViewById(R.id.srl_avatar_area);
-        mSrlAvatarBg = (ImageView) this.findViewById(R.id.srl_avatar_bg);
         mSrlAvatarIv = (SimpleDraweeView) this.findViewById(R.id.srl_avatar_iv);
-
-        mFollowIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                if (mClickListener != null) {
-                    mClickListener.onClickFollow(mUserId, isFriend, isFollow);
-                }
-            }
-        });
-
-        mSrlFollowIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                if (mClickListener != null) {
-                    mClickListener.onClickFollow(mUserId, isFriend, isFollow);
-                }
-            }
-        });
 
         mSrlAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -465,9 +452,30 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         });
     }
 
+    private void initFuncationArea() {
+        mFunctionArea = findViewById(R.id.function_area);
+        mInviteIv = findViewById(R.id.invite_iv);
+        mFollowIv = findViewById(R.id.follow_iv);
+
+        mFollowIv.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                if (mClickListener != null) {
+                    mClickListener.onClickFollow(mUserId, isFriend, isFollow);
+                }
+            }
+        });
+
+        mInviteIv.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                // 点击邀请唱聊
+            }
+        });
+    }
+
     private void initPhotoArea() {
         mPhotoView = (RecyclerView) this.findViewById(R.id.photo_view);
-        mPhotoNumTv = (ExTextView) this.findViewById(R.id.photo_num_tv);
         mEmptyMyPhoto = (ExTextView) this.findViewById(R.id.empty_my_photo);
 
         mPhotoView.setFocusableInTouchMode(false);
@@ -545,14 +553,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mPhotoAdapter.getDataList().clear();
         }
 
-        if (totalCount > 0) {
-            mPhotoNumTv.setText("照片（" + totalCount + "）");
-            mPhotoNumTv.setVisibility(VISIBLE);
-        } else {
-            mPhotoNumTv.setVisibility(GONE);
-            if (mUserId == MyUserInfoManager.getInstance().getUid()) {
-                mEmptyMyPhoto.setVisibility(VISIBLE);
-            }
+        if (totalCount <= 0 && mUserId == MyUserInfoManager.getInstance().getUid()) {
+            mEmptyMyPhoto.setVisibility(VISIBLE);
         }
 
         if (list != null && list.size() != 0) {
@@ -610,10 +612,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mUserInfoModel = model;
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(model.getAvatar())
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
+                            .setBorderColor(Color.WHITE)
                             .setCircle(true)
                             .build());
             AvatarUtils.loadAvatarByUrl(mSrlAvatarIv,
                     AvatarUtils.newParamsBuilder(model.getAvatar())
+                            .setBorderColor(Color.WHITE)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
                             .setCircle(true)
                             .build());
 
@@ -663,20 +669,20 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         refreshTag();
     }
 
-    public void showUserLevel(List<UserLevelModel> list) {
-        int mainRank = 0;
-        int subRank = 0;
-        for (UserLevelModel userLevelModel : list) {
-            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                mainRank = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                subRank = userLevelModel.getScore();
-            }
-        }
-
-        mLevelView.bindData(mainRank, subRank);
-
-    }
+//    public void showUserLevel(List<UserLevelModel> list) {
+//        int mainRank = 0;
+//        int subRank = 0;
+//        for (UserLevelModel userLevelModel : list) {
+//            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+//                mainRank = userLevelModel.getScore();
+//            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+//                subRank = userLevelModel.getScore();
+//            }
+//        }
+//
+//        mLevelView.bindData(mainRank, subRank);
+//
+//    }
 
     public void showUserRelation(final boolean isFriend, final boolean isFollow) {
         this.isFollow = isFollow;
@@ -710,20 +716,17 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mUserInfoModel.setFollow(isFollow);
         mUserInfoModel.setFriend(isFriend);
         if (isFriend) {
-            mFollowIv.setBackgroundResource(R.drawable.person_card_friend);
-            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_friend);
+            mFollowIv.setText("互关");
+            mFollowIv.setAlpha(0.5f);
             mFollowIv.setClickable(false);
-            mSrlFollowIv.setClickable(false);
         } else if (isFollow) {
-            mFollowIv.setBackgroundResource(R.drawable.person_card_followed);
-            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_followed);
+            mFollowIv.setText("已关注");
+            mFollowIv.setAlpha(0.5f);
             mFollowIv.setClickable(false);
-            mSrlFollowIv.setClickable(false);
         } else {
-            mFollowIv.setBackgroundResource(R.drawable.person_card_follow);
-            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_follow);
+            mFollowIv.setText("关注Ta");
+            mFollowIv.setAlpha(1f);
             mFollowIv.setClickable(true);
-            mSrlFollowIv.setClickable(true);
         }
     }
 

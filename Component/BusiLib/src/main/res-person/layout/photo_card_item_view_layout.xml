@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/view_7_dp"
-    android:layout_marginRight="@dimen/view_7_dp"
-    android:layout_marginBottom="@dimen/textsize_14_dp">
+    android:layout_margin="@dimen/view_5_dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/photo_iv"
@@ -14,31 +12,32 @@
 
     <com.common.view.ex.ExFrameLayout
         android:id="@+id/error_container"
+        android:layout_width="@dimen/view_105_dp"
+        android:layout_height="@dimen/view_142_dp"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_solid_color="@color/black_trans_30"
-        android:layout_width="@dimen/view_105_dp"
-        android:layout_height="@dimen/view_142_dp">
+        app:bl_solid_color="@color/black_trans_30">
+
         <com.common.view.ex.ExImageView
-            android:layout_gravity="center"
-            android:scaleType="center"
             android:id="@+id/iv_black_bg"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="center" />
 
         <com.common.view.ex.ExTextView
-            android:textColor="@color/white"
+            android:id="@+id/tv_error_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal|bottom"
             android:paddingBottom="@dimen/view_18_dp"
-            android:id="@+id/tv_error_tips"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/white" />
     </com.common.view.ex.ExFrameLayout>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/upload_tips_tv"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 </com.common.view.ex.ExRelativeLayout>

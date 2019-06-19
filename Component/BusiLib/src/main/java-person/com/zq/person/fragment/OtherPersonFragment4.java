@@ -40,12 +40,9 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
-import com.component.busilib.constans.GameModeType;
-import com.component.busilib.view.BitmapTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.big.BigImageBrowseFragment;
@@ -59,7 +56,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.EditRemarkView;
@@ -356,7 +352,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
-                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_tag_textview,
+                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.other_person_tag_textview,
                         mFlowlayout, false);
                 tv.setText(o);
                 return tv;

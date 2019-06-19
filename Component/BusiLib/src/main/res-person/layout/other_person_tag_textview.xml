@@ -11,6 +11,6 @@
     android:textSize="@dimen/view_14_dp"
     app:bl_corners_radius="@dimen/view_16_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="@color/black_trans_30">
+    app:bl_solid_color="@color/black_trans_10">
 
 </com.common.view.ex.ExTextView>
