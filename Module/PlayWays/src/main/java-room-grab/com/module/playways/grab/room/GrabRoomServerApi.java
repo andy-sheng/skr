@@ -478,6 +478,13 @@ message STCommitSegmentResultReq
     @PUT("http://dev.room.inframe.mobi/v1/room/del-music-suggested")
     Observable<ApiResult> deleteSuggestMusic(@Body RequestBody body);
 
+    /**
+     * 房主添加自定义小游戏
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/add-custom-game")
+    Observable<ApiResult> addCustomGame(@Body RequestBody body);
 
     /**
      * 礼物60秒打卡

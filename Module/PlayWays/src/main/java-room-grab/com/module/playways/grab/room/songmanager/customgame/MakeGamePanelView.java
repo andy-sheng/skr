@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -15,10 +21,18 @@ import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
+import com.module.playways.grab.room.GrabRoomServerApi;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+
 public class MakeGamePanelView extends RelativeLayout {
+
+    public final static String TAG = "MakeGamePanelView";
 
     static final int STATUS_IDLE = 1;
     static final int STATUS_RECORDING = 2;
@@ -39,6 +53,7 @@ public class MakeGamePanelView extends RelativeLayout {
     int mStatus = STATUS_IDLE;
     long mBeginRecordingTs = 0;
     int mPlayTimeExpect = 60;
+    int mRoomID;
 
     public MakeGamePanelView(Context context) {
         super(context);
@@ -137,6 +152,36 @@ public class MakeGamePanelView extends RelativeLayout {
                 changeToRecordBegin();
             }
         });
+        mSubmitBtn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 调研录音
+                // 上传提交
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("roomID", mRoomID);
+                map.put("standIntro", "http://www.baidu.com");
+                map.put("standIntroEndT", 20);
+                map.put("totalMs", mPlayTimeExpect * 1000);
+
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+                GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+                if (grabRoomServerApi != null) {
+                    ApiMethods.subscribe(grabRoomServerApi.addCustomGame(body), new ApiObserver<ApiResult>() {
+                        @Override
+                        public void process(ApiResult obj) {
+                            if(obj.getErrno()==0){
+                                 U.getToastUtil().showShort("添加成功");
+                                 // 刷新ui
+                                if (mDialogPlus != null) {
+                                    mDialogPlus.dismiss();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
         changeToRecordBegin();
     }
 
@@ -201,7 +246,8 @@ public class MakeGamePanelView extends RelativeLayout {
 
     DialogPlus mDialogPlus;
 
-    public void showByDialog() {
+    public void showByDialog(int roomId) {
+        this.mRoomID = roomId;
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);
         }

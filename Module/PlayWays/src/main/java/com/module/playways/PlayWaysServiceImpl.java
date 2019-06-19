@@ -114,7 +114,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public void tryGoCreateRoom() {
         if(true)
         {
-            new MakeGamePanelView(U.getActivityUtils().getTopActivity()).showByDialog();
+            new MakeGamePanelView(U.getActivityUtils().getTopActivity()).showByDialog(1);
             return;
         }
         if (mJoinRoomDisposable != null && !mJoinRoomDisposable.isDisposed()) {

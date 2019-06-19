@@ -87,7 +87,7 @@ public class RecommendSongView extends FrameLayout {
                         if (mMakeGamePanelView == null) {
                             mMakeGamePanelView = new MakeGamePanelView(getContext());
                         }
-                        mMakeGamePanelView.showByDialog();
+                        mMakeGamePanelView.showByDialog(1);
                     }else{
                         EventBus.getDefault().post(new AddSongEvent(model));
                     }
