@@ -12,6 +12,22 @@ public class DoubleUnlockUserInfoPushEvent {
     List<LocalUserLockInfo> userLockInfo;
     boolean enableNoLimitDuration; //开启没有限制的持续时间
 
+    public BasePushInfo getBasePushInfo() {
+        return basePushInfo;
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public List<LocalUserLockInfo> getUserLockInfo() {
+        return userLockInfo;
+    }
+
+    public boolean isEnableNoLimitDuration() {
+        return enableNoLimitDuration;
+    }
+
     public DoubleUnlockUserInfoPushEvent(BasePushInfo basePushInfo, UnlockUserInfoMsg unlockUserInfoMsg) {
         this.basePushInfo = basePushInfo;
         roomID = unlockUserInfoMsg.getRoomID();

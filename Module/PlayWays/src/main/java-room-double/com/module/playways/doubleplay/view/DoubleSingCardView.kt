@@ -1,5 +1,6 @@
 package com.module.playways.doubleplay.view
 
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
@@ -41,7 +42,7 @@ class DoubleSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mCutSongTv = parentView?.findViewById(com.module.playways.R.id.cut_song_tv)
     }
 
-    fun playLyric(avatar: String = "", mCur: SongModel?, mNext: SongModel?) {
+    fun playLyric(avatar: String = "", mCur: SongModel?, mNext: String?) {
         AvatarUtils.loadAvatarByUrl(mSongOwnerIv,
                 AvatarUtils.newParamsBuilder(avatar)
                         .setBorderColor(U.getColor(R.color.white))
@@ -66,11 +67,11 @@ class DoubleSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     MyLog.e(TAG, it)
                 })
 
-        if (mNext == null) {
+        if (TextUtils.isEmpty(mNext)) {
             mNextSongTipTv?.text = "没有歌曲啦～"
             mCutSongTv?.text = "去点歌"
         } else {
-            mNextSongTipTv?.text = "下一首" + mNext.itemName
+            mNextSongTipTv?.text = mNext
             mCutSongTv?.text = "切歌"
         }
     }

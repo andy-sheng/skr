@@ -2,14 +2,11 @@ package com.module.playways.grab.room.songmanager.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.component.busilib.callback.EmptyCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -22,9 +19,6 @@ import com.module.playways.grab.room.songmanager.presenter.GrabWishSongPresenter
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.relation.callback.FansEmptyCallback;
-import com.zq.relation.callback.FollowEmptyCallback;
-import com.zq.relation.callback.FriendsEmptyCallback;
 
 import java.util.List;
 
@@ -44,27 +38,10 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
 
     LoadService mLoadService;
 
-    boolean hasInit;
-
     public GrabSongWishView(Context context, GrabRoomData grabRoomData) {
         super(context);
         mGrabRoomData = grabRoomData;
         mGrabWishSongPresenter = new GrabWishSongPresenter(this, mGrabRoomData);
-        initView();
-    }
-
-    public GrabSongWishView(@NonNull Context context) {
-        super(context);
-        initView();
-    }
-
-    public GrabSongWishView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    public GrabSongWishView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
         initView();
     }
 
@@ -98,15 +75,14 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mGrabWishSongPresenter.getListMusicSuggested();
+                mGrabWishSongPresenter.getListMusicSuggested(mWishSongAdapter.getDataList().size());
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+                mGrabWishSongPresenter.getListMusicSuggested(0);
             }
         });
-
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new GrabWishEmptyCallback())
@@ -114,19 +90,11 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
         mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                mGrabWishSongPresenter.getListMusicSuggested();
+                mGrabWishSongPresenter.getListMusicSuggested(0);
             }
         });
-
-
+        mGrabWishSongPresenter.getListMusicSuggested(0);
     }
-
-    public void initSuggestedMusicList() {
-        if (!hasInit) {
-            mGrabWishSongPresenter.getListMusicSuggested();
-        }
-    }
-
 
     public void destroy() {
         if (mGrabWishSongPresenter != null) {
@@ -134,15 +102,22 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
         }
     }
 
+    public void tryLoad() {
+        if (mWishSongAdapter.getDataList().isEmpty()) {
+            mGrabWishSongPresenter.getListMusicSuggested(0);
+        }
+    }
+
     @Override
-    public void addGrabWishSongModels(List<GrabWishSongModel> grabWishSongModels) {
-        hasInit = true;
+    public void addGrabWishSongModels(int fromOffset, List<GrabWishSongModel> grabWishSongModels) {
+        if (fromOffset == 0) {
+            mWishSongAdapter.getDataList().clear();
+        }
         mRefreshLayout.finishLoadMore();
         if (grabWishSongModels != null && grabWishSongModels.size() > 0) {
             mWishSongAdapter.getDataList().addAll(grabWishSongModels);
             mWishSongAdapter.notifyDataSetChanged();
         }
-
         if (mWishSongAdapter.getDataList() != null && mWishSongAdapter.getDataList().size() > 0) {
             // 没有更多了
             mLoadService.showSuccess();
@@ -163,4 +138,5 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
             mLoadService.showCallback(GrabWishEmptyCallback.class);
         }
     }
+
 }

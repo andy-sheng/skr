@@ -55,7 +55,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     ExTextView mSearchSongIv;
     OwnerViewPagerTitleView mOwnerTitleView;
     ViewPager mViewpager;
-    List<RecommendSongView> mRecommendSongViews = new ArrayList<>();
+    //    List<RecommendSongView> mRecommendSongViews = new ArrayList<>();
     GrabSongManageView mGrabSongManageView;
     GrabSongWishView mGrabSongWishView;
     DialogPlus mEditRoomDialog;
@@ -65,7 +65,6 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     PagerAdapter mPagerAdapter;
 
     GrabRoomData mRoomData;
-    boolean isOwner;    //是否是房主
 
     @Override
     public int initView() {
@@ -80,7 +79,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mOwnerTitleView = (OwnerViewPagerTitleView) mRootView.findViewById(R.id.owner_title_view);
         mViewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
         mOwnerTitleView.setViewPager(mViewpager);
-        mViewpager.setOffscreenPageLimit(100);
+//        mViewpager.setOffscreenPageLimit(100);
         mCommonTitleBar.getCenterTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -130,7 +129,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     @Override
     public void showRoomName(String roomName) {
         mCommonTitleBar.getCenterTextView().setText(roomName);
-        if (isOwner) {
+        if (mRoomData.isOwner()) {
             Drawable drawable = U.getDrawable(R.drawable.ycdd_edit_roomname_icon);
             drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
             mCommonTitleBar.getCenterTextView().setCompoundDrawables(null, null, drawable, null);
@@ -141,28 +140,23 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         }
     }
 
+    /**
+     * 得到所有类别
+     *
+     * @param recommendTagModelList
+     */
     @Override
     public void showRecommendSong(List<RecommendTagModel> recommendTagModelList) {
         if (recommendTagModelList == null || recommendTagModelList.size() == 0) {
             return;
         }
 
-        for (RecommendSongView recommendSongView : mRecommendSongViews) {
-            recommendSongView.destroy();
-        }
-        mRecommendSongViews.clear();
+//        for (RecommendSongView recommendSongView : mRecommendSongViews) {
+//            recommendSongView.destroy();
+//        }
+//        mRecommendSongViews.clear();
 
-        if (isOwner) {
-            if (mGrabSongManageView != null) {
-                mGrabSongManageView.destroy();
-            }
-            mGrabSongManageView = new GrabSongManageView(getActivity(), mRoomData);
-
-            if (mGrabSongWishView != null) {
-                mGrabSongWishView.destroy();
-            }
-            mGrabSongWishView = new GrabSongWishView(getContext(), mRoomData);
-
+        if (mRoomData.isOwner()) {
             RecommendTagModel recommendModel = new RecommendTagModel();
             recommendModel.setType(-1);
             recommendModel.setName("愿望歌单");
@@ -187,29 +181,29 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
                 View view = null;
-                if (isOwner) {
+                if (mRoomData.isOwner()) {
                     if (position == 0) {
+                        if (mGrabSongManageView == null) {
+                            mGrabSongManageView = new GrabSongManageView(getContext(), mRoomData);
+                        }
                         view = mGrabSongManageView;
-                        mGrabSongManageView.initPlayBookList();
                     } else if (position == 1) {
+                        if (mGrabSongWishView == null) {
+                            mGrabSongWishView = new GrabSongWishView(getContext(), mRoomData);
+                        }
+                        mGrabSongWishView.setTag(position);
                         view = mGrabSongWishView;
                     } else {
-                        // TODO: 2019-06-19 需要优化
-                        RecommendSongView recommendSongView = new RecommendSongView(getActivity(), isOwner);
                         RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
-                        recommendSongView.setData(recommendTagModel);
+                        RecommendSongView recommendSongView = new RecommendSongView(getActivity(), mRoomData, recommendTagModel);
+                        recommendSongView.setTag(position);
                         view = recommendSongView;
-                        mRecommendSongViews.add(recommendSongView);
                     }
                 } else {
-                    RecommendSongView recommendSongView = new RecommendSongView(getActivity(), isOwner);
                     RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
-                    recommendSongView.setData(recommendTagModel);
-                    if (position == 0) {
-                        recommendSongView.initSongList();
-                    }
+                    RecommendSongView recommendSongView = new RecommendSongView(getActivity(), mRoomData, recommendTagModel);
+                    recommendSongView.setTag(position);
                     view = recommendSongView;
-                    mRecommendSongViews.add(recommendSongView);
                 }
 
                 if (container.indexOfChild(view) == -1) {
@@ -238,16 +232,15 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
             @Override
             public void onPageSelected(int position) {
-                if (isOwner) {
-                    if (position == 0) {
-                        mGrabSongManageView.initPlayBookList();
-                    } else if (position == 1) {
-                        mGrabSongWishView.initSuggestedMusicList();
-                    } else {
-                        mRecommendSongViews.get(position - 2).initSongList();
+                View view = mViewpager.findViewWithTag(position);
+                if (view != null) {
+                    if (view instanceof RecommendSongView) {
+                        ((RecommendSongView) view).tryLoad();
+                    } else if (view instanceof GrabSongWishView) {
+                        ((GrabSongWishView) view).tryLoad();
+                    } else if (view instanceof GrabSongManageView) {
+                        ((GrabSongManageView) view).tryLoad();
                     }
-                } else {
-                    mRecommendSongViews.get(position).initSongList();
                 }
             }
 
@@ -268,7 +261,6 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         super.setData(type, data);
         if (type == 0) {
             mRoomData = (GrabRoomData) data;
-            isOwner = mRoomData.isOwner();
         }
     }
 
@@ -323,9 +315,9 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     @Override
     public void destroy() {
         super.destroy();
-        for (RecommendSongView recommendSongView : mRecommendSongViews) {
-            recommendSongView.destroy();
-        }
+//        for (RecommendSongView recommendSongView : mRecommendSongViews) {
+//            recommendSongView.destroy();
+//        }
 
         if (mGrabSongManageView != null) {
             mGrabSongManageView.destroy();

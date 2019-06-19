@@ -29,8 +29,11 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.songmanager.event.AddCustomGameEvent;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.HashMap;
@@ -218,27 +221,30 @@ public class MakeGamePanelView extends RelativeLayout {
      */
     private void uploadAudioRes() {
         if (TextUtils.isEmpty(mUploadUrl)) {
-            mUploading = true;
-            mUploadTask = UploadParams.newBuilder(mMakeAudioFilePath)
-                    .setFileType(UploadParams.FileType.customGame)
-                    .startUploadAsync(new UploadCallback() {
-                @Override
-                public void onProgress(long currentSize, long totalSize) {
+            if (!mUploading) {
+                mUploading = true;
+                mUploadTask = UploadParams.newBuilder(mMakeAudioFilePath)
+                        .setFileType(UploadParams.FileType.customGame)
+                        .startUploadAsync(new UploadCallback() {
+                            @Override
+                            public void onProgress(long currentSize, long totalSize) {
 
-                }
+                            }
 
-                @Override
-                public void onSuccess(String url) {
-                    mUploadUrl = url;
-                    sendToServer();
-                    mUploading = false;
-                }
+                            @Override
+                            public void onSuccess(String url) {
+                                mUploadUrl = url;
+                                sendToServer();
+                                mUploading = false;
+                            }
 
-                @Override
-                public void onFailure(String msg) {
-                    mUploading = false;
-                }
-            });
+                            @Override
+                            public void onFailure(String msg) {
+                                mUploading = false;
+                                U.getToastUtil().showShort("上传失败");
+                            }
+                        });
+            }
         } else {
             sendToServer();
         }
@@ -264,6 +270,7 @@ public class MakeGamePanelView extends RelativeLayout {
                 public void process(ApiResult obj) {
                     if (obj.getErrno() == 0) {
                         U.getToastUtil().showShort("添加成功");
+                        EventBus.getDefault().post(new AddCustomGameEvent());
                         // 刷新ui
                         if (mDialogPlus != null) {
                             mDialogPlus.dismiss();

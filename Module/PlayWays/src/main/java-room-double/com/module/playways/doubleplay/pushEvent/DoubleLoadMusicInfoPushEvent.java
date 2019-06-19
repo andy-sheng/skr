@@ -9,6 +9,18 @@ public class DoubleLoadMusicInfoPushEvent {
     LocalCombineRoomMusic currentMusic;
     String nextMusicDesc;
 
+    public BasePushInfo getBasePushInfo() {
+        return basePushInfo;
+    }
+
+    public LocalCombineRoomMusic getCurrentMusic() {
+        return currentMusic;
+    }
+
+    public String getNextMusicDesc() {
+        return nextMusicDesc;
+    }
+
     public DoubleLoadMusicInfoPushEvent(BasePushInfo basePushInfo, LoadMusicInfoMsg loadMusicInfoMsg) {
         this.basePushInfo = basePushInfo;
         currentMusic = new LocalCombineRoomMusic(loadMusicInfoMsg.getCurrentMusic());
