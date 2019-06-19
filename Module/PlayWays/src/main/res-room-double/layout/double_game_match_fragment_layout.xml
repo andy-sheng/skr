@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#404A9A">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/exImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bl_gradient_angle="270"
+        app:bl_gradient_endColor="#592F75"
+        app:bl_gradient_startColor="#271123" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="@dimen/view_154_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_122_dp"
+        android:gravity="center"
+        android:text="取消匹配"
+        android:textColor="#FF8AB6"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="@color/transparent"
+        app:bl_stroke_color="#FF8AB6"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/exImageView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
