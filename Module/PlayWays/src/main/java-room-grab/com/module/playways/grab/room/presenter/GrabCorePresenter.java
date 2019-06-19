@@ -20,8 +20,8 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.player.ExoPlayer;
+import com.common.player.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -392,8 +392,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                 @Override
-                public void onPrepared(long duration) {
-                    super.onPrepared(duration);
+                public void onPrepared() {
+                    super.onPrepared();
                     if (!now.isParticipant() && now.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
                         MyLog.d(TAG, "这轮刚进来，导唱需要seek");
                         mExoPlayer.seekTo(now.getElapsedTimeMs());
@@ -893,7 +893,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mExoPlayer.startPlay(skrerUrl);
         mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
             @Override
-            public void onPrepared(long duration) {
+            public void onPrepared() {
                 if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
                     MyLog.d(TAG, "进来时已经时演唱阶段了，则机器人资源要seek一下 " + grabRoundInfoModel.getElapsedTimeMs());
                     mExoPlayer.seekTo(grabRoundInfoModel.getElapsedTimeMs());

@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.songmanager.customgame;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -9,11 +10,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.common.log.MyLog;
+import com.common.player.IPlayer;
+import com.common.player.MyMediaPlayer;
+import com.common.player.VideoPlayerAdapter;
+import com.common.recorder.MyMediaRecorder;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -25,6 +32,7 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.io.File;
 import java.util.HashMap;
 
 import okhttp3.MediaType;
@@ -37,6 +45,7 @@ public class MakeGamePanelView extends RelativeLayout {
     static final int STATUS_IDLE = 1;
     static final int STATUS_RECORDING = 2;
     static final int STATUS_RECORD_OK = 3;
+    static final int STATUS_RECORD_PLAYING = 4;
 
     TextView mTitleTv;
     TextView mDescTv;
@@ -54,6 +63,18 @@ public class MakeGamePanelView extends RelativeLayout {
     long mBeginRecordingTs = 0;
     int mPlayTimeExpect = 60;
     int mRoomID;
+
+    MyMediaRecorder mMyMediaRecorder;
+
+    String mUploadUrl;
+
+    String mMakeAudioFilePath = new File(U.getAppInfoUtils().getMainDir(), "make_game_intro.aac").getPath();
+
+    UploadTask mUploadTask;
+
+    boolean mUploading = false;
+
+    IPlayer mMediaPlayer;
 
     public MakeGamePanelView(Context context) {
         super(context);
@@ -108,6 +129,14 @@ public class MakeGamePanelView extends RelativeLayout {
                                 mStatus = STATUS_RECORD_OK;
                                 changeToRecordOk();
                             }
+                        } else if (mStatus == STATUS_RECORD_OK) {
+                            mStatus = STATUS_RECORD_PLAYING;
+                            mPlayBtn.setImageResource(R.drawable.make_game_zanting);
+                            playRecorderRes(true);
+                        } else if (mStatus == STATUS_RECORD_PLAYING) {
+                            mStatus = STATUS_RECORD_OK;
+                            mPlayBtn.setImageResource(R.drawable.make_game_bofang);
+                            playRecorderRes(false);
                         }
                         break;
                 }
@@ -156,33 +185,93 @@ public class MakeGamePanelView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 // 调研录音
-                // 上传提交
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("roomID", mRoomID);
-                map.put("standIntro", "http://www.baidu.com");
-                map.put("standIntroEndT", 20);
-                map.put("totalMs", mPlayTimeExpect * 1000);
-
-                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-                GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-                if (grabRoomServerApi != null) {
-                    ApiMethods.subscribe(grabRoomServerApi.addCustomGame(body), new ApiObserver<ApiResult>() {
-                        @Override
-                        public void process(ApiResult obj) {
-                            if(obj.getErrno()==0){
-                                 U.getToastUtil().showShort("添加成功");
-                                 // 刷新ui
-                                if (mDialogPlus != null) {
-                                    mDialogPlus.dismiss();
-                                }
-                            }
-                        }
-                    });
-                }
+                uploadAudioRes();
             }
         });
         changeToRecordBegin();
+    }
+
+    private void playRecorderRes(boolean play) {
+        if (play) {
+            if (mMediaPlayer == null) {
+                mMediaPlayer = new MyMediaPlayer();
+                mMediaPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                    @Override
+                    public void onCompletion() {
+                        super.onCompletion();
+                        mMediaPlayer.reset();
+                        mStatus = STATUS_RECORD_OK;
+                        mPlayBtn.setImageResource(R.drawable.make_game_bofang);
+                    }
+                });
+            }
+            mMediaPlayer.startPlay(mMakeAudioFilePath);
+        } else {
+            if (mMediaPlayer != null) {
+                mMediaPlayer.reset();
+            }
+        }
+    }
+
+    /**
+     * 上传音频资源
+     */
+    private void uploadAudioRes() {
+        if (TextUtils.isEmpty(mUploadUrl)) {
+            mUploading = true;
+            mUploadTask = UploadParams.newBuilder(mMakeAudioFilePath)
+                    .setFileType(UploadParams.FileType.customGame)
+                    .startUploadAsync(new UploadCallback() {
+                @Override
+                public void onProgress(long currentSize, long totalSize) {
+
+                }
+
+                @Override
+                public void onSuccess(String url) {
+                    mUploadUrl = url;
+                    sendToServer();
+                    mUploading = false;
+                }
+
+                @Override
+                public void onFailure(String msg) {
+                    mUploading = false;
+                }
+            });
+        } else {
+            sendToServer();
+        }
+    }
+
+    /**
+     * 传到服务器
+     */
+    public void sendToServer() {
+        // 上传提交
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", mRoomID);
+        map.put("standIntro", mUploadUrl);
+        map.put("standIntroEndT", mMyMediaRecorder.getDuration());
+        map.put("totalMs", mPlayTimeExpect * 1000);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+        if (grabRoomServerApi != null) {
+            ApiMethods.subscribe(grabRoomServerApi.addCustomGame(body), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        U.getToastUtil().showShort("添加成功");
+                        // 刷新ui
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                }
+            }, new ApiMethods.RequestControl("addCustomGame", ApiMethods.ControlType.CancelThis));
+        }
     }
 
     HandlerTaskTimer mHandlerTaskTimer;
@@ -192,6 +281,9 @@ public class MakeGamePanelView extends RelativeLayout {
             mHandlerTaskTimer.dispose();
         }
         mCountDownTv.setText("15s");
+        if (mMyMediaRecorder != null) {
+            mMyMediaRecorder.stop();
+        }
     }
 
     private void startCountDown() {
@@ -205,6 +297,10 @@ public class MakeGamePanelView extends RelativeLayout {
                         mCountDownTv.setText(t);
                     }
                 });
+        if (mMyMediaRecorder == null) {
+            mMyMediaRecorder = MyMediaRecorder.newBuilder().build();
+        }
+        mMyMediaRecorder.start(mMakeAudioFilePath);
     }
 
     private void changeToRecordOk() {
@@ -242,6 +338,15 @@ public class MakeGamePanelView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         cancelCountDown();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+        }
+        if (mMyMediaRecorder != null) {
+            mMyMediaRecorder.destroy();
+        }
+        if (mUploadTask != null) {
+            mUploadTask.cancel();
+        }
     }
 
     DialogPlus mDialogPlus;

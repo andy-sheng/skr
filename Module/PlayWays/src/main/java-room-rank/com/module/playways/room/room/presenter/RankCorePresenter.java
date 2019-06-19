@@ -13,7 +13,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
-import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.ExoPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;

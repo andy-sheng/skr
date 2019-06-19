@@ -1,4 +1,4 @@
-package com.common.player.exoplayer;
+package com.common.player;
 
 import android.net.Uri;
 import android.os.Handler;
@@ -10,10 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.player.BasePlayer;
-import com.common.player.IPlayerCallback;
-import com.common.player.event.PlayerEvent;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -45,12 +41,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.IOException;
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Created by chengsimin on 2017/6/1.
@@ -78,12 +69,10 @@ public class ExoPlayer extends BasePlayer {
     private int videoWidth = 0;
     private int videoHeight = 0;
     private float mShiftUp = 0;
-    private long mDuration = 0;
     private View mView;
     private float mVolume = 1.0f;
     private boolean mPreparedFlag = false;
     private boolean mMuted = false;
-    private HandlerTaskTimer mMusicTimePlayTimeListener;
 
     public ExoPlayer() {
         TAG += hashCode();
@@ -155,12 +144,11 @@ public class ExoPlayer extends BasePlayer {
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_READY:
                         if (mCallback != null) {
-                            mCallback.onPrepared(-1);
+                            mCallback.onPrepared();
                         } else {
                             mPreparedFlag = true;
                         }
                         setVolume(1);
-                        MyLog.d(TAG, "onPrepared 总时长:" + mDuration);
                         break;
                     default:
                         break;
@@ -380,7 +368,7 @@ public class ExoPlayer extends BasePlayer {
         this.mCallback = callback;
         if (callback != null) {
             if (mPreparedFlag) {
-                callback.onPrepared(mDuration);
+                callback.onPrepared();
                 mPreparedFlag = false;
             }
         }
@@ -530,7 +518,7 @@ public class ExoPlayer extends BasePlayer {
 
     @Override
     public void setDecreaseVolumeEnd(boolean b) {
-        enableDecreaseVolume = b;
+        mEnableDecreaseVolume = b;
     }
 
     @Override
@@ -561,7 +549,6 @@ public class ExoPlayer extends BasePlayer {
             mUrlChange = false;
             mPlayer.prepare(mMediaSource, true, false);
         }
-        mDuration = 0;
         mPlayer.setPlayWhenReady(true);
         startMusicPlayTimeListener();
     }
@@ -642,57 +629,5 @@ public class ExoPlayer extends BasePlayer {
     public void reconnect() {
 
     }
-
-    private void startMusicPlayTimeListener() {
-        if (mMusicTimePlayTimeListener != null) {
-            mMusicTimePlayTimeListener.dispose();
-        }
-        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder().interval(1000)
-                .start(new Observer<Integer>() {
-                    long duration = -1;
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        long currentPostion = getCurrentPosition();
-                        if (duration < 0) {
-                            duration = getDuration();
-                        }
-                        PlayerEvent.TimeFly engineEvent = new PlayerEvent.TimeFly();
-                        engineEvent.totalDuration = duration;
-                        engineEvent.curPostion = currentPostion;
-                        EventBus.getDefault().post(engineEvent);
-
-                        if (enableDecreaseVolume && mDuration <= 0) {
-                            mDuration = duration;
-                            if (mDuration > 10 * 1000) {
-                                mHandler.removeMessages(MSG_DECREASE_VOLUME);
-                                mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, mDuration - currentPostion - 3000);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    private void stopMusicPlayTimeListener() {
-        if (mMusicTimePlayTimeListener != null) {
-            mMusicTimePlayTimeListener.dispose();
-        }
-    }
-
 
 }

@@ -1,4 +1,4 @@
-package com.common.player.mediaplayer;
+package com.common.player;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -9,21 +9,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.player.BasePlayer;
-import com.common.player.IPlayerCallback;
-import com.common.player.IPlayerNotSupport;
-import com.common.player.event.PlayerEvent;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.google.android.exoplayer2.C;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.io.IOException;
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 /**
  * 有的手机播放本地 aac 会没法播放，一 start 立马回调 onCompletion
@@ -44,13 +34,10 @@ public class AndroidMediaPlayer extends BasePlayer {
     private int videoWidth = 0;
     private int videoHeight = 0;
     private float mShiftUp = 0;
-    private long mDuration;
     private float mVolume = 1.0f;
     private View mView;
 
     private boolean mPreparedFlag = false;
-
-    private HandlerTaskTimer mMusicTimePlayTimeListener;
 
     private long resetTs = 0;
     private long startTs = 0;
@@ -61,7 +48,7 @@ public class AndroidMediaPlayer extends BasePlayer {
 
     public AndroidMediaPlayer() {
         TAG += hashCode();
-        MyLog.w(TAG, "ExoPlayer()");
+        MyLog.w(TAG, "AndroidMediaPlayer()");
         initializePlayer();
     }
 
@@ -105,22 +92,21 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                MyLog.d(TAG,"onPrepared begin");
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
                 setVolume(1);
-                mDuration = mp.getDuration();
                 if (mCallback != null) {
-                    mCallback.onPrepared(mDuration);
+                    mCallback.onPrepared();
                 }
-                if (enableDecreaseVolume) {
+                if (mEnableDecreaseVolume) {
+                    //mDuration = mp.getDuration();
                     mHandler.removeMessages(MSG_DECREASE_VOLUME);
-                    if(mDuration>10*1000){
-                        mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, mDuration - 3000);
-                    }
+                    mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME,5000);
                 }
                 startTs = System.currentTimeMillis();
-                MyLog.d(TAG, "onPrepared 总时长:" + mDuration);
+
             }
         });
         mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -160,7 +146,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         this.mCallback = callback;
         if (callback != null) {
             if (mPreparedFlag) {
-                callback.onPrepared(mDuration);
+                callback.onPrepared();
                 mPreparedFlag = false;
             }
         }
@@ -449,47 +435,5 @@ public class AndroidMediaPlayer extends BasePlayer {
         mIPlayerNotSupport = l;
     }
 
-    private void startMusicPlayTimeListener() {
-        if (mMusicTimePlayTimeListener != null) {
-            mMusicTimePlayTimeListener.dispose();
-        }
-        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder().interval(1000)
-                .start(new Observer<Integer>() {
-                    long duration = -1;
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        long currentPostion = getCurrentPosition();
-                        if (duration < 0) {
-                            duration = getDuration();
-                        }
-                        PlayerEvent.TimeFly engineEvent = new PlayerEvent.TimeFly();
-                        engineEvent.totalDuration = duration;
-                        engineEvent.curPostion = currentPostion;
-                        EventBus.getDefault().post(engineEvent);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    private void stopMusicPlayTimeListener() {
-        if (mMusicTimePlayTimeListener != null) {
-            mMusicTimePlayTimeListener.dispose();
-        }
-    }
 
 }
