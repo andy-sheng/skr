@@ -72,6 +72,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import model.RelationNumModel;
 
@@ -112,10 +113,10 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     private static final int CONSTELLATION_TAG = 3;      //星座标签
     private static final int FANS_NUM_TAG = 4;      //粉丝数标签
 
-    private List<String> mTags = new ArrayList<>();  //标签
+    private List<TagModel> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
 
-    TagAdapter<String> mTagAdapter;
+    TagAdapter<TagModel> mTagAdapter;
 
     PhotoAdapter mPhotoAdapter;
 
@@ -344,13 +345,20 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
 
-        mTagAdapter = new TagAdapter<String>(mTags) {
+        mTagAdapter = new TagAdapter<TagModel>(mTags) {
             @Override
-            public View getView(FlowLayout parent, int position, String o) {
-                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_center_business_tag,
-                        mFlowlayout, false);
-                tv.setText(o);
-                return tv;
+            public View getView(FlowLayout parent, int position, TagModel tagModel) {
+                if (tagModel.type != CHARMS_TAG) {
+                    ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_center_business_tag,
+                            mFlowlayout, false);
+                    tv.setText(tagModel.getContent());
+                    return tv;
+                } else {
+                    ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_card_charm_tag,
+                            mFlowlayout, false);
+                    tv.setText(tagModel.getContent());
+                    return tv;
+                }
             }
         };
         mFlowlayout.setAdapter(mTagAdapter);
@@ -736,23 +744,41 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         if (mHashMap != null) {
 
             if (!TextUtils.isEmpty(mHashMap.get(CHARMS_TAG))) {
-                mTags.add(mHashMap.get(CHARMS_TAG));
+                mTags.add(new TagModel(CHARMS_TAG, mHashMap.get(CHARMS_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
-                mTags.add(mHashMap.get(LOCATION_TAG));
+                mTags.add(new TagModel(LOCATION_TAG, mHashMap.get(LOCATION_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(CONSTELLATION_TAG))) {
-                mTags.add(mHashMap.get(CONSTELLATION_TAG));
+                mTags.add(new TagModel(CONSTELLATION_TAG, mHashMap.get(CONSTELLATION_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
-                mTags.add(mHashMap.get(FANS_NUM_TAG));
+                mTags.add(new TagModel(FANS_NUM_TAG, mHashMap.get(FANS_NUM_TAG)));
             }
 
         }
         mTagAdapter.setTagDatas(mTags);
         mTagAdapter.notifyDataChanged();
+    }
+
+    class TagModel {
+        String content;
+        int type;
+
+        public TagModel(int type, String content) {
+            this.type = type;
+            this.content = content;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 }
