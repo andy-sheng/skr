@@ -194,6 +194,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
                     } else if (position == 1) {
                         view = mGrabSongWishView;
                     } else {
+                        // TODO: 2019-06-19 需要优化
                         RecommendSongView recommendSongView = new RecommendSongView(getActivity(), isOwner);
                         RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
                         recommendSongView.setData(recommendTagModel);

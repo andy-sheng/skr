@@ -32,8 +32,12 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
     lateinit var mPagerAdapter: PagerAdapter
     lateinit var mListener: Listener
     lateinit var mBeautyVp: ViewPager
-    var mShowOrHideAnimator: Animator?=null
-    var mPlaceHolderView:View? = null
+    var mShowOrHideAnimator: Animator? = null
+    var mPlaceHolderView: View? = null
+
+    private var mBeautyView: BeautyFiterStickerView? = null
+    private var mFiterView: BeautyFiterStickerView? = null
+    private var mStickerView: BeautyFiterStickerView? = null
 
     override fun init(parentView: View?) {
         mBeautyTitleStl = mParentView.findViewById(R.id.beauty_title_stl);
@@ -55,25 +59,31 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 if (position == 0) {
                     // 美颜
-                    var mBeautyFiterPaterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY), mListener)
-                    if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
-                        container.addView(mBeautyFiterPaterView)
+                    if (mBeautyView == null) {
+                        mBeautyView = BeautyFiterStickerView(mBeautyVp.context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY), mListener)
                     }
-                    return mBeautyFiterPaterView
+                    if (container.indexOfChild(mBeautyView) == -1) {
+                        container.addView(mBeautyView)
+                    }
+                    return mBeautyView!!
                 } else if (position == 1) {
-                    var mBeautyFiterPaterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_FITER, getViewModel(TYPE_FITER), mListener)
-                    if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
-                        container.addView(mBeautyFiterPaterView)
-                    }
-                    return mBeautyFiterPaterView
                     // 滤镜
-                } else if (position == 2) {
-                    var mBeautyFiterPaterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_PATER, getViewModel(TYPE_PATER), mListener)
-                    if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
-                        container.addView(mBeautyFiterPaterView)
+                    if (mFiterView == null) {
+                        mFiterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_FITER, getViewModel(TYPE_FITER), mListener)
                     }
-                    return mBeautyFiterPaterView
+                    if (container.indexOfChild(mFiterView) == -1) {
+                        container.addView(mFiterView)
+                    }
+                    return mFiterView!!
+                } else if (position == 2) {
                     // 贴纸
+                    if (mStickerView == null) {
+                        mStickerView = BeautyFiterStickerView(mBeautyVp.context, TYPE_PATER, getViewModel(TYPE_PATER), mListener)
+                    }
+                    if (container.indexOfChild(mStickerView) == -1) {
+                        container.addView(mStickerView)
+                    }
+                    return mStickerView!!
                 }
                 return super.instantiateItem(container, position)
             }
@@ -106,7 +116,7 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
         mBeautyTitleStl.setViewPager(mBeautyVp)
         mPagerAdapter?.notifyDataSetChanged()
         mPlaceHolderView = mParentView.findViewById(R.id.place_holder_view)
-        mPlaceHolderView?.setOnClickListener(object:DebounceViewClickListener(){
+        mPlaceHolderView?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 hide()
             }
@@ -157,9 +167,9 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
         tryInflate()
         mShowOrHideAnimator?.cancel()
 
-        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView,View.TRANSLATION_Y,mParentView.height.toFloat(),0f)
+        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView, View.TRANSLATION_Y, mParentView.height.toFloat(), 0f)
         mShowOrHideAnimator?.setDuration(300)
-        mShowOrHideAnimator?.addListener(object :AnimatorListenerAdapter(){
+        mShowOrHideAnimator?.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)
                 mParentView.visibility = View.VISIBLE
@@ -173,9 +183,9 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
         //tryInflate()
         mShowOrHideAnimator?.cancel()
 
-        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView,View.TRANSLATION_Y,0f,mParentView.height.toFloat())
+        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView, View.TRANSLATION_Y, 0f, mParentView.height.toFloat())
         mShowOrHideAnimator?.setDuration(300)
-        mShowOrHideAnimator?.addListener(object :AnimatorListenerAdapter(){
+        mShowOrHideAnimator?.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)
                 mParentView.visibility = View.VISIBLE
@@ -195,7 +205,7 @@ class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
     }
 
     fun onBackPressed(): Boolean {
-        if(mParentView!=null && mParentView.visibility == View.VISIBLE){
+        if (mParentView != null && mParentView.visibility == View.VISIBLE) {
             hide()
             return true
         }

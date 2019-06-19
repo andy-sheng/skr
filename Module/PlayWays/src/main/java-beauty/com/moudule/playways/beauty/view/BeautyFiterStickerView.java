@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class BeautyFiterStickerView extends FrameLayout {
 
-    public final static String TAG = "BeautyFiterPaterView";
+    public final static String TAG = "BeautyFiterStickerView";
 
     RecyclerView mRecyclerView;
     SeekBar mProgressBar;
