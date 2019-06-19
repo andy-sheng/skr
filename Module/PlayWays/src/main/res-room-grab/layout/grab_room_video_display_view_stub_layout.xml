@@ -5,15 +5,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--视频开始-->
-    <TextureView
-        android:id="@+id/main_video_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <View
+        android:id="@+id/place_view"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <!--视频开始-->
+    <TextureView
+        android:id="@+id/main_video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/left_avatar_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/right_avatar_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/left_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_38_dp"
+        android:gravity="center"
+        android:text="表演者溜走了"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/place_view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/right_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_38_dp"
+        android:gravity="center"
+        android:text="表演者溜走了"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/place_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/left_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_12_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_5_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@id/main_video_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/right_name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/right_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_12_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_5_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@id/main_video_view"
+        app:layout_constraintLeft_toRightOf="@id/left_name_tv"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <!-- open 模式  margin 是64 close 模式是 78-->
     <com.module.playways.grab.room.view.SingCountDownView2
@@ -38,36 +125,6 @@
         app:bl_solid_color="#5C67C1"
         app:layout_constraintLeft_toRightOf="@id/sing_count_down_view"
         app:layout_constraintTop_toTopOf="@id/sing_count_down_view" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/left_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_marginBottom="@dimen/view_12_dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_3_dp"
-        android:paddingRight="@dimen/view_3_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/black_trans_20"
-        app:layout_constraintBottom_toBottomOf="@id/main_video_view"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/right_name_tv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/right_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_marginBottom="@dimen/view_12_dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_3_dp"
-        android:paddingRight="@dimen/view_3_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/black_trans_20"
-        app:layout_constraintBottom_toBottomOf="@id/main_video_view"
-        app:layout_constraintLeft_toRightOf="@id/left_name_tv"
-        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
 

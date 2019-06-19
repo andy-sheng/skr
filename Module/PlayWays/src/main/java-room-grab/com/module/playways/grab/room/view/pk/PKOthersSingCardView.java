@@ -15,7 +15,7 @@ import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
 import com.module.playways.R;

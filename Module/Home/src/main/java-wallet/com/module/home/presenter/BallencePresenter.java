@@ -163,20 +163,20 @@ public class BallencePresenter extends RxLifeCyclePresenter {
                     String orderInfo = obj.getData().getString("paySign");
                     mPayApi.pay(new AliPayReq(orderInfo));
                 } else {
-                    ToastUtils.showShort(obj.getErrmsg());
+                    U.getToastUtil().showShort(obj.getErrmsg());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, "rechargeAliPay onError" + " e=" + e);
-                ToastUtils.showShort("获取订单失败，请重试");
+                U.getToastUtil().showShort("获取订单失败，请重试");
             }
 
             @Override
             public void onNetworkError(ErrorType errorType) {
                 MyLog.e(TAG, "rechargeAliPay net onError");
-                ToastUtils.showShort("网络超时，请重试");
+                U.getToastUtil().showShort("网络超时，请重试");
             }
         }, this);
     }
@@ -206,20 +206,20 @@ public class BallencePresenter extends RxLifeCyclePresenter {
                     String prepayID = obj.getData().getString("prepayID");
                     mPayApi.pay(new WxPayReq(prepayID, sign, orderID));
                 } else {
-                    ToastUtils.showShort(obj.getErrmsg());
+                    U.getToastUtil().showShort(obj.getErrmsg());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, "rechargeAliPay onError" + " e=" + e);
-                ToastUtils.showShort("获取订单失败，请重试");
+                U.getToastUtil().showShort("获取订单失败，请重试");
             }
 
             @Override
             public void onNetworkError(ErrorType errorType) {
                 MyLog.e(TAG, "rechargeAliPay net onError");
-                ToastUtils.showShort("网络超时，请重试");
+                U.getToastUtil().showShort("网络超时，请重试");
             }
         }, this);
     }

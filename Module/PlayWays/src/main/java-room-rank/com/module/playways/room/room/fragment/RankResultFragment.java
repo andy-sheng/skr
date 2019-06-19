@@ -14,7 +14,7 @@ import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.ExoPlayer;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;

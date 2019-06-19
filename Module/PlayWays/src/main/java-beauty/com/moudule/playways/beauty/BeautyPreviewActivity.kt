@@ -24,6 +24,12 @@ class BeautyPreviewActivity : BaseActivity() {
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .build())
+        hasCreate = true
+    }
+
+    override fun finish() {
+        super.finish()
+        hasCreate = false
     }
 
     override fun useEventBus(): Boolean {
@@ -32,5 +38,10 @@ class BeautyPreviewActivity : BaseActivity() {
 
     override fun canSlide(): Boolean {
         return false
+    }
+
+    companion object {
+        @JvmField
+        var hasCreate: Boolean = false
     }
 }

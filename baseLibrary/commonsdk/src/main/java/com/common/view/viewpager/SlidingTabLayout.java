@@ -106,6 +106,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private int mTabViewTextViewId;
     private int mDistributeMode = DISTRIBUTE_MODE_NONE;
     private float titleSize = 0;
+    private float selectedTitleSize = 0;
     private ViewPager mViewPager;
     private SparseArray<String> mContentDescriptions = new SparseArray<String>();
     private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
@@ -170,6 +171,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     public void setTitleSize(float titleSize) {
         this.titleSize = titleSize;
+    }
+
+    public void setSelectedTilleSize(float selectedTitleSize) {
+        this.selectedTitleSize = selectedTitleSize;
     }
 
     /**
@@ -319,6 +324,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
             mTabStrip.addView(tabView);
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
+                if (selectedTitleSize > 0) {
+                    tabTitleView.setTextSize(selectedTitleSize);
+                }
             }
 
             if (isTabAsDividerMode() && i == adapter.getCount() - 1) {

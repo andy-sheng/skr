@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package com.zq.live.proto.CombineRoom;
+
+import "Common.proto";
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ CombineRoom.proto
+
+*/
+
+// 联合[双人]房信令消息
+message CombineRoomMsg
+{
+    sint64 timeMs               = 1; //房间消息产生时间，单位毫秒
+    ECombineRoomMsgType msgType = 2; //消息类型
+    uint32 roomID               = 3; //房间ID
+
+    PickMsg pickMsg                                       = 10;
+    StartCombineRoomByMatchMsg startCombineRoomByMatchMsg = 11; //通过匹配开始双人房
+    EndCombineRoomMsg endCombineRoomMsg                   = 12; //结束双人房
+    UnlockUserInfoMsg unlockUserInfoMsg                   = 13; //解锁用户信息
+    LoadMusicInfoMsg loadMusicInfoMsg                     = 14; //加载歌曲信息
+    CombineRoomSyncStatusMsg syncStatusMsg                           = 15; //同步状态
+}
+
+// ECombineRoomMsgType 房间消息类型
+enum ECombineRoomMsgType {
+    DRM_UNKNOWN = 0; //未知消息
+
+    DRM_PICK                        = 1; //pick类型
+    DRM_START_COMBINE_ROOM_BY_MATCH = 2; //通过匹配开始双人房
+    DRM_END_COMBINE_ROOM            = 3; //结束双人房
+    DRM_UNLOCK_USER_INFO            = 4; //解锁用户信息
+    DRM_LOAD_MUSIC_INFO             = 5; //加载歌曲信息
+    DRM_SYNC_STATUS                 = 6; //同步状态
+}
+
+message CombineRoomSyncStatusMsg
+{
+    sint64 syncStatusTimeMs            = 1; //状态同步时的毫秒时间戳
+    sint64 passedTimeMs                = 2; //房间已经经历的毫秒数
+    repeated UserLockInfo userLockInfo = 3;
+    bool enableNoLimitDuration         = 4; //开启没有限制的持续时间
+    CombineRoomMusic currentMusic      = 5;
+    string nextMusicDesc               = 6;
+}
+
+message CombineRoomMusic
+{
+    Common.MusicInfo Music = 1; //当前歌曲
+    uint32 userID   = 2; //点歌用户id
+}
+
+message LoadMusicInfoMsg
+{
+    CombineRoomMusic currentMusic = 1;
+    string nextMusicDesc          = 2;
+}
+
+message UserLockInfo
+{
+    uint32 userID = 1; //解锁信息的用户ID
+    bool hasLock  = 2;
+}
+
+message UnlockUserInfoMsg
+{
+    uint32 roomID                      = 1; //房间ID
+    repeated UserLockInfo userLockInfo = 2;
+    bool enableNoLimitDuration         = 3; //开启没有限制的持续时间
+}
+
+message PickMsg
+{
+    uint32 fromPickUserID = 1; //pick发出者
+    uint32 toPickUserID   = 2; //pick接受者
+}
+
+message StartCombineRoomByMatchMsg
+{
+    uint32 roomID                  = 2; //房间ID
+    sint64 createdTimeMs           = 3; //房间创建的时间戳
+    sint64 passedTimeMs            = 4; //房间已经经历的毫秒数
+    repeated Common.UserInfo users        = 5; //玩家信息
+    Common.CombineRoomConfig config       = 6; //配置信息
+    repeated Common.AgoraTokenInfo tokens = 7; //声网token
+    bool needMaskUserInfo          = 8; //是否需要隐藏用户信息
+}
+
+message EndCombineRoomMsg
+{
+    uint32 roomID                  = 1; //房间ID
+    ECombineRoomCloseReason reason = 2; //关闭原因
+    uint32 exitUserID              = 3;
+    uint32 noResponseUserID        = 4;
+}
+
+enum ECombineRoomCloseReason {
+    DRCR_UNKNOWN          = 0; //未知
+    DRCR_USER_EXIT        = 1; //用户退出
+    DRCR_END_COUNTDOWN    = 2; //倒计时结束
+    DRCR_USER_NO_RESPONSE = 3; //用户无响应
+}

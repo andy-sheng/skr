@@ -12,7 +12,7 @@ import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;

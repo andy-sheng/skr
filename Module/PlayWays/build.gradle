@@ -96,8 +96,8 @@ android {
             java.srcDirs += 'src/main/java-beauty'
             res.srcDirs += 'src/main/res-beauty'
 
-//            java.srcDirs += 'src/main/java-guide'
-//            res.srcDirs += 'src/main/res-guide'
+            java.srcDirs += 'src/main/java-room-double'
+            res.srcDirs += 'src/main/res-room-double'
         }
     }
 }

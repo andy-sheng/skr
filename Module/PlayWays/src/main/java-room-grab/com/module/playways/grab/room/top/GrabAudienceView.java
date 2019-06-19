@@ -70,7 +70,7 @@ public class GrabAudienceView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabWaitSeatUpdateEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
-        mWaitInfoModelList.clear();
+        //mWaitInfoModelList.clear();
         if (event.list != null) {
             mWaitInfoModelList.addAll(event.list);
         }
@@ -108,7 +108,7 @@ public class GrabAudienceView extends RelativeLayout {
             GrabRoundInfoModel grabRoundInfoModel = grabRoomData.getExpectRoundInfo();
             if (grabRoundInfoModel != null) {
                 List<GrabPlayerInfoModel> l = grabRoundInfoModel.getWaitUsers();
-                mWaitInfoModelList.clear();
+                //mWaitInfoModelList.clear();
                 mWaitInfoModelList.addAll(l);
                 updateAllView();
             }

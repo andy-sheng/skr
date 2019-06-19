@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/grab_top_content_view"
-        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:layout_marginTop="-135dp"
         android:visibility="gone"
         />
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/grab_top_content_view"
-        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:layout_marginTop="-135dp"
         android:visibility="gone"/>
 
     <ViewStub
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/grab_top_content_view"
-        android:layout_marginTop="@dimen/view_d_185_dp"
+        android:layout_marginTop="-135dp"
         android:visibility="gone"/>
 
 </merge>

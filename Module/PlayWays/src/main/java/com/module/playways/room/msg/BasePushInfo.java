@@ -1,5 +1,6 @@
 package com.module.playways.room.msg;
 
+import com.zq.live.proto.CombineRoom.CombineRoomMsg;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.RoomMsg;
@@ -22,6 +23,16 @@ public class BasePushInfo {
         info.setNo(msg.getNo());
         info.setPosType(msg.getPosType());
         info.setSender(msg.getSender());
+        return info;
+    }
+
+    public static BasePushInfo parse(CombineRoomMsg msg) {
+        BasePushInfo info = new BasePushInfo();
+        info.setTimeMs(msg.getTimeMs());
+        info.setRoomID(msg.getRoomID());
+//        info.setNo(msg.get());
+//        info.setPosType(msg.getPosType());
+//        info.setSender(msg.getSender());
         return info;
     }
 

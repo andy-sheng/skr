@@ -1,8 +1,6 @@
 package com.common.player;
 
 import android.graphics.SurfaceTexture;
-import android.net.Uri;
-import android.os.Environment;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -10,9 +8,6 @@ import android.view.TextureView;
 import android.view.View;
 
 import com.common.log.MyLog;
-import com.common.player.exoplayer.ExoPlayer;
-
-import java.io.File;
 
 /**
  * 职责：
@@ -206,10 +201,10 @@ public class VideoPlayerAdapter {
          * 如果是prestart的话 播放器中会缓存这个标记，等到 setCallback 时会调用
          */
         @Override
-        public void onPrepared(long duration) {
+        public void onPrepared() {
             MyLog.d(TAG, "onPrepared");
             if (mOutPlayerCallback != null) {
-                mOutPlayerCallback.onPrepared(duration);
+                mOutPlayerCallback.onPrepared();
             }
         }
 
@@ -464,7 +459,7 @@ public class VideoPlayerAdapter {
     public static class PlayerCallbackAdapter implements IPlayerCallback {
 
         @Override
-        public void onPrepared(long duration) {
+        public void onPrepared() {
 
         }
 

@@ -14,6 +14,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
@@ -25,9 +26,11 @@ import org.greenrobot.eventbus.EventBus;
 public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
 
     boolean isOwner;
+    RecyclerOnItemClickListener<SongModel> mListener;
 
-    public RecommendSongAdapter(boolean isOwner) {
+    public RecommendSongAdapter(boolean isOwner, RecyclerOnItemClickListener<SongModel> l) {
         this.isOwner = isOwner;
+        this.mListener = l;
     }
 
     Drawable pk = new DrawableCreator.Builder()
@@ -94,7 +97,9 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
             mSelectTv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    EventBus.getDefault().post(new AddSongEvent(mSongModel));
+                    if (mListener != null) {
+                        mListener.onItemClicked(v,-1,mSongModel);
+                    }
                 }
             });
         }

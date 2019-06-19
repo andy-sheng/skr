@@ -42,4 +42,9 @@ public class OwnerManagerActivity extends BaseActivity {
     public boolean useEventBus() {
         return false;
     }
+
+    @Override
+    public boolean canSlide() {
+        return false;
+    }
 }

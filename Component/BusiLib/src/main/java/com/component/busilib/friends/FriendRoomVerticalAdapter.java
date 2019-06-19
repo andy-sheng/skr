@@ -13,7 +13,7 @@ public class FriendRoomVerticalAdapter extends DiffAdapter<RecommendModel, Frien
 
     RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 
-    public FriendRoomVerticalAdapter(RecyclerOnItemClickListener mOnItemClickListener) {
+    public FriendRoomVerticalAdapter(RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 

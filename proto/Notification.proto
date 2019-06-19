@@ -63,3 +63,20 @@ enum EMsgPosType {
     EPT_TOP = 3; // 页面上方
     EPT_BOTTOM = 4; // 页面底部
 }
+
+message CombineRoomSendInviteUserMsg
+{
+    Common.UserInfo user = 1; //发起邀请的用户详情
+}
+
+message CombineRoomSyncInviteUserMsg
+{
+    uint32 roomID                  = 2; //房间ID
+    sint64 createdTimeMs           = 3; //房间创建的时间戳
+    sint64 passedTimeMs            = 4; //房间已经经历的毫秒数
+    repeated Common.UserInfo users        = 5; //玩家信息
+    Common.CombineRoomConfig config       = 6; //配置信息
+    repeated Common.AgoraTokenInfo tokens = 7; //声网token
+    bool needMaskUserInfo          = 8; //是否需要隐藏用户信息
+}
+

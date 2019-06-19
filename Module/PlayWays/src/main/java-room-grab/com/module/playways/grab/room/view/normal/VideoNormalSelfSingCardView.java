@@ -9,7 +9,7 @@ import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 
@@ -72,7 +72,7 @@ public class VideoNormalSelfSingCardView extends ExViewStub {
 
         int totalTs = infoModel.getSingTotalMs();
         boolean withAcc = false;
-        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
+        if (infoModel.isAccRound() && mRoomData.isAccEnable() || infoModel.isPKRound()) {
             withAcc = true;
         }
         if (!withAcc) {

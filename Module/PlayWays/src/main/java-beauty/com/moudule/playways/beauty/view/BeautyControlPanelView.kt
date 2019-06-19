@@ -1,24 +1,26 @@
 package com.moudule.playways.beauty.view
 
-import android.content.Context
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.v4.view.PagerAdapter
-import android.util.AttributeSet
+import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
+import android.view.ViewStub
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
+import com.common.view.ExViewStub
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.viewpager.SlidingTabLayout
-
 import com.module.playways.R
-import kotlinx.android.synthetic.main.beauty_control_panel_view_layout.view.*
 
 /**
  * 美颜、滤镜和贴纸的控制面板
  */
-class BeautyControlPanelView : RelativeLayout {
+class BeautyControlPanelView(viewStub: ViewStub?) : ExViewStub(viewStub) {
 
     companion object {
         const val TYPE_BEAUTY = 1     // 美颜
@@ -26,29 +28,29 @@ class BeautyControlPanelView : RelativeLayout {
         const val TYPE_PATER = 3      // 贴纸
     }
 
-    var mPagerAdapter: PagerAdapter? = null
-
+    lateinit var mBeautyTitleStl: SlidingTabLayout
+    lateinit var mPagerAdapter: PagerAdapter
     lateinit var mListener: Listener
+    lateinit var mBeautyVp: ViewPager
+    var mShowOrHideAnimator: Animator? = null
+    var mPlaceHolderView: View? = null
 
-    constructor(context: Context) : super(context) {}
+    private var mBeautyView: BeautyFiterStickerView? = null
+    private var mFiterView: BeautyFiterStickerView? = null
+    private var mStickerView: BeautyFiterStickerView? = null
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    override fun init(parentView: View?) {
+        mBeautyTitleStl = mParentView.findViewById(R.id.beauty_title_stl);
+        mBeautyTitleStl.setCustomTabView(R.layout.beauty_tab_view, R.id.tab_tv)
+        mBeautyTitleStl.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
+        mBeautyTitleStl.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
+        mBeautyTitleStl.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
+        mBeautyTitleStl.setIndicatorWidth(U.getDisplayUtils().dip2px(56f))
+        mBeautyTitleStl.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(13f))
+        mBeautyTitleStl.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
+        mBeautyTitleStl.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
-
-    init {
-        View.inflate(context, R.layout.beauty_control_panel_view_layout, this)
-    }
-
-    fun initData(){
-        beauty_title_stl.setCustomTabView(R.layout.beauty_tab_view, R.id.tab_tv)
-        beauty_title_stl.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
-        beauty_title_stl.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
-        beauty_title_stl.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
-        beauty_title_stl.setIndicatorWidth(U.getDisplayUtils().dip2px(56f))
-        beauty_title_stl.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(13f))
-        beauty_title_stl.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
-        beauty_title_stl.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
+        mBeautyVp = mParentView.findViewById(R.id.beauty_vp);
         mPagerAdapter = object : PagerAdapter() {
             override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
                 container.removeView(`object` as View)
@@ -57,25 +59,31 @@ class BeautyControlPanelView : RelativeLayout {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 if (position == 0) {
                     // 美颜
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY), mListener)
-                    if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
-                        container.addView(mBeautyFiterPaterView)
+                    if (mBeautyView == null) {
+                        mBeautyView = BeautyFiterStickerView(mBeautyVp.context, TYPE_BEAUTY, getViewModel(TYPE_BEAUTY), mListener)
                     }
-                    return mBeautyFiterPaterView
+                    if (container.indexOfChild(mBeautyView) == -1) {
+                        container.addView(mBeautyView)
+                    }
+                    return mBeautyView!!
                 } else if (position == 1) {
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_FITER, getViewModel(TYPE_FITER), mListener)
-                    if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
-                        container.addView(mBeautyFiterPaterView)
-                    }
-                    return mBeautyFiterPaterView
                     // 滤镜
-                } else if (position == 2) {
-                    var mBeautyFiterPaterView = BeautyFiterPaterView(context, TYPE_PATER, getViewModel(TYPE_PATER), mListener)
-                    if (container.indexOfChild(mBeautyFiterPaterView) == -1) {
-                        container.addView(mBeautyFiterPaterView)
+                    if (mFiterView == null) {
+                        mFiterView = BeautyFiterStickerView(mBeautyVp.context, TYPE_FITER, getViewModel(TYPE_FITER), mListener)
                     }
-                    return mBeautyFiterPaterView
+                    if (container.indexOfChild(mFiterView) == -1) {
+                        container.addView(mFiterView)
+                    }
+                    return mFiterView!!
+                } else if (position == 2) {
                     // 贴纸
+                    if (mStickerView == null) {
+                        mStickerView = BeautyFiterStickerView(mBeautyVp.context, TYPE_PATER, getViewModel(TYPE_PATER), mListener)
+                    }
+                    if (container.indexOfChild(mStickerView) == -1) {
+                        container.addView(mStickerView)
+                    }
+                    return mStickerView!!
                 }
                 return super.instantiateItem(container, position)
             }
@@ -104,14 +112,24 @@ class BeautyControlPanelView : RelativeLayout {
             }
         }
 
-        beauty_vp.setAdapter(mPagerAdapter)
-        beauty_title_stl.setViewPager(beauty_vp)
+        mBeautyVp.setAdapter(mPagerAdapter)
+        mBeautyTitleStl.setViewPager(mBeautyVp)
         mPagerAdapter?.notifyDataSetChanged()
+        mPlaceHolderView = mParentView.findViewById(R.id.place_holder_view)
+        mPlaceHolderView?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                hide()
+            }
+        })
     }
+
+    override fun layoutDesc(): Int {
+        return R.layout.beauty_control_panel_view_stub_layout
+    }
+
 
     fun setListener(listener: Listener) {
         mListener = listener
-        initData()
     }
 
     fun getViewModel(type: Int): List<BeautyViewModel> {
@@ -143,6 +161,55 @@ class BeautyControlPanelView : RelativeLayout {
                 .setStrokeWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setCornersRadius(U.getDisplayUtils().dip2px(22f).toFloat())
                 .build()
+    }
+
+    fun show() {
+        tryInflate()
+        mShowOrHideAnimator?.cancel()
+
+        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView, View.TRANSLATION_Y, mParentView.height.toFloat(), 0f)
+        mShowOrHideAnimator?.setDuration(300)
+        mShowOrHideAnimator?.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                super.onAnimationStart(animation)
+                mParentView.visibility = View.VISIBLE
+            }
+        })
+        mShowOrHideAnimator?.start()
+    }
+
+
+    fun hide() {
+        //tryInflate()
+        mShowOrHideAnimator?.cancel()
+
+        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView, View.TRANSLATION_Y, 0f, mParentView.height.toFloat())
+        mShowOrHideAnimator?.setDuration(300)
+        mShowOrHideAnimator?.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                super.onAnimationStart(animation)
+                mParentView.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                super.onAnimationEnd(animation, isReverse)
+                mParentView.visibility = View.GONE
+            }
+        })
+        mShowOrHideAnimator?.start()
+    }
+
+    override fun onViewDetachedFromWindow(v: View?) {
+        super.onViewDetachedFromWindow(v)
+        mShowOrHideAnimator?.cancel()
+    }
+
+    fun onBackPressed(): Boolean {
+        if (mParentView != null && mParentView.visibility == View.VISIBLE) {
+            hide()
+            return true
+        }
+        return false
     }
 
     interface Listener {

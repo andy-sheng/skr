@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_315_dp"
+    android:layout_marginLeft="@dimen/view_32_dp"
+    android:layout_marginRight="@dimen/view_32_dp">
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_solid_color="#FFC15B" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/song_owner_iv"
+        android:layout_width="@dimen/view_26_dp"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="《简单爱》"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_18_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/song_owner_iv"
+        app:layout_constraintStart_toEndOf="@+id/song_owner_iv"
+        app:layout_constraintTop_toTopOf="@+id/song_owner_iv" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="song_name_tv,song_owner_iv" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_186_dp"
+        android:layout_marginLeft="@dimen/view_32_dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="@dimen/view_32_dp"
+        app:layout_constraintTop_toBottomOf="@+id/barrier">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/lyric_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:lineSpacingExtra="@dimen/view_16_dp"
+            android:text="我想大声宣布 对你依依不舍 连隔壁邻居都猜到我现在的感受 河边的风在吹着头发飘动 牵着你的手一阵莫名感动 我想带你到我外婆家一起"
+            android:textColor="#ff000000"
+            android:textSize="@dimen/textsize_16_dp" />
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
+    <TextView
+        android:id="@+id/next_song_tip_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="下一首"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/cut_song_tv"
+        android:layout_width="@dimen/view_67_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="切歌"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@+id/next_song_tip_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/next_song_tip_tv" />
+
+</android.support.constraint.ConstraintLayout>

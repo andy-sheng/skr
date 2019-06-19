@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_132_dp"
+    android:layout_height="@dimen/view_144_dp"
+    android:layout_marginLeft="@dimen/view_12_dp"
     android:layout_marginTop="@dimen/view_8_dp"
+    android:layout_marginRight="@dimen/view_12_dp"
     android:layout_marginBottom="@dimen/view_8_dp"
-    android:background="@drawable/grab_friend_room_bg">
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#D0EFFF"
+    app:bl_stroke_color="#697CDB"
+    app:bl_stroke_width="@dimen/view_1_dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_43_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_25_dp"
         android:orientation="horizontal">
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -38,7 +45,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/view_10_dp"
             android:background="@drawable/recommend_more_user"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -47,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:text="4/12"
         android:textColor="#803B4E79"
@@ -57,7 +64,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/view_71_dp"
+        android:layout_marginTop="@dimen/view_87_dp"
         android:alpha="0.2"
         android:background="#3B4E79" />
 
@@ -66,7 +73,7 @@
         android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_16_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_90_dp"
+        android:layout_marginTop="@dimen/view_108_dp"
         android:gravity="center" />
 
     <com.common.view.ex.ExTextView
@@ -76,7 +83,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_marginBottom="@dimen/view_25_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
         android:gravity="center"
         android:text="中华小曲库"
         android:textColor="@color/textColorPrimary"
@@ -86,9 +93,10 @@
         android:id="@+id/tips_tv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_22_dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_6_dp"
-        android:layout_marginTop="@dimen/view_86_dp"
         android:layout_marginRight="@dimen/view_6_dp"
+        android:layout_marginBottom="@dimen/view_18_dp"
         android:layout_toLeftOf="@id/room_info_tv"
         android:layout_toRightOf="@id/recommend_tag_sdv"
         android:ellipsize="end"

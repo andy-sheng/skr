@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -338,7 +337,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
-                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_card_tag_textview,
+                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_center_business_tag,
                         mFlowlayout, false);
                 tv.setText(o);
                 return tv;

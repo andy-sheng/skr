@@ -1,12 +1,6 @@
 package com.module.home.persenter;
 
-import android.os.Handler;
-
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.common.anim.ObjectPlayControlTemplate;
-import com.common.callback.Callback;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -14,36 +8,21 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import model.RelationNumModel;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
-import com.common.upload.UploadCallback;
-import com.common.upload.UploadParams;
-import com.common.upload.UploadTask;
-import com.common.utils.U;
 import com.module.home.view.IPersonView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.common.core.userinfo.model.UserLevelModel;
-import com.respicker.model.ImageItem;
-import com.zq.person.model.PhotoModel;
-import com.zq.person.photo.PhotoDataManager;
-import com.zq.person.photo.PhotoLocalApi;
 
+// TODO: 2019-06-19 需要优化，新的设计里面其实只有魅力值需要从服务器去取，等服务器接口优化
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi mUserInfoServerApi;
@@ -104,18 +83,18 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getRelationNums() {
-        ApiMethods.subscribe(mUserInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
-                    mView.showRelationNum(relationNumModels);
-                }
-            }
-        }, this);
-
-    }
+//    public void getRelationNums() {
+//        ApiMethods.subscribe(mUserInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                if (result.getErrno() == 0) {
+//                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
+//                    mView.showRelationNum(relationNumModels);
+//                }
+//            }
+//        }, this);
+//
+//    }
 
     @Override
     public void destroy() {

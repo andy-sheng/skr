@@ -197,7 +197,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.showShort("购买礼物失败");
+                        U.getToastUtil().showShort("购买礼物失败");
                     }
 
                     @Override

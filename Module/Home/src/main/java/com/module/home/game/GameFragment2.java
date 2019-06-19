@@ -16,6 +16,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.core.permission.SkrCameraPermission;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
@@ -28,6 +29,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.busilib.beauty.JumpBeautyFromKt;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.component.busilib.view.BitmapTextView;
@@ -75,6 +77,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     GamePresenter mGamePresenter;
 
     SkrAudioPermission mSkrAudioPermission;
+    SkrCameraPermission mCameraPermission;
 
     int mRecommendInterval = 0;
 
@@ -99,6 +102,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mIvRedDot = (ExImageView) mRootView.findViewById(R.id.iv_red_dot);
 
         mSkrAudioPermission = new SkrAudioPermission();
+        mCameraPermission = new SkrCameraPermission();
 
         if (U.getDeviceUtils().hasNotch(getContext())) {
             mTitlebar.setVisibility(View.VISIBLE);
@@ -187,17 +191,37 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void selectSpecial(SpecialModel specialModel) {
                 MyLog.d(TAG, "selectSpecial" + " specialModel=" + specialModel);
-                // TODO: 2019/3/29 选择专场，进入快速匹配
                 if (specialModel != null) {
-                    mSkrAudioPermission.ensurePermission(new Runnable() {
-                        @Override
-                        public void run() {
-                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                            if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
+                    if (specialModel.getTagType() == SpecialModel.TYPE_VIDEO) {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                mCameraPermission.ensurePermission(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 进入视频预览 判断是否实名验证过
+                                        ARouter.getInstance()
+                                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                .withInt("from", JumpBeautyFromKt.FROM_MATCH)
+                                                .withSerializable("SpecialModel", specialModel)
+                                                .navigation();
+                                    }
+                                }, true);
                             }
-                        }
-                    }, true);
+                        }, true);
+                    } else {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                if (iRankingModeService != null) {
+                                    if (specialModel != null) {
+                                        iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
+                                    }
+                                }
+                            }
+                        }, true);
+                    }
                 } else {
 
                 }
@@ -208,16 +232,34 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             public void enterRoom(RecommendModel friendRoomModel) {
                 MyLog.d(TAG, "enterRoom" + " friendRoomModel=" + friendRoomModel);
                 if (friendRoomModel != null) {
-                    mSkrAudioPermission.ensurePermission(new Runnable() {
-                        @Override
-                        public void run() {
-                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                            if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(), 0);
+                    if (friendRoomModel.getMediaType() == SpecialModel.TYPE_VIDEO) {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                mCameraPermission.ensurePermission(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 进入视频预览 判断是否实名验证过
+                                        ARouter.getInstance()
+                                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                .withInt("from", JumpBeautyFromKt.FROM_FRIEND_RECOMMEND)
+                                                .withSerializable("RecommendModel", friendRoomModel)
+                                                .navigation();
+                                    }
+                                }, true);
                             }
-                        }
-                    }, true);
-
+                        }, true);
+                    } else {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                if (iRankingModeService != null) {
+                                    iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(), 0);
+                                }
+                            }
+                        }, true);
+                    }
                 } else {
 
                 }
@@ -231,6 +273,21 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_FRIEND_ROOM)
                         .navigation();
+            }
+
+            @Override
+            public void clickTask() {
+
+            }
+
+            @Override
+            public void clickRank() {
+
+            }
+
+            @Override
+            public void clickPractice() {
+
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

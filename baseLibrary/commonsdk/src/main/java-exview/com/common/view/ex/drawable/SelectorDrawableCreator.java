@@ -1,6 +1,7 @@
 package com.common.view.ex.drawable;
 
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -65,20 +66,20 @@ public class SelectorDrawableCreator implements ICreateDrawable {
 
     private void setSelectorDrawable(TypedArray typedArray, TypedArray selectorTa,
                                      StateListDrawable stateListDrawable, int attr, @AttrRes int functionId) throws Exception {
-        int color = 0;
+        int color = -1;
         Drawable resDrawable = null;
 
         //这里用try catch先判断是否是颜色而不是直接调用getDrawable，为了方便填入的是颜色时可以沿用其他属性,
         //否则如果是其他资源会覆盖app:corners_radius等其他shape属性设置的效果
         try {
-            color = selectorTa.getColor(attr, 0);
-            if (color == 0) {
+            color = selectorTa.getColor(attr, -1);
+            if (color == -1) {
                 resDrawable = selectorTa.getDrawable(attr);
             }
         } catch (Exception e) {
             resDrawable = selectorTa.getDrawable(attr);
         }
-        if (resDrawable == null && color != 0) {
+        if (resDrawable == null && color != -1) {
             GradientDrawable tmpDrawable = DrawableFactory.getDrawable(typedArray);
             tmpDrawable.setColor(color);
             stateListDrawable.addState(new int[]{functionId}, tmpDrawable);

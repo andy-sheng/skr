@@ -28,7 +28,7 @@ public interface RouterConstants {
 
     String ACTIVITY_WALLET = "/home/WalletActivity";
     String ACTIVITY_BALANCE = "/home/BalanceActivity";
-    String ACTIVITY_DIAMOND_BALANCE = "/home/DiamondBalanceActivity";
+    String ACTIVITY_DIAMOND_BALANCE = "/home/DiamondBallanceActivity";
     String ACTIVITY_INCOME = "/home/InComeActivity";
     String ACTIVITY_WITH_DRAW = "/home/WithDrawActivity";
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";
@@ -60,6 +60,8 @@ public interface RouterConstants {
     String ACTIVITY_RECHARGE = "RechargeActivity";
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
 
+    String ACTIVITY_DOUBLE_PLAY = "/rankingmode/DoublePlayActivity";
+
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";
     String ACTIVITY_DEBUG_CORE_ACTIVITY = "/debug/DebugCoreActivity";
@@ -69,6 +71,7 @@ public interface RouterConstants {
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
     String SERVICE_MSG = "/rongmsg/service1";
     String SERVICE_GRAB_SERVICE = "/game/grab_service1";
+    String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
 
 
 }

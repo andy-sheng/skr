@@ -11,6 +11,10 @@ import com.module.playways.grab.room.view.normal.NormalOthersSingCardView;
 import com.module.playways.grab.room.view.pk.PKOthersSingCardView;
 import com.module.playways.R;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class OthersSingCardView {
 
     NormalOthersSingCardView mNormalOthersSingCardView;  // 他人唱歌卡片效果
@@ -95,4 +99,19 @@ public class OthersSingCardView {
         mPKOtherSingCardView.hide();
         mMiniGameOtherSingView.hide();
     }
+
+    public void setTranslateY(int ty) {
+        mChorusOtherSingCardView.setTranslateY(ty);
+        mPKOtherSingCardView.setTranslateY(ty);
+        mMiniGameOtherSingView.setTranslateY(ty);
+    }
+
+    public List<View> getRealViews() {
+        List<View> list = new ArrayList<>();
+        list.add(mChorusOtherSingCardView.getRealView());
+        list.add(mPKOtherSingCardView.getRealView());
+        list.add(mMiniGameOtherSingView.getRealView());
+        return list;
+    }
+
 }

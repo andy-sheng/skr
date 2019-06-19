@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -34,7 +35,10 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.DebugLogView;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
+import com.component.busilib.beauty.JumpBeautyFromKt;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -95,6 +99,7 @@ import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
+import com.moudule.playways.beauty.view.BeautyControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -144,7 +149,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     GrabRoomData mRoomData;
 
-    RelativeLayout mRankingContainer;
+    ExRelativeLayout mRankingContainer;
 
     ExImageView mGrabRoomBgFlag;
 
@@ -222,6 +227,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabVideoDisplayView mGrabVideoDisplayView; // 视频展示view
 
     GrabVideoSelfSingCardView mGrabVideoSelfSingCardView; // 视频模式下 自己演唱时的歌词面板view
+
+    BeautyControlPanelView mBeautyControlPanelView;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -312,7 +319,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         initScoreView();
         initGiftPanelView();
         initVideoView();
-
+        if (MyLog.isDebugLogOpen()) {
+            ViewStub viewStub = mRootView.findViewById(R.id.debug_log_view_stub);
+            DebugLogView debugLogView = new DebugLogView(viewStub);
+            debugLogView.tryInflate();
+        }
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData, (BaseActivity) getActivity());
         addPresent(mCorePresenter);
@@ -340,6 +351,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void run() {
                 onBattleBeginPlayOver();
+                mGrabWidgetAnimationController.open();
             }
         }, 500);
         BgMusicManager.getInstance().setRoom(true);
@@ -367,7 +379,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             tryShowManageSongTipView();
 
         }
-
         enterRoomEvent();
     }
 
@@ -599,14 +610,44 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         {
             ViewStub viewStub = mRootView.findViewById(R.id.grab_video_display_view_stub);
             mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub, mRoomData);
-            mGrabVideoDisplayView.setListener(new SelfSingCardView.Listener() {
+            mGrabVideoDisplayView.setSelfSingCardListener(new SelfSingCardView.Listener() {
                 @Override
                 public void onSelfSingOver() {
                     mCorePresenter.sendRoundOverInfo();
                 }
             });
+            mGrabVideoDisplayView.setListener(new GrabVideoDisplayView.Listener() {
+                @Override
+                public void clickBeautyBtn() {
+                    if (mBeautyControlPanelView != null) {
+                        mBeautyControlPanelView.show();
+                    }
+                }
+            });
         }
         mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView, mRoomData);
+
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.grab_beauty_control_panel_view_stub);
+            mBeautyControlPanelView = new BeautyControlPanelView(viewStub);
+            mBeautyControlPanelView.setListener(new BeautyControlPanelView.Listener() {
+                @Override
+                public void onChangeBeauty(int id, int progress) {
+
+                }
+
+                @Override
+                public void onChangeFiter(int id, int progress) {
+
+                }
+
+                @Override
+                public void onChangePater(int id) {
+
+                }
+            });
+        }
+
     }
 
     private void initInputView() {
@@ -962,7 +1003,29 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void onClickCamera() {
-                ToastUtils.showShort("camera");
+                if(mRoomData.isVideoRoom()){
+                    GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+                    if (grabRoundInfoModel != null) {
+                        for (WantSingerInfo wantSingerInfo :
+                                grabRoundInfoModel.getWantSingInfos()) {
+                            if (wantSingerInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                                return;
+                            }
+                        }
+                    }
+                    // 进入视频预览 判断是否实名验证过
+                    mSkrCameraPermission.ensurePermission(new Runnable() {
+                        @Override
+                        public void run() {
+                            ARouter.getInstance()
+                                    .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                    .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
+                                    .navigation();
+                        }
+                    },true);
+                }else{
+                    U.getToastUtil().showShort("只在视频房间才能开启视频设置");
+                }
             }
         });
         mGrabTopContentView.setListener(new GrabTopContentView.Listener() {
@@ -1518,6 +1581,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
 
         if (mGiftPanelView.onBackPressed()) {
+            return true;
+        }
+        if (mBeautyControlPanelView.onBackPressed()) {
             return true;
         }
         quitGame();

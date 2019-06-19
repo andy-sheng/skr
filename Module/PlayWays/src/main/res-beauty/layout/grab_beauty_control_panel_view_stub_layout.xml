@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/place_holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/beauty_title_stl" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_168_dp"
+        android:background="#404A9A"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.common.view.viewpager.SlidingTabLayout
+        android:id="@+id/beauty_title_stl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/view_60_dp"
+        android:layout_marginRight="@dimen/view_60_dp"
+        app:layout_constraintBottom_toTopOf="@+id/beauty_vp" />
+
+    <com.common.view.viewpager.NestViewPager
+        android:id="@+id/beauty_vp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_marginLeft="@dimen/view_9_dp"
+        android:layout_marginRight="@dimen/view_9_dp"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -26,7 +26,8 @@ public class RecommendModel implements Serializable {
     private String displayURL;
     private String displayAvatar;
     private String displayDesc;
-    List<PlayUser> playUsers;
+    private List<PlayUser> playUsers;
+    private int mediaType;
 
     public List<PlayUser> getPlayUsers() {
         return playUsers;
@@ -102,6 +103,13 @@ public class RecommendModel implements Serializable {
         this.displayDesc = displayDesc;
     }
 
+    public int getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(int mediaType) {
+        this.mediaType = mediaType;
+    }
 
     @Override
     public String toString() {

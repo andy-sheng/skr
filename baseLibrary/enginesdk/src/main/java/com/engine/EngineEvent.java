@@ -144,10 +144,46 @@ public class EngineEvent {
         }
     }
 
+    String getTypeDesc(int type){
+        switch (type){
+            case TYPE_USER_SELF_JOIN_SUCCESS:
+                return "SELF_JOIN_SUCCESS";
+            case TYPE_USER_JOIN:
+                return "USER_JOIN";
+            case TYPE_USER_LEAVE:
+                return "USER_LEAVE";
+            case TYPE_FIRST_REMOTE_VIDEO_DECODED:
+                return "FIRST_REMOTE_VIDEO_DECODED";
+            case TYPE_USER_MUTE_AUDIO:
+                return "MUTE_AUDIO";
+            case TYPE_USER_MUTE_VIDEO:
+                return "MUTE_VIDEO";
+            case TYPE_USER_REJOIN:
+                return "REJOIN";
+            case TYPE_USER_ROLE_CHANGE:
+                return "ROLE_CHANGE";
+            case TYPE_USER_VIDEO_ENABLE:
+                return "VIDEO_ENABLE";
+            case TYPE_USER_AUDIO_VOLUME_INDICATION:
+                return "AUDIO_VOLUME_INDICATION";
+            case TYPE_MUSIC_PLAY_START:
+                return "MUSIC_PLAY_START";
+            case TYPE_MUSIC_PLAY_PAUSE:
+                return "MUSIC_PLAY_PAUSE";
+            case TYPE_MUSIC_PLAY_STOP:
+                return "MUSIC_PLAY_STOP";
+            case TYPE_MUSIC_PLAY_FINISH:
+                return "USIC_PLAY_FINISH";
+            case TYPE_ENGINE_DESTROY:
+                return "ENGINE_DESTROY";
+        }
+        return type+"";
+    }
+
     @Override
     public String toString() {
         return "EngineEvent{" +
-                "type=" + type +
+                "type=" + getTypeDesc(type) +
                 " user="+userStatus+
                 '}';
     }

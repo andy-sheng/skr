@@ -137,7 +137,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
             public void clickValid(View v) {
                 float hz = Float.parseFloat(mTvDqNum.getText().toString());
                 if (hz <= 0.0) {
-                    ToastUtils.showShort("无可兑换红钻");
+                    U.getToastUtil().showShort("无可兑换红钻");
                     return;
                 }
 
@@ -185,7 +185,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
             public void clickValid(View v) {
                 float hz = Float.parseFloat(mTvDqNum.getText().toString());
                 if (hz < 1) {
-                    ToastUtils.showShort("红钻数量少于1个无法兑换哦");
+                    U.getToastUtil().showShort("红钻数量少于1个无法兑换哦");
                     return;
                 }
 

@@ -13,7 +13,7 @@ import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.chorus.ChorusSingBeginTipsCardView;
 import com.module.playways.grab.room.view.minigame.MiniGameSingBeginTipsCardView;
 import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView;

@@ -1,12 +1,9 @@
 package com.module.playways.grab.room.view.minigame;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -14,7 +11,6 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.crash.IgnoreException;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -25,7 +21,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.trello.rxlifecycle2.android.ActivityEvent;

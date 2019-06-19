@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/view_355_dp"
+    android:layout_height="@dimen/view_370_dp"
+    android:layout_centerHorizontal="true"
+    app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#D0EFFF">
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_32_dp"
+        android:gravity="center"
+        android:text="一句话描述游戏规则"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_20_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_73_dp"
+        android:gravity="center"
+        android:text="例:互相为对方唱一首情歌"
+        android:textColor="#859EBC"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/count_down_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_131_dp"
+        android:gravity="center"
+        android:text="15s"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_28_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/play_btn"
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_80_dp"
+        android:layout_marginTop="@dimen/view_169_dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/make_game_luyin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.countdown.CircleCountDownView
+        android:id="@+id/circle_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:inner_color="@color/white"
+        app:inner_stroke_raduis="@dimen/view_42_dp"
+        app:inner_stroke_width="@dimen/view_4_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_btn"
+        app:layout_constraintLeft_toLeftOf="@+id/play_btn"
+        app:layout_constraintRight_toRightOf="@+id/play_btn"
+        app:layout_constraintTop_toTopOf="@+id/play_btn" />
+
+
+    <TextView
+        android:id="@+id/recording_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_262_dp"
+        android:gravity="center"
+        android:text="录音中..."
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/re_record_btn"
+        android:layout_width="@dimen/view_152_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:gravity="center"
+        android:text="重录"
+        android:textColor="#AF436B"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_pressed_color="#99FF8AB6"
+        app:bl_shape="rectangle"
+        app:bl_unpressed_color="#FF8AB6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/submit_btn" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/submit_btn"
+        android:layout_width="@dimen/view_152_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:gravity="center"
+        android:text="添加"
+        android:textColor="#AD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_pressed_color="#99FFC15B"
+        app:bl_shape="rectangle"
+        app:bl_unpressed_color="#FFC15B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/re_record_btn"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/time60_btn"
+        android:layout_width="@dimen/view_72_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginTop="@dimen/view_84_dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="60s"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_enabled_drawable="@color/transparent"
+        app:bl_enabled_textColor="#6A83C0"
+        app:bl_shape="rectangle"
+        app:bl_stroke_color="#7B89ED"
+        app:bl_stroke_width="1dp"
+        app:bl_unEnabled_drawable="#7E8AE6"
+        app:bl_unEnabled_textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/time90_btn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/time90_btn"
+        android:layout_width="@dimen/view_72_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:enabled="true"
+        android:gravity="center"
+        android:text="90s"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_enabled_drawable="@color/transparent"
+        app:bl_enabled_textColor="#6A83C0"
+        app:bl_shape="rectangle"
+        app:bl_stroke_color="#7B89ED"
+        app:bl_stroke_width="1dp"
+        app:bl_unEnabled_drawable="#7E8AE6"
+        app:bl_unEnabled_textColor="@color/white"
+        app:layout_constraintLeft_toRightOf="@+id/time60_btn"
+        app:layout_constraintRight_toLeftOf="@+id/time120_btn"
+        app:layout_constraintTop_toTopOf="@+id/time60_btn" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/time120_btn"
+        android:layout_width="@dimen/view_72_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:enabled="true"
+        android:gravity="center"
+        android:text="120s"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_enabled_drawable="@color/transparent"
+        app:bl_enabled_textColor="#6A83C0"
+        app:bl_shape="rectangle"
+        app:bl_stroke_color="#7B89ED"
+        app:bl_stroke_width="1dp"
+        app:bl_unEnabled_drawable="#7E8AE6"
+        app:bl_unEnabled_textColor="@color/white"
+        app:layout_constraintLeft_toRightOf="@+id/time90_btn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/time60_btn" />
+
+</com.common.view.ex.ExConstraintLayout>

@@ -304,7 +304,7 @@ public interface GrabRoomServerApi {
      * @param offset
      * @param count
      */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-tags")
+    @GET("http://dev.api.inframe.mobi/v1/play2ook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
@@ -433,6 +433,58 @@ message STCommitSegmentResultReq
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
     Observable<ApiResult> getListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
 
+
+    /**
+     * 非房主申请点歌
+     * @param body {
+     *             "itemID": 0,
+     *             "roomID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/suggest-music")
+    Observable<ApiResult> suggestMusic(@Body RequestBody body);
+
+
+    /**
+     * 房主获取用户点的歌曲
+     * @param roomID
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @GET("http://dev.room.inframe.mobi/v1/room/list-music-suggested")
+    Observable<ApiResult> getListMusicSuggested(@Query("roomID") int roomID, @Query("offset") int offset, @Query("limit") int limit);
+
+    /**
+     * 房主添加用户点的歌曲
+     * @param body {
+     *             "itemID": 0,
+     *             "roomID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/add-music-suggested")
+    Observable<ApiResult> addSuggestMusic(@Body RequestBody body);
+
+    /**
+     * 房主删除用户点的歌曲
+     * @param body {
+     *             "itemID": 0,
+     *             "roomID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/del-music-suggested")
+    Observable<ApiResult> deleteSuggestMusic(@Body RequestBody body);
+
+    /**
+     * 房主添加自定义小游戏
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/add-custom-game")
+    Observable<ApiResult> addCustomGame(@Body RequestBody body);
 
     /**
      * 礼物60秒打卡

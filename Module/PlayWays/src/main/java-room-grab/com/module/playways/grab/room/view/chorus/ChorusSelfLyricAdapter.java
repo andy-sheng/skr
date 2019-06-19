@@ -27,10 +27,19 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
 
     boolean mLeftGiveUp = false;
     boolean mRightGiveUp = false;
+    boolean mIsForVideo = false;
 
-    public ChorusSelfLyricAdapter(ChorusSelfSingCardView.DH left, ChorusSelfSingCardView.DH right) {
+    int colorDisable = Color.parseColor("#beb19d");
+    int colorEnable = Color.parseColor("#364E7C");
+
+    public ChorusSelfLyricAdapter(ChorusSelfSingCardView.DH left, ChorusSelfSingCardView.DH right,boolean isForVideo) {
         mLeft = left;
         mRight = right;
+        mIsForVideo = isForVideo;
+        if(isForVideo){
+            colorEnable = Color.parseColor("#99ffffff");
+            colorDisable = Color.parseColor("#33ffffff");
+        }
     }
 
     @NonNull
@@ -73,9 +82,6 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
         }
 
     }
-
-    int colorDisable = Color.parseColor("#beb19d");
-    int colorEnable = Color.parseColor("#364E7C");
 
     class ChorusSelfLyricHolder extends RecyclerView.ViewHolder {
 

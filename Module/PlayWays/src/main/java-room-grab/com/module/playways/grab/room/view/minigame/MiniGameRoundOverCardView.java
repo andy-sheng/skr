@@ -11,7 +11,7 @@ import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.ExViewStub;
+import com.common.view.ExViewStub;
 
 public class MiniGameRoundOverCardView extends ExViewStub {
 

@@ -34,6 +34,11 @@ public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
     }
 
     @Override
+    protected boolean isForVideo() {
+        return false;
+    }
+
+    @Override
     protected int layoutDesc() {
         return R.layout.grab_chorus_self_sing_card_stub_layout;
     }

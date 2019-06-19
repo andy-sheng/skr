@@ -20,16 +20,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
-import com.common.base.GlobalParams;
-import com.common.base.InitManager;
-import com.common.base.delegate.AppLifecycles;
 import com.common.base.ConfigModule;
+import com.common.base.GlobalParams;
+import com.common.base.delegate.AppLifecycles;
 import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
 import com.module.playways.room.msg.manager.ChatRoomMsgManager;
+import com.module.playways.room.msg.manager.DoubleRoomMsgManager;
 import com.module.playways.room.msg.process.ChatRoomChatMsgProcess;
 import com.module.playways.room.msg.process.ChatRoomGameMsgProcess;
 import com.module.playways.room.msg.process.ChatRoomMsgProcess;
+import com.module.playways.room.msg.process.DoubleRoomGameMsgProcess;
+import com.module.playways.room.msg.process.DoubleRoomMsgProcess;
 
 import java.util.List;
 
@@ -69,6 +71,9 @@ public class PlayWaysConfiguration implements ConfigModule {
                     msgService.addMsgProcessor(new ChatRoomMsgProcess());
                     ChatRoomMsgManager.getInstance().addChatRoomMsgProcessor(new ChatRoomChatMsgProcess());
                     ChatRoomMsgManager.getInstance().addChatRoomMsgProcessor(new ChatRoomGameMsgProcess());
+
+                    msgService.addMsgProcessor(new DoubleRoomMsgProcess());
+                    DoubleRoomMsgManager.getInstance().addChatRoomMsgProcessor(new DoubleRoomGameMsgProcess());
                 }
             }
 

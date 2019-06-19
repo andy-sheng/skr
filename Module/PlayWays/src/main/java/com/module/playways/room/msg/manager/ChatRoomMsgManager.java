@@ -6,22 +6,14 @@ import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.RoomMsg;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
  * 处理所有的RoomMsg
  */
-public class ChatRoomMsgManager {
+public class ChatRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
 
     public final static String TAG = "ChatRoomMsgManager";
-
-    /**
-     * 消息类型-->消息处理器的映射
-     */
-    private HashMap<ERoomMsgType, HashSet<IPushChatRoomMsgProcess>> mProcessorMap = new HashMap<>();
-
-    private HashSet<PushMsgFilter> mPushMsgFilterList = new HashSet<>();
 
     private static class ChatRoomMsgAdapterHolder {
         private static final ChatRoomMsgManager INSTANCE = new ChatRoomMsgManager();
@@ -33,26 +25,6 @@ public class ChatRoomMsgManager {
 
     public static final ChatRoomMsgManager getInstance() {
         return ChatRoomMsgAdapterHolder.INSTANCE;
-    }
-
-    public synchronized void addChatRoomMsgProcessor(IPushChatRoomMsgProcess processor) {
-        MyLog.d(TAG, "addChatRoomMsgProcessor" + " processor=" + processor);
-        for (ERoomMsgType msgType : processor.acceptType()) {
-            HashSet<IPushChatRoomMsgProcess> processorSet = mProcessorMap.get(msgType);
-            if (processorSet == null) {
-                processorSet = new HashSet<>();
-                mProcessorMap.put(msgType, processorSet);
-            }
-            processorSet.add(processor);
-        }
-    }
-
-    public void addFilter(PushMsgFilter pushMsgFilter) {
-        mPushMsgFilterList.add(pushMsgFilter);
-    }
-
-    public void removeFilter(PushMsgFilter pushMsgFilter) {
-        mPushMsgFilterList.remove(pushMsgFilter);
     }
 
     /**

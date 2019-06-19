@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import android.os.ConditionVariable;
 import android.util.Log;
 import android.view.TextureView;
+import android.view.View;
 
 import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
@@ -75,7 +76,7 @@ public class ImgTexPreview {
         }
     }
 
-    public Object getDisplayPreview() {
+    public View getDisplayPreview() {
         return mGLRender.getCurrentView();
     }
 

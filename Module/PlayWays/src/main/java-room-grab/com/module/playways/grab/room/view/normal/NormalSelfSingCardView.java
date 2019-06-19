@@ -1,17 +1,13 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.SingCountDownView2;
-import com.module.playways.grab.room.view.ExViewStub;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 import com.module.playways.R;

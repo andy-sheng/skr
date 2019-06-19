@@ -120,14 +120,14 @@ public class UserStatus {
         return "UserStatus{" +
                 "userId=" + userId +
 //                ", enterTs=" + enterTs +
-                ", isVideoMute=" + isVideoMute +
-                ", isAudioMute=" + isAudioMute +
+//                ", isVideoMute=" + isVideoMute +
+//                ", isAudioMute=" + isAudioMute +
                 ", isFirstVideoDecoded=" + isFirstVideoDecoded +
-                ", mFirstVideoWidth=" + mFirstVideoWidth +
-                ", mFirstVideoHeight=" + mFirstVideoHeight +
+//                ", mFirstVideoWidth=" + mFirstVideoWidth +
+//                ", mFirstVideoHeight=" + mFirstVideoHeight +
 //                ", isSelf=" + isSelf +
 //                ", mView=" + mView +
-                ", enableVideo=" + enableVideo +
+//                ", enableVideo=" + enableVideo +
 //                ", isAnchor=" + isAnchor +
                 '}';
     }

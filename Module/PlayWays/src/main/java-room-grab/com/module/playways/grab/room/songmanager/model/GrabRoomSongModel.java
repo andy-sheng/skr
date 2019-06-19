@@ -17,12 +17,12 @@ public class GrabRoomSongModel implements Serializable {
      * challengeAvailable : false
      */
 
-    private String itemName;
-    private String owner;
-    private int roundSeq;
-    private int itemID;
-    private int playType;
-    private boolean challengeAvailable;
+    protected String itemName;
+    protected String owner;
+    protected int roundSeq;
+    protected int itemID;
+    protected int playType;
+    protected boolean challengeAvailable;
 
     public String getItemName() {
         return itemName;
@@ -83,5 +83,17 @@ public class GrabRoomSongModel implements Serializable {
             }
         }
         return itemName;
+    }
+
+    @Override
+    public String toString() {
+        return "GrabRoomSongModel{" +
+                "itemName='" + itemName + '\'' +
+                ", owner='" + owner + '\'' +
+                ", roundSeq=" + roundSeq +
+                ", itemID=" + itemID +
+                ", playType=" + playType +
+                ", challengeAvailable=" + challengeAvailable +
+                '}';
     }
 }

@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class GrabWidgetAnimationController {
 
-    static final int OPEN_TYPE_FOR_NORMAL = 1;
+    public static final int OPEN_TYPE_FOR_NORMAL = 1;
 
-    static final int OPEN_TYPE_FOR_LYRIC = 2;
+    public static final int OPEN_TYPE_FOR_LYRIC = 2;
 
     GrabRoomFragment mF;
 
@@ -31,7 +31,7 @@ public class GrabWidgetAnimationController {
         mF = grabRoomFragment;
     }
 
-    private int getTranslateByOpenType() {
+    public int getTranslateByOpenType() {
         if (mOpenType == OPEN_TYPE_FOR_NORMAL) {
             return U.getDisplayUtils().dip2px(32);
         } else if (mOpenType == OPEN_TYPE_FOR_LYRIC) {
@@ -48,6 +48,11 @@ public class GrabWidgetAnimationController {
         open();
     }
 
+    public void openBelowOpView() {
+        mOpenType = OPEN_TYPE_FOR_NORMAL;
+        open();
+    }
+
     public void open() {
         if (mMainAnimatorSet != null && mMainAnimatorSet.isRunning()) {
             mMainAnimatorSet.cancel();
@@ -56,14 +61,20 @@ public class GrabWidgetAnimationController {
         List<View> viewList = new ArrayList<>();
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
-        viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        if(mF.mRoomData.isVideoRoom()){
+            viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        }else{
+            viewList.addAll(mF.mSelfSingCardView.getRealViews());
+            viewList.addAll(mF.mOthersSingCardView.getRealViews());
+        }
+
         List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {
                 ObjectAnimator objectAnimator = null;
                 if (view == mF.mGrabVideoDisplayView.getRealView()) {
                     // 要多下移一个顶部状态栏的高度，才能和 ContentView对齐
-                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() + U.getStatusBarUtil().getStatusBarHeight(U.app()));
+                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() +  mF.mGrabVideoDisplayView.getExtraTranslateYWhenOpen(mOpenType));
                 } else {
                     objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType());
                 }
@@ -116,7 +127,12 @@ public class GrabWidgetAnimationController {
         List<View> viewList = new ArrayList<>();
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
-        viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        if(mF.mRoomData.isVideoRoom()){
+            viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        }else{
+            viewList.addAll(mF.mSelfSingCardView.getRealViews());
+            viewList.addAll(mF.mOthersSingCardView.getRealViews());
+        }
         List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {

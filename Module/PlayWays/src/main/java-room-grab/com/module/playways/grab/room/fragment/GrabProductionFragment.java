@@ -168,9 +168,8 @@ public class GrabProductionFragment extends BaseFragment {
                     // 播放完毕
                     mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                         @Override
-                        public void onPrepared(long duration) {
-                            super.onPrepared(duration);
-                            model.setDuration(duration);
+                        public void onPrepared() {
+                            super.onPrepared();
                         }
 
                         @Override

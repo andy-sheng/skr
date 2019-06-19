@@ -18,8 +18,9 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.player.ExoPlayer;
+import com.common.player.AndroidMediaPlayer;
+import com.common.player.VideoPlayerAdapter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -268,14 +269,10 @@ public class PlayRecordFragment extends BaseFragment {
                 mPlayer = new ExoPlayer();
             }
 
-            mPlayer.setCallback(new IPlayerCallback() {
-                @Override
-                public void onPrepared(long duration) {
-
-                }
-
+            mPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter(){
                 @Override
                 public void onCompletion() {
+                    super.onCompletion();
                     mManyLyricsView.seekto(mSongModel.getBeginMs());
                     mUiHanlder.postDelayed(new Runnable() {
                         @Override
@@ -289,26 +286,6 @@ public class PlayRecordFragment extends BaseFragment {
                     mPlayer.seekTo(0);
                     mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_bofang), null, null);
                     mOptTv.setText("播放");
-                }
-
-                @Override
-                public void onSeekComplete() {
-
-                }
-
-                @Override
-                public void onVideoSizeChanged(int width, int height) {
-
-                }
-
-                @Override
-                public void onError(int what, int extra) {
-
-                }
-
-                @Override
-                public void onInfo(int what, int extra) {
-
                 }
             });
         }

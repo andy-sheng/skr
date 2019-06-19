@@ -11,6 +11,9 @@ import com.module.playways.grab.room.view.normal.NormalSelfSingCardView;
 import com.module.playways.grab.room.view.pk.PKSelfSingCardView;
 import com.module.playways.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SelfSingCardView {
 
     NormalSelfSingCardView mNormalSelfSingCardView;     // 自己唱歌卡片效果
@@ -94,6 +97,22 @@ public class SelfSingCardView {
         mChorusSelfSingCardView.setListener(listener);
         mPKSelfSingCardView.setListener(listener);
         mMiniGameSelfSingView.setListener(listener);
+    }
+
+    public List<View> getRealViews() {
+        List<View> list = new ArrayList<>();
+        list.add(mNormalSelfSingCardView.getRealView());
+        list.add(mChorusSelfSingCardView.getRealView());
+        list.add(mPKSelfSingCardView.getRealView());
+        list.add(mMiniGameSelfSingView.getRealView());
+        return list;
+    }
+
+    public void setTranslateY(float ty) {
+        mChorusSelfSingCardView.setTranslateY(ty);
+        mPKSelfSingCardView.setTranslateY(ty);
+        mMiniGameSelfSingView.setTranslateY(ty);
+        mNormalSelfSingCardView.setTranslateY(ty);
     }
 
     public interface Listener {

@@ -221,12 +221,12 @@ public class GiftPanelView extends FrameLayout {
             @Override
             public void clickValid(View v) {
                 if (mGiftDisplayView.getSelectedGift() == null) {
-                    ToastUtils.showShort("请选择礼物");
+                    U.getToastUtil().showShort("请选择礼物");
                     return;
                 }
 
                 if (mCurMicroMan == null) {
-                    ToastUtils.showShort("请选择送礼对象");
+                    U.getToastUtil().showShort("请选择送礼对象");
                     return;
                 }
 
@@ -239,7 +239,7 @@ public class GiftPanelView extends FrameLayout {
             @Override
             public void clickValid(View v) {
                 if (mCurMicroMan == null) {
-                    ToastUtils.showShort("请选择送礼用户");
+                    U.getToastUtil().showShort("请选择送礼用户");
                     return;
                 }
 
