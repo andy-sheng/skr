@@ -45,6 +45,7 @@ public interface RouterConstants {
     String ACTIVITY_EMOJI = "/test/EmojiActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";
     String ACTIVITY_TEST_VIDEO = "/test/BaseCameraActivity";
+    String ACTIVITY_TEST_BYTED_EFFECT = "/test/WelcomeActivity";
 
     String ACTIVITY_WATCH = "/watch/WatchSdkAcitivity";
     //VideoDetailSdkActivity

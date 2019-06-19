@@ -45,6 +45,7 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
     private int[] mViewPort = new int[4];
 
     protected boolean mReuseFbo = true;
+    protected boolean mIsRender = false;
     protected GLRender mGLRender;
     protected boolean mInited;
     protected int mOutTexture = ImgTexFrame.NO_TEXTURE;
@@ -154,6 +155,25 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         mAutoRefreshFps = fps;
     }
 
+    /**
+     * Get if this module directly render to view.
+     *
+     * @return isRender
+     */
+    public boolean getIsRender() {
+        return mIsRender;
+    }
+
+    /**
+     * Set if this module should render to view.
+     * Take no effect if glRender is based offscreen render.
+     *
+     * @param isRender isRender
+     */
+    public void setIsRender(boolean isRender) {
+        mIsRender = isRender;
+    }
+
     @Override
     public void release() {
         if (mAutoRefreshTimer != null) {
@@ -224,6 +244,32 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
     }
 
     private void render(ImgTexFrame frame) {
+        // render mode
+        if (mIsRender) {
+            try {
+                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+                GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+                ImgTexFilterBase.this.onDraw(mInputFrames);
+            } catch (Exception e) {
+                if (e instanceof GLProgramLoadException) {
+                    sendError(ERROR_LOAD_PROGRAM_FAILED);
+                } else {
+                    sendError(ERROR_UNKNOWN);
+                }
+                Log.e(TAG, "Draw frame error!");
+                e.printStackTrace();
+                return;
+            } finally {
+                if (frame != null) {
+                    // we can only unref fbo if SrcPin is implemented by ImgTexFilterBase
+                    if (mUnRefFbos[mMainSinkPinIndex]) {
+                        frame.unref();
+                    }
+                }
+            }
+            return;
+        }
+
         if (!mSrcPin.isConnected()) {
             return;
         }

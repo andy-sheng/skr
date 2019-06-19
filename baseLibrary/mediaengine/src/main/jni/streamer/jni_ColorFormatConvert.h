@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (Ljava/nio/ByteBuffer;IIILjava/nio/ByteBuffer;)I
  */
 JNIEXPORT jint JNICALL Java_com_zq_mediaengine_util_ColorFormatConvert_YUVAToI420
-        (JNIEnv *, jclass, jobject, jint, jint, jint, jobject);
+  (JNIEnv *env, jobject obj, jobject jsrc, jint rowStride, jint width, jint height, jobject jdest);
 /*
  * Class:     com_zq_mediaengine_util_ColorFormatConvert
  * Method:    RGBAToI420

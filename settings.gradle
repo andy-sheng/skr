@@ -23,4 +23,5 @@ if (arcCloud.toBoolean()) {
 
 include ':baseLibrary:doraemonkit'
 
+include ':baseLibrary:effectsdk'
 

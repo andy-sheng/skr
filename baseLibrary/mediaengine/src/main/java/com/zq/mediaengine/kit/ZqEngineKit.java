@@ -1,6 +1,7 @@
 package com.zq.mediaengine.kit;
 
 import android.opengl.GLSurfaceView;
+import android.os.ConditionVariable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -40,6 +41,7 @@ import com.zq.mediaengine.filter.imgtex.ImgTexFilterMgt;
 import com.zq.mediaengine.filter.imgtex.ImgTexMixer;
 import com.zq.mediaengine.filter.imgtex.ImgTexPreview;
 import com.zq.mediaengine.filter.imgtex.ImgTexScaleFilter;
+import com.zq.mediaengine.filter.imgtex.ImgTexToBuf;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -48,6 +50,7 @@ import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.kit.agora.AgoraRTCAdapter;
+import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 import com.zq.mediaengine.kit.filter.AcrRecognizer;
 import com.zq.mediaengine.kit.filter.AudioDummyFilter;
 import com.zq.mediaengine.kit.filter.CbAudioEffectFilter;
@@ -120,6 +123,8 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private Handler mMainHandler;
     private CustomHandlerThread mCustomHandlerThread;
+    // 用来做同步调用
+    private ConditionVariable mCustomHandlerCondition = new ConditionVariable();
 
     private boolean mTokenEnable = false; // 是否开启token校验
     private String mLastJoinChannelToken; // 上一次加入房间用的token
@@ -129,7 +134,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private GLRender mGLRender;
     private CameraCapture mCameraCapture;
     private ImgTexScaleFilter mImgTexScaleFilter;
-    private ImgTexFilterMgt mImgTexFilterMgt;
+    private BytedEffectFilter mBytedEffectFilter;
     private ImgTexMixer mImgTexPreviewMixer;
     private ImgTexMixer mImgTexMixer;
     private ImgTexPreview mImgTexPreview;
@@ -408,15 +413,17 @@ public class ZqEngineKit implements AgoraOutCallback {
         };
         final int oldStatus = mStatus;
         mStatus = STATUS_INITING;
+        mCustomHandlerCondition.close();
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
                 MyLog.d(TAG, "init" + " from=" + from + " params=" + params);
                 destroyInner(oldStatus);
                 initInner(from, params);
+                mCustomHandlerCondition.open();
             }
         });
-
+        mCustomHandlerCondition.block();
     }
 
     private void initInner(String from, Params params) {
@@ -637,6 +644,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (mConfig.isUseExternalAudio()) {
                 mAudioCapture.release();
                 mAudioPlayerCapture.release();
+            }
+            if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {
+                mCameraCapture.release();
+                mGLRender.release();
             }
             mAgoraRTCAdapter.destroy(true);
             mUserStatusMap.clear();
@@ -1512,6 +1523,19 @@ public class ZqEngineKit implements AgoraOutCallback {
         return mGLRender;
     }
 
+    public ImgTexPreview getImgTexPreview() {
+        return mImgTexPreview;
+    }
+
+    /**
+     * 获取头条视频特效封装类。
+     *
+     * @return BytedEffectFilter instance.
+     */
+    public BytedEffectFilter getBytedEffectFilter() {
+        return mBytedEffectFilter;
+    }
+
     /**
      * Get {@link CameraCapture} module instance.
      *
@@ -1525,16 +1549,21 @@ public class ZqEngineKit implements AgoraOutCallback {
         // Camera preview
         mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
         mImgTexScaleFilter = new ImgTexScaleFilter(mGLRender);
-        mImgTexFilterMgt = new ImgTexFilterMgt(U.app().getApplicationContext());
+        mBytedEffectFilter = new BytedEffectFilter(mGLRender);
         mImgTexMixer = new ImgTexMixer(mGLRender);
         mImgTexPreviewMixer = new ImgTexMixer(mGLRender);
         mImgTexPreviewMixer.setScalingMode(0, ImgTexMixer.SCALING_MODE_CENTER_CROP);
         mImgTexPreview = new ImgTexPreview();
 
+        // 抖音的美颜特效处理需要先翻转图像
+        mImgTexScaleFilter.setFlipVertical(true);
         mCameraCapture.getImgTexSrcPin().connect(mImgTexScaleFilter.getSinkPin());
-        mImgTexScaleFilter.getSrcPin().connect(mImgTexFilterMgt.getSinkPin());
-        mImgTexFilterMgt.getSrcPin().connect(mImgTexPreviewMixer.getSinkPin(0));
-        mImgTexFilterMgt.getSrcPin().connect(mImgTexMixer.getSinkPin(0));
+        mImgTexScaleFilter.getSrcPin().connect(mBytedEffectFilter.getImgTexSinkPin());
+        // 处理完后再翻转过来
+        mImgTexPreviewMixer.setFlipVertical(0, true);
+        mImgTexMixer.setFlipVertical(0, true);
+        mBytedEffectFilter.getSrcPin().connect(mImgTexPreviewMixer.getSinkPin(0));
+        mBytedEffectFilter.getSrcPin().connect(mImgTexMixer.getSinkPin(0));
         mImgTexPreviewMixer.getSrcPin().connect(mImgTexPreview.getSinkPin());
         mImgTexMixer.getSrcPin().connect(mAgoraRTCAdapter.getVideoSinkPin());
 
@@ -1572,22 +1601,33 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     /**
+     * Should be called on Activity.onResume or Fragment.onResume.
+     */
+    public void onResume() {
+        Log.d(TAG, "onResume");
+        mImgTexPreview.onResume();
+    }
+
+    /**
+     * Should be called on Activity.onPause or Fragment.onPause.
+     */
+    public void onPause() {
+        Log.d(TAG, "onPause");
+        mImgTexPreview.onPause();
+    }
+
+    /**
      * Set GLSurfaceView as camera previewer.<br/>
      * Must set once before the GLSurfaceView created.
      *
      * @param surfaceView GLSurfaceView to be set.
      */
     public void setDisplayPreview(final GLSurfaceView surfaceView) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                Log.e(TAG, "setDisplayPreview");
-                mImgTexPreview.setDisplayPreview(surfaceView);
-                mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
-            }
-        });
+        mImgTexPreview.setDisplayPreview(surfaceView);
+        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
     }
 
+    /**
     /**
      * Set TextureView as camera previewer.<br/>
      * Must set once before the TextureView ready.
@@ -1595,13 +1635,8 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param textureView TextureView to be set.
      */
     public void setDisplayPreview(final TextureView textureView) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                mImgTexPreview.setDisplayPreview(textureView);
-                mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
-            }
-        });
+        mImgTexPreview.setDisplayPreview(textureView);
+        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
     }
 
     /**
@@ -2083,6 +2118,20 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 mCameraCapture.toggleTorch(open);
+            }
+        });
+    }
+
+    /**
+     * request screen shot with resolution of the screen
+     *
+     * @param screenShotListener the listener to be called when bitmap of the screen shot available
+     */
+    public void requestScreenShot(final GLRender.ScreenShotListener screenShotListener) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mImgTexPreviewMixer.requestScreenShot(screenShotListener);
             }
         });
     }
