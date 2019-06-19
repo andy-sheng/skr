@@ -6,17 +6,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableStringBuilder;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -24,34 +21,28 @@ import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.permission.SkrCameraPermission;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
-import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.log.MyLog;
-import com.common.notification.event.FollowNotifyEvent;
-import com.common.utils.SpanUtils;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
-import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.component.busilib.constans.GameModeType;
-import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
@@ -59,9 +50,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.level.view.NormalLevelView2;
+import com.zq.dialog.BusinessCardDialogView;
 import com.zq.live.proto.Common.ESex;
-import com.zq.live.proto.Common.UserInfo;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
 import com.zq.person.view.RequestCallBack;
@@ -77,11 +67,11 @@ import model.RelationNumModel;
  * 自己
  * 带作品的照片墙
  */
-public class PersonFragment3 extends BaseFragment implements IPersonView, RequestCallBack {
+public class PersonFragment4 extends BaseFragment implements IPersonView, RequestCallBack {
 
     SmartRefreshLayout mSmartRefresh;
     ClassicsHeader mClassicsHeader;
-    ConstraintLayout mUserInfoArea;
+    ExConstraintLayout mUserInfoArea;
 
     SimpleDraweeView mAvatarIv;
 
@@ -89,8 +79,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     ExImageView mSettingRedDot;
     ExTextView mNameTv;
     ImageView mSexIv;
-    ExTextView mUseridTv;
     ExTextView mSignTv;
+    ExTextView mCharmTv;
+    ImageView mBusinessCard;
 
     ExImageView mIncomeIv;
     ExImageView mWalletIv;
@@ -98,7 +89,10 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
 
     AppBarLayout mAppbar;
     Toolbar mToolbar;
+    SimpleDraweeView mSrlAvatarIv;
     TextView mSrlNameTv;
+    ImageView mSrlSexIv;
+    ExTextView mSrlCharmTv;
 
     PersonCorePresenter mPresenter;
 
@@ -108,6 +102,8 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
 
     PhotoWallView mPhotoWallView;
     ProducationWallView mProducationWallView;
+
+    DialogPlus mDialogPlus;
 
     @Override
     public int initView() {
@@ -146,16 +142,22 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         if (mProducationWallView != null) {
             mProducationWallView.stopPlay();
         }
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
     }
 
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
+        mUserInfoArea = (ExConstraintLayout) mRootView.findViewById(R.id.user_info_area);
 
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
-        mSrlNameTv = (TextView) mRootView.findViewById(R.id.srl_name_tv);
+        mSrlAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.srl_avatar_iv);
+        mSrlNameTv = (ExTextView) mRootView.findViewById(R.id.srl_name_tv);
+        mSrlSexIv = (ImageView) mRootView.findViewById(R.id.srl_sex_iv);
+        mSrlCharmTv = (ExTextView) mRootView.findViewById(R.id.srl_charm_tv);
 
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(true);
@@ -214,8 +216,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
-        mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
+        mCharmTv = (ExTextView) mRootView.findViewById(R.id.charm_tv);
+        mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -224,6 +227,26 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
                         .navigation();
             }
         });
+
+        mBusinessCard.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // TODO: 2019-06-19 打开名片页面
+                showBusinessCard();
+            }
+        });
+    }
+
+    private void showBusinessCard() {
+        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext());
+        mDialogPlus = DialogPlus.newDialog(getActivity())
+                .setContentHolder(new ViewHolder(businessCardDialogView))
+                .setGravity(Gravity.CENTER)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .create();
+        mDialogPlus.show();
     }
 
     private void initSettingArea() {
@@ -253,7 +276,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     private void initFunctionArea() {
         mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
         mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
-        mRechargeIv = (ExImageView)mRootView.findViewById(R.id.recharge_iv);
+        mRechargeIv = (ExImageView) mRootView.findViewById(R.id.recharge_iv);
 
 
         mWalletIv.setOnClickListener(new AnimateClickListener() {
@@ -277,7 +300,11 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
         mRechargeIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                // TODO: 2019-06-19 充值入口
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), BallanceFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
             }
         });
     }
@@ -306,7 +333,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
                 if (position == 0) {
                     // 照片墙
                     if (mPhotoWallView == null) {
-                        mPhotoWallView = new PhotoWallView(PersonFragment3.this, PersonFragment3.this);
+                        mPhotoWallView = new PhotoWallView(PersonFragment4.this, PersonFragment4.this);
                     }
                     if (container.indexOfChild(mPhotoWallView) == -1) {
                         container.addView(mPhotoWallView);
@@ -319,7 +346,7 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
                     userInfoModel.setNickname(MyUserInfoManager.getInstance().getNickName());
                     userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
                     if (mProducationWallView == null) {
-                        mProducationWallView = new ProducationWallView(PersonFragment3.this, userInfoModel, PersonFragment3.this);
+                        mProducationWallView = new ProducationWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
                     }
                     if (container.indexOfChild(mProducationWallView) == -1) {
                         container.addView(mProducationWallView);
@@ -415,7 +442,8 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     }
 
     private void showCharmsTotal(int meiLiCntTotal) {
-        // TODO: 2019-06-19 魅力值
+        mCharmTv.setText("" + meiLiCntTotal);
+        mSrlCharmTv.setText("" + meiLiCntTotal);
     }
 
     @Override
@@ -430,18 +458,27 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
                     .setBorderWidth(U.getDisplayUtils().dip2px(2f))
                     .setCircle(true)
                     .build());
+            AvatarUtils.loadAvatarByUrl(mSrlAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                    .setBorderColor(Color.WHITE)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f))
+                    .setCircle(true)
+                    .build());
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+            mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
             if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
                 mSexIv.setVisibility(View.VISIBLE);
                 mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+                mSrlSexIv.setVisibility(View.VISIBLE);
+                mSrlSexIv.setBackgroundResource(R.drawable.sex_man_icon);
             } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
                 mSexIv.setVisibility(View.VISIBLE);
                 mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+                mSrlSexIv.setVisibility(View.VISIBLE);
+                mSrlSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
             } else {
                 mSexIv.setVisibility(View.GONE);
+                mSrlSexIv.setVisibility(View.GONE);
             }
-            mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
-            mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
             mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
         }
     }
@@ -470,6 +507,9 @@ public class PersonFragment3 extends BaseFragment implements IPersonView, Reques
     @Override
     public void destroy() {
         super.destroy();
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
     }
 
     @Override
