@@ -1,5 +1,6 @@
 package com.zq.mediaengine.kit;
 
+import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.os.ConditionVariable;
 import android.os.Handler;
@@ -175,6 +176,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     protected int mPreviewWidth = 0;
     protected int mPreviewHeight = 0;
     protected float mPreviewFps = 0;
+    protected int mMixerWidth = 0;
+    protected int mMixerHeight = 0;
     protected int mTargetResolution = VIDEO_RESOLUTION_360P;
     protected int mTargetWidth = 0;
     protected int mTargetHeight = 0;
@@ -2183,6 +2186,8 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, a);
+                // 重新计算预览尺寸
+                setPreviewParams();
             }
         });
     }
@@ -2366,17 +2371,26 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void calResolution() {
+        // 考虑存在远端视频，本地视频的尺寸需要调整
+        RectF previewRect = mImgTexPreviewMixer.getRenderRect(0);
+        int localRenderWidth = (int) (mScreenRenderWidth * previewRect.width());
+        int localRenderHeight = (int) (mScreenRenderHeight * previewRect.height());
+
         if (mPreviewWidth == 0 && mPreviewHeight == 0) {
             int val = getShortEdgeLength(mPreviewResolution);
-            if (mScreenRenderWidth > mScreenRenderHeight) {
+            if (localRenderWidth > localRenderHeight) {
                 mPreviewHeight = val;
             } else {
                 mPreviewWidth = val;
             }
         }
+        if (mMixerWidth == 0 && mMixerHeight == 0) {
+            mMixerWidth = mPreviewWidth;
+            mMixerHeight = mPreviewHeight;
+        }
         if (mTargetWidth == 0 && mTargetHeight == 0) {
             int val = getShortEdgeLength(mTargetResolution);
-            if (mScreenRenderWidth > mScreenRenderHeight) {
+            if (localRenderWidth > localRenderHeight) {
                 mTargetHeight = val;
             } else {
                 mTargetWidth = val;
@@ -2384,21 +2398,37 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
 
         if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
-            if (mPreviewWidth == 0) {
-                mPreviewWidth = mPreviewHeight * mScreenRenderWidth / mScreenRenderHeight;
-            } else if (mPreviewHeight == 0) {
-                mPreviewHeight = mPreviewWidth * mScreenRenderHeight / mScreenRenderWidth;
+            if (mMixerWidth == 0 || (mMixerHeight != 0 && mMixerWidth > mMixerHeight)) {
+                mMixerWidth = mMixerHeight * mScreenRenderWidth / mScreenRenderHeight;
+            } else {
+                mMixerHeight = mMixerWidth * mScreenRenderHeight / mScreenRenderWidth;
             }
-            if (mTargetWidth == 0) {
-                mTargetWidth = mTargetHeight * mScreenRenderWidth / mScreenRenderHeight;
-            } else if (mTargetHeight == 0) {
-                mTargetHeight = mTargetWidth * mScreenRenderHeight / mScreenRenderWidth;
+        }
+
+        if (localRenderWidth != 0 && localRenderHeight != 0) {
+            if (mPreviewWidth == 0 || (mPreviewHeight != 0 && mPreviewWidth > mPreviewHeight)) {
+                mPreviewWidth = mPreviewHeight * localRenderWidth / localRenderHeight;
+            } else {
+                mPreviewHeight = mPreviewWidth * localRenderHeight / localRenderWidth;
+            }
+            if (mTargetWidth == 0 || (mTargetHeight != 0 && mTargetWidth > mTargetHeight)) {
+                mTargetWidth = mTargetHeight * localRenderWidth / localRenderHeight;
+            } else {
+                mTargetHeight = mTargetWidth * localRenderHeight / localRenderWidth;
             }
         }
         mPreviewWidth = align(mPreviewWidth, 8);
         mPreviewHeight = align(mPreviewHeight, 8);
         mTargetWidth = align(mTargetWidth, 8);
         mTargetHeight = align(mTargetHeight, 8);
+
+        Log.i(TAG, "calResolution: \n" +
+                "viewRenderSize: " + mScreenRenderWidth + "x" + mScreenRenderHeight + "\n" +
+                "localRenderRect: " + previewRect + "\n" +
+                "localRenderSize: " + localRenderWidth + "x" + localRenderHeight + "\n" +
+                "previewSize: " + mPreviewWidth + "x" + mPreviewHeight + "\n" +
+                "mixerSize: " + mMixerWidth + "x" + mMixerHeight + "\n" +
+                "targetSize: " + mTargetWidth + "x" + mTargetHeight);
     }
 
     private void updateFrontMirror() {
@@ -2418,32 +2448,35 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCameraCapture.setPreviewFps(mPreviewFps);
 
         mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
-        mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+        mImgTexPreviewMixer.setTargetSize(mMixerWidth, mMixerHeight);
         mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+    }
+
+    private void onPreviewSizeChanged(final int width, final int height) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                boolean notifySizeChanged = mScreenRenderWidth != 0 && mScreenRenderHeight != 0;
+                mScreenRenderWidth = width;
+                mScreenRenderHeight = height;
+                setPreviewParams();
+                if (mDelayedStartCameraPreview) {
+                    mCameraCapture.start(mCameraFacing);
+                    mDelayedStartCameraPreview = false;
+                }
+                if (notifySizeChanged) {
+                    // TODO: notify preview size changed
+                }
+            }
+        });
     }
 
     private GLRender.OnSizeChangedListener mPreviewSizeChangedListener =
             new GLRender.OnSizeChangedListener() {
                 @Override
                 public void onSizeChanged(int width, int height) {
-                    boolean notifySizeChanged = mScreenRenderWidth != 0 && mScreenRenderHeight != 0;
-                    mScreenRenderWidth = width;
-                    mScreenRenderHeight = height;
-                    setPreviewParams();
-                    if (mDelayedStartCameraPreview) {
-                        mCameraCapture.start(mCameraFacing);
-                        mDelayedStartCameraPreview = false;
-                    }
-                    if (notifySizeChanged) {
-                        if (mMainHandler != null) {
-                            mMainHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // TODO: notify preview size changed
-                                }
-                            });
-                        }
-                    }
+                    Log.i(TAG, "onPreviewSizeChanged: " + width + "x" + height);
+                    onPreviewSizeChanged(width, height);
                 }
             };
 }
