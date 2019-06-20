@@ -1,4 +1,4 @@
-package com.module.playways.doubleplay
+package com.module.playways.doubleplay.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.mvp.RxLifeCyclePresenter
@@ -6,6 +6,8 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.module.playways.doubleplay.DoubleRoomData
+import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.ChangeSongEvent
 import com.module.playways.doubleplay.event.StartDoubleGameEvent
 import com.module.playways.doubleplay.event.UpdateLockEvent

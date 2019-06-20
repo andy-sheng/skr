@@ -44,6 +44,7 @@ import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.doubleplay.inter.IDoubleInviteView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.bottom.GrabBottomContainerView;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
@@ -119,7 +120,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
+public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView, IDoubleInviteView {
 
     public final static String TAG = "GrabRoomFragment";
 
@@ -332,7 +333,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
         mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
-        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter();
+        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter(this);
         addPresent(mDoubleRoomInvitePresenter);
 //        mGiftTimerPresenter = new GiftTimerPresenter(this);
 //        addPresent(mGiftTimerPresenter);
@@ -383,6 +384,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         }
         enterRoomEvent();
+    }
+
+    @Override
+    public void toDoubleRoomByPush() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
     private void enterRoomEvent() {

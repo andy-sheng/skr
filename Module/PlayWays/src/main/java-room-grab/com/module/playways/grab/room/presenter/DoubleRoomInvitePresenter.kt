@@ -14,12 +14,16 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
+import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
+import com.module.playways.doubleplay.inter.IDoubleInviteView
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-class DoubleRoomInvitePresenter() : RxLifeCyclePresenter() {
+class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLifeCyclePresenter() {
     private val mTag = "DoubleRoomInvitePresenter"
     private var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
     private var handlerTaskTimer: HandlerTaskTimer? = null
@@ -65,6 +69,11 @@ class DoubleRoomInvitePresenter() : RxLifeCyclePresenter() {
                         getInviteState()
                     }
                 })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: EnterDoubleRoomEvent) {
+        iDoubleInviteView.toDoubleRoomByPush()
     }
 
     /**
