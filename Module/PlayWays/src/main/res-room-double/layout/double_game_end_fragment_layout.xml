@@ -49,19 +49,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<com.common.view.ex.ExTextView-->
-        <!--android:id="@+id/end_tv"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/view_30_dp"-->
-        <!--android:text="唱聊结束了"-->
-        <!--android:textColor="#ff000000"-->
-        <!--android:textSize="@dimen/view_24_dp"-->
-        <!--app:layout_constraintEnd_toEndOf="@+id/avatar_iv"-->
-        <!--app:layout_constraintLeft_toLeftOf="avatar_iv"-->
-        <!--app:layout_constraintRight_toRightOf="avatar_iv"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/avatar_iv"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/avatar_iv" />-->
+    <com.common.view.ex.ExTextView
+        android:id="@+id/end_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_26_dp"
+        android:text="唱聊结束了"
+        android:textColor="#ff000000"
+        android:textSize="@dimen/view_24_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_iv" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/chat_time_tv"
