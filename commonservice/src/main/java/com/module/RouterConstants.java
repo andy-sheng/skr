@@ -34,6 +34,7 @@ public interface RouterConstants {
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";
     String ACTIVITY_MUSIC_TEST = "/home/MusicTestActivity";
     String ACTIVITY_SETTING = "/home/SettingActivity";
+    String ACTIVITY_RANKED = "/home/RankedActivity";
 
     String ACTIVITY_LAST_FOLLOW = "/msg/LastFollowActivity";
 

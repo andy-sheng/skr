@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:StrokeTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp"
+    android:orientation="vertical"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_solid_color="#7187FF"
+    app:bl_stroke_color="#3B4E79"
+    app:bl_stroke_width="@dimen/view_2_dp">
+
+    <com.dialog.view.StrokeTextView
+        android:id="@+id/title_stv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_28_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="段位榜规则说明"
+        android:textSize="@dimen/textsize_20_dp"
+        StrokeTextView:borderColor="#576FE3"
+        StrokeTextView:textColor="@color/white" />
+
+    <com.common.view.ex.ExLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/view_60_dp"
+        android:paddingBottom="@dimen/view_60_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#576FE3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_title"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="在用户注册地域范围内，段位最高的500名用户上榜，榜单数据实时更新"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+    </com.common.view.ex.ExLinearLayout>
+
+</com.common.view.ex.ExLinearLayout>

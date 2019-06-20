@@ -20,7 +20,7 @@
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
-        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="@color/colorPrimary"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
