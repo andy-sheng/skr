@@ -72,3 +72,4 @@ freeline_*.json
 # python pyc
 *.pyc
 a.txt
+moduletest/src/main/assets/resource.zip
