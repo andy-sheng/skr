@@ -227,6 +227,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             GrabRoomSongModel grabRoomSongModel = iterator.next();
             if (grabRoomSongModel.getRoundSeq() < mGrabRoomData.getRealRoundSeq()) {
                 iterator.remove();
+            }else if(grabRoomSongModel.getRoundSeq() > mGrabRoomData.getRealRoundSeq()){
+                break;
             }
         }
 
@@ -252,13 +254,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
-                        if (mGrabRoomSongModelList.size() > 2) {
-                            for (int i = 2; i < mGrabRoomSongModelList.size(); i++) {
-                                GrabRoomSongModel grabRoomSongModel = mGrabRoomSongModelList.get(i);
-                                grabRoomSongModel.setRoundSeq(grabRoomSongModel.getRoundSeq() + 1);
-                            }
-                        }
-
                         //加一个保护
                         GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
                         grabRoomSongModel.setOwner(songModel.getOwner());
@@ -267,9 +262,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         grabRoomSongModel.setPlayType(songModel.getPlayType());
                         grabRoomSongModel.setChallengeAvailable(songModel.isChallengeAvailable());
                         addToUiList(grabRoomSongModel);
-
                     }
-
                     U.getToastUtil().showShort(songModel.getItemName() + " 添加成功");
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
@@ -386,15 +379,27 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         addToUiList(grabRoomSongModel);
     }
 
+    /**
+     * 如果list size >=2 加到 index =2的位置 ，并把之前所有的seq++
+     * 否则加到最后
+     * @param grabRoomSongModel
+     */
     void addToUiList(GrabRoomSongModel grabRoomSongModel) {
-        if (mGrabRoomSongModelList.size() <= 2) {
-            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
-            mGrabRoomSongModelList.add(grabRoomSongModel);
-        } else {
+        if (mGrabRoomSongModelList.size() >= 2) {
+            for (int i = 2; i < mGrabRoomSongModelList.size(); i++) {
+                GrabRoomSongModel g = mGrabRoomSongModelList.get(i);
+                g.setRoundSeq(grabRoomSongModel.getRoundSeq() + 1);
+            }
             grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
-            mGrabRoomSongModelList.add(2, grabRoomSongModel);
+            mGrabRoomSongModelList.add(2,grabRoomSongModel);
+        }else{
+            if(mGrabRoomSongModelList.size()==0){
+                mGrabRoomSongModelList.add(grabRoomSongModel);
+            }else{
+                grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
+                mGrabRoomSongModelList.add(grabRoomSongModel);
+            }
         }
-
         mIGrabSongManageView.showNum(++mTotalNum);
         updateSongList();
     }

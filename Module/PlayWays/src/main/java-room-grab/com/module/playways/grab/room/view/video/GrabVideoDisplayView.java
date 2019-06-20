@@ -330,6 +330,10 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
     }
 
+    /**
+     * 从美颜预览返回
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReturnFromBeautyActivityEvent event) {
         if (mParentView != null) {
