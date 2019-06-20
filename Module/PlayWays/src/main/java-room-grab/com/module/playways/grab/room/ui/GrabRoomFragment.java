@@ -408,22 +408,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowInviteTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_yaoqing_tishi)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_yindao_yaoqinghaoyou)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                .setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0)
+                .setMargins(0, U.getDisplayUtils().dip2px(75), U.getDisplayUtils().dip2px(54), 0)
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .hasAnimation(true)
                 .setShowCount(3)
+                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen()?U.getDisplayUtils().dip2px(32):0)
                 .setTag(TAG_INVITE_TIP_VIEW)
                 .tryShow(mGameTipsManager);
     }
 
     private void tryShowManageSongTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_kongzhi_tishi)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_yindao_fangzhukongzhizhongxin)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                .setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78))
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(68))
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1)
                 .setIndex(mRankingContainer.indexOfChild(mBottomBgVp) + 1)
@@ -435,10 +434,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowChallengeTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_tiaozhan_tishi)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_jiabei_tiaozhan)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0)
+                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(20), 0)
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
                 .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
@@ -450,12 +448,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 抢唱提示
     private void tryShowGrabTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_grab_tips_icon)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_qiangchang_yindao)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(202), U.getDisplayUtils().dip2px(91))
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
-                .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
-                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(48), 0)
+                .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(2))
                 .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
                 .hasAnimation(false)
                 .setShowCount(2)
@@ -465,12 +462,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 爆灯提示
     private void tryShowBurstTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_burst_tips_icon)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_baodeng_yindao)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(208), U.getDisplayUtils().dip2px(80))
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
-                .setMargins(0, 0, U.getDisplayUtils().dip2px(60), -U.getDisplayUtils().dip2px(10))
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(50), -U.getDisplayUtils().dip2px(5))
                 .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
                 .hasAnimation(false)
                 .setTag(TAG_BURST_TIP_VIEW)
@@ -480,12 +476,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 歌词提示
     void tryShowGrabSelfSingTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_self_sing_tips_icon)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_daojishi_yindao)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(250), U.getDisplayUtils().dip2px(96))
                 .addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
-                .setMargins(U.getDisplayUtils().dip2px(55), U.getDisplayUtils().dip2px(60), 0, 0)
+                .setMargins(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(28), 0, 0)
+                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen()?U.getDisplayUtils().dip2px(32):0)
                 .hasAnimation(false)
                 .setTag(TAG_SELF_SING_TIP_VIEW)
                 .setShowCount(1)
