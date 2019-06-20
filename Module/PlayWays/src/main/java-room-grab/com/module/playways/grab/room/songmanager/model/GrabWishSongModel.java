@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public class GrabWishSongModel extends GrabRoomSongModel implements Serializable {
 
+    private String pID;
+
     private UserInfoModel suggester;
 
     public UserInfoModel getSuggester() {
@@ -14,6 +16,14 @@ public class GrabWishSongModel extends GrabRoomSongModel implements Serializable
 
     public void setSuggester(UserInfoModel suggester) {
         this.suggester = suggester;
+    }
+
+    public String getpID() {
+        return pID;
+    }
+
+    public void setpID(String pID) {
+        this.pID = pID;
     }
 
     @Override
@@ -25,6 +35,7 @@ public class GrabWishSongModel extends GrabRoomSongModel implements Serializable
                 ", itemID=" + itemID +
                 ", playType=" + playType +
                 ", challengeAvailable=" + challengeAvailable +
+                ", pID=" + pID +
                 ", suggester=" + suggester +
                 '}';
     }

@@ -57,7 +57,7 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<GrabWishSongModel> grabWishSongModels = JSONObject.parseArray(result.getData().getString("items"), GrabWishSongModel.class);
-                    mView.addGrabWishSongModels(offset,grabWishSongModels);
+                    mView.addGrabWishSongModels(offset, grabWishSongModels);
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
                 }
@@ -72,6 +72,7 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
         map.put("itemID", songModel.getItemID());
         map.put("roomID", mGrabRoomData.getGameId());
         map.put("userID", songModel.getSuggester().getUserId());
+        map.put("pID", songModel.getpID());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -104,6 +105,7 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
         map.put("itemID", songModel.getItemID());
         map.put("roomID", mGrabRoomData.getGameId());
         map.put("userID", songModel.getSuggester().getUserId());
+        map.put("pID", songModel.getpID());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 

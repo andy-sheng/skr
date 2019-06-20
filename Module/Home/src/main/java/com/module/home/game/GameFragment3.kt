@@ -107,6 +107,7 @@ class GameFragment3 : BaseFragment() {
             }
 
             override fun onPageSelected(position: Int) {
+                mGameTab.notifyDataChange()
                 val drawable = mNavigationBgIv.getBackground() as ColorDrawable
                 val color: Int = drawable.color
                 if (position == 0) {
