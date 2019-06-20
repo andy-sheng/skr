@@ -39,8 +39,8 @@ android {
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly project(":baseLibrary:commonsdk")
-    compileOnly project(":baseLibrary:effectsdk")
-    compileOnly project(":baseLibrary:enginesdk")
+    api project(":baseLibrary:effectsdk")
+    api project(":baseLibrary:enginesdk")
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

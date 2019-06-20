@@ -130,7 +130,7 @@ public class RecommendSongView extends FrameLayout {
                     }
                     if (offset == 0) {
                         mRecommendSongAdapter.getDataList().clear();
-                        if (mRecommendTagModel.getType() == 4) {
+                        if (mRecommendTagModel.getType() == 4 && mRoomData.isOwner()) {
                             // 是双人游戏那一例
                             SongModel songModel = new SongModel();
                             songModel.setItemID(SongModel.ID_CUSTOM_GAME);

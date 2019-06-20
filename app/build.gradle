@@ -137,7 +137,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.zq.live"
+        if(compileModuleTest.toBoolean()){
+            applicationId "com.bytedance.labcv.demo"
+        }else{
+            applicationId "com.zq.live"
+        }
+
         minSdkVersion rootProject.ext.android["minSdkVersion"]
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]

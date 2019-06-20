@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#404A9A">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/report_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_36_dp"
+        android:text="举报"
+        android:textColor="#ffff8ab6"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/close_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/dk_close_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/report_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/report_tv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/white_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_325_dp"
+        android:layout_marginLeft="@dimen/view_32_dp"
+        android:layout_marginTop="@dimen/view_120_dp"
+        android:layout_marginRight="@dimen/view_32_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_solid_color="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_68_dp"
+        android:layout_height="@dimen/view_68_dp"
+        android:layout_marginTop="@dimen/view_84_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/end_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_26_dp"
+        android:text="唱聊结束了"
+        android:textColor="#ff000000"
+        android:textSize="@dimen/view_24_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/chat_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:text="你与KTV酒彪子唱聊了45分钟"
+        android:textColor="@color/black_trans_60"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintEnd_toEndOf="@+id/end_tv"
+        app:layout_constraintStart_toStartOf="@+id/end_tv"
+        app:layout_constraintTop_toBottomOf="@+id/end_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/end_tip_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:gravity="center"
+        android:text="你们的相互陪伴\n让岁月多了一份温暖"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintEnd_toEndOf="@+id/end_tv"
+        app:layout_constraintStart_toStartOf="@+id/end_tv"
+        app:layout_constraintTop_toBottomOf="@+id/end_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/follow_tv"
+        android:layout_width="@dimen/view_93_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_158_dp"
+        android:gravity="center"
+        android:text="关注他"
+        android:textColor="#AD6C00"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="#FFC15B"
+        app:layout_constraintEnd_toEndOf="@+id/end_tv"
+        app:layout_constraintStart_toStartOf="@+id/end_tv"
+        app:layout_constraintTop_toBottomOf="@+id/end_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/match_again"
+        android:layout_width="@dimen/view_154_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="再匹配一次"
+        android:textColor="#FFC15B"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="@color/transparent"
+        app:bl_stroke_color="#FFC15B"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintEnd_toEndOf="@+id/white_bg"
+        app:layout_constraintStart_toStartOf="@+id/white_bg"
+        app:layout_constraintTop_toBottomOf="@+id/white_bg" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/last_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_113_dp"
+        android:text="今日剩余 次"
+        android:textColor="@color/white_trans_30"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintEnd_toEndOf="@+id/white_bg"
+        app:layout_constraintStart_toStartOf="@+id/white_bg"
+        app:layout_constraintTop_toBottomOf="@+id/white_bg" />
+</android.support.constraint.ConstraintLayout>

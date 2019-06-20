@@ -7,10 +7,12 @@
     android:gravity="center"
     android:paddingLeft="@dimen/view_15_dp"
     android:paddingRight="@dimen/view_15_dp"
+    android:drawablePadding="@dimen/view_6_dp"
     android:textColor="@color/white"
     android:textSize="@dimen/view_14_dp"
+    android:drawableLeft="@drawable/grab_charm_icon"
     app:bl_corners_radius="@dimen/view_16_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="@color/black_trans_30">
+    app:bl_solid_color="#807E8AE6">
 
 </com.common.view.ex.ExTextView>
