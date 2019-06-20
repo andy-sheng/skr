@@ -87,6 +87,9 @@ android {
 
             java.srcDirs += 'src/main/java-wallet'
             res.srcDirs += 'src/main/res-wallet'
+
+            java.srcDirs += 'src/main/java-ranked'
+            res.srcDirs += 'src/main/res-ranked'
         }
     }
 }

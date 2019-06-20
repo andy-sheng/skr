@@ -304,7 +304,7 @@ public interface GrabRoomServerApi {
      * @param offset
      * @param count
      */
-    @GET("http://dev.api.inframe.mobi/v1/play2ook/list-stand-tags")
+    @GET("http://dev.api.inframe.mobi/v2/playbook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**

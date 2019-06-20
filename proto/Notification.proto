@@ -24,6 +24,9 @@ message NotificationMsg
     FollowMsg followMsg           = 10;
     InviteStandMsg inviteStandMsg = 11;
     SysWarningMsg sysWarningMsg   = 12;
+
+    CombineRoomSendInviteUserMsg sendInviteUserMsg = 13; //发送邀请请求
+    CombineRoomSyncInviteUserMsg syncInviteUserMsg = 14; //同步邀请结果
 }
 
 // ENotificationMsgType 房间消息类型
@@ -33,6 +36,10 @@ enum ENotificationMsgType {
     NM_FOLLOW       = 1; //关注类型
     NM_INVITE_STAND = 2; //一唱到底邀请
     NM_SYS_WARNING_MSG = 3; //系统警告
+
+     NM_CR_SEND_INVITE_USER = 4;//发送邀请请求
+     NM_CR_SYNC_INVITE_USER = 5; //同步邀请结果
+
 }
 
 message FollowMsg

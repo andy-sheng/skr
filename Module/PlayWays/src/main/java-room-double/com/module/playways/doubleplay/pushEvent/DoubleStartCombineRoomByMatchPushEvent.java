@@ -2,7 +2,7 @@ package com.module.playways.doubleplay.pushEvent;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
-import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomConfig;
+import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.module.playways.room.msg.BasePushInfo;
 import com.zq.live.proto.CombineRoom.StartCombineRoomByMatchMsg;
 

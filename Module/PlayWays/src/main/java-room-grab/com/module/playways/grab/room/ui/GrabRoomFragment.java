@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -32,7 +31,6 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.DebugLogView;
@@ -46,6 +44,7 @@ import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.doubleplay.inter.IDoubleInviteView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.bottom.GrabBottomContainerView;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
@@ -59,6 +58,7 @@ import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
@@ -120,7 +120,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
+public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView, IDoubleInviteView {
 
     public final static String TAG = "GrabRoomFragment";
 
@@ -177,6 +177,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabCorePresenter mCorePresenter;
 
     GrabRedPkgPresenter mGrabRedPkgPresenter;
+
+    DoubleRoomInvitePresenter mDoubleRoomInvitePresenter;
 
 //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -331,6 +333,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
         mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
+        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter(this);
+        addPresent(mDoubleRoomInvitePresenter);
 //        mGiftTimerPresenter = new GiftTimerPresenter(this);
 //        addPresent(mGiftTimerPresenter);
 //        mGiftTimerPresenter.startTimer();
@@ -382,6 +386,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         enterRoomEvent();
     }
 
+    @Override
+    public void toDoubleRoomByPush() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+    }
+
     private void enterRoomEvent() {
         if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
             StatisticsAdapter.recordCountEvent("grab", "normalroom_enter", null);
@@ -397,22 +408,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowInviteTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_yaoqing_tishi)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_yindao_yaoqinghaoyou)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                .setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0)
+                .setMargins(0, U.getDisplayUtils().dip2px(75), U.getDisplayUtils().dip2px(54), 0)
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .hasAnimation(true)
                 .setShowCount(3)
+                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen()?U.getDisplayUtils().dip2px(32):0)
                 .setTag(TAG_INVITE_TIP_VIEW)
                 .tryShow(mGameTipsManager);
     }
 
     private void tryShowManageSongTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_kongzhi_tishi)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_yindao_fangzhukongzhizhongxin)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                .setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78))
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(68))
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1)
                 .setIndex(mRankingContainer.indexOfChild(mBottomBgVp) + 1)
@@ -424,10 +434,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowChallengeTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.fz_tiaozhan_tishi)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_jiabei_tiaozhan)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74))
-                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0)
+                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(20), 0)
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
                 .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
@@ -439,12 +448,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 抢唱提示
     private void tryShowGrabTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_grab_tips_icon)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_qiangchang_yindao)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(202), U.getDisplayUtils().dip2px(91))
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
-                .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
-                .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(48), 0)
+                .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(2))
                 .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
                 .hasAnimation(false)
                 .setShowCount(2)
@@ -454,12 +462,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 爆灯提示
     private void tryShowBurstTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_burst_tips_icon)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_baodeng_yindao)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(208), U.getDisplayUtils().dip2px(80))
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
-                .setMargins(0, 0, U.getDisplayUtils().dip2px(60), -U.getDisplayUtils().dip2px(10))
+                .setMargins(0, 0, U.getDisplayUtils().dip2px(50), -U.getDisplayUtils().dip2px(5))
                 .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
                 .hasAnimation(false)
                 .setTag(TAG_BURST_TIP_VIEW)
@@ -469,12 +476,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 歌词提示
     void tryShowGrabSelfSingTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_self_sing_tips_icon)
+        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_daojishi_yindao)
                 .setActivity(getActivity())
-                .setSize(U.getDisplayUtils().dip2px(250), U.getDisplayUtils().dip2px(96))
                 .addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
-                .setMargins(U.getDisplayUtils().dip2px(55), U.getDisplayUtils().dip2px(60), 0, 0)
+                .setMargins(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(28), 0, 0)
+                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen()?U.getDisplayUtils().dip2px(32):0)
                 .hasAnimation(false)
                 .setTag(TAG_SELF_SING_TIP_VIEW)
                 .setShowCount(1)
@@ -852,6 +859,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             public void onClickKick(UserInfoModel userInfoModel) {
                 showKickConfirmDialog(userInfoModel);
             }
+
+            @Override
+            public void onClickDoubleInvite(UserInfoModel userInfoModel) {
+                mDoubleRoomInvitePresenter.inviteToDoubleRoom();
+            }
         });
         mPersonInfoDialog.show();
     }
@@ -1003,7 +1015,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void onClickCamera() {
-                if(mRoomData.isVideoRoom()){
+                if (mRoomData.isVideoRoom()) {
                     GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                     if (grabRoundInfoModel != null) {
                         for (WantSingerInfo wantSingerInfo :
@@ -1022,8 +1034,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                     .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
                                     .navigation();
                         }
-                    },true);
-                }else{
+                    }, true);
+                } else {
                     U.getToastUtil().showShort("只在视频房间才能开启视频设置");
                 }
             }

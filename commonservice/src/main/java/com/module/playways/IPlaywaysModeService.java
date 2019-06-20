@@ -10,7 +10,7 @@ public interface IPlaywaysModeService extends IProvider {
 
     Class getLeaderboardFragmentClass();
 
-    void tryGoGrabRoom(int roomID,int inviteType);
+    void tryGoGrabRoom(int roomID, int inviteType);
 
     void tryGoCreateRoom();
 
@@ -19,4 +19,11 @@ public interface IPlaywaysModeService extends IProvider {
     void tryGoGrabGuide(int tagId);
 
     void tryGoNewGrabMatch();
+
+    //    private Integer roomID;
+//    private Long createdTimeMs;
+//    private Long passedTimeMs;
+//    private List<UserInfoModel> users;
+//    private LocalCombineRoomConfig config;
+    void jumpToDoubleRoom(Object o);
 }

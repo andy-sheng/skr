@@ -111,15 +111,35 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   )
   private final SysWarningMsg sysWarningMsg;
 
+  /**
+   * 发送邀请请求
+   */
+  @WireField(
+      tag = 13,
+      adapter = "com.zq.live.proto.Notification.CombineRoomSendInviteUserMsg#ADAPTER"
+  )
+  private final CombineRoomSendInviteUserMsg sendInviteUserMsg;
+
+  /**
+   * 同步邀请结果
+   */
+  @WireField(
+      tag = 14,
+      adapter = "com.zq.live.proto.Notification.CombineRoomSyncInviteUserMsg#ADAPTER"
+  )
+  private final CombineRoomSyncInviteUserMsg syncInviteUserMsg;
+
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
-      SysWarningMsg sysWarningMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, ByteString.EMPTY);
+      SysWarningMsg sysWarningMsg, CombineRoomSendInviteUserMsg sendInviteUserMsg,
+      CombineRoomSyncInviteUserMsg syncInviteUserMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, sendInviteUserMsg, syncInviteUserMsg, ByteString.EMPTY);
   }
 
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
-      SysWarningMsg sysWarningMsg, ByteString unknownFields) {
+      SysWarningMsg sysWarningMsg, CombineRoomSendInviteUserMsg sendInviteUserMsg,
+      CombineRoomSyncInviteUserMsg syncInviteUserMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -130,6 +150,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     this.followMsg = followMsg;
     this.inviteStandMsg = inviteStandMsg;
     this.sysWarningMsg = sysWarningMsg;
+    this.sendInviteUserMsg = sendInviteUserMsg;
+    this.syncInviteUserMsg = syncInviteUserMsg;
   }
 
   @Override
@@ -144,6 +166,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     builder.followMsg = followMsg;
     builder.inviteStandMsg = inviteStandMsg;
     builder.sysWarningMsg = sysWarningMsg;
+    builder.sendInviteUserMsg = sendInviteUserMsg;
+    builder.syncInviteUserMsg = syncInviteUserMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -162,7 +186,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
         && Internal.equals(sender, o.sender)
         && Internal.equals(followMsg, o.followMsg)
         && Internal.equals(inviteStandMsg, o.inviteStandMsg)
-        && Internal.equals(sysWarningMsg, o.sysWarningMsg);
+        && Internal.equals(sysWarningMsg, o.sysWarningMsg)
+        && Internal.equals(sendInviteUserMsg, o.sendInviteUserMsg)
+        && Internal.equals(syncInviteUserMsg, o.syncInviteUserMsg);
   }
 
   @Override
@@ -179,6 +205,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       result = result * 37 + (followMsg != null ? followMsg.hashCode() : 0);
       result = result * 37 + (inviteStandMsg != null ? inviteStandMsg.hashCode() : 0);
       result = result * 37 + (sysWarningMsg != null ? sysWarningMsg.hashCode() : 0);
+      result = result * 37 + (sendInviteUserMsg != null ? sendInviteUserMsg.hashCode() : 0);
+      result = result * 37 + (syncInviteUserMsg != null ? syncInviteUserMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -196,6 +224,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     if (followMsg != null) builder.append(", followMsg=").append(followMsg);
     if (inviteStandMsg != null) builder.append(", inviteStandMsg=").append(inviteStandMsg);
     if (sysWarningMsg != null) builder.append(", sysWarningMsg=").append(sysWarningMsg);
+    if (sendInviteUserMsg != null) builder.append(", sendInviteUserMsg=").append(sendInviteUserMsg);
+    if (syncInviteUserMsg != null) builder.append(", syncInviteUserMsg=").append(syncInviteUserMsg);
     return builder.replace(0, 2, "NotificationMsg{").append('}').toString();
   }
 
@@ -291,6 +321,26 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   }
 
   /**
+   * 发送邀请请求
+   */
+  public CombineRoomSendInviteUserMsg getSendInviteUserMsg() {
+    if(sendInviteUserMsg==null){
+        return new CombineRoomSendInviteUserMsg.Builder().build();
+    }
+    return sendInviteUserMsg;
+  }
+
+  /**
+   * 同步邀请结果
+   */
+  public CombineRoomSyncInviteUserMsg getSyncInviteUserMsg() {
+    if(syncInviteUserMsg==null){
+        return new CombineRoomSyncInviteUserMsg.Builder().build();
+    }
+    return syncInviteUserMsg;
+  }
+
+  /**
    * 消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -344,6 +394,20 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return sysWarningMsg!=null;
   }
 
+  /**
+   * 发送邀请请求
+   */
+  public boolean hasSendInviteUserMsg() {
+    return sendInviteUserMsg!=null;
+  }
+
+  /**
+   * 同步邀请结果
+   */
+  public boolean hasSyncInviteUserMsg() {
+    return syncInviteUserMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<NotificationMsg, Builder> {
     private Long timeMs;
 
@@ -362,6 +426,10 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     private InviteStandMsg inviteStandMsg;
 
     private SysWarningMsg sysWarningMsg;
+
+    private CombineRoomSendInviteUserMsg sendInviteUserMsg;
+
+    private CombineRoomSyncInviteUserMsg syncInviteUserMsg;
 
     public Builder() {
     }
@@ -429,9 +497,25 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       return this;
     }
 
+    /**
+     * 发送邀请请求
+     */
+    public Builder setSendInviteUserMsg(CombineRoomSendInviteUserMsg sendInviteUserMsg) {
+      this.sendInviteUserMsg = sendInviteUserMsg;
+      return this;
+    }
+
+    /**
+     * 同步邀请结果
+     */
+    public Builder setSyncInviteUserMsg(CombineRoomSyncInviteUserMsg syncInviteUserMsg) {
+      this.syncInviteUserMsg = syncInviteUserMsg;
+      return this;
+    }
+
     @Override
     public NotificationMsg build() {
-      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, super.buildUnknownFields());
+      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, sendInviteUserMsg, syncInviteUserMsg, super.buildUnknownFields());
     }
   }
 
@@ -451,6 +535,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           + FollowMsg.ADAPTER.encodedSizeWithTag(10, value.followMsg)
           + InviteStandMsg.ADAPTER.encodedSizeWithTag(11, value.inviteStandMsg)
           + SysWarningMsg.ADAPTER.encodedSizeWithTag(12, value.sysWarningMsg)
+          + CombineRoomSendInviteUserMsg.ADAPTER.encodedSizeWithTag(13, value.sendInviteUserMsg)
+          + CombineRoomSyncInviteUserMsg.ADAPTER.encodedSizeWithTag(14, value.syncInviteUserMsg)
           + value.unknownFields().size();
     }
 
@@ -465,6 +551,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       FollowMsg.ADAPTER.encodeWithTag(writer, 10, value.followMsg);
       InviteStandMsg.ADAPTER.encodeWithTag(writer, 11, value.inviteStandMsg);
       SysWarningMsg.ADAPTER.encodeWithTag(writer, 12, value.sysWarningMsg);
+      CombineRoomSendInviteUserMsg.ADAPTER.encodeWithTag(writer, 13, value.sendInviteUserMsg);
+      CombineRoomSyncInviteUserMsg.ADAPTER.encodeWithTag(writer, 14, value.syncInviteUserMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -497,6 +585,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           case 10: builder.setFollowMsg(FollowMsg.ADAPTER.decode(reader)); break;
           case 11: builder.setInviteStandMsg(InviteStandMsg.ADAPTER.decode(reader)); break;
           case 12: builder.setSysWarningMsg(SysWarningMsg.ADAPTER.decode(reader)); break;
+          case 13: builder.setSendInviteUserMsg(CombineRoomSendInviteUserMsg.ADAPTER.decode(reader)); break;
+          case 14: builder.setSyncInviteUserMsg(CombineRoomSyncInviteUserMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -515,6 +605,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       if (builder.followMsg != null) builder.followMsg = FollowMsg.ADAPTER.redact(builder.followMsg);
       if (builder.inviteStandMsg != null) builder.inviteStandMsg = InviteStandMsg.ADAPTER.redact(builder.inviteStandMsg);
       if (builder.sysWarningMsg != null) builder.sysWarningMsg = SysWarningMsg.ADAPTER.redact(builder.sysWarningMsg);
+      if (builder.sendInviteUserMsg != null) builder.sendInviteUserMsg = CombineRoomSendInviteUserMsg.ADAPTER.redact(builder.sendInviteUserMsg);
+      if (builder.syncInviteUserMsg != null) builder.syncInviteUserMsg = CombineRoomSyncInviteUserMsg.ADAPTER.redact(builder.syncInviteUserMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

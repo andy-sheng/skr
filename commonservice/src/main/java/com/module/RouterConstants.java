@@ -34,6 +34,7 @@ public interface RouterConstants {
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";
     String ACTIVITY_MUSIC_TEST = "/home/MusicTestActivity";
     String ACTIVITY_SETTING = "/home/SettingActivity";
+    String ACTIVITY_RANKED = "/home/RankedActivity";
 
     String ACTIVITY_LAST_FOLLOW = "/msg/LastFollowActivity";
 
@@ -61,6 +62,8 @@ public interface RouterConstants {
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
 
     String ACTIVITY_DOUBLE_PLAY = "/rankingmode/DoublePlayActivity";
+    String ACTIVITY_DOUBLE_MATCH = "/rankingmode/DoubleMatchActivity";
+    String ACTIVITY_DOUBLE_END = "/rankingmode/DoubleEndActivity";
 
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";

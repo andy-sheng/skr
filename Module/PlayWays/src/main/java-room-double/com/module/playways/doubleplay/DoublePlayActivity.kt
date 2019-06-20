@@ -15,7 +15,7 @@ import com.module.playways.doubleplay.fragment.DoublePlayWaysFragment
 class DoublePlayActivity : BaseActivity() {
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.double_play_activity_layout
+        return R.layout.empty_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {

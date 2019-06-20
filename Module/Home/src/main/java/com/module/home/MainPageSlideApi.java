@@ -1,11 +1,13 @@
 package com.module.home;
 
+import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -56,4 +58,16 @@ public interface MainPageSlideApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/task/show-red-dot")
     Observable<ApiResult> taskRedDotState();
+
+    /**
+     * {
+     * "roomID" : 11111,
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/invite-user-enter")
+    Observable<ApiResult> enterInvitedDoubleRoom(@Body RequestBody body);
 }

@@ -76,6 +76,8 @@ class QuickGameView : RelativeLayout, IGameView3 {
 
             override fun clickRank() {
                 // 新的排行榜
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKED)
+                        .navigation()
             }
 
             override fun clickTask() {

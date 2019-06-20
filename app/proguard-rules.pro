@@ -487,4 +487,6 @@ public static final int *;
 # 腾讯webview x5 内核
 #-libraryjars ../baseLibrary/commonsdk/libs/tbs_sdk_thirdapp_v3.5.0.1004_43500_sharewithdownload_withoutGame_obfs_20170801_113025.jar
 
+# 抖音effect sdk
+-keep class com.bytedance.labcv.effectsdk.**{*;}
 -ignorewarnings

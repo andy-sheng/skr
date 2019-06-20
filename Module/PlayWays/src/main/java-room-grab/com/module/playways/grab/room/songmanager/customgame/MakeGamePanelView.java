@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ public class MakeGamePanelView extends RelativeLayout {
     static final int STATUS_RECORDING = 2;
     static final int STATUS_RECORD_OK = 3;
     static final int STATUS_RECORD_PLAYING = 4;
-
+    ProgressBar mSubmitProgressBar;
     TextView mTitleTv;
     TextView mDescTv;
     TextView mCountDownTv;
@@ -102,6 +103,7 @@ public class MakeGamePanelView extends RelativeLayout {
         mTime60Btn = (ExTextView) this.findViewById(R.id.time60_btn);
         mTime90Btn = (ExTextView) this.findViewById(R.id.time90_btn);
         mTime120Btn = (ExTextView) this.findViewById(R.id.time120_btn);
+        mSubmitProgressBar = (ProgressBar) this.findViewById(R.id.submit_progress_bar);
 
         mPlayBtn.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -222,6 +224,7 @@ public class MakeGamePanelView extends RelativeLayout {
     private void uploadAudioRes() {
         if (TextUtils.isEmpty(mUploadUrl)) {
             if (!mUploading) {
+                mSubmitProgressBar.setVisibility(VISIBLE);
                 mUploading = true;
                 mUploadTask = UploadParams.newBuilder(mMakeAudioFilePath)
                         .setFileType(UploadParams.FileType.customGame)
@@ -236,12 +239,14 @@ public class MakeGamePanelView extends RelativeLayout {
                                 mUploadUrl = url;
                                 sendToServer();
                                 mUploading = false;
+                                mSubmitProgressBar.setVisibility(GONE);
                             }
 
                             @Override
                             public void onFailure(String msg) {
                                 mUploading = false;
                                 U.getToastUtil().showShort("上传失败");
+                                mSubmitProgressBar.setVisibility(GONE);
                             }
                         });
             }
@@ -268,6 +273,7 @@ public class MakeGamePanelView extends RelativeLayout {
             ApiMethods.subscribe(grabRoomServerApi.addCustomGame(body), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult obj) {
+                    mSubmitProgressBar.setVisibility(GONE);
                     if (obj.getErrno() == 0) {
                         U.getToastUtil().showShort("添加成功");
                         EventBus.getDefault().post(new AddCustomGameEvent());
@@ -276,6 +282,12 @@ public class MakeGamePanelView extends RelativeLayout {
                             mDialogPlus.dismiss();
                         }
                     }
+                }
+
+                @Override
+                public void onNetworkError(ErrorType errorType) {
+                    super.onNetworkError(errorType);
+                    mSubmitProgressBar.setVisibility(GONE);
                 }
             }, new ApiMethods.RequestControl("addCustomGame", ApiMethods.ControlType.CancelThis));
         }
@@ -326,6 +338,7 @@ public class MakeGamePanelView extends RelativeLayout {
         mPlayBtn.setImageResource(R.drawable.make_game_bofang);
         mRecordingTipsTv.setText("播放");
         mTitleTv.setText("选择表演时间");
+        mSubmitProgressBar.setVisibility(GONE);
     }
 
     private void changeToRecordBegin() {
@@ -339,6 +352,7 @@ public class MakeGamePanelView extends RelativeLayout {
         mPlayBtn.setImageResource(R.drawable.make_game_luyin);
         mRecordingTipsTv.setText("安装录音");
         mTitleTv.setText("一句话描述游戏规则");
+        mSubmitProgressBar.setVisibility(GONE);
     }
 
     @Override

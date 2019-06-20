@@ -59,14 +59,7 @@ public class GrabWidgetAnimationController {
         }
         // 需要改变偏移的对象
         List<View> viewList = new ArrayList<>();
-        viewList.add(mF.mGrabTopContentView);
-        viewList.add(mF.mPracticeFlagIv);
-        if(mF.mRoomData.isVideoRoom()){
-            viewList.add(mF.mGrabVideoDisplayView.getRealView());
-        }else{
-            viewList.addAll(mF.mSelfSingCardView.getRealViews());
-            viewList.addAll(mF.mOthersSingCardView.getRealViews());
-        }
+        fillView(viewList);
 
         List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
@@ -74,15 +67,15 @@ public class GrabWidgetAnimationController {
                 ObjectAnimator objectAnimator = null;
                 if (view == mF.mGrabVideoDisplayView.getRealView()) {
                     // 要多下移一个顶部状态栏的高度，才能和 ContentView对齐
-                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() +  mF.mGrabVideoDisplayView.getExtraTranslateYWhenOpen(mOpenType));
+                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() + mF.mGrabVideoDisplayView.getExtraTranslateYWhenOpen(mOpenType));
                 } else {
                     objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType());
                 }
                 animators.add(objectAnimator);
             }
         }
-        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(true,mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
-        if(animators2!=null){
+        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(true, mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
+        if (animators2 != null) {
             animators.addAll(animators2);
         }
         mMainAnimatorSet = new AnimatorSet();
@@ -114,6 +107,19 @@ public class GrabWidgetAnimationController {
             }
         });
         mMainAnimatorSet.start();
+        mF.mGameTipsManager.setBaseTranslateY(mF.TAG_INVITE_TIP_VIEW, getTranslateByOpenType());
+    }
+
+    void fillView(List<View> viewList) {
+        viewList.add(mF.mGrabTopContentView);
+        viewList.add(mF.mPracticeFlagIv);
+        viewList.add(mF.mGameTipsManager.getViewByKey(mF.TAG_SELF_SING_TIP_VIEW));
+        if (mF.mRoomData.isVideoRoom()) {
+            viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        } else {
+            viewList.addAll(mF.mSelfSingCardView.getRealViews());
+            viewList.addAll(mF.mOthersSingCardView.getRealViews());
+        }
     }
 
     /**
@@ -125,14 +131,7 @@ public class GrabWidgetAnimationController {
         }
         // 需要改变偏移的对象
         List<View> viewList = new ArrayList<>();
-        viewList.add(mF.mGrabTopContentView);
-        viewList.add(mF.mPracticeFlagIv);
-        if(mF.mRoomData.isVideoRoom()){
-            viewList.add(mF.mGrabVideoDisplayView.getRealView());
-        }else{
-            viewList.addAll(mF.mSelfSingCardView.getRealViews());
-            viewList.addAll(mF.mOthersSingCardView.getRealViews());
-        }
+        fillView(viewList);
         List<Animator> animators = new ArrayList<>();
         for (View view : viewList) {
             if (view != null) {
@@ -140,8 +139,8 @@ public class GrabWidgetAnimationController {
                 animators.add(objectAnimator);
             }
         }
-        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(false,mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
-        if(animators2!=null){
+        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(false, mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
+        if (animators2 != null) {
             animators.addAll(animators2);
         }
         mMainAnimatorSet = new AnimatorSet();
@@ -168,6 +167,8 @@ public class GrabWidgetAnimationController {
             }
         });
         mMainAnimatorSet.start();
+        mF.mGameTipsManager.setBaseTranslateY(mF.TAG_INVITE_TIP_VIEW, 0);
+
     }
 
     public void setOpenType(int openType) {

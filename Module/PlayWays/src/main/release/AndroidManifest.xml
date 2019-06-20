@@ -53,9 +53,19 @@
             android:name=".doubleplay.DoublePlayActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"></activity>
 
-        </activity>
+        <activity
+            android:name=".doubleplay.activity.DoubleEndActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+
+        <activity
+            android:name=".doubleplay.activity.DoubleMatchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <!-- 尝试修复hwui 问题，用户反馈点歌崩溃问题 -->
         <activity

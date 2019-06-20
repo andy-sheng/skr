@@ -1,7 +1,6 @@
 package com.zq.dialog;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.Gravity;
 
 import com.common.base.BaseActivity;
@@ -108,6 +107,17 @@ public class PersonInfoDialog {
 
                 EventBus.getDefault().post(new ShowEditRemarkEvent(userInfoModel));
             }
+
+            @Override
+            public void onClickDoubleInvite(UserInfoModel userInfoModel) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(true);
+                }
+
+                if (mKickListener != null) {
+                    mKickListener.onClickDoubleInvite(userInfoModel);
+                }
+            }
         });
 
         mDialogPlus = DialogPlus.newDialog(mContext)
@@ -158,6 +168,8 @@ public class PersonInfoDialog {
 
     public interface KickListener {
         void onClickKick(UserInfoModel userInfoModel);
+
+        void onClickDoubleInvite(UserInfoModel userInfoModel);
     }
 
     public interface PersonCardClickListener {
@@ -176,5 +188,7 @@ public class PersonInfoDialog {
         void onClickOut();
 
         void onClickRemark(UserInfoModel userInfoModel);
+
+        void onClickDoubleInvite(UserInfoModel userInfoModel);
     }
 }

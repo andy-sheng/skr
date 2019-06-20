@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.permission.SkrAudioPermission;
@@ -23,9 +24,15 @@ import com.common.floatwindow.Screen;
 import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.notification.event.CombineRoomSendInviteUserNotifyEvent;
+import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SpanUtils;
@@ -34,6 +41,7 @@ import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
+import com.module.home.MainPageSlideApi;
 import com.module.home.R;
 import com.module.home.view.INotifyView;
 import com.module.playways.IPlaywaysModeService;
@@ -41,12 +49,18 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.NotifyDialogView;
+import com.zq.notification.DoubleInviteNotifyView;
 import com.zq.notification.FollowNotifyView;
 import com.zq.notification.GrabInviteNotifyView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
@@ -59,6 +73,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     DialogPlus mSysWarnDialogPlus;
 
     INotifyView mINotifyView;
+
+    MainPageSlideApi mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -96,6 +112,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 showFollowFloatWindow(floatWindowData);
             } else if (floatWindowData.mType == FloatWindowData.Type.GRABINVITE) {
                 showGrabInviteFloatWindow(floatWindowData);
+            } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_INVITE) {
+                showDoubleInviteFloatWindow(floatWindowData);
             }
         }
 
@@ -235,6 +253,21 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CombineRoomSendInviteUserNotifyEvent event) {
+        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_INVITE);
+        floatWindowData.setUserInfoModel(event.getUserInfoModel());
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CombineRoomSyncInviteUserNotifyEvent event) {
+        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+        if (iRankingModeService != null) {
+            iRankingModeService.jumpToDoubleRoom(event);
+        }
+    }
+
     void tryGoGrabRoom(int roomID, int inviteType) {
         if (mSkrAudioPermission != null) {
             mSkrAudioPermission.ensurePermission(new Runnable() {
@@ -346,6 +379,55 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .build();
     }
 
+    void showDoubleInviteFloatWindow(FloatWindowData floatWindowData) {
+        UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
+        int roomID = floatWindowData.getRoomID();
+
+        resendGrabInviterFloatWindowDismissMsg();
+        DoubleInviteNotifyView doubleInviteNotifyView = new DoubleInviteNotifyView(U.app());
+        doubleInviteNotifyView.bindData(userInfoModel);
+        doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
+            @Override
+            public void onClickAgree() {
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(new HashMap<>()));
+                ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleRoom(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, e);
+                    }
+                }, NotifyCorePresenter.this);
+            }
+        });
+
+        FloatWindow.with(U.app())
+                .setView(doubleInviteNotifyView)
+                .setMoveType(MoveType.canRemove)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+                .setViewStateListener(new ViewStateListenerAdapter() {
+                    @Override
+                    public void onDismiss() {
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
+                    }
+
+                    @Override
+                    public void onPositionUpdate(int x, int y) {
+                        super.onPositionUpdate(x, y);
+                        resendGrabInviterFloatWindowDismissMsg();
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(TAG_INVITE_FOALT_WINDOW)
+                .build();
+    }
+
     void resendFollowFloatWindowDismissMsg() {
         mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 5000);
@@ -415,7 +497,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
 
         public enum Type {
-            FOLLOW, GRABINVITE
+            FOLLOW, GRABINVITE, DOUBLE_INVITE
         }
     }
 }

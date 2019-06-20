@@ -13,7 +13,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
-import com.module.playways.doubleplay.DoubleCorePresenter
+import com.module.playways.doubleplay.presenter.DoubleCorePresenter
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
@@ -85,12 +85,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         })
 
-        mPickIv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // picked
-                mDoubleCorePresenter?.pickOther()
-            }
-        })
+        mPickIv?.setOnClickListener {
+            mDoubleCorePresenter?.pickOther()
+        }
 
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {

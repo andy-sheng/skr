@@ -29,23 +29,23 @@ public class GameTipsManager {
     }
 
     public void dismiss(String tag) {
-        dismiss(tag,null);
+        dismiss(tag, null);
     }
 
-    public void dismiss(String tag,Activity activity) {
+    public void dismiss(String tag, Activity activity) {
         if (mGameTipsViewMap == null || !mGameTipsViewMap.containsKey(tag)) {
             return;
         }
         GameTipsView gameTipsView = mGameTipsViewMap.get(tag);
         if (gameTipsView != null) {
-            if(activity!=null){
-                if(activity.isDestroyed() || activity.isFinishing()){
+            if (activity != null) {
+                if (activity.isDestroyed() || activity.isFinishing()) {
 
-                }else{
+                } else {
                     gameTipsView.dismiss();
                     mGameTipsViewMap.remove(tag);
                 }
-            }else{
+            } else {
                 gameTipsView.dismiss();
                 mGameTipsViewMap.remove(tag);
             }
@@ -72,10 +72,29 @@ public class GameTipsManager {
         mGameTipsViewMap = null;
     }
 
+    public View getViewByKey(String tag) {
+        if (mGameTipsViewMap != null) {
+            GameTipsView gameTipsView = mGameTipsViewMap.get(tag);
+            if (gameTipsView != null) {
+                return gameTipsView.getTipsView();
+            }
+        }
+        return null;
+    }
+
+    public void setBaseTranslateY(String tag, int baseTranslateY) {
+        if (mGameTipsViewMap != null) {
+            GameTipsView gameTipsView = mGameTipsViewMap.get(tag);
+            if (gameTipsView != null) {
+                gameTipsView.setBaseTranslateY(baseTranslateY);
+            }
+        }
+    }
+
 
     public static final class GameTipsView {
         private View tipsView; // view 本体，如果不特殊设置的话，就是imageView
-        private int width = U.getDisplayUtils().dip2px(100);
+        private int width = ViewGroup.LayoutParams.WRAP_CONTENT;
         private int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         private int resId;
         private int leftMargin = 0;
@@ -91,13 +110,14 @@ public class GameTipsManager {
         private int maxShowCount = -1; // 最大显示次数，绑定app生命周期，会存入sharepref，-1代表不限制
         private Animator tipViewAnimator; // 该view 的显示的动画，如果不特殊设置就是抖动动画
         private Activity activity;
+        private int mBaseTranslateY;// 基于的Y偏移，会在这个基础上播动画啊
 
-        public GameTipsView(ViewGroup viewGroup,int resId) {
+        public GameTipsView(ViewGroup viewGroup, int resId) {
             this.parentView = viewGroup;
             this.resId = resId;
         }
 
-        public GameTipsView(ViewGroup viewGroup,View tipsView) {
+        public GameTipsView(ViewGroup viewGroup, View tipsView) {
             this.parentView = viewGroup;
             this.tipsView = tipsView;
         }
@@ -107,7 +127,7 @@ public class GameTipsManager {
             return this;
         }
 
-        public GameTipsManager.GameTipsView setTipsView(View tipsView) {
+        public GameTipsView setTipsView(View tipsView) {
             this.tipsView = tipsView;
             return this;
         }
@@ -116,68 +136,68 @@ public class GameTipsManager {
             return tipsView;
         }
 
-        public GameTipsManager.GameTipsView setSize(int width, int height) {
+        public GameTipsView setSize(int width, int height) {
             this.width = width;
             this.height = height;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setImgRes(int val) {
+        public GameTipsView setImgRes(int val) {
             resId = val;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setIndex(int val) {
+        public GameTipsView setIndex(int val) {
             index = val;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setIndexView(View view) {
+        public GameTipsView setIndexView(View view) {
             indexView = view;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setTag(String tag) {
+        public GameTipsView setTag(String tag) {
             this.tag = tag;
             return this;
         }
 
-        public GameTipsManager.GameTipsView addRule(int verb, int subject) {
+        public GameTipsView addRule(int verb, int subject) {
             rulesMap.put(verb, subject);
             return this;
         }
 
-        public GameTipsManager.GameTipsView hasAnimation(boolean hasAnimation) {
+        public GameTipsView hasAnimation(boolean hasAnimation) {
             this.hasAnimation = hasAnimation;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setAniamtion(Animator aniamtion){
+        public GameTipsView setAniamtion(Animator aniamtion) {
             this.tipViewAnimator = aniamtion;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setLeftMargin(int leftMargin) {
+        public GameTipsView setLeftMargin(int leftMargin) {
             this.leftMargin = leftMargin;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setRightMargin(int rightMargin) {
+        public GameTipsView setRightMargin(int rightMargin) {
             this.rightMargin = rightMargin;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setTopMargin(int topMargin) {
+        public GameTipsView setTopMargin(int topMargin) {
             this.topMargin = topMargin;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setBottomMargin(int bottomMargin) {
+        public GameTipsView setBottomMargin(int bottomMargin) {
             this.bottomMargin = bottomMargin;
             return this;
         }
 
-        public GameTipsManager.GameTipsView setMargins(int left, int top, int right, int bottom) {
+        public GameTipsView setMargins(int left, int top, int right, int bottom) {
             leftMargin = left;
             topMargin = top;
             rightMargin = right;
@@ -185,14 +205,19 @@ public class GameTipsManager {
             return this;
         }
 
-        public GameTipsManager.GameTipsView setShowCount(int count) {
+        public GameTipsView setShowCount(int count) {
             this.maxShowCount = count;
+            return this;
+        }
+
+        public GameTipsView setBaseTranslateY(int baseTranslateY) {
+            mBaseTranslateY = baseTranslateY;
             return this;
         }
 
         protected void startAnimation() {
             if (tipViewAnimator != null && tipViewAnimator.isRunning()) {
-                if(tipViewAnimator instanceof  ValueAnimator){
+                if (tipViewAnimator instanceof ValueAnimator) {
                     ((ValueAnimator) tipViewAnimator).removeAllUpdateListeners();
                 }
                 tipViewAnimator.removeAllListeners();
@@ -208,7 +233,7 @@ public class GameTipsManager {
                         boolean hasSetableView = false;
                         if (tipsView != null && tipsView.getParent() != null) {
                             hasSetableView = true;
-                            tipsView.setTranslationY((int) animation.getAnimatedValue());
+                            tipsView.setTranslationY((int) animation.getAnimatedValue() + mBaseTranslateY);
                         }
 
                         if (!hasSetableView) {
@@ -217,7 +242,7 @@ public class GameTipsManager {
                     }
                 });
                 tipViewAnimator = valueAnimator;
-            }else{
+            } else {
                 tipViewAnimator.setTarget(tipsView);
             }
             tipViewAnimator.start();
@@ -225,7 +250,7 @@ public class GameTipsManager {
 
         protected void dismiss() {
             if (tipViewAnimator != null) {
-                if(tipViewAnimator instanceof  ValueAnimator){
+                if (tipViewAnimator instanceof ValueAnimator) {
                     ((ValueAnimator) tipViewAnimator).removeAllUpdateListeners();
                 }
                 tipViewAnimator.removeAllListeners();
@@ -237,8 +262,8 @@ public class GameTipsManager {
         }
 
         public GameTipsView tryShow(GameTipsManager gameTipsManager) {
-            if(activity!=null){
-                if(activity.isFinishing() || activity.isDestroyed()){
+            if (activity != null) {
+                if (activity.isFinishing() || activity.isDestroyed()) {
                     return null;
                 }
             }
@@ -268,7 +293,7 @@ public class GameTipsManager {
                 return null;
             }
 
-            if(tipsView==null){
+            if (tipsView == null) {
                 ImageView imageView = new ImageView(parentView.getContext());
                 imageView.setImageResource(resId);
                 tipsView = imageView;
@@ -293,6 +318,8 @@ public class GameTipsManager {
 
             if (hasAnimation) {
                 startAnimation();
+            }else{
+                tipsView.setTranslationY(mBaseTranslateY);
             }
             return this;
         }

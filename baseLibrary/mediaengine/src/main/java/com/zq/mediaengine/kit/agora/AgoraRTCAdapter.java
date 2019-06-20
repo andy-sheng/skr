@@ -309,6 +309,12 @@ public class AgoraRTCAdapter {
                         // 模式为广播,必须在加入频道前调用
                         // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
                         mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
+                        if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
+                            /**
+                             * 直播模式下允许与web互通
+                             */
+                            mRtcEngine.enableWebSdkInteroperability(true);
+                        }
                         initRtcEngineInner();
                     }
                 } catch (Exception e) {
