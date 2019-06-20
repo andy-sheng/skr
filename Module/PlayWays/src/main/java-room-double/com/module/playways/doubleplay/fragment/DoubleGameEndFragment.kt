@@ -31,7 +31,7 @@ class DoubleGameEndFragment : BaseFragment() {
         mCloseIv = mRootView.findViewById<View>(R.id.close_iv) as ImageView
         mWhiteBg = mRootView.findViewById<View>(R.id.white_bg) as ExImageView
         mAvatarIv = mRootView.findViewById<View>(R.id.avatar_iv) as BaseImageView
-//        mEndTv = mRootView.findViewById<View>(R.id.end_tv) as ExTextView
+        mEndTv = mRootView.findViewById<View>(R.id.end_tv) as ExTextView
         mChatTimeTv = mRootView.findViewById<View>(R.id.chat_time_tv) as ExTextView
         mEndTipTv = mRootView.findViewById<View>(R.id.end_tip_tv) as ExTextView
         mFollowTv = mRootView.findViewById<View>(R.id.follow_tv) as ExTextView
