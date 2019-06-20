@@ -1,8 +1,10 @@
-package com.module.playways.doubleplay.pbLocalModel;
+package com.common.core.userinfo.model;
 
 import com.zq.live.proto.Common.CombineRoomConfig;
 
-public class LocalCombineRoomConfig {
+import java.io.Serializable;
+
+public class LocalCombineRoomConfig implements Serializable {
     int durationTimeMs; //房间持续时间（4000ms）
     String roomSignature; //房间描述签名
     String maskUserNickname; //隐藏的用户昵称

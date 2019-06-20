@@ -176,7 +176,7 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
     public String toString() {
         return "RoomData{" +
                 "mGameType=" + getGameType() +
-                ", mGameId=" + mGameId +
+                ", gameId=" + mGameId +
                 ", mSysAvatar='" + mSysAvatar + '\'' +
                 ", mShiftTs=" + mShiftTs +
                 ", mGameCreateTs=" + mGameCreateTs +

@@ -99,6 +99,18 @@ public interface DoubleRoomServerApi {
 
     /**
      * {
+     * "roomID" : 11111,
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/magpie/invite-user-enter")
+    Observable<ApiResult> enterInvitedDoubleRoom(@Body RequestBody body);
+
+    /**
+     * {
      * "fromPickuserID": 0,
      * "toPickUserID": 0
      * }

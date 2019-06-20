@@ -6,7 +6,9 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -15,11 +17,11 @@ import com.common.utils.U;
 import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
+import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
-import com.module.playways.grab.room.songmanager.customgame.MakeGamePanelView;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -184,6 +186,25 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 .navigation();
     }
 
+    @Override
+    public void jumpToDoubleRoom(Object o) {
+        CombineRoomSyncInviteUserNotifyEvent event = (CombineRoomSyncInviteUserNotifyEvent) o;
+        DoubleRoomData doubleRoomData = new DoubleRoomData();
+        doubleRoomData.setGameId(event.getRoomID());
+        doubleRoomData.setEnableNoLimitDuration(true);
+        doubleRoomData.setPassedTimeMs(event.getPassedTimeMs());
+        doubleRoomData.setConfig(event.getConfig());
+
+        HashMap<Integer, UserInfoModel> hashMap = new HashMap();
+        for (UserInfoModel userInfoModel : event.getUsers()) {
+            hashMap.put(userInfoModel.getUserId(), userInfoModel);
+        }
+
+        doubleRoomData.setUserInfoList(hashMap);
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                .withSerializable("roomData", doubleRoomData)
+                .navigation();
+    }
 
     @Override
     public void init(Context context) {

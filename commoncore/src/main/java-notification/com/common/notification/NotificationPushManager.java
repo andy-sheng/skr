@@ -1,9 +1,13 @@
 package com.common.notification;
 
 import com.common.log.MyLog;
+import com.common.notification.event.CombineRoomSendInviteUserNotifyEvent;
+import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
+import com.zq.live.proto.Notification.CombineRoomSendInviteUserMsg;
+import com.zq.live.proto.Notification.CombineRoomSyncInviteUserMsg;
 import com.zq.live.proto.Notification.ENotificationMsgType;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
@@ -46,6 +50,10 @@ public class NotificationPushManager {
             processInviteStandMsg(baseNotiInfo, msg.getInviteStandMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_SYS_WARNING_MSG) {
             processSysWarnMsg(baseNotiInfo, msg.getSysWarningMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_SEND_INVITE_USER) {
+            processInviteToDoubleRoomMsg(baseNotiInfo, msg.getSendInviteUserMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_SYNC_INVITE_USER) {
+            processAcceptInviteMsg(baseNotiInfo, msg.getSyncInviteUserMsg());
         }
     }
 
@@ -70,6 +78,22 @@ public class NotificationPushManager {
         if (baseNotiInfo != null) {
             SysWarnNotifyEvent sysWarnNotifyEvent = new SysWarnNotifyEvent(baseNotiInfo, sysWarningMsg.getTitle(), sysWarningMsg.getContent());
             EventBus.getDefault().post(sysWarnNotifyEvent);
+        }
+    }
+
+    //被别人邀请去双人房
+    private void processInviteToDoubleRoomMsg(BaseNotiInfo baseNotiInfo, CombineRoomSendInviteUserMsg combineRoomSendInviteUserMsg) {
+        if (combineRoomSendInviteUserMsg != null) {
+            CombineRoomSendInviteUserNotifyEvent combineRoomSendInviteUserEvent = new CombineRoomSendInviteUserNotifyEvent(baseNotiInfo, combineRoomSendInviteUserMsg);
+            EventBus.getDefault().post(combineRoomSendInviteUserEvent);
+        }
+    }
+
+    //被我邀请的人进入了房间的push
+    private void processAcceptInviteMsg(BaseNotiInfo baseNotiInfo, CombineRoomSyncInviteUserMsg combineRoomSyncInviteUserMsg) {
+        if (combineRoomSyncInviteUserMsg != null) {
+            CombineRoomSyncInviteUserNotifyEvent combineRoomSyncInviteUserEvent = new CombineRoomSyncInviteUserNotifyEvent(baseNotiInfo, combineRoomSyncInviteUserMsg);
+            EventBus.getDefault().post(combineRoomSyncInviteUserEvent);
         }
     }
 }

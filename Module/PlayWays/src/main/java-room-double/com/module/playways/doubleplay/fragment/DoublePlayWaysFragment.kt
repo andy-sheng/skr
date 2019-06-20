@@ -85,12 +85,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         })
 
-        mPickIv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // picked
-                mDoubleCorePresenter?.pickOther()
-            }
-        })
+        mPickIv?.setOnClickListener {
+            mDoubleCorePresenter?.pickOther()
+        }
 
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {

@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -32,7 +31,6 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.DebugLogView;
@@ -59,6 +57,7 @@ import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
@@ -177,6 +176,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabCorePresenter mCorePresenter;
 
     GrabRedPkgPresenter mGrabRedPkgPresenter;
+
+    DoubleRoomInvitePresenter mDoubleRoomInvitePresenter;
 
 //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -331,6 +332,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
         mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
+        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter();
+        addPresent(mDoubleRoomInvitePresenter);
 //        mGiftTimerPresenter = new GiftTimerPresenter(this);
 //        addPresent(mGiftTimerPresenter);
 //        mGiftTimerPresenter.startTimer();
@@ -852,6 +855,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             public void onClickKick(UserInfoModel userInfoModel) {
                 showKickConfirmDialog(userInfoModel);
             }
+
+            @Override
+            public void onClickDoubleInvite(UserInfoModel userInfoModel) {
+                mDoubleRoomInvitePresenter.inviteToDoubleRoom();
+            }
         });
         mPersonInfoDialog.show();
     }
@@ -1003,7 +1011,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void onClickCamera() {
-                if(mRoomData.isVideoRoom()){
+                if (mRoomData.isVideoRoom()) {
                     GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                     if (grabRoundInfoModel != null) {
                         for (WantSingerInfo wantSingerInfo :
@@ -1022,8 +1030,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                     .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
                                     .navigation();
                         }
-                    },true);
-                }else{
+                    }, true);
+                } else {
                     U.getToastUtil().showShort("只在视频房间才能开启视频设置");
                 }
             }
