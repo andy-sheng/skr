@@ -2457,6 +2457,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         mPreviewWidth = align(mPreviewWidth, 8);
         mPreviewHeight = align(mPreviewHeight, 8);
+        mPreviewMixerWidth = align(mPreviewMixerWidth, 8);
+        mPreviewMixerHeight = align(mPreviewMixerHeight, 8);
         mTargetWidth = align(mTargetWidth, 8);
         mTargetHeight = align(mTargetHeight, 8);
 
