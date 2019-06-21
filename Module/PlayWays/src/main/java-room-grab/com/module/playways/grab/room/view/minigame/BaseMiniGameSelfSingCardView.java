@@ -26,6 +26,7 @@ import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zq.live.proto.Common.EMiniGamePlayType;
+import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.utils.SongResUtils;
 
 import java.io.File;
@@ -123,16 +124,7 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
         if (mMiniGameInfoModel.getGamePlayType() == EMiniGamePlayType.EMGP_SONG_DETAIL.getValue()) {
             // TODO: 2019-05-29 带歌词的
             mMiniGameSongUrl = mMiniGameInfoModel.getSongInfo().getSongURL();
-            File file = SongResUtils.getGrabLyricFileByUrl(mMiniGameSongUrl);
-
-            if (file == null || !file.exists()) {
-                MyLog.w(TAG, "playLyric is not in local file");
-                fetchLyricTask();
-            } else {
-                MyLog.w(TAG, "playLyric is exist");
-                final File fileName = SongResUtils.getGrabLyricFileByUrl(mMiniGameSongUrl);
-                drawLyric(fileName);
-            }
+            setLyric(mTvLyric,mMiniGameSongUrl);
         } else {
             // TODO: 2019-05-29 不带歌词的,待补充
             mTvLyric.setText(mMiniGameInfoModel.getDisplayGameRule());
@@ -140,46 +132,30 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
         return true;
     }
 
-    protected void drawLyric(final File file) {
-        MyLog.w(TAG, "file is " + file);
-        Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> emitter) {
-                if (file != null && file.exists() && file.isFile()) {
-                    try (BufferedSource source = Okio.buffer(Okio.source(file))) {
-                        String lyric = source.readUtf8();
-                        emitter.onNext(lyric);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                emitter.onComplete();
-            }
-        })
-                .compose(((BaseActivity) mParentView.getContext()).bindUntilEvent(ActivityEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String o) {
-                mTvLyric.setText("");
-                if (isJSON2(o)) {
-                    NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
-                    mTvLyric.append(mMiniGameInfoModel.getDisplayGameRule());
-                    mTvLyric.append("\n");
-                    for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
-                        mTvLyric.append(newChorusLyricModel.getItems().get(i).getWords());
-                        if (i == 0) {
-                            mTvLyric.append("\n");
+    protected void setLyric(TextView lyricTv,String lyricUrl){
+        LyricsManager.getLyricsManager(U.app())
+                .loadGrabPlainLyric(lyricUrl)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String o) throws Exception {
+                        lyricTv.setText("");
+                        if (isJSON2(o)) {
+                            NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
+                            lyricTv.append(mMiniGameInfoModel.getDisplayGameRule());
+                            lyricTv.append("\n");
+                            for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
+                                lyricTv.append(newChorusLyricModel.getItems().get(i).getWords());
+                                if (i == 0) {
+                                    lyricTv.append("\n");
+                                }
+                            }
+                        } else {
+                            lyricTv.append(mMiniGameInfoModel.getDisplayGameRule());
+                            lyricTv.append("\n");
+                            lyricTv.append(o);
                         }
                     }
-                } else {
-                    mTvLyric.append(mMiniGameInfoModel.getDisplayGameRule());
-                    mTvLyric.append("\n");
-                    mTvLyric.append(o);
-                }
-            }
-        }, throwable -> MyLog.e(TAG, throwable));
+                });
     }
 
     public boolean isJSON2(String str) {
@@ -191,39 +167,6 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
             result = false;
         }
         return result;
-    }
-
-    protected void fetchLyricTask() {
-        if (TextUtils.isEmpty(mMiniGameSongUrl)) {
-            MyLog.w(TAG, "fetchLyricTask mMiniGameSongUrl = null");
-            return;
-        }
-        if (mDisposable != null) {
-            mDisposable.dispose();
-        }
-
-        mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
-            @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
-                File newName = new File(SongResUtils.createStandLyricFileName(mMiniGameSongUrl));
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(mMiniGameSongUrl, newName, true, null);
-
-                if (isSuccess) {
-                    emitter.onNext(newName);
-                    emitter.onComplete();
-                } else {
-                    emitter.onError(new IgnoreException("下载失败" + TAG));
-                }
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(new RxRetryAssist(5, 1, false))
-                .subscribe(file -> {
-                    final File fileName = SongResUtils.getGrabLyricFileByUrl(mMiniGameSongUrl);
-                    drawLyric(fileName);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
     }
 
     @Override

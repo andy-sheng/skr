@@ -94,60 +94,10 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
 
         // TODO: 2019-05-29 带歌词的
         mMiniGameSongUrl = mSongModel.getMiniGame().getSongInfo().getSongURL();
-        File file = SongResUtils.getGrabLyricFileByUrl(mMiniGameSongUrl);
-
-        if (file == null || !file.exists()) {
-            MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask();
-        } else {
-            MyLog.w(TAG, "playLyric is exist");
-            final File fileName = SongResUtils.getGrabLyricFileByUrl(mMiniGameSongUrl);
-            drawLyric(fileName);
-        }
+        setLyric(mTvLyric,mMiniGameSongUrl);
         return true;
     }
 
-//    protected void drawLyric(final File file) {
-//        MyLog.w(TAG, "file is " + file);
-//        Observable.create(new ObservableOnSubscribe<String>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<String> emitter) {
-//                if (file != null && file.exists() && file.isFile()) {
-//                    try (BufferedSource source = Okio.buffer(Okio.source(file))) {
-//                        String lyric = source.readUtf8();
-//                        emitter.onNext(lyric);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                emitter.onComplete();
-//            }
-//        })
-//                .compose(((BaseActivity) mParentView.getContext()).bindUntilEvent(ActivityEvent.DESTROY))
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
-//            @Override
-//            public void accept(String o) {
-//                mTvLyric.setText("");
-//                if (isJSON2(o)) {
-//                    NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
-//                    mTvLyric.append(mMiniGameInfoModel.getDisplayGameRule());
-//                    mTvLyric.append("\n");
-//                    for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
-//                        mTvLyric.append(newChorusLyricModel.getItems().get(i).getWords());
-//                        if (i == 0) {
-//                            mTvLyric.append("\n");
-//                        }
-//                    }
-//                } else {
-//                    mTvLyric.append(mMiniGameInfoModel.getDisplayGameRule());
-//                    mTvLyric.append("\n");
-//                    mTvLyric.append(o);
-//                }
-//            }
-//        }, throwable -> MyLog.e(TAG, throwable));
-//    }
 
     @Override
     protected int layoutDesc() {
