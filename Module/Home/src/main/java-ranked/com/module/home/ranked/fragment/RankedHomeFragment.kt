@@ -84,7 +84,7 @@ class RankedHomeFragment : BaseFragment() {
 
     fun initRankCard() {
         val rankedServerApi = ApiManager.getInstance().createService(RankedServerApi::class.java)
-        ApiMethods.subscribe(rankedServerApi.homeRankCards, object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(rankedServerApi.homeRankCards(), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val rankHomeCardModels = JSON.parseArray(result.data!!.getString("cards"), RankHomeCardModel::class.java)

@@ -10,22 +10,34 @@ import com.module.home.ranked.model.RankHomeCardModel.Companion.DUAN_RANK_TYPE
 import com.module.home.ranked.model.RankHomeCardModel.Companion.POPULAR_RANK_TYPE
 import com.module.home.ranked.model.RankHomeCardModel.Companion.REWARD_RANK_TYPE
 import android.support.constraint.ConstraintLayout
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import org.greenrobot.greendao.query.WhereCondition
+import com.common.view.viewpager.NestViewPager
+import com.common.view.viewpager.SlidingTabLayout
+import com.module.home.ranked.view.RankedDetailView
+
 
 class RankedDetailFragment : BaseFragment() {
 
-    private var mContainer: ConstraintLayout? = null
-    private var mTopImage: ImageView? = null
-    private var mIvBack: ImageView? = null
-    private var mIvRule: ImageView? = null
+    lateinit var mContainer: ConstraintLayout
+    lateinit var mTopImage: ImageView
+    lateinit var mIvBack: ImageView
+    lateinit var mIvRule: ImageView
+
+    lateinit var mTitleStl: SlidingTabLayout
+    lateinit var mRankedVp: NestViewPager
+    lateinit var mPagerAdapter: PagerAdapter
+    lateinit var mRankedDetailViews: HashMap<Int, RankedDetailView>
 
     private var mModel: RankHomeCardModel? = null
     private var mDialogPlus: DialogPlus? = null
@@ -39,6 +51,8 @@ class RankedDetailFragment : BaseFragment() {
         mTopImage = mRootView.findViewById<View>(R.id.top_image) as ImageView
         mIvBack = mRootView.findViewById<View>(R.id.iv_back) as ImageView
         mIvRule = mRootView.findViewById<View>(R.id.iv_rule) as ImageView
+        mTitleStl = mRootView.findViewById<View>(R.id.title_stl) as SlidingTabLayout
+        mRankedVp = mRootView.findViewById<View>(R.id.ranked_vp) as NestViewPager
 
 
         when (mModel?.rankType) {
@@ -59,17 +73,93 @@ class RankedDetailFragment : BaseFragment() {
             }
         }
 
-        mIvBack?.setOnClickListener(object : DebounceViewClickListener() {
+        initRankTag()
+
+        mIvBack.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 U.getFragmentUtils().popFragment(this@RankedDetailFragment)
             }
 
         })
 
-        mIvRule?.setOnClickListener(object : DebounceViewClickListener() {
+        mIvRule.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 showRankedRule()
             }
+        })
+    }
+
+    private fun initRankTag() {
+        mRankedDetailViews = HashMap()
+        mTitleStl.setCustomTabView(R.layout.ranked_tab_view, R.id.tab_tv)
+        mTitleStl.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
+        mTitleStl.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
+        mTitleStl.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
+        mTitleStl.setIndicatorWidth(U.getDisplayUtils().dip2px(56f))
+        mTitleStl.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(13f))
+        mTitleStl.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
+        mTitleStl.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
+
+        mPagerAdapter = object : PagerAdapter() {
+            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+                container.removeView(`object` as View)
+            }
+
+            override fun instantiateItem(container: ViewGroup, position: Int): Any {
+                var tagModel = mModel?.tabs!![position]
+                var mRankedDetailView: RankedDetailView?
+                if (mRankedDetailViews.containsKey(tagModel.rankID)) {
+                    mRankedDetailView = mRankedDetailViews[tagModel.rankID]
+                } else {
+                    mRankedDetailView = RankedDetailView(context, tagModel)
+                    mRankedDetailViews[tagModel.rankID] = mRankedDetailView
+                }
+
+                if (container.indexOfChild(mRankedDetailView) == -1) {
+                    container.addView(mRankedDetailView)
+                }
+
+                if (position == 0) {
+                    mRankedDetailView?.initData()
+                }
+                return mRankedDetailView!!
+            }
+
+            override fun getCount(): Int {
+                return mModel?.tabs!!.size
+            }
+
+            override fun getItemPosition(`object`: Any): Int {
+                return PagerAdapter.POSITION_NONE
+            }
+
+            override fun getPageTitle(position: Int): CharSequence? {
+                return mModel?.tabs!![position].title
+            }
+
+            override fun isViewFromObject(view: View, `object`: Any): Boolean {
+                return view === `object`
+            }
+        }
+
+        mRankedVp.adapter = mPagerAdapter
+        mTitleStl.setViewPager(mRankedVp)
+        mPagerAdapter.notifyDataSetChanged()
+
+        mTitleStl.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                var tagModel = mModel?.tabs!![position]
+                mRankedDetailViews[tagModel.rankID]?.initData()
+            }
+
         })
     }
 
@@ -100,6 +190,13 @@ class RankedDetailFragment : BaseFragment() {
         super.setData(type, data)
         if (type == 0) {
             mModel = data as RankHomeCardModel?
+        }
+    }
+
+    override fun destroy() {
+        super.destroy()
+        for ((key, view) in mRankedDetailViews) {
+            view.destory()
         }
     }
 
