@@ -18,6 +18,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.R;
@@ -36,6 +37,8 @@ public class ConfirmMatchInfoView extends RelativeLayout {
 
     Listener mListener;
 
+    View mOutView;
+    ExConstraintLayout mContainer;
     ExTextView mBoyTv;
     ExTextView mGirlTv;
     TextView mErrorHintTv;
@@ -73,6 +76,8 @@ public class ConfirmMatchInfoView extends RelativeLayout {
     private void init() {
         inflate(mContext, R.layout.confirm_match_info_view, this);
 
+        mOutView = findViewById(R.id.out_view);
+        mContainer = findViewById(R.id.container);
         mBoyTv = findViewById(R.id.boy_tv);
         mGirlTv = findViewById(R.id.girl_tv);
         mErrorHintTv = findViewById(R.id.error_hint_tv);
@@ -139,6 +144,15 @@ public class ConfirmMatchInfoView extends RelativeLayout {
                 }
             }
         });
+
+        mOutView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null){
+                    mListener.onClickOutView();
+                }
+            }
+        });
     }
 
     private void initAgeTags() {
@@ -171,6 +185,8 @@ public class ConfirmMatchInfoView extends RelativeLayout {
 
     public interface Listener {
         void onSelect(int sex, int ageTag);
+
+        void onClickOutView();
     }
 
     class AgeTag implements IPickerViewData {
