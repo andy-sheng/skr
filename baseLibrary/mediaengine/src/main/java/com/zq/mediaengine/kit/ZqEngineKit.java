@@ -1648,6 +1648,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param textureView TextureView to be set.
      */
     public void setDisplayPreview(final TextureView textureView) {
+        DebugLogView.println(TAG,"setDisplayPreview" + " textureView=" + textureView);
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {

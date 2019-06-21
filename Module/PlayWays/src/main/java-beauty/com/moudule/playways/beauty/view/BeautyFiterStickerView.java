@@ -143,6 +143,10 @@ public class BeautyFiterStickerView extends FrameLayout {
 
             }
         });
+        if (mType == TYPE_BEAUTY) {
+            Params config = ZqEngineKit.getInstance().getParams();
+            mProgressBar.setProgress((int) (config.getIntensityBigEye() * 100));
+        }
     }
 
     public void onPageSelected() {
