@@ -27,6 +27,12 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            res.srcDirs += ['src/main/res-help']
+            java.srcDirs += 'src/main/java-help'
+        }
+    }
 }
 
 dependencies {

@@ -60,20 +60,6 @@ class BeautyPreviewFragment : BaseFragment() {
                 mBeautyControlView.show()
             }
         })
-        mBeautyControlView.setListener(object : BeautyControlPanelView.Listener {
-            override fun onChangeBeauty(id: Int, progress: Int) {
-                MyLog.d("BeautyPreviewFragment", "onChangeBeauty id = " + id + "progress = " + progress)
-            }
-
-            override fun onChangeFiter(id: Int, progress: Int) {
-                MyLog.d("BeautyPreviewFragment", "onChangeFiter id = " + id + "progress = " + progress)
-            }
-
-            override fun onChangePater(id: Int) {
-                MyLog.d("BeautyPreviewFragment", "onChangePater id =" + id)
-            }
-
-        })
 
         mEnterRoomTv.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {

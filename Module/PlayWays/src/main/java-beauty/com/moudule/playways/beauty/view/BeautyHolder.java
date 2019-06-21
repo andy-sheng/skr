@@ -38,7 +38,7 @@ public class BeautyHolder extends RecyclerView.ViewHolder {
     public void bindData(BeautyControlPanelView.BeautyViewModel model, int position, boolean isSelected) {
         this.mBeautyViewModel = model;
         this.position = position;
-        mItemTv.setText(model.getName());
+        mItemTv.setText(model.getType().getName());
         mItemTv.setBackground(model.getDrawable());
         setIsSelected(isSelected);
     }

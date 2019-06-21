@@ -457,7 +457,6 @@ public class BaseCameraActivity extends Activity implements
     private void enableBytedEffect() {
         String path;
         BytedEffectFilter filter = mEngineKit.getBytedEffectFilter();
-        File[] reshapes = ResourceHelper.getReshapeResource();
         File[] beautys = ResourceHelper.getBeautyResources();
         if (beautys != null && beautys.length > 0) {
             path = beautys[0].getAbsolutePath();
@@ -467,6 +466,7 @@ public class BaseCameraActivity extends Activity implements
             filter.updateIntensity(BytedEffectConstants.IntensityType.BeautySharp.getId(), 0.5f);
         }
 
+        File[] reshapes = ResourceHelper.getReshapeResource();
         if (reshapes != null && reshapes.length > 0) {
             path = reshapes[0].getAbsolutePath();
             filter.setReshape(path);
@@ -476,7 +476,7 @@ public class BaseCameraActivity extends Activity implements
         path = ResourceHelper.getFilterResources()[4].getAbsolutePath();
         filter.setFilter(path);
 //        filter.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), 1.0f);
-//        path = ResourceHelper.getStickerPath("6bc53e0a429951da45d55f91f01a9403");
+        path = ResourceHelper.getStickerPath("6bc53e0a429951da45d55f91f01a9403");
 //        filter.setSticker(path);
     }
 

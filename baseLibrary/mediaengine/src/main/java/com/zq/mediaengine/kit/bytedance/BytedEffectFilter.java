@@ -74,6 +74,7 @@ public class BytedEffectFilter {
      */
     public void init(final Context context, final String modelDir, final String licensePath) {
         if (mInited) {
+            MyLog.d(TAG,"has inited cancel this");
             return;
         }
         mGLRender.queueEvent(new Runnable() {

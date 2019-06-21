@@ -637,22 +637,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         {
             ViewStub viewStub = mRootView.findViewById(R.id.grab_beauty_control_panel_view_stub);
             mBeautyControlPanelView = new BeautyControlPanelView(viewStub);
-            mBeautyControlPanelView.setListener(new BeautyControlPanelView.Listener() {
-                @Override
-                public void onChangeBeauty(int id, int progress) {
-
-                }
-
-                @Override
-                public void onChangeFiter(int id, int progress) {
-
-                }
-
-                @Override
-                public void onChangePater(int id) {
-
-                }
-            });
         }
 
     }
