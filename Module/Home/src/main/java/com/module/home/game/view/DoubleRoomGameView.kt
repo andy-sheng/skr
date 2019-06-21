@@ -39,6 +39,7 @@ class DoubleRoomGameView : RelativeLayout {
     private var mDisposable: Disposable? = null        //获取次数
     private var userInfoServerApi: UserInfoServerApi? = null
     private var mainPageSlideApi: MainPageSlideApi? = null
+    var hasRemainTime: Boolean = false        //默认已经没有次数了
 
     internal var mLastUpdateRemainTime: Long = 0    //上次拉去剩余次数的时间
 
@@ -53,13 +54,17 @@ class DoubleRoomGameView : RelativeLayout {
 
         start_match_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                var hasConfirm = U.getPreferenceUtils().getSettingBoolean(SP_HAS_CONFIRM_INFO, false)
-                if (!hasConfirm) {
-                    showConfirmView()
+                if (hasRemainTime) {
+                    var hasConfirm = U.getPreferenceUtils().getSettingBoolean(SP_HAS_CONFIRM_INFO, false)
+                    if (!hasConfirm) {
+                        showConfirmView()
+                    } else {
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                                .navigation()
+                    }
                 } else {
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
-                            .navigation()
+                    U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
                 }
             }
         })
@@ -128,6 +133,7 @@ class DoubleRoomGameView : RelativeLayout {
                 if (result?.errno == 0) {
                     mLastUpdateRemainTime = System.currentTimeMillis();
                     var totalRemainTimes = result.data.getIntValue("todayResTimes");
+                    hasRemainTime = totalRemainTimes > 0
                     val spanStringBuilder = SpanUtils()
                             .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_30))
                             .append("" + totalRemainTimes).setForegroundColor(Color.parseColor("#FFC15B"))
