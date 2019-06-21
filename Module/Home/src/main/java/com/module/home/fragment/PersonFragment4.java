@@ -242,6 +242,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mDialogPlus = DialogPlus.newDialog(getActivity())
                 .setContentHolder(new ViewHolder(businessCardDialogView))
                 .setGravity(Gravity.CENTER)
+                .setMargin(U.getDisplayUtils().dip2px(40), -1, U.getDisplayUtils().dip2px(40), -1)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)

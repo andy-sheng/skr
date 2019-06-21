@@ -334,4 +334,16 @@ public interface UserInfoServerApi {
 
     @GET("v1/mate/search-fans")
     Observable<ApiResult> searchFans(@Query("searchContent") String searchContent);
+
+
+    /**
+     * 双人房进去前，修改用户的性别和年龄段
+     *
+     * @param body
+     *              "sex": "unknown",
+     *              "stage": "stage_unknown"
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/modify-user-info")
+    Observable<ApiResult> modifyDoubleUserInfo(@Body RequestBody body);
 }

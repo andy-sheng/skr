@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 
@@ -19,6 +20,25 @@ import com.module.home.game.view.FriendRoomGameView
 import com.module.home.game.view.QuickGameView
 import android.widget.ImageView
 import android.view.animation.AlphaAnimation
+import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoServerApi
+import com.common.notification.event.FollowNotifyEvent
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiMethods
+import com.common.rxretrofit.ApiObserver
+import com.common.rxretrofit.ApiResult
+import com.module.home.event.ShowConfirmInfoEvent
+import com.module.home.game.view.DoubleRoomGameView.Companion.SP_HAS_CONFIRM_INFO
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
+import com.zq.dialog.BusinessCardDialogView
+import com.zq.dialog.ConfirmMatchInfoView
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.util.HashMap
 
 
 class GameFragment3 : BaseFragment() {
@@ -27,6 +47,8 @@ class GameFragment3 : BaseFragment() {
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
     lateinit var mTabPagerAdapter: PagerAdapter
+
+    lateinit var mDialogPlus: DialogPlus
 
     val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
@@ -155,11 +177,47 @@ class GameFragment3 : BaseFragment() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun isInViewPager(): Boolean {
         return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowConfirmInfoEvent) {
+        if (event != null) {
+            val confirmMatchInfoView = ConfirmMatchInfoView(context, object : ConfirmMatchInfoView.Listener {
+                override fun onSelect(sex: Int, ageTag: Int) {
+                    var userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+                    val map = HashMap<String, Any>()
+                    map["sex"] = sex
+                    map["stage"] = ageTag
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                    ApiMethods.subscribe(userInfoServerApi.modifyDoubleUserInfo(body), object : ApiObserver<ApiResult>() {
+                        override fun process(obj: ApiResult?) {
+                            if (obj?.errno == 0) {
+                                U.getPreferenceUtils().setSettingBoolean(SP_HAS_CONFIRM_INFO, true)
+                                //TODO 是否需要更新本地资料，服务器确认
+                                mDialogPlus.dismiss(false)
+                            } else {
+                                MyLog.w(TAG, "modifyDoubleUserInfo erro = " + obj?.errmsg)
+                            }
+                        }
+
+                    }, this@GameFragment3)
+                }
+            })
+            mDialogPlus = DialogPlus.newDialog(activity!!)
+                    .setContentHolder(ViewHolder(confirmMatchInfoView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setMargin(U.getDisplayUtils().dip2px(10f), -1, U.getDisplayUtils().dip2px(10f), U.getDisplayUtils().dip2px(65f))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.transparent)
+                    .setExpanded(false)
+                    .create()
+            mDialogPlus.show()
+        }
     }
 
     override fun destroy() {
