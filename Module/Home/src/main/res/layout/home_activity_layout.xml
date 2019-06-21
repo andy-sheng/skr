@@ -34,6 +34,28 @@
                 app:bl_unSelected_textColor="@color/black_trans_50" />
         </RelativeLayout>
 
+        <!--排位赛-->
+        <RelativeLayout
+            android:id="@+id/rank_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/rank_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/ic_rank_normal"
+                android:gravity="center_horizontal"
+                android:scaleType="center"
+                android:text="排位"
+                android:textSize="@dimen/textsize_10_dp"
+                app:bl_selected_textColor="#8D501A"
+                app:bl_unSelected_textColor="@color/black_trans_50" />
+        </RelativeLayout>
+
         <!--消息-->
         <RelativeLayout
             android:id="@+id/message_area"

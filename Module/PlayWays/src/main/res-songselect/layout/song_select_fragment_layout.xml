@@ -23,7 +23,7 @@
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_30_dp"
         android:padding="@dimen/view_16_dp"
-        android:src="@drawable/img_back" />
+        android:src="@drawable/grab_back" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/select_select"
