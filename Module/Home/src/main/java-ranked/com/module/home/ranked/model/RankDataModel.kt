@@ -3,6 +3,13 @@ package com.module.home.ranked.model
 import java.io.Serializable
 
 class RankDataModel : Serializable {
+
+    companion object {
+        const val USER_RANKING: Int = 1  //用户的段位
+        const val BLUE_ZUAN: Int = 2     //蓝钻
+        const val MEILI: Int = 3         //魅力值
+    }
+
     /**
      * avatar : string
      * levelDesc : string
