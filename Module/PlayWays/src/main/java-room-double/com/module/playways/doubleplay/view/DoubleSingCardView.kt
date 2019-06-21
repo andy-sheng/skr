@@ -7,27 +7,22 @@ import android.widget.ScrollView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
-import com.common.log.MyLog
-import com.common.rx.RxRetryAssist
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.module.playways.R
+import com.module.playways.grab.room.view.video.DoubleSelfSingCardView
 import com.module.playways.room.song.model.SongModel
-import com.zq.lyrics.LyricsManager
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 
 
 class DoubleSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     val TAG = "DoubleSingCardView"
     var mSongOwnerIv: BaseImageView? = null
     var mSongNameTv: TextView? = null
-    var mLyricTv: TextView? = null
     var mScrollView: ScrollView? = null
     var mNextSongTipTv: TextView? = null
     var mCutSongTv: ExTextView? = null
+    lateinit var mDoubleSelfSingCardView: DoubleSelfSingCardView
 
     init {
         tryInflate()
@@ -36,10 +31,10 @@ class DoubleSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     override fun init(parentView: View?) {
         mSongOwnerIv = parentView?.findViewById(com.module.playways.R.id.song_owner_iv)
         mSongNameTv = parentView?.findViewById(com.module.playways.R.id.song_name_tv)
-        mLyricTv = parentView?.findViewById(com.module.playways.R.id.lyric_tv)
         mScrollView = parentView?.findViewById(com.module.playways.R.id.scrollView)
         mNextSongTipTv = parentView?.findViewById(com.module.playways.R.id.next_song_tip_tv)
         mCutSongTv = parentView?.findViewById(com.module.playways.R.id.cut_song_tv)
+        mDoubleSelfSingCardView = DoubleSelfSingCardView(parentView)
     }
 
     fun playLyric(avatar: String = "", mCur: SongModel?, mNext: String?) {
@@ -51,21 +46,7 @@ class DoubleSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                         .build())
 
         mSongNameTv?.text = mCur?.itemName
-        mLyricTv?.text = "歌词加载中..."
-
-        LyricsManager.getLyricsManager(U.app())
-                .fetchAndLoadLyrics(mCur?.lyric)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(RxRetryAssist(3, ""))
-                .subscribe(Consumer { lyricsReader ->
-                    MyLog.w(TAG, "onEventMainThread " + "play")
-                    for (value in lyricsReader.lrcLineInfos) {
-                        mLyricTv?.append(value.value.lineLyrics + "\n")
-                    }
-                }, Consumer {
-                    MyLog.e(TAG, it)
-                })
+        mDoubleSelfSingCardView.playLyric(mCur)
 
         if (TextUtils.isEmpty(mNext)) {
             mNextSongTipTv?.text = "没有歌曲啦～"

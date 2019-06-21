@@ -42,33 +42,17 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="song_name_tv,song_owner_iv" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_186_dp"
-        android:layout_marginLeft="@dimen/view_32_dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginRight="@dimen/view_32_dp"
-        app:layout_constraintTop_toBottomOf="@+id/barrier">
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/lyric_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:lineSpacingExtra="@dimen/view_16_dp"
-            android:text="我想大声宣布 对你依依不舍 连隔壁邻居都猜到我现在的感受 河边的风在吹着头发飘动 牵着你的手一阵莫名感动 我想带你到我外婆家一起"
-            android:textColor="#ff000000"
-            android:textSize="@dimen/textsize_16_dp" />
-
-    </ScrollView>
+    <include
+        android:id="@+id/double_video_self_sing_card_stub"
+        layout="@layout/double_video_self_sing_card_layout" />
 
     <View
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_1_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_262_dp"
         android:background="@color/black_trans_10"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/next_song_tip_tv"

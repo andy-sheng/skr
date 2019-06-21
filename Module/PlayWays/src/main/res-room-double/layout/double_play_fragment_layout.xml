@@ -202,6 +202,9 @@
         android:layout_height="match_parent"
         android:layout="@layout/double_sing_card_view_layout" />
 
+    <!--视频模式下自己演唱时歌词面板 合唱小游戏歌词 以及 清唱 伴奏歌词-->
+    <include layout="@layout/double_video_self_sing_card_layout" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/mic_iv"
         android:layout_width="@dimen/view_42_dp"
