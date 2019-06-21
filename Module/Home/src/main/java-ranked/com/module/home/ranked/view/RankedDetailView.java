@@ -202,6 +202,7 @@ public class RankedDetailView extends RelativeLayout {
             mRankedIconIv.setVisibility(VISIBLE);
             mRankedDescTv.setVisibility(VISIBLE);
             mRankedDescTv.setText("" + rankDataModel.getScore());
+            mRankedIconIv.setImageResource(R.drawable.ranked_lanzuan_icon);
             if (rankDataModel.getRankSeq() == 0) {
                 mSeqTv.setText("#");
                 mSeqTv.setTextColor(Color.WHITE);
@@ -223,6 +224,7 @@ public class RankedDetailView extends RelativeLayout {
             mLevelView.setVisibility(GONE);
             mRankedIconIv.setVisibility(VISIBLE);
             mRankedDescTv.setVisibility(VISIBLE);
+            mRankedIconIv.setImageResource(R.drawable.ranked_meili_icon);
             mRankedDescTv.setText("" + rankDataModel.getScore());
             if (rankDataModel.getRankSeq() <= 3) {
                 mSeqTv.setText("");

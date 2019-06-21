@@ -54,6 +54,7 @@ public class RankedDetailViewHolder extends RecyclerView.ViewHolder {
 
         if (model.getVType() == BLUE_ZUAN) {
             // 打赏榜
+            mRankedIconIv.setImageResource(R.drawable.ranked_lanzuan_icon);
             if (mRankDataModel.getRankSeq() <= 3) {
                 mRewardBg.setVisibility(View.VISIBLE);
                 mSeqTv.setTextColor(Color.WHITE);
@@ -66,6 +67,7 @@ public class RankedDetailViewHolder extends RecyclerView.ViewHolder {
         } else if (model.getVType() == MEILI) {
             mRewardBg.setVisibility(View.GONE);
             // 人气榜
+            mRankedIconIv.setImageResource(R.drawable.ranked_meili_icon);
             if (mRankDataModel.getRankSeq() <= 3) {
                 mSeqTv.setText("");
                 if (mRankDataModel.getRankSeq() == 1) {

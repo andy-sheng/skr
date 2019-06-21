@@ -10,11 +10,12 @@
         android:layout_height="@dimen/view_0_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_70_dp"
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/myrank_area"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -37,8 +38,8 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/myrank_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_70_dp"
-        android:background="@color/white"
+        android:layout_height="@dimen/view_78_dp"
+        android:background="@drawable/my_ranked_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
