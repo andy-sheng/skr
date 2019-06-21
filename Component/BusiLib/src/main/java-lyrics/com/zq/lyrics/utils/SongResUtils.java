@@ -24,9 +24,13 @@ public class SongResUtils {
     private static final String SCORE_DIR = getRootFile() + File.separator + "score";
     private static final String STAND_DIR = getRootFile() + File.separator + "stand";
     private static final String GRAB_LYRIC_DIR = getRootFile() + File.separator + "grabLyric";
+    private static int sHasScardPermission = -1;
 
     public static final File getRootFile() {
-        if (U.getPermissionUtils().checkExternalStorage(U.getActivityUtils().getTopActivity())) {
+        if (sHasScardPermission == -1) {
+            sHasScardPermission = U.getPermissionUtils().checkExternalStorage(U.getActivityUtils().getTopActivity()) ? 1 : 0;
+        }
+        if (sHasScardPermission == 1) {
             return U.getAppInfoUtils().getMainDir();
         } else {
             return U.app().getFilesDir();

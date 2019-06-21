@@ -117,9 +117,9 @@ public class GrabWidgetAnimationController {
         if (mF.mRoomData.isVideoRoom()) {
             viewList.add(mF.mGrabVideoDisplayView.getRealView());
         } else {
-            viewList.addAll(mF.mSelfSingCardView.getRealViews());
             viewList.addAll(mF.mOthersSingCardView.getRealViews());
         }
+        viewList.addAll(mF.mSelfSingCardView.getRealViews());
     }
 
     /**
