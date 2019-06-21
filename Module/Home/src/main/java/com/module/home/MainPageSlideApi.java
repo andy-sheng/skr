@@ -70,4 +70,7 @@ public interface MainPageSlideApi {
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/magpie/invite-user-enter")
     Observable<ApiResult> enterInvitedDoubleRoom(@Body RequestBody body);
+
+
+
 }

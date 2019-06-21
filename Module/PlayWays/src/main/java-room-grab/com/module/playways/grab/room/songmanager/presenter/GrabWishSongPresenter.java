@@ -57,7 +57,12 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<GrabWishSongModel> grabWishSongModels = JSONObject.parseArray(result.getData().getString("items"), GrabWishSongModel.class);
-                    mView.addGrabWishSongModels(offset, grabWishSongModels);
+                    int newOffset = result.getData().getIntValue("offset");
+                    if (offset == 0) {
+                        mView.addGrabWishSongModels(true, newOffset, grabWishSongModels);
+                    } else {
+                        mView.addGrabWishSongModels(false, newOffset, grabWishSongModels);
+                    }
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
                 }

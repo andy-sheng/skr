@@ -37,6 +37,7 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
     GrabWishSongPresenter mGrabWishSongPresenter;
 
     LoadService mLoadService;
+    int mOffset = 0;
 
     public GrabSongWishView(Context context, GrabRoomData grabRoomData) {
         super(context);
@@ -75,7 +76,7 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mGrabWishSongPresenter.getListMusicSuggested(mWishSongAdapter.getDataList().size());
+                mGrabWishSongPresenter.getListMusicSuggested(mOffset);
             }
 
             @Override
@@ -104,15 +105,16 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
 
     public void tryLoad() {
 //        if (mWishSongAdapter.getDataList().isEmpty()) {
-            mGrabWishSongPresenter.getListMusicSuggested(0);
+        mGrabWishSongPresenter.getListMusicSuggested(0);
 //        }
     }
 
     @Override
-    public void addGrabWishSongModels(int fromOffset, List<GrabWishSongModel> grabWishSongModels) {
-        if (fromOffset == 0) {
+    public void addGrabWishSongModels(boolean clear, int newOffset, List<GrabWishSongModel> grabWishSongModels) {
+        if (clear) {
             mWishSongAdapter.getDataList().clear();
         }
+        mOffset = newOffset;
         mRefreshLayout.finishLoadMore();
         if (grabWishSongModels != null && grabWishSongModels.size() > 0) {
             mWishSongAdapter.getDataList().addAll(grabWishSongModels);
