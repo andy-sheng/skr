@@ -62,6 +62,7 @@ import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.top.GrabTopContentView;
 import com.module.playways.grab.room.top.GrabTopOpView;
 import com.module.playways.grab.room.view.GameTipsManager;
@@ -414,7 +415,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .hasAnimation(true)
                 .setShowCount(3)
-                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen()?U.getDisplayUtils().dip2px(32):0)
+                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen() ? U.getDisplayUtils().dip2px(32) : 0)
                 .setTag(TAG_INVITE_TIP_VIEW)
                 .tryShow(mGameTipsManager);
     }
@@ -481,7 +482,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 .addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
                 .setMargins(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(28), 0, 0)
-                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen()?U.getDisplayUtils().dip2px(32):0)
+                .setBaseTranslateY(mGrabWidgetAnimationController.isOpen() ? U.getDisplayUtils().dip2px(32) : 0)
                 .hasAnimation(false)
                 .setTag(TAG_SELF_SING_TIP_VIEW)
                 .setShowCount(1)
@@ -673,7 +674,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //                        .setExitAnim(R.anim.slide_right_out)
 //                        .addDataBeforeAdd(0, mRoomData)
 //                        .build());
-                OwnerManagerActivity.open(getActivity(), mRoomData);
+                OwnerManagerActivity.open(getActivity(), new SongManageData(mRoomData));
                 removeManageSongTipView();
             }
 

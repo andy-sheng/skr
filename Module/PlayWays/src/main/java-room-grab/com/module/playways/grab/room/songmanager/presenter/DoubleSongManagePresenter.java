@@ -10,11 +10,10 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.component.busilib.friends.SpecialModel;
-import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.event.AddCustomGameEvent;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.event.AddSuggestSongEvent;
@@ -28,7 +27,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -38,20 +36,16 @@ import okhttp3.RequestBody;
 /**
  * 房主可以看到的 所有轮次 的歌曲 view
  */
-public class GrabSongManagePresenter extends BaseSongManagePresenter {
+public class DoubleSongManagePresenter extends BaseSongManagePresenter {
     public final static String TAG = "GrabSongManagePresenter";
 
     IGrabSongManageView mIGrabSongManageView;
 
-    GrabRoomServerApi mGrabRoomServerApi;
+    DoubleRoomServerApi mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi.class);
 
-    GrabRoomData mGrabRoomData;
-
-    Disposable mGetTagsTask;
+    SongManageData mGrabRoomData;
 
     Disposable mGetSongModelListTask;
-
-    List<SpecialModel> mSpecialModelList;
 
     List<GrabRoomSongModel> mGrabRoomSongModelList = new ArrayList<>();
 
@@ -63,44 +57,12 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
 
     int mLimit = 20;
 
-    public GrabSongManagePresenter(IGrabSongManageView view, GrabRoomData grabRoomData) {
+    public DoubleSongManagePresenter(IGrabSongManageView view, SongManageData grabRoomData) {
         this.mIGrabSongManageView = view;
         mGrabRoomData = grabRoomData;
-        mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         mUiHandler = new Handler();
         addToLifeCycle();
         EventBus.getDefault().register(this);
-    }
-
-    public void getTagList() {
-        if (mSpecialModelList != null && mSpecialModelList.size() > 0) {
-            mIGrabSongManageView.showTagList(mSpecialModelList);
-            return;
-        }
-
-        if (mGetTagsTask != null && !mGetTagsTask.isDisposed()) {
-            MyLog.w(TAG, "已经加载中了...");
-            return;
-        }
-
-        mGetTagsTask = ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult obj) {
-                if (obj.getErrno() == 0) {
-                    mSpecialModelList = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
-                    if (mSpecialModelList != null && mSpecialModelList.size() > 0) {
-                        mIGrabSongManageView.showTagList(mSpecialModelList);
-                    }
-                } else {
-                    MyLog.d(TAG, "getTagList failed, " + "result is " + obj.toString());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, this);
     }
 
     public void getPlayBookList() {
@@ -108,20 +70,11 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
             mGetSongModelListTask.dispose();
         }
 
-        int offset;
-
-        if (!mGrabRoomData.hasGameBegin()) {
-            offset = 0;
-        } else {
-            offset = mGrabRoomData.getRealRoundSeq() - 1;
-        }
-        if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
-            offset = mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq();
-        }
+        int offset = mGrabRoomSongModelList.size();
 
         MyLog.d(TAG, "getPlayBookList offset is " + offset);
 
-        mGetSongModelListTask = ApiMethods.subscribe(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
+        mGetSongModelListTask = ApiMethods.subscribe(mDoubleRoomServerApi.getSongList(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -178,22 +131,12 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
-        ApiMethods.subscribe(mGrabRoomServerApi.delMusic(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mDoubleRoomServerApi.deleteSong(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     if (mGrabRoomSongModelList != null) {
-                        Iterator<GrabRoomSongModel> iterator = mGrabRoomSongModelList.iterator();
-                        while (iterator.hasNext()) {
-                            GrabRoomSongModel grabRoomSongModel = iterator.next();
-                            if (grabRoomSongModel.getRoundSeq() == roundSeq) {
-                                iterator.remove();
-                            } else if (grabRoomSongModel.getRoundSeq() > roundSeq) {
-                                grabRoomSongModel.setRoundSeq(grabRoomSongModel.getRoundSeq() - 1);
-                            }
-                        }
-
                         mIGrabSongManageView.showNum(--mTotalNum);
                         mIGrabSongManageView.deleteSong(grabRoomSongModel);
 
@@ -220,16 +163,6 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
     }
 
     public void updateSongList() {
-        Iterator<GrabRoomSongModel> iterator = mGrabRoomSongModelList.iterator();
-        while (iterator.hasNext()) {
-            GrabRoomSongModel grabRoomSongModel = iterator.next();
-            if (grabRoomSongModel.getRoundSeq() < mGrabRoomData.getRealRoundSeq()) {
-                iterator.remove();
-            } else if (grabRoomSongModel.getRoundSeq() > mGrabRoomData.getRealRoundSeq()) {
-                break;
-            }
-        }
-
         mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
 
         if (mGrabRoomSongModelList.size() < 5 && mHasMore) {
@@ -246,7 +179,7 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
-        ApiMethods.subscribe(mGrabRoomServerApi.addMusic(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mDoubleRoomServerApi.addSong(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
@@ -275,58 +208,9 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
         }, this);
     }
 
-    public void changeMusicTag(SpecialModel specialModel, int roomID) {
-        MyLog.d(TAG, "changeMusicTag");
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("newTagID", specialModel.getTagID());
-        map.put("roomID", roomID);
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(mGrabRoomServerApi.changeMusicTag(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "changeMusicTag process" + " result=" + result.getErrno());
-                if (result.getErrno() == 0) {
-                    mIGrabSongManageView.changeTagSuccess(specialModel);
-                    List<GrabRoomSongModel> grabRoomSongModels = JSON.parseArray(result.getData().getString("playbook"), GrabRoomSongModel.class);
-                    if (grabRoomSongModels == null || grabRoomSongModels.size() == 0) {
-                        //没有更多了
-                        mIGrabSongManageView.hasMoreSongList(false);
-                        return;
-                    }
-
-                    int total = result.getData().getIntValue("total");
-                    mTotalNum = total;
-                    mIGrabSongManageView.showNum(mTotalNum);
-
-                    mIGrabSongManageView.hasMoreSongList(true);
-                    mGrabRoomSongModelList.clear();
-                    mGrabRoomSongModelList.addAll(grabRoomSongModels);
-                    updateSongList();
-                } else {
-                    MyLog.w(TAG, "changeMusicTag failed, " + " traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, this);
-    }
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        if (event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1) {
-            mIGrabSongManageView.showNum(--mTotalNum);
-        }
-        /**
-         * 因为现在用Activity 里，所以这里的 mGrabRoomData 跟之前不是一个引用了
-         */
-        mGrabRoomData.setExpectRoundInfo(event.newRoundInfo);
-        mGrabRoomData.setRealRoundInfo(event.newRoundInfo);
+
         updateSongList();
     }
 
@@ -384,21 +268,7 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
      * @param grabRoomSongModel
      */
     void addToUiList(GrabRoomSongModel grabRoomSongModel) {
-        if (mGrabRoomSongModelList.size() >= 2) {
-            for (int i = 2; i < mGrabRoomSongModelList.size(); i++) {
-                GrabRoomSongModel g = mGrabRoomSongModelList.get(i);
-                g.setRoundSeq(grabRoomSongModel.getRoundSeq() + 1);
-            }
-            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
-            mGrabRoomSongModelList.add(2, grabRoomSongModel);
-        } else {
-            if (mGrabRoomSongModelList.size() == 0) {
-                mGrabRoomSongModelList.add(grabRoomSongModel);
-            } else {
-                grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
-                mGrabRoomSongModelList.add(grabRoomSongModel);
-            }
-        }
+        mGrabRoomSongModelList.add(grabRoomSongModel);
         mIGrabSongManageView.showNum(++mTotalNum);
         updateSongList();
     }

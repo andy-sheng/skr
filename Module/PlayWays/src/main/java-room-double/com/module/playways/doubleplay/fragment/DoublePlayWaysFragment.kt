@@ -30,6 +30,8 @@ import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.presenter.DoubleCorePresenter
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
 import com.module.playways.doubleplay.view.DoubleSingCardView
+import com.module.playways.grab.room.songmanager.OwnerManagerActivity
+import com.module.playways.grab.room.songmanager.SongManageData
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
@@ -146,7 +148,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             override fun clickValid(v: View) {
                 // 点歌
                 if (TextUtils.isEmpty(mRoomData?.nextMusicDesc)) {
-//                    OwnerManagerActivity.open(activity, mRoomData)
+                    OwnerManagerActivity.open(activity, SongManageData(mRoomData))
                 } else {
                     mDoubleCorePresenter?.nextSong()
                 }

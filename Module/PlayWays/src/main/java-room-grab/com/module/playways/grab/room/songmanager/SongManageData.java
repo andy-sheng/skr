@@ -8,8 +8,8 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import java.io.Serializable;
 
 public class SongManageData implements Serializable {
-    GrabRoomData mGrabRoomData;
-    DoubleRoomData mDoubleRoomData;
+    private GrabRoomData mGrabRoomData;
+    private DoubleRoomData mDoubleRoomData;
 
     public SongManageData(GrabRoomData grabRoomData) {
         mGrabRoomData = grabRoomData;
@@ -21,10 +21,14 @@ public class SongManageData implements Serializable {
 
     public SpecialModel getSpecialModel() {
         if (mGrabRoomData != null) {
-            mGrabRoomData.getSpecialModel();
+            return mGrabRoomData.getSpecialModel();
         }
 
         return null;
+    }
+
+    public GrabRoomData getGrabRoomData() {
+        return mGrabRoomData;
     }
 
     public void setSpecialModel(SpecialModel specialModel) {
@@ -51,6 +55,24 @@ public class SongManageData implements Serializable {
         return -1;
     }
 
+    public String getRoomName() {
+        if (mGrabRoomData != null) {
+            return mGrabRoomData.getRoomName();
+        }
+
+        if (mDoubleRoomData != null) {
+            return mDoubleRoomData.getConfig().getRoomSignature();
+        }
+
+        return "";
+    }
+
+    public void setRoomName(String roomName) {
+        if (mGrabRoomData != null) {
+            mGrabRoomData.setRoomName(roomName);
+        }
+    }
+
     public boolean hasGameBegin() {
         if (mGrabRoomData != null) {
             return mGrabRoomData.hasGameBegin();
@@ -75,7 +97,21 @@ public class SongManageData implements Serializable {
         if (mGrabRoomData != null) {
             mGrabRoomData.setExpectRoundInfo(expectRoundInfo);
         }
+    }
 
+    public boolean isOwner() {
+        if (mGrabRoomData != null) {
+            return mGrabRoomData.isOwner();
+        }
 
+        return false;
+    }
+
+    public boolean isDoubleRoom() {
+        return mDoubleRoomData != null;
+    }
+
+    public boolean isGrabRoom() {
+        return mGrabRoomData != null;
     }
 }

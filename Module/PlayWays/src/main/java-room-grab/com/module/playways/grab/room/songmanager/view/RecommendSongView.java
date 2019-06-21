@@ -16,8 +16,8 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.adapter.RecommendSongAdapter;
 import com.module.playways.grab.room.songmanager.customgame.MakeGamePanelView;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
@@ -48,9 +48,10 @@ public class RecommendSongView extends FrameLayout {
     int mLimit = 20;
     //    boolean hasInit = false;
     MakeGamePanelView mMakeGamePanelView;
-    GrabRoomData mRoomData;
 
-    public RecommendSongView(Context context, GrabRoomData roomData, RecommendTagModel recommendTagModel) {
+    SongManageData mRoomData;
+
+    public RecommendSongView(Context context, SongManageData roomData, RecommendTagModel recommendTagModel) {
         super(context);
         this.mRoomData = roomData;
         this.mRecommendTagModel = recommendTagModel;
@@ -67,19 +68,33 @@ public class RecommendSongView extends FrameLayout {
         mRefreshLayout = findViewById(R.id.refreshLayout);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecommendSongAdapter = new RecommendSongAdapter(mRoomData.isOwner(), new RecyclerOnItemClickListener<SongModel>() {
-            @Override
-            public void onItemClicked(View view, int position, SongModel model) {
-                if (mRoomData.isOwner() && model != null && model.getItemID() == SongModel.ID_CUSTOM_GAME) {
-                    if (mMakeGamePanelView == null) {
-                        mMakeGamePanelView = new MakeGamePanelView(getContext());
+
+        if (mRoomData.isGrabRoom()) {
+            mRecommendSongAdapter = new RecommendSongAdapter(mRoomData.isOwner(), new RecyclerOnItemClickListener<SongModel>() {
+                @Override
+                public void onItemClicked(View view, int position, SongModel model) {
+                    if (mRoomData.isOwner() && model != null && model.getItemID() == SongModel.ID_CUSTOM_GAME) {
+                        if (mMakeGamePanelView == null) {
+                            mMakeGamePanelView = new MakeGamePanelView(getContext());
+                        }
+                        mMakeGamePanelView.showByDialog(mRoomData.getGameId());
+                    } else {
+                        EventBus.getDefault().post(new AddSongEvent(model));
                     }
-                    mMakeGamePanelView.showByDialog(mRoomData.getGameId());
-                } else {
+                }
+            });
+        } else {
+            /**
+             * 双人房默认是直接 点唱
+             */
+            mRecommendSongAdapter = new RecommendSongAdapter(true, new RecyclerOnItemClickListener<SongModel>() {
+                @Override
+                public void onItemClicked(View view, int position, SongModel model) {
                     EventBus.getDefault().post(new AddSongEvent(model));
                 }
-            }
-        });
+            });
+        }
+
         mRecyclerView.setAdapter(mRecommendSongAdapter);
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
 
@@ -102,8 +117,8 @@ public class RecommendSongView extends FrameLayout {
         getSongList(0);
     }
 
-    public void tryLoad(){
-        if(mRecommendSongAdapter.getDataList().isEmpty()){
+    public void tryLoad() {
+        if (mRecommendSongAdapter.getDataList().isEmpty()) {
             getSongList(0);
         }
     }

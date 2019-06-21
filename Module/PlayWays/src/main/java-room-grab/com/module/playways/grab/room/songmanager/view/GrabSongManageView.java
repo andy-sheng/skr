@@ -17,11 +17,13 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.adapter.ManageSongAdapter;
 import com.module.playways.grab.room.songmanager.event.SongNumChangeEvent;
 import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.presenter.BaseSongManagePresenter;
+import com.module.playways.grab.room.songmanager.presenter.DoubleSongManagePresenter;
 import com.module.playways.grab.room.songmanager.presenter.GrabSongManagePresenter;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
 import com.module.playways.grab.room.songmanager.tags.GrabTagsAdapter;
@@ -39,7 +41,7 @@ import java.util.List;
 public class GrabSongManageView extends FrameLayout implements IGrabSongManageView {
     public final static String TAG = "GrabSongManageView";
 
-    GrabRoomData mRoomData;
+    SongManageData mSongManageData;
 
     SmartRefreshLayout mRefreshLayout;
 
@@ -53,7 +55,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
     ManageSongAdapter mManageSongAdapter;
 
-    GrabSongManagePresenter mGrabSongManagePresenter;
+    BaseSongManagePresenter mGrabSongManagePresenter;
 
     GrabSongTagsView mGrabSongTagsView;
 
@@ -61,9 +63,9 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
     int mSpecialModelId;
 
-    public GrabSongManageView(Context context, GrabRoomData grabRoomData) {
+    public GrabSongManageView(Context context, SongManageData grabRoomData) {
         super(context);
-        mRoomData = grabRoomData;
+        mSongManageData = grabRoomData;
         initView();
     }
 
@@ -73,7 +75,11 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
     }
 
     public void initData() {
-        mGrabSongManagePresenter = new GrabSongManagePresenter(this, mRoomData);
+        if (mSongManageData.isGrabRoom()) {
+            mGrabSongManagePresenter = new GrabSongManagePresenter(this, mSongManageData.getGrabRoomData());
+        } else {
+            mGrabSongManagePresenter = new DoubleSongManagePresenter(this, mSongManageData);
+        }
 
         mIvArrow = (ImageView) findViewById(R.id.iv_arrow);
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
@@ -108,9 +114,12 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
         initListener();
 
-        if (mRoomData.getSpecialModel() != null) {
-            setTagTv(mRoomData.getSpecialModel());
+        if (mSongManageData.isGrabRoom()) {
+            if (mSongManageData.getSpecialModel() != null) {
+                setTagTv(mSongManageData.getSpecialModel());
+            }
         }
+
         mGrabSongManagePresenter.getPlayBookList();
     }
 
@@ -121,60 +130,62 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
     }
 
     private void initListener() {
-        mTvSelectedTag.setOnClickListener(v -> {
-            if (mGrabSongTagsView == null) {
-                mGrabSongTagsView = new GrabSongTagsView(getContext());
+        if (mSongManageData.isGrabRoom()) {
+            mTvSelectedTag.setOnClickListener(v -> {
+                if (mGrabSongTagsView == null) {
+                    mGrabSongTagsView = new GrabSongTagsView(getContext());
 
-                mGrabSongTagsView.setOnTagClickListener(new GrabTagsAdapter.OnTagClickListener() {
-                    @Override
-                    public void onClick(SpecialModel specialModel) {
-                        mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.getGameId());
-                    }
-
-                    @Override
-                    public void dismissDialog() {
-                        if (mPopupWindow != null) {
-                            mPopupWindow.dismiss();
+                    mGrabSongTagsView.setOnTagClickListener(new GrabTagsAdapter.OnTagClickListener() {
+                        @Override
+                        public void onClick(SpecialModel specialModel) {
+                            mGrabSongManagePresenter.changeMusicTag(specialModel, mSongManageData.getGameId());
                         }
-                    }
-                });
-                mPopupWindow = new PopupWindow(mGrabSongTagsView);
-                mPopupWindow.setWidth(mTvSelectedTag.getWidth());
-                mPopupWindow.setOutsideTouchable(true);
-                mPopupWindow.setFocusable(true);
 
-                MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
-                if (Build.VERSION.SDK_INT < 23) {
-                    mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                        @Override
+                        public void dismissDialog() {
+                            if (mPopupWindow != null) {
+                                mPopupWindow.dismiss();
+                            }
+                        }
+                    });
+                    mPopupWindow = new PopupWindow(mGrabSongTagsView);
+                    mPopupWindow.setWidth(mTvSelectedTag.getWidth());
+                    mPopupWindow.setOutsideTouchable(true);
+                    mPopupWindow.setFocusable(true);
+
+                    MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
+                    if (Build.VERSION.SDK_INT < 23) {
+                        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                    }
+
+                    mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_xia));
+                        }
+                    });
                 }
 
-                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_xia));
-                    }
-                });
-            }
+                mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
 
-            mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
-
-            if (mPopupWindow != null && mPopupWindow.isShowing()) {
-                mPopupWindow.dismiss();
-            } else {
-                mGrabSongManagePresenter.getTagList();
-            }
-        });
+                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                } else {
+                    mGrabSongManagePresenter.getTagList();
+                }
+            });
+        }
 
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
             mGrabSongManagePresenter.deleteSong(grabRoomSongModel);
         });
 
-        mManageSongAdapter.setGrabRoomData(mRoomData);
+        mManageSongAdapter.setGrabRoomData(mSongManageData);
     }
 
     private void setTagTv(SpecialModel specialModel) {
-        mRoomData.setSpecialModel(specialModel);
-        mRoomData.setTagId(specialModel.getTagID());
+        mSongManageData.setSpecialModel(specialModel);
+        mSongManageData.setTagId(specialModel.getTagID());
 
         mSpecialModelId = specialModel.getTagID();
         mTvSelectedTag.setText(specialModel.getTagName());

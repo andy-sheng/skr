@@ -8,10 +8,9 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
 import com.module.playways.grab.room.songmanager.view.IOwnerManageView;
@@ -30,11 +29,11 @@ import okhttp3.RequestBody;
 public class OwnerManagePresenter extends RxLifeCyclePresenter {
     IOwnerManageView mIOwnerManageView;
     GrabRoomServerApi mGrabRoomServerApi;
-    GrabRoomData mGrabRoomData;
+    SongManageData mSongManageData;
 
-    public OwnerManagePresenter(IOwnerManageView IOwnerManageView, GrabRoomData grabRoomData) {
+    public OwnerManagePresenter(IOwnerManageView IOwnerManageView, SongManageData songManageData) {
         mIOwnerManageView = IOwnerManageView;
-        mGrabRoomData = grabRoomData;
+        mSongManageData = songManageData;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -54,7 +53,7 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("修改房间名成功");
-                    mGrabRoomData.setRoomName(roomName);
+                    mSongManageData.setRoomName(roomName);
                     mIOwnerManageView.showRoomName(roomName);
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
@@ -84,7 +83,7 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "suggestSong" + " songModel=" + songModel);
         HashMap<String, Object> map = new HashMap<>();
         map.put("itemID", songModel.getItemID());
-        map.put("roomID", mGrabRoomData.getGameId());
+        map.put("roomID", mSongManageData.getGameId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -109,7 +108,7 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddSongEvent event) {
-        if (!mGrabRoomData.isOwner()) {
+        if (mSongManageData.isGrabRoom() && !mSongManageData.isOwner()) {
             suggestSong(event.getSongModel());
         }
     }

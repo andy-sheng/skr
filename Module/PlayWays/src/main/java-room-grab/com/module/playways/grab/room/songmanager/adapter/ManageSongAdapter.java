@@ -15,16 +15,15 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
-
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.R;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {
     OnClickDeleteListener mOnClickDeleteListener;
 
-    GrabRoomData mGrabRoomData;
+    SongManageData mGrabRoomData;
 
     Drawable mGrayDrawable;
     Drawable mRedDrawable;
@@ -85,7 +84,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         reportItemHolder.bind(model, position);
     }
 
-    public void setGrabRoomData(GrabRoomData grabRoomData) {
+    public void setGrabRoomData(SongManageData grabRoomData) {
         mGrabRoomData = grabRoomData;
     }
 
@@ -140,33 +139,39 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             this.mSongModel = model;
             this.mPosition = position;
 
-            if (mGrabRoomData.hasGameBegin()) {
-                if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
-                    mTvManage.setEnabled(false);
-                    mTvManage.setText("演唱中");
-                    mTvManage.setBackground(mGrayDrawable);
-                } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
-                    mTvManage.setEnabled(false);
-                    mTvManage.setText("已加载");
-                    mTvManage.setBackground(mGrayDrawable);
-                } else {
-                    mTvManage.setText("删除");
-                    mTvManage.setEnabled(true);
-                    mTvManage.setBackground(mRedDrawable);
-                }
+            if (mGrabRoomData.isDoubleRoom()) {
+                mTvManage.setText("删除");
+                mTvManage.setEnabled(true);
+                mTvManage.setBackground(mRedDrawable);
             } else {
-                if (position == 0) {
-                    mTvManage.setText("演唱中");
-                    mTvManage.setEnabled(false);
-                    mTvManage.setBackground(mGrayDrawable);
-                } else if (position == 1) {
-                    mTvManage.setText("已加载");
-                    mTvManage.setEnabled(false);
-                    mTvManage.setBackground(mGrayDrawable);
+                if (mGrabRoomData.hasGameBegin()) {
+                    if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
+                        mTvManage.setEnabled(false);
+                        mTvManage.setText("演唱中");
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
+                        mTvManage.setEnabled(false);
+                        mTvManage.setText("已加载");
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else {
+                        mTvManage.setText("删除");
+                        mTvManage.setEnabled(true);
+                        mTvManage.setBackground(mRedDrawable);
+                    }
                 } else {
-                    mTvManage.setText("删除");
-                    mTvManage.setEnabled(true);
-                    mTvManage.setBackground(mRedDrawable);
+                    if (position == 0) {
+                        mTvManage.setText("演唱中");
+                        mTvManage.setEnabled(false);
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else if (position == 1) {
+                        mTvManage.setText("已加载");
+                        mTvManage.setEnabled(false);
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else {
+                        mTvManage.setText("删除");
+                        mTvManage.setEnabled(true);
+                        mTvManage.setBackground(mRedDrawable);
+                    }
                 }
             }
 

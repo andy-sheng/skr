@@ -175,7 +175,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/magpie/list-music")
-    Observable<ApiResult> getSongList();
+    Observable<ApiResult> getSongList(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
 
     /**
      * {
@@ -187,4 +187,28 @@ public interface DoubleRoomServerApi {
      */
     @PUT("http://dev.api.inframe.mobi/v1/magpie/unlock-user-info")
     Observable<ApiResult> unLock(@Body RequestBody body);
+
+    /**
+     * {
+     * "itemID": 0,
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/magpie/add-music")
+    Observable<ApiResult> addSong(@Body RequestBody body);
+
+    /**
+     * {
+     * "roomID": 0,
+     * "uniqID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/magpie/del-music")
+    Observable<ApiResult> deleteSong(@Body RequestBody body);
 }
