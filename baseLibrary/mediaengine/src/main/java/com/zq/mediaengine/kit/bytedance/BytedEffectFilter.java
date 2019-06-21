@@ -37,6 +37,8 @@ public class BytedEffectFilter {
 
     public BytedEffectFilter(GLRender glRender) {
         mGLRender = glRender;
+        mGLRender.addListener(mFboCacheClearedListener);
+
         MyLog.i(TAG, "Create RenderManager");
         mRenderManager = new RenderManager();
         MyLog.i(TAG, "~ RenderManager");
@@ -244,6 +246,7 @@ public class BytedEffectFilter {
 
     public void release() {
         unlockFbo();
+        mGLRender.removeListener(mFboCacheClearedListener);
         mRenderManager.release();
         mImgTexSrcPin.disconnect(true);
     }
@@ -257,6 +260,14 @@ public class BytedEffectFilter {
             }
         });
     }
+
+    private GLRender.OnFboCacheClearedListener mFboCacheClearedListener = new GLRender.OnFboCacheClearedListener() {
+        @Override
+        public void onFboCacheClearedListener() {
+            // Fbo cache清空后需要重新获取fbo
+            mOutTexture = ImgTexFrame.NO_TEXTURE;
+        }
+    };
 
     private SinkPin<ImgBufFrame> mImgBufSinkPin = new SinkPin<ImgBufFrame>() {
         @Override

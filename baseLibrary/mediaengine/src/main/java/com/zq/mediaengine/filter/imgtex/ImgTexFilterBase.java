@@ -75,14 +75,17 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
 
         mGLRender = glRender;
         mGLRender.addListener(mGLReadyListener);
+        mGLRender.addListener(mFboCacheClearedListener);
     }
 
     public void setGLRender(GLRender glRender) {
         if (mGLRender != null) {
             mGLRender.removeListener(mGLReadyListener);
+            mGLRender.removeListener(mFboCacheClearedListener);
         }
         mGLRender = glRender;
         mGLRender.addListener(mGLReadyListener);
+        mGLRender.addListener(mFboCacheClearedListener);
     }
 
     /**
@@ -187,6 +190,7 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
             }
         });
         mGLRender.removeListener(mGLReadyListener);
+        mGLRender.removeListener(mFboCacheClearedListener);
         if (mScreenShotThread != null && mScreenShotThread.isAlive()) {
             mScreenShotThread.interrupt();
             mScreenShotThread = null;
@@ -452,6 +456,14 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
                 mInputFrames[i] = null;
             }
             ImgTexFilterBase.this.onGLContextReady();
+        }
+    };
+
+    private GLRender.OnFboCacheClearedListener mFboCacheClearedListener = new GLRender.OnFboCacheClearedListener() {
+        @Override
+        public void onFboCacheClearedListener() {
+            // Fbo cache清空后需要重新获取fbo
+            mOutTexture = ImgTexFrame.NO_TEXTURE;
         }
     };
 

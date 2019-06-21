@@ -62,6 +62,7 @@ public class GLRender {
     private final LinkedList<OnSizeChangedListener> mSizeChangedListeners;
     private final LinkedList<OnDrawFrameListener> mDrawFrameListeners;
     private final LinkedList<OnReleasedListener> mReleasedListeners;
+    private final LinkedList<OnFboCacheClearedListener> mFboCacheClearedListeners;
     private final LinkedList<Runnable> mEvents;
     private final LinkedList<Runnable> mDrawFrameAppends;
 
@@ -131,6 +132,14 @@ public class GLRender {
         void onReleased();
     }
 
+    public interface OnFboCacheClearedListener {
+        /**
+         * Fbo cache has been cleared by user.
+         * Filter should invalidate all obtained fbo instance.
+         */
+        void onFboCacheClearedListener();
+    }
+
     public interface ScreenShotListener {
         void onBitmapAvailable(Bitmap bitmap);
     }
@@ -142,6 +151,7 @@ public class GLRender {
         mSizeChangedListeners = new LinkedList<>();
         mDrawFrameListeners = new LinkedList<>();
         mReleasedListeners = new LinkedList<>();
+        mFboCacheClearedListeners = new LinkedList<>();
         mEvents = new LinkedList<>();
         mDrawFrameAppends = new LinkedList<>();
         mInitEGL10Context = EGL10.EGL_NO_CONTEXT;
@@ -360,6 +370,20 @@ public class GLRender {
         }
     }
 
+    public void addListener(OnFboCacheClearedListener listener) {
+        synchronized (mFboCacheClearedListeners) {
+            if (!mFboCacheClearedListeners.contains(listener)) {
+                mFboCacheClearedListeners.add(listener);
+            }
+        }
+    }
+
+    public void removeListener(OnFboCacheClearedListener listener) {
+        synchronized (mFboCacheClearedListeners) {
+            mFboCacheClearedListeners.remove(listener);
+        }
+    }
+
     public int getState() {
         return mState.get();
     }
@@ -447,6 +471,20 @@ public class GLRender {
 
     public FboManager getFboManager() {
         return mFboManager;
+    }
+
+    public void clearFboCache() {
+        queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                mFboManager.remove();
+                synchronized (mFboCacheClearedListeners) {
+                    for (OnFboCacheClearedListener listener : mFboCacheClearedListeners) {
+                        listener.onFboCacheClearedListener();
+                    }
+                }
+            }
+        });
     }
 
     private void onReady() {

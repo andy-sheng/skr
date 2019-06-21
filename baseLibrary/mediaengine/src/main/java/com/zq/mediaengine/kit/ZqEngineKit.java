@@ -2292,7 +2292,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 // 释放所有fbo缓存
-                mGLRender.getFboManager().remove();
+                mGLRender.clearFboCache();
             }
         });
     }
