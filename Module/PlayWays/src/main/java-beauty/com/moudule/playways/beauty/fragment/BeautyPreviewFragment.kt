@@ -101,7 +101,7 @@ class BeautyPreviewFragment : BaseFragment() {
 
     protected fun config() {
         // 设置推流分辨率
-        ZqEngineKit.getInstance().setPreviewResolution(ZqEngineKit.VIDEO_RESOLUTION_720P)
+        ZqEngineKit.getInstance().setPreviewResolution(ZqEngineKit.VIDEO_RESOLUTION_540P)
         ZqEngineKit.getInstance().setTargetResolution(ZqEngineKit.VIDEO_RESOLUTION_360P)
 
         // 设置推流帧率
