@@ -359,7 +359,7 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
         dayan(TYPE_BEAUTY, "大眼"), shoulian(TYPE_BEAUTY, "瘦脸"), mopi(TYPE_BEAUTY, "磨皮"),
         meibai(TYPE_BEAUTY, "美白"), ruihua(TYPE_BEAUTY, "锐化"),/* chunse(TYPE_BEAUTY, "唇色"), saihong(TYPE_BEAUTY, "腮红"),*/
         none_filter(TYPE_FITER, "无"), ruanyang(TYPE_FITER, "暖阳"), musi(TYPE_FITER, "慕斯"), yangqi(TYPE_FITER, "氧气"),
-        none_sticker(TYPE_STICKER, "无"), cat(TYPE_STICKER, "猫咪"), pump(TYPE_STICKER, "闪闪"), rabbit(TYPE_STICKER, "兔子");
+        none_sticker(TYPE_STICKER, "无"), cat(TYPE_STICKER, "猫咪"), pump(TYPE_STICKER, "南瓜"), rabbit(TYPE_STICKER, "兔子");
 
         int classify;
         String name;

@@ -5,6 +5,13 @@ import com.common.utils.U;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -104,22 +111,46 @@ public class DyEffectResManager {
 
     public String getFilterResources(int no) {
         File[] files = getResources("res/FilterResource.bundle/1");
-        if (no >= files.length || no < 0) {
+        List<File> fileList = filterFiles(files);
+
+        if (no >= fileList.size() || no < 0) {
             return null;
         }
-        return files[no].getPath();
+        return fileList.get(no).getPath();
     }
 
     public String getStickersPath(int no) {
         File file = new File(new File(sRootDir, "res"), "stickers");
-        File files[] = file.listFiles();
-        if (no >= files.length || no < 0) {
+        List<File> fileList = filterFiles(file.listFiles());
+
+        if (no >= fileList.size() || no < 0) {
             return null;
         }
-        return files[no].getPath();
+        return fileList.get(no).getPath();
     }
 
-
+    /**
+     * 过滤调 .DS_Store 等文件
+     * @param files
+     * @return
+     */
+     List<File> filterFiles(File files[]) {
+        List<File> list = new ArrayList<>();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    list.add(f);
+                }
+            }
+        }
+        Collections.sort(list, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        return list;
+    }
 //    public String getReshapeResPath() {
 //        File file =  new File(sRootDir,"res/ReshapeResource.bundle");
 //        if(file.exists()){
