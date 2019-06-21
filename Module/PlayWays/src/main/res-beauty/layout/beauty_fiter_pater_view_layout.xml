@@ -19,7 +19,7 @@
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_20_dp"
-        android:max="200"
+        android:max="100"
         android:maxHeight="@dimen/view_3_dp"
         android:min="0"
         android:minHeight="@dimen/view_3_dp"
