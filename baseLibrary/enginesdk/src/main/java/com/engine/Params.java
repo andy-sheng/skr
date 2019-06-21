@@ -142,15 +142,15 @@ public class Params implements Serializable {
 
     private int mNoSticker = -1;//  贴纸文件名
     private int mNoFilter = -1;// 滤镜文件名
-    private float mIntensityFilter = 50;// 滤镜强度
-    private float mIntensityThinFace = 20;// 瘦脸强度
-    private float mIntensityBigEye = 20;// 大眼强度
+    private float mIntensityFilter = 0.5f;// 滤镜强度
+    private float mIntensityThinFace = 0.2f;// 瘦脸强度
+    private float mIntensityBigEye = 0.2f;// 大眼强度
 
-    private float mIntensityMeibai = 20;// 美白强度
-    private float mIntensityMopi = 20;// 磨皮强度
-    private float mIntensityRuihua = 20;// 锐化强度
-    private float mIntensityChunse = 20;// 唇色强度
-    private float mIntensitySaihong = 20;// 腮红强度
+    private float mIntensityMeibai = 0.2f;// 美白强度
+    private float mIntensityMopi = 0.2f;// 磨皮强度
+    private float mIntensityRuihua = 0.2f;// 锐化强度
+    private float mIntensityChunse = 0.2f;// 唇色强度
+    private float mIntensitySaihong = 0.2f;// 腮红强度
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
