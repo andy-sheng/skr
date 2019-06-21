@@ -26,7 +26,11 @@ public class ImgTexPreview {
 
     private SinkPin<ImgTexFrame> mSinkPin;
 
+    private GLRender mParentGLRender;
     private GLRender mGLRender;
+
+    private View mViewToInit;
+    private final Object mInitViewLock = new Object();
 
     private int mProgramId;
     private ImgTexFrame mImgTexFrame;
@@ -35,9 +39,18 @@ public class ImgTexPreview {
     private ImgTexFrame mLastImgTexFrame;
     private boolean mKeepFrameOnResume = false;
 
-    public ImgTexPreview() {
+    public ImgTexPreview(GLRender glRender) {
+        mParentGLRender = glRender;
         mSinkPin = new ImgTexPreviewSinkPin();
         mGLRender = new GLRender();
+
+        if (mParentGLRender != null) {
+            mParentGLRender.addListener(mOnParentReadyListener);
+        }
+        mGLRender.addListener(mOnReadyListener);
+        mGLRender.addListener(mOnSizeChangedListener);
+        mGLRender.addListener(mOnDrawFrameListener);
+        mGLRender.addListener(mOnReleasedListener);
     }
 
     public SinkPin<ImgTexFrame> getSinkPin() {
@@ -48,14 +61,6 @@ public class ImgTexPreview {
         return mGLRender;
     }
 
-    public void setEGL10Context(EGLContext eglContext) {
-        mGLRender.setInitEGL10Context(eglContext);
-        mGLRender.addListener(mOnReadyListener);
-        mGLRender.addListener(mOnSizeChangedListener);
-        mGLRender.addListener(mOnDrawFrameListener);
-        mGLRender.addListener(mOnReleasedListener);
-    }
-
     public void setKeepFrameOnResume(boolean keepFrameOnResume) {
         mKeepFrameOnResume = keepFrameOnResume;
     }
@@ -64,7 +69,17 @@ public class ImgTexPreview {
         if (glSurfaceView == null) {
             mGLRender.release();
         } else {
-            mGLRender.init(glSurfaceView);
+            synchronized (mInitViewLock) {
+                if (mParentGLRender == null) {
+                    mGLRender.init(glSurfaceView);
+                } else if (mParentGLRender.getState() == GLRender.STATE_READY) {
+                    mViewToInit = null;
+                    mGLRender.setInitEGL10Context(mParentGLRender.getEGL10Context());
+                    mGLRender.init(glSurfaceView);
+                } else {
+                    mViewToInit = glSurfaceView;
+                }
+            }
         }
     }
 
@@ -72,7 +87,17 @@ public class ImgTexPreview {
         if (textureView == null) {
             mGLRender.release();
         } else {
-            mGLRender.init(textureView);
+            synchronized (mInitViewLock) {
+                if (mParentGLRender == null) {
+                    mGLRender.init(textureView);
+                } else if (mParentGLRender.getState() == GLRender.STATE_READY) {
+                    mViewToInit = null;
+                    mGLRender.setInitEGL10Context(mParentGLRender.getEGL10Context());
+                    mGLRender.init(textureView);
+                } else {
+                    mViewToInit = textureView;
+                }
+            }
         }
     }
 
@@ -89,6 +114,9 @@ public class ImgTexPreview {
     }
 
     public void release() {
+        if (mParentGLRender != null) {
+            mParentGLRender.removeListener(mOnParentReadyListener);
+        }
         mGLRender.release();
     }
 
@@ -172,6 +200,24 @@ public class ImgTexPreview {
         GLES20.glUseProgram(0);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
     }
+
+    private GLRender.OnReadyListener mOnParentReadyListener = new GLRender.OnReadyListener() {
+        @Override
+        public void onReady() {
+            Log.d(TAG, "onParentReady");
+            synchronized (mInitViewLock) {
+                if (mViewToInit != null) {
+                    mGLRender.setInitEGL10Context(mParentGLRender.getEGL10Context());
+                    if (mViewToInit instanceof GLSurfaceView) {
+                        mGLRender.init((GLSurfaceView) mViewToInit);
+                    } else if (mViewToInit instanceof TextureView) {
+                        mGLRender.init((TextureView) mViewToInit);
+                    }
+                    mViewToInit = null;
+                }
+            }
+        }
+    };
 
     private GLRender.OnReadyListener mOnReadyListener = new GLRender.OnReadyListener() {
         @Override

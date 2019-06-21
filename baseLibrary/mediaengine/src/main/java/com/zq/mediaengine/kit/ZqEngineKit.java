@@ -1557,7 +1557,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mImgTexMixer = new ImgTexMixer(mGLRender);
         mImgTexPreviewMixer = new ImgTexMixer(mGLRender);
         mImgTexPreviewMixer.setScalingMode(0, ImgTexMixer.SCALING_MODE_CENTER_CROP);
-        mImgTexPreview = new ImgTexPreview();
+        mImgTexPreview = new ImgTexPreview(mGLRender);
 
         // 抖音的美颜特效处理需要先翻转图像
         mImgTexScaleFilter.setFlipVertical(true);
@@ -1572,12 +1572,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mImgTexMixer.getSrcPin().connect(mAgoraRTCAdapter.getVideoSinkPin());
 
         // set listeners
-        mGLRender.addListener(new GLRender.OnReadyListener() {
-            @Override
-            public void onReady() {
-                mImgTexPreview.setEGL10Context(mGLRender.getEGL10Context());
-            }
-        });
+        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
 
         mCameraCapture.setOnCameraCaptureListener(new CameraCapture.OnCameraCaptureListener() {
             @Override
@@ -1631,11 +1626,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                Log.e(TAG, "setDisplayPreview");
+                Log.d(TAG, "setDisplayPreview " + surfaceView);
                 mImgTexPreview.setDisplayPreview(surfaceView);
-                if (surfaceView != null) {
-                    mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
-                }
             }
         });
     }
@@ -1652,10 +1644,8 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                Log.d(TAG, "setDisplayPreview " + textureView);
                 mImgTexPreview.setDisplayPreview(textureView);
-                if (textureView != null) {
-                    mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
-                }
             }
         });
     }
@@ -2190,8 +2180,10 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, a);
-                // 重新计算预览尺寸
-                setPreviewParams();
+                if (mScreenRenderWidth !=0 && mScreenRenderHeight != 0) {
+                    // 重新计算预览尺寸
+                    setPreviewParams();
+                }
             }
         });
     }

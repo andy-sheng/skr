@@ -206,6 +206,7 @@ public class GLRender {
         }
         release();
         mState.set(STATE_IDLE);
+        // TODO: GLSurfaceView在xml中使用时，创建过程如果早于这里设置回调，会发生crash.
         try {
             glSurfaceView.setEGLConfigChooser(mEGLConfigChooser);
             glSurfaceView.setEGLContextFactory(mEGLContextFactory);
