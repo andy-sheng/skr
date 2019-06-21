@@ -7,9 +7,11 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.engine.Params
 import com.module.RouterConstants
 import com.module.playways.R
 import com.moudule.playways.beauty.fragment.BeautyPreviewFragment
+import com.zq.mediaengine.kit.ZqEngineKit
 
 @Route(path = RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
 class BeautyPreviewActivity : BaseActivity() {
@@ -30,6 +32,10 @@ class BeautyPreviewActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         hasCreate = false
+        val config = ZqEngineKit.getInstance().params
+        if (config != null) {
+            Params.save2Pref(config)
+        }
     }
 
     override fun useEventBus(): Boolean {

@@ -19,8 +19,8 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ExViewStub;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.engine.Params;
 import com.module.playways.R;
-import com.zq.mediaengine.effect.DyEffectResManager;
 import com.zq.mediaengine.kit.ZqEngineKit;
 import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 
@@ -44,8 +44,6 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
     private BeautyFiterStickerView mBeautyView;
     private BeautyFiterStickerView mFiterView;
     private BeautyFiterStickerView mStickerView;
-
-    private DyEffectResManager mDyEffectResManager = new DyEffectResManager();
 
     public BeautyControlPanelView(ViewStub viewStub) {
         super(viewStub);
@@ -138,21 +136,34 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
                 hide();
             }
         });
-
-        mDyEffectResManager.tryLoadRes(new DyEffectResManager.Callback() {
+        mBeautyVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onResReady(String modelDir, String licensePath) {
-                /**
-                 * 初始化抖音特效
-                 */
-                BytedEffectFilter effectFilter = ZqEngineKit.getInstance().getBytedEffectFilter();
-                if (effectFilter != null) {
-                    effectFilter.init(U.app(), modelDir, licensePath);
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    // 美颜
+                    if (mBeautyView != null) {
+                        mBeautyView.onPageSelected();
+                    }
+                } else if (position == 1) {
+                    // 滤镜
+                    if (mFiterView != null) {
+                        mFiterView.onPageSelected();
+                    }
+                } else if (position == 2) {
+                    // 贴纸
+                    if (mStickerView != null) {
+                        mStickerView.onPageSelected();
+                    }
                 }
-                String beautyResPath = mDyEffectResManager.getBeautyResPath()[0].getPath();
-                effectFilter.setBeauty(beautyResPath);
-                String reshapeResPath = mDyEffectResManager.getReshapeResPath()[0].getPath();
-                effectFilter.setReshape(reshapeResPath);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
@@ -172,15 +183,19 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
             mList.add(new BeautyViewModel(Type.mopi, getDrawable("#F9CC82", "#D79F43")));
             mList.add(new BeautyViewModel(Type.meibai, getDrawable("#C7E4AC", "#A1C580")));
             mList.add(new BeautyViewModel(Type.ruihua, getDrawable("#D7ABEE", "#BB81CF")));
+//            mList.add(new BeautyViewModel(Type.chunse, getDrawable("#90DAFF", "#72C1E9")));
+//            mList.add(new BeautyViewModel(Type.saihong, getDrawable("#FFB1CF", "#DF8BAB")));
         } else if (type == TYPE_FITER) {
+            mList.add(new BeautyViewModel(Type.none_filter, getDrawable("#F9CC82", "#D79F43")));
             mList.add(new BeautyViewModel(Type.ruanyang, getDrawable("#90DAFF", "#72C1E9")));
             mList.add(new BeautyViewModel(Type.musi, getDrawable("#FFB1CF", "#DF8BAB")));
             mList.add(new BeautyViewModel(Type.yangqi, getDrawable("#F9CC82", "#D79F43")));
 //            mList.add(new BeautyViewModel(4, "经典", getDrawable("#C7E4AC", "#A1C580")));
         } else if (type == TYPE_STICKER) {
-            mList.add(new BeautyViewModel(Type.xiaogou, getDrawable("#90DAFF", "#72C1E9")));
-//            mList.add(new BeautyViewModel(2, "耳朵", getDrawable("#FFB1CF", "#DF8BAB")));
-//            mList.add(new BeautyViewModel(3, "小狗", getDrawable("#F9CC82", "#D79F43")));
+            mList.add(new BeautyViewModel(Type.none_sticker, getDrawable("#F9CC82", "#D79F43")));
+            mList.add(new BeautyViewModel(Type.cat, getDrawable("#90DAFF", "#72C1E9")));
+            mList.add(new BeautyViewModel(Type.pump, getDrawable("#FFB1CF", "#DF8BAB")));
+            mList.add(new BeautyViewModel(Type.rabbit, getDrawable("#F9CC82", "#D79F43")));
         }
         return mList;
     }
@@ -233,12 +248,18 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
             }
         });
         mShowOrHideAnimator.start();
+        Params config = ZqEngineKit.getInstance().getParams();
+        if (config != null) {
+            Params.save2Pref(config);
+        }
     }
 
     @Override
     public void onViewDetachedFromWindow(View v) {
         super.onViewDetachedFromWindow(v);
-        mShowOrHideAnimator.cancel();
+        if (mShowOrHideAnimator != null) {
+            mShowOrHideAnimator.cancel();
+        }
     }
 
     public boolean onBackPressed() {
@@ -249,89 +270,69 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
         return false;
     }
 
-
-//    /**
-//     * 调节美白
-//     */
-//    BeautyWhite(1),
-//    /**
-//     * 调节磨皮
-//     */
-//    BeautySmooth(2),
-//    /**
-//     * 同时调节瘦脸和大眼
-//     */
-//    FaceReshape(3),
-//    /**
-//     * 调节锐化
-//     */
-//    BeautySharp(9),
-//    /**
-//     * 唇色
-//     */
-//    MakeUpLip(17),
-//    /**
-//     * 腮红
-//     */
-//    MakeUpBlusher(18);
-
-
     @Override
-    public void onChangeBeauty(Type type, int progress) {
+    public void onChangeBeauty(Type type, float progress) {
         BytedEffectFilter filter = ZqEngineKit.getInstance().getBytedEffectFilter();
+        Params config = ZqEngineKit.getInstance().getParams();
         switch (type) {
             case dayan:
-                filter.updateReshape(progress / 100.0f, progress / 100.0f);
+                config.setIntensityBigEye(progress);
+                filter.updateReshape(config.getIntensityThinFace(), config.getIntensityBigEye());
                 break;
             case shoulian:
-                filter.updateReshape(progress / 100.0f, progress / 100.0f);
+                config.setIntensityThinFace(progress);
+                filter.updateReshape(config.getIntensityThinFace(), config.getIntensityBigEye());
                 break;
             case mopi:
-                filter.updateIntensity(BytedEffectConstants.IntensityType.BeautySmooth.getId(), progress / 100.0f);
+                config.setIntensityMopi(progress);
+                filter.updateIntensity(BytedEffectConstants.IntensityType.BeautySmooth.getId(), config.getIntensityMopi());
                 break;
             case meibai:
-                filter.updateIntensity(BytedEffectConstants.IntensityType.BeautyWhite.getId(), progress / 100.0f);
+                config.setIntensityMeibai(progress);
+                filter.updateIntensity(BytedEffectConstants.IntensityType.BeautyWhite.getId(), config.getIntensityMeibai());
                 break;
             case ruihua:
-                filter.updateIntensity(BytedEffectConstants.IntensityType.BeautySharp.getId(), progress / 100.0f);
+                config.setIntensityRuihua(progress);
+                filter.updateIntensity(BytedEffectConstants.IntensityType.BeautySharp.getId(), config.getIntensityRuihua());
                 break;
-//            case ruanyang:
-//                break;
-//            case musi:
-//                break;
-//            case yangqi:
-//                break;
-//            case xiaogou:
-//                break;
-        }
-    }
-
-    @Override
-    public void onChangeFiter(Type type, int progress) {
-        BytedEffectFilter filter = ZqEngineKit.getInstance().getBytedEffectFilter();
-        switch (type) {
+            // 滤镜
+            case none_filter:
+                config.setNoFilter(-1);
+                filter.setFilter(-1);
+                break;
             case ruanyang:
-                filter.setFilter(mDyEffectResManager.getFilterResources()[0].getPath());
-                filter.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), progress / 100.0f);
+                config.setNoFilter(0);
+                config.setIntensityFilter(progress);
+                filter.setFilter(0);
+                filter.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), config.getIntensityFilter());
                 break;
             case musi:
-                filter.setFilter(mDyEffectResManager.getFilterResources()[1].getPath());
-                filter.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), progress / 100.0f);
+                config.setNoFilter(1);
+                config.setIntensityFilter(progress);
+                filter.setFilter(1);
+                filter.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), config.getIntensityFilter());
                 break;
             case yangqi:
-                filter.setFilter(mDyEffectResManager.getFilterResources()[2].getPath());
-                filter.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), progress / 100.0f);
+                config.setNoFilter(2);
+                filter.setFilter(2);
+                filter.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), config.getIntensityFilter());
                 break;
-        }
-    }
-
-    @Override
-    public void onChangePater(Type type) {
-        BytedEffectFilter filter = ZqEngineKit.getInstance().getBytedEffectFilter();
-        switch (type) {
-            case xiaogou:
-                File file = new File(mDyEffectResManager.getStickersPath(), "black_cat");
-                filter.setSticker(file.getPath());
+            // 贴纸
+            case none_sticker:
+                config.setNoSticker(-1);
+                filter.setSticker(-1);
+                break;
+            case cat:
+                config.setNoSticker(0);
+                filter.setSticker(0);
+                break;
+            case pump:
+                config.setNoSticker(1);
+                filter.setSticker(1);
+                break;
+            case rabbit:
+                config.setNoSticker(2);
+                filter.setSticker(2);
                 break;
         }
     }
@@ -355,9 +356,10 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
     }
 
     public enum Type {
-        dayan(TYPE_BEAUTY, "大眼"), shoulian(TYPE_BEAUTY, "瘦脸"), mopi(TYPE_BEAUTY, "磨皮"), meibai(TYPE_BEAUTY, "美白"), ruihua(TYPE_BEAUTY, "锐化"),
-        ruanyang(TYPE_FITER, "暖阳"), musi(TYPE_FITER, "慕斯"), yangqi(TYPE_FITER, "氧气"),
-        xiaogou(TYPE_STICKER, "小狗");
+        dayan(TYPE_BEAUTY, "大眼"), shoulian(TYPE_BEAUTY, "瘦脸"), mopi(TYPE_BEAUTY, "磨皮"),
+        meibai(TYPE_BEAUTY, "美白"), ruihua(TYPE_BEAUTY, "锐化"),/* chunse(TYPE_BEAUTY, "唇色"), saihong(TYPE_BEAUTY, "腮红"),*/
+        none_filter(TYPE_FITER, "无"), ruanyang(TYPE_FITER, "暖阳"), musi(TYPE_FITER, "慕斯"), yangqi(TYPE_FITER, "氧气"),
+        none_sticker(TYPE_STICKER, "无"), cat(TYPE_STICKER, "猫咪"), pump(TYPE_STICKER, "闪闪"), rabbit(TYPE_STICKER, "兔子");
 
         int classify;
         String name;

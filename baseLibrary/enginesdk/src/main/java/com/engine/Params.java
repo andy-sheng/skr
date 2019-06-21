@@ -24,25 +24,25 @@ public class Params implements Serializable {
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private Scene scene = Scene.audiotest;
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean enableVideo = false; // 视频是否可用
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean enableAudio = true; // 音频是否可用
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean useExternalVideo = true; // 自采集视频
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean useExternalAudio = false; // 自采集音频
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean useExternalAudioRecord = true; // 自定义音频录制
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int localVideoHeight = 640;
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private VideoEncoderConfiguration.FRAME_RATE rateFps = VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24; // 帧率，取值范围为 [1,7,10,15,24,30]
     /**
      * STANDARD_BITRATE
@@ -57,7 +57,7 @@ public class Params implements Serializable {
      * static
      * 适配码率模式。该模式下，视频在通信和直播模式下的码率均与基准码率一致。直播下如果选择该模式，可能会导致帧率低于设置的值
      */
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int bitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
 
     /**
@@ -70,20 +70,20 @@ public class Params implements Serializable {
      * <p>
      * 注意注意，会影响FistDDecode的 width height 以及 rotation
      */
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean enableAudioQualityIndication = true;// 开启音量提示
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int volumeIndicationInterval = 300; // 是谁在说话提示最小间隔
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int volumeIndicationSmooth = 3; // 平滑程度
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean mixMusicPlaying = false; // 混音在播放中
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean cameraAutoFocusFaceModeEnabled = true;// 相机自动对焦开启
 
     private double localVoicePitch = 1.0; // 音调
@@ -98,47 +98,59 @@ public class Params implements Serializable {
     private int recordingSignalVolume = 200;// 0-400 默认100，最多放大4倍
     private AudioEffect styleEnum = AudioEffect.none;// 混响style
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean cameraTorchOn = false; // 闪光灯常亮
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int selfUid; // 本人在引擎中的id
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean enableSpeakerphone = false;// 开启扬声器
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean localAudioStreamMute = false; // 本地音频流禁止
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean localVideoStreamMute = false;// 本地视频流禁止
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private String mMixMusicFilePath;// 伴奏路径
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private String mMidiPath;// midi打分文件路径
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private long mMixMusicBeginOffset;// midi文件起始偏移量
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int mCurrentMusicTs;// 当前伴奏的偏移
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private long mRecordCurrentMusicTsTs;// 记录当前伴奏偏移的物理时间戳，在什么时间记录了这次偏移
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean mLrcHasStart; // 歌词是否开始
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private long mJoinRoomBeginTs; // 开始加入房间的时间
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private String mRecordingFromCallbackSavePath;// 保存录音的路径
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean mIsAnchor; // 是否是主播
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean mGrabSingNoAcc; // 一唱到底清唱模式
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private boolean mRecording; // 是否在录制
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int mAudioSampleRate = 44100; // 输出的音频采样率
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int mAudioChannels = 2; // 输出的音频声道数
+
+    private int mNoSticker = -1;//  贴纸文件名
+    private int mNoFilter = -1;// 滤镜文件名
+    private float mIntensityFilter = 50;// 滤镜强度
+    private float mIntensityThinFace = 20;// 瘦脸强度
+    private float mIntensityBigEye = 20;// 大眼强度
+
+    private float mIntensityMeibai = 20;// 美白强度
+    private float mIntensityMopi = 20;// 磨皮强度
+    private float mIntensityRuihua = 20;// 锐化强度
+    private float mIntensityChunse = 20;// 唇色强度
+    private float mIntensitySaihong = 20;// 腮红强度
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -553,7 +565,87 @@ public class Params implements Serializable {
     }
 
     public int getAudioBitrate() {
-        return mAudioChannels == 1 ? 48*1000 : 96*1000;
+        return mAudioChannels == 1 ? 48 * 1000 : 96 * 1000;
+    }
+
+    public int getNoSticker() {
+        return mNoSticker;
+    }
+
+    public int getNoFilter() {
+        return mNoFilter;
+    }
+
+    public float getIntensityFilter() {
+        return mIntensityFilter;
+    }
+
+    public float getIntensityThinFace() {
+        return mIntensityThinFace;
+    }
+
+    public float getIntensityBigEye() {
+        return mIntensityBigEye;
+    }
+
+    public float getIntensityMeibai() {
+        return mIntensityMeibai;
+    }
+
+    public float getIntensityMopi() {
+        return mIntensityMopi;
+    }
+
+    public float getIntensityRuihua() {
+        return mIntensityRuihua;
+    }
+
+    public float getIntensityChunse() {
+        return mIntensityChunse;
+    }
+
+    public float getIntensitySaihong() {
+        return mIntensitySaihong;
+    }
+
+    public void setIntensityFilter(float intensityFilter) {
+        mIntensityFilter = intensityFilter;
+    }
+
+    public void setIntensityThinFace(float intensityThinFace) {
+        mIntensityThinFace = intensityThinFace;
+    }
+
+    public void setIntensityBigEye(float intensityBigEye) {
+        mIntensityBigEye = intensityBigEye;
+    }
+
+    public void setIntensityMeibai(float intensityMeibai) {
+        mIntensityMeibai = intensityMeibai;
+    }
+
+    public void setIntensityMopi(float intensityMopi) {
+        mIntensityMopi = intensityMopi;
+    }
+
+    public void setIntensityRuihua(float intensityRuihua) {
+        mIntensityRuihua = intensityRuihua;
+    }
+
+    public void setIntensityChunse(float intensityChunse) {
+        mIntensityChunse = intensityChunse;
+    }
+
+    public void setIntensitySaihong(float intensitySaihong) {
+        mIntensitySaihong = intensitySaihong;
+    }
+
+    public void setNoSticker(int noSticker) {
+        mNoSticker = noSticker;
+    }
+
+    public void setNoFilter(int noFilter) {
+        mNoFilter = noFilter;
     }
 
     // 工具方法，获取歌曲播放的实际时间戳

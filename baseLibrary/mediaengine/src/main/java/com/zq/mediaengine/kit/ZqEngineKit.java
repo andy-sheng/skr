@@ -11,6 +11,7 @@ import android.view.TextureView;
 import android.util.Log;
 import android.view.View;
 
+import com.bytedance.labcv.effectsdk.BytedEffectConstants;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
@@ -31,6 +32,7 @@ import com.engine.token.AgoraTokenApi;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.capture.CameraCapture;
+import com.zq.mediaengine.effect.DyEffectResManager;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
 import com.zq.mediaengine.filter.audio.AudioCopyFilter;
@@ -462,6 +464,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         if (mConfig.isEnableVideo()) {
             initVideoModules();
+            mBytedEffectFilter.initDyEffects();
         }
     }
 
@@ -1601,6 +1604,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mGLRender.init(1, 1);
     }
 
+
     /**
      * Should be called on Activity.onResume or Fragment.onResume.
      */
@@ -1637,7 +1641,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     /**
-    /**
+     * /**
      * Set TextureView as camera previewer.<br/>
      * Must set once before the TextureView ready.
      *
@@ -1648,7 +1652,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 mImgTexPreview.setDisplayPreview(textureView);
-                if (textureView != null){
+                if (textureView != null) {
                     mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
                 }
             }
@@ -2063,7 +2067,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see CameraCapture#FACING_BACK
      */
     public void startCameraPreview(final int facing) {
-        DebugLogView.println(TAG,"startCameraPreview" + " facing=" + facing);
+        DebugLogView.println(TAG, "startCameraPreview" + " facing=" + facing);
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -2088,7 +2092,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Stop camera preview.
      */
     public void stopCameraPreview() {
-        DebugLogView.println(TAG,"stopCameraPreview");
+        DebugLogView.println(TAG, "stopCameraPreview");
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -2177,7 +2181,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha alpha value，between 0~1.0
      */
     public void setLocalVideoRect(final float x, final float y, final float w, final float h, float alpha) {
-        DebugLogView.println(TAG,"setLocalVideoRect" + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
+        DebugLogView.println(TAG, "setLocalVideoRect" + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
         final float a = alpha;
@@ -2204,7 +2208,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha  alpha value，between 0~1.0
      */
     public void bindRemoteVideoRect(final int userId, final float x, final float y, final float w, final float h, float alpha) {
-        DebugLogView.println(TAG,"bindRemoteVideoRect" + " userId=" + userId + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
+        DebugLogView.println(TAG, "bindRemoteVideoRect" + " userId=" + userId + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
         final float a = alpha;
@@ -2270,7 +2274,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void doUnbindRemoteVideo(int userId) {
-        DebugLogView.println(TAG,"doUnbindRemoteVideo userId=" + userId);
+        DebugLogView.println(TAG, "doUnbindRemoteVideo userId=" + userId);
         SrcPin<ImgTexFrame> remoteVideoSrcPin = mAgoraRTCAdapter.getRemoteVideoSrcPin(userId);
         if (remoteVideoSrcPin != null) {
             remoteVideoSrcPin.disconnect(false);
@@ -2342,6 +2346,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     /**
      * 该用户的首帧是否已经decoded
+     *
      * @param userId
      * @return
      */

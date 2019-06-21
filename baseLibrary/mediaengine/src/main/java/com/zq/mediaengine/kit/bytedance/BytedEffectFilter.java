@@ -6,37 +6,26 @@ import android.opengl.GLES20;
 import com.bytedance.labcv.effectsdk.BytedEffectConstants;
 import com.bytedance.labcv.effectsdk.RenderManager;
 import com.common.log.MyLog;
+import com.common.utils.U;
+import com.engine.Params;
+import com.zq.mediaengine.effect.DyEffectResManager;
 import com.zq.mediaengine.framework.ImgBufFrame;
 import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
+import com.zq.mediaengine.kit.ZqEngineKit;
 import com.zq.mediaengine.util.gles.GLRender;
 
 /**
  * 头条视频特效封装类。
- *
+ * <p>
  * TODO: 实现FBO的复用逻辑，降低内存占用
  * TODO: 加入错误回调
  */
 
 public class BytedEffectFilter {
     private static final String TAG = "BytedEffectFilter";
-
-    // 美白
-    public static final int INTENSITY_TYPE_BEAUTY_WHITE = BytedEffectConstants.IntensityType.BeautyWhite.getId();
-    // 磨皮
-    public static final int INTENSITY_TYPE_BEAUTY_SMOOTH = BytedEffectConstants.IntensityType.BeautySmooth.getId();
-    // 锐化
-    public static final int INTENSITY_TYPE_BEAUTY_SHARP = BytedEffectConstants.IntensityType.BeautySharp.getId();
-    // 大脸瘦眼同时调节
-    public static final int INTENSITY_TYPE_FACE_RESHAPE = BytedEffectConstants.IntensityType.FaceReshape.getId();
-    // 美妆唇色
-    public static final int INTENSITY_TYPE_MAKEUP_LIP = BytedEffectConstants.IntensityType.MakeUpLip.getId();
-    // 美妆腮红
-    public static final int INTENSITY_TYPE_MAKEUP_BLUSHER = BytedEffectConstants.IntensityType.MakeUpBlusher.getId();
-    // 滤镜
-    public static final int INTENSITY_TYPE_FILTER = BytedEffectConstants.IntensityType.Filter.getId();
 
     private int mOutTexture = ImgTexFrame.NO_TEXTURE;
     private ImgTexFormat mOutFormat;
@@ -65,16 +54,18 @@ public class BytedEffectFilter {
         return mImgTexSrcPin;
     }
 
+    private DyEffectResManager mDyEffectResManager;
+
     /**
      * 初始化特效句柄
-     * @param context 应用上下文
-     * @param modelDir 模型文件的根目录，注意不是模型文件的绝对路径，该目录下文件层次和目录名称必须和Demo中提供的完全一致
-     * @param licensePath 授权文件绝对路径
      *
+     * @param context     应用上下文
+     * @param modelDir    模型文件的根目录，注意不是模型文件的绝对路径，该目录下文件层次和目录名称必须和Demo中提供的完全一致
+     * @param licensePath 授权文件绝对路径
      */
     public void init(final Context context, final String modelDir, final String licensePath) {
         if (mInited) {
-            MyLog.d(TAG,"has inited cancel this");
+            MyLog.d(TAG, "has inited cancel this");
             return;
         }
         mGLRender.queueEvent(new Runnable() {
@@ -92,7 +83,44 @@ public class BytedEffectFilter {
     }
 
     /**
+     * 初始化
+     */
+    public void initDyEffects() {
+        if (mDyEffectResManager == null) {
+            mDyEffectResManager = new DyEffectResManager();
+        }
+        mDyEffectResManager.tryLoadRes(new DyEffectResManager.Callback() {
+            @Override
+            public void onResReady(String modelDir, String licensePath) {
+                Params config = ZqEngineKit.getInstance().getParams();
+                BytedEffectFilter.this.init(U.app(), modelDir, licensePath);
+                //初始化美颜相关
+                BytedEffectFilter.this.setBeauty(mDyEffectResManager.getBeautyResPath());
+                // 磨皮强度
+                BytedEffectFilter.this.updateIntensity(BytedEffectConstants.IntensityType.BeautySmooth.getId(), config.getIntensityMopi());
+                // 美白强度
+                BytedEffectFilter.this.updateIntensity(BytedEffectConstants.IntensityType.BeautyWhite.getId(), config.getIntensityMeibai());
+                // 锐化强度
+                BytedEffectFilter.this.updateIntensity(BytedEffectConstants.IntensityType.BeautySharp.getId(), config.getIntensityMeibai());
+//                    // 腮红强度
+//                    mBytedEffectFilter.updateIntensity(BytedEffectConstants.IntensityType.MakeUpBlusher.getId(), mConfig.getIntensitySaihong());
+//                    // 唇色强度
+//                    mBytedEffectFilter.updateIntensity(BytedEffectConstants.IntensityType.MakeUpLip.getId(), mConfig.getIntensityChunse());
+                //初始化瘦脸大眼
+                BytedEffectFilter.this.setReshape(mDyEffectResManager.getReshapeResPath());
+                BytedEffectFilter.this.updateReshape(config.getIntensityThinFace(), config.getIntensityBigEye());
+                // 初始化滤镜
+                BytedEffectFilter.this.setFilter(mDyEffectResManager.getFilterResources(config.getNoFilter()));
+                BytedEffectFilter.this.updateIntensity(BytedEffectConstants.IntensityType.Filter.getId(), config.getIntensityFilter());
+                // 初始化贴纸
+                BytedEffectFilter.this.setSticker(mDyEffectResManager.getStickersPath(config.getNoSticker()));
+            }
+        });
+    }
+
+    /**
      * 设置美颜素材
+     *
      * @param resourcePath 素材绝对路径 如果传null或者空字符，则取消美颜效果
      */
     public void setBeauty(final String resourcePath) {
@@ -108,6 +136,7 @@ public class BytedEffectFilter {
 
     /**
      * 设置塑形素材
+     *
      * @param resourcePath 素材绝对路径 如果传null或者空字符，则取消塑形效果
      */
     public void setReshape(final String resourcePath) {
@@ -121,8 +150,14 @@ public class BytedEffectFilter {
         });
     }
 
+    public void setFilter(int no) {
+        String path = mDyEffectResManager.getFilterResources(no);
+        setFilter(path);
+    }
+
     /**
      * 设置滤镜素材
+     *
      * @param resourcePath 素材绝对路径 如果传null或者空字符，则取消滤镜效果
      */
     public void setFilter(final String resourcePath) {
@@ -138,6 +173,7 @@ public class BytedEffectFilter {
 
     /**
      * 设置美妆素材
+     *
      * @param resourcePath 素材绝对路径 如果传null或者空字符，则取消美妆效果
      */
     public void setMakeUp(final String resourcePath) {
@@ -151,8 +187,14 @@ public class BytedEffectFilter {
         });
     }
 
+    public void setSticker(int no) {
+        String path = mDyEffectResManager.getStickersPath(no);
+        setSticker(path);
+    }
+
     /**
      * 设置贴纸素材
+     *
      * @param resourcePath 素材绝对路径 如果传null或者空字符，则取消贴纸效果
      */
     public void setSticker(final String resourcePath) {
@@ -168,8 +210,9 @@ public class BytedEffectFilter {
 
     /**
      * 设置强度
+     *
      * @param intensitytype 类型
-     * @param intensity 0-1
+     * @param intensity     0-1
      */
     public void updateIntensity(final int intensitytype, final float intensity) {
         mGLRender.queueEvent(new Runnable() {
@@ -184,8 +227,9 @@ public class BytedEffectFilter {
 
     /**
      * 设置塑形参数
+     *
      * @param cheekintensity 瘦脸强度 0-1
-     * @param eyeintensity 大眼参数 0-1
+     * @param eyeintensity   大眼参数 0-1
      */
     public void updateReshape(final float cheekintensity, final float eyeintensity) {
         mGLRender.queueEvent(new Runnable() {

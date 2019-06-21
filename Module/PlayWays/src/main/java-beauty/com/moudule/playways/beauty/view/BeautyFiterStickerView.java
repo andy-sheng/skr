@@ -9,10 +9,14 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.engine.Params;
 import com.module.playways.R;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import java.util.List;
 
+import static com.moudule.playways.beauty.view.BeautyControlPanelView.TYPE_BEAUTY;
+import static com.moudule.playways.beauty.view.BeautyControlPanelView.TYPE_FITER;
 import static com.moudule.playways.beauty.view.BeautyControlPanelView.TYPE_STICKER;
 
 /**
@@ -42,8 +46,8 @@ public class BeautyFiterStickerView extends FrameLayout {
     private void init() {
         inflate(getContext(), R.layout.beauty_fiter_pater_view_layout, this);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mProgressBar = (SeekBar) findViewById(R.id.progress_bar);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mProgressBar = findViewById(R.id.progress_bar);
 
         if (mType == TYPE_STICKER) {
             mProgressBar.setVisibility(GONE);
@@ -68,10 +72,44 @@ public class BeautyFiterStickerView extends FrameLayout {
             public void onItemClicked(View view, int position, BeautyControlPanelView.BeautyViewModel model) {
                 mSelectModel = model;
                 mAdapter.setSelectPosition(position);
-                // TODO: 2019-06-15 得根据选中，
-                if (mType == TYPE_STICKER) {
+                Params config = ZqEngineKit.getInstance().getParams();
+                if (mType == TYPE_BEAUTY) {
+                    float intensity = 0;
+                    switch (mSelectModel.getType()) {
+                        case dayan:
+                            intensity = config.getIntensityBigEye();
+                            break;
+                        case shoulian:
+                            intensity = config.getIntensityThinFace();
+                            break;
+                        case mopi:
+                            intensity = config.getIntensityMopi();
+                            break;
+                        case meibai:
+                            intensity = config.getIntensityMeibai();
+                            break;
+                        case ruihua:
+                            intensity = config.getIntensityRuihua();
+                            break;
+                    }
+                    mProgressBar.setProgress((int) (intensity * 100));
+                } else if (mType == TYPE_FITER) {
+                    float intensity = 0;
+                    switch (mSelectModel.getType()) {
+                        case none_filter:
+                        case ruanyang:
+                        case musi:
+                        case yangqi:
+                            intensity = config.getIntensityFilter();
+                            break;
+                    }
+                    mProgressBar.setProgress((int) (intensity * 100));
                     if (mListener != null) {
-                        mListener.onChangePater(mSelectModel.getType());
+                        mListener.onChangeBeauty(mSelectModel.getType(), mProgressBar.getProgress() / 100.0f);
+                    }
+                } else if (mType == TYPE_STICKER) {
+                    if (mListener != null) {
+                        mListener.onChangeBeauty(mSelectModel.getType(), 0);
                     }
                 }
             }
@@ -87,9 +125,9 @@ public class BeautyFiterStickerView extends FrameLayout {
                     // TODO: 2019-06-16 回调给前台页面
                     if (mListener != null && mSelectModel != null) {
                         if (mType == BeautyControlPanelView.TYPE_BEAUTY) {
-                            mListener.onChangeBeauty(mSelectModel.getType(), progress);
+                            mListener.onChangeBeauty(mSelectModel.getType(), progress / 100.0f);
                         } else if (mType == BeautyControlPanelView.TYPE_FITER) {
-                            mListener.onChangeFiter(mSelectModel.getType(), progress);
+                            mListener.onChangeBeauty(mSelectModel.getType(), progress / 100.0f);
                         }
                     }
                 }
@@ -107,14 +145,18 @@ public class BeautyFiterStickerView extends FrameLayout {
         });
     }
 
+    public void onPageSelected() {
+        Params config = ZqEngineKit.getInstance().getParams();
+        if (mType == TYPE_BEAUTY) {
+
+        } else if (mType == TYPE_FITER) {
+            mAdapter.setSelectPosition(config.getNoFilter() + 1);
+        } else if (mType == TYPE_STICKER) {
+            mAdapter.setSelectPosition(config.getNoSticker() + 1);
+        }
+    }
+
     public interface Listener {
-        // 美颜改变
-        void onChangeBeauty(BeautyControlPanelView.Type type, int progress);
-
-        // 滤镜改变
-        void onChangeFiter(BeautyControlPanelView.Type type, int progress);
-
-        // 贴纸改变
-        void onChangePater(BeautyControlPanelView.Type type);
+        void onChangeBeauty(BeautyControlPanelView.Type type, float progress);
     }
 }

@@ -31,13 +31,13 @@ public class DyEffectResManager {
         // 判断证书文件是否快过期,留一天buffer
         long expireTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().longlySp(), "license_expire_ts", 0);
         if (expireTs - 24 * 60 * 60 * 1000 < System.currentTimeMillis()) {
-            MyLog.e(TAG,"证书快过期了，请求服务器最新证书地址，下载");
+            MyLog.e(TAG, "证书快过期了，请求服务器最新证书地址，下载");
             downloadLicense();
         } else {
             // 判断证书文件是否存在
             File licenseFile = new File(sRootDir, "license/dy_android_license.licbag");
             if (licenseFile.exists()) {
-                MyLog.e(TAG,"证书存在，继续");
+                MyLog.e(TAG, "证书存在，继续");
                 // 可继续
                 step2();
             } else {
@@ -48,18 +48,18 @@ public class DyEffectResManager {
 
     private void step2() {
         File file = new File(sRootDir, "model/");
-        if(file.exists() && file.isDirectory()){
-            MyLog.e(TAG,"model目录存在,继续");
+        if (file.exists() && file.isDirectory()) {
+            MyLog.e(TAG, "model目录存在,继续");
             if (mCallback != null) {
-                mCallback.onResReady(file.getPath(),new File(sRootDir, "license/dy_android_license.licbag").getPath());
+                mCallback.onResReady(file.getPath(), new File(sRootDir, "license/dy_android_license.licbag").getPath());
             }
-        }else{
-            MyLog.d(TAG,"step2 model 目录不存在" );
+        } else {
+            MyLog.d(TAG, "step2 model 目录不存在");
         }
     }
 
     private void downloadLicense() {
-        MyLog.d(TAG,"downloadLicense" );
+        MyLog.d(TAG, "downloadLicense");
         // 目前服务器没接口下载 走解压逻辑
         unzipDyRes();
         step2();
@@ -86,21 +86,37 @@ public class DyEffectResManager {
         return new File[0];
     }
 
-    public File[] getBeautyResPath() {
-        return  getResources("res/BeautyResource.bundle");
+    public String getBeautyResPath() {
+        File[] file = getResources("res/BeautyResource.bundle");
+        if (file.length > 0) {
+            return file[0].getPath();
+        }
+        return null;
     }
 
-    public File[] getReshapeResPath() {
-        return getResources("res/ReshapeResource.bundle");
+    public String getReshapeResPath() {
+        File files[] = getResources("res/ReshapeResource.bundle");
+        if (files.length > 0) {
+            return files[0].getPath();
+        }
+        return null;
     }
 
-    public File[] getFilterResources() {
-        return getResources("res/FilterResource.bundle/1");
+    public String getFilterResources(int no) {
+        File[] files = getResources("res/FilterResource.bundle/1");
+        if (no >= files.length || no < 0) {
+            return null;
+        }
+        return files[no].getPath();
     }
 
-    public String getStickersPath() {
+    public String getStickersPath(int no) {
         File file = new File(new File(sRootDir, "res"), "stickers");
-        return file.getAbsolutePath();
+        File files[] = file.listFiles();
+        if (no >= files.length || no < 0) {
+            return null;
+        }
+        return files[no].getPath();
     }
 
 
