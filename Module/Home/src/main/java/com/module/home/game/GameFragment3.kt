@@ -107,7 +107,7 @@ class GameFragment3 : BaseFragment() {
                 } else if (position == 1) {
                     return "快速游戏"
                 } else if (position == 2) {
-                    return "邂逅好声音"
+                    return "双人唱聊"
                 }
                 return super.getPageTitle(position)
             }
