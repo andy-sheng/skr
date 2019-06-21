@@ -121,10 +121,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private String mInitFrom;
 
-    private Handler mMainHandler;
     private CustomHandlerThread mCustomHandlerThread;
-    // 用来做同步调用
-    private ConditionVariable mCustomHandlerCondition = new ConditionVariable();
 
     private boolean mTokenEnable = false; // 是否开启token校验
     private String mLastJoinChannelToken; // 上一次加入房间用的token
@@ -390,7 +387,6 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAgoraRTCAdapter = AgoraRTCAdapter.create(mGLRender);
         mAgoraRTCAdapter.setOutCallback(this);
         mAcrRecognizer = new AcrRecognizer();
-        mMainHandler = new Handler(Looper.getMainLooper());
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
     }
@@ -420,17 +416,15 @@ public class ZqEngineKit implements AgoraOutCallback {
         };
         final int oldStatus = mStatus;
         mStatus = STATUS_INITING;
-        mCustomHandlerCondition.close();
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
                 MyLog.d(TAG, "init" + " from=" + from + " params=" + params);
                 destroyInner(oldStatus);
                 initInner(from, params);
-                mCustomHandlerCondition.open();
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_INITED));
             }
         });
-        mCustomHandlerCondition.block();
     }
 
     private void initInner(String from, Params params) {
@@ -1654,7 +1648,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void run() {
                 mImgTexPreview.setDisplayPreview(textureView);
-                if(textureView!=null){
+                if (textureView != null){
                     mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
                 }
             }

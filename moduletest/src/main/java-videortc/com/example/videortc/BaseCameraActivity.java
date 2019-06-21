@@ -11,6 +11,7 @@ import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ConditionVariable;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -85,6 +86,7 @@ public class BaseCameraActivity extends Activity implements
     protected ZqEngineKit mEngineKit;
     protected Handler mMainHandler;
     protected Timer mTimer;
+    private ConditionVariable mConditionVariable = new ConditionVariable();
 
     protected String mSdcardPath = Environment.getExternalStorageDirectory().getPath();
     protected String mLogoPath = "file://" + mSdcardPath + "/test.png";
@@ -136,7 +138,9 @@ public class BaseCameraActivity extends Activity implements
         mEngineKit = ZqEngineKit.getInstance();
         Params params = Params.getFromPref();
         params.setScene(Params.Scene.grab);
+        mConditionVariable.close();
         mEngineKit.init("video_test", params);
+        mConditionVariable.block();
         initUI();
         config();
 
@@ -412,7 +416,9 @@ public class BaseCameraActivity extends Activity implements
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
         Log.e(TAG, "onEvent " + event);
-        if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {
+        if (event.getType() == EngineEvent.TYPE_ENGINE_INITED) {
+            mConditionVariable.open();
+        } else if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {
             int userId = event.getUserStatus().getUserId();
             mEngineKit.setLocalVideoRect(0, 0.5f, 1.0f, 0.5f, 1.0f);
             mEngineKit.bindRemoteVideoRect(userId,0, 0, 1.0f, 0.5f, 1.0f);

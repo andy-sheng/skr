@@ -161,7 +161,7 @@ public class FboManager {
      * Remove all textures and the fbo bind on them
      */
     synchronized public void remove() {
-        if (VERBOSE) Log.d(TAG, "remove all");
+        if (VERBOSE) Log.d(TAG, "remove all " + mTextureMap.size() + " fbo");
 
         int[] textures = new int[mTextureMap.size()];
         int[] buffers = new int[mTextureMap.size()];

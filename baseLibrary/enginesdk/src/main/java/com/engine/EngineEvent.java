@@ -19,6 +19,7 @@ public class EngineEvent {
 
     public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 14;// 伴奏时间流逝
 
+    public static final int TYPE_ENGINE_INITED = 100;
     public static final int TYPE_ENGINE_DESTROY = 99;
 
     public int type;
