@@ -6,6 +6,7 @@ import android.view.ViewStub;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.view.chorus.ChorusSelfSingCardView;
+import com.module.playways.grab.room.view.freemic.FreeMicSelfSingCardView;
 import com.module.playways.grab.room.view.minigame.MiniGameSelfSingCardView;
 import com.module.playways.grab.room.view.normal.NormalSelfSingCardView;
 import com.module.playways.grab.room.view.pk.PKSelfSingCardView;
@@ -20,6 +21,7 @@ public class SelfSingCardView {
     ChorusSelfSingCardView mChorusSelfSingCardView;     // 合唱自己唱歌卡片效果
     PKSelfSingCardView mPKSelfSingCardView;             // pk自己唱歌
     MiniGameSelfSingCardView mMiniGameSelfSingView;     // 小游戏时卡片效果
+    FreeMicSelfSingCardView mFreeMicSelfSingCardView;  // 自由麦
     GrabRoomData mRoomData;
 
     public SelfSingCardView(View mRootView, GrabRoomData roomData) {
@@ -40,6 +42,11 @@ public class SelfSingCardView {
             ViewStub viewStub = mRootView.findViewById(R.id.mini_game_self_sing_card_view_stub);
             mMiniGameSelfSingView = new MiniGameSelfSingCardView(viewStub, mRoomData);
         }
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.free_mic_self_sing_card_view_stub);
+            mFreeMicSelfSingCardView = new FreeMicSelfSingCardView(viewStub, mRoomData);
+        }
+
     }
 
     public void setVisibility(int visibility) {
@@ -48,27 +55,38 @@ public class SelfSingCardView {
             mChorusSelfSingCardView.setVisibility(View.GONE);
             mPKSelfSingCardView.setVisibility(View.GONE);
             mMiniGameSelfSingView.setVisibility(View.GONE);
+            mFreeMicSelfSingCardView.setVisibility(View.GONE);
         } else if (visibility == View.VISIBLE) {
             if (RoomDataUtils.isChorusRound(mRoomData)) {
                 mChorusSelfSingCardView.setVisibility(View.VISIBLE);
                 mNormalSelfSingCardView.setVisibility(View.GONE);
                 mPKSelfSingCardView.setVisibility(View.GONE);
                 mMiniGameSelfSingView.setVisibility(View.GONE);
+                mFreeMicSelfSingCardView.setVisibility(View.GONE);
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
                 mPKSelfSingCardView.setVisibility(View.VISIBLE);
                 mNormalSelfSingCardView.setVisibility(View.GONE);
                 mChorusSelfSingCardView.setVisibility(View.GONE);
                 mMiniGameSelfSingView.setVisibility(View.GONE);
+                mFreeMicSelfSingCardView.setVisibility(View.GONE);
             } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
                 mMiniGameSelfSingView.setVisibility(View.VISIBLE);
                 mNormalSelfSingCardView.setVisibility(View.GONE);
                 mChorusSelfSingCardView.setVisibility(View.GONE);
                 mPKSelfSingCardView.setVisibility(View.GONE);
+                mFreeMicSelfSingCardView.setVisibility(View.GONE);
+            }else if(RoomDataUtils.isFreeMicRound(mRoomData)){
+                mMiniGameSelfSingView.setVisibility(View.GONE);
+                mNormalSelfSingCardView.setVisibility(View.GONE);
+                mChorusSelfSingCardView.setVisibility(View.GONE);
+                mPKSelfSingCardView.setVisibility(View.GONE);
+                mFreeMicSelfSingCardView.setVisibility(View.VISIBLE);
             } else {
                 mNormalSelfSingCardView.setVisibility(View.VISIBLE);
                 mChorusSelfSingCardView.setVisibility(View.GONE);
                 mPKSelfSingCardView.setVisibility(View.GONE);
                 mMiniGameSelfSingView.setVisibility(View.GONE);
+                mFreeMicSelfSingCardView.setVisibility(View.GONE);
             }
         }
     }
@@ -80,6 +98,8 @@ public class SelfSingCardView {
             mPKSelfSingCardView.playLyric();
         } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
             mMiniGameSelfSingView.playLyric();
+        } else if (RoomDataUtils.isFreeMicRound(mRoomData)) {
+            mFreeMicSelfSingCardView.playLyric();
         } else {
             mNormalSelfSingCardView.playLyric();
         }
@@ -90,6 +110,7 @@ public class SelfSingCardView {
         mChorusSelfSingCardView.destroy();
         mPKSelfSingCardView.destroy();
         mMiniGameSelfSingView.destroy();
+        mFreeMicSelfSingCardView.destroy();
     }
 
     public void setListener(SelfSingCardView.Listener listener) {
@@ -105,6 +126,7 @@ public class SelfSingCardView {
         list.add(mChorusSelfSingCardView.getRealView());
         list.add(mPKSelfSingCardView.getRealView());
         list.add(mMiniGameSelfSingView.getRealView());
+        list.add(mFreeMicSelfSingCardView.getRealView());
         return list;
     }
 
@@ -113,6 +135,7 @@ public class SelfSingCardView {
         mPKSelfSingCardView.setTranslateY(ty);
         mMiniGameSelfSingView.setTranslateY(ty);
         mNormalSelfSingCardView.setTranslateY(ty);
+        mFreeMicSelfSingCardView.setTranslateY(ty);
     }
 
     public interface Listener {

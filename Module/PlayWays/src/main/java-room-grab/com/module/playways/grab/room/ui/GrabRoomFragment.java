@@ -1328,16 +1328,23 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData + " from=" + from);
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(GONE);
-        mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
-
         mGrabGiveupView.hideWithAnimation(false);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
-            MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
-            mGrabOpBtn.hide("onSongInfoCardPlayOver1");
+        if (grabRoundInfoModel != null && grabRoundInfoModel.isFreeMicRound()) {
+            // 自由麦环节 直接显示卡片了
+            mSelfSingCardView.playLyric();
+            if (mRoomData.isOwner()) {
+                mGrabGiveupView.delayShowGiveUpView(true);
+            }
         } else {
-            if (mRoomData.isInPlayerList()) {
-                mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel);
+            mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
+            if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
+                MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
+                mGrabOpBtn.hide("onSongInfoCardPlayOver1");
+            } else {
+                if (mRoomData.isInPlayerList()) {
+                    mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel);
+                }
             }
         }
         mCorePresenter.playGuide();
@@ -1490,7 +1497,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
         mGrabBaseUiController.roundOver();
-
+        if(lastInfoModel.isFreeMicRound()){
+            mSelfSingCardView.setVisibility(GONE);
+        }
         mRoundOverCardView.bindData(lastInfoModel, new SVGAListener() {
             @Override
             public void onFinished() {

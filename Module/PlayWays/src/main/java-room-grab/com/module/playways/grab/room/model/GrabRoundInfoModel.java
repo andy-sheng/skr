@@ -557,7 +557,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return enterStatus;
     }
 
-    public boolean  isEnterInSingStatus() {
+    public boolean isEnterInSingStatus() {
         return enterStatus == EQRoundStatus.QRS_SING.getValue()
                 || enterStatus == EQRoundStatus.QRS_CHO_SING.getValue()
                 || enterStatus == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
@@ -697,7 +697,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             if (getsPkRoundInfoModels().size() > 1) {
                 return getsPkRoundInfoModels().get(1).getUserID() == userId;
             }
-        }else if (getStatus() == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()) {
+        } else if (getStatus() == EQRoundStatus.QRS_MIN_GAME_PLAY.getValue()) {
             for (MINIGameRoundInfoModel roundInfoModel : mMINIGameRoundInfoModels) {
                 if (roundInfoModel.getUserID() == userId) {
                     return true;
@@ -732,7 +732,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      */
     public boolean isNormalRound() {
         if (music != null) {
-            return  music.getPlayType() == StandPlayType.PT_COMMON_TYPE.getValue();
+            return music.getPlayType() == StandPlayType.PT_COMMON_TYPE.getValue();
         }
         return false;
     }
@@ -744,7 +744,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      */
     public boolean isChorusRound() {
         if (music != null) {
-            return  music.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue();
+            return music.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue();
         }
         return false;
     }
@@ -756,18 +756,31 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      */
     public boolean isPKRound() {
         if (music != null) {
-            return  music.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue();
+            return music.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue();
         }
         return false;
     }
 
     /**
      * 当前是小游戏 游戏中 轮次
+     *
      * @return
      */
     public boolean isMiniGameRound() {
         if (music != null) {
-            return  music.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue();
+            return music.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue();
+        }
+        return false;
+    }
+
+    /**
+     * 当前是自由麦环节
+     *
+     * @return
+     */
+    public boolean isFreeMicRound() {
+        if (music != null) {
+            return music.getPlayType() == StandPlayType.PT_FREE_MICRO.getValue();
         }
         return false;
     }
@@ -827,7 +840,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 totalTs = 40 * 1000;
             } else if (getWantSingType() == EWantSingType.EWST_SPK.getValue()) {
                 totalTs = 30 * 1000;
-            }else if (getWantSingType() == EWantSingType.EWST_MIN_GAME.getValue()) {
+            } else if (getWantSingType() == EWantSingType.EWST_MIN_GAME.getValue()) {
                 totalTs = 90 * 1000;
             }
         }

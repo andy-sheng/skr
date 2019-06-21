@@ -50,5 +50,14 @@
         android:layout_marginTop="-135dp"
         android:visibility="gone"/>
 
-
+    <ViewStub
+        android:id="@+id/free_mic_self_sing_card_view_stub"
+        android:inflatedId="@+id/free_mic_self_sing_card_view"
+        android:layout="@layout/grab_free_mic_self_sing_card_stub_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grab_top_content_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-135dp"
+        android:visibility="gone"/>
 </merge>

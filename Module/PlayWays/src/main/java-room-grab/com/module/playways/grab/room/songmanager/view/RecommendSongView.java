@@ -150,7 +150,7 @@ public class RecommendSongView extends FrameLayout {
                             SongModel songModel = new SongModel();
                             songModel.setItemID(SongModel.ID_CUSTOM_GAME);
                             songModel.setItemName("自制小游戏");
-                            mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);
+                            mRecommendSongAdapter.getDataList().add(songModel);
                         }
                     }
                     mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);

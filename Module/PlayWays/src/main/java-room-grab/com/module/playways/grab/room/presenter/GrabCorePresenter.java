@@ -1205,23 +1205,43 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             map.put("roomID", mRoomData.getGameId());
             map.put("roundSeq", now.getRoundSeq());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-            ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult result) {
-                    if (result.getErrno() == 0) {
-                        mIGrabView.giveUpSuccess(now.getRoundSeq());
-                        closeEngine();
-                        MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
-                    } else {
-                        MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+            if(now.isFreeMicRound()){
+                ApiMethods.subscribe(mRoomServerApi.stopFreeMicroByOwner(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            mIGrabView.giveUpSuccess(now.getRoundSeq());
+                            closeEngine();
+                            MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.getTraceId());
+                        } else {
+                            MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.getTraceId());
+                        }
                     }
-                }
 
-                @Override
-                public void onError(Throwable e) {
-                    MyLog.w(TAG, "stopMiniGameByOwner error " + e);
-                }
-            }, this);
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.w(TAG, "stopFreeMicroByOwner error " + e);
+                    }
+                }, this);
+            }else{
+                ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            mIGrabView.giveUpSuccess(now.getRoundSeq());
+                            closeEngine();
+                            MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+                        } else {
+                            MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.w(TAG, "stopMiniGameByOwner error " + e);
+                    }
+                }, this);
+            }
 
         } else {
             MyLog.w(TAG, "我放弃演唱");

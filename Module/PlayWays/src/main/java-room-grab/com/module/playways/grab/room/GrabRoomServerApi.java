@@ -203,6 +203,11 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-mini-game")
     Observable<ApiResult> stopMiniGameByOwner(@Body RequestBody body);
 
+    //房主控制结束自由麦
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-free-micro")
+    Observable<ApiResult> stopFreeMicroByOwner(@Body RequestBody body);
+
     /**
      * @param body "kickUserID": 0,
      *             "roomID": 0,

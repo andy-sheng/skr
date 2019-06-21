@@ -138,6 +138,7 @@ enum StandPlayType {
     PT_SPK_TYPE     = 2; //PK玩法
     PT_CHO_TYPE     = 3; //合唱玩法
     PT_MINI_GAME_TYPE = 4; //连麦进行小游戏玩法
+    PT_FREE_MICRO     = 5; //自由麦玩法
 }
 
 enum ESex {
