@@ -200,7 +200,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             hashMap.put(userInfoModel.getUserId(), userInfoModel);
         }
 
-        doubleRoomData.setUserInfoList(hashMap);
+        doubleRoomData.setUserInfoListMap(hashMap);
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)
                 .navigation();

@@ -13,6 +13,14 @@ public class LocalAgoraTokenInfo {
 
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
     public static List<LocalAgoraTokenInfo> toLocalAgoraTokenInfo(List<AgoraTokenInfo> agoraTokenInfo) {
         List<LocalAgoraTokenInfo> localAgoraTokenInfo = new ArrayList<>();
         if (agoraTokenInfo == null) {

@@ -52,6 +52,7 @@ message CombineRoomMusic
 {
     Common.MusicInfo Music = 1; //当前歌曲
     uint32 userID   = 2; //点歌用户id
+    uint32 uniqID   = 3; //歌曲的唯一标识
 }
 
 message LoadMusicInfoMsg

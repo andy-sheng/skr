@@ -23,7 +23,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
     var mFollowTv: ExTextView? = null
     var mMatchAgain: ExTextView? = null
     var mLastNumTv: ExTextView? = null
-    var doubleMatchPresenter: DoubleMatchPresenter? = null;
+    var doubleMatchPresenter: DoubleMatchPresenter? = null
 
     override fun initView(): Int {
         return R.layout.double_game_end_fragment_layout
@@ -59,7 +59,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 //            hashMap.put(userInfoModel.userId, userInfoModel)
 //        }
 //
-//        doubleRoomData.userInfoList = hashMap
+//        doubleRoomData.userInfoListMap = hashMap
 //        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
 //                .withSerializable("roomData", doubleRoomData)
 //                .navigation()

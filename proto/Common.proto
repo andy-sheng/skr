@@ -157,10 +157,10 @@ message ResourceInfo {
 
 message CombineRoomConfig
 {
-    uint32 durationTimeMs   = 1; //房间持续时间（4000ms）
-    string roomSignature    = 2; //房间描述签名
-    string maskUserNickname = 3; //隐藏的用户昵称
-    string maskUserAvatar   = 4; //隐藏的用户头像
+    sint32 durationTimeMs   = 1; //房间持续时间（4000ms）
+    string maskMaleAvatar   = 2; //隐藏的男性用户头像
+    string maskFemaleAvatar = 3; //隐藏的女性用户头像
+    string roomSignature    = 4; //房间描述签名
 }
 
 message AgoraTokenInfo

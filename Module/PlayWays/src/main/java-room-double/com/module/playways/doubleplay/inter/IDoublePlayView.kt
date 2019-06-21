@@ -19,4 +19,6 @@ interface IDoublePlayView {
     fun showNoLimitDurationState(noLimit: Boolean)
 
     fun startGame(mCur: SongModel, mNext: String)
+
+    fun finishActivityWithError()
 }

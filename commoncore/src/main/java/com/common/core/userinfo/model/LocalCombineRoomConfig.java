@@ -6,9 +6,25 @@ import java.io.Serializable;
 
 public class LocalCombineRoomConfig implements Serializable {
     int durationTimeMs; //房间持续时间（4000ms）
+    String maskMaleAvatar; //隐藏的男性用户头像
+    String maskFemaleAvatar; //隐藏的女性用户头像
     String roomSignature; //房间描述签名
-    String maskUserNickname; //隐藏的用户昵称
-    String maskUserAvatar; //隐藏的用户头像
+
+    public int getDurationTimeMs() {
+        return durationTimeMs;
+    }
+
+    public String getMaskMaleAvatar() {
+        return maskMaleAvatar;
+    }
+
+    public String getMaskFemaleAvatar() {
+        return maskFemaleAvatar;
+    }
+
+    public String getRoomSignature() {
+        return roomSignature;
+    }
 
     private LocalCombineRoomConfig() {
 
@@ -18,8 +34,8 @@ public class LocalCombineRoomConfig implements Serializable {
         LocalCombineRoomConfig localCombineRoomConfig = new LocalCombineRoomConfig();
         localCombineRoomConfig.durationTimeMs = combineRoomConfig.getDurationTimeMs();
         localCombineRoomConfig.roomSignature = combineRoomConfig.getRoomSignature();
-        localCombineRoomConfig.maskUserNickname = combineRoomConfig.getMaskUserNickname();
-        localCombineRoomConfig.maskUserAvatar = combineRoomConfig.getMaskUserAvatar();
+        localCombineRoomConfig.maskFemaleAvatar = combineRoomConfig.getMaskFemaleAvatar();
+        localCombineRoomConfig.maskMaleAvatar = combineRoomConfig.getMaskMaleAvatar();
         return localCombineRoomConfig;
     }
 }

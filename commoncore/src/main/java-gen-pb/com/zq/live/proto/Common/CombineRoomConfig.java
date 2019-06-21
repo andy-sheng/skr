@@ -24,69 +24,69 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
 
   public static final Integer DEFAULT_DURATIONTIMEMS = 0;
 
+  public static final String DEFAULT_MASKMALEAVATAR = "";
+
+  public static final String DEFAULT_MASKFEMALEAVATAR = "";
+
   public static final String DEFAULT_ROOMSIGNATURE = "";
-
-  public static final String DEFAULT_MASKUSERNICKNAME = "";
-
-  public static final String DEFAULT_MASKUSERAVATAR = "";
 
   /**
    * 房间持续时间（4000ms）
    */
   @WireField(
       tag = 1,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
   private final Integer durationTimeMs;
 
   /**
-   * 房间描述签名
+   * 隐藏的男性用户头像
    */
   @WireField(
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final String roomSignature;
+  private final String maskMaleAvatar;
 
   /**
-   * 隐藏的用户昵称
+   * 隐藏的女性用户头像
    */
   @WireField(
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final String maskUserNickname;
+  private final String maskFemaleAvatar;
 
   /**
-   * 隐藏的用户头像
+   * 房间描述签名
    */
   @WireField(
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final String maskUserAvatar;
+  private final String roomSignature;
 
-  public CombineRoomConfig(Integer durationTimeMs, String roomSignature, String maskUserNickname,
-      String maskUserAvatar) {
-    this(durationTimeMs, roomSignature, maskUserNickname, maskUserAvatar, ByteString.EMPTY);
+  public CombineRoomConfig(Integer durationTimeMs, String maskMaleAvatar, String maskFemaleAvatar,
+      String roomSignature) {
+    this(durationTimeMs, maskMaleAvatar, maskFemaleAvatar, roomSignature, ByteString.EMPTY);
   }
 
-  public CombineRoomConfig(Integer durationTimeMs, String roomSignature, String maskUserNickname,
-      String maskUserAvatar, ByteString unknownFields) {
+  public CombineRoomConfig(Integer durationTimeMs, String maskMaleAvatar, String maskFemaleAvatar,
+      String roomSignature, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.durationTimeMs = durationTimeMs;
+    this.maskMaleAvatar = maskMaleAvatar;
+    this.maskFemaleAvatar = maskFemaleAvatar;
     this.roomSignature = roomSignature;
-    this.maskUserNickname = maskUserNickname;
-    this.maskUserAvatar = maskUserAvatar;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.durationTimeMs = durationTimeMs;
+    builder.maskMaleAvatar = maskMaleAvatar;
+    builder.maskFemaleAvatar = maskFemaleAvatar;
     builder.roomSignature = roomSignature;
-    builder.maskUserNickname = maskUserNickname;
-    builder.maskUserAvatar = maskUserAvatar;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -98,9 +98,9 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
     CombineRoomConfig o = (CombineRoomConfig) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(durationTimeMs, o.durationTimeMs)
-        && Internal.equals(roomSignature, o.roomSignature)
-        && Internal.equals(maskUserNickname, o.maskUserNickname)
-        && Internal.equals(maskUserAvatar, o.maskUserAvatar);
+        && Internal.equals(maskMaleAvatar, o.maskMaleAvatar)
+        && Internal.equals(maskFemaleAvatar, o.maskFemaleAvatar)
+        && Internal.equals(roomSignature, o.roomSignature);
   }
 
   @Override
@@ -109,9 +109,9 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (durationTimeMs != null ? durationTimeMs.hashCode() : 0);
+      result = result * 37 + (maskMaleAvatar != null ? maskMaleAvatar.hashCode() : 0);
+      result = result * 37 + (maskFemaleAvatar != null ? maskFemaleAvatar.hashCode() : 0);
       result = result * 37 + (roomSignature != null ? roomSignature.hashCode() : 0);
-      result = result * 37 + (maskUserNickname != null ? maskUserNickname.hashCode() : 0);
-      result = result * 37 + (maskUserAvatar != null ? maskUserAvatar.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -121,9 +121,9 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (durationTimeMs != null) builder.append(", durationTimeMs=").append(durationTimeMs);
+    if (maskMaleAvatar != null) builder.append(", maskMaleAvatar=").append(maskMaleAvatar);
+    if (maskFemaleAvatar != null) builder.append(", maskFemaleAvatar=").append(maskFemaleAvatar);
     if (roomSignature != null) builder.append(", roomSignature=").append(roomSignature);
-    if (maskUserNickname != null) builder.append(", maskUserNickname=").append(maskUserNickname);
-    if (maskUserAvatar != null) builder.append(", maskUserAvatar=").append(maskUserAvatar);
     return builder.replace(0, 2, "CombineRoomConfig{").append('}').toString();
   }
 
@@ -148,6 +148,26 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
   }
 
   /**
+   * 隐藏的男性用户头像
+   */
+  public String getMaskMaleAvatar() {
+    if(maskMaleAvatar==null){
+        return DEFAULT_MASKMALEAVATAR;
+    }
+    return maskMaleAvatar;
+  }
+
+  /**
+   * 隐藏的女性用户头像
+   */
+  public String getMaskFemaleAvatar() {
+    if(maskFemaleAvatar==null){
+        return DEFAULT_MASKFEMALEAVATAR;
+    }
+    return maskFemaleAvatar;
+  }
+
+  /**
    * 房间描述签名
    */
   public String getRoomSignature() {
@@ -158,30 +178,24 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
   }
 
   /**
-   * 隐藏的用户昵称
-   */
-  public String getMaskUserNickname() {
-    if(maskUserNickname==null){
-        return DEFAULT_MASKUSERNICKNAME;
-    }
-    return maskUserNickname;
-  }
-
-  /**
-   * 隐藏的用户头像
-   */
-  public String getMaskUserAvatar() {
-    if(maskUserAvatar==null){
-        return DEFAULT_MASKUSERAVATAR;
-    }
-    return maskUserAvatar;
-  }
-
-  /**
    * 房间持续时间（4000ms）
    */
   public boolean hasDurationTimeMs() {
     return durationTimeMs!=null;
+  }
+
+  /**
+   * 隐藏的男性用户头像
+   */
+  public boolean hasMaskMaleAvatar() {
+    return maskMaleAvatar!=null;
+  }
+
+  /**
+   * 隐藏的女性用户头像
+   */
+  public boolean hasMaskFemaleAvatar() {
+    return maskFemaleAvatar!=null;
   }
 
   /**
@@ -191,28 +205,14 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
     return roomSignature!=null;
   }
 
-  /**
-   * 隐藏的用户昵称
-   */
-  public boolean hasMaskUserNickname() {
-    return maskUserNickname!=null;
-  }
-
-  /**
-   * 隐藏的用户头像
-   */
-  public boolean hasMaskUserAvatar() {
-    return maskUserAvatar!=null;
-  }
-
   public static final class Builder extends Message.Builder<CombineRoomConfig, Builder> {
     private Integer durationTimeMs;
 
+    private String maskMaleAvatar;
+
+    private String maskFemaleAvatar;
+
     private String roomSignature;
-
-    private String maskUserNickname;
-
-    private String maskUserAvatar;
 
     public Builder() {
     }
@@ -226,6 +226,22 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
     }
 
     /**
+     * 隐藏的男性用户头像
+     */
+    public Builder setMaskMaleAvatar(String maskMaleAvatar) {
+      this.maskMaleAvatar = maskMaleAvatar;
+      return this;
+    }
+
+    /**
+     * 隐藏的女性用户头像
+     */
+    public Builder setMaskFemaleAvatar(String maskFemaleAvatar) {
+      this.maskFemaleAvatar = maskFemaleAvatar;
+      return this;
+    }
+
+    /**
      * 房间描述签名
      */
     public Builder setRoomSignature(String roomSignature) {
@@ -233,25 +249,9 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
       return this;
     }
 
-    /**
-     * 隐藏的用户昵称
-     */
-    public Builder setMaskUserNickname(String maskUserNickname) {
-      this.maskUserNickname = maskUserNickname;
-      return this;
-    }
-
-    /**
-     * 隐藏的用户头像
-     */
-    public Builder setMaskUserAvatar(String maskUserAvatar) {
-      this.maskUserAvatar = maskUserAvatar;
-      return this;
-    }
-
     @Override
     public CombineRoomConfig build() {
-      return new CombineRoomConfig(durationTimeMs, roomSignature, maskUserNickname, maskUserAvatar, super.buildUnknownFields());
+      return new CombineRoomConfig(durationTimeMs, maskMaleAvatar, maskFemaleAvatar, roomSignature, super.buildUnknownFields());
     }
   }
 
@@ -262,19 +262,19 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
 
     @Override
     public int encodedSize(CombineRoomConfig value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.durationTimeMs)
-          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.roomSignature)
-          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.maskUserNickname)
-          + ProtoAdapter.STRING.encodedSizeWithTag(4, value.maskUserAvatar)
+      return ProtoAdapter.SINT32.encodedSizeWithTag(1, value.durationTimeMs)
+          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.maskMaleAvatar)
+          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.maskFemaleAvatar)
+          + ProtoAdapter.STRING.encodedSizeWithTag(4, value.roomSignature)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, CombineRoomConfig value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.durationTimeMs);
-      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.roomSignature);
-      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.maskUserNickname);
-      ProtoAdapter.STRING.encodeWithTag(writer, 4, value.maskUserAvatar);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 1, value.durationTimeMs);
+      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.maskMaleAvatar);
+      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.maskFemaleAvatar);
+      ProtoAdapter.STRING.encodeWithTag(writer, 4, value.roomSignature);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -284,10 +284,10 @@ public final class CombineRoomConfig extends Message<CombineRoomConfig, CombineR
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setDurationTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setRoomSignature(ProtoAdapter.STRING.decode(reader)); break;
-          case 3: builder.setMaskUserNickname(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.setMaskUserAvatar(ProtoAdapter.STRING.decode(reader)); break;
+          case 1: builder.setDurationTimeMs(ProtoAdapter.SINT32.decode(reader)); break;
+          case 2: builder.setMaskMaleAvatar(ProtoAdapter.STRING.decode(reader)); break;
+          case 3: builder.setMaskFemaleAvatar(ProtoAdapter.STRING.decode(reader)); break;
+          case 4: builder.setRoomSignature(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

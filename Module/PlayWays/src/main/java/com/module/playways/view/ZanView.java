@@ -11,9 +11,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.common.log.MyLog;
+import com.module.playways.R;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
     public final static String TAG = "ZanView";
@@ -53,7 +53,8 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
      * todo 这里优化
      * 点赞动作  添加心的函数 控制画面最大心的个数
      */
-    public void addZanXin(ZanBean zanBean) {
+    public void addZanXin(ZanView zanView) {
+        ZanBean zanBean = new ZanBean(getContext(), R.drawable.srf_xin, zanView);
         synchronized (surfaceHolder) {
             mBeanArrayList.add(zanBean);
             if (mBeanArrayList.size() > 40) {

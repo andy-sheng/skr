@@ -97,7 +97,7 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
                         hashMap.put(userInfoModel.userId, userInfoModel)
                     }
 
-                    doubleRoomData.userInfoList = hashMap
+                    doubleRoomData.userInfoListMap = hashMap
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation()

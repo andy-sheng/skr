@@ -4,14 +4,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -51,6 +47,8 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
     ExTextView mTvSelectedTag;
 
+    FrameLayout mTopTagView;
+
     ImageView mIvArrow;
 
     ManageSongAdapter mManageSongAdapter;
@@ -60,8 +58,6 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
     GrabSongTagsView mGrabSongTagsView;
 
     PopupWindow mPopupWindow;
-
-    Handler mUiHandler = new Handler();
 
     int mSpecialModelId;
 
@@ -83,6 +79,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mTvSelectedTag = findViewById(R.id.selected_tag);
+        mTopTagView = (FrameLayout) findViewById(R.id.top_tag_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mManageSongAdapter = new ManageSongAdapter();

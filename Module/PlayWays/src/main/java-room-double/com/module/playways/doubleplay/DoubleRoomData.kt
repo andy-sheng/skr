@@ -1,11 +1,14 @@
 package com.module.playways.doubleplay
 
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.LocalCombineRoomConfig
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.module.playways.doubleplay.event.StartDoubleGameEvent
 import com.module.playways.doubleplay.event.UpdateLockEvent
 import com.module.playways.doubleplay.event.UpdateNoLimitDuraionEvent
 import com.module.playways.doubleplay.model.DoubleSyncModel
+import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.pbLocalModel.LocalUserLockInfo
 import org.greenrobot.eventbus.EventBus
@@ -41,12 +44,12 @@ class DoubleRoomData() : Serializable {
     /*
      游戏里的人的解锁状态
      */
-    var userLockInfo: HashMap<Int, LocalUserLockInfo> = HashMap()
+    var userLockInfoMap: HashMap<Int, LocalUserLockInfo> = HashMap()
 
     /*
      所有参与游戏的人
      */
-    var userInfoList: HashMap<Int, UserInfoModel>? = null
+    var userInfoListMap: HashMap<Int, UserInfoModel>? = null
 
     /*
      有没有开启无限畅聊模式，匹配进来的默认是4分钟，两个人都解锁之后是无限畅聊
@@ -68,6 +71,8 @@ class DoubleRoomData() : Serializable {
      房间配置,后续需要扩展
      */
     var config: LocalCombineRoomConfig? = null
+
+    lateinit var tokens: List<LocalAgoraTokenInfo> //声网token
 
     init {
 
@@ -104,7 +109,7 @@ class DoubleRoomData() : Serializable {
         if (this.localCombineRoomMusic == null) {
             //游戏开始
             EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc))
-        } else if (this.localCombineRoomMusic!!.music.itemID == localCombineRoomMusic.music.itemID) {
+        } else if (this.localCombineRoomMusic!!.uniqID == localCombineRoomMusic.uniqID) {
             //还是这个歌曲
         } else {
             //歌曲换了，需要更换歌词
@@ -118,12 +123,12 @@ class DoubleRoomData() : Serializable {
     fun updateLockInfo(localUserLockInfoList: List<LocalUserLockInfo>, enableNoLimitDuration: Boolean) {
         //多人情况
         for (info in localUserLockInfoList) {
-            if (userLockInfo[info.userID] == null) {
-                userLockInfo[info.userID] = info
+            if (userLockInfoMap[info.userID] == null) {
+                userLockInfoMap[info.userID] = info
                 EventBus.getDefault().post(UpdateLockEvent(info.userID, info.isHasLock))
             } else {
-                if (userLockInfo[info.userID]?.isHasLock != info.isHasLock) {
-                    userLockInfo[info.userID]?.isHasLock = info.isHasLock
+                if (userLockInfoMap[info.userID]?.isHasLock != info.isHasLock) {
+                    userLockInfoMap[info.userID]?.isHasLock = info.isHasLock
                     EventBus.getDefault().post(UpdateLockEvent(info.userID, info.isHasLock))
                 }
             }
@@ -136,10 +141,40 @@ class DoubleRoomData() : Serializable {
 
     }
 
+    fun getMaskAvatar(sex: Int) = if (sex == 1) getMaleAvatar() else getFeMaleAvatar()
+
+    private fun getMaleAvatar() = config?.maskMaleAvatar ?: ""
+
+    private fun getFeMaleAvatar() = config?.maskMaleAvatar ?: ""
+
     fun updateGameState(doubleGameState: DoubleGameState) {
         if (doubleGameState.value > this.doubleGameState.value) {
             this.doubleGameState = doubleGameState
         }
+    }
+
+    fun getAntherUser(): UserInfoModel? {
+        val map = userInfoListMap
+        if (map != null) {
+            for (info in map) {
+                if (info.key != MyUserInfoManager.getInstance().uid as Int) {
+                    return info.value
+                }
+            }
+        }
+
+        return null
+    }
+
+    fun getToken(): String {
+        for (token in tokens) {
+            if (token.userID == MyUserInfoManager.getInstance().uid as Int) {
+                return token.token
+            }
+        }
+
+        MyLog.e(Tag, "自己的token是空的")
+        return ""
     }
 
     //未开始，已开始，已结束
