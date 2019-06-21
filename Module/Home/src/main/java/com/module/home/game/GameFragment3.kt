@@ -133,6 +133,7 @@ class GameFragment3 : BaseFragment() {
                     animation(color, Color.parseColor("#7088FF"))
                     mQuickGameView?.initData()
                 } else if (position == 2) {
+                    mDoubleRoomGameView?.initData()
                     animation(color, Color.parseColor("#1f0e26"))
                 }
             }

@@ -72,5 +72,10 @@ public interface MainPageSlideApi {
     Observable<ApiResult> enterInvitedDoubleRoom(@Body RequestBody body);
 
 
-
+    /**
+     * 获取用户房间数据(每日剩余匹配开房次数)
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/magpie/room-data")
+    Observable<ApiResult> getRemainTime();
 }

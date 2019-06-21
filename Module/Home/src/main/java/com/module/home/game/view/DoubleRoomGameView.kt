@@ -1,20 +1,22 @@
 package com.module.home.game.view
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoServerApi
-import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.module.RouterConstants
+import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.zq.dialog.ConfirmMatchInfoView
 import io.reactivex.disposables.Disposable
@@ -36,6 +38,9 @@ class DoubleRoomGameView : RelativeLayout {
     private var mModifyDisposable: Disposable? = null  //修改资料
     private var mDisposable: Disposable? = null        //获取次数
     private var userInfoServerApi: UserInfoServerApi? = null
+    private var mainPageSlideApi: MainPageSlideApi? = null
+
+    internal var mLastUpdateRemainTime: Long = 0    //上次拉去剩余次数的时间
 
     constructor(context: Context) : super(context) {}
 
@@ -60,6 +65,10 @@ class DoubleRoomGameView : RelativeLayout {
         })
     }
 
+    fun initData() {
+        getRemainTimes(false)
+    }
+
     fun showConfirmView() {
         mConfirmMatchInfoView = ConfirmMatchInfoView(context, object : ConfirmMatchInfoView.Listener {
             override fun onClickOutView() {
@@ -77,7 +86,7 @@ class DoubleRoomGameView : RelativeLayout {
                 map["sex"] = sex
                 map["stage"] = ageTag
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                mDisposable = ApiMethods.subscribe(userInfoServerApi?.modifyDoubleUserInfo(body), object : ApiObserver<ApiResult>() {
+                mModifyDisposable = ApiMethods.subscribe(userInfoServerApi?.modifyDoubleUserInfo(body), object : ApiObserver<ApiResult>() {
                     override fun process(obj: ApiResult?) {
                         if (obj?.errno == 0) {
                             U.getPreferenceUtils().setSettingBoolean(SP_HAS_CONFIRM_INFO, true)
@@ -98,6 +107,42 @@ class DoubleRoomGameView : RelativeLayout {
         }
     }
 
+    fun getRemainTimes(isFlag: Boolean) {
+        val now = System.currentTimeMillis()
+        if (!isFlag) {
+            // 距离上次拉去已经超过30秒了
+            if (now - mLastUpdateRemainTime < 30 * 1000) {
+                return
+            }
+        }
+        if (mDisposable != null && !mDisposable!!.isDisposed) {
+            mDisposable?.dispose()
+        }
+
+        if (mainPageSlideApi == null) {
+            mainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
+        }
+
+        mDisposable = ApiMethods.subscribe(mainPageSlideApi?.remainTime, object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult?) {
+                if (result?.errno == 0) {
+                    mLastUpdateRemainTime = System.currentTimeMillis();
+                    var totalRemainTimes = result.data.getIntValue("todayResTimes");
+                    val spanStringBuilder = SpanUtils()
+                            .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_30))
+                            .append("" + totalRemainTimes).setForegroundColor(Color.parseColor("#FFC15B"))
+                            .append("次").setForegroundColor(U.getColor(R.color.white_trans_30))
+                            .create()
+                    remain_times_tv.text = spanStringBuilder
+                } else {
+                    // 请求出错了
+                }
+            }
+
+        })
+
+    }
+
     //TODO 后续可能加个动画
     fun hideConfirmView(hasAnimation: Boolean) {
         if (this.indexOfChild(mConfirmMatchInfoView) != -1) {
@@ -106,6 +151,7 @@ class DoubleRoomGameView : RelativeLayout {
     }
 
     fun destory() {
-
+        mDisposable?.dispose()
+        mModifyDisposable?.dispose()
     }
 }
