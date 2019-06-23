@@ -381,7 +381,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     void showDoubleInviteFloatWindow(FloatWindowData floatWindowData) {
         UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
-        int roomID = floatWindowData.getRoomID();
 
         resendGrabInviterFloatWindowDismissMsg();
         DoubleInviteNotifyView doubleInviteNotifyView = new DoubleInviteNotifyView(U.app());
@@ -400,6 +399,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                         if (result.getErrno() == 0) {
                             IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             iRankingModeService.jumpToDoubleRoom(result.getData());
+                        } else {
+                            U.getToastUtil().showShort(result.getErrmsg());
                         }
                     }
 

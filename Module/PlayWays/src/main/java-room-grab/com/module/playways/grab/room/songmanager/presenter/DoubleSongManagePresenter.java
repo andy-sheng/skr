@@ -11,14 +11,14 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
+import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.event.AddCustomGameEvent;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
-import com.module.playways.grab.room.songmanager.event.AddSuggestSongEvent;
 import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
-import com.module.playways.grab.room.songmanager.model.GrabWishSongModel;
 import com.module.playways.room.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -116,7 +117,6 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
 
     public void deleteSong(GrabRoomSongModel grabRoomSongModel) {
         MyLog.d(TAG, "deleteSong");
-        int playbookItemId = grabRoomSongModel.getItemID();
         int roundSeq = grabRoomSongModel.getRoundSeq();
 
         if (roundSeq < 0) {
@@ -125,9 +125,8 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
         }
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("itemID", playbookItemId);
         map.put("roomID", mGrabRoomData.getGameId());
-        map.put("roundSeq", grabRoomSongModel.getRoundSeq());
+        map.put("uniqTag", grabRoomSongModel.getUniqTag());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -184,16 +183,16 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    if (mGrabRoomSongModelList != null) {
-                        //加一个保护
-                        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
-                        grabRoomSongModel.setOwner(songModel.getOwner());
-                        grabRoomSongModel.setItemName(songModel.getItemName());
-                        grabRoomSongModel.setItemID(songModel.getItemID());
-                        grabRoomSongModel.setPlayType(songModel.getPlayType());
-                        grabRoomSongModel.setChallengeAvailable(songModel.isChallengeAvailable());
-                        addToUiList(grabRoomSongModel);
-                    }
+//                    if (mGrabRoomSongModelList != null) {
+//                        //加一个保护
+//                        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
+//                        grabRoomSongModel.setOwner(songModel.getOwner());
+//                        grabRoomSongModel.setItemName(songModel.getItemName());
+//                        grabRoomSongModel.setItemID(songModel.getItemID());
+//                        grabRoomSongModel.setPlayType(songModel.getPlayType());
+//                        grabRoomSongModel.setChallengeAvailable(songModel.isChallengeAvailable());
+//                        addToUiList(grabRoomSongModel);
+//                    }
                     U.getToastUtil().showShort(songModel.getItemName() + " 添加成功");
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
@@ -215,7 +214,7 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
     }
 
     /**
-     * 增加歌曲
+     * 自己添加的歌曲
      *
      * @param event
      */
@@ -224,6 +223,47 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
         // 双人房都可以点歌
         addSong(event.getSongModel());
     }
+
+    /**
+     * 对方添加的音乐
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DoubleAddMusicEvent event) {
+        // 双人房都可以点歌
+        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
+        grabRoomSongModel.setChallengeAvailable(event.mCombineRoomMusic.getMusic().isChallengeAvailable());
+        grabRoomSongModel.setItemID(event.mCombineRoomMusic.getMusic().getItemID());
+        grabRoomSongModel.setItemName(event.mCombineRoomMusic.getMusic().getItemName());
+        grabRoomSongModel.setOwner(event.mCombineRoomMusic.getMusic().getOwner());
+        grabRoomSongModel.setPlayType(event.mCombineRoomMusic.getMusic().getPlayType());
+        grabRoomSongModel.setUniqTag(event.mCombineRoomMusic.getUniqID());
+        mGrabRoomSongModelList.add(grabRoomSongModel);
+
+        updateSongList();
+    }
+
+    /**
+     * 对方删除的歌曲
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DoubleDelMusicEvent event) {
+        // 双人房都可以点歌
+        Iterator<GrabRoomSongModel> grabRoomSongModelIterator = mGrabRoomSongModelList.iterator();
+        while (grabRoomSongModelIterator.hasNext()) {
+            GrabRoomSongModel grabRoomSongModel = grabRoomSongModelIterator.next();
+            if (grabRoomSongModel.getUniqTag().equals(event.uniqTag)) {
+                grabRoomSongModelIterator.remove();
+                break;
+            }
+        }
+
+        updateSongList();
+    }
+
 
     /**
      * 添加自定义小游戏成功

@@ -205,7 +205,7 @@ public interface DoubleRoomServerApi {
     /**
      * {
      * "roomID": 0,
-     * "uniqID": 0
+     * "uniqTag": "string"
      * }
      *
      * @param body

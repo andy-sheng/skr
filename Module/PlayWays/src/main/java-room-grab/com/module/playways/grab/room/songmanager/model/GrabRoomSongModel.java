@@ -23,6 +23,15 @@ public class GrabRoomSongModel implements Serializable {
     protected int itemID;
     protected int playType;
     protected boolean challengeAvailable;
+    protected String uniqTag;
+
+    public String getUniqTag() {
+        return uniqTag;
+    }
+
+    public void setUniqTag(String uniqTag) {
+        this.uniqTag = uniqTag;
+    }
 
     public String getItemName() {
         return itemName;

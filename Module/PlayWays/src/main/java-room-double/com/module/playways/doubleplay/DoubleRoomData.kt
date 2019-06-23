@@ -111,7 +111,7 @@ class DoubleRoomData() : Serializable {
         if (this.localCombineRoomMusic == null) {
             //游戏开始
             EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc))
-        } else if (this.localCombineRoomMusic!!.uniqID == localCombineRoomMusic.uniqID) {
+        } else if (this.localCombineRoomMusic!!.uniqID === localCombineRoomMusic.uniqID) {
             //还是这个歌曲
         } else {
             //歌曲换了，需要更换歌词

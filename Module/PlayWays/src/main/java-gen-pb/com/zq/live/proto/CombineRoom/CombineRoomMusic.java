@@ -25,7 +25,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
 
   public static final Integer DEFAULT_USERID = 0;
 
-  public static final Integer DEFAULT_UNIQID = 0;
+  public static final String DEFAULT_UNIQTAG = "";
 
   /**
    * 当前歌曲
@@ -50,20 +50,20 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
    */
   @WireField(
       tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final Integer uniqID;
+  private final String uniqTag;
 
-  public CombineRoomMusic(MusicInfo Music, Integer userID, Integer uniqID) {
-    this(Music, userID, uniqID, ByteString.EMPTY);
+  public CombineRoomMusic(MusicInfo Music, Integer userID, String uniqTag) {
+    this(Music, userID, uniqTag, ByteString.EMPTY);
   }
 
-  public CombineRoomMusic(MusicInfo Music, Integer userID, Integer uniqID,
+  public CombineRoomMusic(MusicInfo Music, Integer userID, String uniqTag,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.Music = Music;
     this.userID = userID;
-    this.uniqID = uniqID;
+    this.uniqTag = uniqTag;
   }
 
   @Override
@@ -71,7 +71,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
     Builder builder = new Builder();
     builder.Music = Music;
     builder.userID = userID;
-    builder.uniqID = uniqID;
+    builder.uniqTag = uniqTag;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -84,7 +84,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(Music, o.Music)
         && Internal.equals(userID, o.userID)
-        && Internal.equals(uniqID, o.uniqID);
+        && Internal.equals(uniqTag, o.uniqTag);
   }
 
   @Override
@@ -94,7 +94,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
       result = unknownFields().hashCode();
       result = result * 37 + (Music != null ? Music.hashCode() : 0);
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
-      result = result * 37 + (uniqID != null ? uniqID.hashCode() : 0);
+      result = result * 37 + (uniqTag != null ? uniqTag.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -105,7 +105,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
     StringBuilder builder = new StringBuilder();
     if (Music != null) builder.append(", Music=").append(Music);
     if (userID != null) builder.append(", userID=").append(userID);
-    if (uniqID != null) builder.append(", uniqID=").append(uniqID);
+    if (uniqTag != null) builder.append(", uniqTag=").append(uniqTag);
     return builder.replace(0, 2, "CombineRoomMusic{").append('}').toString();
   }
 
@@ -142,11 +142,11 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
   /**
    * 歌曲的唯一标识
    */
-  public Integer getUniqID() {
-    if(uniqID==null){
-        return DEFAULT_UNIQID;
+  public String getUniqTag() {
+    if(uniqTag==null){
+        return DEFAULT_UNIQTAG;
     }
-    return uniqID;
+    return uniqTag;
   }
 
   /**
@@ -166,8 +166,8 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
   /**
    * 歌曲的唯一标识
    */
-  public boolean hasUniqID() {
-    return uniqID!=null;
+  public boolean hasUniqTag() {
+    return uniqTag!=null;
   }
 
   public static final class Builder extends Message.Builder<CombineRoomMusic, Builder> {
@@ -175,7 +175,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
 
     private Integer userID;
 
-    private Integer uniqID;
+    private String uniqTag;
 
     public Builder() {
     }
@@ -199,14 +199,14 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
     /**
      * 歌曲的唯一标识
      */
-    public Builder setUniqID(Integer uniqID) {
-      this.uniqID = uniqID;
+    public Builder setUniqTag(String uniqTag) {
+      this.uniqTag = uniqTag;
       return this;
     }
 
     @Override
     public CombineRoomMusic build() {
-      return new CombineRoomMusic(Music, userID, uniqID, super.buildUnknownFields());
+      return new CombineRoomMusic(Music, userID, uniqTag, super.buildUnknownFields());
     }
   }
 
@@ -219,7 +219,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
     public int encodedSize(CombineRoomMusic value) {
       return MusicInfo.ADAPTER.encodedSizeWithTag(1, value.Music)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.userID)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.uniqID)
+          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.uniqTag)
           + value.unknownFields().size();
     }
 
@@ -227,7 +227,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
     public void encode(ProtoWriter writer, CombineRoomMusic value) throws IOException {
       MusicInfo.ADAPTER.encodeWithTag(writer, 1, value.Music);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.userID);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.uniqID);
+      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.uniqTag);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -239,7 +239,7 @@ public final class CombineRoomMusic extends Message<CombineRoomMusic, CombineRoo
         switch (tag) {
           case 1: builder.setMusic(MusicInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: builder.setUniqID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setUniqTag(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
