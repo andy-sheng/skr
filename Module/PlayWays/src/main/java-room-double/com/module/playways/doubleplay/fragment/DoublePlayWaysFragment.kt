@@ -302,6 +302,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mLeftNameTv?.visibility = VISIBLE
     }
 
+    override fun onBackPressed(): Boolean {
+        exitLogin()
+        return true
+    }
+
     /**
      * 自己解锁状态
      */
