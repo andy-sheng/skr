@@ -27,6 +27,7 @@ message NotificationMsg
 
     CombineRoomSendInviteUserMsg sendInviteUserMsg = 13; //发送邀请请求
     CombineRoomSyncInviteUserMsg syncInviteUserMsg = 14; //同步邀请结果
+    StartCombineRoomByMatchMsg startCombineRoomByMatchMsg = 15; //通过匹配开始双人房
 }
 
 // ENotificationMsgType 房间消息类型
@@ -39,6 +40,7 @@ enum ENotificationMsgType {
 
      NM_CR_SEND_INVITE_USER = 4;//发送邀请请求
      NM_CR_SYNC_INVITE_USER = 5; //同步邀请结果
+     NM_START_CR_BY_MATCH   = 6; //通过匹配开始双人房
 
 }
 
@@ -86,4 +88,16 @@ message CombineRoomSyncInviteUserMsg
     repeated Common.AgoraTokenInfo tokens = 7; //声网token
     bool needMaskUserInfo          = 8; //是否需要隐藏用户信息
 }
+
+message StartCombineRoomByMatchMsg
+{
+    uint32 roomID                  = 2; //房间ID
+    sint64 createdTimeMs           = 3; //房间创建的时间戳
+    sint64 passedTimeMs            = 4; //房间已经经历的毫秒数
+    repeated Common.UserInfo users        = 5; //玩家信息
+    Common.CombineRoomConfig config       = 6; //配置信息
+    repeated Common.AgoraTokenInfo tokens = 7; //声网token
+    bool needMaskUserInfo          = 8; //是否需要隐藏用户信息
+}
+
 

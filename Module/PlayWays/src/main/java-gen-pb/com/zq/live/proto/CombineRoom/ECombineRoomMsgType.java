@@ -22,29 +22,34 @@ public enum ECombineRoomMsgType implements WireEnum {
   DRM_PICK(1),
 
   /**
-   * 通过匹配开始双人房
-   */
-  DRM_START_COMBINE_ROOM_BY_MATCH(2),
-
-  /**
    * 结束双人房
    */
-  DRM_END_COMBINE_ROOM(3),
+  DRM_END_COMBINE_ROOM(2),
 
   /**
    * 解锁用户信息
    */
-  DRM_UNLOCK_USER_INFO(4),
+  DRM_UNLOCK_USER_INFO(3),
 
   /**
    * 加载歌曲信息
    */
-  DRM_LOAD_MUSIC_INFO(5),
+  DRM_LOAD_MUSIC_INFO(4),
 
   /**
    * 同步状态
    */
-  DRM_SYNC_STATUS(6);
+  DRM_SYNC_STATUS(5),
+
+  /**
+   * 添加歌曲信息
+   */
+  DRM_ADD_MUSIC_INFO(6),
+
+  /**
+   * 删除歌曲信息
+   */
+  DRM_DEL_MUSIC_INFO(7);
 
   public static final ProtoAdapter<ECombineRoomMsgType> ADAPTER = new ProtoAdapter_ECombineRoomMsgType();
 
@@ -61,11 +66,12 @@ public enum ECombineRoomMsgType implements WireEnum {
     switch (value) {
       case 0: return DRM_UNKNOWN;
       case 1: return DRM_PICK;
-      case 2: return DRM_START_COMBINE_ROOM_BY_MATCH;
-      case 3: return DRM_END_COMBINE_ROOM;
-      case 4: return DRM_UNLOCK_USER_INFO;
-      case 5: return DRM_LOAD_MUSIC_INFO;
-      case 6: return DRM_SYNC_STATUS;
+      case 2: return DRM_END_COMBINE_ROOM;
+      case 3: return DRM_UNLOCK_USER_INFO;
+      case 4: return DRM_LOAD_MUSIC_INFO;
+      case 5: return DRM_SYNC_STATUS;
+      case 6: return DRM_ADD_MUSIC_INFO;
+      case 7: return DRM_DEL_MUSIC_INFO;
       default: return null;
     }
   }

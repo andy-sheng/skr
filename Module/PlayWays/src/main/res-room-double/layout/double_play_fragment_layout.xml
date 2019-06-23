@@ -145,7 +145,7 @@
         android:gravity="center"
         android:paddingLeft="@dimen/view_18_dp"
         android:paddingRight="@dimen/view_18_dp"
-        android:text="解锁资料"
+        android:text="无限畅聊"
         android:textColor="#404A9A"
         android:textSize="@dimen/textsize_12_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
@@ -203,7 +203,14 @@
         android:layout="@layout/double_sing_card_view_layout" />
 
     <!--视频模式下自己演唱时歌词面板 合唱小游戏歌词 以及 清唱 伴奏歌词-->
-    <include layout="@layout/double_video_self_sing_card_layout" />
+    <com.module.playways.doubleplay.view.DoubleSingCardView
+        android:id="@+id/show_card"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_315_dp"
+        android:layout_marginTop="@dimen/view_210_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/mic_iv"

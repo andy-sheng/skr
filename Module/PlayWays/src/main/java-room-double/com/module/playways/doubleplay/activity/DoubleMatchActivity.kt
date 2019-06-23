@@ -1,6 +1,7 @@
 package com.module.playways.doubleplay.activity
 
 import android.os.Bundle
+import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
@@ -22,6 +23,18 @@ class DoubleMatchActivity : BaseActivity() {
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .build())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    override fun destroy() {
+        super.destroy()
+        if (window != null) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
     }
 
     override fun useEventBus(): Boolean {

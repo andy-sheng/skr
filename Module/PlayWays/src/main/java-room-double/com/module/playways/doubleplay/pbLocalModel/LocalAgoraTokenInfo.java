@@ -2,15 +2,21 @@ package com.module.playways.doubleplay.pbLocalModel;
 
 import com.zq.live.proto.Common.AgoraTokenInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalAgoraTokenInfo {
+public class LocalAgoraTokenInfo implements Serializable {
     int userID; //用户id
     String token; //声网token
 
     private LocalAgoraTokenInfo() {
 
+    }
+
+    public LocalAgoraTokenInfo(int userID, String token) {
+        this.userID = userID;
+        this.token = token;
     }
 
     public int getUserID() {

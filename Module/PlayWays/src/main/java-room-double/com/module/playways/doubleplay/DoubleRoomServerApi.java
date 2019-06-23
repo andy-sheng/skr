@@ -132,7 +132,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/magpie/query-match")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/query-match")
     Observable<ApiResult> quaryMatch(@Body RequestBody body);
 
     /**
@@ -145,7 +145,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/magpie/cancel-match")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/cancel-match")
     Observable<ApiResult> cancleMatch(@Body RequestBody body);
 
     /**

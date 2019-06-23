@@ -88,13 +88,12 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
         if (mRoomData.gameId > 0) {
             ModuleServiceManager.getInstance().msgService.joinChatRoom(mRoomData.gameId.toString(), -1, object : ICallback {
-                override fun onSucess(obj: Any) {
+                override fun onSucess(obj: Any?) {
                     MyLog.d(tag, "加入融云房间成功")
                 }
 
-                override fun onFailed(obj: Any, errcode: Int, message: String) {
+                override fun onFailed(obj: Any?, errcode: Int, message: String?) {
                     MyLog.d(tag, "加入融云房间失败， msg is $message, errcode is $errcode")
-                    joinRcRoom(deep + 1)
                 }
             })
             if (deep == -1) {

@@ -3,6 +3,7 @@ package com.common.notification;
 import com.common.log.MyLog;
 import com.common.notification.event.CombineRoomSendInviteUserNotifyEvent;
 import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
+import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
@@ -12,6 +13,7 @@ import com.zq.live.proto.Notification.ENotificationMsgType;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
 import com.zq.live.proto.Notification.NotificationMsg;
+import com.zq.live.proto.Notification.StartCombineRoomByMatchMsg;
 import com.zq.live.proto.Notification.SysWarningMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,6 +56,8 @@ public class NotificationPushManager {
             processInviteToDoubleRoomMsg(baseNotiInfo, msg.getSendInviteUserMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_SYNC_INVITE_USER) {
             processAcceptInviteMsg(baseNotiInfo, msg.getSyncInviteUserMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_START_CR_BY_MATCH) {
+            processStartCombineRoomMsg(baseNotiInfo, msg.getStartCombineRoomByMatchMsg());
         }
     }
 
@@ -94,6 +98,14 @@ public class NotificationPushManager {
         if (combineRoomSyncInviteUserMsg != null) {
             CombineRoomSyncInviteUserNotifyEvent combineRoomSyncInviteUserEvent = new CombineRoomSyncInviteUserNotifyEvent(baseNotiInfo, combineRoomSyncInviteUserMsg);
             EventBus.getDefault().post(combineRoomSyncInviteUserEvent);
+        }
+    }
+
+    private void processStartCombineRoomMsg(BaseNotiInfo basePushInfo, StartCombineRoomByMatchMsg startCombineRoomByMatchMsg) {
+        if (startCombineRoomByMatchMsg != null) {
+            EventBus.getDefault().post(new DoubleStartCombineRoomByMatchPushEvent(basePushInfo, startCombineRoomByMatchMsg));
+        } else {
+            MyLog.e(TAG, "processStartCombineRoomMsg" + " Msg=null");
         }
     }
 }

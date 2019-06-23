@@ -39,7 +39,12 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 同步邀请结果
    */
-  NM_CR_SYNC_INVITE_USER(5);
+  NM_CR_SYNC_INVITE_USER(5),
+
+  /**
+   * 通过匹配开始双人房
+   */
+  NM_START_CR_BY_MATCH(6);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -60,6 +65,7 @@ public enum ENotificationMsgType implements WireEnum {
       case 3: return NM_SYS_WARNING_MSG;
       case 4: return NM_CR_SEND_INVITE_USER;
       case 5: return NM_CR_SYNC_INVITE_USER;
+      case 6: return NM_START_CR_BY_MATCH;
       default: return null;
     }
   }

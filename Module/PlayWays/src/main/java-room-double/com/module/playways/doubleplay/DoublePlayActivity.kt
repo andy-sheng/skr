@@ -1,7 +1,6 @@
 package com.module.playways.doubleplay
 
 import android.os.Bundle
-
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
@@ -19,8 +18,11 @@ class DoublePlayActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        val doubleRoomData = intent.getSerializableExtra("roomData") as DoubleRoomData
+
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoublePlayWaysFragment::class.java)
                 .setAddToBackStack(false)
+                .addDataBeforeAdd(0, doubleRoomData)
                 .setHasAnimation(false)
                 .build())
     }

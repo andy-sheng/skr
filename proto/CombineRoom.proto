@@ -18,24 +18,40 @@ message CombineRoomMsg
     ECombineRoomMsgType msgType = 2; //消息类型
     uint32 roomID               = 3; //房间ID
 
-    PickMsg pickMsg                                       = 10;
-    StartCombineRoomByMatchMsg startCombineRoomByMatchMsg = 11; //通过匹配开始双人房
-    EndCombineRoomMsg endCombineRoomMsg                   = 12; //结束双人房
-    UnlockUserInfoMsg unlockUserInfoMsg                   = 13; //解锁用户信息
-    LoadMusicInfoMsg loadMusicInfoMsg                     = 14; //加载歌曲信息
-    CombineRoomSyncStatusMsg syncStatusMsg                           = 15; //同步状态
+    PickMsg pickMsg                        = 10;
+    EndCombineRoomMsg endCombineRoomMsg    = 11; //结束双人房
+    UnlockUserInfoMsg unlockUserInfoMsg    = 12; //解锁用户信息
+    LoadMusicInfoMsg loadMusicInfoMsg      = 13; //加载歌曲信息
+    CombineRoomSyncStatusMsg syncStatusMsg = 14; //同步状态
+    AddMusicInfoMsg addMuicInfoMsg         = 15; //添加歌曲信息
+    DelMusicInfoMsg delMuicInfoMsg         = 16; //删除歌曲信息
+
 }
+
+message AddMusicInfoMsg
+{
+    CombineRoomMusic music = 1; //添加的歌曲
+    bool needLoad          = 2; //是否需要加载
+}
+
+message DelMusicInfoMsg
+{
+    string uniqTag = 1; //唯一id
+}
+
 
 // ECombineRoomMsgType 房间消息类型
 enum ECombineRoomMsgType {
     DRM_UNKNOWN = 0; //未知消息
 
-    DRM_PICK                        = 1; //pick类型
-    DRM_START_COMBINE_ROOM_BY_MATCH = 2; //通过匹配开始双人房
-    DRM_END_COMBINE_ROOM            = 3; //结束双人房
-    DRM_UNLOCK_USER_INFO            = 4; //解锁用户信息
-    DRM_LOAD_MUSIC_INFO             = 5; //加载歌曲信息
-    DRM_SYNC_STATUS                 = 6; //同步状态
+        DRM_PICK             = 1; //pick类型
+        DRM_END_COMBINE_ROOM = 2; //结束双人房
+        DRM_UNLOCK_USER_INFO = 3; //解锁用户信息
+        DRM_LOAD_MUSIC_INFO  = 4; //加载歌曲信息
+        DRM_SYNC_STATUS      = 5; //同步状态
+        DRM_ADD_MUSIC_INFO   = 6; //添加歌曲信息
+        DRM_DEL_MUSIC_INFO   = 7; //删除歌曲信息
+
 }
 
 message CombineRoomSyncStatusMsg
@@ -78,17 +94,6 @@ message PickMsg
 {
     uint32 fromPickUserID = 1; //pick发出者
     uint32 toPickUserID   = 2; //pick接受者
-}
-
-message StartCombineRoomByMatchMsg
-{
-    uint32 roomID                  = 2; //房间ID
-    sint64 createdTimeMs           = 3; //房间创建的时间戳
-    sint64 passedTimeMs            = 4; //房间已经经历的毫秒数
-    repeated Common.UserInfo users        = 5; //玩家信息
-    Common.CombineRoomConfig config       = 6; //配置信息
-    repeated Common.AgoraTokenInfo tokens = 7; //声网token
-    bool needMaskUserInfo          = 8; //是否需要隐藏用户信息
 }
 
 message EndCombineRoomMsg

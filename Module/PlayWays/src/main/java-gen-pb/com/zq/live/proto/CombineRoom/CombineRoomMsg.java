@@ -68,19 +68,10 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
   private final PickMsg pickMsg;
 
   /**
-   * 通过匹配开始双人房
-   */
-  @WireField(
-      tag = 11,
-      adapter = "com.zq.live.proto.CombineRoom.StartCombineRoomByMatchMsg#ADAPTER"
-  )
-  private final StartCombineRoomByMatchMsg startCombineRoomByMatchMsg;
-
-  /**
    * 结束双人房
    */
   @WireField(
-      tag = 12,
+      tag = 11,
       adapter = "com.zq.live.proto.CombineRoom.EndCombineRoomMsg#ADAPTER"
   )
   private final EndCombineRoomMsg endCombineRoomMsg;
@@ -89,7 +80,7 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
    * 解锁用户信息
    */
   @WireField(
-      tag = 13,
+      tag = 12,
       adapter = "com.zq.live.proto.CombineRoom.UnlockUserInfoMsg#ADAPTER"
   )
   private final UnlockUserInfoMsg unlockUserInfoMsg;
@@ -98,7 +89,7 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
    * 加载歌曲信息
    */
   @WireField(
-      tag = 14,
+      tag = 13,
       adapter = "com.zq.live.proto.CombineRoom.LoadMusicInfoMsg#ADAPTER"
   )
   private final LoadMusicInfoMsg loadMusicInfoMsg;
@@ -107,32 +98,51 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
    * 同步状态
    */
   @WireField(
-      tag = 15,
+      tag = 14,
       adapter = "com.zq.live.proto.CombineRoom.CombineRoomSyncStatusMsg#ADAPTER"
   )
   private final CombineRoomSyncStatusMsg syncStatusMsg;
 
+  /**
+   * 添加歌曲信息
+   */
+  @WireField(
+      tag = 15,
+      adapter = "com.zq.live.proto.CombineRoom.AddMusicInfoMsg#ADAPTER"
+  )
+  private final AddMusicInfoMsg addMuicInfoMsg;
+
+  /**
+   * 删除歌曲信息
+   */
+  @WireField(
+      tag = 16,
+      adapter = "com.zq.live.proto.CombineRoom.DelMusicInfoMsg#ADAPTER"
+  )
+  private final DelMusicInfoMsg delMuicInfoMsg;
+
   public CombineRoomMsg(Long timeMs, ECombineRoomMsgType msgType, Integer roomID, PickMsg pickMsg,
-      StartCombineRoomByMatchMsg startCombineRoomByMatchMsg, EndCombineRoomMsg endCombineRoomMsg,
-      UnlockUserInfoMsg unlockUserInfoMsg, LoadMusicInfoMsg loadMusicInfoMsg,
-      CombineRoomSyncStatusMsg syncStatusMsg) {
-    this(timeMs, msgType, roomID, pickMsg, startCombineRoomByMatchMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, ByteString.EMPTY);
+      EndCombineRoomMsg endCombineRoomMsg, UnlockUserInfoMsg unlockUserInfoMsg,
+      LoadMusicInfoMsg loadMusicInfoMsg, CombineRoomSyncStatusMsg syncStatusMsg,
+      AddMusicInfoMsg addMuicInfoMsg, DelMusicInfoMsg delMuicInfoMsg) {
+    this(timeMs, msgType, roomID, pickMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, addMuicInfoMsg, delMuicInfoMsg, ByteString.EMPTY);
   }
 
   public CombineRoomMsg(Long timeMs, ECombineRoomMsgType msgType, Integer roomID, PickMsg pickMsg,
-      StartCombineRoomByMatchMsg startCombineRoomByMatchMsg, EndCombineRoomMsg endCombineRoomMsg,
-      UnlockUserInfoMsg unlockUserInfoMsg, LoadMusicInfoMsg loadMusicInfoMsg,
-      CombineRoomSyncStatusMsg syncStatusMsg, ByteString unknownFields) {
+      EndCombineRoomMsg endCombineRoomMsg, UnlockUserInfoMsg unlockUserInfoMsg,
+      LoadMusicInfoMsg loadMusicInfoMsg, CombineRoomSyncStatusMsg syncStatusMsg,
+      AddMusicInfoMsg addMuicInfoMsg, DelMusicInfoMsg delMuicInfoMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
     this.roomID = roomID;
     this.pickMsg = pickMsg;
-    this.startCombineRoomByMatchMsg = startCombineRoomByMatchMsg;
     this.endCombineRoomMsg = endCombineRoomMsg;
     this.unlockUserInfoMsg = unlockUserInfoMsg;
     this.loadMusicInfoMsg = loadMusicInfoMsg;
     this.syncStatusMsg = syncStatusMsg;
+    this.addMuicInfoMsg = addMuicInfoMsg;
+    this.delMuicInfoMsg = delMuicInfoMsg;
   }
 
   @Override
@@ -142,11 +152,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     builder.msgType = msgType;
     builder.roomID = roomID;
     builder.pickMsg = pickMsg;
-    builder.startCombineRoomByMatchMsg = startCombineRoomByMatchMsg;
     builder.endCombineRoomMsg = endCombineRoomMsg;
     builder.unlockUserInfoMsg = unlockUserInfoMsg;
     builder.loadMusicInfoMsg = loadMusicInfoMsg;
     builder.syncStatusMsg = syncStatusMsg;
+    builder.addMuicInfoMsg = addMuicInfoMsg;
+    builder.delMuicInfoMsg = delMuicInfoMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -161,11 +172,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
         && Internal.equals(msgType, o.msgType)
         && Internal.equals(roomID, o.roomID)
         && Internal.equals(pickMsg, o.pickMsg)
-        && Internal.equals(startCombineRoomByMatchMsg, o.startCombineRoomByMatchMsg)
         && Internal.equals(endCombineRoomMsg, o.endCombineRoomMsg)
         && Internal.equals(unlockUserInfoMsg, o.unlockUserInfoMsg)
         && Internal.equals(loadMusicInfoMsg, o.loadMusicInfoMsg)
-        && Internal.equals(syncStatusMsg, o.syncStatusMsg);
+        && Internal.equals(syncStatusMsg, o.syncStatusMsg)
+        && Internal.equals(addMuicInfoMsg, o.addMuicInfoMsg)
+        && Internal.equals(delMuicInfoMsg, o.delMuicInfoMsg);
   }
 
   @Override
@@ -177,11 +189,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
       result = result * 37 + (msgType != null ? msgType.hashCode() : 0);
       result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
       result = result * 37 + (pickMsg != null ? pickMsg.hashCode() : 0);
-      result = result * 37 + (startCombineRoomByMatchMsg != null ? startCombineRoomByMatchMsg.hashCode() : 0);
       result = result * 37 + (endCombineRoomMsg != null ? endCombineRoomMsg.hashCode() : 0);
       result = result * 37 + (unlockUserInfoMsg != null ? unlockUserInfoMsg.hashCode() : 0);
       result = result * 37 + (loadMusicInfoMsg != null ? loadMusicInfoMsg.hashCode() : 0);
       result = result * 37 + (syncStatusMsg != null ? syncStatusMsg.hashCode() : 0);
+      result = result * 37 + (addMuicInfoMsg != null ? addMuicInfoMsg.hashCode() : 0);
+      result = result * 37 + (delMuicInfoMsg != null ? delMuicInfoMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -194,11 +207,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     if (msgType != null) builder.append(", msgType=").append(msgType);
     if (roomID != null) builder.append(", roomID=").append(roomID);
     if (pickMsg != null) builder.append(", pickMsg=").append(pickMsg);
-    if (startCombineRoomByMatchMsg != null) builder.append(", startCombineRoomByMatchMsg=").append(startCombineRoomByMatchMsg);
     if (endCombineRoomMsg != null) builder.append(", endCombineRoomMsg=").append(endCombineRoomMsg);
     if (unlockUserInfoMsg != null) builder.append(", unlockUserInfoMsg=").append(unlockUserInfoMsg);
     if (loadMusicInfoMsg != null) builder.append(", loadMusicInfoMsg=").append(loadMusicInfoMsg);
     if (syncStatusMsg != null) builder.append(", syncStatusMsg=").append(syncStatusMsg);
+    if (addMuicInfoMsg != null) builder.append(", addMuicInfoMsg=").append(addMuicInfoMsg);
+    if (delMuicInfoMsg != null) builder.append(", delMuicInfoMsg=").append(delMuicInfoMsg);
     return builder.replace(0, 2, "CombineRoomMsg{").append('}').toString();
   }
 
@@ -250,16 +264,6 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
   }
 
   /**
-   * 通过匹配开始双人房
-   */
-  public StartCombineRoomByMatchMsg getStartCombineRoomByMatchMsg() {
-    if(startCombineRoomByMatchMsg==null){
-        return new StartCombineRoomByMatchMsg.Builder().build();
-    }
-    return startCombineRoomByMatchMsg;
-  }
-
-  /**
    * 结束双人房
    */
   public EndCombineRoomMsg getEndCombineRoomMsg() {
@@ -300,6 +304,26 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
   }
 
   /**
+   * 添加歌曲信息
+   */
+  public AddMusicInfoMsg getAddMuicInfoMsg() {
+    if(addMuicInfoMsg==null){
+        return new AddMusicInfoMsg.Builder().build();
+    }
+    return addMuicInfoMsg;
+  }
+
+  /**
+   * 删除歌曲信息
+   */
+  public DelMusicInfoMsg getDelMuicInfoMsg() {
+    if(delMuicInfoMsg==null){
+        return new DelMusicInfoMsg.Builder().build();
+    }
+    return delMuicInfoMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -322,13 +346,6 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
 
   public boolean hasPickMsg() {
     return pickMsg!=null;
-  }
-
-  /**
-   * 通过匹配开始双人房
-   */
-  public boolean hasStartCombineRoomByMatchMsg() {
-    return startCombineRoomByMatchMsg!=null;
   }
 
   /**
@@ -359,6 +376,20 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     return syncStatusMsg!=null;
   }
 
+  /**
+   * 添加歌曲信息
+   */
+  public boolean hasAddMuicInfoMsg() {
+    return addMuicInfoMsg!=null;
+  }
+
+  /**
+   * 删除歌曲信息
+   */
+  public boolean hasDelMuicInfoMsg() {
+    return delMuicInfoMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<CombineRoomMsg, Builder> {
     private Long timeMs;
 
@@ -368,8 +399,6 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
 
     private PickMsg pickMsg;
 
-    private StartCombineRoomByMatchMsg startCombineRoomByMatchMsg;
-
     private EndCombineRoomMsg endCombineRoomMsg;
 
     private UnlockUserInfoMsg unlockUserInfoMsg;
@@ -377,6 +406,10 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     private LoadMusicInfoMsg loadMusicInfoMsg;
 
     private CombineRoomSyncStatusMsg syncStatusMsg;
+
+    private AddMusicInfoMsg addMuicInfoMsg;
+
+    private DelMusicInfoMsg delMuicInfoMsg;
 
     public Builder() {
     }
@@ -407,15 +440,6 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
 
     public Builder setPickMsg(PickMsg pickMsg) {
       this.pickMsg = pickMsg;
-      return this;
-    }
-
-    /**
-     * 通过匹配开始双人房
-     */
-    public Builder setStartCombineRoomByMatchMsg(
-        StartCombineRoomByMatchMsg startCombineRoomByMatchMsg) {
-      this.startCombineRoomByMatchMsg = startCombineRoomByMatchMsg;
       return this;
     }
 
@@ -451,9 +475,25 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
       return this;
     }
 
+    /**
+     * 添加歌曲信息
+     */
+    public Builder setAddMuicInfoMsg(AddMusicInfoMsg addMuicInfoMsg) {
+      this.addMuicInfoMsg = addMuicInfoMsg;
+      return this;
+    }
+
+    /**
+     * 删除歌曲信息
+     */
+    public Builder setDelMuicInfoMsg(DelMusicInfoMsg delMuicInfoMsg) {
+      this.delMuicInfoMsg = delMuicInfoMsg;
+      return this;
+    }
+
     @Override
     public CombineRoomMsg build() {
-      return new CombineRoomMsg(timeMs, msgType, roomID, pickMsg, startCombineRoomByMatchMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, super.buildUnknownFields());
+      return new CombineRoomMsg(timeMs, msgType, roomID, pickMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, addMuicInfoMsg, delMuicInfoMsg, super.buildUnknownFields());
     }
   }
 
@@ -468,11 +508,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
           + ECombineRoomMsgType.ADAPTER.encodedSizeWithTag(2, value.msgType)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.roomID)
           + PickMsg.ADAPTER.encodedSizeWithTag(10, value.pickMsg)
-          + StartCombineRoomByMatchMsg.ADAPTER.encodedSizeWithTag(11, value.startCombineRoomByMatchMsg)
-          + EndCombineRoomMsg.ADAPTER.encodedSizeWithTag(12, value.endCombineRoomMsg)
-          + UnlockUserInfoMsg.ADAPTER.encodedSizeWithTag(13, value.unlockUserInfoMsg)
-          + LoadMusicInfoMsg.ADAPTER.encodedSizeWithTag(14, value.loadMusicInfoMsg)
-          + CombineRoomSyncStatusMsg.ADAPTER.encodedSizeWithTag(15, value.syncStatusMsg)
+          + EndCombineRoomMsg.ADAPTER.encodedSizeWithTag(11, value.endCombineRoomMsg)
+          + UnlockUserInfoMsg.ADAPTER.encodedSizeWithTag(12, value.unlockUserInfoMsg)
+          + LoadMusicInfoMsg.ADAPTER.encodedSizeWithTag(13, value.loadMusicInfoMsg)
+          + CombineRoomSyncStatusMsg.ADAPTER.encodedSizeWithTag(14, value.syncStatusMsg)
+          + AddMusicInfoMsg.ADAPTER.encodedSizeWithTag(15, value.addMuicInfoMsg)
+          + DelMusicInfoMsg.ADAPTER.encodedSizeWithTag(16, value.delMuicInfoMsg)
           + value.unknownFields().size();
     }
 
@@ -482,11 +523,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
       ECombineRoomMsgType.ADAPTER.encodeWithTag(writer, 2, value.msgType);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.roomID);
       PickMsg.ADAPTER.encodeWithTag(writer, 10, value.pickMsg);
-      StartCombineRoomByMatchMsg.ADAPTER.encodeWithTag(writer, 11, value.startCombineRoomByMatchMsg);
-      EndCombineRoomMsg.ADAPTER.encodeWithTag(writer, 12, value.endCombineRoomMsg);
-      UnlockUserInfoMsg.ADAPTER.encodeWithTag(writer, 13, value.unlockUserInfoMsg);
-      LoadMusicInfoMsg.ADAPTER.encodeWithTag(writer, 14, value.loadMusicInfoMsg);
-      CombineRoomSyncStatusMsg.ADAPTER.encodeWithTag(writer, 15, value.syncStatusMsg);
+      EndCombineRoomMsg.ADAPTER.encodeWithTag(writer, 11, value.endCombineRoomMsg);
+      UnlockUserInfoMsg.ADAPTER.encodeWithTag(writer, 12, value.unlockUserInfoMsg);
+      LoadMusicInfoMsg.ADAPTER.encodeWithTag(writer, 13, value.loadMusicInfoMsg);
+      CombineRoomSyncStatusMsg.ADAPTER.encodeWithTag(writer, 14, value.syncStatusMsg);
+      AddMusicInfoMsg.ADAPTER.encodeWithTag(writer, 15, value.addMuicInfoMsg);
+      DelMusicInfoMsg.ADAPTER.encodeWithTag(writer, 16, value.delMuicInfoMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -507,11 +549,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
           }
           case 3: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
           case 10: builder.setPickMsg(PickMsg.ADAPTER.decode(reader)); break;
-          case 11: builder.setStartCombineRoomByMatchMsg(StartCombineRoomByMatchMsg.ADAPTER.decode(reader)); break;
-          case 12: builder.setEndCombineRoomMsg(EndCombineRoomMsg.ADAPTER.decode(reader)); break;
-          case 13: builder.setUnlockUserInfoMsg(UnlockUserInfoMsg.ADAPTER.decode(reader)); break;
-          case 14: builder.setLoadMusicInfoMsg(LoadMusicInfoMsg.ADAPTER.decode(reader)); break;
-          case 15: builder.setSyncStatusMsg(CombineRoomSyncStatusMsg.ADAPTER.decode(reader)); break;
+          case 11: builder.setEndCombineRoomMsg(EndCombineRoomMsg.ADAPTER.decode(reader)); break;
+          case 12: builder.setUnlockUserInfoMsg(UnlockUserInfoMsg.ADAPTER.decode(reader)); break;
+          case 13: builder.setLoadMusicInfoMsg(LoadMusicInfoMsg.ADAPTER.decode(reader)); break;
+          case 14: builder.setSyncStatusMsg(CombineRoomSyncStatusMsg.ADAPTER.decode(reader)); break;
+          case 15: builder.setAddMuicInfoMsg(AddMusicInfoMsg.ADAPTER.decode(reader)); break;
+          case 16: builder.setDelMuicInfoMsg(DelMusicInfoMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -527,11 +570,12 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     public CombineRoomMsg redact(CombineRoomMsg value) {
       Builder builder = value.newBuilder();
       if (builder.pickMsg != null) builder.pickMsg = PickMsg.ADAPTER.redact(builder.pickMsg);
-      if (builder.startCombineRoomByMatchMsg != null) builder.startCombineRoomByMatchMsg = StartCombineRoomByMatchMsg.ADAPTER.redact(builder.startCombineRoomByMatchMsg);
       if (builder.endCombineRoomMsg != null) builder.endCombineRoomMsg = EndCombineRoomMsg.ADAPTER.redact(builder.endCombineRoomMsg);
       if (builder.unlockUserInfoMsg != null) builder.unlockUserInfoMsg = UnlockUserInfoMsg.ADAPTER.redact(builder.unlockUserInfoMsg);
       if (builder.loadMusicInfoMsg != null) builder.loadMusicInfoMsg = LoadMusicInfoMsg.ADAPTER.redact(builder.loadMusicInfoMsg);
       if (builder.syncStatusMsg != null) builder.syncStatusMsg = CombineRoomSyncStatusMsg.ADAPTER.redact(builder.syncStatusMsg);
+      if (builder.addMuicInfoMsg != null) builder.addMuicInfoMsg = AddMusicInfoMsg.ADAPTER.redact(builder.addMuicInfoMsg);
+      if (builder.delMuicInfoMsg != null) builder.delMuicInfoMsg = DelMusicInfoMsg.ADAPTER.redact(builder.delMuicInfoMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

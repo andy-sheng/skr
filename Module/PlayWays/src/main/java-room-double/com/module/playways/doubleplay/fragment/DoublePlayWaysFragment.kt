@@ -8,12 +8,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
@@ -40,7 +40,7 @@ import com.zq.report.fragment.QuickFeedbackFragment
 
 
 class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
-
+    val mTag = "DoublePlayWaysFragment"
     lateinit var mReportTv: TextView
     private var mExitIv: ImageView? = null
     private var mLeftAvatarSdv: SimpleDraweeView? = null
@@ -65,19 +65,14 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     var countDownTimer: HandlerTaskTimer? = null
 
-    private val mDoubleSingCardView: DoubleSingCardView by lazy {
-        DoubleSingCardView(mRootView.findViewById<View>(R.id.double_sing_card_view_layout_stub) as ViewStub)
-    }
-
-    init {
-        mRoomData = DoubleRoomData()
-    }
+    lateinit var mDoubleSingCardView: DoubleSingCardView
 
     override fun initView(): Int {
         return R.layout.double_play_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        MyLog.w(mTag, "initData mRoomData='${mRoomData}'")
         mReportTv = mRootView.findViewById<View>(R.id.report_tv) as TextView
         mExitIv = mRootView.findViewById<View>(R.id.exit_iv) as ImageView
         mLeftAvatarSdv = mRootView.findViewById<View>(R.id.left_avatar_sdv) as SimpleDraweeView
@@ -95,6 +90,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightZanView = mRootView.findViewById<View>(R.id.right_zanView) as ZanView
         mLeftZanView = mRootView.findViewById<View>(R.id.left_zanView) as ZanView
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
+        mDoubleSingCardView = mRootView.findViewById(R.id.show_card) as DoubleSingCardView
 
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -104,7 +100,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .addDataBeforeAdd(0, 1)
-                                .addDataBeforeAdd(1, mRoomData.getAntherUser()?.avatar ?: 0)
+                                .addDataBeforeAdd(1, mRoomData.getAntherUser()?.userId ?: 0)
                                 .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
                                 .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                                 .build())
@@ -126,7 +122,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mUnlockTv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                mDoubleCorePresenter?.unLockInfo()
+                mDoubleCorePresenter.unLockInfo()
             }
         })
 
@@ -140,7 +136,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         })
 
         mPickIv?.setOnClickListener {
-            mDoubleCorePresenter?.pickOther()
+            mDoubleCorePresenter.pickOther()
             mLeftZanView?.addZanXin(mLeftZanView)
         }
 
@@ -158,17 +154,23 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleCorePresenter = DoubleCorePresenter(mRoomData, this)
         addPresent(mDoubleCorePresenter)
 
-        if (!mRoomData.enableNoLimitDuration) {
+        if (mRoomData.needMaskUserInfo) {
             selfLockState()
             guestLockState()
-            mNoLimitIcon?.visibility = GONE
-            mCountDownTv?.visibility = VISIBLE
-            startCountDown()
         } else {
             unLockOther()
             unLockSelf()
+        }
+
+        if (mRoomData.enableNoLimitDuration) {
             mNoLimitIcon?.visibility = VISIBLE
             mCountDownTv?.visibility = GONE
+            mUnlockTv?.visibility = GONE
+        } else {
+            mNoLimitIcon?.visibility = GONE
+            mCountDownTv?.visibility = VISIBLE
+            mUnlockTv?.visibility = VISIBLE
+            startCountDown()
         }
     }
 
@@ -213,6 +215,12 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDialogPlus?.show()
     }
 
+    override fun setData(type: Int, data: Any?) {
+        if (type == 0) {
+            mRoomData = data as DoubleRoomData
+        }
+    }
+
     /**
      * 自己锁定状态
      */
@@ -224,7 +232,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 .build())
 
         mRightLockIcon?.visibility = VISIBLE
-        mUnlockTv?.visibility = VISIBLE
         mRightNameTv?.text = ""
         mRightNameTv?.visibility = GONE
     }
@@ -302,18 +309,20 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 .build())
 
         mRightLockIcon?.visibility = GONE
-        mUnlockTv?.visibility = GONE
         mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
         mRightNameTv?.visibility = VISIBLE
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {
         if (noLimit) {
-            unLockSelf()
-            unLockOther()
+            mUnlockTv?.visibility = GONE
             mNoLimitIcon?.visibility = VISIBLE
             mCountDownTv?.visibility = GONE
             countDownTimer?.dispose()
+        } else {
+            mUnlockTv?.visibility = VISIBLE
+            mNoLimitIcon?.visibility = GONE
+            mCountDownTv?.visibility = VISIBLE
         }
     }
 

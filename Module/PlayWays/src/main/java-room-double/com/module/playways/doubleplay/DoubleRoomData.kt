@@ -74,6 +74,8 @@ class DoubleRoomData() : Serializable {
 
     lateinit var tokens: List<LocalAgoraTokenInfo> //声网token
 
+    var needMaskUserInfo: Boolean = true
+
     init {
 
     }
@@ -157,7 +159,7 @@ class DoubleRoomData() : Serializable {
         val map = userInfoListMap
         if (map != null) {
             for (info in map) {
-                if (info.key != MyUserInfoManager.getInstance().uid as Int) {
+                if (info.key.toLong() != MyUserInfoManager.getInstance().uid) {
                     return info.value
                 }
             }
@@ -168,13 +170,17 @@ class DoubleRoomData() : Serializable {
 
     fun getToken(): String {
         for (token in tokens) {
-            if (token.userID == MyUserInfoManager.getInstance().uid as Int) {
+            if (token.userID.toLong() == MyUserInfoManager.getInstance().uid) {
                 return token.token
             }
         }
 
         MyLog.e(Tag, "自己的token是空的")
         return ""
+    }
+
+    override fun toString(): String {
+        return "DoubleRoomData(Tag='$Tag', gameId=$gameId, doubleGameState=$doubleGameState, syncStatusTimeMs=$syncStatusTimeMs, passedTimeMs=$passedTimeMs, userLockInfoMap=$userLockInfoMap, userInfoListMap=$userInfoListMap, enableNoLimitDuration=$enableNoLimitDuration, localCombineRoomMusic=$localCombineRoomMusic, nextMusicDesc=$nextMusicDesc, config=$config, tokens=$tokens, needMaskUserInfo=$needMaskUserInfo)"
     }
 
     //未开始，已开始，已结束
@@ -184,4 +190,6 @@ class DoubleRoomData() : Serializable {
         val value: Int
             get() = status!!
     }
+
+
 }
