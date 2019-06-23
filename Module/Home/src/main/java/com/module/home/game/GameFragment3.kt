@@ -177,7 +177,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun setGameConfig(gameKConfigModel: GameKConfigModel?) {
         mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
-        mFriendRoomGameView.initData()
+        if (mGameVp.currentItem == 0) {
+            mFriendRoomGameView.initData()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
