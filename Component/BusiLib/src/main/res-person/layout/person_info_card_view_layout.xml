@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -73,11 +74,25 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <com.zq.level.view.NormalLevelView2
+                            android:id="@+id/level_view"
+                            android:layout_width="@dimen/view_28_dp"
+                            android:layout_height="@dimen/view_24_dp"
+                            android:layout_marginTop="@dimen/view_6_dp"
+                            android:layout_marginLeft="@dimen/view_10_dp"
+                            levelView2:mainHeight2="@dimen/view_24_dp"
+                            levelView2:mainWidth2="@dimen/view_28_dp"
+                            levelView2:subBottom2="@dimen/view_1_dp"
+                            levelView2:subHeight2="@dimen/view_3_dp"
+                            levelView2:subWidth2="@dimen/view_5_dp"
+                            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+                            app:layout_constraintTop_toTopOf="@id/avatar_iv"/>
+
                         <com.common.view.ex.ExTextView
                             android:id="@+id/name_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_25_dp"
-                            android:layout_marginLeft="@dimen/view_10_dp"
+                            android:layout_marginLeft="@dimen/view_5_dp"
                             android:layout_marginTop="@dimen/view_5_dp"
                             android:ellipsize="end"
                             android:gravity="left|center_vertical"
@@ -87,7 +102,7 @@
                             android:singleLine="true"
                             android:textColor="#3B4E79"
                             android:textSize="@dimen/textsize_18_dp"
-                            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+                            app:layout_constraintLeft_toRightOf="@id/level_view"
                             app:layout_constraintTop_toTopOf="@id/avatar_iv" />
 
                         <ImageView
@@ -113,7 +128,7 @@
                             android:singleLine="true"
                             android:textColor="#3B4E79"
                             android:textSize="@dimen/textsize_14_dp"
-                            app:layout_constraintStart_toStartOf="@id/name_tv"
+                            app:layout_constraintStart_toStartOf="@id/level_view"
                             app:layout_constraintTop_toBottomOf="@id/name_tv" />
 
                         <com.common.flowlayout.TagFlowLayout

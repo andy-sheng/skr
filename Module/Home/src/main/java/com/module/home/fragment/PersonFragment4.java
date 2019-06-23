@@ -53,6 +53,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.dialog.BusinessCardDialogView;
+import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
@@ -75,12 +76,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ClassicsHeader mClassicsHeader;
     ExConstraintLayout mUserInfoArea;
 
-    SimpleDraweeView mAvatarIv;
-
     ImageView mSettingImgIv;
     ExImageView mSettingRedDot;
-    ExTextView mNameTv;
+
     ImageView mSexIv;
+    SimpleDraweeView mAvatarIv;
+    NormalLevelView2 mLevelView;
+    ExTextView mNameTv;
     ExTextView mSignTv;
     ExTextView mCharmTv;
     ImageView mBusinessCard;
@@ -230,6 +232,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void initUserInfoArea() {
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
+        mLevelView = (NormalLevelView2)mRootView.findViewById(R.id.level_view);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
@@ -457,11 +460,26 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels, int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showCharmsTotal(meiLiCntTotal);
+        showUserLevel(userLevelModels);
     }
 
     private void showCharmsTotal(int meiLiCntTotal) {
         mCharmTv.setText("魅力：" + meiLiCntTotal);
         mSrlCharmTv.setText("魅力：" + meiLiCntTotal);
+    }
+
+    public void showUserLevel(List<UserLevelModel> list) {
+        int mainRank = 0;
+        int subRank = 0;
+        for (UserLevelModel userLevelModel : list) {
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                mainRank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
+            }
+        }
+
+        mLevelView.bindData(mainRank, subRank);
     }
 
     @Override

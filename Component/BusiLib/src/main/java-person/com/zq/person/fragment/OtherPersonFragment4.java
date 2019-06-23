@@ -58,6 +58,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.dialog.BusinessCardDialogView;
+import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.EditRemarkView;
@@ -115,6 +116,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
+    NormalLevelView2 mLevelView;
     ExTextView mNameTv;
     ImageView mSexIv;
     ImageView mBusinessCard;
@@ -347,6 +349,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     private void initUserInfoArea() {
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
@@ -572,11 +575,26 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         showRelationNum(relationNumModels);
         showReginRank(userRankModels);
         showUserRelation(isFriend, isFollow);
+        showUserLevel(userLevelModels);
         showCharms(meiLiCntTotal);
     }
 
     private void showCharms(int meiLiCntTotal) {
         mCharmTv.setText("魅力：" + meiLiCntTotal);
+    }
+
+    public void showUserLevel(List<UserLevelModel> list) {
+        int mainRank = 0;
+        int subRank = 0;
+        for (UserLevelModel userLevelModel : list) {
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                mainRank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
+            }
+        }
+
+        mLevelView.bindData(mainRank, subRank);
     }
 
     @Override
@@ -591,6 +609,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         }
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(model.getAvatar())
+                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2f))
                         .setCircle(true)
                         .build());
 

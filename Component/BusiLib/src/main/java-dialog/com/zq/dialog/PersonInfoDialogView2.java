@@ -59,6 +59,7 @@ import com.module.msg.IMsgService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
@@ -91,6 +92,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     SimpleDraweeView mAvatarIv;
     ExImageView mMoreBtn;
 
+    NormalLevelView2 mLevelView;
     ExTextView mNameTv;
     ImageView mSexIv;
     MarqueeTextView mSignTv;
@@ -234,7 +236,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     }
                     showUserInfo(userInfoModel);
                     showUserRelationNum(relationNumModes);
-//                    showUserLevel(userLevelModels);
+                    showUserLevel(userLevelModels);
                     showUserRelation(isFriend, isFollow);
                     showCharmsTag(meiLiCntTotal);
                 }
@@ -337,6 +339,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mAvatarBg = (ImageView) this.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
+        mLevelView = (NormalLevelView2)this.findViewById(R.id.level_view);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mSexIv = (ImageView) this.findViewById(R.id.sex_iv);
@@ -678,20 +681,19 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         refreshTag();
     }
 
-//    public void showUserLevel(List<UserLevelModel> list) {
-//        int mainRank = 0;
-//        int subRank = 0;
-//        for (UserLevelModel userLevelModel : list) {
-//            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-//                mainRank = userLevelModel.getScore();
-//            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-//                subRank = userLevelModel.getScore();
-//            }
-//        }
-//
-//        mLevelView.bindData(mainRank, subRank);
-//
-//    }
+    public void showUserLevel(List<UserLevelModel> list) {
+        int mainRank = 0;
+        int subRank = 0;
+        for (UserLevelModel userLevelModel : list) {
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                mainRank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
+            }
+        }
+
+        mLevelView.bindData(mainRank, subRank);
+    }
 
     public void showUserRelation(final boolean isFriend, final boolean isFollow) {
         this.isFollow = isFollow;
