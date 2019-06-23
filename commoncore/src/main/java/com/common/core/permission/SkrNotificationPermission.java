@@ -24,8 +24,8 @@ public class SkrNotificationPermission extends SkrBasePermission {
 
     protected void goSettingPage(Activity activity) {
         U.getPermissionUtils().goNotificationSettingPage();
-        if (mPerTipsDialogPlus != null) {
-            mPerTipsDialogPlus.dismiss();
+        if (mTipsDialogView != null) {
+            mTipsDialogView.dismiss();
         }
         mHasGoPermission = false;
     }

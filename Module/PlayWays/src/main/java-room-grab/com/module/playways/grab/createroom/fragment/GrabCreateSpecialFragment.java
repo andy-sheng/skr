@@ -44,7 +44,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
     SkrCameraPermission mCameraPermission;
     TipsDialogView mTipsDialogView;
     int mRoomType;
-    RealNameVerifyUtils mRealNameVerifyUtils = new RealNameVerifyUtils(this);
+    RealNameVerifyUtils mRealNameVerifyUtils = new RealNameVerifyUtils();
 
     @Override
     public int initView() {

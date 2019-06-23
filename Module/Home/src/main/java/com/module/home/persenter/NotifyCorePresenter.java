@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.core.permission.SkrCameraPermission;
 import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
@@ -39,6 +40,7 @@ import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.WeakRedDotManager;
+import com.component.busilib.verify.RealNameVerifyUtils;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
@@ -49,6 +51,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.NotifyDialogView;
+import com.zq.live.proto.Common.EMsgRoomMediaType;
 import com.zq.notification.DoubleInviteNotifyView;
 import com.zq.notification.FollowNotifyView;
 import com.zq.notification.GrabInviteNotifyView;
@@ -77,6 +80,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     MainPageSlideApi mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
+    SkrCameraPermission mSkrCameraPermission = new SkrCameraPermission();
+
+    RealNameVerifyUtils mRealNameVerifyUtils = new RealNameVerifyUtils();
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -176,7 +183,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
                                 }
-                                tryGoGrabRoom(event.roomId, 2);
+                                tryGoGrabRoom(event.mediaType, event.roomId, 2);
                             }
                         });
                         confirmDialog.show();
@@ -186,7 +193,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             // 不需要直接进
-            tryGoGrabRoom(event.roomId, 2);
+            tryGoGrabRoom(event.mediaType, event.roomId, 2);
         }
     }
 
@@ -268,15 +275,32 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    void tryGoGrabRoom(int roomID, int inviteType) {
+    void tryGoGrabRoom(int mediaType, int roomID, int inviteType) {
         if (mSkrAudioPermission != null) {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
-                    IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                    if (iRankingModeService != null) {
-                        iRankingModeService.tryGoGrabRoom(roomID, inviteType);
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                            if (iRankingModeService != null) {
+                                iRankingModeService.tryGoGrabRoom(roomID, inviteType);
+                            }
+                        }
+                    };
+                    if (mediaType == EMsgRoomMediaType.EMR_VIDEO.getValue()) {
+                        // 视频房间
+                        mSkrCameraPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRealNameVerifyUtils.checkJoinVideoPermission(runnable);
+                            }
+                        }, true);
+                    } else {
+                        runnable.run();
                     }
+
                 }
             }, true);
         }
@@ -316,6 +340,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
             floatWindowData.setUserInfoModel(event.mUserInfoModel);
             floatWindowData.setRoomID(event.roomID);
+            floatWindowData.setMediaType(event.mediaType);
             mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
         } else {
             // 展示一个通知
@@ -350,7 +375,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onAgree() {
-                tryGoGrabRoom(roomID, 1);
+                tryGoGrabRoom(floatWindowData.mMediaType, roomID, 1);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
             }
@@ -483,6 +508,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         private UserInfoModel mUserInfoModel;
         private Type mType;
         private int mRoomID;
+        private int mMediaType;
 
         public void setUserInfoModel(UserInfoModel userInfoModel) {
             mUserInfoModel = userInfoModel;
@@ -502,6 +528,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         public int getRoomID() {
             return mRoomID;
+        }
+
+        public int getMediaType() {
+            return mMediaType;
+        }
+
+        public void setMediaType(int mediaType) {
+            mMediaType = mediaType;
         }
 
         public enum Type {

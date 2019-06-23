@@ -170,4 +170,9 @@ message AgoraTokenInfo
     string token  = 2; //声网token
 }
 
-
+//房间类型
+enum EMsgRoomMediaType {
+    EMR_UNKNOWN = 0; // 未知
+    EMR_AUDIO   = 1; // 音频房
+    EMR_VIDEO   = 2; // 视频房
+}

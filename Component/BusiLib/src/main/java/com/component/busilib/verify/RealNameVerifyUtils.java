@@ -19,16 +19,7 @@ import com.module.RouterConstants;
 public class RealNameVerifyUtils {
 
     TipsDialogView mTipsDialogView;
-    BaseFragment mF;
-    RxLifecycleView mRxLifecycleView;
 
-    public RealNameVerifyUtils(BaseFragment fragment) {
-        this.mF = fragment;
-    }
-
-    public RealNameVerifyUtils(RxLifecycleView rxLifecycleView) {
-        mRxLifecycleView = rxLifecycleView;
-    }
 
     /**
      * 是否需要实名认证
@@ -43,21 +34,12 @@ public class RealNameVerifyUtils {
             return;
         }
         VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
-        if (mRxLifecycleView != null) {
             ApiMethods.subscribe(grabRoomServerApi.checkJoinVideoRoomPermission(), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult obj) {
                     process2(obj, successCallback);
                 }
-            }, mRxLifecycleView, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
-        } else {
-            ApiMethods.subscribe(grabRoomServerApi.checkJoinVideoRoomPermission(), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult obj) {
-                    process2(obj, successCallback);
-                }
-            }, mF, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
-        }
+            }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
     }
 
     private void process2(ApiResult obj, Runnable successCallback) {
@@ -73,13 +55,7 @@ public class RealNameVerifyUtils {
             if (8344161 == obj.getErrno()) {
                 // 去实名认证
                 if (mTipsDialogView == null) {
-                    Context context = null;
-                    if (mRxLifecycleView != null) {
-                        context = ((View) mRxLifecycleView).getContext();
-                    } else {
-                        context = mF.getContext();
-                    }
-                    mTipsDialogView = new TipsDialogView.Builder(context)
+                    mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
                             .setMessageTip("撕歌的宝贝们，两分钟完成认证，超有趣的视频玩法等着你来哦")
                             .setConfirmTip("快速认证")
                             .setCancelTip("取消")

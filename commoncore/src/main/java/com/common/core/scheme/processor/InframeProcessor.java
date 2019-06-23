@@ -155,6 +155,7 @@ public class InframeProcessor implements ISchemeProcessor {
             int ownerId = SchemeUtils.getInt(uri, "owner", 0);
             int roomId = SchemeUtils.getInt(uri, "gameId", 0);
             int ask = SchemeUtils.getInt(uri, "ask", 0);
+            int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
             if (ownerId > 0 && roomId > 0) {
                 if (ownerId == MyUserInfoManager.getInstance().getUid()) {
                     MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
@@ -164,6 +165,7 @@ public class InframeProcessor implements ISchemeProcessor {
                 event.ask = ask;
                 event.ownerId = ownerId;
                 event.roomId = roomId;
+                event.mediaType = mediaType;
                 EventBus.getDefault().post(event);
             }
         } else if ("/jump_match".equals(path)) {

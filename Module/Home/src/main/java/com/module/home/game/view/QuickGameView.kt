@@ -48,7 +48,7 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
     lateinit var mSkrAudioPermission: SkrAudioPermission
     lateinit var mCameraPermission: SkrCameraPermission
     lateinit var mGameAdapter: GameAdapter
-    internal var mRealNameVerifyUtils = RealNameVerifyUtils(this)
+    internal var mRealNameVerifyUtils = RealNameVerifyUtils()
 
     constructor(fragment: BaseFragment) : super(fragment.context) {
         mFragment = fragment

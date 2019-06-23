@@ -55,6 +55,7 @@ message InviteStandMsg
 {
     Common.UserInfo user = 1; //发起邀请的用户详情
     uint32 roomID = 2; //房间id
+    Common.EMsgRoomMediaType mediaType = 3; //房间类型(1:音频房 2:视频房)
 }
 
 message SysWarningMsg
