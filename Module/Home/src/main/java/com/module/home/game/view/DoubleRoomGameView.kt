@@ -60,7 +60,7 @@ class DoubleRoomGameView : RelativeLayout {
                         showConfirmView()
                     } else {
                         ARouter.getInstance()
-                                .build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                                .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
                                 .navigation()
                     }
                 } else {
