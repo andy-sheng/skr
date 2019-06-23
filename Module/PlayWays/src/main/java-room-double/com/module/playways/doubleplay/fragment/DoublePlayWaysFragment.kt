@@ -261,6 +261,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     override fun startGame(mCur: SongModel, mNext: String) {
         mWordGroup?.visibility = GONE
+        mDoubleSingCardView.visibility = VISIBLE
         mDoubleSingCardView.playLyric("", mCur, mNext)
     }
 
