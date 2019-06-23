@@ -2075,6 +2075,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
                 setPreviewParams();
                 mCameraCapture.start(mCameraFacing);
+
+                // 开启了本地预览，关闭自刷新
+                mImgTexPreviewMixer.setEnableAutoRefresh(false, mPreviewFps);
             }
         });
     }
@@ -2090,6 +2093,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mIsCaptureStarted = false;
                 mCameraCapture.stop();
                 freeFboCacheIfNeeded();
+
+                // 关闭了本地预览，开启自刷新
+                if (!mRemoteUserPinMap.isEmpty()) {
+                    mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+                }
             }
         });
     }
@@ -2226,8 +2234,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mImgTexPreviewMixer.setScalingMode(idx, ImgTexMixer.SCALING_MODE_CENTER_CROP);
                 mImgTexPreviewMixer.setRenderRect(idx, x, y, w, h, a);
 
-                // TODO: 仅在未开启本地视频，以及绑定了远端视图的情况下开启自动刷新
-                mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+                // 仅在未开启本地视频，以及绑定了远端视图的情况下开启自动刷新
+                if (!mIsCaptureStarted) {
+                    mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+                }
             }
         });
     }

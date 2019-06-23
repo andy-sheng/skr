@@ -130,11 +130,12 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
     }
 
     public void setEnableAutoRefresh(boolean enableAutoRefresh, float fps) {
+        Log.d(TAG, "setEnableAutoRefresh: " + enableAutoRefresh + " fps: " + fps);
         if (enableAutoRefresh == mEnableAutoRefresh) {
             return;
         }
 
-        if (enableAutoRefresh && !mEnableAutoRefresh) {
+        if (enableAutoRefresh) {
             long delay = (long) (1000 / fps);
             mAutoRefreshTimer = new Timer("AutoRefreshTimer");
             TimerTask refreshTask = new TimerTask() {
@@ -149,7 +150,7 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
                 }
             };
             mAutoRefreshTimer.schedule(refreshTask, delay, delay);
-        } else if (!enableAutoRefresh && mEnableAutoRefresh) {
+        } else {
             mAutoRefreshTimer.cancel();
             mAutoRefreshTimer = null;
         }
