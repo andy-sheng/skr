@@ -118,6 +118,8 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
             if (mSongManageData.getSpecialModel() != null) {
                 setTagTv(mSongManageData.getSpecialModel());
             }
+        } else {
+            mTopTagView.setVisibility(GONE);
         }
 
         mGrabSongManagePresenter.getPlayBookList();

@@ -184,7 +184,7 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
+                    if (mGrabRoomSongModelList != null) {
                         //加一个保护
                         GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
                         grabRoomSongModel.setOwner(songModel.getOwner());
@@ -221,9 +221,7 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddSongEvent event) {
-        if (mGrabRoomData.isOwner()) {
-            addSong(event.getSongModel());
-        }
+        addSong(event.getSongModel());
     }
 
     /**
