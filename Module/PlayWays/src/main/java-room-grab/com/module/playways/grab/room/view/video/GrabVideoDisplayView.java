@@ -128,12 +128,6 @@ public class GrabVideoDisplayView extends ExViewStub {
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
         mMainUserId = userId;
         tryBindMainVideoStream();
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (mSingCountDownView != null) {
-            if (infoModel != null) {
-                mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
-            }
-        }
         if (userId == MyUserInfoManager.getInstance().getUid()) {
             mBeautySettingBtn.setVisibility(View.VISIBLE);
         } else {
@@ -168,12 +162,7 @@ public class GrabVideoDisplayView extends ExViewStub {
             tryBindLeftVideoStream();
             tryBindRightVideoStream();
         }
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (mSingCountDownView != null) {
-            if (infoModel != null) {
-                mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
-            }
-        }
+        startSingCountDown();
         if (mRightUserId == MyUserInfoManager.getInstance().getUid() || mLeftUserId == MyUserInfoManager.getInstance().getUid()) {
             mBeautySettingBtn.setVisibility(View.VISIBLE);
         } else {
@@ -181,6 +170,27 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
     }
 
+    void startSingCountDown(){
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (mSingCountDownView != null) {
+            if (infoModel != null) {
+                int totalMs = infoModel.getSingTotalMs();
+                int progress;  //当前进度条
+                int leaveTime; //剩余时间
+                MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant() + " enterStatus=" + infoModel.getEnterStatus());
+                if (!infoModel.isParticipant() && infoModel.isEnterInSingStatus()) {
+                    MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
+                    progress = infoModel.getElapsedTimeMs() * 100 / totalMs;
+                    leaveTime = totalMs - infoModel.getElapsedTimeMs();
+                } else {
+                    progress = 1;
+                    leaveTime = totalMs;
+                }
+                mSingCountDownView.startPlay(progress, leaveTime, true);
+            }
+        }
+    }
+    
     public void reset() {
         if (!isBeautyActivityVisiable()) {
             ZqEngineKit.getInstance().stopCameraPreview();
