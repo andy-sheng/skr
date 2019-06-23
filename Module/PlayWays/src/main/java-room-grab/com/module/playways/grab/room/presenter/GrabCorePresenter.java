@@ -74,6 +74,7 @@ import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
+import com.module.playways.grab.room.songmanager.event.RoomNameChangeEvent;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
@@ -1205,7 +1206,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             map.put("roomID", mRoomData.getGameId());
             map.put("roundSeq", now.getRoundSeq());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-            if(now.isFreeMicRound()){
+            if (now.isFreeMicRound()) {
                 ApiMethods.subscribe(mRoomServerApi.stopFreeMicroByOwner(body), new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult result) {
@@ -1223,7 +1224,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         MyLog.w(TAG, "stopFreeMicroByOwner error " + e);
                     }
                 }, this);
-            }else{
+            } else {
                 ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult result) {
@@ -2537,6 +2538,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RoomNameChangeEvent event) {
+        MyLog.w(TAG, "onEvent" + " event=" + event);
+        mRoomData.setRoomName(event.getMRoomName());
     }
 
 

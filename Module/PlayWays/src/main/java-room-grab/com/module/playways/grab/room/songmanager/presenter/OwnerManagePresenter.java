@@ -12,6 +12,7 @@ import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
+import com.module.playways.grab.room.songmanager.event.RoomNameChangeEvent;
 import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
 import com.module.playways.grab.room.songmanager.view.IOwnerManageView;
 import com.module.playways.room.song.model.SongModel;
@@ -55,6 +56,8 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
                     U.getToastUtil().showShort("修改房间名成功");
                     mSongManageData.setRoomName(roomName);
                     mIOwnerManageView.showRoomName(roomName);
+                    // TODO: 2019-06-23 由于此时的roomData和Room里面的不一样，需要发一个改变的事件
+                    EventBus.getDefault().post(new RoomNameChangeEvent(roomName));
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
                 }
