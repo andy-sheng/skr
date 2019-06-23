@@ -89,4 +89,13 @@
         app:layout_constraintLeft_toLeftOf="@id/desc_guide"
         app:layout_constraintRight_toRightOf="@id/desc_guide" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/black_trans_5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
 </android.support.constraint.ConstraintLayout>

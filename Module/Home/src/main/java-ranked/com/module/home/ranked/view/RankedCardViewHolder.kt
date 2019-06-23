@@ -22,7 +22,6 @@ class RankedCardViewHolder(itemView: View, listener: RecyclerOnItemClickListener
 
     var mContainer: ConstraintLayout
     var mAvatarIv: SimpleDraweeView
-    var mNameTv: TextView
     var mDescTv: TextView
 
     internal var mModel: RankHomeCardModel? = null
@@ -31,7 +30,6 @@ class RankedCardViewHolder(itemView: View, listener: RecyclerOnItemClickListener
     init {
         mContainer = itemView.findViewById(R.id.container)
         mAvatarIv = itemView.findViewById(R.id.avatar_iv)
-        mNameTv = itemView.findViewById(R.id.name_tv)
         mDescTv = itemView.findViewById(R.id.desc_tv)
 
         mContainer.setOnClickListener(object : AnimateClickListener() {
@@ -69,7 +67,6 @@ class RankedCardViewHolder(itemView: View, listener: RecyclerOnItemClickListener
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setCircle(true)
                 .build())
-        mNameTv.text = MyUserInfoManager.getInstance().nickName
         mDescTv.text = mModel?.desc
     }
 }
