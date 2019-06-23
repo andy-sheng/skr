@@ -389,7 +389,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
             @Override
             public void onClickAgree() {
-                mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
+                mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
+                FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("peerUserID", userInfoModel.getUserId());
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
