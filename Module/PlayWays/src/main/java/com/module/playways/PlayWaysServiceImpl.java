@@ -18,6 +18,7 @@ import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -29,8 +30,11 @@ import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
@@ -195,12 +199,24 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         doubleRoomData.setPassedTimeMs(event.getPassedTimeMs());
         doubleRoomData.setConfig(event.getConfig());
 
-        HashMap<Integer, UserInfoModel> hashMap = new HashMap();
-        for (UserInfoModel userInfoModel : event.getUsers()) {
-            hashMap.put(userInfoModel.getUserId(), userInfoModel);
+        {
+            HashMap<Integer, UserInfoModel> hashMap = new HashMap();
+            for (UserInfoModel userInfoModel : event.getUsers()) {
+                hashMap.put(userInfoModel.getUserId(), userInfoModel);
+            }
+            doubleRoomData.setUserInfoListMap(hashMap);
         }
 
-        doubleRoomData.setUserInfoListMap(hashMap);
+        {
+            List<LocalAgoraTokenInfo> list = new ArrayList<>();
+            Iterator<Map.Entry<Integer, String>> iterator = event.getTokens().entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Integer, String> entry = iterator.next();
+                list.add(new LocalAgoraTokenInfo(entry.getKey(), entry.getValue()));
+            }
+            doubleRoomData.setTokens(list);
+        }
+
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)
                 .navigation();
