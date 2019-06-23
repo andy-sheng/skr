@@ -74,6 +74,7 @@ import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
+import com.module.playways.grab.room.songmanager.event.BeginRecordCustomGameEvent;
 import com.module.playways.grab.room.songmanager.event.RoomNameChangeEvent;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
@@ -2506,7 +2507,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ensureInRcRoom();
     }
 
-
     @Subscribe
     public void onEvent(QChangeMusicTagEvent event) {
         MyLog.d(TAG, "onEvent QChangeMusicTagEvent !!切换专场 " + event);
@@ -2531,6 +2531,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             muteAllRemoteAudioStreams(mRoomData.isMute(), false);
         } else {
             muteAllRemoteAudioStreams(true, false);
+        }
+    }
+
+    /**
+     * 录制小游戏事件，防止录进去背景音
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BeginRecordCustomGameEvent event) {
+        MyLog.d(TAG,"onEvent" + " event=" + event);
+        if (event.getBegin()) {
+            muteAllRemoteAudioStreams(true, false);
+        } else {
+            muteAllRemoteAudioStreams(mRoomData.isMute(), false);
         }
     }
 

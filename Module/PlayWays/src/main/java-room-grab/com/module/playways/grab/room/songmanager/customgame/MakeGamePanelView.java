@@ -31,6 +31,7 @@ import com.common.view.ex.ExTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.songmanager.event.AddCustomGameEvent;
+import com.module.playways.grab.room.songmanager.event.BeginRecordCustomGameEvent;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
@@ -118,6 +119,7 @@ public class MakeGamePanelView extends RelativeLayout {
                             mCircleCountDownView.go(0, 15 * 1000);
                             mBeginRecordingTs = System.currentTimeMillis();
                             startCountDown();
+                            EventBus.getDefault().post(new BeginRecordCustomGameEvent(true));
                         }
                         break;
                     case MotionEvent.ACTION_CANCEL:
@@ -129,19 +131,23 @@ public class MakeGamePanelView extends RelativeLayout {
                             if (System.currentTimeMillis() - mBeginRecordingTs < 5 * 1000) {
                                 mStatus = STATUS_IDLE;
                                 U.getToastUtil().showShort("至少录5秒钟哦");
+                                changeToRecordBegin();
                             } else {
                                 // 录制成功
                                 mStatus = STATUS_RECORD_OK;
                                 changeToRecordOk();
                             }
+                            EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
                         } else if (mStatus == STATUS_RECORD_OK) {
                             mStatus = STATUS_RECORD_PLAYING;
                             mPlayBtn.setImageResource(R.drawable.make_game_zanting);
                             playRecorderRes(true);
+                            mRecordingTipsTv.setText("播放");
                         } else if (mStatus == STATUS_RECORD_PLAYING) {
                             mStatus = STATUS_RECORD_OK;
                             mPlayBtn.setImageResource(R.drawable.make_game_bofang);
                             playRecorderRes(false);
+                            mRecordingTipsTv.setText("暂停");
                         }
                         break;
                 }
@@ -315,6 +321,14 @@ public class MakeGamePanelView extends RelativeLayout {
                         String t = (15 - integer) + "s";
                         mCountDownTv.setText(t);
                     }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        if (mMyMediaRecorder != null) {
+                            mMyMediaRecorder.stop();
+                        }
+                    }
                 });
         if (mMyMediaRecorder == null) {
             mMyMediaRecorder = MyMediaRecorder.newBuilder().build();
@@ -350,7 +364,7 @@ public class MakeGamePanelView extends RelativeLayout {
         mTime90Btn.setVisibility(GONE);
         mTime120Btn.setVisibility(GONE);
         mPlayBtn.setImageResource(R.drawable.make_game_luyin);
-        mRecordingTipsTv.setText("安装录音");
+        mRecordingTipsTv.setText("按住录音");
         mTitleTv.setText("一句话描述游戏规则");
         mSubmitProgressBar.setVisibility(GONE);
     }
@@ -368,6 +382,7 @@ public class MakeGamePanelView extends RelativeLayout {
         if (mUploadTask != null) {
             mUploadTask.cancel();
         }
+        EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
     }
 
     DialogPlus mDialogPlus;

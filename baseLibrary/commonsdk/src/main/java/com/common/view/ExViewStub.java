@@ -19,6 +19,7 @@ public abstract class ExViewStub implements View.OnAttachStateChangeListener {
         if (mParentView == null) {
             mParentView = mViewStub.inflate();
             mParentView.addOnAttachStateChangeListener(this);
+            mParentView.setTranslationY(mViewStub.getTranslationY());
             onViewAttachedToWindow(mParentView);
             init(mParentView);
             mViewStub = null;

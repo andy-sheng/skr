@@ -124,13 +124,16 @@ public class FreeMicSelfSingCardView extends ExViewStub {
                         }
                     });
         }
-        if (ZqEngineKit.getInstance().getParams().isAnchor()) {
-            mmMicControlBtn.setImageResource(R.drawable.free_mic_close_mic);
-        } else {
-            mmMicControlBtn.setImageResource(R.drawable.free_mic_open_mic);
+        if(mRoomData.isInPlayerList()){
+            mmMicControlBtn.setVisibility(View.VISIBLE);
+            if (ZqEngineKit.getInstance().getParams().isAnchor()) {
+                mmMicControlBtn.setImageResource(R.drawable.free_mic_close_mic);
+            } else {
+                mmMicControlBtn.setImageResource(R.drawable.free_mic_open_mic);
+            }
+        }else{
+            mmMicControlBtn.setVisibility(View.GONE);
         }
-
-
         return true;
     }
 

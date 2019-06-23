@@ -6,6 +6,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -27,7 +28,7 @@ public class RealNameVerifyUtils {
      * @param successCallback
      */
     public void checkJoinVideoPermission(final Runnable successCallback) {
-        if (MyUserInfoManager.getInstance().isRealNameVerified()) {
+        if (MyUserInfoManager.getInstance().isRealNameVerified() || MyLog.isDebugLogOpen()) {
             if (successCallback != null) {
                 successCallback.run();
             }

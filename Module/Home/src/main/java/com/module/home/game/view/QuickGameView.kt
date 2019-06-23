@@ -138,7 +138,8 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
                                     ARouter.getInstance()
                                             .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
                                             .withInt("from", FROM_FRIEND_RECOMMEND)
-                                            .withSerializable("RecommendModel", friendRoomModel)
+                                            .withInt("mRoomId",friendRoomModel.roomInfo.roomID)
+                                            .withInt("mInviteType",0)
                                             .navigation()
                                 }
                             }, true)

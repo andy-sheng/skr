@@ -35,12 +35,14 @@ class BeautyPreviewFragment : BaseFragment() {
     lateinit var mEnterRoomTv: ExTextView
     var mFrom: Int? = 0
     var mSpecialModel: SpecialModel? = null
-    var mRecommendModel: RecommendModel? = null
+    var mRoomId: Int? = null
+    var mInviteType: Int? = null
     lateinit var mTitleBar: CommonTitleBar
     lateinit var mBeautyOpenBtn: View
     override fun initView(): Int {
         return R.layout.beauty_preview_fragment_layout
     }
+
     var mSkrCameraPermission = SkrCameraPermission();
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -68,18 +70,12 @@ class BeautyPreviewFragment : BaseFragment() {
                 if (mFrom == FROM_MATCH) {
                     // 从匹配进入的继续去匹配页面
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    mSpecialModel?.run {
-                        iRankingModeService?.tryGoGrabMatch(mSpecialModel!!.getTagID())
-                        activity?.finish()
-                    }?.run {
-                        MyLog.d("mSpecialModel is null")
-                    }
+                    iRankingModeService?.tryGoGrabMatch(mSpecialModel!!.getTagID())
+                    activity?.finish()
                 } else if (mFrom == FROM_FRIEND_RECOMMEND) {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    mRecommendModel?.let {
-                        iRankingModeService?.tryGoGrabRoom(mRecommendModel!!.getRoomInfo()!!.getRoomID(), 0)
-                        activity?.finish()
-                    }
+                    iRankingModeService?.tryGoGrabRoom(mRoomId!!, mInviteType!!)
+                    activity?.finish()
                 }
             }
         })
@@ -94,6 +90,7 @@ class BeautyPreviewFragment : BaseFragment() {
             mBeautyOpenBtn.visibility = View.GONE
             mEnterRoomTv.visibility = View.GONE
             mBeautyControlView.show()
+            mBeautyControlView.enableHide(false)
         }
         // 设置预览View
         ZqEngineKit.getInstance().unbindAllRemoteVideo()
@@ -101,7 +98,7 @@ class BeautyPreviewFragment : BaseFragment() {
         ZqEngineKit.getInstance().setLocalVideoRect(0f, 0f, 1f, 1f, 1f)
         mSkrCameraPermission.ensurePermission({
             ZqEngineKit.getInstance().startCameraPreview()
-        },true)
+        }, true)
     }
 
     protected fun config() {
@@ -163,7 +160,8 @@ class BeautyPreviewFragment : BaseFragment() {
         super.setArguments(args)
         mFrom = args?.getInt("from")
         mSpecialModel = args?.getSerializable("SpecialModel") as SpecialModel?
-        mRecommendModel = args?.getSerializable("RecommendModel") as RecommendModel?
+        mRoomId = args?.getInt("mRoomId")
+        mInviteType = args?.getInt("mInviteType")
     }
 
     override fun useEventBus(): Boolean {

@@ -228,6 +228,19 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
         mShowOrHideAnimator.start();
     }
 
+    public void enableHide(boolean enable){
+        if(enable){
+            mPlaceHolderView.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    hide();
+                }
+            });
+        }else{
+            mPlaceHolderView.setClickable(false);
+        }
+    }
+
     void hide() {
         //tryInflate()
         if (mShowOrHideAnimator != null) {

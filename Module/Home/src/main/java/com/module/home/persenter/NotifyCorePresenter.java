@@ -65,6 +65,8 @@ import java.util.HashMap;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+import static com.component.busilib.beauty.JumpBeautyFromKt.FROM_FRIEND_RECOMMEND;
+
 public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     static final String TAG_INVITE_FOALT_WINDOW = "TAG_INVITE_FOALT_WINDOW";
@@ -280,25 +282,31 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                            if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(roomID, inviteType);
-                            }
-                        }
-                    };
                     if (mediaType == EMsgRoomMediaType.EMR_VIDEO.getValue()) {
                         // 视频房间
                         mSkrCameraPermission.ensurePermission(new Runnable() {
                             @Override
                             public void run() {
-                                mRealNameVerifyUtils.checkJoinVideoPermission(runnable);
+                                mRealNameVerifyUtils.checkJoinVideoPermission(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 进入视频预览
+                                        ARouter.getInstance()
+                                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                .withInt("from", FROM_FRIEND_RECOMMEND)
+                                                .withInt("mRoomId", roomID)
+                                                .withInt("mInviteType", inviteType)
+                                                .navigation();
+
+                                    }
+                                });
                             }
                         }, true);
                     } else {
-                        runnable.run();
+                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                        if (iRankingModeService != null) {
+                            iRankingModeService.tryGoGrabRoom(roomID, inviteType);
+                        }
                     }
 
                 }
