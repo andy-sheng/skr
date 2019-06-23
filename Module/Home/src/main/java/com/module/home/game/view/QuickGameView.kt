@@ -176,7 +176,7 @@ class QuickGameView : RelativeLayout, IQuickGameView3 {
         mQuickGamePresenter.checkTaskRedDot()
     }
 
-    override fun setBannerImage(slideShowModelList: MutableList<SlideShowModel>?) {
+    override fun setBannerImage(slideShowModelList: List<SlideShowModel>) {
         if (slideShowModelList == null || slideShowModelList.size == 0) {
             MyLog.w(TAG, "initOperationArea 为null")
             mGameAdapter.updateBanner(null)
@@ -201,7 +201,7 @@ class QuickGameView : RelativeLayout, IQuickGameView3 {
 //        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
 //    }
 
-    override fun setQuickRoom(list: MutableList<SpecialModel>?, offset: Int) {
+    override fun setQuickRoom(list: MutableList<SpecialModel>, offset: Int) {
         MyLog.d(TAG, "setQuickRoom list=$list offset=$offset")
         // TODO: 2019/4/1 过滤一下空的背景
         if (list != null && list.size > 0) {
@@ -224,6 +224,7 @@ class QuickGameView : RelativeLayout, IQuickGameView3 {
 
         val quickJoinRoomModel = QuickJoinRoomModel(list, offset)
         mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel)
+
     }
 
     fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {

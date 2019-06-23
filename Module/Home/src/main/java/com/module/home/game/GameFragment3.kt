@@ -28,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 class GameFragment3 : BaseFragment(), IGameView3 {
+
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
@@ -166,20 +167,20 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         super.onFragmentInvisible()
         mFriendRoomGameView.stopTimer()
     }
-
-    override fun hideRedOperationView() {
-        mQuickGameView?.hideRedOperationView()
-    }
-
-    override fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {
-        mQuickGameView?.showRedOperationView(homepagesitefirstBean)
-    }
-
-    override fun setGameConfig(gameKConfigModel: GameKConfigModel?) {
+    
+    override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
         mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
         if (mGameVp.currentItem == 0) {
             mFriendRoomGameView.initData()
         }
+    }
+
+    override fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean) {
+        mQuickGameView?.showRedOperationView(homepagesitefirstBean)
+    }
+
+    override fun hideRedOperationView() {
+        mQuickGameView?.hideRedOperationView()
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
