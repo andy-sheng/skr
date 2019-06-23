@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Message
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.jiguang.JiGuangPush
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
@@ -118,7 +119,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun pickOther() {
-        val mutableSet1 = mutableMapOf<String, Objects>()
+        val mutableSet1 = mutableMapOf("count" to 1, "fromPickuserID" to MyUserInfoManager.getInstance().uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.pickOther(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
@@ -198,7 +199,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoublePickPushEvent) {
-        mIDoublePlayView.picked()
+        if (event.fromPickUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+            mIDoublePlayView.picked()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

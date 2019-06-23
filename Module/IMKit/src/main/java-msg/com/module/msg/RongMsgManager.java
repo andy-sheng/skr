@@ -292,6 +292,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.setUserInfoProvider(this, true);
             mIsInit = true;
             RongIM.registerMessageType(CustomChatRoomMsg.class);
+            RongIM.registerMessageType(CustomChatRoomLowLevelMsg.class);
+            RongIM.registerMessageType(CustomChatCombineRoomMsg.class);
+            RongIM.registerMessageType(CustomChatCombineRoomLowLevelMsg.class);
             RongIM.registerMessageType(CustomNotificationMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
             RongIM.getInstance().setConversationClickListener(new MyConversationClickListener());

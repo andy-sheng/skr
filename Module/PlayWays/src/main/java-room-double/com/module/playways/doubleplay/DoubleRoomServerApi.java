@@ -111,7 +111,9 @@ public interface DoubleRoomServerApi {
 
     /**
      * {
+     * "count": 0,
      * "fromPickuserID": 0,
+     * "roomID": 0,
      * "toPickUserID": 0
      * }
      *
