@@ -68,7 +68,7 @@ public class UploadTask {
         } else {
             MyLog.e(TAG, "file==null 或者 文件不存在");
             if (uploadCallback != null) {
-                uploadCallback.onFailure("文件不存在：" + file.getAbsolutePath());
+                uploadCallback.onFailureNotInUiThread("文件不存在：" + file.getAbsolutePath());
             }
             return this;
         }
@@ -81,7 +81,7 @@ public class UploadTask {
                         boolean has = data.containsKey("statusCode");
                         if (!has) {
                             if (uploadCallback != null) {
-                                uploadCallback.onFailure("has == false");
+                                uploadCallback.onFailureNotInUiThread("has == false");
                             }
                             return;
                         }
@@ -158,7 +158,7 @@ public class UploadTask {
                     public void accept(Throwable throwable) throws Exception {
                         MyLog.e(throwable);
                         if (uploadCallback != null) {
-                            uploadCallback.onFailure("Throwable");
+                            uploadCallback.onFailureNotInUiThread("Throwable");
                         }
                     }
                 });
@@ -180,7 +180,7 @@ public class UploadTask {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
                 if (uploadCallback != null) {
-                    uploadCallback.onProgress(currentSize, totalSize);
+                    uploadCallback.onProgressNotInUiThread(currentSize, totalSize);
                 }
             }
         });
@@ -202,11 +202,11 @@ public class UploadTask {
                     JSONObject jo = JSON.parseObject(serverCallbackReturnJson);
                     String url = jo.getString("url");
                     if (!TextUtils.isEmpty(url)) {
-                        uploadCallback.onSuccess(url);
+                        uploadCallback.onSuccessNotInUiThread(url);
                         // 上传成功打点
                         StatisticsAdapter.recordCalculateEvent("upload", "success", System.currentTimeMillis() - uploadStartMs, null);
                     } else {
-                        uploadCallback.onFailure("上传失败");
+                        uploadCallback.onFailureNotInUiThread("上传失败");
                         // 上传失败打点
                         HashMap param = new HashMap();
                         param.put("reason", "url为空");
@@ -227,7 +227,7 @@ public class UploadTask {
                     if (clientException != null) {
                         sb.append(" clientMsg=").append(clientException.getMessage());
                     }
-                    uploadCallback.onFailure(sb.toString());
+                    uploadCallback.onFailureNotInUiThread(sb.toString());
                     // 上传失败打点
                     HashMap param = new HashMap();
                     param.put("reason", sb.toString());
@@ -318,13 +318,13 @@ public class UploadTask {
                         num++;
                         if (!U.getNetworkUtils().hasNetwork()) {
                             if (uploadCallback != null) {
-                                uploadCallback.onFailure("没有网络了");
+                                uploadCallback.onFailureNotInUiThread("没有网络了");
                             }
                             return;
                         }
                         if (num >= 10) {
                             if (uploadCallback != null) {
-                                uploadCallback.onFailure("上传很久了，还没有回调，认为失败");
+                                uploadCallback.onFailureNotInUiThread("上传很久了，还没有回调，认为失败");
                             }
                         }
                     }

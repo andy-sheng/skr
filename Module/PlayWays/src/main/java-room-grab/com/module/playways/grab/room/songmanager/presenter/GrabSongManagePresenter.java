@@ -82,6 +82,7 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
             MyLog.w(TAG, "已经加载中了...");
             return;
         }
+        MyLog.d(TAG, "getTagList");
 
         mGetTagsTask = ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
             @Override
@@ -367,6 +368,7 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddCustomGameEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         // 添加非房主想唱的歌曲
         GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
         grabRoomSongModel.setOwner(MyUserInfoManager.getInstance().getNickName());
@@ -384,10 +386,11 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
      * @param grabRoomSongModel
      */
     void addToUiList(GrabRoomSongModel grabRoomSongModel) {
+        MyLog.d(TAG, "addToUiList" + " grabRoomSongModel=" + grabRoomSongModel);
         if (mGrabRoomSongModelList.size() >= 2) {
             for (int i = 2; i < mGrabRoomSongModelList.size(); i++) {
                 GrabRoomSongModel g = mGrabRoomSongModelList.get(i);
-                g.setRoundSeq(grabRoomSongModel.getRoundSeq() + 1);
+                g.setRoundSeq(g.getRoundSeq() + 1);
             }
             grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
             mGrabRoomSongModelList.add(2, grabRoomSongModel);

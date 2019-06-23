@@ -1027,18 +1027,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     .setFileType(UploadParams.FileType.audioAi)
                     .startUploadAsync(new UploadCallback() {
                         @Override
-                        public void onProgress(long currentSize, long totalSize) {
+                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                         }
 
                         @Override
-                        public void onSuccess(String url) {
+                        public void onSuccessNotInUiThread(String url) {
                             MyLog.w(TAG, "uploadRes1ForAi 上传成功 url=" + url);
                             sendUploadRequest(roundInfoModel, url);
                         }
 
                         @Override
-                        public void onFailure(String msg) {
+                        public void onFailureNotInUiThread(String msg) {
 
                         }
                     });

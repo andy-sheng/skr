@@ -11,9 +11,9 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
  */
 public interface UploadCallback {
 
-    void onProgress(long currentSize, long totalSize);
+    void onProgressNotInUiThread(long currentSize, long totalSize);
 
-    void onSuccess(String url);
+    void onSuccessNotInUiThread(String url);
 
-    void onFailure(String msg);
+    void onFailureNotInUiThread(String msg);
 }

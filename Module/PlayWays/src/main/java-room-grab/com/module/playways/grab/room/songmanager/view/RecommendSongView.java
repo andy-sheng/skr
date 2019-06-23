@@ -74,9 +74,10 @@ public class RecommendSongView extends FrameLayout {
                 @Override
                 public void onItemClicked(View view, int position, SongModel model) {
                     if (mRoomData.isOwner() && model != null && model.getItemID() == SongModel.ID_CUSTOM_GAME) {
-                        if (mMakeGamePanelView == null) {
-                            mMakeGamePanelView = new MakeGamePanelView(getContext());
+                        if (mMakeGamePanelView != null) {
+                            mMakeGamePanelView.dismiss();
                         }
+                        mMakeGamePanelView = new MakeGamePanelView(getContext());
                         mMakeGamePanelView.showByDialog(mRoomData.getGameId());
                     } else {
                         EventBus.getDefault().post(new AddSongEvent(model));

@@ -311,19 +311,19 @@ public class PlayRecordFragment extends BaseFragment {
                 .startUploadAsync(new UploadCallback() {
 
                     @Override
-                    public void onProgress(long currentSize, long totalSize) {
+                    public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                     }
 
                     @Override
-                    public void onSuccess(String url) {
+                    public void onSuccessNotInUiThread(String url) {
                         MyLog.d(TAG, "onSuccess" + " url=" + url);
                         mUrl = url;
                         saveWorksStep2();
                     }
 
                     @Override
-                    public void onFailure(String msg) {
+                    public void onFailureNotInUiThread(String msg) {
                         U.getToastUtil().showShort("保存失败");
                         mUrl = "";
                     }

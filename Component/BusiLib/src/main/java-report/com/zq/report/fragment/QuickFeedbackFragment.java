@@ -214,12 +214,12 @@ public class QuickFeedbackFragment extends BaseFragment {
                 .setFileType(UploadParams.FileType.audit)
                 .startUploadAsync(new UploadCallback() {
                     @Override
-                    public void onProgress(long currentSize, long totalSize) {
+                    public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                     }
 
                     @Override
-                    public void onSuccess(String url) {
+                    public void onSuccessNotInUiThread(String url) {
                         MyLog.d(TAG, "上传成功" + " url=" + url);
                         photoModel.setStatus(STATUS_SUCCESS);
                         photoModel.setPicPath(url);
@@ -227,7 +227,7 @@ public class QuickFeedbackFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onFailure(String msg) {
+                    public void onFailureNotInUiThread(String msg) {
                         MyLog.d(TAG, "上传失败" + " msg=" + msg);
                         photoModel.setStatus(STATUS_FAILED);
                         checkUploadState(mPhotoModelList);

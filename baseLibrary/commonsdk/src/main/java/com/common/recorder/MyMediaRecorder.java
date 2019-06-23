@@ -18,7 +18,7 @@ public class MyMediaRecorder {
     long mStartRecordingTs = 0;
     int mDuration = 0;
     MediaRecorder mMediaRecorder;
-
+    boolean mRecording = false;
 //    String filePath;
 
     public int getAudioSource() {
@@ -90,19 +90,24 @@ public class MyMediaRecorder {
                 mMediaRecorder.start();
             }
             mStartRecordingTs = System.currentTimeMillis();
+            mRecording = true;
         } catch (IOException e) {
             MyLog.e(TAG, e);
         }
     }
 
     public void stop() {
+        if(mRecording){
+            mDuration = (int) (System.currentTimeMillis() - mStartRecordingTs);
+        }
+        mRecording = false;
         if (mMediaRecorder != null) {
             mMediaRecorder.reset();
         }
-        mDuration = (int) (System.currentTimeMillis() - mStartRecordingTs);
     }
 
     public void destroy() {
+        mRecording = false;
         if (mMediaRecorder != null) {
             mMediaRecorder.reset();
             mMediaRecorder.release();

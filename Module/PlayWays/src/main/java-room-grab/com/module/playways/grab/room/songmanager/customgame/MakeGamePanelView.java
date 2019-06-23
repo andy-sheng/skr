@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.songmanager.customgame;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.MyMediaPlayer;
 import com.common.player.VideoPlayerAdapter;
@@ -80,6 +82,8 @@ public class MakeGamePanelView extends RelativeLayout {
     boolean mUploading = false;
 
     IPlayer mMediaPlayer;
+
+    Handler mUiHandler = new Handler();
 
     public MakeGamePanelView(Context context) {
         super(context);
@@ -236,23 +240,34 @@ public class MakeGamePanelView extends RelativeLayout {
                         .setFileType(UploadParams.FileType.customGame)
                         .startUploadAsync(new UploadCallback() {
                             @Override
-                            public void onProgress(long currentSize, long totalSize) {
+                            public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                             }
 
                             @Override
-                            public void onSuccess(String url) {
+                            public void onSuccessNotInUiThread(String url) {
                                 mUploadUrl = url;
                                 sendToServer();
                                 mUploading = false;
-                                mSubmitProgressBar.setVisibility(GONE);
+                                mUiHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mSubmitProgressBar.setVisibility(GONE);
+                                    }
+                                });
+
                             }
 
                             @Override
-                            public void onFailure(String msg) {
+                            public void onFailureNotInUiThread(String msg) {
                                 mUploading = false;
                                 U.getToastUtil().showShort("上传失败");
-                                mSubmitProgressBar.setVisibility(GONE);
+                                mUiHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mSubmitProgressBar.setVisibility(GONE);
+                                    }
+                                });
                             }
                         });
             }
@@ -305,20 +320,20 @@ public class MakeGamePanelView extends RelativeLayout {
         if (mHandlerTaskTimer != null) {
             mHandlerTaskTimer.dispose();
         }
-        mCountDownTv.setText("15s");
         if (mMyMediaRecorder != null) {
             mMyMediaRecorder.stop();
         }
+        mCountDownTv.setText("15s");
     }
 
     private void startCountDown() {
         cancelCountDown();
         mHandlerTaskTimer = HandlerTaskTimer.newBuilder().interval(1000)
-                .take(15)
+                .take(16)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        String t = (15 - integer) + "s";
+                        String t = (16 - integer) + "s";
                         mCountDownTv.setText(t);
                     }
 
@@ -328,6 +343,8 @@ public class MakeGamePanelView extends RelativeLayout {
                         if (mMyMediaRecorder != null) {
                             mMyMediaRecorder.stop();
                         }
+                        changeToRecordOk();
+                        EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
                     }
                 });
         if (mMyMediaRecorder == null) {
@@ -371,8 +388,11 @@ public class MakeGamePanelView extends RelativeLayout {
 
     @Override
     protected void onDetachedFromWindow() {
+        MyLog.d(TAG,"onDetachedFromWindow" );
         super.onDetachedFromWindow();
-        cancelCountDown();
+        if (mHandlerTaskTimer != null) {
+            mHandlerTaskTimer.dispose();
+        }
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
         }
@@ -401,5 +421,11 @@ public class MakeGamePanelView extends RelativeLayout {
                 .setExpanded(false)
                 .create();
         mDialogPlus.show();
+    }
+
+    public void dismiss() {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss();
+        }
     }
 }

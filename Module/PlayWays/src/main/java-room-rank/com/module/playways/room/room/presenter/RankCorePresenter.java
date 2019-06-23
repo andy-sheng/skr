@@ -957,17 +957,17 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     .setFileType(UploadParams.FileType.audioAi)
                     .startUploadAsync(new UploadCallback() {
                         @Override
-                        public void onProgress(long currentSize, long totalSize) {
+                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                         }
 
                         @Override
-                        public void onSuccess(String url) {
+                        public void onSuccessNotInUiThread(String url) {
                             uploadRes2ForAi(roundInfoModel, url);
                         }
 
                         @Override
-                        public void onFailure(String msg) {
+                        public void onFailureNotInUiThread(String msg) {
 
                         }
                     });
@@ -991,17 +991,17 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             .setFileType(UploadParams.FileType.midiAi)
                             .startUploadAsync(new UploadCallback() {
                                 @Override
-                                public void onProgress(long currentSize, long totalSize) {
+                                public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                                 }
 
                                 @Override
-                                public void onSuccess(String url) {
+                                public void onSuccessNotInUiThread(String url) {
                                     sendUploadRequest(roundInfoModel, audioUrl, url);
                                 }
 
                                 @Override
-                                public void onFailure(String msg) {
+                                public void onFailureNotInUiThread(String msg) {
 
                                 }
                             });

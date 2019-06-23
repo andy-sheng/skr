@@ -176,18 +176,18 @@ public class TestSdkActivity extends BaseActivity {
                         .setFileName("main_stage_leave.svga")
                         .startUploadAsync(new UploadCallback() {
                             @Override
-                            public void onProgress(long currentSize, long totalSize) {
+                            public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                             }
 
                             @Override
-                            public void onSuccess(String url) {
+                            public void onSuccessNotInUiThread(String url) {
                                 MyLog.w(TAG, "onSuccess" + " url=" + url);
                                 U.getToastUtil().showShort("url:" + url);
                             }
 
                             @Override
-                            public void onFailure(String msg) {
+                            public void onFailureNotInUiThread(String msg) {
 
                             }
                         });
@@ -544,12 +544,12 @@ public class TestSdkActivity extends BaseActivity {
                                             .setNeedCompress(true)
                                             .startUploadAsync(new UploadCallback() {
                                                 @Override
-                                                public void onProgress(long currentSize, long totalSize) {
+                                                public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                                                 }
 
                                                 @Override
-                                                public void onSuccess(String url) {
+                                                public void onSuccessNotInUiThread(String url) {
                                                     U.getToastUtil().showShort("上传成功 url:" + url);
                                                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                                             .setAvatar(url)
@@ -557,7 +557,7 @@ public class TestSdkActivity extends BaseActivity {
                                                 }
 
                                                 @Override
-                                                public void onFailure(String msg) {
+                                                public void onFailureNotInUiThread(String msg) {
 
                                                 }
 

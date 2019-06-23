@@ -133,6 +133,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else {
             mBeautySettingBtn.setVisibility(View.GONE);
         }
+        startSingCountDown();
     }
 
     public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2, boolean needBindVideo) {
@@ -190,7 +191,7 @@ public class GrabVideoDisplayView extends ExViewStub {
             }
         }
     }
-    
+
     public void reset() {
         if (!isBeautyActivityVisiable()) {
             ZqEngineKit.getInstance().stopCameraPreview();

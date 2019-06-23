@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -79,7 +80,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         GrabRoomSongModel model = mDataList.get(position);
-
+        MyLog.d(TAG,"onBindViewHolder" + " model=" + model + " position=" + position);
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model, position);
     }
@@ -130,7 +131,9 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             mTvManage.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    mOnClickDeleteListener.onClick(mSongModel);
+                    if (mOnClickDeleteListener != null) {
+                        mOnClickDeleteListener.onClick(mSongModel);
+                    }
                 }
             });
         }

@@ -171,12 +171,12 @@ public class PhotoCorePresenter {
                 .setFileType(UploadParams.FileType.profilepic)
                 .startUploadAsync(new UploadCallback() {
                     @Override
-                    public void onProgress(long currentSize, long totalSize) {
+                    public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                     }
 
                     @Override
-                    public void onSuccess(String url) {
+                    public void onSuccessNotInUiThread(String url) {
                         MyLog.d(TAG, "上传成功" + " url=" + url);
                         // 上传到服务器
                         HashMap<String, Object> map = new HashMap<>();
@@ -230,7 +230,7 @@ public class PhotoCorePresenter {
                     }
 
                     @Override
-                    public void onFailure(String msg) {
+                    public void onFailureNotInUiThread(String msg) {
                         MyLog.d(TAG, "上传失败" + " msg=" + msg);
                         mUploadingPhoto = false;
                         mPlayControlTemplate.endCurrent(photo);

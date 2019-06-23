@@ -256,9 +256,17 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
             }
 
             @Override
-            public void onAnimationEnd(Animator animation, boolean isReverse) {
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 mParentView.setVisibility(View.GONE);
             }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                mParentView.setVisibility(View.GONE);
+            }
+
         });
         mShowOrHideAnimator.start();
         Params config = ZqEngineKit.getInstance().getParams();
