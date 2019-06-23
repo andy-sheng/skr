@@ -14,6 +14,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.HandlerTaskTimer
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.friends.FriendRoomVerticalAdapter
 import com.component.busilib.friends.GrabSongApi
@@ -38,6 +39,9 @@ class FriendRoomGameView : RelativeLayout {
     private var mFriendRoomVeritAdapter: FriendRoomVerticalAdapter
     private var mSkrAudioPermission: SkrAudioPermission
     private var mDisposable: Disposable? = null
+
+    var mRecommendTimer: HandlerTaskTimer? = null
+    var mRecommendInterval: Int = 0
 
     constructor(context: Context) : super(context) {}
 
@@ -84,12 +88,31 @@ class FriendRoomGameView : RelativeLayout {
                 }
             }
         })
-        recycler_view.setAdapter(mFriendRoomVeritAdapter)
+        recycler_view.adapter = mFriendRoomVeritAdapter
     }
 
     fun initData() {
-        // TODO: 2019-06-18 缺一个时间间隔控制和得服务器商量是不是要定时刷新
-        if (mDisposable != null && !mDisposable!!.isDisposed()) {
+        if (mRecommendInterval <= 0) {
+            mRecommendInterval = 15
+        }
+        stopTimer()
+        mRecommendTimer = HandlerTaskTimer.newBuilder()
+                .take(-1)
+                .interval((mRecommendInterval * 1000).toLong())
+                .start(object : HandlerTaskTimer.ObserverW() {
+                    override fun onNext(t: Int) {
+                        loadRecommendData()
+                    }
+                })
+
+    }
+
+    public fun stopTimer(){
+        mRecommendTimer?.dispose()
+    }
+
+    private fun loadRecommendData() {
+        if (mDisposable != null && !mDisposable!!.isDisposed) {
             mDisposable?.dispose()
         }
 
@@ -120,6 +143,7 @@ class FriendRoomGameView : RelativeLayout {
 
 
     fun destory() {
+        mRecommendTimer?.dispose()
         mDisposable?.dispose()
     }
 }

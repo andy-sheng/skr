@@ -20,12 +20,10 @@ import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.module.RouterConstants
 import com.module.home.R
-import com.module.home.game.IGameView3
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.model.BannerModel
 import com.module.home.game.model.FuncationModel
 import com.module.home.game.model.QuickJoinRoomModel
-import com.module.home.game.model.RecommendRoomModel
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
@@ -35,7 +33,7 @@ import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
 /**
  * 快速游戏
  */
-class QuickGameView : RelativeLayout, IGameView3 {
+class QuickGameView : RelativeLayout, IQuickGameView3 {
 
     companion object {
         const val TAG: String = "QuickGameView"
@@ -46,8 +44,6 @@ class QuickGameView : RelativeLayout, IGameView3 {
     lateinit var mSkrAudioPermission: SkrAudioPermission
     lateinit var mCameraPermission: SkrCameraPermission
     lateinit var mGameAdapter: GameAdapter
-
-    internal var mRecommendInterval = 0
 
     constructor(fragment: BaseFragment) : super(fragment.context) {
         mFragment = fragment
@@ -177,8 +173,6 @@ class QuickGameView : RelativeLayout, IGameView3 {
     fun initData() {
         mQuickGamePresenter.initOperationArea(false)
         mQuickGamePresenter.initQuickRoom(false)
-//        mQuickGamePresenter.initRecommendRoom(mRecommendInterval)
-        mQuickGamePresenter.initGameKConfig()
         mQuickGamePresenter.checkTaskRedDot()
     }
 
@@ -193,7 +187,7 @@ class QuickGameView : RelativeLayout, IGameView3 {
     }
 
     override fun showTaskRedDot(show: Boolean) {
-        var moFuncationModel: FuncationModel = FuncationModel(show)
+        var moFuncationModel = FuncationModel(show)
         mGameAdapter.updateFuncation(moFuncationModel)
     }
 
@@ -232,19 +226,14 @@ class QuickGameView : RelativeLayout, IGameView3 {
         mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel)
     }
 
-//    override fun setGameConfig(gameKConfigModel: GameKConfigModel?) {
-//        mRecommendInterval = gameKConfigModel!!.getHomepagetickerinterval()
-//        mQuickGamePresenter.initRecommendRoom(mRecommendInterval)
-//    }
-
-    override fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {
+    fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {
         FrescoWorker.loadImage(iv_red_pkg, ImageFactory.newPathImage(homepagesitefirstBean!!.getPic())
                 .setWidth(U.getDisplayUtils().dip2px(48f))
                 .setHeight(U.getDisplayUtils().dip2px(53f))
                 .build<BaseImage>()
         )
 
-        iv_red_pkg.setVisibility(View.VISIBLE)
+        iv_red_pkg.visibility = View.VISIBLE
         iv_red_pkg.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
@@ -254,8 +243,8 @@ class QuickGameView : RelativeLayout, IGameView3 {
         })
     }
 
-    override fun hideRedOperationView() {
-        iv_red_pkg.setVisibility(View.GONE)
+    fun hideRedOperationView() {
+        iv_red_pkg.visibility = View.GONE
     }
 
     override fun onDetachedFromWindow() {

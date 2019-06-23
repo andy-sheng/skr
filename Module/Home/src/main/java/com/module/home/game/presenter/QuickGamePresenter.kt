@@ -13,19 +13,16 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
-import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
-import com.engine.Params
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
-import com.module.home.game.IGameView3
-import com.module.home.model.GameKConfigModel
+import com.module.home.game.view.IQuickGameView3
 import com.module.home.model.SlideShowModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class QuickGamePresenter(internal var mIGameView3: IGameView3) : RxLifeCyclePresenter() {
+class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCyclePresenter() {
 
     internal var mMainPageSlideApi: MainPageSlideApi
     internal var mGrabSongApi: GrabSongApi
@@ -46,38 +43,6 @@ class QuickGamePresenter(internal var mIGameView3: IGameView3) : RxLifeCyclePres
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-    }
-
-    fun initGameKConfig() {
-        if (mIsKConfig) {
-            return
-        }
-        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
-        ApiMethods.subscribe(mMainPageSlideApi.kConfig, object : ApiObserver<ApiResult>() {
-            override fun process(result: ApiResult) {
-                if (result.errno == 0) {
-                    mIsKConfig = true
-                    val gameKConfigModel = JSON.parseObject(result.data!!.getString("common"), GameKConfigModel::class.java)
-                    U.getPreferenceUtils().setSettingBoolean(Params.PREF_KEY_TOKEN_ENABLE, gameKConfigModel.isAgoraTokenEnable)
-//                    mIGameView3.setGameConfig(gameKConfigModel)
-
-                    val homepagesitefirstBean = gameKConfigModel.homepagesitefirst
-                    if (homepagesitefirstBean != null && homepagesitefirstBean.isEnable) {
-                        mIGameView3.showRedOperationView(homepagesitefirstBean)
-                    } else {
-                        MyLog.w(TAG, "initGameKConfig first operation area is empty")
-                        mIGameView3.hideRedOperationView()
-                    }
-                } else {
-                    mIsKConfig = false
-                    mIGameView3.hideRedOperationView()
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                U.getToastUtil().showShort("网络异常")
-            }
-        }, this, ApiMethods.RequestControl("getKConfig", ApiMethods.ControlType.CancelThis))
     }
 
     fun checkTaskRedDot() {
@@ -214,8 +179,6 @@ class QuickGamePresenter(internal var mIGameView3: IGameView3) : RxLifeCyclePres
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
         initQuickRoom(true)
-//        initRecommendRoom(mRecommendInterval)
-        initGameKConfig()
     }
 
 

@@ -19,14 +19,20 @@ import com.module.home.game.view.FriendRoomGameView
 import com.module.home.game.view.QuickGameView
 import android.widget.ImageView
 import android.view.animation.AlphaAnimation
+import com.common.core.account.event.AccountEvent
+import com.module.home.game.presenter.GamePresenter3
+import com.module.home.game.view.IGameView3
+import com.module.home.model.GameKConfigModel
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
-class GameFragment3 : BaseFragment() {
-
+class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
     lateinit var mTabPagerAdapter: PagerAdapter
+    lateinit var mPresenter: GamePresenter3
 
     val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
@@ -115,10 +121,12 @@ class GameFragment3 : BaseFragment() {
                     mFriendRoomGameView?.initData()
                 } else if (position == 1) {
                     animation(color, Color.parseColor("#7088FF"))
+                    mFriendRoomGameView?.stopTimer()
                     mQuickGameView?.initData()
                 } else if (position == 2) {
-                    mDoubleRoomGameView?.initData()
                     animation(color, Color.parseColor("#1f0e26"))
+                    mFriendRoomGameView?.stopTimer()
+                    mDoubleRoomGameView?.initData()
                 }
             }
 
@@ -131,6 +139,9 @@ class GameFragment3 : BaseFragment() {
         mGameTab.setViewPager(mGameVp)
         mTabPagerAdapter.notifyDataSetChanged()
         mGameVp.setCurrentItem(1, false)
+
+        mPresenter = GamePresenter3(this)
+        addPresent(mPresenter)
     }
 
     fun animation(startColor: Int, endColor: Int) {
@@ -148,15 +159,34 @@ class GameFragment3 : BaseFragment() {
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
-        if (mGameVp.currentItem == 0) {
-            mFriendRoomGameView?.initData()
-        } else if (mGameVp.currentItem == 1) {
-            mQuickGameView?.initData()
-        }
+        mPresenter.initGameKConfig()
+    }
+
+    override fun onFragmentInvisible() {
+        super.onFragmentInvisible()
+        mFriendRoomGameView.stopTimer()
+    }
+
+    override fun hideRedOperationView() {
+        mQuickGameView?.hideRedOperationView()
+    }
+
+    override fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {
+        mQuickGameView?.showRedOperationView(homepagesitefirstBean)
+    }
+
+    override fun setGameConfig(gameKConfigModel: GameKConfigModel?) {
+        mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+        mFriendRoomGameView.initData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: AccountEvent.SetAccountEvent) {
+        mPresenter.initGameKConfig()
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun isInViewPager(): Boolean {
