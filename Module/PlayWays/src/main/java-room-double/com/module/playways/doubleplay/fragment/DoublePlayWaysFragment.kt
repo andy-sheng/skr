@@ -278,8 +278,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun showLockState(userID: Int, lockState: Boolean) {
-        if (lockState) {
-            if (userID == MyUserInfoManager.getInstance().uid as Int) {
+        if (!lockState) {
+            if (userID.toLong() == MyUserInfoManager.getInstance().uid) {
                 unLockSelf()
             } else {
                 unLockOther()

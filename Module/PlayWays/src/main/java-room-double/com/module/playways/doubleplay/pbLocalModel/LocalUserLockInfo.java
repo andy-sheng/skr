@@ -2,12 +2,16 @@ package com.module.playways.doubleplay.pbLocalModel;
 
 import com.zq.live.proto.CombineRoom.UserLockInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalUserLockInfo {
+public class LocalUserLockInfo implements Serializable {
     int userID; //解锁信息的用户ID
     boolean hasLock;
+
+    public LocalUserLockInfo() {
+    }
 
     public LocalUserLockInfo(int userID, boolean hasLock) {
         this.userID = userID;

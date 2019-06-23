@@ -2,6 +2,7 @@ package com.module.playways.doubleplay.presenter
 
 import android.os.Handler
 import android.os.Message
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
@@ -14,6 +15,7 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.engine.Params
 import com.module.ModuleServiceManager
+import com.module.RouterConstants
 import com.module.common.ICallback
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
@@ -22,7 +24,13 @@ import com.module.playways.doubleplay.event.StartDoubleGameEvent
 import com.module.playways.doubleplay.event.UpdateLockEvent
 import com.module.playways.doubleplay.event.UpdateNoLimitDuraionEvent
 import com.module.playways.doubleplay.inter.IDoublePlayView
+import com.module.playways.doubleplay.model.DoubleEndRoomModel
+import com.module.playways.doubleplay.model.DoubleSyncModel
+import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
+import com.module.playways.doubleplay.pbLocalModel.LocalUserLockInfo
 import com.module.playways.doubleplay.pushEvent.*
+import com.zq.live.proto.CombineRoom.CombineRoomMusic
+import com.zq.live.proto.CombineRoom.UserLockInfo
 import com.zq.mediaengine.kit.ZqEngineKit
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -144,6 +152,10 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 mIDoublePlayView.finishActivityWithError()
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                        .withSerializable("roomData", mRoomData)
+                        .navigation()
             }
         }, this@DoubleCorePresenter)
     }
@@ -159,10 +171,14 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun syncStatus() {
-        ApiMethods.subscribe(mDoubleRoomServerApi.syncStatus(), object : ApiObserver<ApiResult>() {
+        uiHandler.removeMessages(SYNC_MSG)
+        uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+        ApiMethods.subscribe(mDoubleRoomServerApi.syncStatus(mRoomData.gameId), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-                uiHandler.removeMessages(SYNC_MSG)
-                uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+                if (obj?.errno == 0) {
+                    val model = JSON.parseObject(obj.data.toJSONString(), DoubleSyncModel::class.java)
+                    mRoomData.syncRoomInfo(model)
+                }
             }
         }, this@DoubleCorePresenter)
     }

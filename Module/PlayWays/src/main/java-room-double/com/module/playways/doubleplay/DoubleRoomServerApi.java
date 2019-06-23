@@ -68,6 +68,14 @@ public interface DoubleRoomServerApi {
     Observable<ApiResult> getInviteEnterResult();
 
     /**
+     * 房间结束信息
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/magpie/result")
+    Observable<ApiResult> getEndGameInfo(@Query("roomID") int roomID);
+
+    /**
      * 被邀请的人进入房间时候调用
      */
     @PUT("http://dev.game.inframe.mobi/v1/magpie/invite-user-enter")
@@ -169,7 +177,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @GET("http://dev.game.inframe.mobi/v1/magpie/sync-status")
-    Observable<ApiResult> syncStatus();
+    Observable<ApiResult> syncStatus(@Query("roomID") int roomID);
 
     /**
      * 拉取已点歌曲

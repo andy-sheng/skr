@@ -8,7 +8,6 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.fragment.DoubleGameEndFragment
-import com.module.playways.doubleplay.fragment.DoubleGameMatchFragment
 
 
 @Route(path = RouterConstants.ACTIVITY_DOUBLE_END)
@@ -19,8 +18,10 @@ class DoubleEndActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        val doubleRoomData = intent.getSerializableExtra("roomData")
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoubleGameEndFragment::class.java)
                 .setAddToBackStack(false)
+                .addDataBeforeAdd(0, doubleRoomData)
                 .setHasAnimation(false)
                 .build())
     }

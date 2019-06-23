@@ -22,6 +22,9 @@ public class LocalCombineRoomMusic implements Serializable {
         return uniqID;
     }
 
+    public LocalCombineRoomMusic() {
+    }
+
     public LocalCombineRoomMusic(CombineRoomMusic combineRoomMusic) {
         this.music = new SongModel();
         this.music.parse(combineRoomMusic.getMusic());

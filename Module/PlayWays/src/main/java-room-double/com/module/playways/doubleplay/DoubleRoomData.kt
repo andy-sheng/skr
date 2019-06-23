@@ -122,8 +122,13 @@ class DoubleRoomData() : Serializable {
         this.localCombineRoomMusic = localCombineRoomMusic
     }
 
-    fun updateLockInfo(localUserLockInfoList: List<LocalUserLockInfo>, enableNoLimitDuration: Boolean) {
+    fun updateLockInfo(localUserLockInfoList: List<LocalUserLockInfo>?, enableNoLimitDuration: Boolean) {
         //多人情况
+        if (localUserLockInfoList == null) {
+            MyLog.d(Tag, "updateLockInfo localUserLockInfoList is null")
+            return
+        }
+
         for (info in localUserLockInfoList) {
             if (userLockInfoMap[info.userID] == null) {
                 userLockInfoMap[info.userID] = info

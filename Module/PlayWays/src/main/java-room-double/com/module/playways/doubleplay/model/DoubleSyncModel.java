@@ -14,29 +14,73 @@ public class DoubleSyncModel implements Serializable {
     boolean enableNoLimitDuration; //开启没有限制的持续时间
     LocalCombineRoomMusic currentMusic;
     String nextMusicDesc;
+    int status;
+    boolean hasNextMusic;
 
     public long getSyncStatusTimeMs() {
         return syncStatusTimeMs;
+    }
+
+    public void setSyncStatusTimeMs(long syncStatusTimeMs) {
+        this.syncStatusTimeMs = syncStatusTimeMs;
     }
 
     public long getPassedTimeMs() {
         return passedTimeMs;
     }
 
+    public void setPassedTimeMs(long passedTimeMs) {
+        this.passedTimeMs = passedTimeMs;
+    }
+
+
+
+    public boolean isEnableNoLimitDuration() {
+        return enableNoLimitDuration;
+    }
+
+    public void setEnableNoLimitDuration(boolean enableNoLimitDuration) {
+        this.enableNoLimitDuration = enableNoLimitDuration;
+    }
+
     public List<LocalUserLockInfo> getUserLockInfo() {
         return userLockInfo;
     }
 
-    public boolean isEnableNoLimitDuration() {
-        return enableNoLimitDuration;
+    public void setUserLockInfo(List<LocalUserLockInfo> userLockInfo) {
+        this.userLockInfo = userLockInfo;
     }
 
     public LocalCombineRoomMusic getCurrentMusic() {
         return currentMusic;
     }
 
+    public void setCurrentMusic(LocalCombineRoomMusic currentMusic) {
+        this.currentMusic = currentMusic;
+    }
+
     public String getNextMusicDesc() {
         return nextMusicDesc;
+    }
+
+    public void setNextMusicDesc(String nextMusicDesc) {
+        this.nextMusicDesc = nextMusicDesc;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public boolean isHasNextMusic() {
+        return hasNextMusic;
+    }
+
+    public void setHasNextMusic(boolean hasNextMusic) {
+        this.hasNextMusic = hasNextMusic;
     }
 
     public static DoubleSyncModel parse(CombineRoomSyncStatusMsg combineRoomSyncStatusMsg) {
