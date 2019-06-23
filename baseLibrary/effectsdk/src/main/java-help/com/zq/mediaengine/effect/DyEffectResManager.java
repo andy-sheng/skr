@@ -17,6 +17,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -41,7 +44,13 @@ public class DyEffectResManager {
 
     public void tryLoadRes(Callback callback) {
         mCallback = callback;
-        step1();
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                step1();
+            }
+        }).subscribeOn(U.getThreadUtils().urgentIO())
+                .subscribe();
     }
 
     private void step1() {
@@ -105,20 +114,28 @@ public class DyEffectResManager {
     private void downloadRes() {
         File resZipFile = new File(U.getAppInfoUtils().getMainDir(), "dy_effect_resource.zip");
         if (U.getHttpUtils().downloadFileSync(RES_DOWNLOAD_URL, resZipFile, true, null)) {
-            MyLog.e(TAG, "资源下载成功");
+            MyLog.d(TAG, "资源下载成功");
             try {
                 String tempFile = U.getAppInfoUtils().getSubDirPath("effect_temp");
                 U.getZipUtils().unzipFile(resZipFile.getPath(), tempFile);
+                MyLog.d(TAG, "资源解压成功");
                 File modelFile = U.getFileUtils().findSubDirByName(new File(tempFile), "model");
+                MyLog.d(TAG, "modelFile="+modelFile.getPath());
                 if (modelFile != null) {
                     U.getFileUtils().moveFile(modelFile.getPath(), mModelDir.getPath());
+                    MyLog.e(TAG, "model remove 成功");
                 }
                 File resFile = U.getFileUtils().findSubDirByName(new File(tempFile), "res");
+                MyLog.d(TAG, "resFile="+resFile.getPath());
                 if (resFile != null) {
                     U.getFileUtils().moveFile(resFile.getPath(), new File(sRootDir, "res/").getPath());
+                    MyLog.d(TAG, "resFile remove 成功");
                 }
                 U.getFileUtils().deleteAllFiles(resZipFile);
                 U.getFileUtils().deleteAllFiles(tempFile);
+                if (mCallback != null) {
+                    mCallback.onResReady(mModelDir.getPath(), mLicenseFile.getPath());
+                }
             } catch (IOException e) {
                 MyLog.e(TAG, e);
             }

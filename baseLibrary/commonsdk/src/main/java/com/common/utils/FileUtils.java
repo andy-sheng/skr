@@ -358,25 +358,25 @@ public class FileUtils {
     /**
      * 移动文件夹
      */
-    public void moveFile(String fromPath,String toPath){
+    public void moveFile(String fromPath, String toPath) {
         File fromFolder = new File(fromPath);
-        File [] fromFiles=fromFolder.listFiles();
-        if (fromFiles==null) {
+        File[] fromFiles = fromFolder.listFiles();
+        if (fromFiles == null) {
             return;
         }
-        File toFolder=new File(toPath);
+        File toFolder = new File(toPath);
         if (!toFolder.exists()) {
             toFolder.mkdirs();
         }
         for (int i = 0; i < fromFiles.length; i++) {
             File file = fromFiles[i];
             if (file.isDirectory()) {
-                moveFile(file.getPath(),toPath+"\\"+file.getName());
+                moveFile(file.getPath(), toPath + File.separator + file.getName());
                 //亦可删除
                 //file.delete();
             }
             if (file.isFile()) {
-                File toFile=new File(toFolder+"\\"+file.getName());
+                File toFile = new File(toFolder + File.separator + file.getName());
                 if (toFile.exists()) {
                     //亦可删除
                     //toFile.delete();
@@ -390,6 +390,7 @@ public class FileUtils {
 
     /**
      * 广搜法 查找rootFile 下 第一个 name 为 findFileName 文件或文件夹的路径
+     *
      * @param rootFile
      * @param fileName
      * @return
@@ -397,13 +398,13 @@ public class FileUtils {
     public File findSubDirByName(File rootFile, String fileName) {
         LinkedList<File> queue = new LinkedList<>();
         queue.add(rootFile);
-        while(!queue.isEmpty()){
-             File file = queue.removeFirst();
+        while (!queue.isEmpty()) {
+            File file = queue.removeFirst();
             if (file != null) {
-                if(file.getName().equals(fileName)){
+                if (file.getName().equals(fileName)) {
                     return file;
-                }else if(file.isDirectory()){
-                    for(File childFile:rootFile.listFiles()){
+                } else if (file.isDirectory()) {
+                    for (File childFile : file.listFiles()) {
                         queue.add(childFile);
                     }
                 }

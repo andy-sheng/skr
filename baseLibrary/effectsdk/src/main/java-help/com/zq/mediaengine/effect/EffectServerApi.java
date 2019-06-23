@@ -11,6 +11,6 @@ import retrofit2.http.Query;
 
 public interface EffectServerApi {
 
-    @GET("dev.kconf.inframe.mobi/v1/kconf/beauty-service-ca")
+    @GET("http://dev.kconf.inframe.mobi/v1/kconf/beauty-service-ca")
     Observable<ApiResult> getDyLicenseUrl(@Query("platform") int platform);
 }
