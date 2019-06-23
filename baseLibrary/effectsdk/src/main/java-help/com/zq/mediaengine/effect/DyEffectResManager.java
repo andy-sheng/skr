@@ -1,6 +1,9 @@
 package com.zq.mediaengine.effect;
 
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiResult;
+import com.common.utils.HttpUtils;
 import com.common.utils.U;
 
 import java.io.File;
@@ -14,14 +17,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * 管理抖音特效资源
  */
 public class DyEffectResManager {
     public final static String TAG = "DyEffectResManager";
-    private String LICENSE_NAME = "sige_20190620_20190630_com.zq.live_sige_v2.4.0.licbag";
-    //    private File sRootDir = U.app().getExternalFilesDir("effects");
+
+    /**
+     * 资源下载地址
+     */
+    static final String RES_DOWNLOAD_URL = "http://res-static.inframe.mobi/pkgs/android/dy_effect_resource.zip";
     private File sRootDir = U.getAppInfoUtils().getSubDirFile("dy_effects");// 抖音资源文件根目录
+    private File mLicenseFile = new File(sRootDir, "license/dy_android_license.licbag");// 抖音资源文件根目录
+    private File mModelDir = new File(sRootDir, "model/");
 
     public DyEffectResManager() {
 
@@ -42,8 +52,7 @@ public class DyEffectResManager {
             downloadLicense();
         } else {
             // 判断证书文件是否存在
-            File licenseFile = new File(sRootDir, "license/dy_android_license.licbag");
-            if (licenseFile.exists()) {
+            if (mLicenseFile.exists()) {
                 MyLog.e(TAG, "证书存在，继续");
                 // 可继续
                 step2();
@@ -54,22 +63,68 @@ public class DyEffectResManager {
     }
 
     private void step2() {
-        File file = new File(sRootDir, "model/");
-        if (file.exists() && file.isDirectory()) {
+        if (mModelDir.exists() && mModelDir.isDirectory()) {
             MyLog.e(TAG, "model目录存在,继续");
             if (mCallback != null) {
-                mCallback.onResReady(file.getPath(), new File(sRootDir, "license/dy_android_license.licbag").getPath());
+                mCallback.onResReady(mModelDir.getPath(), mLicenseFile.getPath());
             }
         } else {
-            MyLog.d(TAG, "step2 model 目录不存在");
+            downloadRes();
         }
     }
 
     private void downloadLicense() {
         MyLog.d(TAG, "downloadLicense");
         // 目前服务器没接口下载 走解压逻辑
-        unzipDyRes();
-        step2();
+        EffectServerApi effectServerApi = ApiManager.getInstance().createService(EffectServerApi.class);
+        effectServerApi.getDyLicenseUrl(20)
+                .subscribe(new Consumer<ApiResult>() {
+                    @Override
+                    public void accept(ApiResult apiResult) throws Exception {
+                        if (apiResult.getErrno() == 0) {
+                            String url = apiResult.getData().getString("caURL");
+                            String expireMs = apiResult.getData().getString("expireMs");
+                            if (U.getHttpUtils().downloadFileSync(url, mLicenseFile, true, null)) {
+                                MyLog.e(TAG, "证书下载成功");
+                                U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "license_expire_ts", Long.parseLong(expireMs));
+                                step2();
+                            } else {
+                                MyLog.e(TAG, "证书下载失败");
+                            }
+
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable e) throws Exception {
+                        MyLog.e(TAG, e);
+                    }
+                });
+    }
+
+    private void downloadRes() {
+        File resZipFile = new File(U.getAppInfoUtils().getMainDir(), "dy_effect_resource.zip");
+        if (U.getHttpUtils().downloadFileSync(RES_DOWNLOAD_URL, resZipFile, true, null)) {
+            MyLog.e(TAG, "资源下载成功");
+            try {
+                String tempFile = U.getAppInfoUtils().getSubDirPath("effect_temp");
+                U.getZipUtils().unzipFile(resZipFile.getPath(), tempFile);
+                File modelFile = U.getFileUtils().findSubDirByName(new File(tempFile), "model");
+                if (modelFile != null) {
+                    U.getFileUtils().moveFile(modelFile.getPath(), mModelDir.getPath());
+                }
+                File resFile = U.getFileUtils().findSubDirByName(new File(tempFile), "res");
+                if (resFile != null) {
+                    U.getFileUtils().moveFile(resFile.getPath(), new File(sRootDir, "res/").getPath());
+                }
+                U.getFileUtils().deleteAllFiles(resZipFile);
+                U.getFileUtils().deleteAllFiles(tempFile);
+            } catch (IOException e) {
+                MyLog.e(TAG, e);
+            }
+        } else {
+            MyLog.e(TAG, "资源下载失败");
+        }
     }
 
     private void unzipDyRes() {
@@ -131,10 +186,11 @@ public class DyEffectResManager {
 
     /**
      * 过滤调 .DS_Store 等文件
+     *
      * @param files
      * @return
      */
-     List<File> filterFiles(File files[]) {
+    List<File> filterFiles(File files[]) {
         List<File> list = new ArrayList<>();
         if (files != null) {
             for (File f : files) {
