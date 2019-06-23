@@ -65,8 +65,8 @@ public class SkrKouLingUtils {
 //        });
 //    }
 
-    public static void genNormalJoinGrabGameKouling(final int inviterId, final int gameId, final ICallback callback) {
-        String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", inviterId, gameId);
+    public static void genNormalJoinGrabGameKouling(final int inviterId, final int gameId,int mediaType, final ICallback callback) {
+        String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1&mediaType=%s", inviterId, gameId,mediaType);
         KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
 
         ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {

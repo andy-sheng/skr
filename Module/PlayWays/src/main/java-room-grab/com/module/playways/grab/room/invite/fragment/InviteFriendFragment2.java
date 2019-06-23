@@ -32,6 +32,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zq.dialog.InviteFriendDialog;
+import com.zq.live.proto.Common.EMsgRoomMediaType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -180,7 +181,8 @@ public class InviteFriendFragment2 extends BaseFragment {
             }
         });
 
-        SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
+        SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(),
+                mRoomData.isVideoRoom()? EMsgRoomMediaType.EMR_VIDEO.getValue():EMsgRoomMediaType.EMR_AUDIO.getValue(), new ICallback() {
             @Override
             public void onSucess(Object obj) {
                 if (obj != null) {
@@ -246,7 +248,8 @@ public class InviteFriendFragment2 extends BaseFragment {
 
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mRoomData.getGameId(), mKouLingToken);
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mRoomData.getGameId(),
+                    mRoomData.isVideoRoom()? EMsgRoomMediaType.EMR_VIDEO.getValue():EMsgRoomMediaType.EMR_AUDIO.getValue(), mKouLingToken);
         }
         mInviteFriendDialog.show();
     }
