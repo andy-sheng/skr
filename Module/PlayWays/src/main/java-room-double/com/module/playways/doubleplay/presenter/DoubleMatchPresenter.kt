@@ -55,7 +55,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
                                         doubleRoomData.gameId = obj.data.getIntValue("roomID")
                                         doubleRoomData.enableNoLimitDuration = false
                                         doubleRoomData.passedTimeMs = obj.data.getLongValue("passedTimeMs")
-                                        doubleRoomData.config = JSON.parseObject(obj.data.getString(""), LocalCombineRoomConfig::class.java)
+                                        doubleRoomData.config = JSON.parseObject(obj.data.getString("config"), LocalCombineRoomConfig::class.java)
                                         val userList = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
 
                                         val hashMap = HashMap<Int, UserInfoModel>()

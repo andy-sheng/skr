@@ -6,6 +6,8 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
@@ -192,32 +194,50 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     @Override
     public void jumpToDoubleRoom(Object o) {
-        CombineRoomSyncInviteUserNotifyEvent event = (CombineRoomSyncInviteUserNotifyEvent) o;
         DoubleRoomData doubleRoomData = new DoubleRoomData();
-        doubleRoomData.setGameId(event.getRoomID());
-        doubleRoomData.setEnableNoLimitDuration(true);
-        doubleRoomData.setPassedTimeMs(event.getPassedTimeMs());
-        doubleRoomData.setConfig(event.getConfig());
+        if (o instanceof CombineRoomSyncInviteUserNotifyEvent) {
+            CombineRoomSyncInviteUserNotifyEvent event = (CombineRoomSyncInviteUserNotifyEvent) o;
+            doubleRoomData.setGameId(event.getRoomID());
+            doubleRoomData.setEnableNoLimitDuration(true);
+            doubleRoomData.setPassedTimeMs(event.getPassedTimeMs());
+            doubleRoomData.setConfig(event.getConfig());
 
-        {
+            {
+                HashMap<Integer, UserInfoModel> hashMap = new HashMap();
+                for (UserInfoModel userInfoModel : event.getUsers()) {
+                    hashMap.put(userInfoModel.getUserId(), userInfoModel);
+                }
+                doubleRoomData.setUserInfoListMap(hashMap);
+            }
+
+            {
+                List<LocalAgoraTokenInfo> list = new ArrayList<>();
+                Iterator<Map.Entry<Integer, String>> iterator = event.getTokens().entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Integer, String> entry = iterator.next();
+                    list.add(new LocalAgoraTokenInfo(entry.getKey(), entry.getValue()));
+                }
+                doubleRoomData.setTokens(list);
+            }
+
+            doubleRoomData.setNeedMaskUserInfo(event.isNeedMaskUserInfo());
+        } else if (o instanceof JSONObject) {
+            JSONObject obj = (JSONObject) o;
+            doubleRoomData.setGameId(obj.getIntValue("roomID"));
+            doubleRoomData.setEnableNoLimitDuration(true);
+            doubleRoomData.setPassedTimeMs(obj.getIntValue("passedTimeMs"));
+            doubleRoomData.setConfig(JSON.parseObject(obj.getString("config"), LocalCombineRoomConfig.class));
+            List<UserInfoModel> userList = JSON.parseArray(obj.getString("users"), UserInfoModel.class);
+
             HashMap<Integer, UserInfoModel> hashMap = new HashMap();
-            for (UserInfoModel userInfoModel : event.getUsers()) {
+            for (UserInfoModel userInfoModel : userList) {
                 hashMap.put(userInfoModel.getUserId(), userInfoModel);
             }
             doubleRoomData.setUserInfoListMap(hashMap);
-        }
 
-        {
-            List<LocalAgoraTokenInfo> list = new ArrayList<>();
-            Iterator<Map.Entry<Integer, String>> iterator = event.getTokens().entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<Integer, String> entry = iterator.next();
-                list.add(new LocalAgoraTokenInfo(entry.getKey(), entry.getValue()));
-            }
-            doubleRoomData.setTokens(list);
+            doubleRoomData.setTokens(JSON.parseArray(obj.getString("tokens"), LocalAgoraTokenInfo.class));
+            doubleRoomData.setNeedMaskUserInfo(obj.getBooleanValue("needMaskUserInfo"));
         }
-
-        doubleRoomData.setNeedMaskUserInfo(event.isNeedMaskUserInfo());
 
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)

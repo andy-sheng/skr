@@ -38,6 +38,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)
                 .navigation()
+        activity?.finish()
     }
 
     override fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: DoubleStartCombineRoomByMatchPushEvent) {
@@ -64,6 +65,8 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)
                 .navigation()
+
+        activity?.finish()
     }
 
     override fun useEventBus(): Boolean {

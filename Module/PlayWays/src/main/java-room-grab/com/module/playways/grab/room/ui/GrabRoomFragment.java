@@ -847,7 +847,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void onClickDoubleInvite(UserInfoModel userInfoModel) {
-                mDoubleRoomInvitePresenter.inviteToDoubleRoom();
+                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
             }
         });
         mPersonInfoDialog.show();
@@ -1497,7 +1497,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
         mGrabBaseUiController.roundOver();
-        if(lastInfoModel.isFreeMicRound()){
+        if (lastInfoModel.isFreeMicRound()) {
             mSelfSingCardView.setVisibility(GONE);
         }
         mRoundOverCardView.bindData(lastInfoModel, new SVGAListener() {

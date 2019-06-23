@@ -2,9 +2,9 @@ package com.module.playways.grab.room.presenter
 
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.userinfo.model.LocalCombineRoomConfig
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -16,6 +16,7 @@ import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
 import com.module.playways.doubleplay.inter.IDoubleInviteView
+import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -35,8 +36,8 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
     /**
      * 邀请一个人去双人房
      */
-    fun inviteToDoubleRoom() {
-        val mutableSet1 = mutableMapOf<String, Objects>()
+    fun inviteToDoubleRoom(inviteUserID: Int) {
+        val mutableSet1 = mutableMapOf("inviteUserID" to inviteUserID)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.sendInvite(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
@@ -61,9 +62,9 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
         handlerTaskTimer?.dispose()
         handlerTaskTimer = HandlerTaskTimer
                 .newBuilder()
-                .interval(5000)
+                .interval(3000)
                 .delay(500)
-                .take(6)
+                .take(3)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
                         getInviteState()
@@ -80,24 +81,25 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
      * 发出邀请之后轮询检查对方的进房情况，因为push有可能会丢
      */
     private fun getInviteState() {
-        val mutableSet1 = mutableMapOf<String, Objects>()
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.getInviteEnterResult(), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    val event = obj as CombineRoomSyncInviteUserNotifyEvent
+                if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
                     val doubleRoomData = DoubleRoomData()
-                    doubleRoomData.gameId = event.roomID
-                    doubleRoomData.enableNoLimitDuration = true
-                    doubleRoomData.passedTimeMs = event.passedTimeMs
-                    doubleRoomData.config = event.config
+                    doubleRoomData.gameId = obj.data.getIntValue("roomID")
+                    doubleRoomData.enableNoLimitDuration = false
+                    doubleRoomData.passedTimeMs = obj.data.getLongValue("passedTimeMs")
+                    doubleRoomData.config = JSON.parseObject(obj.data.getString(""), LocalCombineRoomConfig::class.java)
+                    val userList = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
 
                     val hashMap = HashMap<Int, UserInfoModel>()
-                    for (userInfoModel in event.users) {
+                    for (userInfoModel in userList) {
                         hashMap.put(userInfoModel.userId, userInfoModel)
                     }
-
                     doubleRoomData.userInfoListMap = hashMap
+
+                    doubleRoomData.tokens = JSON.parseArray(obj.data.getString("tokens"), LocalAgoraTokenInfo::class.java)
+                    doubleRoomData.needMaskUserInfo = obj.data.getBooleanValue("needMaskUserInfo")
+
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation()

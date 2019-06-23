@@ -59,7 +59,6 @@ import com.module.msg.IMsgService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
@@ -72,7 +71,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import model.RelationNumModel;
 
@@ -478,6 +476,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             @Override
             public void click(View view) {
                 // 点击邀请唱聊
+                if (mClickListener != null) {
+                    mClickListener.onClickDoubleInvite(mUserInfoModel);
+                }
             }
         });
     }

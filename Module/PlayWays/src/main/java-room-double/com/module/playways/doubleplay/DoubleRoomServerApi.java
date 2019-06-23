@@ -22,7 +22,7 @@ public interface DoubleRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.room.inframe.mobi/v1/magpie/close")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/close")
     Observable<ApiResult> closeByTimerOver(@Body RequestBody body);
 
     /**
@@ -34,7 +34,7 @@ public interface DoubleRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.room.inframe.mobi/v1/magpie/enter-failed")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/enter-failed")
     Observable<ApiResult> enterRoomFailed(@Body RequestBody body);
 
     /**
@@ -47,7 +47,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.room.inframe.mobi/v1/magpie/exit")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/exit")
     Observable<ApiResult> exitRoom(@Body RequestBody body);
 
     /**
@@ -56,7 +56,7 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @GET("http://dev.stand.inframe.mobi/v1/magpie/game-data")
+    @GET("http://dev.game.inframe.mobi/v1/magpie/game-data")
     Observable<ApiResult> getGameData();
 
     /**
@@ -64,13 +64,13 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @GET("http://dev.stand.inframe.mobi/v1/magpie/invite-result")
+    @GET("http://dev.game.inframe.mobi/v1/magpie/invite-result")
     Observable<ApiResult> getInviteEnterResult();
 
     /**
      * 被邀请的人进入房间时候调用
      */
-    @PUT("http://dev.stand.inframe.mobi/v1/magpie/invite-user-enter")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/invite-user-enter")
     Observable<ApiResult> toInvitedRoom(@Body RequestBody body);
 
     /**
@@ -82,7 +82,7 @@ public interface DoubleRoomServerApi {
      * @param roomID
      * @return
      */
-    @GET("http://dev.stand.inframe.mobi/v1/magpie/modify-user-info")
+    @GET("http://dev.game.inframe.mobi/v1/magpie/modify-user-info")
     Observable<ApiResult> modifyUserInfo(@Query("roomID") int roomID);
 
     /**
@@ -94,7 +94,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/magpie/next-music")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/next-music")
     Observable<ApiResult> nextSong(@Body RequestBody body);
 
     /**
@@ -106,7 +106,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/magpie/invite-user-enter")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/invite-user-enter")
     Observable<ApiResult> enterInvitedDoubleRoom(@Body RequestBody body);
 
     /**
@@ -119,7 +119,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/magpie/pick")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/pick")
     Observable<ApiResult> pickOther(@Body RequestBody body);
 
     /**
@@ -158,7 +158,7 @@ public interface DoubleRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/magpie/send-invite-user")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/send-invite-user")
     Observable<ApiResult> sendInvite(@Body RequestBody body);
 
     /**
@@ -166,7 +166,7 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/magpie/sync-status")
+    @GET("http://dev.game.inframe.mobi/v1/magpie/sync-status")
     Observable<ApiResult> syncStatus();
 
     /**
@@ -174,7 +174,7 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/magpie/list-music")
+    @GET("http://dev.game.inframe.mobi/v1/magpie/list-music")
     Observable<ApiResult> getSongList(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
 
     /**
@@ -185,7 +185,7 @@ public interface DoubleRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.api.inframe.mobi/v1/magpie/unlock-user-info")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/unlock-user-info")
     Observable<ApiResult> unLock(@Body RequestBody body);
 
     /**
@@ -197,7 +197,7 @@ public interface DoubleRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.api.inframe.mobi/v1/magpie/add-music")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/add-music")
     Observable<ApiResult> addSong(@Body RequestBody body);
 
     /**
@@ -209,6 +209,6 @@ public interface DoubleRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.api.inframe.mobi/v1/magpie/del-music")
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/del-music")
     Observable<ApiResult> deleteSong(@Body RequestBody body);
 }
