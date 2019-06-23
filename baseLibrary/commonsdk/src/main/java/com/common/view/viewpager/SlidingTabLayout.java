@@ -138,7 +138,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         mTabStrip = new SlidingTabStrip(context);
         // 设定内容居中，chengsimin
-        mTabStrip.setGravity(Gravity.CENTER_HORIZONTAL);
+        if (mDistributeMode > DISTRIBUTE_MODE_NONE) {
+            mTabStrip.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 

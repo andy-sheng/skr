@@ -52,7 +52,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
         mGameTab?.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
         mGameTab?.setSelectedIndicatorColors(Color.WHITE)
-        mGameTab?.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
+        mGameTab?.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
         mGameTab?.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
         mGameTab?.setTitleSize(14f)
         mGameTab?.setSelectedTilleSize(20f)
@@ -167,7 +167,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         super.onFragmentInvisible()
         mFriendRoomGameView.stopTimer()
     }
-    
+
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
         mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
         if (mGameVp.currentItem == 0) {
