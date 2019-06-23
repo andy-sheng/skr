@@ -232,16 +232,8 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DoubleAddMusicEvent event) {
         // 双人房都可以点歌
-        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
-        grabRoomSongModel.setChallengeAvailable(event.mCombineRoomMusic.getMusic().isChallengeAvailable());
-        grabRoomSongModel.setItemID(event.mCombineRoomMusic.getMusic().getItemID());
-        grabRoomSongModel.setItemName(event.mCombineRoomMusic.getMusic().getItemName());
-        grabRoomSongModel.setOwner(event.mCombineRoomMusic.getMusic().getOwner());
-        grabRoomSongModel.setPlayType(event.mCombineRoomMusic.getMusic().getPlayType());
-        grabRoomSongModel.setUniqTag(event.mCombineRoomMusic.getUniqID());
-        mGrabRoomSongModelList.add(grabRoomSongModel);
-
-        updateSongList();
+        mGrabRoomSongModelList.clear();
+        getPlayBookList();
     }
 
     /**

@@ -139,10 +139,15 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             this.mSongModel = model;
             this.mPosition = position;
 
+            mTvManage.setText("");
+            mTvManage.setEnabled(false);
+
             if (mGrabRoomData.isDoubleRoom()) {
-                mTvManage.setText("删除");
-                mTvManage.setEnabled(true);
-                mTvManage.setBackground(mRedDrawable);
+                if (model.isCouldDelete()) {
+                    mTvManage.setText("删除");
+                    mTvManage.setEnabled(true);
+                    mTvManage.setBackground(mRedDrawable);
+                }
             } else {
                 if (mGrabRoomData.hasGameBegin()) {
                     if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {

@@ -24,6 +24,15 @@ public class GrabRoomSongModel implements Serializable {
     protected int playType;
     protected boolean challengeAvailable;
     protected String uniqTag;
+    protected boolean couldDelete;
+
+    public boolean isCouldDelete() {
+        return couldDelete;
+    }
+
+    public void setCouldDelete(boolean couldDelete) {
+        this.couldDelete = couldDelete;
+    }
 
     public String getUniqTag() {
         return uniqTag;
