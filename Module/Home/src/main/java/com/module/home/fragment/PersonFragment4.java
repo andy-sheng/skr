@@ -29,6 +29,7 @@ import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
@@ -49,9 +50,11 @@ import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
@@ -73,12 +76,12 @@ import model.RelationNumModel;
 public class PersonFragment4 extends BaseFragment implements IPersonView, RequestCallBack {
 
     SmartRefreshLayout mSmartRefresh;
-    ClassicsHeader mClassicsHeader;
     ExConstraintLayout mUserInfoArea;
 
     ImageView mSettingImgIv;
     ExImageView mSettingRedDot;
 
+    ImageView mImageBg;
     ImageView mSexIv;
     SimpleDraweeView mAvatarIv;
     NormalLevelView2 mLevelView;
@@ -156,9 +159,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void initBaseContainArea() {
         mSmartRefresh = mRootView.findViewById(R.id.smart_refresh);
-        mClassicsHeader = mRootView.findViewById(R.id.classics_header);
         mUserInfoArea = mRootView.findViewById(R.id.user_info_area);
 
+        mImageBg = (ImageView) mRootView.findViewById(R.id.image_bg);
         mAppbar = mRootView.findViewById(R.id.appbar);
         mToolbar = mRootView.findViewById(R.id.toolbar);
         mToolbarLayout = mRootView.findViewById(R.id.toolbar_layout);
@@ -171,11 +174,26 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
-        mClassicsHeader.setBackgroundColor(Color.parseColor("#1f0e26"));
-        mSmartRefresh.setRefreshHeader(mClassicsHeader);
-        mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+        mSmartRefresh.setHeaderMaxDragRate(1.5f);
+        mSmartRefresh.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
+
+            float lastScale = 0;
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                super.onRefresh(refreshLayout);
+                mPresenter.getHomePage(true);
+                if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
+                    mPhotoWallView.getPhotos(true);
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mProducationWallView.getProducations(true);
+                }
+            }
+
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getMorePhotos();
                 }
@@ -185,13 +203,14 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
 
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getHomePage(true);
-                if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
-                    mPhotoWallView.getPhotos(true);
-                }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
-                    mProducationWallView.getProducations(true);
+            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
+                super.onHeaderMoving(header, isDragging, percent, offset, headerHeight, maxDragHeight);
+                float scale = (float) offset / (float) U.getDisplayUtils().dip2px(300) + 1;
+                if (Math.abs(scale - lastScale) >= 0.01) {
+                    // TODO: 2019-06-23 不要加平移，会闪动，让设计把图给大一点可以避免
+                    lastScale = scale;
+                    mImageBg.setScaleX(scale);
+                    mImageBg.setScaleY(scale);
                 }
             }
         });
@@ -199,6 +218,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                // TODO: 2019-06-23  可以加效果，看产品需求
+                mImageBg.setTranslationY(verticalOffset);
                 int srollLimit = appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(55);
                 if (U.getDeviceUtils().hasNotch(U.app())) {
                     srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app());
@@ -232,7 +253,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void initUserInfoArea() {
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
-        mLevelView = (NormalLevelView2)mRootView.findViewById(R.id.level_view);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);

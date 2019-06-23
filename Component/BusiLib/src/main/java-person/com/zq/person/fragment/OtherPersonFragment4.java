@@ -54,9 +54,11 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
@@ -104,8 +106,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
     OtherPersonPresenter mPresenter;
 
+    ImageView mImageBg;
     SmartRefreshLayout mSmartRefresh;
-    ClassicsHeader mClassicsHeader;
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
     ConstraintLayout mUserInfoArea;
@@ -171,8 +173,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
 
     private void initBaseContainArea() {
+        mImageBg = (ImageView)mRootView.findViewById(R.id.image_bg);
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
-        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.toolbar_layout);
         mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
@@ -183,9 +185,20 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
-        mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
-        mSmartRefresh.setRefreshHeader(mClassicsHeader);
-        mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+        mSmartRefresh.setHeaderMaxDragRate(1.5f);
+        mSmartRefresh.setOnMultiPurposeListener(new SimpleMultiPurposeListener(){
+            float lastScale = 0;
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mPresenter.getHomePage(mUserId);
+                if (mOtherPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
+                    mOtherPhotoWallView.getPhotos(true);
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mProducationWallView.getProducations(true);
+                }
+            }
+
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 if (mOtherPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
@@ -197,13 +210,13 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
             }
 
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getHomePage(mUserId);
-                if (mOtherPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
-                    mOtherPhotoWallView.getPhotos(true);
-                }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
-                    mProducationWallView.getProducations(true);
+            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
+                super.onHeaderMoving(header, isDragging, percent, offset, headerHeight, maxDragHeight);
+                float scale = (float) offset / (float) U.getDisplayUtils().dip2px(300) + 1;
+                if (Math.abs(scale - lastScale) >= 0.01) {
+                    lastScale = scale;
+                    mImageBg.setScaleX(scale);
+                    mImageBg.setScaleY(scale);
                 }
             }
         });
@@ -211,6 +224,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                // TODO: 2019-06-23 也可以加效果，看产品怎么说
+                mImageBg.setTranslationY(verticalOffset);
                 if (verticalOffset == 0) {
                     // 展开状态
                     if (mToolbar.getVisibility() != View.GONE) {
@@ -521,7 +536,6 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mFunctionArea = mRootView.findViewById(R.id.function_area);
         mFollowIv = mRootView.findViewById(R.id.follow_iv);
         mMessageIv = mRootView.findViewById(R.id.message_iv);
-
 
         mFollowIv.setOnClickListener(new AnimateClickListener() {
             @Override
