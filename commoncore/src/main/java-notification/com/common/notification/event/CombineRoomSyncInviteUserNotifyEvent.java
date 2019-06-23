@@ -18,6 +18,7 @@ public class CombineRoomSyncInviteUserNotifyEvent {
     private List<UserInfoModel> users;
     Map<Integer, String> tokens; //声网token
     private LocalCombineRoomConfig config;
+    boolean needMaskUserInfo; //是否需要隐藏用户信息
 
     public CombineRoomSyncInviteUserNotifyEvent(BaseNotiInfo baseNotiInfo, CombineRoomSyncInviteUserMsg combineRoomSyncInviteUserMsg) {
         mBaseNotiInfo = baseNotiInfo;
@@ -30,10 +31,15 @@ public class CombineRoomSyncInviteUserNotifyEvent {
         for (AgoraTokenInfo agoraTokenInfo : combineRoomSyncInviteUserMsg.getTokensList()) {
             tokens.put(agoraTokenInfo.getUserID(), agoraTokenInfo.getToken());
         }
+        needMaskUserInfo = combineRoomSyncInviteUserMsg.getNeedMaskUserInfo();
     }
 
     public Map<Integer, String> getTokens() {
         return tokens;
+    }
+
+    public boolean isNeedMaskUserInfo() {
+        return needMaskUserInfo;
     }
 
     public BaseNotiInfo getBaseNotiInfo() {

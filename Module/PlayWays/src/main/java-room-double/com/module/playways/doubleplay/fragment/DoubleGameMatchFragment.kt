@@ -59,6 +59,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
             list.add(LocalAgoraTokenInfo(value.key, value.value))
         }
         doubleRoomData.tokens = list
+        doubleRoomData.needMaskUserInfo = doubleStartCombineRoomByMatchPushEvent.isNeedMaskUserInfo
 
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)

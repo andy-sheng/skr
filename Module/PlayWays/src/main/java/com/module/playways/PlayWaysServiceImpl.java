@@ -217,6 +217,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             doubleRoomData.setTokens(list);
         }
 
+        doubleRoomData.setNeedMaskUserInfo(event.isNeedMaskUserInfo());
+
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)
                 .navigation();
