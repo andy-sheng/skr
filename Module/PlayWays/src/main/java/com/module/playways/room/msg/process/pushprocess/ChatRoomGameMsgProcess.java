@@ -1,4 +1,4 @@
-package com.module.playways.room.msg.process;
+package com.module.playways.room.msg.process.pushprocess;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
@@ -36,6 +36,7 @@ import com.module.playways.room.msg.event.RoundAndGameOverEvent;
 import com.module.playways.room.msg.event.RoundOverEvent;
 import com.module.playways.room.msg.event.SyncStatusEvent;
 import com.module.playways.room.msg.event.VoteResultEvent;
+import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
 import com.zq.live.proto.Room.AppSwapMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.ExitGameAfterPlayMsg;

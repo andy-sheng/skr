@@ -1,4 +1,4 @@
-package com.module.playways.room.msg.process;
+package com.module.playways.room.msg.process.pushprocess;
 
 import android.text.TextUtils;
 
@@ -7,6 +7,7 @@ import com.module.playways.room.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
+import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
 import com.zq.live.proto.Room.CommentMsg;
 import com.zq.live.proto.Room.DynamicEmojiMsg;
 import com.zq.live.proto.Room.ERoomMsgType;

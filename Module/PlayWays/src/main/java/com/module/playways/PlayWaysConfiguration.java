@@ -27,10 +27,10 @@ import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
 import com.module.playways.room.msg.manager.ChatRoomMsgManager;
 import com.module.playways.room.msg.manager.DoubleRoomMsgManager;
-import com.module.playways.room.msg.process.ChatRoomChatMsgProcess;
-import com.module.playways.room.msg.process.ChatRoomGameMsgProcess;
+import com.module.playways.room.msg.process.pushprocess.ChatRoomChatMsgProcess;
+import com.module.playways.room.msg.process.pushprocess.ChatRoomGameMsgProcess;
 import com.module.playways.room.msg.process.ChatRoomMsgProcess;
-import com.module.playways.room.msg.process.DoubleRoomGameMsgProcess;
+import com.module.playways.room.msg.process.pushprocess.DoubleRoomGameMsgProcess;
 import com.module.playways.room.msg.process.DoubleRoomMsgProcess;
 
 import java.util.List;
