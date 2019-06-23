@@ -445,8 +445,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void showCharmsTotal(int meiLiCntTotal) {
-        mCharmTv.setText("" + meiLiCntTotal);
-        mSrlCharmTv.setText("" + meiLiCntTotal);
+        mCharmTv.setText("魅力：" + meiLiCntTotal);
+        mSrlCharmTv.setText("魅力：" + meiLiCntTotal);
     }
 
     @Override
