@@ -93,7 +93,7 @@
                 app:elevation="@dimen/view_0_dp">
 
                 <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/toolbar_layout"
+                    android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
@@ -234,7 +234,7 @@
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/view_96_dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
@@ -242,8 +242,9 @@
 
 
                         <android.support.constraint.ConstraintLayout
+                            android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/view_96_dp"
                             android:background="#7088FF">
 
                             <com.facebook.drawee.view.SimpleDraweeView
@@ -251,9 +252,9 @@
                                 android:layout_width="@dimen/view_60_dp"
                                 android:layout_height="@dimen/view_60_dp"
                                 android:layout_marginLeft="@dimen/view_20_dp"
-                                android:layout_marginTop="@dimen/view_20_dp"
+                                android:layout_marginBottom="@dimen/view_10_dp"
                                 app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent" />
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/srl_name_tv"

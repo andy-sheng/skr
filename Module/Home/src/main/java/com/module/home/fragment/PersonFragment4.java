@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -90,6 +91,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     AppBarLayout mAppbar;
     Toolbar mToolbar;
+    ConstraintLayout mToolbarLayout;
+
     SimpleDraweeView mSrlAvatarIv;
     TextView mSrlNameTv;
     ImageView mSrlSexIv;
@@ -105,6 +108,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ProducationWallView mProducationWallView;
 
     DialogPlus mDialogPlus;
+    boolean isInitToolbar = false;
 
     @Override
     public int initView() {
@@ -149,16 +153,17 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initBaseContainArea() {
-        mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
-        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mUserInfoArea = (ExConstraintLayout) mRootView.findViewById(R.id.user_info_area);
+        mSmartRefresh = mRootView.findViewById(R.id.smart_refresh);
+        mClassicsHeader = mRootView.findViewById(R.id.classics_header);
+        mUserInfoArea = mRootView.findViewById(R.id.user_info_area);
 
-        mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
-        mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
-        mSrlAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.srl_avatar_iv);
-        mSrlNameTv = (ExTextView) mRootView.findViewById(R.id.srl_name_tv);
-        mSrlSexIv = (ImageView) mRootView.findViewById(R.id.srl_sex_iv);
-        mSrlCharmTv = (ExTextView) mRootView.findViewById(R.id.srl_charm_tv);
+        mAppbar = mRootView.findViewById(R.id.appbar);
+        mToolbar = mRootView.findViewById(R.id.toolbar);
+        mToolbarLayout = mRootView.findViewById(R.id.toolbar_layout);
+        mSrlAvatarIv = mRootView.findViewById(R.id.srl_avatar_iv);
+        mSrlNameTv = mRootView.findViewById(R.id.srl_name_tv);
+        mSrlSexIv = mRootView.findViewById(R.id.srl_sex_iv);
+        mSrlCharmTv = mRootView.findViewById(R.id.srl_charm_tv);
 
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(true);
@@ -192,14 +197,24 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int srollLimit = appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(55);
+                if (U.getDeviceUtils().hasNotch(U.app())) {
+                    srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app());
+                }
                 if (verticalOffset == 0) {
                     // 展开状态
                     if (mToolbar.getVisibility() != View.GONE) {
                         mToolbar.setVisibility(View.GONE);
                     }
-                } else if (Math.abs(verticalOffset) >= (appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(70))) {
+                } else if (Math.abs(verticalOffset) >= srollLimit) {
                     // 完全收缩状态
                     if (mToolbar.getVisibility() != View.VISIBLE) {
+                        if (U.getDeviceUtils().hasNotch(U.app()) && !isInitToolbar) {
+                            ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
+                            params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
+                            mToolbarLayout.setLayoutParams(params);
+                            isInitToolbar = true;
+                        }
                         mToolbar.setVisibility(View.VISIBLE);
                     }
                 } else {
