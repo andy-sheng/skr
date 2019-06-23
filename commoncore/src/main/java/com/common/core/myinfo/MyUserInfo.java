@@ -138,6 +138,21 @@ public class MyUserInfo implements Serializable {
         return myUserInfo;
     }
 
+    public static UserInfoModel toUserInfoModel(MyUserInfo myUserInfo) {
+        UserInfoModel userInfoModel = new UserInfoModel();
+        if (myUserInfo != null) {
+            // 简易版本
+            userInfoModel.setUserId((int)myUserInfo.getUserId());
+            userInfoModel.setNickname(myUserInfo.getUserNickname());
+            userInfoModel.setAvatar(myUserInfo.getAvatar());
+            userInfoModel.setBirthday(myUserInfo.getBirthday());
+            userInfoModel.setLocation(myUserInfo.getLocation());
+            userInfoModel.setSex(myUserInfo.getSex());
+            userInfoModel.setSignature(myUserInfo.getSignature());
+        }
+        return userInfoModel;
+    }
+
     public static UserInfoDB toUserInfoDB(MyUserInfo myUserInfo) {
         UserInfoDB userInfoDB = new UserInfoDB();
         if (myUserInfo != null) {

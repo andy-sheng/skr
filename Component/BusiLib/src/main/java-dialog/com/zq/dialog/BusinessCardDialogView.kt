@@ -8,7 +8,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.flowlayout.FlowLayout
 import com.common.flowlayout.TagAdapter
 import com.common.utils.U
@@ -25,38 +28,42 @@ class BusinessCardDialogView : ConstraintLayout {
     private val LOCATION_TAG = 1           //城市标签
     private val AGE_TAG = 2                //年龄标签
     private val CONSTELLATION_TAG = 3      //星座标签
+    private val FANS_NUM_TAG = 4           //粉丝数
 
     private val mTags = ArrayList<String>()  //标签
     private val mHashMap = HashMap<Int, String>()
-    private var mTagAdapter: TagAdapter<String>
+    private var mTagAdapter: TagAdapter<String>? = null
 
-    constructor(context: Context) : super(context) {}
+    private var mUserInfo: UserInfoModel
+    private var mFansNums: Int
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    constructor(context: Context, userInfo: UserInfoModel, fansNum: Int) : super(context) {
+        this.mUserInfo = userInfo
+        this.mFansNums = fansNum
+        initData()
+    }
 
     init {
         View.inflate(context, R.layout.business_card_dialog_view, this)
+    }
 
-
-        AvatarUtils.loadAvatarByUrl(avatar_iv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+    private fun initData() {
+        AvatarUtils.loadAvatarByUrl(avatar_iv, AvatarUtils.newParamsBuilder(mUserInfo.avatar)
                 .setBorderColor(Color.WHITE)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setCircle(true)
                 .build())
-        name_tv.text = MyUserInfoManager.getInstance().nickName
-        userid_tv.text = "ID号：" + MyUserInfoManager.getInstance().uid
+        name_tv.text = UserInfoManager.getInstance().getRemarkName(mUserInfo.userId, mUserInfo.nickname)
+        userid_tv.text = "ID号：" + mUserInfo.userId
         if (MyUserInfoManager.getInstance().sex == ESex.SX_MALE.value) {
-            sex_iv.setVisibility(View.VISIBLE)
+            sex_iv.visibility = View.VISIBLE
             sex_iv.setBackgroundResource(R.drawable.sex_man_icon)
         } else if (MyUserInfoManager.getInstance().sex == ESex.SX_FEMALE.value) {
-            sex_iv.setVisibility(View.VISIBLE)
+            sex_iv.visibility = View.VISIBLE
             sex_iv.setBackgroundResource(R.drawable.sex_woman_icon)
         } else {
-            sex_iv.setVisibility(View.GONE)
+            sex_iv.visibility = View.GONE
         }
-
 
         mTagAdapter = object : TagAdapter<String>(mTags) {
             override fun getView(parent: FlowLayout, position: Int, o: String): View {
@@ -68,16 +75,20 @@ class BusinessCardDialogView : ConstraintLayout {
         }
         flowlayout.adapter = mTagAdapter
 
-        if (MyUserInfoManager.getInstance().location != null && !TextUtils.isEmpty(MyUserInfoManager.getInstance().location.city)) {
-            mHashMap[LOCATION_TAG] = MyUserInfoManager.getInstance().location.city
+        if (MyUserInfoManager.getInstance().location != null && !TextUtils.isEmpty(mUserInfo.location.city)) {
+            mHashMap[LOCATION_TAG] = mUserInfo.location.city
         }
 
-        if (MyUserInfoManager.getInstance().age > 0) {
-            mHashMap[AGE_TAG] = MyUserInfoManager.getInstance().age.toString() + "岁"
+        if (mUserInfo.age > 0) {
+            mHashMap[AGE_TAG] = mUserInfo.age.toString() + "岁"
         }
 
-        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().constellation)) {
-            mHashMap[CONSTELLATION_TAG] = MyUserInfoManager.getInstance().constellation
+        if (!TextUtils.isEmpty(mUserInfo.constellation)) {
+            mHashMap[CONSTELLATION_TAG] = mUserInfo.constellation
+        }
+
+        if (mUserInfo.userId != MyUserInfoManager.getInstance().uid.toInt()) {
+            mHashMap[FANS_NUM_TAG] = "粉丝" + mFansNums
         }
 
         refreshTag()
@@ -99,8 +110,12 @@ class BusinessCardDialogView : ConstraintLayout {
                 mTags.add(mHashMap[CONSTELLATION_TAG]!!)
             }
 
+            if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])){
+                mTags.add(mHashMap[FANS_NUM_TAG]!!)
+            }
+
         }
-        mTagAdapter.setTagDatas(mTags)
-        mTagAdapter.notifyDataChanged()
+        mTagAdapter!!.setTagDatas(mTags)
+        mTagAdapter!!.notifyDataChanged()
     }
 }

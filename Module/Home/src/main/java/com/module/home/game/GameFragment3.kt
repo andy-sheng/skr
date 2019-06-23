@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 
@@ -20,21 +19,6 @@ import com.module.home.game.view.FriendRoomGameView
 import com.module.home.game.view.QuickGameView
 import android.widget.ImageView
 import android.view.animation.AlphaAnimation
-import com.alibaba.fastjson.JSON
-import com.common.core.userinfo.UserInfoServerApi
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
-import com.module.home.game.view.DoubleRoomGameView.Companion.SP_HAS_CONFIRM_INFO
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
-import com.zq.dialog.ConfirmMatchInfoView
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import java.util.HashMap
 
 
 class GameFragment3 : BaseFragment() {

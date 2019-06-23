@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.event.RelationChangeEvent;
@@ -56,6 +57,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.dialog.BusinessCardDialogView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.EditRemarkView;
@@ -90,6 +92,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     private HashMap<Integer, String> mHashMap = new HashMap();
 
     TagAdapter mTagAdapter;
+    int fansNum = 0; // 粉丝数
 
     boolean isAppbarCanSrcoll = true;  // AppBarLayout是否可以滚动
 
@@ -114,6 +117,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     ImageView mSexIv;
+    ImageView mBusinessCard;
     ExTextView mSignTv;
     TagFlowLayout mFlowlayout;
     TextView mCharmTv;
@@ -345,6 +349,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
+        mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
         mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
@@ -366,7 +371,29 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                 BigImageBrowseFragment.open(false, getActivity(), mUserInfoModel.getAvatar());
             }
         });
+
+        mBusinessCard.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // TODO: 2019-06-19 打开名片页面
+                showBusinessCard();
+            }
+        });
     }
+
+    private void showBusinessCard() {
+        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), mUserInfoModel, fansNum);
+        mDialogPlus = DialogPlus.newDialog(getActivity())
+                .setContentHolder(new ViewHolder(businessCardDialogView))
+                .setGravity(Gravity.CENTER)
+                .setMargin(U.getDisplayUtils().dip2px(40), -1, U.getDisplayUtils().dip2px(40), -1)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .create();
+        mDialogPlus.show();
+    }
+
 
     private void setAppBarCanScroll(final boolean canScroll) {
         if (isAppbarCanSrcoll == canScroll) {
@@ -622,7 +649,6 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
 
     public void showRelationNum(List<RelationNumModel> list) {
-        int fansNum = 0;
         if (list != null && list.size() > 0) {
             for (RelationNumModel mode : list) {
                 if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {

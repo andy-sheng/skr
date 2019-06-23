@@ -1,4 +1,4 @@
-package com.zq.dialog;
+package com.zq.person.view;
 
 import android.content.Context;
 import android.graphics.Color;

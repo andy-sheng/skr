@@ -18,7 +18,7 @@ import com.common.view.DebounceViewClickListener
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
-import com.zq.dialog.ConfirmMatchInfoView
+import com.zq.person.view.ConfirmMatchInfoView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.double_room_view_layout.view.*
 import okhttp3.MediaType

@@ -168,6 +168,16 @@
                             app:layout_constraintRight_toRightOf="@id/name_tv"
                             app:layout_constraintTop_toTopOf="@id/name_tv" />
 
+                        <ImageView
+                            android:id="@+id/business_card"
+                            android:layout_width="@dimen/view_48_dp"
+                            android:layout_height="@dimen/view_30_dp"
+                            android:layout_marginTop="@dimen/view_28_dp"
+                            android:layout_marginRight="@dimen/view_20_dp"
+                            android:background="@drawable/person_center_business_icon"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <com.common.view.ex.ExTextView
                             android:id="@+id/charm_tv"
                             android:layout_width="wrap_content"

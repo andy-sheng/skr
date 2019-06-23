@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
@@ -238,7 +239,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void showBusinessCard() {
-        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext());
+        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), userInfoModel, 0);
         mDialogPlus = DialogPlus.newDialog(getActivity())
                 .setContentHolder(new ViewHolder(businessCardDialogView))
                 .setGravity(Gravity.CENTER)

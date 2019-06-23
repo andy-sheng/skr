@@ -57,7 +57,7 @@ public interface GrabSongApi {
      * 更多房间，只能刷新，不能加载更多
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room-more")
+    @GET("http://dev.api.inframe.mobi/v2/mate/index-recommend-room-more")
     Observable<ApiResult> getRecommendRoomList();
 
     /**
