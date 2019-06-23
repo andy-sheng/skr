@@ -4,15 +4,23 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
+import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
+import com.common.rx.ViewEvent;
 import com.common.view.ex.shadow.ShadowConfig;
 import com.common.view.ex.shadow.ShadowHelper;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
 
-public class ExRelativeLayout extends RelativeLayout {
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
+
+public class ExRelativeLayout extends RelativeLayout implements RxLifecycleView{
 
     ShadowConfig mShadowConfig;
 
@@ -71,6 +79,36 @@ public class ExRelativeLayout extends RelativeLayout {
 
     public void setListener(Listener listener) {
         mListener = listener;
+    }
+
+    private BehaviorSubject<ViewEvent> mLifecycleSubject =  null;
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mLifecycleSubject != null) {
+            mLifecycleSubject.onNext(ViewEvent.DETACH);
+        }
+    }
+
+    /**
+     * 事件在 {@link ActivityLifecycleForRxLifecycle}发出
+     * 绑定 Activity 的指定生命周期
+     *
+     * @param <T>
+     * @return
+     */
+    @Override
+    public <T> LifecycleTransformer<T> bindDetachEvent() {
+        return RxLifecycle.bindUntilEvent(provideLifecycleSubject(), ViewEvent.DETACH);
+    }
+
+    @NonNull
+    public final Subject<ViewEvent> provideLifecycleSubject() {
+        if(mLifecycleSubject==null){
+            mLifecycleSubject = BehaviorSubject.create();
+        }
+        return mLifecycleSubject;
     }
 
     public interface Listener {

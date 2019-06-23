@@ -17,7 +17,6 @@ import java.util.List;
 
 public abstract class SkrBasePermission {
     public final static String TAG = "SkrPermission";
-    DialogPlus mPerTipsDialogPlus;
     TipsDialogView mTipsDialogView;
     boolean mHasGoPermission = false;
     String mPermissionStr;
@@ -79,7 +78,7 @@ public abstract class SkrBasePermission {
     }
 
     public void onReject(final Activity activity, String text) {
-        if (mPerTipsDialogPlus == null) {
+        if (mTipsDialogView == null) {
             mTipsDialogView = new TipsDialogView.Builder(activity)
                     .setMessageTip(text)
                     .setOkBtnTip("去设置")
@@ -91,18 +90,9 @@ public abstract class SkrBasePermission {
                         }
                     })
                     .build();
-
-            mPerTipsDialogPlus = DialogPlus.newDialog(activity)
-                    .setContentHolder(new ViewHolder(mTipsDialogView))
-                    .setGravity(Gravity.BOTTOM)
-                    .setCancelable(mCannable)
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_80)
-                    .setExpanded(false)
-                    .create();
         }
         mTipsDialogView.mMessageTv.setText(text);
-        mPerTipsDialogPlus.show();
+        mTipsDialogView.showByDialog(mCannable);
     }
 
     protected void goSettingPage(Activity activity){
@@ -110,8 +100,8 @@ public abstract class SkrBasePermission {
     }
 
     private void onAgree() {
-        if (mPerTipsDialogPlus != null) {
-            mPerTipsDialogPlus.dismiss();
+        if (mTipsDialogView != null) {
+            mTipsDialogView.dismiss();
         }
     }
 

@@ -2,10 +2,13 @@ package com.dialog.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
 import com.common.view.ex.ExTextView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 public class TipsDialogView extends RelativeLayout {
 
@@ -15,6 +18,7 @@ public class TipsDialogView extends RelativeLayout {
     public StrokeTextView mCancelTv;
     public StrokeTextView mConfirmTv;
 
+    DialogPlus mDialogPlus;
 
     private TipsDialogView(Context context) {
         super(context);
@@ -39,6 +43,36 @@ public class TipsDialogView extends RelativeLayout {
         mOkBtn = (StrokeTextView) this.findViewById(R.id.ok_btn);
         mConfirmTv = (StrokeTextView) this.findViewById(R.id.confirm_tv);
         mCancelTv = (StrokeTextView) this.findViewById(R.id.cancel_tv);
+    }
+
+
+    /**
+     * 以后tips dialog 不要在外部单独写 dialog 了。
+     * 可以不
+     */
+    public void showByDialog() {
+        showByDialog(true);
+    }
+
+    public void showByDialog(boolean canCancel) {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
+        mDialogPlus = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(this))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .setCancelable(canCancel)
+                .create();
+        mDialogPlus.show();
+    }
+
+    public void dismiss() {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss();
+        }
     }
 
     public static final class Builder {

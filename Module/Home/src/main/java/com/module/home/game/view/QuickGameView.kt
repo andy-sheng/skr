@@ -16,8 +16,12 @@ import com.common.rxretrofit.ApiManager
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExRelativeLayout
+import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
+import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
+import com.component.busilib.verify.RealNameVerifyUtils
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.game.adapter.GameAdapter
@@ -33,7 +37,7 @@ import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
 /**
  * 快速游戏
  */
-class QuickGameView : RelativeLayout, IQuickGameView3 {
+class QuickGameView : ExRelativeLayout, IQuickGameView3 {
 
     companion object {
         const val TAG: String = "QuickGameView"
@@ -44,6 +48,7 @@ class QuickGameView : RelativeLayout, IQuickGameView3 {
     lateinit var mSkrAudioPermission: SkrAudioPermission
     lateinit var mCameraPermission: SkrCameraPermission
     lateinit var mGameAdapter: GameAdapter
+    internal var mRealNameVerifyUtils = RealNameVerifyUtils(this)
 
     constructor(fragment: BaseFragment) : super(fragment.context) {
         mFragment = fragment
@@ -96,18 +101,14 @@ class QuickGameView : RelativeLayout, IQuickGameView3 {
                     if (specialModel.tagType == SpecialModel.TYPE_VIDEO) {
                         mSkrAudioPermission.ensurePermission({
                             mCameraPermission.ensurePermission({
-                                // 进入视频预览
-                                ARouter.getInstance()
-                                        .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                        .withInt("from", 1)
-                                        .withSerializable("SpecialModel", specialModel)
-                                        .navigation()
-                                //
-                                //                                        // 判断是否实名验证过
-                                //                                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                                //                                        if (iRankingModeService != null) {
-                                //                                            iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
-                                //                                        }
+                                mRealNameVerifyUtils.checkJoinVideoPermission {
+                                    // 进入视频预览
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                            .withInt("from", FROM_MATCH)
+                                            .withSerializable("SpecialModel", specialModel)
+                                            .navigation()
+                                }
                             }, true)
                         }, true)
                     } else {
@@ -132,18 +133,14 @@ class QuickGameView : RelativeLayout, IQuickGameView3 {
                     if (friendRoomModel.mediaType == SpecialModel.TYPE_VIDEO) {
                         mSkrAudioPermission.ensurePermission({
                             mCameraPermission.ensurePermission({
-                                // 进入视频预览
-                                ARouter.getInstance()
-                                        .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                        .withInt("from", 2)
-                                        .withSerializable("RecommendModel", friendRoomModel)
-                                        .navigation()
-                                //
-                                //                                        // 判断是否实名验证过
-                                //                                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                                //                                        if (iRankingModeService != null) {
-                                //                                            iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
-                                //                                        }
+                                mRealNameVerifyUtils.checkJoinVideoPermission {
+                                    // 进入视频预览
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                            .withInt("from", FROM_FRIEND_RECOMMEND)
+                                            .withSerializable("RecommendModel", friendRoomModel)
+                                            .navigation()
+                                }
                             }, true)
                         }, true)
                     } else {

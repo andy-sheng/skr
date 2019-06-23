@@ -11,6 +11,7 @@ import com.common.view.ex.ExTextView
 import android.view.TextureView
 import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.core.permission.SkrCameraPermission
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
@@ -40,6 +41,7 @@ class BeautyPreviewFragment : BaseFragment() {
     override fun initView(): Int {
         return R.layout.beauty_preview_fragment_layout
     }
+    var mSkrCameraPermission = SkrCameraPermission();
 
     override fun initData(savedInstanceState: Bundle?) {
         MyLog.d(TAG, "mFrom=${mFrom}")
@@ -97,6 +99,9 @@ class BeautyPreviewFragment : BaseFragment() {
         ZqEngineKit.getInstance().unbindAllRemoteVideo()
         ZqEngineKit.getInstance().setDisplayPreview(mVideoTexture)
         ZqEngineKit.getInstance().setLocalVideoRect(0f, 0f, 1f, 1f, 1f)
+        mSkrCameraPermission.ensurePermission({
+            ZqEngineKit.getInstance().startCameraPreview()
+        },true)
     }
 
     protected fun config() {

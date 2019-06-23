@@ -17,7 +17,9 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
+import com.component.busilib.verify.RealNameVerifyUtils;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.createroom.view.SpecialSelectView;
@@ -40,8 +42,9 @@ public class GrabCreateSpecialFragment extends BaseFragment {
 
     SkrAudioPermission mSkrAudioPermission;
     SkrCameraPermission mCameraPermission;
-
+    TipsDialogView mTipsDialogView;
     int mRoomType;
+    RealNameVerifyUtils mRealNameVerifyUtils = new RealNameVerifyUtils(this);
 
     @Override
     public int initView() {
@@ -73,10 +76,20 @@ public class GrabCreateSpecialFragment extends BaseFragment {
             public void onClickSpecial(SpecialModel model, List<String> music) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     if (model.getTagType() == SpecialModel.TYPE_VIDEO) {
-                        mCameraPermission.ensurePermission(new Runnable() {
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
                             @Override
                             public void run() {
-                                createRoom(model);
+                                mCameraPermission.ensurePermission(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mRealNameVerifyUtils.checkJoinVideoPermission(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                createRoom(model);
+                                            }
+                                        });
+                                    }
+                                }, true);
                             }
                         }, true);
                     } else {
@@ -125,6 +138,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
             }
         }, this, new ApiMethods.RequestControl("create-room", ApiMethods.ControlType.CancelThis));
     }
+
 
     @Override
     public boolean useEventBus() {

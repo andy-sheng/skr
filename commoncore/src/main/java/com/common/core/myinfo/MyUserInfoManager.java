@@ -54,7 +54,8 @@ public class MyUserInfoManager {
     private boolean needBeginnerGuide = false;
     private boolean mIsFirstLogin = false;    // 标记是否第一次登录
     //    private boolean mHasLoadFromDB = false;
-    private boolean mHasGrabCertifyPassed = false;
+    private boolean mHasGrabCertifyPassed = false;// 抢唱时的认证
+    private int mRealNameVerified = 0; // 实名认证
 
     public void init() {
         load();
@@ -429,6 +430,11 @@ public class MyUserInfoManager {
         });
     }
 
+    /**
+     * 是否通过了抢唱时的认证
+     *
+     * @return
+     */
     public boolean hasGrabCertifyPassed() {
         if (MyLog.isDebugLogOpen()) {
             return true;
@@ -446,7 +452,30 @@ public class MyUserInfoManager {
         }
     }
 
-//    public boolean hasLoadFromDB() {
+    /**
+     * 是否实名认证
+     *
+     * @return
+     */
+    public boolean isRealNameVerified() {
+        if (mRealNameVerified == 0) {
+            boolean v = U.getPreferenceUtils().getSettingBoolean("mRealNameVerified", false);
+            if (v) {
+                mRealNameVerified = 1;
+            } else {
+                mRealNameVerified = -1;
+            }
+        }
+        return mRealNameVerified == 1;
+    }
+
+    public void setRealNameVerified(boolean realNameVerified) {
+        if (realNameVerified) {
+            U.getPreferenceUtils().setSettingBoolean("mRealNameVerified", realNameVerified);
+        }
+    }
+
+    //    public boolean hasLoadFromDB() {
 //        return mHasLoadFromDB;
 //    }
 
