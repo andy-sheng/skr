@@ -16,11 +16,16 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.HandlerTaskTimer
 import com.common.view.recyclerview.RecyclerOnItemClickListener
+import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.friends.FriendRoomVerticalAdapter
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.home.R
+import com.module.home.loadsir.BalanceEmptyCallBack
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -42,6 +47,8 @@ class FriendRoomGameView : RelativeLayout {
 
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0
+
+    var mLoadService: LoadService<*>
 
     constructor(context: Context) : super(context) {}
 
@@ -89,6 +96,13 @@ class FriendRoomGameView : RelativeLayout {
             }
         })
         recycler_view.adapter = mFriendRoomVeritAdapter
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "暂时没有房间了～"))
+                .build()
+        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
+            initData()
+        })
     }
 
     fun initData() {
@@ -107,7 +121,7 @@ class FriendRoomGameView : RelativeLayout {
 
     }
 
-    public fun stopTimer(){
+    fun stopTimer() {
         mRecommendTimer?.dispose()
     }
 
@@ -135,8 +149,13 @@ class FriendRoomGameView : RelativeLayout {
     private fun refreshView(list: List<RecommendModel>?) {
         refreshLayout.finishRefresh()
         if (list != null && list!!.isNotEmpty()) {
+            mLoadService.showSuccess()
             mFriendRoomVeritAdapter.dataList.clear()
             mFriendRoomVeritAdapter.dataList.addAll(list)
+            mFriendRoomVeritAdapter.notifyDataSetChanged()
+        } else {
+            mLoadService.showCallback(EmptyCallback::class.java)
+            mFriendRoomVeritAdapter.dataList.clear()
             mFriendRoomVeritAdapter.notifyDataSetChanged()
         }
     }
