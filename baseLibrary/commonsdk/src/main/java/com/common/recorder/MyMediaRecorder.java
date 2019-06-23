@@ -85,8 +85,10 @@ public class MyMediaRecorder {
     public void start(String filePath) {
         config(filePath);
         try {
-            mMediaRecorder.prepare();
-            mMediaRecorder.start();
+            if (mMediaRecorder != null) {
+                mMediaRecorder.prepare();
+                mMediaRecorder.start();
+            }
             mStartRecordingTs = System.currentTimeMillis();
         } catch (IOException e) {
             MyLog.e(TAG, e);
@@ -94,7 +96,9 @@ public class MyMediaRecorder {
     }
 
     public void stop() {
-        mMediaRecorder.reset();
+        if (mMediaRecorder != null) {
+            mMediaRecorder.reset();
+        }
         mDuration = (int) (System.currentTimeMillis() - mStartRecordingTs);
     }
 
