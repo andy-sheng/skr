@@ -414,6 +414,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightNameTv?.visibility = VISIBLE
     }
 
+    override fun destroy() {
+        super.destroy()
+        countDownTimer?.dispose()
+    }
+
     override fun showNoLimitDurationState(noLimit: Boolean) {
         MyLog.d(mTag, "showNoLimitDurationState noLimit is $noLimit")
         if (noLimit) {
