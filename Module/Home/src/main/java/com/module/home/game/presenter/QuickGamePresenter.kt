@@ -179,6 +179,7 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
         initQuickRoom(true)
+        checkTaskRedDot()
     }
 
 
