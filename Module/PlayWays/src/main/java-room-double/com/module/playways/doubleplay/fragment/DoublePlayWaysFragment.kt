@@ -117,6 +117,18 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         })
 
+        mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+
+            }
+        })
+
+        mRightAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+
+            }
+        })
+
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 // 举报

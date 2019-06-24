@@ -11,7 +11,6 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Boolean;
-import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -24,21 +23,13 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
 
   private static final long serialVersionUID = 0L;
 
-  public static final Integer DEFAULT_ROOMID = 0;
-
   public static final Boolean DEFAULT_ENABLENOLIMITDURATION = false;
 
   /**
-   * 房间ID
+   * 解锁信息
    */
   @WireField(
       tag = 1,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  private final Integer roomID;
-
-  @WireField(
-      tag = 2,
       adapter = "com.zq.live.proto.CombineRoom.UserLockInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
@@ -48,20 +39,18 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
    * 开启没有限制的持续时间
    */
   @WireField(
-      tag = 3,
+      tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   private final Boolean enableNoLimitDuration;
 
-  public UnlockUserInfoMsg(Integer roomID, List<UserLockInfo> userLockInfo,
-      Boolean enableNoLimitDuration) {
-    this(roomID, userLockInfo, enableNoLimitDuration, ByteString.EMPTY);
+  public UnlockUserInfoMsg(List<UserLockInfo> userLockInfo, Boolean enableNoLimitDuration) {
+    this(userLockInfo, enableNoLimitDuration, ByteString.EMPTY);
   }
 
-  public UnlockUserInfoMsg(Integer roomID, List<UserLockInfo> userLockInfo,
-      Boolean enableNoLimitDuration, ByteString unknownFields) {
+  public UnlockUserInfoMsg(List<UserLockInfo> userLockInfo, Boolean enableNoLimitDuration,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.roomID = roomID;
     this.userLockInfo = Internal.immutableCopyOf("userLockInfo", userLockInfo);
     this.enableNoLimitDuration = enableNoLimitDuration;
   }
@@ -69,7 +58,6 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.roomID = roomID;
     builder.userLockInfo = Internal.copyOf("userLockInfo", userLockInfo);
     builder.enableNoLimitDuration = enableNoLimitDuration;
     builder.addUnknownFields(unknownFields());
@@ -82,7 +70,6 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
     if (!(other instanceof UnlockUserInfoMsg)) return false;
     UnlockUserInfoMsg o = (UnlockUserInfoMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(roomID, o.roomID)
         && userLockInfo.equals(o.userLockInfo)
         && Internal.equals(enableNoLimitDuration, o.enableNoLimitDuration);
   }
@@ -92,7 +79,6 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
       result = result * 37 + userLockInfo.hashCode();
       result = result * 37 + (enableNoLimitDuration != null ? enableNoLimitDuration.hashCode() : 0);
       super.hashCode = result;
@@ -103,7 +89,6 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (roomID != null) builder.append(", roomID=").append(roomID);
     if (!userLockInfo.isEmpty()) builder.append(", userLockInfo=").append(userLockInfo);
     if (enableNoLimitDuration != null) builder.append(", enableNoLimitDuration=").append(enableNoLimitDuration);
     return builder.replace(0, 2, "UnlockUserInfoMsg{").append('}').toString();
@@ -120,15 +105,8 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
   }
 
   /**
-   * 房间ID
+   * 解锁信息
    */
-  public Integer getRoomID() {
-    if(roomID==null){
-        return DEFAULT_ROOMID;
-    }
-    return roomID;
-  }
-
   public List<UserLockInfo> getUserLockInfoList() {
     if(userLockInfo==null){
         return new java.util.ArrayList<UserLockInfo>();
@@ -147,12 +125,8 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
   }
 
   /**
-   * 房间ID
+   * 解锁信息
    */
-  public boolean hasRoomID() {
-    return roomID!=null;
-  }
-
   public boolean hasUserLockInfoList() {
     return userLockInfo!=null;
   }
@@ -165,8 +139,6 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
   }
 
   public static final class Builder extends Message.Builder<UnlockUserInfoMsg, Builder> {
-    private Integer roomID;
-
     private List<UserLockInfo> userLockInfo;
 
     private Boolean enableNoLimitDuration;
@@ -176,13 +148,8 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
     }
 
     /**
-     * 房间ID
+     * 解锁信息
      */
-    public Builder setRoomID(Integer roomID) {
-      this.roomID = roomID;
-      return this;
-    }
-
     public Builder addAllUserLockInfo(List<UserLockInfo> userLockInfo) {
       Internal.checkElementsNotNull(userLockInfo);
       this.userLockInfo = userLockInfo;
@@ -199,7 +166,7 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
 
     @Override
     public UnlockUserInfoMsg build() {
-      return new UnlockUserInfoMsg(roomID, userLockInfo, enableNoLimitDuration, super.buildUnknownFields());
+      return new UnlockUserInfoMsg(userLockInfo, enableNoLimitDuration, super.buildUnknownFields());
     }
   }
 
@@ -210,17 +177,15 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
 
     @Override
     public int encodedSize(UnlockUserInfoMsg value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.roomID)
-          + UserLockInfo.ADAPTER.asRepeated().encodedSizeWithTag(2, value.userLockInfo)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.enableNoLimitDuration)
+      return UserLockInfo.ADAPTER.asRepeated().encodedSizeWithTag(1, value.userLockInfo)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(2, value.enableNoLimitDuration)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, UnlockUserInfoMsg value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.roomID);
-      UserLockInfo.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.userLockInfo);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.enableNoLimitDuration);
+      UserLockInfo.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.userLockInfo);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 2, value.enableNoLimitDuration);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -230,9 +195,8 @@ public final class UnlockUserInfoMsg extends Message<UnlockUserInfoMsg, UnlockUs
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.userLockInfo.add(UserLockInfo.ADAPTER.decode(reader)); break;
-          case 3: builder.setEnableNoLimitDuration(ProtoAdapter.BOOL.decode(reader)); break;
+          case 1: builder.userLockInfo.add(UserLockInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.setEnableNoLimitDuration(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

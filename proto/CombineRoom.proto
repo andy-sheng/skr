@@ -96,10 +96,10 @@ message UserLockInfo
 
 message UnlockUserInfoMsg
 {
-    uint32 roomID                      = 1; //房间ID
-    repeated UserLockInfo userLockInfo = 2;
-    bool enableNoLimitDuration         = 3; //开启没有限制的持续时间
+    repeated UserLockInfo userLockInfo = 1; //解锁信息
+    bool enableNoLimitDuration         = 2; //开启没有限制的持续时间
 }
+
 
 message PickMsg
 {
