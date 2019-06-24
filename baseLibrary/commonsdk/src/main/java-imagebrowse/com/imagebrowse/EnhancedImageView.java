@@ -248,14 +248,16 @@ public class EnhancedImageView extends RelativeLayout {
                 }
                 // 加载完成
                 File file = FrescoWorker.getCacheFileFromFrescoDiskCache(httpImage.getUri());
-                int wh[] = U.getImageUtils().getImageWidthAndHeightFromFile(file.getAbsolutePath());
+                if (file != null && file.exists()) {
+                    int wh[] = U.getImageUtils().getImageWidthAndHeightFromFile(file.getAbsolutePath());
 
-                addLog("load processWithInfo wh " + wh[0] + " " + wh[1]);
-                // 如果是图特别大，用 subsample加载
-                boolean b1 = wh[0] != 0 && wh[0] > U.getDisplayUtils().getScreenWidth() * 1.5;
-                boolean b2 = wh[1] != 0 && wh[1] > U.getDisplayUtils().getScreenHeight() * 1.5;
-                if (b1 || b2) {
-                    loadBySubSampleView(file.getAbsolutePath());
+                    addLog("load processWithInfo wh " + wh[0] + " " + wh[1]);
+                    // 如果是图特别大，用 subsample加载
+                    boolean b1 = wh[0] != 0 && wh[0] > U.getDisplayUtils().getScreenWidth() * 1.5;
+                    boolean b2 = wh[1] != 0 && wh[1] > U.getDisplayUtils().getScreenHeight() * 1.5;
+                    if (b1 || b2) {
+                        loadBySubSampleView(file.getAbsolutePath());
+                    }
                 }
             }
 
@@ -389,7 +391,7 @@ public class EnhancedImageView extends RelativeLayout {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                U.getHttpUtils().downloadFileSync(url, getGifSaveFile(url, true),false, new HttpUtils.OnDownloadProgress() {
+                U.getHttpUtils().downloadFileSync(url, getGifSaveFile(url, true), false, new HttpUtils.OnDownloadProgress() {
                     @Override
                     public void onDownloaded(long downloaded, long totalLength) {
                         MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
