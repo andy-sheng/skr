@@ -1,6 +1,7 @@
 package com.moudule.playways.beauty.fragment
 
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.view.View
 
 import com.common.base.BaseFragment
@@ -10,8 +11,10 @@ import com.moudule.playways.beauty.view.BeautyControlPanelView
 import com.common.view.ex.ExTextView
 import android.view.TextureView
 import android.view.ViewStub
+import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.permission.SkrCameraPermission
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
@@ -54,6 +57,8 @@ class BeautyPreviewFragment : BaseFragment() {
             }
         })
         mVideoTexture = mRootView.findViewById<View>(R.id.video_texture) as TextureView
+        var lp = mVideoTexture.layoutParams as ConstraintLayout.LayoutParams
+        lp.height = U.getDisplayUtils().screenWidth*16/9
         var viewStub = mRootView.findViewById<ViewStub>(R.id.beauty_control_panel_view_stub);
         mBeautyControlView = BeautyControlPanelView(viewStub)
         mEnterRoomTv = mRootView.findViewById<View>(R.id.enter_room_tv) as ExTextView

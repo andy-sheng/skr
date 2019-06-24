@@ -10,7 +10,6 @@
         android:id="@+id/video_texture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,9 +26,11 @@
         app:titleBarColor="@color/transparent" />
 
     <View
+        android:id="@+id/bg1_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_168_dp"
+        android:layout_height="0dp"
         android:background="#404A9A"
+        app:layout_constraintTop_toBottomOf="@+id/video_texture"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.common.view.ex.ExTextView
@@ -85,14 +86,12 @@
     <com.common.view.ex.ExImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_185_dp"
-        android:layout_marginBottom="@dimen/view_168_dp"
         app:bl_gradient_angle="90"
         app:bl_gradient_endColor="@color/transparent"
         app:bl_gradient_startColor="#404A9A"
         app:bl_shape="rectangle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/bg1_view"
+        />
 
 
 </android.support.constraint.ConstraintLayout>

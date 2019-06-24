@@ -50,6 +50,8 @@ public class GrabVideoDisplayView extends ExViewStub {
     ImageView mBeautySettingBtn;
     ExTextView mLeftNameTv;
     ExTextView mRightNameTv;
+    View mBg1View, mBg2View;
+
     SelfSingCardView.Listener mSelfSingCardListener;
     Listener mListener;
     private GrabRoomData mRoomData;
@@ -76,6 +78,10 @@ public class GrabVideoDisplayView extends ExViewStub {
             lp.width = U.getDisplayUtils().getScreenWidth() / 2;
             mRightTipsTv = mParentView.findViewById(R.id.right_tips_tv);
             mRightNameTv = mParentView.findViewById(R.id.right_name_tv);
+        }
+        {
+            mBg1View = mParentView.findViewById(R.id.bg1_view);
+            mBg2View = mParentView.findViewById(R.id.bg2_view);
         }
         mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mSelfSingCardListener);
@@ -124,8 +130,16 @@ public class GrabVideoDisplayView extends ExViewStub {
         tryInflate();
         ensureBindDisplayView();
         setVisibility(View.VISIBLE);
-        ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
-        lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        {
+            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+            lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        {
+            ViewGroup.LayoutParams lp = mMainVideoView.getLayoutParams();
+            lp.height = U.getDisplayUtils().getScreenWidth() * 16 / 9;
+        }
+        mBg1View.setVisibility(View.VISIBLE);
+        mBg2View.setVisibility(View.VISIBLE);
         mMainUserId = userId;
         tryBindMainVideoStream();
         if (userId == MyUserInfoManager.getInstance().getUid()) {
@@ -141,12 +155,18 @@ public class GrabVideoDisplayView extends ExViewStub {
         tryInflate();
         ensureBindDisplayView();
         setVisibility(View.VISIBLE);
+        {
+            ViewGroup.LayoutParams lp = mMainVideoView.getLayoutParams();
+            lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
         mLeftNameTv.setVisibility(View.VISIBLE);
         mRightNameTv.setVisibility(View.VISIBLE);
         mLeftNameTv.setText(userID1.getNicknameRemark());
         mRightNameTv.setText(userID2.getNicknameRemark());
         ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(315);
+        mBg1View.setVisibility(View.GONE);
+        mBg2View.setVisibility(View.GONE);
         mLeftUserId = userID1.getUserId();
         mRightUserId = userID2.getUserId();
         if (needBindVideo) {
@@ -171,7 +191,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
     }
 
-    void startSingCountDown(){
+    void startSingCountDown() {
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (mSingCountDownView != null) {
             if (infoModel != null) {
@@ -343,6 +363,7 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     /**
      * 从美颜预览返回
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
