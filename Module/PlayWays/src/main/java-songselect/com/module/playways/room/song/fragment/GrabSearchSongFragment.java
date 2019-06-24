@@ -155,7 +155,8 @@ public class GrabSearchSongFragment extends BaseFragment {
             return;
         }
         SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(songSelectServerApi.searchGrabMusicItems(keyword), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManageData.isGrabRoom() ? songSelectServerApi.searchGrabMusicItems(keyword)
+                : songSelectServerApi.searchDoubleMusicItems(keyword), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -279,7 +280,11 @@ public class GrabSearchSongFragment extends BaseFragment {
             @Override
             public ObservableSource<ApiResult> apply(String string) throws Exception {
                 SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-                return songSelectServerApi.searchGrabMusicItems(string).subscribeOn(Schedulers.io());
+                if (mSongManageData.isGrabRoom()) {
+                    return songSelectServerApi.searchGrabMusicItems(string).subscribeOn(Schedulers.io());
+                } else {
+                    return songSelectServerApi.searchDoubleMusicItems(string).subscribeOn(Schedulers.io());
+                }
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
         mCompositeDisposable = new CompositeDisposable();
