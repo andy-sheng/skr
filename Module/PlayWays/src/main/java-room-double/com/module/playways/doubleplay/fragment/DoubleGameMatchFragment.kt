@@ -33,7 +33,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mCalcelMatchTv = mRootView.findViewById<View>(com.module.playways.R.id.calcel_match_tv) as ExTextView
+        mCalcelMatchTv = mRootView.findViewById<View>(R.id.calcel_match_tv) as ExTextView
 
         mCalcelMatchTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
