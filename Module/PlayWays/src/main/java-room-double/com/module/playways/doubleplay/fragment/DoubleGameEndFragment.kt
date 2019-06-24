@@ -44,6 +44,7 @@ class DoubleGameEndFragment : BaseFragment() {
     lateinit var mFollowTv: ExTextView
     lateinit var mMatchAgain: ExTextView
     lateinit var mLastNumTv: ExTextView
+    var onClickBottomBtn: (() -> Unit)? = null
 
     lateinit var mDoubleRoomData: DoubleRoomData
 
@@ -82,14 +83,7 @@ class DoubleGameEndFragment : BaseFragment() {
 
         mMatchAgain.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
-                    activity?.finish()
-                } else {
-                    activity?.finish()
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                            .navigation()
-                }
+                onClickBottomBtn?.invoke()
             }
         })
 
@@ -136,12 +130,25 @@ class DoubleGameEndFragment : BaseFragment() {
         if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
             mLastNumTv.visibility = View.GONE
             mMatchAgain.text = "返回首页"
+            onClickBottomBtn = {
+                activity?.finish()
+            }
         } else {
             if (model.todayResTimes <= 0) {
                 mLastNumTv.visibility = View.GONE
+                mMatchAgain.text = "返回首页"
+                onClickBottomBtn = {
+                    activity?.finish()
+                }
             } else {
                 mLastNumTv.text = "今日剩余${model.todayResTimes}次"
                 mLastNumTv.visibility = View.VISIBLE
+                onClickBottomBtn = {
+                    activity?.finish()
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                            .navigation()
+                }
             }
         }
 
