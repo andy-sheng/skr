@@ -53,7 +53,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mGameTab?.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
         mGameTab?.setSelectedIndicatorColors(Color.WHITE)
         mGameTab?.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
-        mGameTab?.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
+        mGameTab?.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
         mGameTab?.setTitleSize(14f)
         mGameTab?.setSelectedTilleSize(20f)
         mGameTab?.setIndicatorWidth(U.getDisplayUtils().dip2px(16f))
