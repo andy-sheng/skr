@@ -126,7 +126,7 @@ class DoubleGameEndFragment : BaseFragment() {
                 .build())
 
         mEndTv.text = model.combineRoomCloseReasonDesc
-        mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.nickname}唱聊了${(model.chatDurTime / 60000) + 1}分钟"
+        mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.nickname}唱聊了${(model.chatDurTime)}分钟"
 
 
         if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
