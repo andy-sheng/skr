@@ -67,18 +67,33 @@ public class OwnerManagePresenter extends RxLifeCyclePresenter {
     }
 
     public void getRecommendTag() {
-        ApiMethods.subscribe(mGrabRoomServerApi.getStandBillBoards(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<RecommendTagModel> recommendTagModelArrayList = JSONObject.parseArray(result.getData().getString("items"), RecommendTagModel.class);
-                    mIOwnerManageView.showRecommendSong(recommendTagModelArrayList);
-                } else {
-                    U.getToastUtil().showShort(result.getErrmsg() + "");
-                }
+        if (mSongManageData.isGrabRoom()) {
+            ApiMethods.subscribe(mGrabRoomServerApi.getStandBillBoards(), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        List<RecommendTagModel> recommendTagModelArrayList = JSONObject.parseArray(result.getData().getString("items"), RecommendTagModel.class);
+                        mIOwnerManageView.showRecommendSong(recommendTagModelArrayList);
+                    } else {
+                        U.getToastUtil().showShort(result.getErrmsg() + "");
+                    }
 
-            }
-        }, this, new ApiMethods.RequestControl("getStandBillBoards", ApiMethods.ControlType.CancelThis));
+                }
+            }, this, new ApiMethods.RequestControl("getStandBillBoards", ApiMethods.ControlType.CancelThis));
+        } else {
+            ApiMethods.subscribe(mGrabRoomServerApi.getDoubleStandBillBoards(), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        List<RecommendTagModel> recommendTagModelArrayList = JSONObject.parseArray(result.getData().getString("items"), RecommendTagModel.class);
+                        mIOwnerManageView.showRecommendSong(recommendTagModelArrayList);
+                    } else {
+                        U.getToastUtil().showShort(result.getErrmsg() + "");
+                    }
+
+                }
+            }, this, new ApiMethods.RequestControl("getStandBillBoards", ApiMethods.ControlType.CancelThis));
+        }
     }
 
     // 向房主推荐新歌
