@@ -45,9 +45,9 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         MyLog.d(mTag, "matchSuccessFromPush")
         val doubleRoomData = DoubleRoomData()
         doubleRoomData.gameId = doubleStartCombineRoomByMatchPushEvent.roomID
-        doubleRoomData.enableNoLimitDuration = true
         doubleRoomData.passedTimeMs = doubleStartCombineRoomByMatchPushEvent.passedTimeMs
         doubleRoomData.config = doubleStartCombineRoomByMatchPushEvent.config
+        doubleRoomData.enableNoLimitDuration = doubleRoomData.config?.durationTimeMs == -1
 
         val hashMap = HashMap<Int, UserInfoModel>()
         for (userInfoModel in doubleStartCombineRoomByMatchPushEvent.users) {

@@ -186,11 +186,15 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun unLockInfo() {
-        val mutableSet1 = mutableMapOf<String, Objects>()
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.unLock(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-
+                if (obj?.errno == 0) {
+                    MyLog.d(tag, "解锁成功")
+                } else {
+                    MyLog.e(tag, obj?.errmsg)
+                }
             }
         }, this@DoubleCorePresenter)
     }

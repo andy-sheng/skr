@@ -38,8 +38,11 @@ public class LocalCombineRoomMusic implements Serializable {
     }
 
     public LocalCombineRoomMusic(CombineRoomMusic combineRoomMusic) {
-        this.music = new SongModel();
-        this.music.parse(combineRoomMusic.getMusic());
+        if (combineRoomMusic.hasMusic()) {
+            this.music = new SongModel();
+            this.music.parse(combineRoomMusic.getMusic());
+        }
+
         this.userID = combineRoomMusic.getUserID();
         this.uniqTag = combineRoomMusic.getUniqTag();
     }

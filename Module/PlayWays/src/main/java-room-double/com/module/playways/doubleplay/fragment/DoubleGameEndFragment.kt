@@ -68,10 +68,16 @@ class DoubleGameEndFragment : BaseFragment() {
             }
         })
 
-//        Observable.create<String> {
+        mCloseIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                activity?.finish()
+            }
+        })
+
+        Observable.create<String> {
             ApiMethods.subscribe(mDoubleRoomServerApi.getEndGameInfo(mDoubleRoomData.gameId), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
-//                    it.onComplete()
+                    it.onComplete()
                     if (obj?.errno == 0) {
                         val model = JSON.parseObject(obj.data.toJSONString(), DoubleEndRoomModel::class.java)
                         setEndData(model)
@@ -81,14 +87,14 @@ class DoubleGameEndFragment : BaseFragment() {
                 }
 
                 override fun onNetworkError(errorType: ErrorType?) {
-//                    it.onError(Throwable("网络延迟"))
+                    it.onError(Throwable("网络延迟"))
                 }
 
                 override fun onError(e: Throwable) {
-//                    it.onError(Throwable("网络错误"))
+                    it.onError(Throwable("网络错误"))
                 }
             }, this@DoubleGameEndFragment)
-//        }.retryWhen(RxRetryAssist(10, "")).subscribe()
+        }.retryWhen(RxRetryAssist(10, "")).subscribe()
     }
 
     fun setEndData(model: DoubleEndRoomModel) {

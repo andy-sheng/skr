@@ -5,7 +5,7 @@ import com.zq.live.proto.Common.CombineRoomConfig;
 import java.io.Serializable;
 
 public class LocalCombineRoomConfig implements Serializable {
-    int durationTimeMs; //房间持续时间（4000ms）
+    public int durationTimeMs; //房间持续时间（4000ms）
     String maskMaleAvatar; //隐藏的男性用户头像
     String maskFemaleAvatar; //隐藏的女性用户头像
     String roomSignature; //房间描述签名

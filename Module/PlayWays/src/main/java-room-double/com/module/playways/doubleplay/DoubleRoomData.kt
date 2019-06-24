@@ -109,8 +109,10 @@ class DoubleRoomData() : Serializable {
         }
 
         if (this.localCombineRoomMusic == null) {
-            //游戏开始
-            EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc, hasNext))
+            //localCombineRoomMusic == null 表示之前没有歌曲，localCombineRoomMusic.music == null表示游戏还没开始，还没有人点歌
+            if (localCombineRoomMusic.music != null) {
+                EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc, hasNext))
+            }
         } else if (this.localCombineRoomMusic!!.uniqTag.equals(localCombineRoomMusic.uniqTag)) {
             //还是这个歌曲
             EventBus.getDefault().post(UpdateNextSongDecEvent(nextMusicDesc, hasNext))
