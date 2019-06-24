@@ -14,6 +14,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -24,6 +25,7 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleEndRoomModel
+import com.zq.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
 
 
@@ -58,6 +60,21 @@ class DoubleGameEndFragment : BaseFragment() {
         mFollowTv = mRootView.findViewById<View>(R.id.follow_tv) as ExTextView
         mMatchAgain = mRootView.findViewById<View>(R.id.match_again) as ExTextView
         mLastNumTv = mRootView.findViewById<View>(R.id.last_num_tv) as ExTextView
+
+        mReportTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 举报
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, 1)
+                                .addDataBeforeAdd(1, mDoubleRoomData.getAntherUser()?.userId ?: 0)
+                                .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                                .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                                .build())
+            }
+        })
 
         mMatchAgain.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
