@@ -186,7 +186,16 @@ class DoubleRoomData() : Serializable {
         return null
     }
 
-    fun getMyUser() : UserInfoModel?{
+    fun getUserHasLockById(id: Int): Boolean {
+        val localUserLockInfo = userLockInfoMap[id]
+        if (localUserLockInfo == null || localUserLockInfo.isHasLock) {
+            return true
+        }
+
+        return false
+    }
+
+    fun getMyUser(): UserInfoModel? {
         val map = userInfoListMap
         if (map != null) {
             for (info in map) {

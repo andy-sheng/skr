@@ -117,11 +117,23 @@ class DoubleGameEndFragment : BaseFragment() {
     }
 
     fun setEndData(model: DoubleEndRoomModel) {
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder("")
-                .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                .setBorderColor(Color.WHITE)
-                .build())
+        val userInfoModel = mDoubleRoomData.getAntherUser()
+
+        if (!mDoubleRoomData.getUserHasLockById(userInfoModel?.userId ?: 0)) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel?.avatar)
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                    .setBorderColor(Color.WHITE)
+                    .build())
+        } else {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mDoubleRoomData.getMaskAvatar(mDoubleRoomData.getAntherUser()?.sex
+                    ?: 0))
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                    .setBorderColor(Color.WHITE)
+                    .build())
+            mFollowTv.visibility = View.GONE
+        }
 
         mEndTv.text = model.combineRoomCloseReasonDesc
         mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.nickname}唱聊了${(model.chatDurTime)}分钟"
