@@ -46,6 +46,7 @@ import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.doubleplay.inter.IDoubleInviteView;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.grab.room.bottom.GrabBottomContainerView;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
@@ -1722,8 +1723,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
                         .withSerializable("room_data", mRoomData)
                         .navigation();
-
-                getActivity().finish();
+                for (Activity activity1 : U.getActivityUtils().getActivityList()) {
+                    if (activity1 instanceof GrabRoomActivity) {
+                        activity1.finish();
+                    }
+                    if (activity1 instanceof OwnerManagerActivity) {
+                        activity1.finish();
+                    }
+                }
 //                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
 //                        StatConstants.KEY_GAME_FINISH, null);
             } else {
