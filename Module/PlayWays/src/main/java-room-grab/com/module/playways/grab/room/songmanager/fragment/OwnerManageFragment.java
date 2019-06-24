@@ -112,6 +112,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), GrabSearchSongFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
+                        .addDataBeforeAdd(0, mSongManageData)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

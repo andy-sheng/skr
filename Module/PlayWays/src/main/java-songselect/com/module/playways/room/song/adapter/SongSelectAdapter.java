@@ -16,8 +16,9 @@ import com.module.playways.R;
 
 public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
 
-    public static int DEFAULT_MODE = 0;          //默认模式，不带底部
+    public static int DEFAULT_MODE = 0;          //默认模式
     public static int GRAB_MODE = 1;             //一唱到底搜索
+    public static int DOUBLE_MODE = 2;           //双人房模式
 
     Boolean mHasFooterBack = false;     //是否含底部搜索反馈
 
@@ -28,6 +29,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     public static int SEARCH_ITEM_TYPE = 1;      // 底部搜索反馈
 
     int mode = DEFAULT_MODE;
+    boolean isOwner = false;
 
     public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener) {
         this.mRecyclerOnItemClickListener = onItemClickListener;
@@ -38,17 +40,18 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         this.mHasFooterBack = mHasFooterBack;
     }
 
-    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, boolean mHasFooterBack, int mode) {
+    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, boolean mHasFooterBack, int mode, boolean isOwner) {
         this.mRecyclerOnItemClickListener = onItemClickListener;
         this.mHasFooterBack = mHasFooterBack;
         this.mode = mode;
+        this.isOwner = isOwner;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == SEARCH_ITEM_TYPE) {
-            if (mode == GRAB_MODE) {
+            if (mode == GRAB_MODE || mode == DOUBLE_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_search_footer_view, parent, false);
                 SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
                 return songSearchFooter;
@@ -60,7 +63,11 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         } else {
             if (mode == GRAB_MODE) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
-                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener);
+                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, isOwner);
+                return viewHolder;
+            } else if (mode == DOUBLE_MODE) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
+                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener, true);
                 return viewHolder;
             } else {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);

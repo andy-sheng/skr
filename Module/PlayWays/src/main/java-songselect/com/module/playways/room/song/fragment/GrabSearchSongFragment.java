@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -21,6 +22,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
@@ -54,7 +56,7 @@ public class GrabSearchSongFragment extends BaseFragment {
     LinearLayoutManager mLinearLayoutManager;
     SongSelectAdapter mSongSelectAdapter;
 
-    int mGameType;
+    SongManageData mSongManageData;
     String mKeyword;
     DialogPlus mSearchFeedbackDialog;
 
@@ -73,13 +75,13 @@ public class GrabSearchSongFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mSearchResult = (RecyclerView) mRootView.findViewById(R.id.search_result);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            mGameType = bundle.getInt(KEY_GAME_TYPE);
-        }
-
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mSearchResult.setLayoutManager(mLinearLayoutManager);
+
+        int selectMode = SongSelectAdapter.GRAB_MODE;
+        if (mSongManageData.isDoubleRoom()) {
+            selectMode = SongSelectAdapter.DOUBLE_MODE;
+        }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
@@ -94,7 +96,7 @@ public class GrabSearchSongFragment extends BaseFragment {
                     mFragmentDataListener.onFragmentResult(0, 0, null, songModel);
                 }
             }
-        }, true, SongSelectAdapter.GRAB_MODE);
+        }, true, selectMode, mSongManageData.isOwner());
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
@@ -282,6 +284,14 @@ public class GrabSearchSongFragment extends BaseFragment {
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
         mCompositeDisposable = new CompositeDisposable();
         mCompositeDisposable.add(mDisposableObserver);
+    }
+
+    @Override
+    public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
+        if (type == 0) {
+            mSongManageData = (SongManageData) data;
+        }
     }
 
     @Override

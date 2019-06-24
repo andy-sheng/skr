@@ -14,8 +14,8 @@ import com.module.playways.grab.room.songmanager.fragment.OwnerManageFragment;
 
 public class OwnerManagerActivity extends BaseActivity {
     public static void open(FragmentActivity activity, SongManageData roomData) {
-        Intent intent = new Intent(activity,OwnerManagerActivity.class);
-        intent.putExtra("room_data",roomData);
+        Intent intent = new Intent(activity, OwnerManagerActivity.class);
+        intent.putExtra("room_data", roomData);
         if (activity != null) {
             activity.startActivity(intent);
         }
@@ -46,5 +46,10 @@ public class OwnerManagerActivity extends BaseActivity {
     @Override
     public boolean canSlide() {
         return false;
+    }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return true;
     }
 }

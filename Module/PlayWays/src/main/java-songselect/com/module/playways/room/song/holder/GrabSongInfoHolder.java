@@ -23,14 +23,14 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
     SongModel mSongModel;
     int position;
 
-//    SimpleDraweeView mSongCoverIv;
+    //    SimpleDraweeView mSongCoverIv;
     ExTextView mSongSelectTv;
     ExTextView mSongNameTv;
     ExTextView mChorusSongTag;
     ExTextView mPkSongTag;
 //    ExTextView mSongOwnerTv;
 
-    public GrabSongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
+    public GrabSongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener, boolean canAdd) {
         super(itemView);
 
 //        mSongCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.song_cover_iv);
@@ -39,7 +39,11 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
         mChorusSongTag = (ExTextView) itemView.findViewById(R.id.chorus_song_tag);
         mPkSongTag = (ExTextView) itemView.findViewById(R.id.pk_song_tag);
 //        mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
-
+        if (canAdd) {
+            mSongSelectTv.setText("添加");
+        } else {
+            mSongSelectTv.setText("想唱");
+        }
         mSongSelectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
