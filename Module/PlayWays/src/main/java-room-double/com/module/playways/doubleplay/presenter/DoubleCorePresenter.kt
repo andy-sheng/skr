@@ -130,11 +130,15 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun closeByTimeOver() {
-        val mutableSet1 = mutableMapOf<String, Objects>()
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+        val mutableSet = mutableMapOf("roomID" to mRoomData.gameId)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
         ApiMethods.subscribe(mDoubleRoomServerApi.closeByTimerOver(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-
+                mIDoublePlayView.finishActivity()
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                        .withSerializable("roomData", mRoomData)
+                        .navigation()
             }
         }, this@DoubleCorePresenter)
     }
@@ -144,7 +148,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-                mIDoublePlayView.finishActivityWithError()
+                mIDoublePlayView.finishActivity()
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_DOUBLE_END)
                         .withSerializable("roomData", mRoomData)

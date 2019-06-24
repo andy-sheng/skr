@@ -23,4 +23,6 @@ interface IDoublePlayView {
     fun finishActivityWithError()
 
     fun updateNextSongDec(mNext: String, hasNext: Boolean)
+
+    fun finishActivity()
 }

@@ -183,11 +183,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     private fun startCountDown() {
-        val take = mRoomData.config?.durationTimeMs ?: 0 / 1000
+        val take = (mRoomData.config?.durationTimeMs ?: 0) / 1000
         MyLog.d(mTag, "startCountDown take is " + take)
         countDownTimer = HandlerTaskTimer.newBuilder().interval(1000).take(take).start(object : HandlerTaskTimer.ObserverW() {
             override fun onNext(t: Int) {
-                mCountDownTv?.text = t.toString()
+                mCountDownTv?.text = U.getDateTimeUtils().formatTimeStringForDate((take - t).toLong() * 1000, "mm:ss")
             }
 
             override fun onComplete() {
@@ -279,6 +279,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleSingCardView.playLyric("", mCur, mNext, hasNext)
     }
 
+    override fun finishActivity() {
+        activity?.finish()
+    }
 
     override fun picked() {
         mRightZanView?.addZanXin(mRightZanView)
