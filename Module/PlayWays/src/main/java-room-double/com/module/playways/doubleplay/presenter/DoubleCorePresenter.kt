@@ -24,13 +24,13 @@ import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.model.DoubleSyncModel
 import com.module.playways.doubleplay.pushEvent.*
+import com.zq.live.proto.CombineRoom.ECombineStatus
 import com.zq.mediaengine.kit.ZqEngineKit
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 
 class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mIDoublePlayView: IDoublePlayView) : RxLifeCyclePresenter() {
     val tag = "DoubleCorePresenter"
@@ -110,13 +110,19 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     private fun sendFailedToServer() {
-        val mutableSet1 = mutableMapOf<String, Objects>()
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.enterRoomFailed(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
 
             }
         }, this@DoubleCorePresenter)
+
+        mIDoublePlayView.finishActivity()
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                .withSerializable("roomData", mRoomData)
+                .navigation()
     }
 
     fun pickOther() {
@@ -185,7 +191,15 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 if (obj?.errno == 0) {
                     MyLog.d(tag, "syncStatus 2")
                     val model = JSON.parseObject(obj.data.toJSONString(), DoubleSyncModel::class.java)
-                    mRoomData.syncRoomInfo(model)
+                    if (model.status == ECombineStatus.CS_Finished.value) {
+                        mIDoublePlayView.finishActivity()
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                                .withSerializable("roomData", mRoomData)
+                                .navigation()
+                    } else {
+                        mRoomData.syncRoomInfo(model)
+                    }
                 }
             }
         }, this@DoubleCorePresenter)
@@ -256,9 +270,17 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     fun onEvent(event: DoubleCombineRoomSycPushEvent) {
         if (event.doubleSyncModel.syncStatusTimeMs > syncStatusTimeMs) {
             syncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
-            mRoomData!!.syncRoomInfo(event.doubleSyncModel)
-            uiHandler.removeMessages(SYNC_MSG)
-            uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+            if (event.doubleSyncModel.status == ECombineStatus.CS_Finished.value) {
+                mIDoublePlayView.finishActivity()
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                        .withSerializable("roomData", mRoomData)
+                        .navigation()
+            } else {
+                mRoomData!!.syncRoomInfo(event.doubleSyncModel)
+                uiHandler.removeMessages(SYNC_MSG)
+                uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+            }
         }
     }
 

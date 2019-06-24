@@ -34,7 +34,6 @@ public class DoubleSyncModel implements Serializable {
     }
 
 
-
     public boolean isEnableNoLimitDuration() {
         return enableNoLimitDuration;
     }
@@ -107,6 +106,7 @@ public class DoubleSyncModel implements Serializable {
         doubleRoundInfoModel.currentMusic = new LocalCombineRoomMusic(combineRoomSyncStatusMsg.getCurrentMusic());
         doubleRoundInfoModel.nextMusicDesc = combineRoomSyncStatusMsg.getNextMusicDesc();
         doubleRoundInfoModel.hasNextMusic = combineRoomSyncStatusMsg.getHasNextMusic();
+        doubleRoundInfoModel.status = combineRoomSyncStatusMsg.getStatus().getValue();
         return doubleRoundInfoModel;
     }
 }
