@@ -73,9 +73,9 @@ public class DoubleSelfSingCardView {
         if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             mDoubleChorusSelfSingCardView.setVisibility(View.VISIBLE);
             if (songModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getMyUser(), roomData.getAntherUser());
+                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getMyUser(), roomData.getAntherUser(), roomData);
             } else {
-                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getAntherUser(), roomData.getMyUser());
+                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getAntherUser(), roomData.getMyUser(), roomData);
             }
         } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             mDoubleMiniGameSelfSingCardView.playLyric(songModel, roomData);

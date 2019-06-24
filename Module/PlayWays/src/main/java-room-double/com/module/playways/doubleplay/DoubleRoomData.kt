@@ -186,6 +186,40 @@ class DoubleRoomData() : Serializable {
         return null
     }
 
+    fun getAvatarById(id: Int): String {
+        if (id == MyUserInfoManager.getInstance().uid.toInt()) {
+            return getSelfAvatar()
+        } else {
+            return getPartnerAvatar()
+        }
+    }
+
+    fun getPartnerAvatar(): String {
+        val info = getAntherUser()
+        if (info != null) {
+            if (!getUserHasLockById(info.userId)) {
+                return info.avatar
+            } else {
+                return getMaskAvatar(info.sex)
+            }
+        } else {
+            return ""
+        }
+    }
+
+    fun getSelfAvatar(): String {
+        val info = userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
+        if (info != null) {
+            if (!info.isHasLock) {
+                return MyUserInfoManager.getInstance().avatar
+            } else {
+                return getMaskAvatar(MyUserInfoManager.getInstance().sex)
+            }
+        } else {
+            return ""
+        }
+    }
+
     fun getUserHasLockById(id: Int): Boolean {
         val localUserLockInfo = userLockInfoMap[id]
         if (localUserLockInfo == null || localUserLockInfo.isHasLock) {

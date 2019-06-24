@@ -15,12 +15,10 @@ import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
-import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.grab.room.view.video.DoubleSelfSingCardView
-import com.module.playways.room.song.model.SongModel
 
 
 class DoubleSingCardView : ConstraintLayout {
@@ -63,10 +61,11 @@ class DoubleSingCardView : ConstraintLayout {
         })
     }
 
-    fun playLyric(roomData: DoubleRoomData, avatar: String = "", mCur: LocalCombineRoomMusic?, mNext: String?, hasNext: Boolean) {
+    fun playLyric(roomData: DoubleRoomData, mCur: LocalCombineRoomMusic?, mNext: String?, hasNext: Boolean) {
         this.mCurMusic = mCur
+
         AvatarUtils.loadAvatarByUrl(mSongOwnerIv,
-                AvatarUtils.newParamsBuilder(avatar)
+                AvatarUtils.newParamsBuilder(roomData.getAvatarById(mCur?.userID ?: 0))
                         .setBorderColor(U.getColor(R.color.white))
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setCircle(true)

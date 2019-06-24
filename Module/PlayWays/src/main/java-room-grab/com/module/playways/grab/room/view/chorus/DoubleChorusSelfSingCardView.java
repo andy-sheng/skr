@@ -10,6 +10,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.R;
+import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.SongModel;
@@ -27,6 +28,8 @@ import io.reactivex.functions.Consumer;
 public class DoubleChorusSelfSingCardView extends BaseChorusSelfCardView {
     UserInfoModel mFirstModel;
     UserInfoModel mSecondModel;
+    DoubleRoomData mRoomData;
+    ChorusSelfLyricAdapter mChorusSelfLyricAdapter;
 
     public final static String TAG = "DoubleChorusSelfSingCardView";
 
@@ -44,10 +47,11 @@ public class DoubleChorusSelfSingCardView extends BaseChorusSelfCardView {
         }
     }
 
-    public boolean playLyric(SongModel songModel, UserInfoModel firstModel, UserInfoModel secondModel) {
+    public boolean playLyric(SongModel songModel, UserInfoModel firstModel, UserInfoModel secondModel, DoubleRoomData roomData) {
         mSongModel = songModel;
         mFirstModel = firstModel;
         mSecondModel = secondModel;
+        mRoomData = roomData;
 
         return playLyric();
     }

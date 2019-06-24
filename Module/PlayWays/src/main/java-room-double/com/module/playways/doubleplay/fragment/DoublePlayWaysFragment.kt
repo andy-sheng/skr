@@ -325,12 +325,12 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mWordGroup?.visibility = GONE
         toNextSongCardView()
         mCurrentCardView?.visibility = VISIBLE
-        mCurrentCardView?.playLyric(mRoomData, "", mCur, mNext, hasNext)
+        mCurrentCardView?.playLyric(mRoomData, mCur, mNext, hasNext)
     }
 
     override fun changeRound(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
         toNextSongCardView()
-        mCurrentCardView?.playLyric(mRoomData, "", mCur, mNext, hasNext)
+        mCurrentCardView?.playLyric(mRoomData, mCur, mNext, hasNext)
     }
 
     override fun finishActivity() {

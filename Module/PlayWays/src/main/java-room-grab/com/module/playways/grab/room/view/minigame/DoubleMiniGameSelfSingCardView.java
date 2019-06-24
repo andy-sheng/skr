@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 
-import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -16,24 +14,8 @@ import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
-import com.module.playways.room.song.model.SongModel;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zq.live.proto.Common.EMiniGamePlayType;
-import com.zq.lyrics.utils.SongResUtils;
-
-import java.io.File;
-import java.io.IOException;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSource;
-import okio.Okio;
 
 public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
     public final static String TAG = "DoubleMiniGameSelfSingCardView";
@@ -41,6 +23,7 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
     //是不是这个人点的歌儿
     boolean mIsOwner = false;
     UserInfoModel mOwnerInfo;
+    DoubleRoomData mDoubleRoomData;
 
     public DoubleMiniGameSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub, roomData);
@@ -58,6 +41,7 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
 
     public boolean playLyric(LocalCombineRoomMusic music, DoubleRoomData roomData) {
         mMusic = music;
+        mDoubleRoomData = roomData;
         if (music.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             mIsOwner = true;
             mOwnerInfo = roomData.getMyUser();
@@ -86,18 +70,23 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
 //        mSingCountDownView.setTagTvText(mMiniGameInfoModel.getGameName());
 //        mSingCountDownView.startPlay(0, totalTs, true);
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mOwnerInfo.getAvatar())
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mDoubleRoomData.getAvatarById(mMusic.getUserID()))
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .setBorderColor(Color.WHITE)
                 .build());
 
-        String mOwnerName = mOwnerInfo.getNickname();
-        if (mOwnerInfo.getNickname().length() > 7) {
-            mOwnerName = mOwnerName.substring(0, 7);
+        if (!mDoubleRoomData.getUserHasLockById(mMusic.getUserID())) {
+            String mOwnerName = mOwnerInfo.getNickname();
+            if (mOwnerInfo.getNickname().length() > 7) {
+                mOwnerName = mOwnerName.substring(0, 7);
+            }
+            mFirstTipsTv.setTextColor(U.getColor(R.color.black_trans_60));
+            mFirstTipsTv.setText("【" + mOwnerName + "】" + "先开始");
+        } else {
+            mFirstTipsTv.setTextColor(U.getColor(R.color.black_trans_60));
+            mFirstTipsTv.setText("【 他 】" + "先开始");
         }
-        mFirstTipsTv.setTextColor(U.getColor(R.color.black_trans_60));
-        mFirstTipsTv.setText("【" + mOwnerName + "】" + "先开始");
 
 
         MiniGameInfoModel model = mMusic.getMusic().getMiniGame();
