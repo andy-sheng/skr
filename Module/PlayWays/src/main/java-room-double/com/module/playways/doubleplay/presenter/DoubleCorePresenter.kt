@@ -264,7 +264,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleEndCombineRoomPushEvent) {
+        MyLog.d(tag, "DoubleEndCombineRoomPushEvent 1")
         if (event.basePushInfo.timeMs > syncStatusTimeMs) {
+            MyLog.d(tag, "DoubleEndCombineRoomPushEvent 2")
             mRoomData!!.updateGameState(DoubleRoomData.DoubleGameState.END)
             mIDoublePlayView.gameEnd(event)
         }

@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -24,6 +25,7 @@ import com.common.view.ex.ExTextView
 import com.dialog.view.TipsDialogView
 import com.engine.agora.AgoraEngineAdapter
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
@@ -34,7 +36,6 @@ import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
 import com.module.playways.doubleplay.view.DoubleSingCardView
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity
 import com.module.playways.grab.room.songmanager.SongManageData
-import com.module.playways.room.song.model.SongModel
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -360,7 +361,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun gameEnd(doubleEndCombineRoomPushEvent: DoubleEndCombineRoomPushEvent) {
-
+        activity?.finish()
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                .withSerializable("roomData", mRoomData)
+                .navigation()
     }
 
     override fun showLockState(userID: Int, lockState: Boolean) {
