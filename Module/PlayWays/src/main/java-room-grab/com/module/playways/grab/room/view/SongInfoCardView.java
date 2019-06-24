@@ -156,6 +156,7 @@ public class SongInfoCardView extends RelativeLayout {
             // 合唱
             mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
+            mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
@@ -172,6 +173,7 @@ public class SongInfoCardView extends RelativeLayout {
             // PK
             mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
+            mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(VISIBLE);
@@ -192,6 +194,7 @@ public class SongInfoCardView extends RelativeLayout {
             } else {
                 MyLog.w(TAG, "bindSongModel" + " 给的是小游戏类型，但是结构给的空？？？服务器BYD和佳胜");
             }
+            mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             // 和合唱一样的卡片
             mGrabChorus.setVisibility(VISIBLE);
@@ -363,6 +366,7 @@ public class SongInfoCardView extends RelativeLayout {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    mGrabCd.clearAnimation();
                     clearAnimation();
                     if (mRotateAnimation != null) {
                         mRotateAnimation.cancel();
@@ -380,6 +384,7 @@ public class SongInfoCardView extends RelativeLayout {
             if (mRotateAnimation != null) {
                 mRotateAnimation.cancel();
             }
+            mGrabCd.clearAnimation();
             clearAnimation();
             setVisibility(GONE);
         }
