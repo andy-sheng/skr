@@ -83,13 +83,8 @@ class DoubleRoomData() : Serializable {
     fun syncRoomInfo(model: DoubleSyncModel?) {
         if (doubleGameState != DoubleGameState.END) {
             if (model == null) {
-                //结束
-                doubleGameState = DoubleGameState.END
+                MyLog.e(Tag, "syncRoomInfo model is null")
                 return
-            }
-
-            if (doubleGameState == DoubleGameState.HAS_NOT_START) {
-                doubleGameState = DoubleGameState.START
             }
 
             setData(model)
@@ -97,6 +92,7 @@ class DoubleRoomData() : Serializable {
     }
 
     private fun setData(model: DoubleSyncModel) {
+        MyLog.d(Tag, "setData model is " + model.toString())
         syncStatusTimeMs = model.syncStatusTimeMs
         passedTimeMs = model.passedTimeMs
         updateCombineRoomMusic(model.currentMusic, model.nextMusicDesc, model.isHasNextMusic)
@@ -111,6 +107,10 @@ class DoubleRoomData() : Serializable {
         if (this.localCombineRoomMusic == null) {
             //localCombineRoomMusic == null 表示之前没有歌曲，localCombineRoomMusic.music == null表示游戏还没开始，还没有人点歌
             if (localCombineRoomMusic.music != null) {
+                if (doubleGameState == DoubleGameState.HAS_NOT_START) {
+                    doubleGameState = DoubleGameState.START
+                }
+
                 EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc, hasNext))
             }
         } else if (this.localCombineRoomMusic!!.uniqTag.equals(localCombineRoomMusic.uniqTag)) {

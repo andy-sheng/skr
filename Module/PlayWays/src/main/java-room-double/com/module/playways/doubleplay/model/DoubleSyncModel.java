@@ -83,6 +83,20 @@ public class DoubleSyncModel implements Serializable {
         this.hasNextMusic = hasNextMusic;
     }
 
+    @Override
+    public String toString() {
+        return "DoubleSyncModel{" +
+                "syncStatusTimeMs=" + syncStatusTimeMs +
+                ", passedTimeMs=" + passedTimeMs +
+                ", userLockInfo=" + userLockInfo +
+                ", enableNoLimitDuration=" + enableNoLimitDuration +
+                ", currentMusic=" + currentMusic +
+                ", nextMusicDesc='" + nextMusicDesc + '\'' +
+                ", status=" + status +
+                ", hasNextMusic=" + hasNextMusic +
+                '}';
+    }
+
     public static DoubleSyncModel parse(CombineRoomSyncStatusMsg combineRoomSyncStatusMsg) {
         DoubleSyncModel doubleRoundInfoModel = new DoubleSyncModel();
 //        doubleRoundInfoModel.basePushInfo = basePushInfo;

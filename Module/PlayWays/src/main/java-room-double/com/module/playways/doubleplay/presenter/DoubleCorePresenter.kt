@@ -179,9 +179,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     fun syncStatus() {
         uiHandler.removeMessages(SYNC_MSG)
         uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+        MyLog.d(tag, "syncStatus 1")
         ApiMethods.subscribe(mDoubleRoomServerApi.syncStatus(mRoomData.gameId), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
+                    MyLog.d(tag, "syncStatus 2")
                     val model = JSON.parseObject(obj.data.toJSONString(), DoubleSyncModel::class.java)
                     mRoomData.syncRoomInfo(model)
                 }
@@ -201,6 +203,19 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 }
             }
         }, this@DoubleCorePresenter)
+    }
+
+    /**
+     * 双方添加的音乐
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleAddMusicEvent) {
+        // 双人房都可以点歌
+        if (event.mNeedLoad) {
+            mRoomData.updateCombineRoomMusic(event.mCombineRoomMusic, "", false)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -235,15 +250,15 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: DoubleCombineRoomSycPushEvent) {
-        if (event.doubleSyncModel.syncStatusTimeMs > syncStatusTimeMs) {
-            syncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
-            mRoomData!!.syncRoomInfo(event.doubleSyncModel)
-            uiHandler.removeMessages(SYNC_MSG)
-            uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: DoubleCombineRoomSycPushEvent) {
+//        if (event.doubleSyncModel.syncStatusTimeMs > syncStatusTimeMs) {
+//            syncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
+//            mRoomData!!.syncRoomInfo(event.doubleSyncModel)
+//            uiHandler.removeMessages(SYNC_MSG)
+//            uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+//        }
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleEndCombineRoomPushEvent) {

@@ -10,7 +10,6 @@ import com.common.log.MyLog
 import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
-import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -122,5 +121,10 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
     override fun toDoubleRoomByPush() {
         activity?.finish()
+    }
+
+    override fun destroy() {
+        super.destroy()
+        mDialogPlus?.dismiss()
     }
 }
