@@ -8,13 +8,19 @@ import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.R;
+import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
+import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.lyrics.utils.SongResUtils;
 
 import java.io.File;
@@ -31,13 +37,10 @@ import okio.Okio;
 
 public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
     public final static String TAG = "DoubleMiniGameSelfSingCardView";
-    SongModel mSongModel;
+    LocalCombineRoomMusic mMusic;
     //是不是这个人点的歌儿
     boolean mIsOwner = false;
-
-    String mOwnerName;
-
-    String mAvatar;
+    UserInfoModel mOwnerInfo;
 
     public DoubleMiniGameSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub, roomData);
@@ -53,22 +56,25 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
         }
     }
 
-    public boolean playLyric(SongModel songModel, boolean isOwner, String ownerName, String avatar) {
-        mIsOwner = isOwner;
-        mOwnerName = ownerName;
-        mSongModel = songModel;
-        mAvatar = avatar;
-
+    public boolean playLyric(LocalCombineRoomMusic music, DoubleRoomData roomData) {
+        mMusic = music;
+        if (music.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            mIsOwner = true;
+            mOwnerInfo = roomData.getMyUser();
+        } else {
+            mIsOwner = false;
+            mOwnerInfo = roomData.getAntherUser();
+        }
         return playLyric();
     }
 
     public boolean playLyric() {
-        if (mSongModel == null) {
+        if (mMusic == null) {
             MyLog.w(TAG, "infoModel 是空的");
             return false;
         }
 
-        mMiniGameInfoModel = mSongModel.getMiniGame();
+        mMiniGameInfoModel = mMusic.getMusic().getMiniGame();
         if (mMiniGameInfoModel == null) {
             MyLog.w(TAG, "MiniGame 是空的");
             return false;
@@ -80,21 +86,31 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
 //        mSingCountDownView.setTagTvText(mMiniGameInfoModel.getGameName());
 //        mSingCountDownView.startPlay(0, totalTs, true);
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mAvatar)
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mOwnerInfo.getAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .setBorderColor(Color.WHITE)
                 .build());
 
-        if (mOwnerName.length() > 7) {
+        String mOwnerName = mOwnerInfo.getNickname();
+        if (mOwnerInfo.getNickname().length() > 7) {
             mOwnerName = mOwnerName.substring(0, 7);
         }
-
+        mFirstTipsTv.setTextColor(U.getColor(R.color.black_trans_60));
         mFirstTipsTv.setText("【" + mOwnerName + "】" + "先开始");
 
-        // TODO: 2019-05-29 带歌词的
-        mMiniGameSongUrl = mSongModel.getMiniGame().getSongInfo().getSongURL();
-        setLyric(mTvLyric,mMiniGameSongUrl);
+
+        MiniGameInfoModel model = mMusic.getMusic().getMiniGame();
+        if (model.getGamePlayType() == EMiniGamePlayType.EMGP_SONG_DETAIL.getValue()) {
+            // TODO: 2019-05-29 带歌词的
+            mMiniGameSongUrl = model.getSongInfo().getSongURL();
+            setLyric(mTvLyric, mMiniGameSongUrl);
+        } else {
+            // TODO: 2019-05-29 不带歌词的
+            mTvLyric.setTextColor(U.getColor(R.color.black_trans_60));
+            mTvLyric.setText(model.getDisplayGameRule());
+        }
+
         return true;
     }
 

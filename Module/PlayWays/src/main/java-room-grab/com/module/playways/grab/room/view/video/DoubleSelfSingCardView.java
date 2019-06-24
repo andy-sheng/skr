@@ -74,7 +74,7 @@ public class DoubleSelfSingCardView {
                 mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getAntherUser(), roomData.getMyUser());
             }
         } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
-//            mDoubleMiniGameSelfSingCardView.playLyric();
+            mDoubleMiniGameSelfSingCardView.playLyric(songModel, roomData);
         } else {
             mDoubleNormalSelfSingCardView.playLyric(mSongModel);
         }
