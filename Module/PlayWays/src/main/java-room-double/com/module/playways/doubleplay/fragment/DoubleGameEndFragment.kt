@@ -8,6 +8,8 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.UserInfoManager
+import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.rx.RxRetryAssist
 import com.common.rxretrofit.ApiManager
@@ -27,6 +29,8 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleEndRoomModel
 import com.zq.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class DoubleGameEndFragment : BaseFragment() {
@@ -141,26 +145,72 @@ class DoubleGameEndFragment : BaseFragment() {
             }
         }
 
-        if (model.isIsFriend || model.isIsFollow) {
-            val followState = DrawableCreator.Builder()
-                    .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
-                    .setSolidColor(U.getColor(R.color.white))
-                    .setStrokeColor(Color.parseColor("#AD6C00"))
-                    .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
-                    .build()
-
-            mFollowTv.text = "已关注"
-            mFollowTv.background = followState
-            mFollowTv.setTextColor(Color.parseColor("#AD6C00"))
+        if (model.isIsFriend) {
+            isFriendState()
+        } else if (model.isIsFollow) {
+            isFollowState()
         } else {
-            val followState = DrawableCreator.Builder()
-                    .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
-                    .setSolidColor(Color.parseColor("#FFC15B"))
-                    .build()
+            mFollowTv.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    UserInfoManager.getInstance().mateRelation(mDoubleRoomData.getAntherUser()!!.userId, UserInfoManager.RA_BUILD, false, mDoubleRoomData.gameId, null)
+                }
+            })
+            isStrangerState()
+        }
+    }
 
-            mFollowTv.text = "关注Ta"
-            mFollowTv.background = followState
-            mFollowTv.setTextColor(Color.parseColor("#AD6C00"))
+    fun isFriendState() {
+        val followState = DrawableCreator.Builder()
+                .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                .setSolidColor(U.getColor(R.color.white))
+                .setStrokeColor(Color.parseColor("#AD6C00"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .build()
+
+        mFollowTv.text = "已互关"
+        mFollowTv.background = followState
+        mFollowTv.setTextColor(Color.parseColor("#AD6C00"))
+    }
+
+    fun isFollowState() {
+        val followState = DrawableCreator.Builder()
+                .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                .setSolidColor(U.getColor(R.color.white))
+                .setStrokeColor(Color.parseColor("#AD6C00"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .build()
+
+        mFollowTv.text = "已关注"
+        mFollowTv.background = followState
+        mFollowTv.setTextColor(Color.parseColor("#AD6C00"))
+    }
+
+    fun isStrangerState() {
+        val followState = DrawableCreator.Builder()
+                .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                .setSolidColor(Color.parseColor("#FFC15B"))
+                .build()
+
+        mFollowTv.text = "关注Ta"
+        mFollowTv.background = followState
+        mFollowTv.setTextColor(Color.parseColor("#AD6C00"))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelationChangeEvent) {
+        val userInfoModel = mDoubleRoomData.getAntherUser()
+        if (userInfoModel == null) {
+            return
+        }
+
+        if (userInfoModel.userId == event.useId) {
+            if (event.isFriend) {
+                isFriendState()
+            } else if (event.isFollow) {
+                isFollowState()
+            } else {
+                isStrangerState()
+            }
         }
     }
 
@@ -171,6 +221,6 @@ class DoubleGameEndFragment : BaseFragment() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 }
