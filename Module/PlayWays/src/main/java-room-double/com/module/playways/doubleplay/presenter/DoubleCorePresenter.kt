@@ -198,6 +198,8 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     MyLog.d(tag, "解锁成功")
+                    mIDoublePlayView.unLockSelfSuccess()
+                    mRoomData.selfUnLock()
                 } else {
                     MyLog.e(tag, obj?.errmsg)
                 }

@@ -299,6 +299,10 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         activity?.finish()
     }
 
+    override fun unLockSelfSuccess() {
+        unLockSelf()
+    }
+
     override fun picked() {
         mRightZanView?.addZanXin(mRightZanView)
     }
@@ -371,12 +375,10 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun showNoLimitDurationState(noLimit: Boolean) {
         MyLog.d(mTag, "showNoLimitDurationState noLimit is $noLimit")
         if (noLimit) {
-            mUnlockTv?.visibility = GONE
             mNoLimitIcon?.visibility = VISIBLE
             mCountDownTv?.visibility = GONE
             countDownTimer?.dispose()
         } else {
-            mUnlockTv?.visibility = VISIBLE
             mNoLimitIcon?.visibility = GONE
             mCountDownTv?.visibility = VISIBLE
         }

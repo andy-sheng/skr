@@ -126,6 +126,13 @@ class DoubleRoomData() : Serializable {
         this.localCombineRoomMusic = localCombineRoomMusic
     }
 
+    fun selfUnLock() {
+        if (userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()] != null) {
+            userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]?.isHasLock = false
+            EventBus.getDefault().post(UpdateLockEvent(MyUserInfoManager.getInstance().uid.toInt(), false))
+        }
+    }
+
     fun updateLockInfo(localUserLockInfoList: List<LocalUserLockInfo>?, enableNoLimitDuration: Boolean) {
         //多人情况
         if (localUserLockInfoList == null) {

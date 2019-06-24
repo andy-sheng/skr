@@ -25,4 +25,6 @@ interface IDoublePlayView {
     fun updateNextSongDec(mNext: String, hasNext: Boolean)
 
     fun finishActivity()
+
+    fun unLockSelfSuccess()
 }
