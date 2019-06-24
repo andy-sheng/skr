@@ -32,6 +32,10 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
 
   public static final String DEFAULT_NEXTMUSICDESC = "";
 
+  public static final Boolean DEFAULT_HASNEXTMUSIC = false;
+
+  public static final ECombineStatus DEFAULT_STATUS = ECombineStatus.CS_UnPlay;
+
   /**
    * 状态同步时的毫秒时间戳
    */
@@ -78,15 +82,33 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
   )
   private final String nextMusicDesc;
 
+  /**
+   * 是否有下首歌曲
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean hasNextMusic;
+
+  /**
+   * 房间状态
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.zq.live.proto.CombineRoom.ECombineStatus#ADAPTER"
+  )
+  private final ECombineStatus status;
+
   public CombineRoomSyncStatusMsg(Long syncStatusTimeMs, Long passedTimeMs,
       List<UserLockInfo> userLockInfo, Boolean enableNoLimitDuration, CombineRoomMusic currentMusic,
-      String nextMusicDesc) {
-    this(syncStatusTimeMs, passedTimeMs, userLockInfo, enableNoLimitDuration, currentMusic, nextMusicDesc, ByteString.EMPTY);
+      String nextMusicDesc, Boolean hasNextMusic, ECombineStatus status) {
+    this(syncStatusTimeMs, passedTimeMs, userLockInfo, enableNoLimitDuration, currentMusic, nextMusicDesc, hasNextMusic, status, ByteString.EMPTY);
   }
 
   public CombineRoomSyncStatusMsg(Long syncStatusTimeMs, Long passedTimeMs,
       List<UserLockInfo> userLockInfo, Boolean enableNoLimitDuration, CombineRoomMusic currentMusic,
-      String nextMusicDesc, ByteString unknownFields) {
+      String nextMusicDesc, Boolean hasNextMusic, ECombineStatus status, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.syncStatusTimeMs = syncStatusTimeMs;
     this.passedTimeMs = passedTimeMs;
@@ -94,6 +116,8 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
     this.enableNoLimitDuration = enableNoLimitDuration;
     this.currentMusic = currentMusic;
     this.nextMusicDesc = nextMusicDesc;
+    this.hasNextMusic = hasNextMusic;
+    this.status = status;
   }
 
   @Override
@@ -105,6 +129,8 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
     builder.enableNoLimitDuration = enableNoLimitDuration;
     builder.currentMusic = currentMusic;
     builder.nextMusicDesc = nextMusicDesc;
+    builder.hasNextMusic = hasNextMusic;
+    builder.status = status;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -120,7 +146,9 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
         && userLockInfo.equals(o.userLockInfo)
         && Internal.equals(enableNoLimitDuration, o.enableNoLimitDuration)
         && Internal.equals(currentMusic, o.currentMusic)
-        && Internal.equals(nextMusicDesc, o.nextMusicDesc);
+        && Internal.equals(nextMusicDesc, o.nextMusicDesc)
+        && Internal.equals(hasNextMusic, o.hasNextMusic)
+        && Internal.equals(status, o.status);
   }
 
   @Override
@@ -134,6 +162,8 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
       result = result * 37 + (enableNoLimitDuration != null ? enableNoLimitDuration.hashCode() : 0);
       result = result * 37 + (currentMusic != null ? currentMusic.hashCode() : 0);
       result = result * 37 + (nextMusicDesc != null ? nextMusicDesc.hashCode() : 0);
+      result = result * 37 + (hasNextMusic != null ? hasNextMusic.hashCode() : 0);
+      result = result * 37 + (status != null ? status.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -148,6 +178,8 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
     if (enableNoLimitDuration != null) builder.append(", enableNoLimitDuration=").append(enableNoLimitDuration);
     if (currentMusic != null) builder.append(", currentMusic=").append(currentMusic);
     if (nextMusicDesc != null) builder.append(", nextMusicDesc=").append(nextMusicDesc);
+    if (hasNextMusic != null) builder.append(", hasNextMusic=").append(hasNextMusic);
+    if (status != null) builder.append(", status=").append(status);
     return builder.replace(0, 2, "CombineRoomSyncStatusMsg{").append('}').toString();
   }
 
@@ -213,6 +245,26 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
   }
 
   /**
+   * 是否有下首歌曲
+   */
+  public Boolean getHasNextMusic() {
+    if(hasNextMusic==null){
+        return DEFAULT_HASNEXTMUSIC;
+    }
+    return hasNextMusic;
+  }
+
+  /**
+   * 房间状态
+   */
+  public ECombineStatus getStatus() {
+    if(status==null){
+        return new ECombineStatus.Builder().build();
+    }
+    return status;
+  }
+
+  /**
    * 状态同步时的毫秒时间戳
    */
   public boolean hasSyncStatusTimeMs() {
@@ -245,6 +297,20 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
     return nextMusicDesc!=null;
   }
 
+  /**
+   * 是否有下首歌曲
+   */
+  public boolean hasHasNextMusic() {
+    return hasNextMusic!=null;
+  }
+
+  /**
+   * 房间状态
+   */
+  public boolean hasStatus() {
+    return status!=null;
+  }
+
   public static final class Builder extends Message.Builder<CombineRoomSyncStatusMsg, Builder> {
     private Long syncStatusTimeMs;
 
@@ -257,6 +323,10 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
     private CombineRoomMusic currentMusic;
 
     private String nextMusicDesc;
+
+    private Boolean hasNextMusic;
+
+    private ECombineStatus status;
 
     public Builder() {
       userLockInfo = Internal.newMutableList();
@@ -302,9 +372,25 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
       return this;
     }
 
+    /**
+     * 是否有下首歌曲
+     */
+    public Builder setHasNextMusic(Boolean hasNextMusic) {
+      this.hasNextMusic = hasNextMusic;
+      return this;
+    }
+
+    /**
+     * 房间状态
+     */
+    public Builder setStatus(ECombineStatus status) {
+      this.status = status;
+      return this;
+    }
+
     @Override
     public CombineRoomSyncStatusMsg build() {
-      return new CombineRoomSyncStatusMsg(syncStatusTimeMs, passedTimeMs, userLockInfo, enableNoLimitDuration, currentMusic, nextMusicDesc, super.buildUnknownFields());
+      return new CombineRoomSyncStatusMsg(syncStatusTimeMs, passedTimeMs, userLockInfo, enableNoLimitDuration, currentMusic, nextMusicDesc, hasNextMusic, status, super.buildUnknownFields());
     }
   }
 
@@ -321,6 +407,8 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
           + ProtoAdapter.BOOL.encodedSizeWithTag(4, value.enableNoLimitDuration)
           + CombineRoomMusic.ADAPTER.encodedSizeWithTag(5, value.currentMusic)
           + ProtoAdapter.STRING.encodedSizeWithTag(6, value.nextMusicDesc)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(7, value.hasNextMusic)
+          + ECombineStatus.ADAPTER.encodedSizeWithTag(8, value.status)
           + value.unknownFields().size();
     }
 
@@ -332,6 +420,8 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
       ProtoAdapter.BOOL.encodeWithTag(writer, 4, value.enableNoLimitDuration);
       CombineRoomMusic.ADAPTER.encodeWithTag(writer, 5, value.currentMusic);
       ProtoAdapter.STRING.encodeWithTag(writer, 6, value.nextMusicDesc);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 7, value.hasNextMusic);
+      ECombineStatus.ADAPTER.encodeWithTag(writer, 8, value.status);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -347,6 +437,15 @@ public final class CombineRoomSyncStatusMsg extends Message<CombineRoomSyncStatu
           case 4: builder.setEnableNoLimitDuration(ProtoAdapter.BOOL.decode(reader)); break;
           case 5: builder.setCurrentMusic(CombineRoomMusic.ADAPTER.decode(reader)); break;
           case 6: builder.setNextMusicDesc(ProtoAdapter.STRING.decode(reader)); break;
+          case 7: builder.setHasNextMusic(ProtoAdapter.BOOL.decode(reader)); break;
+          case 8: {
+            try {
+              builder.setStatus(ECombineStatus.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

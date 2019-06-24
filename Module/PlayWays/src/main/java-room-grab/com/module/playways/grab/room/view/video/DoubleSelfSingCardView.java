@@ -68,7 +68,7 @@ public class DoubleSelfSingCardView {
         } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
 //            mDoubleMiniGameSelfSingCardView.playLyric();
         } else {
-//            mDoubleNormalSelfSingCardView.playLyric();
+            mDoubleNormalSelfSingCardView.playLyric(songModel);
         }
     }
 

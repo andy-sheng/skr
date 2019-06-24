@@ -3,7 +3,6 @@ package com.module.playways.doubleplay.fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.Group
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.View.GONE
@@ -94,6 +93,15 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mLeftZanView = mRootView.findViewById<View>(R.id.left_zanView) as ZanView
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
         mDoubleSingCardView = mRootView.findViewById(R.id.show_card) as DoubleSingCardView
+        mDoubleSingCardView.mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                if (!mRoomData.hasNextMusic) {
+                    OwnerManagerActivity.open(activity, SongManageData(mRoomData))
+                } else {
+                    mDoubleCorePresenter?.nextSong()
+                }
+            }
+        })
 
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -146,11 +154,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 // 点歌
-                if (TextUtils.isEmpty(mRoomData?.nextMusicDesc)) {
-                    OwnerManagerActivity.open(activity, SongManageData(mRoomData))
-                } else {
-                    mDoubleCorePresenter?.nextSong()
-                }
+                OwnerManagerActivity.open(activity, SongManageData(mRoomData))
             }
         })
 
@@ -165,6 +169,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             unLockSelf()
         }
 
+        MyLog.d(mTag, "mRoomData.enableNoLimitDuration " + mRoomData.enableNoLimitDuration)
         if (mRoomData.enableNoLimitDuration) {
             mNoLimitIcon?.visibility = VISIBLE
             mCountDownTv?.visibility = GONE
@@ -178,8 +183,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     private fun startCountDown() {
-        countDownTimer = HandlerTaskTimer.newBuilder().interval(1000).take(mRoomData.config?.durationTimeMs
-                ?: 0 / 1000).start(object : HandlerTaskTimer.ObserverW() {
+        val take = mRoomData.config?.durationTimeMs ?: 0 / 1000
+        MyLog.d(mTag, "startCountDown take is " + take)
+        countDownTimer = HandlerTaskTimer.newBuilder().interval(1000).take(take).start(object : HandlerTaskTimer.ObserverW() {
             override fun onNext(t: Int) {
                 mCountDownTv?.text = t.toString()
             }
@@ -259,15 +265,20 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         activity?.finish()
     }
 
-    override fun startGame(mCur: SongModel, mNext: String) {
-        mWordGroup?.visibility = GONE
-        mDoubleSingCardView.visibility = VISIBLE
-        mDoubleSingCardView.playLyric("", mCur, mNext)
+    override fun updateNextSongDec(mNext: String, hasNext: Boolean) {
+        mDoubleSingCardView.updateNextSongDec(mNext, hasNext)
     }
 
-    override fun changeRound(mCur: SongModel, mNext: String) {
-        mDoubleSingCardView.playLyric("", mCur, mNext)
+    override fun startGame(mCur: SongModel, mNext: String, hasNext: Boolean) {
+        mWordGroup?.visibility = GONE
+        mDoubleSingCardView.visibility = VISIBLE
+        mDoubleSingCardView.playLyric("", mCur, mNext, hasNext)
     }
+
+    override fun changeRound(mCur: SongModel, mNext: String, hasNext: Boolean) {
+        mDoubleSingCardView.playLyric("", mCur, mNext, hasNext)
+    }
+
 
     override fun picked() {
         mRightZanView?.addZanXin(mRightZanView)
@@ -323,6 +334,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {
+        MyLog.d(mTag, "showNoLimitDurationState noLimit is $noLimit")
         if (noLimit) {
             mUnlockTv?.visibility = GONE
             mNoLimitIcon?.visibility = VISIBLE

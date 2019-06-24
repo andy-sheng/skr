@@ -4,9 +4,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.LocalCombineRoomConfig
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
-import com.module.playways.doubleplay.event.StartDoubleGameEvent
-import com.module.playways.doubleplay.event.UpdateLockEvent
-import com.module.playways.doubleplay.event.UpdateNoLimitDuraionEvent
+import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.model.DoubleSyncModel
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
@@ -76,6 +74,8 @@ class DoubleRoomData() : Serializable {
 
     var needMaskUserInfo: Boolean = true
 
+    var hasNextMusic: Boolean = false
+
     init {
 
     }
@@ -99,25 +99,27 @@ class DoubleRoomData() : Serializable {
     private fun setData(model: DoubleSyncModel) {
         syncStatusTimeMs = model.syncStatusTimeMs
         passedTimeMs = model.passedTimeMs
-        updateCombineRoomMusic(model.currentMusic, model.nextMusicDesc)
+        updateCombineRoomMusic(model.currentMusic, model.nextMusicDesc, model.isHasNextMusic)
         updateLockInfo(model.userLockInfo, model.isEnableNoLimitDuration)
     }
 
-    fun updateCombineRoomMusic(localCombineRoomMusic: LocalCombineRoomMusic?, nextMusicDesc: String?) {
+    fun updateCombineRoomMusic(localCombineRoomMusic: LocalCombineRoomMusic?, nextMusicDesc: String?, hasNext: Boolean) {
         if (localCombineRoomMusic == null || localCombineRoomMusic.music == null) {
             return
         }
 
         if (this.localCombineRoomMusic == null) {
             //游戏开始
-            EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc))
-        } else if (this.localCombineRoomMusic!!.uniqID === localCombineRoomMusic.uniqID) {
+            EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc, hasNext))
+        } else if (this.localCombineRoomMusic!!.uniqTag.equals(localCombineRoomMusic.uniqTag)) {
             //还是这个歌曲
+            EventBus.getDefault().post(UpdateNextSongDecEvent(nextMusicDesc, hasNext))
         } else {
             //歌曲换了，需要更换歌词
-            EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc))
+            EventBus.getDefault().post(ChangeSongEvent(localCombineRoomMusic.music, nextMusicDesc, hasNext))
         }
 
+        this.hasNextMusic = hasNext
         this.nextMusicDesc = nextMusicDesc
         this.localCombineRoomMusic = localCombineRoomMusic
     }

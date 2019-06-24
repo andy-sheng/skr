@@ -13,24 +13,17 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.U
 import com.engine.Params
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.common.ICallback
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
-import com.module.playways.doubleplay.event.ChangeSongEvent
-import com.module.playways.doubleplay.event.StartDoubleGameEvent
-import com.module.playways.doubleplay.event.UpdateLockEvent
-import com.module.playways.doubleplay.event.UpdateNoLimitDuraionEvent
+import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.inter.IDoublePlayView
-import com.module.playways.doubleplay.model.DoubleEndRoomModel
 import com.module.playways.doubleplay.model.DoubleSyncModel
-import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
-import com.module.playways.doubleplay.pbLocalModel.LocalUserLockInfo
 import com.module.playways.doubleplay.pushEvent.*
-import com.zq.live.proto.CombineRoom.CombineRoomMusic
-import com.zq.live.proto.CombineRoom.UserLockInfo
 import com.zq.mediaengine.kit.ZqEngineKit
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -161,12 +154,21 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun nextSong() {
-        val mutableSet1 = mutableMapOf<String, Objects>()
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.nextSong(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-
+                if (obj?.errno == 0) {
+                    U.getToastUtil().showShort("切歌成功")
+                } else {
+                    U.getToastUtil().showShort(obj?.errmsg)
+                }
             }
+
+            override fun onError(e: Throwable) {
+                U.getToastUtil().showShort("网络错误")
+            }
+
         }, this@DoubleCorePresenter)
     }
 
@@ -199,18 +201,23 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: UpdateNextSongDecEvent) {
+        mIDoublePlayView.updateNextSongDec(event.dec, event.isHasNext)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: UpdateNoLimitDuraionEvent) {
         mIDoublePlayView.showNoLimitDurationState(event.isEnableNoLimitDuration)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: StartDoubleGameEvent) {
-        mIDoublePlayView.startGame(event.songModel, event.nextDec)
+        mIDoublePlayView.startGame(event.songModel, event.nextDec, event.isHasNext)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ChangeSongEvent) {
-        mIDoublePlayView.changeRound(event.songModel, event.nextDec)
+        mIDoublePlayView.changeRound(event.songModel, event.nextDec, event.isHasNext)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -241,7 +248,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleLoadMusicInfoPushEvent) {
         if (event.basePushInfo.timeMs > syncStatusTimeMs) {
-            mRoomData!!.updateCombineRoomMusic(event.currentMusic, event.nextMusicDesc)
+            mRoomData!!.updateCombineRoomMusic(event.currentMusic, event.nextMusicDesc, event.isHasNext)
         }
     }
 

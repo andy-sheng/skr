@@ -92,6 +92,7 @@ public class DoubleSyncModel implements Serializable {
         doubleRoundInfoModel.enableNoLimitDuration = combineRoomSyncStatusMsg.getEnableNoLimitDuration();
         doubleRoundInfoModel.currentMusic = new LocalCombineRoomMusic(combineRoomSyncStatusMsg.getCurrentMusic());
         doubleRoundInfoModel.nextMusicDesc = combineRoomSyncStatusMsg.getNextMusicDesc();
+        doubleRoundInfoModel.hasNextMusic = combineRoomSyncStatusMsg.getHasNextMusic();
         return doubleRoundInfoModel;
     }
 }

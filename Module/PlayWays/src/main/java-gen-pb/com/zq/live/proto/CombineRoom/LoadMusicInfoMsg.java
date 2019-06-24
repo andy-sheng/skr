@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -23,6 +24,8 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
 
   public static final String DEFAULT_NEXTMUSICDESC = "";
 
+  public static final Boolean DEFAULT_HASNEXTMUSIC = false;
+
   @WireField(
       tag = 1,
       adapter = "com.zq.live.proto.CombineRoom.CombineRoomMusic#ADAPTER"
@@ -35,15 +38,23 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
   )
   private final String nextMusicDesc;
 
-  public LoadMusicInfoMsg(CombineRoomMusic currentMusic, String nextMusicDesc) {
-    this(currentMusic, nextMusicDesc, ByteString.EMPTY);
-  }
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean hasNextMusic;
 
   public LoadMusicInfoMsg(CombineRoomMusic currentMusic, String nextMusicDesc,
+      Boolean hasNextMusic) {
+    this(currentMusic, nextMusicDesc, hasNextMusic, ByteString.EMPTY);
+  }
+
+  public LoadMusicInfoMsg(CombineRoomMusic currentMusic, String nextMusicDesc, Boolean hasNextMusic,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.currentMusic = currentMusic;
     this.nextMusicDesc = nextMusicDesc;
+    this.hasNextMusic = hasNextMusic;
   }
 
   @Override
@@ -51,6 +62,7 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
     Builder builder = new Builder();
     builder.currentMusic = currentMusic;
     builder.nextMusicDesc = nextMusicDesc;
+    builder.hasNextMusic = hasNextMusic;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -62,7 +74,8 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
     LoadMusicInfoMsg o = (LoadMusicInfoMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(currentMusic, o.currentMusic)
-        && Internal.equals(nextMusicDesc, o.nextMusicDesc);
+        && Internal.equals(nextMusicDesc, o.nextMusicDesc)
+        && Internal.equals(hasNextMusic, o.hasNextMusic);
   }
 
   @Override
@@ -72,6 +85,7 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
       result = unknownFields().hashCode();
       result = result * 37 + (currentMusic != null ? currentMusic.hashCode() : 0);
       result = result * 37 + (nextMusicDesc != null ? nextMusicDesc.hashCode() : 0);
+      result = result * 37 + (hasNextMusic != null ? hasNextMusic.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -82,6 +96,7 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
     StringBuilder builder = new StringBuilder();
     if (currentMusic != null) builder.append(", currentMusic=").append(currentMusic);
     if (nextMusicDesc != null) builder.append(", nextMusicDesc=").append(nextMusicDesc);
+    if (hasNextMusic != null) builder.append(", hasNextMusic=").append(hasNextMusic);
     return builder.replace(0, 2, "LoadMusicInfoMsg{").append('}').toString();
   }
 
@@ -109,6 +124,13 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
     return nextMusicDesc;
   }
 
+  public Boolean getHasNextMusic() {
+    if(hasNextMusic==null){
+        return DEFAULT_HASNEXTMUSIC;
+    }
+    return hasNextMusic;
+  }
+
   public boolean hasCurrentMusic() {
     return currentMusic!=null;
   }
@@ -117,10 +139,16 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
     return nextMusicDesc!=null;
   }
 
+  public boolean hasHasNextMusic() {
+    return hasNextMusic!=null;
+  }
+
   public static final class Builder extends Message.Builder<LoadMusicInfoMsg, Builder> {
     private CombineRoomMusic currentMusic;
 
     private String nextMusicDesc;
+
+    private Boolean hasNextMusic;
 
     public Builder() {
     }
@@ -135,9 +163,14 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
       return this;
     }
 
+    public Builder setHasNextMusic(Boolean hasNextMusic) {
+      this.hasNextMusic = hasNextMusic;
+      return this;
+    }
+
     @Override
     public LoadMusicInfoMsg build() {
-      return new LoadMusicInfoMsg(currentMusic, nextMusicDesc, super.buildUnknownFields());
+      return new LoadMusicInfoMsg(currentMusic, nextMusicDesc, hasNextMusic, super.buildUnknownFields());
     }
   }
 
@@ -150,6 +183,7 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
     public int encodedSize(LoadMusicInfoMsg value) {
       return CombineRoomMusic.ADAPTER.encodedSizeWithTag(1, value.currentMusic)
           + ProtoAdapter.STRING.encodedSizeWithTag(2, value.nextMusicDesc)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.hasNextMusic)
           + value.unknownFields().size();
     }
 
@@ -157,6 +191,7 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
     public void encode(ProtoWriter writer, LoadMusicInfoMsg value) throws IOException {
       CombineRoomMusic.ADAPTER.encodeWithTag(writer, 1, value.currentMusic);
       ProtoAdapter.STRING.encodeWithTag(writer, 2, value.nextMusicDesc);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.hasNextMusic);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -168,6 +203,7 @@ public final class LoadMusicInfoMsg extends Message<LoadMusicInfoMsg, LoadMusicI
         switch (tag) {
           case 1: builder.setCurrentMusic(CombineRoomMusic.ADAPTER.decode(reader)); break;
           case 2: builder.setNextMusicDesc(ProtoAdapter.STRING.decode(reader)); break;
+          case 3: builder.setHasNextMusic(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

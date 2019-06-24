@@ -62,7 +62,17 @@ message CombineRoomSyncStatusMsg
     bool enableNoLimitDuration         = 4; //开启没有限制的持续时间
     CombineRoomMusic currentMusic      = 5;
     string nextMusicDesc               = 6;
+    bool hasNextMusic                  = 7; //是否有下首歌曲
+        ECombineStatus status              = 8; //房间状态
+
 }
+
+enum ECombineStatus {
+    CS_UnPlay   = 0; //房间游戏未开始
+    CS_Playing  = 1; //房间游戏进行中
+    CS_Finished = 2; //房间游戏结束
+}
+
 
 message CombineRoomMusic
 {
@@ -75,6 +85,7 @@ message LoadMusicInfoMsg
 {
     CombineRoomMusic currentMusic = 1;
     string nextMusicDesc          = 2;
+    bool hasNextMusic             = 3;
 }
 
 message UserLockInfo

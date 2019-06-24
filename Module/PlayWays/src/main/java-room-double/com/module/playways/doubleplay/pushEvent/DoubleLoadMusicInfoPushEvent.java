@@ -8,6 +8,11 @@ public class DoubleLoadMusicInfoPushEvent {
     BasePushInfo basePushInfo;
     LocalCombineRoomMusic currentMusic;
     String nextMusicDesc;
+    boolean hasNext;
+
+    public boolean isHasNext() {
+        return hasNext;
+    }
 
     public BasePushInfo getBasePushInfo() {
         return basePushInfo;
@@ -25,5 +30,6 @@ public class DoubleLoadMusicInfoPushEvent {
         this.basePushInfo = basePushInfo;
         currentMusic = new LocalCombineRoomMusic(loadMusicInfoMsg.getCurrentMusic());
         nextMusicDesc = loadMusicInfoMsg.getNextMusicDesc();
+        hasNext = loadMusicInfoMsg.getHasNextMusic();
     }
 }

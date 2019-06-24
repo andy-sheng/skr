@@ -8,18 +8,30 @@ import java.io.Serializable;
 public class LocalCombineRoomMusic implements Serializable {
     SongModel music; //当前歌曲
     int userID; //点歌用户id
-    String uniqID;
+    String uniqTag;
 
     public SongModel getMusic() {
         return music;
+    }
+
+    public void setMusic(SongModel music) {
+        this.music = music;
     }
 
     public int getUserID() {
         return userID;
     }
 
-    public String getUniqID() {
-        return uniqID;
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public String getUniqTag() {
+        return uniqTag;
+    }
+
+    public void setUniqTag(String uniqTag) {
+        this.uniqTag = uniqTag;
     }
 
     public LocalCombineRoomMusic() {
@@ -29,6 +41,6 @@ public class LocalCombineRoomMusic implements Serializable {
         this.music = new SongModel();
         this.music.parse(combineRoomMusic.getMusic());
         this.userID = combineRoomMusic.getUserID();
-        this.uniqID = combineRoomMusic.getUniqTag();
+        this.uniqTag = combineRoomMusic.getUniqTag();
     }
 }

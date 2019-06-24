@@ -8,7 +8,7 @@ interface IDoublePlayView {
      * @param pre  之前的，如果刚开始是null
      * @param mCur 当前的，是现在的轮次信息
      */
-    fun changeRound(mCur: SongModel, mNext: String)
+    fun changeRound(mCur: SongModel, mNext: String, hasNext: Boolean)
 
     fun picked()
 
@@ -18,7 +18,9 @@ interface IDoublePlayView {
 
     fun showNoLimitDurationState(noLimit: Boolean)
 
-    fun startGame(mCur: SongModel, mNext: String)
+    fun startGame(mCur: SongModel, mNext: String, hasNext: Boolean)
 
     fun finishActivityWithError()
+
+    fun updateNextSongDec(mNext: String, hasNext: Boolean)
 }
