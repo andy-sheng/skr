@@ -103,6 +103,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         }
         doubleRoomData.tokens = list
         doubleRoomData.needMaskUserInfo = doubleStartCombineRoomByMatchPushEvent.isNeedMaskUserInfo
+        doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.MATCH
 
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)

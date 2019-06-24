@@ -76,6 +76,8 @@ class DoubleRoomData() : Serializable {
 
     var hasNextMusic: Boolean = false
 
+    var doubleRoomOri: DoubleRoomOri? = null
+
     init {
 
     }
@@ -220,4 +222,13 @@ class DoubleRoomData() : Serializable {
     }
 
 
+    /**
+     * 这个房间从哪里来，可以从匹配，一场到底邀请来
+     */
+    enum class DoubleRoomOri constructor(private val status: Int?) {
+        GRAB_INVITE(0), MATCH(1);
+
+        val value: Int
+            get() = status!!
+    }
 }

@@ -66,6 +66,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
 
                                         doubleRoomData.tokens = JSON.parseArray(obj.data.getString("tokens"), LocalAgoraTokenInfo::class.java)
                                         doubleRoomData.needMaskUserInfo = obj.data.getBooleanValue("needMaskUserInfo")
+                                        doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.MATCH
 
                                         iMatchView.matchSuccessFromHttp(doubleRoomData)
                                     }

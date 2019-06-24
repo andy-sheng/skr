@@ -78,10 +78,14 @@ class DoubleGameEndFragment : BaseFragment() {
 
         mMatchAgain.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                activity?.finish()
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                        .navigation()
+                if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
+                    activity?.finish()
+                } else {
+                    activity?.finish()
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                            .navigation()
+                }
             }
         })
 
@@ -124,11 +128,17 @@ class DoubleGameEndFragment : BaseFragment() {
         mEndTv.text = model.combineRoomCloseReasonDesc
         mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.nickname}唱聊了${(model.chatDurTime / 60000) + 1}分钟"
 
-        if (model.todayResTimes <= 0) {
+
+        if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
             mLastNumTv.visibility = View.GONE
+            mMatchAgain.text = "返回首页"
         } else {
-            mLastNumTv.text = "今日剩余${model.todayResTimes}次"
-            mLastNumTv.visibility = View.VISIBLE
+            if (model.todayResTimes <= 0) {
+                mLastNumTv.visibility = View.GONE
+            } else {
+                mLastNumTv.text = "今日剩余${model.todayResTimes}次"
+                mLastNumTv.visibility = View.VISIBLE
+            }
         }
 
         if (model.isIsFriend || model.isIsFollow) {

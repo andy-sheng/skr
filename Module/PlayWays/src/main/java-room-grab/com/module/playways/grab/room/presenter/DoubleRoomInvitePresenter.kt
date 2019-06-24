@@ -99,6 +99,7 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
 
                     doubleRoomData.tokens = JSON.parseArray(obj.data.getString("tokens"), LocalAgoraTokenInfo::class.java)
                     doubleRoomData.needMaskUserInfo = obj.data.getBooleanValue("needMaskUserInfo")
+                    doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.GRAB_INVITE
 
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
