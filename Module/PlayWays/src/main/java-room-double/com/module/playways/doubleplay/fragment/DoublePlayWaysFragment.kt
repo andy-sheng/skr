@@ -328,6 +328,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 .setBorderColor(Color.WHITE)
                 .build())
 
+        mUnlockTv?.visibility = GONE
         mRightLockIcon?.visibility = GONE
         mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
         mRightNameTv?.visibility = VISIBLE
