@@ -5,6 +5,9 @@ import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
@@ -22,6 +25,8 @@ class DoubleSingCardView : ConstraintLayout {
     var mNextSongTipTv: TextView
     var mCutSongTv: ExTextView
     var mDoubleSelfSingCardView: DoubleSelfSingCardView
+    var mEnterTranslateAnimation: TranslateAnimation? = null
+    var mScaleAnimation: ScaleAnimation? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -47,6 +52,55 @@ class DoubleSingCardView : ConstraintLayout {
         mSongNameTv?.text = mCur?.itemName
         mDoubleSelfSingCardView.playLyric(mCur)
         updateNextSongDec(mNext, hasNext)
+    }
+
+    /**
+     * 进入中心
+     */
+    fun goOut() {
+        if (mEnterTranslateAnimation == null) {
+            mEnterTranslateAnimation = TranslateAnimation(0.0f, (-U.getDisplayUtils().screenWidth).toFloat(), 0.0f, 0.0f)
+            mEnterTranslateAnimation?.setDuration(300)
+        }
+        this.startAnimation(mEnterTranslateAnimation)
+
+        mEnterTranslateAnimation?.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                visibility = View.GONE
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+
+            }
+        })
+    }
+
+    fun centerScale() {
+        visibility = View.VISIBLE
+        if (mScaleAnimation == null) {
+            mScaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+            mScaleAnimation?.setDuration(300)
+        }
+
+        mScaleAnimation?.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+
+            }
+        })
+
+        this.startAnimation(mScaleAnimation)
     }
 
     fun updateNextSongDec(mNext: String?, hasNext: Boolean) {

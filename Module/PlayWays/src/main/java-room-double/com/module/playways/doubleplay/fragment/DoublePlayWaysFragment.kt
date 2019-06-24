@@ -66,7 +66,10 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     var countDownTimer: HandlerTaskTimer? = null
 
-    lateinit var mDoubleSingCardView: DoubleSingCardView
+    lateinit var mDoubleSingCardView1: DoubleSingCardView
+    lateinit var mDoubleSingCardView2: DoubleSingCardView
+
+    var mCurrentCardView: DoubleSingCardView? = null
 
     override fun initView(): Int {
         return R.layout.double_play_fragment_layout
@@ -92,8 +95,19 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightZanView = mRootView.findViewById<View>(R.id.right_zanView) as ZanView
         mLeftZanView = mRootView.findViewById<View>(R.id.left_zanView) as ZanView
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
-        mDoubleSingCardView = mRootView.findViewById(R.id.show_card) as DoubleSingCardView
-        mDoubleSingCardView.mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
+        mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
+        mDoubleSingCardView1.mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                if (!mRoomData.hasNextMusic) {
+                    OwnerManagerActivity.open(activity, SongManageData(mRoomData))
+                } else {
+                    mDoubleCorePresenter?.nextSong()
+                }
+            }
+        })
+
+        mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
+        mDoubleSingCardView2.mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (!mRoomData.hasNextMusic) {
                     OwnerManagerActivity.open(activity, SongManageData(mRoomData))
@@ -266,17 +280,19 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun updateNextSongDec(mNext: String, hasNext: Boolean) {
-        mDoubleSingCardView.updateNextSongDec(mNext, hasNext)
+        mCurrentCardView?.updateNextSongDec(mNext, hasNext)
     }
 
     override fun startGame(mCur: SongModel, mNext: String, hasNext: Boolean) {
         mWordGroup?.visibility = GONE
-        mDoubleSingCardView.visibility = VISIBLE
-        mDoubleSingCardView.playLyric("", mCur, mNext, hasNext)
+        toNextSongCardView()
+        mCurrentCardView?.visibility = VISIBLE
+        mCurrentCardView?.playLyric("", mCur, mNext, hasNext)
     }
 
     override fun changeRound(mCur: SongModel, mNext: String, hasNext: Boolean) {
-        mDoubleSingCardView.playLyric("", mCur, mNext, hasNext)
+        toNextSongCardView()
+        mCurrentCardView?.playLyric("", mCur, mNext, hasNext)
     }
 
     override fun finishActivity() {
@@ -285,6 +301,21 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     override fun picked() {
         mRightZanView?.addZanXin(mRightZanView)
+    }
+
+    fun toNextSongCardView() {
+        if (mDoubleSingCardView1.visibility == VISIBLE) {
+            mDoubleSingCardView1.goOut()
+            mDoubleSingCardView2.centerScale()
+            mCurrentCardView = mDoubleSingCardView2
+        } else if (mDoubleSingCardView2.visibility == VISIBLE) {
+            mDoubleSingCardView2.goOut()
+            mDoubleSingCardView1.centerScale()
+            mCurrentCardView = mDoubleSingCardView1
+        } else {
+            mDoubleSingCardView1.centerScale()
+            mCurrentCardView = mDoubleSingCardView1
+        }
     }
 
     override fun gameEnd(doubleEndCombineRoomPushEvent: DoubleEndCombineRoomPushEvent) {
