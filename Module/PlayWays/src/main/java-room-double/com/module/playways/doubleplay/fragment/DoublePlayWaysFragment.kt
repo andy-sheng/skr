@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.HandlerTaskTimer
@@ -36,6 +37,7 @@ import com.module.playways.room.song.model.SongModel
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.dialog.PersonInfoDialog
 import com.zq.report.fragment.QuickFeedbackFragment
 import org.greenrobot.eventbus.EventBus
 
@@ -119,13 +121,19 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-
+                val info = mRoomData.userLockInfoMap[mRoomData.getAntherUser()?.userId]
+                if (info != null && !info.isHasLock) {
+                    showPersonInfoView(info.userID)
+                }
             }
         })
 
         mRightAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-
+                val info = mRoomData.userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
+                if (info != null && !info.isHasLock) {
+                    showPersonInfoView(MyUserInfoManager.getInstance().uid.toInt())
+                }
             }
         })
 
@@ -220,6 +228,28 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 mDoubleCorePresenter.closeByTimeOver()
             }
         })
+    }
+
+    var mPersonInfoDialog: PersonInfoDialog? = null
+
+    private fun showPersonInfoView(userID: Int) {
+        if (!U.getNetworkUtils().hasNetwork()) {
+            U.getToastUtil().showShort("网络异常，请检查网络后重试!")
+            return
+        }
+
+        mPersonInfoDialog = PersonInfoDialog(activity, userID, true, false, mRoomData.gameId)
+        mPersonInfoDialog?.setListener(object : PersonInfoDialog.KickListener {
+
+            override fun onClickKick(userInfoModel: UserInfoModel) {
+
+            }
+
+            override fun onClickDoubleInvite(userInfoModel: UserInfoModel) {
+
+            }
+        })
+        mPersonInfoDialog?.show()
     }
 
     private fun exitLogin() {
