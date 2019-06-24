@@ -3,15 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#404A9A">
+    android:background="#592F75">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/exImageView"
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/match_svga"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:bl_gradient_angle="270"
-        app:bl_gradient_endColor="#592F75"
-        app:bl_gradient_startColor="#271123" />
+        android:layout_height="@dimen/view_667_dp"
+        app:antiAlias="true"
+        app:autoPlay="true"
+        app:loopCount="-1"
+        app:source="double_match.svga"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/calcel_match_tv"
@@ -26,7 +30,7 @@
         app:bl_solid_color="@color/transparent"
         app:bl_stroke_color="#FF8AB6"
         app:bl_stroke_width="@dimen/view_1_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/exImageView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

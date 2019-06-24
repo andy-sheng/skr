@@ -25,17 +25,15 @@ import com.orhanobut.dialogplus.ViewHolder
 
 class DoubleGameMatchFragment : BaseFragment(), IMatchView {
     val mTag = "DoubleGameMatchFragment"
-    lateinit var mExImageView: ExImageView
     lateinit var mCalcelMatchTv: ExTextView
     var mDialogPlus: DialogPlus? = null
     lateinit var doubleMatchPresenter: DoubleMatchPresenter
 
     override fun initView(): Int {
-        return com.module.playways.R.layout.double_game_match_fragment_layout
+        return R.layout.double_game_match_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mExImageView = mRootView.findViewById<View>(com.module.playways.R.id.exImageView) as ExImageView
         mCalcelMatchTv = mRootView.findViewById<View>(com.module.playways.R.id.calcel_match_tv) as ExTextView
 
         mCalcelMatchTv.setOnClickListener(object : DebounceViewClickListener() {
