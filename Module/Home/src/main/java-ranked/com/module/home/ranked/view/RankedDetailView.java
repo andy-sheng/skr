@@ -205,7 +205,7 @@ public class RankedDetailView extends RelativeLayout {
             mRankedIconIv.setImageResource(R.drawable.ranked_lanzuan_icon);
             if (rankDataModel.getRankSeq() == 0) {
                 mSeqTv.setText("#");
-                mSeqTv.setTextColor(Color.WHITE);
+                mSeqTv.setTextColor(Color.parseColor("#333B7B"));
                 mRewardBg.setVisibility(GONE);
             } else if (rankDataModel.getRankSeq() <= 3) {
                 mSeqTv.setText("" + rankDataModel.getRankSeq());
