@@ -10,16 +10,27 @@ import android.view.animation.ScaleAnimation
 import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
+import com.module.playways.BaseRoomData
 import com.module.playways.R
+import com.module.playways.doubleplay.DoubleRoomData
+import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.grab.room.view.video.DoubleSelfSingCardView
 import com.module.playways.room.song.model.SongModel
 
 
 class DoubleSingCardView : ConstraintLayout {
-    val TAG = "DoubleSingCardView"
+    companion object {
+        const val TAG = "DoubleSingCardView"
+        const val TAG_ADD_SONG = 1
+        const val TAG_CHANGE_SONG = 2
+    }
+
+    var mCurMusic: LocalCombineRoomMusic? = null
     var mSongOwnerIv: BaseImageView
     var mSongNameTv: TextView
     var mNextSongTipTv: TextView
@@ -27,6 +38,7 @@ class DoubleSingCardView : ConstraintLayout {
     var mDoubleSelfSingCardView: DoubleSelfSingCardView
     var mEnterTranslateAnimation: TranslateAnimation? = null
     var mScaleAnimation: ScaleAnimation? = null
+    var mListener: DoubleSingCardView.Listener? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -39,18 +51,28 @@ class DoubleSingCardView : ConstraintLayout {
         mNextSongTipTv = findViewById(com.module.playways.R.id.next_song_tip_tv)
         mCutSongTv = findViewById(com.module.playways.R.id.cut_song_tv)
         mDoubleSelfSingCardView = DoubleSelfSingCardView(this@DoubleSingCardView)
+
+        mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                if (mCutSongTv.tag == TAG_ADD_SONG) {
+                    mListener?.clickToAddMusic()
+                } else if (mCutSongTv.tag == TAG_CHANGE_SONG) {
+                    mListener?.clickChangeSong()
+                }
+            }
+        })
     }
 
-    fun playLyric(avatar: String = "", mCur: SongModel?, mNext: String?, hasNext: Boolean) {
+    fun playLyric(roomData: DoubleRoomData, avatar: String = "", mCur: LocalCombineRoomMusic?, mNext: String?, hasNext: Boolean) {
+        this.mCurMusic = mCur
         AvatarUtils.loadAvatarByUrl(mSongOwnerIv,
                 AvatarUtils.newParamsBuilder(avatar)
                         .setBorderColor(U.getColor(R.color.white))
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setCircle(true)
                         .build())
-
-        mSongNameTv?.text = mCur?.itemName
-        mDoubleSelfSingCardView.playLyric(mCur)
+        mSongNameTv?.text = mCur?.music?.itemName
+        mDoubleSelfSingCardView.playLyric(mCur, roomData)
         updateNextSongDec(mNext, hasNext)
     }
 
@@ -111,9 +133,23 @@ class DoubleSingCardView : ConstraintLayout {
         }
 
         if (hasNext) {
-            mCutSongTv?.text = "切歌"
+            if (mCurMusic?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                mCutSongTv.tag = TAG_CHANGE_SONG
+                mCutSongTv?.text = "切歌"
+                mCutSongTv.visibility = View.VISIBLE
+            } else {
+                mCutSongTv.visibility = View.GONE
+            }
         } else {
+            mCutSongTv.tag = TAG_ADD_SONG
             mCutSongTv?.text = "去点歌"
+            mCutSongTv.visibility = View.VISIBLE
         }
     }
+
+    abstract class Listener {
+        abstract fun clickChangeSong()
+        abstract fun clickToAddMusic()
+    }
+
 }

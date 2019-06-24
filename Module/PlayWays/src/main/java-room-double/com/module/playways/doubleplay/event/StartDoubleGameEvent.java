@@ -1,14 +1,14 @@
 package com.module.playways.doubleplay.event;
 
-import com.module.playways.room.song.model.SongModel;
+import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 
 public class StartDoubleGameEvent {
-    SongModel mSongModel;
+    LocalCombineRoomMusic mMusic;
     String nextDec;
     boolean hasNext = false;
 
-    public StartDoubleGameEvent(SongModel songModel, String nextDec, boolean hasNext) {
-        mSongModel = songModel;
+    public StartDoubleGameEvent(LocalCombineRoomMusic music, String nextDec, boolean hasNext) {
+        this.mMusic = music;
         this.nextDec = nextDec;
         this.hasNext = hasNext;
     }
@@ -17,8 +17,8 @@ public class StartDoubleGameEvent {
         return hasNext;
     }
 
-    public SongModel getSongModel() {
-        return mSongModel;
+    public LocalCombineRoomMusic getMusic() {
+        return mMusic;
     }
 
     public String getNextDec() {

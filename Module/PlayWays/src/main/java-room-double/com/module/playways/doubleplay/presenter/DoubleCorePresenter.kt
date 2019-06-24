@@ -237,12 +237,12 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: StartDoubleGameEvent) {
-        mIDoublePlayView.startGame(event.songModel, event.nextDec, event.isHasNext)
+        mIDoublePlayView.startGame(event.music, event.nextDec, event.isHasNext)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ChangeSongEvent) {
-        mIDoublePlayView.changeRound(event.songModel, event.nextDec, event.isHasNext)
+        mIDoublePlayView.changeRound(event.music, event.nextDec, event.isHasNext)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

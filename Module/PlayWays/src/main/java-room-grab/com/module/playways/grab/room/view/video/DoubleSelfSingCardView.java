@@ -3,8 +3,12 @@ package com.module.playways.grab.room.view.video;
 import android.view.View;
 import android.view.ViewStub;
 
+import com.common.core.myinfo.MyUserInfo;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.R;
+import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.grab.room.view.chorus.DoubleChorusSelfSingCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.minigame.DoubleMiniGameSelfSingCardView;
@@ -55,20 +59,24 @@ public class DoubleSelfSingCardView {
         }
     }
 
-    public void playLyric(SongModel songModel) {
+    public void playLyric(LocalCombineRoomMusic songModel, DoubleRoomData roomData) {
         if (songModel == null) {
             MyLog.w(TAG, "playLyric" + " songModel is null");
             return;
         }
 
-        mSongModel = songModel;
+        mSongModel = songModel.getMusic();
 
-        if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
-//            mDoubleChorusSelfSingCardView.playLyric();
-        } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+        if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+            if (songModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getMyUser(), roomData.getAntherUser());
+            } else {
+                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getAntherUser(), roomData.getMyUser());
+            }
+        } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
 //            mDoubleMiniGameSelfSingCardView.playLyric();
         } else {
-            mDoubleNormalSelfSingCardView.playLyric(songModel);
+            mDoubleNormalSelfSingCardView.playLyric(mSongModel);
         }
     }
 

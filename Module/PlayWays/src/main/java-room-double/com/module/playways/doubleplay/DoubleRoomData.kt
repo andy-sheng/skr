@@ -111,14 +111,14 @@ class DoubleRoomData() : Serializable {
                     doubleGameState = DoubleGameState.START
                 }
 
-                EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic.music, nextMusicDesc, hasNext))
+                EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic, nextMusicDesc, hasNext))
             }
         } else if (this.localCombineRoomMusic!!.uniqTag.equals(localCombineRoomMusic.uniqTag)) {
             //还是这个歌曲
             EventBus.getDefault().post(UpdateNextSongDecEvent(nextMusicDesc, hasNext))
         } else {
             //歌曲换了，需要更换歌词
-            EventBus.getDefault().post(ChangeSongEvent(localCombineRoomMusic.music, nextMusicDesc, hasNext))
+            EventBus.getDefault().post(ChangeSongEvent(localCombineRoomMusic, nextMusicDesc, hasNext))
         }
 
         this.hasNextMusic = hasNext
@@ -181,6 +181,18 @@ class DoubleRoomData() : Serializable {
             }
         }
 
+        return null
+    }
+
+    fun getMyUser() : UserInfoModel?{
+        val map = userInfoListMap
+        if (map != null) {
+            for (info in map) {
+                if (info.key.toLong() == MyUserInfoManager.getInstance().uid) {
+                    return info.value
+                }
+            }
+        }
         return null
     }
 
