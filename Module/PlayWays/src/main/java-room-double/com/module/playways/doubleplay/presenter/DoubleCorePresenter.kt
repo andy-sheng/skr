@@ -250,15 +250,15 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: DoubleCombineRoomSycPushEvent) {
-//        if (event.doubleSyncModel.syncStatusTimeMs > syncStatusTimeMs) {
-//            syncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
-//            mRoomData!!.syncRoomInfo(event.doubleSyncModel)
-//            uiHandler.removeMessages(SYNC_MSG)
-//            uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
-//        }
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleCombineRoomSycPushEvent) {
+        if (event.doubleSyncModel.syncStatusTimeMs > syncStatusTimeMs) {
+            syncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
+            mRoomData!!.syncRoomInfo(event.doubleSyncModel)
+            uiHandler.removeMessages(SYNC_MSG)
+            uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleEndCombineRoomPushEvent) {
