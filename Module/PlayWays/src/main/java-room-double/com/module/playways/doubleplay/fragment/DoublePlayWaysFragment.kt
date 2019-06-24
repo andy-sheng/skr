@@ -23,7 +23,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.dialog.view.TipsDialogView
-import com.engine.agora.AgoraEngineAdapter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.playways.R
@@ -40,6 +39,7 @@ import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.dialog.PersonInfoDialog
+import com.zq.mediaengine.kit.ZqEngineKit
 import com.zq.report.fragment.QuickFeedbackFragment
 import org.greenrobot.eventbus.EventBus
 
@@ -171,7 +171,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             override fun clickValid(v: View) {
                 // 开关麦克
                 val isSelected = mMicIv?.isSelected ?: false
-                AgoraEngineAdapter.getInstance().muteLocalAudioStream(!isSelected)
+                ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
                 mMicIv?.setSelected(!isSelected)
             }
         })

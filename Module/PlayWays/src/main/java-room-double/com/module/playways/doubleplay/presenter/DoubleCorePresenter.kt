@@ -72,9 +72,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 params.isEnableVideo = false
                 ZqEngineKit.getInstance().init("doubleRoom", params)
             }
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), false, mRoomData.getToken())
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), true, mRoomData.getToken())
             // 不发送本地音频, 会造成第一次抢没声音
-            ZqEngineKit.getInstance().muteLocalAudioStream(true)
+            ZqEngineKit.getInstance().muteLocalAudioStream(false)
         }
 
         joinRcRoom(-1)
