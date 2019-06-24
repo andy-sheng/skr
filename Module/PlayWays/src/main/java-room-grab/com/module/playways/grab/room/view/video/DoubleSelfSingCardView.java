@@ -3,7 +3,6 @@ package com.module.playways.grab.room.view.video;
 import android.view.View;
 import android.view.ViewStub;
 
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.R;
@@ -65,9 +64,14 @@ public class DoubleSelfSingCardView {
             return;
         }
 
+        mDoubleNormalSelfSingCardView.setVisibility(View.GONE);
+        mDoubleChorusSelfSingCardView.setVisibility(View.GONE);
+        mDoubleMiniGameSelfSingCardView.setVisibility(View.GONE);
+
         mSongModel = songModel.getMusic();
 
         if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+            mDoubleChorusSelfSingCardView.setVisibility(View.VISIBLE);
             if (songModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getMyUser(), roomData.getAntherUser());
             } else {
@@ -75,8 +79,10 @@ public class DoubleSelfSingCardView {
             }
         } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             mDoubleMiniGameSelfSingCardView.playLyric(songModel, roomData);
+            mDoubleMiniGameSelfSingCardView.setVisibility(View.VISIBLE);
         } else {
             mDoubleNormalSelfSingCardView.playLyric(mSongModel);
+            mDoubleNormalSelfSingCardView.setVisibility(View.VISIBLE);
         }
     }
 
