@@ -68,6 +68,14 @@ class DoubleRoomGameView : RelativeLayout {
                 }
             }
         })
+
+        invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+            }
+
+        })
     }
 
     fun initData() {
@@ -135,9 +143,9 @@ class DoubleRoomGameView : RelativeLayout {
                     var totalRemainTimes = result.data.getIntValue("todayResTimes");
                     hasRemainTime = totalRemainTimes > 0
                     val spanStringBuilder = SpanUtils()
-                            .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_30))
+                            .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_80))
                             .append("" + totalRemainTimes).setForegroundColor(Color.parseColor("#FFC15B"))
-                            .append("次").setForegroundColor(U.getColor(R.color.white_trans_30))
+                            .append("次").setForegroundColor(U.getColor(R.color.white_trans_80))
                             .create()
                     remain_times_tv.text = spanStringBuilder
                 } else {

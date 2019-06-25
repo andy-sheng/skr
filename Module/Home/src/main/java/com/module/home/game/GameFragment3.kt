@@ -125,7 +125,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                     mFriendRoomGameView?.stopTimer()
                     mQuickGameView?.initData()
                 } else if (position == 2) {
-                    animation(color, Color.parseColor("#210B1C"))
+                    animation(color, Color.parseColor("#261127"))
                     mFriendRoomGameView?.stopTimer()
                     mDoubleRoomGameView?.initData()
                 }
