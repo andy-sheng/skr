@@ -161,6 +161,15 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         mPresenter.initGameKConfig()
+        if (mGameVp.currentItem == 0) {
+            mFriendRoomGameView?.initData()
+        } else if (mGameVp.currentItem == 1) {
+            mFriendRoomGameView?.stopTimer()
+            mQuickGameView?.initData()
+        } else if (mGameVp.currentItem == 2) {
+            mFriendRoomGameView?.stopTimer()
+            mDoubleRoomGameView?.initData()
+        }
     }
 
     override fun onFragmentInvisible() {
