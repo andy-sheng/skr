@@ -14,6 +14,9 @@ import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.BaseImage
+import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.HandlerTaskTimer
@@ -22,6 +25,7 @@ import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.dialog.view.TipsDialogView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
@@ -121,6 +125,17 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
+                if (!mRoomData.isRoomPrepared()) {
+//                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
+//                            .setAddToBackStack(true)
+//                            .setHasAnimation(true)
+//                            .addDataBeforeAdd(0, mRoomData)
+//                            .build()
+//                    )
+                    U.getToastUtil().showShort("邀请")
+                    return
+                }
+
                 val info = mRoomData.userLockInfoMap[mRoomData.getAntherUser()?.userId]
                 if (info != null && !info.isHasLock) {
                     showPersonInfoView(info.userID)
@@ -195,13 +210,19 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleCorePresenter = DoubleCorePresenter(mRoomData, this)
         addPresent(mDoubleCorePresenter)
 
-        if (mRoomData.needMaskUserInfo) {
-            selfLockState()
-            guestLockState()
-        } else {
-            unLockOther()
+        if (mRoomData.isCreateRoom()) {
             unLockSelf()
+            toInviteUI()
+        } else {
+            if (mRoomData.needMaskUserInfo) {
+                selfLockState()
+                guestLockState()
+            } else {
+                unLockOther()
+                unLockSelf()
+            }
         }
+
 
         MyLog.d(mTag, "mRoomData.enableNoLimitDuration " + mRoomData.enableNoLimitDuration)
         if (mRoomData.enableNoLimitDuration) {
@@ -381,6 +402,21 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
             mCurrentCardView?.updateLockState()
         }
+    }
+
+    private fun toInviteUI() {
+        FrescoWorker.loadImage(mLeftAvatarSdv, ImageFactory.newResImage(R.drawable.double_invite)
+                .build<BaseImage>())
+
+        val drawable = DrawableCreator.Builder()
+                .setCornersRadius(U.getDisplayUtils().dip2px(16f).toFloat())
+                .setSolidColor(Color.parseColor("#FFC15B"))
+                .build()
+
+        mLeftLockIcon?.visibility = GONE
+        mLeftNameTv?.background = drawable
+        mLeftNameTv?.text = "邀请好友"
+        mLeftNameTv?.setTextColor(Color.parseColor("#404A9A"))
     }
 
     /**

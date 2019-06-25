@@ -33,10 +33,9 @@
         android:id="@+id/left_avatar_sdv"
         android:layout_width="@dimen/view_67_dp"
         android:layout_height="@dimen/view_67_dp"
+        android:layout_marginLeft="@dimen/view_65_dp"
         android:layout_marginTop="@dimen/view_82_dp"
-        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/right_avatar_sdv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.module.playways.view.ZanView
@@ -98,8 +97,7 @@
         android:id="@+id/right_avatar_sdv"
         android:layout_width="@dimen/view_67_dp"
         android:layout_height="@dimen/view_67_dp"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintLeft_toRightOf="@id/left_avatar_sdv"
+        android:layout_marginRight="@dimen/view_65_dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/left_avatar_sdv" />
 

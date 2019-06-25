@@ -246,6 +246,18 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     @Override
+    public void createDoubleRoom() {
+        DoubleRoomData doubleRoomData = new DoubleRoomData();
+        doubleRoomData.setEnableNoLimitDuration(true);
+        doubleRoomData.setNeedMaskUserInfo(false);
+        doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
+        doubleRoomData.setTokens(new ArrayList<>());
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                .withSerializable("roomData", doubleRoomData)
+                .navigation();
+    }
+
+    @Override
     public void init(Context context) {
 
     }

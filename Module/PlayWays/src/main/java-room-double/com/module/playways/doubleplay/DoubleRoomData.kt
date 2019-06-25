@@ -253,6 +253,24 @@ class DoubleRoomData() : Serializable {
         return ""
     }
 
+    /**
+     * 由于现在房间里可以邀请别人，prepare状态是两个人都到齐算准备完成了
+     */
+    fun isRoomPrepared(): Boolean {
+        if (doubleRoomOri == DoubleRoomOri.CREATE) {
+            return userInfoListMap?.size == 2
+        } else {
+            return true
+        }
+    }
+
+    /**
+     * 是不是创建的房间，通过首页邀请进来
+     */
+    fun isCreateRoom(): Boolean {
+        return doubleRoomOri == DoubleRoomOri.CREATE
+    }
+
     override fun toString(): String {
         return "DoubleRoomData(Tag='$Tag', gameId=$gameId, doubleGameState=$doubleGameState, syncStatusTimeMs=$syncStatusTimeMs, passedTimeMs=$passedTimeMs, userLockInfoMap=$userLockInfoMap, userInfoListMap=$userInfoListMap, enableNoLimitDuration=$enableNoLimitDuration, localCombineRoomMusic=$localCombineRoomMusic, nextMusicDesc=$nextMusicDesc, config=$config, tokens=$tokens, needMaskUserInfo=$needMaskUserInfo)"
     }
@@ -267,10 +285,10 @@ class DoubleRoomData() : Serializable {
 
 
     /**
-     * 这个房间从哪里来，可以从匹配，一场到底邀请来
+     * 这个房间从哪里来，可以从匹配，一场到底邀请，创建房间邀请来
      */
     enum class DoubleRoomOri constructor(private val status: Int?) {
-        GRAB_INVITE(0), MATCH(1);
+        GRAB_INVITE(0), MATCH(1), CREATE(2);
 
         val value: Int
             get() = status!!

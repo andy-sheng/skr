@@ -45,7 +45,6 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     init {
         EventBus.getDefault().register(this)
-        joinRoomAndInit(true)
         uiHandler = object : Handler() {
             override fun handleMessage(msg: Message?) {
                 if (msg?.what == SYNC_MSG) {
@@ -54,7 +53,10 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
             }
         }
 
-        uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+        if (!mRoomData.isCreateRoom()) {
+            uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+            joinRoomAndInit(true)
+        }
     }
 
     /**

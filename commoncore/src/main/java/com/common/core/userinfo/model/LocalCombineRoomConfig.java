@@ -14,16 +14,32 @@ public class LocalCombineRoomConfig implements Serializable {
         return durationTimeMs;
     }
 
+    public void setDurationTimeMs(int durationTimeMs) {
+        this.durationTimeMs = durationTimeMs;
+    }
+
     public String getMaskMaleAvatar() {
         return maskMaleAvatar;
+    }
+
+    public void setMaskMaleAvatar(String maskMaleAvatar) {
+        this.maskMaleAvatar = maskMaleAvatar;
     }
 
     public String getMaskFemaleAvatar() {
         return maskFemaleAvatar;
     }
 
+    public void setMaskFemaleAvatar(String maskFemaleAvatar) {
+        this.maskFemaleAvatar = maskFemaleAvatar;
+    }
+
     public String getRoomSignature() {
         return roomSignature;
+    }
+
+    public void setRoomSignature(String roomSignature) {
+        this.roomSignature = roomSignature;
     }
 
     private LocalCombineRoomConfig() {
