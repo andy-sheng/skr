@@ -2,8 +2,6 @@ package com.module.playways.grab.room.presenter
 
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.common.core.userinfo.model.LocalCombineRoomConfig
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -16,13 +14,11 @@ import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
 import com.module.playways.doubleplay.inter.IDoubleInviteView
-import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 
 class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLifeCyclePresenter() {
     private val mTag = "DoubleRoomInvitePresenter"
@@ -84,23 +80,8 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
         ApiMethods.subscribe(mDoubleRoomServerApi.getInviteEnterResult(), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
-                    val doubleRoomData = DoubleRoomData()
-                    doubleRoomData.gameId = obj.data.getIntValue("roomID")
-                    doubleRoomData.enableNoLimitDuration = false
-                    doubleRoomData.passedTimeMs = obj.data.getLongValue("passedTimeMs")
-                    doubleRoomData.config = JSON.parseObject(obj.data.getString(""), LocalCombineRoomConfig::class.java)
-                    val userList = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
-
-                    val hashMap = HashMap<Int, UserInfoModel>()
-                    for (userInfoModel in userList) {
-                        hashMap.put(userInfoModel.userId, userInfoModel)
-                    }
-                    doubleRoomData.userInfoListMap = hashMap
-
-                    doubleRoomData.tokens = JSON.parseArray(obj.data.getString("tokens"), LocalAgoraTokenInfo::class.java)
-                    doubleRoomData.needMaskUserInfo = obj.data.getBooleanValue("needMaskUserInfo")
+                    val doubleRoomData = DoubleRoomData.makeRoomDataFromJsonObject(obj.data)
                     doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.GRAB_INVITE
-
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation()

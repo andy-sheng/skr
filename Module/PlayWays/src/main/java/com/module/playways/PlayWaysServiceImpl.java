@@ -7,7 +7,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
@@ -223,20 +222,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             doubleRoomData.setNeedMaskUserInfo(event.isNeedMaskUserInfo());
         } else if (o instanceof JSONObject) {
             JSONObject obj = (JSONObject) o;
-            doubleRoomData.setGameId(obj.getIntValue("roomID"));
-            doubleRoomData.setEnableNoLimitDuration(true);
-            doubleRoomData.setPassedTimeMs(obj.getIntValue("passedTimeMs"));
-            doubleRoomData.setConfig(JSON.parseObject(obj.getString("config"), LocalCombineRoomConfig.class));
-            List<UserInfoModel> userList = JSON.parseArray(obj.getString("users"), UserInfoModel.class);
-
-            HashMap<Integer, UserInfoModel> hashMap = new HashMap();
-            for (UserInfoModel userInfoModel : userList) {
-                hashMap.put(userInfoModel.getUserId(), userInfoModel);
-            }
-            doubleRoomData.setUserInfoListMap(hashMap);
-
-            doubleRoomData.setTokens(JSON.parseArray(obj.getString("tokens"), LocalAgoraTokenInfo.class));
-            doubleRoomData.setNeedMaskUserInfo(obj.getBooleanValue("needMaskUserInfo"));
+            doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(obj);
         }
 
         doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.GRAB_INVITE);

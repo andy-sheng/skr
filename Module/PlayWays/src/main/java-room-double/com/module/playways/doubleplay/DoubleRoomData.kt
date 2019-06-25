@@ -1,5 +1,7 @@
 package com.module.playways.doubleplay
 
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.LocalCombineRoomConfig
 import com.common.core.userinfo.model.UserInfoModel
@@ -294,5 +296,26 @@ class DoubleRoomData() : Serializable {
 
         val value: Int
             get() = status!!
+    }
+
+    companion object {
+        fun makeRoomDataFromJsonObject(obj: JSONObject): DoubleRoomData {
+            val doubleRoomData = DoubleRoomData()
+            doubleRoomData.gameId = obj.getIntValue("roomID")
+            doubleRoomData.enableNoLimitDuration = false
+            doubleRoomData.passedTimeMs = obj.getLongValue("passedTimeMs")
+            doubleRoomData.config = JSON.parseObject(obj.getString("config"), LocalCombineRoomConfig::class.java)
+            val userList = JSON.parseArray(obj.getString("users"), UserInfoModel::class.java)
+
+            val hashMap = HashMap<Int, UserInfoModel>()
+            for (userInfoModel in userList) {
+                hashMap.put(userInfoModel.userId, userInfoModel)
+            }
+            doubleRoomData.userInfoListMap = hashMap
+
+            doubleRoomData.tokens = JSON.parseArray(obj.getString("tokens"), LocalAgoraTokenInfo::class.java)
+            doubleRoomData.needMaskUserInfo = obj.getBooleanValue("needMaskUserInfo")
+            return doubleRoomData
+        }
     }
 }

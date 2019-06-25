@@ -1,10 +1,9 @@
 package com.module.playways.doubleplay.presenter
 
 import com.alibaba.fastjson.JSON
-import com.common.core.userinfo.model.LocalCombineRoomConfig
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
+import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -14,14 +13,11 @@ import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
 import com.module.playways.doubleplay.inter.IMatchView
-import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
-import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 
 class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() {
     val mTag = "DoubleMatchPresenter"
@@ -51,24 +47,8 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
                                     val hasMatchedRoom = obj.data.getBoolean("hasMatchedRoom")
                                     if (hasMatchedRoom) {
                                         handlerTaskTimer?.dispose()
-
-                                        val doubleRoomData = DoubleRoomData()
-                                        doubleRoomData.gameId = obj.data.getIntValue("roomID")
-                                        doubleRoomData.enableNoLimitDuration = false
-                                        doubleRoomData.passedTimeMs = obj.data.getLongValue("passedTimeMs")
-                                        doubleRoomData.config = JSON.parseObject(obj.data.getString("config"), LocalCombineRoomConfig::class.java)
-                                        val userList = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
-
-                                        val hashMap = HashMap<Int, UserInfoModel>()
-                                        for (userInfoModel in userList) {
-                                            hashMap.put(userInfoModel.userId, userInfoModel)
-                                        }
-                                        doubleRoomData.userInfoListMap = hashMap
-
-                                        doubleRoomData.tokens = JSON.parseArray(obj.data.getString("tokens"), LocalAgoraTokenInfo::class.java)
-                                        doubleRoomData.needMaskUserInfo = obj.data.getBooleanValue("needMaskUserInfo")
+                                        val doubleRoomData = DoubleRoomData.makeRoomDataFromJsonObject(obj.data)
                                         doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.MATCH
-
                                         iMatchView.matchSuccessFromHttp(doubleRoomData)
                                     }
                                 }
