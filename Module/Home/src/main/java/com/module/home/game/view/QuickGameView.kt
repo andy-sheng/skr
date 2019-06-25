@@ -129,8 +129,8 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
 
             override fun enterRoom(friendRoomModel: RecommendModel?) {
                 MyLog.d(TAG, "enterRoom friendRoomModel=$friendRoomModel")
-                if (friendRoomModel != null) {
-                    if (friendRoomModel.mediaType == SpecialModel.TYPE_VIDEO) {
+                if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
+                    if (friendRoomModel.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
                         mSkrAudioPermission.ensurePermission({
                             mCameraPermission.ensurePermission({
                                 mRealNameVerifyUtils.checkJoinVideoPermission {
@@ -138,8 +138,8 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
                                     ARouter.getInstance()
                                             .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
                                             .withInt("mFrom", FROM_FRIEND_RECOMMEND)
-                                            .withInt("mRoomId",friendRoomModel.roomInfo.roomID)
-                                            .withInt("mInviteType",0)
+                                            .withInt("mRoomId", friendRoomModel.roomInfo.roomID)
+                                            .withInt("mInviteType", 0)
                                             .navigation()
                                 }
                             }, true)

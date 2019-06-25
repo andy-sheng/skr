@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -16,10 +17,13 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.HandlerTaskTimer
 import com.common.view.recyclerview.RecyclerOnItemClickListener
+import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.friends.FriendRoomVerticalAdapter
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
+import com.component.busilib.friends.SpecialModel
+import com.component.busilib.verify.RealNameVerifyUtils
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -42,8 +46,10 @@ class FriendRoomGameView : RelativeLayout {
     }
 
     private var mFriendRoomVeritAdapter: FriendRoomVerticalAdapter
-    private var mSkrAudioPermission: SkrAudioPermission
     private var mDisposable: Disposable? = null
+    private var mSkrAudioPermission: SkrAudioPermission
+    private var mCameraPermission: SkrCameraPermission
+    internal var mRealNameVerifyUtils = RealNameVerifyUtils()
 
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0
@@ -61,6 +67,7 @@ class FriendRoomGameView : RelativeLayout {
         View.inflate(context, R.layout.friend_room_view_layout, this)
 
         mSkrAudioPermission = SkrAudioPermission()
+        mCameraPermission = SkrCameraPermission()
 
         refreshLayout.setEnableRefresh(false)
         refreshLayout.setEnableLoadMore(false)
@@ -82,11 +89,26 @@ class FriendRoomGameView : RelativeLayout {
                 if (model != null && model is RecommendModel) {
                     val friendRoomModel = model as RecommendModel?
                     if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
-                        val roomID = friendRoomModel.roomInfo.roomID
-                        mSkrAudioPermission.ensurePermission({
-                            val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                            playWaysService?.tryGoGrabRoom(roomID, 0)
-                        }, true)
+                        if (friendRoomModel.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
+                            mSkrAudioPermission.ensurePermission({
+                                mCameraPermission.ensurePermission({
+                                    mRealNameVerifyUtils.checkJoinVideoPermission {
+                                        // 进入视频预览
+                                        ARouter.getInstance()
+                                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                .withInt("mFrom", FROM_FRIEND_RECOMMEND)
+                                                .withInt("mRoomId", friendRoomModel.roomInfo.roomID)
+                                                .withInt("mInviteType", 0)
+                                                .navigation()
+                                    }
+                                }, true)
+                            }, true)
+                        } else {
+                            mSkrAudioPermission.ensurePermission({
+                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                                iRankingModeService?.tryGoGrabRoom(friendRoomModel.roomInfo.roomID, 0)
+                            }, true)
+                        }
                     } else {
                         MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
                     }

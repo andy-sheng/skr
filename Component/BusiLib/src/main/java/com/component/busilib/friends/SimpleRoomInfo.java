@@ -31,6 +31,7 @@ public class SimpleRoomInfo implements Serializable {
     private int currentRoundSeq;
     private int totalGameRoundSeq;
     private String roomName;
+    private int mediaType;
 
     public int getRoomTag() {
         return roomTag;
@@ -118,6 +119,14 @@ public class SimpleRoomInfo implements Serializable {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public int getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(int mediaType) {
+        this.mediaType = mediaType;
     }
 
     @Override
