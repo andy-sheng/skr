@@ -10,13 +10,13 @@ import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ExViewStub;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
-import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
@@ -62,11 +62,15 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
         mRoomData = roomData;
     }
 
+    public BaseChorusSelfCardView(ViewStub viewStub) {
+        super(viewStub);
+    }
+
     @Override
     protected void init(View parentView) {
         mLyricRecycleView = mParentView.findViewById(R.id.lyric_recycle_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(), LinearLayoutManager.VERTICAL, false));
-        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight,isForVideo());
+        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight, isForVideo());
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -76,7 +80,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
     protected abstract boolean isForVideo();
 
     protected boolean playLyric() {
-        if(mRoomData==null){
+        if (mRoomData == null) {
             return false;
         }
         mLeft.reset();
@@ -95,7 +99,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
             }
             mSongModel = infoModel.getMusic();
         }
-        if(mSongModel==null){
+        if (mSongModel == null) {
             return false;
         }
 

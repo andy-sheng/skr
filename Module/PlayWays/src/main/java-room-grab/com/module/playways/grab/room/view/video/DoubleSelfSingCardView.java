@@ -23,14 +23,14 @@ public class DoubleSelfSingCardView {
 
     SongModel mSongModel;
 
-    public DoubleSelfSingCardView(View rootView) {
+    public DoubleSelfSingCardView(View rootView, DoubleRoomData doubleRoomData) {
         {
             ViewStub viewStub = rootView.findViewById(R.id.double_normal_lyric_view_stub);
             mDoubleNormalSelfSingCardView = new DoubleNormalSelfSingCardView(viewStub, null);
         }
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_chorus_lyric_view_stub);
-            mDoubleChorusSelfSingCardView = new DoubleChorusSelfSingCardView(viewStub, null);
+            mDoubleChorusSelfSingCardView = new DoubleChorusSelfSingCardView(viewStub, doubleRoomData);
         }
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_mini_game_lyric_view_stub);
@@ -73,9 +73,9 @@ public class DoubleSelfSingCardView {
         if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             mDoubleChorusSelfSingCardView.setVisibility(View.VISIBLE);
             if (songModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getMyUser(), roomData.getAntherUser(), roomData);
+                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getMyUser(), roomData.getAntherUser());
             } else {
-                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getAntherUser(), roomData.getMyUser(), roomData);
+                mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getAntherUser(), roomData.getMyUser());
             }
         } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             mDoubleMiniGameSelfSingCardView.playLyric(songModel, roomData);

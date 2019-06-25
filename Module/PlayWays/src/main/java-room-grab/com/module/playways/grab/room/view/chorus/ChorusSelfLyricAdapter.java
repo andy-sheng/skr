@@ -6,21 +6,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
+import com.module.playways.doubleplay.DoubleRoomData;
 
 public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.ChorusLineLyricModel, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
 
     public final static String TAG = "ChorusSelfLyricAdapter";
+    public final static int GRAB_TYPE = 0;
+    public final static int DOUBLE_TYPE = 1;
+    private int mType = GRAB_TYPE;
 
     ChorusSelfSingCardView.DH mLeft;
     ChorusSelfSingCardView.DH mRight;
@@ -28,25 +30,38 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
     boolean mLeftGiveUp = false;
     boolean mRightGiveUp = false;
     boolean mIsForVideo = false;
+    DoubleRoomData mDoubleRoomData;
 
     int colorDisable = Color.parseColor("#beb19d");
     int colorEnable = Color.parseColor("#364E7C");
 
-    public ChorusSelfLyricAdapter(ChorusSelfSingCardView.DH left, ChorusSelfSingCardView.DH right,boolean isForVideo) {
+    public ChorusSelfLyricAdapter(ChorusSelfSingCardView.DH left, ChorusSelfSingCardView.DH right, boolean isForVideo) {
         mLeft = left;
         mRight = right;
         mIsForVideo = isForVideo;
-        if(isForVideo){
+        if (isForVideo) {
             colorEnable = Color.parseColor("#99ffffff");
             colorDisable = Color.parseColor("#33ffffff");
         }
+    }
+
+    public ChorusSelfLyricAdapter(ChorusSelfSingCardView.DH left, ChorusSelfSingCardView.DH right, boolean isForVideo, DoubleRoomData doubleRoomData) {
+        this(left, right, isForVideo);
+        mDoubleRoomData = doubleRoomData;
+        mType = DOUBLE_TYPE;
     }
 
     @NonNull
     @Override
     public ChorusSelfLyricHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chorus_self_lyric_item_layout, parent, false);
-        ChorusSelfLyricHolder chorusSelfLyric = new ChorusSelfLyricHolder(view);
+        ChorusSelfLyricHolder chorusSelfLyric;
+        if (mType == GRAB_TYPE) {
+            chorusSelfLyric = new ChorusSelfLyricHolder(view);
+        } else {
+            chorusSelfLyric = new DoubleChorusSelfLyricHolder(view);
+        }
+
         return chorusSelfLyric;
     }
 
@@ -173,6 +188,40 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
         }
     }
 
+    class DoubleChorusSelfLyricHolder extends ChorusSelfLyricHolder {
+        public DoubleChorusSelfLyricHolder(View itemView) {
+            super(itemView);
+            mAvatarIv = (BaseImageView) itemView.findViewById(R.id.avatar_iv);
+            mLyricLineTv = (ExTextView) itemView.findViewById(R.id.lyric_line_tv);
+            mBlankView = itemView.findViewById(R.id.blank_view);
+        }
+
+        @Override
+        public void bindData(ChorusLineLyricModel chorusLineLyricModel, int position) {
+            mChorusLineLyricModel = chorusLineLyricModel;
+            mLyricLineTv.setText(chorusLineLyricModel.getLyrics());
+
+            mBlankView.setVisibility(View.VISIBLE);
+            if (mChorusLineLyricModel.getUserInfoModel() != null &&
+                    mChorusLineLyricModel.getUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                // 左边是自己
+                mLyricLineTv.setTextColor(colorEnable);
+            } else {
+                mLyricLineTv.setTextColor(colorDisable);
+            }
+            if (mChorusLineLyricModel.getUserInfoModel() != null) {
+                mAvatarIv.setVisibility(View.VISIBLE);
+                AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mDoubleRoomData.getAvatarById(mChorusLineLyricModel.getUserInfoModel().getUserId()))
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(Color.WHITE)
+                        .build());
+            } else {
+                mAvatarIv.setVisibility(View.GONE);
+            }
+        }
+    }
+
     public static class ChorusLineLyricModel {
         UserInfoModel UserInfoModel;
         String lyrics;
@@ -190,6 +239,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
             return UserInfoModel;
         }
     }
+
 }
 
 

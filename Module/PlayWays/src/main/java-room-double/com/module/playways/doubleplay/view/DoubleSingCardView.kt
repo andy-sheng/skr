@@ -33,10 +33,13 @@ class DoubleSingCardView : ConstraintLayout {
     var mSongNameTv: TextView
     var mNextSongTipTv: TextView
     var mCutSongTv: ExTextView
-    var mDoubleSelfSingCardView: DoubleSelfSingCardView
+    val mDoubleSelfSingCardView: DoubleSelfSingCardView by lazy {
+        DoubleSelfSingCardView(this@DoubleSingCardView, mDoubleRoomData)
+    }
     var mEnterTranslateAnimation: TranslateAnimation? = null
     var mScaleAnimation: ScaleAnimation? = null
     var mListener: DoubleSingCardView.Listener? = null
+    var mDoubleRoomData: DoubleRoomData? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -48,7 +51,6 @@ class DoubleSingCardView : ConstraintLayout {
         mSongNameTv = findViewById(com.module.playways.R.id.song_name_tv)
         mNextSongTipTv = findViewById(com.module.playways.R.id.next_song_tip_tv)
         mCutSongTv = findViewById(com.module.playways.R.id.cut_song_tv)
-        mDoubleSelfSingCardView = DoubleSelfSingCardView(this@DoubleSingCardView)
 
         mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -63,6 +65,7 @@ class DoubleSingCardView : ConstraintLayout {
 
     fun playLyric(roomData: DoubleRoomData, mCur: LocalCombineRoomMusic?, mNext: String?, hasNext: Boolean) {
         this.mCurMusic = mCur
+        this.mDoubleRoomData = roomData
 
         AvatarUtils.loadAvatarByUrl(mSongOwnerIv,
                 AvatarUtils.newParamsBuilder(roomData.getAvatarById(mCur?.userID ?: 0))

@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.view.chorus;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
@@ -11,10 +12,11 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +35,21 @@ public class DoubleChorusSelfSingCardView extends BaseChorusSelfCardView {
 
     public final static String TAG = "DoubleChorusSelfSingCardView";
 
-    public DoubleChorusSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
-        super(viewStub, roomData);
+    public DoubleChorusSelfSingCardView(ViewStub viewStub, DoubleRoomData roomData) {
+        super(viewStub);
+        mRoomData = roomData;
     }
 
     @Override
     protected void init(View parentView) {
-        super.init(parentView);
+        mLyricRecycleView = mParentView.findViewById(R.id.lyric_recycle_view);
+        mLyricRecycleView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(), LinearLayoutManager.VERTICAL, false));
+        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight, isForVideo(), mRoomData);
+        mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(U.app());
         {
             RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) parentView.getLayoutParams();
@@ -47,11 +57,10 @@ public class DoubleChorusSelfSingCardView extends BaseChorusSelfCardView {
         }
     }
 
-    public boolean playLyric(SongModel songModel, UserInfoModel firstModel, UserInfoModel secondModel, DoubleRoomData roomData) {
+    public boolean playLyric(SongModel songModel, UserInfoModel firstModel, UserInfoModel secondModel) {
         mSongModel = songModel;
         mFirstModel = firstModel;
         mSecondModel = secondModel;
-        mRoomData = roomData;
 
         return playLyric();
     }
