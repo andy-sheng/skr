@@ -22,7 +22,8 @@ public class GrabVideoUiController extends GrabBaseUiController {
             mF.mGrabVideoSelfSingCardView.playLyric();
             if (infoModel.isNormalRound()) {
                 // 普通轮次
-                mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
+                UserInfoModel userInfoModel = getUserInfoModel(infoModel.getUserID());
+                mF.mGrabVideoDisplayView.bindVideoStream(userInfoModel);
             } else if (infoModel.isChorusRound()) {
                 if (infoModel.getChorusRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
@@ -70,6 +71,14 @@ public class GrabVideoUiController extends GrabBaseUiController {
         return new Pair<>(userInfoModel1, userInfoModel2);
     }
 
+    UserInfoModel getUserInfoModel(int userID) {
+        UserInfoModel userInfoModel1 = mF.mRoomData.getUserInfo(userID);
+        if (userInfoModel1 == null) {
+            userInfoModel1 = new UserInfoModel(userID);
+        }
+        return userInfoModel1;
+    }
+
     @Override
     public void singByOthers() {
         GrabRoundInfoModel infoModel = mF.mRoomData.getRealRoundInfo();
@@ -78,7 +87,8 @@ public class GrabVideoUiController extends GrabBaseUiController {
             int halfVideoMarginTop = U.getDisplayUtils().dip2px(82);
             if (infoModel.isNormalRound()) {
                 // 普通轮次
-                mF.mGrabVideoDisplayView.bindVideoStream(infoModel.getUserID());
+                UserInfoModel userInfoModel = getUserInfoModel(infoModel.getUserID());
+                mF.mGrabVideoDisplayView.bindVideoStream(userInfoModel);
             } else if (infoModel.isChorusRound()) {
                 if (infoModel.getChorusRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();

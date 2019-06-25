@@ -44,6 +44,8 @@ public class GrabVideoDisplayView extends ExViewStub {
     TextureView mMainVideoView;
     BaseImageView mLeftAvatarIv;
     BaseImageView mRightAvatarIv;
+    BaseImageView mMiddleAvatarIv;
+
     TextView mLeftTipsTv;
     TextView mRightTipsTv;
     SingCountDownView2 mSingCountDownView;
@@ -78,6 +80,9 @@ public class GrabVideoDisplayView extends ExViewStub {
             lp.width = U.getDisplayUtils().getScreenWidth() / 2;
             mRightTipsTv = mParentView.findViewById(R.id.right_tips_tv);
             mRightNameTv = mParentView.findViewById(R.id.right_name_tv);
+        }
+        {
+            mMiddleAvatarIv = mParentView.findViewById(R.id.middle_avatar_iv);
         }
         {
             mBg1View = mParentView.findViewById(R.id.bg1_view);
@@ -126,7 +131,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         //ZqEngineKit.getInstance().setDisplayPreview(mMainVideoView);
     }
 
-    public void bindVideoStream(int userId) {
+    public void bindVideoStream(UserInfoModel userId) {
         tryInflate();
         ensureBindDisplayView();
         setVisibility(View.VISIBLE);
@@ -140,9 +145,14 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
         mBg1View.setVisibility(View.VISIBLE);
         mBg2View.setVisibility(View.VISIBLE);
-        mMainUserId = userId;
+        mMainUserId = userId.getUserId();
+        mMiddleAvatarIv.setVisibility(View.VISIBLE);
+        AvatarUtils.loadAvatarByUrl(mMiddleAvatarIv, AvatarUtils.newParamsBuilder(userId.getAvatar())
+                .setBlur(true)
+                .build()
+        );
         tryBindMainVideoStream();
-        if (userId == MyUserInfoManager.getInstance().getUid()) {
+        if (userId.getUserId() == MyUserInfoManager.getInstance().getUid()) {
             mBeautySettingBtn.setVisibility(View.VISIBLE);
         } else {
             mBeautySettingBtn.setVisibility(View.GONE);
@@ -150,6 +160,11 @@ public class GrabVideoDisplayView extends ExViewStub {
         startSingCountDown();
     }
 
+    /**
+     * @param userID1
+     * @param userID2
+     * @param needBindVideo pk 第二轮不需要重新bind
+     */
     public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2, boolean needBindVideo) {
         MyLog.d(TAG, "bindVideoStream needBindVideo=" + needBindVideo);
         tryInflate();
@@ -227,6 +242,7 @@ public class GrabVideoDisplayView extends ExViewStub {
             mRightAvatarIv.setVisibility(View.GONE);
             mRightTipsTv.setVisibility(View.GONE);
             mRightNameTv.setVisibility(View.GONE);
+            mMiddleAvatarIv.setVisibility(View.GONE);
             mSingCountDownView.reset();
             setMarginTop(0);
         }
@@ -251,10 +267,17 @@ public class GrabVideoDisplayView extends ExViewStub {
                 // 是自己
                 ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
                 ZqEngineKit.getInstance().startCameraPreview();
+                mMiddleAvatarIv.setVisibility(View.GONE);
             } else {
                 // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
                 // 但如果set时别人的视频流还没过来，
-                ZqEngineKit.getInstance().bindRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
+                if(ZqEngineKit.getInstance().isFirstVideoDecoded(mMainUserId)){
+                    ZqEngineKit.getInstance().bindRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
+                    mMiddleAvatarIv.setVisibility(View.GONE);
+                } else {
+                    DebugLogView.println(TAG, mMainUserId + "首帧还没到!!!");
+                    mMiddleAvatarIv.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
