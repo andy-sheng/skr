@@ -18,12 +18,13 @@ import com.common.view.DebounceViewClickListener
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
+import com.module.playways.IPlaywaysModeService
 import com.zq.person.view.ConfirmMatchInfoView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.double_room_view_layout.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import java.util.HashMap
+import java.util.*
 
 /**
  * 邂逅好声音
@@ -71,10 +72,9 @@ class DoubleRoomGameView : RelativeLayout {
 
         invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
+                val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                playWaysService?.createDoubleRoom()
             }
-
         })
     }
 
