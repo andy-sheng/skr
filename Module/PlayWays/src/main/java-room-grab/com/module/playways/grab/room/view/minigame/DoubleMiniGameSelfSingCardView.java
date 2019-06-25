@@ -91,7 +91,7 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
                 .setBorderColor(Color.WHITE)
                 .build());
 
-        if (!mDoubleRoomData.getUserHasLockById(mMusic.getUserID())) {
+        if (mDoubleRoomData.getEnableNoLimitDuration()) {
             String mOwnerName = mOwnerInfo.getNickname();
             if (mOwnerInfo.getNickname().length() > 7) {
                 mOwnerName = mOwnerName.substring(0, 7);

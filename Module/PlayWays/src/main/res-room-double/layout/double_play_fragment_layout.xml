@@ -48,11 +48,26 @@
 
     <ImageView
         android:id="@+id/left_lock_icon"
-        android:layout_width="@dimen/view_19_dp"
-        android:layout_height="@dimen/view_19_dp"
-        android:background="@drawable/srf_suoding"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_28_dp"
+        android:background="@drawable/double_down"
         app:layout_constraintBottom_toBottomOf="@id/left_avatar_sdv"
         app:layout_constraintRight_toRightOf="@id/left_avatar_sdv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/no_limit_tip"
+        android:layout_width="@dimen/view_122_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:background="@drawable/srf_tishi"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_8_dp"
+        android:text="互相亮灯 无限唱聊"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/left_avatar_sdv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/count_down_tv"
@@ -111,9 +126,9 @@
 
     <ImageView
         android:id="@+id/right_lock_icon"
-        android:layout_width="@dimen/view_19_dp"
-        android:layout_height="@dimen/view_19_dp"
-        android:background="@drawable/srf_suoding"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_28_dp"
+        android:background="@drawable/double_down"
         app:layout_constraintBottom_toBottomOf="@id/right_avatar_sdv"
         app:layout_constraintRight_toRightOf="@id/right_avatar_sdv" />
 
@@ -137,13 +152,11 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/unlock_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginTop="@dimen/view_162_dp"
         android:gravity="center"
-        android:paddingLeft="@dimen/view_18_dp"
-        android:paddingRight="@dimen/view_18_dp"
-        android:text="无限畅聊"
+        android:text="亮灯"
         android:textColor="#404A9A"
         android:textSize="@dimen/textsize_12_dp"
         app:bl_corners_radius="@dimen/view_16_dp"

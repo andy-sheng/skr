@@ -198,7 +198,7 @@ class DoubleRoomData() : Serializable {
     fun getPartnerAvatar(): String {
         val info = getAntherUser()
         if (info != null) {
-            if (!getUserHasLockById(info.userId)) {
+            if (enableNoLimitDuration) {
                 return info.avatar
             } else {
                 return getMaskAvatar(info.sex)
@@ -209,15 +209,10 @@ class DoubleRoomData() : Serializable {
     }
 
     fun getSelfAvatar(): String {
-        val info = userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
-        if (info != null) {
-            if (!info.isHasLock) {
-                return MyUserInfoManager.getInstance().avatar
-            } else {
-                return getMaskAvatar(MyUserInfoManager.getInstance().sex)
-            }
+        if (enableNoLimitDuration) {
+            return MyUserInfoManager.getInstance().avatar
         } else {
-            return ""
+            return getMaskAvatar(MyUserInfoManager.getInstance().sex)
         }
     }
 
@@ -269,6 +264,13 @@ class DoubleRoomData() : Serializable {
      */
     fun isCreateRoom(): Boolean {
         return doubleRoomOri == DoubleRoomOri.CREATE
+    }
+
+    /**
+     * 是不是创建的房间，通过首页邀请进来
+     */
+    fun isMatchRoom(): Boolean {
+        return doubleRoomOri == DoubleRoomOri.MATCH
     }
 
     override fun toString(): String {

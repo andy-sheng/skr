@@ -117,9 +117,8 @@ class DoubleGameEndFragment : BaseFragment() {
     }
 
     fun setEndData(model: DoubleEndRoomModel) {
-        val userInfoModel = mDoubleRoomData.getAntherUser()
-
-        if (!mDoubleRoomData.getUserHasLockById(userInfoModel?.userId ?: 0)) {
+        if (mDoubleRoomData.enableNoLimitDuration) {
+            val userInfoModel = mDoubleRoomData.getAntherUser()
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel?.avatar)
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())

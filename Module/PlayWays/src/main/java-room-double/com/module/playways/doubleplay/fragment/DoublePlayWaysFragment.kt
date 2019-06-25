@@ -61,6 +61,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mRightLockIcon: ImageView? = null
     private var mRightNameTv: ExTextView? = null
     private var mCountDownTv: ExTextView? = null
+    private var mNoLimitTip: ExTextView? = null
     private var mMicIv: ExImageView? = null
     private var mNoLimitIcon: ExImageView? = null
     private var mPickIv: ImageView? = null
@@ -105,6 +106,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightZanView = mRootView.findViewById<View>(R.id.right_zanView) as ZanView
         mLeftZanView = mRootView.findViewById<View>(R.id.left_zanView) as ZanView
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
+        mNoLimitTip = mRootView.findViewById(R.id.no_limit_tip) as ExTextView
         mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
         mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
 
@@ -209,6 +211,10 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mDoubleCorePresenter = DoubleCorePresenter(mRoomData, this)
         addPresent(mDoubleCorePresenter)
+
+        if (mRoomData.isMatchRoom()) {
+            mNoLimitTip?.visibility = VISIBLE
+        }
 
         if (mRoomData.isCreateRoom()) {
             unLockSelf()
@@ -400,7 +406,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             } else {
                 unLockOther()
             }
-            mCurrentCardView?.updateLockState()
         }
     }
 
@@ -423,15 +428,33 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 别人解锁状态
      */
     fun unLockOther() {
-        AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData?.getAntherUser()?.avatar)
-                .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                .setBorderColor(Color.WHITE)
-                .build())
+        if (mRoomData.isMatchRoom()) {
+            if (mRoomData.enableNoLimitDuration) {
+                AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData?.getAntherUser()?.avatar)
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                        .setBorderColor(Color.WHITE)
+                        .build())
 
-        mLeftLockIcon?.visibility = GONE
-        mLeftNameTv?.text = mRoomData?.getAntherUser()?.nickname
-        mLeftNameTv?.visibility = VISIBLE
+                mLeftNameTv?.text = mRoomData?.getAntherUser()?.nickname
+                mLeftNameTv?.visibility = VISIBLE
+                mLeftLockIcon?.visibility = VISIBLE
+                mLeftLockIcon?.background = U.getDrawable(R.drawable.double_light)
+            } else {
+                mLeftLockIcon?.visibility = VISIBLE
+                mLeftLockIcon?.background = U.getDrawable(R.drawable.double_light)
+            }
+        } else {
+            AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData?.getAntherUser()?.avatar)
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                    .setBorderColor(Color.WHITE)
+                    .build())
+
+            mLeftNameTv?.text = mRoomData?.getAntherUser()?.nickname
+            mLeftNameTv?.visibility = VISIBLE
+            mLeftLockIcon?.visibility = GONE
+        }
     }
 
     override fun onBackPressed(): Boolean {
@@ -443,16 +466,38 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 自己解锁状态
      */
     fun unLockSelf() {
-        AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                .setBorderColor(Color.WHITE)
-                .build())
+        if (mRoomData.isMatchRoom()) {
+            if (mRoomData.enableNoLimitDuration) {
+                AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                        .setBorderColor(Color.WHITE)
+                        .build())
 
-        mUnlockTv?.visibility = GONE
-        mRightLockIcon?.visibility = GONE
-        mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
-        mRightNameTv?.visibility = VISIBLE
+                mUnlockTv?.visibility = GONE
+                mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
+                mRightNameTv?.visibility = VISIBLE
+                mRightLockIcon?.visibility = VISIBLE
+                mRightLockIcon?.background = U.getDrawable(R.drawable.double_light)
+            } else {
+                mUnlockTv?.visibility = GONE
+                mRightLockIcon?.visibility = VISIBLE
+                mRightLockIcon?.background = U.getDrawable(R.drawable.double_light)
+            }
+        } else {
+            if (mRoomData.enableNoLimitDuration) {
+                AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                        .setBorderColor(Color.WHITE)
+                        .build())
+
+                mUnlockTv?.visibility = GONE
+                mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
+                mRightNameTv?.visibility = VISIBLE
+                mRightLockIcon?.visibility = GONE
+            }
+        }
     }
 
     override fun destroy() {
@@ -465,10 +510,17 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         if (noLimit) {
             mNoLimitIcon?.visibility = VISIBLE
             mCountDownTv?.visibility = GONE
+            mNoLimitTip?.visibility = GONE
+            unLockSelf()
+            unLockOther()
             countDownTimer?.dispose()
+            mCurrentCardView?.updateLockState()
         } else {
+            selfLockState()
+            guestLockState()
             mNoLimitIcon?.visibility = GONE
             mCountDownTv?.visibility = VISIBLE
+            mNoLimitTip?.visibility = VISIBLE
         }
     }
 
