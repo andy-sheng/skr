@@ -322,9 +322,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     private void setTabDrawable(ExTextView textView, Drawable drawable) {
-        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-        textView.setCompoundDrawables(null, drawable,
-                null, null);
+//        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+//        textView.setCompoundDrawables(null, drawable,
+//                null, null);
+        textView.setBackground(drawable);
     }
 
     private void checkIfFromSchema() {
