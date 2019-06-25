@@ -19,8 +19,8 @@
         android:layout_width="@dimen/view_158_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginBottom="@dimen/view_82_dp"
-        android:drawableRight="@drawable/double_random_icon"
         android:gravity="center"
+        android:paddingRight="@dimen/view_20_dp"
         android:text="随机匹配"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
@@ -33,13 +33,22 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_36_dp"
+        android:background="@drawable/double_random_icon"
+        app:layout_constraintBottom_toBottomOf="@id/start_match_iv"
+        app:layout_constraintRight_toRightOf="@id/start_match_iv"
+        app:layout_constraintTop_toTopOf="@id/start_match_iv" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/invite_friend_iv"
         android:layout_width="@dimen/view_158_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginBottom="@dimen/view_24_dp"
-        android:drawableRight="@drawable/double_invite_icon"
         android:gravity="center"
+        android:paddingRight="@dimen/view_20_dp"
         android:text="邀请好友"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
@@ -51,6 +60,15 @@
         app:layout_constraintBottom_toTopOf="@id/start_match_iv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_36_dp"
+        android:background="@drawable/double_invite_icon"
+        app:layout_constraintBottom_toBottomOf="@id/invite_friend_iv"
+        app:layout_constraintRight_toRightOf="@id/invite_friend_iv"
+        app:layout_constraintTop_toTopOf="@id/invite_friend_iv" />
 
     <TextView
         android:id="@+id/remain_times_tv"
