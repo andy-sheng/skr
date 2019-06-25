@@ -25,6 +25,15 @@
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />
 
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_185_dp"
+        app:bl_gradient_angle="90"
+        app:bl_gradient_endColor="@color/transparent"
+        app:bl_gradient_startColor="#404A9A"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toTopOf="@id/bg1_view" />
+
     <View
         android:id="@+id/bg1_view"
         android:layout_width="match_parent"
@@ -73,25 +82,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
-    <!--<com.moudule.playways.beauty.view.BeautyControlPanelView-->
-    <!--android:id="@+id/beauty_control_panel_view"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/view_168_dp"-->
-    <!--android:background="#404A9A"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--app:layout_constraintRight_toRightOf="parent" />-->
-
-    <com.common.view.ex.ExImageView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_185_dp"
-        app:bl_gradient_angle="90"
-        app:bl_gradient_endColor="@color/transparent"
-        app:bl_gradient_startColor="#404A9A"
-        app:bl_shape="rectangle"
-        app:layout_constraintBottom_toTopOf="@id/bg1_view"
-        />
-
 
 </android.support.constraint.ConstraintLayout>

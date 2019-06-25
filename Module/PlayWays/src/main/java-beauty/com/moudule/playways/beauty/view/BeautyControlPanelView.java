@@ -183,14 +183,11 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
             mList.add(new BeautyViewModel(Type.mopi, getDrawable("#F9CC82", "#D79F43")));
             mList.add(new BeautyViewModel(Type.meibai, getDrawable("#C7E4AC", "#A1C580")));
             mList.add(new BeautyViewModel(Type.ruihua, getDrawable("#D7ABEE", "#BB81CF")));
-//            mList.add(new BeautyViewModel(Type.chunse, getDrawable("#90DAFF", "#72C1E9")));
-//            mList.add(new BeautyViewModel(Type.saihong, getDrawable("#FFB1CF", "#DF8BAB")));
         } else if (type == TYPE_FITER) {
             mList.add(new BeautyViewModel(Type.none_filter, getDrawable("#F9CC82", "#D79F43")));
             mList.add(new BeautyViewModel(Type.ruanyang, getDrawable("#90DAFF", "#72C1E9")));
             mList.add(new BeautyViewModel(Type.musi, getDrawable("#FFB1CF", "#DF8BAB")));
             mList.add(new BeautyViewModel(Type.yangqi, getDrawable("#F9CC82", "#D79F43")));
-//            mList.add(new BeautyViewModel(4, "经典", getDrawable("#C7E4AC", "#A1C580")));
         } else if (type == TYPE_STICKER) {
             mList.add(new BeautyViewModel(Type.none_sticker, getDrawable("#F9CC82", "#D79F43")));
             mList.add(new BeautyViewModel(Type.cat, getDrawable("#90DAFF", "#72C1E9")));
