@@ -32,6 +32,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     Drawable mChorusDrawable;
     Drawable mPKDrawable;
     Drawable mMiniGameDrawable;
+    Drawable mFreeMicDrawable;
 
     public ManageSongAdapter() {
         mGrayDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
@@ -67,6 +68,13 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                 .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
                 .setStrokeColor(U.getColor(R.color.white_trans_70))
                 .build();
+
+        mFreeMicDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#C856E0"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setStrokeColor(U.getColor(R.color.white_trans_70))
+                .build();
     }
 
     @NonNull
@@ -80,7 +88,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         GrabRoomSongModel model = mDataList.get(position);
-        MyLog.d(TAG,"onBindViewHolder" + " model=" + model + " position=" + position);
+        MyLog.d(TAG, "onBindViewHolder" + " model=" + model + " position=" + position);
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model, position);
     }
@@ -212,6 +220,16 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                 mSongTagTv.setText("双人游戏");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mMiniGameDrawable);
+                mTvSongName.setText("【" + model.getItemName() + "】");
+            } else if (model.getPlayType() == StandPlayType.PT_FREE_MICRO.getValue()) {
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(58 + 84), 0);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(58);
+                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(58 + 84);
+                mSongTagTv.setLayoutParams(layoutParams);
+                mSongTagTv.setText("多人游戏");
+                mSongTagTv.setVisibility(View.VISIBLE);
+                mSongTagTv.setBackground(mFreeMicDrawable);
                 mTvSongName.setText("【" + model.getItemName() + "】");
             } else {
                 mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(84), 0);
