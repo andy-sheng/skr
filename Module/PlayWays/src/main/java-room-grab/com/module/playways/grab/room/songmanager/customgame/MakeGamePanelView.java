@@ -83,6 +83,8 @@ public class MakeGamePanelView extends RelativeLayout {
 
     IPlayer mMediaPlayer;
 
+    boolean mDownTouching = false;
+
     Handler mUiHandler = new Handler();
 
     public MakeGamePanelView(Context context) {
@@ -115,6 +117,7 @@ public class MakeGamePanelView extends RelativeLayout {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
+                        mDownTouching =true;
                         if (mStatus == STATUS_IDLE) {
                             // 开始录音
                             mStatus = STATUS_RECORDING;
@@ -128,6 +131,7 @@ public class MakeGamePanelView extends RelativeLayout {
                         break;
                     case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP:
+                        mDownTouching = false;
                         if (mStatus == STATUS_RECORDING) {
                             cancelCountDown();
                             // 停止录音
@@ -162,6 +166,9 @@ public class MakeGamePanelView extends RelativeLayout {
         mTime60Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mDownTouching){
+                    return;
+                }
                 mPlayTimeExpect = 60;
                 mTime60Btn.setEnabled(false);
                 mTime90Btn.setEnabled(true);
@@ -172,6 +179,9 @@ public class MakeGamePanelView extends RelativeLayout {
         mTime90Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mDownTouching){
+                    return;
+                }
                 mPlayTimeExpect = 90;
                 mTime60Btn.setEnabled(true);
                 mTime90Btn.setEnabled(false);
@@ -182,6 +192,9 @@ public class MakeGamePanelView extends RelativeLayout {
         mTime120Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mDownTouching){
+                    return;
+                }
                 mPlayTimeExpect = 120;
                 mTime60Btn.setEnabled(true);
                 mTime90Btn.setEnabled(true);
@@ -192,6 +205,9 @@ public class MakeGamePanelView extends RelativeLayout {
         mReRecordBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mDownTouching){
+                    return;
+                }
                 mStatus = STATUS_IDLE;
                 changeToRecordBegin();
             }
@@ -199,6 +215,9 @@ public class MakeGamePanelView extends RelativeLayout {
         mSubmitBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mDownTouching){
+                    return;
+                }
                 // 调研录音
                 uploadAudioRes();
             }
