@@ -532,6 +532,37 @@ public class UserInfoManager {
     }
 
     /**
+     * 拉取粉丝
+     *
+     * @param offset
+     * @param cnt
+     * @param userInfoListCallback
+     */
+    public void getFans(final int offset, final int cnt, final UserInfoListCallback userInfoListCallback) {
+        ApiMethods.subscribe(userInfoServerApi.listFansByPage(offset, cnt), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
+                List<UserInfoModel> friendList = new ArrayList<>();
+                for (UserInfoModel userInfoModel : list) {
+                    if (userInfoModel.isFriend()) {
+                        friendList.add(userInfoModel);
+                    }
+                }
+                if (!friendList.isEmpty()) {
+                    // 好友列表存到数据库
+                    UserInfoLocalApi.insertOrUpdate(friendList);
+                }
+                int newOffset = obj.getData().getIntValue("offset");
+                if (userInfoListCallback != null) {
+                    userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
+                }
+            }
+        });
+
+    }
+
+    /**
      * 获取我的好友
      */
     public void getMyFriends(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
@@ -701,27 +732,6 @@ public class UserInfoManager {
 
 
     /**
-     * 拉取粉丝
-     *
-     * @param offset
-     * @param cnt
-     * @param userInfoListCallback
-     */
-    public void getFans(final int offset, final int cnt, final UserInfoListCallback userInfoListCallback) {
-        ApiMethods.subscribe(userInfoServerApi.listFansByPage(offset, cnt), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult obj) {
-                List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
-                int newOffset = obj.getData().getIntValue("offset");
-                if (userInfoListCallback != null) {
-                    userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
-                }
-            }
-        });
-
-    }
-
-    /**
      * 更新备注名
      *
      * @param remark
@@ -845,15 +855,15 @@ public class UserInfoManager {
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
-                MyLog.d(TAG,"compare" + " u1=" + u1 + " u2=" + u2);
+                MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
                 if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
                     // 两者都是离线
                     // 按离线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else if(u1.getStatusTs() < u2.getStatusTs()){
+                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
                         return 1;
-                    }else{
+                    } else {
                         return 0;
                     }
                 }
@@ -862,9 +872,9 @@ public class UserInfoManager {
                     // 按在线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else if(u1.getStatusTs() < u2.getStatusTs()){
+                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
                         return 1;
-                    }else{
+                    } else {
                         return 0;
                     }
                 }
