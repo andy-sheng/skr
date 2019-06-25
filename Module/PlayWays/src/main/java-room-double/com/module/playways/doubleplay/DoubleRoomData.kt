@@ -302,10 +302,10 @@ class DoubleRoomData() : Serializable {
         fun makeRoomDataFromJsonObject(obj: JSONObject): DoubleRoomData {
             val doubleRoomData = DoubleRoomData()
             doubleRoomData.gameId = obj.getIntValue("roomID")
-            doubleRoomData.enableNoLimitDuration = false
             doubleRoomData.passedTimeMs = obj.getLongValue("passedTimeMs")
             doubleRoomData.config = JSON.parseObject(obj.getString("config"), LocalCombineRoomConfig::class.java)
             val userList = JSON.parseArray(obj.getString("users"), UserInfoModel::class.java)
+            doubleRoomData.enableNoLimitDuration = doubleRoomData.config?.durationTimeMs == -1
 
             val hashMap = HashMap<Int, UserInfoModel>()
             for (userInfoModel in userList) {
