@@ -406,6 +406,9 @@ public class MakeGamePanelView extends RelativeLayout {
         mRecordingTipsTv.setText("按住录音");
         mTitleTv.setText("一句话描述游戏规则");
         mSubmitProgressBar.setVisibility(GONE);
+        if (mMediaPlayer != null) {
+            mMediaPlayer.reset();
+        }
     }
 
     @Override
