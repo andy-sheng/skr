@@ -17,14 +17,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.log.MyLog
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
+import com.module.RouterConstants
 import com.module.home.ranked.view.RankedDetailView
+import com.zq.person.event.ShowPersonCenterEvent
+import com.zq.person.fragment.OtherPersonFragment4
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class RankedDetailFragment : BaseFragment() {
@@ -201,6 +208,16 @@ class RankedDetailFragment : BaseFragment() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowPersonCenterEvent) {
+        val bundle = Bundle()
+        bundle.putInt("bundle_user_id", event.uid)
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                .with(bundle)
+                .navigation()
     }
 }

@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.event;
+package com.zq.person.event;
 
 public class ShowPersonCardEvent {
     private int uid;

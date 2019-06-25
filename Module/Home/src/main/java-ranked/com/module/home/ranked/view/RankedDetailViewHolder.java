@@ -9,9 +9,15 @@ import android.widget.TextView;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 import com.module.home.ranked.model.RankDataModel;
+import com.zq.person.event.ShowPersonCenterEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.security.spec.ECField;
 
 import static com.module.home.ranked.model.RankDataModel.BLUE_ZUAN;
 import static com.module.home.ranked.model.RankDataModel.MEILI;
@@ -38,6 +44,13 @@ public class RankedDetailViewHolder extends RecyclerView.ViewHolder {
         mNameTv = itemView.findViewById(R.id.name_tv);
         mRankedIconIv = itemView.findViewById(R.id.ranked_icon_iv);
         mRankedDescTv = itemView.findViewById(R.id.ranked_desc_tv);
+
+        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                EventBus.getDefault().post(new ShowPersonCenterEvent(mRankDataModel.getUserID()));
+            }
+        });
     }
 
     public void bindData(int position, RankDataModel model) {

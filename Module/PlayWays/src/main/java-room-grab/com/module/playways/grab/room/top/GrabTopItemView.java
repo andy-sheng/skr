@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,13 +19,11 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.R;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.zq.live.proto.Room.EWantSingType;
 
 import org.greenrobot.eventbus.EventBus;
-
-import io.reactivex.functions.Consumer;
 
 public class GrabTopItemView extends RelativeLayout {
     public final static String TAG = "GrabTopItemView";

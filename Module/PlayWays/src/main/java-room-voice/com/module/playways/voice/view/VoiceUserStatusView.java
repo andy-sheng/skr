@@ -14,7 +14,7 @@ import com.common.image.fresco.BaseImageView;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.R;
 import com.opensource.svgaplayer.SVGADrawable;

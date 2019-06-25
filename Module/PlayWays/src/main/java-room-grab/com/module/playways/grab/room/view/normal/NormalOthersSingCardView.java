@@ -20,7 +20,7 @@ import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.common.view.ExViewStub;
 import com.opensource.svgaplayer.SVGADrawable;

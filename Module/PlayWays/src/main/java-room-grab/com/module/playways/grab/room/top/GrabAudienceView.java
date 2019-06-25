@@ -13,7 +13,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;

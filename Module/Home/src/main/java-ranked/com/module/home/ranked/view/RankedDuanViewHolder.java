@@ -9,10 +9,14 @@ import android.widget.TextView;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 import com.module.home.ranked.model.RankDataModel;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.person.event.ShowPersonCenterEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 // 段位榜的viewHolder
 public class RankedDuanViewHolder extends RecyclerView.ViewHolder {
@@ -35,6 +39,12 @@ public class RankedDuanViewHolder extends RecyclerView.ViewHolder {
         mDuanDesc = itemView.findViewById(R.id.duan_desc);
         mLevelView = itemView.findViewById(R.id.level_view);
 
+        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                EventBus.getDefault().post(new ShowPersonCenterEvent(mRankDataModel.getUserID()));
+            }
+        });
     }
 
     public void bindData(int position, RankDataModel model) {

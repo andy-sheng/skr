@@ -52,7 +52,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
 import com.module.playways.grab.room.listener.SVGAListener;
