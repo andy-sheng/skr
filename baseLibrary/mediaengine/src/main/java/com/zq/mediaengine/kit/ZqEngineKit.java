@@ -102,6 +102,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
+    static final int STATUS_UNINITING = 3;
     static final int MSG_JOIN_ROOM_TIMEOUT = 11;
     static final int MSG_JOIN_ROOM_AGAIN = 12;
 
@@ -109,9 +110,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     private static final String SCORE_DEBUG_PATH = "/sdcard/tongzhuodeni.pcm";
 
     private Params mConfig = new Params(); // 为了防止崩溃
-    private final Object mLock = new Object();
 
-    private int mStatus = STATUS_UNINIT;// 0未初始化 1 初始ing 2 初始化
+    private volatile int mStatus = STATUS_UNINIT;// 0未初始化 1 初始ing 2 初始化 3 释放ing
     /**
      * 存储该房间所有用户在引擎中的状态的，
      * key为在引擎中的用户 id
@@ -391,16 +391,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAcrRecognizer = new AcrRecognizer();
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+        initWorkThread();
     }
 
-    public static ZqEngineKit getInstance() {
-        return ZqEngineKitHolder.INSTANCE;
-    }
-
-    public void init(final String from, final Params params) {
-        if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.destroy();
-        }
+    private void initWorkThread() {
         mCustomHandlerThread = new CustomHandlerThread(TAG) {
             @Override
             protected void processMessage(Message msg) {
@@ -416,26 +410,27 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             }
         };
-        final int oldStatus = mStatus;
-        mStatus = STATUS_INITING;
+    }
+
+    public static ZqEngineKit getInstance() {
+        return ZqEngineKitHolder.INSTANCE;
+    }
+
+    public void init(final String from, final Params params) {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
                 MyLog.d(TAG, "init" + " from=" + from + " params=" + params);
-                destroyInner(oldStatus);
+                destroyInner();
                 initInner(from, params);
-                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_INITED));
             }
         });
     }
 
     private void initInner(String from, Params params) {
-        mStatus = STATUS_INITED;
+        mStatus = STATUS_INITING;
         mInitFrom = from;
         mConfig = params;
-        synchronized (mLock) {
-            mLock.notifyAll();
-        }
 
         // TODO: engine代码合并后，采样率初始值在Params初始化时获取
         mConfig.setAudioSampleRate(AudioUtil.getNativeSampleRate(U.app().getApplicationContext()));
@@ -451,6 +446,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        // 回调消息前更新状态
+        mStatus = STATUS_INITED;
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_INITED));
     }
 
     private void initModules() {
@@ -576,21 +574,14 @@ public class ZqEngineKit implements AgoraOutCallback {
         return mStatus == STATUS_INITED;
     }
 
+    /**
+     * 注意：在初始化完成前获取到的配置可能是不正确的，如需保证获取到的配置是init时传入的，
+     * 可以在收到EngineEvent.TYPE_ENGINE_INITED事件后再进行下一步的处理。
+     *
+     * @return Params实例
+     */
     public Params getParams() {
-        if (mStatus == STATUS_INITED) {
-            return mConfig;
-        } else if (mStatus == STATUS_UNINIT) {
-            return mConfig;
-        } else if (mStatus == STATUS_INITING) {
-            synchronized (mLock) {
-                try {
-                    mLock.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-            return mConfig;
-        }
-        return null;
+        return mConfig;
     }
 
     /**
@@ -620,27 +611,26 @@ public class ZqEngineKit implements AgoraOutCallback {
                 return;
             }
         }
-        if (mStatus == STATUS_INITED) {
-            mCustomHandlerThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (from.equals(mInitFrom)) {
-                        mConfig.setAnchor(false);
-                        destroyInner(mStatus);
-                        mCustomHandlerThread.destroy();
-                        mStatus = STATUS_UNINIT;
-                    }
+        // 销毁前清理掉其他的异步任务
+        mCustomHandlerThread.removeCallbacksAndMessages(null);
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (from.equals(mInitFrom)) {
+                    mConfig.setAnchor(false);
+                    destroyInner();
                 }
-            });
-        }
+            }
+        });
     }
 
-    private void destroyInner(int status) {
+    private void destroyInner() {
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
         mUiHandler.removeMessages(MSG_JOIN_ROOM_TIMEOUT);
-        if (status == STATUS_INITED) {
+        if (mStatus == STATUS_INITED) {
+            mStatus = STATUS_UNINITING;
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
                 mMusicTimePlayTimeListener.dispose();
             }
@@ -660,6 +650,8 @@ public class ZqEngineKit implements AgoraOutCallback {
             mUiHandler.removeCallbacksAndMessages(null);
             mConfig = new Params();
             mPendingStartMixAudioParams = null;
+            // 发送消息前，更新状态
+            mStatus = STATUS_UNINIT;
             EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
             if (EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().unregister(this);
