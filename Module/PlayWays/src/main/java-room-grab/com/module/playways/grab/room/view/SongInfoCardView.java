@@ -154,7 +154,7 @@ public class SongInfoCardView extends RelativeLayout {
         mTotalSeq.setText("" + totalSeq);
         if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             // 合唱
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42 + 5), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
             mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
@@ -171,7 +171,7 @@ public class SongInfoCardView extends RelativeLayout {
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             // PK
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42 + 5), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
             mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
@@ -188,7 +188,7 @@ public class SongInfoCardView extends RelativeLayout {
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             // 小游戏
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68), 0);
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68 + 5), 0);
             if (songModel.getMiniGame() != null) {
                 mSongNameTv.setText("【" + songModel.getMiniGame().getGameName() + "】");
             } else {
