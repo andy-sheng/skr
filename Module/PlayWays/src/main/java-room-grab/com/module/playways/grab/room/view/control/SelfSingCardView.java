@@ -120,6 +120,10 @@ public class SelfSingCardView {
         mMiniGameSelfSingView.setListener(listener);
     }
 
+    public void setListener4FreeMic(SelfSingCardView.Listener listener) {
+        mFreeMicSelfSingCardView.setListener(listener);
+    }
+
     public List<View> getRealViews() {
         List<View> list = new ArrayList<>();
         list.add(mNormalSelfSingCardView.getRealView());

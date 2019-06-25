@@ -12,5 +12,9 @@
         android:layout_marginRight="@dimen/view_10_dp"
         android:paddingRight="@dimen/view_12_dp"
         android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+        android:fadeScrollbars="false"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
         android:scrollbars="vertical" />
+
 </RelativeLayout>

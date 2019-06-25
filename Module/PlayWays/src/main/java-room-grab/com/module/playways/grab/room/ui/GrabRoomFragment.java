@@ -1210,6 +1210,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mCorePresenter.sendRoundOverInfo();
             }
         });
+        mSelfSingCardView.setListener4FreeMic(new SelfSingCardView.Listener() {
+            @Override
+            public void onSelfSingOver() {
+                mCorePresenter.sendMyGrabOver();
+            }
+        });
         mOthersSingCardView = new OthersSingCardView(mRootView, mRoomData);
     }
 

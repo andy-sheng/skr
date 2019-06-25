@@ -15,6 +15,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.SingCountDownView2;
+import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.lyrics.LyricsManager;
 import com.zq.mediaengine.kit.ZqEngineKit;
@@ -33,8 +34,8 @@ public class FreeMicSelfSingCardView extends ExViewStub {
     TextView mTvLyric;
     SingCountDownView2 mSingCountDownView;
     ExImageView mmMicControlBtn;
-
     GrabRoomData mRoomData;
+    SelfSingCardView.Listener mListener;
 
     public FreeMicSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
@@ -47,6 +48,7 @@ public class FreeMicSelfSingCardView extends ExViewStub {
         mSvLyric = parentView.findViewById(R.id.sv_lyric);
         mTvLyric = parentView.findViewById(R.id.tv_lyric);
         mSingCountDownView = parentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView.setListener(mListener);
         mmMicControlBtn = parentView.findViewById(R.id.mic_control_btn);
         mmMicControlBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -115,6 +117,10 @@ public class FreeMicSelfSingCardView extends ExViewStub {
         return true;
     }
 
+    public void setListener(SelfSingCardView.Listener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
@@ -123,4 +129,5 @@ public class FreeMicSelfSingCardView extends ExViewStub {
     public void destroy() {
 
     }
+
 }
