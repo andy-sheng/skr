@@ -172,7 +172,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mExitIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 // 退出
-                exitLogin()
+                confirmExitRoom()
             }
         })
 
@@ -205,7 +205,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 // 点歌
-                OwnerManagerActivity.open(activity, SongManageData(mRoomData))
+                if (mRoomData.isRoomPrepared()) {
+                    OwnerManagerActivity.open(activity, SongManageData(mRoomData))
+                } else {
+                    U.getToastUtil().showShort("房间里还没有人哦～")
+                }
             }
         })
 
@@ -279,32 +283,36 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mPersonInfoDialog?.show()
     }
 
-    private fun exitLogin() {
-        val tipsDialogView = TipsDialogView.Builder(context)
-                .setMessageTip("确定退出唱聊房吗？")
-                .setConfirmTip("确定")
-                .setCancelTip("取消")
-                .setConfirmBtnClickListener(object : AnimateClickListener() {
-                    override fun click(view: View) {
-                        mDialogPlus?.dismiss()
-                        mDoubleCorePresenter.exit()
-                    }
-                })
-                .setCancelBtnClickListener(object : AnimateClickListener() {
-                    override fun click(view: View) {
-                        mDialogPlus?.dismiss()
-                    }
-                })
-                .build()
+    private fun confirmExitRoom() {
+        if (!mRoomData.isRoomPrepared()) {
+            activity?.finish()
+        } else {
+            val tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip("确定退出唱聊房吗？")
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mDialogPlus?.dismiss()
+                            mDoubleCorePresenter.exit()
+                        }
+                    })
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mDialogPlus?.dismiss()
+                        }
+                    })
+                    .build()
 
-        mDialogPlus = DialogPlus.newDialog(context!!)
-                .setContentHolder(ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create()
-        mDialogPlus?.show()
+            mDialogPlus = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create()
+            mDialogPlus?.show()
+        }
     }
 
     override fun setData(type: Int, data: Any?) {
@@ -458,7 +466,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun onBackPressed(): Boolean {
-        exitLogin()
+        confirmExitRoom()
         return true
     }
 
