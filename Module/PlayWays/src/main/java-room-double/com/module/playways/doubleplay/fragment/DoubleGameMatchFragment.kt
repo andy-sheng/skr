@@ -25,7 +25,6 @@ import com.orhanobut.dialogplus.ViewHolder
 class DoubleGameMatchFragment : BaseFragment(), IMatchView {
     val mTag = "DoubleGameMatchFragment"
     lateinit var mCalcelMatchTv: ExTextView
-    var mDialogPlus: DialogPlus? = null
     lateinit var doubleMatchPresenter: DoubleMatchPresenter
 
     override fun initView(): Int {
@@ -37,7 +36,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
         mCalcelMatchTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                exitLogin()
+                activity?.finish()
             }
         })
 
@@ -46,33 +45,33 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         doubleMatchPresenter.startMatch()
     }
 
-    private fun exitLogin() {
-        val tipsDialogView = TipsDialogView.Builder(context)
-                .setMessageTip("确定取消匹配吗？")
-                .setConfirmTip("确定")
-                .setCancelTip("取消")
-                .setConfirmBtnClickListener(object : AnimateClickListener() {
-                    override fun click(view: View) {
-                        mDialogPlus?.dismiss()
-                        activity?.finish()
-                    }
-                })
-                .setCancelBtnClickListener(object : AnimateClickListener() {
-                    override fun click(view: View) {
-                        mDialogPlus?.dismiss()
-                    }
-                })
-                .build()
-
-        mDialogPlus = DialogPlus.newDialog(context!!)
-                .setContentHolder(ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create()
-        mDialogPlus?.show()
-    }
+//    private fun exitLogin() {
+//        val tipsDialogView = TipsDialogView.Builder(context)
+//                .setMessageTip("确定取消匹配吗？")
+//                .setConfirmTip("确定")
+//                .setCancelTip("取消")
+//                .setConfirmBtnClickListener(object : AnimateClickListener() {
+//                    override fun click(view: View) {
+//                        mDialogPlus?.dismiss()
+//                        activity?.finish()
+//                    }
+//                })
+//                .setCancelBtnClickListener(object : AnimateClickListener() {
+//                    override fun click(view: View) {
+//                        mDialogPlus?.dismiss()
+//                    }
+//                })
+//                .build()
+//
+//        mDialogPlus = DialogPlus.newDialog(context!!)
+//                .setContentHolder(ViewHolder(tipsDialogView))
+//                .setGravity(Gravity.BOTTOM)
+//                .setContentBackgroundResource(R.color.transparent)
+//                .setOverlayBackgroundResource(R.color.black_trans_80)
+//                .setExpanded(false)
+//                .create()
+//        mDialogPlus?.show()
+//    }
 
     override fun matchSuccessFromHttp(doubleRoomData: DoubleRoomData) {
         MyLog.d(mTag, "matchSuccessFromHttp")
@@ -126,6 +125,5 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
     override fun destroy() {
         super.destroy()
-        mDialogPlus?.dismiss()
     }
 }

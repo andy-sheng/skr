@@ -6,42 +6,20 @@ import android.view.ViewStub;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
-import com.common.core.crash.IgnoreException;
 import com.common.log.MyLog;
-import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ExViewStub;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExTextView;
-import com.engine.EngineEvent;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.grab.room.view.SingCountDownView2;
-import com.module.playways.grab.room.view.control.SelfSingCardView;
-import com.module.playways.grab.room.view.minigame.BaseMiniGameSelfSingCardView;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.utils.SongResUtils;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
-import java.io.File;
-import java.io.IOException;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSource;
-import okio.Okio;
 
 /**
  * 自由麦自己视角的卡片
