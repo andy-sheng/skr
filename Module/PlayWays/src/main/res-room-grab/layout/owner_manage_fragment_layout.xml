@@ -23,7 +23,7 @@
         app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#7187FF"
-        app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#7187FF" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/search_song_iv"
@@ -42,21 +42,25 @@
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_16_dp" />
 
-    <com.module.playways.grab.room.songmanager.view.OwnerViewPagerTitleView
-        android:id="@+id/owner_title_view"
+    <com.common.view.viewpager.SlidingTabLayout
+        android:id="@+id/tag_tab"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_50_dp"
-        android:layout_below="@+id/search_song_iv"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_below="@id/search_song_iv"
+        android:layout_gravity="center"
         android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" />
+        android:layout_marginBottom="@dimen/view_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/owner_title_view"
+        android:layout_below="@+id/tag_tab"
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_12_dp"
         android:layout_marginBottom="@dimen/view_30_dp" />

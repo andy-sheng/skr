@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.songmanager.fragment;
 
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.common.view.viewpager.SlidingTabLayout;
 import com.module.playways.R;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
 import com.module.playways.grab.room.songmanager.SongManageData;
@@ -33,7 +35,6 @@ import com.module.playways.grab.room.songmanager.view.GrabEditView;
 import com.module.playways.grab.room.songmanager.view.GrabSongManageView;
 import com.module.playways.grab.room.songmanager.view.GrabSongWishView;
 import com.module.playways.grab.room.songmanager.view.IOwnerManageView;
-import com.module.playways.grab.room.songmanager.view.OwnerViewPagerTitleView;
 import com.module.playways.grab.room.songmanager.view.RecommendSongView;
 import com.module.playways.room.song.fragment.GrabSearchSongFragment;
 import com.module.playways.room.song.model.SongModel;
@@ -52,8 +53,8 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     ExRelativeLayout mRlContent;
     ExTextView mSearchSongIv;
-    OwnerViewPagerTitleView mOwnerTitleView;
     ViewPager mViewpager;
+    SlidingTabLayout mTagTab;
     //    List<RecommendSongView> mRecommendSongViews = new ArrayList<>();
     GrabSongManageView mGrabSongManageView;
     GrabSongWishView mGrabSongWishView;
@@ -66,6 +67,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 //    GrabRoomData mRoomData;
 
     SongManageData mSongManageData;
+    List<RecommendTagModel> mTagModelList;
 
     @Override
     public int initView() {
@@ -77,10 +79,9 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mCommonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mRlContent = (ExRelativeLayout) mRootView.findViewById(R.id.rl_content);
         mSearchSongIv = (ExTextView) mRootView.findViewById(R.id.search_song_iv);
-        mOwnerTitleView = (OwnerViewPagerTitleView) mRootView.findViewById(R.id.owner_title_view);
+        mTagTab = (SlidingTabLayout) mRootView.findViewById(R.id.tag_tab);
         mViewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
-        mOwnerTitleView.setViewPager(mViewpager);
-//        mViewpager.setOffscreenPageLimit(100);
+
         mCommonTitleBar.getCenterTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -181,6 +182,12 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             recommendTagModelList.add(0, recommendTagModel);
         }
 
+        mTagModelList = recommendTagModelList;
+        mTagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv);
+        mTagTab.setSelectedIndicatorColors(Color.TRANSPARENT);
+        mTagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
+        mTagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL);
+        mTagTab.setIndicatorWidth(U.getDisplayUtils().dip2px(0f));
         mPagerAdapter = new PagerAdapter() {
 
             @Override
@@ -209,9 +216,15 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
                 return view == (object);
             }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mTagModelList.get(position).getName();
+            }
         };
 
-        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mTagTab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -237,10 +250,9 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             }
         });
 
-        mOwnerTitleView.setRecommendTagModelList(recommendTagModelList);
         mViewpager.setAdapter(mPagerAdapter);
+        mTagTab.setViewPager(mViewpager);
         mPagerAdapter.notifyDataSetChanged();
-        mViewpager.setPageMargin(U.getDisplayUtils().dip2px(12));
     }
 
     public Object instantiateItemGrab(@NonNull ViewGroup container, int position, List<RecommendTagModel> recommendTagModelList) {
@@ -312,7 +324,8 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SongNumChangeEvent event) {
-        mOwnerTitleView.updateSelectedSongNum(event.getSongNum());
+        mTagModelList.get(0).setName("已点" + event.getSongNum());
+        mTagTab.notifyDataChange();
     }
 
     private void showEditRoomDialog() {
