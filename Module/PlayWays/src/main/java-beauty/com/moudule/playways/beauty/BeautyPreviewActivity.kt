@@ -7,6 +7,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
+import com.component.busilib.beauty.FROM_MATCH
 import com.engine.Params
 import com.module.RouterConstants
 import com.module.playways.R
@@ -21,6 +23,18 @@ class BeautyPreviewActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         val bundle = intent.extras
+        var mFrom = bundle.getInt("mFrom")
+        if (mFrom == FROM_FRIEND_RECOMMEND || mFrom == FROM_MATCH) {
+            for (activity in U.getActivityUtils().activityList) {
+                if (activity === this) {
+                    continue
+                }
+                if (U.getActivityUtils().isHomeActivity(activity)) {
+                    continue
+                }
+                activity.finish()
+            }
+        }
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, BeautyPreviewFragment::class.java)
                 .setBundle(bundle)
                 .setAddToBackStack(false)
