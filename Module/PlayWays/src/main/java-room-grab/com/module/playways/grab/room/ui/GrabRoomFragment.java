@@ -1017,7 +1017,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                         public void run() {
                             ARouter.getInstance()
                                     .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                    .withInt("from", JumpBeautyFromKt.FROM_GRAB_ROOM)
+                                    .withInt("mFrom", JumpBeautyFromKt.FROM_IN_GRAB_ROOM)
                                     .navigation();
                         }
                     }, true);

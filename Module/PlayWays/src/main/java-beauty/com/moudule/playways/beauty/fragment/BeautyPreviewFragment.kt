@@ -11,24 +11,33 @@ import com.moudule.playways.beauty.view.BeautyControlPanelView
 import com.common.view.ex.ExTextView
 import android.view.TextureView
 import android.view.ViewStub
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.core.permission.SkrCameraPermission
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiMethods
+import com.common.rxretrofit.ApiObserver
+import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.beauty.FROM_CREATE_GRAB_ROOM
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
-import com.component.busilib.beauty.FROM_GRAB_ROOM
+import com.component.busilib.beauty.FROM_IN_GRAB_ROOM
 import com.component.busilib.beauty.FROM_MATCH
-import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.engine.Params
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
+import com.module.playways.grab.room.GrabRoomServerApi
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.moudule.playways.beauty.event.ReturnFromBeautyActivityEvent
 import com.zq.mediaengine.capture.CameraCapture
 import com.zq.mediaengine.kit.ZqEngineKit
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import java.util.HashMap
 
 
 class BeautyPreviewFragment : BaseFragment() {
@@ -40,6 +49,7 @@ class BeautyPreviewFragment : BaseFragment() {
     var mSpecialModel: SpecialModel? = null
     var mRoomId: Int? = null
     var mInviteType: Int? = null
+    var mRoomType: Int? = null
     lateinit var mTitleBar: CommonTitleBar
     lateinit var mBeautyOpenBtn: View
     override fun initView(): Int {
@@ -58,7 +68,7 @@ class BeautyPreviewFragment : BaseFragment() {
         })
         mVideoTexture = mRootView.findViewById<View>(R.id.video_texture) as TextureView
         var lp = mVideoTexture.layoutParams as ConstraintLayout.LayoutParams
-        lp.height = U.getDisplayUtils().screenWidth*16/9
+        lp.height = U.getDisplayUtils().screenWidth * 16 / 9
         var viewStub = mRootView.findViewById<ViewStub>(R.id.beauty_control_panel_view_stub);
         mBeautyControlView = BeautyControlPanelView(viewStub)
         mEnterRoomTv = mRootView.findViewById<View>(R.id.enter_room_tv) as ExTextView
@@ -81,12 +91,14 @@ class BeautyPreviewFragment : BaseFragment() {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     iRankingModeService?.tryGoGrabRoom(mRoomId!!, mInviteType!!)
                     activity?.finish()
+                } else if (mFrom == FROM_CREATE_GRAB_ROOM) {
+                    createRoom()
                 }
             }
         })
 
 
-        if (mFrom != FROM_GRAB_ROOM) {
+        if (mFrom != FROM_IN_GRAB_ROOM) {
             var params = Params.getFromPref()
             params.isEnableVideo = true;
             ZqEngineKit.getInstance().init("BeautyPreview", params)
@@ -139,7 +151,7 @@ class BeautyPreviewFragment : BaseFragment() {
 
     override fun destroy() {
         super.destroy()
-        if (mFrom != FROM_GRAB_ROOM) {
+        if (mFrom != FROM_IN_GRAB_ROOM) {
             ZqEngineKit.getInstance().setDisplayPreview(null as TextureView?)
             ZqEngineKit.getInstance().stopCameraPreview()
             ZqEngineKit.getInstance().destroy("BeautyPreview")
@@ -147,13 +159,13 @@ class BeautyPreviewFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        if (mFrom != FROM_GRAB_ROOM) {
+        if (mFrom != FROM_IN_GRAB_ROOM) {
             if (mBeautyControlView.onBackPressed()) {
                 return true
             }
         }
         activity?.finish()
-        if (mFrom == FROM_GRAB_ROOM) {
+        if (mFrom == FROM_IN_GRAB_ROOM) {
             ZqEngineKit.getInstance().setDisplayPreview(null as TextureView?)
             ZqEngineKit.getInstance().stopCameraPreview()
             EventBus.getDefault().post(ReturnFromBeautyActivityEvent())
@@ -163,10 +175,42 @@ class BeautyPreviewFragment : BaseFragment() {
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        mFrom = args?.getInt("from")
-        mSpecialModel = args?.getSerializable("SpecialModel") as SpecialModel?
+        mFrom = args?.getInt("mFrom")
+        mSpecialModel = args?.getSerializable("mSpecialModel") as SpecialModel?
         mRoomId = args?.getInt("mRoomId")
         mInviteType = args?.getInt("mInviteType")
+        mRoomType = args?.getInt("mRoomType")
+    }
+
+
+    /**
+     * 创建房间
+     */
+    private fun createRoom() {
+        val grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi::class.java)
+        val map = HashMap<String, Any>()
+        map["roomType"] = mRoomType!!
+        map["tagID"] = mSpecialModel!!.tagID
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(grabRoomServerApi.createRoom(body), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    val grabCurGameStateModel = JSON.parseObject(result.data!!.toString(), JoinGrabRoomRspModel::class.java)
+                    grabCurGameStateModel.isHasGameBegin = false
+                    //先跳转
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                            .withSerializable("prepare_data", grabCurGameStateModel)
+                            .withSerializable("special_model", mSpecialModel)
+                            .navigation()
+                    //结束当前Activity
+                    this@BeautyPreviewFragment.activity?.finish()
+                } else {
+                    // 房间创建失败
+                    U.getToastUtil().showShort("" + result.errmsg)
+                }
+            }
+        }, this, ApiMethods.RequestControl("create-room", ApiMethods.ControlType.CancelThis))
     }
 
     override fun useEventBus(): Boolean {

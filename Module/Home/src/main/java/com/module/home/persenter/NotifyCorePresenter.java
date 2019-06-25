@@ -293,7 +293,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                         // 进入视频预览
                                         ARouter.getInstance()
                                                 .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                                .withInt("from", FROM_FRIEND_RECOMMEND)
+                                                .withInt("mFrom", FROM_FRIEND_RECOMMEND)
                                                 .withInt("mRoomId", roomID)
                                                 .withInt("mInviteType", inviteType)
                                                 .navigation();

@@ -1137,6 +1137,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendGrapOver(body), new ApiObserver<ApiResult>() {
+
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

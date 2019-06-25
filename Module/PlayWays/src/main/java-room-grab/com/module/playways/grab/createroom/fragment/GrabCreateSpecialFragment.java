@@ -32,6 +32,8 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+import static com.component.busilib.beauty.JumpBeautyFromKt.FROM_CREATE_GRAB_ROOM;
+
 /**
  * 选择房间属性
  */
@@ -85,7 +87,14 @@ public class GrabCreateSpecialFragment extends BaseFragment {
                                         mRealNameVerifyUtils.checkJoinVideoPermission(new Runnable() {
                                             @Override
                                             public void run() {
-                                                createRoom(model);
+                                                // 进入视频预览
+                                                ARouter.getInstance()
+                                                        .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                        .withInt("mFrom", FROM_CREATE_GRAB_ROOM)
+                                                        .withSerializable("mSpecialModel", model)
+                                                        .withInt("mRoomType",mRoomType)
+                                                        .navigation();
+                                                //createRoom(model);
                                             }
                                         });
                                     }

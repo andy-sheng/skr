@@ -105,8 +105,8 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
                                     // 进入视频预览
                                     ARouter.getInstance()
                                             .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                            .withInt("from", FROM_MATCH)
-                                            .withSerializable("SpecialModel", specialModel)
+                                            .withInt("mFrom", FROM_MATCH)
+                                            .withSerializable("mSpecialModel", specialModel)
                                             .navigation()
                                 }
                             }, true)
@@ -137,7 +137,7 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
                                     // 进入视频预览
                                     ARouter.getInstance()
                                             .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                            .withInt("from", FROM_FRIEND_RECOMMEND)
+                                            .withInt("mFrom", FROM_FRIEND_RECOMMEND)
                                             .withInt("mRoomId",friendRoomModel.roomInfo.roomID)
                                             .withInt("mInviteType",0)
                                             .navigation()

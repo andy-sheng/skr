@@ -146,12 +146,12 @@ public class MakeGamePanelView extends RelativeLayout {
                             mStatus = STATUS_RECORD_PLAYING;
                             mPlayBtn.setImageResource(R.drawable.make_game_zanting);
                             playRecorderRes(true);
-                            mRecordingTipsTv.setText("播放");
+                            mRecordingTipsTv.setText("暂停");
                         } else if (mStatus == STATUS_RECORD_PLAYING) {
                             mStatus = STATUS_RECORD_OK;
                             mPlayBtn.setImageResource(R.drawable.make_game_bofang);
                             playRecorderRes(false);
-                            mRecordingTipsTv.setText("暂停");
+                            mRecordingTipsTv.setText("播放");
                         }
                         break;
                 }
@@ -217,11 +217,14 @@ public class MakeGamePanelView extends RelativeLayout {
                         mMediaPlayer.reset();
                         mStatus = STATUS_RECORD_OK;
                         mPlayBtn.setImageResource(R.drawable.make_game_bofang);
+                        EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
                     }
                 });
             }
             mMediaPlayer.startPlay(mMakeAudioFilePath);
+            EventBus.getDefault().post(new BeginRecordCustomGameEvent(true));
         } else {
+            EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
             if (mMediaPlayer != null) {
                 mMediaPlayer.reset();
             }
