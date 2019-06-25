@@ -106,6 +106,7 @@ class DoubleRoomData() : Serializable {
             return
         }
 
+        MyLog.d(Tag, "updateCombineRoomMusic localCombineRoomMusic is $localCombineRoomMusic, nextMusicDesc is $nextMusicDesc, hasNext is $hasNext");
         if (this.localCombineRoomMusic == null) {
             //localCombineRoomMusic == null 表示之前没有歌曲，localCombineRoomMusic.music == null表示游戏还没开始，还没有人点歌
             if (localCombineRoomMusic.music != null) {

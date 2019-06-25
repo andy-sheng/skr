@@ -46,4 +46,13 @@ public class LocalCombineRoomMusic implements Serializable {
         this.userID = combineRoomMusic.getUserID();
         this.uniqTag = combineRoomMusic.getUniqTag();
     }
+
+    @Override
+    public String toString() {
+        return "LocalCombineRoomMusic{" +
+                "music=" + music +
+                ", userID=" + userID +
+                ", uniqTag='" + uniqTag + '\'' +
+                '}';
+    }
 }
