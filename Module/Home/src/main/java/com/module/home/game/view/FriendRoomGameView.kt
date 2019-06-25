@@ -69,16 +69,18 @@ class FriendRoomGameView : RelativeLayout {
         mSkrAudioPermission = SkrAudioPermission()
         mCameraPermission = SkrCameraPermission()
 
-        refreshLayout.setEnableRefresh(false)
+        refreshLayout.setEnableRefresh(true)
         refreshLayout.setEnableLoadMore(false)
         refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         refreshLayout.setEnableOverScrollDrag(true)
+        refreshLayout.setHeaderMaxDragRate(1.5f)
         refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
 
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
+                initData()
             }
         })
         recycler_view.setLayoutManager(LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false))
