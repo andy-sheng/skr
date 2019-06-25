@@ -63,6 +63,7 @@ public class SettingFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
 
     RelativeLayout mEditPerson;
+    RelativeLayout mShiming;
     RelativeLayout mTuiguang;
     RelativeLayout mVolumeSet;
 
@@ -106,6 +107,7 @@ public class SettingFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
         mEditPerson = (RelativeLayout) mRootView.findViewById(R.id.edit_person);
+        mShiming = (RelativeLayout) mRootView.findViewById(R.id.shiming);
         mTuiguang = (RelativeLayout) mRootView.findViewById(R.id.tuiguang);
         mVolumeSet = (RelativeLayout) mRootView.findViewById(R.id.volume_set);
 
@@ -150,6 +152,15 @@ public class SettingFragment extends BaseFragment {
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
                         .navigation();
+            }
+        });
+
+        mShiming.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/mobile?from=uc"))
+                        .greenChannel().navigation();
             }
         });
 
