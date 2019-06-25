@@ -242,7 +242,6 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mPkInfoPresenter = new PkInfoPresenter(this);
         addPresent(mPkInfoPresenter);
         initBaseInfo();
-        mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), true);
     }
 
     @Override
@@ -263,6 +262,19 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         }
         mLevelView.bindData(rank, subRank);
         mLevelTv.setText(levelDesc);
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        initBaseInfo();
+        mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), false);
+        StatisticsAdapter.recordCountEvent("rank", "expose", null);
+    }
+
+    @Override
+    protected void onFragmentInvisible() {
+        super.onFragmentInvisible();
     }
 
     @Override
@@ -344,14 +356,6 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
             float result = (float) (Math.round(((float) rankSeq / 10000) * 10)) / 10;
             return String.valueOf(result) + "w";
         }
-    }
-
-    @Override
-    protected void onFragmentVisible() {
-        super.onFragmentVisible();
-        initBaseInfo();
-        mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), false);
-        StatisticsAdapter.recordCountEvent("rank", "expose", null);
     }
 
     @Override
