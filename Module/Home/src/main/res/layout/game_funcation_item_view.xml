@@ -5,13 +5,27 @@
     android:layout_height="@dimen/view_75_dp"
     android:layout_marginTop="@dimen/view_8_dp">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/task_iv"
         android:layout_width="@dimen/view_48_dp"
         android:layout_height="@dimen/view_48_dp"
         android:background="@drawable/game_task_bg"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/rank_iv"
+        app:layout_constraintRight_toRightOf="@id/guide_1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExImageView
@@ -45,8 +59,8 @@
         android:layout_width="@dimen/view_48_dp"
         android:layout_height="@dimen/view_48_dp"
         android:background="@drawable/game_rank_bg"
-        app:layout_constraintLeft_toRightOf="@id/task_iv"
-        app:layout_constraintRight_toLeftOf="@id/practice_iv"
+        app:layout_constraintLeft_toLeftOf="@id/guide_1"
+        app:layout_constraintRight_toRightOf="@id/guide_2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -66,7 +80,7 @@
         android:layout_width="@dimen/view_48_dp"
         android:layout_height="@dimen/view_48_dp"
         android:background="@drawable/game_practice_bg"
-        app:layout_constraintLeft_toRightOf="@id/rank_iv"
+        app:layout_constraintLeft_toLeftOf="@id/guide_2"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
