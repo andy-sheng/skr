@@ -167,7 +167,7 @@
         android:gravity="center_horizontal"
         android:lineSpacingExtra="@dimen/view_8_dp"
         android:paddingTop="@dimen/view_30_dp"
-        android:paddingBottom="@dimen/view_59_dp"
+        android:paddingBottom="@dimen/view_30_dp"
         android:text="茫茫人海中遇见你\n如同阳光照进心底\n这最美的时光有你相依\n我心情无法言喻"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/view_14_dp"
@@ -177,24 +177,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/word_auther"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_78_dp"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:text="——因为遇见你"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/word_tv"
-        app:layout_constraintRight_toRightOf="@+id/word_tv" />
 
     <android.support.constraint.Group
         android:id="@+id/word_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="word_tv,word_auther" />
+        app:constraint_referenced_ids="word_tv" />
 
     <ViewStub
         android:id="@+id/double_sing_card_view_layout_stub"

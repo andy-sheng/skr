@@ -52,6 +52,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mLeftLockIcon: ImageView? = null
     private var mLeftNameTv: ExTextView? = null
     private var mUnlockTv: ExTextView? = null
+    private var mWordTv: ExTextView? = null
     private var mRightAvatarSdv: SimpleDraweeView? = null   //右边固定是自己
     private var mRightLockIcon: ImageView? = null
     private var mRightNameTv: ExTextView? = null
@@ -92,6 +93,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightNameTv = mRootView.findViewById<View>(R.id.right_name_tv) as ExTextView
         mMicIv = mRootView.findViewById<View>(R.id.mic_iv) as ExImageView
         mPickIv = mRootView.findViewById<View>(R.id.pick_iv) as ImageView
+        mWordTv = mRootView.findViewById(R.id.word_tv) as ExTextView
         mSelectIv = mRootView.findViewById<View>(R.id.select_iv) as ImageView
         mUnlockTv = mRootView.findViewById<View>(R.id.unlock_tv) as ExTextView
         mWordGroup = mRootView.findViewById<View>(R.id.word_group) as Group
@@ -101,6 +103,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
         mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
         mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
+
+        mWordTv?.text = mRoomData.config?.roomSignature
 
         var mListener = object : DoubleSingCardView.Listener() {
             override fun clickChangeSong() {
