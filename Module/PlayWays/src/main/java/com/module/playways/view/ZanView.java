@@ -53,8 +53,8 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
      * todo 这里优化
      * 点赞动作  添加心的函数 控制画面最大心的个数
      */
-    public void addZanXin(ZanView zanView) {
-        ZanBean zanBean = new ZanBean(getContext(), R.drawable.srf_xin, zanView);
+    public void addZanXin() {
+        ZanBean zanBean = new ZanBean(getContext(), R.drawable.srf_xin, this);
         synchronized (surfaceHolder) {
             mBeanArrayList.add(zanBean);
             if (mBeanArrayList.size() > 40) {

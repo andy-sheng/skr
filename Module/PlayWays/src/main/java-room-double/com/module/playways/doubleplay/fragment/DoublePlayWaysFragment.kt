@@ -182,7 +182,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mPickIv?.setOnClickListener {
             mDoubleCorePresenter.pickOther()
-            mLeftZanView?.addZanXin(mLeftZanView)
+            mRightZanView?.addZanXin()
         }
 
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
@@ -346,7 +346,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun picked() {
-        mRightZanView?.addZanXin(mRightZanView)
+        mLeftZanView?.addZanXin()
     }
 
     fun toNextSongCardView() {
