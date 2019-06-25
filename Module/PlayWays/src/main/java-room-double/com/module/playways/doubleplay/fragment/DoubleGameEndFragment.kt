@@ -135,8 +135,13 @@ class DoubleGameEndFragment : BaseFragment() {
             mFollowTv.visibility = View.GONE
         }
 
+        mMatchAgain.visibility = View.VISIBLE
         mEndTv.text = model.combineRoomCloseReasonDesc
-        mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.nickname}唱聊了${(model.chatDurTime)}分钟"
+        if (mDoubleRoomData.enableNoLimitDuration) {
+            mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.nickname}唱聊了${(model.chatDurTime)}分钟"
+        } else {
+            mChatTimeTv.text = "你与Ta唱聊了${(model.chatDurTime)}分钟"
+        }
 
 
         if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
@@ -153,6 +158,7 @@ class DoubleGameEndFragment : BaseFragment() {
                     activity?.finish()
                 }
             } else {
+                mMatchAgain.text = "再匹配一次"
                 mLastNumTv.text = "今日剩余${model.todayResTimes}次"
                 mLastNumTv.visibility = View.VISIBLE
                 onClickBottomBtn = {
