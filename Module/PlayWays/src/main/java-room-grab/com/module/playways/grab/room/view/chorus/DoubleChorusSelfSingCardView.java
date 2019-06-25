@@ -57,6 +57,10 @@ public class DoubleChorusSelfSingCardView extends BaseChorusSelfCardView {
         }
     }
 
+    public void updateLockState() {
+        mChorusSelfLyricAdapter.notifyDataSetChanged();
+    }
+
     public boolean playLyric(SongModel songModel, UserInfoModel firstModel, UserInfoModel secondModel) {
         mSongModel = songModel;
         mFirstModel = firstModel;

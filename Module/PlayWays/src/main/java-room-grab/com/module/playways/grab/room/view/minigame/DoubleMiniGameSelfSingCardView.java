@@ -39,6 +39,21 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
         }
     }
 
+    public void updateLockState() {
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mDoubleRoomData.getAvatarById(mMusic.getUserID()))
+                .setCircle(true)
+                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                .setBorderColor(Color.WHITE)
+                .build());
+
+        String mOwnerName = mOwnerInfo.getNickname();
+        if (mOwnerInfo.getNickname().length() > 7) {
+            mOwnerName = mOwnerName.substring(0, 7);
+        }
+        mFirstTipsTv.setTextColor(U.getColor(R.color.black_trans_60));
+        mFirstTipsTv.setText("【" + mOwnerName + "】" + "先开始");
+    }
+
     public boolean playLyric(LocalCombineRoomMusic music, DoubleRoomData roomData) {
         mMusic = music;
         mDoubleRoomData = roomData;

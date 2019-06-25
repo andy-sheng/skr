@@ -79,6 +79,20 @@ class DoubleSingCardView : ConstraintLayout {
     }
 
     /**
+     * 锁发生变化
+     */
+    fun updateLockState() {
+        AvatarUtils.loadAvatarByUrl(mSongOwnerIv,
+                AvatarUtils.newParamsBuilder(mDoubleRoomData?.getAvatarById(mCurMusic?.userID ?: 0))
+                        .setBorderColor(U.getColor(R.color.white))
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                        .setCircle(true)
+                        .build())
+
+        mDoubleSelfSingCardView.updateLockState()
+    }
+
+    /**
      * 进入中心
      */
     fun goOut() {

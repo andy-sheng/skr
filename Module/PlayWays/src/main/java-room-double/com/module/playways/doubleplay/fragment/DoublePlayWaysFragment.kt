@@ -375,6 +375,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             } else {
                 unLockOther()
             }
+            mCurrentCardView?.updateLockState()
         }
     }
 

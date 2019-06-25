@@ -65,6 +65,10 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
         super.onViewDetachedFromWindow(v);
     }
 
+    public void updateLockState() {
+
+    }
+
     public void playLyric(SongModel songModel) {
         mSongModel = songModel;
         playLyric();

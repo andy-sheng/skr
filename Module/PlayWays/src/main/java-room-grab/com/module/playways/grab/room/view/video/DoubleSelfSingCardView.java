@@ -86,6 +86,20 @@ public class DoubleSelfSingCardView {
         }
     }
 
+    public void updateLockState() {
+        if (mSongModel == null) {
+            return;
+        }
+
+        if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+            mDoubleChorusSelfSingCardView.updateLockState();
+        } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
+            mDoubleMiniGameSelfSingCardView.updateLockState();
+        } else {
+            mDoubleNormalSelfSingCardView.updateLockState();
+        }
+    }
+
     public void destroy() {
         mDoubleChorusSelfSingCardView.destroy();
         mDoubleNormalSelfSingCardView.destroy();
