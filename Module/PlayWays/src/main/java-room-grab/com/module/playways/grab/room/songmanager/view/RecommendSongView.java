@@ -140,6 +140,7 @@ public class RecommendSongView extends FrameLayout {
 
                 if (result.getErrno() == 0) {
                     List<SongModel> recommendTagModelArrayList = JSONObject.parseArray(result.getData().getString("items"), SongModel.class);
+                    mOffset = result.getData().getIntValue("offset");
                     if (recommendTagModelArrayList == null || recommendTagModelArrayList.size() == 0) {
                         mRefreshLayout.setEnableLoadMore(false);
                         return;
@@ -155,10 +156,6 @@ public class RecommendSongView extends FrameLayout {
                         }
                     }
                     mRecommendSongAdapter.getDataList().addAll(recommendTagModelArrayList);
-                    mOffset = mRecommendSongAdapter.getDataList().size();
-                    if (mOffset > 0 && mRecommendSongAdapter.getDataList().get(0).getItemID() == SongModel.ID_CUSTOM_GAME) {
-                        mOffset--;
-                    }
                     mRecommendSongAdapter.notifyDataSetChanged();
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");

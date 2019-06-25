@@ -54,6 +54,13 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
             .setStrokeColor(U.getColor(R.color.white_trans_70))
             .build();
 
+    Drawable freeMic = new DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#C856E0"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setStrokeColor(U.getColor(R.color.white_trans_70))
+            .build();
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -98,7 +105,7 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
                 @Override
                 public void clickValid(View v) {
                     if (mListener != null) {
-                        mListener.onItemClicked(v,-1,mSongModel);
+                        mListener.onItemClicked(v, -1, mSongModel);
                     }
                 }
             });
@@ -126,6 +133,12 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
                 mSongTag.setLayoutParams(layoutParams);
                 mSongTag.setBackground(game);
                 mSongTag.setText("双人游戏");
+            } else if (model.getPlayType() == StandPlayType.PT_FREE_MICRO.getValue()) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(58);
+                mSongTag.setLayoutParams(layoutParams);
+                mSongTag.setBackground(freeMic);
+                mSongTag.setText("多人游戏");
             } else {
                 mSongTag.setVisibility(View.GONE);
             }
