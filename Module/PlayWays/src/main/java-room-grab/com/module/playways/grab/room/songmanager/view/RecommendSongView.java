@@ -26,6 +26,7 @@ import com.module.playways.room.song.model.SongModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.live.proto.Common.StandPlayType;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -151,6 +152,7 @@ public class RecommendSongView extends FrameLayout {
                             // 是双人游戏那一例
                             SongModel songModel = new SongModel();
                             songModel.setItemID(SongModel.ID_CUSTOM_GAME);
+                            songModel.setPlayType(StandPlayType.PT_MINI_GAME_TYPE.getValue());
                             songModel.setItemName("自制小游戏");
                             mRecommendSongAdapter.getDataList().add(songModel);
                         }
