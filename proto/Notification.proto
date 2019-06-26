@@ -76,7 +76,8 @@ enum EMsgPosType {
 
 message CombineRoomSendInviteUserMsg
 {
-    Common.UserInfo user = 1; //发起邀请的用户详情
+    Common.UserInfo user    = 1; //发起邀请的用户详情
+    string inviteMsg = 2; //邀请信息
 }
 
 message CombineRoomSyncInviteUserMsg

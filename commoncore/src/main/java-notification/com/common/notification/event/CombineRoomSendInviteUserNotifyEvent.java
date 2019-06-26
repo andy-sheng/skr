@@ -7,10 +7,12 @@ import com.zq.live.proto.Notification.CombineRoomSendInviteUserMsg;
 public class CombineRoomSendInviteUserNotifyEvent {
     public BaseNotiInfo mBaseNotiInfo;
     public UserInfoModel mUserInfoModel;
+    public String msg;
 
     public CombineRoomSendInviteUserNotifyEvent(BaseNotiInfo baseNotiInfo, CombineRoomSendInviteUserMsg combineRoomSendInviteUserMsg) {
         mBaseNotiInfo = baseNotiInfo;
         mUserInfoModel = UserInfoModel.parseFromPB(combineRoomSendInviteUserMsg.getUser());
+        msg = combineRoomSendInviteUserMsg.getInviteMsg();
     }
 
     public BaseNotiInfo getBaseNotiInfo() {

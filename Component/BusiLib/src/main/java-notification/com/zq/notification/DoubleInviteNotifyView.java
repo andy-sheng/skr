@@ -51,7 +51,7 @@ public class DoubleInviteNotifyView extends ConstraintLayout {
         mAgreeButton = (ExTextView) findViewById(R.id.agree_button);
     }
 
-    public void bindData(UserInfoModel userInfoModel) {
+    public void bindData(UserInfoModel userInfoModel, String extra) {
         this.mUserInfoModel = userInfoModel;
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                 .setCircle(true)
@@ -60,7 +60,7 @@ public class DoubleInviteNotifyView extends ConstraintLayout {
                 .build());
 
         mInviterNameTv.setText(userInfoModel.getNickname());
-        mSubTitleTv.setText("哇哈哈，测试");
+        mSubTitleTv.setText(extra);
 
         mAgreeButton.setOnClickListener(new DebounceViewClickListener() {
             @Override

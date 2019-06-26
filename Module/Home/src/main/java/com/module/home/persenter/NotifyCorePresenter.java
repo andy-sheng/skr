@@ -266,6 +266,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(CombineRoomSendInviteUserNotifyEvent event) {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_INVITE);
         floatWindowData.setUserInfoModel(event.getUserInfoModel());
+        floatWindowData.setExtra(event.msg);
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
     }
 
@@ -417,7 +418,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         resendGrabInviterFloatWindowDismissMsg();
         DoubleInviteNotifyView doubleInviteNotifyView = new DoubleInviteNotifyView(U.app());
-        doubleInviteNotifyView.bindData(userInfoModel);
+        doubleInviteNotifyView.bindData(userInfoModel, floatWindowData.getExtra());
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
             @Override
             public void onClickAgree() {
@@ -522,6 +523,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         private Type mType;
         private int mRoomID;
         private int mMediaType;
+        private String mExtra;
+
+        public String getExtra() {
+            return mExtra;
+        }
+
+        public void setExtra(String extra) {
+            mExtra = extra;
+        }
 
         public void setUserInfoModel(UserInfoModel userInfoModel) {
             mUserInfoModel = userInfoModel;

@@ -22,6 +22,8 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
 
   private static final long serialVersionUID = 0L;
 
+  public static final String DEFAULT_INVITEMSG = "";
+
   /**
    * 发起邀请的用户详情
    */
@@ -31,19 +33,30 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
   )
   private final UserInfo user;
 
-  public CombineRoomSendInviteUserMsg(UserInfo user) {
-    this(user, ByteString.EMPTY);
+  /**
+   * 邀请信息
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String inviteMsg;
+
+  public CombineRoomSendInviteUserMsg(UserInfo user, String inviteMsg) {
+    this(user, inviteMsg, ByteString.EMPTY);
   }
 
-  public CombineRoomSendInviteUserMsg(UserInfo user, ByteString unknownFields) {
+  public CombineRoomSendInviteUserMsg(UserInfo user, String inviteMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
+    this.inviteMsg = inviteMsg;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.user = user;
+    builder.inviteMsg = inviteMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -54,7 +67,8 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
     if (!(other instanceof CombineRoomSendInviteUserMsg)) return false;
     CombineRoomSendInviteUserMsg o = (CombineRoomSendInviteUserMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(user, o.user);
+        && Internal.equals(user, o.user)
+        && Internal.equals(inviteMsg, o.inviteMsg);
   }
 
   @Override
@@ -63,6 +77,7 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (user != null ? user.hashCode() : 0);
+      result = result * 37 + (inviteMsg != null ? inviteMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -72,6 +87,7 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (user != null) builder.append(", user=").append(user);
+    if (inviteMsg != null) builder.append(", inviteMsg=").append(inviteMsg);
     return builder.replace(0, 2, "CombineRoomSendInviteUserMsg{").append('}').toString();
   }
 
@@ -96,14 +112,33 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
   }
 
   /**
+   * 邀请信息
+   */
+  public String getInviteMsg() {
+    if(inviteMsg==null){
+        return DEFAULT_INVITEMSG;
+    }
+    return inviteMsg;
+  }
+
+  /**
    * 发起邀请的用户详情
    */
   public boolean hasUser() {
     return user!=null;
   }
 
+  /**
+   * 邀请信息
+   */
+  public boolean hasInviteMsg() {
+    return inviteMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<CombineRoomSendInviteUserMsg, Builder> {
     private UserInfo user;
+
+    private String inviteMsg;
 
     public Builder() {
     }
@@ -116,9 +151,17 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
       return this;
     }
 
+    /**
+     * 邀请信息
+     */
+    public Builder setInviteMsg(String inviteMsg) {
+      this.inviteMsg = inviteMsg;
+      return this;
+    }
+
     @Override
     public CombineRoomSendInviteUserMsg build() {
-      return new CombineRoomSendInviteUserMsg(user, super.buildUnknownFields());
+      return new CombineRoomSendInviteUserMsg(user, inviteMsg, super.buildUnknownFields());
     }
   }
 
@@ -130,12 +173,14 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
     @Override
     public int encodedSize(CombineRoomSendInviteUserMsg value) {
       return UserInfo.ADAPTER.encodedSizeWithTag(1, value.user)
+          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.inviteMsg)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, CombineRoomSendInviteUserMsg value) throws IOException {
       UserInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
+      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.inviteMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -146,6 +191,7 @@ public final class CombineRoomSendInviteUserMsg extends Message<CombineRoomSendI
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setUser(UserInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.setInviteMsg(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
