@@ -40,7 +40,7 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
         mPkSongTag = (ExTextView) itemView.findViewById(R.id.pk_song_tag);
 //        mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
         if (canAdd) {
-            mSongSelectTv.setText("添加");
+            mSongSelectTv.setText("点歌");
         } else {
             mSongSelectTv.setText("想唱");
         }

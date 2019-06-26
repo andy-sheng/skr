@@ -469,7 +469,7 @@ message STCommitSegmentResultReq
      * @return
      */
     @GET("http://dev.room.inframe.mobi/v1/room/list-music-suggested")
-    Observable<ApiResult> getListMusicSuggested(@Query("roomID") int roomID, @Query("offset") int offset, @Query("limit") int limit);
+    Observable<ApiResult> getListMusicSuggested(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
 
     /**
      * 房主添加用户点的歌曲

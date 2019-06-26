@@ -37,7 +37,7 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
     GrabWishSongPresenter mGrabWishSongPresenter;
 
     LoadService mLoadService;
-    int mOffset = 0;
+    long mOffset = 0;   //此处是时间戳，int64
 
     public GrabSongWishView(Context context, GrabRoomData grabRoomData) {
         super(context);
@@ -110,7 +110,7 @@ public class GrabSongWishView extends FrameLayout implements IGrabWishManageView
     }
 
     @Override
-    public void addGrabWishSongModels(boolean clear, int newOffset, List<GrabWishSongModel> grabWishSongModels) {
+    public void addGrabWishSongModels(boolean clear, long newOffset, List<GrabWishSongModel> grabWishSongModels) {
         if (clear) {
             mWishSongAdapter.getDataList().clear();
         }

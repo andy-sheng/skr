@@ -47,7 +47,7 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
         addToLifeCycle();
     }
 
-    public void getListMusicSuggested(int offset) {
+    public void getListMusicSuggested(long offset) {
         if (mGetSuggestListTask != null && !mGetSuggestListTask.isDisposed()) {
             MyLog.w(TAG, "已经加载中了...");
             return;
@@ -57,7 +57,7 @@ public class GrabWishSongPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<GrabWishSongModel> grabWishSongModels = JSONObject.parseArray(result.getData().getString("items"), GrabWishSongModel.class);
-                    int newOffset = result.getData().getIntValue("offset");
+                    long newOffset = result.getData().getLongValue("offset");
                     if (offset == 0) {
                         mView.addGrabWishSongModels(true, newOffset, grabWishSongModels);
                     } else {
