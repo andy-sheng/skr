@@ -112,7 +112,7 @@
                 android:id="@+id/tuiguang"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_64_dp"
-                android:layout_below="@+id/edit_person"
+                android:layout_below="@+id/shiming"
                 android:visibility="gone">
 
                 <com.common.view.ex.ExTextView
