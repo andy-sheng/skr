@@ -110,7 +110,11 @@ class DoubleRoomData() : Serializable {
         }
 
         if (localCombineRoomMusic.music == null) {
-            EventBus.getDefault().post(NoMusicEvent())
+            if (this.localCombineRoomMusic != null) {
+                EventBus.getDefault().post(NoMusicEvent())
+            }
+
+            this.localCombineRoomMusic = null
             return
         }
 
