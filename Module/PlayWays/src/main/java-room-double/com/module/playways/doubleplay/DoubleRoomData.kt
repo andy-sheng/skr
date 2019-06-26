@@ -104,7 +104,13 @@ class DoubleRoomData() : Serializable {
     }
 
     fun updateCombineRoomMusic(localCombineRoomMusic: LocalCombineRoomMusic?, nextMusicDesc: String?, hasNext: Boolean) {
-        if (localCombineRoomMusic == null || localCombineRoomMusic.music == null) {
+        MyLog.w(Tag, "updateCombineRoomMusic localCombineRoomMusic is $localCombineRoomMusic, nextMusicDesc is $nextMusicDesc, hasNext is $hasNext")
+        if (localCombineRoomMusic == null) {
+            return
+        }
+
+        if (localCombineRoomMusic.music == null) {
+            EventBus.getDefault().post(NoMusicEvent())
             return
         }
 

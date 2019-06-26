@@ -28,4 +28,6 @@ interface IDoublePlayView {
     fun finishActivity()
 
     fun unLockSelfSuccess()
+
+    fun noMusic()
 }

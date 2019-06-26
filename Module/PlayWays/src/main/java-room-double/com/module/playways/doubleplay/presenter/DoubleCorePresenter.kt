@@ -392,6 +392,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: NoMusicEvent) {
+        mIDoublePlayView.noMusic()
+    }
+
     override fun destroy() {
         MyLog.d(tag, "destroy begin")
         super.destroy()
