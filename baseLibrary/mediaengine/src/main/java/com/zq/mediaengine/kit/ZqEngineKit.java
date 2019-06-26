@@ -651,6 +651,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mUiHandler.removeCallbacksAndMessages(null);
             mConfig = new Params();
             mPendingStartMixAudioParams = null;
+            mIsCaptureStarted = false;
             // 发送消息前，更新状态
             mStatus = STATUS_UNINIT;
             EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
@@ -1605,16 +1606,32 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Should be called on Activity.onResume or Fragment.onResume.
      */
     public void onResume() {
-        MyLog.d(TAG, "onResume");
-        mImgTexPreview.onResume();
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                MyLog.d(TAG, "onResume");
+                mImgTexPreview.onResume();
+            }
+        });
     }
 
     /**
      * Should be called on Activity.onPause or Fragment.onPause.
      */
     public void onPause() {
-        MyLog.d(TAG, "onPause");
-        mImgTexPreview.onPause();
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                MyLog.d(TAG, "onPause");
+                mImgTexPreview.onPause();
+            }
+        });
     }
 
     /**
@@ -1627,6 +1644,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
                 MyLog.d(TAG, "setDisplayPreview " + surfaceView);
                 mImgTexPreview.setDisplayPreview(surfaceView);
             }
@@ -1645,6 +1665,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
                 MyLog.d(TAG, "setDisplayPreview " + textureView);
                 mImgTexPreview.setDisplayPreview(textureView);
             }
@@ -2063,6 +2086,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
                 mCameraFacing = facing;
                 mIsCaptureStarted = true;
                 if ((mPreviewWidth == 0 || mPreviewHeight == 0) &&
@@ -2091,6 +2117,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
                 mIsCaptureStarted = false;
                 mCameraCapture.stop();
                 freeFboCacheIfNeeded();
@@ -2110,6 +2139,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
                 mCameraCapture.switchCamera();
             }
         });
