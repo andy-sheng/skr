@@ -184,7 +184,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         ApiMethods.subscribe(mDoubleRoomServerApi.nextSong(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    U.getToastUtil().showShort("切歌成功")
+                    MyLog.d(tag, "nextSong success")
                 } else {
                     U.getToastUtil().showShort(obj?.errmsg)
                 }

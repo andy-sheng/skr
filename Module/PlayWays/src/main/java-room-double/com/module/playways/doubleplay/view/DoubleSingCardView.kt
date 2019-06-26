@@ -10,7 +10,6 @@ import android.view.animation.ScaleAnimation
 import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -54,11 +53,7 @@ class DoubleSingCardView : ConstraintLayout {
 
         mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if (mCutSongTv.tag == TAG_ADD_SONG) {
-                    mListener?.clickToAddMusic()
-                } else if (mCutSongTv.tag == TAG_CHANGE_SONG) {
-                    mListener?.clickChangeSong()
-                }
+                mListener?.clickChangeSong()
             }
         })
     }
@@ -146,20 +141,6 @@ class DoubleSingCardView : ConstraintLayout {
             mNextSongTipTv?.text = "没有歌曲啦～"
         } else {
             mNextSongTipTv?.text = mNext
-        }
-
-        if (hasNext) {
-            if (mCurMusic?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-                mCutSongTv.tag = TAG_CHANGE_SONG
-                mCutSongTv?.text = "切歌"
-                mCutSongTv.visibility = View.VISIBLE
-            } else {
-                mCutSongTv.visibility = View.GONE
-            }
-        } else {
-            mCutSongTv.tag = TAG_ADD_SONG
-            mCutSongTv?.text = "去点歌"
-            mCutSongTv.visibility = View.VISIBLE
         }
     }
 
