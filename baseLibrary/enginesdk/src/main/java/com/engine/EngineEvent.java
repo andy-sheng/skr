@@ -22,6 +22,11 @@ public class EngineEvent {
     public static final int TYPE_ENGINE_INITED = 100;
     public static final int TYPE_ENGINE_DESTROY = 99;
 
+    public static final int TYPE_CAMERA_OPENED = 200;
+    public static final int TYPE_CAMERA_FIRST_FRAME_RENDERED = 201;
+    public static final int TYPE_CAMERA_FACING_CHANGED = 202;
+    public static final int TYPE_CAMERA_ERROR = 203;
+
     public int type;
     public UserStatus userStatus;
     public Object obj;
@@ -177,6 +182,16 @@ public class EngineEvent {
                 return "USIC_PLAY_FINISH";
             case TYPE_ENGINE_DESTROY:
                 return "ENGINE_DESTROY";
+            case TYPE_ENGINE_INITED:
+                return "ENGINE_INITED";
+            case TYPE_CAMERA_OPENED:
+                return "CAMERA_OPENED";
+            case TYPE_CAMERA_FIRST_FRAME_RENDERED:
+                return "CAMERA_FIRST_FRAME_RENDERED";
+            case TYPE_CAMERA_FACING_CHANGED:
+                return "CAMERA_FACING_CHANGED";
+            case TYPE_CAMERA_ERROR:
+                return "CAMERA_ERROR";
         }
         return type+"";
     }
