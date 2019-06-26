@@ -1,6 +1,7 @@
 package com.moudule.playways.beauty
 
 
+import android.content.Intent
 import android.os.Bundle
 
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -41,6 +42,12 @@ class BeautyPreviewActivity : BaseActivity() {
                 .setHasAnimation(false)
                 .build())
         hasCreate = true
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        var fragment = U.getFragmentUtils().findFragment(this,BeautyPreviewFragment::class.java)
+        fragment?.arguments = intent?.extras
     }
 
     override fun finish() {
