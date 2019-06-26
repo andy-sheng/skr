@@ -171,7 +171,7 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
 
     @Override
     protected int layoutDesc() {
-        return R.layout.beauty_control_panel_view_stub_layout;
+        return R.layout.grab_beauty_control_panel_view_stub_layout;
     }
 
 
