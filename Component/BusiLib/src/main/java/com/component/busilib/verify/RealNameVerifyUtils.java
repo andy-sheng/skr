@@ -36,18 +36,23 @@ public class RealNameVerifyUtils {
             }
             return;
         }
+        final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
         if (Build.SDK_INT < 21) {
             if (U.getDeviceUtils().getLevel().getValue() <= DeviceUtils.LEVEL.MIDDLE.getValue()) {
                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                        .setMessageTip("为保证视频体验")
-                        .setOkBtnTip("确认")
+                        .setMessageTip("你的设备性能较差，进入视频专场可能会影响体验，确定要进入么？")
+                        .setOkBtnTip("进入")
+                        .setCancelTip("退出")
                         .setConfirmBtnClickListener(new AnimateClickListener() {
                             @Override
                             public void click(View view) {
+                                ApiMethods.subscribe(grabRoomServerApi.checkJoinVideoRoomPermission(), new ApiObserver<ApiResult>() {
+                                    @Override
+                                    public void process(ApiResult obj) {
+                                        process2(obj, successCallback);
+                                    }
+                                }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
                                 mTipsDialogView.dismiss();
-                                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                        .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/mobile?from=video"))
-                                        .greenChannel().navigation();
                             }
                         })
                         .setCancelBtnClickListener(new AnimateClickListener() {
@@ -61,7 +66,6 @@ public class RealNameVerifyUtils {
             }
         }
 
-        VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
         ApiMethods.subscribe(grabRoomServerApi.checkJoinVideoRoomPermission(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {

@@ -1125,8 +1125,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 告知我的的抢唱阶段结束了
      */
-    public void sendMyGrabOver() {
-        MyLog.d(TAG, "上报我的抢唱结束 ");
+    public void sendMyGrabOver(String from) {
+        MyLog.d(TAG, "上报我的抢唱结束 from="+from);
         GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel == null) {
             return;
