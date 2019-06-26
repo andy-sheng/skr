@@ -1570,20 +1570,27 @@ public class ZqEngineKit implements AgoraOutCallback {
             @Override
             public void onStarted() {
                 Log.d(TAG, "CameraCapture ready");
-                // TODO: notify to app
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_OPENED));
+            }
+
+            @Override
+            public void onFirstFrameRendered() {
+                Log.d(TAG, "CameraCapture onFirstFrameRendered");
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FIRST_FRAME_RENDERED));
             }
 
             @Override
             public void onFacingChanged(int facing) {
+                Log.d(TAG, "CameraCapture onFacingChanged");
                 mCameraFacing = facing;
                 updateFrontMirror();
-                // TODO: notify to app
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FACING_CHANGED));
             }
 
             @Override
             public void onError(int err) {
                 Log.e(TAG, "CameraCapture error: " + err);
-                // TODO: notify to app
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_ERROR));
             }
         });
 

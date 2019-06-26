@@ -1,18 +1,22 @@
 package com.common.notification;
 
 import com.common.log.MyLog;
+import com.common.notification.event.CombineRoomInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CombineRoomSendInviteUserNotifyEvent;
 import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
 import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.notification.event.StartCombineRoomByCreateNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
+import com.zq.live.proto.Notification.CombineRoomInviteInCreateRoomMsg;
 import com.zq.live.proto.Notification.CombineRoomSendInviteUserMsg;
 import com.zq.live.proto.Notification.CombineRoomSyncInviteUserMsg;
 import com.zq.live.proto.Notification.ENotificationMsgType;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
 import com.zq.live.proto.Notification.NotificationMsg;
+import com.zq.live.proto.Notification.StartCombineRoomByCreateMsg;
 import com.zq.live.proto.Notification.StartCombineRoomByMatchMsg;
 import com.zq.live.proto.Notification.SysWarningMsg;
 
@@ -58,6 +62,10 @@ public class NotificationPushManager {
             processAcceptInviteMsg(baseNotiInfo, msg.getSyncInviteUserMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_START_CR_BY_MATCH) {
             processStartCombineRoomMsg(baseNotiInfo, msg.getStartCombineRoomByMatchMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_INVITE_IN_CREATE_ROOM) {
+            processCreateRoomInviteMsg(baseNotiInfo, msg.getInviteInCreateRoomMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_START_CR_BY_CREATE) {
+            processStartCombineRoomByCreateMsg(baseNotiInfo, msg.getStartCombineRoomByCreateMsg());
         }
     }
 
@@ -106,6 +114,28 @@ public class NotificationPushManager {
             EventBus.getDefault().post(new DoubleStartCombineRoomByMatchPushEvent(basePushInfo, startCombineRoomByMatchMsg));
         } else {
             MyLog.e(TAG, "processStartCombineRoomMsg" + " Msg=null");
+        }
+    }
+
+    /**
+     * 在双人房里有人邀请后被邀请方收到的push
+     *
+     * @param basePushInfo
+     * @param combineRoomInviteInCreateRoomMsg
+     */
+    private void processCreateRoomInviteMsg(BaseNotiInfo basePushInfo, CombineRoomInviteInCreateRoomMsg combineRoomInviteInCreateRoomMsg) {
+        if (combineRoomInviteInCreateRoomMsg != null) {
+            EventBus.getDefault().post(new CombineRoomInviteInCreateRoomNotifyEvent(basePushInfo, combineRoomInviteInCreateRoomMsg));
+        } else {
+            MyLog.e(TAG, "processCreateRoomInviteMsg" + " Msg=null");
+        }
+    }
+
+    private void processStartCombineRoomByCreateMsg(BaseNotiInfo basePushInfo, StartCombineRoomByCreateMsg startCombineRoomByCreateMsg) {
+        if (startCombineRoomByCreateMsg != null) {
+            EventBus.getDefault().post(new StartCombineRoomByCreateNotifyEvent(basePushInfo, startCombineRoomByCreateMsg));
+        } else {
+            MyLog.e(TAG, "processStartCombineRoomByCreateMsg" + " Msg=null");
         }
     }
 }

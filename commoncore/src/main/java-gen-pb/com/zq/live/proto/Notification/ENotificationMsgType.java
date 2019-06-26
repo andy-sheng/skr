@@ -44,7 +44,17 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 通过匹配开始双人房
    */
-  NM_START_CR_BY_MATCH(6);
+  NM_START_CR_BY_MATCH(6),
+
+  /**
+   * 在创建双人房场景下，进行邀请
+   */
+  NM_CR_INVITE_IN_CREATE_ROOM(7),
+
+  /**
+   * 在创建双人房场景下，对方响应邀请，开始双人房游戏
+   */
+  NM_START_CR_BY_CREATE(8);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -66,6 +76,8 @@ public enum ENotificationMsgType implements WireEnum {
       case 4: return NM_CR_SEND_INVITE_USER;
       case 5: return NM_CR_SYNC_INVITE_USER;
       case 6: return NM_START_CR_BY_MATCH;
+      case 7: return NM_CR_INVITE_IN_CREATE_ROOM;
+      case 8: return NM_START_CR_BY_CREATE;
       default: return null;
     }
   }

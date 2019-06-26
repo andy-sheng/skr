@@ -25,6 +25,7 @@ import com.common.floatwindow.Screen;
 import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.notification.event.CombineRoomInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CombineRoomSendInviteUserNotifyEvent;
 import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
@@ -123,6 +124,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 showGrabInviteFloatWindow(floatWindowData);
             } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_INVITE) {
                 showDoubleInviteFloatWindow(floatWindowData);
+            } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_ROOM_INVITE) {
+                showDoubleInviteFromRoomFloatWindow(floatWindowData);
             }
         }
 
@@ -267,6 +270,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_INVITE);
         floatWindowData.setUserInfoModel(event.getUserInfoModel());
         floatWindowData.setExtra(event.msg);
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CombineRoomInviteInCreateRoomNotifyEvent event) {
+        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_ROOM_INVITE);
+        floatWindowData.setUserInfoModel(event.getUser());
+        floatWindowData.setRoomID(event.getRoomID());
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
     }
 
@@ -475,6 +486,70 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .build();
     }
 
+    void showDoubleInviteFromRoomFloatWindow(FloatWindowData floatWindowData) {
+        UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
+
+        resendGrabInviterFloatWindowDismissMsg();
+        DoubleInviteNotifyView doubleInviteNotifyView = new DoubleInviteNotifyView(U.app());
+        doubleInviteNotifyView.bindData(userInfoModel, floatWindowData.getExtra());
+        doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
+            @Override
+            public void onClickAgree() {
+                mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
+                FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("peerUserID", userInfoModel.getUserId());
+                map.put("roomID", floatWindowData.getRoomID());
+
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleFromCreateRoom(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            mSkrAudioPermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                    iRankingModeService.jumpToDoubleRoom(result.getData());
+                                }
+                            }, true);
+                        } else {
+                            U.getToastUtil().showShort(result.getErrmsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, e);
+                    }
+                }, NotifyCorePresenter.this);
+            }
+        });
+
+        FloatWindow.with(U.app())
+                .setView(doubleInviteNotifyView)
+                .setMoveType(MoveType.canRemove)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+                .setViewStateListener(new ViewStateListenerAdapter() {
+                    @Override
+                    public void onDismiss() {
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
+                    }
+
+                    @Override
+                    public void onPositionUpdate(int x, int y) {
+                        super.onPositionUpdate(x, y);
+                        resendGrabInviterFloatWindowDismissMsg();
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(TAG_INVITE_FOALT_WINDOW)
+                .build();
+    }
+
     void resendFollowFloatWindowDismissMsg() {
         mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 5000);
@@ -561,8 +636,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             mMediaType = mediaType;
         }
 
+        /**
+         * DOUBLE_INVITE 是一场到底里的邀请
+         * DOUBLE_ROOM_INVITE是唱聊房里的邀请
+         */
         public enum Type {
-            FOLLOW, GRABINVITE, DOUBLE_INVITE
+            FOLLOW, GRABINVITE, DOUBLE_INVITE, DOUBLE_ROOM_INVITE,
         }
     }
 }

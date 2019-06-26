@@ -71,6 +71,20 @@ public interface MainPageSlideApi {
     @PUT("http://dev.game.inframe.mobi/v1/magpie/invite-user-enter")
     Observable<ApiResult> enterInvitedDoubleRoom(@Body RequestBody body);
 
+    /**
+     * 这个是从唱聊房里邀请，收到邀请之后点击进入房间的短链接
+     * {
+     * "peerUserID": 0,
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/room-invite-user-enter")
+    Observable<ApiResult> enterInvitedDoubleFromCreateRoom(@Body RequestBody body);
+
 
     /**
      * 获取用户房间数据(每日剩余匹配开房次数)
