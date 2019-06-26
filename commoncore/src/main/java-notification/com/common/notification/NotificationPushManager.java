@@ -86,52 +86,6 @@ public class NotificationPushManager {
         }
     }
 
-//    //被别人邀请去双人房
-//    private void processInviteToDoubleRoomMsg(BaseNotiInfo baseNotiInfo, CombineRoomSendInviteUserMsg combineRoomSendInviteUserMsg) {
-//        if (combineRoomSendInviteUserMsg != null) {
-//            CombineRoomSendInviteUserNotifyEvent combineRoomSendInviteUserEvent = new CombineRoomSendInviteUserNotifyEvent(baseNotiInfo, combineRoomSendInviteUserMsg);
-//            EventBus.getDefault().post(combineRoomSendInviteUserEvent);
-//        }
-//    }
-//
-//    //被我邀请的人进入了房间的push
-//    private void processAcceptInviteMsg(BaseNotiInfo baseNotiInfo, CombineRoomSyncInviteUserMsg combineRoomSyncInviteUserMsg) {
-//        if (combineRoomSyncInviteUserMsg != null) {
-//            CombineRoomSyncInviteUserNotifyEvent combineRoomSyncInviteUserEvent = new CombineRoomSyncInviteUserNotifyEvent(baseNotiInfo, combineRoomSyncInviteUserMsg);
-//            EventBus.getDefault().post(combineRoomSyncInviteUserEvent);
-//        }
-//    }
-//
-//    private void processStartCombineRoomMsg(BaseNotiInfo basePushInfo, StartCombineRoomByMatchMsg startCombineRoomByMatchMsg) {
-//        if (startCombineRoomByMatchMsg != null) {
-//            EventBus.getDefault().post(new DoubleStartCombineRoomByMatchPushEvent(basePushInfo, startCombineRoomByMatchMsg));
-//        } else {
-//            MyLog.e(TAG, "processStartCombineRoomMsg" + " Msg=null");
-//        }
-//    }
-//
-//    /**
-//     * 在双人房里有人邀请后被邀请方收到的push
-//     *
-//     * @param basePushInfo
-//     * @param combineRoomInviteInCreateRoomMsg
-//     */
-//    private void processCreateRoomInviteMsg(BaseNotiInfo basePushInfo, CombineRoomInviteInCreateRoomMsg combineRoomInviteInCreateRoomMsg) {
-//        if (combineRoomInviteInCreateRoomMsg != null) {
-//            EventBus.getDefault().post(new CombineRoomInviteInCreateRoomNotifyEvent(basePushInfo, combineRoomInviteInCreateRoomMsg));
-//        } else {
-//            MyLog.e(TAG, "processCreateRoomInviteMsg" + " Msg=null");
-//        }
-//    }
-//
-//    private void processStartCombineRoomByCreateMsg(BaseNotiInfo basePushInfo, StartCombineRoomByCreateMsg startCombineRoomByCreateMsg) {
-//        if (startCombineRoomByCreateMsg != null) {
-//            EventBus.getDefault().post(new StartCombineRoomByCreateNotifyEvent(basePushInfo, startCombineRoomByCreateMsg));
-//        } else {
-//            MyLog.e(TAG, "processStartCombineRoomByCreateMsg" + " Msg=null");
-//        }
-//    }
-
     /**
      * 邀请解析，所有邀请都包括
      */
