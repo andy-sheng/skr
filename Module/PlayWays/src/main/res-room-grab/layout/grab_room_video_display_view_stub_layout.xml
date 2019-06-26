@@ -85,6 +85,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/middle_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_38_dp"
+        android:gravity="center"
+        android:text="表演者溜走了"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <android.support.constraint.Guideline
         android:id="@+id/middle_guide"
         android:layout_width="wrap_content"

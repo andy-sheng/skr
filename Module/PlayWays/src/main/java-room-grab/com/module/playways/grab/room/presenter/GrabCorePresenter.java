@@ -2530,8 +2530,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         swapGame(!event.foreground, event.foreground);
         if (event.foreground) {
             muteAllRemoteAudioStreams(mRoomData.isMute(), false);
+            if(mRoomData.isVideoRoom()){
+                ZqEngineKit.getInstance().muteLocalVideoStream(false);
+            }
         } else {
             muteAllRemoteAudioStreams(true, false);
+            if(mRoomData.isVideoRoom()){
+                if(ZqEngineKit.getInstance().getParams().isAnchor()){
+                    // 我是主播
+                    ZqEngineKit.getInstance().muteLocalVideoStream(true);
+                }
+            }
         }
     }
 

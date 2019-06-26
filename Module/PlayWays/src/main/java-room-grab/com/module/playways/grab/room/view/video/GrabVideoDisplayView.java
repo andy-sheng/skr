@@ -21,6 +21,7 @@ import com.common.utils.U;
 import com.common.log.DebugLogView;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
+import com.engine.UserStatus;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -55,6 +56,7 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     TextView mLeftTipsTv;
     TextView mRightTipsTv;
+    TextView mMiddleTipsTv;
     SingCountDownView2 mSingCountDownView;
     ImageView mBeautySettingBtn;
     ExTextView mLeftNameTv;
@@ -111,6 +113,8 @@ public class GrabVideoDisplayView extends ExViewStub {
         }
         {
             mMiddleAvatarIv = mParentView.findViewById(R.id.middle_avatar_iv);
+            mMiddleTipsTv = mParentView.findViewById(R.id.middle_tips_tv);
+
         }
         {
             mBg1View = mParentView.findViewById(R.id.bg1_view);
@@ -271,6 +275,7 @@ public class GrabVideoDisplayView extends ExViewStub {
             mRightTipsTv.setVisibility(View.GONE);
             mRightNameTv.setVisibility(View.GONE);
             mMiddleAvatarIv.setVisibility(View.GONE);
+            mMiddleTipsTv.setVisibility(View.GONE);
             mSingCountDownView.reset();
             setMarginTop(0);
         }
@@ -411,7 +416,30 @@ public class GrabVideoDisplayView extends ExViewStub {
             }
         } else if (event.getType() == EngineEvent.TYPE_CAMERA_FIRST_FRAME_RENDERED) {
             onCameraFirstFrameRendered();
+        } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_VIDEO) {
+            UserStatus userStatus = event.getUserStatus();
+            if (userStatus != null) {
+                int userId = event.getUserStatus().getUserId();
+                if (userStatus.isVideoMute()) {
+                    if (userId == mLeftUserId) {
+                        mLeftTipsTv.setVisibility(View.VISIBLE);
+                    } else if (userId == mRightUserId) {
+                        mRightTipsTv.setVisibility(View.VISIBLE);
+                    } else if (userId == mMainUserId) {
+                        mMiddleTipsTv.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (userId == mLeftUserId) {
+                        mLeftTipsTv.setVisibility(View.GONE);
+                    } else if (userId == mRightUserId) {
+                        mRightTipsTv.setVisibility(View.GONE);
+                    } else if (userId == mMainUserId) {
+                        mMiddleTipsTv.setVisibility(View.GONE);
+                    }
+                }
+            }
         }
+
     }
 
     void onCameraFirstFrameRendered() {
