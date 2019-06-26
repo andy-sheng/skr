@@ -23,8 +23,16 @@ public class LocalAgoraTokenInfo implements Serializable {
         return userID;
     }
 
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public static List<LocalAgoraTokenInfo> toLocalAgoraTokenInfo(List<AgoraTokenInfo> agoraTokenInfo) {

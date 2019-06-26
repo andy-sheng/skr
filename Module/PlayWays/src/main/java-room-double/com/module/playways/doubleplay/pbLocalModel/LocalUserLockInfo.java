@@ -22,6 +22,10 @@ public class LocalUserLockInfo implements Serializable {
         return userID;
     }
 
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
     public boolean isHasLock() {
         return hasLock;
     }
