@@ -36,6 +36,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mIDoublePlayView: IDoublePlayView) : RxLifeCyclePresenter() {
     val tag = "DoubleCorePresenter"
@@ -71,7 +72,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      * 系统消息弹幕
      */
     private fun joinRoomAndInit(first: Boolean) {
-//        MyLog.w(TAG, "joinRoomAndInit" + " first=" + first + ", gameId is " + mRoomData.getGameId())
+        MyLog.w(TAG, "joinRoomAndInit" + " first=$first , gameId is ${mRoomData.gameId}")
 
         if (mRoomData.gameId > 0) {
             if (first) {
@@ -116,6 +117,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     private fun sendFailedToServer() {
+        MyLog.e(tag, "sendFailedToServer, roomID is ${mRoomData.gameId}")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.enterRoomFailed(body), object : ApiObserver<ApiResult>() {
@@ -142,6 +144,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun closeByTimeOver() {
+        MyLog.w(tag, "closeByTimeOver, roomID is ${mRoomData.gameId}")
         val mutableSet = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
         ApiMethods.subscribe(mDoubleRoomServerApi.closeByTimerOver(body), object : ApiObserver<ApiResult>() {
@@ -155,18 +158,24 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         }, this@DoubleCorePresenter)
     }
 
+    /**
+     * 点击结束按钮或者返回，弹出确认退出弹窗之后退出，使用这个接口
+     */
     fun exit() {
+        MyLog.w(tag, "exit(), roomID is ${mRoomData.gameId}")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-                mIDoublePlayView.finishActivity()
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_DOUBLE_END)
-                        .withSerializable("roomData", mRoomData)
-                        .navigation()
+
             }
         }, this@DoubleCorePresenter)
+
+        mIDoublePlayView.finishActivity()
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                .withSerializable("roomData", mRoomData)
+                .navigation()
     }
 
     fun nextSong() {
@@ -292,7 +301,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleCombineRoomSycPushEvent) {
+        MyLog.d(tag, "onEvent DoubleCombineRoomSycPushEvent")
         if (event.doubleSyncModel.syncStatusTimeMs > syncStatusTimeMs) {
+            MyLog.d(tag, "onEvent SycPush is $event")
             syncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
             if (event.doubleSyncModel.status == ECombineStatus.CS_Finished.value) {
                 mIDoublePlayView.finishActivity()
@@ -316,15 +327,30 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     /**
-     * 这个信息必须拉到
+     * 这个信息必须拉到!!
      */
     private fun syncRoomPlayer() {
+        MyLog.d(tag, "syncRoomPlayer")
         val mutableSet = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
         Observable.create<Any> {
             ApiMethods.subscribe(mDoubleRoomServerApi.getRoomUserInfo(body), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
-                    MyLog.d(tag, "syncRoomPlayer obj is $obj")
+                    MyLog.w(tag, "syncRoomPlayer obj is $obj")
+                    if (obj?.errno == 0 && mRoomData.userInfoListMap?.size ?: 0 < 2) {
+                        val userList = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
+
+                        if (userList != null) {
+                            val hashMap = HashMap<Int, UserInfoModel>()
+                            for (userInfoModel in userList) {
+                                hashMap.put(userInfoModel.userId, userInfoModel)
+                            }
+                            mRoomData.userInfoListMap = hashMap
+                        }
+
+                        joinRoomAndInit(true)
+                    }
+
                     it.onComplete()
                 }
 
@@ -337,7 +363,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 }
             }, this@DoubleCorePresenter)
         }.compose(this@DoubleCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))
-                .retryWhen(RxRetryAssist(10, 2, false)).subscribe()
+                .retryWhen(RxRetryAssist(5, 2, false)).subscribe()
 
     }
 

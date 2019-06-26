@@ -20,4 +20,11 @@ public class DoubleCombineRoomSycPushEvent {
         this.basePushInfo = basePushInfo;
         this.doubleSyncModel = DoubleSyncModel.parse(combineRoomSyncStatusMsg);
     }
+
+    @Override
+    public String toString() {
+        return "DoubleCombineRoomSycPushEvent{" +
+                "doubleSyncModel=" + doubleSyncModel +
+                '}';
+    }
 }
