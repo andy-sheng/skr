@@ -6,9 +6,13 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.jiguang.JiGuangPush
 import com.common.log.MyLog
+import com.common.mvp.PresenterEvent
 import com.common.mvp.RxLifeCyclePresenter
+import com.common.notification.event.StartCombineRoomByCreateNotifyEvent
+import com.common.rx.RxRetryAssist
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -26,6 +30,7 @@ import com.module.playways.doubleplay.model.DoubleSyncModel
 import com.module.playways.doubleplay.pushEvent.*
 import com.zq.live.proto.CombineRoom.ECombineStatus
 import com.zq.mediaengine.kit.ZqEngineKit
+import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -53,7 +58,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
             }
         }
 
-        if (!mRoomData.isCreateRoom()) {
+        if (mRoomData.isRoomPrepared()) {
             uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
             joinRoomAndInit(true)
         }
@@ -237,6 +242,21 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: StartCombineRoomByCreateNotifyEvent) {
+        //在唱聊房邀请别人之后当对方同意之后收到的push，如果房间人数已经2个了就说名这个房间已经
+        if (mRoomData.gameId == event.roomID && !mRoomData.isRoomPrepared()) {
+            //游戏开始了
+            mRoomData.config = event.config
+            val hashMap = HashMap<Int, UserInfoModel>()
+            for (userInfoModel in event.users) {
+                hashMap.put(userInfoModel.userId, userInfoModel)
+            }
+            mRoomData.userInfoListMap = hashMap
+            syncStatus()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: UpdateLockEvent) {
         mIDoublePlayView.showLockState(event.userID, event.isLock)
     }
@@ -280,10 +300,42 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                         .navigation()
             } else {
                 mRoomData!!.syncRoomInfo(event.doubleSyncModel)
+                /**
+                 * sync开始了，但房间里的人还是少于2个，需要短链接拉一下房间人数,
+                 * 这种情况是，别人进来的push没有收到的时候的一个补救
+                 */
+                if ((mRoomData.userInfoListMap?.size ?: 0) < 2) {
+                    syncRoomPlayer()
+                }
                 uiHandler.removeMessages(SYNC_MSG)
                 uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
             }
         }
+    }
+
+    /**
+     * 这个信息必须拉到
+     */
+    private fun syncRoomPlayer() {
+        val mutableSet = mutableMapOf("roomID" to mRoomData.gameId)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
+        Observable.create<Any> {
+            ApiMethods.subscribe(mDoubleRoomServerApi.getRoomUserInfo(body), object : ApiObserver<ApiResult>() {
+                override fun process(obj: ApiResult?) {
+                    it.onComplete()
+                }
+
+                override fun onError(e: Throwable) {
+                    it.onError(Throwable("网络错误"))
+                }
+
+                override fun onNetworkError(errorType: ErrorType?) {
+                    it.onError(Throwable("网络延迟"))
+                }
+            }, this@DoubleCorePresenter)
+        }.compose(this@DoubleCorePresenter.bindUntilEvent(PresenterEvent.DESTROY))
+                .retryWhen(RxRetryAssist(10, 2, false)).subscribe()
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

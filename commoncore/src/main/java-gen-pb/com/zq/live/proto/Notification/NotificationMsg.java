@@ -138,19 +138,41 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   )
   private final StartCombineRoomByMatchMsg startCombineRoomByMatchMsg;
 
+  /**
+   * 在创建双人房场景下，进行邀请
+   */
+  @WireField(
+      tag = 16,
+      adapter = "com.zq.live.proto.Notification.CombineRoomInviteInCreateRoomMsg#ADAPTER"
+  )
+  private final CombineRoomInviteInCreateRoomMsg inviteInCreateRoomMsg;
+
+  /**
+   * 在创建双人房场景下，对方响应邀请，开始双人房游戏
+   */
+  @WireField(
+      tag = 17,
+      adapter = "com.zq.live.proto.Notification.StartCombineRoomByCreateMsg#ADAPTER"
+  )
+  private final StartCombineRoomByCreateMsg startCombineRoomByCreateMsg;
+
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
       SysWarningMsg sysWarningMsg, CombineRoomSendInviteUserMsg sendInviteUserMsg,
       CombineRoomSyncInviteUserMsg syncInviteUserMsg,
-      StartCombineRoomByMatchMsg startCombineRoomByMatchMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, sendInviteUserMsg, syncInviteUserMsg, startCombineRoomByMatchMsg, ByteString.EMPTY);
+      StartCombineRoomByMatchMsg startCombineRoomByMatchMsg,
+      CombineRoomInviteInCreateRoomMsg inviteInCreateRoomMsg,
+      StartCombineRoomByCreateMsg startCombineRoomByCreateMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, sendInviteUserMsg, syncInviteUserMsg, startCombineRoomByMatchMsg, inviteInCreateRoomMsg, startCombineRoomByCreateMsg, ByteString.EMPTY);
   }
 
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
       SysWarningMsg sysWarningMsg, CombineRoomSendInviteUserMsg sendInviteUserMsg,
       CombineRoomSyncInviteUserMsg syncInviteUserMsg,
-      StartCombineRoomByMatchMsg startCombineRoomByMatchMsg, ByteString unknownFields) {
+      StartCombineRoomByMatchMsg startCombineRoomByMatchMsg,
+      CombineRoomInviteInCreateRoomMsg inviteInCreateRoomMsg,
+      StartCombineRoomByCreateMsg startCombineRoomByCreateMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -164,6 +186,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     this.sendInviteUserMsg = sendInviteUserMsg;
     this.syncInviteUserMsg = syncInviteUserMsg;
     this.startCombineRoomByMatchMsg = startCombineRoomByMatchMsg;
+    this.inviteInCreateRoomMsg = inviteInCreateRoomMsg;
+    this.startCombineRoomByCreateMsg = startCombineRoomByCreateMsg;
   }
 
   @Override
@@ -181,6 +205,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     builder.sendInviteUserMsg = sendInviteUserMsg;
     builder.syncInviteUserMsg = syncInviteUserMsg;
     builder.startCombineRoomByMatchMsg = startCombineRoomByMatchMsg;
+    builder.inviteInCreateRoomMsg = inviteInCreateRoomMsg;
+    builder.startCombineRoomByCreateMsg = startCombineRoomByCreateMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -202,7 +228,9 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
         && Internal.equals(sysWarningMsg, o.sysWarningMsg)
         && Internal.equals(sendInviteUserMsg, o.sendInviteUserMsg)
         && Internal.equals(syncInviteUserMsg, o.syncInviteUserMsg)
-        && Internal.equals(startCombineRoomByMatchMsg, o.startCombineRoomByMatchMsg);
+        && Internal.equals(startCombineRoomByMatchMsg, o.startCombineRoomByMatchMsg)
+        && Internal.equals(inviteInCreateRoomMsg, o.inviteInCreateRoomMsg)
+        && Internal.equals(startCombineRoomByCreateMsg, o.startCombineRoomByCreateMsg);
   }
 
   @Override
@@ -222,6 +250,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       result = result * 37 + (sendInviteUserMsg != null ? sendInviteUserMsg.hashCode() : 0);
       result = result * 37 + (syncInviteUserMsg != null ? syncInviteUserMsg.hashCode() : 0);
       result = result * 37 + (startCombineRoomByMatchMsg != null ? startCombineRoomByMatchMsg.hashCode() : 0);
+      result = result * 37 + (inviteInCreateRoomMsg != null ? inviteInCreateRoomMsg.hashCode() : 0);
+      result = result * 37 + (startCombineRoomByCreateMsg != null ? startCombineRoomByCreateMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -242,6 +272,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     if (sendInviteUserMsg != null) builder.append(", sendInviteUserMsg=").append(sendInviteUserMsg);
     if (syncInviteUserMsg != null) builder.append(", syncInviteUserMsg=").append(syncInviteUserMsg);
     if (startCombineRoomByMatchMsg != null) builder.append(", startCombineRoomByMatchMsg=").append(startCombineRoomByMatchMsg);
+    if (inviteInCreateRoomMsg != null) builder.append(", inviteInCreateRoomMsg=").append(inviteInCreateRoomMsg);
+    if (startCombineRoomByCreateMsg != null) builder.append(", startCombineRoomByCreateMsg=").append(startCombineRoomByCreateMsg);
     return builder.replace(0, 2, "NotificationMsg{").append('}').toString();
   }
 
@@ -367,6 +399,26 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   }
 
   /**
+   * 在创建双人房场景下，进行邀请
+   */
+  public CombineRoomInviteInCreateRoomMsg getInviteInCreateRoomMsg() {
+    if(inviteInCreateRoomMsg==null){
+        return new CombineRoomInviteInCreateRoomMsg.Builder().build();
+    }
+    return inviteInCreateRoomMsg;
+  }
+
+  /**
+   * 在创建双人房场景下，对方响应邀请，开始双人房游戏
+   */
+  public StartCombineRoomByCreateMsg getStartCombineRoomByCreateMsg() {
+    if(startCombineRoomByCreateMsg==null){
+        return new StartCombineRoomByCreateMsg.Builder().build();
+    }
+    return startCombineRoomByCreateMsg;
+  }
+
+  /**
    * 消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -441,6 +493,20 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return startCombineRoomByMatchMsg!=null;
   }
 
+  /**
+   * 在创建双人房场景下，进行邀请
+   */
+  public boolean hasInviteInCreateRoomMsg() {
+    return inviteInCreateRoomMsg!=null;
+  }
+
+  /**
+   * 在创建双人房场景下，对方响应邀请，开始双人房游戏
+   */
+  public boolean hasStartCombineRoomByCreateMsg() {
+    return startCombineRoomByCreateMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<NotificationMsg, Builder> {
     private Long timeMs;
 
@@ -465,6 +531,10 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     private CombineRoomSyncInviteUserMsg syncInviteUserMsg;
 
     private StartCombineRoomByMatchMsg startCombineRoomByMatchMsg;
+
+    private CombineRoomInviteInCreateRoomMsg inviteInCreateRoomMsg;
+
+    private StartCombineRoomByCreateMsg startCombineRoomByCreateMsg;
 
     public Builder() {
     }
@@ -557,9 +627,27 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       return this;
     }
 
+    /**
+     * 在创建双人房场景下，进行邀请
+     */
+    public Builder setInviteInCreateRoomMsg(
+        CombineRoomInviteInCreateRoomMsg inviteInCreateRoomMsg) {
+      this.inviteInCreateRoomMsg = inviteInCreateRoomMsg;
+      return this;
+    }
+
+    /**
+     * 在创建双人房场景下，对方响应邀请，开始双人房游戏
+     */
+    public Builder setStartCombineRoomByCreateMsg(
+        StartCombineRoomByCreateMsg startCombineRoomByCreateMsg) {
+      this.startCombineRoomByCreateMsg = startCombineRoomByCreateMsg;
+      return this;
+    }
+
     @Override
     public NotificationMsg build() {
-      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, sendInviteUserMsg, syncInviteUserMsg, startCombineRoomByMatchMsg, super.buildUnknownFields());
+      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, sendInviteUserMsg, syncInviteUserMsg, startCombineRoomByMatchMsg, inviteInCreateRoomMsg, startCombineRoomByCreateMsg, super.buildUnknownFields());
     }
   }
 
@@ -582,6 +670,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           + CombineRoomSendInviteUserMsg.ADAPTER.encodedSizeWithTag(13, value.sendInviteUserMsg)
           + CombineRoomSyncInviteUserMsg.ADAPTER.encodedSizeWithTag(14, value.syncInviteUserMsg)
           + StartCombineRoomByMatchMsg.ADAPTER.encodedSizeWithTag(15, value.startCombineRoomByMatchMsg)
+          + CombineRoomInviteInCreateRoomMsg.ADAPTER.encodedSizeWithTag(16, value.inviteInCreateRoomMsg)
+          + StartCombineRoomByCreateMsg.ADAPTER.encodedSizeWithTag(17, value.startCombineRoomByCreateMsg)
           + value.unknownFields().size();
     }
 
@@ -599,6 +689,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       CombineRoomSendInviteUserMsg.ADAPTER.encodeWithTag(writer, 13, value.sendInviteUserMsg);
       CombineRoomSyncInviteUserMsg.ADAPTER.encodeWithTag(writer, 14, value.syncInviteUserMsg);
       StartCombineRoomByMatchMsg.ADAPTER.encodeWithTag(writer, 15, value.startCombineRoomByMatchMsg);
+      CombineRoomInviteInCreateRoomMsg.ADAPTER.encodeWithTag(writer, 16, value.inviteInCreateRoomMsg);
+      StartCombineRoomByCreateMsg.ADAPTER.encodeWithTag(writer, 17, value.startCombineRoomByCreateMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -634,6 +726,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           case 13: builder.setSendInviteUserMsg(CombineRoomSendInviteUserMsg.ADAPTER.decode(reader)); break;
           case 14: builder.setSyncInviteUserMsg(CombineRoomSyncInviteUserMsg.ADAPTER.decode(reader)); break;
           case 15: builder.setStartCombineRoomByMatchMsg(StartCombineRoomByMatchMsg.ADAPTER.decode(reader)); break;
+          case 16: builder.setInviteInCreateRoomMsg(CombineRoomInviteInCreateRoomMsg.ADAPTER.decode(reader)); break;
+          case 17: builder.setStartCombineRoomByCreateMsg(StartCombineRoomByCreateMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -655,6 +749,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       if (builder.sendInviteUserMsg != null) builder.sendInviteUserMsg = CombineRoomSendInviteUserMsg.ADAPTER.redact(builder.sendInviteUserMsg);
       if (builder.syncInviteUserMsg != null) builder.syncInviteUserMsg = CombineRoomSyncInviteUserMsg.ADAPTER.redact(builder.syncInviteUserMsg);
       if (builder.startCombineRoomByMatchMsg != null) builder.startCombineRoomByMatchMsg = StartCombineRoomByMatchMsg.ADAPTER.redact(builder.startCombineRoomByMatchMsg);
+      if (builder.inviteInCreateRoomMsg != null) builder.inviteInCreateRoomMsg = CombineRoomInviteInCreateRoomMsg.ADAPTER.redact(builder.inviteInCreateRoomMsg);
+      if (builder.startCombineRoomByCreateMsg != null) builder.startCombineRoomByCreateMsg = StartCombineRoomByCreateMsg.ADAPTER.redact(builder.startCombineRoomByCreateMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -19,6 +19,7 @@ import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabGuideServerApi;
@@ -233,14 +234,31 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     @Override
     public void createDoubleRoom() {
-        DoubleRoomData doubleRoomData = new DoubleRoomData();
-        doubleRoomData.setEnableNoLimitDuration(true);
-        doubleRoomData.setNeedMaskUserInfo(false);
-        doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
-        doubleRoomData.setTokens(new ArrayList<>());
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
-                .withSerializable("roomData", doubleRoomData)
-                .navigation();
+        DoubleRoomServerApi mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi.class);
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(new HashMap()));
+        ApiMethods.subscribe(mDoubleRoomServerApi.createRoom(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(result.getData());
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                            .withSerializable("roomData", doubleRoomData)
+                            .navigation();
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络错误");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络延迟");
+            }
+        });
     }
 
     @Override

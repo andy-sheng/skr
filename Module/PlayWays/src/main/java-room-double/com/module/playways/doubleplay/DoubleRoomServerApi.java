@@ -221,4 +221,24 @@ public interface DoubleRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/magpie/del-music")
     Observable<ApiResult> deleteSong(@Body RequestBody body);
+
+    /**
+     * {
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/room-user-info")
+    Observable<ApiResult> getRoomUserInfo(@Body RequestBody body);
+
+    /**
+     * {}
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/room-create")
+    Observable<ApiResult> createRoom(@Body RequestBody body);
 }
