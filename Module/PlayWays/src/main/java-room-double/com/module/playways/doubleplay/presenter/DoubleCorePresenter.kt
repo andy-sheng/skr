@@ -349,6 +349,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                         }
 
                         joinRoomAndInit(true)
+                        syncStatus()
                     }
 
                     it.onComplete()
