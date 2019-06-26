@@ -63,9 +63,8 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
                             .setCircle(true)
                             .build());
             String disName = mFriendRoomModel.getDisplayName();
-            if (mFriendRoomModel.getUserInfo() != null &&
-                    (mFriendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM || mFriendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM)) {
-                disName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getDisplayName());
+            if (mFriendRoomModel.getUserInfo() != null) {
+                disName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), disName);
             }
             mNicknameTv.setText(disName);
             if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
