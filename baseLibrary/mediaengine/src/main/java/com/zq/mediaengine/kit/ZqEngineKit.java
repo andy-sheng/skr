@@ -468,6 +468,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @SuppressWarnings("unchecked")
     private void initAudioModules() {
+        MyLog.d(TAG,"initAudioModules" );
         mAudioFilterMgt = new AudioFilterMgt();
         mCbAudioScorer = new CbAudioScorer();
         // 单mic数据PCM录制
@@ -1542,6 +1543,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void initVideoModules() {
+        MyLog.d(TAG,"initVideoModules" );
         // Camera preview
         mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
         mImgTexScaleFilter = new ImgTexScaleFilter(mGLRender);

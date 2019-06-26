@@ -236,6 +236,7 @@ public class MakeGamePanelView extends RelativeLayout {
                         mMediaPlayer.reset();
                         mStatus = STATUS_RECORD_OK;
                         mPlayBtn.setImageResource(R.drawable.make_game_bofang);
+                        mRecordingTipsTv.setText("播放");
                         EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
                     }
                 });
