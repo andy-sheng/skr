@@ -1569,19 +1569,19 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCameraCapture.setOnCameraCaptureListener(new CameraCapture.OnCameraCaptureListener() {
             @Override
             public void onStarted() {
-                Log.d(TAG, "CameraCapture ready");
+                MyLog.d(TAG, "CameraCapture ready");
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_OPENED));
             }
 
             @Override
             public void onFirstFrameRendered() {
-                Log.d(TAG, "CameraCapture onFirstFrameRendered");
+                MyLog.d(TAG, "CameraCapture onFirstFrameRendered");
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FIRST_FRAME_RENDERED));
             }
 
             @Override
             public void onFacingChanged(int facing) {
-                Log.d(TAG, "CameraCapture onFacingChanged");
+                MyLog.d(TAG, "CameraCapture onFacingChanged");
                 mCameraFacing = facing;
                 updateFrontMirror();
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FACING_CHANGED));
@@ -1589,7 +1589,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
             @Override
             public void onError(int err) {
-                Log.e(TAG, "CameraCapture error: " + err);
+                MyLog.e(TAG, "CameraCapture error: " + err);
                 EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_ERROR));
             }
         });
@@ -1603,7 +1603,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Should be called on Activity.onResume or Fragment.onResume.
      */
     public void onResume() {
-        Log.d(TAG, "onResume");
+        MyLog.d(TAG, "onResume");
         mImgTexPreview.onResume();
     }
 
@@ -1611,7 +1611,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Should be called on Activity.onPause or Fragment.onPause.
      */
     public void onPause() {
-        Log.d(TAG, "onPause");
+        MyLog.d(TAG, "onPause");
         mImgTexPreview.onPause();
     }
 
@@ -1625,7 +1625,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "setDisplayPreview " + surfaceView);
+                MyLog.d(TAG, "setDisplayPreview " + surfaceView);
                 mImgTexPreview.setDisplayPreview(surfaceView);
             }
         });
@@ -1643,7 +1643,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "setDisplayPreview " + textureView);
+                MyLog.d(TAG, "setDisplayPreview " + textureView);
                 mImgTexPreview.setDisplayPreview(textureView);
             }
         });
@@ -2366,13 +2366,13 @@ public class ZqEngineKit implements AgoraOutCallback {
         int idx = -1;
         for (int i = 1; i < mImgTexPreviewMixer.getSinkPinNum(); i++) {
             if (!mRemoteUserPinMap.containsValue(i)) {
-                Log.d(TAG, "get available sink " + i);
+                MyLog.d(TAG, "get available sink " + i);
                 idx = i;
                 break;
             }
         }
         if (idx == -1) {
-            Log.e(TAG, "unable to get available mixer sink!");
+            MyLog.e(TAG, "unable to get available mixer sink!");
         }
         return idx;
     }
@@ -2463,7 +2463,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mTargetWidth = align(mTargetWidth, 8);
         mTargetHeight = align(mTargetHeight, 8);
 
-        Log.i(TAG, "calResolution: \n" +
+        MyLog.i(TAG, "calResolution: \n" +
                 "viewRenderSize: " + mScreenRenderWidth + "x" + mScreenRenderHeight + "\n" +
                 "localRenderRect: " + previewRect + "\n" +
                 "localRenderSize: " + localRenderWidth + "x" + localRenderHeight + "\n" +
@@ -2516,7 +2516,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             new GLRender.OnSizeChangedListener() {
                 @Override
                 public void onSizeChanged(int width, int height) {
-                    Log.i(TAG, "onPreviewSizeChanged: " + width + "x" + height);
+                    MyLog.i(TAG, "onPreviewSizeChanged: " + width + "x" + height);
                     onPreviewSizeChanged(width, height);
                 }
             };
