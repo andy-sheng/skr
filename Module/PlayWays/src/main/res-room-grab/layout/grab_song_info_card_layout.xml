@@ -50,8 +50,6 @@
                 android:layout_alignBottom="@id/song_name_tv"
                 android:layout_toRightOf="@id/song_name_tv"
                 android:gravity="center"
-                android:paddingLeft="@dimen/view_6_dp"
-                android:paddingRight="@dimen/view_6_dp"
                 android:textColor="#FFDCA2"
                 android:textSize="@dimen/textsize_14_dp"
                 android:visibility="gone" />
