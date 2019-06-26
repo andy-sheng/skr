@@ -2,6 +2,8 @@ package com.module.playways.grab.room.view.video;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.os.Handler;
+import android.os.Message;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,8 @@ import java.util.List;
 public class GrabVideoDisplayView extends ExViewStub {
     public final static String TAG = "GrabVideoDisplayView";
 
+    static final int MSG_ENSURE_FIRST_CAMERA_DECODED = 9;
+
     TextureView mMainVideoView;
     BaseImageView mLeftAvatarIv;
     BaseImageView mRightAvatarIv;
@@ -58,6 +62,18 @@ public class GrabVideoDisplayView extends ExViewStub {
     Listener mListener;
     private GrabRoomData mRoomData;
     int mMainUserId = 0, mLeftUserId = 0, mRightUserId = 0;
+
+    private Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_ENSURE_FIRST_CAMERA_DECODED:
+                    onCameraFirstFrameRendered();
+                    break;
+            }
+        }
+    };
 
     public GrabVideoDisplayView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
@@ -246,6 +262,7 @@ public class GrabVideoDisplayView extends ExViewStub {
             mSingCountDownView.reset();
             setMarginTop(0);
         }
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     void ensureBindDisplayView() {
@@ -267,11 +284,12 @@ public class GrabVideoDisplayView extends ExViewStub {
                 // 是自己
                 ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1, 1, 1);
                 ZqEngineKit.getInstance().startCameraPreview();
-                mMiddleAvatarIv.setVisibility(View.GONE);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_FIRST_CAMERA_DECODED,1000);
+//                mMiddleAvatarIv.setVisibility(View.VISIBLE);
             } else {
                 // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
                 // 但如果set时别人的视频流还没过来，
-                if(ZqEngineKit.getInstance().isFirstVideoDecoded(mMainUserId)){
+                if (ZqEngineKit.getInstance().isFirstVideoDecoded(mMainUserId)) {
                     ZqEngineKit.getInstance().bindRemoteVideoRect(mMainUserId, 0, 0, 1, 1, 1);
                     mMiddleAvatarIv.setVisibility(View.GONE);
                 } else {
@@ -292,8 +310,9 @@ public class GrabVideoDisplayView extends ExViewStub {
                 // 是自己
                 ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 0.5f, 1, 1);
                 ZqEngineKit.getInstance().startCameraPreview();
-                mLeftAvatarIv.setVisibility(View.GONE);
-                mLeftTipsTv.setVisibility(View.GONE);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_FIRST_CAMERA_DECODED,1000);
+//                mLeftAvatarIv.setVisibility(View.GONE);
+//                mLeftTipsTv.setVisibility(View.GONE);
             } else {
                 // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
                 // 但如果set时别人的视频流还没过来，
@@ -319,8 +338,9 @@ public class GrabVideoDisplayView extends ExViewStub {
                 // 是自己
                 ZqEngineKit.getInstance().setLocalVideoRect(0.5f, 0, 0.5f, 1, 1);
                 ZqEngineKit.getInstance().startCameraPreview();
-                mRightAvatarIv.setVisibility(View.GONE);
-                mRightTipsTv.setVisibility(View.GONE);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_FIRST_CAMERA_DECODED,1000);
+//                mRightAvatarIv.setVisibility(View.GONE);
+//                mRightTipsTv.setVisibility(View.GONE);
             } else {
                 // 别人唱，两种情况。一是我绑定时别人的首帧视频流已经过来了，这是set没问题。
                 // 但如果set时别人的视频流还没过来，
@@ -355,13 +375,14 @@ public class GrabVideoDisplayView extends ExViewStub {
                 tryBindRightVideoStream();
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+            // 自己
             EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
             if (roleChangeInfo.getNewRole() == 2) {
                 if (!isBeautyActivityVisiable()) {
                     // 美颜界面在顶部 不操作
                     ZqEngineKit.getInstance().stopCameraPreview();
                 }
-                //变成观众了
+                //变成观众了 2 是观众
                 if (MyUserInfoManager.getInstance().getUid() == mLeftUserId) {
                     mLeftAvatarIv.setVisibility(View.VISIBLE);
                     mLeftTipsTv.setVisibility(View.VISIBLE);
@@ -371,6 +392,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                 }
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
+            // 用户离开了
             int userId = event.getUserStatus().getUserId();
             ZqEngineKit.getInstance().unbindRemoteVideo(userId);
             if (userId == mLeftUserId) {
@@ -380,7 +402,21 @@ public class GrabVideoDisplayView extends ExViewStub {
                 mRightAvatarIv.setVisibility(View.VISIBLE);
                 mRightTipsTv.setVisibility(View.VISIBLE);
             }
-//            ZqEngineKit.getInstance().setLocalVideoRect(0, 0, 1.0f, 1.0f, 1.0f);
+        } else if (event.getType() == EngineEvent.TYPE_CAMERA_FIRST_FRAME_RENDERED) {
+            onCameraFirstFrameRendered();
+        }
+    }
+
+    void onCameraFirstFrameRendered() {
+        mUiHandler.removeMessages(MSG_ENSURE_FIRST_CAMERA_DECODED);
+        if (MyUserInfoManager.getInstance().getUid() == mLeftUserId) {
+            mLeftAvatarIv.setVisibility(View.GONE);
+            mLeftTipsTv.setVisibility(View.GONE);
+        } else if (MyUserInfoManager.getInstance().getUid() == mRightUserId) {
+            mRightAvatarIv.setVisibility(View.GONE);
+            mRightTipsTv.setVisibility(View.GONE);
+        } else if (MyUserInfoManager.getInstance().getUid() == mMainUserId) {
+            mMiddleAvatarIv.setVisibility(View.GONE);
         }
     }
 

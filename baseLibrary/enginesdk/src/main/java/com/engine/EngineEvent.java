@@ -19,13 +19,13 @@ public class EngineEvent {
 
     public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 14;// 伴奏时间流逝
 
-    public static final int TYPE_ENGINE_INITED = 100;
-    public static final int TYPE_ENGINE_DESTROY = 99;
+    public static final int TYPE_ENGINE_INITED = 100;// 引擎初始化完毕
+    public static final int TYPE_ENGINE_DESTROY = 99;// 引擎销毁完毕
 
-    public static final int TYPE_CAMERA_OPENED = 200;
-    public static final int TYPE_CAMERA_FIRST_FRAME_RENDERED = 201;
-    public static final int TYPE_CAMERA_FACING_CHANGED = 202;
-    public static final int TYPE_CAMERA_ERROR = 203;
+    public static final int TYPE_CAMERA_OPENED = 200;// 相机打开
+    public static final int TYPE_CAMERA_FIRST_FRAME_RENDERED = 201;//相机首帧渲染
+    public static final int TYPE_CAMERA_FACING_CHANGED = 202;// 摄像头切换
+    public static final int TYPE_CAMERA_ERROR = 203;// 摄像头出错
 
     public int type;
     public UserStatus userStatus;

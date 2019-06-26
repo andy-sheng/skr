@@ -807,9 +807,14 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void tryStopRobotPlay() {
-        if (mExoPlayer != null) {
-            mExoPlayer.reset();
-        }
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mExoPlayer != null) {
+                    mExoPlayer.reset();
+                }
+            }
+        });
     }
 
     public void sendBurst(int seq) {
