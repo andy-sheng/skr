@@ -20,6 +20,7 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.grab.room.inter.IGrabInviteView;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
+import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
 import com.module.playways.grab.room.invite.fragment.InviteSearchFragment;
 import com.module.playways.grab.room.invite.presenter.GrabInvitePresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -40,18 +41,20 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
     private boolean mHasMore = true;
+    private int mFrom;
 
     GrabInvitePresenter mGrabInvitePresenter;
     BaseFragment mBaseFragment;
     int mRoomID;
     LoadService mLoadService;
 
-    public InviteFriendView(BaseFragment fragment, int roomID, int mode) {
+    public InviteFriendView(BaseFragment fragment, int from, int roomID, int mode) {
         super(fragment.getContext());
-        init(fragment, roomID, mode);
+        init(fragment, from, roomID, mode);
     }
 
-    private void init(BaseFragment fragment, int roomID, int mode) {
+    private void init(BaseFragment fragment, int from, int roomID, int mode) {
+        this.mFrom = from;
         this.mBaseFragment = fragment;
         this.mRoomID = roomID;
         this.mMode = mode;
@@ -64,7 +67,12 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
 
             @Override
             public void onClick(UserInfoModel model, StrokeTextView view) {
-                mGrabInvitePresenter.inviteFriend(mRoomID, model, view);
+                if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
+                    mGrabInvitePresenter.inviteGrabFriend(mRoomID, model, view);
+                } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
+                    mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
+                }
+
             }
 
             @Override

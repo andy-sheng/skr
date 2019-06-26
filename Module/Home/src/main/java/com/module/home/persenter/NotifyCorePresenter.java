@@ -16,6 +16,7 @@ import com.common.core.permission.SkrAudioPermission;
 import com.common.core.permission.SkrCameraPermission;
 import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
+import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -203,6 +204,43 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DoubleInviteFromSchemeEvent event){
+        // 双人房间邀请口令
+        if (event.ask == 1) {
+            // 需要再次确认弹窗
+            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, new UserInfoManager.ResultCallback<UserInfoModel>() {
+                @Override
+                public boolean onGetLocalDB(UserInfoModel o) {
+                    return false;
+                }
+
+                @Override
+                public boolean onGetServer(UserInfoModel userInfoModel) {
+                    if (userInfoModel != null) {
+                        Activity activity = U.getActivityUtils().getTopActivity();
+                        if (activity instanceof SchemeSdkActivity) {
+                            activity = U.getActivityUtils().getHomeActivity();
+                        }
+                        ConfirmDialog confirmDialog = new ConfirmDialog(activity
+                                , userInfoModel, ConfirmDialog.TYPE_DOUBLE_INVITE_CONFIRM);
+                        confirmDialog.setListener(new ConfirmDialog.Listener() {
+                            @Override
+                            public void onClickConfirm(UserInfoModel userInfoModel) {
+                                tryGoDoubleRoom(event.mediaType, event.roomId, 2);
+                            }
+                        });
+                        confirmDialog.show();
+                    }
+                    return false;
+                }
+            });
+        } else {
+            // 不需要直接进
+            tryGoDoubleRoom(event.mediaType, event.roomId, 2);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BothRelationFromSchemeEvent event) {
         // TODO: 2019/3/25 成为好友的的口令
         MyLog.d(TAG, "onEvent" + " event=" + event);
@@ -325,6 +363,20 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             }, true);
         }
     }
+
+
+    void tryGoDoubleRoom(int mediaType, int roomID, int inviteType) {
+        if (mSkrAudioPermission != null) {
+            mSkrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }, true);
+        }
+    }
+
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {

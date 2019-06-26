@@ -15,6 +15,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.module.common.ICallback;
 
+import static com.zq.dialog.InviteFriendDialog.INVITE_DOUBLE_GAME;
 import static com.zq.dialog.InviteFriendDialog.INVITE_GRAB_FRIEND;
 import static com.zq.dialog.InviteFriendDialog.INVITE_GRAB_GAME;
 
@@ -34,7 +35,7 @@ public class InviteFriendDialogView extends RelativeLayout {
 
     Listener mListener;
 
-    public InviteFriendDialogView(Context context, int type, int gameId,int mediaType, String kouLingToken) {
+    public InviteFriendDialogView(Context context, int type, int gameId, int mediaType, String kouLingToken) {
         super(context);
         this.mType = type;
         this.mGameId = gameId;
@@ -60,7 +61,28 @@ public class InviteFriendDialogView extends RelativeLayout {
                     MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
                     return;
                 }
-                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId,mMediaType, new ICallback() {
+                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId, mMediaType, new ICallback() {
+                    @Override
+                    public void onSucess(Object obj) {
+                        if (obj != null) {
+                            mKouLingToken = (String) obj;
+                            mTvKouling.setText(mKouLingToken);
+                        } else {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(Object obj, int errcode, String message) {
+                        U.getToastUtil().showShort("口令生成失败");
+                    }
+                });
+            } else if (mType == INVITE_DOUBLE_GAME) {
+                if (mGameId == 0) {
+                    MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
+                    return;
+                }
+                SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId, mMediaType, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -121,6 +143,8 @@ public class InviteFriendDialogView extends RelativeLayout {
                         text = SkrKouLingUtils.genReqFollowKouling(mKouLingToken);
                     } else if (mType == INVITE_GRAB_GAME) {
                         text = SkrKouLingUtils.genJoinGrabGameKouling(mKouLingToken);
+                    } else if (mType == INVITE_DOUBLE_GAME) {
+                        text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
                     }
 
                     mListener.onClickWeixinShare(text);

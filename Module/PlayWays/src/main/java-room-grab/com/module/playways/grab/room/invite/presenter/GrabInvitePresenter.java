@@ -15,6 +15,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.dialog.view.StrokeTextView;
+import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.inter.IGrabInviteView;
 
@@ -28,6 +29,7 @@ public class GrabInvitePresenter {
     public final static String TAG = "GrabRedPkgPresenter";
 
     GrabRoomServerApi mGrabRoomServerApi;
+    DoubleRoomServerApi mDoubleRoomServerApi;
     IGrabInviteView mIGrabInviteView;
     BaseFragment mBaseFragment;
 
@@ -35,6 +37,7 @@ public class GrabInvitePresenter {
         this.mBaseFragment = fragment;
         this.mIGrabInviteView = view;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+        mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi.class);
     }
 
     public void getFriendList(int mOffset, int mLimit) {
@@ -45,7 +48,7 @@ public class GrabInvitePresenter {
                     @Override
                     public void run() {
                         mIGrabInviteView.finishRefresh();
-                        mIGrabInviteView.addInviteModelList(list,mOffset, offset);
+                        mIGrabInviteView.addInviteModelList(list, mOffset, offset);
                     }
                 });
             }
@@ -62,7 +65,7 @@ public class GrabInvitePresenter {
                     List<JSONObject> list = JSON.parseArray(result.getData().getString("fans"), JSONObject.class);
                     List<UserInfoModel> userInfoModels = UserInfoDataUtils.parseRoomUserInfo(list);
                     int newOffset = result.getData().getIntValue("offset");
-                    mIGrabInviteView.addInviteModelList(userInfoModels,mOffset, newOffset);
+                    mIGrabInviteView.addInviteModelList(userInfoModels, mOffset, newOffset);
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }
@@ -82,8 +85,8 @@ public class GrabInvitePresenter {
     }
 
 
-    public void inviteFriend(int roomID, UserInfoModel model, StrokeTextView view) {
-        MyLog.d(TAG, "deleteSong");
+    public void inviteGrabFriend(int roomID, UserInfoModel model, StrokeTextView view) {
+        MyLog.d(TAG, "inviteGrabFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
         map.put("userID", model.getUserId());
@@ -91,6 +94,33 @@ public class GrabInvitePresenter {
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mGrabRoomServerApi.inviteFriend(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                if (result.getErrno() == 0) {
+                    // 更新视图
+                    mIGrabInviteView.updateInvited(view);
+                } else {
+                    MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
+            }
+        }, mBaseFragment);
+    }
+
+    public void inviteDoubleFriend(int roomID, UserInfoModel model, StrokeTextView view) {
+        MyLog.d(TAG, "inviteDoubleFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", roomID);
+        map.put("inviteUserID", model.getUserId());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(mDoubleRoomServerApi.roomSendInvite(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());

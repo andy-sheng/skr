@@ -241,4 +241,28 @@ public interface DoubleRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/magpie/room-create")
     Observable<ApiResult> createRoom(@Body RequestBody body);
+
+    /**
+     * 双人房间内邀请
+     *
+     * @param body {
+     *             "inviteUserID": 0,
+     *             "roomID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/room-send-invite-user")
+    Observable<ApiResult> roomSendInvite(@Body RequestBody body);
+
+    /**
+     * 双人房邀请响应
+     * @param body {
+     *   "peerUserID": 0,
+     *   "roomID": 0
+     * }
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/room-invite-user-enter")
+    Observable<ApiResult> roomInviteEnter(@Body RequestBody body);
+
 }

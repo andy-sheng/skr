@@ -37,12 +37,14 @@ import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.presenter.DoubleCorePresenter
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
 import com.module.playways.doubleplay.view.DoubleSingCardView
+import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity
 import com.module.playways.grab.room.songmanager.SongManageData
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.dialog.PersonInfoDialog
+import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.mediaengine.kit.ZqEngineKit
 import com.zq.report.fragment.QuickFeedbackFragment
 import org.greenrobot.eventbus.EventBus
@@ -128,13 +130,14 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 if (!mRoomData.isRoomPrepared()) {
-//                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
-//                            .setAddToBackStack(true)
-//                            .setHasAnimation(true)
-//                            .addDataBeforeAdd(0, mRoomData)
-//                            .build()
-//                    )
-                    U.getToastUtil().showShort("邀请")
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, InviteFriendFragment2.FROM_DOUBLE_ROOM)
+                            .addDataBeforeAdd(1, mRoomData.gameId)
+                            .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+                            .build()
+                    )
                     return
                 }
 

@@ -52,6 +52,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
+import com.zq.live.proto.Common.EMsgRoomMediaType;
 import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
@@ -756,12 +757,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         // 房主想要邀请别人加入游戏
         // 打开邀请面板
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteFriendFragment2.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .addDataBeforeAdd(0, mRoomData)
-//                .setEnterAnim(R.anim.slide_in_bottom)
-//                .setExitAnim(R.anim.slide_out_bottom)
-                        .build()
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .addDataBeforeAdd(0, InviteFriendFragment2.FROM_GRAB_ROOM)
+                .addDataBeforeAdd(1, mRoomData.getGameId())
+                .addDataBeforeAdd(2, mRoomData.isVideoRoom() ? EMsgRoomMediaType.EMR_VIDEO.getValue() : EMsgRoomMediaType.EMR_AUDIO.getValue())
+                .build()
         );
 
         removeInviteTipView();
