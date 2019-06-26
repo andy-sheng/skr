@@ -224,8 +224,13 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
         if (mRoomData.isCreateRoom()) {
-            unLockSelf()
-            toInviteUI()
+            if (mRoomData.isRoomPrepared()) {
+                unLockOther()
+                unLockSelf()
+            } else {
+                unLockSelf()
+                toInviteUI()
+            }
         } else {
             if (mRoomData.needMaskUserInfo) {
                 selfLockState()
@@ -462,7 +467,14 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                     .setBorderColor(Color.WHITE)
                     .build())
 
+            val drawable = DrawableCreator.Builder()
+                    .setCornersRadius(U.getDisplayUtils().dip2px(16f).toFloat())
+                    .setSolidColor(U.getColor(R.color.black_trans_20))
+                    .build()
+
+            mLeftNameTv?.background = drawable
             mLeftNameTv?.text = mRoomData?.getAntherUser()?.nickname
+            mLeftNameTv?.setTextColor(U.getColor(R.color.white_trans_50))
             mLeftNameTv?.visibility = VISIBLE
             mLeftLockIcon?.visibility = GONE
         }

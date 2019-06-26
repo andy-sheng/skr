@@ -316,6 +316,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_ROOM_INVITE);
         floatWindowData.setUserInfoModel(event.getUser());
         floatWindowData.setRoomID(event.getRoomID());
+        floatWindowData.setExtra(event.getInviteMsg());
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
     }
 

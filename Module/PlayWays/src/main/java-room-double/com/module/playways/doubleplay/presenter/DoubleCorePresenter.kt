@@ -62,11 +62,12 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
             uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
             joinRoomAndInit(true)
         }
+
+        joinRcRoom(-1)
     }
 
     /**
      * 加入引擎房间
-     * 加入融云房间
      * 系统消息弹幕
      */
     private fun joinRoomAndInit(first: Boolean) {
@@ -83,8 +84,6 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(false)
         }
-
-        joinRcRoom(-1)
     }
 
     private fun joinRcRoom(deep: Int) {
@@ -243,6 +242,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: StartCombineRoomByCreateNotifyEvent) {
+        MyLog.d(tag, "onEvent StartCombineRoomByCreateNotifyEvent 1")
         //在唱聊房邀请别人之后当对方同意之后收到的push，如果房间人数已经2个了就说名这个房间已经
         if (mRoomData.gameId == event.roomID && !mRoomData.isRoomPrepared()) {
             //游戏开始了
@@ -253,6 +253,8 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
             }
             mRoomData.userInfoListMap = hashMap
             syncStatus()
+            joinRoomAndInit(true)
+            MyLog.d(tag, "onEvent StartCombineRoomByCreateNotifyEvent 2")
         }
     }
 
@@ -322,6 +324,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         Observable.create<Any> {
             ApiMethods.subscribe(mDoubleRoomServerApi.getRoomUserInfo(body), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
+                    MyLog.d(tag, "syncRoomPlayer obj is $obj")
                     it.onComplete()
                 }
 
