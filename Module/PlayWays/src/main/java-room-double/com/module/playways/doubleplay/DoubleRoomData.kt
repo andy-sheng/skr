@@ -178,7 +178,7 @@ class DoubleRoomData() : Serializable {
 
     private fun getMaleAvatar() = config?.maskMaleAvatar ?: ""
 
-    private fun getFeMaleAvatar() = config?.maskMaleAvatar ?: ""
+    private fun getFeMaleAvatar() = config?.maskFemaleAvatar ?: ""
 
     fun updateGameState(doubleGameState: DoubleGameState) {
         if (doubleGameState.value > this.doubleGameState.value) {
