@@ -1,38 +1,42 @@
 package com.module.playways.doubleplay.fragment
 
 import android.os.Bundle
-import android.view.Gravity
+import android.support.constraint.Group
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent
-import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
-import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
-import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.inter.IMatchView
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
 import com.module.playways.doubleplay.presenter.DoubleMatchPresenter
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
 
 
 class DoubleGameMatchFragment : BaseFragment(), IMatchView {
     val mTag = "DoubleGameMatchFragment"
     lateinit var mCalcelMatchTv: ExTextView
     lateinit var doubleMatchPresenter: DoubleMatchPresenter
+    lateinit var mSelectArea: Group
+    lateinit var mSelectSexTipTv: ExTextView
+    lateinit var mManTv: ExTextView
+    lateinit var mWomanTv: ExTextView
+
 
     override fun initView(): Int {
-        return R.layout.double_game_match_fragment_layout
+        return com.module.playways.R.layout.double_game_match_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mCalcelMatchTv = mRootView.findViewById<View>(R.id.calcel_match_tv) as ExTextView
+        mCalcelMatchTv = mRootView.findViewById<View>(com.module.playways.R.id.calcel_match_tv) as ExTextView
+        mSelectArea = mRootView.findViewById<View>(com.module.playways.R.id.select_area) as Group
+        mSelectSexTipTv = mRootView.findViewById<View>(com.module.playways.R.id.select_sex_tip_tv) as ExTextView
+        mManTv = mRootView.findViewById<View>(com.module.playways.R.id.man_tv) as ExTextView
+        mWomanTv = mRootView.findViewById<View>(com.module.playways.R.id.woman_tv) as ExTextView
 
         mCalcelMatchTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -40,9 +44,20 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
             }
         })
 
+        mManTv.setOnClickListener {
+            doubleMatchPresenter.startMatch(true)
+            mSelectArea.visibility = View.GONE
+            mCalcelMatchTv.visibility = View.VISIBLE
+        }
+
+        mWomanTv.setOnClickListener {
+            doubleMatchPresenter.startMatch(false)
+            mSelectArea.visibility = View.GONE
+            mCalcelMatchTv.visibility = View.VISIBLE
+        }
+
         doubleMatchPresenter = DoubleMatchPresenter(this)
         addPresent(doubleMatchPresenter)
-        doubleMatchPresenter.startMatch()
     }
 
 //    private fun exitLogin() {

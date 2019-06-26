@@ -29,7 +29,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
         EventBus.getDefault().register(this)
     }
 
-    fun startMatch() {
+    fun startMatch(isMan: Boolean) {
         handlerTaskTimer?.dispose()
         handlerTaskTimer = HandlerTaskTimer
                 .newBuilder()
@@ -38,8 +38,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
                         MyLog.d(mTag, "startMatch onNext")
-                        val mutableSet = mutableMapOf<String, Any>("platform" to 20)
-                        mutableSet["userClick"] = t == 1
+                        val mutableSet = mutableMapOf<String, Any>("platform" to 20, "sex" to if (isMan) 1 else 2)
                         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
                         ApiMethods.subscribe(doubleRoomServerApi.quaryMatch(body), object : ApiObserver<ApiResult>() {
                             override fun process(obj: ApiResult?) {
