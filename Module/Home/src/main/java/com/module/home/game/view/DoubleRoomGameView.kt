@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -42,6 +43,8 @@ class DoubleRoomGameView : RelativeLayout {
     private var mainPageSlideApi: MainPageSlideApi? = null
     var hasRemainTime: Boolean = false        //默认已经没有次数了
 
+    lateinit var mSkrAudioPermission: SkrAudioPermission
+
     internal var mLastUpdateRemainTime: Long = 0    //上次拉去剩余次数的时间
 
     constructor(context: Context) : super(context) {}
@@ -52,6 +55,7 @@ class DoubleRoomGameView : RelativeLayout {
 
     init {
         View.inflate(context, R.layout.double_room_view_layout, this)
+        mSkrAudioPermission = SkrAudioPermission()
 
         start_match_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -60,9 +64,11 @@ class DoubleRoomGameView : RelativeLayout {
                     if (!hasConfirm) {
                         showConfirmView()
                     } else {
-                        ARouter.getInstance()
-                                .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                .navigation()
+                        mSkrAudioPermission.ensurePermission({
+                            ARouter.getInstance()
+                                    .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                    .navigation()
+                        }, true)
                     }
                 } else {
                     U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
@@ -72,8 +78,10 @@ class DoubleRoomGameView : RelativeLayout {
 
         invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                playWaysService?.createDoubleRoom()
+                mSkrAudioPermission.ensurePermission({
+                    val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    playWaysService?.createDoubleRoom()
+                }, true)
             }
         })
     }

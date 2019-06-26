@@ -430,8 +430,13 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
-                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                            iRankingModeService.jumpToDoubleRoom(result.getData());
+                            mSkrAudioPermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                    iRankingModeService.jumpToDoubleRoom(result.getData());
+                                }
+                            }, true);
                         } else {
                             U.getToastUtil().showShort(result.getErrmsg());
                         }
