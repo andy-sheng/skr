@@ -1,4 +1,4 @@
-package com.common.view;
+package com.common.log;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -6,7 +6,8 @@ import android.view.ViewStub;
 import android.widget.TextView;
 
 import com.common.base.R;
-import com.common.log.MyLog;
+import com.common.view.DebounceViewClickListener;
+import com.common.view.ExViewStub;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

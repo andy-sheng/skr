@@ -2,16 +2,13 @@ package com.zq.mediaengine.kit;
 
 import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
-import android.os.ConditionVariable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.TextureView;
-import android.util.Log;
 import android.view.View;
 
-import com.bytedance.labcv.effectsdk.BytedEffectConstants;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
@@ -19,7 +16,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
-import com.common.view.DebugLogView;
+import com.common.log.DebugLogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.UserStatus;
@@ -32,7 +29,6 @@ import com.engine.token.AgoraTokenApi;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
 import com.zq.mediaengine.capture.CameraCapture;
-import com.zq.mediaengine.effect.DyEffectResManager;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
 import com.zq.mediaengine.filter.audio.AudioCopyFilter;
@@ -59,6 +55,7 @@ import com.zq.mediaengine.kit.filter.CbAudioEffectFilter;
 import com.zq.mediaengine.kit.filter.CbAudioScorer;
 import com.zq.mediaengine.kit.filter.TbAudioAgcFilter;
 import com.zq.mediaengine.kit.filter.TbAudioEffectFilter;
+import com.zq.mediaengine.kit.log.LogRunnable;
 import com.zq.mediaengine.publisher.MediaMuxerPublisher;
 import com.zq.mediaengine.publisher.RawFrameWriter;
 import com.zq.mediaengine.util.audio.AudioUtil;
@@ -417,10 +414,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     public void init(final String from, final Params params) {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("init" + " from=" + from + " params=" + params) {
             @Override
-            public void run() {
-                MyLog.d(TAG, "init" + " from=" + from + " params=" + params);
+            public void realRun() {
                 destroyInner();
                 initInner(from, params);
             }
@@ -468,7 +464,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     @SuppressWarnings("unchecked")
     private void initAudioModules() {
-        MyLog.d(TAG,"initAudioModules" );
+        MyLog.d(TAG, "initAudioModules");
         mAudioFilterMgt = new AudioFilterMgt();
         mCbAudioScorer = new CbAudioScorer();
         // 单mic数据PCM录制
@@ -589,9 +585,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 离开房间
      */
     public void leaveChannel() {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("leaveChannel") {
             @Override
-            public void run() {
+            public void realRun() {
                 if (mConfig.isUseExternalAudio()) {
                     mAudioPreview.stop();
                     mAudioCapture.stop();
@@ -606,7 +602,6 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy(final String from) {
-        MyLog.d(TAG, "destroy" + " from=" + from + " status=" + mStatus);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;
@@ -614,10 +609,11 @@ public class ZqEngineKit implements AgoraOutCallback {
         }
         // 销毁前清理掉其他的异步任务
         mCustomHandlerThread.removeCallbacksAndMessages(null);
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
             @Override
-            public void run() {
+            public void realRun() {
                 if (from.equals(mInitFrom)) {
+                    MyLog.d(TAG, "destroy inner");
                     mConfig.setAnchor(false);
                     destroyInner();
                 }
@@ -626,6 +622,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void destroyInner() {
+        MyLog.d(TAG, "destroyInner1");
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
@@ -640,14 +637,17 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.release();
                 mAudioPlayerCapture.release();
             }
+            MyLog.d(TAG, "destroyInner2");
             if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {
                 mCameraCapture.release();
                 mGLRender.release();
             }
+            MyLog.d(TAG, "destroyInner3");
             mAgoraRTCAdapter.destroy(true);
             mUserStatusMap.clear();
             mRemoteViewCache.clear();
             mRemoteUserPinMap.clear();
+            MyLog.d(TAG, "destroyInner4");
             mUiHandler.removeCallbacksAndMessages(null);
             mConfig = new Params();
             mPendingStartMixAudioParams = null;
@@ -658,6 +658,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             if (EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().unregister(this);
             }
+            MyLog.d(TAG, "destroyInner5");
         }
     }
 
@@ -706,10 +707,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      *                 不是主播只看不能说
      */
     public void joinRoom(final String roomid, final int userId, final boolean isAnchor, final String token) {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor + " token=" + token) {
             @Override
-            public void run() {
-                MyLog.d(TAG, "joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor + " token=" + token);
+            public void realRun() {
                 mConfig.setSelfUid(userId);
                 if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
                     mAgoraRTCAdapter.setClientRole(isAnchor);
@@ -729,12 +729,10 @@ public class ZqEngineKit implements AgoraOutCallback {
 
 
     private void joinRoomInner(final String roomid, final int userId, final String token) {
-        MyLog.w(TAG, "joinRoomInner" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
         if (Looper.myLooper() != mCustomHandlerThread.getLooper()) {
-            MyLog.d(TAG, "joinRoomInner not looper");
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("joinRoomInner" + " roomid=" + roomid + " userId=" + userId + " token=" + token) {
                 @Override
-                public void run() {
+                public void realRun() {
                     joinRoomInner(roomid, userId, token);
                 }
             });
@@ -805,10 +803,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void setClientRole(final boolean isAnchor) {
         if (mCustomHandlerThread != null) {
             mConfig.setAnchor(isAnchor);
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("setClientRole" + " isAnchor=" + isAnchor) {
                 @Override
-                public void run() {
-                    DebugLogView.println(TAG, "setClientRole" + " isAnchor=" + isAnchor);
+                public void realRun() {
                     mAgoraRTCAdapter.setClientRole(isAnchor);
                 }
             });
@@ -854,10 +851,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     public void muteLocalAudioStream(final boolean muted) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("muteLocalAudioStream muted=" + muted) {
                 @Override
-                public void run() {
-                    DebugLogView.println(TAG, "muteLocalAudioStream muted=" + muted);
+                public void realRun() {
                     UserStatus status = new UserStatus(mConfig.getSelfUid());
                     status.setAudioMute(muted);
                     EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
@@ -927,7 +923,6 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     public void adjustRecordingSignalVolume(final int volume, final boolean setConfig) {
-        MyLog.d(TAG, "adjustRecordingSignalVolume" + " volume=" + volume + " setConfig=" + setConfig);
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
@@ -1011,9 +1006,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("setAudioEffectStyle") {
                 @Override
-                public void run() {
+                public void realRun() {
                     doSetAudioEffect(styleEnum);
                 }
             });
@@ -1101,10 +1096,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
-                public void run() {
-                    MyLog.w(TAG, "startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                public void realRun() {
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.d(TAG, "伴奏路径非法");
                         return;
@@ -1182,11 +1176,10 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
-        MyLog.d(TAG, "stopAudioMixing");
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("stopAudioMixing") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
                         mConfig.setMixMusicPlaying(false);
                         mConfig.setMixMusicFilePath(null);
@@ -1215,11 +1208,10 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 继续播放混音
      */
     public void resumeAudioMixing() {
-        MyLog.d(TAG, "resumeAudioMixing");
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("resumeAudioMixing") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
                         mConfig.setMixMusicPlaying(true);
                         startMusicPlayTimeListener();
@@ -1241,11 +1233,10 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
-        MyLog.d(TAG, "pauseAudioMixing");
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("pauseAudioMixing") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
                         mConfig.setMixMusicPlaying(false);
                         stopMusicPlayTimeListener();
@@ -1315,11 +1306,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     public void adjustAudioMixingVolume(final int volume, final boolean setConfig) {
-        MyLog.d(TAG, "adjustAudioMixingVolume" + " volume=" + volume + " setConfig=" + setConfig);
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("adjustAudioMixingVolume" + " volume=" + volume + " setConfig=" + setConfig) {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (setConfig) {
                         mConfig.setAudioMixingVolume(volume);
                     }
@@ -1361,10 +1351,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param posMs
      */
     public void setAudioMixingPosition(final int posMs) {
+
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("setAudioMixingPosition" + " posMs=" + posMs) {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (mConfig.isUseExternalAudio()) {
                         mAudioPlayerCapture.seek(posMs);
                     } else {
@@ -1387,12 +1378,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
-        MyLog.w(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
         if (mCustomHandlerThread != null) {
             mConfig.setRecording(true);
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh) {
                 @Override
-                public void run() {
+                public void realRun() {
                     File file = new File(saveAudioForAiFilePath);
                     if (!file.getParentFile().exists()) {
                         file.getParentFile().mkdirs();
@@ -1448,12 +1438,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        MyLog.w(TAG, "stopAudioRecording");
         if (mCustomHandlerThread != null && mConfig.isRecording()) {
             mConfig.setRecording(false);
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("stopAudioRecording") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                         if (mConfig.isUseExternalAudioRecord()) {
                             mAudioEncoder.stop();
@@ -1544,7 +1533,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void initVideoModules() {
-        MyLog.d(TAG,"initVideoModules" );
+        MyLog.d(TAG, "initVideoModules");
         // Camera preview
         mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
         mImgTexScaleFilter = new ImgTexScaleFilter(mGLRender);
@@ -1641,9 +1630,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param surfaceView GLSurfaceView to be set.
      */
     public void setDisplayPreview(final GLSurfaceView surfaceView) {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setDisplayPreview surfaceView=" + surfaceView) {
             @Override
-            public void run() {
+            public void realRun() {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
@@ -1661,10 +1650,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param textureView TextureView to be set.
      */
     public void setDisplayPreview(final TextureView textureView) {
-        DebugLogView.println(TAG,"setDisplayPreview" + " textureView=" + textureView);
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setDisplayPreview textureView=" + textureView) {
             @Override
-            public void run() {
+            public void realRun() {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
@@ -1685,13 +1673,12 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Set rotate degrees in anti-clockwise of current Activity.
      *
      * @param rotate Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
-     * @throws IllegalArgumentException
      */
     @SuppressWarnings("SuspiciousNameCombination")
     public void setRotateDegrees(final int rotate) throws IllegalArgumentException {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setRotateDegrees" + " rotate=" + rotate) {
             @Override
-            public void run() {
+            public void realRun() {
                 int degrees = rotate % 360;
                 if (degrees % 90 != 0) {
                     throw new IllegalArgumentException("Invalid rotate degrees");
@@ -1734,15 +1721,14 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param width  capture width
      * @param height capture height
-     * @throws IllegalArgumentException
      */
     public void setCameraCaptureResolution(final int width, final int height) throws IllegalArgumentException {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("Invalid resolution");
         }
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setCameraCaptureResolution" + " width=" + width + " height=" + height) {
             @Override
-            public void run() {
+            public void realRun() {
                 mCameraCapture.setPreviewSize(width, height);
             }
         });
@@ -1755,7 +1741,6 @@ public class ZqEngineKit implements AgoraOutCallback {
      * {@link #startCameraPreview(int)} call.<br/>
      *
      * @param idx Resolution index.<br/>
-     * @throws IllegalArgumentException
      * @see #VIDEO_RESOLUTION_360P
      * @see #VIDEO_RESOLUTION_480P
      * @see #VIDEO_RESOLUTION_540P
@@ -1767,9 +1752,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setCameraCaptureResolution" + " idx=" + idx) {
             @Override
-            public void run() {
+            public void realRun() {
                 int height = getShortEdgeLength(idx);
                 int width = height * 16 / 9;
                 mCameraCapture.setPreviewSize(width, height);
@@ -1790,15 +1775,14 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param width  preview width.
      * @param height preview height.
-     * @throws IllegalArgumentException
      */
     public void setPreviewResolution(final int width, final int height) throws IllegalArgumentException {
         if (width < 0 || height < 0 || (width == 0 && height == 0)) {
             throw new IllegalArgumentException("Invalid resolution");
         }
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setPreviewResolution" + " width=" + width + " height=" + height) {
             @Override
-            public void run() {
+            public void realRun() {
                 mPreviewWidthOrig = width;
                 mPreviewHeightOrig = height;
                 doSetPreviewResolution();
@@ -1814,7 +1798,6 @@ public class ZqEngineKit implements AgoraOutCallback {
      * If called in previewing mode, it would take effect immediately.<br/>
      *
      * @param idx Resolution index.<br/>
-     * @throws IllegalArgumentException
      * @see #VIDEO_RESOLUTION_360P
      * @see #VIDEO_RESOLUTION_480P
      * @see #VIDEO_RESOLUTION_540P
@@ -1826,9 +1809,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setPreviewResolution" + " idx=" + idx) {
             @Override
-            public void run() {
+            public void realRun() {
                 mPreviewResolution = idx;
                 mPreviewWidthOrig = 0;
                 mPreviewHeightOrig = 0;
@@ -1872,7 +1855,6 @@ public class ZqEngineKit implements AgoraOutCallback {
      * The actual preview fps depends on the running device, may be different with the set value.
      *
      * @param fps frame rate to be set.
-     * @throws IllegalArgumentException
      */
     public void setPreviewFps(float fps) throws IllegalArgumentException {
         if (fps <= 0) {
@@ -1917,15 +1899,14 @@ public class ZqEngineKit implements AgoraOutCallback {
      *
      * @param width  streaming width.
      * @param height streaming height.
-     * @throws IllegalArgumentException
      */
     public void setTargetResolution(final int width, final int height) throws IllegalArgumentException {
         if (width < 0 || height < 0 || (width == 0 && height == 0)) {
             throw new IllegalArgumentException("Invalid resolution");
         }
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setTargetResolution" + " width=" + width + " height=" + height) {
             @Override
-            public void run() {
+            public void realRun() {
                 mTargetWidthOrig = width;
                 mTargetHeightOrig = height;
                 doSetTargetResolution();
@@ -1939,7 +1920,6 @@ public class ZqEngineKit implements AgoraOutCallback {
      * The set resolution would take effect immediately if streaming started.<br/>
      *
      * @param idx Resolution index.<br/>
-     * @throws IllegalArgumentException
      * @see #VIDEO_RESOLUTION_360P
      * @see #VIDEO_RESOLUTION_480P
      * @see #VIDEO_RESOLUTION_540P
@@ -1951,9 +1931,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 idx > VIDEO_RESOLUTION_1080P) {
             throw new IllegalArgumentException("Invalid resolution index");
         }
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setTargetResolution" + " idx=" + idx) {
             @Override
-            public void run() {
+            public void realRun() {
                 mTargetResolution = idx;
                 mTargetWidthOrig = 0;
                 mTargetHeightOrig = 0;
@@ -1998,7 +1978,6 @@ public class ZqEngineKit implements AgoraOutCallback {
      * default value : 15
      *
      * @param fps frame rate.
-     * @throws IllegalArgumentException
      */
     public void setTargetFps(float fps) throws IllegalArgumentException {
         if (fps <= 0) {
@@ -2082,10 +2061,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @see CameraCapture#FACING_BACK
      */
     public void startCameraPreview(final int facing) {
-        DebugLogView.println(TAG, "startCameraPreview" + " facing=" + facing);
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("startCameraPreview" + " facing=" + facing) {
             @Override
-            public void run() {
+            public void realRun() {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
@@ -2113,10 +2091,10 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Stop camera preview.
      */
     public void stopCameraPreview() {
-        DebugLogView.println(TAG, "stopCameraPreview");
-        mCustomHandlerThread.post(new Runnable() {
+
+        mCustomHandlerThread.post(new LogRunnable("stopCameraPreview") {
             @Override
-            public void run() {
+            public void realRun() {
                 if (mStatus != STATUS_INITED) {
                     return;
                 }
@@ -2193,9 +2171,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param screenShotListener the listener to be called when bitmap of the screen shot available
      */
     public void requestScreenShot(final GLRender.ScreenShotListener screenShotListener) {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("requestScreenShot" + " screenShotListener=" + screenShotListener) {
             @Override
-            public void run() {
+            public void realRun() {
                 mImgTexPreviewMixer.requestScreenShot(screenShotListener);
             }
         });
@@ -2213,15 +2191,14 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha alpha value，between 0~1.0
      */
     public void setLocalVideoRect(final float x, final float y, final float w, final float h, float alpha) {
-        DebugLogView.println(TAG, "setLocalVideoRect" + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
         final float a = alpha;
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("setLocalVideoRect" + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha) {
             @Override
-            public void run() {
+            public void realRun() {
                 mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, a);
-                if (mScreenRenderWidth !=0 && mScreenRenderHeight != 0) {
+                if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
                     // 重新计算预览尺寸
                     setPreviewParams();
                 }
@@ -2242,14 +2219,13 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param alpha  alpha value，between 0~1.0
      */
     public void bindRemoteVideoRect(final int userId, final float x, final float y, final float w, final float h, float alpha) {
-        DebugLogView.println(TAG, "bindRemoteVideoRect" + " userId=" + userId + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha);
         alpha = Math.max(0.0f, alpha);
         alpha = Math.min(alpha, 1.0f);
         final float a = alpha;
 
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("bindRemoteVideoRect" + " userId=" + userId + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha) {
             @Override
-            public void run() {
+            public void realRun() {
                 int idx;
                 if (!mRemoteUserPinMap.containsKey(userId)) {
                     idx = getAvailableVideoMixerSink();
@@ -2281,9 +2257,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param userId which user to unbind
      */
     public void unbindRemoteVideo(final int userId) {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("unbindRemoteVideo" + " userId=" + userId) {
             @Override
-            public void run() {
+            public void realRun() {
                 doUnbindRemoteVideo(userId);
                 mRemoteUserPinMap.remove(userId);
                 freeFboCacheIfNeeded();
@@ -2295,9 +2271,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * Unbind and remove all remote video.
      */
     public void unbindAllRemoteVideo() {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("unbindAllRemoteVideo") {
             @Override
-            public void run() {
+            public void realRun() {
                 for (int userId : mRemoteUserPinMap.keySet()) {
                     doUnbindRemoteVideo(userId);
                 }
@@ -2323,9 +2299,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mIsCaptureStarted || !mRemoteUserPinMap.isEmpty()) {
             return;
         }
-        mGLRender.queueEvent(new Runnable() {
+        mGLRender.queueEvent(new LogRunnable("freeFboCacheIfNeeded") {
             @Override
-            public void run() {
+            public void realRun() {
                 // 释放所有fbo缓存
                 mGLRender.clearFboCache();
             }
@@ -2528,9 +2504,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     private void onPreviewSizeChanged(final int width, final int height) {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("onPreviewSizeChanged" + " width=" + width + " height=" + height) {
             @Override
-            public void run() {
+            public void realRun() {
                 boolean notifySizeChanged = mScreenRenderWidth != 0 && mScreenRenderHeight != 0;
                 mScreenRenderWidth = width;
                 mScreenRenderHeight = height;

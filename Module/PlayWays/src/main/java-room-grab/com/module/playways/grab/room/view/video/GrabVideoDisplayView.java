@@ -18,7 +18,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.common.view.DebugLogView;
+import com.common.log.DebugLogView;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.module.playways.R;

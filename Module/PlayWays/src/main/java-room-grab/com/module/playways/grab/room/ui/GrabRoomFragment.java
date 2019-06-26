@@ -33,7 +33,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.DebugLogView;
+import com.common.log.DebugLogView;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.beauty.JumpBeautyFromKt;

@@ -34,7 +34,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
-import com.common.view.DebugLogView;
+import com.common.log.DebugLogView;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;

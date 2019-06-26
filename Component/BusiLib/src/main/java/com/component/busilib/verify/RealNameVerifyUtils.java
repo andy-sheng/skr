@@ -11,11 +11,13 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.DeviceUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.RxLifecycleView;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
+import com.tencent.mm.opensdk.constants.Build;
 
 public class RealNameVerifyUtils {
 
@@ -34,13 +36,38 @@ public class RealNameVerifyUtils {
             }
             return;
         }
+        if (Build.SDK_INT < 21) {
+            if (U.getDeviceUtils().getLevel().getValue() <= DeviceUtils.LEVEL.MIDDLE.getValue()) {
+                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                        .setMessageTip("为保证视频体验")
+                        .setOkBtnTip("确认")
+                        .setConfirmBtnClickListener(new AnimateClickListener() {
+                            @Override
+                            public void click(View view) {
+                                mTipsDialogView.dismiss();
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                        .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/mobile?from=video"))
+                                        .greenChannel().navigation();
+                            }
+                        })
+                        .setCancelBtnClickListener(new AnimateClickListener() {
+                            @Override
+                            public void click(View view) {
+                                mTipsDialogView.dismiss();
+                            }
+                        })
+                        .build();
+                return;
+            }
+        }
+
         VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
-            ApiMethods.subscribe(grabRoomServerApi.checkJoinVideoRoomPermission(), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult obj) {
-                    process2(obj, successCallback);
-                }
-            }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
+        ApiMethods.subscribe(grabRoomServerApi.checkJoinVideoRoomPermission(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                process2(obj, successCallback);
+            }
+        }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
     }
 
     private void process2(ApiResult obj, Runnable successCallback) {
