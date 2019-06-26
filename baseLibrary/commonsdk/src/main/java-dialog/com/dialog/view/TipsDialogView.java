@@ -14,9 +14,9 @@ public class TipsDialogView extends RelativeLayout {
 
     public ExTextView mTitleTv;
     public ExTextView mMessageTv;
-    public StrokeTextView mOkBtn;
-    public StrokeTextView mCancelTv;
-    public StrokeTextView mConfirmTv;
+    public ExTextView mOkBtn;
+    public ExTextView mCancelTv;
+    public ExTextView mConfirmTv;
 
     DialogPlus mDialogPlus;
 
@@ -38,11 +38,11 @@ public class TipsDialogView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.template_tips1_dialog, this);
 
-        mTitleTv = (ExTextView) this.findViewById(R.id.title_tv);
-        mMessageTv = (ExTextView) this.findViewById(R.id.message_tv);
-        mOkBtn = (StrokeTextView) this.findViewById(R.id.ok_btn);
-        mConfirmTv = (StrokeTextView) this.findViewById(R.id.confirm_tv);
-        mCancelTv = (StrokeTextView) this.findViewById(R.id.cancel_tv);
+        mTitleTv = this.findViewById(R.id.title_tv);
+        mMessageTv = this.findViewById(R.id.message_tv);
+        mOkBtn = this.findViewById(R.id.ok_btn);
+        mConfirmTv = this.findViewById(R.id.confirm_tv);
+        mCancelTv = this.findViewById(R.id.cancel_tv);
     }
 
 

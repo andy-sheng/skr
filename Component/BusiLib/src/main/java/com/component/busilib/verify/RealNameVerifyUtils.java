@@ -57,7 +57,7 @@ public class RealNameVerifyUtils {
                 // 去实名认证
                 if (mTipsDialogView == null) {
                     mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                            .setMessageTip("撕歌的宝贝们，两分钟完成认证，超有趣的视频玩法等着你来哦")
+                            .setMessageTip("撕歌的宝贝们，两分钟完成认证\n超有趣的视频玩法等着你来哦")
                             .setConfirmTip("快速认证")
                             .setCancelTip("取消")
                             .setConfirmBtnClickListener(new AnimateClickListener() {

@@ -205,7 +205,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
 
         if (mFunctionArea.getVisibility() == VISIBLE) {
-            mPhotoView.setPadding(0, 0, 0, U.getDisplayUtils().dip2px(60f));
+            mPhotoView.setPadding(0, 0, 0, U.getDisplayUtils().dip2px(65f));
         }
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
