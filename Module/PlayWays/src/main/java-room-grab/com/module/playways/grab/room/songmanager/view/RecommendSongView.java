@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -134,7 +135,7 @@ public class RecommendSongView extends FrameLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-        mDisposable = ApiMethods.subscribe(mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), offset, mLimit), new ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe(getListStandBoardObservable(offset), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 mRefreshLayout.finishLoadMore();
@@ -165,6 +166,14 @@ public class RecommendSongView extends FrameLayout {
 
             }
         });
+    }
+
+    private Observable<ApiResult> getListStandBoardObservable(int offset) {
+        if (mRoomData.isGrabRoom()) {
+            return mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), offset, mLimit);
+        } else {
+            return mGrabRoomServerApi.getDoubleListStandBoards(mRecommendTagModel.getType(), offset, mLimit);
+        }
     }
 
     @Override

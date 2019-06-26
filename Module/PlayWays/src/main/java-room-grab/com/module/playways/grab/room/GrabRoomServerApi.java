@@ -448,9 +448,18 @@ message STCommitSegmentResultReq
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
     Observable<ApiResult> getListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
 
+    /**
+     * 获取推荐歌曲
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/list-magpie-billboard")
+    Observable<ApiResult> getDoubleListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
+
 
     /**
      * 非房主申请点歌
+     *
      * @param body {
      *             "itemID": 0,
      *             "roomID": 0
@@ -463,6 +472,7 @@ message STCommitSegmentResultReq
 
     /**
      * 房主获取用户点的歌曲
+     *
      * @param roomID
      * @param offset
      * @param limit
@@ -473,6 +483,7 @@ message STCommitSegmentResultReq
 
     /**
      * 房主添加用户点的歌曲
+     *
      * @param body {
      *             "itemID": 0,
      *             "roomID": 0
@@ -484,6 +495,7 @@ message STCommitSegmentResultReq
 
     /**
      * 房主删除用户点的歌曲
+     *
      * @param body {
      *             "itemID": 0,
      *             "roomID": 0
@@ -495,6 +507,7 @@ message STCommitSegmentResultReq
 
     /**
      * 房主添加自定义小游戏
+     *
      * @param body
      * @return
      */
