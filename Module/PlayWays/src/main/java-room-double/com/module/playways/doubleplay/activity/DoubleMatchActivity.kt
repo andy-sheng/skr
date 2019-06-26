@@ -1,11 +1,13 @@
 package com.module.playways.doubleplay.activity
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.component.busilib.manager.BgMusicManager
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.fragment.DoubleGameMatchFragment
@@ -19,6 +21,10 @@ class DoubleMatchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        var bgMusic = intent.getStringExtra("music")
+        if (!TextUtils.isEmpty(bgMusic)) {
+            BgMusicManager.getInstance().starPlay(bgMusic, 0, "DoubleMatchActivity")
+        }
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoubleGameMatchFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
@@ -32,6 +38,7 @@ class DoubleMatchActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        BgMusicManager.getInstance().destory()
         if (window != null) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }

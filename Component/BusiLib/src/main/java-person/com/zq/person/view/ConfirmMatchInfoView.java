@@ -115,6 +115,7 @@ public class ConfirmMatchInfoView extends RelativeLayout {
                 .build();
         mCustomOptions.setPicker(mAgeTags);//添加数据
         mCustomOptions.setSelectOptions(3);
+        mCustomOptions.setKeyBackCancelable(false);
         mCustomOptions.show();
 
         mBoyTv.setOnClickListener(new DebounceViewClickListener() {

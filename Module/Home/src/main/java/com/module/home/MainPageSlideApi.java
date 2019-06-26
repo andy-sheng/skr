@@ -102,4 +102,7 @@ public interface MainPageSlideApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/magpie/room-data")
     Observable<ApiResult> getRemainTime();
+
+    @GET("http://dev.game.inframe.mobi/v1/magpie/on-match-music")
+    Observable<ApiResult> getDoubleMatchMusic();
 }
