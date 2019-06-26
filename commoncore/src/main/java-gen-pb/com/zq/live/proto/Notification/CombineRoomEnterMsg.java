@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.AgoraTokenInfo;
 import com.zq.live.proto.Common.CombineRoomConfig;
 import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
@@ -22,10 +23,12 @@ import java.lang.StringBuilder;
 import java.util.List;
 import okio.ByteString;
 
-public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomByCreateMsg, StartCombineRoomByCreateMsg.Builder> {
-  public static final ProtoAdapter<StartCombineRoomByCreateMsg> ADAPTER = new ProtoAdapter_StartCombineRoomByCreateMsg();
+public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, CombineRoomEnterMsg.Builder> {
+  public static final ProtoAdapter<CombineRoomEnterMsg> ADAPTER = new ProtoAdapter_CombineRoomEnterMsg();
 
   private static final long serialVersionUID = 0L;
+
+  public static final ECombineRoomEnterType DEFAULT_ENTERTYPE = ECombineRoomEnterType.CRET_UNKNOWN;
 
   public static final Integer DEFAULT_ROOMID = 0;
 
@@ -36,10 +39,19 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
   public static final Boolean DEFAULT_NEEDMASKUSERINFO = false;
 
   /**
-   * 房间ID
+   * 进房方式
    */
   @WireField(
       tag = 1,
+      adapter = "com.zq.live.proto.Notification.ECombineRoomEnterType#ADAPTER"
+  )
+  private final ECombineRoomEnterType enterType;
+
+  /**
+   * 房间ID
+   */
+  @WireField(
+      tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer roomID;
@@ -48,7 +60,7 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
    * 房间创建的时间戳
    */
   @WireField(
-      tag = 2,
+      tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
   private final Long createdTimeMs;
@@ -57,7 +69,7 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
    * 房间已经经历的毫秒数
    */
   @WireField(
-      tag = 3,
+      tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
   private final Long passedTimeMs;
@@ -66,7 +78,7 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
    * 玩家信息
    */
   @WireField(
-      tag = 4,
+      tag = 5,
       adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
@@ -76,45 +88,60 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
    * 配置信息
    */
   @WireField(
-      tag = 5,
+      tag = 6,
       adapter = "com.zq.live.proto.Common.CombineRoomConfig#ADAPTER"
   )
   private final CombineRoomConfig config;
 
   /**
+   * 声网token
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.zq.live.proto.Common.AgoraTokenInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<AgoraTokenInfo> tokens;
+
+  /**
    * 是否需要隐藏用户信息
    */
   @WireField(
-      tag = 6,
+      tag = 8,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   private final Boolean needMaskUserInfo;
 
-  public StartCombineRoomByCreateMsg(Integer roomID, Long createdTimeMs, Long passedTimeMs,
-      List<UserInfo> users, CombineRoomConfig config, Boolean needMaskUserInfo) {
-    this(roomID, createdTimeMs, passedTimeMs, users, config, needMaskUserInfo, ByteString.EMPTY);
+  public CombineRoomEnterMsg(ECombineRoomEnterType enterType, Integer roomID, Long createdTimeMs,
+      Long passedTimeMs, List<UserInfo> users, CombineRoomConfig config,
+      List<AgoraTokenInfo> tokens, Boolean needMaskUserInfo) {
+    this(enterType, roomID, createdTimeMs, passedTimeMs, users, config, tokens, needMaskUserInfo, ByteString.EMPTY);
   }
 
-  public StartCombineRoomByCreateMsg(Integer roomID, Long createdTimeMs, Long passedTimeMs,
-      List<UserInfo> users, CombineRoomConfig config, Boolean needMaskUserInfo,
-      ByteString unknownFields) {
+  public CombineRoomEnterMsg(ECombineRoomEnterType enterType, Integer roomID, Long createdTimeMs,
+      Long passedTimeMs, List<UserInfo> users, CombineRoomConfig config,
+      List<AgoraTokenInfo> tokens, Boolean needMaskUserInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
+    this.enterType = enterType;
     this.roomID = roomID;
     this.createdTimeMs = createdTimeMs;
     this.passedTimeMs = passedTimeMs;
     this.users = Internal.immutableCopyOf("users", users);
     this.config = config;
+    this.tokens = Internal.immutableCopyOf("tokens", tokens);
     this.needMaskUserInfo = needMaskUserInfo;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
+    builder.enterType = enterType;
     builder.roomID = roomID;
     builder.createdTimeMs = createdTimeMs;
     builder.passedTimeMs = passedTimeMs;
     builder.users = Internal.copyOf("users", users);
     builder.config = config;
+    builder.tokens = Internal.copyOf("tokens", tokens);
     builder.needMaskUserInfo = needMaskUserInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
@@ -123,14 +150,16 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
   @Override
   public boolean equals(Object other) {
     if (other == this) return true;
-    if (!(other instanceof StartCombineRoomByCreateMsg)) return false;
-    StartCombineRoomByCreateMsg o = (StartCombineRoomByCreateMsg) other;
+    if (!(other instanceof CombineRoomEnterMsg)) return false;
+    CombineRoomEnterMsg o = (CombineRoomEnterMsg) other;
     return unknownFields().equals(o.unknownFields())
+        && Internal.equals(enterType, o.enterType)
         && Internal.equals(roomID, o.roomID)
         && Internal.equals(createdTimeMs, o.createdTimeMs)
         && Internal.equals(passedTimeMs, o.passedTimeMs)
         && users.equals(o.users)
         && Internal.equals(config, o.config)
+        && tokens.equals(o.tokens)
         && Internal.equals(needMaskUserInfo, o.needMaskUserInfo);
   }
 
@@ -139,11 +168,13 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
+      result = result * 37 + (enterType != null ? enterType.hashCode() : 0);
       result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
       result = result * 37 + (createdTimeMs != null ? createdTimeMs.hashCode() : 0);
       result = result * 37 + (passedTimeMs != null ? passedTimeMs.hashCode() : 0);
       result = result * 37 + users.hashCode();
       result = result * 37 + (config != null ? config.hashCode() : 0);
+      result = result * 37 + tokens.hashCode();
       result = result * 37 + (needMaskUserInfo != null ? needMaskUserInfo.hashCode() : 0);
       super.hashCode = result;
     }
@@ -153,23 +184,35 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
+    if (enterType != null) builder.append(", enterType=").append(enterType);
     if (roomID != null) builder.append(", roomID=").append(roomID);
     if (createdTimeMs != null) builder.append(", createdTimeMs=").append(createdTimeMs);
     if (passedTimeMs != null) builder.append(", passedTimeMs=").append(passedTimeMs);
     if (!users.isEmpty()) builder.append(", users=").append(users);
     if (config != null) builder.append(", config=").append(config);
+    if (!tokens.isEmpty()) builder.append(", tokens=").append(tokens);
     if (needMaskUserInfo != null) builder.append(", needMaskUserInfo=").append(needMaskUserInfo);
-    return builder.replace(0, 2, "StartCombineRoomByCreateMsg{").append('}').toString();
+    return builder.replace(0, 2, "CombineRoomEnterMsg{").append('}').toString();
   }
 
   public byte[] toByteArray() {
-    return StartCombineRoomByCreateMsg.ADAPTER.encode(this);
+    return CombineRoomEnterMsg.ADAPTER.encode(this);
   }
 
-  public static final StartCombineRoomByCreateMsg parseFrom(byte[] data) throws IOException {
-    StartCombineRoomByCreateMsg c = null;
-       c = StartCombineRoomByCreateMsg.ADAPTER.decode(data);
+  public static final CombineRoomEnterMsg parseFrom(byte[] data) throws IOException {
+    CombineRoomEnterMsg c = null;
+       c = CombineRoomEnterMsg.ADAPTER.decode(data);
     return c;
+  }
+
+  /**
+   * 进房方式
+   */
+  public ECombineRoomEnterType getEnterType() {
+    if(enterType==null){
+        return new ECombineRoomEnterType.Builder().build();
+    }
+    return enterType;
   }
 
   /**
@@ -223,6 +266,16 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
   }
 
   /**
+   * 声网token
+   */
+  public List<AgoraTokenInfo> getTokensList() {
+    if(tokens==null){
+        return new java.util.ArrayList<AgoraTokenInfo>();
+    }
+    return tokens;
+  }
+
+  /**
    * 是否需要隐藏用户信息
    */
   public Boolean getNeedMaskUserInfo() {
@@ -230,6 +283,13 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
         return DEFAULT_NEEDMASKUSERINFO;
     }
     return needMaskUserInfo;
+  }
+
+  /**
+   * 进房方式
+   */
+  public boolean hasEnterType() {
+    return enterType!=null;
   }
 
   /**
@@ -268,13 +328,22 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
   }
 
   /**
+   * 声网token
+   */
+  public boolean hasTokensList() {
+    return tokens!=null;
+  }
+
+  /**
    * 是否需要隐藏用户信息
    */
   public boolean hasNeedMaskUserInfo() {
     return needMaskUserInfo!=null;
   }
 
-  public static final class Builder extends Message.Builder<StartCombineRoomByCreateMsg, Builder> {
+  public static final class Builder extends Message.Builder<CombineRoomEnterMsg, Builder> {
+    private ECombineRoomEnterType enterType;
+
     private Integer roomID;
 
     private Long createdTimeMs;
@@ -285,10 +354,21 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
 
     private CombineRoomConfig config;
 
+    private List<AgoraTokenInfo> tokens;
+
     private Boolean needMaskUserInfo;
 
     public Builder() {
       users = Internal.newMutableList();
+      tokens = Internal.newMutableList();
+    }
+
+    /**
+     * 进房方式
+     */
+    public Builder setEnterType(ECombineRoomEnterType enterType) {
+      this.enterType = enterType;
+      return this;
     }
 
     /**
@@ -333,6 +413,15 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
     }
 
     /**
+     * 声网token
+     */
+    public Builder addAllTokens(List<AgoraTokenInfo> tokens) {
+      Internal.checkElementsNotNull(tokens);
+      this.tokens = tokens;
+      return this;
+    }
+
+    /**
      * 是否需要隐藏用户信息
      */
     public Builder setNeedMaskUserInfo(Boolean needMaskUserInfo) {
@@ -341,50 +430,63 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
     }
 
     @Override
-    public StartCombineRoomByCreateMsg build() {
-      return new StartCombineRoomByCreateMsg(roomID, createdTimeMs, passedTimeMs, users, config, needMaskUserInfo, super.buildUnknownFields());
+    public CombineRoomEnterMsg build() {
+      return new CombineRoomEnterMsg(enterType, roomID, createdTimeMs, passedTimeMs, users, config, tokens, needMaskUserInfo, super.buildUnknownFields());
     }
   }
 
-  private static final class ProtoAdapter_StartCombineRoomByCreateMsg extends ProtoAdapter<StartCombineRoomByCreateMsg> {
-    public ProtoAdapter_StartCombineRoomByCreateMsg() {
-      super(FieldEncoding.LENGTH_DELIMITED, StartCombineRoomByCreateMsg.class);
+  private static final class ProtoAdapter_CombineRoomEnterMsg extends ProtoAdapter<CombineRoomEnterMsg> {
+    public ProtoAdapter_CombineRoomEnterMsg() {
+      super(FieldEncoding.LENGTH_DELIMITED, CombineRoomEnterMsg.class);
     }
 
     @Override
-    public int encodedSize(StartCombineRoomByCreateMsg value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.roomID)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.createdTimeMs)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(3, value.passedTimeMs)
-          + UserInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.users)
-          + CombineRoomConfig.ADAPTER.encodedSizeWithTag(5, value.config)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(6, value.needMaskUserInfo)
+    public int encodedSize(CombineRoomEnterMsg value) {
+      return ECombineRoomEnterType.ADAPTER.encodedSizeWithTag(1, value.enterType)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roomID)
+          + ProtoAdapter.SINT64.encodedSizeWithTag(3, value.createdTimeMs)
+          + ProtoAdapter.SINT64.encodedSizeWithTag(4, value.passedTimeMs)
+          + UserInfo.ADAPTER.asRepeated().encodedSizeWithTag(5, value.users)
+          + CombineRoomConfig.ADAPTER.encodedSizeWithTag(6, value.config)
+          + AgoraTokenInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.tokens)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(8, value.needMaskUserInfo)
           + value.unknownFields().size();
     }
 
     @Override
-    public void encode(ProtoWriter writer, StartCombineRoomByCreateMsg value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.roomID);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.createdTimeMs);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 3, value.passedTimeMs);
-      UserInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.users);
-      CombineRoomConfig.ADAPTER.encodeWithTag(writer, 5, value.config);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 6, value.needMaskUserInfo);
+    public void encode(ProtoWriter writer, CombineRoomEnterMsg value) throws IOException {
+      ECombineRoomEnterType.ADAPTER.encodeWithTag(writer, 1, value.enterType);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roomID);
+      ProtoAdapter.SINT64.encodeWithTag(writer, 3, value.createdTimeMs);
+      ProtoAdapter.SINT64.encodeWithTag(writer, 4, value.passedTimeMs);
+      UserInfo.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.users);
+      CombineRoomConfig.ADAPTER.encodeWithTag(writer, 6, value.config);
+      AgoraTokenInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.tokens);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 8, value.needMaskUserInfo);
       writer.writeBytes(value.unknownFields());
     }
 
     @Override
-    public StartCombineRoomByCreateMsg decode(ProtoReader reader) throws IOException {
+    public CombineRoomEnterMsg decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setCreatedTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 3: builder.setPassedTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 4: builder.users.add(UserInfo.ADAPTER.decode(reader)); break;
-          case 5: builder.setConfig(CombineRoomConfig.ADAPTER.decode(reader)); break;
-          case 6: builder.setNeedMaskUserInfo(ProtoAdapter.BOOL.decode(reader)); break;
+          case 1: {
+            try {
+              builder.setEnterType(ECombineRoomEnterType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 2: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setCreatedTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 4: builder.setPassedTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 5: builder.users.add(UserInfo.ADAPTER.decode(reader)); break;
+          case 6: builder.setConfig(CombineRoomConfig.ADAPTER.decode(reader)); break;
+          case 7: builder.tokens.add(AgoraTokenInfo.ADAPTER.decode(reader)); break;
+          case 8: builder.setNeedMaskUserInfo(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -397,10 +499,11 @@ public final class StartCombineRoomByCreateMsg extends Message<StartCombineRoomB
     }
 
     @Override
-    public StartCombineRoomByCreateMsg redact(StartCombineRoomByCreateMsg value) {
+    public CombineRoomEnterMsg redact(CombineRoomEnterMsg value) {
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.users, UserInfo.ADAPTER);
       if (builder.config != null) builder.config = CombineRoomConfig.ADAPTER.redact(builder.config);
+      Internal.redactElements(builder.tokens, AgoraTokenInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

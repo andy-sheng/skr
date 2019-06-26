@@ -4,7 +4,7 @@ import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.notification.BaseNotiInfo;
 import com.zq.live.proto.Common.AgoraTokenInfo;
-import com.zq.live.proto.Notification.CombineRoomSyncInviteUserMsg;
+import com.zq.live.proto.Notification.CombineRoomEnterMsg;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,18 +20,18 @@ public class CombineRoomSyncInviteUserNotifyEvent {
     private LocalCombineRoomConfig config;
     boolean needMaskUserInfo; //是否需要隐藏用户信息
 
-    public CombineRoomSyncInviteUserNotifyEvent(BaseNotiInfo baseNotiInfo, CombineRoomSyncInviteUserMsg combineRoomSyncInviteUserMsg) {
+    public CombineRoomSyncInviteUserNotifyEvent(BaseNotiInfo baseNotiInfo, CombineRoomEnterMsg combineRoomEnterMsg) {
         mBaseNotiInfo = baseNotiInfo;
-        roomID = combineRoomSyncInviteUserMsg.getRoomID();
-        createdTimeMs = combineRoomSyncInviteUserMsg.getCreatedTimeMs();
-        passedTimeMs = combineRoomSyncInviteUserMsg.getPassedTimeMs();
-        users = UserInfoModel.parseFromPB(combineRoomSyncInviteUserMsg.getUsersList());
-        config = LocalCombineRoomConfig.toLocalCombineRoomConfig(combineRoomSyncInviteUserMsg.getConfig());
+        roomID = combineRoomEnterMsg.getRoomID();
+        createdTimeMs = combineRoomEnterMsg.getCreatedTimeMs();
+        passedTimeMs = combineRoomEnterMsg.getPassedTimeMs();
+        users = UserInfoModel.parseFromPB(combineRoomEnterMsg.getUsersList());
+        config = LocalCombineRoomConfig.toLocalCombineRoomConfig(combineRoomEnterMsg.getConfig());
         tokens = new HashMap<>();
-        for (AgoraTokenInfo agoraTokenInfo : combineRoomSyncInviteUserMsg.getTokensList()) {
+        for (AgoraTokenInfo agoraTokenInfo : combineRoomEnterMsg.getTokensList()) {
             tokens.put(agoraTokenInfo.getUserID(), agoraTokenInfo.getToken());
         }
-        needMaskUserInfo = combineRoomSyncInviteUserMsg.getNeedMaskUserInfo();
+        needMaskUserInfo = combineRoomEnterMsg.getNeedMaskUserInfo();
     }
 
     public Map<Integer, String> getTokens() {

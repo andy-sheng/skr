@@ -25,13 +25,44 @@ message NotificationMsg
     InviteStandMsg inviteStandMsg = 11;
     SysWarningMsg sysWarningMsg   = 12;
 
-    CombineRoomSendInviteUserMsg sendInviteUserMsg = 13; //发送邀请请求
-    CombineRoomSyncInviteUserMsg syncInviteUserMsg = 14; //同步邀请结果
-    StartCombineRoomByMatchMsg startCombineRoomByMatchMsg = 15; //通过匹配开始双人房
-
-    CombineRoomInviteInCreateRoomMsg inviteInCreateRoomMsg  = 16; //在创建双人房场景下，进行邀请
-    StartCombineRoomByCreateMsg startCombineRoomByCreateMsg = 17; //在创建双人房场景下，对方响应邀请，开始双人房游戏
+    CombineRoomInviteMsg inviteMsg = 13; //双人房邀请信令
+    CombineRoomEnterMsg enterMsg   = 14; //双人房进房信令
 }
+
+enum ECombineRoomEnterType {
+    CRET_UNKNOWN = 0; //未知
+    CRET_INVITE  = 1; //通过普通邀请方式，获取房间数据后进房
+    CRET_MATCH   = 2; //通过匹配方式，获取房间数据后进房
+    CRET_CREATE  = 3; //通过创建房间邀请方式，获取房间数据后进房
+}
+
+message CombineRoomEnterMsg
+{
+    ECombineRoomEnterType enterType = 1; //进房方式
+    uint32 roomID                   = 2; //房间ID
+    sint64 createdTimeMs            = 3; //房间创建的时间戳
+    sint64 passedTimeMs             = 4; //房间已经经历的毫秒数
+    repeated Common.UserInfo users         = 5; //玩家信息
+    Common.CombineRoomConfig config        = 6; //配置信息
+    repeated Common.AgoraTokenInfo tokens  = 7; //声网token
+    bool needMaskUserInfo           = 8; //是否需要隐藏用户信息
+}
+
+
+enum EInviteType {
+    IT_UNKNOWN          = 0; //未知
+    IT_OUT_COMBINE_ROOM = 1; //在双人房间外邀请
+    IT_IN_COMBINE_ROOM  = 2; //在双人房间内邀请
+}
+
+message CombineRoomInviteMsg
+{
+    EInviteType inviteType = 1; //邀请类型
+    Common.UserInfo user          = 2; //发起邀请的用户详情
+    string inviteMsg       = 3; //邀请信息
+    uint32 roomID          = 4; //房间id
+}
+
 
 // ENotificationMsgType 房间消息类型
 enum ENotificationMsgType {
@@ -41,14 +72,8 @@ enum ENotificationMsgType {
     NM_INVITE_STAND = 2; //一唱到底邀请
     NM_SYS_WARNING_MSG = 3; //系统警告
 
-     NM_CR_SEND_INVITE_USER = 4;//发送邀请请求
-     NM_CR_SYNC_INVITE_USER = 5; //同步邀请结果
-     NM_START_CR_BY_MATCH   = 6; //通过匹配开始双人房
-
-     NM_CR_INVITE_IN_CREATE_ROOM = 7; //在创建双人房场景下，进行邀请
-     NM_START_CR_BY_CREATE       = 8; //在创建双人房场景下，对方响应邀请，开始双人房游戏
-
-
+    NM_CR_INVITE = 4; //双人房邀请信令
+    NM_CR_ENTER  = 5; //双人房进房信令
 }
 
 message FollowMsg
@@ -80,52 +105,3 @@ enum EMsgPosType {
     EPT_TOP = 3; // 页面上方
     EPT_BOTTOM = 4; // 页面底部
 }
-
-message CombineRoomSendInviteUserMsg
-{
-    Common.UserInfo user    = 1; //发起邀请的用户详情
-    string inviteMsg = 2; //邀请信息
-}
-
-message CombineRoomSyncInviteUserMsg
-{
-    uint32 roomID                  = 2; //房间ID
-    sint64 createdTimeMs           = 3; //房间创建的时间戳
-    sint64 passedTimeMs            = 4; //房间已经经历的毫秒数
-    repeated Common.UserInfo users        = 5; //玩家信息
-    Common.CombineRoomConfig config       = 6; //配置信息
-    repeated Common.AgoraTokenInfo tokens = 7; //声网token
-    bool needMaskUserInfo          = 8; //是否需要隐藏用户信息
-}
-
-message StartCombineRoomByMatchMsg
-{
-    uint32 roomID                  = 2; //房间ID
-    sint64 createdTimeMs           = 3; //房间创建的时间戳
-    sint64 passedTimeMs            = 4; //房间已经经历的毫秒数
-    repeated Common.UserInfo users        = 5; //玩家信息
-    Common.CombineRoomConfig config       = 6; //配置信息
-    repeated Common.AgoraTokenInfo tokens = 7; //声网token
-    bool needMaskUserInfo          = 8; //是否需要隐藏用户信息
-}
-
-message CombineRoomInviteInCreateRoomMsg
-{
-    Common.UserInfo user    = 1; //发起邀请的用户详情
-    string inviteMsg = 2; //邀请信息
-    uint32 roomID    = 3; //房间id
-}
-
-message StartCombineRoomByCreateMsg
-{
-    uint32 roomID            = 1; //房间ID
-    sint64 createdTimeMs     = 2; //房间创建的时间戳
-    sint64 passedTimeMs      = 3; //房间已经经历的毫秒数
-    repeated Common.UserInfo users  = 4; //玩家信息
-    Common.CombineRoomConfig config = 5; //配置信息
-    bool needMaskUserInfo    = 6; //是否需要隐藏用户信息
-}
-
-
-
-

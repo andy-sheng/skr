@@ -4,7 +4,7 @@ import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.notification.BaseNotiInfo;
 import com.zq.live.proto.Common.AgoraTokenInfo;
-import com.zq.live.proto.Notification.StartCombineRoomByMatchMsg;
+import com.zq.live.proto.Notification.CombineRoomEnterMsg;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,17 +52,17 @@ public class DoubleStartCombineRoomByMatchPushEvent {
         return needMaskUserInfo;
     }
 
-    public DoubleStartCombineRoomByMatchPushEvent(BaseNotiInfo basePushInfo, StartCombineRoomByMatchMsg startCombineRoomByMatchMsg) {
+    public DoubleStartCombineRoomByMatchPushEvent(BaseNotiInfo basePushInfo, CombineRoomEnterMsg combineRoomEnterMsg) {
         this.basePushInfo = basePushInfo;
-        this.roomID = startCombineRoomByMatchMsg.getRoomID();
-        this.createdTimeMs = startCombineRoomByMatchMsg.getCreatedTimeMs();
-        this.passedTimeMs = startCombineRoomByMatchMsg.getPassedTimeMs();
-        users = UserInfoModel.parseFromPB(startCombineRoomByMatchMsg.getUsersList());
-        config = LocalCombineRoomConfig.toLocalCombineRoomConfig(startCombineRoomByMatchMsg.getConfig());
+        this.roomID = combineRoomEnterMsg.getRoomID();
+        this.createdTimeMs = combineRoomEnterMsg.getCreatedTimeMs();
+        this.passedTimeMs = combineRoomEnterMsg.getPassedTimeMs();
+        users = UserInfoModel.parseFromPB(combineRoomEnterMsg.getUsersList());
+        config = LocalCombineRoomConfig.toLocalCombineRoomConfig(combineRoomEnterMsg.getConfig());
         tokens = new HashMap<>();
-        for (AgoraTokenInfo agoraTokenInfo : startCombineRoomByMatchMsg.getTokensList()) {
+        for (AgoraTokenInfo agoraTokenInfo : combineRoomEnterMsg.getTokensList()) {
             tokens.put(agoraTokenInfo.getUserID(), agoraTokenInfo.getToken());
         }
-        needMaskUserInfo = startCombineRoomByMatchMsg.getNeedMaskUserInfo();
+        needMaskUserInfo = combineRoomEnterMsg.getNeedMaskUserInfo();
     }
 }

@@ -3,7 +3,7 @@ package com.common.notification.event;
 import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.notification.BaseNotiInfo;
-import com.zq.live.proto.Notification.StartCombineRoomByCreateMsg;
+import com.zq.live.proto.Notification.CombineRoomEnterMsg;
 
 import java.util.List;
 
@@ -43,13 +43,13 @@ public class StartCombineRoomByCreateNotifyEvent {
         return needMaskUserInfo;
     }
 
-    public StartCombineRoomByCreateNotifyEvent(BaseNotiInfo baseNotiInfo, StartCombineRoomByCreateMsg startCombineRoomByCreateMsg) {
+    public StartCombineRoomByCreateNotifyEvent(BaseNotiInfo baseNotiInfo, CombineRoomEnterMsg combineRoomEnterMsg) {
         mBaseNotiInfo = baseNotiInfo;
-        roomID = startCombineRoomByCreateMsg.getRoomID();
-        createdTimeMs = startCombineRoomByCreateMsg.getCreatedTimeMs();
-        passedTimeMs = startCombineRoomByCreateMsg.getPassedTimeMs();
-        users = UserInfoModel.parseFromPB(startCombineRoomByCreateMsg.getUsersList());
-        config = LocalCombineRoomConfig.toLocalCombineRoomConfig(startCombineRoomByCreateMsg.getConfig());
-        needMaskUserInfo = startCombineRoomByCreateMsg.getNeedMaskUserInfo();
+        roomID = combineRoomEnterMsg.getRoomID();
+        createdTimeMs = combineRoomEnterMsg.getCreatedTimeMs();
+        passedTimeMs = combineRoomEnterMsg.getPassedTimeMs();
+        users = UserInfoModel.parseFromPB(combineRoomEnterMsg.getUsersList());
+        config = LocalCombineRoomConfig.toLocalCombineRoomConfig(combineRoomEnterMsg.getConfig());
+        needMaskUserInfo = combineRoomEnterMsg.getNeedMaskUserInfo();
     }
 }
