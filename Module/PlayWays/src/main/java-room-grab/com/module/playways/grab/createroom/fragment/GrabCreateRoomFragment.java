@@ -107,7 +107,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                                             }
 
                                             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                    .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/mobile?from=room"))
+                                                    .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth?from=room"))
                                                     .greenChannel().navigation();
                                         }
                                     })
