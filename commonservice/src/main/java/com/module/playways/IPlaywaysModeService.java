@@ -27,6 +27,8 @@ public interface IPlaywaysModeService extends IProvider {
 //    private LocalCombineRoomConfig config;
     void jumpToDoubleRoom(Object o);
 
+    void jumpToDoubleRoomFromDoubleRoomInvite(Object o);
+
     void createDoubleRoom();
 
 }

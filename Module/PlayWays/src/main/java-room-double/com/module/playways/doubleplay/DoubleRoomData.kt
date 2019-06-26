@@ -307,11 +307,13 @@ class DoubleRoomData() : Serializable {
             val userList = JSON.parseArray(obj.getString("users"), UserInfoModel::class.java)
             doubleRoomData.enableNoLimitDuration = doubleRoomData.config?.durationTimeMs == -1
 
-            val hashMap = HashMap<Int, UserInfoModel>()
-            for (userInfoModel in userList) {
-                hashMap.put(userInfoModel.userId, userInfoModel)
+            if (userList != null) {
+                val hashMap = HashMap<Int, UserInfoModel>()
+                for (userInfoModel in userList) {
+                    hashMap.put(userInfoModel.userId, userInfoModel)
+                }
+                doubleRoomData.userInfoListMap = hashMap
             }
-            doubleRoomData.userInfoListMap = hashMap
 
             doubleRoomData.tokens = JSON.parseArray(obj.getString("tokens"), LocalAgoraTokenInfo::class.java)
             doubleRoomData.needMaskUserInfo = obj.getBooleanValue("needMaskUserInfo")

@@ -233,6 +233,15 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     @Override
+    public void jumpToDoubleRoomFromDoubleRoomInvite(Object o) {
+        DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject((JSONObject) o);
+        doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                .withSerializable("roomData", doubleRoomData)
+                .navigation();
+    }
+
+    @Override
     public void createDoubleRoom() {
         DoubleRoomServerApi mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi.class);
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(new HashMap()));
@@ -241,6 +250,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(result.getData());
+                    doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation();

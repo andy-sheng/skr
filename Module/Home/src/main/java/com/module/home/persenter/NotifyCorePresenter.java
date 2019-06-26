@@ -562,7 +562,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                 @Override
                                 public void run() {
                                     IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                                    iRankingModeService.jumpToDoubleRoom(result.getData());
+                                    iRankingModeService.jumpToDoubleRoomFromDoubleRoomInvite(result.getData());
                                 }
                             }, true);
                         } else {
