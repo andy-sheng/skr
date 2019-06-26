@@ -60,16 +60,16 @@ class DoubleRoomGameView : RelativeLayout {
         start_match_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 if (hasRemainTime) {
-                    var hasConfirm = U.getPreferenceUtils().getSettingBoolean(SP_HAS_CONFIRM_INFO, false)
-                    if (!hasConfirm) {
-                        showConfirmView()
-                    } else {
+//                    var hasConfirm = U.getPreferenceUtils().getSettingBoolean(SP_HAS_CONFIRM_INFO, false)
+//                    if (!hasConfirm) {
+//                        showConfirmView()
+//                    } else {
                         mSkrAudioPermission.ensurePermission({
                             ARouter.getInstance()
                                     .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
                                     .navigation()
                         }, true)
-                    }
+//                    }
                 } else {
                     U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
                 }
