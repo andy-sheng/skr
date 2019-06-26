@@ -97,6 +97,10 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         activity?.finish()
     }
 
+    override fun finishActivity() {
+        activity?.finish()
+    }
+
     override fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: DoubleStartCombineRoomByMatchPushEvent) {
         MyLog.d(mTag, "matchSuccessFromPush")
         val doubleRoomData = DoubleRoomData()

@@ -8,5 +8,7 @@ interface IMatchView {
 
     fun toDoubleRoomByPush();
 
-    fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: DoubleStartCombineRoomByMatchPushEvent);
+    fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: DoubleStartCombineRoomByMatchPushEvent)
+
+    fun finishActivity()
 }

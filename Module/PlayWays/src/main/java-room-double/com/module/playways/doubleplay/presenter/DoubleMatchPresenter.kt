@@ -9,6 +9,7 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.HandlerTaskTimer
+import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
@@ -34,6 +35,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
         handlerTaskTimer = HandlerTaskTimer
                 .newBuilder()
                 .interval(intervalDuration)
+                .take(7)
                 .compose(this@DoubleMatchPresenter)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
@@ -53,6 +55,11 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
                                 }
                             }
                         }, this@DoubleMatchPresenter)
+                    }
+
+                    override fun onComplete() {
+                        iMatchView.finishActivity()
+                        U.getToastUtil().showShort("当前匹配的人比较少，请稍后再试")
                     }
                 })
     }
