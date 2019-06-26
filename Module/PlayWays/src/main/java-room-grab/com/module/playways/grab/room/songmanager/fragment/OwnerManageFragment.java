@@ -184,10 +184,11 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
         mTagModelList = recommendTagModelList;
         mTagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv);
-        mTagTab.setSelectedIndicatorColors(Color.TRANSPARENT);
+        mTagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         mTagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
         mTagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL);
-        mTagTab.setIndicatorWidth(U.getDisplayUtils().dip2px(0f));
+        mTagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24));
+        mTagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12));
         mPagerAdapter = new PagerAdapter() {
 
             @Override
@@ -201,15 +202,15 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
                 if (mSongManageData.isGrabRoom()) {
-                    return instantiateItemGrab(container, position, recommendTagModelList);
+                    return instantiateItemGrab(container, position, mTagModelList);
                 } else {
-                    return instantiateItemDouble(container, position, recommendTagModelList);
+                    return instantiateItemDouble(container, position, mTagModelList);
                 }
             }
 
             @Override
             public int getCount() {
-                return recommendTagModelList.size();
+                return mTagModelList.size();
             }
 
             @Override

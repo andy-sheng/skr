@@ -16,7 +16,6 @@
         android:singleLine="true"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_selected_textColor="@color/white"
-        app:bl_unSelected_textColor="@color/white_trans_50"
-        app:bl_selected_drawable="@drawable/sliding_tab_selected_bg"/>
+        app:bl_unSelected_textColor="@color/white_trans_50" />
 
 </RelativeLayout>
