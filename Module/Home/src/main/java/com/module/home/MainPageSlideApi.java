@@ -72,6 +72,15 @@ public interface MainPageSlideApi {
     Observable<ApiResult> enterInvitedDoubleRoom(@Body RequestBody body);
 
     /**
+     * 拒绝邀请
+     *
+     * @param body {"peerUserID": 0}
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/refuse-enter")
+    Observable<ApiResult> refuseInvitedDoubleRoom(@Body RequestBody body);
+
+    /**
      * 这个是从唱聊房里邀请，收到邀请之后点击进入房间的短链接
      * {
      * "peerUserID": 0,

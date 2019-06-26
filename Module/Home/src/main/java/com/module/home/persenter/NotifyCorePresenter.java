@@ -73,8 +73,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     static final String TAG_INVITE_FOALT_WINDOW = "TAG_INVITE_FOALT_WINDOW";
     static final String TAG_RELATION_FOALT_WINDOW = "TAG_RELATION_FOALT_WINDOW";
+    static final String TAG_DOUBLE_INVITE_FOALT_WINDOW = "TAG_DOUBLE_INVITE_FOALT_WINDOW";
+    static final String TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW = "TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW";
     static final int MSG_DISMISS_INVITE_FLOAT_WINDOW = 2;
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
+    static final int MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW = 4;
+    static final int MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW = 5;
 
     DialogPlus mBeFriendDialog;
     DialogPlus mSysWarnDialogPlus;
@@ -99,6 +103,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     break;
                 case MSG_DISMISS_RELATION_FLOAT_WINDOW:
                     FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
+                    break;
+                case MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW:
+                    FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW);
+                    break;
+                case MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW:
+                    FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
                     break;
             }
         }
@@ -204,7 +214,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(DoubleInviteFromSchemeEvent event){
+    public void onEvent(DoubleInviteFromSchemeEvent event) {
         // 双人房间邀请口令
         if (event.ask == 1) {
             // 需要再次确认弹窗
@@ -378,7 +388,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.FOLLOW);
@@ -477,15 +486,21 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .build();
     }
 
+    void resendDoubleInviterFloatWindowDismissMsg() {
+        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW, 5000);
+    }
+
     void showDoubleInviteFloatWindow(FloatWindowData floatWindowData) {
         UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
 
-        resendGrabInviterFloatWindowDismissMsg();
+        resendDoubleInviterFloatWindowDismissMsg();
         DoubleInviteNotifyView doubleInviteNotifyView = new DoubleInviteNotifyView(U.app());
         doubleInviteNotifyView.bindData(userInfoModel, floatWindowData.getExtra());
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
             @Override
             public void onClickAgree() {
+                floatWindowData.setOperation(true);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
                 HashMap<String, Object> map = new HashMap<>();
@@ -524,25 +539,51 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onDismiss() {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
+                        if (!floatWindowData.isOperation()) {
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("peerUserID", userInfoModel.getUserId());
+                            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                            ApiMethods.subscribe(mMainPageSlideApi.refuseInvitedDoubleRoom(body), new ApiObserver<ApiResult>() {
+                                @Override
+                                public void process(ApiResult result) {
+                                    if (result.getErrno() == 0) {
+                                        MyLog.w(TAG, "process" + " result=" + result);
+                                    } else {
+                                        MyLog.w(TAG, "process" + " result=" + result);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    MyLog.e(TAG, e);
+                                }
+                            }, NotifyCorePresenter.this);
+                        }
                     }
 
                     @Override
                     public void onPositionUpdate(int x, int y) {
                         super.onPositionUpdate(x, y);
-                        resendGrabInviterFloatWindowDismissMsg();
+                        resendDoubleInviterFloatWindowDismissMsg();
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_INVITE_FOALT_WINDOW)
+                .setTag(TAG_DOUBLE_INVITE_FOALT_WINDOW)
                 .build();
+    }
+
+
+    void resendDoubleRoomFloatWindowDismissMsg() {
+        mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW, 5000);
     }
 
     void showDoubleInviteFromRoomFloatWindow(FloatWindowData floatWindowData) {
         UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
 
-        resendGrabInviterFloatWindowDismissMsg();
+        resendDoubleRoomFloatWindowDismissMsg();
         DoubleInviteNotifyView doubleInviteNotifyView = new DoubleInviteNotifyView(U.app());
         doubleInviteNotifyView.bindData(userInfoModel, floatWindowData.getExtra());
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
@@ -588,12 +629,13 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onDismiss() {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
+
                     }
 
                     @Override
                     public void onPositionUpdate(int x, int y) {
                         super.onPositionUpdate(x, y);
-                        resendGrabInviterFloatWindowDismissMsg();
+                        resendDoubleRoomFloatWindowDismissMsg();
                     }
                 })
                 .setDesktopShow(false)                        //桌面显示
@@ -645,13 +687,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .build();
     }
 
-
     public static class FloatWindowData {
         private UserInfoModel mUserInfoModel;
         private Type mType;
         private int mRoomID;
         private int mMediaType;
         private String mExtra;
+
+        private boolean mOperation = false;  //标记是否操作过
 
         public String getExtra() {
             return mExtra;
@@ -687,6 +730,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         public void setMediaType(int mediaType) {
             mMediaType = mediaType;
+        }
+
+        public boolean isOperation() {
+            return mOperation;
+        }
+
+        public void setOperation(boolean operation) {
+            mOperation = operation;
         }
 
         /**
