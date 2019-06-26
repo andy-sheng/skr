@@ -205,7 +205,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
 
         if (mFunctionArea.getVisibility() == VISIBLE) {
-            mPhotoView.setPadding(0, 0, 0, U.getDisplayUtils().dip2px(65f));
+            mCoordinator.setPadding(0, 0, 0, U.getDisplayUtils().dip2px(65f));
         }
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
@@ -339,7 +339,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mAvatarBg = (ImageView) this.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
-        mLevelView = (NormalLevelView2)this.findViewById(R.id.level_view);
+        mLevelView = (NormalLevelView2) this.findViewById(R.id.level_view);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mSexIv = (ImageView) this.findViewById(R.id.sex_iv);
