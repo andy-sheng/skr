@@ -44,10 +44,6 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
             mLyricTv = parentView.findViewById(R.id.lyric_tv);
         }
         mParentView.setClickable(true);
-        {
-            ConstraintLayout.LayoutParams topLayoutParams = (ConstraintLayout.LayoutParams) parentView.getLayoutParams();
-            topLayoutParams.topMargin = U.getDisplayUtils().dip2px(55f);
-        }
     }
 
     @Override

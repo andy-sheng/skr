@@ -33,10 +33,6 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
     protected void init(View parentView) {
         super.init(parentView);
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(U.app());
-        {
-            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) parentView.getLayoutParams();
-            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-        }
     }
 
     public void updateLockState() {

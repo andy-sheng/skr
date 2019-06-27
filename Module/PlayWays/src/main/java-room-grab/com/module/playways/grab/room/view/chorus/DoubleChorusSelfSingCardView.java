@@ -49,12 +49,6 @@ public class DoubleChorusSelfSingCardView extends BaseChorusSelfCardView {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
-        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(U.app());
-        {
-            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) parentView.getLayoutParams();
-            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-        }
     }
 
     public void updateLockState() {
