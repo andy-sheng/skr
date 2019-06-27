@@ -6,21 +6,23 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/select_bg_iv"
-        android:layout_width="@dimen/view_56_dp"
-        android:layout_height="@dimen/view_56_dp"
+        android:layout_width="@dimen/view_48_dp"
+        android:layout_height="@dimen/view_48_dp"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_28_dp"
         app:bl_shape="oval"
-        app:bl_solid_color="@color/black_trans_20" />
+        app:bl_solid_color="@color/transparent"
+        app:bl_stroke_width="@dimen/view_2_dp"
+        app:bl_stroke_color="#FF8AB6"/>
 
     <TextView
         android:id="@+id/item_tv"
-        android:layout_width="@dimen/view_44_dp"
-        android:layout_height="@dimen/view_44_dp"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_alignTop="@id/select_bg_iv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_6_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp" />

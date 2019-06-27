@@ -113,7 +113,7 @@ public class BeautyFiterStickerView extends FrameLayout {
                     }
                 }
             }
-        }, layoutManager);
+        }, layoutManager, mType);
         mAdapter.setDataList(mDataList);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

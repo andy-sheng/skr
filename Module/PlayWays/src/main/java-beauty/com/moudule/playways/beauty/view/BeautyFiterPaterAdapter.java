@@ -17,14 +17,16 @@ public class BeautyFiterPaterAdapter extends RecyclerView.Adapter {
     List<BeautyControlPanelView.BeautyViewModel> mDataList;
 
     int mSelectPosition = 0;  //默认选中的位置
+    int mType;
 
     RecyclerOnItemClickListener<BeautyControlPanelView.BeautyViewModel> mClickListener;
     RecyclerView.LayoutManager mLayoutManager;
 
 
-    public BeautyFiterPaterAdapter(RecyclerOnItemClickListener<BeautyControlPanelView.BeautyViewModel> listener, RecyclerView.LayoutManager layoutManager) {
+    public BeautyFiterPaterAdapter(RecyclerOnItemClickListener<BeautyControlPanelView.BeautyViewModel> listener, RecyclerView.LayoutManager layoutManager, int type) {
         mClickListener = listener;
         mLayoutManager = layoutManager;
+        mType = type;
     }
 
     public void setDataList(List<BeautyControlPanelView.BeautyViewModel> dataList) {
@@ -43,9 +45,9 @@ public class BeautyFiterPaterAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BeautyControlPanelView.BeautyViewModel model = mDataList.get(position);
         if (mSelectPosition == position) {
-            ((BeautyHolder) holder).bindData(model, position, true);
+            ((BeautyHolder) holder).bindData(model, position, true, mType);
         } else {
-            ((BeautyHolder) holder).bindData(model, position, false);
+            ((BeautyHolder) holder).bindData(model, position, false, mType);
         }
     }
 

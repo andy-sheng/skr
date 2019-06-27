@@ -178,34 +178,24 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
     List<BeautyViewModel> getViewModel(int type) {
         List mList = new ArrayList<BeautyViewModel>();
         if (type == TYPE_BEAUTY) {
-            mList.add(new BeautyViewModel(Type.dayan, getDrawable("#90DAFF", "#72C1E9")));
-            mList.add(new BeautyViewModel(Type.shoulian, getDrawable("#FFB1CF", "#DF8BAB")));
-            mList.add(new BeautyViewModel(Type.mopi, getDrawable("#F9CC82", "#D79F43")));
-            mList.add(new BeautyViewModel(Type.meibai, getDrawable("#C7E4AC", "#A1C580")));
-            mList.add(new BeautyViewModel(Type.ruihua, getDrawable("#D7ABEE", "#BB81CF")));
+            mList.add(new BeautyViewModel(Type.dayan, "#72C1E9", 0));
+            mList.add(new BeautyViewModel(Type.shoulian, "#DF8BAB", 0));
+            mList.add(new BeautyViewModel(Type.mopi, "#D79F43", 0));
+            mList.add(new BeautyViewModel(Type.meibai, "#A1C580", 0));
+            mList.add(new BeautyViewModel(Type.ruihua, "#BB81CF", 0));
         } else if (type == TYPE_FITER) {
-            mList.add(new BeautyViewModel(Type.none_filter, getDrawable("#F9CC82", "#D79F43")));
-            mList.add(new BeautyViewModel(Type.ruanyang, getDrawable("#90DAFF", "#72C1E9")));
-            mList.add(new BeautyViewModel(Type.musi, getDrawable("#FFB1CF", "#DF8BAB")));
-            mList.add(new BeautyViewModel(Type.yangqi, getDrawable("#F9CC82", "#D79F43")));
+            mList.add(new BeautyViewModel(Type.none_filter, "#72C1E9", 0));
+            mList.add(new BeautyViewModel(Type.ruanyang, "#DF8BAB", 0));
+            mList.add(new BeautyViewModel(Type.musi, "#D79F43", 0));
+            mList.add(new BeautyViewModel(Type.yangqi, "#A1C580", 0));
         } else if (type == TYPE_STICKER) {
-            mList.add(new BeautyViewModel(Type.none_sticker, getDrawable("#F9CC82", "#D79F43")));
-            mList.add(new BeautyViewModel(Type.cat, getDrawable("#90DAFF", "#72C1E9")));
-            mList.add(new BeautyViewModel(Type.pump, getDrawable("#FFB1CF", "#DF8BAB")));
-            mList.add(new BeautyViewModel(Type.rabbit, getDrawable("#F9CC82", "#D79F43")));
+            mList.add(new BeautyViewModel(Type.none_sticker, null, R.drawable.sticker_no_icon));
+            mList.add(new BeautyViewModel(Type.cat, null, R.drawable.sticker_cat_icon));
+            mList.add(new BeautyViewModel(Type.pump, null, R.drawable.sticker_pump_icon));
+            mList.add(new BeautyViewModel(Type.rabbit, null, R.drawable.sticker_rabbit_icon));
         }
         return mList;
     }
-
-    Drawable getDrawable(String solidColor, String strokeColor) {
-        return new DrawableCreator.Builder()
-                .setSolidColor(Color.parseColor(solidColor))
-                .setStrokeColor(Color.parseColor(strokeColor))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(2f))
-                .setCornersRadius(U.getDisplayUtils().dip2px(22f))
-                .build();
-    }
-
 
     public void show() {
         tryInflate();
@@ -225,15 +215,15 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
         mShowOrHideAnimator.start();
     }
 
-    public void enableHide(boolean enable){
-        if(enable){
+    public void enableHide(boolean enable) {
+        if (enable) {
             mPlaceHolderView.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
                     hide();
                 }
             });
-        }else{
+        } else {
             mPlaceHolderView.setClickable(false);
         }
     }
@@ -357,19 +347,37 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
 
     public static class BeautyViewModel {
         Type mType;
-        Drawable drawable;
+        String color;  //正常的颜色
+        int resId;     //给贴纸使用的
 
-        public BeautyViewModel(Type type, Drawable drawable) {
-            mType = type;
-            this.drawable = drawable;
+        public BeautyViewModel(Type type, String color, int resId) {
+            this.mType = type;
+            this.color = color;
+            this.resId = resId;
         }
 
         public Type getType() {
             return mType;
         }
 
-        public Drawable getDrawable() {
-            return drawable;
+        public void setType(Type type) {
+            mType = type;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public int getResId() {
+            return resId;
+        }
+
+        public void setResId(int resId) {
+            this.resId = resId;
         }
     }
 
