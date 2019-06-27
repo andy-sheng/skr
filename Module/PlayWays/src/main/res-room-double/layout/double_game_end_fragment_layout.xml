@@ -65,14 +65,17 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/chat_time_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_60_dp"
         android:layout_marginTop="@dimen/view_3_dp"
+        android:layout_marginRight="@dimen/view_60_dp"
+        android:gravity="center"
         android:text=""
         android:textColor="@color/black_trans_60"
         android:textSize="@dimen/textsize_16_dp"
-        app:layout_constraintEnd_toEndOf="@+id/end_tv"
-        app:layout_constraintStart_toStartOf="@+id/end_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_tv" />
 
     <com.common.view.ex.ExTextView
