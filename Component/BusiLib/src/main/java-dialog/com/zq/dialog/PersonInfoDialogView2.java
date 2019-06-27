@@ -146,11 +146,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             .setSolidColor(Color.parseColor("#D0EFFF"))
             .build();
 
-    PersonInfoDialogView2(Context context, int userID, boolean showReport, boolean showKick) {
+    PersonInfoDialogView2(Context context, int userID, boolean showReport, boolean showKick, boolean showInvite) {
         super(context);
 
         initView();
-        initData(context, userID, showReport, showKick);
+        initData(context, userID, showReport, showKick, showInvite);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -186,7 +186,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         initFuncationArea();
     }
 
-    private void initData(Context context, int userID, boolean showReport, boolean showKick) {
+    private void initData(Context context, int userID, boolean showReport, boolean showKick, boolean showInvite) {
         mContext = context;
         mUserId = userID;
         isShowKick = showKick;
@@ -195,6 +195,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         if (mUserId == UserAccountManager.SYSTEM_GRAB_ID || mUserId == UserAccountManager.SYSTEM_RANK_AI) {
             isShowKick = false;
             mMoreBtn.setVisibility(GONE);
+        }
+
+        if (showInvite) {
+            mInviteIv.setVisibility(VISIBLE);
+        } else {
+            mInviteIv.setVisibility(GONE);
         }
 
         // 自己卡片的处理

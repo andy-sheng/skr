@@ -34,17 +34,23 @@ public class PersonInfoDialog {
 
     public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick) {
         mContext = context;
-        init(context, userId, showReport, showKick);
+        init(context, userId, showReport, showKick, true);
     }
 
     public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick, int roomID) {
         mContext = context;
         mRoomID = roomID;
-        init(context, userId, showReport, showKick);
+        init(context, userId, showReport, showKick, true);
     }
 
-    private void init(Context context, final int userId, final boolean showReport, boolean showKick) {
-        PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(context, userId, showReport, showKick);
+    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick, int roomID, boolean showInvite) {
+        mContext = context;
+        mRoomID = roomID;
+        init(context, userId, showReport, showKick, showInvite);
+    }
+
+    private void init(Context context, final int userId, final boolean showReport, boolean showKick, boolean showInvite) {
+        PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(context, userId, showReport, showKick, showInvite);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
             public void onClickReport(int userID) {
@@ -81,10 +87,10 @@ public class PersonInfoDialog {
 //                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                 } else {
                     UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
-                    if(RA.hasTestList()){
+                    if (RA.hasTestList()) {
                         HashMap map = new HashMap();
                         map.put("testList", RA.getTestList());
-                        StatisticsAdapter.recordCountEvent("ra","follow",map);
+                        StatisticsAdapter.recordCountEvent("ra", "follow", map);
                     }
                 }
             }
