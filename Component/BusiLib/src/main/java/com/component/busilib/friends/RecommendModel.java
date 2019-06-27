@@ -23,6 +23,7 @@ public class RecommendModel implements Serializable {
     private String displayURL;
     private String displayAvatar;
     private String displayDesc;
+    private String mediaTagURL;
     private List<PlayUser> playUsers;
 
     public List<PlayUser> getPlayUsers() {
@@ -99,6 +100,13 @@ public class RecommendModel implements Serializable {
         this.displayDesc = displayDesc;
     }
 
+    public String getMediaTagURL() {
+        return mediaTagURL;
+    }
+
+    public void setMediaTagURL(String mediaTagURL) {
+        this.mediaTagURL = mediaTagURL;
+    }
 
     @Override
     public String toString() {
@@ -111,6 +119,7 @@ public class RecommendModel implements Serializable {
                 ", displayURL='" + displayURL + '\'' +
                 ", displayAvatar='" + displayAvatar + '\'' +
                 ", displayDesc='" + displayDesc + '\'' +
+                ", mediaTagURL='" + mediaTagURL + '\'' +
                 ", playUsers=" + playUsers +
                 '}';
     }
