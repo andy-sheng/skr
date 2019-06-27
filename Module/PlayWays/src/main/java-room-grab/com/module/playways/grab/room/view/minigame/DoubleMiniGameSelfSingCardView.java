@@ -87,7 +87,7 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
                 .build());
 
         if (mDoubleRoomData.getEnableNoLimitDuration()) {
-            String mOwnerName = mOwnerInfo.getNickname();
+            String mOwnerName = mOwnerInfo.getNicknameRemark();
             if (mOwnerInfo.getNickname().length() > 7) {
                 mOwnerName = mOwnerName.substring(0, 7);
             }
