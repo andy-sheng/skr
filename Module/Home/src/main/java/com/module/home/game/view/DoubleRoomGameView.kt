@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -67,6 +68,7 @@ class DoubleRoomGameView : RelativeLayout {
 //                    if (!hasConfirm) {
 //                        showConfirmView()
 //                    } else {
+                    StatisticsAdapter.recordCountEvent("cp", "invite1", null)
                     mSkrAudioPermission.ensurePermission({
                         ARouter.getInstance()
                                 .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)

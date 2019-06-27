@@ -40,6 +40,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -479,6 +480,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             @Override
             public void click(View view) {
                 // 点击邀请唱聊
+                StatisticsAdapter.recordCountEvent("cp", "invite2", null);
                 if (mClickListener != null) {
                     mClickListener.onClickDoubleInvite(mUserInfoModel);
                 }

@@ -73,12 +73,14 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                         .withBoolean("selectSong", true)
                         .navigation()
+                StatisticsAdapter.recordCountEvent("grab", "practice", null)
             }
 
             override fun clickRank() {
                 // 新的排行榜
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKED)
                         .navigation()
+                StatisticsAdapter.recordCountEvent("grab", "ranklist", null)
             }
 
             override fun clickTask() {

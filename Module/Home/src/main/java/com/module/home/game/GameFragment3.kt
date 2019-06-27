@@ -20,6 +20,7 @@ import com.module.home.game.view.QuickGameView
 import android.widget.ImageView
 import android.view.animation.AlphaAnimation
 import com.common.core.account.event.AccountEvent
+import com.common.statistics.StatisticsAdapter
 import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.IGameView3
 import com.module.home.model.GameKConfigModel
@@ -120,14 +121,17 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 if (position == 0) {
                     animation(color, Color.parseColor("#7088FF"))
                     mFriendRoomGameView?.initData()
+                    StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
                 } else if (position == 1) {
                     animation(color, Color.parseColor("#7088FF"))
                     mFriendRoomGameView?.stopTimer()
                     mQuickGameView?.initData()
+                    StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                 } else if (position == 2) {
                     animation(color, Color.parseColor("#261127"))
                     mFriendRoomGameView?.stopTimer()
                     mDoubleRoomGameView?.initData()
+                    StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
                 }
             }
 
@@ -170,6 +174,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             mFriendRoomGameView?.stopTimer()
             mDoubleRoomGameView?.initData()
         }
+        StatisticsAdapter.recordCountEvent("grab", "expose", null)
     }
 
     override fun onFragmentInvisible() {

@@ -8,6 +8,7 @@ import com.common.base.BaseFragment
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent
+import com.common.statistics.StatisticsAdapter
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.RouterConstants
@@ -90,11 +91,11 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
     override fun matchSuccessFromHttp(doubleRoomData: DoubleRoomData) {
         MyLog.d(mTag, "matchSuccessFromHttp")
-
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)
                 .navigation()
         activity?.finish()
+        StatisticsAdapter.recordCountEvent("cp", "pairing_success", null)
     }
 
     override fun finishActivity() {
@@ -128,6 +129,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
                 .navigation()
 
         activity?.finish()
+        StatisticsAdapter.recordCountEvent("cp", "pairing_success", null)
     }
 
     override fun onBackPressed(): Boolean {

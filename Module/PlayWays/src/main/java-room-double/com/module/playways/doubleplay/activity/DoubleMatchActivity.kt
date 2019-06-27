@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.busilib.manager.BgMusicManager
@@ -29,6 +30,7 @@ class DoubleMatchActivity : BaseActivity() {
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .build())
+        StatisticsAdapter.recordCountEvent("cp", "pairing", null)
     }
 
     override fun onResume() {

@@ -15,6 +15,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
@@ -88,7 +89,8 @@ class FriendRoomGameView : RelativeLayout {
         mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(object : RecyclerOnItemClickListener<RecommendModel> {
 
             override fun onItemClicked(view: View, position: Int, model: RecommendModel?) {
-                if (model != null && model is RecommendModel) {
+                StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
+                if (model != null) {
                     val friendRoomModel = model as RecommendModel?
                     if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
                         if (friendRoomModel.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {

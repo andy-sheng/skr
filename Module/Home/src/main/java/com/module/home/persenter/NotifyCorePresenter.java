@@ -500,9 +500,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
             @Override
             public void onClickAgree() {
+                StatisticsAdapter.recordCountEvent("cp", "invite1_success", null);
                 floatWindowData.setOperation(true);
-                mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
-                FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
+                mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW);
+                FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW);
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("peerUserID", userInfoModel.getUserId());
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -589,8 +590,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
             @Override
             public void onClickAgree() {
-                mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
-                FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
+                StatisticsAdapter.recordCountEvent("cp", "nvite2_success", null);
+                mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
+                FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("peerUserID", userInfoModel.getUserId());
                 map.put("roomID", floatWindowData.getRoomID());
@@ -641,7 +643,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setTag(TAG_INVITE_FOALT_WINDOW)
+                .setTag(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW)
                 .build();
     }
 
