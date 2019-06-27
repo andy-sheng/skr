@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
+import com.common.utils.U
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.callback.EmptyCallback
@@ -24,6 +25,7 @@ import com.component.busilib.friends.FriendRoomVerticalAdapter
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
+import com.component.busilib.recommend.RA
 import com.component.busilib.verify.RealNameVerifyUtils
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
@@ -157,7 +159,7 @@ class FriendRoomGameView : RelativeLayout {
         }
 
         val grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
-        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.recommendRoomList, object : ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(RA.getVars(),RA.getTestList()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)

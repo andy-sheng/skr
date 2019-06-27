@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.recommend.RA;
 import com.module.RouterConstants;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
@@ -71,6 +72,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
         map.put("inviteType", inviteType);
+        map.put("vars", RA.getVars());
+        map.put("testList", RA.getTestList());
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         mJoinRoomDisposable = ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override

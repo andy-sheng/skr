@@ -9,13 +9,22 @@ import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
+import com.component.busilib.recommend.RA;
+import com.component.busilib.recommend.RAServerApi;
 import com.zq.person.photo.PhotoLocalApi;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.HashMap;
 
 /**
  * 这个类放在最顶层，因为只有可能它 调用 其它
@@ -58,6 +67,33 @@ public class GlobalEventReceiver {
         PhotoLocalApi.deleteAll();
     }
 
+    @Subscribe
+    public void onEvent(AccountEvent.SetAccountEvent event) {
+        initABtestInfo();
+    }
+
+    /**
+     * 获取AB test 相关的信息
+     */
+    private void initABtestInfo() {
+        RAServerApi raServerApi = ApiManager.getInstance().createService(RAServerApi.class);
+        ApiMethods.subscribe(raServerApi.getABtestInfo(RA.getTestList()), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if(obj.getErrno() == 0){
+                    String vars = obj.getData().getString("vars");
+                    String testList= obj.getData().getString("testList");
+                    RA.setVar(vars);
+                    RA.setTestList(testList);
+                    if(RA.hasTestList()){
+                        HashMap map = new HashMap();
+                        map.put("testList", RA.getTestList());
+                        StatisticsAdapter.recordCountEvent("ra","active",map);
+                    }
+                }
+            }
+        });
+    }
 
     @Subscribe
     public void onEvent(LogUploadUtils.RequestOthersUploadLogSuccess event) {

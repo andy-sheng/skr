@@ -173,13 +173,14 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
 //        }, this, ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis))
 //    }
 
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
         initQuickRoom(true)
         checkTaskRedDot()
     }
-
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(checkInSuccessEvent: CheckInSuccessEvent) {

@@ -8,6 +8,8 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.U;
+import com.component.busilib.recommend.RA;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.playways.room.msg.event.QJoinActionEvent;
@@ -109,7 +111,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         if (mIsNewUser) {
             map.put("isNewUser", mIsNewUser);
         }
-
+        map.put("vars", RA.getVars());
+        map.put("testList", RA.getTestList());
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         mStartMatchTask = ApiMethods.subscribe(mMatchServerApi.startGrabMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
@@ -263,7 +266,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
 //        map.put("platform", PLAT_FORM);
         map.put("roomID", mJoinActionEvent.gameId);
         map.put("matchEnter", true);
-
+        map.put("vars", RA.getVars());
+        map.put("testList", RA.getTestList());
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override

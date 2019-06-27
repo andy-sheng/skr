@@ -6,9 +6,11 @@ import android.view.Gravity;
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
+import com.component.busilib.recommend.RA;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -17,6 +19,8 @@ import com.zq.person.model.PhotoModel;
 import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
 
 
 // 个人信息卡片
@@ -77,6 +81,11 @@ public class PersonInfoDialog {
 //                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                 } else {
                     UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
+                    if(RA.hasTestList()){
+                        HashMap map = new HashMap();
+                        map.put("testList", RA.getTestList());
+                        StatisticsAdapter.recordCountEvent("ra","follow",map);
+                    }
                 }
             }
 

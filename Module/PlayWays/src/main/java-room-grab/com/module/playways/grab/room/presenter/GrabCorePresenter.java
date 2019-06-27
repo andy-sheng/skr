@@ -35,6 +35,7 @@ import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.log.DebugLogView;
+import com.component.busilib.recommend.RA;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
@@ -832,6 +833,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "lightsBurst 不在演唱状态，cancel status=" + now.getStatus() + " roundSeq=" + now.getRoundSeq());
             return;
         }
+        if(RA.hasTestList()){
+            HashMap map = new HashMap();
+            map.put("testList", RA.getTestList());
+            StatisticsAdapter.recordCountEvent("ra","burst",map);
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         int roundSeq = now.getRoundSeq();
@@ -1436,6 +1442,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("tagID", mRoomData.getTagId());
+        map.put("vars", RA.getVars());
+        map.put("testList", RA.getTestList());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.changeRoom(body), new ApiObserver<ApiResult>() {
 
