@@ -398,9 +398,11 @@ public class GrabVideoDisplayView extends ExViewStub {
                 if (MyUserInfoManager.getInstance().getUid() == mLeftUserId) {
                     mLeftAvatarIv.setVisibility(View.VISIBLE);
                     mLeftTipsTv.setVisibility(View.VISIBLE);
+                    mLeftTipsTv.setText("不唱了");
                 } else if (MyUserInfoManager.getInstance().getUid() == mRightUserId) {
                     mRightAvatarIv.setVisibility(View.VISIBLE);
                     mRightTipsTv.setVisibility(View.VISIBLE);
+                    mRightTipsTv.setText("不唱了");
                 }
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
@@ -410,9 +412,11 @@ public class GrabVideoDisplayView extends ExViewStub {
             if (userId == mLeftUserId) {
                 mLeftAvatarIv.setVisibility(View.VISIBLE);
                 mLeftTipsTv.setVisibility(View.VISIBLE);
+                mLeftTipsTv.setText("不唱了");
             } else if (userId == mRightUserId) {
                 mRightAvatarIv.setVisibility(View.VISIBLE);
                 mRightTipsTv.setVisibility(View.VISIBLE);
+                mRightTipsTv.setText("不唱了");
             }
         } else if (event.getType() == EngineEvent.TYPE_CAMERA_FIRST_FRAME_RENDERED) {
             onCameraFirstFrameRendered();
@@ -423,10 +427,13 @@ public class GrabVideoDisplayView extends ExViewStub {
                 if (userStatus.isVideoMute()) {
                     if (userId == mLeftUserId) {
                         mLeftTipsTv.setVisibility(View.VISIBLE);
+                        mLeftTipsTv.setText("溜走了");
                     } else if (userId == mRightUserId) {
                         mRightTipsTv.setVisibility(View.VISIBLE);
+                        mRightTipsTv.setText("溜走了");
                     } else if (userId == mMainUserId) {
                         mMiddleTipsTv.setVisibility(View.VISIBLE);
+                        mMiddleTipsTv.setText("溜走了");
                     }
                 } else {
                     if (userId == mLeftUserId) {
