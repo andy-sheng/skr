@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 class DoubleGameEndFragment : BaseFragment() {
+    val mTag = "DoubleGameEndFragment"
     lateinit var mReportTv: ExTextView
     lateinit var mCloseIv: ImageView
     lateinit var mWhiteBg: ExImageView
@@ -98,7 +99,7 @@ class DoubleGameEndFragment : BaseFragment() {
         Observable.create<String> {
             ApiMethods.subscribe(mDoubleRoomServerApi.getEndGameInfo(mDoubleRoomData.gameId), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
-                    MyLog.w(TAG, "getEndGameInfo obj is $obj")
+                    MyLog.w(mTag, "getEndGameInfo obj is $obj")
                     it.onComplete()
                     if (obj?.errno == 0) {
                         val model = JSON.parseObject(obj.data.toJSONString(), DoubleEndRoomModel::class.java)
