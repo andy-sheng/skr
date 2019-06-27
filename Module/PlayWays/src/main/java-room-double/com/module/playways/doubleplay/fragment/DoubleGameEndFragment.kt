@@ -29,6 +29,7 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleEndRoomModel
+import com.trello.rxlifecycle2.android.FragmentEvent
 import com.zq.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
 import org.greenrobot.eventbus.Subscribe
@@ -117,7 +118,8 @@ class DoubleGameEndFragment : BaseFragment() {
                     it.onError(Throwable("网络错误"))
                 }
             }, this@DoubleGameEndFragment)
-        }.retryWhen(RxRetryAssist(10, "")).subscribe()
+        }.compose(bindUntilEvent(FragmentEvent.DESTROY))
+                .retryWhen(RxRetryAssist(10, "")).subscribe()
     }
 
     fun setEndData(model: DoubleEndRoomModel) {
