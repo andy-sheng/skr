@@ -110,7 +110,6 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
-import com.zq.dialog.event.ShowEditRemarkEvent;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
@@ -217,8 +216,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     PersonInfoDialog mPersonInfoDialog;
 
     DialogPlus mGameRuleDialog;
-
-    DialogPlus mEditRemarkDialog;
 
     ConfirmDialog mGrabKickDialog;
 
@@ -775,60 +772,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         );
 
         removeInviteTipView();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowEditRemarkEvent event) {
-        if (event.mUserInfoModel != null) {
-            showRemarkDialog(event.mUserInfoModel);
-        }
-    }
-
-    private void showRemarkDialog(UserInfoModel mUserInfoModel) {
-        EditRemarkView editRemarkView = new EditRemarkView(GrabRoomFragment.this, mUserInfoModel.getNickname(), mUserInfoModel.getNicknameRemark(null));
-        editRemarkView.setListener(new EditRemarkView.Listener() {
-            @Override
-            public void onClickCancel() {
-                if (mEditRemarkDialog != null) {
-                    mEditRemarkDialog.dismiss();
-                }
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            }
-
-            @Override
-            public void onClickSave(String remarkName) {
-                if (mEditRemarkDialog != null) {
-                    mEditRemarkDialog.dismiss();
-                }
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(mUserInfoModel.getNicknameRemark())) {
-                    // 都为空
-                    return;
-                } else if (!TextUtils.isEmpty(mUserInfoModel.getNicknameRemark()) && (mUserInfoModel.getNicknameRemark()).equals(remarkName)) {
-                    // 相同
-                    return;
-                } else {
-                    UserInfoManager.getInstance().updateRemark(remarkName, mUserInfoModel.getUserId());
-                }
-            }
-        });
-
-        mEditRemarkDialog = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(editRemarkView))
-                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
-                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
-                .setInAnimation(com.component.busilib.R.anim.fade_in)
-                .setOutAnimation(com.component.busilib.R.anim.fade_out)
-                .setExpanded(false)
-                .setGravity(Gravity.BOTTOM)
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                    }
-                })
-                .create();
-        mEditRemarkDialog.show();
     }
 
     private void showPersonInfoView(int userID) {
@@ -1792,9 +1735,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     private void dismissDialog() {
         if (mGameRuleDialog != null) {
             mGameRuleDialog.dismiss(false);
-        }
-        if (mEditRemarkDialog != null) {
-            mEditRemarkDialog.dismiss(false);
         }
         if (mBottomContainerView != null) {
             mBottomContainerView.dismissPopWindow();

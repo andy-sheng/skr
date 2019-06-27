@@ -1,6 +1,9 @@
 package com.zq.dialog;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Gravity;
 
 import com.common.base.BaseActivity;
@@ -13,12 +16,11 @@ import com.component.busilib.R;
 import com.component.busilib.recommend.RA;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.event.ShowEditRemarkEvent;
 import com.zq.person.model.PhotoModel;
+import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -26,27 +28,27 @@ import java.util.HashMap;
 // 个人信息卡片
 public class PersonInfoDialog {
 
-    Context mContext;
+    Activity mActivity;
     int mRoomID;
     DialogPlus mDialogPlus;
 
     KickListener mKickListener;
 
-    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick) {
-        mContext = context;
-        init(context, userId, showReport, showKick, true);
+    public PersonInfoDialog(Activity activity, final int userId, final boolean showReport, boolean showKick) {
+        mActivity = activity;
+        init(mActivity, userId, showReport, showKick, true);
     }
 
-    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick, int roomID) {
-        mContext = context;
+    public PersonInfoDialog(Activity activity, final int userId, final boolean showReport, boolean showKick, int roomID) {
+        mActivity = activity;
         mRoomID = roomID;
-        init(context, userId, showReport, showKick, true);
+        init(mActivity, userId, showReport, showKick, true);
     }
 
-    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick, int roomID, boolean showInvite) {
-        mContext = context;
+    public PersonInfoDialog(Activity activity, final int userId, final boolean showReport, boolean showKick, int roomID, boolean showInvite) {
+        mActivity = activity;
         mRoomID = roomID;
-        init(context, userId, showReport, showKick, showInvite);
+        init(activity, userId, showReport, showKick, showInvite);
     }
 
     private void init(Context context, final int userId, final boolean showReport, boolean showKick, boolean showInvite) {
@@ -75,7 +77,7 @@ public class PersonInfoDialog {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
-                BigImageBrowseFragment.open(false, (BaseActivity) mContext, avatar);
+                BigImageBrowseFragment.open(false, (BaseActivity) mActivity, avatar);
             }
 
             @Override
@@ -120,7 +122,7 @@ public class PersonInfoDialog {
                     mDialogPlus.dismiss(false);
                 }
 
-                EventBus.getDefault().post(new ShowEditRemarkEvent(userInfoModel));
+                showRemarkDialog(userInfoModel);
             }
 
             @Override
@@ -135,7 +137,7 @@ public class PersonInfoDialog {
             }
         });
 
-        mDialogPlus = DialogPlus.newDialog(mContext)
+        mDialogPlus = DialogPlus.newDialog(mActivity)
                 .setContentHolder(new ViewHolder(personInfoDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
@@ -143,6 +145,53 @@ public class PersonInfoDialog {
                 .setExpanded(false)
                 .setCancelable(true)
                 .create();
+    }
+
+    private void showRemarkDialog(final UserInfoModel userInfoModel) {
+        EditRemarkView editRemarkView = new EditRemarkView((BaseActivity) mActivity, userInfoModel.getNickname(), userInfoModel.getNicknameRemark(null));
+        editRemarkView.setListener(new EditRemarkView.Listener() {
+            @Override
+            public void onClickCancel() {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss();
+                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+            }
+
+            @Override
+            public void onClickSave(String remarkName) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss();
+                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+                if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(userInfoModel.getNicknameRemark())) {
+                    // 都为空
+                    return;
+                } else if (!TextUtils.isEmpty(userInfoModel.getNicknameRemark()) && (userInfoModel.getNicknameRemark()).equals(remarkName)) {
+                    // 相同
+                    return;
+                } else {
+                    UserInfoManager.getInstance().updateRemark(remarkName, userInfoModel.getUserId());
+                }
+            }
+        });
+
+        mDialogPlus = DialogPlus.newDialog(mActivity)
+                .setContentHolder(new ViewHolder(editRemarkView))
+                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
+                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
+                .setInAnimation(com.component.busilib.R.anim.fade_in)
+                .setOutAnimation(com.component.busilib.R.anim.fade_out)
+                .setExpanded(false)
+                .setGravity(Gravity.BOTTOM)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+                    }
+                })
+                .create();
+        mDialogPlus.show();
     }
 
     public void setListener(KickListener kickListener) {
@@ -171,7 +220,7 @@ public class PersonInfoDialog {
 
     private void showReportView(int userID) {
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, QuickFeedbackFragment.class)
+                FragmentUtils.newAddParamsBuilder((BaseActivity) mActivity, QuickFeedbackFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, 1)

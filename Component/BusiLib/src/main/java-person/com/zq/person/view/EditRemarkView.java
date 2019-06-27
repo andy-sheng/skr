@@ -1,11 +1,13 @@
 package com.zq.person.view;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -15,7 +17,7 @@ import com.dialog.view.StrokeTextView;
 
 public class EditRemarkView extends RelativeLayout {
 
-    BaseFragment mFragment;
+    Activity mActivity;
     String mNickName;
     String mRemarkName;
     Listener mListener;
@@ -27,14 +29,9 @@ public class EditRemarkView extends RelativeLayout {
     StrokeTextView mCancelTv;
     StrokeTextView mSaveTv;
 
-    /**
-     * @param fragment
-     * @param nickName   昵称
-     * @param remarkName 真的备注
-     */
-    public EditRemarkView(BaseFragment fragment, String nickName, String remarkName) {
-        super(fragment.getContext());
-        this.mFragment = fragment;
+    public EditRemarkView(Activity activity, String nickName, String remarkName) {
+        super(activity);
+        this.mActivity = activity;
         this.mNickName = nickName;
         this.mRemarkName = remarkName;
         init();
@@ -117,7 +114,7 @@ public class EditRemarkView extends RelativeLayout {
                     mRemarkNameEdt.setSelection(editRemark.length());
                 }
                 mRemarkNameEdt.requestFocus();
-                U.getKeyBoardUtils().showSoftInputKeyBoard(mFragment.getActivity());
+                U.getKeyBoardUtils().showSoftInputKeyBoard(mActivity);
             }
         }, 300);
 
