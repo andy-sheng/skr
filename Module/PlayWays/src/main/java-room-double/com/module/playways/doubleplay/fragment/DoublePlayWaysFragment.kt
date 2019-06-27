@@ -336,7 +336,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 自己锁定状态
      */
     fun selfLockState() {
-        AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData.getMaskAvatar(MyUserInfoManager.getInstance().sex))
+        AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData.getSelfAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setBorderColor(Color.WHITE)
@@ -351,8 +351,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 别人锁定状态
      */
     fun guestLockState() {
-        AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData.getMaskAvatar(mRoomData.getAntherUser()?.sex
-                ?: 0))
+        AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData.getPartnerAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setBorderColor(Color.WHITE)

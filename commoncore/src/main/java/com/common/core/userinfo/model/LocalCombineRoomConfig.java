@@ -54,4 +54,14 @@ public class LocalCombineRoomConfig implements Serializable {
         localCombineRoomConfig.maskMaleAvatar = combineRoomConfig.getMaskMaleAvatar();
         return localCombineRoomConfig;
     }
+
+    @Override
+    public String toString() {
+        return "LocalCombineRoomConfig{" +
+                "durationTimeMs=" + durationTimeMs +
+                ", maskMaleAvatar='" + maskMaleAvatar + '\'' +
+                ", maskFemaleAvatar='" + maskFemaleAvatar + '\'' +
+                ", roomSignature='" + roomSignature + '\'' +
+                '}';
+    }
 }
