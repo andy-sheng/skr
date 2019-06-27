@@ -63,6 +63,10 @@ class DoubleRoomGameView : RelativeLayout {
 
         start_match_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
+                if (!U.getNetworkUtils().hasNetwork()){
+                    U.getToastUtil().showLong("网络连接失败 请检查网络")
+                    return
+                }
                 if (hasRemainTime) {
 //                    var hasConfirm = U.getPreferenceUtils().getSettingBoolean(SP_HAS_CONFIRM_INFO, false)
 //                    if (!hasConfirm) {
