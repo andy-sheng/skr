@@ -78,8 +78,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     static final String TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW = "TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW";
     static final int MSG_DISMISS_INVITE_FLOAT_WINDOW = 2;
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
-    static final int MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW = 4;
-    static final int MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW = 5;
+    static final int MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW = 4;      // 普通邀请
+    static final int MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW = 5; // 邀请好友，在双人房中的邀请
 
     DialogPlus mBeFriendDialog;
     DialogPlus mSysWarnDialogPlus;
@@ -106,10 +106,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
                     break;
                 case MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW:
-                    FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW,2);
+                    FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW, 2);
                     break;
                 case MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW:
-                    FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW,2);
+                    FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW, 2);
                     break;
             }
         }
@@ -382,7 +382,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
-
+                    // TODO: 2019-06-27 进入房间（好友邀请）
                 }
             }, true);
         }
@@ -508,7 +508,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void onClickAgree() {
                 StatisticsAdapter.recordCountEvent("cp", "invite1_success", null);
-                floatWindowData.setFlag(FloatWindowData.CLICK_DISMISS);
                 mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW);
                 FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW);
                 HashMap<String, Object> map = new HashMap<>();
@@ -547,10 +546,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onDismiss(int dismissReason) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
-                        if (floatWindowData.getFlag() != FloatWindowData.CLICK_DISMISS) {
+                        if (dismissReason != 0) {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("peerUserID", userInfoModel.getUserId());
-                            if (floatWindowData.getFlag() == FloatWindowData.MOVE_SISMISS) {
+                            if (dismissReason == 1) {
                                 map.put("refuseType", 1); //主动拒绝
                             } else {
                                 map.put("refuseType", 2);
@@ -577,7 +576,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onPositionUpdate(int x, int y) {
                         super.onPositionUpdate(x, y);
-                        floatWindowData.setFlag(FloatWindowData.MOVE_SISMISS);
                         resendDoubleInviterFloatWindowDismissMsg();
                     }
                 })
@@ -703,15 +701,11 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     public static class FloatWindowData {
-        public static final int CLICK_DISMISS = 1;
-        public static final int MOVE_SISMISS = 2;
-        public static final int TIME_OUT_DISMISS = 3; // 暂时只给邀请弹窗使用
         private UserInfoModel mUserInfoModel;
         private Type mType;
         private int mRoomID;
         private int mMediaType;
         private String mExtra;
-        private int mFlag = TIME_OUT_DISMISS; //标记已操作，滑走不响应和时间到自然消失
 
         public String getExtra() {
             return mExtra;
@@ -747,14 +741,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         public void setMediaType(int mediaType) {
             mMediaType = mediaType;
-        }
-
-        public int getFlag() {
-            return mFlag;
-        }
-
-        public void setFlag(int flag) {
-            mFlag = flag;
         }
 
         /**
