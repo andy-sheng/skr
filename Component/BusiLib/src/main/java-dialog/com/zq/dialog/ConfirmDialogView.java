@@ -13,6 +13,7 @@ import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.dialog.view.StrokeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -22,8 +23,8 @@ public class ConfirmDialogView extends RelativeLayout {
 
     SimpleDraweeView mAvatarIv;
     TextView mContentTv;
-    StrokeTextView mCancleTv;
-    StrokeTextView mConfirmTv;
+    ExTextView mCancleTv;
+    ExTextView mConfirmTv;
     ImageView mKickMaskIv;
 
     UserInfoModel mUserInfoModel;
@@ -45,11 +46,11 @@ public class ConfirmDialogView extends RelativeLayout {
     public void initView() {
         inflate(getContext(), R.layout.confirm_dialog_view, this);
 
-        mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
-        mContentTv = (TextView) findViewById(R.id.content_tv);
-        mCancleTv = (StrokeTextView) findViewById(R.id.cancle_tv);
-        mConfirmTv = (StrokeTextView) findViewById(R.id.confirm_tv);
-        mKickMaskIv = (ImageView) this.findViewById(R.id.kick_mask_iv);
+        mAvatarIv = findViewById(R.id.avatar_iv);
+        mContentTv = findViewById(R.id.content_tv);
+        mCancleTv = findViewById(R.id.cancle_tv);
+        mConfirmTv = findViewById(R.id.confirm_tv);
+        mKickMaskIv = findViewById(R.id.kick_mask_iv);
     }
 
     private void initData() {

@@ -6,6 +6,7 @@
     android:layout_marginLeft="@dimen/view_10_dp"
     android:layout_marginRight="@dimen/view_10_dp"
     app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_shape="rectangle"
     app:bl_solid_color="#D0EFFF">
 
     <com.common.image.fresco.BaseImageView
@@ -61,6 +62,7 @@
         android:text="同意"
         android:textColor="#AD6C00"
         android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_solid_color="#FFC15B"
         app:layout_constraintBottom_toBottomOf="parent"
