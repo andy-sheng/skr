@@ -235,8 +235,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/pick_iv"
-        app:src_selected_drawable="@drawable/srf_kaimai"
-        app:src_unSelected_drawable="@drawable/srf_bimai" />
+        app:src_selected_drawable="@drawable/srf_bimai"
+        app:src_unSelected_drawable="@drawable/srf_kaimai" />
 
     <ImageView
         android:id="@+id/pick_iv"
@@ -263,7 +263,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_30_dp"
-        android:text="闭麦"
+        android:text="开麦"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="parent"
