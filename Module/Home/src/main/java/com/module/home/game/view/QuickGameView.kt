@@ -126,46 +126,9 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
                 }
                 StatisticsAdapter.recordCountEvent("grab", "categoryall2", null)
             }
-
-            override fun enterRoom(friendRoomModel: RecommendModel?) {
-                MyLog.d(TAG, "enterRoom friendRoomModel=$friendRoomModel")
-                if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
-                    if (friendRoomModel.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
-                        mSkrAudioPermission.ensurePermission({
-                            mCameraPermission.ensurePermission({
-                                mRealNameVerifyUtils.checkJoinVideoPermission {
-                                    // 进入视频预览
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                            .withInt("mFrom", FROM_FRIEND_RECOMMEND)
-                                            .withInt("mRoomId", friendRoomModel.roomInfo.roomID)
-                                            .withInt("mInviteType", 0)
-                                            .navigation()
-                                }
-                            }, true)
-                        }, true)
-                    } else {
-                        mSkrAudioPermission.ensurePermission({
-                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                            iRankingModeService?.tryGoGrabRoom(friendRoomModel.roomInfo.roomID, 0)
-                        }, true)
-                    }
-                } else {
-
-                }
-                StatisticsAdapter.recordCountEvent("grab", "room_click2", null)
-            }
-
-            override fun moreRoom() {
-                MyLog.d(TAG, "moreRoom")
-                StatisticsAdapter.recordCountEvent("grab", "room_more", null)
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_FRIEND_ROOM)
-                        .navigation()
-            }
         })
-        recycler_view.setLayoutManager(LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false))
-        recycler_view.setAdapter(mGameAdapter)
+        recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recycler_view.adapter = mGameAdapter
     }
 
     fun initData() {
@@ -174,7 +137,7 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
         mQuickGamePresenter.checkTaskRedDot()
     }
 
-    override fun setBannerImage(slideShowModelList: List<SlideShowModel>) {
+    override fun setBannerImage(slideShowModelList: List<SlideShowModel>?) {
         if (slideShowModelList == null || slideShowModelList.size == 0) {
             MyLog.w(TAG, "initOperationArea 为null")
             mGameAdapter.updateBanner(null)
@@ -199,7 +162,7 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
 //        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
 //    }
 
-    override fun setQuickRoom(list: MutableList<SpecialModel>, offset: Int) {
+    override fun setQuickRoom(list: MutableList<SpecialModel>?, offset: Int) {
         MyLog.d(TAG, "setQuickRoom list=$list offset=$offset")
         // TODO: 2019/4/1 过滤一下空的背景
         if (list != null && list.size > 0) {

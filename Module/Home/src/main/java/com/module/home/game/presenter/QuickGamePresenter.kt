@@ -28,13 +28,10 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     internal var mGrabSongApi: GrabSongApi
 
     internal var mLastUpdateOperaArea: Long = 0    //广告位上次更新成功时间
-    internal var mLastUpdateRecomendInfo: Long = 0 //好友派对上次更新成功时间
     internal var mLastUpdateQuickInfo: Long = 0    //快速加入房间更新成功时间
     internal var mIsFirstQuick = true
-    internal var mIsKConfig = false  //标记是否拉到过游戏配置信息
 
     internal var mRecommendTimer: HandlerTaskTimer? = null
-    internal var mRecommendInterval: Int = 0
 
     init {
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
@@ -82,13 +79,14 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     mLastUpdateOperaArea = System.currentTimeMillis()
-                    val slideShowModelList = JSON.parseArray(result.data!!.getString("slideshow"), SlideShowModel::class.java)
+                    var slideShowModelList: List<SlideShowModel>? = JSON.parseArray(result.data!!.getString("slideshow"), SlideShowModel::class.java)
                     U.getPreferenceUtils().setSettingString("slideshow", result.data!!.getString("slideshow"))
                     mIGameView3.setBannerImage(slideShowModelList)
                 }
             }
 
             override fun onError(e: Throwable) {
+                MyLog.e(TAG, "slideList error " + e)
                 U.getToastUtil().showShort("网络异常")
             }
 
@@ -115,9 +113,9 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
             spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", "")
             if (!TextUtils.isEmpty(spResult)) {
                 try {
-                    val jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
-                    val list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel::class.java)
-                    val offset = jsonObject.getIntValue("offset")
+                    var jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
+                    var list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel::class.java)
+                    var offset = jsonObject.getIntValue("offset")
                     mIGameView3.setQuickRoom(list, offset)
                 } catch (e: Exception) {
                 }

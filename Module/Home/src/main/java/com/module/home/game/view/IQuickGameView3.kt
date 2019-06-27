@@ -5,11 +5,11 @@ import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
 
 interface IQuickGameView3 {
-    fun setBannerImage(slideShowModelList: List<SlideShowModel>)
+    fun setBannerImage(slideShowModelList: List<SlideShowModel>?)
 
     //    void setRecommendInfo(List<RecommendModel> list);
 
-    fun setQuickRoom(list: MutableList<SpecialModel>, offset: Int)
+    fun setQuickRoom(list: MutableList<SpecialModel>?, offset: Int)
 
     //    void setGameConfig(GameKConfigModel gameKConfigModel);
 

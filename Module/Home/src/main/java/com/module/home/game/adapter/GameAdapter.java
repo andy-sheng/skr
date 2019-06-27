@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
@@ -18,7 +17,6 @@ import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.game.viewholder.BannerViewHolder;
 import com.module.home.game.viewholder.FuncationAreaViewHolder;
 import com.module.home.game.viewholder.QuickRoomViewHolder;
-import com.module.home.game.viewholder.RecommendRoomViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +34,7 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     public static final int TYPE_BANNER_HOLDER = 0;       // 广告
     public static final int TYPE_FUNCATION_HOLDER = 1;    // 功能区域（做任务，排行榜，练歌房）
-    public static final int TYPE_RECOMMEND_HOLDER = 2;    // 推荐房
-    public static final int TYPE_QUICK_ROOM_HOLDER = 3;   // 快速房
+    public static final int TYPE_QUICK_ROOM_HOLDER = 2;   // 快速房
 
     public GameAdapter(BaseFragment baseFragment, GameAdapterListener gameAdapterListener) {
         this.mBaseFragment = baseFragment;
@@ -51,11 +48,6 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     public void updateFuncation(FuncationModel funcationModel) {
         mObjArr[TYPE_FUNCATION_HOLDER] = funcationModel;
-        setDataList();
-    }
-
-    public void updateRecommendRoomInfo(RecommendRoomModel recommendRoomModel) {
-        mObjArr[TYPE_RECOMMEND_HOLDER] = recommendRoomModel;
         setDataList();
     }
 
@@ -85,10 +77,6 @@ public class GameAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_funcation_item_view, parent, false);
             FuncationAreaViewHolder funcationAreaViewHolder = new FuncationAreaViewHolder(view, mListener);
             return funcationAreaViewHolder;
-        } else if (viewType == TYPE_RECOMMEND_HOLDER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_recommend_room_item_view, parent, false);
-            RecommendRoomViewHolder recommendRoomViewHolder = new RecommendRoomViewHolder(view, mBaseFragment, mListener);
-            return recommendRoomViewHolder;
         } else if (viewType == TYPE_QUICK_ROOM_HOLDER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_quick_room_item_view, parent, false);
             QuickRoomViewHolder quickRoomViewHolder = new QuickRoomViewHolder(view, mBaseFragment, mListener);
@@ -104,8 +92,6 @@ public class GameAdapter extends RecyclerView.Adapter {
             ((BannerViewHolder) holder).bindData((BannerModel) obj);
         } else if (obj instanceof FuncationModel) {
             ((FuncationAreaViewHolder) holder).bindData((FuncationModel) obj);
-        } else if (obj instanceof RecommendRoomModel) {
-            ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) obj);
         } else if (obj instanceof QuickJoinRoomModel) {
             ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) obj);
         }
@@ -123,8 +109,6 @@ public class GameAdapter extends RecyclerView.Adapter {
             return TYPE_BANNER_HOLDER;
         } else if (obj instanceof FuncationModel) {
             return TYPE_FUNCATION_HOLDER;
-        } else if (obj instanceof RecommendRoomModel) {
-            return TYPE_RECOMMEND_HOLDER;
         } else if (obj instanceof QuickJoinRoomModel) {
             return TYPE_QUICK_ROOM_HOLDER;
         }
@@ -135,10 +119,6 @@ public class GameAdapter extends RecyclerView.Adapter {
         void createRoom();     //创建房间
 
         void selectSpecial(SpecialModel specialModel);   //选择专场
-
-        void enterRoom(RecommendModel friendRoomModel);   //进入房间
-
-        void moreRoom();  //更多房间
 
         void clickTask();  //做任务
 
