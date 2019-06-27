@@ -22,6 +22,7 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExFrameLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
@@ -66,6 +67,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mMicTv: TextView? = null
     private var mMicIv: ExImageView? = null
     private var mNoLimitIcon: ExImageView? = null
+    private var mWordArea: ExFrameLayout? = null
     private var mPickIv: ImageView? = null
     private var mSelectIv: ImageView? = null
     private var mRightZanView: ZanView? = null
@@ -108,6 +110,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
         mNoLimitTip = mRootView.findViewById(R.id.no_limit_tip) as ExTextView
         mMicTv = mRootView.findViewById(R.id.mic_tv) as TextView
+        mWordArea = mRootView.findViewById(R.id.word_area) as ExFrameLayout
         mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
         mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
 
@@ -369,7 +372,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun startGame(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
-        mWordTv?.visibility = GONE
+        mWordArea?.visibility = GONE
         toNextSongCardView()
         mCurrentCardView?.visibility = VISIBLE
         mCurrentCardView?.playLyric(mRoomData, mCur, mNext, hasNext)
@@ -391,7 +394,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun noMusic() {
         mDoubleSingCardView1.visibility = GONE
         mDoubleSingCardView2.visibility = GONE
-        mWordTv?.visibility = VISIBLE
+        mWordArea?.visibility = VISIBLE
     }
 
     override fun picked() {
