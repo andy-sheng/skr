@@ -35,7 +35,11 @@ import com.common.core.userinfo.model.UserRankModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -45,6 +49,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.ModuleServiceManager;
@@ -83,6 +88,8 @@ import static com.zq.person.activity.OtherPersonActivity.BUNDLE_USER_ID;
 
 public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonView, RequestCallBack {
 
+    public static final String PERSON_CENTER_TOP_ICON = "http://res-static.inframe.mobi/app/person_center_top_bg.png";
+
     public static final int RELATION_FOLLOWED = 1; // 已关注关系
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
 
@@ -106,7 +113,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
     OtherPersonPresenter mPresenter;
 
-    ImageView mImageBg;
+    SimpleDraweeView mImageBg;
     SmartRefreshLayout mSmartRefresh;
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
@@ -173,7 +180,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
 
     private void initBaseContainArea() {
-        mImageBg = (ImageView)mRootView.findViewById(R.id.image_bg);
+        mImageBg = (SimpleDraweeView) mRootView.findViewById(R.id.image_bg);
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.toolbar_layout);
@@ -181,13 +188,17 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
         mSrlNameTv = (TextView) mRootView.findViewById(R.id.srl_name_tv);
 
+        FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
+                .build());
+
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
         mSmartRefresh.setHeaderMaxDragRate(1.5f);
-        mSmartRefresh.setOnMultiPurposeListener(new SimpleMultiPurposeListener(){
+        mSmartRefresh.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
             float lastScale = 0;
+
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(mUserId);

@@ -36,11 +36,10 @@
     另外，exitUntilCollapsed 属性也会失效，即使你设置了 minHeight，所以官方也说明了CollapsingToolbarLayout 是为了配合 Toolbar 而设计
     -->
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_300_dp"
-        android:background="@drawable/person_center_bg"
         app:layout_collapseMode="parallax"
         app:layout_collapseParallaxMultiplier="0.5" />
 

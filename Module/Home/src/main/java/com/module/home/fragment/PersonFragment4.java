@@ -29,8 +29,12 @@ import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -39,6 +43,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -58,6 +63,7 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
+import com.zq.person.fragment.OtherPersonFragment4;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
 import com.zq.person.view.RequestCallBack;
@@ -81,7 +87,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ImageView mSettingImgIv;
     ExImageView mSettingRedDot;
 
-    ImageView mImageBg;
+    SimpleDraweeView mImageBg;
     ImageView mSexIv;
     SimpleDraweeView mAvatarIv;
     NormalLevelView2 mLevelView;
@@ -161,7 +167,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSmartRefresh = mRootView.findViewById(R.id.smart_refresh);
         mUserInfoArea = mRootView.findViewById(R.id.user_info_area);
 
-        mImageBg = (ImageView) mRootView.findViewById(R.id.image_bg);
+        mImageBg = mRootView.findViewById(R.id.image_bg);
         mAppbar = mRootView.findViewById(R.id.appbar);
         mToolbar = mRootView.findViewById(R.id.toolbar);
         mToolbarLayout = mRootView.findViewById(R.id.toolbar_layout);
@@ -169,6 +175,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSrlNameTv = mRootView.findViewById(R.id.srl_name_tv);
         mSrlSexIv = mRootView.findViewById(R.id.srl_sex_iv);
         mSrlCharmTv = mRootView.findViewById(R.id.srl_charm_tv);
+
+        FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
+                .build());
 
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(true);
