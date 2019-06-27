@@ -63,6 +63,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mRightNameTv: ExTextView? = null
     private var mCountDownTv: ExTextView? = null
     private var mNoLimitTip: ExTextView? = null
+    private var mMicTv: TextView? = null
     private var mMicIv: ExImageView? = null
     private var mNoLimitIcon: ExImageView? = null
     private var mPickIv: ImageView? = null
@@ -106,6 +107,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mLeftZanView = mRootView.findViewById<View>(R.id.left_zanView) as ZanView
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
         mNoLimitTip = mRootView.findViewById(R.id.no_limit_tip) as ExTextView
+        mMicTv = mRootView.findViewById(R.id.mic_tv) as TextView
         mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
         mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
 
@@ -194,6 +196,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 val isSelected = mMicIv?.isSelected ?: false
                 ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
                 mMicIv?.setSelected(!isSelected)
+                mMicTv?.text = if (isSelected) "闭麦" else "开麦"
             }
         })
 

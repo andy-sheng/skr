@@ -68,7 +68,7 @@ class DoubleSingCardView : ConstraintLayout {
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setCircle(true)
                         .build())
-        mSongNameTv?.text = mCur?.music?.itemName
+        mSongNameTv?.text = "《${mCur?.music?.itemName}》"
         mDoubleSelfSingCardView.playLyric(mCur, roomData)
         updateNextSongDec(mNext, hasNext)
     }
