@@ -165,11 +165,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         MyLog.w(tag, "exit(), roomID is ${mRoomData.gameId}")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-
-            }
-        }, this@DoubleCorePresenter)
+        ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), null)
 
         mIDoublePlayView.finishActivity()
         ARouter.getInstance()
