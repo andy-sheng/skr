@@ -93,6 +93,7 @@
     <com.module.playways.grab.room.top.GrabTopOpView
         android:id="@+id/grab_top_op_view"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="@dimen/view_38_dp" />
 
     <!--包括嘉宾栏 和 观众栏-->

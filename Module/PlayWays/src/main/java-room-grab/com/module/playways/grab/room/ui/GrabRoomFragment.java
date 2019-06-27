@@ -359,9 +359,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void run() {
                 onBattleBeginPlayOver();
-                mGrabWidgetAnimationController.open();
+                int openOpBarTimes = U.getPreferenceUtils().getSettingInt("key_open_op_bar_times", 0);
+                if (openOpBarTimes < 2) {
+                    mGrabWidgetAnimationController.open();
+                    openOpBarTimes++;
+                    U.getPreferenceUtils().setSettingInt("key_open_op_bar_times", openOpBarTimes);
+                } else {
+                    mGrabWidgetAnimationController.close();
+                }
             }
         }, 500);
+
         BgMusicManager.getInstance().setRoom(true);
         if (mRoomData.isOwner()) {
             if (!mRoomData.hasGameBegin() && mOwnerBeginGameIv == null) {
