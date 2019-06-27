@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_315_dp"
+    android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/view_32_dp"
     android:layout_marginRight="@dimen/view_32_dp">
 
@@ -40,6 +40,16 @@
         app:layout_constraintStart_toEndOf="@+id/song_owner_iv"
         app:layout_constraintTop_toTopOf="@+id/song_owner_iv" />
 
+    <View
+        android:id="@+id/top_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/view_50_dp"
+        android:background="@color/black_trans_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.constraint.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
@@ -52,12 +62,12 @@
         layout="@layout/double_video_self_sing_card_layout" />
 
     <View
-        android:id="@+id/textView3"
+        android:id="@+id/bottom_divider"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_1_dp"
-        android:layout_marginTop="@dimen/view_262_dp"
+        android:layout_marginBottom="@dimen/view_50_dp"
         android:background="@color/black_trans_10"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/next_song_tip_tv"
@@ -73,7 +83,7 @@
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/cut_song_tv"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/bottom_divider" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/cut_song_tv"

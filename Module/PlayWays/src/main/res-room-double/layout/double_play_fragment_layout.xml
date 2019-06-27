@@ -198,9 +198,11 @@
     <com.module.playways.doubleplay.view.DoubleSingCardView
         android:id="@+id/show_card1"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_315_dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/view_210_dp"
+        android:layout_marginBottom="@dimen/view_140_dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -208,9 +210,11 @@
     <com.module.playways.doubleplay.view.DoubleSingCardView
         android:id="@+id/show_card2"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_315_dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/view_210_dp"
+        android:layout_marginBottom="@dimen/view_140_dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
