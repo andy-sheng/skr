@@ -532,6 +532,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun destroy() {
         super.destroy()
         countDownTimer?.dispose()
+        mLeftZanView?.stop()
+        mRightZanView?.stop()
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {
