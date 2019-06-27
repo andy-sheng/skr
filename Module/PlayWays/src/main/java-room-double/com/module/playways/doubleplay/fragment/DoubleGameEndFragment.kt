@@ -143,7 +143,7 @@ class DoubleGameEndFragment : BaseFragment() {
         mMatchAgain.visibility = View.VISIBLE
         mEndTv.text = model.combineRoomCloseReasonDesc
         if (mDoubleRoomData.enableNoLimitDuration) {
-            mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.nickname}唱聊了${(model.chatDurTime)}分钟"
+            mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.getNicknameRemark()}唱聊了${(model.chatDurTime)}分钟"
         } else {
             mChatTimeTv.text = "你与Ta唱聊了${(model.chatDurTime)}分钟"
         }
