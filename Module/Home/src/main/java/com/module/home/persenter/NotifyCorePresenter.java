@@ -501,7 +501,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void onClickAgree() {
                 StatisticsAdapter.recordCountEvent("cp", "invite1_success", null);
-                floatWindowData.setOperation(true);
+                floatWindowData.setFlag(FloatWindowData.CLICK_DISMISS);
                 mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW);
                 FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW);
                 HashMap<String, Object> map = new HashMap<>();
@@ -540,9 +540,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onDismiss() {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
-                        if (!floatWindowData.isOperation()) {
+                        if (floatWindowData.getFlag() != FloatWindowData.CLICK_DISMISS) {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("peerUserID", userInfoModel.getUserId());
+                            if (floatWindowData.getFlag() == FloatWindowData.MOVE_SISMISS) {
+                                map.put("refuseType", 1); //主动拒绝
+                            } else {
+                                map.put("refuseType", 2);
+                            }
                             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                             ApiMethods.subscribe(mMainPageSlideApi.refuseInvitedDoubleRoom(body), new ApiObserver<ApiResult>() {
                                 @Override
@@ -565,6 +570,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onPositionUpdate(int x, int y) {
                         super.onPositionUpdate(x, y);
+                        floatWindowData.setFlag(FloatWindowData.MOVE_SISMISS);
                         resendDoubleInviterFloatWindowDismissMsg();
                     }
                 })
@@ -690,13 +696,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     public static class FloatWindowData {
+        public static final int CLICK_DISMISS = 1;
+        public static final int MOVE_SISMISS = 2;
+        public static final int TIME_OUT_DISMISS = 3; // 暂时只给邀请弹窗使用
         private UserInfoModel mUserInfoModel;
         private Type mType;
         private int mRoomID;
         private int mMediaType;
         private String mExtra;
-
-        private boolean mOperation = false;  //标记是否操作过
+        private int mFlag = TIME_OUT_DISMISS; //标记已操作，滑走不响应和时间到自然消失
 
         public String getExtra() {
             return mExtra;
@@ -734,12 +742,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             mMediaType = mediaType;
         }
 
-        public boolean isOperation() {
-            return mOperation;
+        public int getFlag() {
+            return mFlag;
         }
 
-        public void setOperation(boolean operation) {
-            mOperation = operation;
+        public void setFlag(int flag) {
+            mFlag = flag;
         }
 
         /**
