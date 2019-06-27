@@ -221,10 +221,15 @@ class DoubleRoomData() : Serializable {
     }
 
     fun getSelfAvatar(): String {
-        if (enableNoLimitDuration) {
-            return MyUserInfoManager.getInstance().avatar
+        val info = getMyUser()
+        if (info != null) {
+            if (enableNoLimitDuration) {
+                return MyUserInfoManager.getInstance().avatar
+            } else {
+                return getMaskAvatar(info.sex)
+            }
         } else {
-            return getMaskAvatar(MyUserInfoManager.getInstance().sex)
+            return ""
         }
     }
 
