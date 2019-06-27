@@ -6,8 +6,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/background"
-        android:layout_width="@dimen/view_343_dp"
-        android:layout_height="@dimen/view_84_dp"
+        android:layout_width="@dimen/view_339_dp"
+        android:layout_height="@dimen/view_74_dp"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
