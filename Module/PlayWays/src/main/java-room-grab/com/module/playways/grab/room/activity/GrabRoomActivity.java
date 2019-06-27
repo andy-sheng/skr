@@ -147,7 +147,7 @@ public class GrabRoomActivity extends BaseActivity {
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
-        // 销毁其他的一唱到底页面
+        // 销毁其他的除一唱到底页面所有界面
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity == this) {
                 continue;
