@@ -1,6 +1,5 @@
 package com.module.playways.grab.room.view.freemic;
 
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ScrollView;
@@ -55,11 +54,11 @@ public class FreeMicSelfSingCardView extends ExViewStub {
             public void clickValid(View v) {
                 if (ZqEngineKit.getInstance().getParams().isAnchor()) {
                     ZqEngineKit.getInstance().setClientRole(false);
-                    mmMicControlBtn.setImageResource(R.drawable.free_mic_open_mic);
+                    mmMicControlBtn.setImageResource(R.drawable.free_mic_close_mic);
                 } else {
                     ZqEngineKit.getInstance().setClientRole(true);
                     ZqEngineKit.getInstance().muteLocalAudioStream(false);
-                    mmMicControlBtn.setImageResource(R.drawable.free_mic_close_mic);
+                    mmMicControlBtn.setImageResource(R.drawable.free_mic_open_mic);
                 }
             }
         });
@@ -107,9 +106,9 @@ public class FreeMicSelfSingCardView extends ExViewStub {
         if(mRoomData.isInPlayerList()){
             mmMicControlBtn.setVisibility(View.VISIBLE);
             if (ZqEngineKit.getInstance().getParams().isAnchor()) {
-                mmMicControlBtn.setImageResource(R.drawable.free_mic_close_mic);
-            } else {
                 mmMicControlBtn.setImageResource(R.drawable.free_mic_open_mic);
+            } else {
+                mmMicControlBtn.setImageResource(R.drawable.free_mic_close_mic);
             }
         }else{
             mmMicControlBtn.setVisibility(View.GONE);
