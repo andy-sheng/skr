@@ -105,10 +105,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
                     break;
                 case MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW:
-                    FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW);
+                    FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW,2);
                     break;
                 case MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW:
-                    FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
+                    FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW,2);
                     break;
             }
         }
@@ -469,7 +469,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setHeight(Screen.height, 0.2f)
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
-                    public void onDismiss() {
+                    public void onDismiss(int dismissReason) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
                     }
 
@@ -538,7 +538,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setHeight(Screen.height, 0.2f)
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
-                    public void onDismiss() {
+                    public void onDismiss(int dismissReason) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
                         if (floatWindowData.getFlag() != FloatWindowData.CLICK_DISMISS) {
                             HashMap<String, Object> map = new HashMap<>();
@@ -596,7 +596,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
             @Override
             public void onClickAgree() {
-                StatisticsAdapter.recordCountEvent("cp", "nvite2_success", null);
+                StatisticsAdapter.recordCountEvent("cp", "invite2_success", null);
                 mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
                 FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
                 HashMap<String, Object> map = new HashMap<>();
@@ -635,7 +635,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setHeight(Screen.height, 0.2f)
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
-                    public void onDismiss() {
+                    public void onDismiss(int dismissReason) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
 
                     }
@@ -678,7 +678,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setHeight(Screen.height, 0.2f)
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
-                    public void onDismiss() {
+                    public void onDismiss(int dismissReason) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
                     }
 

@@ -11,7 +11,11 @@ public interface ViewStateListener {
 
     void onHide();
 
-    void onDismiss();
+    /**
+     *
+     * @param dismissReason 0 是自动消失的 1是滑动消失的 2时间到了消失
+     */
+    void onDismiss(int dismissReason);
 
     void onMoveAnimStart();
 
