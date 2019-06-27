@@ -11,6 +11,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -97,6 +98,7 @@ class DoubleGameEndFragment : BaseFragment() {
         Observable.create<String> {
             ApiMethods.subscribe(mDoubleRoomServerApi.getEndGameInfo(mDoubleRoomData.gameId), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
+                    MyLog.w(TAG, "getEndGameInfo obj is $obj")
                     it.onComplete()
                     if (obj?.errno == 0) {
                         val model = JSON.parseObject(obj.data.toJSONString(), DoubleEndRoomModel::class.java)
