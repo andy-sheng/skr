@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.FragmentUtils
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -157,8 +158,14 @@ class DoubleGameEndFragment : BaseFragment() {
                     activity?.finish()
                 }
             } else {
+                val stringBuilder = SpanUtils()
+                        .append("今日剩余").setForegroundColor(U.getColor(R.color.white_trans_80))
+                        .append(model.todayResTimes.toString()).setForegroundColor(Color.parseColor("#FFCC48"))
+                        .append("次").setForegroundColor(U.getColor(R.color.white_trans_80))
+                        .create()
+
                 mMatchAgain.text = "再匹配一次"
-                mLastNumTv.text = "今日剩余${model.todayResTimes}次"
+                mLastNumTv.text = stringBuilder
                 mLastNumTv.visibility = View.VISIBLE
                 onClickBottomBtn = {
                     activity?.finish()
