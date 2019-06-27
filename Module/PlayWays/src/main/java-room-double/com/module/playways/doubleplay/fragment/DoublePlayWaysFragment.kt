@@ -199,7 +199,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 val isSelected = mMicIv?.isSelected ?: false
                 ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
                 mMicIv?.setSelected(!isSelected)
-                mMicTv?.text = if (isSelected) "开麦" else "闭麦"
+//                mMicTv?.text = if (isSelected) "开麦" else "闭麦"
             }
         })
 
