@@ -29,6 +29,7 @@ import com.common.core.permission.SkrCameraPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -1871,7 +1872,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     @Override
     public void beginOuath() {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth?from=singer"))
+                .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=singer"))
                 .greenChannel().navigation();
         getActivity().finish();
     }

@@ -97,7 +97,7 @@ public class RealNameVerifyUtils {
                                 public void click(View view) {
                                     mTipsDialogView.dismiss();
                                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                            .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth?from=video"))
+                                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=video"))
                                             .greenChannel().navigation();
                                 }
                             })

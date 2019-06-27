@@ -159,7 +159,7 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth?from=uc"))
+                        .withString("url",ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=uc"))
                         .greenChannel().navigation();
             }
         });
@@ -195,7 +195,7 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/extend/exchangeGold"))
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/extend/exchangeGold"))
                         .greenChannel().navigation();
             }
         });

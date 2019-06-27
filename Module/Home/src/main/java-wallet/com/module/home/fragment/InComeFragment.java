@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -149,7 +150,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                 } else if (!mWithDrawInfoModel.isIsRealAuth()) {
                     mWithDrawInfoModel = null;
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                            .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("https://app.inframe.mobi/oauth?from=cash"))
+                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/oauth?from=cash"))
                             .navigation();
                 } else {
                     if (!U.getNetworkUtils().hasNetwork()) {
