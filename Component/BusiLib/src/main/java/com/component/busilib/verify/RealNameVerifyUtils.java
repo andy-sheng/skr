@@ -86,7 +86,7 @@ public class RealNameVerifyUtils {
                 // 去实名认证
                 if (mTipsDialogView == null) {
                     mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                            .setMessageTip("成为认证VIP\n解锁视频专场永久开启权限")
+                            .setMessageTip("完成实名认证\n解锁视频专场永久开启权限")
                             .setConfirmTip("快速认证")
                             .setCancelTip("残忍拒绝")
                             .setConfirmBtnClickListener(new AnimateClickListener() {
