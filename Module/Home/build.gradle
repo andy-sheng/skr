@@ -82,8 +82,9 @@ android {
             java.srcDirs += 'src/main/java-feedback'
             res.srcDirs += 'src/main/res-feedback'
 
-            java.srcDirs += 'src/main/java-musictest'
-            res.srcDirs += 'src/main/res-musictest'
+            // 下掉音乐测试
+//            java.srcDirs += 'src/main/java-musictest'
+//            res.srcDirs += 'src/main/res-musictest'
 
             java.srcDirs += 'src/main/java-wallet'
             res.srcDirs += 'src/main/res-wallet'
