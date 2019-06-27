@@ -75,6 +75,10 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
      * 点赞动作  添加心的函数 控制画面最大心的个数
      */
     public void addZanXin(int count) {
+        if (count < 1) {
+            return;
+        }
+
         int delay = 200 / count;
         for (int i = 0; i < count; i++) {
             mHandler.sendEmptyMessageDelayed(ADD_XIN_MSG, delay * i);
