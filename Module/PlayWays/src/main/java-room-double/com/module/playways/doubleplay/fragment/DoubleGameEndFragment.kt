@@ -239,8 +239,10 @@ class DoubleGameEndFragment : BaseFragment() {
         if (userInfoModel.userId == event.useId) {
             if (event.isFriend) {
                 isFriendState()
+                mFollowTv.setOnClickListener(null)
             } else if (event.isFollow) {
                 isFollowState()
+                mFollowTv.setOnClickListener(null)
             } else {
                 isStrangerState()
             }
