@@ -155,9 +155,12 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
             if (mGrabRoomData.isDoubleRoom()) {
                 if (model.isCouldDelete()) {
+                    mTvManage.setVisibility(View.VISIBLE);
                     mTvManage.setText("删除");
                     mTvManage.setEnabled(true);
                     mTvManage.setBackground(mRedDrawable);
+                } else {
+                    mTvManage.setVisibility(View.GONE);
                 }
             } else {
                 if (mGrabRoomData.hasGameBegin()) {
