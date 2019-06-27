@@ -62,6 +62,7 @@ public class RealNameVerifyUtils {
                             }
                         })
                         .build();
+                mTipsDialogView.showByDialog();
                 return;
             }
         }

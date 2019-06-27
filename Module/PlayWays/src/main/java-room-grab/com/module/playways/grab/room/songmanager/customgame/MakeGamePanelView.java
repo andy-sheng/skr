@@ -150,7 +150,7 @@ public class MakeGamePanelView extends RelativeLayout {
                             mStatus = STATUS_RECORD_PLAYING;
                             mPlayBtn.setImageResource(R.drawable.make_game_zanting);
                             playRecorderRes(true);
-                            mRecordingTipsTv.setText("暂停");
+                            mRecordingTipsTv.setText("停止");
                         } else if (mStatus == STATUS_RECORD_PLAYING) {
                             mStatus = STATUS_RECORD_OK;
                             mPlayBtn.setImageResource(R.drawable.make_game_bofang);
