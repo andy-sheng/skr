@@ -31,7 +31,6 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
-import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.presenter.DoubleCorePresenter
@@ -90,7 +89,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     override fun initData(savedInstanceState: Bundle?) {
         MyLog.w(mTag, "initData mRoomData='${mRoomData}'")
-        EventBus.getDefault().post(EnterDoubleRoomEvent())
         mReportTv = mRootView.findViewById<View>(R.id.report_tv) as TextView
         mExitIv = mRootView.findViewById<View>(R.id.exit_iv) as ImageView
         mLeftAvatarSdv = mRootView.findViewById<View>(R.id.left_avatar_sdv) as SimpleDraweeView

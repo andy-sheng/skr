@@ -13,7 +13,6 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
-import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
 import com.module.playways.doubleplay.inter.IMatchView
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -79,11 +78,6 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: CRStartByMatchPushEvent) {
         iMatchView.matchSuccessFromPush(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: EnterDoubleRoomEvent) {
-        iMatchView.toDoubleRoomByPush()
     }
 
     override fun destroy() {

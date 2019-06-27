@@ -19,6 +19,18 @@ class DoublePlayActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        for (activity in U.getActivityUtils().activityList) {
+            if (activity == this) {
+                continue
+            }
+
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+
+            activity.finish()
+        }
+
         val doubleRoomData = intent.getSerializableExtra("roomData") as DoubleRoomData
 
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoublePlayWaysFragment::class.java)

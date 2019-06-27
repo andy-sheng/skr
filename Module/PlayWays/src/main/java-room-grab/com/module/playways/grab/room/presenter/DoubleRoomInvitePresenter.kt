@@ -13,22 +13,14 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
-import com.module.playways.doubleplay.event.EnterDoubleRoomEvent
 import com.module.playways.doubleplay.inter.IDoubleInviteView
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLifeCyclePresenter() {
     private val mTag = "DoubleRoomInvitePresenter"
     private var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
     private var handlerTaskTimer: HandlerTaskTimer? = null
-
-    init {
-        EventBus.getDefault().register(this)
-    }
 
     /**
      * 邀请一个人去双人房
@@ -42,7 +34,7 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
                     startCheckLoop()
                     U.getToastUtil().showShort("邀请成功")
                 } else {
-                    if (obj?.errno == 8376040){
+                    if (obj?.errno == 8376040) {
                         StatisticsAdapter.recordCountEvent("cp", "invite2_outchance", null)
                     }
                     U.getToastUtil().showShort(obj?.errmsg)
@@ -73,11 +65,6 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
                 })
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: EnterDoubleRoomEvent) {
-        iDoubleInviteView.toDoubleRoomByPush()
-    }
-
     /**
      * 发出邀请之后轮询检查对方的进房情况，因为push有可能会丢
      */
@@ -98,6 +85,5 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
     override fun destroy() {
         super.destroy()
         handlerTaskTimer?.dispose()
-        EventBus.getDefault().unregister(this)
     }
 }
