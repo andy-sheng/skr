@@ -125,74 +125,36 @@
                 app:bl_corners_radius="@dimen/view_16_dp"
                 app:bl_solid_color="#FF8AB6" />
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/tv_diamond"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_27_dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="-24dp"
-                android:layout_toRightOf="@+id/iv_diamond_icon"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/view_25_dp"
-                android:paddingRight="@dimen/view_10_dp"
-                android:text="158"
-                android:textColor="#FFC15B"
-                android:textSize="@dimen/textsize_18_dp"
-                android:textStyle="bold"
-                app:bl_corners_radius="@dimen/view_14_dp"
-                app:bl_solid_color="@color/black_trans_20" />
-
-            <ImageView
-                android:id="@+id/iv_diamond_icon"
-                android:layout_width="@dimen/view_14_dp"
-                android:layout_height="@dimen/view_16_dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/view_21_dp"
-                android:layout_toRightOf="@+id/iv_recharge"
-                android:background="@drawable/diamond_icon" />
-
             <com.common.view.ex.ExFrameLayout
-                android:id="@+id/hz_container"
-                bl_corners_radius="@dimen/view_16_dp"
-                bl_solid_color="@color/black_trans_20"
+                android:id="@+id/diamond_area"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_27_dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/tv_diamond"
-                android:paddingLeft="@dimen/view_6_dp"
-                android:paddingRight="@dimen/view_5_dp"
-                BitmapTextView:bl_corners_bottomLeftRadius="@dimen/view_14_dp"
-                BitmapTextView:bl_corners_topLeftRadius="@dimen/view_14_dp"
-                BitmapTextView:bl_solid_color="@color/black_trans_20">
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_toRightOf="@id/iv_recharge"
+                android:paddingLeft="@dimen/view_5_dp"
+                android:paddingRight="@dimen/view_6_dp"
+                app:bl_corners_radius="@dimen/view_14_dp"
+                app:bl_solid_color="@color/black_trans_20">
 
-                <com.common.view.ex.ExImageView
-                    android:id="@+id/iv_hz_icon"
+                <ImageView
+                    android:id="@+id/iv_diamond_icon"
                     android:layout_width="@dimen/view_14_dp"
                     android:layout_height="@dimen/view_16_dp"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/top_xiaohongzuan" />
+                    android:background="@drawable/diamond_icon" />
 
                 <com.component.busilib.view.BitmapTextView
-                    android:id="@+id/tv_hz"
-                    android:layout_width="40dp"
+                    android:id="@+id/tv_diamond"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:layout_toRightOf="@+id/iv_diamond_icon"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/view_18_dp"
-                    android:layout_toRightOf="@+id/tv_coin"
                     BitmapTextView:scale="0.5" />
 
-                <com.common.view.ex.ExTextView
-                    android:id="@+id/tv_hz_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/view_22_dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/view_10_dp"
-                    android:gravity="center"
-                    android:textColor="#B2B6D6"
-                    android:textSize="@dimen/textsize_16_dp"
-                    android:visibility="gone" />
             </com.common.view.ex.ExFrameLayout>
 
             <com.common.view.ex.ExFrameLayout
@@ -200,11 +162,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_27_dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/hz_container"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_toRightOf="@+id/diamond_area"
                 android:paddingLeft="@dimen/view_5_dp"
                 android:paddingRight="@dimen/view_6_dp"
-                BitmapTextView:bl_corners_bottomRightRadius="@dimen/view_16_dp"
-                BitmapTextView:bl_corners_topRightRadius="@dimen/view_16_dp"
+                BitmapTextView:bl_corners_radius="@dimen/view_16_dp"
                 BitmapTextView:bl_solid_color="@color/black_trans_20">
 
                 <com.common.view.ex.ExImageView
@@ -217,7 +179,7 @@
 
                 <com.component.busilib.view.BitmapTextView
                     android:id="@+id/tv_coin"
-                    android:layout_width="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"

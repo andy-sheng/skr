@@ -29,8 +29,6 @@ public class GrabTopOpView extends RelativeLayout {
     Listener mOnClickChangeRoomListener;
     GrabRoomData mGrabRoomData;
 
-    ExImageView mIvHzIcon;
-
     AnimatorSet mAnimatorSet;  //金币加减的动画
     AnimatorSet mHzAnimatorSet;  //金币加减的动画
 
@@ -62,7 +60,6 @@ public class GrabTopOpView extends RelativeLayout {
         mFeedBackIv = (ImageView) findViewById(R.id.feed_back_iv);
         mExitTv = (ExTextView) findViewById(R.id.exit_tv);
         mIvVoiceSetting = (ImageView) findViewById(R.id.iv_voice_setting);
-        mIvHzIcon = (ExImageView) findViewById(R.id.iv_hz_icon);
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override

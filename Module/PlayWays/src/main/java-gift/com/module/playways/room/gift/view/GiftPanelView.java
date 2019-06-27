@@ -75,14 +75,11 @@ public class GiftPanelView extends FrameLayout {
     ExRelativeLayout mGiftPanelArea;
     RecyclerView mAllPlayersRV;
     RelativeLayout mLlSelectedMan;
-    ExTextView mTvDiamond;
+    BitmapTextView mTvDiamond;
     RelativeLayout mRlPlayerSelectArea;
     ExTextView mFollowTv;
-    BitmapTextView mTvHz;
     BitmapTextView mTvCoin;
     ExTextView mTvCoinChange;
-    ExImageView mIvHzIcon;
-    ExTextView mTvHzChange;
     int mCoin = 0;
     float mHz = 0;
 
@@ -160,13 +157,10 @@ public class GiftPanelView extends FrameLayout {
         mGiftDisplayView = (GiftDisplayView) findViewById(R.id.gift_view);
         mAllPlayersRV = (RecyclerView) findViewById(R.id.all_players_rv);
         mLlSelectedMan = (RelativeLayout) findViewById(R.id.ll_selected_man);
-        mTvDiamond = (ExTextView) findViewById(R.id.tv_diamond);
+        mTvDiamond = (BitmapTextView) findViewById(R.id.tv_diamond);
         mFollowTv = (ExTextView) findViewById(R.id.follow_tv);
         mTvCoin = (BitmapTextView) findViewById(R.id.tv_coin);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
-        mIvHzIcon = (ExImageView) findViewById(R.id.iv_hz_icon);
-        mTvHzChange = (ExTextView) findViewById(R.id.tv_hz_change);
-        mTvHz = (BitmapTextView) findViewById(R.id.tv_hz);
         mGiftDisplayView.setIGetGiftCountDownListener(mIGetGiftCountDownListener);
 
         mGiftAllPlayersAdapter = new GiftAllPlayersAdapter();
@@ -293,7 +287,7 @@ public class GiftPanelView extends FrameLayout {
         getZSBalance();
 
         mTvCoin.setText(mGrabRoomData.getCoin() + "");
-        mTvHz.setText(String.format("%.1f", mGrabRoomData.getHzCount()));
+//        mTvHz.setText(String.format("%.1f", mGrabRoomData.getHzCount()));
         mCoin = mGrabRoomData.getCoin();
         mHz = mGrabRoomData.getHzCount();
     }
@@ -396,7 +390,7 @@ public class GiftPanelView extends FrameLayout {
     public void onEvent(UpdateHZEvent event) {
         if (mHz != event.getHz()) {
             mHz = event.getHz();
-            mTvHz.setText(String.format("%.1f", event.getHz()));
+//            mTvHz.setText(String.format("%.1f", event.getHz()));
         }
     }
 
