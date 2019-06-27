@@ -11,7 +11,7 @@ interface IDoublePlayView {
      */
     fun changeRound(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean)
 
-    fun picked()
+    fun picked(count: Int)
 
     fun gameEnd(doubleEndCombineRoomPushEvent: DoubleEndCombineRoomPushEvent)
 

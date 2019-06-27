@@ -7,14 +7,20 @@ public class DoublePickPushEvent {
     BasePushInfo basePushInfo;
     int fromPickUserID;
     int toPickUserID;
+    int count;
 
     public int getFromPickUserID() {
         return fromPickUserID;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public DoublePickPushEvent(BasePushInfo basePushInfo, PickMsg pickMsg) {
         this.basePushInfo = basePushInfo;
         this.fromPickUserID = pickMsg.getFromPickUserID();
         this.toPickUserID = pickMsg.getToPickUserID();
+        this.count = pickMsg.getCount();
     }
 }

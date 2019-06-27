@@ -26,6 +26,8 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
 
   public static final Integer DEFAULT_TOPICKUSERID = 0;
 
+  public static final Integer DEFAULT_COUNT = 0;
+
   /**
    * pick发出者
    */
@@ -44,14 +46,25 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
   )
   private final Integer toPickUserID;
 
-  public PickMsg(Integer fromPickUserID, Integer toPickUserID) {
-    this(fromPickUserID, toPickUserID, ByteString.EMPTY);
+  /**
+   * 计数
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer count;
+
+  public PickMsg(Integer fromPickUserID, Integer toPickUserID, Integer count) {
+    this(fromPickUserID, toPickUserID, count, ByteString.EMPTY);
   }
 
-  public PickMsg(Integer fromPickUserID, Integer toPickUserID, ByteString unknownFields) {
+  public PickMsg(Integer fromPickUserID, Integer toPickUserID, Integer count,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.fromPickUserID = fromPickUserID;
     this.toPickUserID = toPickUserID;
+    this.count = count;
   }
 
   @Override
@@ -59,6 +72,7 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
     Builder builder = new Builder();
     builder.fromPickUserID = fromPickUserID;
     builder.toPickUserID = toPickUserID;
+    builder.count = count;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -70,7 +84,8 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
     PickMsg o = (PickMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(fromPickUserID, o.fromPickUserID)
-        && Internal.equals(toPickUserID, o.toPickUserID);
+        && Internal.equals(toPickUserID, o.toPickUserID)
+        && Internal.equals(count, o.count);
   }
 
   @Override
@@ -80,6 +95,7 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
       result = unknownFields().hashCode();
       result = result * 37 + (fromPickUserID != null ? fromPickUserID.hashCode() : 0);
       result = result * 37 + (toPickUserID != null ? toPickUserID.hashCode() : 0);
+      result = result * 37 + (count != null ? count.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -90,6 +106,7 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
     StringBuilder builder = new StringBuilder();
     if (fromPickUserID != null) builder.append(", fromPickUserID=").append(fromPickUserID);
     if (toPickUserID != null) builder.append(", toPickUserID=").append(toPickUserID);
+    if (count != null) builder.append(", count=").append(count);
     return builder.replace(0, 2, "PickMsg{").append('}').toString();
   }
 
@@ -124,6 +141,16 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
   }
 
   /**
+   * 计数
+   */
+  public Integer getCount() {
+    if(count==null){
+        return DEFAULT_COUNT;
+    }
+    return count;
+  }
+
+  /**
    * pick发出者
    */
   public boolean hasFromPickUserID() {
@@ -137,10 +164,19 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
     return toPickUserID!=null;
   }
 
+  /**
+   * 计数
+   */
+  public boolean hasCount() {
+    return count!=null;
+  }
+
   public static final class Builder extends Message.Builder<PickMsg, Builder> {
     private Integer fromPickUserID;
 
     private Integer toPickUserID;
+
+    private Integer count;
 
     public Builder() {
     }
@@ -161,9 +197,17 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
       return this;
     }
 
+    /**
+     * 计数
+     */
+    public Builder setCount(Integer count) {
+      this.count = count;
+      return this;
+    }
+
     @Override
     public PickMsg build() {
-      return new PickMsg(fromPickUserID, toPickUserID, super.buildUnknownFields());
+      return new PickMsg(fromPickUserID, toPickUserID, count, super.buildUnknownFields());
     }
   }
 
@@ -176,6 +220,7 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
     public int encodedSize(PickMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.fromPickUserID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.toPickUserID)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.count)
           + value.unknownFields().size();
     }
 
@@ -183,6 +228,7 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
     public void encode(ProtoWriter writer, PickMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.fromPickUserID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.toPickUserID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.count);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -194,6 +240,7 @@ public final class PickMsg extends Message<PickMsg, PickMsg.Builder> {
         switch (tag) {
           case 1: builder.setFromPickUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setToPickUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setCount(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

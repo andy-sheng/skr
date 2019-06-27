@@ -105,6 +105,7 @@ message PickMsg
 {
     uint32 fromPickUserID = 1; //pick发出者
     uint32 toPickUserID   = 2; //pick接受者
+    uint32 count          = 3; //计数
 }
 
 message EndCombineRoomMsg

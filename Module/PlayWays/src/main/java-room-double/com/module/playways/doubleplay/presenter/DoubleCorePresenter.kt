@@ -42,6 +42,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     val tag = "DoubleCorePresenter"
 
     val SYNC_MSG = 0
+    val PICK_MSG = 1
     val SYNC_DURATION = 12000L
 
     internal var syncStatusTimeMs: Long = 0 //状态同步时的毫秒时间戳
@@ -49,12 +50,24 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     var uiHandler: Handler
 
+    var pickNum: Int = 0
+
     init {
         EventBus.getDefault().register(this)
         uiHandler = object : Handler() {
             override fun handleMessage(msg: Message?) {
-                if (msg?.what == SYNC_MSG) {
-                    syncStatus()
+                when (msg?.what) {
+                    SYNC_MSG -> syncStatus()
+                    PICK_MSG -> {
+                        val mutableSet1 = mutableMapOf("count" to pickNum, "fromPickuserID" to MyUserInfoManager.getInstance().uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
+                        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+                        ApiMethods.subscribe(mDoubleRoomServerApi.pickOther(body), object : ApiObserver<ApiResult>() {
+                            override fun process(obj: ApiResult?) {
+
+                            }
+                        }, this@DoubleCorePresenter)
+                        pickNum = 0
+                    }
                 }
             }
         }
@@ -134,13 +147,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun pickOther() {
-        val mutableSet1 = mutableMapOf("count" to 1, "fromPickuserID" to MyUserInfoManager.getInstance().uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        ApiMethods.subscribe(mDoubleRoomServerApi.pickOther(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
+        if (!uiHandler.hasMessages(PICK_MSG)) {
+            uiHandler.sendEmptyMessageDelayed(PICK_MSG, 200)
+        }
 
-            }
-        }, this@DoubleCorePresenter)
+        pickNum++
     }
 
     fun closeByTimeOver() {
@@ -291,7 +302,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoublePickPushEvent) {
         if (event.fromPickUserID.toLong() != MyUserInfoManager.getInstance().uid) {
-            mIDoublePlayView.picked()
+            mIDoublePlayView.picked(event.count)
         }
     }
 

@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 
 public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
     public final static String TAG = "ZanView";
+    public final static int ADD_XIN_MSG = 0;
     private SurfaceHolder surfaceHolder;
 
     /**
@@ -28,6 +32,10 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
      * 负责绘制的工作线程
      */
     private DrawThread drawThread;
+
+    HandlerThread handlerThread;
+
+    Handler mHandler;
 
     public ZanView(Context context) {
         this(context, null);
@@ -47,14 +55,34 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
         p = new Paint();
         p.setAntiAlias(true);
         drawThread = new DrawThread();
+
+        handlerThread = new HandlerThread("ZanView HandlerThread");
+        handlerThread.start();
+
+        mHandler = new Handler(handlerThread.getLooper(), new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if (msg.what == ADD_XIN_MSG) {
+                    realAddZanXin();
+                }
+                return true;
+            }
+        });
     }
 
     /**
      * todo 这里优化
      * 点赞动作  添加心的函数 控制画面最大心的个数
      */
-    public void addZanXin() {
-        ZanBean zanBean = new ZanBean(getContext(), R.drawable.srf_xin, this);
+    public void addZanXin(int count) {
+        int delay = 200 / count;
+        for (int i = 0; i < count; i++) {
+            mHandler.sendEmptyMessageDelayed(ADD_XIN_MSG, delay * i);
+        }
+    }
+
+    private void realAddZanXin() {
+        ZanBean zanBean = new ZanBean(ZanView.this.getContext(), R.drawable.srf_xin, ZanView.this);
         synchronized (surfaceHolder) {
             mBeanArrayList.add(zanBean);
             if (mBeanArrayList.size() > 40) {
@@ -157,6 +185,7 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
             drawThread.isRun = false;
             drawThread = null;
         }
+        mHandler.removeCallbacksAndMessages(null);
 
     }
 
