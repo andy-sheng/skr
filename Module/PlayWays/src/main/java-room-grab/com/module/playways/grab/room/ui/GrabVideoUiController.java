@@ -9,6 +9,8 @@ import com.common.utils.U;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 
+import static android.view.View.GONE;
+
 public class GrabVideoUiController extends GrabBaseUiController {
     public GrabVideoUiController(GrabRoomFragment f) {
         super(f);
@@ -158,5 +160,10 @@ public class GrabVideoUiController extends GrabBaseUiController {
             mF.mGrabVideoSelfSingCardView.destroy();
 //            mF.mGrabVideoDisplayView.destroy();
         }
+    }
+
+    @Override
+    public void stopWork() {
+        roundOver();
     }
 }

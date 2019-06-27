@@ -48,4 +48,6 @@ public abstract class GrabBaseUiController {
     public abstract void roundOver();
 
     public abstract void destroy();
+
+    public abstract void stopWork();
 }

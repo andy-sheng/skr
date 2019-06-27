@@ -82,6 +82,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
                     for (Activity activity : U.getActivityUtils().getActivityList()) {
                         if (activity instanceof GrabRoomActivity) {
+                            // 如果 视频房 被邀请进 非视频房
                             MyLog.d(TAG, " 存在一唱到底主页面了，发event刷新view");
                             EventBus.getDefault().post(new GrabChangeRoomEvent(grabCurGameStateModel));
                             return;

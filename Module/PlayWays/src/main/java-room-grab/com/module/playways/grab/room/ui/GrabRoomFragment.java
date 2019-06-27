@@ -1870,6 +1870,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         getActivity().finish();
     }
 
+    @Override
+    public void changeRoomMode(boolean isVideo) {
+        if(isVideo){
+            mGrabAudioUiController.stopWork();
+            mGrabBaseUiController = mGrabVideoUiController;
+        }else{
+            mGrabVideoUiController.stopWork();
+            mGrabBaseUiController = mGrabAudioUiController;
+        }
+    }
+
     static class PendingPlaySongCardData {
         int seq;
         SongModel songModel;

@@ -284,7 +284,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mAbsenTimes = 0;
 
         if (mRoomData.getGameId() > 0) {
-            if (first) {
+            boolean reInit = false;
+            if(first){
+                reInit = true;
+            }
+            if(!reInit && ZqEngineKit.getInstance().getParams().isEnableVideo() != mRoomData.isVideoRoom()){
+                MyLog.d(TAG,"音视频模式发生切换");
+                mIGrabView.changeRoomMode(mRoomData.isVideoRoom());
+                // 发出通知
+                reInit = true;
+            }
+            if (reInit) {
                 Params params = Params.getFromPref();
 //            params.setStyleEnum(Params.AudioEffect.none);
                 params.setScene(Params.Scene.grab);

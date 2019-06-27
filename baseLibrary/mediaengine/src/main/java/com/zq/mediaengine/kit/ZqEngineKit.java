@@ -414,6 +414,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     public void init(final String from, final Params params) {
+        mInitFrom = from;
         mCustomHandlerThread.post(new LogRunnable("init" + " from=" + from + " params=" + params) {
             @Override
             public void realRun() {
@@ -602,6 +603,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy(final String from) {
+        MyLog.d(TAG,"destroy" + " from=" + from);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;

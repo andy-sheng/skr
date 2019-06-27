@@ -380,7 +380,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                 && event.type != EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             DebugLogView.println(TAG, event.toString());
         }
-        if (mParentView == null) {
+        if (mParentView == null || mParentView.getVisibility() !=View.VISIBLE) {
             return;
         }
         if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {

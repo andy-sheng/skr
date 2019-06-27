@@ -731,8 +731,12 @@ public class AgoraRTCAdapter {
      */
     public void addRemoteVideo(int uid) {
         AgoraImgTexSrcPin srcPin = new AgoraImgTexSrcPin(mGLRender);
-        mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
-        mRemoteVideoSrcPins.put(uid, srcPin);
+        if (mRtcEngine != null) {
+            mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
+        }
+        if (mRemoteVideoSrcPins != null) {
+            mRemoteVideoSrcPins.put(uid, srcPin);
+        }
     }
 
     /**
@@ -741,8 +745,12 @@ public class AgoraRTCAdapter {
      * @param uid uid
      */
     public void removeRemoteVideo(int uid) {
-        mRtcEngine.setRemoteVideoRenderer(uid, null);
-        mRemoteVideoSrcPins.remove(uid);
+        if (mRtcEngine != null) {
+            mRtcEngine.setRemoteVideoRenderer(uid, null);
+        }
+        if (mRemoteVideoSrcPins != null) {
+            mRemoteVideoSrcPins.remove(uid);
+        }
     }
 
     /**

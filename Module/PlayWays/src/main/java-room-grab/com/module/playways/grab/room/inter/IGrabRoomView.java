@@ -77,4 +77,6 @@ public interface IGrabRoomView {
 
     //开始实名认证
     void beginOuath();
+
+    void changeRoomMode(boolean isVideo);
 }

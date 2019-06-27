@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface RAServerApi {
-    @GET("http://dev.game.inframe.mobi/v1/kconf/abtest-info")
+    @GET("http://dev.kconf.inframe.mobi/v1/kconf/abtest-info")
     Observable<ApiResult> getABtestInfo(@Query("testList") String testList);
 }

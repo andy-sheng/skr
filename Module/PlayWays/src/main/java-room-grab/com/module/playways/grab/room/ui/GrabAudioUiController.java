@@ -64,4 +64,9 @@ public class GrabAudioUiController extends GrabBaseUiController{
             mF.mSelfSingCardView.destroy();
         }
     }
+
+    @Override
+    public void stopWork() {
+        roundOver();
+    }
 }
