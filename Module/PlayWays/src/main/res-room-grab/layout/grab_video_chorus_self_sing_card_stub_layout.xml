@@ -14,7 +14,7 @@
         android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
         android:fadeScrollbars="false"
         android:fadingEdge="none"
-        android:overScrollMode="never"
+        android:overScrollMode="ifContentScrolls"
         android:scrollbars="vertical" />
 
 </RelativeLayout>
