@@ -146,7 +146,7 @@
                 android:id="@+id/volume_set"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_64_dp"
-                android:layout_below="@+id/shiming">
+                android:layout_below="@+id/tuiguang">
 
                 <com.common.view.ex.ExTextView
                     android:layout_width="wrap_content"
