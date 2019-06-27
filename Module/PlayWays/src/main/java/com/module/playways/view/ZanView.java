@@ -190,6 +190,7 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
             drawThread = null;
         }
         mHandler.removeCallbacksAndMessages(null);
+        handlerThread.quit();
 
     }
 
