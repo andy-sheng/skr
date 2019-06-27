@@ -7,6 +7,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.module.RouterConstants
@@ -41,6 +42,9 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
                     startCheckLoop()
                     U.getToastUtil().showShort("邀请成功")
                 } else {
+                    if (obj?.errno == 8376040){
+                        StatisticsAdapter.recordCountEvent("cp", "invite2_outchance", null)
+                    }
                     U.getToastUtil().showShort(obj?.errmsg)
                 }
             }
