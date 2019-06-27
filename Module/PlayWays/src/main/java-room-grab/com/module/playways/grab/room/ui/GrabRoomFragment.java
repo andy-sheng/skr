@@ -817,7 +817,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                 mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
                             } else {
                                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                                        .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人畅聊房吗？")
+                                        .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人唱聊房吗？")
                                         .setConfirmTip("邀请")
                                         .setCancelTip("取消")
                                         .setConfirmBtnClickListener(new AnimateClickListener() {
