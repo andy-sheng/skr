@@ -140,14 +140,6 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
                         mIGrabSongManageView.deleteSong(grabRoomSongModel);
 
                         mUiHandler.removeCallbacksAndMessages(null);
-                        mUiHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mGrabRoomSongModelList.size() < 10 && mHasMore) {
-                                    getPlayBookList();
-                                }
-                            }
-                        }, 300);
                     }
                 } else {
                     MyLog.w(TAG, "deleteSong failed, " + " traceid is " + result.getTraceId());
@@ -163,10 +155,6 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
 
     public void updateSongList() {
         mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
-
-        if (mGrabRoomSongModelList.size() < 5 && mHasMore) {
-            getPlayBookList();
-        }
     }
 
     // 添加新歌
@@ -254,6 +242,7 @@ public class DoubleSongManagePresenter extends BaseSongManagePresenter {
         }
 
         updateSongList();
+        mIGrabSongManageView.showNum(mGrabRoomSongModelList.size());
     }
 
 
