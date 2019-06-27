@@ -290,10 +290,9 @@ public class SongInfoCardView extends RelativeLayout {
                         String lyric = source.readUtf8();
                         emitter.onNext(lyric);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        MyLog.d(e);
                     }
                 }
-
                 emitter.onComplete();
             }
         }).compose(((BaseActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))

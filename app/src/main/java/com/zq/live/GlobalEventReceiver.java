@@ -3,6 +3,7 @@ package com.zq.live;
 import android.text.TextUtils;
 
 import com.common.clipboard.ClipboardUtils;
+import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.share.SharePanel;
@@ -47,6 +48,9 @@ public class GlobalEventReceiver {
 
     public void register() {
         EventBus.getDefault().register(this);
+        if(UserAccountManager.getInstance().hasAccount()){
+            initABtestInfo();
+        }
     }
 
 
