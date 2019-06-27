@@ -462,8 +462,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
                 mLeftNameTv?.text = mRoomData?.getAntherUser()?.nickname
                 mLeftNameTv?.visibility = VISIBLE
-                mLeftLockIcon?.visibility = VISIBLE
-                mLeftLockIcon?.background = U.getDrawable(R.drawable.double_light)
+                mLeftLockIcon?.visibility = GONE
             } else {
                 mLeftLockIcon?.visibility = VISIBLE
                 mLeftLockIcon?.background = U.getDrawable(R.drawable.double_light)
@@ -508,8 +507,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 mUnlockTv?.visibility = GONE
                 mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
                 mRightNameTv?.visibility = VISIBLE
-                mRightLockIcon?.visibility = VISIBLE
-                mRightLockIcon?.background = U.getDrawable(R.drawable.double_light)
+                mRightLockIcon?.visibility = GONE
             } else {
                 mUnlockTv?.visibility = GONE
                 mRightLockIcon?.visibility = VISIBLE
@@ -539,6 +537,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun showNoLimitDurationState(noLimit: Boolean) {
         MyLog.d(mTag, "showNoLimitDurationState noLimit is $noLimit")
         if (noLimit) {
+            mLeftLockIcon?.visibility = GONE
+            mRightLockIcon?.visibility = GONE
             mNoLimitIcon?.visibility = VISIBLE
             mCountDownTv?.visibility = GONE
             mNoLimitTip?.visibility = GONE
