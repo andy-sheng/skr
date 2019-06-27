@@ -75,7 +75,7 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LoadingCallback(R.drawable.wufensi, "数据真的在加载中..."))
-                .addCallback(new EmptyCallback(R.drawable.wufensi, "数据空了"))
+                .addCallback(new EmptyCallback(R.drawable.wufensi, "数据空了", null))
                 .addCallback(new ErrorCallback(R.drawable.wufensi, "请求出错了"))
                 .setDefaultCallback(LoadingCallback.class)
                 .build();

@@ -1,6 +1,8 @@
 package com.component.busilib.callback;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,10 +17,12 @@ public class EmptyCallback extends Callback {
 
     int resid;
     String text;
+    String textColor;
 
-    public EmptyCallback(int resid, String text) {
+    public EmptyCallback(int resid, String text, String textColor) {
         this.resid = resid;
         this.text = text;
+        this.textColor = textColor;
     }
 
     @Override
@@ -32,6 +36,9 @@ public class EmptyCallback extends Callback {
         mCallbackImg = (ImageView) view.findViewById(R.id.callback_img);
         mCallbackTxt = (TextView) view.findViewById(R.id.callback_txt);
 
+        if (!TextUtils.isEmpty(textColor)) {
+            mCallbackTxt.setTextColor(Color.parseColor(textColor));
+        }
         mCallbackImg.setBackgroundResource(resid);
         mCallbackTxt.setText(text);
     }

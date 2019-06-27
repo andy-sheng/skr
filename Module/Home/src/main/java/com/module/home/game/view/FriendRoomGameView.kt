@@ -126,7 +126,7 @@ class FriendRoomGameView : RelativeLayout {
         recycler_view.adapter = mFriendRoomVeritAdapter
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "暂时没有房间了～"))
+                .addCallback(EmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "暂时没有房间了～", "#4cffffff"))
                 .build()
         mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
             initData()
