@@ -10,16 +10,16 @@
         android:id="@+id/empty_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/tongxunlu_fensikongbaiye"/>
+        android:background="@drawable/photo_wall_empty_icon"/>
 
     <TextView
         android:id="@+id/empty_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="这个人很神秘，都没有照片"
+        android:text="暂无照片"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:textColor="#803B4E79"
-        android:textSize="@dimen/textsize_12_dp" />
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp" />
 
 </LinearLayout>
