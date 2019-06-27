@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
+import com.common.notification.event.CRSyncInviteUserNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -198,8 +198,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     @Override
     public void jumpToDoubleRoom(Object o) {
         DoubleRoomData doubleRoomData = new DoubleRoomData();
-        if (o instanceof CombineRoomSyncInviteUserNotifyEvent) {
-            CombineRoomSyncInviteUserNotifyEvent event = (CombineRoomSyncInviteUserNotifyEvent) o;
+        if (o instanceof CRSyncInviteUserNotifyEvent) {
+            CRSyncInviteUserNotifyEvent event = (CRSyncInviteUserNotifyEvent) o;
             doubleRoomData.setGameId(event.getRoomID());
             doubleRoomData.setEnableNoLimitDuration(true);
             doubleRoomData.setPassedTimeMs(event.getPassedTimeMs());

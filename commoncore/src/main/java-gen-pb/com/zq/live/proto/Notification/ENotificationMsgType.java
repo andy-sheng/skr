@@ -39,7 +39,12 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 双人房进房信令
    */
-  NM_CR_ENTER(5);
+  NM_CR_ENTER(5),
+
+  /**
+   * 双人房拒绝邀请信令
+   */
+  NM_CR_REFUSE(6);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -60,6 +65,7 @@ public enum ENotificationMsgType implements WireEnum {
       case 3: return NM_SYS_WARNING_MSG;
       case 4: return NM_CR_INVITE;
       case 5: return NM_CR_ENTER;
+      case 6: return NM_CR_REFUSE;
       default: return null;
     }
   }

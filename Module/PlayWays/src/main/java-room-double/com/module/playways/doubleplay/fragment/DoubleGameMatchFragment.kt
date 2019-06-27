@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
-import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent
+import com.common.notification.event.CRStartByMatchPushEvent
 import com.common.statistics.StatisticsAdapter
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
@@ -102,7 +102,7 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         activity?.finish()
     }
 
-    override fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: DoubleStartCombineRoomByMatchPushEvent) {
+    override fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: CRStartByMatchPushEvent) {
         MyLog.d(mTag, "matchSuccessFromPush")
         val doubleRoomData = DoubleRoomData()
         doubleRoomData.gameId = doubleStartCombineRoomByMatchPushEvent.roomID

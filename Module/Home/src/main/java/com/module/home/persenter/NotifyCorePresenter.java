@@ -26,9 +26,10 @@ import com.common.floatwindow.Screen;
 import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
-import com.common.notification.event.CombineRoomInviteInCreateRoomNotifyEvent;
-import com.common.notification.event.CombineRoomSendInviteUserNotifyEvent;
-import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
+import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
+import com.common.notification.event.CRRefuseInviteNotifyEvent;
+import com.common.notification.event.CRSendInviteUserNotifyEvent;
+import com.common.notification.event.CRSyncInviteUserNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
@@ -314,7 +315,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(CombineRoomSendInviteUserNotifyEvent event) {
+    public void onEvent(CRSendInviteUserNotifyEvent event) {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_INVITE);
         floatWindowData.setUserInfoModel(event.getUserInfoModel());
         floatWindowData.setExtra(event.msg);
@@ -322,7 +323,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(CombineRoomInviteInCreateRoomNotifyEvent event) {
+    public void onEvent(CRInviteInCreateRoomNotifyEvent event) {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_ROOM_INVITE);
         floatWindowData.setUserInfoModel(event.getUser());
         floatWindowData.setRoomID(event.getRoomID());
@@ -331,7 +332,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(CombineRoomSyncInviteUserNotifyEvent event) {
+    public void onEvent(CRSyncInviteUserNotifyEvent event) {
         IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
         if (iRankingModeService != null) {
             iRankingModeService.jumpToDoubleRoom(event);
@@ -434,6 +435,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(null);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CRRefuseInviteNotifyEvent event) {
+        String remark = UserInfoManager.getInstance().getRemarkName(event.mUserInfoModel.getUserId(), event.mUserInfoModel.getNickname());
+        U.getToastUtil().showShort("" + remark + event.refuseMsg);
     }
 
     void resendGrabInviterFloatWindowDismissMsg() {

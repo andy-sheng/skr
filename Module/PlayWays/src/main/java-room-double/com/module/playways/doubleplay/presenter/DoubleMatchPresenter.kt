@@ -3,7 +3,7 @@ package com.module.playways.doubleplay.presenter
 import com.alibaba.fastjson.JSON
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent
+import com.common.notification.event.CRStartByMatchPushEvent
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -77,7 +77,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: DoubleStartCombineRoomByMatchPushEvent) {
+    fun onEvent(event: CRStartByMatchPushEvent) {
         iMatchView.matchSuccessFromPush(event)
     }
 

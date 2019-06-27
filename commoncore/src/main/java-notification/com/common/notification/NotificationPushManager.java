@@ -1,16 +1,18 @@
 package com.common.notification;
 
 import com.common.log.MyLog;
-import com.common.notification.event.CombineRoomInviteInCreateRoomNotifyEvent;
-import com.common.notification.event.CombineRoomSendInviteUserNotifyEvent;
-import com.common.notification.event.CombineRoomSyncInviteUserNotifyEvent;
-import com.common.notification.event.DoubleStartCombineRoomByMatchPushEvent;
+import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
+import com.common.notification.event.CRRefuseInviteNotifyEvent;
+import com.common.notification.event.CRSendInviteUserNotifyEvent;
+import com.common.notification.event.CRSyncInviteUserNotifyEvent;
+import com.common.notification.event.CRStartByMatchPushEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
-import com.common.notification.event.StartCombineRoomByCreateNotifyEvent;
+import com.common.notification.event.CRStartByCreateNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
 import com.zq.live.proto.Notification.CombineRoomEnterMsg;
 import com.zq.live.proto.Notification.CombineRoomInviteMsg;
+import com.zq.live.proto.Notification.CombineRoomRefuseMsg;
 import com.zq.live.proto.Notification.ECombineRoomEnterType;
 import com.zq.live.proto.Notification.EInviteType;
 import com.zq.live.proto.Notification.ENotificationMsgType;
@@ -59,6 +61,16 @@ public class NotificationPushManager {
             processInviteMsg(baseNotiInfo, msg.getInviteMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_ENTER) {
             processEnterRoomMsg(baseNotiInfo, msg.getEnterMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_REFUSE) {
+            processRefuseDoubleRoomMsg(baseNotiInfo, msg.getRefuseMsg());
+        }
+    }
+
+    // 处理双人房拒绝消息
+    private void processRefuseDoubleRoomMsg(BaseNotiInfo baseNotiInfo, CombineRoomRefuseMsg refuseMsg) {
+        if (baseNotiInfo != null) {
+            CRRefuseInviteNotifyEvent crRefuseInviteNotifyEvent = new CRRefuseInviteNotifyEvent(baseNotiInfo, refuseMsg);
+            EventBus.getDefault().post(crRefuseInviteNotifyEvent);
         }
     }
 
@@ -93,11 +105,11 @@ public class NotificationPushManager {
         if (combineRoomInviteMsg != null) {
             if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_OUT_COMBINE_ROOM) {
                 //房间外，目前是一场到底里面
-                CombineRoomSendInviteUserNotifyEvent combineRoomSendInviteUserEvent = new CombineRoomSendInviteUserNotifyEvent(baseNotiInfo, combineRoomInviteMsg);
+                CRSendInviteUserNotifyEvent combineRoomSendInviteUserEvent = new CRSendInviteUserNotifyEvent(baseNotiInfo, combineRoomInviteMsg);
                 EventBus.getDefault().post(combineRoomSendInviteUserEvent);
             } else if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_IN_COMBINE_ROOM) {
                 //双人房房间里
-                EventBus.getDefault().post(new CombineRoomInviteInCreateRoomNotifyEvent(baseNotiInfo, combineRoomInviteMsg));
+                EventBus.getDefault().post(new CRInviteInCreateRoomNotifyEvent(baseNotiInfo, combineRoomInviteMsg));
             } else {
                 MyLog.e(TAG, "processInviteMsg unknown type=" + combineRoomInviteMsg.getInviteType());
             }
@@ -109,12 +121,12 @@ public class NotificationPushManager {
     private void processEnterRoomMsg(BaseNotiInfo baseNotiInfo, CombineRoomEnterMsg combineRoomEnterMsg) {
         if (combineRoomEnterMsg != null) {
             if (combineRoomEnterMsg.getEnterType() == ECombineRoomEnterType.CRET_INVITE) {
-                CombineRoomSyncInviteUserNotifyEvent combineRoomSyncInviteUserEvent = new CombineRoomSyncInviteUserNotifyEvent(baseNotiInfo, combineRoomEnterMsg);
+                CRSyncInviteUserNotifyEvent combineRoomSyncInviteUserEvent = new CRSyncInviteUserNotifyEvent(baseNotiInfo, combineRoomEnterMsg);
                 EventBus.getDefault().post(combineRoomSyncInviteUserEvent);
             } else if (combineRoomEnterMsg.getEnterType() == ECombineRoomEnterType.CRET_MATCH) {
-                EventBus.getDefault().post(new DoubleStartCombineRoomByMatchPushEvent(baseNotiInfo, combineRoomEnterMsg));
+                EventBus.getDefault().post(new CRStartByMatchPushEvent(baseNotiInfo, combineRoomEnterMsg));
             } else if (combineRoomEnterMsg.getEnterType() == ECombineRoomEnterType.CRET_CREATE) {
-                EventBus.getDefault().post(new StartCombineRoomByCreateNotifyEvent(baseNotiInfo, combineRoomEnterMsg));
+                EventBus.getDefault().post(new CRStartByCreateNotifyEvent(baseNotiInfo, combineRoomEnterMsg));
             } else {
                 MyLog.e(TAG, "processEnterRoomMsg unknown type=" + combineRoomEnterMsg.getEnterType());
             }

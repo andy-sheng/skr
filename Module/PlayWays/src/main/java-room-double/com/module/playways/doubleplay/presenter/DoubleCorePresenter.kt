@@ -11,7 +11,7 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.MyLog
 import com.common.mvp.PresenterEvent
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.notification.event.StartCombineRoomByCreateNotifyEvent
+import com.common.notification.event.CRStartByCreateNotifyEvent
 import com.common.rx.RxRetryAssist
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -257,7 +257,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: StartCombineRoomByCreateNotifyEvent) {
+    fun onEvent(event: CRStartByCreateNotifyEvent) {
         MyLog.d(tag, "onEvent StartCombineRoomByCreateNotifyEvent 1")
         //在唱聊房邀请别人之后当对方同意之后收到的push，如果房间人数已经2个了就说名这个房间已经
         if (mRoomData.gameId == event.roomID && !mRoomData.isRoomPrepared()) {

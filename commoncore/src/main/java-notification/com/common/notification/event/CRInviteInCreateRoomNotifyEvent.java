@@ -4,7 +4,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.notification.BaseNotiInfo;
 import com.zq.live.proto.Notification.CombineRoomInviteMsg;
 
-public class CombineRoomInviteInCreateRoomNotifyEvent {
+public class CRInviteInCreateRoomNotifyEvent {
     public BaseNotiInfo mBaseNotiInfo;
     private UserInfoModel user;
     private String inviteMsg;
@@ -22,7 +22,7 @@ public class CombineRoomInviteInCreateRoomNotifyEvent {
         return roomID;
     }
 
-    public CombineRoomInviteInCreateRoomNotifyEvent(BaseNotiInfo baseNotiInfo, CombineRoomInviteMsg combineRoomInviteMsg) {
+    public CRInviteInCreateRoomNotifyEvent(BaseNotiInfo baseNotiInfo, CombineRoomInviteMsg combineRoomInviteMsg) {
         mBaseNotiInfo = baseNotiInfo;
         user = UserInfoModel.parseFromPB(combineRoomInviteMsg.getUser());
         inviteMsg = combineRoomInviteMsg.getInviteMsg();
