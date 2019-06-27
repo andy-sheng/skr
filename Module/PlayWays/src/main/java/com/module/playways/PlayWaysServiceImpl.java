@@ -23,7 +23,6 @@ import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
 import com.module.playways.event.GrabChangeRoomEvent;
-import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
@@ -160,24 +159,6 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                 .withSerializable("prepare_data", prepareData)
                 .navigation();
-    }
-
-    @Override
-    public void tryGoGrabGuide(int tagId) {
-        GrabGuideServerApi grabGuideServerApi = ApiManager.getInstance().createService(GrabGuideServerApi.class);
-        if (grabGuideServerApi != null) {
-//            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1, (int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-//                @Override
-//                public void process(ApiResult obj) {
-//                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(), GrabGuideInfoModel.class);
-//
-//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
-//                            .withSerializable("guide_data", grabGuideInfoModel)
-//                            .withInt("tag_id", tagId)
-//                            .navigation();
-//                }
-//            }, new ApiMethods.RequestControl("getGuideRes", ApiMethods.ControlType.CancelThis));
-        }
     }
 
     /**

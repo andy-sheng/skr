@@ -6,7 +6,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -44,7 +42,6 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
-import com.module.home.fragment.GrabGuideHomePageFragment;
 import com.module.home.fragment.PersonFragment4;
 import com.module.home.fragment.PkInfoFragment;
 import com.module.home.game.GameFragment3;
@@ -398,17 +395,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
         mFromCreate = false;
 
-        if (MyUserInfoManager.getInstance().isNeedBeginnerGuide()) {
-            U.getFragmentUtils().addFragment(
-                    FragmentUtils.newAddParamsBuilder(this, GrabGuideHomePageFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(false)
-                            .build());
-        } else {
-            UpgradeManager.getInstance().checkUpdate1();
-            mRedPkgPresenter.checkRedPkg();
-            mCheckInPresenter.check();
-        }
+        UpgradeManager.getInstance().checkUpdate1();
+        mRedPkgPresenter.checkRedPkg();
+        mCheckInPresenter.check();
+
         if (UserAccountManager.getInstance().hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
         }

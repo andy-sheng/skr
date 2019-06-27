@@ -16,8 +16,6 @@ public interface IPlaywaysModeService extends IProvider {
 
     void tryGoGrabMatch(int tagId);
 
-    void tryGoGrabGuide(int tagId);
-
     void tryGoNewGrabMatch();
 
     //    private Integer roomID;
