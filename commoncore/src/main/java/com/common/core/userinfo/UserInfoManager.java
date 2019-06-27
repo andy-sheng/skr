@@ -279,6 +279,28 @@ public class UserInfoManager {
         }
     }
 
+    public void checkIsFans(int from, int to, final ResponseCallBack<Boolean> responseCallBack) {
+        if (from <= 0 || to <= 0) {
+            MyLog.w(TAG, "checkIsFans" + " from=" + from + " to=" + to + " responseCallBack=" + responseCallBack);
+            return;
+        }
+        ApiMethods.subscribe(userInfoServerApi.checkIsFans(from, to), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    boolean isFans = result.getData().getBooleanValue("isFans");
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerSucess(isFans);
+                    }
+                } else {
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerFailed();
+                    }
+                }
+            }
+        });
+    }
+
     public void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
             @Override

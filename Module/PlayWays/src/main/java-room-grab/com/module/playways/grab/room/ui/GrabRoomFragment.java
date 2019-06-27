@@ -30,9 +30,13 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.log.DebugLogView;
 import com.common.view.ex.ExImageView;
@@ -226,6 +230,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     ContinueSendView mContinueSendView;
 
     DialogPlus mVoiceControlDialog;
+
+    TipsDialogView mTipsDialogView;
 
     GrabVideoDisplayView mGrabVideoDisplayView; // 视频展示view
 
@@ -801,7 +807,43 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void onClickDoubleInvite(UserInfoModel userInfoModel) {
-                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                if (userInfoModel.isFriend()) {
+                    mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                } else {
+                    UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack<Boolean>() {
+                        @Override
+                        public void onServerSucess(Boolean isFans) {
+                            if (isFans) {
+                                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                            } else {
+                                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                                        .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人畅聊房吗？")
+                                        .setConfirmTip("邀请")
+                                        .setCancelTip("取消")
+                                        .setConfirmBtnClickListener(new AnimateClickListener() {
+                                            @Override
+                                            public void click(View view) {
+                                                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                                                mTipsDialogView.dismiss();
+                                            }
+                                        })
+                                        .setCancelBtnClickListener(new AnimateClickListener() {
+                                            @Override
+                                            public void click(View view) {
+                                                mTipsDialogView.dismiss();
+                                            }
+                                        })
+                                        .build();
+                                mTipsDialogView.showByDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onServerFailed() {
+
+                        }
+                    });
+                }
             }
         });
         mPersonInfoDialog.show();
@@ -1747,6 +1789,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
         if (mVoiceControlDialog != null) {
             mVoiceControlDialog.dismiss(false);
+        }
+        if (mTipsDialogView != null) {
+            mTipsDialogView.dismiss(false);
         }
     }
 

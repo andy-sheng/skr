@@ -41,7 +41,7 @@ public class RealNameVerifyUtils {
             if (U.getDeviceUtils().getLevel().getValue() <= DeviceUtils.LEVEL.MIDDLE.getValue()) {
                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
                         .setMessageTip("你的设备性能较差，进入视频专场可能会影响体验，确定要进入么？")
-                        .setOkBtnTip("进入")
+                        .setConfirmTip("进入")
                         .setCancelTip("退出")
                         .setConfirmBtnClickListener(new AnimateClickListener() {
                             @Override

@@ -128,9 +128,8 @@ public class PersonInfoDialog {
             @Override
             public void onClickDoubleInvite(UserInfoModel userInfoModel) {
                 if (mDialogPlus != null) {
-                    mDialogPlus.dismiss(true);
+                    mDialogPlus.dismiss(false);
                 }
-
                 if (mKickListener != null) {
                     mKickListener.onClickDoubleInvite(userInfoModel);
                 }

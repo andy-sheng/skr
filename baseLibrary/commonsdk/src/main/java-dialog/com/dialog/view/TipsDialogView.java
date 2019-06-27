@@ -75,6 +75,12 @@ public class TipsDialogView extends RelativeLayout {
         }
     }
 
+    public void dismiss(boolean isAnimation){
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(isAnimation);
+        }
+    }
+
     public static final class Builder {
         TipsDialogView tipsDialogView;
         private ExTextView mMessageTv;
