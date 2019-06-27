@@ -39,6 +39,7 @@ class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLi
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     startCheckLoop()
+                    U.getToastUtil().showShort("邀请成功")
                 } else {
                     U.getToastUtil().showShort(obj?.errmsg)
                 }
