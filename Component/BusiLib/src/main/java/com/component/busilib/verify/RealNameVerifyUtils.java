@@ -1,10 +1,8 @@
 package com.component.busilib.verify;
 
-import android.content.Context;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -14,7 +12,6 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
-import com.common.view.ex.RxLifecycleView;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.tencent.mm.opensdk.constants.Build;
@@ -89,9 +86,9 @@ public class RealNameVerifyUtils {
                 // 去实名认证
                 if (mTipsDialogView == null) {
                     mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                            .setMessageTip("撕歌的宝贝们，两分钟完成认证\n超有趣的视频玩法等着你来哦")
+                            .setMessageTip("成为认证VIP\n解锁视频专场永久开启权限")
                             .setConfirmTip("快速认证")
-                            .setCancelTip("取消")
+                            .setCancelTip("残忍拒绝")
                             .setConfirmBtnClickListener(new AnimateClickListener() {
                                 @Override
                                 public void click(View view) {
