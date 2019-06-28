@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
     public final static String TAG = "ZanView";
     public final static int ADD_XIN_MSG = 0;
+    public final static int DRAW_XIN_MSG = 1;
     private SurfaceHolder surfaceHolder;
 
     /**
@@ -28,10 +29,6 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
      */
     private ArrayList<ZanBean> mBeanArrayList = new ArrayList<>();
     private Paint p;
-    /**
-     * 负责绘制的工作线程
-     */
-    private DrawThread drawThread;
 
     HandlerThread handlerThread;
 
@@ -54,7 +51,6 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);
         p = new Paint();
         p.setAntiAlias(true);
-        drawThread = new DrawThread();
 
         handlerThread = new HandlerThread("ZanView HandlerThread");
         handlerThread.start();
@@ -64,6 +60,11 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
             public boolean handleMessage(Message msg) {
                 if (msg.what == ADD_XIN_MSG) {
                     realAddZanXin();
+                    if (!mHandler.hasMessages(DRAW_XIN_MSG)) {
+                        mHandler.sendEmptyMessageDelayed(DRAW_XIN_MSG, 0);
+                    }
+                } else if (msg.what == DRAW_XIN_MSG) {
+                    drawXin();
                 }
                 return true;
             }
@@ -71,7 +72,6 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * todo 这里优化
      * 点赞动作  添加心的函数 控制画面最大心的个数
      */
     public void addZanXin(int count) {
@@ -92,16 +92,12 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
             if (mBeanArrayList.size() > 40) {
                 mBeanArrayList.remove(0);
             }
-            start();
         }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if (drawThread == null) {
-            drawThread = new DrawThread();
-        }
-        drawThread.start();
+        drawXin();
     }
 
     @Override
@@ -111,96 +107,58 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        if (drawThread != null) {
-            drawThread.isRun = false;
-            drawThread = null;
-        }
+        mHandler.removeCallbacksAndMessages(null);
     }
 
-    class DrawThread extends Thread {
-        boolean isRun = true;
+    private void drawXin() {
+        Canvas canvas = null;
+        try {
+            synchronized (surfaceHolder) {
+                canvas = surfaceHolder.lockCanvas();
+                /**清除画面*/
+                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
-        @Override
-        public void run() {
-            super.run();
-            /**绘制的线程 死循环 不断的跑动*/
-            while (isRun) {
-                Canvas canvas = null;
-                try {
-                    synchronized (surfaceHolder) {
-                        canvas = surfaceHolder.lockCanvas();
-                        /**清除画面*/
-                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-                        /**对所有心进行遍历绘制*/
-                        java.util.Iterator<ZanBean> iterable = mBeanArrayList.iterator();
-                        MyLog.d(TAG, "run DrawThread " + Thread.currentThread().hashCode());
-                        while (iterable.hasNext()) {
-                            ZanBean bean = iterable.next();
-                            if (bean.isEnd) {
-                                iterable.remove();
-                                continue;
-                            }
-
-                            bean.draw(canvas, p);
-                        }
-
-                        MyLog.d(TAG, "run + mBeanArrayList size is " + mBeanArrayList.size());
-                        /**这里做一个性能优化的动作，由于线程是死循环的 在没有心需要的绘制的时候会结束线程*/
-                        if (mBeanArrayList.size() == 0) {
-                            isRun = false;
-                            drawThread = null;
-                        }
+                /**对所有心进行遍历绘制*/
+                java.util.Iterator<ZanBean> iterable = mBeanArrayList.iterator();
+                MyLog.d(TAG, "run DrawThread " + Thread.currentThread().hashCode());
+                while (iterable.hasNext()) {
+                    ZanBean bean = iterable.next();
+                    if (bean.isEnd) {
+                        iterable.remove();
+                        continue;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (canvas != null) {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                    }
+
+                    bean.draw(canvas, p);
                 }
-                try {
-                    /**用于控制绘制帧率*/
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+                MyLog.d(TAG, "run + mBeanArrayList size is " + mBeanArrayList.size());
+                /**这里做一个性能优化的动作，由于线程是死循环的 在没有心需要的绘制的时候会结束线程*/
+                if (mBeanArrayList.size() == 0) {
+                    MyLog.d(TAG, "mBeanArrayList 为空，画完了");
+                } else {
+                    mHandler.sendEmptyMessageDelayed(DRAW_XIN_MSG, 20);
                 }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            mHandler.sendEmptyMessageDelayed(DRAW_XIN_MSG, 20);
+        } finally {
+            if (canvas != null) {
+                surfaceHolder.unlockCanvasAndPost(canvas);
             }
         }
     }
 
     public void stop() {
-        if (drawThread != null) {
-
-//            for (int i = 0; i < mBeanArrayList.size(); i++) {
-//                mBeanArrayList.get(i).pause();
-//            }
-//            for (int i = 0; i < mBeanArrayList.size(); i++) {
-//                mBeanArrayList.get(i).stop();
-//            }
-
-            java.util.Iterator<ZanBean> iterable = mBeanArrayList.iterator();
-            MyLog.d(TAG, "run DrawThread " + Thread.currentThread().hashCode());
-            while (iterable.hasNext()) {
-                ZanBean bean = iterable.next();
-                bean.stop();
-            }
-
-            drawThread.isRun = false;
-            drawThread = null;
+        java.util.Iterator<ZanBean> iterable = mBeanArrayList.iterator();
+        MyLog.d(TAG, "run DrawThread " + Thread.currentThread().hashCode());
+        while (iterable.hasNext()) {
+            ZanBean bean = iterable.next();
+            bean.stop();
         }
+
         mHandler.removeCallbacksAndMessages(null);
         handlerThread.quit();
 
-    }
-
-    public void start() {
-        if (drawThread == null) {
-//            for (int i = 0; i < mBeanArrayList.size(); i++) {
-//                mBeanArrayList.get(i).resume();
-//            }
-            drawThread = new DrawThread();
-            drawThread.start();
-        }
     }
 }
