@@ -109,14 +109,14 @@ public class GrabTopContentView extends ConstraintLayout {
     }
 
     public void setArrowIcon(boolean open) {
-        if(open){
+        if (open) {
             // 展开状态
             mIsOpen = true;
-            mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbuzhankai));
-        }else{
+            mArrowIv.setImageResource(R.drawable.yichangdaodi_dingbuzhankai);
+        } else {
             // 折叠状态
             mIsOpen = false;
-            mArrowIv.setBackground(U.getDrawable(R.drawable.yichangdaodi_dingbushouqi));
+            mArrowIv.setImageResource(R.drawable.yichangdaodi_dingbushouqi);
         }
     }
 
@@ -720,7 +720,7 @@ public class GrabTopContentView extends ConstraintLayout {
         mListener = listener;
     }
 
-    public interface Listener{
+    public interface Listener {
         void clickArrow(boolean open);
     }
 }
