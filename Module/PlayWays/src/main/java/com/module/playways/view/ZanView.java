@@ -120,7 +120,6 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
 
                 /**对所有心进行遍历绘制*/
                 java.util.Iterator<ZanBean> iterable = mBeanArrayList.iterator();
-                MyLog.d(TAG, "run DrawThread " + Thread.currentThread().hashCode());
                 while (iterable.hasNext()) {
                     ZanBean bean = iterable.next();
                     if (bean.isEnd) {
@@ -131,7 +130,6 @@ public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
                     bean.draw(canvas, p);
                 }
 
-                MyLog.d(TAG, "run + mBeanArrayList size is " + mBeanArrayList.size());
                 /**这里做一个性能优化的动作，由于线程是死循环的 在没有心需要的绘制的时候会结束线程*/
                 if (mBeanArrayList.size() == 0) {
                     MyLog.d(TAG, "mBeanArrayList 为空，画完了");
