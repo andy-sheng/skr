@@ -48,12 +48,14 @@ public class PersonInfoDialog {
 
     public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, int roomID) {
         this.mActivity = activity;
+        this.mFrom = from;
         this.mRoomID = roomID;
         init(mActivity, userId, showReport, showKick, true);
     }
 
     public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, int roomID, boolean showInvite) {
         this.mActivity = activity;
+        this.mFrom = from;
         this.mRoomID = roomID;
         init(activity, userId, showReport, showKick, showInvite);
     }
