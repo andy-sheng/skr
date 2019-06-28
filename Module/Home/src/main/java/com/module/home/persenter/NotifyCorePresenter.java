@@ -134,7 +134,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 showFollowFloatWindow(floatWindowData);
             } else if (floatWindowData.mType == FloatWindowData.Type.GRABINVITE) {
                 showGrabInviteFloatWindow(floatWindowData);
-            } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_INVITE) {
+            } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_GRAB_INVITE) {
                 showDoubleInviteFloatWindow(floatWindowData);
             } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_ROOM_INVITE) {
                 showDoubleInviteFromRoomFloatWindow(floatWindowData);
@@ -316,7 +316,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CRSendInviteUserNotifyEvent event) {
-        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_INVITE);
+        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.DOUBLE_GRAB_INVITE);
         floatWindowData.setUserInfoModel(event.getUserInfoModel());
         floatWindowData.setExtra(event.msg);
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
@@ -743,12 +743,21 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             mMediaType = mediaType;
         }
 
+        @Override
+        public String toString() {
+            return "FloatWindowData{" +
+                    "mUserInfoModel=" + mUserInfoModel +
+                    ", mType=" + mType +
+                    ", mRoomID=" + mRoomID +
+                    '}';
+        }
+
         /**
          * DOUBLE_INVITE 是一场到底里的邀请
          * DOUBLE_ROOM_INVITE是唱聊房里的邀请
          */
         public enum Type {
-            FOLLOW, GRABINVITE, DOUBLE_INVITE, DOUBLE_ROOM_INVITE,
+            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE,
         }
     }
 }

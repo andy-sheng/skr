@@ -131,7 +131,7 @@ public class IFloatWindowImpl extends IFloatWindow {
 
     @Override
     void dismiss(int dismissReason) {
-        MyLog.d(TAG, "dismiss dismissReason");
+        MyLog.d(TAG,"dismiss" + " dismissReason=" + dismissReason);
         mFloatView.dismiss();
         isShow = false;
         if (mB.mViewStateListener != null) {
