@@ -36,10 +36,6 @@ public class PersonInfoDialog {
 
     private int mFrom;
 
-    public static final int FROM_RANK_ROOM = 1;  //标记来源
-    public static final int FROM_GRAB_ROOM = 2;
-    public static final int FROM_DOUBLE_ROOM = 3;
-
     public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick) {
         this.mActivity = activity;
         this.mFrom = from;
@@ -227,17 +223,11 @@ public class PersonInfoDialog {
     }
 
     private void showReportView(int userID) {
-        int from = QuickFeedbackFragment.FROM_GRAB_ROOM;
-        if (mFrom == FROM_DOUBLE_ROOM) {
-            from = QuickFeedbackFragment.FROM_DOUBLE_ROOM;
-        } else if (mFrom == FROM_RANK_ROOM) {
-            from = QuickFeedbackFragment.FROM_RANK_ROOM;
-        }
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder((BaseActivity) mActivity, QuickFeedbackFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .addDataBeforeAdd(0, from)
+                        .addDataBeforeAdd(0, mFrom)
                         .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
                         .addDataBeforeAdd(2, userID)
                         .setEnterAnim(R.anim.slide_in_bottom)

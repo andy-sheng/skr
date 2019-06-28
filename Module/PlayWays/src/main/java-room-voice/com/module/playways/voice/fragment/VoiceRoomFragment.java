@@ -30,6 +30,7 @@ import com.module.playways.voice.view.VoiceTopContainerView;
 import com.module.playways.voice.view.VoiceUserStatusContainerView;
 import com.module.playways.R;
 import com.zq.dialog.PersonInfoDialog;
+import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -204,7 +205,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), PersonInfoDialog.FROM_RANK_ROOM, userID, true, false);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), QuickFeedbackFragment.FROM_RANK_ROOM, userID, true, false);
         mPersonInfoDialog.show();
     }
 

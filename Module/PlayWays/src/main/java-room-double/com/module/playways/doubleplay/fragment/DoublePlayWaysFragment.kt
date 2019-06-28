@@ -279,7 +279,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             return
         }
 
-        mPersonInfoDialog = PersonInfoDialog(activity, PersonInfoDialog.FROM_DOUBLE_ROOM, userID, true, false, mRoomData.gameId, false)
+        mPersonInfoDialog = PersonInfoDialog(activity, QuickFeedbackFragment.FROM_DOUBLE_ROOM, userID, true, false, mRoomData.gameId, false)
         mPersonInfoDialog?.setListener(object : PersonInfoDialog.KickListener {
 
             override fun onClickKick(userInfoModel: UserInfoModel) {
