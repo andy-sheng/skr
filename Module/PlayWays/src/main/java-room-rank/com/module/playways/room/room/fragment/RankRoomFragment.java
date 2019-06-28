@@ -610,7 +610,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), QuickFeedbackFragment.FROM_RANK_ROOM, userID, true, false);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), QuickFeedbackFragment.FROM_RANK_ROOM, userID, true, false, false);
         mPersonInfoDialog.show();
     }
 

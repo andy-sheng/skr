@@ -36,10 +36,10 @@ public class PersonInfoDialog {
 
     private int mFrom;
 
-    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick) {
+    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, boolean showInvite) {
         this.mActivity = activity;
         this.mFrom = from;
-        init(mActivity, userId, showReport, showKick, true);
+        init(mActivity, userId, showReport, showKick, showInvite);
     }
 
     public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, int roomID) {
