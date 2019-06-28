@@ -164,8 +164,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                         FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
-                                .addDataBeforeAdd(0, 1)
-                                .addDataBeforeAdd(1, mRoomData.getAntherUser()?.userId ?: 0)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_DOUBLE_ROOM)
+                                .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
+                                .addDataBeforeAdd(2, mRoomData.getAntherUser()?.userId ?: 0)
                                 .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
                                 .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                                 .build())
@@ -278,7 +279,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             return
         }
 
-        mPersonInfoDialog = PersonInfoDialog(activity, userID, true, false, mRoomData.gameId, false)
+        mPersonInfoDialog = PersonInfoDialog(activity, PersonInfoDialog.FROM_DOUBLE_ROOM, userID, true, false, mRoomData.gameId, false)
         mPersonInfoDialog?.setListener(object : PersonInfoDialog.KickListener {
 
             override fun onClickKick(userInfoModel: UserInfoModel) {

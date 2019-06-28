@@ -610,7 +610,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), PersonInfoDialog.FROM_RANK_ROOM, userID, true, false);
         mPersonInfoDialog.show();
     }
 
@@ -635,6 +635,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                         FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RANK_ROOM)
+                                .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
                                 .setEnterAnim(R.anim.slide_in_bottom)
                                 .setExitAnim(R.anim.slide_out_bottom)
                                 .build());

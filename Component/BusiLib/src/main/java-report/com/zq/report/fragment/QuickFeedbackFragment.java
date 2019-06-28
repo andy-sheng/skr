@@ -67,6 +67,12 @@ public class QuickFeedbackFragment extends BaseFragment {
     //举报
     public static final int REPORT = 1;
 
+    public static final int FROM_RANK_ROOM = 1;  //标记来源
+    public static final int FROM_GRAB_ROOM = 2;
+    public static final int FROM_DOUBLE_ROOM = 3;
+
+    private int mFrom;  //标记举报来源
+
     RelativeLayout mContainer;
     FeedbackView mFeedBackView;
     View mPlaceView;
@@ -267,7 +273,11 @@ public class QuickFeedbackFragment extends BaseFragment {
         map.put("createdAt", System.currentTimeMillis());
         map.put("appVer", U.getAppInfoUtils().getVersionName());
         map.put("channel", U.getChannelUtils().getChannel());
-        map.put("source", 1);
+        if (mFrom == FROM_RANK_ROOM || mFrom == FROM_GRAB_ROOM) {
+            map.put("source", 1);
+        } else if (mFrom == FROM_DOUBLE_ROOM) {
+            map.put("source", 3);
+        }
         map.put("type", typeList);
         map.put("content", content);
         map.put("appLog", logUrl);
@@ -317,7 +327,11 @@ public class QuickFeedbackFragment extends BaseFragment {
         map.put("content", content);
         map.put("screenshot", picUrls);
         map.put("type", typeList);
-        map.put("source", 1);
+        if (mFrom == FROM_RANK_ROOM || mFrom == FROM_GRAB_ROOM) {
+            map.put("source", 1);
+        } else if (mFrom == FROM_DOUBLE_ROOM) {
+            map.put("source", 3);
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -350,8 +364,10 @@ public class QuickFeedbackFragment extends BaseFragment {
     @Override
     public void setData(int type, @Nullable Object data) {
         if (type == 0) {
-            mActionType = (int) data;
+            mFrom = (int) data;
         } else if (type == 1) {
+            mActionType = (int) data;
+        } else if (type == 2) {
             mTargetId = (int) data;
         }
     }

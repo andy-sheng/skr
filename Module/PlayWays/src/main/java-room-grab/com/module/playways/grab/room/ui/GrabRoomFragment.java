@@ -789,12 +789,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
             // 普通房
-            mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true, mRoomData.getGameId());
+            mPersonInfoDialog = new PersonInfoDialog(getActivity(), PersonInfoDialog.FROM_GRAB_ROOM, userID, true, true, mRoomData.getGameId());
         } else {
             if (mRoomData.isOwner()) {
-                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true, mRoomData.getGameId());
+                mPersonInfoDialog = new PersonInfoDialog(getActivity(), PersonInfoDialog.FROM_GRAB_ROOM, userID, true, true, mRoomData.getGameId());
             } else {
-                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false, mRoomData.getGameId());
+                mPersonInfoDialog = new PersonInfoDialog(getActivity(), PersonInfoDialog.FROM_GRAB_ROOM, userID, true, false, mRoomData.getGameId());
             }
         }
 
@@ -954,7 +954,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                         FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
-                                .addDataBeforeAdd(0, 0)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RANK_ROOM)
+                                .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
                                 .setEnterAnim(R.anim.slide_in_bottom)
                                 .setExitAnim(R.anim.slide_out_bottom)
                                 .build());
@@ -1872,10 +1873,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     @Override
     public void changeRoomMode(boolean isVideo) {
-        if(isVideo){
+        if (isVideo) {
             mGrabAudioUiController.stopWork();
             mGrabBaseUiController = mGrabVideoUiController;
-        }else{
+        } else {
             mGrabVideoUiController.stopWork();
             mGrabBaseUiController = mGrabAudioUiController;
         }
