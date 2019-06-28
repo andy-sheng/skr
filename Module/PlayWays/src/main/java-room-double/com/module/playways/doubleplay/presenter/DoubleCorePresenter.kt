@@ -343,7 +343,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 override fun process(obj: ApiResult?) {
                     MyLog.w(tag, "syncRoomPlayer obj is $obj")
                     if (obj?.errno == 0 && mRoomData.userInfoListMap?.size ?: 0 < 2) {
-                        val userList = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
+                        val userList: List<UserInfoModel>? = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
 
                         if (userList != null) {
                             val hashMap = HashMap<Int, UserInfoModel>()
