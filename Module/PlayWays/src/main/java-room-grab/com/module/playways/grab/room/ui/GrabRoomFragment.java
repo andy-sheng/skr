@@ -1696,6 +1696,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 }
             }, 1500 - t);
         }
+        if(success){
+            hideAllCardView();
+            // 重新决定显示mic按钮
+            mBottomContainerView.setRoomData(mRoomData);
+        }
     }
 
     @Override
@@ -1848,7 +1853,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         removeManageSongTipView();
     }
 
-    @Override
     public void hideAllCardView() {
         mRoundOverCardView.setVisibility(GONE);
         mOthersSingCardView.setVisibility(GONE);

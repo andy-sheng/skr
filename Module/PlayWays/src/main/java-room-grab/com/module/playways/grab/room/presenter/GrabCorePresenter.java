@@ -1506,10 +1506,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (joinGrabRoomRspModel != null) {
             stopGuide();
             mRoomData.loadFromRsp(joinGrabRoomRspModel);
-            mIGrabView.hideAllCardView();
             joinRoomAndInit(false);
-            mRoomData.checkRoundInEachMode();
             mIGrabView.onChangeRoomResult(true, null);
+            mRoomData.checkRoundInEachMode();
             mIGrabView.dimissKickDialog();
         }
     }
