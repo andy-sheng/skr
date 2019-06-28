@@ -97,7 +97,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 if (position == 0) {
                     return "好友房"
                 } else if (position == 1) {
-                    return "快速游戏"
+                    return "多人抢唱"
                 } else if (position == 2) {
                     return "双人唱聊"
                 }
