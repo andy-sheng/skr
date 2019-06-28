@@ -566,20 +566,24 @@ public class UserInfoManager {
         ApiMethods.subscribe(userInfoServerApi.listFansByPage(offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
-                List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
-                List<UserInfoModel> friendList = new ArrayList<>();
-                for (UserInfoModel userInfoModel : list) {
-                    if (userInfoModel.isFriend()) {
-                        friendList.add(userInfoModel);
+                if (obj.getErrno() == 0) {
+                    List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
+                    List<UserInfoModel> friendList = new ArrayList<>();
+                    if (list != null) {
+                        for (UserInfoModel userInfoModel : list) {
+                            if (userInfoModel.isFriend()) {
+                                friendList.add(userInfoModel);
+                            }
+                        }
                     }
-                }
-                if (!friendList.isEmpty()) {
-                    // 好友列表存到数据库
-                    UserInfoLocalApi.insertOrUpdate(friendList);
-                }
-                int newOffset = obj.getData().getIntValue("offset");
-                if (userInfoListCallback != null) {
-                    userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
+                    if (!friendList.isEmpty()) {
+                        // 好友列表存到数据库
+                        UserInfoLocalApi.insertOrUpdate(friendList);
+                    }
+                    int newOffset = obj.getData().getIntValue("offset");
+                    if (userInfoListCallback != null) {
+                        userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
+                    }
                 }
             }
         });
