@@ -63,7 +63,7 @@ class DoubleRoomGameView : RelativeLayout {
 
         start_match_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (!U.getNetworkUtils().hasNetwork()){
+                if (!U.getNetworkUtils().hasNetwork()) {
                     U.getToastUtil().showLong("网络连接失败 请检查网络")
                     return
                 }
@@ -187,8 +187,8 @@ class DoubleRoomGameView : RelativeLayout {
         mMusicDisposable = ApiMethods.subscribe(mainPageSlideApi?.doubleMatchMusic, object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result?.errno == 0) {
-                    var list: List<String> = JSON.parseArray(result.data.getString("musicURL"), String::class.java)
-                    if (list.isNotEmpty()) {
+                    var list: List<String>? = JSON.parseArray(result.data.getString("musicURL"), String::class.java)
+                    if (list != null && list.isNotEmpty()) {
                         Collections.shuffle(list)
                         mMusic = list[0]
                     }

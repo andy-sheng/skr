@@ -501,14 +501,15 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     public void showUserLevel(List<UserLevelModel> list) {
         int mainRank = 0;
         int subRank = 0;
-        for (UserLevelModel userLevelModel : list) {
-            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                mainRank = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                subRank = userLevelModel.getScore();
+        if (list != null && list.size() > 0) {
+            for (UserLevelModel userLevelModel : list) {
+                if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                    mainRank = userLevelModel.getScore();
+                } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                    subRank = userLevelModel.getScore();
+                }
             }
         }
-
         mLevelView.bindData(mainRank, subRank);
     }
 

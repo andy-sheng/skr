@@ -248,16 +248,18 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     public void showUserLevel(List<UserLevelModel> list) {
         mSmartRefreshLayout.finishRefresh();
         // 展示段位信息
-        for (UserLevelModel userLevelModel : list) {
-            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                rank = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                subRank = userLevelModel.getScore();
-                levelDesc = userLevelModel.getDesc();
-            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
-                starNum = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
-                starLimit = userLevelModel.getScore();
+        if (list != null && list.size() > 0) {
+            for (UserLevelModel userLevelModel : list) {
+                if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                    rank = userLevelModel.getScore();
+                } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                    subRank = userLevelModel.getScore();
+                    levelDesc = userLevelModel.getDesc();
+                } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
+                    starNum = userLevelModel.getScore();
+                } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
+                    starLimit = userLevelModel.getScore();
+                }
             }
         }
         mLevelView.bindData(rank, subRank);
@@ -280,19 +282,21 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     @Override
     public void showGameStatic(List<GameStatisModel> list) {
         mSmartRefreshLayout.finishRefresh();
-        for (GameStatisModel gameStatisModel : list) {
-            if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
-                        .append("场").setFontSize(10, true)
-                        .create();
-                mRankNumTv.setText(stringBuilder);
-            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
-                        .append("首").setFontSize(10, true)
-                        .create();
-                mSingendNumTv.setText(stringBuilder);
+        if (list != null && list.size() > 0) {
+            for (GameStatisModel gameStatisModel : list) {
+                if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+                    SpannableStringBuilder stringBuilder = new SpanUtils()
+                            .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                            .append("场").setFontSize(10, true)
+                            .create();
+                    mRankNumTv.setText(stringBuilder);
+                } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
+                    SpannableStringBuilder stringBuilder = new SpanUtils()
+                            .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                            .append("首").setFontSize(10, true)
+                            .create();
+                    mSingendNumTv.setText(stringBuilder);
+                }
             }
         }
     }
