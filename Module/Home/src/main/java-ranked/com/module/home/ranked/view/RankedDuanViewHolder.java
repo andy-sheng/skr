@@ -39,7 +39,7 @@ public class RankedDuanViewHolder extends RecyclerView.ViewHolder {
         mDuanDesc = itemView.findViewById(R.id.duan_desc);
         mLevelView = itemView.findViewById(R.id.level_view);
 
-        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+        itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 EventBus.getDefault().post(new ShowPersonCenterEvent(mRankDataModel.getUserID()));

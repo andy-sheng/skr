@@ -45,7 +45,7 @@ public class RankedDetailViewHolder extends RecyclerView.ViewHolder {
         mRankedIconIv = itemView.findViewById(R.id.ranked_icon_iv);
         mRankedDescTv = itemView.findViewById(R.id.ranked_desc_tv);
 
-        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+        itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 EventBus.getDefault().post(new ShowPersonCenterEvent(mRankDataModel.getUserID()));
