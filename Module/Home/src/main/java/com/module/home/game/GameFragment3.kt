@@ -56,7 +56,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mGameTab?.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
         mGameTab?.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
         mGameTab?.setTitleSize(14f)
-        mGameTab?.setSelectedTilleSize(20f)
+        mGameTab?.setSelectedTitleSize(24f)
         mGameTab?.setIndicatorWidth(U.getDisplayUtils().dip2px(16f))
         mGameTab?.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4f).toFloat())
         mGameTab?.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2f).toFloat())

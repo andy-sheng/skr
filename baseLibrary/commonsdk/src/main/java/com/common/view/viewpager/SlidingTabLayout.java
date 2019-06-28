@@ -175,7 +175,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         this.titleSize = titleSize;
     }
 
-    public void setSelectedTilleSize(float selectedTitleSize) {
+    public void setSelectedTitleSize(float selectedTitleSize) {
         this.selectedTitleSize = selectedTitleSize;
     }
 
