@@ -23,11 +23,11 @@
         android:id="@+id/exit_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_35_dp"
-        android:layout_marginRight="@dimen/view_18_dp"
         android:background="@drawable/srf_guanbi"
+        android:padding="@dimen/view_18_dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginTop="@dimen/view_18_dp" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/left_avatar_sdv"
