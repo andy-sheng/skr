@@ -32,7 +32,7 @@ public class DyEffectResManager {
      * 资源下载地址
      */
     static final String RES_DOWNLOAD_URL = "http://res-static.inframe.mobi/pkgs/android/dy_effect_resource.zip";
-    private File sRootDir = U.getAppInfoUtils().getSubDirFile("dy_effects");// 抖音资源文件根目录
+    private File sRootDir = U.app().getExternalFilesDir("dy_effects");// 抖音资源文件根目录
     private File mLicenseFile = new File(sRootDir, "license/dy_android_license.licbag");// 抖音资源文件根目录
     private File mModelDir = new File(sRootDir, "model/");
 
@@ -112,6 +112,7 @@ public class DyEffectResManager {
     }
 
     private void downloadRes() {
+        U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("dy_effects"));
         File resZipFile = new File(U.getAppInfoUtils().getMainDir(), "dy_effect_resource.zip");
         if (U.getHttpUtils().downloadFileSync(RES_DOWNLOAD_URL, resZipFile, true, null)) {
             MyLog.d(TAG, "资源下载成功");

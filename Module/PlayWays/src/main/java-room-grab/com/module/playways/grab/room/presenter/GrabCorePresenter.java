@@ -304,7 +304,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false, mRoomData.getAgoraToken());
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
-            ZqEngineKit.getInstance().unbindAllRemoteVideo();
+            if(mRoomData.isVideoRoom()){
+                ZqEngineKit.getInstance().unbindAllRemoteVideo();
+            }
         }
         joinRcRoom(-1);
         if (mRoomData.getGameId() > 0) {
