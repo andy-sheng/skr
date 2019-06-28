@@ -24,7 +24,51 @@ message NotificationMsg
     FollowMsg followMsg           = 10;
     InviteStandMsg inviteStandMsg = 11;
     SysWarningMsg sysWarningMsg   = 12;
+
+    CombineRoomInviteMsg inviteMsg = 13; //双人房邀请信令
+    CombineRoomEnterMsg enterMsg   = 14; //双人房进房信令
+    CombineRoomRefuseMsg refuseMsg = 15; //双人房拒绝邀请信令
 }
+
+enum ECombineRoomEnterType {
+    CRET_UNKNOWN = 0; //未知
+    CRET_INVITE  = 1; //通过普通邀请方式，获取房间数据后进房
+    CRET_MATCH   = 2; //通过匹配方式，获取房间数据后进房
+    CRET_CREATE  = 3; //通过创建房间邀请方式，获取房间数据后进房
+}
+
+message CombineRoomEnterMsg
+{
+    ECombineRoomEnterType enterType = 1; //进房方式
+    uint32 roomID                   = 2; //房间ID
+    sint64 createdTimeMs            = 3; //房间创建的时间戳
+    sint64 passedTimeMs             = 4; //房间已经经历的毫秒数
+    repeated Common.UserInfo users         = 5; //玩家信息
+    Common.CombineRoomConfig config        = 6; //配置信息
+    repeated Common.AgoraTokenInfo tokens  = 7; //声网token
+    bool needMaskUserInfo           = 8; //是否需要隐藏用户信息
+}
+
+message CombineRoomRefuseMsg
+{
+    Common.UserInfo user    = 1; //拒绝行为发出的用户信息
+    string refuseMsg = 2; //拒绝反馈文案
+}
+
+enum EInviteType {
+    IT_UNKNOWN          = 0; //未知
+    IT_OUT_COMBINE_ROOM = 1; //在双人房间外邀请
+    IT_IN_COMBINE_ROOM  = 2; //在双人房间内邀请
+}
+
+message CombineRoomInviteMsg
+{
+    EInviteType inviteType = 1; //邀请类型
+    Common.UserInfo user          = 2; //发起邀请的用户详情
+    string inviteMsg       = 3; //邀请信息
+    uint32 roomID          = 4; //房间id
+}
+
 
 // ENotificationMsgType 房间消息类型
 enum ENotificationMsgType {
@@ -33,6 +77,10 @@ enum ENotificationMsgType {
     NM_FOLLOW       = 1; //关注类型
     NM_INVITE_STAND = 2; //一唱到底邀请
     NM_SYS_WARNING_MSG = 3; //系统警告
+
+    NM_CR_INVITE = 4; //双人房邀请信令
+    NM_CR_ENTER  = 5; //双人房进房信令
+    NM_CR_REFUSE = 6; //双人房拒绝邀请信令
 }
 
 message FollowMsg
@@ -46,6 +94,7 @@ message InviteStandMsg
 {
     Common.UserInfo user = 1; //发起邀请的用户详情
     uint32 roomID = 2; //房间id
+    Common.EMsgRoomMediaType mediaType = 3; //房间类型(1:音频房 2:视频房)
 }
 
 message SysWarningMsg

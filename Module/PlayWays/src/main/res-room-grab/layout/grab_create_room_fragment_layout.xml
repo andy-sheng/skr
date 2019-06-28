@@ -29,40 +29,35 @@
     <com.common.view.ex.ExImageView
         android:id="@+id/friends_room"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_131_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_80_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/chuangjianfangjian_haoyoufangrukou">
-
-    </com.common.view.ex.ExImageView>
+        android:background="@drawable/create_room_friend_icon"/>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/secret_room"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_131_dp"
         android:layout_below="@+id/friends_room"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/chuangjianfangjian_simifangrukou">
-
-    </com.common.view.ex.ExImageView>
+        android:background="@drawable/create_room_secret_icon"/>
 
 
     <com.common.view.ex.ExImageView
         android:id="@+id/public_room"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_131_dp"
         android:layout_below="@id/secret_room"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/chuangjianhaoyou_haohuapaiduirukou">
+        android:background="@drawable/create_room_party_icon"/>
 
-    </com.common.view.ex.ExImageView>
 
 </com.common.view.ex.ExRelativeLayout>

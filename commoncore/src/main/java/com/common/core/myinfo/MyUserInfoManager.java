@@ -53,7 +53,9 @@ public class MyUserInfoManager {
     private boolean mUserInfoFromServer = false;
     private boolean needBeginnerGuide = false;
     private boolean mIsFirstLogin = false;    // 标记是否第一次登录
-//    private boolean mHasLoadFromDB = false;
+    //    private boolean mHasLoadFromDB = false;
+    private boolean mHasGrabCertifyPassed = false;// 抢唱时的认证
+    private int mRealNameVerified = 0; // 实名认证
 
     public void init() {
         load();
@@ -151,7 +153,7 @@ public class MyUserInfoManager {
                             final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                             MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                            setMyUserInfo(myUserInfo, true,"syncMyInfoFromServer");
+                            setMyUserInfo(myUserInfo, true, "syncMyInfoFromServer");
                         } else if (obj.getErrno() == 107) {
                             UserAccountManager.getInstance().notifyAccountExpired();
                         }
@@ -281,7 +283,7 @@ public class MyUserInfoManager {
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(mUser, true,"updateInfo");
+                                setMyUserInfo(mUser, true, "updateInfo");
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
@@ -341,10 +343,12 @@ public class MyUserInfoManager {
     public String getConstellation() {
         if (mUser != null && !TextUtils.isEmpty(mUser.getBirthday())) {
             String[] array = mUser.getBirthday().split("-");
-            if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
-                int month = Integer.valueOf(array[1]);
-                int day = Integer.valueOf(array[2]);
-                return U.getDateTimeUtils().getConstellation(month, day);
+            if (array != null && array.length >= 3) {
+                if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+                    int month = Integer.valueOf(array[1]);
+                    int day = Integer.valueOf(array[2]);
+                    return U.getDateTimeUtils().getConstellation(month, day);
+                }
             }
         }
         return "";
@@ -428,8 +432,52 @@ public class MyUserInfoManager {
         });
     }
 
+    /**
+     * 是否通过了抢唱时的认证
+     *
+     * @return
+     */
+    public boolean hasGrabCertifyPassed() {
+        if (MyLog.isDebugLogOpen()) {
+            return true;
+        }
+        if (!mHasGrabCertifyPassed) {
+            mHasGrabCertifyPassed = U.getPreferenceUtils().getSettingBoolean("hasGrabCertifyPassed", false);
+        }
+        return mHasGrabCertifyPassed;
+    }
 
-//    public boolean hasLoadFromDB() {
+    public void setGrabCertifyPassed(boolean mHasPassedCertify) {
+        if (!mHasPassedCertify) {
+            U.getPreferenceUtils().setSettingBoolean("hasGrabCertifyPassed", mHasPassedCertify);
+            mHasGrabCertifyPassed = true;
+        }
+    }
+
+    /**
+     * 是否实名认证
+     *
+     * @return
+     */
+    public boolean isRealNameVerified() {
+        if (mRealNameVerified == 0) {
+            boolean v = U.getPreferenceUtils().getSettingBoolean("mRealNameVerified", false);
+            if (v) {
+                mRealNameVerified = 1;
+            } else {
+                mRealNameVerified = -1;
+            }
+        }
+        return mRealNameVerified == 1;
+    }
+
+    public void setRealNameVerified(boolean realNameVerified) {
+        if (realNameVerified) {
+            U.getPreferenceUtils().setSettingBoolean("mRealNameVerified", realNameVerified);
+        }
+    }
+
+    //    public boolean hasLoadFromDB() {
 //        return mHasLoadFromDB;
 //    }
 

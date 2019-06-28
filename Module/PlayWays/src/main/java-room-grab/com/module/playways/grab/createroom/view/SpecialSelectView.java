@@ -126,7 +126,7 @@ public class SpecialSelectView extends RelativeLayout {
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LoadingCallback(R.drawable.wulishigedan, "数据正在努力加载中..."))
-                .addCallback(new EmptyCallback(R.drawable.wulishigedan, "你敢不敢唱首歌？"))
+                .addCallback(new EmptyCallback(R.drawable.wulishigedan, "你敢不敢唱首歌？", null))
                 .addCallback(new ErrorCallback(R.drawable.wulishigedan, "请求出错了..."))
                 .setDefaultCallback(LoadingCallback.class)
                 .build();

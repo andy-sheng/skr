@@ -8,33 +8,33 @@
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/first_icon"
-        android:layout_width="@dimen/view_30_dp"
-        android:layout_height="@dimen/view_30_dp" />
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/second_icon"
-        android:layout_width="@dimen/view_30_dp"
-        android:layout_height="@dimen/view_30_dp"
-        android:layout_marginLeft="@dimen/view_20_dp" />
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_18_dp" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/third_icon"
-        android:layout_width="@dimen/view_30_dp"
-        android:layout_height="@dimen/view_30_dp"
-        android:layout_marginLeft="@dimen/view_40_dp" />
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_36_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_count"
-        android:layout_width="@dimen/view_26_dp"
-        android:layout_height="@dimen/view_26_dp"
+        android:layout_width="@dimen/view_22_dp"
+        android:layout_height="@dimen/view_22_dp"
         android:layout_alignLeft="@+id/third_icon"
         android:layout_alignTop="@+id/third_icon"
-        android:layout_marginLeft="@dimen/view_2_dp"
-        android:layout_marginTop="@dimen/view_2_dp"
+        android:layout_marginLeft="@dimen/view_1_dp"
+        android:layout_marginTop="@dimen/view_1_dp"
         android:gravity="center"
         android:text="0"
         android:textColor="@color/white"
         app:bl_corners_radius="@dimen/view_13_dp"
         app:bl_solid_color="@color/black_trans_30"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:textSize="@dimen/textsize_12_dp" />
 </merge>

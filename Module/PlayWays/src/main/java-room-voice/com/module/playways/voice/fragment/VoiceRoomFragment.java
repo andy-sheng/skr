@@ -10,13 +10,18 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.manager.BgMusicManager;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.dialog.view.TipsDialogView;
+import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
@@ -30,6 +35,7 @@ import com.module.playways.voice.view.VoiceTopContainerView;
 import com.module.playways.voice.view.VoiceUserStatusContainerView;
 import com.module.playways.R;
 import com.zq.dialog.PersonInfoDialog;
+import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -57,8 +63,11 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     ExImageView mGameResultIv;
 
     VoiceCorePresenter mCorePresenter;
+    DoubleRoomInvitePresenter mDoubleRoomInvitePresenter;
 
     PersonInfoDialog mPersonInfoDialog;
+
+    TipsDialogView mTipsDialogView;
 
     boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
@@ -96,6 +105,9 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
         mCorePresenter = new VoiceCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
+
+        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter();
+        addPresent(mDoubleRoomInvitePresenter);
 
         BgMusicManager.getInstance().setRoom(true);
     }
@@ -204,7 +216,54 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), QuickFeedbackFragment.FROM_RANK_ROOM, userID, true, false, true);
+        mPersonInfoDialog.setListener(new PersonInfoDialog.KickListener() {
+            @Override
+            public void onClickKick(UserInfoModel userInfoModel) {
+
+            }
+
+            @Override
+            public void onClickDoubleInvite(UserInfoModel userInfoModel) {
+                if (userInfoModel.isFriend()) {
+                    mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                } else {
+                    UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack<Boolean>() {
+                        @Override
+                        public void onServerSucess(Boolean isFans) {
+                            if (isFans) {
+                                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                            } else {
+                                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                                        .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人唱聊房吗？")
+                                        .setConfirmTip("邀请")
+                                        .setCancelTip("取消")
+                                        .setConfirmBtnClickListener(new AnimateClickListener() {
+                                            @Override
+                                            public void click(View view) {
+                                                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                                                mTipsDialogView.dismiss();
+                                            }
+                                        })
+                                        .setCancelBtnClickListener(new AnimateClickListener() {
+                                            @Override
+                                            public void click(View view) {
+                                                mTipsDialogView.dismiss();
+                                            }
+                                        })
+                                        .build();
+                                mTipsDialogView.showByDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onServerFailed() {
+
+                        }
+                    });
+                }
+            }
+        });
         mPersonInfoDialog.show();
     }
 
@@ -228,6 +287,9 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
             mPersonInfoDialog.dismiss();
             mPersonInfoDialog = null;
+        }
+        if (mTipsDialogView != null) {
+            mTipsDialogView.dismiss(false);
         }
         mUiHanlder.removeCallbacksAndMessages(null);
 

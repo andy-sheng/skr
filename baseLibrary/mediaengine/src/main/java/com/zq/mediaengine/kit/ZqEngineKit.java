@@ -1,9 +1,12 @@
 package com.zq.mediaengine.kit;
 
+import android.graphics.RectF;
+import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 
 import com.common.log.MyLog;
@@ -13,6 +16,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
+import com.common.log.DebugLogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.UserStatus;
@@ -24,6 +28,7 @@ import com.engine.score.Score2Callback;
 import com.engine.token.AgoraTokenApi;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
+import com.zq.mediaengine.capture.CameraCapture;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.APMFilter;
 import com.zq.mediaengine.filter.audio.AudioCopyFilter;
@@ -32,19 +37,25 @@ import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
 import com.zq.mediaengine.filter.audio.AudioResampleFilter;
+import com.zq.mediaengine.filter.imgtex.ImgTexMixer;
+import com.zq.mediaengine.filter.imgtex.ImgTexPreview;
+import com.zq.mediaengine.filter.imgtex.ImgTexScaleFilter;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.AudioCodecFormat;
+import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.kit.agora.AgoraRTCAdapter;
+import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 import com.zq.mediaengine.kit.filter.AcrRecognizer;
 import com.zq.mediaengine.kit.filter.AudioDummyFilter;
 import com.zq.mediaengine.kit.filter.CbAudioEffectFilter;
 import com.zq.mediaengine.kit.filter.CbAudioScorer;
 import com.zq.mediaengine.kit.filter.TbAudioAgcFilter;
 import com.zq.mediaengine.kit.filter.TbAudioEffectFilter;
+import com.zq.mediaengine.kit.log.LogRunnable;
 import com.zq.mediaengine.publisher.MediaMuxerPublisher;
 import com.zq.mediaengine.publisher.RawFrameWriter;
 import com.zq.mediaengine.util.audio.AudioUtil;
@@ -59,6 +70,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.Constants;
@@ -74,9 +86,20 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public final static String TAG = "ZqEngineKit";
     public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
+
+    public static final int VIDEO_RESOLUTION_360P = 0;
+    public static final int VIDEO_RESOLUTION_480P = 1;
+    public static final int VIDEO_RESOLUTION_540P = 2;
+    public static final int VIDEO_RESOLUTION_720P = 3;
+    public static final int VIDEO_RESOLUTION_1080P = 4;
+
+    private static final int DEFAULT_PREVIEW_WIDTH = 720;
+    private static final int DEFAULT_PREVIEW_HEIGHT = 1280;
+
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
+    static final int STATUS_UNINITING = 3;
     static final int MSG_JOIN_ROOM_TIMEOUT = 11;
     static final int MSG_JOIN_ROOM_AGAIN = 12;
 
@@ -84,9 +107,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     private static final String SCORE_DEBUG_PATH = "/sdcard/tongzhuodeni.pcm";
 
     private Params mConfig = new Params(); // 为了防止崩溃
-    private final Object mLock = new Object();
 
-    private int mStatus = STATUS_UNINIT;// 0未初始化 1 初始ing 2 初始化
+    private volatile int mStatus = STATUS_UNINIT;// 0未初始化 1 初始ing 2 初始化 3 释放ing
     /**
      * 存储该房间所有用户在引擎中的状态的，
      * key为在引擎中的用户 id
@@ -106,6 +128,14 @@ public class ZqEngineKit implements AgoraOutCallback {
     private boolean mInChannel = false; // 是否已经在频道中
 
     private GLRender mGLRender;
+    private CameraCapture mCameraCapture;
+    private ImgTexScaleFilter mImgTexScaleFilter;
+    private BytedEffectFilter mBytedEffectFilter;
+    private ImgTexMixer mImgTexPreviewMixer;
+    private ImgTexMixer mImgTexMixer;
+    private ImgTexPreview mImgTexPreview;
+    private Map<Integer, Integer> mRemoteUserPinMap = new HashMap<>();
+
     private AgoraRTCAdapter mAgoraRTCAdapter;
     private AudioDummyFilter mAudioDummyFilter;
     private AudioFilterMgt mAudioFilterMgt;
@@ -131,6 +161,30 @@ public class ZqEngineKit implements AgoraOutCallback {
     private MediaCodecAudioEncoder mAudioEncoder;
     private MediaMuxerPublisher mFilePublisher;
     private RawFrameWriter mRawFrameWriter;
+
+    // 视频相关参数
+    protected int mScreenRenderWidth = 0;
+    protected int mScreenRenderHeight = 0;
+    protected int mPreviewResolution = VIDEO_RESOLUTION_360P;
+    protected int mPreviewWidthOrig = 0;
+    protected int mPreviewHeightOrig = 0;
+    protected int mPreviewWidth = 0;
+    protected int mPreviewHeight = 0;
+    protected float mPreviewFps = 0;
+    protected int mPreviewMixerWidth = 0;
+    protected int mPreviewMixerHeight = 0;
+    protected int mTargetResolution = VIDEO_RESOLUTION_360P;
+    protected int mTargetWidthOrig = 0;
+    protected int mTargetHeightOrig = 0;
+    protected int mTargetWidth = 0;
+    protected int mTargetHeight = 0;
+    protected float mTargetFps = 0;
+    protected int mRotateDegrees = 0;
+
+    protected boolean mFrontCameraMirror = false;
+    protected int mCameraFacing = CameraCapture.FACING_FRONT;
+    protected boolean mIsCaptureStarted = false;
+    protected boolean mDelayedStartCameraPreview = false;
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -170,11 +224,12 @@ public class ZqEngineKit implements AgoraOutCallback {
     @Override
     public void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed) {
         UserStatus status = ensureJoin(uid);
+        status.setEnableVideo(true);
         status.setFirstVideoDecoded(true);
         status.setFirstVideoWidth(width);
         status.setFirstVideoHeight(height);
-        // TODO: tryBindRemoteViewAutoOnMainThread("onFirstRemoteVideoDecoded");
-        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_VIDEO_DECODED, status));
+
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED, status));
     }
 
     @Override
@@ -333,16 +388,10 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAcrRecognizer = new AcrRecognizer();
 
         mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
+        initWorkThread();
     }
 
-    public static ZqEngineKit getInstance() {
-        return ZqEngineKitHolder.INSTANCE;
-    }
-
-    public void init(final String from, final Params params) {
-        if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.destroy();
-        }
+    private void initWorkThread() {
         mCustomHandlerThread = new CustomHandlerThread(TAG) {
             @Override
             protected void processMessage(Message msg) {
@@ -358,26 +407,27 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             }
         };
-        final int oldStatus = mStatus;
-        mStatus = STATUS_INITING;
-        mCustomHandlerThread.post(new Runnable() {
+    }
+
+    public static ZqEngineKit getInstance() {
+        return ZqEngineKitHolder.INSTANCE;
+    }
+
+    public void init(final String from, final Params params) {
+        mInitFrom = from;
+        mCustomHandlerThread.post(new LogRunnable("init" + " from=" + from + " params=" + params) {
             @Override
-            public void run() {
-                MyLog.d(TAG, "init" + " from=" + from + " params=" + params);
-                destroyInner(oldStatus);
+            public void realRun() {
+                destroyInner();
                 initInner(from, params);
             }
         });
-
     }
 
     private void initInner(String from, Params params) {
-        mStatus = STATUS_INITED;
+        mStatus = STATUS_INITING;
         mInitFrom = from;
         mConfig = params;
-        synchronized (mLock) {
-            mLock.notifyAll();
-        }
 
         // TODO: engine代码合并后，采样率初始值在Params初始化时获取
         mConfig.setAudioSampleRate(AudioUtil.getNativeSampleRate(U.app().getApplicationContext()));
@@ -393,18 +443,33 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        // 回调消息前更新状态
+        mStatus = STATUS_INITED;
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_INITED));
+    }
+
+    private void initModules() {
+        MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
+                " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
+                " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord());
+
+        if (mConfig.isEnableAudio()) {
+            initAudioModules();
+        }
+
+        if (mConfig.isEnableVideo()) {
+            initVideoModules();
+            mBytedEffectFilter.initDyEffects();
+        }
     }
 
     @SuppressWarnings("unchecked")
-    private void initModules() {
+    private void initAudioModules() {
+        MyLog.d(TAG, "initAudioModules");
         mAudioFilterMgt = new AudioFilterMgt();
         mCbAudioScorer = new CbAudioScorer();
         // 单mic数据PCM录制
         mRawFrameWriter = new RawFrameWriter();
-
-        MyLog.i(TAG, "isUseExternalAudio: " + mConfig.isUseExternalAudio() +
-                " isUseExternalVideo: " + mConfig.isUseExternalVideo() +
-                " isUseExternalRecord: " + mConfig.isUseExternalAudioRecord());
 
         SrcPin<AudioBufFrame> audioLocalSrcPin;
         if (mConfig.isUseExternalAudio()) {
@@ -507,30 +572,23 @@ public class ZqEngineKit implements AgoraOutCallback {
         return mStatus == STATUS_INITED;
     }
 
+    /**
+     * 注意：在初始化完成前获取到的配置可能是不正确的，如需保证获取到的配置是init时传入的，
+     * 可以在收到EngineEvent.TYPE_ENGINE_INITED事件后再进行下一步的处理。
+     *
+     * @return Params实例
+     */
     public Params getParams() {
-        if (mStatus == STATUS_INITED) {
-            return mConfig;
-        } else if (mStatus == STATUS_UNINIT) {
-            return mConfig;
-        } else if (mStatus == STATUS_INITING) {
-            synchronized (mLock) {
-                try {
-                    mLock.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-            return mConfig;
-        }
-        return null;
+        return mConfig;
     }
 
     /**
      * 离开房间
      */
     public void leaveChannel() {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("leaveChannel") {
             @Override
-            public void run() {
+            public void realRun() {
                 if (mConfig.isUseExternalAudio()) {
                     mAudioPreview.stop();
                     mAudioCapture.stop();
@@ -545,33 +603,34 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy(final String from) {
-        MyLog.d(TAG, "destroy" + " from=" + from + " status=" + mStatus);
+        MyLog.d(TAG,"destroy" + " from=" + from);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;
             }
         }
-        if (mStatus == STATUS_INITED) {
-            mCustomHandlerThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (from.equals(mInitFrom)) {
-                        mConfig.setAnchor(false);
-                        destroyInner(mStatus);
-                        mCustomHandlerThread.destroy();
-                        mStatus = STATUS_UNINIT;
-                    }
+        // 销毁前清理掉其他的异步任务
+        mCustomHandlerThread.removeCallbacksAndMessages(null);
+        mCustomHandlerThread.post(new LogRunnable("destroy" + " from=" + from + " status=" + mStatus) {
+            @Override
+            public void realRun() {
+                if (from.equals(mInitFrom)) {
+                    MyLog.d(TAG, "destroy inner");
+                    mConfig.setAnchor(false);
+                    destroyInner();
                 }
-            });
-        }
+            }
+        });
     }
 
-    private void destroyInner(int status) {
+    private void destroyInner() {
+        MyLog.d(TAG, "destroyInner1");
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
         mUiHandler.removeMessages(MSG_JOIN_ROOM_TIMEOUT);
-        if (status == STATUS_INITED) {
+        if (mStatus == STATUS_INITED) {
+            mStatus = STATUS_UNINITING;
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
                 mMusicTimePlayTimeListener.dispose();
             }
@@ -580,16 +639,28 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAudioCapture.release();
                 mAudioPlayerCapture.release();
             }
+            MyLog.d(TAG, "destroyInner2");
+            if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {
+                mCameraCapture.release();
+                mGLRender.release();
+            }
+            MyLog.d(TAG, "destroyInner3");
             mAgoraRTCAdapter.destroy(true);
             mUserStatusMap.clear();
             mRemoteViewCache.clear();
+            mRemoteUserPinMap.clear();
+            MyLog.d(TAG, "destroyInner4");
             mUiHandler.removeCallbacksAndMessages(null);
             mConfig = new Params();
             mPendingStartMixAudioParams = null;
+            mIsCaptureStarted = false;
+            // 发送消息前，更新状态
+            mStatus = STATUS_UNINIT;
             EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
             if (EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().unregister(this);
             }
+            MyLog.d(TAG, "destroyInner5");
         }
     }
 
@@ -638,10 +709,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      *                 不是主播只看不能说
      */
     public void joinRoom(final String roomid, final int userId, final boolean isAnchor, final String token) {
-        mCustomHandlerThread.post(new Runnable() {
+        mCustomHandlerThread.post(new LogRunnable("joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor + " token=" + token) {
             @Override
-            public void run() {
-                MyLog.d(TAG, "joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor + " token=" + token);
+            public void realRun() {
                 mConfig.setSelfUid(userId);
                 if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
                     mAgoraRTCAdapter.setClientRole(isAnchor);
@@ -661,12 +731,10 @@ public class ZqEngineKit implements AgoraOutCallback {
 
 
     private void joinRoomInner(final String roomid, final int userId, final String token) {
-        MyLog.w(TAG, "joinRoomInner" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
         if (Looper.myLooper() != mCustomHandlerThread.getLooper()) {
-            MyLog.d(TAG, "joinRoomInner not looper");
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("joinRoomInner" + " roomid=" + roomid + " userId=" + userId + " token=" + token) {
                 @Override
-                public void run() {
+                public void realRun() {
                     joinRoomInner(roomid, userId, token);
                 }
             });
@@ -737,10 +805,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     public void setClientRole(final boolean isAnchor) {
         if (mCustomHandlerThread != null) {
             mConfig.setAnchor(isAnchor);
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("setClientRole" + " isAnchor=" + isAnchor) {
                 @Override
-                public void run() {
-                    MyLog.w(TAG, "setClientRole" + " isAnchor=" + isAnchor);
+                public void realRun() {
                     mAgoraRTCAdapter.setClientRole(isAnchor);
                 }
             });
@@ -786,14 +853,12 @@ public class ZqEngineKit implements AgoraOutCallback {
      */
     public void muteLocalAudioStream(final boolean muted) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("muteLocalAudioStream muted=" + muted) {
                 @Override
-                public void run() {
-
+                public void realRun() {
                     UserStatus status = new UserStatus(mConfig.getSelfUid());
                     status.setAudioMute(muted);
                     EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
-
                     mConfig.setLocalAudioStreamMute(muted);
                     mAgoraRTCAdapter.muteLocalAudioStream(muted);
                 }
@@ -860,7 +925,6 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     public void adjustRecordingSignalVolume(final int volume, final boolean setConfig) {
-        MyLog.d(TAG,"adjustRecordingSignalVolume" + " volume=" + volume + " setConfig=" + setConfig);
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
@@ -884,15 +948,15 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param volume
      */
     public void adjustPlaybackSignalVolume(final int volume) {
-        adjustPlaybackSignalVolume(volume,true);
+        adjustPlaybackSignalVolume(volume, true);
     }
 
     public void adjustPlaybackSignalVolume(final int volume, final boolean setConfig) {
-        if(mCustomHandlerThread != null){
+        if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(setConfig) {
+                    if (setConfig) {
                         mConfig.setPlaybackSignalVolume(volume);
                     }
                     mAgoraRTCAdapter.adjustPlaybackSignalVolume(volume);
@@ -944,9 +1008,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("setAudioEffectStyle") {
                 @Override
-                public void run() {
+                public void realRun() {
                     doSetAudioEffect(styleEnum);
                 }
             });
@@ -1034,10 +1098,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
-                public void run() {
-                    MyLog.w(TAG, "startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                public void realRun() {
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.d(TAG, "伴奏路径非法");
                         return;
@@ -1115,11 +1178,10 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
-        MyLog.d(TAG, "stopAudioMixing");
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("stopAudioMixing") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
                         mConfig.setMixMusicPlaying(false);
                         mConfig.setMixMusicFilePath(null);
@@ -1148,11 +1210,10 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 继续播放混音
      */
     public void resumeAudioMixing() {
-        MyLog.d(TAG, "resumeAudioMixing");
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("resumeAudioMixing") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
                         mConfig.setMixMusicPlaying(true);
                         startMusicPlayTimeListener();
@@ -1174,11 +1235,10 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
-        MyLog.d(TAG, "pauseAudioMixing");
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("pauseAudioMixing") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
                         mConfig.setMixMusicPlaying(false);
                         stopMusicPlayTimeListener();
@@ -1248,11 +1308,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     public void adjustAudioMixingVolume(final int volume, final boolean setConfig) {
-        MyLog.d(TAG,"adjustAudioMixingVolume" + " volume=" + volume + " setConfig=" + setConfig);
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("adjustAudioMixingVolume" + " volume=" + volume + " setConfig=" + setConfig) {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (setConfig) {
                         mConfig.setAudioMixingVolume(volume);
                     }
@@ -1294,10 +1353,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * @param posMs
      */
     public void setAudioMixingPosition(final int posMs) {
+
         if (mCustomHandlerThread != null) {
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("setAudioMixingPosition" + " posMs=" + posMs) {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (mConfig.isUseExternalAudio()) {
                         mAudioPlayerCapture.seek(posMs);
                     } else {
@@ -1320,12 +1380,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
-        MyLog.w(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
         if (mCustomHandlerThread != null) {
             mConfig.setRecording(true);
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh) {
                 @Override
-                public void run() {
+                public void realRun() {
                     File file = new File(saveAudioForAiFilePath);
                     if (!file.getParentFile().exists()) {
                         file.getParentFile().mkdirs();
@@ -1381,12 +1440,11 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        MyLog.w(TAG, "stopAudioRecording");
         if (mCustomHandlerThread != null && mConfig.isRecording()) {
             mConfig.setRecording(false);
-            mCustomHandlerThread.post(new Runnable() {
+            mCustomHandlerThread.post(new LogRunnable("stopAudioRecording") {
                 @Override
-                public void run() {
+                public void realRun() {
                     if (TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                         if (mConfig.isUseExternalAudioRecord()) {
                             mAudioEncoder.stop();
@@ -1442,5 +1500,1039 @@ public class ZqEngineKit implements AgoraOutCallback {
         public String token;
     }
 
+
+    // 视频相关接口
+
+    /**
+     * Get {@link GLRender} instance.
+     *
+     * @return GLRender instance.
+     */
+    public GLRender getGLRender() {
+        return mGLRender;
+    }
+
+    public ImgTexPreview getImgTexPreview() {
+        return mImgTexPreview;
+    }
+
+    /**
+     * 获取头条视频特效封装类。
+     *
+     * @return BytedEffectFilter instance.
+     */
+    public BytedEffectFilter getBytedEffectFilter() {
+        return mBytedEffectFilter;
+    }
+
+    /**
+     * Get {@link CameraCapture} module instance.
+     *
+     * @return CameraCapture instance.
+     */
+    public CameraCapture getCameraCapture() {
+        return mCameraCapture;
+    }
+
+    private void initVideoModules() {
+        MyLog.d(TAG, "initVideoModules");
+        // Camera preview
+        mCameraCapture = new CameraCapture(U.app().getApplicationContext(), mGLRender);
+        mImgTexScaleFilter = new ImgTexScaleFilter(mGLRender);
+        mBytedEffectFilter = new BytedEffectFilter(mGLRender);
+        mImgTexMixer = new ImgTexMixer(mGLRender);
+        mImgTexPreviewMixer = new ImgTexMixer(mGLRender);
+        mImgTexPreviewMixer.setScalingMode(0, ImgTexMixer.SCALING_MODE_CENTER_CROP);
+        mImgTexPreview = new ImgTexPreview(mGLRender);
+
+        // 抖音的美颜特效处理需要先翻转图像
+        mImgTexScaleFilter.setFlipVertical(true);
+        mCameraCapture.getImgTexSrcPin().connect(mImgTexScaleFilter.getSinkPin());
+        mImgTexScaleFilter.getSrcPin().connect(mBytedEffectFilter.getImgTexSinkPin());
+        // 处理完后再翻转过来
+        mImgTexPreviewMixer.setFlipVertical(0, true);
+        mImgTexMixer.setFlipVertical(0, true);
+        mBytedEffectFilter.getSrcPin().connect(mImgTexPreviewMixer.getSinkPin(0));
+        mBytedEffectFilter.getSrcPin().connect(mImgTexMixer.getSinkPin(0));
+        mImgTexPreviewMixer.getSrcPin().connect(mImgTexPreview.getSinkPin());
+        mImgTexMixer.getSrcPin().connect(mAgoraRTCAdapter.getVideoSinkPin());
+
+        // set listeners
+        mImgTexPreview.getGLRender().addListener(mPreviewSizeChangedListener);
+
+        mCameraCapture.setOnCameraCaptureListener(new CameraCapture.OnCameraCaptureListener() {
+            @Override
+            public void onStarted() {
+                MyLog.d(TAG, "CameraCapture ready");
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_OPENED));
+            }
+
+            @Override
+            public void onFirstFrameRendered() {
+                MyLog.d(TAG, "CameraCapture onFirstFrameRendered");
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FIRST_FRAME_RENDERED));
+            }
+
+            @Override
+            public void onFacingChanged(int facing) {
+                MyLog.d(TAG, "CameraCapture onFacingChanged");
+                mCameraFacing = facing;
+                updateFrontMirror();
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_FACING_CHANGED));
+            }
+
+            @Override
+            public void onError(int err) {
+                MyLog.e(TAG, "CameraCapture error: " + err);
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_CAMERA_ERROR));
+            }
+        });
+
+        // init with offscreen GLRender
+        mGLRender.init(1, 1);
+    }
+
+
+    /**
+     * Should be called on Activity.onResume or Fragment.onResume.
+     */
+    public void onResume() {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                MyLog.d(TAG, "onResume");
+                mImgTexPreview.onResume();
+            }
+        });
+    }
+
+    /**
+     * Should be called on Activity.onPause or Fragment.onPause.
+     */
+    public void onPause() {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                MyLog.d(TAG, "onPause");
+                mImgTexPreview.onPause();
+            }
+        });
+    }
+
+    /**
+     * Set GLSurfaceView as camera previewer.<br/>
+     * Must set once before the GLSurfaceView created.
+     *
+     * @param surfaceView GLSurfaceView to be set.
+     */
+    public void setDisplayPreview(final GLSurfaceView surfaceView) {
+        mCustomHandlerThread.post(new LogRunnable("setDisplayPreview surfaceView=" + surfaceView) {
+            @Override
+            public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                MyLog.d(TAG, "setDisplayPreview " + surfaceView);
+                mImgTexPreview.setDisplayPreview(surfaceView);
+            }
+        });
+    }
+
+    /**
+     * /**
+     * Set TextureView as camera previewer.<br/>
+     * Must set once before the TextureView ready.
+     *
+     * @param textureView TextureView to be set.
+     */
+    public void setDisplayPreview(final TextureView textureView) {
+        mCustomHandlerThread.post(new LogRunnable("setDisplayPreview textureView=" + textureView) {
+            @Override
+            public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                MyLog.d(TAG, "setDisplayPreview " + textureView);
+                mImgTexPreview.setDisplayPreview(textureView);
+            }
+        });
+    }
+
+    public View getDisplayPreview() {
+        if (mImgTexPreview != null) {
+            return mImgTexPreview.getDisplayPreview();
+        }
+        return null;
+    }
+
+    /**
+     * Set rotate degrees in anti-clockwise of current Activity.
+     *
+     * @param rotate Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
+     */
+    @SuppressWarnings("SuspiciousNameCombination")
+    public void setRotateDegrees(final int rotate) throws IllegalArgumentException {
+        mCustomHandlerThread.post(new LogRunnable("setRotateDegrees" + " rotate=" + rotate) {
+            @Override
+            public void realRun() {
+                int degrees = rotate % 360;
+                if (degrees % 90 != 0) {
+                    throw new IllegalArgumentException("Invalid rotate degrees");
+                }
+                if (mRotateDegrees == degrees) {
+                    return;
+                }
+                boolean isLastLandscape = (mRotateDegrees % 180) != 0;
+                boolean isLandscape = (degrees % 180) != 0;
+                if (isLastLandscape != isLandscape) {
+                    if (mPreviewWidth > 0 || mPreviewHeight > 0) {
+                        setPreviewResolution(mPreviewHeight, mPreviewWidth);
+                    }
+                    if (mTargetWidth > 0 || mTargetHeight > 0) {
+                        setTargetResolution(mTargetHeight, mTargetWidth);
+                    }
+                }
+                mRotateDegrees = degrees;
+                mCameraCapture.setOrientation(mRotateDegrees);
+            }
+        });
+    }
+
+    /**
+     * get rotate degrees
+     *
+     * @return degrees Degrees in anti-clockwise, only 0, 90, 180, 270 accepted.
+     */
+    public int getRotateDegrees() {
+        return mRotateDegrees;
+    }
+
+    /**
+     * Set camera capture resolution.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call.<br/>
+     * <p>
+     * Both of the set width and height must be greater than 0.
+     *
+     * @param width  capture width
+     * @param height capture height
+     */
+    public void setCameraCaptureResolution(final int width, final int height) throws IllegalArgumentException {
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Invalid resolution");
+        }
+        mCustomHandlerThread.post(new LogRunnable("setCameraCaptureResolution" + " width=" + width + " height=" + height) {
+            @Override
+            public void realRun() {
+                mCameraCapture.setPreviewSize(width, height);
+            }
+        });
+    }
+
+    /**
+     * Set camera capture resolution.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call.<br/>
+     *
+     * @param idx Resolution index.<br/>
+     * @see #VIDEO_RESOLUTION_360P
+     * @see #VIDEO_RESOLUTION_480P
+     * @see #VIDEO_RESOLUTION_540P
+     * @see #VIDEO_RESOLUTION_720P
+     * @see #VIDEO_RESOLUTION_1080P
+     */
+    public void setCameraCaptureResolution(final int idx) throws IllegalArgumentException {
+        if (idx < VIDEO_RESOLUTION_360P ||
+                idx > VIDEO_RESOLUTION_1080P) {
+            throw new IllegalArgumentException("Invalid resolution index");
+        }
+        mCustomHandlerThread.post(new LogRunnable("setCameraCaptureResolution" + " idx=" + idx) {
+            @Override
+            public void realRun() {
+                int height = getShortEdgeLength(idx);
+                int width = height * 16 / 9;
+                mCameraCapture.setPreviewSize(width, height);
+            }
+        });
+    }
+
+    /**
+     * Set preview resolution.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call, if called not in previewing mode.<br/>
+     * If called in previewing mode, it would take effect immediately.<br/>
+     * <p>
+     * The set width and height must not be 0 at same time.
+     * If one of the params is 0, the other would calculated by the actual preview view size
+     * to keep the ratio of the preview view.
+     *
+     * @param width  preview width.
+     * @param height preview height.
+     */
+    public void setPreviewResolution(final int width, final int height) throws IllegalArgumentException {
+        if (width < 0 || height < 0 || (width == 0 && height == 0)) {
+            throw new IllegalArgumentException("Invalid resolution");
+        }
+        mCustomHandlerThread.post(new LogRunnable("setPreviewResolution" + " width=" + width + " height=" + height) {
+            @Override
+            public void realRun() {
+                mPreviewWidthOrig = width;
+                mPreviewHeightOrig = height;
+                doSetPreviewResolution();
+            }
+        });
+    }
+
+    /**
+     * Set preview resolution index.<br/>
+     * <p>
+     * The set resolution would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call, if called not in previewing mode.<br/>
+     * If called in previewing mode, it would take effect immediately.<br/>
+     *
+     * @param idx Resolution index.<br/>
+     * @see #VIDEO_RESOLUTION_360P
+     * @see #VIDEO_RESOLUTION_480P
+     * @see #VIDEO_RESOLUTION_540P
+     * @see #VIDEO_RESOLUTION_720P
+     * @see #VIDEO_RESOLUTION_1080P
+     */
+    public void setPreviewResolution(final int idx) throws IllegalArgumentException {
+        if (idx < VIDEO_RESOLUTION_360P ||
+                idx > VIDEO_RESOLUTION_1080P) {
+            throw new IllegalArgumentException("Invalid resolution index");
+        }
+        mCustomHandlerThread.post(new LogRunnable("setPreviewResolution" + " idx=" + idx) {
+            @Override
+            public void realRun() {
+                mPreviewResolution = idx;
+                mPreviewWidthOrig = 0;
+                mPreviewHeightOrig = 0;
+                doSetPreviewResolution();
+            }
+        });
+    }
+
+    private void doSetPreviewResolution() {
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            calResolution();
+            mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+            mImgTexPreviewMixer.setTargetSize(mPreviewWidth, mPreviewHeight);
+        }
+    }
+
+    /**
+     * get preview width
+     *
+     * @return preview width
+     */
+    public int getPreviewWidth() {
+        return mPreviewWidth;
+    }
+
+    /**
+     * get preview height
+     *
+     * @return preview height
+     */
+    public int getPreviewHeight() {
+        return mPreviewHeight;
+    }
+
+    /**
+     * Set preview fps.<br/>
+     * <p>
+     * The set fps would take effect on next {@link #startCameraPreview()}
+     * {@link #startCameraPreview(int)} call.<br/>
+     * <p>
+     * The actual preview fps depends on the running device, may be different with the set value.
+     *
+     * @param fps frame rate to be set.
+     */
+    public void setPreviewFps(float fps) throws IllegalArgumentException {
+        if (fps <= 0) {
+            throw new IllegalArgumentException("the fps must > 0");
+        }
+        mPreviewFps = fps;
+        if (mTargetFps == 0) {
+            mTargetFps = mPreviewFps;
+        }
+    }
+
+    /**
+     * get preview frame rate
+     *
+     * @return preview frame rate
+     */
+    public float getPreviewFps() {
+        return mPreviewFps;
+    }
+
+    /**
+     * Get current camera preview frame rate.
+     *
+     * @return current camera preview frame rate
+     */
+    public float getCurrentPreviewFps() {
+        if (mCameraCapture != null) {
+            return mCameraCapture.getCurrentPreviewFps();
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Set streaming resolution.<br/>
+     * <p>
+     * The set resolution would take effect immediately if streaming started.<br/>
+     * <p>
+     * The set width and height must not be 0 at same time.
+     * If one of the params is 0, the other would calculated by the actual preview view size
+     * to keep the ratio of the preview view.
+     *
+     * @param width  streaming width.
+     * @param height streaming height.
+     */
+    public void setTargetResolution(final int width, final int height) throws IllegalArgumentException {
+        if (width < 0 || height < 0 || (width == 0 && height == 0)) {
+            throw new IllegalArgumentException("Invalid resolution");
+        }
+        mCustomHandlerThread.post(new LogRunnable("setTargetResolution" + " width=" + width + " height=" + height) {
+            @Override
+            public void realRun() {
+                mTargetWidthOrig = width;
+                mTargetHeightOrig = height;
+                doSetTargetResolution();
+            }
+        });
+    }
+
+    /**
+     * Set streaming resolution index.<br/>
+     * <p>
+     * The set resolution would take effect immediately if streaming started.<br/>
+     *
+     * @param idx Resolution index.<br/>
+     * @see #VIDEO_RESOLUTION_360P
+     * @see #VIDEO_RESOLUTION_480P
+     * @see #VIDEO_RESOLUTION_540P
+     * @see #VIDEO_RESOLUTION_720P
+     * @see #VIDEO_RESOLUTION_1080P
+     */
+    public void setTargetResolution(final int idx) throws IllegalArgumentException {
+        if (idx < VIDEO_RESOLUTION_360P ||
+                idx > VIDEO_RESOLUTION_1080P) {
+            throw new IllegalArgumentException("Invalid resolution index");
+        }
+        mCustomHandlerThread.post(new LogRunnable("setTargetResolution" + " idx=" + idx) {
+            @Override
+            public void realRun() {
+                mTargetResolution = idx;
+                mTargetWidthOrig = 0;
+                mTargetHeightOrig = 0;
+                doSetTargetResolution();
+            }
+        });
+    }
+
+    private void doSetTargetResolution() {
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            calResolution();
+            mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+        }
+    }
+
+    /**
+     * get streaming width
+     *
+     * @return streaming width
+     */
+    public int getTargetWidth() {
+        return mTargetWidth;
+    }
+
+    /**
+     * get streaming height
+     *
+     * @return streaming height
+     */
+    public int getTargetHeight() {
+        return mTargetHeight;
+    }
+
+    /**
+     * Set streaming fps.<br/>
+     * <p>
+     * The set fps would take effect after next streaming started.<br/>
+     * <p>
+     * If actual preview fps is larger than set value,
+     * the extra frames will be dropped before encoding,
+     * and if is smaller than set value, nothing will be done.
+     * default value : 15
+     *
+     * @param fps frame rate.
+     */
+    public void setTargetFps(float fps) throws IllegalArgumentException {
+        if (fps <= 0) {
+            throw new IllegalArgumentException("the fps must > 0");
+        }
+        mTargetFps = fps;
+        if (mPreviewFps == 0) {
+            mPreviewFps = mTargetFps;
+        }
+    }
+
+    /**
+     * get streaming fps
+     *
+     * @return streaming fps
+     */
+    public float getTargetFps() {
+        return mTargetFps;
+    }
+
+    /**
+     * Set enable front camera mirror or not while streaming.<br/>
+     * Would take effect immediately while streaming.
+     *
+     * @param mirror true to enable, false to disable.
+     */
+    public void setFrontCameraMirror(final boolean mirror) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mFrontCameraMirror = mirror;
+                updateFrontMirror();
+            }
+        });
+    }
+
+    /**
+     * check if front camera mirror enabled or not.
+     *
+     * @return true if mirror enabled, false if mirror disabled.
+     */
+    public boolean isFrontCameraMirrorEnabled() {
+        return mFrontCameraMirror;
+    }
+
+    /**
+     * Set initial camera facing.<br/>
+     * Set before {@link #startCameraPreview()}, give a chance to set initial camera facing,
+     * equals {@link #startCameraPreview(int)}.<br/>
+     *
+     * @param facing camera facing.
+     * @see CameraCapture#FACING_FRONT
+     * @see CameraCapture#FACING_BACK
+     */
+    public void setCameraFacing(int facing) {
+        mCameraFacing = facing;
+    }
+
+    /**
+     * get camera facing.
+     *
+     * @return camera facing
+     */
+    public int getCameraFacing() {
+        return mCameraFacing;
+    }
+
+    /**
+     * Start camera preview with default facing, or facing set by
+     * {@link #setCameraFacing(int)} before.
+     */
+    public void startCameraPreview() {
+        startCameraPreview(mCameraFacing);
+    }
+
+    /**
+     * Start camera preview with given facing.
+     *
+     * @param facing camera facing.
+     * @see CameraCapture#FACING_FRONT
+     * @see CameraCapture#FACING_BACK
+     */
+    public void startCameraPreview(final int facing) {
+        mCustomHandlerThread.post(new LogRunnable("startCameraPreview" + " facing=" + facing) {
+            @Override
+            public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                mCameraFacing = facing;
+                mIsCaptureStarted = true;
+                if ((mPreviewWidth == 0 || mPreviewHeight == 0) &&
+                        (mScreenRenderWidth == 0 || mScreenRenderHeight == 0)) {
+                    if (mImgTexPreview.getDisplayPreview() != null) {
+                        mDelayedStartCameraPreview = true;
+                        return;
+                    }
+                    mScreenRenderWidth = DEFAULT_PREVIEW_WIDTH;
+                    mScreenRenderHeight = DEFAULT_PREVIEW_HEIGHT;
+                }
+                setPreviewParams();
+                mCameraCapture.start(mCameraFacing);
+
+                // 开启了本地预览，关闭自刷新
+                mImgTexPreviewMixer.setEnableAutoRefresh(false, mPreviewFps);
+            }
+        });
+    }
+
+    /**
+     * Stop camera preview.
+     */
+    public void stopCameraPreview() {
+
+        mCustomHandlerThread.post(new LogRunnable("stopCameraPreview") {
+            @Override
+            public void realRun() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                mIsCaptureStarted = false;
+                mCameraCapture.stop();
+                freeFboCacheIfNeeded();
+
+                // 关闭了本地预览，开启自刷新
+                if (!mRemoteUserPinMap.isEmpty()) {
+                    mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+                }
+            }
+        });
+    }
+
+    /**
+     * Switch camera facing between front and back.
+     */
+    public void switchCamera() {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mStatus != STATUS_INITED) {
+                    return;
+                }
+                mCameraCapture.switchCamera();
+            }
+        });
+    }
+
+    /**
+     * Get if current camera in use is front camera.<br/>
+     *
+     * @return true if front camera in use false otherwise.
+     */
+    public boolean isFrontCamera() {
+        return mCameraFacing == CameraCapture.FACING_FRONT;
+    }
+
+    /**
+     * Get if torch supported on current camera facing.
+     *
+     * @return true if supported, false if not.
+     * @see #getCameraCapture()
+     * @see CameraCapture#isTorchSupported()
+     */
+    public boolean isTorchSupported() {
+        if (mCameraCapture != null) {
+            return mCameraCapture.isTorchSupported();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Toggle torch of current camera.
+     *
+     * @param open true to turn on, false to turn off.
+     * @see #getCameraCapture()
+     * @see CameraCapture#toggleTorch(boolean)
+     */
+    public void toggleTorch(final boolean open) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mCameraCapture.toggleTorch(open);
+            }
+        });
+    }
+
+    /**
+     * request screen shot with resolution of the screen
+     *
+     * @param screenShotListener the listener to be called when bitmap of the screen shot available
+     */
+    public void requestScreenShot(final GLRender.ScreenShotListener screenShotListener) {
+        mCustomHandlerThread.post(new LogRunnable("requestScreenShot" + " screenShotListener=" + screenShotListener) {
+            @Override
+            public void realRun() {
+                mImgTexPreviewMixer.requestScreenShot(screenShotListener);
+            }
+        });
+    }
+
+    /**
+     * Set local video shown rect.
+     *
+     * @param x     x position for left top of logo relative to the video, between 0~1.0.
+     * @param y     y position for left top of logo relative to the video, between 0~1.0.
+     * @param w     width of logo relative to the video, between 0~1.0, if set to 0,
+     *              width would be calculated by h and logo image radio.
+     * @param h     height of logo relative to the video, between 0~1.0, if set to 0,
+     *              height would be calculated by w and logo image radio.
+     * @param alpha alpha value，between 0~1.0
+     */
+    public void setLocalVideoRect(final float x, final float y, final float w, final float h, float alpha) {
+        alpha = Math.max(0.0f, alpha);
+        alpha = Math.min(alpha, 1.0f);
+        final float a = alpha;
+        mCustomHandlerThread.post(new LogRunnable("setLocalVideoRect" + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha) {
+            @Override
+            public void realRun() {
+                mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, a);
+                if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+                    // 重新计算预览尺寸
+                    setPreviewParams();
+                }
+            }
+        });
+    }
+
+    /**
+     * Bind remote video shown rect with user id.
+     *
+     * @param userId which user to show
+     * @param x      x position for left top of logo relative to the video, between 0~1.0.
+     * @param y      y position for left top of logo relative to the video, between 0~1.0.
+     * @param w      width of logo relative to the video, between 0~1.0, if set to 0,
+     *               width would be calculated by h and logo image radio.
+     * @param h      height of logo relative to the video, between 0~1.0, if set to 0,
+     *               height would be calculated by w and logo image radio.
+     * @param alpha  alpha value，between 0~1.0
+     */
+    public void bindRemoteVideoRect(final int userId, final float x, final float y, final float w, final float h, float alpha) {
+        alpha = Math.max(0.0f, alpha);
+        alpha = Math.min(alpha, 1.0f);
+        final float a = alpha;
+
+        mCustomHandlerThread.post(new LogRunnable("bindRemoteVideoRect" + " userId=" + userId + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha) {
+            @Override
+            public void realRun() {
+                int idx;
+                if (!mRemoteUserPinMap.containsKey(userId)) {
+                    idx = getAvailableVideoMixerSink();
+                    if (idx < 0) {
+                        MyLog.e(TAG, "bindRemoteVideoRect failed!");
+                        return;
+                    }
+                    mAgoraRTCAdapter.addRemoteVideo(userId);
+                    mAgoraRTCAdapter.getRemoteVideoSrcPin(userId).connect(mImgTexPreviewMixer.getSinkPin(idx));
+                    mRemoteUserPinMap.put(userId, idx);
+                } else {
+                    idx = mRemoteUserPinMap.get(userId);
+                }
+
+                mImgTexPreviewMixer.setScalingMode(idx, ImgTexMixer.SCALING_MODE_CENTER_CROP);
+                mImgTexPreviewMixer.setRenderRect(idx, x, y, w, h, a);
+
+                // 仅在未开启本地视频，以及绑定了远端视图的情况下开启自动刷新
+                if (!mIsCaptureStarted) {
+                    mImgTexPreviewMixer.setEnableAutoRefresh(true, mPreviewFps);
+                }
+            }
+        });
+    }
+
+    /**
+     * Unbind and remove remote video with user id.
+     *
+     * @param userId which user to unbind
+     */
+    public void unbindRemoteVideo(final int userId) {
+        mCustomHandlerThread.post(new LogRunnable("unbindRemoteVideo" + " userId=" + userId) {
+            @Override
+            public void realRun() {
+                doUnbindRemoteVideo(userId);
+                mRemoteUserPinMap.remove(userId);
+                freeFboCacheIfNeeded();
+            }
+        });
+    }
+
+    /**
+     * Unbind and remove all remote video.
+     */
+    public void unbindAllRemoteVideo() {
+        mCustomHandlerThread.post(new LogRunnable("unbindAllRemoteVideo") {
+            @Override
+            public void realRun() {
+                for (int userId : mRemoteUserPinMap.keySet()) {
+                    doUnbindRemoteVideo(userId);
+                }
+                mRemoteUserPinMap.clear();
+                // 重置本地视频显示区域
+                if (mImgTexPreviewMixer != null) {
+                    mImgTexPreviewMixer.setRenderRect(0, 0, 0, 1.0f, 1.0f, 1.0f);
+                }
+                freeFboCacheIfNeeded();
+            }
+        });
+    }
+
+    private void doUnbindRemoteVideo(int userId) {
+        DebugLogView.println(TAG, "doUnbindRemoteVideo userId=" + userId);
+        SrcPin<ImgTexFrame> remoteVideoSrcPin = mAgoraRTCAdapter.getRemoteVideoSrcPin(userId);
+        if (remoteVideoSrcPin != null) {
+            remoteVideoSrcPin.disconnect(false);
+        }
+        mAgoraRTCAdapter.removeRemoteVideo(userId);
+    }
+
+    private void freeFboCacheIfNeeded() {
+        // 还有要用到视频渲染的地方
+        if (mIsCaptureStarted || !mRemoteUserPinMap.isEmpty()) {
+            return;
+        }
+        mGLRender.queueEvent(new LogRunnable("freeFboCacheIfNeeded") {
+            @Override
+            public void realRun() {
+                // 释放所有fbo缓存
+                mGLRender.clearFboCache();
+            }
+        });
+    }
+
+    /**
+     * 调用该方法时，SDK 不再发送本地视频流，但摄像头仍然处于工作状态。
+     * 相比于 enableLocalVideo (false) 用于控制本地视频流发送的方法，该方法响应速度更快。
+     * 该方法不影响本地视频流获取，没有禁用摄像头
+     *
+     * @param muted
+     */
+    public void muteLocalVideoStream(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mAgoraRTCAdapter.muteLocalVideoStream(muted);
+            }
+        });
+    }
+
+    /**
+     * 接收/停止接收指定视频流
+     * 如果之前有调用过 muteAllRemoteVideoStreams (true) 停止接收所有远端视频流，
+     * 在调用本 API 之前请确保你已调用 muteAllRemoteVideoStreams (false)。 muteAllRemoteVideoStreams 是全局控制，
+     * muteRemoteVideoStream 是精细控制。
+     *
+     * @param uid
+     * @param muted
+     */
+    public void muteRemoteVideoStream(final int uid, final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mAgoraRTCAdapter.muteRemoteVideoStream(uid, muted);
+            }
+        });
+    }
+
+    /**
+     * 你不想看其他人的了，但其他人还能互相看
+     *
+     * @param muted
+     */
+    public void muteAllRemoteVideoStreams(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mAgoraRTCAdapter.muteAllRemoteVideoStreams(muted);
+            }
+        });
+    }
+
+    /**
+     * 该用户的首帧是否已经decoded
+     *
+     * @param userId
+     * @return
+     */
+    public boolean isFirstVideoDecoded(int userId) {
+        boolean r = false;
+        UserStatus userStatus = mUserStatusMap.get(userId);
+        if (userStatus != null) {
+            r = userStatus.isEnableVideo() && userStatus.isFirstVideoDecoded();
+        }
+        MyLog.d(TAG, "isFirstVideoDecoded" + " userId=" + userId + " r=" + r);
+        return r;
+    }
+
+    private int getAvailableVideoMixerSink() {
+        int idx = -1;
+        for (int i = 1; i < mImgTexPreviewMixer.getSinkPinNum(); i++) {
+            if (!mRemoteUserPinMap.containsValue(i)) {
+                MyLog.d(TAG, "get available sink " + i);
+                idx = i;
+                break;
+            }
+        }
+        if (idx == -1) {
+            MyLog.e(TAG, "unable to get available mixer sink!");
+        }
+        return idx;
+    }
+
+    private int getShortEdgeLength(int resolution) {
+        switch (resolution) {
+            case VIDEO_RESOLUTION_360P:
+                return 360;
+            case VIDEO_RESOLUTION_480P:
+                return 480;
+            case VIDEO_RESOLUTION_540P:
+                return 540;
+            case VIDEO_RESOLUTION_720P:
+                return 720;
+            case VIDEO_RESOLUTION_1080P:
+                return 1080;
+            default:
+                return 720;
+        }
+    }
+
+    private int align(int val, int align) {
+        return (val + align - 1) / align * align;
+    }
+
+    private void calResolution() {
+        // 考虑存在远端视频，本地视频的尺寸需要调整
+        RectF previewRect = mImgTexPreviewMixer.getRenderRect(0);
+        int localRenderWidth = (int) (mScreenRenderWidth * previewRect.width());
+        int localRenderHeight = (int) (mScreenRenderHeight * previewRect.height());
+
+        if (mPreviewWidthOrig == 0 && mPreviewHeightOrig == 0) {
+            int val = getShortEdgeLength(mPreviewResolution);
+            if (mScreenRenderWidth > mScreenRenderHeight) {
+                mPreviewMixerWidth = 0;
+                mPreviewMixerHeight = val;
+            } else {
+                mPreviewMixerWidth = val;
+                mPreviewMixerHeight = 0;
+            }
+            if (localRenderWidth > localRenderHeight) {
+                mPreviewWidth = 0;
+                mPreviewHeight = val;
+            } else {
+                mPreviewWidth = val;
+                mPreviewHeight = 0;
+            }
+        } else {
+            mPreviewMixerWidth = mPreviewWidthOrig;
+            mPreviewMixerHeight = mPreviewHeightOrig;
+        }
+
+        if (mTargetWidthOrig == 0 && mTargetHeightOrig == 0) {
+            int val = getShortEdgeLength(mTargetResolution);
+            if (localRenderWidth > localRenderHeight) {
+                mTargetWidth = 0;
+                mTargetHeight = val;
+            } else {
+                mTargetWidth = val;
+                mTargetHeight = 0;
+            }
+        }
+
+        if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
+            if (mPreviewMixerWidth == 0) {
+                mPreviewMixerWidth = mPreviewMixerHeight * mScreenRenderWidth / mScreenRenderHeight;
+            } else if (mPreviewMixerHeight == 0) {
+                mPreviewMixerHeight = mPreviewMixerWidth * mScreenRenderHeight / mScreenRenderWidth;
+            }
+        }
+
+        if (localRenderWidth != 0 && localRenderHeight != 0) {
+            if (mPreviewWidth == 0) {
+                mPreviewWidth = mPreviewHeight * localRenderWidth / localRenderHeight;
+            } else if (mPreviewHeight == 0) {
+                mPreviewHeight = mPreviewWidth * localRenderHeight / localRenderWidth;
+            }
+            if (mTargetWidth == 0) {
+                mTargetWidth = mTargetHeight * localRenderWidth / localRenderHeight;
+            } else if (mTargetHeight == 0) {
+                mTargetHeight = mTargetWidth * localRenderHeight / localRenderWidth;
+            }
+        }
+        mPreviewWidth = align(mPreviewWidth, 8);
+        mPreviewHeight = align(mPreviewHeight, 8);
+        mPreviewMixerWidth = align(mPreviewMixerWidth, 8);
+        mPreviewMixerHeight = align(mPreviewMixerHeight, 8);
+        mTargetWidth = align(mTargetWidth, 8);
+        mTargetHeight = align(mTargetHeight, 8);
+
+        MyLog.i(TAG, "calResolution: \n" +
+                "viewRenderSize: " + mScreenRenderWidth + "x" + mScreenRenderHeight + "\n" +
+                "localRenderRect: " + previewRect + "\n" +
+                "localRenderSize: " + localRenderWidth + "x" + localRenderHeight + "\n" +
+                "previewSize: " + mPreviewWidth + "x" + mPreviewHeight + "\n" +
+                "mixerSize: " + mPreviewMixerWidth + "x" + mPreviewMixerHeight + "\n" +
+                "targetSize: " + mTargetWidth + "x" + mTargetHeight);
+    }
+
+    private void updateFrontMirror() {
+        if (mCameraFacing == CameraCapture.FACING_FRONT) {
+            mImgTexMixer.setMirror(0, !mFrontCameraMirror);
+        } else {
+            mImgTexMixer.setMirror(0, false);
+        }
+    }
+
+    private void setPreviewParams() {
+        calResolution();
+        mCameraCapture.setOrientation(mRotateDegrees);
+        if (mPreviewFps == 0) {
+            mPreviewFps = CameraCapture.DEFAULT_PREVIEW_FPS;
+        }
+        mCameraCapture.setPreviewFps(mPreviewFps);
+
+        mImgTexScaleFilter.setTargetSize(mPreviewWidth, mPreviewHeight);
+        mImgTexPreviewMixer.setTargetSize(mPreviewMixerWidth, mPreviewMixerHeight);
+        mImgTexMixer.setTargetSize(mTargetWidth, mTargetHeight);
+    }
+
+    private void onPreviewSizeChanged(final int width, final int height) {
+        mCustomHandlerThread.post(new LogRunnable("onPreviewSizeChanged" + " width=" + width + " height=" + height) {
+            @Override
+            public void realRun() {
+                boolean notifySizeChanged = mScreenRenderWidth != 0 && mScreenRenderHeight != 0;
+                mScreenRenderWidth = width;
+                mScreenRenderHeight = height;
+                setPreviewParams();
+                if (mDelayedStartCameraPreview) {
+                    mCameraCapture.start(mCameraFacing);
+                    mDelayedStartCameraPreview = false;
+                }
+                if (notifySizeChanged) {
+                    // TODO: notify preview size changed
+                }
+            }
+        });
+    }
+
+    private GLRender.OnSizeChangedListener mPreviewSizeChangedListener =
+            new GLRender.OnSizeChangedListener() {
+                @Override
+                public void onSizeChanged(int width, int height) {
+                    MyLog.i(TAG, "onPreviewSizeChanged: " + width + "x" + height);
+                    onPreviewSizeChanged(width, height);
+                }
+            };
 }
 

@@ -50,7 +50,9 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.room.inframe.mobi/v2/room/create-room")
     Observable<ApiResult> createRoom(@Body RequestBody body);
 
+
     //检查公开房间有没有权限
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
     @GET("http://dev.room.inframe.mobi/v3/room/public-permission")
     Observable<ApiResult> checkCreatePublicRoomPermission();
 
@@ -203,6 +205,11 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-mini-game")
     Observable<ApiResult> stopMiniGameByOwner(@Body RequestBody body);
 
+    //房主控制结束自由麦
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-free-micro")
+    Observable<ApiResult> stopFreeMicroByOwner(@Body RequestBody body);
+
     /**
      * @param body "kickUserID": 0,
      *             "roomID": 0,
@@ -304,7 +311,7 @@ public interface GrabRoomServerApi {
      * @param offset
      * @param count
      */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-tags")
+    @GET("http://dev.api.inframe.mobi/v2/playbook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
@@ -426,6 +433,14 @@ message STCommitSegmentResultReq
     Observable<ApiResult> getStandBillBoards();
 
     /**
+     * 获取推荐tag列表
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/magpie-billboards")
+    Observable<ApiResult> getDoubleStandBillBoards();
+
+    /**
      * 获取推荐歌曲
      *
      * @return
@@ -433,6 +448,71 @@ message STCommitSegmentResultReq
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
     Observable<ApiResult> getListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
 
+    /**
+     * 获取推荐歌曲
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/list-magpie-billboard")
+    Observable<ApiResult> getDoubleListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
+
+
+    /**
+     * 非房主申请点歌
+     *
+     * @param body {
+     *             "itemID": 0,
+     *             "roomID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/suggest-music")
+    Observable<ApiResult> suggestMusic(@Body RequestBody body);
+
+
+    /**
+     * 房主获取用户点的歌曲
+     *
+     * @param roomID
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @GET("http://dev.room.inframe.mobi/v1/room/list-music-suggested")
+    Observable<ApiResult> getListMusicSuggested(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
+
+    /**
+     * 房主添加用户点的歌曲
+     *
+     * @param body {
+     *             "itemID": 0,
+     *             "roomID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/add-music-suggested")
+    Observable<ApiResult> addSuggestMusic(@Body RequestBody body);
+
+    /**
+     * 房主删除用户点的歌曲
+     *
+     * @param body {
+     *             "itemID": 0,
+     *             "roomID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/del-music-suggested")
+    Observable<ApiResult> deleteSuggestMusic(@Body RequestBody body);
+
+    /**
+     * 房主添加自定义小游戏
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/add-custom-game")
+    Observable<ApiResult> addCustomGame(@Body RequestBody body);
 
     /**
      * 礼物60秒打卡

@@ -39,10 +39,11 @@ public class ImgTexFilter extends ImgTexFilterBase {
     private FloatBuffer mVertexCoordsBuf;
 
     protected boolean mMirror;
+    protected boolean mFlipVertical;
 
     public ImgTexFilter(GLRender glRender) {
         super(glRender);
-        init(BASE_VERTEX_SHADER, GlUtil.BASE_FRAGMENT_SHADER_BODY);
+        init(BASE_VERTEX_SHADER, BASE_FRAGMENT_SHADER_BODY);
     }
 
     protected ImgTexFilter(GLRender glRender,
@@ -97,6 +98,15 @@ public class ImgTexFilter extends ImgTexFilterBase {
      */
     public void setMirror(boolean mirror) {
         mMirror = mirror;
+    }
+
+    /**
+     * Flip source image vertically while rendering to the next module.
+     *
+     * @param flipVertical  flip or not
+     */
+    public void setFlipVertical(boolean flipVertical) {
+        mFlipVertical = flipVertical;
     }
 
     /**
@@ -270,7 +280,7 @@ public class ImgTexFilter extends ImgTexFilterBase {
         float bottom = 1.0f - rect.bottom;
 
         return TexTransformUtil.getTexCoordsBuf(left, top, right,
-                bottom, 0, mMirror, false);
+                bottom, 0, mMirror, mFlipVertical);
     }
 
     protected int getUniformLocation(String uniformName) {
@@ -287,22 +297,12 @@ public class ImgTexFilter extends ImgTexFilterBase {
     }
 
     private FloatBuffer genVertexCoordsBuf(RectF rect) {
-        if (!mMirror) {
-            float vertexArray[] = {
-                    -1 + 2 * rect.left, 1 - 2 * rect.bottom,   // 0 bottom left
-                    -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 1 bottom right
-                    -1 + 2 * rect.left, 1 - 2 * rect.top,      // 2 top left
-                    -1 + 2 * rect.right, 1 - 2 * rect.top,      // 3 top right
-            };
-            return GlUtil.createFloatBuffer(vertexArray);
-        } else {
-            float vertexArray[] = {
-                    -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 0 bottom left
-                    -1 + 2 * rect.left, 1 - 2 * rect.bottom,   // 1 bottom right
-                    -1 + 2 * rect.right, 1 - 2 * rect.top,      // 2 top left
-                    -1 + 2 * rect.left, 1 - 2 * rect.top,      // 2 top right
-            };
-            return GlUtil.createFloatBuffer(vertexArray);
-        }
+        float vertexArray[] = {
+                -1 + 2 * rect.left,  1 - 2 * rect.bottom,   // 0 bottom left
+                -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 1 bottom right
+                -1 + 2 * rect.left,  1 - 2 * rect.top,      // 2 top left
+                -1 + 2 * rect.right, 1 - 2 * rect.top,      // 3 top right
+        };
+        return GlUtil.createFloatBuffer(vertexArray);
     }
 }

@@ -10,21 +10,21 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
-
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.R;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {
     OnClickDeleteListener mOnClickDeleteListener;
 
-    GrabRoomData mGrabRoomData;
+    SongManageData mGrabRoomData;
 
     Drawable mGrayDrawable;
     Drawable mRedDrawable;
@@ -32,6 +32,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     Drawable mChorusDrawable;
     Drawable mPKDrawable;
     Drawable mMiniGameDrawable;
+    Drawable mFreeMicDrawable;
 
     public ManageSongAdapter() {
         mGrayDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
@@ -67,6 +68,13 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                 .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
                 .setStrokeColor(U.getColor(R.color.white_trans_70))
                 .build();
+
+        mFreeMicDrawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#C856E0"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setStrokeColor(U.getColor(R.color.white_trans_70))
+                .build();
     }
 
     @NonNull
@@ -80,12 +88,12 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         GrabRoomSongModel model = mDataList.get(position);
-
+        MyLog.d(TAG, "onBindViewHolder" + " model=" + model + " position=" + position);
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model, position);
     }
 
-    public void setGrabRoomData(GrabRoomData grabRoomData) {
+    public void setGrabRoomData(SongManageData grabRoomData) {
         mGrabRoomData = grabRoomData;
     }
 
@@ -131,7 +139,9 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             mTvManage.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    mOnClickDeleteListener.onClick(mSongModel);
+                    if (mOnClickDeleteListener != null) {
+                        mOnClickDeleteListener.onClick(mSongModel);
+                    }
                 }
             });
         }
@@ -140,33 +150,47 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             this.mSongModel = model;
             this.mPosition = position;
 
-            if (mGrabRoomData.hasGameBegin()) {
-                if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
-                    mTvManage.setEnabled(false);
-                    mTvManage.setText("演唱中");
-                    mTvManage.setBackground(mGrayDrawable);
-                } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
-                    mTvManage.setEnabled(false);
-                    mTvManage.setText("已加载");
-                    mTvManage.setBackground(mGrayDrawable);
-                } else {
+            mTvManage.setText("");
+            mTvManage.setEnabled(false);
+
+            if (mGrabRoomData.isDoubleRoom()) {
+                if (model.isCouldDelete()) {
+                    mTvManage.setVisibility(View.VISIBLE);
                     mTvManage.setText("删除");
                     mTvManage.setEnabled(true);
                     mTvManage.setBackground(mRedDrawable);
+                } else {
+                    mTvManage.setVisibility(View.GONE);
                 }
             } else {
-                if (position == 0) {
-                    mTvManage.setText("演唱中");
-                    mTvManage.setEnabled(false);
-                    mTvManage.setBackground(mGrayDrawable);
-                } else if (position == 1) {
-                    mTvManage.setText("已加载");
-                    mTvManage.setEnabled(false);
-                    mTvManage.setBackground(mGrayDrawable);
+                if (mGrabRoomData.hasGameBegin()) {
+                    if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
+                        mTvManage.setEnabled(false);
+                        mTvManage.setText("演唱中");
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
+                        mTvManage.setEnabled(false);
+                        mTvManage.setText("已加载");
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else {
+                        mTvManage.setText("删除");
+                        mTvManage.setEnabled(true);
+                        mTvManage.setBackground(mRedDrawable);
+                    }
                 } else {
-                    mTvManage.setText("删除");
-                    mTvManage.setEnabled(true);
-                    mTvManage.setBackground(mRedDrawable);
+                    if (position == 0) {
+                        mTvManage.setText("演唱中");
+                        mTvManage.setEnabled(false);
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else if (position == 1) {
+                        mTvManage.setText("已加载");
+                        mTvManage.setEnabled(false);
+                        mTvManage.setBackground(mGrayDrawable);
+                    } else {
+                        mTvManage.setText("删除");
+                        mTvManage.setEnabled(true);
+                        mTvManage.setBackground(mRedDrawable);
+                    }
                 }
             }
 
@@ -199,6 +223,16 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                 mSongTagTv.setText("双人游戏");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mMiniGameDrawable);
+                mTvSongName.setText("【" + model.getItemName() + "】");
+            } else if (model.getPlayType() == StandPlayType.PT_FREE_MICRO.getValue()) {
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(58 + 84), 0);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
+                layoutParams.width = U.getDisplayUtils().dip2px(58);
+                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(58 + 84);
+                mSongTagTv.setLayoutParams(layoutParams);
+                mSongTagTv.setText("多人游戏");
+                mSongTagTv.setVisibility(View.VISIBLE);
+                mSongTagTv.setBackground(mFreeMicDrawable);
                 mTvSongName.setText("【" + model.getItemName() + "】");
             } else {
                 mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(84), 0);

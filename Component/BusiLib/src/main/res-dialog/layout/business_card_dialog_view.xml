@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_425_dp">
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_302_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_14_dp"
+        app:bl_corners_topRightRadius="@dimen/view_14_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#7088FF"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/bottom_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_123_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_14_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_14_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#E8F4FB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_108_dp"
+        android:layout_height="@dimen/view_108_dp"
+        android:layout_marginTop="@dimen/view_60_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:maxEms="7"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="KTV"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/sex_iv"
+        app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+
+    <ImageView
+        android:id="@+id/sex_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        app:layout_constraintBottom_toBottomOf="@id/name_tv"
+        app:layout_constraintLeft_toRightOf="@id/name_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/userid_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:gravity="center"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+    <com.common.flowlayout.TagFlowLayout
+        android:id="@+id/flowlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/bottom_area"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bottom_area"
+        app:tag_gravity="center" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -30,6 +30,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -163,6 +164,7 @@ public class ZipUtils {
         return unzipFileByKeyword(zipFilePath, destDirPath, null);
     }
 
+
     public List<File> unzipFileByKeyword(final String zipFilePath,
                                          final String destDirPath,
                                          final String keyword)
@@ -213,6 +215,65 @@ public class ZipUtils {
             zip.close();
         }
         return files;
+    }
+
+    public static boolean unzipFile(ZipInputStream zipInputStream, File dstDir) {
+
+        try {
+            if (dstDir.exists()) {
+                dstDir.delete();
+            }
+            dstDir.mkdirs();
+            if (null == zipInputStream) {
+                return false;
+            }
+            ZipEntry entry;
+            String name;
+            do {
+                entry = zipInputStream.getNextEntry();
+                if (null != entry) {
+                    name = entry.getName();
+                    if (entry.isDirectory()) {
+                        name = name.substring(0, name.length() - 1);
+                        File folder = new File(dstDir, name);
+                        folder.mkdirs();
+
+                    } else {
+                        //否则创建文件,并输出文件的内容
+                        File file = new File(dstDir, name);
+                        file.getParentFile().mkdirs();
+                        file.createNewFile();
+                        FileOutputStream out = new FileOutputStream(file);
+                        int len;
+                        byte[] buffer = new byte[1024];
+                        while ((len = zipInputStream.read(buffer)) != -1) {
+                            out.write(buffer, 0, len);
+                            out.flush();
+                        }
+                        out.close();
+
+                    }
+                }
+
+            } while (null != entry);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+
+        } finally {
+            if (zipInputStream != null) {
+                try {
+                    zipInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+        }
+        return true;
     }
 
     private static boolean zipFile(final File srcFile,

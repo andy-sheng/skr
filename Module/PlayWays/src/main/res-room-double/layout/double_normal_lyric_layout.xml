@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_32_dp"
+        android:layout_marginRight="@dimen/view_32_dp">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/lyric_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:lineSpacingExtra="@dimen/view_10_dp"
+            android:textColor="#ff000000"
+            android:textSize="@dimen/textsize_16_dp" />
+
+    </ScrollView>
+
+</FrameLayout>

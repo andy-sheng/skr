@@ -8,9 +8,6 @@ import java.util.List;
 
 
 public class RecommendModel implements Serializable {
-    public static final int TYPE_FRIEND_ROOM = 1;
-    public static final int TYPE_RECOMMEND_ROOM = 2;
-    public static final int TYPE_FOLLOW_ROOM = 3;
     /**
      * roomInfo : {"inPlayersNum":0,"isOwner":true,"roomID":0,"roomTag":"URT_UNKNOWN","roomType":"RT_UNKNOWN","tagID":0,"totalPlayersNum":0,"userID":0}
      * tagInfo : {"bgColor":"string","introduction":"string","tagID":0,"tagName":"string"}
@@ -26,7 +23,8 @@ public class RecommendModel implements Serializable {
     private String displayURL;
     private String displayAvatar;
     private String displayDesc;
-    List<PlayUser> playUsers;
+    private String mediaTagURL;
+    private List<PlayUser> playUsers;
 
     public List<PlayUser> getPlayUsers() {
         return playUsers;
@@ -102,6 +100,13 @@ public class RecommendModel implements Serializable {
         this.displayDesc = displayDesc;
     }
 
+    public String getMediaTagURL() {
+        return mediaTagURL;
+    }
+
+    public void setMediaTagURL(String mediaTagURL) {
+        this.mediaTagURL = mediaTagURL;
+    }
 
     @Override
     public String toString() {
@@ -114,6 +119,7 @@ public class RecommendModel implements Serializable {
                 ", displayURL='" + displayURL + '\'' +
                 ", displayAvatar='" + displayAvatar + '\'' +
                 ", displayDesc='" + displayDesc + '\'' +
+                ", mediaTagURL='" + mediaTagURL + '\'' +
                 ", playUsers=" + playUsers +
                 '}';
     }

@@ -6,7 +6,10 @@ import android.content.Context;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.notification.event.CRSyncInviteUserNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -14,9 +17,12 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.recommend.RA;
 import com.module.RouterConstants;
+import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.doubleplay.DoubleRoomServerApi;
+import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
 import com.module.playways.event.GrabChangeRoomEvent;
-import com.module.playways.grab.room.GrabGuideServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
@@ -26,8 +32,11 @@ import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
@@ -62,6 +71,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
         map.put("inviteType", inviteType);
+        map.put("vars", RA.getVars());
+        map.put("testList", RA.getTestList());
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         mJoinRoomDisposable = ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
@@ -70,6 +81,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
                     for (Activity activity : U.getActivityUtils().getActivityList()) {
                         if (activity instanceof GrabRoomActivity) {
+                            // 如果 视频房 被邀请进 非视频房
                             MyLog.d(TAG, " 存在一唱到底主页面了，发event刷新view");
                             EventBus.getDefault().post(new GrabChangeRoomEvent(grabCurGameStateModel));
                             return;
@@ -111,6 +123,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     @Override
     public void tryGoCreateRoom() {
+//        if(true)
+//        {
+//            new MakeGamePanelView(U.getActivityUtils().getTopActivity()).showByDialog(1);
+//            return;
+//        }
         if (mJoinRoomDisposable != null && !mJoinRoomDisposable.isDisposed()) {
             MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
             return;
@@ -144,24 +161,6 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 .navigation();
     }
 
-    @Override
-    public void tryGoGrabGuide(int tagId) {
-        GrabGuideServerApi grabGuideServerApi = ApiManager.getInstance().createService(GrabGuideServerApi.class);
-        if (grabGuideServerApi != null) {
-//            ApiMethods.subscribe(grabGuideServerApi.getGuideRes(1, (int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-//                @Override
-//                public void process(ApiResult obj) {
-//                    GrabGuideInfoModel grabGuideInfoModel = JSON.parseObject(obj.getData().toJSONString(), GrabGuideInfoModel.class);
-//
-//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_GUIDE)
-//                            .withSerializable("guide_data", grabGuideInfoModel)
-//                            .withInt("tag_id", tagId)
-//                            .navigation();
-//                }
-//            }, new ApiMethods.RequestControl("getGuideRes", ApiMethods.ControlType.CancelThis));
-        }
-    }
-
     /**
      * 新手引导匹配
      */
@@ -178,6 +177,84 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 .navigation();
     }
 
+    @Override
+    public void jumpToDoubleRoom(Object o) {
+        DoubleRoomData doubleRoomData = new DoubleRoomData();
+        if (o instanceof CRSyncInviteUserNotifyEvent) {
+            CRSyncInviteUserNotifyEvent event = (CRSyncInviteUserNotifyEvent) o;
+            doubleRoomData.setGameId(event.getRoomID());
+            doubleRoomData.setEnableNoLimitDuration(true);
+            doubleRoomData.setPassedTimeMs(event.getPassedTimeMs());
+            doubleRoomData.setConfig(event.getConfig());
+
+            {
+                HashMap<Integer, UserInfoModel> hashMap = new HashMap();
+                for (UserInfoModel userInfoModel : event.getUsers()) {
+                    hashMap.put(userInfoModel.getUserId(), userInfoModel);
+                }
+                doubleRoomData.setUserInfoListMap(hashMap);
+            }
+
+            {
+                List<LocalAgoraTokenInfo> list = new ArrayList<>();
+                Iterator<Map.Entry<Integer, String>> iterator = event.getTokens().entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Integer, String> entry = iterator.next();
+                    list.add(new LocalAgoraTokenInfo(entry.getKey(), entry.getValue()));
+                }
+                doubleRoomData.setTokens(list);
+            }
+
+            doubleRoomData.setNeedMaskUserInfo(event.isNeedMaskUserInfo());
+        } else if (o instanceof JSONObject) {
+            JSONObject obj = (JSONObject) o;
+            doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(obj);
+        }
+
+        doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.GRAB_INVITE);
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                .withSerializable("roomData", doubleRoomData)
+                .navigation();
+    }
+
+    @Override
+    public void jumpToDoubleRoomFromDoubleRoomInvite(Object o) {
+        DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject((JSONObject) o);
+        doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                .withSerializable("roomData", doubleRoomData)
+                .navigation();
+    }
+
+    @Override
+    public void createDoubleRoom() {
+        DoubleRoomServerApi mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi.class);
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(new HashMap()));
+        ApiMethods.subscribe(mDoubleRoomServerApi.createRoom(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(result.getData());
+                    doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
+                            .withSerializable("roomData", doubleRoomData)
+                            .navigation();
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络错误");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络延迟");
+            }
+        });
+    }
 
     @Override
     public void init(Context context) {

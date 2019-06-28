@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+
+    <com.common.view.ex.ExRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_220_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_133_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFE0AD">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lyric_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginBottom="@dimen/view_20_dp"
+            android:paddingRight="@dimen/view_10_dp"
+            android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+            android:scrollbars="vertical" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
+    <com.module.playways.grab.room.view.SingCountDownView2
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_78_dp" />
+
+</RelativeLayout>

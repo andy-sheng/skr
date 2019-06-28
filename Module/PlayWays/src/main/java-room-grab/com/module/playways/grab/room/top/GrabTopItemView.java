@@ -19,13 +19,11 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.R;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.zq.live.proto.Room.EWantSingType;
 
 import org.greenrobot.eventbus.EventBus;
-
-import io.reactivex.functions.Consumer;
 
 public class GrabTopItemView extends RelativeLayout {
     public final static String TAG = "GrabTopItemView";
@@ -160,12 +158,12 @@ public class GrabTopItemView extends RelativeLayout {
     //占位的View
     public void setToPlaceHolder() {
         if (mCanShowInviteWhenEmpty) {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_yaoqing));
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_yaoqing));
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
             }
         } else {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_kongwei));
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.yichangdaodi_guanzhong));
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
             }
@@ -240,7 +238,7 @@ public class GrabTopItemView extends RelativeLayout {
 //        MyLog.d(TAG, "setGrap" + " grap=" + grap);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(10);
+        lp.topMargin = -U.getDisplayUtils().dip2px(8);
         mFlagIv.setLayoutParams(lp);
         if (wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()
                 || wantSingType == EWantSingType.EWST_COMMON_OVER_TIME.getValue()) {
@@ -263,7 +261,7 @@ public class GrabTopItemView extends RelativeLayout {
         MyLog.d(TAG, "setLight" + " on=" + on);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(25);
+        lp.topMargin = -U.getDisplayUtils().dip2px(22);
         mFlagIv.setLayoutParams(lp);
         if (on) {
             mFlagIv.setImageResource(R.drawable.ycdd_liangdeng);

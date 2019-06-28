@@ -22,7 +22,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.view.ContinueTextView;
 import com.module.playways.room.room.comment.model.CommentGiftModel;

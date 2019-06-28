@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.common.log.MyLog;
+import com.umeng.commonsdk.statistics.common.DeviceConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -972,6 +973,18 @@ public class DeviceUtils {
             }
         }
         return ret;
+    }
+
+    public static String[] getTestDeviceInfo(Context context){
+        String[] deviceInfo = new String[2];
+        try {
+            if(context != null){
+                deviceInfo[0] = DeviceConfig.getDeviceIdForGeneral(context);
+                deviceInfo[1] = DeviceConfig.getMac(context);
+            }
+        } catch (Exception e){
+        }
+        return deviceInfo;
     }
 
 }

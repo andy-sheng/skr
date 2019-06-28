@@ -13,6 +13,7 @@ import com.common.utils.U;
 import java.util.LinkedHashSet;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -156,10 +157,28 @@ public class ApiManager {
         return host;
     }
 
+    /**
+     * 返回对应环境真正的url
+     * @param url
+     * @return
+     */
     public String findRealUrlByChannel(String url) {
         Uri uri = Uri.parse(url);
+
+        String scheme = uri.getScheme();
+        if (U.getChannelUtils().isStaging()) {
+            if (scheme.equals("https")) {
+                scheme = "http";
+            }
+        } else {
+            if (scheme.equals("http")) {
+                scheme = "https";
+            }
+        }
+
         String host = findRealHostByChannel(uri.getHost());
         url = url.replace(uri.getHost(), host);
+        url = url.replace(uri.getScheme(),scheme);
         return url;
     }
 

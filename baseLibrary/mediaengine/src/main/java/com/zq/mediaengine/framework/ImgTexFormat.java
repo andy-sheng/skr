@@ -17,4 +17,10 @@ public class ImgTexFormat {
         this.width = width;
         this.height = height;
     }
+
+    public ImgTexFormat(ImgTexFormat format) {
+        this.colorFormat = format.colorFormat;
+        this.width = format.width;
+        this.height = format.height;
+    }
 }

@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongModel implements Serializable {
+
+    public static final int ID_FREE_MIC = 9277;
+    public static final int ID_CUSTOM_GAME = 9276;
     /**
      * itemID : 44
      * itemName : 过火
@@ -54,7 +57,7 @@ public class SongModel implements Serializable {
     private int standLrcBeginT;        //一唱到底第一句歌词的开始毫秒
     private int standLrcEndT;          //一唱到底歌词的结束毫秒
     private boolean isblank = false;   //一唱到底是否是白板item
-    private String standLrc = "";   //一唱到底是否是白板item
+    private String standLrc = "";   //一唱到底歌词
     private String rankUserVoice;   //排位进入游戏前的背景音乐
     private int rankLrcEndT;   //排位进入游戏前的背景音乐
     private boolean challengeAvailable;// 挑战是否可用

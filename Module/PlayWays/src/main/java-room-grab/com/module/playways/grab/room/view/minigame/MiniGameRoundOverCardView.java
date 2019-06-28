@@ -1,20 +1,19 @@
 package com.module.playways.grab.room.view.minigame;
 
-import android.content.Context;
 import android.os.Handler;
-import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.zq.live.proto.Room.EQRoundOverReason;
+import com.common.view.ExViewStub;
 
-public class MiniGameRoundOverCardView extends RelativeLayout {
+public class MiniGameRoundOverCardView extends ExViewStub {
 
     ImageView mMiniGameBgIv;
     SVGAListener mSVGAListener;
@@ -24,38 +23,27 @@ public class MiniGameRoundOverCardView extends RelativeLayout {
 
     Handler mUiHandler = new Handler();
 
-    public MiniGameRoundOverCardView(Context context) {
-        super(context);
-        init();
+    public MiniGameRoundOverCardView(ViewStub viewStub) {
+        super(viewStub);
     }
 
-    public MiniGameRoundOverCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+    @Override
+    protected void init(View parentView) {
+        mMiniGameBgIv = (ImageView) parentView.findViewById(R.id.mini_game_bg_iv);
     }
 
-    public MiniGameRoundOverCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_mini_game_over_card_layout, this);
-        mMiniGameBgIv = (ImageView) findViewById(R.id.mini_game_bg_iv);
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_mini_game_over_card_stub_layout;
     }
 
     public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener listener) {
         if (lastRoundInfo == null) {
             return;
         }
-        int songId = 0;
-        if (lastRoundInfo.getMusic() != null) {
-            songId = lastRoundInfo.getMusic().getItemID();
-        }
-        int reason = lastRoundInfo.getOverReason();
-        int resultType = lastRoundInfo.getResultType();
+        tryInflate();
         this.mSVGAListener = listener;
-        setVisibility(VISIBLE);
+        mParentView.setVisibility(View.VISIBLE);
 
 //        if (reason == EQRoundOverReason.ROR_MIN_GAME_NOT_ENOUTH_PLAYER.getValue()) {
 //            // 连麦小游戏人数不够
@@ -84,45 +72,47 @@ public class MiniGameRoundOverCardView extends RelativeLayout {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
         }
-        this.startAnimation(mEnterTranslateAnimation);
+        mParentView.startAnimation(mEnterTranslateAnimation);
     }
 
     /**
      * 离场动画
      */
     public void animationLeave() {
-        if (this != null && this.getVisibility() == VISIBLE) {
-            if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
-                mLeaveTranslateAnimation.setDuration(200);
-            }
-            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
+        if (mParentView != null) {
+            if (mParentView.getVisibility() == View.VISIBLE) {
+                if (mLeaveTranslateAnimation == null) {
+                    mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                    mLeaveTranslateAnimation.setDuration(200);
                 }
+                mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    clearAnimation();
-                    setVisibility(GONE);
-                    if (mSVGAListener != null) {
-                        mSVGAListener.onFinished();
                     }
 
-                }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mParentView.clearAnimation();
+                        setVisibility(View.GONE);
+                        if (mSVGAListener != null) {
+                            mSVGAListener.onFinished();
+                        }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
+                    }
 
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mParentView.startAnimation(mLeaveTranslateAnimation);
+            } else {
+                mParentView.clearAnimation();
+                setVisibility(View.GONE);
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
-            });
-            this.startAnimation(mLeaveTranslateAnimation);
-        } else {
-            clearAnimation();
-            setVisibility(GONE);
-            if (mSVGAListener != null) {
-                mSVGAListener.onFinished();
             }
         }
     }
@@ -130,7 +120,7 @@ public class MiniGameRoundOverCardView extends RelativeLayout {
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (visibility == GONE) {
+        if (visibility == View.GONE) {
             mUiHandler.removeCallbacksAndMessages(null);
             if (mEnterTranslateAnimation != null) {
                 mEnterTranslateAnimation.setAnimationListener(null);
@@ -145,8 +135,8 @@ public class MiniGameRoundOverCardView extends RelativeLayout {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
         mUiHandler.removeCallbacksAndMessages(null);
         if (mEnterTranslateAnimation != null) {
             mEnterTranslateAnimation.setAnimationListener(null);

@@ -19,7 +19,7 @@
       android:id="@+id/holderRadioGroup"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/activity_horizontal_margin"
+      android:layout_marginBottom="16dp"
       android:orientation="horizontal">
 
     <RadioButton
@@ -54,7 +54,7 @@
       android:id="@+id/positionRadioGroup"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/activity_horizontal_margin"
+      android:layout_marginBottom="16dp"
       android:orientation="horizontal">
 
     <RadioButton

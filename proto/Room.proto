@@ -232,6 +232,7 @@ enum EWantSingType {
     EWST_CHORUS = 4; //合唱模式
     EWST_SPK = 5; //一唱到底spk模式
     EWST_MIN_GAME = 6; //一唱到底连麦小游戏模式
+    EWST_FREE_MICRO = 7; //自由麦玩法
 }
 
 message QSyncStatusMsg {
@@ -302,7 +303,8 @@ enum EQRoundOverReason {
     ROR_MIN_GAME_NOT_ENOUTH_PLAYER = 10; //连麦小游戏人数不够
     ROR_MIN_GAME_OWNER_END_ROUND = 11; //连麦小游戏房主结束轮次
     ROR_MIN_GAME_NOT_PLAY = 12; //用户不玩了
-
+    ROR_FREE_MICRO_NORMAL_END      = 13; //自由麦模式正常结束
+    ROR_FREE_MICRO_OWNER_STOP      = 14; //自由麦模式房主停止
 }
 
 message QResultInfo {

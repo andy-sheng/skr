@@ -143,7 +143,7 @@ public class SmsAuthFragment extends BaseFragment {
 
                                         //短信验证完实人认证
                                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/card"))
+                                                .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth/card"))
                                                 .navigation();
                                     } else {
                                         U.getToastUtil().showShort(result.getErrmsg());

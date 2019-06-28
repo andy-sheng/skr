@@ -174,27 +174,27 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
     public void buyFaild(int erroCode, String errorMsg) {
         switch (erroCode) {
             case ErrZSNotEnough:
-                ToastUtils.showShort("钻石余额不足，充值后就可以送礼啦");
+                U.getToastUtil().showShort("钻石余额不足，充值后就可以送礼啦");
                 mHandler.removeMessages(MSG_SHOW_RECHARGE);
                 mHandler.sendEmptyMessageDelayed(MSG_SHOW_RECHARGE, 1000);
                 mHandler.removeMessages(MSG_HIDE);
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), 0);
                 break;
             case ErrPresentObjLeave:
-                ToastUtils.showShort("送礼对象已离开，请重新选择");
+                U.getToastUtil().showShort("送礼对象已离开，请重新选择");
                 mHandler.removeMessages(MSG_HIDE);
                 mHandler.sendEmptyMessageDelayed(MSG_HIDE, 0);
                 break;
             case ErrCoinNotEnough:
-                ToastUtils.showShort("金币余额不足");
+                U.getToastUtil().showShort("金币余额不足");
                 mHandler.removeMessages(MSG_HIDE);
                 mHandler.sendEmptyMessageDelayed(MSG_HIDE, 0);
                 break;
             case ErrSystem:
-                ToastUtils.showShort(errorMsg);
+                U.getToastUtil().showShort(errorMsg);
                 break;
             default:
-                ToastUtils.showShort(errorMsg);
+                U.getToastUtil().showShort(errorMsg);
                 break;
         }
     }

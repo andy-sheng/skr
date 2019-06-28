@@ -6,11 +6,10 @@
     <com.common.view.ex.ExImageView
         android:id="@+id/create_room"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_74_dp"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_66_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_10_dp"
         android:background="@drawable/shouye_grab_create_room" />
 
     <android.support.v7.widget.RecyclerView
@@ -18,16 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/create_room"
-        android:layout_marginLeft="@dimen/view_8_dp"
-        android:layout_marginTop="@dimen/view_15_dp"
-        android:layout_marginRight="@dimen/view_8_dp"></android.support.v7.widget.RecyclerView>
-
-    <com.common.view.ex.ExImageView
-        android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_27_dp"
-        android:layout_alignTop="@id/friends_recycle"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="-10dp"
-        android:background="@drawable/grab_quick_game" />
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_4_dp"/>
 
 </RelativeLayout>

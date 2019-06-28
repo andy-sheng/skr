@@ -1,125 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_32_dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/view_34_dp"
     android:orientation="vertical"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_change_room"
-        android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_31_dp"
+        android:layout_width="@dimen/view_70_dp"
+        android:layout_height="@dimen/view_24_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:background="@drawable/qiehuanmoshi_bj"
         android:gravity="center"
-        android:paddingBottom="@dimen/view_4_dp"
         android:text="换房间"
-        android:textColor="#3B4E79"
+        android:textColor="#404A9A"
         android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_solid_color="#7E8AE6" />
 
-    <com.common.view.ex.ExFrameLayout
-        android:id="@+id/coin_area"
+    <RelativeLayout
+        android:id="@+id/control_area"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_32_dp"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@+id/tv_change_room"
-        android:paddingLeft="@dimen/view_6_dp"
-        android:paddingRight="@dimen/view_6_dp"
-        BitmapTextView:bl_corners_radius="@dimen/view_16_dp"
-        BitmapTextView:bl_solid_color="@color/black_trans_20">
+        android:layout_toRightOf="@+id/tv_change_room">
 
-        <com.common.view.ex.ExImageView
-            android:id="@+id/iv_money_coin"
-            android:layout_width="@dimen/view_14_dp"
-            android:layout_height="@dimen/view_16_dp"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ycdd_daojishi_jinbi" />
+        <ImageView
+            android:id="@+id/camera_iv"
+            android:layout_width="@dimen/view_35_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:background="@drawable/yichangdaodi_shipin" />
 
-        <com.component.busilib.view.BitmapTextView
-            android:id="@+id/tv_coin"
+        <ImageView
+            android:id="@+id/iv_voice_setting"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/view_18_dp"
-            BitmapTextView:scale="0.5" />
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_toRightOf="@+id/camera_iv"
+            android:background="@drawable/yichangdaodi_yinyue_video" />
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/tv_coin_change"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:gravity="center"
-            android:textColor="#B2B6D6"
-            android:textSize="@dimen/textsize_16_dp"
-            android:visibility="gone" />
-
-    </com.common.view.ex.ExFrameLayout>
-
-    <com.common.view.ex.ExFrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_32_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@+id/coin_area"
-        android:paddingLeft="@dimen/view_6_dp"
-        android:paddingRight="@dimen/view_6_dp"
-        BitmapTextView:bl_corners_radius="@dimen/view_16_dp"
-        BitmapTextView:bl_solid_color="@color/black_trans_20">
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/iv_hz_icon"
-            android:layout_width="@dimen/view_14_dp"
-            android:layout_height="@dimen/view_16_dp"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/top_xiaohongzuan" />
-
-        <com.component.busilib.view.BitmapTextView
-            android:id="@+id/tv_hz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/view_18_dp"
-            android:layout_toRightOf="@+id/tv_coin"
-            BitmapTextView:scale="0.5" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/tv_hz_change"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:gravity="center"
-            android:textColor="#B2B6D6"
-            android:textSize="@dimen/textsize_16_dp"
-            android:visibility="gone" />
-    </com.common.view.ex.ExFrameLayout>
-
-    <!--<ImageView-->
-    <!--android:id="@+id/iv_acc_disable"-->
-    <!--android:layout_width="@dimen/view_12_dp"-->
-    <!--android:layout_height="@dimen/view_12_dp"-->
-    <!--android:layout_alignLeft="@+id/tv_acc"-->
-    <!--android:layout_alignBottom="@+id/tv_acc"-->
-    <!--android:background="@drawable/wubanzou" />-->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="@dimen/view_1_dp"
+            android:layout_height="@dimen/view_24_dp"
+            android:layout_marginLeft="-0.33dp"
+            android:layout_toRightOf="@+id/camera_iv"
+            android:background="#404A9A" />
+    </RelativeLayout>
 
     <ImageView
-        android:id="@+id/iv_voice_setting"
-        android:layout_width="@dimen/view_27_dp"
-        android:layout_height="@dimen/view_31_dp"
+        android:id="@+id/game_rule_iv"
+        android:layout_width="@dimen/view_35_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_toRightOf="@+id/control_area"
+        android:background="@drawable/yichangdaddi_guize" />
+
+    <ImageView
+        android:id="@+id/feed_back_iv"
+        android:layout_width="@dimen/view_35_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/game_rule_iv"
+        android:background="@drawable/yichangdaodi_fankui" />
+
+    <View
+        android:layout_width="@dimen/view_1_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="-0.33dp"
+        android:layout_toRightOf="@+id/game_rule_iv"
+        android:background="#404A9A" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/exit_tv"
+        android:layout_width="@dimen/view_70_dp"
+        android:layout_height="@dimen/view_24_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_53_dp"
-        android:background="@drawable/grab_acc_setting_icon" />
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="退出房间"
+        android:textColor="#404A9A"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_solid_color="#7E8AE6" />
+
 </merge>

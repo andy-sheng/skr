@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.songmanager.fragment;
 
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,16 +23,19 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.common.view.viewpager.SlidingTabLayout;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
+import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
 import com.module.playways.grab.room.songmanager.event.SongNumChangeEvent;
 import com.module.playways.grab.room.songmanager.model.RecommendTagModel;
 import com.module.playways.grab.room.songmanager.presenter.OwnerManagePresenter;
 import com.module.playways.grab.room.songmanager.view.GrabEditView;
+import com.module.playways.grab.room.songmanager.view.GrabSongManageView;
+import com.module.playways.grab.room.songmanager.view.GrabSongWishView;
 import com.module.playways.grab.room.songmanager.view.IOwnerManageView;
-import com.module.playways.grab.room.songmanager.view.OwnerViewPagerTitleView;
+import com.module.playways.grab.room.songmanager.view.RecommendSongView;
 import com.module.playways.room.song.fragment.GrabSearchSongFragment;
 import com.module.playways.room.song.model.SongModel;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -42,7 +46,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OwnerManageFragment extends BaseFragment implements IOwnerManageView {
@@ -50,14 +53,21 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     ExRelativeLayout mRlContent;
     ExTextView mSearchSongIv;
-    OwnerViewPagerTitleView mOwnerTitleView;
     ViewPager mViewpager;
-    List<RecommendSongView> mRecommendSongViews = new ArrayList<>();
+    SlidingTabLayout mTagTab;
+    //    List<RecommendSongView> mRecommendSongViews = new ArrayList<>();
     GrabSongManageView mGrabSongManageView;
+    GrabSongWishView mGrabSongWishView;
     DialogPlus mEditRoomDialog;
-    GrabRoomData mRoomData;
+
     CommonTitleBar mCommonTitleBar;
     OwnerManagePresenter mOwnerManagePresenter;
+    PagerAdapter mPagerAdapter;
+
+//    GrabRoomData mRoomData;
+
+    SongManageData mSongManageData;
+    List<RecommendTagModel> mTagModelList;
 
     @Override
     public int initView() {
@@ -69,10 +79,9 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mCommonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mRlContent = (ExRelativeLayout) mRootView.findViewById(R.id.rl_content);
         mSearchSongIv = (ExTextView) mRootView.findViewById(R.id.search_song_iv);
-        mOwnerTitleView = (OwnerViewPagerTitleView) mRootView.findViewById(R.id.owner_title_view);
+        mTagTab = (SlidingTabLayout) mRootView.findViewById(R.id.tag_tab);
         mViewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
-        mOwnerTitleView.setViewPager(mViewpager);
-        mViewpager.setOffscreenPageLimit(100);
+
         mCommonTitleBar.getCenterTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -83,20 +92,20 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mCommonTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(getActivity() instanceof OwnerManagerActivity){
+                if (getActivity() instanceof OwnerManagerActivity) {
                     if (getActivity() != null) {
                         getActivity().finish();
                     }
-                }else{
+                } else {
                     finish();
                 }
             }
         });
 
-        mOwnerManagePresenter = new OwnerManagePresenter(this, mRoomData);
+        mOwnerManagePresenter = new OwnerManagePresenter(this, mSongManageData);
         addPresent(mOwnerManagePresenter);
         mOwnerManagePresenter.getRecommendTag();
-        showRoomName(mRoomData.getRoomName());
+        showRoomName(mSongManageData.getRoomName());
 
         mSearchSongIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -104,6 +113,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), GrabSearchSongFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
+                        .addDataBeforeAdd(0, mSongManageData)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
@@ -122,34 +132,64 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     @Override
     public void showRoomName(String roomName) {
         mCommonTitleBar.getCenterTextView().setText(roomName);
-        Drawable drawable = U.getDrawable(R.drawable.ycdd_edit_roomname_icon);
-        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-        mCommonTitleBar.getCenterTextView().setCompoundDrawables(null, null, drawable, null);
-        mCommonTitleBar.getCenterTextView().setCompoundDrawablePadding(U.getDisplayUtils().dip2px(7));
+        if (mSongManageData.isGrabRoom()) {
+            if (mSongManageData.isOwner()) {
+                Drawable drawable = U.getDrawable(R.drawable.ycdd_edit_roomname_icon);
+                drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+                mCommonTitleBar.getCenterTextView().setCompoundDrawables(null, null, drawable, null);
+                mCommonTitleBar.getCenterTextView().setCompoundDrawablePadding(U.getDisplayUtils().dip2px(7));
+                mCommonTitleBar.getCenterTextView().setClickable(true);
+            } else {
+                mCommonTitleBar.getCenterTextView().setClickable(false);
+            }
+        } else {
+            mCommonTitleBar.getCenterTextView().setClickable(false);
+        }
     }
 
+    /**
+     * 得到所有类别
+     *
+     * @param recommendTagModelList
+     */
     @Override
     public void showRecommendSong(List<RecommendTagModel> recommendTagModelList) {
         if (recommendTagModelList == null || recommendTagModelList.size() == 0) {
             return;
         }
 
-        for (RecommendSongView recommendSongView : mRecommendSongViews) {
-            recommendSongView.destroy();
-        }
-        mRecommendSongViews.clear();
+//        for (RecommendSongView recommendSongView : mRecommendSongViews) {
+//            recommendSongView.destroy();
+//        }
+//        mRecommendSongViews.clear();
 
-        for (RecommendTagModel recommendTagModel : recommendTagModelList) {
-            RecommendSongView recommendSongView = new RecommendSongView(getActivity());
-            recommendSongView.setData(recommendTagModel);
-            mRecommendSongViews.add(recommendSongView);
-        }
-        if (mGrabSongManageView != null) {
-            mGrabSongManageView.destroy();
-        }
-        mGrabSongManageView = new GrabSongManageView(getActivity(), mRoomData);
+        if (mSongManageData.isGrabRoom()) {
+            if (mSongManageData.isOwner()) {
+                RecommendTagModel recommendModel = new RecommendTagModel();
+                recommendModel.setType(-1);
+                recommendModel.setName("愿望歌单");
+                recommendTagModelList.add(0, recommendModel);
 
-        PagerAdapter pagerAdapter = new PagerAdapter() {
+                RecommendTagModel recommendTagModel = new RecommendTagModel();
+                recommendTagModel.setType(-1);
+                recommendTagModel.setName("已点0");
+                recommendTagModelList.add(0, recommendTagModel);
+            }
+        } else {
+            RecommendTagModel recommendTagModel = new RecommendTagModel();
+            recommendTagModel.setType(-1);
+            recommendTagModel.setName("已点0");
+            recommendTagModelList.add(0, recommendTagModel);
+        }
+
+        mTagModelList = recommendTagModelList;
+        mTagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv);
+        mTagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
+        mTagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
+        mTagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL);
+        mTagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24));
+        mTagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12));
+        mPagerAdapter = new PagerAdapter() {
 
             @Override
             public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
@@ -161,76 +201,136 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
             @Override
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
-                View view = null;
-                if (position == 0) {
-                    view = mGrabSongManageView;
+                if (mSongManageData.isGrabRoom()) {
+                    return instantiateItemGrab(container, position, mTagModelList);
                 } else {
-                    view = mRecommendSongViews.get(position - 1);
+                    return instantiateItemDouble(container, position, mTagModelList);
                 }
-
-                if (container.indexOfChild(view) == -1) {
-                    container.addView(view);
-                }
-
-                return view;
             }
 
             @Override
             public int getCount() {
-                return mRecommendSongViews.size() + 1;
+                return mTagModelList.size();
             }
 
             @Override
             public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
                 return view == (object);
             }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mTagModelList.get(position).getName();
+            }
         };
 
-//        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
-//            @Override
-//            public Fragment getItem(int position) {
-//                MyLog.d(TAG, "getItem" + " position=" + position);
-//                if (position == 0) {
-//                    GrabSongManageView grabSongManageFragment = new GrabSongManageView();
-//                    grabSongManageFragment.setData(mRoomData);
-//                    return grabSongManageFragment;
-//                } else {
-//                    return mRecommendSongViews.get(position - 1);
-//                }
-//            }
-//
-//            @Override
-//            public int getCount() {
-//                return mRecommendSongViews.size() + 1;
-//            }
-//        };
+        mTagTab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        RecommendTagModel recommendTagModel = new RecommendTagModel();
-        recommendTagModel.setType(-1);
-        recommendTagModel.setName("已点0");
-        recommendTagModelList.add(0, recommendTagModel);
+            }
 
-        mOwnerTitleView.setRecommendTagModelList(recommendTagModelList);
-        mViewpager.setAdapter(pagerAdapter);
-        pagerAdapter.notifyDataSetChanged();
-        mViewpager.setPageMargin(U.getDisplayUtils().dip2px(12));
+            @Override
+            public void onPageSelected(int position) {
+                View view = mViewpager.findViewWithTag(position);
+                if (view != null) {
+                    if (view instanceof RecommendSongView) {
+                        ((RecommendSongView) view).tryLoad();
+                    } else if (view instanceof GrabSongWishView) {
+                        ((GrabSongWishView) view).tryLoad();
+                    } else if (view instanceof GrabSongManageView) {
+                        ((GrabSongManageView) view).tryLoad();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        mViewpager.setAdapter(mPagerAdapter);
+        mTagTab.setViewPager(mViewpager);
+        mPagerAdapter.notifyDataSetChanged();
+    }
+
+    public Object instantiateItemGrab(@NonNull ViewGroup container, int position, List<RecommendTagModel> recommendTagModelList) {
+        MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
+        View view = null;
+
+        if (mSongManageData.isOwner()) {
+            if (position == 0) {
+                if (mGrabSongManageView == null) {
+                    mGrabSongManageView = new GrabSongManageView(getContext(), mSongManageData);
+                }
+                view = mGrabSongManageView;
+            } else if (position == 1) {
+                if (mGrabSongWishView == null) {
+                    mGrabSongWishView = new GrabSongWishView(getContext(), mSongManageData.getGrabRoomData());
+                }
+                mGrabSongWishView.setTag(position);
+                view = mGrabSongWishView;
+            } else {
+                RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
+                RecommendSongView recommendSongView = new RecommendSongView(getActivity(), mSongManageData, recommendTagModel);
+                recommendSongView.setTag(position);
+                view = recommendSongView;
+            }
+        } else {
+            RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
+            RecommendSongView recommendSongView = new RecommendSongView(getActivity(), mSongManageData, recommendTagModel);
+            recommendSongView.setTag(position);
+            view = recommendSongView;
+        }
+
+        if (container.indexOfChild(view) == -1) {
+            container.addView(view);
+        }
+
+        return view;
+    }
+
+    public Object instantiateItemDouble(@NonNull ViewGroup container, int position, List<RecommendTagModel> recommendTagModelList) {
+        MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
+        View view = null;
+
+        if (position == 0) {
+            if (mGrabSongManageView == null) {
+                mGrabSongManageView = new GrabSongManageView(getContext(), mSongManageData);
+            }
+            view = mGrabSongManageView;
+        } else {
+            RecommendTagModel recommendTagModel = recommendTagModelList.get(position);
+            RecommendSongView recommendSongView = new RecommendSongView(getActivity(), mSongManageData, recommendTagModel);
+            recommendSongView.setTag(position);
+            view = recommendSongView;
+        }
+
+        if (container.indexOfChild(view) == -1) {
+            container.addView(view);
+        }
+
+        return view;
     }
 
     @Override
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mRoomData = (GrabRoomData) data;
+            mSongManageData = (SongManageData) data;
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SongNumChangeEvent event) {
-        mOwnerTitleView.updateSelectedSongNum(event.getSongNum());
+        mTagModelList.get(0).setName("已点" + event.getSongNum());
+        mTagTab.notifyDataChange();
     }
 
     private void showEditRoomDialog() {
-        GrabEditView grabEditView = new GrabEditView(getContext(), mRoomData.getRoomName());
+        GrabEditView grabEditView = new GrabEditView(getContext(), mSongManageData.getRoomName());
         grabEditView.setListener(new GrabEditView.Listener() {
             @Override
             public void onClickCancel() {
@@ -244,7 +344,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
                 if (!TextUtils.isEmpty(roomName)) {
                     // TODO: 2019/4/18 修改房间名
                     mEditRoomDialog.dismiss(false);
-                    mOwnerManagePresenter.updateRoomName(mRoomData.getGameId(), roomName);
+                    mOwnerManagePresenter.updateRoomName(mSongManageData.getGameId(), roomName);
                 } else {
                     // TODO: 2019/4/18 房间名为空
                     U.getToastUtil().showShort("输入的房间名为空");
@@ -275,18 +375,22 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
     @Override
     public void destroy() {
         super.destroy();
-        for (RecommendSongView recommendSongView : mRecommendSongViews) {
-            recommendSongView.destroy();
-        }
+//        for (RecommendSongView recommendSongView : mRecommendSongViews) {
+//            recommendSongView.destroy();
+//        }
 
         if (mGrabSongManageView != null) {
             mGrabSongManageView.destroy();
+        }
+
+        if (mGrabSongWishView != null) {
+            mGrabSongWishView.destroy();
         }
     }
 
     @Override
     protected boolean onBackPressed() {
-        if(mEditRoomDialog!=null && mEditRoomDialog.isShowing()){
+        if (mEditRoomDialog != null && mEditRoomDialog.isShowing()) {
             mEditRoomDialog.dismiss(false);
             mEditRoomDialog = null;
             return true;

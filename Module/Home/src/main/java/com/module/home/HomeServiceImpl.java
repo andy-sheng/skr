@@ -7,7 +7,7 @@ import com.module.RouterConstants;
 import com.module.home.event.AuthSuccessEvent;
 import com.module.home.feedback.FeedbackFragment;
 import com.module.home.fragment.HalfRechargeFragment;
-import com.module.home.fragment.PersonFragment3;
+import com.module.home.fragment.PersonFragment4;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +23,7 @@ public class HomeServiceImpl implements IHomeService {
     @Override
     public Object getData(int type, Object object) {
         if (0 == type) {
-            return PersonFragment3.class;
+            return PersonFragment4.class;
         } else if (1 == type) {
             return HomeActivity.class.getSimpleName();
         } else if (2 == type) {

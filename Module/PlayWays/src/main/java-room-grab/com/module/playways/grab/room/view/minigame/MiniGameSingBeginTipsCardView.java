@@ -26,50 +26,25 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import java.io.File;
 
-public class MiniGameSingBeginTipsCardView extends RelativeLayout {
+public class MiniGameSingBeginTipsCardView {
 
     public final static String TAG = "ChorusSingBeginTipsCardView";
 
-    SVGAImageView mMinigameSingBeginSvga;
-    SVGAListener mSVGAListener;
 
-    public MiniGameSingBeginTipsCardView(Context context) {
-        super(context);
-        init();
-    }
-
-    public MiniGameSingBeginTipsCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public MiniGameSingBeginTipsCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_minigame_sing_begin_tips_card_layout, this);
-        mMinigameSingBeginSvga = findViewById(R.id.minigame_sing_begin_svga);
-    }
-
-    public void bindData(UserInfoModel left, UserInfoModel right, SVGAListener listener) {
+    public void bindData(SVGAImageView svgaImageView, UserInfoModel left, UserInfoModel right, SVGAListener listener) {
         if (left == null || right == null) {
             MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + listener);
             return;
         }
 
-        this.mSVGAListener = listener;
-        setVisibility(VISIBLE);
         // TODO: 2019-05-29 暂时复用合唱的板子
         String assetsName = "grab_chorus_sing_chance.svga";
-        mMinigameSingBeginSvga.setVisibility(VISIBLE);
         SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamic(left, right));
-                mMinigameSingBeginSvga.setImageDrawable(drawable);
-                mMinigameSingBeginSvga.startAnimation();
+                svgaImageView.setImageDrawable(drawable);
+                svgaImageView.startAnimation();
             }
 
             @Override
@@ -78,7 +53,7 @@ public class MiniGameSingBeginTipsCardView extends RelativeLayout {
             }
         });
 
-        mMinigameSingBeginSvga.setCallback(new SVGACallback() {
+        svgaImageView.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -86,19 +61,19 @@ public class MiniGameSingBeginTipsCardView extends RelativeLayout {
 
             @Override
             public void onFinished() {
-                if (mMinigameSingBeginSvga != null) {
-                    mMinigameSingBeginSvga.setCallback(null);
-                    mMinigameSingBeginSvga.stopAnimation(true);
+                if (svgaImageView != null) {
+                    svgaImageView.setCallback(null);
+                    svgaImageView.stopAnimation(true);
                 }
-                if (mSVGAListener != null) {
-                    mSVGAListener.onFinished();
+                if (listener != null) {
+                    listener.onFinished();
                 }
             }
 
             @Override
             public void onRepeat() {
-                if (mMinigameSingBeginSvga != null && mMinigameSingBeginSvga.isAnimating()) {
-                    mMinigameSingBeginSvga.stopAnimation(false);
+                if (svgaImageView != null && svgaImageView.isAnimating()) {
+                    svgaImageView.stopAnimation(false);
                 }
             }
 
@@ -168,27 +143,5 @@ public class MiniGameSingBeginTipsCardView extends RelativeLayout {
             dynamicEntity.setDynamicText(text, rightPaint, "text_442");
         }
         return dynamicEntity;
-    }
-
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
-            this.mSVGAListener = null;
-            if (mMinigameSingBeginSvga != null) {
-                mMinigameSingBeginSvga.setCallback(null);
-                mMinigameSingBeginSvga.stopAnimation(true);
-            }
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        this.mSVGAListener = null;
-        if (mMinigameSingBeginSvga != null) {
-            mMinigameSingBeginSvga.setCallback(null);
-            mMinigameSingBeginSvga.stopAnimation(true);
-        }
     }
 }

@@ -1,47 +1,63 @@
 package com.zq.dialog;
 
+import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Gravity;
 
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
+import com.component.busilib.recommend.RA;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.event.ShowEditRemarkEvent;
 import com.zq.person.model.PhotoModel;
+import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.HashMap;
 
 
 // 个人信息卡片
 public class PersonInfoDialog {
 
-    Context mContext;
+    Activity mActivity;
     int mRoomID;
     DialogPlus mDialogPlus;
 
     KickListener mKickListener;
 
-    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick) {
-        mContext = context;
-        init(context, userId, showReport, showKick);
+    private int mFrom;
+
+    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, boolean showInvite) {
+        this.mActivity = activity;
+        this.mFrom = from;
+        init(mActivity, userId, showReport, showKick, showInvite);
     }
 
-    public PersonInfoDialog(Context context, final int userId, final boolean showReport, boolean showKick, int roomID) {
-        mContext = context;
-        mRoomID = roomID;
-        init(context, userId, showReport, showKick);
+    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, int roomID) {
+        this.mActivity = activity;
+        this.mFrom = from;
+        this.mRoomID = roomID;
+        init(mActivity, userId, showReport, showKick, true);
     }
 
-    private void init(Context context, final int userId, final boolean showReport, boolean showKick) {
-        PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(context, userId, showReport, showKick);
+    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, int roomID, boolean showInvite) {
+        this.mActivity = activity;
+        this.mFrom = from;
+        this.mRoomID = roomID;
+        init(activity, userId, showReport, showKick, showInvite);
+    }
+
+    private void init(Context context, final int userId, final boolean showReport, boolean showKick, boolean showInvite) {
+        PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(context, userId, showReport, showKick, showInvite);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
             public void onClickReport(int userID) {
@@ -66,7 +82,7 @@ public class PersonInfoDialog {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
-                BigImageBrowseFragment.open(false, (BaseActivity) mContext, avatar);
+                BigImageBrowseFragment.open(false, (BaseActivity) mActivity, avatar);
             }
 
             @Override
@@ -78,6 +94,11 @@ public class PersonInfoDialog {
 //                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                 } else {
                     UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
+                    if (RA.hasTestList()) {
+                        HashMap map = new HashMap();
+                        map.put("testList", RA.getTestList());
+                        StatisticsAdapter.recordCountEvent("ra", "follow", map);
+                    }
                 }
             }
 
@@ -106,11 +127,21 @@ public class PersonInfoDialog {
                     mDialogPlus.dismiss(false);
                 }
 
-                EventBus.getDefault().post(new ShowEditRemarkEvent(userInfoModel));
+                showRemarkDialog(userInfoModel);
+            }
+
+            @Override
+            public void onClickDoubleInvite(UserInfoModel userInfoModel) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+                if (mKickListener != null) {
+                    mKickListener.onClickDoubleInvite(userInfoModel);
+                }
             }
         });
 
-        mDialogPlus = DialogPlus.newDialog(mContext)
+        mDialogPlus = DialogPlus.newDialog(mActivity)
                 .setContentHolder(new ViewHolder(personInfoDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
@@ -118,6 +149,53 @@ public class PersonInfoDialog {
                 .setExpanded(false)
                 .setCancelable(true)
                 .create();
+    }
+
+    private void showRemarkDialog(final UserInfoModel userInfoModel) {
+        EditRemarkView editRemarkView = new EditRemarkView((BaseActivity) mActivity, userInfoModel.getNickname(), userInfoModel.getNicknameRemark(null));
+        editRemarkView.setListener(new EditRemarkView.Listener() {
+            @Override
+            public void onClickCancel() {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss();
+                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+            }
+
+            @Override
+            public void onClickSave(String remarkName) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss();
+                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+                if (TextUtils.isEmpty(remarkName) && TextUtils.isEmpty(userInfoModel.getNicknameRemark())) {
+                    // 都为空
+                    return;
+                } else if (!TextUtils.isEmpty(userInfoModel.getNicknameRemark()) && (userInfoModel.getNicknameRemark()).equals(remarkName)) {
+                    // 相同
+                    return;
+                } else {
+                    UserInfoManager.getInstance().updateRemark(remarkName, userInfoModel.getUserId());
+                }
+            }
+        });
+
+        mDialogPlus = DialogPlus.newDialog(mActivity)
+                .setContentHolder(new ViewHolder(editRemarkView))
+                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
+                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
+                .setInAnimation(com.component.busilib.R.anim.fade_in)
+                .setOutAnimation(com.component.busilib.R.anim.fade_out)
+                .setExpanded(false)
+                .setGravity(Gravity.BOTTOM)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+                    }
+                })
+                .create();
+        mDialogPlus.show();
     }
 
     public void setListener(KickListener kickListener) {
@@ -146,11 +224,12 @@ public class PersonInfoDialog {
 
     private void showReportView(int userID) {
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, QuickFeedbackFragment.class)
+                FragmentUtils.newAddParamsBuilder((BaseActivity) mActivity, QuickFeedbackFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .addDataBeforeAdd(0, 1)
-                        .addDataBeforeAdd(1, userID)
+                        .addDataBeforeAdd(0, mFrom)
+                        .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
+                        .addDataBeforeAdd(2, userID)
                         .setEnterAnim(R.anim.slide_in_bottom)
                         .setExitAnim(R.anim.slide_out_bottom)
                         .build());
@@ -158,6 +237,8 @@ public class PersonInfoDialog {
 
     public interface KickListener {
         void onClickKick(UserInfoModel userInfoModel);
+
+        void onClickDoubleInvite(UserInfoModel userInfoModel);
     }
 
     public interface PersonCardClickListener {
@@ -176,5 +257,7 @@ public class PersonInfoDialog {
         void onClickOut();
 
         void onClickRemark(UserInfoModel userInfoModel);
+
+        void onClickDoubleInvite(UserInfoModel userInfoModel);
     }
 }

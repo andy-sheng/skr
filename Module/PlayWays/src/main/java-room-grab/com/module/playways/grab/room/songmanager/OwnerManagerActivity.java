@@ -13,9 +13,9 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.songmanager.fragment.OwnerManageFragment;
 
 public class OwnerManagerActivity extends BaseActivity {
-    public static void open(FragmentActivity activity, GrabRoomData roomData) {
-        Intent intent = new Intent(activity,OwnerManagerActivity.class);
-        intent.putExtra("room_data",roomData);
+    public static void open(FragmentActivity activity, SongManageData roomData) {
+        Intent intent = new Intent(activity, OwnerManagerActivity.class);
+        intent.putExtra("room_data", roomData);
         if (activity != null) {
             activity.startActivity(intent);
         }
@@ -28,7 +28,7 @@ public class OwnerManagerActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        GrabRoomData mRoomData = (GrabRoomData) getIntent().getSerializableExtra("room_data");
+        SongManageData mRoomData = (SongManageData) getIntent().getSerializableExtra("room_data");
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, OwnerManageFragment.class)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
@@ -41,5 +41,15 @@ public class OwnerManagerActivity extends BaseActivity {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public boolean canSlide() {
+        return false;
+    }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return true;
     }
 }

@@ -161,11 +161,7 @@ public class FboManager {
      * Remove all textures and the fbo bind on them
      */
     synchronized public void remove() {
-        if (VERBOSE) Log.d(TAG, "remove all");
-
-        mTextureMap.clear();
-        mResolutionMap.clear();
-        mTextureCount = 0;
+        if (VERBOSE) Log.d(TAG, "remove all " + mTextureMap.size() + " fbo");
 
         int[] textures = new int[mTextureMap.size()];
         int[] buffers = new int[mTextureMap.size()];
@@ -173,9 +169,14 @@ public class FboManager {
         for (Fbo fbo : mTextureMap.values()) {
             textures[i] = fbo.texture;
             buffers[i] = fbo.framebuffer;
+            i++;
         }
         GLES20.glDeleteTextures(textures.length, textures, 0);
         GLES20.glDeleteFramebuffers(buffers.length, buffers, 0);
+
+        mTextureMap.clear();
+        mResolutionMap.clear();
+        mTextureCount = 0;
     }
 
     private String genKey(int w, int h) {

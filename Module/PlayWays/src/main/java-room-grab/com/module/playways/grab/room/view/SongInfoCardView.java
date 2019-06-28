@@ -28,6 +28,7 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.zq.live.proto.Common.EMiniGamePlayType;
+import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -154,8 +155,9 @@ public class SongInfoCardView extends RelativeLayout {
         mTotalSeq.setText("" + totalSeq);
         if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             // 合唱
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42 + 5), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
+            mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
@@ -170,8 +172,9 @@ public class SongInfoCardView extends RelativeLayout {
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             // PK
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42), 0);
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42 + 5), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
+            mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(VISIBLE);
@@ -186,12 +189,13 @@ public class SongInfoCardView extends RelativeLayout {
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             // 小游戏
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68), 0);
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68 + 5), 0);
             if (songModel.getMiniGame() != null) {
                 mSongNameTv.setText("【" + songModel.getMiniGame().getGameName() + "】");
             } else {
                 MyLog.w(TAG, "bindSongModel" + " 给的是小游戏类型，但是结构给的空？？？服务器BYD和佳胜");
             }
+            mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             // 和合唱一样的卡片
             mGrabChorus.setVisibility(VISIBLE);
@@ -223,7 +227,6 @@ public class SongInfoCardView extends RelativeLayout {
             MyLog.w(TAG, "songModel 是空的");
             return;
         }
-
         if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             MiniGameInfoModel gameInfoModel = songModel.getMiniGame();
             if (gameInfoModel != null) {
@@ -232,86 +235,26 @@ public class SongInfoCardView extends RelativeLayout {
                 MyLog.w(TAG, "miniGameInfo 是空的");
             }
         } else {
-            File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-
-            if (file == null || !file.exists()) {
-                MyLog.w(TAG, "playLyric is not in local file");
-                fetchLyricTask(songModel);
-            } else {
-                MyLog.w(TAG, "playLyric is exist");
-                final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-                drawLyric(fileName);
-            }
-        }
-
-    }
-
-    private void fetchLyricTask(SongModel songModel) {
-        MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
-        if (mDisposable != null) {
-            mDisposable.dispose();
-        }
-
-        mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
-            @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
-                File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), newName, true, null);
-
-                if (isSuccess) {
-                    emitter.onNext(newName);
-                    emitter.onComplete();
-                } else {
-                    emitter.onError(new IgnoreException("下载失败" + TAG));
-                }
-            }
-        }).subscribeOn(Schedulers.io())
-                .compose(((BaseActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(new RxRetryAssist(5, 1, false))
-                .subscribe(file -> {
-                    final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-                    drawLyric(fileName);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
-    }
-
-    private void drawLyric(final File file) {
-        MyLog.w(TAG, "file is " + file);
-        Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> emitter) {
-                if (file != null && file.exists() && file.isFile()) {
-                    try (BufferedSource source = Okio.buffer(Okio.source(file))) {
-                        String lyric = source.readUtf8();
-                        emitter.onNext(lyric);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                emitter.onComplete();
-            }
-        }).compose(((BaseActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String o) {
-                mSongLyrics.setText("");
-                if (isJSON2(o)) {
-                    NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
-                    for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
-                        mSongLyrics.append(newChorusLyricModel.getItems().get(i).getWords());
-                        if (i == 0) {
-                            mSongLyrics.append("\n");
+            LyricsManager.getLyricsManager(U.app())
+                    .loadGrabPlainLyric(songModel.getStandLrc())
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String o) {
+                            mSongLyrics.setText("");
+                            if (isJSON2(o)) {
+                                NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
+                                for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
+                                    mSongLyrics.append(newChorusLyricModel.getItems().get(i).getWords());
+                                    if (i == 0) {
+                                        mSongLyrics.append("\n");
+                                    }
+                                }
+                            } else {
+                                mSongLyrics.setText(o);
+                            }
                         }
-                    }
-                } else {
-                    mSongLyrics.setText(o);
-                }
-            }
-        }, throwable -> MyLog.e(TAG, throwable));
+                    }, throwable -> MyLog.e(TAG, throwable));
+        }
     }
 
     public boolean isJSON2(String str) {
@@ -363,6 +306,7 @@ public class SongInfoCardView extends RelativeLayout {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    mGrabCd.clearAnimation();
                     clearAnimation();
                     if (mRotateAnimation != null) {
                         mRotateAnimation.cancel();
@@ -380,6 +324,7 @@ public class SongInfoCardView extends RelativeLayout {
             if (mRotateAnimation != null) {
                 mRotateAnimation.cancel();
             }
+            mGrabCd.clearAnimation();
             clearAnimation();
             setVisibility(GONE);
         }

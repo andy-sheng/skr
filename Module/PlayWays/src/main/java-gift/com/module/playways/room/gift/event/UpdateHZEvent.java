@@ -1,19 +1,23 @@
 package com.module.playways.room.gift.event;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class UpdateHZEvent {
     float hz;
-    private long ts;
+    static long lastTs = 0;
 
-    public UpdateHZEvent(float hz, long ts) {
+    public UpdateHZEvent(float hz) {
         this.hz = hz;
-        this.ts = ts;
     }
 
     public float getHz() {
         return hz;
     }
 
-    public long getTs() {
-        return ts;
+    public static void sendEvent(float hz, long newTs) {
+        if (newTs > lastTs) {
+            lastTs = newTs;
+            EventBus.getDefault().post(new UpdateHZEvent(hz));
+        }
     }
 }

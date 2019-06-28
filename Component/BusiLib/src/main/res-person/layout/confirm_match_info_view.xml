@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/out_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_0_dp"
+        app:layout_constraintBottom_toTopOf="@id/container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_393_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_25_dp"
+            android:layout_marginTop="@dimen/view_23_dp"
+            android:gravity="center"
+            android:text="确认你的资料"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_18_dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_20_dp"
+            android:layout_marginTop="@dimen/view_55_dp"
+            android:gravity="center"
+            android:text="更好的匹配唱聊伙伴"
+            android:textColor="@color/black_trans_40"
+            android:textSize="@dimen/textsize_14_dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/boy_tv"
+            android:layout_width="@dimen/view_72_dp"
+            android:layout_height="@dimen/view_32_dp"
+            android:layout_marginTop="@dimen/view_105_dp"
+            android:gravity="center"
+            android:text="男孩"
+            android:textColor="#6A83C0"
+            android:textSize="@dimen/textsize_14_dp"
+            app:bl_corners_radius="@dimen/view_16_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="@color/transparent"
+            app:bl_stroke_color="#7B89ED"
+            app:bl_stroke_width="@dimen/view_1_dp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/girl_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/girl_tv"
+            android:layout_width="@dimen/view_72_dp"
+            android:layout_height="@dimen/view_32_dp"
+            android:layout_marginLeft="@dimen/view_30_dp"
+            android:gravity="center"
+            android:text="女孩"
+            android:textColor="#6A83C0"
+            android:textSize="@dimen/textsize_14_dp"
+            app:bl_corners_radius="@dimen/view_16_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="@color/transparent"
+            app:bl_stroke_color="#7B89ED"
+            app:bl_stroke_width="@dimen/view_1_dp"
+            app:layout_constraintLeft_toRightOf="@id/boy_tv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/boy_tv" />
+
+        <TextView
+            android:id="@+id/error_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_18_dp"
+            android:layout_marginTop="@dimen/view_14_dp"
+            android:gravity="center"
+            android:textColor="#E65C90"
+            android:textSize="@dimen/textsize_12_dp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/boy_tv" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_138_dp"
+            app:layout_constraintBottom_toTopOf="@id/confirm_tv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/boy_tv">
+
+        </FrameLayout>
+
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/confirm_tv"
+            android:layout_width="@dimen/view_152_dp"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_marginBottom="@dimen/view_20_dp"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="#AD6C00"
+            android:textSize="@dimen/textsize_16_dp"
+            app:bl_corners_radius="@dimen/view_20_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#FFC15B"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </com.common.view.ex.ExConstraintLayout>
+
+</com.common.view.ex.ExConstraintLayout>

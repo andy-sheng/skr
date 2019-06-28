@@ -195,6 +195,7 @@ public class JoinGrabRoomRspModel implements Serializable {
     private boolean challengeAvailable = false;// 是否有挑战资格
     private String roomName;    //房间名称
     private float hongZuan;
+    private int mediaType;
 
     public JoinGrabRoomRspModel() {
 
@@ -346,6 +347,14 @@ public class JoinGrabRoomRspModel implements Serializable {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public int getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(int mediaType) {
+        this.mediaType = mediaType;
     }
 
     @Override

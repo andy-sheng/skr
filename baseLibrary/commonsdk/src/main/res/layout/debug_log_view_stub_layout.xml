@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/log_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="150dp"
+        android:textColor="@color/white" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/play_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_dimen_300"
+        android:layout_marginRight="@dimen/view_dimen_40"
+        android:textColor="@color/red"
+        android:textSize="@dimen/view_dimen_80"
+        android:text="暂停" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/clear_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_dimen_20"
+        android:layout_marginRight="@dimen/view_dimen_40"
+        android:textColor="@color/red"
+        android:textSize="@dimen/view_dimen_80"
+        android:layout_below="@+id/play_btn"
+        android:text="clear" />
+</RelativeLayout>
+
+
+

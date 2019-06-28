@@ -168,9 +168,8 @@ public class GrabProductionFragment extends BaseFragment {
                     // 播放完毕
                     mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                         @Override
-                        public void onPrepared(long duration) {
-                            super.onPrepared(duration);
-                            model.setDuration(duration);
+                        public void onPrepared() {
+                            super.onPrepared();
                         }
 
                         @Override
@@ -291,12 +290,12 @@ public class GrabProductionFragment extends BaseFragment {
                 .startUploadAsync(new UploadCallback() {
 
                     @Override
-                    public void onProgress(long currentSize, long totalSize) {
+                    public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                     }
 
                     @Override
-                    public void onSuccess(String url) {
+                    public void onSuccessNotInUiThread(String url) {
                         MyLog.d(TAG, "onSuccess" + " url=" + url);
                         model.setUrl(url);
                         saveWorksStep2(model);
@@ -304,7 +303,7 @@ public class GrabProductionFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onFailure(String msg) {
+                    public void onFailureNotInUiThread(String msg) {
                         U.getToastUtil().showShort("保存失败");
                         mSaving = false;
                         mObjectPlayControlTemplate.endCurrent(model);

@@ -116,9 +116,9 @@ public class BitmapTextView extends View {
             switch (aChar) {
                 case '0':
                     return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_0);
-                case '1':
-                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_1);
-                case '2':
+                case '1':return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_1);
+
+                               case '2':
                     return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_2);
                 case '3':
                     return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_3);

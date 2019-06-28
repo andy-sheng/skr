@@ -94,7 +94,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                             }
                         } else if (ErrRealAuth == result.getErrno()) {
                             //实人认证
-//                            ToastUtils.showShort("请实名认证再开公开房");
+//                            U.getToastUtil().showShort("请实名认证再开公开房");
                             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                                     .setMessageTip("撕歌的宝贝们，两分钟成为认证房主，你将获得每日派对开放权，更多好玩等你解锁")
                                     .setConfirmTip("快速认证")
@@ -107,7 +107,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                                             }
 
                                             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                    .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/oauth/mobile?from=room"))
+                                                    .withString("url",ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=room"))
                                                     .greenChannel().navigation();
                                         }
                                     })
@@ -140,7 +140,6 @@ public class GrabCreateRoomFragment extends BaseFragment {
                 }, GrabCreateRoomFragment.this);
             }
         });
-
     }
 
     public void showErrorMsgDialog(String string) {

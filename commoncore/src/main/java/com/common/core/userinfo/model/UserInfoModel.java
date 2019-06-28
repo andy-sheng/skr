@@ -186,11 +186,15 @@ public class UserInfoModel implements Serializable, Cloneable {
     }
 
     public String getConstellation() {
-        String[] array = this.birthday.split("-");
-        if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
-            int month = Integer.valueOf(array[1]);
-            int day = Integer.valueOf(array[2]);
-            return U.getDateTimeUtils().getConstellation(month, day);
+        if (!TextUtils.isEmpty(this.birthday)) {
+            String[] array = this.birthday.split("-");
+            if (array != null && array.length >= 3) {
+                if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+                    int month = Integer.valueOf(array[1]);
+                    int day = Integer.valueOf(array[2]);
+                    return U.getDateTimeUtils().getConstellation(month, day);
+                }
+            }
         }
         return "";
     }

@@ -1,103 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_132_dp"
+    android:layout_height="@dimen/view_144_dp"
+    android:layout_marginLeft="@dimen/view_12_dp"
     android:layout_marginTop="@dimen/view_8_dp"
+    android:layout_marginRight="@dimen/view_12_dp"
     android:layout_marginBottom="@dimen/view_8_dp"
-    android:background="@drawable/grab_friend_room_bg">
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#D0EFFF"
+    app:bl_stroke_color="#697CDB"
+    app:bl_stroke_width="@dimen/view_1_dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_1"
+        android:layout_width="@dimen/view_43_dp"
         android:layout_height="@dimen/view_43_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/view_24_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_1"
-            android:layout_width="@dimen/view_43_dp"
-            android:layout_height="@dimen/view_43_dp" />
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_2"
+        android:layout_width="@dimen/view_43_dp"
+        android:layout_height="@dimen/view_43_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
+        app:layout_constraintLeft_toRightOf="@id/iv_1"
+        app:layout_constraintTop_toTopOf="@id/iv_1" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_2"
-            android:layout_width="@dimen/view_43_dp"
-            android:layout_height="@dimen/view_43_dp"
-            android:layout_marginLeft="@dimen/view_3_dp" />
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_3"
+        android:layout_width="@dimen/view_43_dp"
+        android:layout_height="@dimen/view_43_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
+        app:layout_constraintLeft_toRightOf="@id/iv_2"
+        app:layout_constraintTop_toTopOf="@id/iv_2" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_3"
-            android:layout_width="@dimen/view_43_dp"
-            android:layout_height="@dimen/view_43_dp"
-            android:layout_marginLeft="@dimen/view_3_dp" />
+    <ImageView
+        android:id="@+id/more_user_iv"
+        android:layout_width="@dimen/view_18_dp"
+        android:layout_height="@dimen/view_5_dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:background="@drawable/recommend_more_user"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iv_3"
+        app:layout_constraintLeft_toRightOf="@id/iv_3"
+        app:layout_constraintTop_toTopOf="@id/iv_3" />
 
-        <ImageView
-            android:id="@+id/more_user_iv"
-            android:layout_width="@dimen/view_18_dp"
-            android:layout_height="@dimen/view_5_dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:background="@drawable/recommend_more_user"
-            android:visibility="gone"/>
-
-    </LinearLayout>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/room_player_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:text="4/12"
         android:textColor="#803B4E79"
         android:textSize="@dimen/textsize_24_dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/view_71_dp"
+        android:layout_marginTop="@dimen/view_87_dp"
         android:alpha="0.2"
-        android:background="#3B4E79" />
+        android:background="#3B4E79"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/recommend_tag_sdv"
         android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_16_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_90_dp"
-        android:gravity="center" />
+        android:layout_marginTop="@dimen/view_108_dp"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/room_info_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_marginBottom="@dimen/view_25_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
         android:gravity="center"
         android:text="中华小曲库"
         android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/textsize_12_dp" />
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tips_tv"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_6_dp"
-        android:layout_marginTop="@dimen/view_86_dp"
         android:layout_marginRight="@dimen/view_6_dp"
-        android:layout_toLeftOf="@id/room_info_tv"
-        android:layout_toRightOf="@id/recommend_tag_sdv"
+        android:layout_marginBottom="@dimen/view_18_dp"
         android:ellipsize="end"
         android:gravity="center_vertical|left"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/textsize_16_dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/recommend_tag_sdv"
+        app:layout_constraintRight_toLeftOf="@id/room_info_tv" />
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/media_tag_sdv"
+        android:layout_width="@dimen/view_34_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</com.common.view.ex.ExRelativeLayout>
+</com.common.view.ex.ExConstraintLayout>

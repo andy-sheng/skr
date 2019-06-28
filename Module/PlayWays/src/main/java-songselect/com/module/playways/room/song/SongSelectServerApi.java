@@ -76,6 +76,14 @@ public interface SongSelectServerApi {
     @GET("/v1/playbook/search-stand-intro")
     Observable<ApiResult> searchGrabMusicItems(@Query("keyword") String keyword);
 
+    /**
+     * 双人房搜歌
+     * @param keyword
+     * @return
+     */
+    @GET("/v1/playbook/search-magpie-item")
+    Observable<ApiResult> searchDoubleMusicItems(@Query("keyword")String keyword);
+
     @GET("/v1/playbook/report-not-exist-song")
     Observable<ApiResult> reportNotExistSong(@Query("name") String name,
                                              @Query("artist") String artist);

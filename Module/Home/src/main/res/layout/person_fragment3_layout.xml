@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:levelView2="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A8D1E6">
+    android:background="#7088FF">
 
     <!--
             appbar_scrolling_view_behavior
@@ -38,6 +36,13 @@
     另外，exitUntilCollapsed 属性也会失效，即使你设置了 minHeight，所以官方也说明了CollapsingToolbarLayout 是为了配合 Toolbar 而设计
     -->
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/image_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_300_dp"
+        app:layout_collapseMode="parallax"
+        app:layout_collapseParallaxMultiplier="0.5" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
@@ -47,7 +52,9 @@
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:id="@+id/classics_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:srlAccentColor="@color/white"
+            android:background="@color/transparent"/>
 
         <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -60,6 +67,11 @@
                 android:layout_below="@+id/titlebar"
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_1_dp"
+                    android:background="#4C3B4E79"/>
 
                 <com.common.view.viewpager.SlidingTabLayout
                     android:id="@+id/person_tab"
@@ -91,95 +103,78 @@
                 app:elevation="@dimen/view_0_dp">
 
                 <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/toolbar_layout"
+                    android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <android.support.constraint.ConstraintLayout
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/sign_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/view_20_dp"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/view_184_dp"
+                        android:layout_marginRight="@dimen/view_16_dp"
+                        android:ellipsize="end"
+                        android:gravity="left|center_vertical"
+                        android:maxEms="14"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/white_trans_80"
+                        android:textSize="@dimen/textsize_14_dp" />
+
+                    <com.common.view.ex.ExConstraintLayout
                         android:id="@+id/user_info_area"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <!--只是做一下刘海屏幕的适配-->
-                        <com.common.view.titlebar.CommonTitleBar
-                            android:id="@+id/titlebar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:showBottomLine="false"
-                            app:statusBarColor="@color/colorPrimary"
-                            app:titleBarHeight="@dimen/view_0_dp" />
-
-                        <!--蓝色背景-->
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_320_dp"
-                            android:background="#7088FF"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/titlebar" />
-
-                        <ImageView
-                            android:id="@+id/avatar_bg"
-                            android:layout_width="@dimen/view_62_dp"
-                            android:layout_height="@dimen/view_67_dp"
-                            android:layout_marginStart="@dimen/view_20_dp"
-                            android:layout_marginTop="@dimen/view_40_dp"
-                            android:background="@drawable/b_touxiang"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/titlebar"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/view_204_dp"
+                        android:paddingBottom="@dimen/view_20_dp"
+                        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+                        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+                        app:bl_shape="rectangle"
+                        app:bl_solid_color="#7088FF">
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/avatar_iv"
-                            android:layout_width="@dimen/view_52_dp"
-                            android:layout_height="@dimen/view_52_dp"
-                            android:layout_marginStart="@dimen/view_5_dp"
-                            android:layout_marginTop="@dimen/view_5_dp"
-                            app:layout_constraintLeft_toLeftOf="@id/avatar_bg"
-                            app:layout_constraintTop_toTopOf="@id/avatar_bg" />
+                            android:layout_width="@dimen/view_60_dp"
+                            android:layout_height="@dimen/view_60_dp"
+                            android:layout_marginLeft="@dimen/view_20_dp"
+                            android:layout_marginTop="@dimen/view_20_dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <!--设置-->
-                        <ImageView
-                            android:id="@+id/setting_img_iv"
-                            android:layout_width="@dimen/view_27_dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/view_6_dp"
-                            android:layout_marginRight="@dimen/view_16_dp"
-                            android:background="@drawable/gerenzhongxin_shezhi"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/avatar_bg" />
-
-                        <com.common.view.ex.ExImageView
-                            android:id="@+id/setting_red_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/reddot"
-                            app:layout_constraintRight_toRightOf="@id/setting_img_iv"
-                            app:layout_constraintTop_toTopOf="@id/setting_img_iv" />
-
+                        <com.zq.level.view.NormalLevelView2
+                            android:id="@+id/level_view"
+                            android:layout_width="@dimen/view_28_dp"
+                            android:layout_height="@dimen/view_24_dp"
+                            android:layout_marginTop="@dimen/view_1_dp"
+                            android:layout_marginLeft="@dimen/view_10_dp"
+                            levelView2:mainHeight2="@dimen/view_24_dp"
+                            levelView2:mainWidth2="@dimen/view_28_dp"
+                            levelView2:subBottom2="@dimen/view_1_dp"
+                            levelView2:subHeight2="@dimen/view_3_dp"
+                            levelView2:subWidth2="@dimen/view_5_dp"
+                            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+                            app:layout_constraintTop_toTopOf="@id/avatar_iv"/>
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/name_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_25_dp"
-                            android:layout_marginStart="@dimen/view_18_dp"
+                            android:layout_marginStart="@dimen/view_5_dp"
+                            android:layout_marginTop="@dimen/view_2_dp"
                             android:ellipsize="end"
                             android:gravity="left|center_vertical"
+                            android:maxEms="7"
                             android:maxLines="1"
                             android:paddingRight="@dimen/view_20_dp"
                             android:singleLine="true"
-                            android:maxEms="7"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_18_dp"
                             android:textStyle="bold"
-                            app:layout_constraintLeft_toRightOf="@id/avatar_bg"
-                            app:layout_constraintTop_toTopOf="@id/avatar_bg" />
+                            app:layout_constraintLeft_toRightOf="@id/level_view"
+                            app:layout_constraintTop_toTopOf="@id/avatar_iv" />
 
                         <ImageView
                             android:id="@+id/sex_iv"
@@ -189,275 +184,146 @@
                             app:layout_constraintRight_toRightOf="@id/name_tv"
                             app:layout_constraintTop_toTopOf="@id/name_tv" />
 
+                        <ImageView
+                            android:id="@+id/business_card"
+                            android:layout_width="@dimen/view_48_dp"
+                            android:layout_height="@dimen/view_30_dp"
+                            android:layout_marginTop="@dimen/view_28_dp"
+                            android:layout_marginRight="@dimen/view_20_dp"
+                            android:background="@drawable/person_center_business_icon"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <com.common.view.ex.ExTextView
-                            android:id="@+id/userid_tv"
+                            android:id="@+id/charm_tv"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_17_dp"
-                            android:textColor="@color/white_trans_50"
-                            android:textSize="@dimen/textsize_12_dp"
-                            app:layout_constraintLeft_toLeftOf="@id/name_tv"
+                            android:layout_height="@dimen/view_24_dp"
+                            android:layout_marginTop="@dimen/view_6_dp"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/view_28_dp"
+                            android:paddingRight="@dimen/view_11_dp"
+                            android:textColor="@color/white"
+                            app:bl_corners_radius="@dimen/view_12_dp"
+                            app:bl_shape="rectangle"
+                            app:bl_solid_color="@color/black_trans_10"
+                            app:layout_constraintLeft_toLeftOf="@id/level_view"
                             app:layout_constraintTop_toBottomOf="@id/name_tv" />
 
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/sign_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_20_dp"
-                            android:textColor="@color/white_trans_80"
-                            android:textSize="@dimen/textsize_14_dp"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:ellipsize="end"
-                            android:gravity="left|center_vertical"
-                            android:maxEms="14"
-                            app:layout_constraintLeft_toLeftOf="@id/userid_tv"
-                            app:layout_constraintTop_toBottomOf="@id/userid_tv" />
-
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/friends_num_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_30_dp"
-                            android:layout_marginTop="@dimen/view_10_dp"
-                            android:gravity="center"
-                            android:text="好友"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/textsize_24_dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/follows_num_tv"
-                            app:layout_constraintTop_toBottomOf="@id/avatar_bg" />
-
-                        <com.common.view.ex.ExImageView
-                            android:id="@+id/friend_red_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/reddot"
-                            android:visibility="gone"
-                            app:layout_constraintRight_toRightOf="@id/friends_num_tv"
-                            app:layout_constraintTop_toTopOf="@id/friends_num_tv" />
-
-
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/follows_num_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_30_dp"
-                            android:gravity="center"
-                            android:text="关注"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/textsize_24_dp"
-                            app:layout_constraintLeft_toRightOf="@id/friends_num_tv"
-                            app:layout_constraintRight_toLeftOf="@id/fans_num_tv"
-                            app:layout_constraintTop_toTopOf="@id/friends_num_tv" />
-
-
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/fans_num_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_30_dp"
-                            android:gravity="center"
-                            android:text="粉丝"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/textsize_24_dp"
-                            app:layout_constraintLeft_toRightOf="@id/follows_num_tv"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/friends_num_tv" />
-
-                        <com.common.view.ex.ExImageView
-                            android:id="@+id/fans_red_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/reddot"
-                            android:visibility="gone"
-                            app:layout_constraintRight_toRightOf="@id/fans_num_tv"
-                            app:layout_constraintTop_toTopOf="@id/fans_num_tv" />
+                        <ImageView
+                            android:layout_width="@dimen/view_16_dp"
+                            android:layout_height="@dimen/view_15_dp"
+                            android:layout_marginLeft="@dimen/view_9_dp"
+                            android:background="@drawable/grab_charm_icon"
+                            app:layout_constraintBottom_toBottomOf="@id/charm_tv"
+                            app:layout_constraintLeft_toLeftOf="@id/charm_tv"
+                            app:layout_constraintTop_toTopOf="@id/charm_tv" />
 
                         <com.common.view.ex.ExImageView
                             android:id="@+id/wallet_iv"
-                            android:layout_width="@dimen/view_105_dp"
-                            android:layout_height="@dimen/view_56_dp"
-                            android:layout_marginTop="@dimen/view_24_dp"
-                            android:background="@drawable/gerenzhongxin_yuederukou"
+                            android:layout_width="@dimen/view_96_dp"
+                            android:layout_height="@dimen/view_37_dp"
+                            android:layout_marginTop="@dimen/view_15_dp"
+                            android:background="@drawable/person_center_wallet_icon"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/income_iv"
-                            app:layout_constraintTop_toBottomOf="@id/friends_num_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
 
                         <com.common.view.ex.ExImageView
                             android:id="@+id/income_iv"
-                            android:layout_width="@dimen/view_105_dp"
-                            android:layout_height="@dimen/view_56_dp"
-                            android:background="@drawable/gerenzhongxin_shouyiderukou"
+                            android:layout_width="@dimen/view_96_dp"
+                            android:layout_height="@dimen/view_37_dp"
+                            android:background="@drawable/person_center_income_icon"
                             app:layout_constraintLeft_toRightOf="@id/wallet_iv"
-                            app:layout_constraintRight_toLeftOf="@id/music_test_iv"
+                            app:layout_constraintRight_toLeftOf="@id/recharge_iv"
                             app:layout_constraintTop_toTopOf="@id/wallet_iv" />
 
                         <com.common.view.ex.ExImageView
-                            android:id="@+id/music_test_iv"
-                            android:layout_width="@dimen/view_105_dp"
-                            android:layout_height="@dimen/view_56_dp"
-                            android:background="@drawable/gerenzhongxin_ceshiderukou"
+                            android:id="@+id/recharge_iv"
+                            android:layout_width="@dimen/view_96_dp"
+                            android:layout_height="@dimen/view_37_dp"
+                            android:background="@drawable/person_center_recharge_icon"
                             app:layout_constraintLeft_toRightOf="@id/income_iv"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="@id/wallet_iv" />
 
-                        <android.support.constraint.ConstraintLayout
-                            android:id="@+id/medal_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_130_dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="@dimen/view_16_dp"
-                            android:layout_marginTop="@dimen/view_35_dp"
-                            android:layout_marginRight="@dimen/view_16_dp"
-                            android:background="@drawable/person_medal_bg"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/wallet_iv">
-
-                            <ImageView
-                                android:id="@+id/paiwei_img"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/view_32_dp"
-                                android:layout_marginTop="@dimen/view_16_dp"
-                                android:background="@drawable/person_rank_num_bg"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <com.component.busilib.view.BitmapTextView
-                                android:id="@+id/rank_num_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/view_18_dp"
-                                BitmapTextView:scale="0.6"
-                                BitmapTextView:text_color="#3E4E76"
-                                app:layout_constraintLeft_toLeftOf="@id/paiwei_img"
-                                app:layout_constraintRight_toRightOf="@id/paiwei_img"
-                                app:layout_constraintTop_toTopOf="@id/paiwei_img" />
-
-                            <com.common.view.ex.ExTextView
-                                android:id="@+id/exTextView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="排位赛"
-                                android:textColor="#0C2275"
-                                android:textSize="@dimen/textsize_12_dp"
-                                android:textStyle="bold"
-                                app:layout_constraintLeft_toLeftOf="@id/paiwei_img"
-                                app:layout_constraintRight_toRightOf="@id/paiwei_img"
-                                app:layout_constraintTop_toBottomOf="@id/paiwei_img" />
-
-
-                            <ImageView
-                                android:id="@+id/singend_img"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/view_16_dp"
-                                android:layout_marginRight="@dimen/view_32_dp"
-                                android:background="@drawable/person_grab_num_bg"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <com.component.busilib.view.BitmapTextView
-                                android:id="@+id/singend_num_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/view_18_dp"
-                                BitmapTextView:scale="0.6"
-                                BitmapTextView:text_color="#3E4E76"
-                                app:layout_constraintLeft_toLeftOf="@id/singend_img"
-                                app:layout_constraintRight_toRightOf="@id/singend_img"
-                                app:layout_constraintTop_toTopOf="@id/singend_img" />
-
-                            <com.common.view.ex.ExTextView
-                                android:id="@+id/exTextView4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="一唱到底"
-                                android:textColor="#0C2275"
-                                android:textSize="@dimen/textsize_12_dp"
-                                android:textStyle="bold"
-                                app:layout_constraintLeft_toLeftOf="@id/singend_img"
-                                app:layout_constraintRight_toRightOf="@id/singend_img"
-                                app:layout_constraintTop_toBottomOf="@id/singend_img" />
-
-                        </android.support.constraint.ConstraintLayout>
-
-                        <com.zq.level.view.NormalLevelView2
-                            android:id="@+id/level_view"
-                            android:layout_width="@dimen/view_125_dp"
-                            android:layout_height="@dimen/view_109_dp"
-                            android:layout_marginTop="@dimen/textsize_4_dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/wallet_iv"
-                            levelView2:mainHeight2="@dimen/view_109_dp"
-                            levelView2:mainWidth2="@dimen/view_125_dp"
-                            levelView2:subBottom2="@dimen/view_6_dp"
-                            levelView2:subHeight2="@dimen/view_13_dp"
-                            levelView2:subWidth2="@dimen/view_24_dp"></com.zq.level.view.NormalLevelView2>
-
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/level_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_20_dp"
-                            android:layout_marginTop="@dimen/view_4_dp"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:textColor="#0C2275"
-                            android:textSize="@dimen/textsize_14_dp"
-                            android:textStyle="bold"
-                            app:layout_constraintTop_toBottomOf="@id/level_view"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent" />
-
-                        <TextView
-                            android:id="@+id/charm_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_34_dp"
-                            android:layout_marginTop="@dimen/view_10_dp"
-                            android:background="@drawable/pk_info_paiming"
-                            android:drawableLeft="@drawable/grab_charm_icon"
-                            android:drawablePadding="@dimen/textsize_5_dp"
-                            android:gravity="center"
-                            android:paddingLeft="@dimen/view_32_dp"
-                            android:paddingRight="@dimen/view_32_dp"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="@dimen/textsize_14_dp"
-                            BitmapTextView:layout_constraintLeft_toLeftOf="parent"
-                            BitmapTextView:layout_constraintRight_toRightOf="parent"
-                            BitmapTextView:layout_constraintTop_toBottomOf="@+id/level_tv" />
-
-
-                    </android.support.constraint.ConstraintLayout>
+                    </com.common.view.ex.ExConstraintLayout>
 
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/view_70_dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
                         app:layout_collapseMode="pin">
 
-                        <RelativeLayout
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/view_96_dp"
                             android:background="#7088FF">
 
-                            <TextView
+                            <com.facebook.drawee.view.SimpleDraweeView
+                                android:id="@+id/srl_avatar_iv"
+                                android:layout_width="@dimen/view_60_dp"
+                                android:layout_height="@dimen/view_60_dp"
+                                android:layout_marginLeft="@dimen/view_20_dp"
+                                android:layout_marginBottom="@dimen/view_10_dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                            <com.common.view.ex.ExTextView
                                 android:id="@+id/srl_name_tv"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="@dimen/view_10_dp"
-                                android:gravity="center"
+                                android:layout_height="@dimen/view_25_dp"
+                                android:layout_marginStart="@dimen/view_18_dp"
+                                android:layout_marginTop="@dimen/view_2_dp"
+                                android:ellipsize="end"
+                                android:gravity="left|center_vertical"
+                                android:maxEms="7"
+                                android:maxLines="1"
+                                android:paddingRight="@dimen/view_20_dp"
+                                android:singleLine="true"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/textsize_18_dp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                app:layout_constraintLeft_toRightOf="@id/srl_avatar_iv"
+                                app:layout_constraintTop_toTopOf="@id/srl_avatar_iv" />
 
-                        </RelativeLayout>
+                            <ImageView
+                                android:id="@+id/srl_sex_iv"
+                                android:layout_width="@dimen/view_16_dp"
+                                android:layout_height="@dimen/view_16_dp"
+                                app:layout_constraintBottom_toBottomOf="@id/srl_name_tv"
+                                app:layout_constraintRight_toRightOf="@id/srl_name_tv"
+                                app:layout_constraintTop_toTopOf="@id/srl_name_tv" />
+
+                            <com.common.view.ex.ExTextView
+                                android:id="@+id/srl_charm_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/view_24_dp"
+                                android:layout_marginTop="@dimen/view_6_dp"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/view_28_dp"
+                                android:paddingRight="@dimen/view_11_dp"
+                                android:textColor="@color/white"
+                                app:bl_corners_radius="@dimen/view_12_dp"
+                                app:bl_shape="rectangle"
+                                app:bl_solid_color="@color/black_trans_10"
+                                app:layout_constraintLeft_toLeftOf="@id/srl_name_tv"
+                                app:layout_constraintTop_toBottomOf="@id/srl_name_tv" />
+
+                            <ImageView
+                                android:layout_width="@dimen/view_16_dp"
+                                android:layout_height="@dimen/view_15_dp"
+                                android:layout_marginLeft="@dimen/view_9_dp"
+                                android:background="@drawable/grab_charm_icon"
+                                app:layout_constraintBottom_toBottomOf="@id/srl_charm_tv"
+                                app:layout_constraintLeft_toLeftOf="@id/srl_charm_tv"
+                                app:layout_constraintTop_toTopOf="@id/srl_charm_tv" />
+
+                        </android.support.constraint.ConstraintLayout>
 
                     </android.support.v7.widget.Toolbar>
 
@@ -469,5 +335,24 @@
 
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <!--设置-->
+    <ImageView
+        android:id="@+id/setting_img_iv"
+        android:layout_width="@dimen/view_27_dp"
+        android:layout_height="@dimen/view_27_dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:background="@drawable/gerenzhongxin_shezhi" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/setting_red_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/setting_img_iv"
+        android:layout_alignRight="@id/setting_img_iv"
+        android:src="@drawable/reddot" />
 
 </RelativeLayout>

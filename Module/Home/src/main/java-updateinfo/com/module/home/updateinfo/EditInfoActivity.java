@@ -267,12 +267,12 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                     .setNeedCompress(true)
                     .startUploadAsync(new UploadCallback() {
                         @Override
-                        public void onProgress(long currentSize, long totalSize) {
+                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                         }
 
                         @Override
-                        public void onSuccess(String url) {
+                        public void onSuccessNotInUiThread(String url) {
                             mUiHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -283,7 +283,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         }
 
                         @Override
-                        public void onFailure(String msg) {
+                        public void onFailureNotInUiThread(String msg) {
                             mUiHandler.post(new Runnable() {
                                 @Override
                                 public void run() {

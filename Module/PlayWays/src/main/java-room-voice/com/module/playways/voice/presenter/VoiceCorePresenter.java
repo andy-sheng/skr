@@ -57,7 +57,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter<RoomMsg>() {
         @Override
         public boolean doFilter(RoomMsg msg) {
             if (msg != null && msg.getRoomID() == mRoomData.getGameId()) {
@@ -67,7 +67,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public VoiceCorePresenter( IVoiceView iVoiceView,  RankRoomData roomData) {
+    public VoiceCorePresenter(IVoiceView iVoiceView, RankRoomData roomData) {
         mIVoiceView = iVoiceView;
         mRoomData = roomData;
         TAG = "VoiceCorePresenter";
@@ -77,7 +77,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             params.setStyleEnum(Params.AudioEffect.none);
             params.setSelfUid((int) MyUserInfoManager.getInstance().getUid());
             ZqEngineKit.getInstance().init("voiceroom", params);
-            ZqEngineKit.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true,null);
+            ZqEngineKit.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true, null);
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {

@@ -21,6 +21,8 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
 
     static final int MSG_END_ON_UI = 81;
 
+    static final int MSG_ACCEPT_ON_UI = 82;
+
     public static final int SIZE = 100;//生产者池子里最多多少个
 
     /**
@@ -51,6 +53,24 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
                     case MSG_END_ON_UI:
                         onEnd((MODEL) msg.obj);
                         break;
+                    case MSG_ACCEPT_ON_UI:
+                        MODEL cur = (MODEL) msg.obj;
+                        CONSUMER consumer = accept(cur);
+                        mHandlerThread.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (consumer != null) {
+                                    // 肯定有消费者，才会走到这
+                                    MODEL cur = mQueue.poll();
+                                    if (cur != null) {
+                                        //取出来一个
+                                        processInBackGround(cur);
+                                        onStartInside(cur, consumer);
+                                    }
+                                }
+                            }
+                        });
+                        break;
                 }
             }
         };
@@ -71,16 +91,19 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
     private void play() {
         MODEL cur = mQueue.peekFirst();
         if(cur!=null){
-            CONSUMER consumer = accept(cur);
-            if (consumer != null) {
-                // 肯定有消费者，才会走到这
-                cur = mQueue.poll();
-                if (cur != null) {
-                    //取出来一个
-                    processInBackGround(cur);
-                    onStartInside(cur, consumer);
-                }
-            }
+            Message msg = mUiHandler.obtainMessage(MSG_ACCEPT_ON_UI);
+            msg.obj = cur;
+            mUiHandler.sendMessage(msg);
+//            CONSUMER consumer = accept(cur);
+//            if (consumer != null) {
+//                // 肯定有消费者，才会走到这
+//                cur = mQueue.poll();
+//                if (cur != null) {
+//                    //取出来一个
+//                    processInBackGround(cur);
+//                    onStartInside(cur, consumer);
+//                }
+//            }
         }
 
     }

@@ -62,10 +62,14 @@ public class FloatWindow {
     }
 
     public static boolean destroy(String tag) {
+        return destroy(tag,0);
+    }
+
+    public static boolean destroy(String tag,int dismissReason) {
         if (mFloatWindowMap == null || !mFloatWindowMap.containsKey(tag)) {
             return false;
         }
-        mFloatWindowMap.get(tag).dismiss();
+        mFloatWindowMap.get(tag).dismiss(dismissReason);
         mFloatWindowMap.remove(tag);
         return true;
     }

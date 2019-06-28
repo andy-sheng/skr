@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
 import com.common.utils.ToastUtils;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -139,7 +140,7 @@ public class FeedbackView extends RelativeLayout {
                     }
 
                     if (tags.size() == 0) {
-                        ToastUtils.showShort("请选择顶部的选项哦");
+                        U.getToastUtil().showShort("请选择顶部的选项哦");
                     } else {
                         mListener.onClickSubmit(tags, mFeedbackContent.getText().toString().trim(), mImageItemArrayList);
                     }

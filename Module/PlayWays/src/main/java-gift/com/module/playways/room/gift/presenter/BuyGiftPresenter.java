@@ -11,8 +11,10 @@ import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
+import com.component.busilib.recommend.RA;
 import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.module.playways.room.gift.event.UpdateDiamondEvent;
@@ -134,7 +136,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     int coin = result.getData().getIntValue("coinBalance");
                     if (coin >= 0) {
                         long ts = result.getData().getLongValue("coinBalanceLastChangeMs");
-                        EventBus.getDefault().post(new UpdateCoinEvent(coin, ts));
+                        UpdateCoinEvent.sendEvent(coin, ts);
                     }
 
                     float diamond = result.getData().getFloatValue("zuanBalance");
@@ -190,6 +192,11 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         MyLog.w(TAG, "buyGift process" + " result=" + result);
                         if (result.getErrno() == 0) {
                             mIContinueSendView.buySuccess(baseGift, continueCount[0]);
+                            if(RA.hasTestList()){
+                                HashMap map = new HashMap();
+                                map.put("testList", RA.getTestList());
+                                StatisticsAdapter.recordCountEvent("ra","sendgift",map);
+                            }
                         } else {
                             mIContinueSendView.buyFaild(result.getErrno(), result.getErrmsg());
                         }
@@ -197,7 +204,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.showShort("购买礼物失败");
+                        U.getToastUtil().showShort("购买礼物失败");
                     }
 
                     @Override

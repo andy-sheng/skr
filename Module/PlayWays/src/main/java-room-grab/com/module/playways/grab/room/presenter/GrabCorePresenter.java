@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
@@ -21,8 +20,8 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.player.ExoPlayer;
+import com.common.player.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -35,6 +34,8 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
+import com.common.log.DebugLogView;
+import com.component.busilib.recommend.RA;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
@@ -43,7 +44,6 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
-import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
@@ -75,6 +75,8 @@ import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
+import com.module.playways.grab.room.songmanager.event.BeginRecordCustomGameEvent;
+import com.module.playways.grab.room.songmanager.event.RoomNameChangeEvent;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
@@ -185,9 +187,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     EngineParamsTemp mEngineParamsTemp;
 
-    //需不需要认证
-    boolean mHasPassedCertify = false;
-
     BaseActivity mBaseActivity;
 
     DialogPlus mDialogPlus;
@@ -248,7 +247,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter<RoomMsg>() {
         @Override
         public boolean doFilter(RoomMsg msg) {
             if (msg != null && msg.getRoomID() == mRoomData.getGameId()) {
@@ -285,15 +284,29 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mAbsenTimes = 0;
 
         if (mRoomData.getGameId() > 0) {
-            if (first) {
+            boolean reInit = false;
+            if(first){
+                reInit = true;
+            }
+            if(!reInit && ZqEngineKit.getInstance().getParams().isEnableVideo() != mRoomData.isVideoRoom()){
+                MyLog.d(TAG,"音视频模式发生切换");
+                mIGrabView.changeRoomMode(mRoomData.isVideoRoom());
+                // 发出通知
+                reInit = true;
+            }
+            if (reInit) {
                 Params params = Params.getFromPref();
 //            params.setStyleEnum(Params.AudioEffect.none);
                 params.setScene(Params.Scene.grab);
+                params.setEnableVideo(mRoomData.isVideoRoom());
                 ZqEngineKit.getInstance().init("grabroom", params);
             }
             ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false, mRoomData.getAgoraToken());
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
+            if(mRoomData.isVideoRoom()){
+                ZqEngineKit.getInstance().unbindAllRemoteVideo();
+            }
         }
         joinRcRoom(-1);
         if (mRoomData.getGameId() > 0) {
@@ -330,7 +343,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     joinRcRoom(deep + 1);
                 }
             });
-            if(deep==-1){
+            if (deep == -1) {
                 /**
                  * 说明是初始化时那次加入房间，这时加入极光房间做个备份，使用tag的方案
                  */
@@ -395,8 +408,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                 @Override
-                public void onPrepared(long duration) {
-                    super.onPrepared(duration);
+                public void onPrepared() {
+                    super.onPrepared();
                     if (!now.isParticipant() && now.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
                         MyLog.d(TAG, "这轮刚进来，导唱需要seek");
                         mExoPlayer.seekTo(now.getElapsedTimeMs());
@@ -509,6 +522,49 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    public void preOpWhenOtherRound(long uid) {
+        PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+        if (playerInfo == null) {
+            MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
+            return;
+        }
+        /**
+         * 机器人
+         */
+        if (playerInfo.isSkrer()) {
+            MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
+            //这个时间现在待定
+            //移除之前的要发生的机器人演唱
+            mUiHandler.removeMessages(MSG_ROBOT_SING_BEGIN);
+            Message message = mUiHandler.obtainMessage(MSG_ROBOT_SING_BEGIN);
+            mUiHandler.sendMessage(message);
+        }
+
+        // 别人的轮次
+//        if (mRoomData.isVideoRoom()) {
+//            // 如果是语音房间
+//            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+//            if (infoModel != null) {
+//                if (infoModel.isPKRound()) {
+//                    if (infoModel.getsPkRoundInfoModels().size() >= 2) {
+//                        int userId1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
+//                        int userId2 = infoModel.getsPkRoundInfoModels().get(1).getUserID();
+//                        if (MyUserInfoManager.getInstance().getUid() == userId1 ||
+//                                MyUserInfoManager.getInstance().getUid() == userId2) {
+//                            // 万一这个人是一个人 这个人点不唱了
+//                            //join房间也变成主播
+//                            if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
+//                                ZqEngineKit.getInstance().setClientRole(true);
+//                            }
+//                            // 不发声
+//                            ZqEngineKit.getInstance().muteLocalAudioStream(true);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+    }
+
     /**
      * 真正打开引擎开始演唱
      */
@@ -532,6 +588,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
          *                 mRobotScoreHelper.reset();
          *             }
          */
+
+
     }
 
     /**
@@ -644,10 +702,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         map.put("wantSingType", wantSingType);
-        if (MyLog.isDebugLogOpen()) {
-            mHasPassedCertify = true;
-        }
-        map.put("hasPassedCertify", mHasPassedCertify);
+        map.put("hasPassedCertify", MyUserInfoManager.getInstance().hasGrabCertifyPassed());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
@@ -656,9 +711,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 MyLog.w(TAG, "grabThisRound erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     //true为已经认证过了或者无需认证，false为未认证
-                    mHasPassedCertify = result.getData().getBoolean("hasPassedCertify");
+                    boolean mHasPassedCertify = result.getData().getBoolean("hasPassedCertify");
 
                     if (mHasPassedCertify) {
+                        MyUserInfoManager.getInstance().setGrabCertifyPassed(mHasPassedCertify);
                         //抢成功了
                         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
                         if (now != null && now.getRoundSeq() == seq) {
@@ -790,6 +846,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "lightsBurst 不在演唱状态，cancel status=" + now.getStatus() + " roundSeq=" + now.getRoundSeq());
             return;
         }
+        if(RA.hasTestList()){
+            HashMap map = new HashMap();
+            map.put("testList", RA.getTestList());
+            StatisticsAdapter.recordCountEvent("ra","burst",map);
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         int roundSeq = now.getRoundSeq();
@@ -853,7 +914,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mExoPlayer.startPlay(skrerUrl);
         mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
             @Override
-            public void onPrepared(long duration) {
+            public void onPrepared() {
                 if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
                     MyLog.d(TAG, "进来时已经时演唱阶段了，则机器人资源要seek一下 " + grabRoundInfoModel.getElapsedTimeMs());
                     mExoPlayer.seekTo(grabRoundInfoModel.getElapsedTimeMs());
@@ -985,18 +1046,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     .setFileType(UploadParams.FileType.audioAi)
                     .startUploadAsync(new UploadCallback() {
                         @Override
-                        public void onProgress(long currentSize, long totalSize) {
+                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                         }
 
                         @Override
-                        public void onSuccess(String url) {
+                        public void onSuccessNotInUiThread(String url) {
                             MyLog.w(TAG, "uploadRes1ForAi 上传成功 url=" + url);
                             sendUploadRequest(roundInfoModel, url);
                         }
 
                         @Override
-                        public void onFailure(String msg) {
+                        public void onFailureNotInUiThread(String msg) {
 
                         }
                     });
@@ -1083,8 +1144,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 告知我的的抢唱阶段结束了
      */
-    public void sendMyGrabOver() {
-        MyLog.d(TAG, "上报我的抢唱结束 ");
+    public void sendMyGrabOver(String from) {
+        MyLog.d(TAG, "上报我的抢唱结束 from="+from);
         GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel == null) {
             return;
@@ -1095,6 +1156,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendGrapOver(body), new ApiObserver<ApiResult>() {
+
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -1165,23 +1227,43 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             map.put("roomID", mRoomData.getGameId());
             map.put("roundSeq", now.getRoundSeq());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-            ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult result) {
-                    if (result.getErrno() == 0) {
-                        mIGrabView.giveUpSuccess(now.getRoundSeq());
-                        closeEngine();
-                        MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
-                    } else {
-                        MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+            if (now.isFreeMicRound()) {
+                ApiMethods.subscribe(mRoomServerApi.stopFreeMicroByOwner(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            mIGrabView.giveUpSuccess(now.getRoundSeq());
+                            closeEngine();
+                            MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.getTraceId());
+                        } else {
+                            MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.getTraceId());
+                        }
                     }
-                }
 
-                @Override
-                public void onError(Throwable e) {
-                    MyLog.w(TAG, "stopMiniGameByOwner error " + e);
-                }
-            }, this);
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.w(TAG, "stopFreeMicroByOwner error " + e);
+                    }
+                }, this);
+            } else {
+                ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            mIGrabView.giveUpSuccess(now.getRoundSeq());
+                            closeEngine();
+                            MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+                        } else {
+                            MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.getTraceId());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.w(TAG, "stopMiniGameByOwner error " + e);
+                    }
+                }, this);
+            }
 
         } else {
             MyLog.w(TAG, "我放弃演唱");
@@ -1369,10 +1451,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             U.getToastUtil().showShort("切换中");
             return;
         }
+//        if(true){
+//            stopGuide();
+//            mRoomData.setRealRoundInfo(null);
+//            mIGrabView.hideAllCardView();
+//            joinRoomAndInit(false);
+//            ZqEngineKit.getInstance().unbindAllRemoteVideo();
+//            mRoomData.checkRoundInEachMode();
+//            mIGrabView.onChangeRoomResult(true, null);
+//            mIGrabView.dimissKickDialog();
+//            return;
+//        }
         mSwitchRooming = true;
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("tagID", mRoomData.getTagId());
+        map.put("vars", RA.getVars());
+        map.put("testList", RA.getTestList());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.changeRoom(body), new ApiObserver<ApiResult>() {
 
@@ -1625,6 +1720,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
+        DebugLogView.println(TAG, "---轮次" + event.newRoundInfo.getRoundSeq() + "开始--- ");
         MyLog.d(TAG, "GrabRoundChangeEvent" + " event=" + event);
         // 轮次变化尝试更新头像
         estimateOverTsThisRound();
@@ -1691,7 +1787,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         mIGrabView.singByOthers();
                     }
                 });
-                checkMachineUser(now.getUserID());
+                preOpWhenOtherRound(now.getUserID());
             }
         } else if (now.getStatus() == EQRoundStatus.QRS_END.getValue()) {
             MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.getRoundSeq());
@@ -1725,8 +1821,51 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "GrabRoundStatusChangeEvent" + " event=" + event);
         estimateOverTsThisRound();
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
-        closeEngine();
         GrabRoundInfoModel now = event.roundInfo;
+
+        boolean needCloseEngine = true;
+        if (mRoomData.isVideoRoom()) {
+            if (now.isPKRound() && now.getsPkRoundInfoModels().size() >= 2) {
+                if (now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+                    // pk的第一轮
+                    SPkRoundInfoModel pkRoundInfoModel2 = now.getsPkRoundInfoModels().get(1);
+                    if (MyUserInfoManager.getInstance().getUid() == pkRoundInfoModel2.getUserID()) {
+                        // 本人第二个唱
+                        if (pkRoundInfoModel2.getOverReason() == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()
+                                || pkRoundInfoModel2.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                            needCloseEngine = true;
+                        } else {
+                            needCloseEngine = false;
+                        }
+                    }
+                } else if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                    // pk第二轮
+                    SPkRoundInfoModel pkRoundInfoModel1 = now.getsPkRoundInfoModels().get(0);
+                    if (MyUserInfoManager.getInstance().getUid() == pkRoundInfoModel1.getUserID()) {
+                        // 本人第二个唱
+                        if (pkRoundInfoModel1.getOverReason() == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()
+                                || pkRoundInfoModel1.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                            needCloseEngine = true;
+                        } else {
+                            needCloseEngine = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (needCloseEngine) {
+            closeEngine();
+        } else {
+            // pk第二轮，只把混音关了
+            if (!ZqEngineKit.getInstance().getParams().isAnchor()) {
+                ZqEngineKit.getInstance().setClientRole(true);
+            }
+            // 不发声
+            ZqEngineKit.getInstance().muteLocalAudioStream(true);
+            ZqEngineKit.getInstance().stopAudioMixing();
+            ZqEngineKit.getInstance().stopAudioRecording();
+        }
         tryStopRobotPlay();
         if (now.getStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
             //抢唱阶段，播抢唱卡片
@@ -1753,7 +1892,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         mIGrabView.singByOthers();
                     }
                 });
-                checkMachineUser(now.getUserID());
+                preOpWhenOtherRound(now.getUserID());
             }
         }
     }
@@ -1796,42 +1935,42 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
-            UserStatus userStatus = event.getUserStatus();
-            if (userStatus != null) {
-                MyLog.d(TAG, "有人mute变化 uid=" + userStatus.getUserId());
-                if (userStatus.getUserId() == mRoomData.getOwnerId()) {
-                    if (mRoomData.isOwner()) {
-                        MyLog.d(TAG, "自己就是房主，忽略");
-                    } else {
-                        if (!userStatus.isAudioMute()) {
-                            MyLog.d(TAG, "房主解开mute，如果检测到房主说话，音量就衰减");
-                            weakVolume(1000);
-                        } else {
-                            MyLog.d(TAG, "房主mute了，恢复音量");
-                            mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
-                            mUiHandler.sendEmptyMessage(MSG_RECOVER_VOLUME);
-                        }
-                    }
-                }
-            }
+//            UserStatus userStatus = event.getUserStatus();
+//            if (userStatus != null) {
+//                MyLog.d(TAG, "有人mute变化 uid=" + userStatus.getUserId());
+//                if (userStatus.getUserId() == mRoomData.getOwnerId()) {
+//                    if (mRoomData.isOwner()) {
+//                        MyLog.d(TAG, "自己就是房主，忽略");
+//                    } else {
+//                        if (!userStatus.isAudioMute()) {
+//                            MyLog.d(TAG, "房主解开mute，如果检测到房主说话，音量就衰减");
+//                            weakVolume(1000);
+//                        } else {
+//                            MyLog.d(TAG, "房主mute了，恢复音量");
+//                            mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
+//                            mUiHandler.sendEmptyMessage(MSG_RECOVER_VOLUME);
+//                        }
+//                    }
+//                }
+//            }
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
-            List<EngineEvent.UserVolumeInfo> list = event.getObj();
-            for (EngineEvent.UserVolumeInfo uv : list) {
-                //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
-                if (uv != null) {
-                    int uid = uv.getUid();
-                    if (uid == 0) {
-                        uid = (int) MyUserInfoManager.getInstance().getUid();
-                    }
-                    if (mRoomData != null
-                            && uid == mRoomData.getOwnerId()
-                            && uv.getVolume() > 40
-                            && !mRoomData.isOwner()) {
-                        MyLog.d(TAG, "房主在说话");
-                        weakVolume(1000);
-                    }
-                }
-            }
+//            List<EngineEvent.UserVolumeInfo> list = event.getObj();
+//            for (EngineEvent.UserVolumeInfo uv : list) {
+//                //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
+//                if (uv != null) {
+//                    int uid = uv.getUid();
+//                    if (uid == 0) {
+//                        uid = (int) MyUserInfoManager.getInstance().getUid();
+//                    }
+//                    if (mRoomData != null
+//                            && uid == mRoomData.getOwnerId()
+//                            && uv.getVolume() > 40
+//                            && !mRoomData.isOwner()) {
+//                        MyLog.d(TAG, "房主在说话");
+//                        weakVolume(1000);
+//                    }
+//                }
+//            }
         } else {
             // 可以考虑监听下房主的说话提示 做下容错
         }
@@ -2376,25 +2515,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    public void checkMachineUser(long uid) {
-        PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
-        if (playerInfo == null) {
-            MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
-            return;
-        }
-        /**
-         * 机器人
-         */
-        if (playerInfo.isSkrer()) {
-            MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
-            //这个时间现在待定
-            //移除之前的要发生的机器人演唱
-            mUiHandler.removeMessages(MSG_ROBOT_SING_BEGIN);
-            Message message = mUiHandler.obtainMessage(MSG_ROBOT_SING_BEGIN);
-            mUiHandler.sendMessage(message);
-        }
-    }
-
     /**
      * 房主 被告知游戏开始
      *
@@ -2420,7 +2540,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ensureInRcRoom();
     }
 
-
     @Subscribe
     public void onEvent(QChangeMusicTagEvent event) {
         MyLog.d(TAG, "onEvent QChangeMusicTagEvent !!切换专场 " + event);
@@ -2443,8 +2562,31 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         swapGame(!event.foreground, event.foreground);
         if (event.foreground) {
             muteAllRemoteAudioStreams(mRoomData.isMute(), false);
+            if(mRoomData.isVideoRoom()){
+                ZqEngineKit.getInstance().muteLocalVideoStream(false);
+            }
         } else {
             muteAllRemoteAudioStreams(true, false);
+            if(mRoomData.isVideoRoom()){
+                if(ZqEngineKit.getInstance().getParams().isAnchor()){
+                    // 我是主播
+                    ZqEngineKit.getInstance().muteLocalVideoStream(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * 录制小游戏事件，防止录进去背景音
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BeginRecordCustomGameEvent event) {
+        MyLog.d(TAG,"onEvent" + " event=" + event);
+        if (event.getBegin()) {
+            muteAllRemoteAudioStreams(true, false);
+        } else {
+            muteAllRemoteAudioStreams(mRoomData.isMute(), false);
         }
     }
 
@@ -2452,6 +2594,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RoomNameChangeEvent event) {
+        MyLog.w(TAG, "onEvent" + " event=" + event);
+        mRoomData.setRoomName(event.getMRoomName());
     }
 
 
@@ -2643,7 +2791,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             for (GPrensentGiftMsgModel.PropertyModel property : giftPresentEvent.mGPrensentGiftMsgModel.getPropertyModelList()) {
                 if (property.userID == MyUserInfoManager.getInstance().getUid()) {
                     if (property.coinBalance != -1) {
-                        EventBus.getDefault().post(new UpdateCoinEvent((int) property.coinBalance, property.lastChangeMs));
+                        UpdateCoinEvent.sendEvent((int) property.coinBalance, property.lastChangeMs);
                     }
                     if (property.hongZuanBalance != -1) {
                         mRoomData.setHzCount(property.hongZuanBalance, property.lastChangeMs);

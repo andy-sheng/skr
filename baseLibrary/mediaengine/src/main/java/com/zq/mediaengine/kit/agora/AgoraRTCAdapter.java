@@ -58,6 +58,7 @@ public class AgoraRTCAdapter {
     static {
         if (U.getChannelUtils().isStaging()) {
             APP_ID = "f23bd32ce6484113b02d14bd878e694c";
+//            APP_ID = "9624261076ba437c9eac190e88c3403e";
         } else {
             APP_ID = "2cceda2dbb2d46d28cab627f30c1a6f7";
         }
@@ -233,7 +234,7 @@ public class AgoraRTCAdapter {
         @Override
         public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
             super.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
-            // 一般可以在这里绑定视图
+            // 绑定远端渲染视图交由业务层处理
             if (mOutCallback != null) {
                 mOutCallback.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
             }
@@ -308,6 +309,12 @@ public class AgoraRTCAdapter {
                         // 模式为广播,必须在加入频道前调用
                         // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
                         mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
+                        if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
+                            /**
+                             * 直播模式下允许与web互通
+                             */
+                            mRtcEngine.enableWebSdkInteroperability(true);
+                        }
                         initRtcEngineInner();
                     }
                 } catch (Exception e) {
@@ -551,6 +558,7 @@ public class AgoraRTCAdapter {
         if (mRtcEngine != null) {
             mRtcEngine.getAudioEffectManager().stopAllEffects();
         }
+        mRemoteVideoSrcPins.clear();
         if (destroyAll) {
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
             RtcEngine.destroy();
@@ -723,8 +731,26 @@ public class AgoraRTCAdapter {
      */
     public void addRemoteVideo(int uid) {
         AgoraImgTexSrcPin srcPin = new AgoraImgTexSrcPin(mGLRender);
-        mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
-        mRemoteVideoSrcPins.put(uid, srcPin);
+        if (mRtcEngine != null) {
+            mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
+        }
+        if (mRemoteVideoSrcPins != null) {
+            mRemoteVideoSrcPins.put(uid, srcPin);
+        }
+    }
+
+    /**
+     * 移除对应uid的远程视频流的SrcPin.
+     *
+     * @param uid uid
+     */
+    public void removeRemoteVideo(int uid) {
+        if (mRtcEngine != null) {
+            mRtcEngine.setRemoteVideoRenderer(uid, null);
+        }
+        if (mRemoteVideoSrcPins != null) {
+            mRemoteVideoSrcPins.remove(uid);
+        }
     }
 
     /**
@@ -1301,7 +1327,7 @@ public class AgoraRTCAdapter {
             vf.transform = frame.texMatrix;
             vf.rotation = 0;
             boolean ret = mRtcEngine.pushExternalVideoFrame(vf);
-            MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + frame.textureId + " ret=" + ret);
+//            MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + frame.textureId + " ret=" + ret);
         }
     }
 }

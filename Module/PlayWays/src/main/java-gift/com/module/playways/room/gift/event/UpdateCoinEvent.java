@@ -1,11 +1,12 @@
 package com.module.playways.room.gift.event;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class UpdateCoinEvent {
     private int coinBalance;
-    private long ts;
+    static long lastTs = 0;
 
-    public UpdateCoinEvent(int coinBalance, long ts) {
-        this.ts = ts;
+    public UpdateCoinEvent(int coinBalance) {
         this.coinBalance = coinBalance;
     }
 
@@ -13,7 +14,10 @@ public class UpdateCoinEvent {
         return coinBalance;
     }
 
-    public long getTs() {
-        return ts;
+    public static void sendEvent(int coin, long newTs) {
+        if (newTs > lastTs) {
+            lastTs = newTs;
+            EventBus.getDefault().post(new UpdateCoinEvent(coin));
+        }
     }
 }

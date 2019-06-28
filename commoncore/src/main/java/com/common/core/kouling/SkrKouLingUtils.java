@@ -22,51 +22,43 @@ import com.module.common.ICallback;
 public class SkrKouLingUtils {
     public final static String TAG = "SkrKouLingUtils";
 
-//    /**
-//     * t=1&u=123&r=3333
-//     * 为了口令比较短
-//     * t=1 表示type是邀请别人进入游戏
-//     * u=123 表示房主id
-//     * r=3333 表示房间id
-//     *
-//     * @param inviterId
-//     * @param gameId
-//     */
-//    public static void genJoinGrabGameKouling(final int inviterId, final int gameId, final ICallback callback) {
-//        String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", inviterId, gameId);
-//        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
-//
-//        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
-//            @Override
-//            public void process(ApiResult obj) {
-//                if (obj.getErrno() == 0) {
-//                    StringBuilder sb = new StringBuilder();
-//                    sb.append("【复制消息 打开撕歌skr】").append("\n");
-//                    String name = MyUserInfoManager.getInstance().getNickName();
-////                    if (!TextUtils.isEmpty(name)) {
-////                        name = name.replaceAll("\\$", "");
-////                    }
-//                    sb.append(name).append(" 在 撕歌skr 创建了个嗨唱包房 ，邀你一起来嗨呀。等你喔~").append("\n");
-//                    sb.append("——————————").append("\n");
-//                    sb.append("房间口令:").append("$").append(obj.getData().getString("token")).append("$").append("\n");
-//                    sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
-//                    if (MyLog.isDebugLogOpen()) {
-//                        sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
-//                    }
-//                    if (callback != null) {
-//                        callback.onSucess(sb.toString());
-//                    }
-//                } else {
-//                    if (callback != null) {
-//                        callback.onFailed("", obj.getErrno(), "口令生成失败");
-//                    }
-//                }
-//            }
-//        });
-//    }
+    public static void genDoubleJoinGrabGameKouling(final int inviterId, final int gameId,int mediaType, final ICallback callback){
+        String code = String.format("inframeskr://room/doublejoin?owner=%s&gameId=%s&ask=1&mediaType=%s", inviterId, gameId,mediaType);
+        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
 
-    public static void genNormalJoinGrabGameKouling(final int inviterId, final int gameId, final ICallback callback) {
-        String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", inviterId, gameId);
+        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    if (callback != null) {
+                        callback.onSucess(obj.getData().getString("token"));
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onFailed("", obj.getErrno(), "口令生成失败");
+                    }
+                }
+            }
+        });
+    }
+
+    public static String genJoinDoubleGameKouling(String kouling) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("【复制消息 打开撕歌skr】").append("\n");
+        String name = MyUserInfoManager.getInstance().getNickName();
+        sb.append(name).append(" 邀你一起加入ta的双人畅聊房间，一起边唱边聊～").append("\n");
+        sb.append("——————————").append("\n");
+        sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
+        sb.append("撕歌skr 下载地址:http://a.app.icon_qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
+        if (MyLog.isDebugLogOpen()) {
+            sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
+        }
+        return sb.toString();
+    }
+
+
+    public static void genNormalJoinGrabGameKouling(final int inviterId, final int gameId,int mediaType, final ICallback callback) {
+        String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1&mediaType=%s", inviterId, gameId,mediaType);
         KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
 
         ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
@@ -101,39 +93,6 @@ public class SkrKouLingUtils {
         }
         return sb.toString();
     }
-
-//    public static void genReqFollowKouling(final int inviterId, final String name, final ICallback callback) {
-//        String code = String.format("inframeskr://relation/bothfollow?inviterId=%s", inviterId);
-//        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
-//
-//        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
-//            @Override
-//            public void process(ApiResult obj) {
-//                if (obj.getErrno() == 0) {
-//                    StringBuilder sb = new StringBuilder();
-//                    sb.append("【复制消息 打开撕歌skr】").append("\n");
-//                    String name = MyUserInfoManager.getInstance().getNickName();
-////                    if (!TextUtils.isEmpty(name)) {
-////                        name = name.replaceAll("\\$", "");
-////                    }
-//                    sb.append(name).append(" 想添加你为好友，来 撕歌skr 一起嗨唱躁不停，等你喔~").append("\n");
-//                    sb.append("——————————").append("\n");
-//                    sb.append("邀请口令:").append("$").append(obj.getData().getString("token")).append("$").append("\n");
-//                    sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
-//                    if (MyLog.isDebugLogOpen()) {
-//                        sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
-//                    }
-//                    if (callback != null) {
-//                        callback.onSucess(sb.toString());
-//                    }
-//                } else {
-//                    if (callback != null) {
-//                        callback.onFailed("", obj.getErrno(), "口令生成失败");
-//                    }
-//                }
-//            }
-//        });
-//    }
 
     public static void genNormalReqFollowKouling(final int inviterId, final ICallback callback) {
         String code = String.format("inframeskr://relation/bothfollow?inviterId=%s", inviterId);
@@ -175,8 +134,6 @@ public class SkrKouLingUtils {
 
     public static void tryParseScheme(String str) {
         if (!TextUtils.isEmpty(str)) {
-
-
             // 跳到 是否需要跳一个activity
 //            String base64Scheme = U.getStringUtils().getLongestBase64SubString(str);
             // TODO 可能需要去服务端解析口令，解析口令的接口不做身份验证

@@ -32,7 +32,7 @@ public interface GrabSongApi {
      * "traceId": "5c4429cf53a42b1c5900001b"
      * }
      */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-tags")
+    @GET("http://dev.api.inframe.mobi/v2/playbook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
@@ -57,8 +57,8 @@ public interface GrabSongApi {
      * 更多房间，只能刷新，不能加载更多
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room-more")
-    Observable<ApiResult> getRecommendRoomList();
+    @GET("http://dev.api.inframe.mobi/v2/mate/index-recommend-room-more")
+    Observable<ApiResult> getRecommendRoomList(@Query("vars") String vars, @Query("testList") String testList);
 
     /**
      * 首页推荐房间，只能刷新，不能加载更多

@@ -16,8 +16,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -31,7 +29,7 @@ import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
-import com.module.playways.grab.room.fragment.GrabRoomFragment;
+import com.module.playways.grab.room.ui.GrabRoomFragment;
 import com.zq.live.proto.Room.EQRoundStatus;
 
 import java.util.ArrayList;
@@ -149,7 +147,7 @@ public class GrabRoomActivity extends BaseActivity {
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
-        // 销毁其他的一唱到底页面
+        // 销毁其他的除一唱到底页面所有界面
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity == this) {
                 continue;

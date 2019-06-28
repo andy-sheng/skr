@@ -14,13 +14,13 @@
         app:centerText="设置"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_18_dp"
-        app:centerType="textView"
         app:centerTextStyle="BOLD"
+        app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
-        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="@color/colorPrimary" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -74,12 +74,45 @@
 
             </RelativeLayout>
 
+            <!--实名认证-->
+            <RelativeLayout
+                android:id="@+id/shiming"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_64_dp"
+                android:layout_below="@+id/edit_person">
+
+                <com.common.view.ex.ExTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/view_15_dp"
+                    android:text="实名认证"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/textsize_16_dp"
+                    android:textStyle="bold" />
+
+                <com.common.view.ex.ExImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/view_17_dp"
+                    android:src="@drawable/icon_back" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_1_dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#D8D8D8" />
+
+            </RelativeLayout>
+
             <!--我要推广-->
             <RelativeLayout
                 android:id="@+id/tuiguang"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_64_dp"
-                android:layout_below="@+id/edit_person"
+                android:layout_below="@+id/shiming"
                 android:visibility="gone">
 
                 <com.common.view.ex.ExTextView

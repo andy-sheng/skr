@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.EMsgRoomMediaType;
 import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Integer;
@@ -24,6 +25,8 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
   private static final long serialVersionUID = 0L;
 
   public static final Integer DEFAULT_ROOMID = 0;
+
+  public static final EMsgRoomMediaType DEFAULT_MEDIATYPE = EMsgRoomMediaType.EMR_UNKNOWN;
 
   /**
    * 发起邀请的用户详情
@@ -43,14 +46,25 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
   )
   private final Integer roomID;
 
-  public InviteStandMsg(UserInfo user, Integer roomID) {
-    this(user, roomID, ByteString.EMPTY);
+  /**
+   * 房间类型(1:音频房 2:视频房)
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Common.EMsgRoomMediaType#ADAPTER"
+  )
+  private final EMsgRoomMediaType mediaType;
+
+  public InviteStandMsg(UserInfo user, Integer roomID, EMsgRoomMediaType mediaType) {
+    this(user, roomID, mediaType, ByteString.EMPTY);
   }
 
-  public InviteStandMsg(UserInfo user, Integer roomID, ByteString unknownFields) {
+  public InviteStandMsg(UserInfo user, Integer roomID, EMsgRoomMediaType mediaType,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
     this.roomID = roomID;
+    this.mediaType = mediaType;
   }
 
   @Override
@@ -58,6 +72,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     Builder builder = new Builder();
     builder.user = user;
     builder.roomID = roomID;
+    builder.mediaType = mediaType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -69,7 +84,8 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     InviteStandMsg o = (InviteStandMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(user, o.user)
-        && Internal.equals(roomID, o.roomID);
+        && Internal.equals(roomID, o.roomID)
+        && Internal.equals(mediaType, o.mediaType);
   }
 
   @Override
@@ -79,6 +95,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
       result = unknownFields().hashCode();
       result = result * 37 + (user != null ? user.hashCode() : 0);
       result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
+      result = result * 37 + (mediaType != null ? mediaType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -89,6 +106,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     StringBuilder builder = new StringBuilder();
     if (user != null) builder.append(", user=").append(user);
     if (roomID != null) builder.append(", roomID=").append(roomID);
+    if (mediaType != null) builder.append(", mediaType=").append(mediaType);
     return builder.replace(0, 2, "InviteStandMsg{").append('}').toString();
   }
 
@@ -123,6 +141,16 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
   }
 
   /**
+   * 房间类型(1:音频房 2:视频房)
+   */
+  public EMsgRoomMediaType getMediaType() {
+    if(mediaType==null){
+        return new EMsgRoomMediaType.Builder().build();
+    }
+    return mediaType;
+  }
+
+  /**
    * 发起邀请的用户详情
    */
   public boolean hasUser() {
@@ -136,10 +164,19 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     return roomID!=null;
   }
 
+  /**
+   * 房间类型(1:音频房 2:视频房)
+   */
+  public boolean hasMediaType() {
+    return mediaType!=null;
+  }
+
   public static final class Builder extends Message.Builder<InviteStandMsg, Builder> {
     private UserInfo user;
 
     private Integer roomID;
+
+    private EMsgRoomMediaType mediaType;
 
     public Builder() {
     }
@@ -160,9 +197,17 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
       return this;
     }
 
+    /**
+     * 房间类型(1:音频房 2:视频房)
+     */
+    public Builder setMediaType(EMsgRoomMediaType mediaType) {
+      this.mediaType = mediaType;
+      return this;
+    }
+
     @Override
     public InviteStandMsg build() {
-      return new InviteStandMsg(user, roomID, super.buildUnknownFields());
+      return new InviteStandMsg(user, roomID, mediaType, super.buildUnknownFields());
     }
   }
 
@@ -175,6 +220,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     public int encodedSize(InviteStandMsg value) {
       return UserInfo.ADAPTER.encodedSizeWithTag(1, value.user)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roomID)
+          + EMsgRoomMediaType.ADAPTER.encodedSizeWithTag(3, value.mediaType)
           + value.unknownFields().size();
     }
 
@@ -182,6 +228,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     public void encode(ProtoWriter writer, InviteStandMsg value) throws IOException {
       UserInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roomID);
+      EMsgRoomMediaType.ADAPTER.encodeWithTag(writer, 3, value.mediaType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -193,6 +240,14 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
         switch (tag) {
           case 1: builder.setUser(UserInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: {
+            try {
+              builder.setMediaType(EMsgRoomMediaType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

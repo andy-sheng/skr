@@ -120,8 +120,8 @@ android {
             res.srcDirs += 'src/main/res-agentweb'
 
             // 滚轮时间、地址等选择器
-            //java.srcDirs += 'src/main/java-picker'
-            //res.srcDirs += 'src/main/res-picker'
+            java.srcDirs += 'src/main/java-picker'
+            res.srcDirs += 'src/main/res-picker'
 
             // 标签布局
             java.srcDirs += 'src/main/java-flowlayout'

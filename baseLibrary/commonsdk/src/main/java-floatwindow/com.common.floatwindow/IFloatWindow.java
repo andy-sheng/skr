@@ -28,5 +28,5 @@ public abstract class IFloatWindow {
 
     public abstract View getView();
 
-    abstract void dismiss();
+    abstract void dismiss(int dismissReason);
 }

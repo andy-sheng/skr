@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/view_24_dp"
+    app:bl_corners_radius="@dimen/view_12_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#5C67C1">
+
+
+    <com.common.view.countdown.CircleCountDownView
+        android:id="@+id/circle_count_down_view"
+        android:layout_width="@dimen/view_20_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_2_dp"
+        app:bg_color="@color/transparent"
+        app:inner_color="#FFC15B"
+        app:inner_stroke_raduis="@dimen/view_9_dp"
+        app:inner_stroke_width="@dimen/view_2_dp"
+        app:stroke_bg_color="#353E89"
+        app:stroke_bg_width="@dimen/view_3_dp" />
+
+    <TextView
+        android:id="@+id/count_down_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_toRightOf="@id/circle_count_down_view"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp" />
+
+</com.common.view.ex.ExRelativeLayout>

@@ -1,6 +1,8 @@
 package com.zq.dialog;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -16,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -39,11 +40,13 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.component.busilib.view.MarqueeTextView;
@@ -89,22 +92,21 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExImageView mMoreBtn;
+
     NormalLevelView2 mLevelView;
     ExTextView mNameTv;
     ImageView mSexIv;
     MarqueeTextView mSignTv;
     TagFlowLayout mFlowlayout;
 
-    ImageView mFollowIv;
+    ConstraintLayout mFunctionArea;
+    ExTextView mInviteIv;
+    ExTextView mFollowIv;
 
     Toolbar mToolbar;
-    ImageView mSrlFollowIv;
-    RelativeLayout mSrlAvatarArea;
-    ImageView mSrlAvatarBg;
     SimpleDraweeView mSrlAvatarIv;
 
     RecyclerView mPhotoView;
-    ExTextView mPhotoNumTv;
     ExTextView mEmptyMyPhoto;
 
     private static final int CHARMS_TAG = 1;
@@ -112,10 +114,10 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     private static final int CONSTELLATION_TAG = 3;      //星座标签
     private static final int FANS_NUM_TAG = 4;      //粉丝数标签
 
-    private List<String> mTags = new ArrayList<>();  //标签
+    private List<TagModel> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
 
-    TagAdapter<String> mTagAdapter;
+    TagAdapter<TagModel> mTagAdapter;
 
     PhotoAdapter mPhotoAdapter;
 
@@ -139,10 +141,21 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     PersonInfoDialog.PersonCardClickListener mClickListener;
 
-    PersonInfoDialogView2(Context context, int userID, boolean showReport, boolean showKick) {
+    Drawable mBackground1 = new DrawableCreator.Builder()
+            .setCornersRadius(U.getDisplayUtils().dip2px(16f))
+            .setSolidColor(Color.parseColor("#D0EFFF"))
+            .build();
+
+    Drawable mBackground2 = new DrawableCreator.Builder()
+            .setCornersRadius(0, 0, U.getDisplayUtils().dip2px(16), U.getDisplayUtils().dip2px(16f))
+            .setSolidColor(Color.parseColor("#D0EFFF"))
+            .build();
+
+    PersonInfoDialogView2(Context context, int userID, boolean showReport, boolean showKick, boolean showInvite) {
         super(context);
+
         initView();
-        initData(context, userID, showReport, showKick);
+        initData(context, userID, showReport, showKick, showInvite);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -171,14 +184,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     private void initView() {
         inflate(getContext(), R.layout.person_info_card_view_layout, this);
-
         initBaseContainInfo();
         initUserInfo();
-        initOpretaArea();
+        initToolBarArea();
         initPhotoArea();
+        initFuncationArea();
     }
 
-    private void initData(Context context, int userID, boolean showReport, boolean showKick) {
+    private void initData(Context context, int userID, boolean showReport, boolean showKick, boolean showInvite) {
         mContext = context;
         mUserId = userID;
         isShowKick = showKick;
@@ -189,13 +202,31 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mMoreBtn.setVisibility(GONE);
         }
 
+        if (showInvite) {
+            mInviteIv.setVisibility(VISIBLE);
+        } else {
+            mInviteIv.setVisibility(GONE);
+        }
+
         // 自己卡片的处理
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
             isShowKick = false;
             mMoreBtn.setVisibility(GONE);
             mToolbar.setVisibility(GONE);
-            mFollowIv.setVisibility(View.GONE);
-            mSrlFollowIv.setVisibility(GONE);
+            mFunctionArea.setVisibility(GONE);
+        }
+
+        if (mFunctionArea.getVisibility() == VISIBLE) {
+            // 重新设置mSmartRefresh的marginbottom 和背景
+            mSmartRefresh.setBackground(mBackground2);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSmartRefresh.getLayoutParams();
+            layoutParams.setMargins(U.getDisplayUtils().dip2px(10f), 0, U.getDisplayUtils().dip2px(10f), U.getDisplayUtils().dip2px(70f));
+            mSmartRefresh.setLayoutParams(layoutParams);
+        } else {
+            mSmartRefresh.setBackground(mBackground1);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSmartRefresh.getLayoutParams();
+            layoutParams.setMargins(U.getDisplayUtils().dip2px(10f), 0, U.getDisplayUtils().dip2px(10f), U.getDisplayUtils().dip2px(10f));
+            mSmartRefresh.setLayoutParams(layoutParams);
         }
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
@@ -328,20 +359,27 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mAvatarBg = (ImageView) this.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
-        mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mLevelView = (NormalLevelView2) this.findViewById(R.id.level_view);
+        mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mSexIv = (ImageView) this.findViewById(R.id.sex_iv);
         mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
 
-        mTagAdapter = new TagAdapter<String>(mTags) {
+        mTagAdapter = new TagAdapter<TagModel>(mTags) {
             @Override
-            public View getView(FlowLayout parent, int position, String o) {
-                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_card_tag_textview,
-                        mFlowlayout, false);
-                tv.setText(o);
-                return tv;
+            public View getView(FlowLayout parent, int position, TagModel tagModel) {
+                if (tagModel.type != CHARMS_TAG) {
+                    ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_center_business_tag,
+                            mFlowlayout, false);
+                    tv.setText(tagModel.getContent());
+                    return tv;
+                } else {
+                    ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_card_charm_tag,
+                            mFlowlayout, false);
+                    tv.setText(tagModel.getContent());
+                    return tv;
+                }
             }
         };
         mFlowlayout.setAdapter(mTagAdapter);
@@ -429,32 +467,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         });
     }
 
-    private void initOpretaArea() {
-        mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
-
+    private void initToolBarArea() {
         mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
-        mSrlFollowIv = (ImageView) this.findViewById(R.id.srl_follow_iv);
-        mSrlAvatarArea = (RelativeLayout) this.findViewById(R.id.srl_avatar_area);
-        mSrlAvatarBg = (ImageView) this.findViewById(R.id.srl_avatar_bg);
         mSrlAvatarIv = (SimpleDraweeView) this.findViewById(R.id.srl_avatar_iv);
-
-        mFollowIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                if (mClickListener != null) {
-                    mClickListener.onClickFollow(mUserId, isFriend, isFollow);
-                }
-            }
-        });
-
-        mSrlFollowIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                if (mClickListener != null) {
-                    mClickListener.onClickFollow(mUserId, isFriend, isFollow);
-                }
-            }
-        });
 
         mSrlAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -466,9 +481,34 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         });
     }
 
+    private void initFuncationArea() {
+        mFunctionArea = findViewById(R.id.function_area);
+        mInviteIv = findViewById(R.id.invite_iv);
+        mFollowIv = findViewById(R.id.follow_iv);
+
+        mFollowIv.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                if (mClickListener != null) {
+                    mClickListener.onClickFollow(mUserId, isFriend, isFollow);
+                }
+            }
+        });
+
+        mInviteIv.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                // 点击邀请唱聊
+                StatisticsAdapter.recordCountEvent("cp", "invite2", null);
+                if (mClickListener != null) {
+                    mClickListener.onClickDoubleInvite(mUserInfoModel);
+                }
+            }
+        });
+    }
+
     private void initPhotoArea() {
         mPhotoView = (RecyclerView) this.findViewById(R.id.photo_view);
-        mPhotoNumTv = (ExTextView) this.findViewById(R.id.photo_num_tv);
         mEmptyMyPhoto = (ExTextView) this.findViewById(R.id.empty_my_photo);
 
         mPhotoView.setFocusableInTouchMode(false);
@@ -546,14 +586,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mPhotoAdapter.getDataList().clear();
         }
 
-        if (totalCount > 0) {
-            mPhotoNumTv.setText("照片（" + totalCount + "）");
-            mPhotoNumTv.setVisibility(VISIBLE);
-        } else {
-            mPhotoNumTv.setVisibility(GONE);
-            if (mUserId == MyUserInfoManager.getInstance().getUid()) {
-                mEmptyMyPhoto.setVisibility(VISIBLE);
-            }
+        if (totalCount <= 0 && mUserId == MyUserInfoManager.getInstance().getUid()) {
+            mEmptyMyPhoto.setVisibility(VISIBLE);
         }
 
         if (list != null && list.size() != 0) {
@@ -611,10 +645,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mUserInfoModel = model;
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(model.getAvatar())
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
+                            .setBorderColor(Color.WHITE)
                             .setCircle(true)
                             .build());
             AvatarUtils.loadAvatarByUrl(mSrlAvatarIv,
                     AvatarUtils.newParamsBuilder(model.getAvatar())
+                            .setBorderColor(Color.WHITE)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
                             .setCircle(true)
                             .build());
 
@@ -676,7 +714,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
 
         mLevelView.bindData(mainRank, subRank);
-
     }
 
     public void showUserRelation(final boolean isFriend, final boolean isFollow) {
@@ -711,20 +748,17 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mUserInfoModel.setFollow(isFollow);
         mUserInfoModel.setFriend(isFriend);
         if (isFriend) {
-            mFollowIv.setBackgroundResource(R.drawable.person_card_friend);
-            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_friend);
+            mFollowIv.setText("互关");
+            mFollowIv.setAlpha(0.5f);
             mFollowIv.setClickable(false);
-            mSrlFollowIv.setClickable(false);
         } else if (isFollow) {
-            mFollowIv.setBackgroundResource(R.drawable.person_card_followed);
-            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_followed);
+            mFollowIv.setText("已关注");
+            mFollowIv.setAlpha(0.5f);
             mFollowIv.setClickable(false);
-            mSrlFollowIv.setClickable(false);
         } else {
-            mFollowIv.setBackgroundResource(R.drawable.person_card_follow);
-            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_follow);
+            mFollowIv.setText("关注Ta");
+            mFollowIv.setAlpha(1f);
             mFollowIv.setClickable(true);
-            mSrlFollowIv.setClickable(true);
         }
     }
 
@@ -734,23 +768,41 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         if (mHashMap != null) {
 
             if (!TextUtils.isEmpty(mHashMap.get(CHARMS_TAG))) {
-                mTags.add(mHashMap.get(CHARMS_TAG));
+                mTags.add(new TagModel(CHARMS_TAG, mHashMap.get(CHARMS_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
-                mTags.add(mHashMap.get(LOCATION_TAG));
+                mTags.add(new TagModel(LOCATION_TAG, mHashMap.get(LOCATION_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(CONSTELLATION_TAG))) {
-                mTags.add(mHashMap.get(CONSTELLATION_TAG));
+                mTags.add(new TagModel(CONSTELLATION_TAG, mHashMap.get(CONSTELLATION_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
-                mTags.add(mHashMap.get(FANS_NUM_TAG));
+                mTags.add(new TagModel(FANS_NUM_TAG, mHashMap.get(FANS_NUM_TAG)));
             }
 
         }
         mTagAdapter.setTagDatas(mTags);
         mTagAdapter.notifyDataChanged();
+    }
+
+    class TagModel {
+        String content;
+        int type;
+
+        public TagModel(int type, String content) {
+            this.type = type;
+            this.content = content;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 }
