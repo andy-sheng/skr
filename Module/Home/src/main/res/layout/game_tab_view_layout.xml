@@ -11,6 +11,7 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:gravity="center"
+        android:paddingBottom="@dimen/view_4_dp"
         android:singleLine="true"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
