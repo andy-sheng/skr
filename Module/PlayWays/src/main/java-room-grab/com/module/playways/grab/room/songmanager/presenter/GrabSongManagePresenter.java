@@ -84,7 +84,7 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
         }
         MyLog.d(TAG, "getTagList");
 
-        mGetTagsTask = ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
+        mGetTagsTask = ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20, mGrabRoomData.isVideoRoom() ? 2 : 1), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {

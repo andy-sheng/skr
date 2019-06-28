@@ -312,7 +312,7 @@ public interface GrabRoomServerApi {
      * @param count
      */
     @GET("http://dev.api.inframe.mobi/v2/playbook/list-stand-tags")
-    Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
+    Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count, @Query("mediaType") int type);
 
     /**
      * 获取好友列表
