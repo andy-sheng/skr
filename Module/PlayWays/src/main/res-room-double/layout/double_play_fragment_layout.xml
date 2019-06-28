@@ -18,16 +18,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <ImageView
         android:id="@+id/exit_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/srf_guanbi"
-        android:padding="@dimen/view_18_dp"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:src="@drawable/srf_guanbi"
+        android:padding="@dimen/view_9_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/report_tv"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginTop="@dimen/view_18_dp" />
+        app:layout_constraintTop_toTopOf="@+id/report_tv" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/left_avatar_sdv"
@@ -242,8 +242,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/pick_iv"
-        app:src_selected_drawable="@drawable/srf_bimai"
-        app:src_unSelected_drawable="@drawable/srf_kaimai" />
+        app:src_selected_drawable="@drawable/skr_jingyin_able"
+        app:src_unSelected_drawable="@drawable/srf_bimai" />
 
     <ImageView
         android:id="@+id/pick_iv"
