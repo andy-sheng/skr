@@ -511,7 +511,9 @@ public class UserInfoManager {
                 for (UserInfoModel userInfoModel : resutlSet) {
                     resultList.add(userInfoModel);
                 }
-                mStatusMap.resize(resultList.size());
+                if (resultList.size() > 0) {
+                    mStatusMap.resize(resultList.size());
+                }
 
                 if (pullOnlineStatus == ONLINE_PULL_GAME) {
                     if (resultList.size() > 100) {
