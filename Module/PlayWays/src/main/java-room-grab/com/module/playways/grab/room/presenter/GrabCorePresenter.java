@@ -1935,42 +1935,42 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
-            UserStatus userStatus = event.getUserStatus();
-            if (userStatus != null) {
-                MyLog.d(TAG, "有人mute变化 uid=" + userStatus.getUserId());
-                if (userStatus.getUserId() == mRoomData.getOwnerId()) {
-                    if (mRoomData.isOwner()) {
-                        MyLog.d(TAG, "自己就是房主，忽略");
-                    } else {
-                        if (!userStatus.isAudioMute()) {
-                            MyLog.d(TAG, "房主解开mute，如果检测到房主说话，音量就衰减");
-                            weakVolume(1000);
-                        } else {
-                            MyLog.d(TAG, "房主mute了，恢复音量");
-                            mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
-                            mUiHandler.sendEmptyMessage(MSG_RECOVER_VOLUME);
-                        }
-                    }
-                }
-            }
+//            UserStatus userStatus = event.getUserStatus();
+//            if (userStatus != null) {
+//                MyLog.d(TAG, "有人mute变化 uid=" + userStatus.getUserId());
+//                if (userStatus.getUserId() == mRoomData.getOwnerId()) {
+//                    if (mRoomData.isOwner()) {
+//                        MyLog.d(TAG, "自己就是房主，忽略");
+//                    } else {
+//                        if (!userStatus.isAudioMute()) {
+//                            MyLog.d(TAG, "房主解开mute，如果检测到房主说话，音量就衰减");
+//                            weakVolume(1000);
+//                        } else {
+//                            MyLog.d(TAG, "房主mute了，恢复音量");
+//                            mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
+//                            mUiHandler.sendEmptyMessage(MSG_RECOVER_VOLUME);
+//                        }
+//                    }
+//                }
+//            }
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
-            List<EngineEvent.UserVolumeInfo> list = event.getObj();
-            for (EngineEvent.UserVolumeInfo uv : list) {
-                //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
-                if (uv != null) {
-                    int uid = uv.getUid();
-                    if (uid == 0) {
-                        uid = (int) MyUserInfoManager.getInstance().getUid();
-                    }
-                    if (mRoomData != null
-                            && uid == mRoomData.getOwnerId()
-                            && uv.getVolume() > 40
-                            && !mRoomData.isOwner()) {
-                        MyLog.d(TAG, "房主在说话");
-                        weakVolume(1000);
-                    }
-                }
-            }
+//            List<EngineEvent.UserVolumeInfo> list = event.getObj();
+//            for (EngineEvent.UserVolumeInfo uv : list) {
+//                //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
+//                if (uv != null) {
+//                    int uid = uv.getUid();
+//                    if (uid == 0) {
+//                        uid = (int) MyUserInfoManager.getInstance().getUid();
+//                    }
+//                    if (mRoomData != null
+//                            && uid == mRoomData.getOwnerId()
+//                            && uv.getVolume() > 40
+//                            && !mRoomData.isOwner()) {
+//                        MyLog.d(TAG, "房主在说话");
+//                        weakVolume(1000);
+//                    }
+//                }
+//            }
         } else {
             // 可以考虑监听下房主的说话提示 做下容错
         }
