@@ -27,6 +27,7 @@ import com.common.core.permission.SkrAudioPermission;
 import com.common.core.permission.SkrCameraPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.DebugLogView;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
@@ -34,7 +35,6 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
-import com.common.log.DebugLogView;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.beauty.JumpBeautyFromKt;
@@ -52,8 +52,6 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
-import com.zq.live.proto.Common.EMsgRoomMediaType;
-import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -65,6 +63,7 @@ import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
 import com.module.playways.grab.room.songmanager.SongManageData;
+import com.module.playways.grab.room.songmanager.model.ChangeTagSuccessEvent;
 import com.module.playways.grab.room.top.GrabTopContentView;
 import com.module.playways.grab.room.top.GrabTopOpView;
 import com.module.playways.grab.room.view.GameTipsManager;
@@ -108,7 +107,9 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
+import com.zq.live.proto.Common.EMsgRoomMediaType;
 import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.person.event.ShowPersonCardEvent;
 import com.zq.report.fragment.QuickFeedbackFragment;
 import com.zq.toast.CommonToastView;
 
@@ -764,6 +765,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         );
 
         removeInviteTipView();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChangeTagSuccessEvent event) {
+        mRoomData.setSpecialModel(event.getSpecialModel());
+        mRoomData.setTagId(event.getSpecialModel().getTagID());
     }
 
     private void showPersonInfoView(int userID) {

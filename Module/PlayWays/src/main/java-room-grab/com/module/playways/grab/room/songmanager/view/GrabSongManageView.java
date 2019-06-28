@@ -21,6 +21,7 @@ import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.grab.room.songmanager.adapter.ManageSongAdapter;
 import com.module.playways.grab.room.songmanager.event.SongNumChangeEvent;
+import com.module.playways.grab.room.songmanager.model.ChangeTagSuccessEvent;
 import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
 import com.module.playways.grab.room.songmanager.presenter.BaseSongManagePresenter;
 import com.module.playways.grab.room.songmanager.presenter.DoubleSongManagePresenter;
@@ -197,6 +198,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
     @Override
     public void changeTagSuccess(SpecialModel specialModel) {
         setTagTv(specialModel);
+        EventBus.getDefault().post(new ChangeTagSuccessEvent(specialModel));
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
         }
