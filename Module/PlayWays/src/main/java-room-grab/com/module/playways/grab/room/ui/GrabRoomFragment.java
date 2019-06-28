@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -30,9 +29,6 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -49,7 +45,6 @@ import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.doubleplay.inter.IDoubleInviteView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.grab.room.bottom.GrabBottomContainerView;
@@ -110,12 +105,10 @@ import com.module.playways.room.song.model.SongModel;
 import com.moudule.playways.beauty.view.BeautyControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
 import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
 import com.zq.toast.CommonToastView;
 
@@ -127,7 +120,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView, IDoubleInviteView {
+public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
 
     public final static String TAG = "GrabRoomFragment";
 
@@ -340,7 +333,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
         mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
-        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter(this);
+        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter();
         addPresent(mDoubleRoomInvitePresenter);
 //        mGiftTimerPresenter = new GiftTimerPresenter(this);
 //        addPresent(mGiftTimerPresenter);
@@ -399,13 +392,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         }
         enterRoomEvent();
-    }
-
-    @Override
-    public void toDoubleRoomByPush() {
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
     }
 
     private void enterRoomEvent() {

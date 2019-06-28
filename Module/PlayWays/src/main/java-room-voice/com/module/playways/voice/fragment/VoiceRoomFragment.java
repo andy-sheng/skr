@@ -106,7 +106,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         mCorePresenter = new VoiceCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
-        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter(null);
+        mDoubleRoomInvitePresenter = new DoubleRoomInvitePresenter();
         addPresent(mDoubleRoomInvitePresenter);
 
         BgMusicManager.getInstance().setRoom(true);

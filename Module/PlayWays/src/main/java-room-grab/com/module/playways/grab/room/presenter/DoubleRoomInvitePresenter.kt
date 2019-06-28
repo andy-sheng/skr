@@ -13,11 +13,10 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
-import com.module.playways.doubleplay.inter.IDoubleInviteView
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
-class DoubleRoomInvitePresenter(val iDoubleInviteView: IDoubleInviteView) : RxLifeCyclePresenter() {
+class DoubleRoomInvitePresenter() : RxLifeCyclePresenter() {
     private val mTag = "DoubleRoomInvitePresenter"
     private var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
     private var handlerTaskTimer: HandlerTaskTimer? = null
