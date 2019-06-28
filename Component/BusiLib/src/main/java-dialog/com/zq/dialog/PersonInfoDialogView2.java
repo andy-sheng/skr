@@ -141,8 +141,13 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     PersonInfoDialog.PersonCardClickListener mClickListener;
 
-    Drawable mBackground = new DrawableCreator.Builder()
+    Drawable mBackground1 = new DrawableCreator.Builder()
             .setCornersRadius(U.getDisplayUtils().dip2px(16f))
+            .setSolidColor(Color.parseColor("#D0EFFF"))
+            .build();
+
+    Drawable mBackground2 = new DrawableCreator.Builder()
+            .setCornersRadius(0, 0, U.getDisplayUtils().dip2px(16), U.getDisplayUtils().dip2px(16f))
             .setSolidColor(Color.parseColor("#D0EFFF"))
             .build();
 
@@ -212,7 +217,16 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
 
         if (mFunctionArea.getVisibility() == VISIBLE) {
-            mCoordinator.setPadding(0, 0, 0, U.getDisplayUtils().dip2px(65f));
+            // 重新设置mSmartRefresh的marginbottom 和背景
+            mSmartRefresh.setBackground(mBackground2);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSmartRefresh.getLayoutParams();
+            layoutParams.setMargins(U.getDisplayUtils().dip2px(10f), 0, U.getDisplayUtils().dip2px(10f), U.getDisplayUtils().dip2px(70f));
+            mSmartRefresh.setLayoutParams(layoutParams);
+        } else {
+            mSmartRefresh.setBackground(mBackground1);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSmartRefresh.getLayoutParams();
+            layoutParams.setMargins(U.getDisplayUtils().dip2px(10f), 0, U.getDisplayUtils().dip2px(10f), U.getDisplayUtils().dip2px(10f));
+            mSmartRefresh.setLayoutParams(layoutParams);
         }
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
@@ -297,7 +311,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         });
 
         mSmartRefresh = (SmartRefreshLayout) this.findViewById(R.id.smart_refresh);
-        mSmartRefresh.setBackground(mBackground);
         mCoordinator = (CoordinatorLayout) this.findViewById(R.id.coordinator);
         mAppbar = (AppBarLayout) this.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) this.findViewById(R.id.toolbar_layout);

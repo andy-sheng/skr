@@ -14,7 +14,6 @@
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:layout_marginBottom="@dimen/view_10_dp"
-        android:paddingBottom="@dimen/view_6_dp"
         app:srlFooterTranslationViewId="@+id/photo_view">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -78,15 +77,15 @@
                             android:id="@+id/level_view"
                             android:layout_width="@dimen/view_28_dp"
                             android:layout_height="@dimen/view_24_dp"
-                            android:layout_marginTop="@dimen/view_6_dp"
                             android:layout_marginLeft="@dimen/view_10_dp"
+                            android:layout_marginTop="@dimen/view_6_dp"
+                            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+                            app:layout_constraintTop_toTopOf="@id/avatar_iv"
                             levelView2:mainHeight2="@dimen/view_24_dp"
                             levelView2:mainWidth2="@dimen/view_28_dp"
                             levelView2:subBottom2="@dimen/view_1_dp"
                             levelView2:subHeight2="@dimen/view_3_dp"
-                            levelView2:subWidth2="@dimen/view_5_dp"
-                            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
-                            app:layout_constraintTop_toTopOf="@id/avatar_iv"/>
+                            levelView2:subWidth2="@dimen/view_5_dp" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/name_tv"
@@ -156,9 +155,7 @@
                             android:id="@+id/empty_my_photo"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_96_dp"
-                            android:layout_marginLeft="@dimen/view_16_dp"
-                            android:layout_marginTop="@dimen/view_16_dp"
-                            android:layout_marginRight="@dimen/view_16_dp"
+                            android:layout_margin="@dimen/view_16_dp"
                             android:gravity="center"
                             android:text="去个人中心添加照片\n展示更靓自己"
                             android:textColor="#803B4E79"
@@ -168,6 +165,7 @@
                             app:bl_corners_radius="@dimen/view_16_dp"
                             app:bl_shape="rectangle"
                             app:bl_solid_color="@color/black_trans_10"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/bottom_line" />
@@ -225,9 +223,10 @@
         android:id="@+id/function_area"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_60_dp"
-        android:layout_alignBottom="@id/smart_refresh"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
         app:bl_corners_bottomLeftRadius="@dimen/view_16_dp"
         app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
