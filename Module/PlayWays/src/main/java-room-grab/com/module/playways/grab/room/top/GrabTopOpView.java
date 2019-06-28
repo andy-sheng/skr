@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -21,6 +22,7 @@ public class GrabTopOpView extends RelativeLayout {
 
     ImageView mIvVoiceSetting;
     ImageView mCameraIv;
+    View mDivider;
     ImageView mGameRuleIv;
     ImageView mFeedBackIv;
 
@@ -56,6 +58,7 @@ public class GrabTopOpView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_top_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mCameraIv = (ImageView) findViewById(R.id.camera_iv);
+        mDivider = (View) findViewById(R.id.divider);
         mGameRuleIv = (ImageView) findViewById(R.id.game_rule_iv);
         mFeedBackIv = (ImageView) findViewById(R.id.feed_back_iv);
         mExitTv = (ExTextView) findViewById(R.id.exit_tv);
@@ -118,6 +121,11 @@ public class GrabTopOpView extends RelativeLayout {
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
+        if (!mGrabRoomData.isVideoRoom()) {
+            mCameraIv.setVisibility(GONE);
+            mDivider.setVisibility(GONE);
+            mIvVoiceSetting.setBackground(U.getDrawable(R.drawable.yichangdaodi_yinyue_audio));
+        }
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
             setChangeRoomBtnVisiable(false);
