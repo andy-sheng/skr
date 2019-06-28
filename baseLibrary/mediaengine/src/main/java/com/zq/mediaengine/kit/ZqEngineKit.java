@@ -2281,7 +2281,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
                 mRemoteUserPinMap.clear();
                 // 重置本地视频显示区域
-                mImgTexPreviewMixer.setRenderRect(0, 0, 0, 1.0f, 1.0f, 1.0f);
+                if (mImgTexPreviewMixer != null) {
+                    mImgTexPreviewMixer.setRenderRect(0, 0, 0, 1.0f, 1.0f, 1.0f);
+                }
                 freeFboCacheIfNeeded();
             }
         });

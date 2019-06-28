@@ -164,6 +164,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void bindVideoStream(UserInfoModel userId) {
+        MyLog.d(TAG,"bindVideoStream" + " userId=" + userId);
         tryInflate();
         ensureBindDisplayView();
         setVisibility(View.VISIBLE);
@@ -260,6 +261,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void reset() {
+        MyLog.d(TAG,"reset" );
         if (!isBeautyActivityVisiable()) {
             ZqEngineKit.getInstance().stopCameraPreview();
             ZqEngineKit.getInstance().unbindAllRemoteVideo();
