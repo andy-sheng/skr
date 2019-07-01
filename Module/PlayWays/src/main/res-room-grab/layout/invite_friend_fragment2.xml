@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -7,41 +8,48 @@
 
     <com.common.view.viewpager.SlidingTabLayout
         android:id="@+id/invite_tab"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_52_dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/view_80_dp"
         android:layout_marginTop="@dimen/view_36_dp"
-        android:layout_marginRight="@dimen/view_80_dp" />
+        android:layout_marginRight="@dimen/view_80_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.viewpager.NestViewPager
         android:id="@+id/invite_vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/view_0_dp"
         android:layout_below="@id/invite_tab"
-        android:layout_marginBottom="@dimen/view_140_dp"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
-        android:requiresFadingEdge="none" />
+        android:requiresFadingEdge="none"
+        app:layout_constraintBottom_toTopOf="@id/share_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invite_tab" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/view_4_dp"
         android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginBottom="@dimen/view_4_dp"
         android:padding="@dimen/view_16_dp"
-        android:src="@drawable/grab_back" />
+        android:src="@drawable/grab_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.module.playways.grab.room.invite.view.InviteShareFriendView
         android:id="@+id/share_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_140_dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="@dimen/view_126_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

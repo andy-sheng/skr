@@ -68,13 +68,12 @@ public class InviteFriendFragment2 extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mInviteTab = (SlidingTabLayout) mRootView.findViewById(R.id.invite_tab);
-        mInviteVp = (NestViewPager) mRootView.findViewById(R.id.invite_vp);
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mShareView = (InviteShareFriendView) mRootView.findViewById(R.id.share_view);
+        mInviteTab = mRootView.findViewById(R.id.invite_tab);
+        mInviteVp = mRootView.findViewById(R.id.invite_vp);
+        mIvBack = mRootView.findViewById(R.id.iv_back);
+        mShareView = mRootView.findViewById(R.id.share_view);
 
         mInviteTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
-        mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         mInviteTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
         mInviteTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
         mInviteTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
@@ -82,11 +81,18 @@ public class InviteFriendFragment2 extends BaseFragment {
         mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
         mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
-        mTitleList.put(0, "好友");
-        mTitleList.put(1, "粉丝");
+        if (mFrom == FROM_GRAB_ROOM) {
+            mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
+            mTitleList.put(0, "好友");
+            mTitleList.put(1, "粉丝");
+            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, UserInfoManager.RELATION.FRIENDS.getValue()));
+            mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, mGameID, UserInfoManager.RELATION.FANS.getValue()));
+        } else {
+            mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
+            mTitleList.put(0, "好友");
+            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, UserInfoManager.RELATION.FRIENDS.getValue()));
+        }
 
-        mTitleAndViewMap.put(0, new InviteFriendView(this,mFrom, mGameID, UserInfoManager.RELATION.FRIENDS.getValue()));
-        mTitleAndViewMap.put(1, new InviteFriendView(this,mFrom, mGameID, UserInfoManager.RELATION.FANS.getValue()));
 
         mTabPagerAdapter = new PagerAdapter() {
 
@@ -135,6 +141,7 @@ public class InviteFriendFragment2 extends BaseFragment {
             }
         });
 
+        mShareView.setData(mFrom);
         mShareView.setListener(new RecyclerOnItemClickListener<ShareModel>() {
             @Override
             public void onItemClicked(View view, int position, ShareModel model) {

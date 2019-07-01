@@ -14,6 +14,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.view.ex.ExTextView;
 import com.dialog.view.StrokeTextView;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -85,7 +86,7 @@ public class GrabInvitePresenter {
     }
 
 
-    public void inviteGrabFriend(int roomID, UserInfoModel model, StrokeTextView view) {
+    public void inviteGrabFriend(int roomID, UserInfoModel model, ExTextView view) {
         MyLog.d(TAG, "inviteGrabFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
@@ -112,7 +113,7 @@ public class GrabInvitePresenter {
         }, mBaseFragment);
     }
 
-    public void inviteDoubleFriend(int roomID, UserInfoModel model, StrokeTextView view) {
+    public void inviteDoubleFriend(int roomID, UserInfoModel model, ExTextView view) {
         MyLog.d(TAG, "inviteDoubleFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);

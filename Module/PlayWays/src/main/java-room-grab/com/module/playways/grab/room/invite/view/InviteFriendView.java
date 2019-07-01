@@ -13,6 +13,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.dialog.view.StrokeTextView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -66,7 +67,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
 
             @Override
-            public void onClick(UserInfoModel model, StrokeTextView view) {
+            public void onClick(UserInfoModel model, ExTextView view) {
                 if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
                     mGrabInvitePresenter.inviteGrabFriend(mRoomID, model, view);
                 } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
@@ -173,7 +174,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     }
 
     @Override
-    public void updateInvited(StrokeTextView view) {
+    public void updateInvited(ExTextView view) {
         if (view != null) {
             view.setAlpha(0.5f);
             view.setText("已邀请");

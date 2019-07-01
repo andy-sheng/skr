@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -19,6 +20,7 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
+import com.zq.live.proto.Common.ESex;
 
 public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView.ViewHolder> {
 
@@ -39,22 +41,22 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
 
         mBusyCircleDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#FFC300"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .setCornersRadius(U.getDisplayUtils().dip2px(5))
                 .build();
 
         mAIDLCircleDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#7ED321"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .setCornersRadius(U.getDisplayUtils().dip2px(5))
                 .build();
 
         mOffLineCircleDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#8EA0A9"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .setCornersRadius(U.getDisplayUtils().dip2px(5))
                 .build();
 
         mGameCircleDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#FF8C9A"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                .setCornersRadius(U.getDisplayUtils().dip2px(5))
                 .build();
     }
 
@@ -129,18 +131,20 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
         BaseImageView mIvFriendIcon;
         ExTextView mIvFriendName;
         ExTextView mTvState;
-        StrokeTextView mTvInvite;
+        ExTextView mTvInvite;
         ExTextView mTvCircleState;
+        ImageView mIvSex;
 
         UserInfoModel mGrabFriendModel;
 
         public ItemHolder(View itemView) {
             super(itemView);
-            mIvFriendIcon = (BaseImageView) itemView.findViewById(R.id.iv_friend_icon);
-            mIvFriendName = (ExTextView) itemView.findViewById(R.id.iv_friend_name);
-            mTvState = (ExTextView) itemView.findViewById(R.id.tv_state);
-            mTvInvite = (StrokeTextView) itemView.findViewById(R.id.tv_invite);
-            mTvCircleState = (ExTextView) itemView.findViewById(R.id.tv_circle_state);
+            mIvFriendIcon = itemView.findViewById(R.id.iv_friend_icon);
+            mIvFriendName = itemView.findViewById(R.id.iv_friend_name);
+            mTvState = itemView.findViewById(R.id.tv_state);
+            mTvInvite = itemView.findViewById(R.id.tv_invite);
+            mTvCircleState = itemView.findViewById(R.id.tv_circle_state);
+            mIvSex = itemView.findViewById(R.id.iv_sex);
 
             mTvInvite.setOnClickListener(new DebounceViewClickListener() {
                 @Override
@@ -162,6 +166,16 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
                             .build());
 
             mIvFriendName.setText(model.getNicknameRemark());
+
+            if (model.getSex() == ESex.SX_MALE.getValue()) {
+                mIvSex.setVisibility(View.VISIBLE);
+                mIvSex.setImageResource(R.drawable.sex_man_icon);
+            } else if (model.getSex() == ESex.SX_FEMALE.getValue()) {
+                mIvSex.setVisibility(View.VISIBLE);
+                mIvSex.setImageResource(R.drawable.sex_woman_icon);
+            } else {
+                mIvSex.setVisibility(View.GONE);
+            }
 
             if (model.getStatus() == UserInfoModel.EF_ONLINE_BUSY) {
                 mTvState.setText("忙碌中");
@@ -193,7 +207,7 @@ public class InviteFirendAdapter extends DiffAdapter<UserInfoModel, RecyclerView
     }
 
     public interface OnInviteClickListener {
-        void onClick(UserInfoModel model, StrokeTextView view);
+        void onClick(UserInfoModel model, ExTextView view);
 
         void onClickSearch();
     }

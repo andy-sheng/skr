@@ -27,6 +27,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExTextView;
 import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -87,7 +88,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         addPresent(mPresenter);
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
-            public void onClick(UserInfoModel model, StrokeTextView view) {
+            public void onClick(UserInfoModel model, ExTextView view) {
                 mPresenter.inviteFriend(mRoomID, model, view);
             }
 
@@ -217,7 +218,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
     }
 
     @Override
-    public void updateInvited(StrokeTextView view) {
+    public void updateInvited(ExTextView view) {
         if (view != null) {
             view.setVisibility(View.VISIBLE);
             view.setClickable(false);
