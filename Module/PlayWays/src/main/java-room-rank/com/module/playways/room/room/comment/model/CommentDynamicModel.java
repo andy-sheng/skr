@@ -1,6 +1,5 @@
 package com.module.playways.room.room.comment.model;
 
-import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.common.core.userinfo.model.UserInfoModel;
@@ -29,7 +28,7 @@ public class CommentDynamicModel extends CommentModel {
 
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
-            commentModel.setAvatarColor(Color.WHITE);
+            commentModel.setAvatarColor(CommentModel.AVATAR_COLOR);
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
             } else {

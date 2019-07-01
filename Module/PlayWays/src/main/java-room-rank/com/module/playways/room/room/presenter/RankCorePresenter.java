@@ -1,7 +1,5 @@
 package com.module.playways.room.room.presenter;
 
-
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -52,6 +50,7 @@ import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.RankRoomServerApi;
 import com.module.playways.room.room.SwapStatusType;
 import com.module.playways.room.room.comment.model.CommentAiModel;
+import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentSysModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PkSomeOneOnlineChangeEvent;
@@ -97,8 +96,6 @@ import okhttp3.RequestBody;
 
 import static com.module.playways.room.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
 import static com.module.playways.room.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
-import static com.module.playways.room.room.comment.model.CommentModel.TEXT_WHITE;
-import static com.module.playways.room.room.comment.model.CommentModel.TEXT_YELLOW;
 
 public class RankCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankCorePresenter";
@@ -256,10 +253,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         commentTextModel.setUserId(playerInfoModel.getUserInfo().getUserId());
         commentTextModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
         commentTextModel.setUserName(playerInfoModel.getUserInfo().getNicknameRemark());
-        commentTextModel.setAvatarColor(Color.WHITE);
+        commentTextModel.setAvatarColor(CommentModel.AVATAR_COLOR);
         SpannableStringBuilder ssb = new SpanUtils()
-                .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(TEXT_YELLOW)
-                .append(String.format("第%s个唱", index + 1)).setForegroundColor(TEXT_WHITE)
+                .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
+                .append(String.format("第%s个唱", index + 1)).setForegroundColor(CommentModel.RANK_TEXT_COLOR)
                 .create();
         commentTextModel.setStringBuilder(ssb);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentTextModel));

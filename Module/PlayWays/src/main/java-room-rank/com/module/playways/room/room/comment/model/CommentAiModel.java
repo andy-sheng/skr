@@ -1,6 +1,5 @@
 package com.module.playways.room.room.comment.model;
 
-import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 
 import com.common.utils.SpanUtils;
@@ -16,10 +15,10 @@ public class CommentAiModel extends CommentModel {
         setUserId(ai.getUserInfo().getUserId());
         setUserName(ai.getUserInfo().getNicknameRemark());
         setAvatar(ai.getUserInfo().getAvatar());
-        setAvatarColor(Color.WHITE);
+        setAvatarColor(CommentModel.AVATAR_COLOR);
         SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("AI裁判 ").setForegroundColor(TEXT_YELLOW)
-                .append(text).setForegroundColor(TEXT_WHITE)
+                .append("AI裁判 ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
+                .append(text).setForegroundColor(CommentModel.RANK_TEXT_COLOR)
                 .create();
         setStringBuilder(stringBuilder);
     }

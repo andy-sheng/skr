@@ -17,11 +17,17 @@ public abstract class CommentModel {
     public static final int TYPE_DYNAMIC = 103;  // 特殊表情消息
     public static final int TYPE_GIFT = 104;     // 礼物消息
 
-    public static final int TEXT_WHITE = U.getColor(R.color.white_trans_80);
-    public static final int TEXT_YELLOW = Color.parseColor("#ccFFB100");
-    public static final int TEXT_RED = Color.parseColor("#EF5E85");
-    public static final int TEXT_GRAY = Color.GRAY;
-    public static final int TEXT_3B4E79 = Color.parseColor("#3B4E79");
+    public static final int AVATAR_COLOR = Color.WHITE;     // 头像圈的颜色
+
+    public static final int RANK_NAME_COLOR = Color.parseColor("#FFC15B");    // 昵称颜色（排位）
+    public static final int RANK_TEXT_COLOR = U.getColor(R.color.white_trans_50);          // 文本颜色 （排位）
+    public static final int RANK_SYSTEM_COLOR = Color.parseColor("#FF8AB6");    // 系统文案颜色（排位）
+    public static final int RANK_SYSTEM_HIGH_COLOR =  Color.parseColor("#FF8AB6"); // 系统文案的高亮颜色（排位)
+
+    public static final int GRAB_NAME_COLOR = Color.parseColor("#FFC15B");   // 昵称颜色（抢唱）
+    public static final int GRAB_TEXT_COLOR = U.getColor(R.color.white_trans_50);       // 文本颜色 （抢唱）
+    public static final int GRAB_SYSTEM_COLOR = Color.parseColor("#FF8AB6");  // 系统文案颜色（抢唱）
+    public static final int GRAB_SYSTEM_HIGH_COLOR = Color.parseColor("#FF8AB6");  // 系统文案的高亮颜色（抢唱)
 
     private int commentType = 0;                   //消息类型
     private int userId;                            //消息发送者

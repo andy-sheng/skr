@@ -108,6 +108,7 @@ import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.playways.room.room.SwapStatusType;
 import com.module.playways.room.room.comment.model.CommentLightModel;
+import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentSysModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
@@ -285,11 +286,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         if (mRoomData.getGameId() > 0) {
             boolean reInit = false;
-            if(first){
+            if (first) {
                 reInit = true;
             }
-            if(!reInit && ZqEngineKit.getInstance().getParams().isEnableVideo() != mRoomData.isVideoRoom()){
-                MyLog.d(TAG,"音视频模式发生切换");
+            if (!reInit && ZqEngineKit.getInstance().getParams().isEnableVideo() != mRoomData.isVideoRoom()) {
+                MyLog.d(TAG, "音视频模式发生切换");
                 mIGrabView.changeRoomMode(mRoomData.isVideoRoom());
                 // 发出通知
                 reInit = true;
@@ -304,7 +305,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             ZqEngineKit.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false, mRoomData.getAgoraToken());
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
-            if(mRoomData.isVideoRoom()){
+            if (mRoomData.isVideoRoom()) {
                 ZqEngineKit.getInstance().unbindAllRemoteVideo();
             }
         }
@@ -846,10 +847,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "lightsBurst 不在演唱状态，cancel status=" + now.getStatus() + " roundSeq=" + now.getRoundSeq());
             return;
         }
-        if(RA.hasTestList()){
+        if (RA.hasTestList()) {
             HashMap map = new HashMap();
             map.put("testList", RA.getTestList());
-            StatisticsAdapter.recordCountEvent("ra","burst",map);
+            StatisticsAdapter.recordCountEvent("ra", "burst", map);
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
@@ -1145,7 +1146,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 告知我的的抢唱阶段结束了
      */
     public void sendMyGrabOver(String from) {
-        MyLog.d(TAG, "上报我的抢唱结束 from="+from);
+        MyLog.d(TAG, "上报我的抢唱结束 from=" + from);
         GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel == null) {
             return;
@@ -2361,11 +2362,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             commentModel.setUserId(userInfoModel.getUserId());
             commentModel.setAvatar(userInfoModel.getAvatar());
             commentModel.setUserName(userInfoModel.getNicknameRemark());
-            commentModel.setAvatarColor(Color.WHITE);
+            commentModel.setAvatarColor(CommentModel.AVATAR_COLOR);
             SpannableStringBuilder stringBuilder;
             SpanUtils spanUtils = new SpanUtils()
-                    .append(userInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
+                    .append(userInfoModel.getNicknameRemark() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR);
             stringBuilder = spanUtils.create();
             commentModel.setStringBuilder(stringBuilder);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
@@ -2377,17 +2378,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
         commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
         commentModel.setUserName(playerInfoModel.getUserInfo().getNicknameRemark());
-        commentModel.setAvatarColor(Color.WHITE);
+        commentModel.setAvatarColor(CommentModel.AVATAR_COLOR);
         SpannableStringBuilder stringBuilder;
         if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
             stringBuilder = new SpanUtils()
-                    .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(Color.parseColor("#586D94"))
+                    .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                     .create();
         } else {
             SpanUtils spanUtils = new SpanUtils()
-                    .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("加入了房间").setForegroundColor(Color.parseColor("#586D94"));
+                    .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("加入了房间").setForegroundColor(CommentModel.GRAB_TEXT_COLOR);
             if (BuildConfig.DEBUG) {
                 spanUtils.append(" 角色为" + playerInfoModel.getRole())
                         .append(" 在线状态为" + playerInfoModel.isOnline());
@@ -2561,13 +2562,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         swapGame(!event.foreground, event.foreground);
         if (event.foreground) {
             muteAllRemoteAudioStreams(mRoomData.isMute(), false);
-            if(mRoomData.isVideoRoom()){
+            if (mRoomData.isVideoRoom()) {
                 ZqEngineKit.getInstance().muteLocalVideoStream(false);
             }
         } else {
             muteAllRemoteAudioStreams(true, false);
-            if(mRoomData.isVideoRoom()){
-                if(ZqEngineKit.getInstance().getParams().isAnchor()){
+            if (mRoomData.isVideoRoom()) {
+                if (ZqEngineKit.getInstance().getParams().isAnchor()) {
                     // 我是主播
                     ZqEngineKit.getInstance().muteLocalVideoStream(true);
                 }
@@ -2577,11 +2578,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 录制小游戏事件，防止录进去背景音
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BeginRecordCustomGameEvent event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         if (event.getBegin()) {
             muteAllRemoteAudioStreams(true, false);
         } else {
