@@ -31,7 +31,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 0);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                 }
             } else if (infoModel.isMiniGameRound()) {
@@ -39,7 +39,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getMINIGameRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getMINIGameRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 0);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                 }
             } else if (infoModel.isPKRound()) {
@@ -49,9 +49,9 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                     if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
-                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 1);
                     } else if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, false);
+                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 2);
                     }
                     mF.mGrabVideoDisplayView.setMarginTop(0);
                 }
@@ -96,7 +96,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getChorusRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 0);
                     mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
                 }
             } else if (infoModel.isMiniGameRound()) {
@@ -104,7 +104,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     int userID1 = infoModel.getMINIGameRoundInfoModels().get(0).getUserID();
                     int userID2 = infoModel.getMINIGameRoundInfoModels().get(1).getUserID();
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
-                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                    mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 0);
                     mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);
                 }
             } else if (infoModel.isPKRound()) {
@@ -114,14 +114,14 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     Pair<UserInfoModel, UserInfoModel> p = getUserInfoModel(userID1, userID2);
                     if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
                         //pk第一轮
-                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                        mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 1);
                     } else if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
                         //pk第二轮
                         if (infoModel.isEnterInSingStatus() && !infoModel.isParticipant()) {
                             // 是一个刚进来的用户
-                            mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, true);
+                            mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 0);
                         } else {
-                            mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, false);
+                            mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 2);
                         }
                     }
                     mF.mGrabVideoDisplayView.setMarginTop(halfVideoMarginTop);

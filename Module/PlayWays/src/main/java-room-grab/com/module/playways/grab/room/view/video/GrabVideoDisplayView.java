@@ -1,9 +1,12 @@
 package com.module.playways.grab.room.view.video;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Handler;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +53,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     static final int MSG_ENSURE_RIGHT_FIRST_VIDEO_FRAME_DECODED = 12;
 
     TextureView mMainVideoView;
+    View mMiddleGuide;
     BaseImageView mLeftAvatarIv;
     BaseImageView mRightAvatarIv;
     BaseImageView mMiddleAvatarIv;
@@ -63,10 +67,13 @@ public class GrabVideoDisplayView extends ExViewStub {
     ExTextView mRightNameTv;
     View mBg1View, mBg2View;
 
+    TextView mPkBeginTipsView;
+
     SelfSingCardView.Listener mSelfSingCardListener;
     Listener mListener;
     private GrabRoomData mRoomData;
     int mMainUserId = 0, mLeftUserId = 0, mRightUserId = 0;
+    AnimatorSet mPkBeginTipsAnimation;
 
     private Handler mUiHandler = new Handler() {
         @Override
@@ -131,6 +138,8 @@ public class GrabVideoDisplayView extends ExViewStub {
                 }
             }
         });
+        mPkBeginTipsView = mParentView.findViewById(R.id.pk_begin_tips_view);
+        mMiddleGuide = mParentView.findViewById(R.id.middle_guide);
         config();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -164,7 +173,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void bindVideoStream(UserInfoModel userId) {
-        MyLog.d(TAG,"bindVideoStream" + " userId=" + userId);
+        MyLog.d(TAG, "bindVideoStream" + " userId=" + userId);
         tryInflate();
         ensureBindDisplayView();
         setVisibility(View.VISIBLE);
@@ -196,10 +205,10 @@ public class GrabVideoDisplayView extends ExViewStub {
     /**
      * @param userID1
      * @param userID2
-     * @param needBindVideo pk 第二轮不需要重新bind
+     * @param roundFlag 0 普通轮次 | 1 pk第一轮 | 2 pk第二轮
      */
-    public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2, boolean needBindVideo) {
-        MyLog.d(TAG, "bindVideoStream needBindVideo=" + needBindVideo);
+    public void bindVideoStream(UserInfoModel userID1, UserInfoModel userID2, int roundFlag) {
+        MyLog.d(TAG, "bindVideoStream roundFlag=" + roundFlag);
         tryInflate();
         ensureBindDisplayView();
         setVisibility(View.VISIBLE);
@@ -217,7 +226,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         mBg2View.setVisibility(View.GONE);
         mLeftUserId = userID1.getUserId();
         mRightUserId = userID2.getUserId();
-        if (needBindVideo) {
+        if (roundFlag != 2) {
             mLeftAvatarIv.setVisibility(View.VISIBLE);
             AvatarUtils.loadAvatarByUrl(mLeftAvatarIv, AvatarUtils.newParamsBuilder(userID1.getAvatar())
                     .setBlur(true)
@@ -237,6 +246,60 @@ public class GrabVideoDisplayView extends ExViewStub {
         } else {
             mBeautySettingBtn.setVisibility(View.GONE);
         }
+        if (roundFlag == 1) {
+            pkBeginTips(true);
+        } else if (roundFlag == 2) {
+            pkBeginTips(false);
+        } else {
+            mPkBeginTipsView.setVisibility(View.GONE);
+        }
+    }
+
+    private void pkBeginTips(boolean left) {
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) mPkBeginTipsView.getLayoutParams();
+        if (left) {
+            lp.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+            lp.rightToLeft = mMiddleGuide.getId();
+            lp.leftToRight = -1;
+            lp.rightToRight = -1;
+        } else {
+            lp.leftToLeft = -1;
+            lp.rightToLeft = -1;
+            lp.leftToRight = mMiddleGuide.getId();
+            lp.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
+        }
+        mPkBeginTipsView.setLayoutParams(lp);
+        mPkBeginTipsView.setVisibility(View.VISIBLE);
+        if (mPkBeginTipsAnimation != null) {
+            mPkBeginTipsAnimation.cancel();
+        }
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mPkBeginTipsView, View.TRANSLATION_Y, mPkBeginTipsView.getHeight(), 0);
+        objectAnimator1.setDuration(300);
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mPkBeginTipsView, View.TRANSLATION_Y, 0, mPkBeginTipsView.getHeight());
+        objectAnimator2.setDuration(300);
+        objectAnimator2.setStartDelay(1000);
+        mPkBeginTipsAnimation = new AnimatorSet();
+        mPkBeginTipsAnimation.playSequentially(objectAnimator1, objectAnimator2);
+        mPkBeginTipsAnimation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                mPkBeginTipsView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mPkBeginTipsView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mPkBeginTipsView.setVisibility(View.VISIBLE);
+            }
+        });
+        mPkBeginTipsAnimation.start();
     }
 
     void startSingCountDown() {
@@ -261,7 +324,7 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void reset() {
-        MyLog.d(TAG,"reset" );
+        MyLog.d(TAG, "reset");
         if (!isBeautyActivityVisiable()) {
             ZqEngineKit.getInstance().stopCameraPreview();
             ZqEngineKit.getInstance().unbindAllRemoteVideo();
@@ -278,8 +341,12 @@ public class GrabVideoDisplayView extends ExViewStub {
             mRightNameTv.setVisibility(View.GONE);
             mMiddleAvatarIv.setVisibility(View.GONE);
             mMiddleTipsTv.setVisibility(View.GONE);
+            mPkBeginTipsView.setVisibility(View.GONE);
             mSingCountDownView.reset();
             setMarginTop(0);
+        }
+        if (mPkBeginTipsAnimation != null) {
+            mPkBeginTipsAnimation.cancel();
         }
         mUiHandler.removeCallbacksAndMessages(null);
     }
@@ -382,7 +449,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                 && event.type != EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             DebugLogView.println(TAG, event.toString());
         }
-        if (mParentView == null || mParentView.getVisibility() !=View.VISIBLE) {
+        if (mParentView == null || mParentView.getVisibility() != View.VISIBLE) {
             return;
         }
         if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {
