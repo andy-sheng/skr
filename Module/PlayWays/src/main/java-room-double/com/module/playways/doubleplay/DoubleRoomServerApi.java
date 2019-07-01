@@ -159,6 +159,13 @@ public interface DoubleRoomServerApi {
     Observable<ApiResult> cancleMatch(@Body RequestBody body);
 
     /**
+     * 获取背景音乐
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/magpie/on-match-music")
+    Observable<ApiResult> getDoubleMatchMusic();
+
+    /**
      * {
      * "inviteUserID": 0
      * }

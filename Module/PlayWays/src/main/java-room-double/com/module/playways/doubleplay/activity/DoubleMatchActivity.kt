@@ -22,10 +22,6 @@ class DoubleMatchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        var bgMusic = intent.getStringExtra("music")
-        if (!TextUtils.isEmpty(bgMusic)) {
-            BgMusicManager.getInstance().starPlay(bgMusic, 0, "DoubleMatchActivity")
-        }
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoubleGameMatchFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
@@ -40,7 +36,6 @@ class DoubleMatchActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
-        BgMusicManager.getInstance().destory()
         if (window != null) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }

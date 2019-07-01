@@ -40,13 +40,10 @@ class DoubleRoomGameView : RelativeLayout {
 
     private var mModifyDisposable: Disposable? = null  //修改资料
     private var mDisposable: Disposable? = null        //获取次数
-    private var mMusicDisposable: Disposable? = null   //获取应用
     private var userInfoServerApi: UserInfoServerApi? = null
     private var mainPageSlideApi: MainPageSlideApi? = null
     var hasRemainTime: Boolean = false        //默认已经没有次数了
     internal var mLastUpdateRemainTime: Long = 0    //上次拉去剩余次数的时间
-    internal var mLastUpdateMusic: Long = 0         //上次拉背景音乐
-    var mMusic: String? = null
 
     var mSkrAudioPermission: SkrAudioPermission
 
@@ -76,7 +73,6 @@ class DoubleRoomGameView : RelativeLayout {
                     mSkrAudioPermission.ensurePermission({
                         ARouter.getInstance()
                                 .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                .withString("music", mMusic)
                                 .navigation()
                     }, true)
 //                    }
@@ -98,7 +94,6 @@ class DoubleRoomGameView : RelativeLayout {
 
     fun initData() {
         getRemainTimes(false)
-        getBgMusic(false)
     }
 
     fun showConfirmView() {
@@ -168,34 +163,6 @@ class DoubleRoomGameView : RelativeLayout {
                 }
             }
 
-        })
-    }
-
-    fun getBgMusic(isFlag: Boolean) {
-        val now = System.currentTimeMillis()
-        if (!isFlag) {
-            // 距离上次拉去已经超过30秒了
-            if (now - mLastUpdateMusic < 30 * 1000) {
-                return
-            }
-        }
-
-        if (mMusicDisposable != null && !mMusicDisposable!!.isDisposed) {
-            mMusicDisposable?.dispose()
-        }
-
-        mMusicDisposable = ApiMethods.subscribe(mainPageSlideApi?.doubleMatchMusic, object : ApiObserver<ApiResult>() {
-            override fun process(result: ApiResult?) {
-                if (result?.errno == 0) {
-                    var list: List<String>? = JSON.parseArray(result.data.getString("musicURL"), String::class.java)
-                    if (list != null && list.isNotEmpty()) {
-                        Collections.shuffle(list)
-                        mMusic = list[0]
-                    }
-                } else {
-                    // 请求出错
-                }
-            }
         })
     }
 

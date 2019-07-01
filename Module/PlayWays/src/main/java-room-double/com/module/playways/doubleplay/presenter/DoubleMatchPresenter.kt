@@ -19,6 +19,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() {
     val mTag = "DoubleMatchPresenter"
@@ -71,6 +72,22 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
         ApiMethods.subscribe(doubleRoomServerApi.cancleMatch(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
 
+            }
+        }, this@DoubleMatchPresenter)
+    }
+
+    fun getBgMusic() {
+        ApiMethods.subscribe(doubleRoomServerApi.doubleMatchMusic, object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult?) {
+                if (result?.errno == 0) {
+                    var list: List<String>? = JSON.parseArray(result.data.getString("musicURL"), String::class.java)
+                    if (list != null && list.isNotEmpty()) {
+                        Collections.shuffle(list)
+                        iMatchView.playBgMusic(list[0])
+                    }
+                } else {
+                    // 请求出错
+                }
             }
         }, this@DoubleMatchPresenter)
     }

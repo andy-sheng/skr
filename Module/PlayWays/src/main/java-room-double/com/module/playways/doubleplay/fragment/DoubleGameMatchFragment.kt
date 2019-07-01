@@ -2,6 +2,7 @@ package com.module.playways.doubleplay.fragment
 
 import android.os.Bundle
 import android.support.constraint.Group
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
@@ -11,6 +12,7 @@ import com.common.notification.event.CRStartByMatchPushEvent
 import com.common.statistics.StatisticsAdapter
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
+import com.component.busilib.manager.BgMusicManager
 import com.module.RouterConstants
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.inter.IMatchView
@@ -59,35 +61,14 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
         doubleMatchPresenter = DoubleMatchPresenter(this)
         addPresent(doubleMatchPresenter)
+        doubleMatchPresenter.getBgMusic()
     }
 
-//    private fun exitLogin() {
-//        val tipsDialogView = TipsDialogView.Builder(context)
-//                .setMessageTip("确定取消匹配吗？")
-//                .setConfirmTip("确定")
-//                .setCancelTip("取消")
-//                .setConfirmBtnClickListener(object : AnimateClickListener() {
-//                    override fun click(view: View) {
-//                        mDialogPlus?.dismiss()
-//                        activity?.finish()
-//                    }
-//                })
-//                .setCancelBtnClickListener(object : AnimateClickListener() {
-//                    override fun click(view: View) {
-//                        mDialogPlus?.dismiss()
-//                    }
-//                })
-//                .build()
-//
-//        mDialogPlus = DialogPlus.newDialog(context!!)
-//                .setContentHolder(ViewHolder(tipsDialogView))
-//                .setGravity(Gravity.BOTTOM)
-//                .setContentBackgroundResource(R.color.transparent)
-//                .setOverlayBackgroundResource(R.color.black_trans_80)
-//                .setExpanded(false)
-//                .create()
-//        mDialogPlus?.show()
-//    }
+    override fun playBgMusic(musicUrl: String) {
+        if (!TextUtils.isEmpty(musicUrl)) {
+            BgMusicManager.getInstance().starPlay(musicUrl, 0, "DoubleGameMatchFragment")
+        }
+    }
 
     override fun matchSuccessFromHttp(doubleRoomData: DoubleRoomData) {
         MyLog.d(mTag, "matchSuccessFromHttp")
@@ -146,5 +127,6 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
     override fun destroy() {
         super.destroy()
+        BgMusicManager.getInstance().destory()
     }
 }
