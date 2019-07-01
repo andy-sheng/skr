@@ -131,7 +131,7 @@ public class LyricsManager {
     }
 
     public Observable<File> fetchLyricTask(final String url) {
-        MyLog.d(TAG, "fetchLyricTask" + " url =" + url);
+        MyLog.w(TAG, "fetchLyricTask" + " url =" + url);
         return Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
