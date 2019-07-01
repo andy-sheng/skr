@@ -46,12 +46,11 @@ import com.zq.dialog.PersonInfoDialog
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.mediaengine.kit.ZqEngineKit
 import com.zq.report.fragment.QuickFeedbackFragment
-import org.greenrobot.eventbus.EventBus
 
 
 class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     val mTag = "DoublePlayWaysFragment"
-    lateinit var mReportTv: TextView
+    private var mReportTv: TextView? = null
     private var mExitIv: ImageView? = null
     private var mLeftAvatarSdv: SimpleDraweeView? = null
     private var mLeftLockIcon: ImageView? = null
@@ -74,7 +73,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mDialogPlus: DialogPlus? = null
 
     lateinit var mDoubleCorePresenter: DoubleCorePresenter
-    lateinit var mRoomData: DoubleRoomData
+    var mRoomData: DoubleRoomData? = null
 
     var countDownTimer: HandlerTaskTimer? = null
 
@@ -83,11 +82,19 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     var mCurrentCardView: DoubleSingCardView? = null
 
+    var mHasInit: Boolean = false
+
     override fun initView(): Int {
         return R.layout.double_play_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        mHasInit = true
+        if (mRoomData == null) {
+            MyLog.w(mTag, "initData mRoomData is null")
+            return
+        }
+
         MyLog.w(mTag, "initData mRoomData='${mRoomData}'")
         mReportTv = mRootView.findViewById<View>(R.id.report_tv) as TextView
         mExitIv = mRootView.findViewById<View>(R.id.exit_iv) as ImageView
@@ -112,7 +119,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
         mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
 
-        mWordTv?.text = mRoomData.config?.roomSignature
+        mWordTv?.text = mRoomData!!.config?.roomSignature
 
         var mListener = object : DoubleSingCardView.Listener() {
             override fun clickChangeSong() {
@@ -129,19 +136,19 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (!mRoomData.isRoomPrepared()) {
+                if (!mRoomData!!.isRoomPrepared()) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
                             .addDataBeforeAdd(0, InviteFriendFragment2.FROM_DOUBLE_ROOM)
-                            .addDataBeforeAdd(1, mRoomData.gameId)
+                            .addDataBeforeAdd(1, mRoomData!!.gameId)
                             .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
                             .build()
                     )
                     return
                 }
 
-                val info = mRoomData.userLockInfoMap[mRoomData.getAntherUser()?.userId]
+                val info = mRoomData!!.userLockInfoMap[mRoomData!!.getAntherUser()?.userId]
                 if (info != null && !info.isHasLock) {
                     showPersonInfoView(info.userID)
                 }
@@ -150,14 +157,14 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mRightAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                val info = mRoomData.userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
+                val info = mRoomData!!.userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
                 if (info != null && !info.isHasLock) {
                     showPersonInfoView(MyUserInfoManager.getInstance().uid.toInt())
                 }
             }
         })
 
-        mReportTv.setOnClickListener(object : DebounceViewClickListener() {
+        mReportTv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 // 举报
                 U.getFragmentUtils().addFragment(
@@ -166,7 +173,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                                 .setHasAnimation(true)
                                 .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_DOUBLE_ROOM)
                                 .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
-                                .addDataBeforeAdd(2, mRoomData.getAntherUser()?.userId ?: 0)
+                                .addDataBeforeAdd(2, mRoomData!!.getAntherUser()?.userId ?: 0)
                                 .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
                                 .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                                 .build())
@@ -210,7 +217,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 // 点歌
-                if (mRoomData.isRoomPrepared()) {
+                if (mRoomData!!.isRoomPrepared()) {
                     OwnerManagerActivity.open(activity, SongManageData(mRoomData))
                 } else {
                     U.getToastUtil().showShort("房间里还没有人哦～")
@@ -218,15 +225,15 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         })
 
-        mDoubleCorePresenter = DoubleCorePresenter(mRoomData, this)
+        mDoubleCorePresenter = DoubleCorePresenter(mRoomData!!, this)
         addPresent(mDoubleCorePresenter)
 
-        if (mRoomData.isMatchRoom()) {
+        if (mRoomData!!.isMatchRoom()) {
             mNoLimitTip?.visibility = VISIBLE
         }
 
-        if (mRoomData.isCreateRoom()) {
-            if (mRoomData.isRoomPrepared()) {
+        if (mRoomData!!.isCreateRoom()) {
+            if (mRoomData!!.isRoomPrepared()) {
                 unLockOther()
                 unLockSelf()
             } else {
@@ -234,7 +241,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 toInviteUI()
             }
         } else {
-            if (mRoomData.needMaskUserInfo) {
+            if (mRoomData!!.needMaskUserInfo) {
                 selfLockState()
                 guestLockState()
             } else {
@@ -244,8 +251,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
 
-        MyLog.d(mTag, "mRoomData.enableNoLimitDuration " + mRoomData.enableNoLimitDuration)
-        if (mRoomData.enableNoLimitDuration) {
+        MyLog.d(mTag, "mRoomData.enableNoLimitDuration " + mRoomData!!.enableNoLimitDuration)
+        if (mRoomData!!.enableNoLimitDuration) {
             mNoLimitIcon?.visibility = VISIBLE
             mCountDownTv?.visibility = GONE
             mUnlockTv?.visibility = GONE
@@ -258,7 +265,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     private fun startCountDown() {
-        val take = (mRoomData.config?.durationTimeMs ?: 0) / 1000
+        val take = (mRoomData!!.config?.durationTimeMs ?: 0) / 1000
         MyLog.d(mTag, "startCountDown take is " + take)
         countDownTimer = HandlerTaskTimer.newBuilder().interval(1000).take(take).start(object : HandlerTaskTimer.ObserverW() {
             override fun onNext(t: Int) {
@@ -279,7 +286,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             return
         }
 
-        mPersonInfoDialog = PersonInfoDialog(activity, QuickFeedbackFragment.FROM_DOUBLE_ROOM, userID, true, false, mRoomData.gameId, false)
+        mPersonInfoDialog = PersonInfoDialog(activity, QuickFeedbackFragment.FROM_DOUBLE_ROOM, userID, true, false, mRoomData!!.gameId, false)
         mPersonInfoDialog?.setListener(object : PersonInfoDialog.KickListener {
 
             override fun onClickKick(userInfoModel: UserInfoModel) {
@@ -294,7 +301,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     private fun confirmExitRoom() {
-        if (!mRoomData.isRoomPrepared()) {
+        if (!mRoomData!!.isRoomPrepared()) {
             activity?.finish()
         } else {
             val tipsDialogView = TipsDialogView.Builder(context)
@@ -328,6 +335,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
             mRoomData = data as DoubleRoomData
+            if (mHasInit) initData(null)
         }
     }
 
@@ -335,7 +343,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 自己锁定状态
      */
     fun selfLockState() {
-        AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData.getSelfAvatar())
+        AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData!!.getSelfAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setBorderColor(Color.WHITE)
@@ -350,7 +358,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 别人锁定状态
      */
     fun guestLockState() {
-        AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData.getPartnerAvatar())
+        AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData!!.getPartnerAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setBorderColor(Color.WHITE)
@@ -373,12 +381,12 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mWordArea?.visibility = GONE
         toNextSongCardView()
         mCurrentCardView?.visibility = VISIBLE
-        mCurrentCardView?.playLyric(mRoomData, mCur, mNext, hasNext)
+        mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
     }
 
     override fun changeRound(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
         toNextSongCardView()
-        mCurrentCardView?.playLyric(mRoomData, mCur, mNext, hasNext)
+        mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
     }
 
     override fun finishActivity() {
@@ -451,8 +459,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 别人解锁状态
      */
     fun unLockOther() {
-        if (mRoomData.isMatchRoom()) {
-            if (mRoomData.enableNoLimitDuration) {
+        if (mRoomData!!.isMatchRoom()) {
+            if (mRoomData!!.enableNoLimitDuration) {
                 AvatarUtils.loadAvatarByUrl(mLeftAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData?.getAntherUser()?.avatar)
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
@@ -495,8 +503,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
      * 自己解锁状态
      */
     fun unLockSelf() {
-        if (mRoomData.isMatchRoom()) {
-            if (mRoomData.enableNoLimitDuration) {
+        if (mRoomData!!.isMatchRoom()) {
+            if (mRoomData!!.enableNoLimitDuration) {
                 AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
@@ -513,7 +521,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 mRightLockIcon?.background = U.getDrawable(R.drawable.double_light)
             }
         } else {
-            if (mRoomData.enableNoLimitDuration) {
+            if (mRoomData!!.enableNoLimitDuration) {
                 AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
