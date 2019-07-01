@@ -29,35 +29,31 @@ import java.util.HashMap;
 public class PersonInfoDialog {
 
     Activity mActivity;
+    int mFrom;
+    int mUserID;
+    boolean mShowKick;
+    boolean mShowInvite = true;
     int mRoomID;
-    DialogPlus mDialogPlus;
 
     KickListener mKickListener;
+    InviteDoubleListener mInviteDoubleListener;
+    DialogPlus mDialogPlus;
 
-    private int mFrom;
+    private PersonInfoDialog(Builder builder) {
+        mActivity = builder.mActivity;
+        mFrom = builder.mFrom;
+        mUserID = builder.mUserID;
+        mShowKick = builder.mShowKick;
+        mShowInvite = builder.mShowInvite;
+        mRoomID = builder.mRoomID;
+        mKickListener = builder.mKickListener;
+        mInviteDoubleListener = builder.mInviteDoubleListener;
 
-    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, boolean showInvite) {
-        this.mActivity = activity;
-        this.mFrom = from;
-        init(mActivity, userId, showReport, showKick, showInvite);
+        init();
     }
 
-    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, int roomID) {
-        this.mActivity = activity;
-        this.mFrom = from;
-        this.mRoomID = roomID;
-        init(mActivity, userId, showReport, showKick, true);
-    }
-
-    public PersonInfoDialog(Activity activity, int from, final int userId, final boolean showReport, boolean showKick, int roomID, boolean showInvite) {
-        this.mActivity = activity;
-        this.mFrom = from;
-        this.mRoomID = roomID;
-        init(activity, userId, showReport, showKick, showInvite);
-    }
-
-    private void init(Context context, final int userId, final boolean showReport, boolean showKick, boolean showInvite) {
-        PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(context, userId, showReport, showKick, showInvite);
+    private void init() {
+        PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(mActivity, mUserID, mShowKick, mShowInvite);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
             public void onClickReport(int userID) {
@@ -103,17 +99,8 @@ public class PersonInfoDialog {
             }
 
             @Override
-            public void onClickMessage(UserInfoModel userInfoModel) {
-                if (mDialogPlus != null) {
-                    mDialogPlus.dismiss(false);
-                }
-            }
-
-            @Override
             public void onClickPhoto(PhotoModel photoModel, int position) {
-                if (mDialogPlus != null) {
-                    mDialogPlus.dismiss(false);
-                }
+
             }
 
             @Override
@@ -135,8 +122,8 @@ public class PersonInfoDialog {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
-                if (mKickListener != null) {
-                    mKickListener.onClickDoubleInvite(userInfoModel);
+                if (mInviteDoubleListener != null) {
+                    mInviteDoubleListener.onClickDoubleInvite(userInfoModel);
                 }
             }
         });
@@ -149,6 +136,35 @@ public class PersonInfoDialog {
                 .setExpanded(false)
                 .setCancelable(true)
                 .create();
+    }
+
+    public void show() {
+        if (mDialogPlus != null) {
+            mDialogPlus.show();
+        }
+    }
+
+    public boolean isShowing() {
+        if (mDialogPlus != null) {
+            return mDialogPlus.isShowing();
+        }
+        return false;
+    }
+
+    public void dismiss() {
+        mKickListener = null;
+        mInviteDoubleListener = null;
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
+    }
+
+    public void dismiss(boolean useAnimation) {
+        mKickListener = null;
+        mInviteDoubleListener = null;
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(useAnimation);
+        }
     }
 
     private void showRemarkDialog(final UserInfoModel userInfoModel) {
@@ -182,10 +198,10 @@ public class PersonInfoDialog {
 
         mDialogPlus = DialogPlus.newDialog(mActivity)
                 .setContentHolder(new ViewHolder(editRemarkView))
-                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
-                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
-                .setInAnimation(com.component.busilib.R.anim.fade_in)
-                .setOutAnimation(com.component.busilib.R.anim.fade_out)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setInAnimation(R.anim.fade_in)
+                .setOutAnimation(R.anim.fade_out)
                 .setExpanded(false)
                 .setGravity(Gravity.BOTTOM)
                 .setOnDismissListener(new OnDismissListener() {
@@ -198,29 +214,6 @@ public class PersonInfoDialog {
         mDialogPlus.show();
     }
 
-    public void setListener(KickListener kickListener) {
-        this.mKickListener = kickListener;
-    }
-
-    public void show() {
-        if (mDialogPlus != null) {
-            mDialogPlus.show();
-        }
-    }
-
-    public boolean isShowing() {
-        if (mDialogPlus != null) {
-            return mDialogPlus.isShowing();
-        }
-        return false;
-    }
-
-    public void dismiss() {
-        if (mDialogPlus != null) {
-            mDialogPlus.dismiss(false);
-        }
-        mKickListener = null;
-    }
 
     private void showReportView(int userID) {
         U.getFragmentUtils().addFragment(
@@ -237,7 +230,9 @@ public class PersonInfoDialog {
 
     public interface KickListener {
         void onClickKick(UserInfoModel userInfoModel);
+    }
 
+    public interface InviteDoubleListener {
         void onClickDoubleInvite(UserInfoModel userInfoModel);
     }
 
@@ -250,8 +245,6 @@ public class PersonInfoDialog {
 
         void onClickFollow(int userID, boolean isFriend, boolean isFollow);
 
-        void onClickMessage(UserInfoModel userInfoModel);
-
         void onClickPhoto(PhotoModel photoModel, int position);
 
         void onClickOut();
@@ -259,5 +252,43 @@ public class PersonInfoDialog {
         void onClickRemark(UserInfoModel userInfoModel);
 
         void onClickDoubleInvite(UserInfoModel userInfoModel);
+    }
+
+    public static final class Builder {
+        private Activity mActivity;
+        private int mFrom;
+        private int mUserID;
+        private boolean mShowKick;
+        private boolean mShowInvite;
+        private int mRoomID;
+        private KickListener mKickListener;
+        private InviteDoubleListener mInviteDoubleListener;
+
+        public Builder(Activity activity, int from, int userID, boolean showKick, boolean showInvite) {
+            mActivity = activity;
+            mFrom = from;
+            mUserID = userID;
+            mShowKick = showKick;
+            mShowInvite = showInvite;
+        }
+
+        public Builder setRoomID(int roomID) {
+            mRoomID = roomID;
+            return this;
+        }
+
+        public Builder setKickListener(KickListener val) {
+            mKickListener = val;
+            return this;
+        }
+
+        public Builder setInviteDoubleListener(InviteDoubleListener val) {
+            mInviteDoubleListener = val;
+            return this;
+        }
+
+        public PersonInfoDialog build() {
+            return new PersonInfoDialog(this);
+        }
     }
 }

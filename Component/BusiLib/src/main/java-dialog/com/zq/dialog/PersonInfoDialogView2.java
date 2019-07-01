@@ -151,11 +151,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             .setSolidColor(Color.parseColor("#D0EFFF"))
             .build();
 
-    PersonInfoDialogView2(Context context, int userID, boolean showReport, boolean showKick, boolean showInvite) {
+    PersonInfoDialogView2(Context context, int userID, boolean showKick, boolean showInvite) {
         super(context);
 
         initView();
-        initData(context, userID, showReport, showKick, showInvite);
+        initData(context, userID, showKick, showInvite);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -191,7 +191,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         initFuncationArea();
     }
 
-    private void initData(Context context, int userID, boolean showReport, boolean showKick, boolean showInvite) {
+    private void initData(Context context, int userID, boolean showKick, boolean showInvite) {
         mContext = context;
         mUserId = userID;
         isShowKick = showKick;

@@ -216,54 +216,56 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), QuickFeedbackFragment.FROM_RANK_ROOM, userID, true, false, true);
-        mPersonInfoDialog.setListener(new PersonInfoDialog.KickListener() {
-            @Override
-            public void onClickKick(UserInfoModel userInfoModel) {
+        mPersonInfoDialog = new PersonInfoDialog.Builder(getActivity(),QuickFeedbackFragment.FROM_RANK_ROOM, userID, false, true )
+                .setInviteDoubleListener(new PersonInfoDialog.InviteDoubleListener() {
+                    @Override
+                    public void onClickDoubleInvite(UserInfoModel userInfoModel) {
 
-            }
+                    }
+                })
+                .setKickListener(new PersonInfoDialog.KickListener() {
+                    @Override
+                    public void onClickKick(UserInfoModel userInfoModel) {
+                        if (userInfoModel.isFriend()) {
+                            mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                        } else {
+                            UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack<Boolean>() {
+                                @Override
+                                public void onServerSucess(Boolean isFans) {
+                                    if (isFans) {
+                                        mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                                    } else {
+                                        mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                                                .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人唱聊房吗？")
+                                                .setConfirmTip("邀请")
+                                                .setCancelTip("取消")
+                                                .setConfirmBtnClickListener(new AnimateClickListener() {
+                                                    @Override
+                                                    public void click(View view) {
+                                                        mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
+                                                        mTipsDialogView.dismiss();
+                                                    }
+                                                })
+                                                .setCancelBtnClickListener(new AnimateClickListener() {
+                                                    @Override
+                                                    public void click(View view) {
+                                                        mTipsDialogView.dismiss();
+                                                    }
+                                                })
+                                                .build();
+                                        mTipsDialogView.showByDialog();
+                                    }
+                                }
 
-            @Override
-            public void onClickDoubleInvite(UserInfoModel userInfoModel) {
-                if (userInfoModel.isFriend()) {
-                    mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
-                } else {
-                    UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack<Boolean>() {
-                        @Override
-                        public void onServerSucess(Boolean isFans) {
-                            if (isFans) {
-                                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
-                            } else {
-                                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                                        .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人唱聊房吗？")
-                                        .setConfirmTip("邀请")
-                                        .setCancelTip("取消")
-                                        .setConfirmBtnClickListener(new AnimateClickListener() {
-                                            @Override
-                                            public void click(View view) {
-                                                mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
-                                                mTipsDialogView.dismiss();
-                                            }
-                                        })
-                                        .setCancelBtnClickListener(new AnimateClickListener() {
-                                            @Override
-                                            public void click(View view) {
-                                                mTipsDialogView.dismiss();
-                                            }
-                                        })
-                                        .build();
-                                mTipsDialogView.showByDialog();
-                            }
+                                @Override
+                                public void onServerFailed() {
+
+                                }
+                            });
                         }
-
-                        @Override
-                        public void onServerFailed() {
-
-                        }
-                    });
-                }
-            }
-        });
+                    }
+                })
+                .build();
         mPersonInfoDialog.show();
     }
 
