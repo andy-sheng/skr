@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view.video;
+package com.module.playways.doubleplay.view;
 
 import android.view.View;
 import android.view.ViewStub;

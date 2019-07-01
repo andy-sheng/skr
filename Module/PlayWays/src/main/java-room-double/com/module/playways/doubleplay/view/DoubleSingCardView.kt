@@ -17,7 +17,6 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
-import com.module.playways.grab.room.view.video.DoubleSelfSingCardView
 
 
 class DoubleSingCardView : ConstraintLayout {
