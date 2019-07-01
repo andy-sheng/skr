@@ -1,6 +1,5 @@
 package com.module.playways.doubleplay.view;
 
-import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
@@ -12,7 +11,6 @@ import com.common.view.ExViewStub;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
@@ -48,7 +46,7 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
 
     @Override
     protected int layoutDesc() {
-        return R.layout.double_normal_lyric_layout;
+        return R.layout.double_normal_lyric_stub_layout;
     }
 
     @Override

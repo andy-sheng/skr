@@ -9,7 +9,6 @@ import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.doubleplay.view.DoubleChorusSelfSingCardView;
-import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.doubleplay.view.DoubleMiniGameSelfSingCardView;
 import com.module.playways.doubleplay.view.DoubleNormalSelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
@@ -29,11 +28,11 @@ public class DoubleSelfSingCardView {
             mDoubleNormalSelfSingCardView = new DoubleNormalSelfSingCardView(viewStub, null);
         }
         {
-            ViewStub viewStub = rootView.findViewById(R.id.grab_video_chorus_lyric_view_stub);
+            ViewStub viewStub = rootView.findViewById(R.id.grab_video_chorus_self_sing_card_stub);
             mDoubleChorusSelfSingCardView = new DoubleChorusSelfSingCardView(viewStub, doubleRoomData);
         }
         {
-            ViewStub viewStub = rootView.findViewById(R.id.grab_video_mini_game_lyric_view_stub);
+            ViewStub viewStub = rootView.findViewById(R.id.grab_video_mini_game_self_sing_card_stub);
             mDoubleMiniGameSelfSingCardView = new DoubleMiniGameSelfSingCardView(viewStub);
         }
 

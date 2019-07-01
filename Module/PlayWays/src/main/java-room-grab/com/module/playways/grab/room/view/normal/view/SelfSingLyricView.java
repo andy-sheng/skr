@@ -34,7 +34,7 @@ public class SelfSingLyricView extends ExViewStub {
     ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
-    GrabRoomData mRoomData;
+    protected GrabRoomData mRoomData;
     SongModel mSongModel;
     VoiceScaleView mVoiceScaleView;
 

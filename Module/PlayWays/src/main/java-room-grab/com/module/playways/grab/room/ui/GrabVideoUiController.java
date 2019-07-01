@@ -26,6 +26,10 @@ public class GrabVideoUiController extends GrabBaseUiController {
                 // 普通轮次
                 UserInfoModel userInfoModel = getUserInfoModel(infoModel.getUserID());
                 mF.mGrabVideoDisplayView.bindVideoStream(userInfoModel);
+                mF.mGrabTopContentView.setVisibility(View.GONE);
+                mF.mGrabTopOpView.setVisibility(View.GONE);
+                mF.mGrabVideoDisplayView.setTranslateY(0);
+                mF.mGrabVideoDisplayView.adjustViewPostionWhenSolo();
             } else if (infoModel.isChorusRound()) {
                 if (infoModel.getChorusRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();
@@ -34,6 +38,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 0);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                 }
+                mF.mGrabWidgetAnimationController.openBelowLyricView();
             } else if (infoModel.isMiniGameRound()) {
                 if (infoModel.getMINIGameRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getMINIGameRoundInfoModels().get(0).getUserID();
@@ -42,6 +47,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     mF.mGrabVideoDisplayView.bindVideoStream(p.first, p.second, 0);
                     mF.mGrabTopContentView.setVisibility(View.GONE);
                 }
+                mF.mGrabWidgetAnimationController.openBelowLyricView();
             } else if (infoModel.isPKRound()) {
                 if (infoModel.getsPkRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getsPkRoundInfoModels().get(0).getUserID();
@@ -55,8 +61,9 @@ public class GrabVideoUiController extends GrabBaseUiController {
                     }
                     mF.mGrabVideoDisplayView.setMarginTop(0);
                 }
+                mF.mGrabWidgetAnimationController.openBelowLyricView();
             }
-            mF.mGrabWidgetAnimationController.openBelowLyricView();
+
         }
         // ZqEngineKit.getInstance().startPreview(mF.mMainVideoView);
     }
@@ -148,8 +155,12 @@ public class GrabVideoUiController extends GrabBaseUiController {
         mF.mGrabVideoDisplayView.setVisibility(View.GONE);
         mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
         mF.mGrabTopContentView.setVisibility(View.VISIBLE);
-        if (mF.mGrabWidgetAnimationController.isOpen() && mF.mGrabWidgetAnimationController.getOpenType() == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC) {
-            mF.mGrabWidgetAnimationController.close();//关闭
+        if (mF.mGrabWidgetAnimationController.isOpen()){
+            if(mF.mGrabWidgetAnimationController.getOpenType() == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC){
+                mF.mGrabWidgetAnimationController.close();//关闭
+            }else{
+                mF.mGrabTopOpView.setVisibility(View.VISIBLE);
+            }
         }
         mF.mGrabWidgetAnimationController.setOpenType(GrabWidgetAnimationController.OPEN_TYPE_FOR_NORMAL);
     }

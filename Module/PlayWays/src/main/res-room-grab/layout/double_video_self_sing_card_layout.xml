@@ -7,12 +7,11 @@
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <ViewStub
-        android:id="@+id/grab_video_chorus_lyric_view_stub"
+        android:id="@+id/grab_video_chorus_self_sing_card_stub"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/view_55_dp"
         android:layout_marginBottom="@dimen/view_55_dp"
-        android:inflatedId="@+id/video_grab_chorus_lyric_view"
         android:layout="@layout/grab_video_chorus_self_sing_card_stub_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,18 +22,16 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/view_55_dp"
         android:layout_marginBottom="@dimen/view_55_dp"
-        android:inflatedId="@+id/grab_video_normal_lyric_view"
-        android:layout="@layout/double_normal_lyric_layout"
+        android:layout="@layout/double_normal_lyric_stub_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ViewStub
-        android:id="@+id/grab_video_mini_game_lyric_view_stub"
+        android:id="@+id/grab_video_mini_game_self_sing_card_stub"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/view_55_dp"
         android:layout_marginBottom="@dimen/view_55_dp"
-        android:inflatedId="@+id/grab_video_mini_game_lyric_view"
         android:layout="@layout/grab_video_mini_game_self_sing_card_stub_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

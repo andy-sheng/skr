@@ -1,32 +1,29 @@
-package com.module.playways.grab.room.view.normal;
+package com.module.playways.grab.room.view.pk;
 
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 
 /**
  * 你的主场景歌词
  */
-public class VideoNormalSelfSingCardView extends SelfSingLyricView {
+public class VideoPkSelfSingCardView extends SelfSingLyricView {
     public final static String TAG = "SelfSingCardView2";
 
 
-    public VideoNormalSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+    public VideoPkSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub, roomData);
     }
 
     @Override
     protected int layoutDesc() {
-        return R.layout.grab_video_normal_self_sing_card_stub_layout;
+        return R.layout.grab_video_pk_self_sing_card_stub_layout;
     }
 
     SelfSingCardView.Listener mListener;

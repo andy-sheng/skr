@@ -590,27 +590,6 @@ public class GrabVideoDisplayView extends ExViewStub {
         EventBus.getDefault().unregister(this);
     }
 
-    private int getTranslateY(boolean open, boolean topContentViewVisiable) {
-        int ty = 0;
-        if (mParentView != null) {
-            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
-            if (open) {
-                if (topContentViewVisiable && lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
-                    ty = U.getDisplayUtils().dip2px(58);
-                } else {
-                    ty = U.getDisplayUtils().dip2px(14);
-                }
-            } else {
-                if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
-                    ty = U.getDisplayUtils().dip2px(88);
-                } else {
-                    ty = U.getDisplayUtils().dip2px(14);
-                }
-            }
-        }
-        return ty;
-    }
-
     /**
      * 内部的两个小部件的动画
      *
@@ -646,6 +625,37 @@ public class GrabVideoDisplayView extends ExViewStub {
         if (mBeautySettingBtn != null) {
             mBeautySettingBtn.setTranslationY(translateY);
         }
+    }
+
+    public void adjustViewPostionWhenSolo() {
+        int translateY = U.getStatusBarUtil().getStatusBarHeight(U.app());
+        if (mSingCountDownView != null) {
+            mSingCountDownView.setTranslationY(translateY);
+        }
+        if (mBeautySettingBtn != null) {
+            mBeautySettingBtn.setTranslationY(translateY);
+        }
+    }
+
+    private int getTranslateY(boolean open, boolean topContentViewVisiable) {
+        int ty = 0;
+        if (mParentView != null) {
+            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+            if (open) {
+                if (topContentViewVisiable && lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                    ty = U.getDisplayUtils().dip2px(58);
+                } else {
+                    ty = U.getDisplayUtils().dip2px(14);
+                }
+            } else {
+                if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+                    ty = U.getDisplayUtils().dip2px(88);
+                } else {
+                    ty = U.getDisplayUtils().dip2px(14);
+                }
+            }
+        }
+        return ty;
     }
 
     public void setMarginTop(int px) {
