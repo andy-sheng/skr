@@ -4,11 +4,9 @@ import android.content.Context
 import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -55,10 +53,10 @@ class BusinessCardDialogView : ConstraintLayout {
                 .build())
         name_tv.text = UserInfoManager.getInstance().getRemarkName(mUserInfo.userId, mUserInfo.nickname)
         userid_tv.text = "ID号：" + mUserInfo.userId
-        if (MyUserInfoManager.getInstance().sex == ESex.SX_MALE.value) {
+        if (mUserInfo.sex == ESex.SX_MALE.value) {
             sex_iv.visibility = View.VISIBLE
             sex_iv.setBackgroundResource(R.drawable.sex_man_icon)
-        } else if (MyUserInfoManager.getInstance().sex == ESex.SX_FEMALE.value) {
+        } else if (mUserInfo.sex == ESex.SX_FEMALE.value) {
             sex_iv.visibility = View.VISIBLE
             sex_iv.setBackgroundResource(R.drawable.sex_woman_icon)
         } else {
@@ -75,7 +73,7 @@ class BusinessCardDialogView : ConstraintLayout {
         }
         flowlayout.adapter = mTagAdapter
 
-        if (MyUserInfoManager.getInstance().location != null && !TextUtils.isEmpty(mUserInfo.location.city)) {
+        if (mUserInfo.location != null && !TextUtils.isEmpty(mUserInfo.location.city)) {
             mHashMap[LOCATION_TAG] = mUserInfo.location.city
         }
 
@@ -110,7 +108,7 @@ class BusinessCardDialogView : ConstraintLayout {
                 mTags.add(mHashMap[CONSTELLATION_TAG]!!)
             }
 
-            if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])){
+            if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {
                 mTags.add(mHashMap[FANS_NUM_TAG]!!)
             }
 
