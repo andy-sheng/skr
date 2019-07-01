@@ -185,4 +185,11 @@ public class SelfSingLyricView extends ExViewStub {
         }
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if(visibility==View.GONE){
+            reset();
+        }
+    }
 }
