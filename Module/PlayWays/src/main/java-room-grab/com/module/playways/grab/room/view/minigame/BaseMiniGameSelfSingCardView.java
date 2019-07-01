@@ -1,46 +1,30 @@
 package com.module.playways.grab.room.view.minigame;
 
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.crash.IgnoreException;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
+import com.common.view.ExViewStub;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
-import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.utils.SongResUtils;
 
-import java.io.File;
-import java.io.IOException;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSource;
-import okio.Okio;
 
 public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
     public final static String TAG = "BaseMiniGameSelfSingCardView";
@@ -59,7 +43,7 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
 
     Disposable mDisposable;
 
-    public BaseMiniGameSelfSingCardView(ViewStub viewStub,GrabRoomData roomData) {
+    public BaseMiniGameSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
         mGrabRoomData = roomData;
     }
@@ -124,7 +108,7 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
         if (mMiniGameInfoModel.getGamePlayType() == EMiniGamePlayType.EMGP_SONG_DETAIL.getValue()) {
             // TODO: 2019-05-29 带歌词的
             mMiniGameSongUrl = mMiniGameInfoModel.getSongInfo().getSongURL();
-            setLyric(mTvLyric,mMiniGameSongUrl);
+            setLyric(mTvLyric, mMiniGameSongUrl);
         } else {
             // TODO: 2019-05-29 不带歌词的,待补充
             mTvLyric.setText(mMiniGameInfoModel.getDisplayGameRule());
@@ -132,14 +116,14 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
         return true;
     }
 
-    protected void setLyric(TextView lyricTv,String lyricUrl){
+    protected void setLyric(TextView lyricTv, String lyricUrl) {
         LyricsManager.getLyricsManager(U.app())
                 .loadGrabPlainLyric(lyricUrl)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String o) throws Exception {
                         lyricTv.setText("");
-                        if (isJSON2(o)) {
+                        if (U.getStringUtils().isJSON(o)) {
                             NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
                             lyricTv.append(mMiniGameInfoModel.getDisplayGameRule());
                             lyricTv.append("\n");
@@ -156,17 +140,6 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
                         }
                     }
                 });
-    }
-
-    public boolean isJSON2(String str) {
-        boolean result = false;
-        try {
-            Object obj = JSON.parse(str);
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
     }
 
     @Override

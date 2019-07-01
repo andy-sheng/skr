@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view.normal.view;
+package com.module.playways.doubleplay.view;
 
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
@@ -122,11 +122,4 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
     public void destroy() {
 
     }
-
-    SelfSingCardView.Listener mListener;
-
-    public void setListener(SelfSingCardView.Listener l) {
-        mListener = l;
-    }
-
 }

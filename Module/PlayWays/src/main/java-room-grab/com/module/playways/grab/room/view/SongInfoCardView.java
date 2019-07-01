@@ -241,7 +241,7 @@ public class SongInfoCardView extends RelativeLayout {
                         @Override
                         public void accept(String o) {
                             mSongLyrics.setText("");
-                            if (isJSON2(o)) {
+                            if (U.getStringUtils().isJSON(o)) {
                                 NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
                                 for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
                                     mSongLyrics.append(newChorusLyricModel.getItems().get(i).getWords());
@@ -255,17 +255,6 @@ public class SongInfoCardView extends RelativeLayout {
                         }
                     }, throwable -> MyLog.e(TAG, throwable));
         }
-    }
-
-    public boolean isJSON2(String str) {
-        boolean result = false;
-        try {
-            Object obj = JSON.parse(str);
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
     }
 
     /**

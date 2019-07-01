@@ -8,10 +8,10 @@ import com.common.log.MyLog;
 import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
-import com.module.playways.grab.room.view.chorus.DoubleChorusSelfSingCardView;
+import com.module.playways.doubleplay.view.DoubleChorusSelfSingCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
-import com.module.playways.grab.room.view.minigame.DoubleMiniGameSelfSingCardView;
-import com.module.playways.grab.room.view.normal.view.DoubleNormalSelfSingCardView;
+import com.module.playways.doubleplay.view.DoubleMiniGameSelfSingCardView;
+import com.module.playways.doubleplay.view.DoubleNormalSelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
@@ -34,7 +34,7 @@ public class DoubleSelfSingCardView {
         }
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_mini_game_lyric_view_stub);
-            mDoubleMiniGameSelfSingCardView = new DoubleMiniGameSelfSingCardView(viewStub, null);
+            mDoubleMiniGameSelfSingCardView = new DoubleMiniGameSelfSingCardView(viewStub);
         }
 
     }
@@ -105,20 +105,4 @@ public class DoubleSelfSingCardView {
         mDoubleNormalSelfSingCardView.destroy();
         mDoubleMiniGameSelfSingCardView.destroy();
     }
-
-    public void setListener(SelfSingCardView.Listener listener) {
-        mDoubleChorusSelfSingCardView.setListener(listener);
-        mDoubleNormalSelfSingCardView.setListener(listener);
-        mDoubleMiniGameSelfSingCardView.setListener(listener);
-    }
-
-//    public View getRealView() {
-//        if(mDoubleNormalSelfSingCardView.getVisibility()==View.VISIBLE){
-//            return mDoubleNormalSelfSingCardView.getRealView();
-//        }
-//        if(mVideoChorusSelfSingCardView.getVisibility()==View.VISIBLE){
-//            return mVideoChorusSelfSingCardView.getRealView();
-//        }
-//        return null;
-//    }
 }

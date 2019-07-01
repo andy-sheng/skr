@@ -1,23 +1,30 @@
-package com.module.playways.grab.room.view.minigame;
+package com.module.playways.doubleplay.view;
 
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ExViewStub;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
-import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
 import com.zq.live.proto.Common.EMiniGamePlayType;
+import com.zq.lyrics.LyricsManager;
 
-public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
+import io.reactivex.functions.Consumer;
+
+public class DoubleMiniGameSelfSingCardView extends ExViewStub {
     public final static String TAG = "DoubleMiniGameSelfSingCardView";
     LocalCombineRoomMusic mMusic;
     //是不是这个人点的歌儿
@@ -25,13 +32,23 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
     UserInfoModel mOwnerInfo;
     DoubleRoomData mDoubleRoomData;
 
-    public DoubleMiniGameSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
-        super(viewStub, roomData);
+    public MiniGameInfoModel mMiniGameInfoModel;
+    public String mMiniGameSongUrl;
+    public ScrollView mSvLyric;
+    public SimpleDraweeView mAvatarIv;
+    public TextView mFirstTipsTv;
+    public TextView mTvLyric;    //用来显示游戏内容
+
+    public DoubleMiniGameSelfSingCardView(ViewStub viewStub) {
+        super(viewStub);
     }
 
     @Override
     protected void init(View parentView) {
-        super.init(parentView);
+        mSvLyric = mParentView.findViewById(R.id.sv_lyric);
+        mAvatarIv = mParentView.findViewById(R.id.avatar_iv);
+        mFirstTipsTv = mParentView.findViewById(R.id.first_tips_tv);
+        mTvLyric = mParentView.findViewById(R.id.tv_lyric);
     }
 
     public void updateLockState() {
@@ -113,6 +130,35 @@ public class DoubleMiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView
         return true;
     }
 
+    protected void setLyric(TextView lyricTv, String lyricUrl) {
+        LyricsManager.getLyricsManager(U.app())
+                .loadGrabPlainLyric(lyricUrl)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String o) throws Exception {
+                        lyricTv.setText("");
+                        if (U.getStringUtils().isJSON(o)) {
+                            NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
+                            lyricTv.append(mMiniGameInfoModel.getDisplayGameRule());
+                            lyricTv.append("\n");
+                            for (int i = 0; i < newChorusLyricModel.getItems().size() && i < 2; i++) {
+                                lyricTv.append(newChorusLyricModel.getItems().get(i).getWords());
+                                if (i == 0) {
+                                    lyricTv.append("\n");
+                                }
+                            }
+                        } else {
+                            lyricTv.append(mMiniGameInfoModel.getDisplayGameRule());
+                            lyricTv.append("\n");
+                            lyricTv.append(o);
+                        }
+                    }
+                });
+    }
+
+    public void destroy() {
+
+    }
 
     @Override
     protected int layoutDesc() {

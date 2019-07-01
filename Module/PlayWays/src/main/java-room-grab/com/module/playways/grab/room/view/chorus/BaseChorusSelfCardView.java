@@ -31,6 +31,8 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+import static com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter.ChorusLineLyricModel.GRAB_TYPE;
+
 public abstract class BaseChorusSelfCardView extends ExViewStub {
     public final static String TAG = "ChorusSelfSingCardView";
 
@@ -42,8 +44,8 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
     Disposable mDisposable;
 
     public static class DH {
-        UserInfoModel mUserInfoModel;
-        ChorusRoundInfoModel mChorusRoundInfoModel;
+        public UserInfoModel mUserInfoModel;
+        public ChorusRoundInfoModel mChorusRoundInfoModel;
 
         public void reset() {
             mUserInfoModel = null;
@@ -60,10 +62,6 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
     public BaseChorusSelfCardView(ViewStub viewStub, GrabRoomData roomData) {
         super(viewStub);
         mRoomData = roomData;
-    }
-
-    public BaseChorusSelfCardView(ViewStub viewStub) {
-        super(viewStub);
     }
 
     @Override
@@ -116,7 +114,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
                     public void accept(String result) throws Exception {
                         List<ChorusSelfLyricAdapter.ChorusLineLyricModel> lyrics = new ArrayList<>();
 
-                        if (isJSON2(result)) {
+                        if (U.getStringUtils().isJSON(result)) {
                             NewChorusLyricModel newChorusLyricModel = JSON.parseObject(result, NewChorusLyricModel.class);
                             for (NewChorusLyricModel.ItemsBean itemsBean : newChorusLyricModel.getItems()) {
                                 UserInfoModel owner = (itemsBean.getTurn() == 1 ? mLeft.mUserInfoModel : mRight.mUserInfoModel);
@@ -126,10 +124,10 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
                                     if (bean.getUserInfoModel().getUserId() == owner.getUserId()) {
                                         bean.lyrics += "\n" + itemsBean.getWords();
                                     } else {
-                                        lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, itemsBean.getWords()));
+                                        lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, itemsBean.getWords(), GRAB_TYPE));
                                     }
                                 } else {
-                                    lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, itemsBean.getWords()));
+                                    lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, itemsBean.getWords(), GRAB_TYPE));
                                 }
                             }
                         } else {
@@ -140,9 +138,9 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
                                     UserInfoModel owner = turnLeft ? mLeft.mUserInfoModel : mRight.mUserInfoModel;
                                     turnLeft = !turnLeft;
                                     if ((i + 1) < strings.length) {
-                                        lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, strings[i] + "\n" + strings[i + 1]));
+                                        lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, strings[i] + "\n" + strings[i + 1], GRAB_TYPE));
                                     } else {
-                                        lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, strings[i]));
+                                        lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, strings[i], GRAB_TYPE));
                                     }
                                 }
                             }
@@ -159,17 +157,6 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
                     }
                 });
         return true;
-    }
-
-    public boolean isJSON2(String str) {
-        boolean result = false;
-        try {
-            Object obj = JSON.parse(str);
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
     }
 
     public void setListener(SelfSingCardView.Listener listener) {

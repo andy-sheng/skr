@@ -20,13 +20,8 @@ import com.module.playways.doubleplay.DoubleRoomData;
 public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.ChorusLineLyricModel, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
 
     public final static String TAG = "ChorusSelfLyricAdapter";
-    public final static int GRAB_TYPE = 0;
-    public final static int DOUBLE_TYPE = 1;
-    private int mType = GRAB_TYPE;
-
     ChorusSelfSingCardView.DH mLeft;
     ChorusSelfSingCardView.DH mRight;
-
     boolean mLeftGiveUp = false;
     boolean mRightGiveUp = false;
     boolean mIsForVideo = false;
@@ -48,17 +43,16 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
     public ChorusSelfLyricAdapter(ChorusSelfSingCardView.DH left, ChorusSelfSingCardView.DH right, boolean isForVideo, DoubleRoomData doubleRoomData) {
         this(left, right, isForVideo);
         mDoubleRoomData = doubleRoomData;
-        mType = DOUBLE_TYPE;
     }
 
     @NonNull
     @Override
     public ChorusSelfLyricHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chorus_self_lyric_item_layout, parent, false);
-        ChorusSelfLyricHolder chorusSelfLyric;
-        if (mType == GRAB_TYPE) {
+        ChorusSelfLyricHolder chorusSelfLyric = null;
+        if (viewType == ChorusLineLyricModel.GRAB_TYPE) {
             chorusSelfLyric = new ChorusSelfLyricHolder(view);
-        } else {
+        } else if (viewType == ChorusLineLyricModel.DOUBLE_TYPE) {
             chorusSelfLyric = new DoubleChorusSelfLyricHolder(view);
         }
 
@@ -74,6 +68,12 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
     @Override
     public int getItemCount() {
         return mDataList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        ChorusLineLyricModel chorusLineLyricModel = mDataList.get(position);
+        return chorusLineLyricModel.getType();
     }
 
     /**
@@ -223,12 +223,20 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
     }
 
     public static class ChorusLineLyricModel {
-        UserInfoModel UserInfoModel;
-        String lyrics;
+        public final static int GRAB_TYPE = 0;
+        public final static int DOUBLE_TYPE = 1;
+        public UserInfoModel UserInfoModel;
+        public String lyrics;
+        int type;
 
-        public ChorusLineLyricModel(UserInfoModel userInfoModel, String lyrics) {
+        public ChorusLineLyricModel(UserInfoModel userInfoModel, String lyrics, int type) {
             UserInfoModel = userInfoModel;
             this.lyrics = lyrics;
+            this.type = type;
+        }
+
+        public int getType() {
+            return type;
         }
 
         public String getLyrics() {
