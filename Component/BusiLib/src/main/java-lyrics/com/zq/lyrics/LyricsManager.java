@@ -162,7 +162,7 @@ public class LyricsManager {
      * @return
      */
     public Observable<String> loadGrabPlainLyric(final String url) {
-        MyLog.d(TAG,"loadGrabPlainLyric" + " url=" + url);
+        MyLog.w(TAG,"loadGrabPlainLyric" + " url=" + url);
         return Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
