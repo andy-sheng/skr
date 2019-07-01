@@ -156,6 +156,11 @@ class DoubleRoomData() : Serializable {
         }
 
         for (info in localUserLockInfoList) {
+            val map = userInfoListMap
+            if (map == null || map[info.userID] == null) {
+                continue
+            }
+
             if (userLockInfoMap[info.userID] == null) {
                 userLockInfoMap[info.userID] = info
                 EventBus.getDefault().post(UpdateLockEvent(info.userID, info.isHasLock))

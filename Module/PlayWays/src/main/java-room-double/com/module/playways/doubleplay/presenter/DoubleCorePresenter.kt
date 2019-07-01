@@ -322,7 +322,8 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                  * sync开始了，但房间里的人还是少于2个，需要短链接拉一下房间人数,
                  * 这种情况是，别人进来的push没有收到的时候的一个补救
                  */
-                if ((mRoomData.userInfoListMap?.size ?: 0) < 2) {
+                val map = mRoomData.userInfoListMap
+                if (map == null || map.size < 2) {
                     syncRoomPlayer()
                 }
                 uiHandler.removeMessages(SYNC_MSG)
