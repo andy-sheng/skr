@@ -52,6 +52,8 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
+import io.rong.push.RongPushClient;
+import io.rong.push.pushconfig.PushConfig;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
@@ -290,6 +292,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 rongKey = "e5t4ouvpec57a";
             }
             RongIM.getInstance().disconnect();
+
+            PushConfig config = new PushConfig.Builder()
+                    .enableHWPush(true)  // 配置华为推送
+                    .enableMiPush("2882303761517932750", "5701793259750")
+                    .enableOppoPush("b6476d0350bf448da381e589e232add8","1b038723163d485b9d739ad9ee0fbe8e")
+                    .build();
+            RongPushClient.setPushConfig(config);
+
             RongIM.init(application, rongKey);
             RongIM.setUserInfoProvider(this, true);
             mIsInit = true;

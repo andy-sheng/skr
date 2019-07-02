@@ -26,7 +26,7 @@ import cn.jpush.android.api.JPushInterface;
  * 1) 默认用户会打开主界面
  * 2) 接收不到自定义消息
  */
-public class MyReceiver extends BroadcastReceiver {
+public class MyJGReceiver extends BroadcastReceiver {
     private static final String TAG = "MyReceiver";
 
     @Override
