@@ -3,9 +3,11 @@ package com.module.playways.grab.room.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.constraint.Group;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -50,17 +52,20 @@ public class GrabResultFragment extends BaseFragment {
     GrabResultData mGrabResultData;
     ScoreStateModel mScoreStateModel;
 
-    RelativeLayout mSingEndRecord;
-    ExRelativeLayout mResultArea;
-    ExTextView mLevelDescTv;
-    LevelStarProgressBar mLevelProgress;
-    BitmapTextView mSongNum;
-    BitmapTextView mSongEndPer;
-    BitmapTextView mBaodengNum;
-    NormalLevelView2 mLevelView;
-    LinearLayout mLlBottomArea;
-    StrokeTextView mTvBack;
-    StrokeTextView mTvAgain;
+    Group mGrabNumArea;
+    TextView mGrabNumTv;
+    Group mBurstArea;
+    TextView mBurstNumTv;
+    Group mFlowerArea;
+    TextView mFlowerNumTv;
+    Group mCharmArea;
+    TextView mCharmNumTv;
+    Group mCoinArea;
+    TextView mCoinNumTv;
+    Group mHzArea;
+    TextView mHzNumTv;
+    ExTextView mTvBack;
+    ExTextView mTvAgain;
 
     Handler mUiHandler = new Handler();
 
@@ -71,17 +76,27 @@ public class GrabResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSingEndRecord = (RelativeLayout) mRootView.findViewById(R.id.sing_end_record);
-        mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
-        mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
-        mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
-        mSongNum = (BitmapTextView) mRootView.findViewById(R.id.song_num);
-        mSongEndPer = (BitmapTextView) mRootView.findViewById(R.id.song_end_per);
-        mBaodengNum = (BitmapTextView) mRootView.findViewById(R.id.baodeng_num);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mLlBottomArea = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_area);
-        mTvBack = (StrokeTextView) mRootView.findViewById(R.id.tv_back);
-        mTvAgain = (StrokeTextView) mRootView.findViewById(R.id.tv_again);
+
+        mGrabNumArea = mRootView.findViewById(R.id.grab_num_area);
+        mGrabNumTv = mRootView.findViewById(R.id.grab_num_tv);
+
+        mBurstArea = mRootView.findViewById(R.id.burst_area);
+        mBurstNumTv = mRootView.findViewById(R.id.burst_num_tv);
+
+        mFlowerArea = mRootView.findViewById(R.id.flower_area);
+        mFlowerNumTv = mRootView.findViewById(R.id.flower_num_tv);
+
+        mCharmArea = mRootView.findViewById(R.id.charm_area);
+        mCharmNumTv = mRootView.findViewById(R.id.charm_num_tv);
+
+        mCoinArea = mRootView.findViewById(R.id.coin_area);
+        mCoinNumTv = mRootView.findViewById(R.id.coin_num_tv);
+
+        mHzArea = mRootView.findViewById(R.id.hz_area);
+        mHzNumTv = mRootView.findViewById(R.id.hz_num_tv);
+
+        mTvBack = mRootView.findViewById(R.id.tv_back);
+        mTvAgain = mRootView.findViewById(R.id.tv_again);
 
         if (mRoomData != null) {
             mGrabResultData = mRoomData.getGrabResultData();
@@ -164,16 +179,7 @@ public class GrabResultFragment extends BaseFragment {
             }
 
             if (mScoreStateModel != null && mGrabResultData.getGrabResultInfoModel() != null) {
-                mLevelView.bindData(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking());
-                mLevelDescTv.setText(mScoreStateModel.getRankingDesc());
-                int progress = 0;
-                if (mScoreStateModel.getMaxExp() != 0) {
-                    progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
-                }
-                mLevelProgress.setCurProgress(progress);
-                mSongNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingCnt()) + "");
-                mSongEndPer.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio()) + "");
-                mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
+                // TODO: 2019-07-02 等信令更新
             }
         } else {
             MyLog.w(TAG, "bindData 数据为空了");
