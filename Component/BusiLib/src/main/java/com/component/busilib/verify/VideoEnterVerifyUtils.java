@@ -76,6 +76,28 @@ public class VideoEnterVerifyUtils {
         }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
     }
 
+    /**
+     * 双人房实人认证相关
+     *
+     * @param successCallback
+     */
+    public void checkJoinDoubleRoomPermission(final Runnable successCallback) {
+        if (MyLog.isDebugLogOpen()) {
+            if (successCallback != null) {
+                successCallback.run();
+            }
+            return;
+        }
+
+        final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
+        ApiMethods.subscribe(grabRoomServerApi.checkJoinDoubleRoomPermission(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                process2(obj, successCallback);
+            }
+        }, new ApiMethods.RequestControl("checkJoinDoubleRoomPermission", ApiMethods.ControlType.CancelThis));
+    }
+
     private void process2(ApiResult obj, Runnable successCallback) {
         if (obj.getErrno() == 0) {
             boolean isAuth = obj.getData().getBooleanValue("IsAuth");

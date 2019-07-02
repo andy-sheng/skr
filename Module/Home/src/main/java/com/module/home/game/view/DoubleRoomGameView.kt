@@ -17,6 +17,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.component.busilib.verify.VideoEnterVerifyUtils
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
@@ -37,6 +38,8 @@ class DoubleRoomGameView : RelativeLayout {
     }
 
     var mConfirmMatchInfoView: ConfirmMatchInfoView? = null
+
+    internal var mRealNameVerifyUtils = VideoEnterVerifyUtils()
 
     private var mModifyDisposable: Disposable? = null  //修改资料
     private var mDisposable: Disposable? = null        //获取次数
@@ -71,9 +74,11 @@ class DoubleRoomGameView : RelativeLayout {
 //                    } else {
                     StatisticsAdapter.recordCountEvent("cp", "invite1", null)
                     mSkrAudioPermission.ensurePermission({
-                        ARouter.getInstance()
-                                .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                .navigation()
+                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+                            ARouter.getInstance()
+                                    .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                    .navigation()
+                        }
                     }, true)
 //                    }
                 } else {
@@ -85,8 +90,10 @@ class DoubleRoomGameView : RelativeLayout {
         invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mSkrAudioPermission.ensurePermission({
-                    val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    playWaysService?.createDoubleRoom()
+                    mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+                        val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                        playWaysService?.createDoubleRoom()
+                    }
                 }, true)
             }
         })
