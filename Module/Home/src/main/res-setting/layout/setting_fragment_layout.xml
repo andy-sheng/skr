@@ -16,7 +16,7 @@
         app:centerTextSize="@dimen/textsize_18_dp"
         app:centerTextStyle="BOLD"
         app:centerType="textView"
-        app:leftDrawable="@drawable/img_back"
+        app:leftDrawable="@drawable/grab_back"
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"

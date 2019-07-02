@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,62 +15,70 @@
         app:centerTextSize="@dimen/textsize_18_dp"
         app:centerTextStyle="BOLD"
         app:centerType="textView"
-        app:leftDrawable="@drawable/img_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/grab_back"
         app:leftType="textView"
         app:rightText="完成"
         app:rightTextColor="@color/white_trans_70"
         app:rightTextSize="@dimen/textsize_18_dp"
-        app:rightType="textView"
         app:rightTextStyle="BOLD"
+        app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
-        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="@color/colorPrimary" />
 
-    <RelativeLayout
+    <com.common.view.ex.ExImageView
+        android:id="@+id/background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:background="@drawable/common_dialog_bg"
-        android:paddingLeft="@dimen/view_3_dp"
-        android:paddingTop="@dimen/view_3_dp"
-        android:paddingRight="@dimen/view_3_dp"
-        android:paddingBottom="@dimen/view_5_dp">
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titlebar" />
 
-        <com.common.view.ex.NoLeakEditText
-            android:id="@+id/nickname_et"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_54_dp"
-            android:layout_marginLeft="@dimen/view_12_dp"
-            android:layout_marginTop="@dimen/view_30_dp"
-            android:layout_marginRight="@dimen/view_12_dp"
-            android:background="@drawable/edit_info_single_input_bg"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingLeft="@dimen/view_14_dp"
-            android:paddingRight="@dimen/view_14_dp"
-            android:singleLine="true"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="@dimen/view_16_dp"
-            android:textStyle="bold" />
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/nickname_et"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:background="@drawable/edit_info_single_input_bg"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/view_14_dp"
+        android:paddingRight="@dimen/view_14_dp"
+        android:singleLine="true"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/view_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/background"
+        app:layout_constraintRight_toRightOf="@id/background"
+        app:layout_constraintTop_toTopOf="@id/background"/>
 
-        <com.common.view.ex.ExTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/nickname_et"
-            android:layout_marginLeft="@dimen/view_27_dp"
-            android:layout_marginTop="@dimen/view_8_dp"
-            android:text="每3个月才能更改一次昵称喔～"
-            android:visibility="gone"
-            android:textColor="#993B4E79"
-            android:textSize="@dimen/textsize_14_dp"
-            android:textStyle="bold" />
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_27_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:text="每3个月才能更改一次昵称喔～"
+        app:layout_constraintLeft_toLeftOf="@id/nickname_et"
+        app:layout_constraintTop_toBottomOf="@id/nickname_et"
+        android:textColor="#993B4E79"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-    </RelativeLayout>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

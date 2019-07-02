@@ -32,7 +32,7 @@ import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.updateinfo.fragment.EditInfoAgeFragment2;
+import com.module.home.updateinfo.fragment.EditInfoAgeTagFragment;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.EditInfoSignFragment;
@@ -206,7 +206,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     //修改年龄
     private void onClickAgeContainer() {
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, EditInfoAgeFragment2.class)
+                FragmentUtils.newAddParamsBuilder(this, EditInfoAgeTagFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
