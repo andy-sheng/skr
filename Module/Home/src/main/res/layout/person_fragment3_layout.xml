@@ -53,8 +53,8 @@
             android:id="@+id/classics_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srlAccentColor="@color/white"
-            android:background="@color/transparent"/>
+            android:background="@color/transparent"
+            app:srlAccentColor="@color/white" />
 
         <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/view_1_dp"
-                    android:background="#4C3B4E79"/>
+                    android:background="#4C3B4E79" />
 
                 <com.common.view.viewpager.SlidingTabLayout
                     android:id="@+id/person_tab"
@@ -148,15 +148,15 @@
                             android:id="@+id/level_view"
                             android:layout_width="@dimen/view_28_dp"
                             android:layout_height="@dimen/view_24_dp"
-                            android:layout_marginTop="@dimen/view_1_dp"
                             android:layout_marginLeft="@dimen/view_10_dp"
+                            android:layout_marginTop="@dimen/view_1_dp"
+                            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+                            app:layout_constraintTop_toTopOf="@id/avatar_iv"
                             levelView2:mainHeight2="@dimen/view_24_dp"
                             levelView2:mainWidth2="@dimen/view_28_dp"
                             levelView2:subBottom2="@dimen/view_1_dp"
                             levelView2:subHeight2="@dimen/view_3_dp"
-                            levelView2:subWidth2="@dimen/view_5_dp"
-                            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
-                            app:layout_constraintTop_toTopOf="@id/avatar_iv"/>
+                            levelView2:subWidth2="@dimen/view_5_dp" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/name_tv"
@@ -218,6 +218,43 @@
                             app:layout_constraintLeft_toLeftOf="@id/charm_tv"
                             app:layout_constraintTop_toTopOf="@id/charm_tv" />
 
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/friends_num_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_30_dp"
+                            android:layout_marginTop="@dimen/view_10_dp"
+                            android:gravity="center"
+                            android:text="好友"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textsize_24_dp"
+                            app:layout_constraintLeft_toLeftOf="@id/wallet_iv"
+                            app:layout_constraintRight_toRightOf="@id/wallet_iv"
+                            app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/follows_num_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_30_dp"
+                            android:gravity="center"
+                            android:text="关注"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textsize_24_dp"
+                            app:layout_constraintLeft_toLeftOf="@id/income_iv"
+                            app:layout_constraintRight_toRightOf="@id/income_iv"
+                            app:layout_constraintTop_toTopOf="@id/friends_num_tv" />
+
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/fans_num_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_30_dp"
+                            android:gravity="center"
+                            android:text="粉丝"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textsize_24_dp"
+                            app:layout_constraintLeft_toLeftOf="@id/recharge_iv"
+                            app:layout_constraintRight_toRightOf="@id/recharge_iv"
+                            app:layout_constraintTop_toTopOf="@id/friends_num_tv" />
+
                         <com.common.view.ex.ExImageView
                             android:id="@+id/wallet_iv"
                             android:layout_width="@dimen/view_96_dp"
@@ -226,7 +263,7 @@
                             android:background="@drawable/person_center_wallet_icon"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/income_iv"
-                            app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+                            app:layout_constraintTop_toBottomOf="@id/friends_num_tv" />
 
                         <com.common.view.ex.ExImageView
                             android:id="@+id/income_iv"
@@ -270,8 +307,8 @@
                                 android:layout_height="@dimen/view_60_dp"
                                 android:layout_marginLeft="@dimen/view_20_dp"
                                 android:layout_marginBottom="@dimen/view_10_dp"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent" />
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/srl_name_tv"

@@ -11,6 +11,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
@@ -35,6 +37,7 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.ImageUtils;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -96,6 +99,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ExTextView mCharmTv;
     ImageView mBusinessCard;
 
+    ExTextView mFriendsNumTv;
+    ExTextView mFansNumTv;
+    ExTextView mFollowsNumTv;
+
     ExImageView mIncomeIv;
     ExImageView mWalletIv;
     ExImageView mRechargeIv;
@@ -120,6 +127,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     DialogPlus mDialogPlus;
     boolean isInitToolbar = false;
+
+    int mFriendNum = 0;
+    int mFansNum = 0;
+    int mFocusNum = 0;
 
     @Override
     public int initView() {
@@ -325,10 +336,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initFunctionArea() {
+        mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
+        mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
+        mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
+
         mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
         mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
         mRechargeIv = (ExImageView) mRootView.findViewById(R.id.recharge_iv);
-
 
         mWalletIv.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -358,6 +372,43 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                                 .build());
             }
         });
+
+        mFriendsNumTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 好友，双向关注
+                openRelationFragment(UserInfoManager.RELATION.FRIENDS.getValue());
+            }
+        });
+
+        mFansNumTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 粉丝，我关注的
+                openRelationFragment(UserInfoManager.RELATION.FANS.getValue());
+            }
+        });
+
+        mFollowsNumTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 关注, 关注我的
+                openRelationFragment(UserInfoManager.RELATION.FOLLOW.getValue());
+            }
+        });
+    }
+
+    private void openRelationFragment(int mode) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("from_page_key", mode);
+        bundle.putInt("friend_num_key", mFriendNum);
+        bundle.putInt("follow_num_key", mFocusNum);
+        bundle.putInt("fans_num_key", mFansNum);
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_RELATION)
+                .with(bundle)
+                .navigation();
+
     }
 
     private void initPersonArea() {
@@ -491,6 +542,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSmartRefresh.finishRefresh();
         showCharmsTotal(meiLiCntTotal);
         showUserLevel(userLevelModels);
+        showRelationNum(relationNumModels);
     }
 
     private void showCharmsTotal(int meiLiCntTotal) {
@@ -511,6 +563,40 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         }
         mLevelView.bindData(mainRank, subRank);
+    }
+
+    public void showRelationNum(List<RelationNumModel> list) {
+        for (RelationNumModel mode : list) {
+            if (mode.getRelation() == UserInfoManager.RELATION.FRIENDS.getValue()) {
+                mFriendNum = mode.getCnt();
+            } else if (mode.getRelation() == UserInfoManager.RELATION.FANS.getValue()) {
+                mFansNum = mode.getCnt();
+            } else if (mode.getRelation() == UserInfoManager.RELATION.FOLLOW.getValue()) {
+                mFocusNum = mode.getCnt();
+            }
+        }
+
+        refreshRelationNum();
+    }
+
+    private void refreshRelationNum() {
+        SpannableStringBuilder friendBuilder = new SpanUtils()
+                .append(String.valueOf(mFriendNum)).setFontSize(24, true)
+                .append("好友").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .create();
+        mFriendsNumTv.setText(friendBuilder);
+
+        SpannableStringBuilder fansBuilder = new SpanUtils()
+                .append(String.valueOf(mFansNum)).setFontSize(24, true)
+                .append("粉丝").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .create();
+        mFansNumTv.setText(fansBuilder);
+
+        SpannableStringBuilder focusBuilder = new SpanUtils()
+                .append(String.valueOf(mFocusNum)).setFontSize(24, true)
+                .append("关注").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .create();
+        mFollowsNumTv.setText(focusBuilder);
     }
 
     @Override
