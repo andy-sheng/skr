@@ -1,6 +1,5 @@
 package com.module.playways.grab.room.songmanager.fragment;
 
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -254,6 +253,10 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         mViewpager.setAdapter(mPagerAdapter);
         mTagTab.setViewPager(mViewpager);
         mPagerAdapter.notifyDataSetChanged();
+
+        if (mSongManageData.isDoubleRoom()) {
+            mViewpager.setCurrentItem(1);
+        }
     }
 
     public Object instantiateItemGrab(@NonNull ViewGroup container, int position, List<RecommendTagModel> recommendTagModelList) {
