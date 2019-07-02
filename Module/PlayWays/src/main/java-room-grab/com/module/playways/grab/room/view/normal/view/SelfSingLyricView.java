@@ -31,8 +31,8 @@ import io.reactivex.functions.Consumer;
 public class SelfSingLyricView extends ExViewStub {
     public final static String TAG = "SelfSingLyricView";
 
-    ScrollView mSvlyric;
-    TextView mTvLyric;
+    protected ScrollView mSvlyric;
+    protected TextView mTvLyric;
     protected ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
@@ -143,6 +143,7 @@ public class SelfSingLyricView extends ExViewStub {
         initLyric();
         mManyLyricsView.setVisibility(View.GONE);
         mSvlyric.setVisibility(View.VISIBLE);
+        mSvlyric.scrollTo(0,0);
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }

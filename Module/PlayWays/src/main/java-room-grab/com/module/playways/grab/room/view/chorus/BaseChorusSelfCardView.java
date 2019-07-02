@@ -36,7 +36,7 @@ import static com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter.C
 public abstract class BaseChorusSelfCardView extends ExViewStub {
     public final static String TAG = "ChorusSelfSingCardView";
 
-    RecyclerView mLyricRecycleView;
+    protected RecyclerView mLyricRecycleView;
     ChorusSelfLyricAdapter mChorusSelfLyricAdapter;
     GrabRoomData mRoomData;
     SongModel mSongModel;

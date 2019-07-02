@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.module.playways.grab.room.view.GrabRootView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/tools"
     xmlns:gameType="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ranking_container"
+    android:id="@+id/grab_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/room_bg_color">
@@ -93,8 +93,8 @@
     <com.module.playways.grab.room.top.GrabTopOpView
         android:id="@+id/grab_top_op_view"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="@dimen/view_38_dp" />
+        android:layout_height="@dimen/view_38_dp"
+        android:visibility="gone" />
 
     <!--包括嘉宾栏 和 观众栏-->
     <com.module.playways.grab.room.top.GrabTopContentView
@@ -232,7 +232,7 @@
         android:paddingBottom="@dimen/view_8_dp"
         android:visibility="gone" />
 
-<!--大礼物动画-->
+    <!--大礼物动画-->
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
@@ -304,4 +304,4 @@
         android:inflatedId="@+id/debug_log_view"
         android:layout="@layout/debug_log_view_stub_layout" />
 
-</com.common.view.ex.ExRelativeLayout>
+</com.module.playways.grab.room.view.GrabRootView>

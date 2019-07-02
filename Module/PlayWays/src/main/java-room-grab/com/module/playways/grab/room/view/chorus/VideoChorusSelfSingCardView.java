@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.view.chorus;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
@@ -9,6 +10,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.GrabRootView;
 
 import java.util.List;
 
@@ -20,8 +22,11 @@ public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
 
     public final static String TAG = "VideoChorusSelfSingCardView";
 
-    public VideoChorusSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+    GrabRootView mGrabRootView;
+
+    public VideoChorusSelfSingCardView(ViewStub viewStub, GrabRoomData roomData, GrabRootView rootView) {
         super(viewStub, roomData);
+        mGrabRootView = rootView;
     }
 
     @Override
@@ -32,6 +37,15 @@ public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
             RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) parentView.getLayoutParams();
             topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
         }
+        mGrabRootView.addOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mLyricRecycleView.isShown()) {
+                    return mLyricRecycleView.onTouchEvent(event);
+                }
+                return false;
+            }
+        });
     }
 
     @Override

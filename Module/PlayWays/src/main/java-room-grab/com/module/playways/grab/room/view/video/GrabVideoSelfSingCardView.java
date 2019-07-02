@@ -6,6 +6,7 @@ import android.view.ViewStub;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.view.GrabRootView;
 import com.module.playways.grab.room.view.chorus.VideoChorusSelfSingCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.minigame.VideoMiniGameSelfSingCardView;
@@ -23,7 +24,7 @@ public class GrabVideoSelfSingCardView {
         mRoomData = roomData;
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_normal_self_sing_card_stub);
-            mVideoNormalSelfSingCardView = new VideoNormalSelfSingCardView(viewStub, roomData);
+            mVideoNormalSelfSingCardView = new VideoNormalSelfSingCardView(viewStub, roomData, (GrabRootView) rootView);
         }
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_pk_self_sing_card_stub);
@@ -31,7 +32,7 @@ public class GrabVideoSelfSingCardView {
         }
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_chorus_self_sing_card_stub);
-            mVideoChorusSelfSingCardView = new VideoChorusSelfSingCardView(viewStub, roomData);
+            mVideoChorusSelfSingCardView = new VideoChorusSelfSingCardView(viewStub, roomData, (GrabRootView) rootView);
         }
         {
             ViewStub viewStub = rootView.findViewById(R.id.grab_video_mini_game_self_sing_card_stub);

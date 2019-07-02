@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -72,6 +73,7 @@ import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabGiveupView;
 import com.module.playways.grab.room.view.GrabOpView;
+import com.module.playways.grab.room.view.GrabRootView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
@@ -150,7 +152,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     GrabRoomData mRoomData;
 
-    ExRelativeLayout mRankingContainer;
+    GrabRootView mGrabRootView;
 
     ExImageView mGrabRoomBgFlag;
 
@@ -301,11 +303,20 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
 
         // 请保证从下面的view往上面的view开始初始化
-        mRankingContainer = mRootView.findViewById(R.id.ranking_container);
-        mRankingContainer.setOnClickListener(new View.OnClickListener() {
+        mGrabRootView = mRootView.findViewById(R.id.grab_root_view);
+//        mGrabRootView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mInputContainerView.hideSoftInput();
+//            }
+//        });
+        mGrabRootView.addOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                mInputContainerView.hideSoftInput();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    mInputContainerView.hideSoftInput();
+                }
+                return false;
             }
         });
         initBgView();
@@ -378,8 +389,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 lp.rightMargin = U.getDisplayUtils().dip2px(10);
                 lp.addRule(RelativeLayout.ALIGN_TOP, R.id.bottom_bg_vp);
                 lp.topMargin = -U.getDisplayUtils().dip2px(55);
-                int index = mRankingContainer.indexOfChild(mInputContainerView);
-                mRankingContainer.addView(mOwnerBeginGameIv, index, lp);
+                int index = mGrabRootView.indexOfChild(mInputContainerView);
+                mGrabRootView.addView(mOwnerBeginGameIv, index, lp);
                 mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
@@ -410,7 +421,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowInviteTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_yindao_yaoqinghaoyou)
+        new GameTipsManager.GameTipsView(mGrabRootView, R.drawable.guide_yindao_yaoqinghaoyou)
                 .setActivity(getActivity())
                 .setMargins(0, U.getDisplayUtils().dip2px(75), U.getDisplayUtils().dip2px(54), 0)
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
@@ -422,12 +433,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowManageSongTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_yindao_fangzhukongzhizhongxin)
+        new GameTipsManager.GameTipsView(mGrabRootView, R.drawable.guide_yindao_fangzhukongzhizhongxin)
                 .setActivity(getActivity())
                 .setMargins(0, 0, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(68))
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1)
-                .setIndex(mRankingContainer.indexOfChild(mBottomBgVp) + 1)
+                .setIndex(mGrabRootView.indexOfChild(mBottomBgVp) + 1)
                 .hasAnimation(true)
                 .setShowCount(3)
                 .setTag(TAG_MANAGE_SONG_TIP_VIEW)
@@ -436,12 +447,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void tryShowChallengeTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_jiabei_tiaozhan)
+        new GameTipsManager.GameTipsView(mGrabRootView, R.drawable.guide_jiabei_tiaozhan)
                 .setActivity(getActivity())
                 .setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(20), 0)
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.BELOW, R.id.grab_op_btn)
-                .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
+                .setIndex(mGrabRootView.indexOfChild(mGrabOpBtn) + 1)
                 .hasAnimation(true)
                 .setShowCount(3)
                 .setTag(TAG_CHANLLENGE_TIP_VIEW)
@@ -450,12 +461,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 抢唱提示
     private void tryShowGrabTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_qiangchang_yindao)
+        new GameTipsManager.GameTipsView(mGrabRootView, R.drawable.guide_qiangchang_yindao)
                 .setActivity(getActivity())
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
                 .setMargins(0, 0, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(2))
-                .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
+                .setIndex(mGrabRootView.indexOfChild(mGrabOpBtn) + 1)
                 .hasAnimation(false)
                 .setShowCount(2)
                 .setTag(TAG_GRAB_ROB_TIP_VIEW)
@@ -464,12 +475,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 爆灯提示
     private void tryShowBurstTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_baodeng_yindao)
+        new GameTipsManager.GameTipsView(mGrabRootView, R.drawable.guide_baodeng_yindao)
                 .setActivity(getActivity())
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .addRule(RelativeLayout.ABOVE, R.id.grab_op_btn)
                 .setMargins(0, 0, U.getDisplayUtils().dip2px(50), -U.getDisplayUtils().dip2px(5))
-                .setIndex(mRankingContainer.indexOfChild(mGrabOpBtn) + 1)
+                .setIndex(mGrabRootView.indexOfChild(mGrabOpBtn) + 1)
                 .hasAnimation(false)
                 .setTag(TAG_BURST_TIP_VIEW)
                 .setShowCount(1)
@@ -478,7 +489,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     // 歌词提示
     void tryShowGrabSelfSingTipView() {
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.guide_daojishi_yindao)
+        new GameTipsManager.GameTipsView(mGrabRootView, R.drawable.guide_daojishi_yindao)
                 .setActivity(getActivity())
                 .addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
@@ -521,7 +532,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
         });
 
-        new GameTipsManager.GameTipsView(mRankingContainer, R.drawable.grab_sroll_finger_icon)
+        new GameTipsManager.GameTipsView(mGrabRootView, R.drawable.grab_sroll_finger_icon)
                 .setActivity(getActivity())
                 .setSize(U.getDisplayUtils().dip2px(64), U.getDisplayUtils().dip2px(54))
                 .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
@@ -1288,7 +1299,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         removeAllEnsureMsg();
         if (mOwnerBeginGameIv != null) {
             // 如果房主开始游戏的按钮还在的话，将其移除
-            mRankingContainer.removeView(mOwnerBeginGameIv);
+            mGrabRootView.removeView(mOwnerBeginGameIv);
         }
         // 播放3秒导唱
         mOthersSingCardView.setVisibility(GONE);
