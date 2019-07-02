@@ -30,4 +30,6 @@ interface IDoublePlayView {
     fun unLockSelfSuccess()
 
     fun noMusic()
+
+    fun joinAgora()
 }

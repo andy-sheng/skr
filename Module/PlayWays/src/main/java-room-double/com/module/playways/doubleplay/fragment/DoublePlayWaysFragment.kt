@@ -12,7 +12,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
@@ -199,16 +198,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         })
 
-        mMicIv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // 开关麦克
-                val isSelected = mMicIv?.isSelected ?: false
-                ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
-                mMicIv?.setSelected(!isSelected)
-//                mMicTv?.text = if (isSelected) "开麦" else "闭麦"
-            }
-        })
-
         mPickIv?.setOnClickListener {
             mDoubleCorePresenter.pickOther()
             mRightZanView?.addZanXin(1)
@@ -387,6 +376,27 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     override fun unLockSelfSuccess() {
         unLockSelf()
+    }
+
+    /**
+     * 进入agora
+     */
+    override fun joinAgora() {
+        val drawable = DrawableCreator.Builder()
+                .setSelectedDrawable(U.getDrawable(R.drawable.skr_jingyin_able))
+                .setUnSelectedDrawable(U.getDrawable(R.drawable.srf_bimai))
+                .build()
+
+        mMicIv?.background = drawable
+
+        mMicIv?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                // 开关麦克
+                val isSelected = mMicIv?.isSelected ?: false
+                ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
+                mMicIv?.setSelected(!isSelected)
+            }
+        })
     }
 
     override fun noMusic() {

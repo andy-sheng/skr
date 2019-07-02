@@ -86,7 +86,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     private fun joinRoomAndInit(first: Boolean) {
         MyLog.w(TAG, "joinRoomAndInit" + " first=$first , gameId is ${mRoomData.gameId}")
-
+        mIDoublePlayView.joinAgora()
         if (mRoomData.gameId > 0) {
             if (first) {
                 val params = Params.getFromPref()
