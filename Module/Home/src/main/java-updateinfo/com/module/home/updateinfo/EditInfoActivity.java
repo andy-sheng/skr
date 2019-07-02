@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -33,6 +34,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.fragment.EditInfoAgeTagFragment;
+import com.module.home.updateinfo.fragment.EditInfoLocationFragment;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.EditInfoSignFragment;
@@ -143,7 +145,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             sex = "女";
         }
         mSexTv.setText(sex);
-        mLocationTv.setText(MyUserInfoManager.getInstance().getLocationDesc());
+        mLocationTv.setText(MyUserInfoManager.getInstance().getLocationProvince());
     }
 
     @Override
@@ -159,9 +161,25 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             onClickAgeContainer(); // 年龄
         } else if (viewId == R.id.edit_sex) {
             onClickSexContainer(); // 性别
-        } else if (viewId == R.id.location_refresh_btn) {
-            onClickLocationRefresh();
+        } else if (viewId == R.id.edit_location) {
+            onClickEditLocation();
         }
+    }
+
+    private void onClickEditLocation() {
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, EditInfoLocationFragment.class)
+                        .setAddToBackStack(true)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                                if (requestCode == 0) {
+                                    mLocationTv.setText(MyUserInfoManager.getInstance().getLocationProvince());
+                                }
+                            }
+                        })
+                        .setHasAnimation(true)
+                        .build());
     }
 
     //修改头像

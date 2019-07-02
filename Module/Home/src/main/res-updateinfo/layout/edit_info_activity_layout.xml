@@ -305,7 +305,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/view_17_dp"
-                android:src="@drawable/refresh_bg" />
+                android:src="@drawable/icon_back" />
 
             <View
                 android:layout_width="match_parent"
