@@ -146,12 +146,12 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
     }
 
     protected void setLyric(TextView lyricTv, String lyricUrl) {
+        lyricTv.setText("");
         LyricsManager.getLyricsManager(U.app())
                 .loadGrabPlainLyric(lyricUrl)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String o) throws Exception {
-                        lyricTv.setText("");
                         if (U.getStringUtils().isJSON(o)) {
                             NewChorusLyricModel newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel.class);
                             lyricTv.append(mMiniGameInfoModel.getDisplayGameRule());
