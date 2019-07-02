@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.presenter;
 
 import android.animation.ValueAnimator;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -39,7 +38,6 @@ import com.component.busilib.recommend.RA;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
-import com.engine.UserStatus;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
@@ -68,10 +66,10 @@ import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.model.BLightInfoModel;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
-import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
+import com.module.playways.grab.room.model.NumericDetailModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
@@ -1421,11 +1419,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.removeMessages(MSG_ENSURE_EXIT);
                 if (result.getErrno() == 0) {
                     mRoomData.setHasExitGame(true);
-                    GrabResultInfoModel grabResultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
-                    List<ScoreResultModel> scoreResultModel = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
-                    if (grabResultInfoModel != null && scoreResultModel != null) {
+                    List<NumericDetailModel> models = JSON.parseArray(result.getData().getString("numericDetail"), NumericDetailModel.class);
+                    if (models != null) {
                         // 得到结果
-                        mRoomData.setGrabResultData(new GrabResultData(grabResultInfoModel, scoreResultModel));
+                        mRoomData.setGrabResultData(new GrabResultData(models));
                         mIGrabView.onGetGameResult(true);
                     } else {
                         mIGrabView.onGetGameResult(false);

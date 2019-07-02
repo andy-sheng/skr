@@ -3,7 +3,6 @@
 package com.module.playways.room.msg.event;
 
 import com.common.core.myinfo.MyUserInfoManager;
-import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
@@ -29,11 +28,6 @@ public final class QRoundAndGameOverMsgEvent {
      */
     public BaseRoundInfoModel roundInfoModel;
 
-    /**
-     * 最终结果信息
-     */
-    public List<GrabResultInfoModel> resultInfo;
-
     public int myCoin = -1;
 
     public EQGameOverReason mOverReason;
@@ -42,10 +36,7 @@ public final class QRoundAndGameOverMsgEvent {
         this.info = info;
         this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
         this.roundInfoModel = GrabRoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
-        resultInfo = new ArrayList<>();
-        for (QResultInfo qResultInfo : qRoundAndGameOverMsg.getResultInfoList()) {
-            resultInfo.add(GrabResultInfoModel.parse(qResultInfo));
-        }
+
         for (QUserCoin c : qRoundAndGameOverMsg.getQUserCoinList()) {
             if (c.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 long a = c.getCoin();
@@ -65,10 +56,6 @@ public final class QRoundAndGameOverMsgEvent {
 
     public BaseRoundInfoModel getRoundInfoModel() {
         return roundInfoModel;
-    }
-
-    public List<GrabResultInfoModel> getResultInfo() {
-        return resultInfo;
     }
 
     public EQGameOverReason getOverReason() {

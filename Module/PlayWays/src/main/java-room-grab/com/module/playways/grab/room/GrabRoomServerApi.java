@@ -65,7 +65,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.room.inframe.mobi/v2/room/exit-room")
+    @PUT("http://dev.room.inframe.mobi/v3/room/exit-room")
     Observable<ApiResult> exitRoom(@Body RequestBody body);
 
     /**
@@ -146,7 +146,7 @@ public interface GrabRoomServerApi {
      * @param roomID
      * @return
      */
-    @GET("http://dev.stand.inframe.mobi/v1/stand/result")
+    @GET("http://dev.stand.inframe.mobi/v2/stand/result")
     Observable<ApiResult> getStandResult(@Query("roomID") int roomID);
 
     /**

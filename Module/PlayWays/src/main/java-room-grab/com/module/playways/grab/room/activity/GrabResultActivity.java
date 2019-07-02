@@ -9,7 +9,6 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.fragment.GrabProductionFragment;
 import com.module.playways.grab.room.fragment.GrabResultFragment;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_RESULT)
@@ -41,19 +40,11 @@ public class GrabResultActivity extends BaseActivity {
             return;
         }
 
-        if (mRoomData.getWorksUploadModel() != null && mRoomData.getWorksUploadModel().size() > 0) {
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabProductionFragment.class)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(false)
-                    .addDataBeforeAdd(0, mRoomData)
-                    .build());
-        } else {
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabResultFragment.class)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(false)
-                    .addDataBeforeAdd(0, mRoomData)
-                    .build());
-        }
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabResultFragment.class)
+                .setAddToBackStack(false)
+                .setHasAnimation(false)
+                .addDataBeforeAdd(0, mRoomData)
+                .build());
     }
 
     @Override
