@@ -69,6 +69,7 @@ import com.zq.person.view.PersonMoreOpView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +112,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     private static final int CHARMS_TAG = 1;
     private static final int LOCATION_TAG = 2;           //城市标签
-    private static final int CONSTELLATION_TAG = 3;      //星座标签
+    private static final int AGE_STAGE_TAG = 3;          //年龄段标签
     private static final int FANS_NUM_TAG = 4;      //粉丝数标签
 
     private List<TagModel> mTags = new ArrayList<>();  //标签
@@ -668,12 +669,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 mSexIv.setVisibility(GONE);
             }
 
-            if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
-                mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
+            if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getProvince())) {
+                mHashMap.put(LOCATION_TAG, model.getLocation().getProvince());
             }
 
-            if (!TextUtils.isEmpty(model.getBirthday())) {
-                mHashMap.put(CONSTELLATION_TAG, model.getConstellation());
+            if (model.getAgeStage() != 0 && !TextUtils.isEmpty(model.getAgeStageString())) {
+                mHashMap.put(AGE_STAGE_TAG, model.getAgeStageString());
             }
 
             refreshTag();
@@ -775,8 +776,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 mTags.add(new TagModel(LOCATION_TAG, mHashMap.get(LOCATION_TAG)));
             }
 
-            if (!TextUtils.isEmpty(mHashMap.get(CONSTELLATION_TAG))) {
-                mTags.add(new TagModel(CONSTELLATION_TAG, mHashMap.get(CONSTELLATION_TAG)));
+            if (!TextUtils.isEmpty(mHashMap.get(AGE_STAGE_TAG))) {
+                mTags.add(new TagModel(AGE_STAGE_TAG, mHashMap.get(AGE_STAGE_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {

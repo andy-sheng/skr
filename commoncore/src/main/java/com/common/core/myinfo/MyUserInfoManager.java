@@ -357,7 +357,7 @@ public class MyUserInfoManager {
                 return "工作党";
             }
         }
-        return "无";
+        return "";
     }
 
     public String getConstellation() {

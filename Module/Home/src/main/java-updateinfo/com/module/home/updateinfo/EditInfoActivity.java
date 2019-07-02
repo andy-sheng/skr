@@ -136,7 +136,11 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-        mAgeTv.setText(MyUserInfoManager.getInstance().getAgeStageString());
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getAgeStageString())) {
+            mAgeTv.setText("无");
+        } else {
+            mAgeTv.setText(MyUserInfoManager.getInstance().getAgeStageString());
+        }
 
         String sex = "保密";
         if (MyUserInfoManager.getInstance().getSex() == 1) {

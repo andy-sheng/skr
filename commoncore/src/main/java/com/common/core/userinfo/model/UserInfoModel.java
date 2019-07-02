@@ -183,6 +183,21 @@ public class UserInfoModel implements Serializable, Cloneable {
         return ageStage;
     }
 
+    public String getAgeStageString() {
+        if (ageStage != 0) {
+            if (ageStage == 1) {
+                return "小学党";
+            } else if (ageStage == 2) {
+                return "中学党";
+            } else if (ageStage == 3) {
+                return "大学党";
+            } else if (ageStage == 4) {
+                return "工作党";
+            }
+        }
+        return "";
+    }
+
     public void setAgeStage(int ageStage) {
         this.ageStage = ageStage;
     }

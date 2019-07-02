@@ -24,9 +24,8 @@ import java.util.HashMap
 class BusinessCardDialogView : ConstraintLayout {
 
     private val LOCATION_TAG = 1           //城市标签
-    private val AGE_TAG = 2                //年龄标签
-    private val CONSTELLATION_TAG = 3      //星座标签
-    private val FANS_NUM_TAG = 4           //粉丝数
+    private val AGE_STAGE_TAG = 2          //年龄段标签
+    private val FANS_NUM_TAG = 3           //粉丝数
 
     private val mTags = ArrayList<String>()  //标签
     private val mHashMap = HashMap<Int, String>()
@@ -73,16 +72,12 @@ class BusinessCardDialogView : ConstraintLayout {
         }
         flowlayout.adapter = mTagAdapter
 
-        if (mUserInfo.location != null && !TextUtils.isEmpty(mUserInfo.location.city)) {
-            mHashMap[LOCATION_TAG] = mUserInfo.location.city
+        if (mUserInfo.location != null && !TextUtils.isEmpty(mUserInfo.location.province)) {
+            mHashMap[LOCATION_TAG] = mUserInfo.location.province
         }
 
-        if (mUserInfo.age > 0) {
-            mHashMap[AGE_TAG] = mUserInfo.age.toString() + "岁"
-        }
-
-        if (!TextUtils.isEmpty(mUserInfo.constellation)) {
-            mHashMap[CONSTELLATION_TAG] = mUserInfo.constellation
+        if (mUserInfo.ageStage != 0 && !TextUtils.isEmpty(mUserInfo.ageStageString)) {
+            mHashMap[AGE_STAGE_TAG] = mUserInfo.ageStageString
         }
 
         if (mUserInfo.userId != MyUserInfoManager.getInstance().uid.toInt()) {
@@ -100,12 +95,8 @@ class BusinessCardDialogView : ConstraintLayout {
                 mTags.add(mHashMap[LOCATION_TAG]!!)
             }
 
-            if (!TextUtils.isEmpty(mHashMap[AGE_TAG])) {
-                mTags.add(mHashMap[AGE_TAG]!!)
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[CONSTELLATION_TAG])) {
-                mTags.add(mHashMap[CONSTELLATION_TAG]!!)
+            if (!TextUtils.isEmpty(mHashMap[AGE_STAGE_TAG])) {
+                mTags.add(mHashMap[AGE_STAGE_TAG]!!)
             }
 
             if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {

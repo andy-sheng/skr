@@ -93,10 +93,9 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     public static final int RELATION_FOLLOWED = 1; // 已关注关系
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
 
-    private static final int LOCATION_TAG = 0;         //地区标签  省/市
-    private static final int AGE_TAG = 1;              //年龄标签
-    private static final int CONSTELLATION_TAG = 2;    //星座标签
-    private static final int FANS_NUM_TAG = 3;         // 粉丝数标签
+    private static final int LOCATION_TAG = 0;         // 地区标签  省
+    private static final int AGE_STAGE_TAG = 1;        // 年龄标签
+    private static final int FANS_NUM_TAG = 2;         // 粉丝数标签
 
     private List<String> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
@@ -653,16 +652,12 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mSrlNameTv.setText(model.getNicknameRemark());
         mSignTv.setText(model.getSignature());
 
-        if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
-            mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
+        if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getProvince())) {
+            mHashMap.put(LOCATION_TAG, model.getLocation().getProvince());
         }
 
-        if (!TextUtils.isEmpty(model.getBirthday())) {
-            mHashMap.put(AGE_TAG, String.format(getString(R.string.age_tag), model.getAge()));
-        }
-
-        if (!TextUtils.isEmpty(model.getBirthday())) {
-            mHashMap.put(CONSTELLATION_TAG, model.getConstellation());
+        if (model.getAgeStage() != 0 && !TextUtils.isEmpty(model.getAgeStageString())) {
+            mHashMap.put(AGE_STAGE_TAG, model.getAgeStageString());
         }
 
         refreshTag();
@@ -675,12 +670,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                 mTags.add(mHashMap.get(LOCATION_TAG));
             }
 
-            if (!TextUtils.isEmpty(mHashMap.get(AGE_TAG))) {
-                mTags.add(mHashMap.get(AGE_TAG));
-            }
-
-            if (!TextUtils.isEmpty(mHashMap.get(CONSTELLATION_TAG))) {
-                mTags.add(mHashMap.get(CONSTELLATION_TAG));
+            if (!TextUtils.isEmpty(mHashMap.get(AGE_STAGE_TAG))) {
+                mTags.add(mHashMap.get(AGE_STAGE_TAG));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
