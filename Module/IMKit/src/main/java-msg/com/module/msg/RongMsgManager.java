@@ -223,9 +223,12 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     EventBus.getDefault().post(event);
                 }
             }
-
             // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
-            return false;
+            if (U.getActivityUtils().isAppForeground()) {
+                return true;
+            } else {
+                return false;
+            }
         }
     };
 
@@ -296,7 +299,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             PushConfig config = new PushConfig.Builder()
                     .enableHWPush(true)  // 配置华为推送
                     .enableMiPush("2882303761517932750", "5701793259750")
-                    .enableOppoPush("b6476d0350bf448da381e589e232add8","1b038723163d485b9d739ad9ee0fbe8e")
+                    .enableOppoPush("b6476d0350bf448da381e589e232add8", "1b038723163d485b9d739ad9ee0fbe8e")
                     .build();
             RongPushClient.setPushConfig(config);
 
