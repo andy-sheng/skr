@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.common.base.BaseFragment
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
@@ -17,7 +16,6 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
-import com.common.utils.U
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.callback.EmptyCallback
@@ -26,13 +24,12 @@ import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.recommend.RA
-import com.component.busilib.verify.RealNameVerifyUtils
+import com.component.busilib.verify.VideoEnterVerifyUtils
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.home.R
-import com.module.home.loadsir.BalanceEmptyCallBack
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -52,7 +49,7 @@ class FriendRoomGameView : RelativeLayout {
     private var mDisposable: Disposable? = null
     private var mSkrAudioPermission: SkrAudioPermission
     private var mCameraPermission: SkrCameraPermission
-    internal var mRealNameVerifyUtils = RealNameVerifyUtils()
+    internal var mRealNameVerifyUtils = VideoEnterVerifyUtils()
 
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0

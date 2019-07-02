@@ -19,7 +19,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
-import com.component.busilib.verify.RealNameVerifyUtils;
+import com.component.busilib.verify.VideoEnterVerifyUtils;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.createroom.view.SpecialSelectView;
@@ -46,7 +46,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
     SkrCameraPermission mCameraPermission;
     TipsDialogView mTipsDialogView;
     int mRoomType;
-    RealNameVerifyUtils mRealNameVerifyUtils = new RealNameVerifyUtils();
+    VideoEnterVerifyUtils mRealNameVerifyUtils = new VideoEnterVerifyUtils();
 
     @Override
     public int initView() {

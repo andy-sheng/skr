@@ -3,7 +3,6 @@ package com.module.home.game.view
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.View
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.permission.SkrAudioPermission
@@ -17,11 +16,9 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
-import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.beauty.FROM_MATCH
-import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
-import com.component.busilib.verify.RealNameVerifyUtils
+import com.component.busilib.verify.VideoEnterVerifyUtils
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.game.adapter.GameAdapter
@@ -48,7 +45,7 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
     lateinit var mSkrAudioPermission: SkrAudioPermission
     lateinit var mCameraPermission: SkrCameraPermission
     lateinit var mGameAdapter: GameAdapter
-    internal var mRealNameVerifyUtils = RealNameVerifyUtils()
+    internal var mRealNameVerifyUtils = VideoEnterVerifyUtils()
 
     constructor(fragment: BaseFragment) : super(fragment.context) {
         mFragment = fragment

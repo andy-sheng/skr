@@ -12,11 +12,12 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
+import com.common.view.DebounceViewClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.tencent.mm.opensdk.constants.Build;
 
-public class RealNameVerifyUtils {
+public class VideoEnterVerifyUtils {
 
     TipsDialogView mTipsDialogView;
 
@@ -27,7 +28,7 @@ public class RealNameVerifyUtils {
      * @param successCallback
      */
     public void checkJoinVideoPermission(final Runnable successCallback) {
-        if (MyUserInfoManager.getInstance().isRealNameVerified() || MyLog.isDebugLogOpen()) {
+        if (MyLog.isDebugLogOpen()) {
             if (successCallback != null) {
                 successCallback.run();
             }
@@ -36,6 +37,9 @@ public class RealNameVerifyUtils {
         final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
         if (Build.SDK_INT < 21) {
             if (U.getDeviceUtils().getLevel().getValue() <= DeviceUtils.LEVEL.MIDDLE.getValue()) {
+                if (mTipsDialogView != null) {
+                    mTipsDialogView.dismiss();
+                }
                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
                         .setMessageTip("你的设备性能较差，进入视频专场可能会影响体验，确定要进入么？")
                         .setConfirmTip("进入")
@@ -83,32 +87,47 @@ public class RealNameVerifyUtils {
             }
         } else {
             if (8344161 == obj.getErrno()) {
-                // 去实名认证
-                if (mTipsDialogView == null) {
-                    mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                            .setMessageTip("完成实名认证\n解锁视频专场永久开启权限")
-                            .setConfirmTip("快速认证")
-                            .setCancelTip("残忍拒绝")
-                            .setConfirmBtnClickListener(new AnimateClickListener() {
-                                @Override
-                                public void click(View view) {
-                                    mTipsDialogView.dismiss();
-                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=video"))
-                                            .greenChannel().navigation();
-                                }
-                            })
-                            .setCancelBtnClickListener(new AnimateClickListener() {
-                                @Override
-                                public void click(View view) {
-                                    mTipsDialogView.dismiss();
-                                }
-                            })
-                            .build();
+                if (mTipsDialogView != null) {
+                    mTipsDialogView.dismiss();
                 }
+                // 去实名认证
+                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                        .setMessageTip("完成实名认证\n解锁视频专场永久开启权限")
+                        .setConfirmTip("快速认证")
+                        .setCancelTip("残忍拒绝")
+                        .setConfirmBtnClickListener(new AnimateClickListener() {
+                            @Override
+                            public void click(View view) {
+                                mTipsDialogView.dismiss();
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=video"))
+                                        .greenChannel().navigation();
+                            }
+                        })
+                        .setCancelBtnClickListener(new AnimateClickListener() {
+                            @Override
+                            public void click(View view) {
+                                mTipsDialogView.dismiss();
+                            }
+                        })
+                        .build();
                 mTipsDialogView.showByDialog();
+            } else if (8344304 == obj.getErrno()) {
+                // 未满100首
+                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                        .setMessageTip(obj.getErrmsg())
+                        .setOkBtnTip("确认")
+                        .setOkBtnClickListener(new DebounceViewClickListener() {
+                            @Override
+                            public void clickValid(View v) {
+                                mTipsDialogView.dismiss();
+                            }
+                        })
+                        .build();
+                mTipsDialogView.showByDialog();
+            } else {
+                U.getToastUtil().showShort(obj.getErrmsg());
             }
-            U.getToastUtil().showShort(obj.getErrmsg());
         }
     }
 }
