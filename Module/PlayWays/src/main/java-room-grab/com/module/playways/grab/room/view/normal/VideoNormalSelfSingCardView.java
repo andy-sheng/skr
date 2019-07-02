@@ -25,6 +25,12 @@ public class VideoNormalSelfSingCardView extends SelfSingLyricView {
     }
 
     @Override
+    protected void init(View parentView) {
+        super.init(parentView);
+        mManyLyricsView.setSpaceLineHeight(U.getDisplayUtils().dip2px(10));
+    }
+
+    @Override
     protected int layoutDesc() {
         return R.layout.grab_video_normal_self_sing_card_stub_layout;
     }

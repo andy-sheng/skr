@@ -434,19 +434,21 @@ public class ManyLyricsView extends AbstractLrcView {
 //            MyLog.v(TAG, "倒计时 0");
             return;
         }
+        float radius = 10.0f;
+        float dy = y - textHeight - radius*2 - U.getDisplayUtils().dip2px(33);
 
         if (degree <= 1000) {
 //            MyLog.v(TAG, "倒计时 1");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX, dy, radius, circlePaint);
             return;
         }
 
         if (degree <= 2000) {
 //            MyLog.v(TAG, "倒计时 2");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
-            canvas.drawCircle(textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX, dy, radius, circlePaint);
+            canvas.drawCircle(textX + 40, dy, radius, circlePaint);
             circlePaint.setColor(getSubPaintHLColor());
             return;
         }
@@ -454,9 +456,9 @@ public class ManyLyricsView extends AbstractLrcView {
         if (degree <= 3000) {
 //            MyLog.v(TAG, "倒计时 3");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
-            canvas.drawCircle(textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
-            canvas.drawCircle(textX + 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX, dy, radius, circlePaint);
+            canvas.drawCircle(textX + 40, dy, radius, circlePaint);
+            canvas.drawCircle(textX + 80, dy, radius, circlePaint);
             return;
         }
     }

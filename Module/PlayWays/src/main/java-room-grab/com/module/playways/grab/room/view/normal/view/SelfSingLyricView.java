@@ -3,6 +3,7 @@ package com.module.playways.grab.room.view.normal.view;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.log.MyLog;
@@ -30,8 +31,9 @@ import io.reactivex.functions.Consumer;
 public class SelfSingLyricView extends ExViewStub {
     public final static String TAG = "SelfSingLyricView";
 
+    ScrollView mSvlyric;
     TextView mTvLyric;
-    ManyLyricsView mManyLyricsView;
+    protected ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
     protected GrabRoomData mRoomData;
@@ -49,6 +51,7 @@ public class SelfSingLyricView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
+        mSvlyric = mParentView.findViewById(R.id.sv_lyric);
         mTvLyric = mParentView.findViewById(R.id.tv_lyric);
         mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view);
         mVoiceScaleView = mParentView.findViewById(R.id.voice_scale_view);
@@ -62,7 +65,7 @@ public class SelfSingLyricView extends ExViewStub {
 
     private void initLyric() {
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        mTvLyric.setVisibility(View.VISIBLE);
+        mSvlyric.setVisibility(View.VISIBLE);
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.initLrcData();
 
@@ -110,7 +113,7 @@ public class SelfSingLyricView extends ExViewStub {
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
             @Override
             public void onLyricParseSuccess() {
-                mTvLyric.setVisibility(View.GONE);
+                mSvlyric.setVisibility(View.GONE);
             }
 
             @Override
@@ -139,7 +142,7 @@ public class SelfSingLyricView extends ExViewStub {
         tryInflate();
         initLyric();
         mManyLyricsView.setVisibility(View.GONE);
-        mTvLyric.setVisibility(View.VISIBLE);
+        mSvlyric.setVisibility(View.VISIBLE);
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
@@ -188,7 +191,7 @@ public class SelfSingLyricView extends ExViewStub {
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if(visibility==View.GONE){
+        if (visibility == View.GONE) {
             reset();
         }
     }

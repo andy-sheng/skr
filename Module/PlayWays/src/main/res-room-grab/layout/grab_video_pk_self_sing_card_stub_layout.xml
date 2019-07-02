@@ -20,12 +20,11 @@
             android:id="@+id/tv_lyric"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.6"
             android:gravity="center"
             android:lineSpacingExtra="7dp"
             android:paddingLeft="@dimen/view_40_dp"
             android:paddingRight="@dimen/view_40_dp"
-            android:textColor="@color/white_trans_60"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_16_dp" />
     </ScrollView>
 
@@ -41,12 +40,11 @@
         app:ly_high_light_paint_color_from="#FFC15B"
         app:ly_high_light_paint_color_to="#FFC15B"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_16"
-        app:ly_high_light_sub_paint_color="#665945"
-        app:ly_outline_paint_color="#665945"
-        app:ly_paint_color_from="@color/black_trans_30"
-        app:ly_paint_color_to="@color/black_trans_30"
+        app:ly_high_light_sub_paint_color="@color/white"
+        app:ly_outline_paint_color="@color/white"
+        app:ly_paint_color_from="@color/white"
+        app:ly_paint_color_to="@color/white"
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
-        app:ly_top_line_num="2" />
-
+        app:ly_top_line_num="3" />
 
 </RelativeLayout>
