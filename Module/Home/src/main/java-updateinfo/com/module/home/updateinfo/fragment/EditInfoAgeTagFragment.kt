@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 
 import com.common.base.BaseFragment
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.U
 import com.module.home.R
 import kotlinx.android.synthetic.main.edit_info_age_tag_fragment_layout.*
@@ -18,6 +19,8 @@ class EditInfoAgeTagFragment : BaseFragment() {
     lateinit var mSeniorIv: ExImageView
     lateinit var mCollegeIv: ExImageView
     lateinit var mWorksIv: ExImageView
+
+    var ageStage: Int = 0
 
     override fun initView(): Int {
         return R.layout.edit_info_age_tag_fragment_layout
@@ -35,7 +38,24 @@ class EditInfoAgeTagFragment : BaseFragment() {
         }
 
         mTitlebar.rightTextView.setOnClickListener {
+            if (ageStage == 0) {
+                U.getToastUtil().showShort("您当前选择的年龄段为空")
+            } else if (ageStage == MyUserInfoManager.getInstance().ageStage) {
+                U.getFragmentUtils().popFragment(this@EditInfoAgeTagFragment)
+            } else {
+                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                        .setAgeStage(ageStage)
+                        .build(), false, false, object : MyUserInfoManager.ServerCallback {
+                    override fun onSucess() {
+                        U.getToastUtil().showShort("年龄段更新成功")
+                        U.getFragmentUtils().popFragment(this@EditInfoAgeTagFragment)
+                    }
 
+                    override fun onFail() {
+
+                    }
+                })
+            }
         }
 
         mPrimaryIv.setOnClickListener {
@@ -54,33 +74,37 @@ class EditInfoAgeTagFragment : BaseFragment() {
             setSelectTag(4)
         }
 
+        if (MyUserInfoManager.getInstance().ageStage != 0) {
+            setSelectTag(MyUserInfoManager.getInstance().ageStage)
+        }
     }
 
-    private fun setSelectTag(i: Int) {
-        when (i) {
+    private fun setSelectTag(ageTag: Int) {
+        ageStage = ageTag
+        when (ageTag) {
             1 -> {
-                primary_iv.isSelected = true
-                senior_iv.isSelected = false
-                college_iv.isSelected = false
-                works_iv.isSelected = false
+                mPrimaryIv.isSelected = true
+                mSeniorIv.isSelected = false
+                mCollegeIv.isSelected = false
+                mWorksIv.isSelected = false
             }
             2 -> {
-                primary_iv.isSelected = false
-                senior_iv.isSelected = true
-                college_iv.isSelected = false
-                works_iv.isSelected = false
+                mPrimaryIv.isSelected = false
+                mSeniorIv.isSelected = true
+                mCollegeIv.isSelected = false
+                mWorksIv.isSelected = false
             }
             3 -> {
-                primary_iv.isSelected = false
-                senior_iv.isSelected = false
-                college_iv.isSelected = true
-                works_iv.isSelected = false
+                mPrimaryIv.isSelected = false
+                mSeniorIv.isSelected = false
+                mCollegeIv.isSelected = true
+                mWorksIv.isSelected = false
             }
             4 -> {
-                primary_iv.isSelected = false
-                senior_iv.isSelected = false
-                college_iv.isSelected = false
-                works_iv.isSelected = true
+                mPrimaryIv.isSelected = false
+                mSeniorIv.isSelected = false
+                mCollegeIv.isSelected = false
+                mWorksIv.isSelected = true
             }
         }
 

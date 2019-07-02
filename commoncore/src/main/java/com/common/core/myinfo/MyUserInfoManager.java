@@ -222,6 +222,13 @@ public class MyUserInfoManager {
             }
         }
 
+        if (updateParams.ageStage != 0) {
+            map.put("ageStage", updateParams.ageStage);
+            if (updateLocalIfServerFailed) {
+                mUser.setAgeStage(updateParams.ageStage);
+            }
+        }
+
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
         MyUserInfoServerApi myUserAccountServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
         Observable<ApiResult> apiResultObservable = myUserAccountServerApi.updateInfo(body);
@@ -247,6 +254,9 @@ public class MyUserInfoManager {
                         }
                         if (updateParams.location != null) {
                             mUser.setLocation(updateParams.location);
+                        }
+                        if (updateParams.ageStage != 0) {
+                            mUser.setAgeStage(updateParams.ageStage);
                         }
                     }
 
@@ -338,6 +348,10 @@ public class MyUserInfoManager {
             }
         }
         return 0;
+    }
+
+    public int getAgeStage() {
+        return mUser != null ? mUser.getAgeStage() : 0;
     }
 
     public String getConstellation() {
@@ -504,6 +518,7 @@ public class MyUserInfoManager {
         String avatar;
         String sign;
         Location location;
+        int ageStage;
 
         private MyInfoUpdateParams() {
         }
@@ -553,6 +568,14 @@ public class MyUserInfoManager {
             this.location = location;
         }
 
+        public int getAgeStage() {
+            return ageStage;
+        }
+
+        public void setAgeStage(int ageStage) {
+            this.ageStage = ageStage;
+        }
+
         public static class Builder {
             MyInfoUpdateParams mParams = new MyInfoUpdateParams();
 
@@ -586,6 +609,11 @@ public class MyUserInfoManager {
 
             public Builder setLocation(Location location) {
                 mParams.setLocation(location);
+                return this;
+            }
+
+            public Builder setAgeStage(int ageStage) {
+                mParams.setAgeStage(ageStage);
                 return this;
             }
 

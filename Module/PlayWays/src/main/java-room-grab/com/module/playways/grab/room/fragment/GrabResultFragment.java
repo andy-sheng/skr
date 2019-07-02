@@ -36,6 +36,7 @@ import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.score.ScoreStateModel;
 import com.module.playways.R;
+import com.zq.dialog.AgeStageDialogView;
 import com.zq.level.view.LevelStarProgressBar;
 import com.zq.level.view.NormalLevelView2;
 
@@ -68,6 +69,8 @@ public class GrabResultFragment extends BaseFragment {
     ExTextView mTvAgain;
 
     Handler mUiHandler = new Handler();
+
+    AgeStageDialogView mAgeStageDialogView;
 
     @Override
     public int initView() {
@@ -163,6 +166,9 @@ public class GrabResultFragment extends BaseFragment {
         super.destroy();
         U.getSoundUtils().release(GrabResultFragment.TAG);
         mUiHandler.removeCallbacksAndMessages(null);
+        if (mAgeStageDialogView != null) {
+            mAgeStageDialogView.dismiss(false);
+        }
     }
 
     private void bindData() {
@@ -183,6 +189,11 @@ public class GrabResultFragment extends BaseFragment {
             }
         } else {
             MyLog.w(TAG, "bindData 数据为空了");
+        }
+
+        if (MyUserInfoManager.getInstance().getAgeStage() == 0) {
+            mAgeStageDialogView = new AgeStageDialogView(getContext());
+            mAgeStageDialogView.showByDialog();
         }
     }
 
