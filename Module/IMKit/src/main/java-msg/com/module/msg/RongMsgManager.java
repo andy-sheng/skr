@@ -23,6 +23,7 @@ import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
+import com.module.msg.custom.MyPrivateConversationProvider;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
 import com.module.msg.model.CustomChatCombineRoomMsg;
@@ -44,6 +45,7 @@ import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
+import io.rong.imkit.widget.provider.PrivateConversationProvider;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -297,6 +299,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(CustomChatCombineRoomLowLevelMsg.class);
             RongIM.registerMessageType(CustomNotificationMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
+
+            RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
+
             RongIM.getInstance().setConversationClickListener(new MyConversationClickListener());
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
                 @Override
