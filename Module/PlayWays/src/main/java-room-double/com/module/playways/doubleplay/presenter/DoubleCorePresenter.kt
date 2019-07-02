@@ -337,10 +337,8 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     private fun syncRoomPlayer() {
         MyLog.d(tag, "syncRoomPlayer")
-        val mutableSet = mutableMapOf("roomID" to mRoomData.gameId)
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
         Observable.create<Any> {
-            ApiMethods.subscribe(mDoubleRoomServerApi.getRoomUserInfo(body), object : ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(mDoubleRoomServerApi.getRoomUserInfo(mRoomData.gameId), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
                     MyLog.w(tag, "syncRoomPlayer obj is $obj")
                     if (obj?.errno == 0 && mRoomData.userInfoListMap?.size ?: 0 < 2) {

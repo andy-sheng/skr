@@ -14,8 +14,12 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ExViewStub;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.doubleplay.loadsir.LyricLoadErrorCallBack;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
@@ -38,6 +42,7 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
     public SimpleDraweeView mAvatarIv;
     public TextView mFirstTipsTv;
     public TextView mTvLyric;    //用来显示游戏内容
+    LoadService mLoadService;
 
     public DoubleMiniGameSelfSingCardView(ViewStub viewStub) {
         super(viewStub);
@@ -49,6 +54,15 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
         mAvatarIv = mParentView.findViewById(R.id.avatar_iv);
         mFirstTipsTv = mParentView.findViewById(R.id.first_tips_tv);
         mTvLyric = mParentView.findViewById(R.id.tv_lyric);
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new LyricLoadErrorCallBack())
+                .build();
+        mLoadService = mLoadSir.register(mSvLyric, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                playLyric();
+            }
+        });
     }
 
     public void updateLockState() {
@@ -125,6 +139,7 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
             // TODO: 2019-05-29 不带歌词的
             mTvLyric.setTextColor(U.getColor(R.color.black_trans_60));
             mTvLyric.setText(model.getDisplayGameRule());
+            mLoadService.showSuccess();
         }
 
         return true;
@@ -152,7 +167,12 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
                             lyricTv.append("\n");
                             lyricTv.append(o);
                         }
+
+                        mLoadService.showSuccess();
                     }
+                }, throwable -> {
+                    mLoadService.showCallback(LyricLoadErrorCallBack.class);
+                    MyLog.e(TAG, "setLyric" + " throwable=" + throwable);
                 });
     }
 

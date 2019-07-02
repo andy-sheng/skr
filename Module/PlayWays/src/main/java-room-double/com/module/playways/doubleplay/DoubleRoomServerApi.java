@@ -234,11 +234,10 @@ public interface DoubleRoomServerApi {
      * "roomID": 0
      * }
      *
-     * @param body
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/magpie/room-user-info")
-    Observable<ApiResult> getRoomUserInfo(@Body RequestBody body);
+    @GET("http://dev.game.inframe.mobi/v1/magpie/room-user-info")
+    Observable<ApiResult> getRoomUserInfo(@Query("roomID") int roomID);
 
     /**
      * {}

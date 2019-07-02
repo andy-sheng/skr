@@ -11,8 +11,12 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ExViewStub;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.doubleplay.loadsir.LyricLoadErrorCallBack;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.grab.room.view.chorus.BaseChorusSelfCardView;
 import com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter;
@@ -39,6 +43,7 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
     RecyclerView mLyricRecycleView;
     SongModel mSongModel;
     Disposable mDisposable;
+    LoadService mLoadService;
 
     BaseChorusSelfCardView.DH mLeft = new BaseChorusSelfCardView.DH();
     BaseChorusSelfCardView.DH mRight = new BaseChorusSelfCardView.DH();
@@ -54,6 +59,15 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight, false, mRoomData);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new LyricLoadErrorCallBack())
+                .build();
+        mLoadService = mLoadSir.register(mLyricRecycleView, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                playLyric();
+            }
+        });
     }
 
     public void updateLockState() {
@@ -130,11 +144,13 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
                         mChorusSelfLyricAdapter.setDataList(lyrics);
                         // 移到顶部
                         mLyricRecycleView.scrollToPosition(0);
+                        mLoadService.showSuccess();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         MyLog.e(TAG, "accept" + " throwable=" + throwable);
+                        mLoadService.showCallback(LyricLoadErrorCallBack.class);
                     }
                 });
         return true;
