@@ -134,16 +134,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-        String age = String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge());
-        if (MyUserInfoManager.getInstance().getAge() == 0) {
-            age = "未知";
-        }
-        String constellation = MyUserInfoManager.getInstance().getConstellation();
-        if (!TextUtils.isEmpty(constellation)) {
-            mAgeTv.setText(age + " " + constellation);
-        } else {
-            mAgeTv.setText(age + "");
-        }
+        mAgeTv.setText(MyUserInfoManager.getInstance().getAgeStageString());
 
         String sex = "保密";
         if (MyUserInfoManager.getInstance().getSex() == 1) {

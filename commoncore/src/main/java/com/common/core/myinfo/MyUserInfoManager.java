@@ -354,6 +354,21 @@ public class MyUserInfoManager {
         return mUser != null ? mUser.getAgeStage() : 0;
     }
 
+    public String getAgeStageString() {
+        if (mUser != null && mUser.getAgeStage() != 0) {
+            if (mUser.getAgeStage() == 1) {
+                return "小学党";
+            } else if (mUser.getAgeStage() == 2) {
+                return "中学党";
+            } else if (mUser.getAgeStage() == 3) {
+                return "大学党";
+            } else if (mUser.getAgeStage() == 4) {
+                return "工作党";
+            }
+        }
+        return "无";
+    }
+
     public String getConstellation() {
         if (mUser != null && !TextUtils.isEmpty(mUser.getBirthday())) {
             String[] array = mUser.getBirthday().split("-");

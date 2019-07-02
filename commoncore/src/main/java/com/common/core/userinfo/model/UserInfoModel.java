@@ -52,6 +52,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private int status;    // 状态 在线  离线
     private long statusTs;// 在线或者离线的时间
     private String statusDesc;  //状态描述
+    private int ageStage;   // 年龄段（目前只有homepage的接口里面带）
 
     public UserInfoModel() {
     }
@@ -176,6 +177,14 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
+    }
+
+    public int getAgeStage() {
+        return ageStage;
+    }
+
+    public void setAgeStage(int ageStage) {
+        this.ageStage = ageStage;
     }
 
     public int getAge() {
@@ -356,7 +365,9 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", isFollow=" + isFollow +
                 ", mainLevel=" + mainLevel +
                 ", status=" + status +
+                ", statusTs=" + statusTs +
                 ", statusDesc='" + statusDesc + '\'' +
+                ", ageStage=" + ageStage +
                 '}';
     }
 

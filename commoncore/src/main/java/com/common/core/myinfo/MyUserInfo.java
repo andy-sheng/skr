@@ -144,6 +144,7 @@ public class MyUserInfo implements Serializable {
         myUserInfo.setSex(userInfoModel.getSex());
         myUserInfo.setSignature(userInfoModel.getSignature());
         myUserInfo.setUserDisplayname(userInfoModel.getNickname());
+        myUserInfo.setAgeStage(userInfoModel.getAgeStage());
         return myUserInfo;
     }
 

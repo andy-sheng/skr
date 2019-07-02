@@ -330,6 +330,7 @@ public class UserAccountManager {
         String avatar = profileJO.getString("avatar");
         String sign = profileJO.getString("signature");
         Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
+        int ageStage = profileJO.getIntValue("ageStage");
 
         boolean isFirstLogin = jsonObject.getBooleanValue("isFirstLogin");
         if (isFirstLogin) {
@@ -349,6 +350,7 @@ public class UserAccountManager {
         myUserInfo.setAvatar(avatar);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
+        myUserInfo.setAgeStage(ageStage);
         MyUserInfoManager.getInstance().setFirstLogin(isFirstLogin);
         MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
