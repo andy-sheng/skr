@@ -319,6 +319,8 @@ public class UserInfoManager {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userID, false, false));
+                    // TODO: 2019-07-03 可能服务器加成功，加融云失败，有问题找服务器
                     msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
                         @Override
                         public void onSucess(Object obj) {
@@ -445,20 +447,13 @@ public class UserInfoManager {
                     }
                     if (action == RA_BUILD) {
                         StatisticsAdapter.recordCountEvent("social", "follow", null);
-                        if (isOldFriend) {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, true, isFriend, isFollow));
-                        } else {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, false, isFriend, isFollow));
-                        }
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, isFriend, isFollow));
                     } else if (action == RA_UNBUILD) {
-                        if (isOldFriend) {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, true, isFriend, isFollow));
-                        } else {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, false, isFriend, isFollow));
-                        }
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, isFriend, isFollow));
                     }
                 } else {
-                    U.getToastUtil().showShort("关系请求处理出错");
+                    MyLog.w(TAG, "process" + " obj=" + obj);
+                    U.getToastUtil().showShort(obj.getErrmsg());
                 }
             }
         });
