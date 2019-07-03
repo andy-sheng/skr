@@ -1,21 +1,20 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.graphics.Rect;
+import android.text.SpannableStringBuilder;
 import android.view.MotionEvent;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.GrabRootView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
+import com.module.playways.room.song.model.SongModel;
 
 /**
  * 你的主场景歌词
@@ -79,5 +78,18 @@ public class VideoNormalSelfSingCardView extends SelfSingLyricView {
         } else {
             playWithAcc(infoModel, totalTs);
         }
+    }
+
+    @Override
+    protected SpannableStringBuilder createLyricSpan(String lyric, SongModel songModel) {
+        SpanUtils spanUtils = new SpanUtils();
+        spanUtils = spanUtils.append(lyric)
+                .setShadow(U.getDisplayUtils().dip2px(1), 0, U.getDisplayUtils().dip2px(1), U.getColor(R.color.black_trans_50));
+        if (songModel != null) {
+            spanUtils = spanUtils.append("\n")
+                    .append("上传者:" + songModel.getUploaderName()).setFontSize(12, true)
+                    .setShadow(U.getDisplayUtils().dip2px(1), 0, U.getDisplayUtils().dip2px(1), U.getColor(R.color.black_trans_50));
+        }
+        return spanUtils.create();
     }
 }

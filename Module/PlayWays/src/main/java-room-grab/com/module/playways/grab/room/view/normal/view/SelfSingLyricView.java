@@ -1,5 +1,7 @@
 package com.module.playways.grab.room.view.normal.view;
 
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -7,6 +9,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.log.MyLog;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
@@ -15,6 +18,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.common.view.ExViewStub;
 import com.module.playways.others.LyricAndAccMatchManager;
+import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
@@ -152,7 +156,13 @@ public class SelfSingLyricView extends ExViewStub {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        mTvLyric.setText(s);
+                        SpannableStringBuilder ssb = createLyricSpan(s,songModel);
+                        if(ssb==null){
+                            mTvLyric.setText(s);
+                        }else{
+                            mTvLyric.setText(ssb);
+                        }
+
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -161,6 +171,18 @@ public class SelfSingLyricView extends ExViewStub {
                     }
                 });
         mLyricAndAccMatchManager.stop();
+    }
+
+    protected  SpannableStringBuilder createLyricSpan(String lyric,SongModel songModel){
+        if(songModel!=null){
+            SpannableStringBuilder ssb = new SpanUtils()
+                    .append(lyric)
+                    .append("\n")
+                    .append("上传者:"+songModel.getUploaderName()).setFontSize(12,true)
+                    .create();
+            return ssb;
+        }
+        return null;
     }
 
     @Override
