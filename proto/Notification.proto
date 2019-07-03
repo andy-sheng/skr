@@ -59,6 +59,7 @@ enum EInviteType {
     IT_UNKNOWN          = 0; //未知
     IT_OUT_COMBINE_ROOM = 1; //在双人房间外邀请
     IT_IN_COMBINE_ROOM  = 2; //在双人房间内邀请
+    IT_IN_COMBINE_ROOM_V2  = 3; //在双人房间内邀请 V2
 }
 
 message CombineRoomInviteMsg

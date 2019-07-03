@@ -69,11 +69,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
     fun cancelMatch() {
         val mutableSet1 = mutableMapOf("platform" to 20)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        ApiMethods.subscribe(doubleRoomServerApi.cancleMatch(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-
-            }
-        }, this@DoubleMatchPresenter)
+        ApiMethods.subscribe(doubleRoomServerApi.cancleMatch(body), null)
     }
 
     fun getBgMusic() {

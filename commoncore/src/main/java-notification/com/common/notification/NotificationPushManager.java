@@ -4,11 +4,11 @@ import com.common.log.MyLog;
 import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CRRefuseInviteNotifyEvent;
 import com.common.notification.event.CRSendInviteUserNotifyEvent;
-import com.common.notification.event.CRSyncInviteUserNotifyEvent;
+import com.common.notification.event.CRStartByCreateNotifyEvent;
 import com.common.notification.event.CRStartByMatchPushEvent;
+import com.common.notification.event.CRSyncInviteUserNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
-import com.common.notification.event.CRStartByCreateNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
 import com.zq.live.proto.Notification.CombineRoomEnterMsg;
 import com.zq.live.proto.Notification.CombineRoomInviteMsg;
@@ -107,7 +107,7 @@ public class NotificationPushManager {
                 //房间外，目前是一场到底里面
                 CRSendInviteUserNotifyEvent combineRoomSendInviteUserEvent = new CRSendInviteUserNotifyEvent(baseNotiInfo, combineRoomInviteMsg);
                 EventBus.getDefault().post(combineRoomSendInviteUserEvent);
-            } else if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_IN_COMBINE_ROOM) {
+            } else if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_IN_COMBINE_ROOM_V2) {
                 //双人房房间里
                 EventBus.getDefault().post(new CRInviteInCreateRoomNotifyEvent(baseNotiInfo, combineRoomInviteMsg));
             } else {
