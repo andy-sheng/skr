@@ -10,7 +10,6 @@ import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
-import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
@@ -21,15 +20,12 @@ class DoubleRoomInvitePresenter() : RxLifeCyclePresenter() {
     private val mTag = "DoubleRoomInvitePresenter"
     private var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
     private var handlerTaskTimer: HandlerTaskTimer? = null
-    internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
     /**
      * 邀请一个人去双人房
      */
     fun inviteToDoubleRoom(inviteUserID: Int) {
-        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-            sendInvite(inviteUserID)
-        }
+        sendInvite(inviteUserID)
     }
 
     private fun sendInvite(inviteUserID: Int) {

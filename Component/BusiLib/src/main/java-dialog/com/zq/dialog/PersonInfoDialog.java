@@ -14,6 +14,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.component.busilib.recommend.RA;
+import com.component.busilib.verify.SkrVerifyUtils;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -34,6 +35,8 @@ public class PersonInfoDialog {
     boolean mShowKick;
     boolean mShowInvite = true;
     int mRoomID;
+
+    SkrVerifyUtils mRealNameVerifyUtils = new SkrVerifyUtils();
 
     KickListener mKickListener;
     InviteDoubleListener mInviteDoubleListener;
@@ -118,12 +121,17 @@ public class PersonInfoDialog {
             }
 
             @Override
-            public void onClickDoubleInvite(UserInfoModel userInfoModel) {
+            public void onClickDoubleInvite(final UserInfoModel userInfoModel) {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
                 if (mInviteDoubleListener != null) {
-                    mInviteDoubleListener.onClickDoubleInvite(userInfoModel);
+                    mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
+                        @Override
+                        public void run() {
+                            mInviteDoubleListener.onClickDoubleInvite(userInfoModel);
+                        }
+                    });
                 }
             }
         });
