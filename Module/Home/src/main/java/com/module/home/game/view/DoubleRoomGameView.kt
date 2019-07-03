@@ -19,7 +19,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
-import com.component.busilib.verify.VideoEnterVerifyUtils
+import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
@@ -43,7 +43,7 @@ class DoubleRoomGameView : RelativeLayout {
 
     var mConfirmMatchInfoView: ConfirmMatchInfoView? = null
 
-    internal var mRealNameVerifyUtils = VideoEnterVerifyUtils()
+    internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
     private var mModifyDisposable: Disposable? = null  //修改资料
     private var mDisposable: Disposable? = null        //获取次数

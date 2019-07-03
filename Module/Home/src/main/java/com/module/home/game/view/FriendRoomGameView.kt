@@ -24,7 +24,7 @@ import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.recommend.RA
-import com.component.busilib.verify.VideoEnterVerifyUtils
+import com.component.busilib.verify.SkrVerifyUtils
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -49,7 +49,7 @@ class FriendRoomGameView : RelativeLayout {
     private var mDisposable: Disposable? = null
     private var mSkrAudioPermission: SkrAudioPermission
     private var mCameraPermission: SkrCameraPermission
-    internal var mRealNameVerifyUtils = VideoEnterVerifyUtils()
+    internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0

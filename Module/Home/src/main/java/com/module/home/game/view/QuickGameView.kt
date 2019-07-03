@@ -18,7 +18,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
 import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.friends.SpecialModel
-import com.component.busilib.verify.VideoEnterVerifyUtils
+import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.game.adapter.GameAdapter
@@ -45,7 +45,7 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
     lateinit var mSkrAudioPermission: SkrAudioPermission
     lateinit var mCameraPermission: SkrCameraPermission
     lateinit var mGameAdapter: GameAdapter
-    internal var mRealNameVerifyUtils = VideoEnterVerifyUtils()
+    internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
     constructor(fragment: BaseFragment) : super(fragment.context) {
         mFragment = fragment

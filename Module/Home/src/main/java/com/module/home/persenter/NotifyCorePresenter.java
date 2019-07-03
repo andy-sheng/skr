@@ -43,7 +43,7 @@ import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.WeakRedDotManager;
-import com.component.busilib.verify.VideoEnterVerifyUtils;
+import com.component.busilib.verify.SkrVerifyUtils;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
@@ -92,7 +92,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     SkrCameraPermission mSkrCameraPermission = new SkrCameraPermission();
 
-    VideoEnterVerifyUtils mRealNameVerifyUtils = new VideoEnterVerifyUtils();
+    SkrVerifyUtils mRealNameVerifyUtils = new SkrVerifyUtils();
 
     Handler mUiHandler = new Handler() {
         @Override

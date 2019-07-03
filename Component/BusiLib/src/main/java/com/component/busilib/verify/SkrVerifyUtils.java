@@ -17,7 +17,7 @@ import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.tencent.mm.opensdk.constants.Build;
 
-public class VideoEnterVerifyUtils {
+public class SkrVerifyUtils {
 
     TipsDialogView mTipsDialogView;
 
@@ -82,12 +82,12 @@ public class VideoEnterVerifyUtils {
      * @param successCallback
      */
     public void checkJoinDoubleRoomPermission(final Runnable successCallback) {
-        if (MyLog.isDebugLogOpen()) {
-            if (successCallback != null) {
-                successCallback.run();
-            }
-            return;
-        }
+//        if (MyLog.isDebugLogOpen()) {
+//            if (successCallback != null) {
+//                successCallback.run();
+//            }
+//            return;
+//        }
 
         final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
         ApiMethods.subscribe(grabRoomServerApi.checkJoinDoubleRoomPermission(), new ApiObserver<ApiResult>() {
@@ -142,6 +142,32 @@ public class VideoEnterVerifyUtils {
                         .setOkBtnClickListener(new DebounceViewClickListener() {
                             @Override
                             public void clickValid(View v) {
+                                mTipsDialogView.dismiss();
+                            }
+                        })
+                        .build();
+                mTipsDialogView.showByDialog();
+            } else if (8376042 == obj.getErrno()) {
+                if (mTipsDialogView != null) {
+                    mTipsDialogView.dismiss();
+                }
+                // 去实名认证
+                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                        .setMessageTip(obj.getErrmsg())
+                        .setConfirmTip("快速认证")
+                        .setCancelTip("残忍拒绝")
+                        .setConfirmBtnClickListener(new AnimateClickListener() {
+                            @Override
+                            public void click(View view) {
+                                mTipsDialogView.dismiss();
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=video"))
+                                        .greenChannel().navigation();
+                            }
+                        })
+                        .setCancelBtnClickListener(new AnimateClickListener() {
+                            @Override
+                            public void click(View view) {
                                 mTipsDialogView.dismiss();
                             }
                         })
