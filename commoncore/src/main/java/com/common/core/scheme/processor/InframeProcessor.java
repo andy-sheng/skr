@@ -169,7 +169,7 @@ public class InframeProcessor implements ISchemeProcessor {
                 event.mediaType = mediaType;
                 EventBus.getDefault().post(event);
             }
-        } else if ("/doublejoin".equals(path)) {
+        } else if ("/joindouble".equals(path)) {
             int ownerId = SchemeUtils.getInt(uri, "owner", 0);
             int roomId = SchemeUtils.getInt(uri, "gameId", 0);
             int ask = SchemeUtils.getInt(uri, "ask", 0);

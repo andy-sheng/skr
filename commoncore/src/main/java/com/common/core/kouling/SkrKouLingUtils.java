@@ -23,7 +23,7 @@ public class SkrKouLingUtils {
     public final static String TAG = "SkrKouLingUtils";
 
     public static void genDoubleJoinGrabGameKouling(final int inviterId, final int gameId,int mediaType, final ICallback callback){
-        String code = String.format("inframeskr://room/doublejoin?owner=%s&gameId=%s&ask=1&mediaType=%s", inviterId, gameId,mediaType);
+        String code = String.format("inframeskr://room/joindouble?owner=%s&gameId=%s&ask=1&mediaType=%s", inviterId, gameId,mediaType);
         KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
 
         ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
