@@ -57,7 +57,7 @@
         android:id="@+id/iv_sex"
         android:layout_width="@dimen/view_16_dp"
         android:layout_height="@dimen/view_16_dp"
-        android:layout_marginLeft="@dimen/view_6_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         app:layout_constraintBottom_toBottomOf="@id/iv_friend_name"
         app:layout_constraintLeft_toRightOf="@id/iv_friend_name"

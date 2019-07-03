@@ -1,79 +1,75 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_70_dp">
 
-    <ImageView
-        android:id="@+id/avatar_bg"
-        android:layout_width="@dimen/view_46_dp"
-        android:layout_height="@dimen/view_50_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:background="@drawable/s_touxiang" />
-
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_40_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_alignLeft="@id/avatar_bg"
-        android:layout_alignTop="@id/avatar_bg"
-        android:layout_marginLeft="@dimen/view_3_dp"
-        android:layout_marginTop="@dimen/view_3_dp" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@+id/avatar_bg">
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:paddingRight="@dimen/view_120_dp"
-            android:singleLine="true"
-            android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_16_dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/sex_iv"
-            android:layout_width="@dimen/view_16_dp"
-            android:layout_height="@dimen/view_16_dp"
-            android:layout_alignTop="@id/name_tv"
-            android:layout_marginLeft="-116dp"
-            android:layout_marginTop="@dimen/view_3_dp"
-            android:layout_toRightOf="@id/name_tv" />
-
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/status_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_17_dp"
-            android:layout_below="@+id/name_tv"
-            android:layout_alignLeft="@+id/name_tv"
-            android:gravity="center"
-            android:textColor="#800C2275"
-            android:textSize="@dimen/textsize_12_dp" />
-
-    </RelativeLayout>
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/follow_tv"
         android:layout_width="@dimen/view_65_dp"
         android:layout_height="@dimen/view_30_dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/textsize_14_dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/status_tv"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintRight_toLeftOf="@id/sex_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <ImageView
+        android:id="@+id/sex_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/name_tv"
+        app:layout_constraintLeft_toRightOf="@id/name_tv"
+        app:layout_constraintRight_toLeftOf="@id/follow_tv"
+        app:layout_constraintTop_toTopOf="@id/name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_17_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:gravity="center"
+        android:textColor="#800C2275"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
 
     <View
         android:layout_width="match_parent"
@@ -81,4 +77,4 @@
         android:layout_alignParentBottom="true"
         android:background="#333E5181" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
