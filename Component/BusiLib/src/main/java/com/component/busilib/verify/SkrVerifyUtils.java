@@ -109,6 +109,7 @@ public class SkrVerifyUtils {
             }
         } else {
             if (8344161 == obj.getErrno()) {
+                // 视频实名认证
                 if (mTipsDialogView != null) {
                     mTipsDialogView.dismiss();
                 }
@@ -148,6 +149,7 @@ public class SkrVerifyUtils {
                         .build();
                 mTipsDialogView.showByDialog();
             } else if (8376042 == obj.getErrno()) {
+                // 双人唱聊实名认证
                 if (mTipsDialogView != null) {
                     mTipsDialogView.dismiss();
                 }
@@ -161,7 +163,7 @@ public class SkrVerifyUtils {
                             public void click(View view) {
                                 mTipsDialogView.dismiss();
                                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=video"))
+                                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=duoble"))
                                         .greenChannel().navigation();
                             }
                         })
