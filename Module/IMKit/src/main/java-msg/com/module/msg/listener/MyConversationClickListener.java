@@ -2,11 +2,13 @@ package com.module.msg.listener;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.rxretrofit.ApiManager;
 import com.common.utils.U;
 import com.module.RouterConstants;
 
@@ -51,6 +53,14 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
 
     @Override
     public boolean onMessageLinkClick(Context context, String s, Message message) {
+        if(!TextUtils.isEmpty(s)){
+            if(s.startsWith("http://") || s.startsWith("https://")){
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel(s))
+                        .greenChannel().navigation();
+                return true;
+            }
+        }
         return false;
     }
 
