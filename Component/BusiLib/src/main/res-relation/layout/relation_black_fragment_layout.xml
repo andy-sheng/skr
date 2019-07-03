@@ -15,27 +15,30 @@
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
-        app:leftDrawable="@drawable/img_back"
+        app:leftDrawable="@drawable/grab_back"
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
-        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="@color/colorPrimary"/>
 
 
-    <RelativeLayout
+    <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/titlebar"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/common_bg_2">
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"/>
 
-    </RelativeLayout>
+    </com.common.view.ex.ExRelativeLayout>
 
 
 </RelativeLayout>

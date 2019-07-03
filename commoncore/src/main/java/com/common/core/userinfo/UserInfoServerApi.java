@@ -361,4 +361,10 @@ public interface UserInfoServerApi {
 
     @PUT("/v1/mate/my-blacklist")
     Observable<ApiResult> addToBlackList(@Body RequestBody body);
+
+    @GET("/v1/mate/my-blacklist")
+    Observable<ApiResult> getBlackList();
+
+    @GET("/v1/mate/is-blacked")
+    Observable<ApiResult> checkIsBlack(@Query("userID")int userID);
 }
