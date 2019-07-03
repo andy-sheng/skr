@@ -21,12 +21,7 @@ public enum EInviteType implements WireEnum {
   /**
    * 在双人房间内邀请
    */
-  IT_IN_COMBINE_ROOM(2),
-
-  /**
-   * 在双人房间内邀请 V2
-   */
-  IT_IN_COMBINE_ROOM_V2(3);
+  IT_IN_COMBINE_ROOM(2);
 
   public static final ProtoAdapter<EInviteType> ADAPTER = new ProtoAdapter_EInviteType();
 
@@ -44,7 +39,6 @@ public enum EInviteType implements WireEnum {
       case 0: return IT_UNKNOWN;
       case 1: return IT_OUT_COMBINE_ROOM;
       case 2: return IT_IN_COMBINE_ROOM;
-      case 3: return IT_IN_COMBINE_ROOM_V2;
       default: return null;
     }
   }

@@ -12,6 +12,7 @@ import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
 import com.zq.live.proto.Notification.CombineRoomEnterMsg;
 import com.zq.live.proto.Notification.CombineRoomInviteMsg;
+import com.zq.live.proto.Notification.CombineRoomInviteV2Msg;
 import com.zq.live.proto.Notification.CombineRoomRefuseMsg;
 import com.zq.live.proto.Notification.ECombineRoomEnterType;
 import com.zq.live.proto.Notification.EInviteType;
@@ -57,8 +58,8 @@ public class NotificationPushManager {
             processInviteStandMsg(baseNotiInfo, msg.getInviteStandMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_SYS_WARNING_MSG) {
             processSysWarnMsg(baseNotiInfo, msg.getSysWarningMsg());
-        } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_INVITE) {
-            processInviteMsg(baseNotiInfo, msg.getInviteMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_INVITEV2) {
+            processInviteMsg(baseNotiInfo, msg.getInviteV2Msg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_ENTER) {
             processEnterRoomMsg(baseNotiInfo, msg.getEnterMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_REFUSE) {
@@ -101,13 +102,13 @@ public class NotificationPushManager {
     /**
      * 邀请解析，所有邀请都包括
      */
-    private void processInviteMsg(BaseNotiInfo baseNotiInfo, CombineRoomInviteMsg combineRoomInviteMsg) {
+    private void processInviteMsg(BaseNotiInfo baseNotiInfo, CombineRoomInviteV2Msg combineRoomInviteMsg) {
         if (combineRoomInviteMsg != null) {
             if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_OUT_COMBINE_ROOM) {
                 //房间外，目前是一场到底里面
                 CRSendInviteUserNotifyEvent combineRoomSendInviteUserEvent = new CRSendInviteUserNotifyEvent(baseNotiInfo, combineRoomInviteMsg);
                 EventBus.getDefault().post(combineRoomSendInviteUserEvent);
-            } else if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_IN_COMBINE_ROOM_V2) {
+            } else if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_IN_COMBINE_ROOM) {
                 //双人房房间里
                 EventBus.getDefault().post(new CRInviteInCreateRoomNotifyEvent(baseNotiInfo, combineRoomInviteMsg));
             } else {
