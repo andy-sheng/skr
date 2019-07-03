@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.RouterConstants;
 
@@ -25,7 +26,8 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
      */
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
-        if (Integer.valueOf(userInfo.getUserId()) != MyUserInfoManager.getInstance().getUid()) {
+        int userId = Integer.valueOf(userInfo.getUserId());
+        if (userId != MyUserInfoManager.getInstance().getUid() && userId != UserInfoModel.USER_ID_XIAOZHUSHOU) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             Bundle bundle = new Bundle();
             bundle.putInt("bundle_user_id", Integer.valueOf(userInfo.getUserId()));

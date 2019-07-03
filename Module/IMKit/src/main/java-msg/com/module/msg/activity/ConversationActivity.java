@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -78,12 +79,17 @@ public class ConversationActivity extends BaseActivity {
                 finish();
             }
         });
-        mTitleBar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                showConfirmOptions();
-            }
-        });
+
+        if (mUserId.equals(UserInfoModel.USER_ID_XIAOZHUSHOU + "")) {
+            mTitleBar.getRightImageButton().setVisibility(View.GONE);
+        } else {
+            mTitleBar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    showConfirmOptions();
+                }
+            });
+        }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
         RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
