@@ -135,7 +135,9 @@ public interface DoubleRoomServerApi {
     /**
      * 请求匹配
      * {
-     * "platform": "PF_UNKNOWN"
+     * "platform": "PF_UNKNOWN",
+     * "sex": "unknown",
+     * "wantPeerSex": "unknown"
      * }
      *
      * @param body
@@ -160,6 +162,7 @@ public interface DoubleRoomServerApi {
 
     /**
      * 获取背景音乐
+     *
      * @return
      */
     @GET("http://dev.game.inframe.mobi/v1/magpie/on-match-music")
@@ -262,10 +265,11 @@ public interface DoubleRoomServerApi {
 
     /**
      * 双人房邀请响应
+     *
      * @param body {
-     *   "peerUserID": 0,
-     *   "roomID": 0
-     * }
+     *             "peerUserID": 0,
+     *             "roomID": 0
+     *             }
      * @return
      */
     @PUT("http://dev.game.inframe.mobi/v1/magpie/room-invite-user-enter")

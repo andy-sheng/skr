@@ -53,71 +53,12 @@
         android:text="取消匹配"
         android:textColor="#FF8AB6"
         android:textSize="@dimen/textsize_12_dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_solid_color="@color/transparent"
         app:bl_stroke_color="#FF8AB6"
         app:bl_stroke_width="@dimen/view_1_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <android.support.constraint.Group
-        android:id="@+id/select_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="select_sex_tip_tv,man_tv,woman_tv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/select_sex_tip_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/view_170_dp"
-        android:text="请选择你的性别"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_16_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/man_tv"
-        android:layout_width="@dimen/view_88_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_marginBottom="@dimen/view_90_dp"
-        android:gravity="center"
-        android:text="男生"
-        android:textSize="@dimen/textsize_14_dp"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_pressed_color="#807B89ED"
-        app:bl_pressed_textColor="@color/white"
-        app:bl_stroke_color="#807B89ED"
-        app:bl_stroke_width="@dimen/view_1_dp"
-        app:bl_unPressed_textColor="#6A83C0"
-        app:bl_unpressed_color="@color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/woman_tv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/woman_tv"
-        android:layout_width="@dimen/view_88_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_marginLeft="@dimen/view_30_dp"
-        android:layout_marginBottom="@dimen/view_90_dp"
-        android:gravity="center"
-        android:text="女生"
-        android:textSize="@dimen/textsize_14_dp"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_pressed_color="#80DF7EC2"
-        app:bl_pressed_textColor="@color/white"
-        app:bl_stroke_color="#80DF7EC2"
-        app:bl_stroke_width="@dimen/view_1_dp"
-        app:bl_unPressed_textColor="#DF7EC2"
-        app:bl_unpressed_color="@color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toRightOf="@+id/man_tv"
         app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

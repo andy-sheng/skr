@@ -31,7 +31,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
         EventBus.getDefault().register(this)
     }
 
-    fun startMatch(isMan: Boolean) {
+    fun startMatch(isMan: Boolean, wantMan: Boolean) {
         StatisticsAdapter.recordCountEvent("cp", "pairing_ready", null)
         handlerTaskTimer?.dispose()
         handlerTaskTimer = HandlerTaskTimer
@@ -42,7 +42,7 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
                         MyLog.d(mTag, "startMatch onNext")
-                        val mutableSet = mutableMapOf<String, Any>("platform" to 20, "sex" to if (isMan) 1 else 2)
+                        val mutableSet = mutableMapOf<String, Any>("platform" to 20, "sex" to if (isMan) 1 else 2, "wantPeerSex" to if (wantMan) 1 else 2)
                         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
                         ApiMethods.subscribe(doubleRoomServerApi.quaryMatch(body), object : ApiObserver<ApiResult>() {
                             override fun process(obj: ApiResult?) {

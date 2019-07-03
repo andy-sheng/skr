@@ -1,7 +1,6 @@
 package com.module.playways.doubleplay.fragment
 
 import android.os.Bundle
-import android.support.constraint.Group
 import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
@@ -24,11 +23,11 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
     val mTag = "DoubleGameMatchFragment"
     lateinit var mCalcelMatchTv: ExTextView
     lateinit var doubleMatchPresenter: DoubleMatchPresenter
-    lateinit var mSelectArea: Group
-    lateinit var mSelectSexTipTv: ExTextView
-    lateinit var mManTv: ExTextView
-    lateinit var mWomanTv: ExTextView
 
+    //是否想找男的
+    var mIsFindMale: Boolean? = null
+    //自己是否是男的
+    var mMeIsMale: Boolean? = null
 
     override fun initView(): Int {
         return com.module.playways.R.layout.double_game_match_fragment_layout
@@ -36,10 +35,6 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
     override fun initData(savedInstanceState: Bundle?) {
         mCalcelMatchTv = mRootView.findViewById<View>(com.module.playways.R.id.calcel_match_tv) as ExTextView
-        mSelectArea = mRootView.findViewById<View>(com.module.playways.R.id.select_area) as Group
-        mSelectSexTipTv = mRootView.findViewById<View>(com.module.playways.R.id.select_sex_tip_tv) as ExTextView
-        mManTv = mRootView.findViewById<View>(com.module.playways.R.id.man_tv) as ExTextView
-        mWomanTv = mRootView.findViewById<View>(com.module.playways.R.id.woman_tv) as ExTextView
 
         mCalcelMatchTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -47,21 +42,11 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
             }
         })
 
-        mManTv.setOnClickListener {
-            doubleMatchPresenter.startMatch(true)
-            mSelectArea.visibility = View.GONE
-            mCalcelMatchTv.visibility = View.VISIBLE
-        }
-
-        mWomanTv.setOnClickListener {
-            doubleMatchPresenter.startMatch(false)
-            mSelectArea.visibility = View.GONE
-            mCalcelMatchTv.visibility = View.VISIBLE
-        }
-
         doubleMatchPresenter = DoubleMatchPresenter(this)
         addPresent(doubleMatchPresenter)
         doubleMatchPresenter.getBgMusic()
+
+        doubleMatchPresenter.startMatch(mMeIsMale ?: true, mIsFindMale ?: true)
     }
 
     override fun playBgMusic(musicUrl: String) {
@@ -81,6 +66,14 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
 
     override fun finishActivity() {
         activity?.finish()
+    }
+
+    override fun setData(type: Int, data: Any?) {
+        if (type == 0) {
+            val bundle = data as Bundle
+            mIsFindMale = bundle.getBoolean("is_find_male")
+            mMeIsMale = bundle.getBoolean("is_me_male")
+        }
     }
 
     override fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: CRStartByMatchPushEvent) {

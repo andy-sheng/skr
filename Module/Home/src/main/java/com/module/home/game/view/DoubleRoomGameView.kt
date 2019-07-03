@@ -2,7 +2,9 @@ package com.module.home.game.view
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
@@ -22,6 +24,8 @@ import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.playways.IPlaywaysModeService
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 import com.zq.person.view.ConfirmMatchInfoView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.double_room_view_layout.view.*
@@ -50,6 +54,10 @@ class DoubleRoomGameView : RelativeLayout {
 
     var mSkrAudioPermission: SkrAudioPermission
 
+    var mSelectSexDialogPlus: DialogPlus? = null
+
+    var mSelectView: SelectSexDialogView? = null
+
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
@@ -75,9 +83,30 @@ class DoubleRoomGameView : RelativeLayout {
                     StatisticsAdapter.recordCountEvent("cp", "invite1", null)
                     mSkrAudioPermission.ensurePermission({
                         mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-                            ARouter.getInstance()
-                                    .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                    .navigation()
+                            if (mSelectSexDialogPlus == null) {
+                                mSelectView = SelectSexDialogView(this@DoubleRoomGameView.context)
+                                mSelectView?.onClickMatch = { isFindMale, isMeMale ->
+                                    mSelectSexDialogPlus?.dismiss()
+                                    val bundle = Bundle()
+                                    bundle.putBoolean("is_find_male", isFindMale ?: true)
+                                    bundle.putBoolean("is_me_male", isMeMale ?: true)
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                            .withBundle("bundle", bundle)
+                                            .navigation()
+                                }
+
+                                mSelectSexDialogPlus = DialogPlus.newDialog(context!!)
+                                        .setContentHolder(ViewHolder(mSelectView))
+                                        .setGravity(Gravity.BOTTOM)
+                                        .setContentBackgroundResource(R.color.transparent)
+                                        .setOverlayBackgroundResource(R.color.black_trans_80)
+                                        .setExpanded(false)
+                                        .create()
+                            }
+
+                            mSelectView?.reset()
+                            mSelectSexDialogPlus?.show()
                         }
                     }, true)
 //                    }
