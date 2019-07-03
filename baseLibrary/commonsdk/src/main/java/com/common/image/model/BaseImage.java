@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.common.image.fresco.IFrescoCallBack;
+import com.common.utils.ImageUtils;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.facebook.imagepipeline.common.Priority;
@@ -62,6 +63,8 @@ public abstract class BaseImage {
     protected ProgressBarDrawable mProgressBarDrawable = null;
     //低分辨率的图片uri
     protected Uri mLowImageUri = null;
+    //低分辨率的图片size 与 低分辨率的图片uri 只需要存在一个
+    protected ImageUtils.SIZE mLowImageSize = null;
     //加载的优先级
     protected Priority mRequestPriority = Priority.MEDIUM;
     //是否支持渐进式加载
@@ -256,5 +259,9 @@ public abstract class BaseImage {
 
     public void setTapToRetryEnabled(boolean tapToRetryEnabled) {
         mTapToRetryEnabled = tapToRetryEnabled;
+    }
+
+    public void setLowImageSize(ImageUtils.SIZE lowSize) {
+        mLowImageSize = lowSize;
     }
 }

@@ -7,6 +7,7 @@ import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.oss.IOssParam;
 import com.common.image.model.oss.OssImgResize;
 import com.common.log.MyLog;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
@@ -136,6 +137,10 @@ public class ImageFactory {
 
         public ImageFactory.Builder setLowImageUri(Uri lowImageUri) {
             mBaseImage.setLowImageUri(lowImageUri);
+            return this;
+        }
+        public ImageFactory.Builder setLowImageUri(ImageUtils.SIZE lowSize) {
+            mBaseImage.setLowImageSize(lowSize);
             return this;
         }
 
