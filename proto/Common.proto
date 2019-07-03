@@ -51,6 +51,9 @@ message MusicInfo {
     StandPlayType playType = 27; //一唱到底演唱类型
     repeated MusicInfo SPKMusic = 28; //一唱到底模式下spk歌曲信息
     MiniGameInfo miniGame       = 29; //连麦小游戏演唱类型
+    string writer = 30; //作词人
+    string composer = 31; //作曲人
+    string uploaderName = 32; //上传者用户名
 }
 
 message MiniGameInfo

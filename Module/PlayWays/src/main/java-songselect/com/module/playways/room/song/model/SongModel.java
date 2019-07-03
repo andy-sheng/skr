@@ -66,6 +66,9 @@ public class SongModel implements Serializable {
     private List<SongModel> pkMusicList;
     private int singCount;
     private MiniGameInfoModel miniGame;
+    private String writer;    //作词人
+    private String composer;   //作曲人
+    private String uploaderName; //上传用户名
 
     public int getSingCount() {
         return singCount;
@@ -292,6 +295,30 @@ public class SongModel implements Serializable {
         this.miniGame = miniGame;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getComposer() {
+        return composer;
+    }
+
+    public void setComposer(String composer) {
+        this.composer = composer;
+    }
+
+    public String getUploaderName() {
+        return uploaderName;
+    }
+
+    public void setUploaderName(String uploaderName) {
+        this.uploaderName = uploaderName;
+    }
+
     public void parse(MusicInfo musicInfo) {
         if (musicInfo == null) {
             MyLog.e("SongModel MusicInfo == null");
@@ -336,6 +363,9 @@ public class SongModel implements Serializable {
         if (musicInfo.getMiniGame() != null) {
             this.setMiniGame(MiniGameInfoModel.parse(musicInfo.getMiniGame()));
         }
+        this.setWriter(musicInfo.getWriter());
+        this.setComposer(musicInfo.getComposer());
+        this.setUploaderName(musicInfo.getUploaderName());
     }
 
     public SongModel getPkMusic() {

@@ -81,6 +81,12 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
   public static final StandPlayType DEFAULT_PLAYTYPE = StandPlayType.PT_INVALID_TYPE;
 
+  public static final String DEFAULT_WRITER = "";
+
+  public static final String DEFAULT_COMPOSER = "";
+
+  public static final String DEFAULT_UPLOADERNAME = "";
+
   /**
    * 音乐条目标识
    */
@@ -343,14 +349,42 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   private final MiniGameInfo miniGame;
 
+  /**
+   * 作词人
+   */
+  @WireField(
+      tag = 30,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String writer;
+
+  /**
+   * 作曲人
+   */
+  @WireField(
+      tag = 31,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String composer;
+
+  /**
+   * 上传者用户名
+   */
+  @WireField(
+      tag = 32,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String uploaderName;
+
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
       Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
       Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
-      List<MusicInfo> SPKMusic, MiniGameInfo miniGame) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, ByteString.EMPTY);
+      List<MusicInfo> SPKMusic, MiniGameInfo miniGame, String writer, String composer,
+      String uploaderName) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, writer, composer, uploaderName, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
@@ -359,7 +393,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
       Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
       Integer standTotalMs, Boolean challengeAvailable, StandPlayType playType,
-      List<MusicInfo> SPKMusic, MiniGameInfo miniGame, ByteString unknownFields) {
+      List<MusicInfo> SPKMusic, MiniGameInfo miniGame, String writer, String composer,
+      String uploaderName, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -390,6 +425,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.playType = playType;
     this.SPKMusic = Internal.immutableCopyOf("SPKMusic", SPKMusic);
     this.miniGame = miniGame;
+    this.writer = writer;
+    this.composer = composer;
+    this.uploaderName = uploaderName;
   }
 
   @Override
@@ -424,6 +462,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.playType = playType;
     builder.SPKMusic = Internal.copyOf("SPKMusic", SPKMusic);
     builder.miniGame = miniGame;
+    builder.writer = writer;
+    builder.composer = composer;
+    builder.uploaderName = uploaderName;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -462,7 +503,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(challengeAvailable, o.challengeAvailable)
         && Internal.equals(playType, o.playType)
         && SPKMusic.equals(o.SPKMusic)
-        && Internal.equals(miniGame, o.miniGame);
+        && Internal.equals(miniGame, o.miniGame)
+        && Internal.equals(writer, o.writer)
+        && Internal.equals(composer, o.composer)
+        && Internal.equals(uploaderName, o.uploaderName);
   }
 
   @Override
@@ -499,6 +543,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (playType != null ? playType.hashCode() : 0);
       result = result * 37 + SPKMusic.hashCode();
       result = result * 37 + (miniGame != null ? miniGame.hashCode() : 0);
+      result = result * 37 + (writer != null ? writer.hashCode() : 0);
+      result = result * 37 + (composer != null ? composer.hashCode() : 0);
+      result = result * 37 + (uploaderName != null ? uploaderName.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -536,6 +583,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (playType != null) builder.append(", playType=").append(playType);
     if (!SPKMusic.isEmpty()) builder.append(", SPKMusic=").append(SPKMusic);
     if (miniGame != null) builder.append(", miniGame=").append(miniGame);
+    if (writer != null) builder.append(", writer=").append(writer);
+    if (composer != null) builder.append(", composer=").append(composer);
+    if (uploaderName != null) builder.append(", uploaderName=").append(uploaderName);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -840,6 +890,36 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 作词人
+   */
+  public String getWriter() {
+    if(writer==null){
+        return DEFAULT_WRITER;
+    }
+    return writer;
+  }
+
+  /**
+   * 作曲人
+   */
+  public String getComposer() {
+    if(composer==null){
+        return DEFAULT_COMPOSER;
+    }
+    return composer;
+  }
+
+  /**
+   * 上传者用户名
+   */
+  public String getUploaderName() {
+    if(uploaderName==null){
+        return DEFAULT_UPLOADERNAME;
+    }
+    return uploaderName;
+  }
+
+  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -1042,6 +1122,27 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return miniGame!=null;
   }
 
+  /**
+   * 作词人
+   */
+  public boolean hasWriter() {
+    return writer!=null;
+  }
+
+  /**
+   * 作曲人
+   */
+  public boolean hasComposer() {
+    return composer!=null;
+  }
+
+  /**
+   * 上传者用户名
+   */
+  public boolean hasUploaderName() {
+    return uploaderName!=null;
+  }
+
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     private Integer itemID;
 
@@ -1100,6 +1201,12 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     private List<MusicInfo> SPKMusic;
 
     private MiniGameInfo miniGame;
+
+    private String writer;
+
+    private String composer;
+
+    private String uploaderName;
 
     public Builder() {
       SPKMusic = Internal.newMutableList();
@@ -1338,9 +1445,33 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
+    /**
+     * 作词人
+     */
+    public Builder setWriter(String writer) {
+      this.writer = writer;
+      return this;
+    }
+
+    /**
+     * 作曲人
+     */
+    public Builder setComposer(String composer) {
+      this.composer = composer;
+      return this;
+    }
+
+    /**
+     * 上传者用户名
+     */
+    public Builder setUploaderName(String uploaderName) {
+      this.uploaderName = uploaderName;
+      return this;
+    }
+
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, playType, SPKMusic, miniGame, writer, composer, uploaderName, super.buildUnknownFields());
     }
   }
 
@@ -1380,6 +1511,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + StandPlayType.ADAPTER.encodedSizeWithTag(27, value.playType)
           + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(28, value.SPKMusic)
           + MiniGameInfo.ADAPTER.encodedSizeWithTag(29, value.miniGame)
+          + ProtoAdapter.STRING.encodedSizeWithTag(30, value.writer)
+          + ProtoAdapter.STRING.encodedSizeWithTag(31, value.composer)
+          + ProtoAdapter.STRING.encodedSizeWithTag(32, value.uploaderName)
           + value.unknownFields().size();
     }
 
@@ -1414,6 +1548,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       StandPlayType.ADAPTER.encodeWithTag(writer, 27, value.playType);
       MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 28, value.SPKMusic);
       MiniGameInfo.ADAPTER.encodeWithTag(writer, 29, value.miniGame);
+      ProtoAdapter.STRING.encodeWithTag(writer, 30, value.writer);
+      ProtoAdapter.STRING.encodeWithTag(writer, 31, value.composer);
+      ProtoAdapter.STRING.encodeWithTag(writer, 32, value.uploaderName);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1459,6 +1596,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           }
           case 28: builder.SPKMusic.add(MusicInfo.ADAPTER.decode(reader)); break;
           case 29: builder.setMiniGame(MiniGameInfo.ADAPTER.decode(reader)); break;
+          case 30: builder.setWriter(ProtoAdapter.STRING.decode(reader)); break;
+          case 31: builder.setComposer(ProtoAdapter.STRING.decode(reader)); break;
+          case 32: builder.setUploaderName(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
