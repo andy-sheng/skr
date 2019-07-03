@@ -19,12 +19,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.view.ex.ExConstraintLayout
+    <com.common.view.ex.ExLinearLayout
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_366_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_85_dp"
         android:layout_marginRight="@dimen/view_10_dp"
+        android:orientation="vertical"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="@color/black_trans_10"
@@ -32,301 +33,308 @@
         app:layout_constraintRight_toRightOf="@id/result_bg"
         app:layout_constraintTop_toTopOf="@id/result_bg">
 
-        <android.support.constraint.Group
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/grab_num_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_60_dp"
-            app:constraint_referenced_ids="grab_num_icon,grab_num_desc,grab_num_tv,grab_num_divider" />
+            android:layout_height="@dimen/view_60_dp">
 
-        <ImageView
-            android:id="@+id/grab_num_icon"
-            android:layout_width="@dimen/view_30_dp"
-            android:layout_height="@dimen/view_30_dp"
-            android:layout_marginLeft="@dimen/view_24_dp"
-            android:background="@drawable/grab_result_grab_icon"
-            app:layout_constraintBottom_toBottomOf="@id/grab_num_area"
-            app:layout_constraintLeft_toLeftOf="@id/grab_num_area"
-            app:layout_constraintTop_toTopOf="@id/grab_num_area" />
+            <ImageView
+                android:id="@+id/grab_num_icon"
+                android:layout_width="@dimen/view_30_dp"
+                android:layout_height="@dimen/view_30_dp"
+                android:layout_marginLeft="@dimen/view_24_dp"
+                android:background="@drawable/grab_result_grab_icon"
+                app:layout_constraintBottom_toBottomOf="@id/grab_num_area"
+                app:layout_constraintLeft_toLeftOf="@id/grab_num_area"
+                app:layout_constraintTop_toTopOf="@id/grab_num_area" />
 
-        <TextView
-            android:id="@+id/grab_num_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="抢唱"
-            android:textColor="@color/white_trans_60"
-            android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="@id/grab_num_icon"
-            app:layout_constraintLeft_toRightOf="@id/grab_num_icon"
-            app:layout_constraintTop_toTopOf="@id/grab_num_icon" />
+            <TextView
+                android:id="@+id/grab_num_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="抢唱"
+                android:textColor="@color/white_trans_60"
+                android:textSize="@dimen/textsize_16_dp"
+                app:layout_constraintBottom_toBottomOf="@id/grab_num_icon"
+                app:layout_constraintLeft_toRightOf="@id/grab_num_icon"
+                app:layout_constraintTop_toTopOf="@id/grab_num_icon" />
 
-        <TextView
-            android:id="@+id/grab_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/textsize_16_dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_32_dp"
-            app:layout_constraintBottom_toBottomOf="@id/grab_num_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/grab_num_icon" />
+            <TextView
+                android:id="@+id/grab_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/textsize_16_dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_32_dp"
+                app:layout_constraintBottom_toBottomOf="@id/grab_num_icon"
+                app:layout_constraintRight_toRightOf="@id/grab_num_area"
+                app:layout_constraintTop_toTopOf="@id/grab_num_icon" />
 
-        <View
-            android:id="@+id/grab_num_divider"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_1_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_16_dp"
-            android:background="@color/white_trans_10"
-            app:layout_constraintBottom_toBottomOf="@id/grab_num_area"
-            app:layout_constraintLeft_toLeftOf="@id/grab_num_area"
-            app:layout_constraintRight_toRightOf="@id/grab_num_area" />
+            <View
+                android:id="@+id/grab_num_divider"
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@color/white_trans_10"
+                app:layout_constraintBottom_toBottomOf="@id/grab_num_area"
+                app:layout_constraintLeft_toLeftOf="@id/grab_num_area"
+                app:layout_constraintRight_toRightOf="@id/grab_num_area" />
 
-        <android.support.constraint.Group
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/burst_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_60_dp"
-            app:constraint_referenced_ids="burst_icon,burst_desc,burst_num_tv,burst_num_divider"
-            app:layout_constraintTop_toBottomOf="@id/grab_num_area" />
+            android:layout_height="@dimen/view_60_dp">
 
-        <ImageView
-            android:id="@+id/burst_icon"
-            android:layout_width="@dimen/view_30_dp"
-            android:layout_height="@dimen/view_30_dp"
-            android:layout_marginLeft="@dimen/view_24_dp"
-            android:background="@drawable/grab_result_burst_icon"
-            app:layout_constraintBottom_toBottomOf="@id/burst_area"
-            app:layout_constraintLeft_toLeftOf="@id/burst_area"
-            app:layout_constraintTop_toTopOf="@id/burst_area" />
+            <ImageView
+                android:id="@+id/burst_icon"
+                android:layout_width="@dimen/view_30_dp"
+                android:layout_height="@dimen/view_30_dp"
+                android:layout_marginLeft="@dimen/view_24_dp"
+                android:background="@drawable/grab_result_burst_icon"
+                app:layout_constraintBottom_toBottomOf="@id/burst_area"
+                app:layout_constraintLeft_toLeftOf="@id/burst_area"
+                app:layout_constraintTop_toTopOf="@id/burst_area" />
 
-        <TextView
-            android:id="@+id/burst_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="爆灯"
-            android:textColor="@color/white_trans_60"
-            android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="@id/burst_icon"
-            app:layout_constraintLeft_toRightOf="@id/burst_icon"
-            app:layout_constraintTop_toTopOf="@id/burst_icon" />
+            <TextView
+                android:id="@+id/burst_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="爆灯"
+                android:textColor="@color/white_trans_60"
+                android:textSize="@dimen/textsize_16_dp"
+                app:layout_constraintBottom_toBottomOf="@id/burst_icon"
+                app:layout_constraintLeft_toRightOf="@id/burst_icon"
+                app:layout_constraintTop_toTopOf="@id/burst_icon" />
 
-        <TextView
-            android:id="@+id/burst_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/textsize_16_dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_32_dp"
-            app:layout_constraintBottom_toBottomOf="@id/burst_area"
-            app:layout_constraintRight_toRightOf="@id/burst_area"
-            app:layout_constraintTop_toTopOf="@id/burst_area" />
+            <TextView
+                android:id="@+id/burst_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/textsize_16_dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_32_dp"
+                app:layout_constraintBottom_toBottomOf="@id/burst_area"
+                app:layout_constraintRight_toRightOf="@id/burst_area"
+                app:layout_constraintTop_toTopOf="@id/burst_area" />
 
-        <View
-            android:id="@+id/burst_num_divider"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_1_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_16_dp"
-            android:background="@color/white_trans_10"
-            app:layout_constraintBottom_toBottomOf="@id/burst_area"
-            app:layout_constraintLeft_toLeftOf="@id/burst_area"
-            app:layout_constraintRight_toRightOf="@id/burst_area" />
+            <View
+                android:id="@+id/burst_num_divider"
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@color/white_trans_10"
+                app:layout_constraintBottom_toBottomOf="@id/burst_area"
+                app:layout_constraintLeft_toLeftOf="@id/burst_area"
+                app:layout_constraintRight_toRightOf="@id/burst_area" />
 
-        <android.support.constraint.Group
+        </android.support.constraint.ConstraintLayout>
+
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/flower_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_60_dp"
-            app:constraint_referenced_ids="flower_icon,flower_desc,flower_num_tv,flower_num_divider"
-            app:layout_constraintTop_toBottomOf="@id/burst_area" />
+            android:layout_height="@dimen/view_60_dp">
 
-        <ImageView
-            android:id="@+id/flower_icon"
-            android:layout_width="@dimen/view_30_dp"
-            android:layout_height="@dimen/view_30_dp"
-            android:layout_marginLeft="@dimen/view_24_dp"
-            android:background="@drawable/grab_result_flower_icon"
-            app:layout_constraintBottom_toBottomOf="@id/flower_area"
-            app:layout_constraintLeft_toLeftOf="@id/flower_area"
-            app:layout_constraintTop_toTopOf="@id/flower_area" />
+            <ImageView
+                android:id="@+id/flower_icon"
+                android:layout_width="@dimen/view_30_dp"
+                android:layout_height="@dimen/view_30_dp"
+                android:layout_marginLeft="@dimen/view_24_dp"
+                android:background="@drawable/grab_result_flower_icon"
+                app:layout_constraintBottom_toBottomOf="@id/flower_area"
+                app:layout_constraintLeft_toLeftOf="@id/flower_area"
+                app:layout_constraintTop_toTopOf="@id/flower_area" />
 
-        <TextView
-            android:id="@+id/flower_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="获得鲜花"
-            android:textColor="@color/white_trans_60"
-            android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="@id/flower_icon"
-            app:layout_constraintLeft_toRightOf="@id/flower_icon"
-            app:layout_constraintTop_toTopOf="@id/flower_icon" />
+            <TextView
+                android:id="@+id/flower_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="获得鲜花"
+                android:textColor="@color/white_trans_60"
+                android:textSize="@dimen/textsize_16_dp"
+                app:layout_constraintBottom_toBottomOf="@id/flower_icon"
+                app:layout_constraintLeft_toRightOf="@id/flower_icon"
+                app:layout_constraintTop_toTopOf="@id/flower_icon" />
 
-        <TextView
-            android:id="@+id/flower_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/textsize_16_dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_32_dp"
-            app:layout_constraintBottom_toBottomOf="@id/flower_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/flower_icon" />
+            <TextView
+                android:id="@+id/flower_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/textsize_16_dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_32_dp"
+                app:layout_constraintBottom_toBottomOf="@id/flower_icon"
+                app:layout_constraintRight_toRightOf="@id/flower_area"
+                app:layout_constraintTop_toTopOf="@id/flower_icon" />
 
-        <View
-            android:id="@+id/flower_num_divider"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_1_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_16_dp"
-            android:background="@color/white_trans_10"
-            app:layout_constraintBottom_toBottomOf="@id/flower_area"
-            app:layout_constraintLeft_toLeftOf="@id/flower_area"
-            app:layout_constraintRight_toRightOf="@id/flower_area" />
+            <View
+                android:id="@+id/flower_num_divider"
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@color/white_trans_10"
+                app:layout_constraintBottom_toBottomOf="@id/flower_area"
+                app:layout_constraintLeft_toLeftOf="@id/flower_area"
+                app:layout_constraintRight_toRightOf="@id/flower_area" />
 
-        <android.support.constraint.Group
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/charm_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_60_dp"
-            app:constraint_referenced_ids="charm_icon,charm_num_desc,charm_num_tv,charm_num_divider"
-            app:layout_constraintTop_toBottomOf="@id/flower_area" />
+            android:layout_height="@dimen/view_60_dp">
 
-        <ImageView
-            android:id="@+id/charm_icon"
-            android:layout_width="@dimen/view_30_dp"
-            android:layout_height="@dimen/view_30_dp"
-            android:layout_marginLeft="@dimen/view_24_dp"
-            android:background="@drawable/grab_result_charm_icon"
-            app:layout_constraintBottom_toBottomOf="@id/charm_area"
-            app:layout_constraintLeft_toLeftOf="@id/charm_area"
-            app:layout_constraintTop_toTopOf="@id/charm_area" />
+            <ImageView
+                android:id="@+id/charm_icon"
+                android:layout_width="@dimen/view_30_dp"
+                android:layout_height="@dimen/view_30_dp"
+                android:layout_marginLeft="@dimen/view_24_dp"
+                android:background="@drawable/grab_result_charm_icon"
+                app:layout_constraintBottom_toBottomOf="@id/charm_area"
+                app:layout_constraintLeft_toLeftOf="@id/charm_area"
+                app:layout_constraintTop_toTopOf="@id/charm_area" />
 
-        <TextView
-            android:id="@+id/charm_num_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="魅力值"
-            android:textColor="@color/white_trans_60"
-            android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="@id/charm_icon"
-            app:layout_constraintLeft_toRightOf="@id/charm_icon"
-            app:layout_constraintTop_toTopOf="@id/charm_icon" />
+            <TextView
+                android:id="@+id/charm_num_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="魅力值"
+                android:textColor="@color/white_trans_60"
+                android:textSize="@dimen/textsize_16_dp"
+                app:layout_constraintBottom_toBottomOf="@id/charm_icon"
+                app:layout_constraintLeft_toRightOf="@id/charm_icon"
+                app:layout_constraintTop_toTopOf="@id/charm_icon" />
 
-        <TextView
-            android:id="@+id/charm_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/textsize_16_dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_32_dp"
-            app:layout_constraintBottom_toBottomOf="@id/charm_area"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/charm_area" />
+            <TextView
+                android:id="@+id/charm_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/textsize_16_dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_32_dp"
+                app:layout_constraintBottom_toBottomOf="@id/charm_area"
+                app:layout_constraintRight_toRightOf="@id/charm_area"
+                app:layout_constraintTop_toTopOf="@id/charm_area" />
 
-        <View
-            android:id="@+id/charm_num_divider"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_1_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_16_dp"
-            android:background="@color/white_trans_10"
-            app:layout_constraintBottom_toBottomOf="@id/charm_area"
-            app:layout_constraintLeft_toLeftOf="@id/charm_area"
-            app:layout_constraintRight_toRightOf="@id/charm_area" />
+            <View
+                android:id="@+id/charm_num_divider"
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@color/white_trans_10"
+                app:layout_constraintBottom_toBottomOf="@id/charm_area"
+                app:layout_constraintLeft_toLeftOf="@id/charm_area"
+                app:layout_constraintRight_toRightOf="@id/charm_area" />
 
-        <android.support.constraint.Group
+        </android.support.constraint.ConstraintLayout>
+
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/coin_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_60_dp"
-            app:constraint_referenced_ids="coin_icon,coin_desc,coin_num_tv,coin_num_divider"
-            app:layout_constraintTop_toBottomOf="@id/charm_area" />
+            android:layout_height="@dimen/view_60_dp">
 
-        <ImageView
-            android:id="@+id/coin_icon"
-            android:layout_width="@dimen/view_30_dp"
-            android:layout_height="@dimen/view_30_dp"
-            android:layout_marginLeft="@dimen/view_24_dp"
-            android:background="@drawable/grab_result_coin_icon"
-            app:layout_constraintBottom_toBottomOf="@id/coin_area"
-            app:layout_constraintLeft_toLeftOf="@id/coin_area"
-            app:layout_constraintTop_toTopOf="@id/coin_area" />
+            <ImageView
+                android:id="@+id/coin_icon"
+                android:layout_width="@dimen/view_30_dp"
+                android:layout_height="@dimen/view_30_dp"
+                android:layout_marginLeft="@dimen/view_24_dp"
+                android:background="@drawable/grab_result_coin_icon"
+                app:layout_constraintBottom_toBottomOf="@id/coin_area"
+                app:layout_constraintLeft_toLeftOf="@id/coin_area"
+                app:layout_constraintTop_toTopOf="@id/coin_area" />
 
-        <TextView
-            android:id="@+id/coin_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="获得金币"
-            android:textColor="@color/white_trans_60"
-            android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="@id/coin_icon"
-            app:layout_constraintLeft_toRightOf="@id/coin_icon"
-            app:layout_constraintTop_toTopOf="@id/coin_icon" />
+            <TextView
+                android:id="@+id/coin_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="获得金币"
+                android:textColor="@color/white_trans_60"
+                android:textSize="@dimen/textsize_16_dp"
+                app:layout_constraintBottom_toBottomOf="@id/coin_icon"
+                app:layout_constraintLeft_toRightOf="@id/coin_icon"
+                app:layout_constraintTop_toTopOf="@id/coin_icon" />
 
-        <TextView
-            android:id="@+id/coin_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/textsize_16_dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_32_dp"
-            app:layout_constraintBottom_toBottomOf="@id/coin_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/coin_icon" />
+            <TextView
+                android:id="@+id/coin_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/textsize_16_dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_32_dp"
+                app:layout_constraintBottom_toBottomOf="@id/coin_icon"
+                app:layout_constraintRight_toRightOf="@id/coin_area"
+                app:layout_constraintTop_toTopOf="@id/coin_icon" />
 
-        <View
-            android:id="@+id/coin_num_divider"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_1_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_16_dp"
-            android:background="@color/white_trans_10"
-            app:layout_constraintBottom_toBottomOf="@id/coin_area"
-            app:layout_constraintLeft_toLeftOf="@id/coin_area"
-            app:layout_constraintRight_toRightOf="@id/coin_area" />
+            <View
+                android:id="@+id/coin_num_divider"
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:background="@color/white_trans_10"
+                app:layout_constraintBottom_toBottomOf="@id/coin_area"
+                app:layout_constraintLeft_toLeftOf="@id/coin_area"
+                app:layout_constraintRight_toRightOf="@id/coin_area" />
 
-        <android.support.constraint.Group
+        </android.support.constraint.ConstraintLayout>
+
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/hz_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_60_dp"
-            app:constraint_referenced_ids="hz_icon,hz_desc,hz_num_tv"
-            app:layout_constraintTop_toBottomOf="@id/coin_area" />
+            android:layout_height="@dimen/view_60_dp">
 
-        <ImageView
-            android:id="@+id/hz_icon"
-            android:layout_width="@dimen/view_30_dp"
-            android:layout_height="@dimen/view_30_dp"
-            android:layout_marginLeft="@dimen/view_24_dp"
-            android:background="@drawable/grab_result_hz_icon"
-            app:layout_constraintBottom_toBottomOf="@id/hz_area"
-            app:layout_constraintLeft_toLeftOf="@id/hz_area"
-            app:layout_constraintTop_toTopOf="@id/hz_area" />
+            <ImageView
+                android:id="@+id/hz_icon"
+                android:layout_width="@dimen/view_30_dp"
+                android:layout_height="@dimen/view_30_dp"
+                android:layout_marginLeft="@dimen/view_24_dp"
+                android:background="@drawable/grab_result_hz_icon"
+                app:layout_constraintBottom_toBottomOf="@id/hz_area"
+                app:layout_constraintLeft_toLeftOf="@id/hz_area"
+                app:layout_constraintTop_toTopOf="@id/hz_area" />
 
-        <TextView
-            android:id="@+id/hz_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="获得红钻"
-            android:textColor="@color/white_trans_60"
-            android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="@id/hz_icon"
-            app:layout_constraintLeft_toRightOf="@id/hz_icon"
-            app:layout_constraintTop_toTopOf="@id/hz_icon" />
+            <TextView
+                android:id="@+id/hz_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="获得红钻"
+                android:textColor="@color/white_trans_60"
+                android:textSize="@dimen/textsize_16_dp"
+                app:layout_constraintBottom_toBottomOf="@id/hz_icon"
+                app:layout_constraintLeft_toRightOf="@id/hz_icon"
+                app:layout_constraintTop_toTopOf="@id/hz_icon" />
 
-        <TextView
-            android:id="@+id/hz_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/textsize_16_dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_32_dp"
-            app:layout_constraintBottom_toBottomOf="@id/hz_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/hz_icon" />
+            <TextView
+                android:id="@+id/hz_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/textsize_16_dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_32_dp"
+                app:layout_constraintBottom_toBottomOf="@id/hz_icon"
+                app:layout_constraintRight_toRightOf="@id/hz_area"
+                app:layout_constraintTop_toTopOf="@id/hz_icon" />
 
-    </com.common.view.ex.ExConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+
+
+    </com.common.view.ex.ExLinearLayout>
 
     <ImageView
         android:layout_width="@dimen/view_306_dp"

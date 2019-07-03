@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -44,22 +45,22 @@ public class GrabResultFragment extends BaseFragment {
     GrabRoomData mRoomData;
     GrabResultData mGrabResultData;
 
-    Group mGrabNumArea;
+    ConstraintLayout mGrabNumArea;
     TextView mGrabNumTv;
 
-    Group mBurstArea;
+    ConstraintLayout mBurstArea;
     TextView mBurstNumTv;
 
-    Group mFlowerArea;
+    ConstraintLayout mFlowerArea;
     TextView mFlowerNumTv;
 
-    Group mCharmArea;
+    ConstraintLayout mCharmArea;
     TextView mCharmNumTv;
 
-    Group mCoinArea;
+    ConstraintLayout mCoinArea;
     TextView mCoinNumTv;
 
-    Group mHzArea;
+    ConstraintLayout mHzArea;
     TextView mHzNumTv;
 
     ExTextView mTvBack;
@@ -188,7 +189,7 @@ public class GrabResultFragment extends BaseFragment {
         }
     }
 
-    private void bindData(Group group, TextView textView, NumericDetailModel model, String before, String after) {
+    private void bindData(ConstraintLayout group, TextView textView, NumericDetailModel model, String before, String after) {
         if (model == null) {
             group.setVisibility(View.GONE);
             return;
