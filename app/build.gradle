@@ -180,8 +180,8 @@ android {
                     OPPO_APPID    : "OP‐3733726", // OPPO平台注册的appid
                     OPPO_APPSECRET: "OP‐1b038723163d485b9d739ad9ee0fbe8e",//OPPO平台注册的appsecret
                     //TODO vivo 平台 push 通道 申请失败。目前用的测试的推送类型
-                    VIVO_APPKEY   : "7fe32b5b-91e0-499e-98fc-1cf2076256c0", // VIVO平台注册的appkey
-                    VIVO_APPID    : "12021", // VIVO平台注册的appid
+                    VIVO_APPKEY   : "5c26c7b0-8e5c-477e-96a1-294559c71da1", // VIVO平台注册的appkey
+                    VIVO_APPID    : "13303", // VIVO平台注册的appid
             ]
         }
     }
