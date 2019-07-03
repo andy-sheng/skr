@@ -54,6 +54,8 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
         mMeMaleIv?.isSelected = false
         mMeFemaleIv?.isSelected = false
         mStartMatchTv?.isEnabled = false
+        mIsFindMale = null
+        mMeIsMale = null
     }
 
     private fun onClickView(view: View?) {
