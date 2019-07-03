@@ -1,32 +1,24 @@
 package com.module.playways.room.room.fragment;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.permission.PermissionUtils;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -80,9 +72,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     TextView mTvArea;
     ExImageView mIvBack;
 
-    LinearLayout mLlAreaContainer;
-    ExTextView mTvOtherArea;
-
     SmartRefreshLayout mRefreshLayout;
     boolean mHasMore = true;
 
@@ -90,11 +79,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     ImageView mIvRank;
     ImageView mIvRankRight;
 
-    PopupWindow mPopupWindow;
-
     View mOwnInfoItem;
-
-    int mRankMode = UserRankModel.COUNTRY;
 
     SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
@@ -137,13 +122,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mTvArea = (ExTextView) mRootView.findViewById(R.id.tv_area);
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
-        mLlAreaContainer = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_select_popup_window_layout, null);
-        mTvOtherArea = (ExTextView) mLlAreaContainer.findViewById(R.id.tv_other_area);
-
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
-        mPopupWindow = new PopupWindow(mLlAreaContainer);
-        mPopupWindow.setOutsideTouchable(true);
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
@@ -171,89 +151,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             }
         });
 
-        mTvArea.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (mPopupWindow.isShowing()) {
-                    mPopupWindow.dismiss();
-                } else {
-                    mPopupWindow.setWidth(mTvArea.getMeasuredWidth());
-                    mPopupWindow.setHeight(300);
-                    mPopupWindow.showAsDropDown(mTvArea);
-                }
-
-//                        mLlAreaContainer.setVisibility(mLlAreaContainer.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                Drawable drawable = null;
-
-                if (mPopupWindow.isShowing()) {
-                    drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon_down);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                } else {
-                    drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                }
-
-                mTvArea.setCompoundDrawables(null, null, drawable, null);
-                if (mRankMode == UserRankModel.COUNTRY) {
-                    if (MyUserInfoManager.getInstance().hasLocation()) {
-                        mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                    } else {
-                        mTvOtherArea.setText("地域榜");
-                    }
-                } else if (mRankMode == UserRankModel.REGION) {
-                    mTvOtherArea.setText("全国榜");
-                }
-                mTvOtherArea.setSelected(false);
-            }
-        });
-
-        mTvOtherArea.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                mPopupWindow.dismiss();
-                Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                mTvArea.setCompoundDrawables(null, null, drawable, null);
-
-                if (!MyUserInfoManager.getInstance().hasLocation()) {
-                    tryGetLocation();
-                    return;
-                }
-
-                if (!U.getNetworkUtils().hasNetwork()) {
-                    noNetWork();
-                    return;
-                }
-
-                if (mRankMode == UserRankModel.REGION) {
-                    mTvArea.setText("全国榜");
-                    mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                    mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
-                    mRankMode = UserRankModel.COUNTRY;
-                } else if (mRankMode == UserRankModel.COUNTRY) {
-                    if (MyUserInfoManager.getInstance().hasLocation()) {
-                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                        mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
-                        mRankMode = UserRankModel.REGION;
-                    } else {
-                        mSkrLocationPermission.ensurePermission(new Runnable() {
-                            @Override
-                            public void run() {
-                                MyUserInfoManager.getInstance().uploadLocation(new LbsUtils.Callback() {
-                                    @Override
-                                    public void onReceive(LbsUtils.Location location) {
-                                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                                        mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
-                                        mRankMode = UserRankModel.REGION;
-                                    }
-                                });
-                            }
-                        }, true);
-                    }
-                }
-            }
-        });
-
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -262,73 +159,15 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             }
         });
 
-        setRankMode();
-        if (!MyUserInfoManager.getInstance().hasLocation() && U.getPreferenceUtils().getSettingBoolean("tips_location_permission_in_rank", false)) {
-            tryGetLocation();
-        }
-
+        mLeaderboardPresenter.getOwnInfo();
+        mLeaderboardPresenter.getLeaderBoardInfo();
         StatisticsAdapter.recordCountEvent("rank", "ranklist", null);
-    }
-
-    private void setRankMode() {
-        if (MyUserInfoManager.getInstance().hasLocation()) {
-            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-            mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
-            mRankMode = UserRankModel.REGION;
-            mTvOtherArea.setText("全国榜");
-        } else {
-            mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
-            mRankMode = UserRankModel.COUNTRY;
-//            mTvArea.setCompoundDrawables(null, null, null, null);
-            mTvArea.setText("全国榜");
-            mTvOtherArea.setText("地域榜");
-        }
-    }
-
-    private String getAreaFromLocation(Location location) {
-        if (!TextUtils.isEmpty(location.getDistrict())) {
-            return location.getDistrict() + "榜";
-        } else {
-            return "未知位置";
-        }
-    }
-
-    private void tryGetLocation() {
-        boolean hasLocationPermmistion = U.getPermissionUtils().checkLocation(getActivity());
-
-        if (!hasLocationPermmistion) {
-            U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
-                @Override
-                public void onRequestPermissionSuccess() {
-                    MyUserInfoManager.getInstance().uploadLocation();
-                }
-
-                @Override
-                public void onRequestPermissionFailure(List<String> permissions) {
-
-                }
-
-                @Override
-                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-
-                }
-            }, getActivity());
-        } else {
-            MyUserInfoManager.getInstance().uploadLocation();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mSkrLocationPermission.onBackFromPermisionManagerMaybe(getActivity());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        if (MyUserInfoManager.getInstance().hasLocation()) {
-            setRankMode();
-        }
     }
 
     @Override
@@ -343,7 +182,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     public void onEvent(NetworkUtils.NetworkChangeEvent event) {
         if (event.type != -1) {
             if (mLeaderBoardAdapter.getDataList() == null && mLeaderBoardAdapter.getDataList().size() == 0) {
-                setRankMode();
+                mLeaderboardPresenter.getLeaderBoardInfo();
             }
         }
     }
@@ -490,9 +329,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     @Override
     public void destroy() {
         super.destroy();
-        if (mPopupWindow != null) {
-            mPopupWindow.dismiss();
-        }
         U.getSoundUtils().release(TAG);
     }
 
