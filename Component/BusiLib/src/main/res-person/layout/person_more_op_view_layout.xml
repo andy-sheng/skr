@@ -74,6 +74,27 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/black_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_45_dp">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/black_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:drawableLeft="@drawable/person_black_icon"
+                android:drawablePadding="@dimen/view_5_dp"
+                android:gravity="center"
+                android:text="拉黑"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16_dp" />
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/report_area"

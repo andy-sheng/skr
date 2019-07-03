@@ -148,6 +148,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
     DialogPlus mEditRemarkDialog;
 
+    boolean isBlacked = false;
+
     @Override
     public int initView() {
         return R.layout.other_person_fragment_layout;
@@ -275,7 +277,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView.dismiss();
                 }
-                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.isFollow(), false);
+                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.isFollow(), false, isBlacked);
                 mPersonMoreOpView.setListener(new PersonMoreOpView.Listener() {
                     @Override
                     public void onClickRemark() {
@@ -315,6 +317,42 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
                     @Override
                     public void onClickKick() {
+
+                    }
+
+                    @Override
+                    public void onClickBlack() {
+                        if (mPersonMoreOpView != null) {
+                            mPersonMoreOpView.dismiss();
+                        }
+
+                        if (isBlacked) {
+                            UserInfoManager.getInstance().removeBlackList(mUserId, new UserInfoManager.ResponseCallBack() {
+                                @Override
+                                public void onServerSucess(Object o) {
+                                    U.getToastUtil().showShort("移除黑名单成功");
+                                    isBlacked = false;
+                                }
+
+                                @Override
+                                public void onServerFailed() {
+
+                                }
+                            });
+                        } else {
+                            UserInfoManager.getInstance().addToBlacklist(mUserId, new UserInfoManager.ResponseCallBack() {
+                                @Override
+                                public void onServerSucess(Object o) {
+                                    U.getToastUtil().showShort("加入黑名单成功");
+                                    isBlacked = true;
+                                }
+
+                                @Override
+                                public void onServerFailed() {
+
+                                }
+                            });
+                        }
 
                     }
                 });
@@ -592,7 +630,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     @Override
     public void showHomePageInfo(UserInfoModel userInfoModel, List<RelationNumModel> relationNumModels,
                                  List<UserRankModel> userRankModels, List<UserLevelModel> userLevelModels,
-                                 List<GameStatisModel> gameStatisModels, boolean isFriend, boolean isFollow,
+                                 List<GameStatisModel> gameStatisModels,
+                                 boolean isFriend, boolean isFollow, boolean isBlacked,
                                  int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showUserInfo(userInfoModel);
@@ -601,6 +640,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         showUserRelation(isFriend, isFollow);
         showUserLevel(userLevelModels);
         showCharms(meiLiCntTotal);
+        this.isBlacked = isBlacked;
     }
 
     private void showCharms(int meiLiCntTotal) {

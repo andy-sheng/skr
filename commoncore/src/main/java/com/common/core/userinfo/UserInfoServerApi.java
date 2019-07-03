@@ -357,4 +357,8 @@ public interface UserInfoServerApi {
      */
     @GET("/v1/mate/check-fans-relation")
     Observable<ApiResult> checkIsFans(@Query("from") int from, @Query("to") int to);
+
+
+    @PUT("/v1/mate/my-blacklist")
+    Observable<ApiResult> addToBlackList(@Body RequestBody body);
 }

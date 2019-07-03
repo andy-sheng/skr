@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -16,8 +17,10 @@ import com.component.busilib.R;
 
 public class PersonMoreOpView extends RelativeLayout {
 
+    int mUserID;
     boolean mHasUnFollow;
     boolean mHasKick;
+    boolean isInBlacked;
 
     LinearLayout mMenuContainer;
     RelativeLayout mModifyRemarkArea;
@@ -26,16 +29,19 @@ public class PersonMoreOpView extends RelativeLayout {
     ExTextView mUnfollowTv;
     RelativeLayout mKickArea;
     ExTextView mKickTv;
+    RelativeLayout mBlackArea;
+    ExTextView mBlackTv;
     RelativeLayout mReportArea;
     ExTextView mReportTv;
 
     Listener mListener;
     PopupWindow mPopupWindow;
 
-    public PersonMoreOpView(Context context, boolean hasUnFollow, boolean hasKick) {
+    public PersonMoreOpView(Context context, boolean hasUnFollow, boolean hasKick, boolean isInBlacked) {
         super(context);
         this.mHasUnFollow = hasUnFollow;
         this.mHasKick = hasKick;
+        this.isInBlacked = isInBlacked;
         init();
     }
 
@@ -50,11 +56,19 @@ public class PersonMoreOpView extends RelativeLayout {
         mUnfollowTv = (ExTextView) findViewById(R.id.unfollow_tv);
         mKickArea = (RelativeLayout) findViewById(R.id.kick_area);
         mKickTv = (ExTextView) findViewById(R.id.kick_tv);
+        mBlackArea = (RelativeLayout) findViewById(R.id.black_area);
+        mBlackTv = (ExTextView) findViewById(R.id.black_tv);
         mReportArea = (RelativeLayout) findViewById(R.id.report_area);
         mReportTv = (ExTextView) findViewById(R.id.report_tv);
 
         mUnfollowArea.setVisibility(mHasUnFollow ? VISIBLE : GONE);
         mKickArea.setVisibility(mHasKick ? VISIBLE : GONE);
+
+        if (isInBlacked) {
+            mBlackTv.setText("取消拉黑");
+        } else {
+            mBlackTv.setText("拉黑");
+        }
 
         mModifyRemarkArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -88,6 +102,15 @@ public class PersonMoreOpView extends RelativeLayout {
             public void clickValid(View v) {
                 if (mListener != null) {
                     mListener.onClickKick();
+                }
+            }
+        });
+
+        mBlackArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.onClickBlack();
                 }
             }
         });
@@ -125,5 +148,7 @@ public class PersonMoreOpView extends RelativeLayout {
         void onClickReport();
 
         void onClickKick();
+
+        void onClickBlack();
     }
 }

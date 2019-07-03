@@ -20,6 +20,9 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
+import com.module.msg.IMsgService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,6 +99,7 @@ public class UserInfoManager {
     public static final int ONLINE_PULL_GAME = 2;
 
     UserInfoServerApi userInfoServerApi;
+    IMsgService msgService;
 
     /**
      * 备注名的映射缓存住了
@@ -112,6 +116,7 @@ public class UserInfoManager {
 
     private UserInfoManager() {
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        msgService = ModuleServiceManager.getInstance().getMsgService();
         initRemark();
     }
 
@@ -296,6 +301,84 @@ public class UserInfoManager {
                     if (responseCallBack != null) {
                         responseCallBack.onServerFailed();
                     }
+                }
+            }
+        });
+    }
+
+    public void addToBlacklist(final int userID, final ResponseCallBack responseCallBack) {
+        if (userID <= 0 || userID <= 0) {
+            MyLog.w(TAG, "addToBlacklist" + " userID=" + userID);
+            return;
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userID", userID);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(userInfoServerApi.addToBlackList(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            if (responseCallBack != null) {
+                                responseCallBack.onServerSucess(obj);
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            MyLog.w(TAG, "onFailed" + " obj=" + obj + " errcode=" + errcode + " message=" + message);
+                            if (responseCallBack != null) {
+                                responseCallBack.onServerFailed();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void removeBlackList(final int userID, final ResponseCallBack responseCallBack) {
+        if (userID <= 0 || userID <= 0) {
+            MyLog.w(TAG, "removeBlackList" + " userID=" + userID + " responseCallBack=" + responseCallBack);
+            return;
+        }
+        msgService.removeFromBlacklist(String.valueOf(userID), new ICallback() {
+            @Override
+            public void onSucess(Object obj) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerSucess(obj);
+                }
+            }
+
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerFailed();
+                }
+            }
+        });
+    }
+
+    public void getBlacklistStatus(final int userID, final ResponseCallBack responseCallBack) {
+        if (userID <= 0 || userID <= 0) {
+            MyLog.w(TAG, "getBlacklistStatus" + " userID=" + userID + " responseCallBack=" + responseCallBack);
+            return;
+        }
+        msgService.getBlacklistStatus(String.valueOf(userID), new ICallback() {
+            @Override
+            public void onSucess(Object obj) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerSucess(obj);
+                }
+            }
+
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerFailed();
                 }
             }
         });

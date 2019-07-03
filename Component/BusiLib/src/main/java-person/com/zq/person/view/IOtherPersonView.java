@@ -18,7 +18,7 @@ public interface IOtherPersonView {
                           List<UserRankModel> userRankModels,
                           List<UserLevelModel> userLevelModels,
                           List<GameStatisModel> gameStatisModels,
-                          boolean isFriend, boolean isFollow,
+                          boolean isFriend, boolean isFollow,boolean isBlacked,
                           int meiLiCntTotal);
 
     void getHomePageFail();
