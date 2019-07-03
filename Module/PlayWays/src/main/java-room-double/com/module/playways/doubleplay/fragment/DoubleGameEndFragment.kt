@@ -34,6 +34,8 @@ import com.trello.rxlifecycle2.android.FragmentEvent
 import com.zq.dialog.AgeStageDialogView
 import com.zq.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -166,6 +168,12 @@ class DoubleGameEndFragment : BaseFragment() {
             onClickBottomBtn = {
                 activity?.finish()
             }
+        } else if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.CREATE) {
+            mLastNumTv.visibility = View.GONE
+            mMatchAgain.text = "返回首页"
+            onClickBottomBtn = {
+                activity?.finish()
+            }
         } else {
             if (model.todayResTimes <= 0) {
                 mLastNumTv.visibility = View.GONE
@@ -185,9 +193,22 @@ class DoubleGameEndFragment : BaseFragment() {
                 mLastNumTv.visibility = View.VISIBLE
                 onClickBottomBtn = {
                     activity?.finish()
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                            .navigation()
+                    Observable.create<Bundle> {
+                        val bundle = Bundle()
+                        bundle.putBoolean("is_find_male", U.getPreferenceUtils().getSettingBoolean("is_find_male", true))
+                        bundle.putBoolean("is_me_male", U.getPreferenceUtils().getSettingBoolean("is_me_male", true))
+                        it.onNext(bundle)
+                        it.onComplete()
+                    }.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                ARouter.getInstance()
+                                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                        .withBundle("bundle", it)
+                                        .navigation()
+                            }, {
+                                MyLog.e(mTag, it)
+                            })
                 }
             }
         }

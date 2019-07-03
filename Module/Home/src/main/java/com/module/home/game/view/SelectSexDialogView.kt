@@ -5,9 +5,12 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.home.R
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
 class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
     var mFindMaleIv: ImageView? = null
@@ -86,6 +89,12 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
             }
             R.id.start_match_tv -> {
                 onClickMatch?.invoke(mIsFindMale, mMeIsMale)
+                Observable.create<Any> {
+                    U.getPreferenceUtils().setSettingBoolean("is_find_male", mIsFindMale ?: true)
+                    U.getPreferenceUtils().setSettingBoolean("is_me_male", mMeIsMale ?: true)
+                    it.onComplete()
+                }.subscribeOn(Schedulers.io()).subscribe()
+
             }
         }
     }
