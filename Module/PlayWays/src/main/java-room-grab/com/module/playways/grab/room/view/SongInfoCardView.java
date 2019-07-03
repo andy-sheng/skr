@@ -4,6 +4,7 @@ package com.module.playways.grab.room.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -57,13 +58,14 @@ import okio.Okio;
 /**
  * 转场时的歌曲信息页
  */
-public class SongInfoCardView extends RelativeLayout {
+public class SongInfoCardView extends ConstraintLayout {
 
     public final static String TAG = "SongInfoCardView";
 
     //    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
     TextView mSongTagTv;
+    TextView mWriterTv;
     //    ExTextView mSongSingerTv;
     BitmapTextView mCurrentSeq;
     BitmapTextView mTotalSeq;
@@ -102,6 +104,7 @@ public class SongInfoCardView extends RelativeLayout {
 //        mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
         mSongTagTv = (TextView) findViewById(R.id.song_tag_tv);
+        mWriterTv = (TextView) findViewById(R.id.writer_tv);
 //        mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
         mCurrentSeq = (BitmapTextView) findViewById(R.id.current_seq);
         mTotalSeq = (BitmapTextView) findViewById(R.id.total_seq);
@@ -113,16 +116,22 @@ public class SongInfoCardView extends RelativeLayout {
         mChorusDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#7088FF"))
                 .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2f))
+                .setStrokeColor(Color.WHITE)
                 .build();
 
         mPKDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#E55088"))
                 .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2f))
+                .setStrokeColor(Color.WHITE)
                 .build();
 
         mMiniGameDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#61B14F"))
                 .setCornersRadius(U.getDisplayUtils().dip2px(10))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2f))
+                .setStrokeColor(Color.WHITE)
                 .build();
     }
 
@@ -153,18 +162,35 @@ public class SongInfoCardView extends RelativeLayout {
         mSongLyrics.setText("歌词加载中...");
         mCurrentSeq.setText("" + curRoundSeq);
         mTotalSeq.setText("" + totalSeq);
+
+        String desc = "";
+        if (!TextUtils.isEmpty(songModel.getWriter())) {
+            desc = "词/" + songModel.getWriter();
+        }
+        if (!TextUtils.isEmpty(desc)) {
+            if (!TextUtils.isEmpty(songModel.getComposer())) {
+                desc = " 曲/" + songModel.getComposer();
+            }
+        } else {
+            if (!TextUtils.isEmpty(songModel.getComposer())) {
+                desc = "曲/" + songModel.getComposer();
+            }
+        }
+
+        if (TextUtils.isEmpty(desc)) {
+            mWriterTv.setVisibility(GONE);
+        } else {
+            mWriterTv.setVisibility(VISIBLE);
+            mWriterTv.setText(desc);
+        }
+
         if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             // 合唱
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42 + 5), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
             mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-            layoutParams.width = U.getDisplayUtils().dip2px(42);
-            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(42);
-            mSongTagTv.setLayoutParams(layoutParams);
             mSongTagTv.setText("合唱");
             mSongTagTv.setVisibility(VISIBLE);
             mSongTagTv.setBackground(mChorusDrawable);
@@ -172,16 +198,11 @@ public class SongInfoCardView extends RelativeLayout {
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             // PK
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(42 + 5), 0);
             mSongNameTv.setText("" + songModel.getDisplaySongName());
             mGrabCd.clearAnimation();
             mGrabCd.setVisibility(GONE);
             mGrabChorus.setVisibility(GONE);
             mGrabPk.setVisibility(VISIBLE);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-            layoutParams.width = U.getDisplayUtils().dip2px(42);
-            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(42);
-            mSongTagTv.setLayoutParams(layoutParams);
             mSongTagTv.setText("PK");
             mSongTagTv.setVisibility(VISIBLE);
             mSongTagTv.setBackground(mPKDrawable);
@@ -189,7 +210,6 @@ public class SongInfoCardView extends RelativeLayout {
             animationGo(false);
         } else if (songModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
             // 小游戏
-            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(68 + 5), 0);
             if (songModel.getMiniGame() != null) {
                 mSongNameTv.setText("【" + songModel.getMiniGame().getGameName() + "】");
             } else {
@@ -200,10 +220,6 @@ public class SongInfoCardView extends RelativeLayout {
             // 和合唱一样的卡片
             mGrabChorus.setVisibility(VISIBLE);
             mGrabPk.setVisibility(GONE);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-            layoutParams.width = U.getDisplayUtils().dip2px(68);
-            layoutParams.leftMargin = -U.getDisplayUtils().dip2px(68);
-            mSongTagTv.setLayoutParams(layoutParams);
             mSongTagTv.setText("双人游戏");
             mSongTagTv.setVisibility(VISIBLE);
             mSongTagTv.setBackground(mMiniGameDrawable);

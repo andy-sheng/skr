@@ -2,101 +2,111 @@
     xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:parentTag="android.widget.RelativeLayout">
+    android:layout_width="@dimen/view_328_dp"
+    android:layout_height="@dimen/view_144_dp"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ldnc_bj_qian" />
+
+    <View
+        android:id="@+id/middle_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginTop="@dimen/view_58_dp"
+        android:background="#CC7F00"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical|left"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:textColor="@color/black_trans_60"
+        android:textSize="@dimen/textsize_18_dp"
+        BitmapTextView:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/writer_tv"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/song_tag_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/song_tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_8_dp"
+        android:paddingRight="@dimen/view_8_dp"
+        android:textColor="#FFDCA2"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/song_name_tv"
+        app:layout_constraintLeft_toRightOf="@id/song_name_tv"
+        app:layout_constraintRight_toLeftOf="@id/current_seq"
+        app:layout_constraintTop_toTopOf="@id/song_name_tv"/>
+
+    <TextView
+        android:id="@+id/writer_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_2_dp"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:textColor="#80664D24"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/middle_divider"
+        app:layout_constraintLeft_toLeftOf="@id/song_name_tv"
+        app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
+
+    <com.component.busilib.view.BitmapTextView
+        android:id="@+id/current_seq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        BitmapTextView:layout_constraintHorizontal_bias="1"
+        BitmapTextView:scale="0.5"
+        BitmapTextView:text_color="@color/black_trans_30"
+        app:layout_constraintBottom_toBottomOf="@id/middle_divider"
+        app:layout_constraintRight_toLeftOf="@id/index_divider"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/index_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/view_2_dp"
+        android:text="/"
+        android:textColor="@color/black_trans_25"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constraintBottom_toBottomOf="@id/middle_divider"
+        app:layout_constraintRight_toLeftOf="@id/total_seq"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.component.busilib.view.BitmapTextView
+        android:id="@+id/total_seq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_16_dp"
+        BitmapTextView:scale="0.5"
+        BitmapTextView:text_color="@color/black_trans_30"
+        app:layout_constraintBottom_toBottomOf="@id/middle_divider"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
-        android:layout_width="@dimen/view_328_dp"
-        android:layout_height="@dimen/view_144_dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_2_dp"
-        android:layout_marginTop="@dimen/view_2_dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_144_dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
-            android:background="@drawable/ldnc_bj_qian" />
-
-        <RelativeLayout
-            android:id="@+id/song_name_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:layout_marginTop="@dimen/view_18_dp"
-            android:layout_toLeftOf="@id/song_index_area"
-            android:layout_toRightOf="@+id/song_cover_iv">
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/song_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_22_dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical|left"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/black_trans_70"
-                android:textSize="@dimen/textsize_18_dp" />
-
-            <TextView
-                android:id="@+id/song_tag_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_20_dp"
-                android:layout_alignBottom="@id/song_name_tv"
-                android:layout_toRightOf="@id/song_name_tv"
-                android:gravity="center"
-                android:textColor="#FFDCA2"
-                android:textSize="@dimen/textsize_14_dp"
-                android:visibility="gone" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/song_index_area"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_24_dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/view_18_dp"
-            android:layout_marginRight="@dimen/view_20_dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.component.busilib.view.BitmapTextView
-                android:id="@+id/current_seq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                BitmapTextView:scale="0.5"
-                BitmapTextView:text_color="@color/black_trans_30" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingBottom="@dimen/view_2_dp"
-                android:text="/"
-                android:textColor="@color/black_trans_25"
-                android:textSize="@dimen/textsize_18_dp" />
-
-            <com.component.busilib.view.BitmapTextView
-                android:id="@+id/total_seq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                BitmapTextView:scale="0.5"
-                BitmapTextView:text_color="@color/black_trans_30" />
-
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="@dimen/view_328_dp"
-            android:layout_height="@dimen/view_1_dp"
-            android:layout_marginTop="@dimen/view_58_dp"
-            android:background="#CC7F00" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/grab_cd"
@@ -106,44 +116,42 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="-22dp"
             android:layout_marginBottom="-18dp"
-            android:background="@drawable/ldnc_cd" />
-
-        <ImageView
-            android:id="@+id/grab_chorus"
-            android:layout_width="@dimen/view_119_dp"
-            android:layout_height="@dimen/view_69_dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/view_5_dp"
-            android:background="@drawable/grab_chorus_song_icon" />
-
-        <ImageView
-            android:id="@+id/grab_pk"
-            android:layout_width="@dimen/view_119_dp"
-            android:layout_height="@dimen/view_69_dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/view_5_dp"
-            android:background="@drawable/grab_pk_song_icon" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/song_lyrics"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginTop="@dimen/view_72_dp"
-            android:layout_marginRight="@dimen/view_72_dp"
-            android:lineSpacingExtra="@dimen/view_6_dp"
-            android:maxLines="2"
-            android:textColor="@color/black_trans_60"
-            android:textSize="@dimen/view_16_dp" />
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/ldnc_bj" />
+            android:background="@drawable/ldnc_cd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/grab_chorus"
+        android:layout_width="@dimen/view_119_dp"
+        android:layout_height="@dimen/view_69_dp"
+        android:layout_marginRight="@dimen/view_5_dp"
+        android:background="@drawable/grab_chorus_song_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/grab_pk"
+        android:layout_width="@dimen/view_119_dp"
+        android:layout_height="@dimen/view_69_dp"
+        android:layout_marginRight="@dimen/view_5_dp"
+        android:background="@drawable/grab_pk_song_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_lyrics"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_72_dp"
+        android:lineSpacingExtra="@dimen/view_6_dp"
+        android:maxLines="2"
+        android:textColor="@color/black_trans_60"
+        android:textSize="@dimen/view_16_dp"
+        BitmapTextView:layout_constraintTop_toBottomOf="@id/middle_divider"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </merge>
