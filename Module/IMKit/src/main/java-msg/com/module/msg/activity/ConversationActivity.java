@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
+import com.common.core.permission.SkrNotificationPermission;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.rxretrofit.ApiManager;
@@ -203,6 +204,24 @@ public class ConversationActivity extends BaseActivity {
             }));
         }
         listDialog.showList(listItems);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        /**
+         * 如果没有通知栏权限，提示一次
+         */
+        if (U.getPermissionUtils().checkNotification(U.app())) {
+            // 有权限
+        } else {
+            long lastShowTs = U.getPreferenceUtils().getSettingLong("show_go_notification_page", 0);
+            if (System.currentTimeMillis() - lastShowTs > 24 * 60 * 60 * 1000) {
+                U.getPreferenceUtils().setSettingLong("show_go_notification_page", System.currentTimeMillis());
+                SkrNotificationPermission skrNotificationPermission = new SkrNotificationPermission();
+                skrNotificationPermission.ensurePermission(U.getActivityUtils().getHomeActivity(), null, true);
+            }
+        }
     }
 
     @Subscribe
