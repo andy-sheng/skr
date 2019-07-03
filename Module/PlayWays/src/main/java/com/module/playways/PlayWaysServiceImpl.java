@@ -19,6 +19,7 @@ import com.component.busilib.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.recommend.RA;
 import com.module.RouterConstants;
+import com.module.playways.doubleplay.DoublePlayActivity;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
@@ -219,6 +220,13 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
     @Override
     public void jumpToDoubleRoomFromDoubleRoomInvite(Object o) {
+        //这个是这个人已经开了一个房间，但还没邀请别人进来的时候还是回收到邀请的push，需要finish掉
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof DoublePlayActivity) {
+                activity.finish();
+            }
+        }
+
         DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject((JSONObject) o);
         doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
