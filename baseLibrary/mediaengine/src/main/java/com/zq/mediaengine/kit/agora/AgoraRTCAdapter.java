@@ -625,7 +625,9 @@ public class AgoraRTCAdapter {
         int bitrate = mConfig.getBitrate();
         VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = mConfig.getOrientationMode();
         VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(dimensions, frameRate, bitrate, orientationMode);
-        mRtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+        if (mRtcEngine != null) {
+            mRtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+        }
     }
 
     /**
@@ -868,7 +870,9 @@ public class AgoraRTCAdapter {
         if (volume > 400) {
             volume = 400;
         }
-        mRtcEngine.adjustRecordingSignalVolume(volume);
+        if (mRtcEngine != null) {
+            mRtcEngine.adjustRecordingSignalVolume(volume);
+        }
     }
 
     /**
@@ -883,7 +887,9 @@ public class AgoraRTCAdapter {
         if (volume > 400) {
             volume = 400;
         }
-        mRtcEngine.adjustPlaybackSignalVolume(volume);
+        if (mRtcEngine != null) {
+            mRtcEngine.adjustPlaybackSignalVolume(volume);
+        }
     }
 
     /**
