@@ -66,6 +66,7 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
+import com.zq.person.StringFromatUtils;
 import com.zq.person.fragment.OtherPersonFragment4;
 import com.zq.person.view.PhotoWallView;
 import com.zq.person.view.ProducationWallView;
@@ -131,6 +132,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     int mFriendNum = 0;
     int mFansNum = 0;
     int mFocusNum = 0;
+    int mCharmNum = 0;
 
     @Override
     public int initView() {
@@ -299,7 +301,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void showBusinessCard() {
         UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
-        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), userInfoModel, 0);
+        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), userInfoModel, mFansNum, mCharmNum);
         mDialogPlus = DialogPlus.newDialog(getActivity())
                 .setContentHolder(new ViewHolder(businessCardDialogView))
                 .setGravity(Gravity.CENTER)
@@ -546,8 +548,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void showCharmsTotal(int meiLiCntTotal) {
-        mCharmTv.setText("魅力：" + meiLiCntTotal);
-        mSrlCharmTv.setText("魅力：" + meiLiCntTotal);
+        mCharmNum = meiLiCntTotal;
+        mCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
+        mSrlCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
     }
 
     public void showUserLevel(List<UserLevelModel> list) {

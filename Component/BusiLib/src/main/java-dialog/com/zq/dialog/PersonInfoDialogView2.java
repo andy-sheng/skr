@@ -62,6 +62,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
+import com.zq.person.StringFromatUtils;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 import com.zq.person.view.PersonMoreOpView;
@@ -112,8 +113,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     private static final int CHARMS_TAG = 1;
     private static final int LOCATION_TAG = 2;           //城市标签
-    private static final int AGE_STAGE_TAG = 3;          //年龄段标签
-    private static final int FANS_NUM_TAG = 4;      //粉丝数标签
+    private static final int FANS_NUM_TAG = 3;      //粉丝数标签
 
     private List<TagModel> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
@@ -709,10 +709,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
             if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getProvince())) {
                 mHashMap.put(LOCATION_TAG, model.getLocation().getProvince());
-            }
-
-            if (model.getAgeStage() != 0 && !TextUtils.isEmpty(model.getAgeStageString())) {
-                mHashMap.put(AGE_STAGE_TAG, model.getAgeStageString());
+            } else {
+                mHashMap.put(LOCATION_TAG, "火星");
             }
 
             refreshTag();
@@ -730,13 +728,13 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             }
         }
 
-        mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
+        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatFansNum(fansNum));
 
         refreshTag();
     }
 
     private void showCharmsTag(int meiLiCntTotal) {
-        mHashMap.put(CHARMS_TAG, String.format(getResources().getString(R.string.meili_tag), meiLiCntTotal));
+        mHashMap.put(CHARMS_TAG, "魅力 " + StringFromatUtils.formatCharmNum(meiLiCntTotal));
 
         refreshTag();
     }
@@ -810,16 +808,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 mTags.add(new TagModel(CHARMS_TAG, mHashMap.get(CHARMS_TAG)));
             }
 
-            if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
-                mTags.add(new TagModel(LOCATION_TAG, mHashMap.get(LOCATION_TAG)));
-            }
-
-            if (!TextUtils.isEmpty(mHashMap.get(AGE_STAGE_TAG))) {
-                mTags.add(new TagModel(AGE_STAGE_TAG, mHashMap.get(AGE_STAGE_TAG)));
-            }
-
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
                 mTags.add(new TagModel(FANS_NUM_TAG, mHashMap.get(FANS_NUM_TAG)));
+            }
+
+            if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
+                mTags.add(new TagModel(LOCATION_TAG, mHashMap.get(LOCATION_TAG)));
             }
 
         }

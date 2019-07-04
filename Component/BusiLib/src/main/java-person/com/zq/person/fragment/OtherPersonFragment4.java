@@ -67,6 +67,7 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
+import com.zq.person.StringFromatUtils;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.EditRemarkView;
 import com.zq.person.view.IOtherPersonView;
@@ -94,7 +95,6 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
 
     private static final int LOCATION_TAG = 0;         // 地区标签  省
-    private static final int AGE_STAGE_TAG = 1;        // 年龄标签
     private static final int FANS_NUM_TAG = 2;         // 粉丝数标签
 
     private List<String> mTags = new ArrayList<>();  //标签
@@ -102,6 +102,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
     TagAdapter mTagAdapter;
     int fansNum = 0; // 粉丝数
+    int charmNum = 0; // 魅力值
 
     boolean isAppbarCanSrcoll = true;  // AppBarLayout是否可以滚动
 
@@ -448,7 +449,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     }
 
     private void showBusinessCard() {
-        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), mUserInfoModel, fansNum);
+        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), mUserInfoModel, fansNum, charmNum);
         mDialogPlus = DialogPlus.newDialog(getActivity())
                 .setContentHolder(new ViewHolder(businessCardDialogView))
                 .setGravity(Gravity.CENTER)
@@ -644,7 +645,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     }
 
     private void showCharms(int meiLiCntTotal) {
-        mCharmTv.setText("魅力：" + meiLiCntTotal);
+        charmNum = meiLiCntTotal;
+        mCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
     }
 
     public void showUserLevel(List<UserLevelModel> list) {
@@ -694,10 +696,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
         if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getProvince())) {
             mHashMap.put(LOCATION_TAG, model.getLocation().getProvince());
-        }
-
-        if (model.getAgeStage() != 0 && !TextUtils.isEmpty(model.getAgeStageString())) {
-            mHashMap.put(AGE_STAGE_TAG, model.getAgeStageString());
+        } else {
+            mHashMap.put(LOCATION_TAG, "火星");
         }
 
         refreshTag();
@@ -706,16 +706,12 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     private void refreshTag() {
         mTags.clear();
         if (mHashMap != null) {
-            if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
-                mTags.add(mHashMap.get(LOCATION_TAG));
-            }
-
-            if (!TextUtils.isEmpty(mHashMap.get(AGE_STAGE_TAG))) {
-                mTags.add(mHashMap.get(AGE_STAGE_TAG));
-            }
-
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
                 mTags.add(mHashMap.get(FANS_NUM_TAG));
+            }
+
+            if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
+                mTags.add(mHashMap.get(LOCATION_TAG));
             }
 
         }
@@ -733,7 +729,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
             }
         }
 
-        mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
+        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatFansNum(fansNum));
 
         refreshTag();
     }

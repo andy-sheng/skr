@@ -35,6 +35,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
+import com.zq.person.StringFromatUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -200,7 +201,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             tvRank.setVisibility(View.GONE);
         } else {
             tvRank.setVisibility(View.VISIBLE);
-            tvRank.setText(formatRank(userRankModel.getRankSeq()));
+            tvRank.setText(StringFromatUtils.formatRank(userRankModel.getRankSeq()));
         }
         normalLevelView.bindData(userRankModel.getMainRanking(), userRankModel.getSubRanking());
 
@@ -213,16 +214,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                         .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
                         .build());
     }
-
-    private String formatRank(int rankSeq) {
-        if (rankSeq < 10000) {
-            return String.valueOf(rankSeq);
-        } else {
-            float result = (float) (Math.round(((float) rankSeq / 10000) * 10)) / 10;
-            return String.valueOf(result) + "w";
-        }
-    }
-
 
     @Override
     public void showFirstThreeRankInfo(List<RankInfoModel> rankInfoModelList) {

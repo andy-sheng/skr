@@ -16,6 +16,7 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.R
 import com.zq.live.proto.Common.ESex
+import com.zq.person.StringFromatUtils
 import kotlinx.android.synthetic.main.business_card_dialog_view.view.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -23,9 +24,9 @@ import java.util.HashMap
 // 个人名片页面
 class BusinessCardDialogView : ConstraintLayout {
 
-    private val LOCATION_TAG = 1           //城市标签
-    private val AGE_STAGE_TAG = 2          //年龄段标签
-    private val FANS_NUM_TAG = 3           //粉丝数
+    private val CHARM_TAG = 1              //魅力值标签
+    private val FANS_NUM_TAG = 2           //粉丝数
+    private val LOCATION_TAG = 3           //城市标签
 
     private val mTags = ArrayList<String>()  //标签
     private val mHashMap = HashMap<Int, String>()
@@ -33,10 +34,12 @@ class BusinessCardDialogView : ConstraintLayout {
 
     private var mUserInfo: UserInfoModel
     private var mFansNums: Int
+    private var mCharmNums: Int
 
-    constructor(context: Context, userInfo: UserInfoModel, fansNum: Int) : super(context) {
+    constructor(context: Context, userInfo: UserInfoModel, fansNum: Int, charmNum: Int) : super(context) {
         this.mUserInfo = userInfo
         this.mFansNums = fansNum
+        this.mCharmNums = charmNum
         initData()
     }
 
@@ -72,16 +75,13 @@ class BusinessCardDialogView : ConstraintLayout {
         }
         flowlayout.adapter = mTagAdapter
 
+        mHashMap[CHARM_TAG] = "魅力 " + StringFromatUtils.formatCharmNum(mCharmNums)
+        mHashMap[FANS_NUM_TAG] = "粉丝 " + StringFromatUtils.formatFansNum(mFansNums)
+
         if (mUserInfo.location != null && !TextUtils.isEmpty(mUserInfo.location.province)) {
             mHashMap[LOCATION_TAG] = mUserInfo.location.province
-        }
-
-        if (mUserInfo.ageStage != 0 && !TextUtils.isEmpty(mUserInfo.ageStageString)) {
-            mHashMap[AGE_STAGE_TAG] = mUserInfo.ageStageString
-        }
-
-        if (mUserInfo.userId != MyUserInfoManager.getInstance().uid.toInt()) {
-            mHashMap[FANS_NUM_TAG] = "粉丝" + mFansNums
+        } else {
+            mHashMap[LOCATION_TAG] = "火星"
         }
 
         refreshTag()
@@ -91,18 +91,17 @@ class BusinessCardDialogView : ConstraintLayout {
         mTags.clear()
         if (mHashMap != null) {
 
-            if (!TextUtils.isEmpty(mHashMap[LOCATION_TAG])) {
-                mTags.add(mHashMap[LOCATION_TAG]!!)
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[AGE_STAGE_TAG])) {
-                mTags.add(mHashMap[AGE_STAGE_TAG]!!)
+            if (!TextUtils.isEmpty(mHashMap[CHARM_TAG])) {
+                mTags.add(mHashMap[CHARM_TAG]!!)
             }
 
             if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {
                 mTags.add(mHashMap[FANS_NUM_TAG]!!)
             }
 
+            if (!TextUtils.isEmpty(mHashMap[LOCATION_TAG])) {
+                mTags.add(mHashMap[LOCATION_TAG]!!)
+            }
         }
         mTagAdapter!!.setTagDatas(mTags)
         mTagAdapter!!.notifyDataChanged()
