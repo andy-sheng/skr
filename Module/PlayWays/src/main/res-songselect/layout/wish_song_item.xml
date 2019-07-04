@@ -49,27 +49,14 @@
         android:singleLine="true"
         android:textColor="#ffffffff"
         android:textSize="@dimen/textsize_16_dp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/sing_name_tv"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/song_tag_tv"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/sing_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_18_dp"
-        android:layout_alignLeft="@id/song_name_tv"
-        android:layout_marginTop="@dimen/view_4_dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxWidth="@dimen/view_200_dp"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/song_name_tv"
-        app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_tag_tv"
@@ -84,8 +71,28 @@
         android:textSize="@dimen/textsize_10_dp"
         app:layout_constraintBottom_toBottomOf="@id/song_name_tv"
         app:layout_constraintLeft_toRightOf="@id/song_name_tv"
+        app:layout_constraintRight_toLeftOf="@id/delete_tv"
         app:layout_constraintTop_toTopOf="@id/song_name_tv"
         app:layout_goneMarginRight="@dimen/view_10_dp" />
+
+    <TextView
+        android:id="@+id/sing_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxWidth="@dimen/view_200_dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/song_name_tv"
+        app:layout_constraintRight_toLeftOf="@id/delete_tv"
+        app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
     <View
         android:layout_width="match_parent"
