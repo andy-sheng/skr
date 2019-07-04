@@ -220,12 +220,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
                 .setInviteDoubleListener(new PersonInfoDialog.InviteDoubleListener() {
                     @Override
                     public void onClickDoubleInvite(UserInfoModel userInfoModel) {
-
-                    }
-                })
-                .setKickListener(new PersonInfoDialog.KickListener() {
-                    @Override
-                    public void onClickKick(UserInfoModel userInfoModel) {
                         if (userInfoModel.isFriend()) {
                             mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
                         } else {
