@@ -4,10 +4,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -86,6 +88,7 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
         ExTextView mSongNameTv;
         ExTextView mSelectTv;
         ExTextView mSongTag;
+        TextView mSongDesc;
 
         SongModel mSongModel;
 
@@ -94,6 +97,7 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
             mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
             mSelectTv = (ExTextView) itemView.findViewById(R.id.select_tv);
             mSongTag = (ExTextView) itemView.findViewById(R.id.song_tag);
+            mSongDesc = (TextView) itemView.findViewById(R.id.song_desc);
 
             if (isOwner) {
                 mSelectTv.setText("点歌");
@@ -115,28 +119,23 @@ public class RecommendSongAdapter extends DiffAdapter<SongModel, RecyclerView.Vi
             mSongModel = model;
             mSongNameTv.setText("《" + model.getDisplaySongName() + "》");
             mSongTag.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(mSongModel.getSongDesc())) {
+                mSongDesc.setVisibility(View.GONE);
+            } else {
+                mSongDesc.setVisibility(View.VISIBLE);
+                mSongDesc.setText(mSongModel.getSongDesc());
+            }
             if (model.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(34);
-                mSongTag.setLayoutParams(layoutParams);
                 mSongTag.setBackground(pk);
                 mSongTag.setText("PK");
             } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(34);
-                mSongTag.setLayoutParams(layoutParams);
                 mSongTag.setBackground(togather);
                 mSongTag.setText("合唱");
             } else if (model.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(58);
-                mSongTag.setLayoutParams(layoutParams);
                 mSongTag.setBackground(game);
                 mSongTag.setText("双人游戏");
             } else if (model.getPlayType() == StandPlayType.PT_FREE_MICRO.getValue()) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTag.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(58);
-                mSongTag.setLayoutParams(layoutParams);
+                ;
                 mSongTag.setBackground(freeMic);
                 mSongTag.setText("多人游戏");
             } else {

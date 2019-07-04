@@ -120,31 +120,16 @@ public class WishSongAdapter extends DiffAdapter<GrabWishSongModel, RecyclerView
             this.mPosition = position;
 
             if (model.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
-                mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(34), 0);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(34);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34);
-                mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("PK");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mPKDrawable);
                 mSongNameTv.setText("《" + model.getDisplaySongName() + "》");
             } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
-                mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(34), 0);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(34);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34);
-                mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("合唱");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mChorusDrawable);
                 mSongNameTv.setText("《" + model.getDisplaySongName() + "》");
             } else if (model.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
-                mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(58), 0);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(58);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(58);
-                mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("双人游戏");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mMiniGameDrawable);

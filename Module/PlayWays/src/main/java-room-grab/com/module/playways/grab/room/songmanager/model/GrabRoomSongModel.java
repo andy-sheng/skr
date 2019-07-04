@@ -25,6 +25,9 @@ public class GrabRoomSongModel implements Serializable {
     protected boolean challengeAvailable;
     protected String uniqTag;
     protected boolean couldDelete;
+    protected String writer;    //作词人
+    protected String composer;   //作曲人
+    protected String uploaderName; //上传用户名
 
     public boolean isCouldDelete() {
         return couldDelete;
@@ -86,6 +89,30 @@ public class GrabRoomSongModel implements Serializable {
         return challengeAvailable;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getComposer() {
+        return composer;
+    }
+
+    public void setComposer(String composer) {
+        this.composer = composer;
+    }
+
+    public String getUploaderName() {
+        return uploaderName;
+    }
+
+    public void setUploaderName(String uploaderName) {
+        this.uploaderName = uploaderName;
+    }
+
     public void setChallengeAvailable(boolean challengeAvailable) {
         this.challengeAvailable = challengeAvailable;
     }
@@ -101,6 +128,23 @@ public class GrabRoomSongModel implements Serializable {
             }
         }
         return itemName;
+    }
+
+    public String getSongDesc() {
+        String desc = "";
+        if (!TextUtils.isEmpty(writer)) {
+            desc = "词/" + writer;
+        }
+        if (!TextUtils.isEmpty(desc)) {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = " 曲/" + composer;
+            }
+        } else {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = "曲/" + composer;
+            }
+        }
+        return desc;
     }
 
     @Override

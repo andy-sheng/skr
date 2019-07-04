@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_70_dp"
@@ -9,8 +9,6 @@
         android:id="@+id/select_tv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_32_dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_14_dp"
         android:gravity="center"
         android:text="通过"
@@ -19,15 +17,16 @@
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_solid_color="#FFC15B"
         app:bl_stroke_color="#3B4E79"
-        app:bl_stroke_width="@dimen/view_2_dp" />
+        app:bl_stroke_width="@dimen/view_2_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/delete_tv"
         android:layout_width="@dimen/view_60_dp"
         android:layout_height="@dimen/view_32_dp"
-        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_8_dp"
-        android:layout_toLeftOf="@id/select_tv"
         android:gravity="center"
         android:text="删除"
         android:textColor="#ff3b4e79"
@@ -35,59 +34,63 @@
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_solid_color="#FF8AB6"
         app:bl_stroke_color="#3B4E79"
-        app:bl_stroke_width="@dimen/view_2_dp" />
+        app:bl_stroke_width="@dimen/view_2_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/select_tv"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintBottom_toTopOf="@id/sing_name_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/sing_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_alignLeft="@id/song_name_tv"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxWidth="@dimen/view_200_dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/song_name_tv"
+        app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_toLeftOf="@id/delete_tv">
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/song_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_22_dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/view_10_dp"
-            android:layout_marginTop="@dimen/view_14_dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/textsize_16_dp" />
-
-        <TextView
-            android:id="@+id/sing_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_18_dp"
-            android:layout_below="@id/song_name_tv"
-            android:layout_alignLeft="@id/song_name_tv"
-            android:layout_marginTop="@dimen/view_2_dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxWidth="@dimen/view_200_dp"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_12_dp" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/song_tag_tv"
-            android:layout_width="@dimen/view_34_dp"
-            android:layout_height="@dimen/view_16_dp"
-            android:layout_alignTop="@+id/song_name_tv"
-            android:layout_marginLeft="@dimen/view_3_dp"
-            android:layout_marginTop="@dimen/view_3_dp"
-            android:layout_toRightOf="@+id/song_name_tv"
-            android:gravity="center"
-            android:textColor="@color/white_trans_80"
-            android:textSize="@dimen/textsize_10_dp" />
-
-    </RelativeLayout>
-
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_8_dp"
+        android:paddingRight="@dimen/view_8_dp"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/song_name_tv"
+        app:layout_constraintLeft_toRightOf="@id/song_name_tv"
+        app:layout_constraintTop_toTopOf="@id/song_name_tv"
+        app:layout_goneMarginRight="@dimen/view_10_dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.6dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/black_trans_20" />
-</RelativeLayout>
+        android:background="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</android.support.constraint.ConstraintLayout>

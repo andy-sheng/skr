@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,6 +127,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     private class ItemHolder extends RecyclerView.ViewHolder {
         ExTextView mTvSongName;
         TextView mSongTagTv;
+        TextView mTvSongDesc;
         ExTextView mTvManage;
 
         GrabRoomSongModel mSongModel;
@@ -136,6 +138,8 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             mTvSongName = (ExTextView) itemView.findViewById(R.id.tv_song_name);
             mSongTagTv = (TextView) itemView.findViewById(R.id.song_tag_tv);
             mTvManage = (ExTextView) itemView.findViewById(R.id.tv_manage);
+            mTvSongDesc = (TextView) itemView.findViewById(R.id.tv_song_desc);
+
             mTvManage.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
@@ -152,6 +156,13 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
             mTvManage.setText("");
             mTvManage.setEnabled(false);
+
+            if (TextUtils.isEmpty(model.getSongDesc())) {
+                mTvSongDesc.setVisibility(View.GONE);
+            } else {
+                mTvSongDesc.setVisibility(View.VISIBLE);
+                mTvSongDesc.setText(model.getSongDesc());
+            }
 
             if (mGrabRoomData.isDoubleRoom()) {
                 if (model.isCouldDelete()) {
@@ -195,47 +206,26 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             }
 
             if (model.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(34 + 84), 0);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(34);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34 + 84);
-                mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("PK");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mPKDrawable);
                 mTvSongName.setText("《" + model.getDisplaySongName() + "》");
             } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(34 + 84), 0);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(34);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(34 + 84);
-                mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("合唱");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mChorusDrawable);
                 mTvSongName.setText("《" + model.getDisplaySongName() + "》");
             } else if (model.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(58 + 84), 0);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(58);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(58 + 84);
-                mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("双人游戏");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mMiniGameDrawable);
                 mTvSongName.setText("【" + model.getItemName() + "】");
             } else if (model.getPlayType() == StandPlayType.PT_FREE_MICRO.getValue()) {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(58 + 84), 0);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mSongTagTv.getLayoutParams();
-                layoutParams.width = U.getDisplayUtils().dip2px(58);
-                layoutParams.leftMargin = -U.getDisplayUtils().dip2px(58 + 84);
-                mSongTagTv.setLayoutParams(layoutParams);
                 mSongTagTv.setText("多人游戏");
                 mSongTagTv.setVisibility(View.VISIBLE);
                 mSongTagTv.setBackground(mFreeMicDrawable);
                 mTvSongName.setText("【" + model.getItemName() + "】");
             } else {
-                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(84), 0);
                 mSongTagTv.setVisibility(View.GONE);
                 mTvSongName.setText("《" + model.getDisplaySongName() + "》");
             }

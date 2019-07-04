@@ -425,6 +425,23 @@ public class SongModel implements Serializable {
         return itemName;
     }
 
+    public String getSongDesc() {
+        String desc = "";
+        if (!TextUtils.isEmpty(writer)) {
+            desc = "词/" + writer;
+        }
+        if (!TextUtils.isEmpty(desc)) {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = " 曲/" + composer;
+            }
+        } else {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = "曲/" + composer;
+            }
+        }
+        return desc;
+    }
+
     @Override
     public String toString() {
         return "SongModel{" +

@@ -163,25 +163,11 @@ public class SongInfoCardView extends ConstraintLayout {
         mCurrentSeq.setText("" + curRoundSeq);
         mTotalSeq.setText("" + totalSeq);
 
-        String desc = "";
-        if (!TextUtils.isEmpty(songModel.getWriter())) {
-            desc = "词/" + songModel.getWriter();
-        }
-        if (!TextUtils.isEmpty(desc)) {
-            if (!TextUtils.isEmpty(songModel.getComposer())) {
-                desc = " 曲/" + songModel.getComposer();
-            }
-        } else {
-            if (!TextUtils.isEmpty(songModel.getComposer())) {
-                desc = "曲/" + songModel.getComposer();
-            }
-        }
-
-        if (TextUtils.isEmpty(desc)) {
+        if (TextUtils.isEmpty(songModel.getSongDesc())) {
             mWriterTv.setVisibility(GONE);
         } else {
             mWriterTv.setVisibility(VISIBLE);
-            mWriterTv.setText(desc);
+            mWriterTv.setText(songModel.getSongDesc());
         }
 
         if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
