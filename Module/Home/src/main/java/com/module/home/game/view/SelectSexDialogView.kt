@@ -5,11 +5,13 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.home.R
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
@@ -41,6 +43,26 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
         setOnClickListener(mMeFemaleIv)
         setOnClickListener(mStartMatchTv)
         mStartMatchTv?.isEnabled = false
+
+        Observable.create<Any> {
+            if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
+                mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
+                mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
+                it.onNext(1)
+            }
+
+            it.onComplete()
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    mFindMaleIv?.isSelected = mIsFindMale ?: true
+                    mFindFemaleIv?.isSelected = !(mIsFindMale ?: true)
+                    mMeMaleIv?.isSelected = mMeIsMale ?: false
+                    mMeFemaleIv?.isSelected = !(mMeIsMale ?: false)
+                    checkEnableStartMatch()
+                }, {
+                    MyLog.e("SelectSexDialogView", it)
+                })
     }
 
     private fun setOnClickListener(view: View?) {
@@ -49,16 +71,6 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
                 onClickView(v)
             }
         })
-    }
-
-    fun reset() {
-        mFindMaleIv?.isSelected = false
-        mFindFemaleIv?.isSelected = false
-        mMeMaleIv?.isSelected = false
-        mMeFemaleIv?.isSelected = false
-        mStartMatchTv?.isEnabled = false
-        mIsFindMale = null
-        mMeIsMale = null
     }
 
     private fun onClickView(view: View?) {

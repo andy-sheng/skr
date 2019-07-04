@@ -105,7 +105,6 @@ class DoubleRoomGameView : RelativeLayout {
                                         .create()
                             }
 
-                            mSelectView?.reset()
                             mSelectSexDialogPlus?.show()
                         }
                     }, true)
