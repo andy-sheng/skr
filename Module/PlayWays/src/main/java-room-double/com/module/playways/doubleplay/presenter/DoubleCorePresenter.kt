@@ -175,12 +175,6 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), null)
-
-        mIDoublePlayView.finishActivity()
-        ARouter.getInstance()
-                .build(RouterConstants.ACTIVITY_DOUBLE_END)
-                .withSerializable("roomData", mRoomData)
-                .navigation()
     }
 
     fun nextSong() {
@@ -404,6 +398,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     override fun destroy() {
         MyLog.d(tag, "destroy begin")
         super.destroy()
+        exit()
         EventBus.getDefault().unregister(this)
         Params.save2Pref(ZqEngineKit.getInstance().params)
         ZqEngineKit.getInstance().destroy("doubleRoom")

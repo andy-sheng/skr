@@ -303,7 +303,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View) {
                             mDialogPlus?.dismiss()
-                            mDoubleCorePresenter.exit()
+                            activity?.finish()
+                            ARouter.getInstance()
+                                    .build(RouterConstants.ACTIVITY_DOUBLE_END)
+                                    .withSerializable("roomData", mRoomData)
+                                    .navigation()
                         }
                     })
                     .setCancelBtnClickListener(object : AnimateClickListener() {
