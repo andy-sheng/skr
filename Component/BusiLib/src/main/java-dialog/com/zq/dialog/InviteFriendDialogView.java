@@ -127,6 +127,8 @@ public class InviteFriendDialogView extends RelativeLayout {
                         text = SkrKouLingUtils.genReqFollowKouling(mKouLingToken);
                     } else if (mType == INVITE_GRAB_GAME) {
                         text = SkrKouLingUtils.genJoinGrabGameKouling(mKouLingToken);
+                    } else if (mType == INVITE_DOUBLE_GAME) {
+                        text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
                     }
 
                     mListener.onClickQQShare(text);
