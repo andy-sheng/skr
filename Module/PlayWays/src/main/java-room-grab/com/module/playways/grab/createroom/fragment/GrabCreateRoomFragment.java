@@ -96,9 +96,9 @@ public class GrabCreateRoomFragment extends BaseFragment {
                                 mTipsDialogView.dismiss();
                             }
                             mTipsDialogView = new TipsDialogView.Builder(getContext())
-                                    .setMessageTip("撕歌的宝贝们，两分钟成为认证房主，你将获得每日派对开放权，更多好玩等你解锁")
-                                    .setConfirmTip("快速认证")
-                                    .setCancelTip("取消")
+                                    .setMessageTip("应相关法律法规要求\n解锁开房权限，需要完成实名认证")
+                                    .setConfirmTip("立即认证")
+                                    .setCancelTip("放弃")
                                     .setConfirmBtnClickListener(new AnimateClickListener() {
                                         @Override
                                         public void click(View view) {
