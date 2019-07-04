@@ -14,6 +14,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.zq.live.proto.Common.ESex;
 
 public class DoubleInviteNotifyView extends ConstraintLayout {
     BaseImageView mAvatarIv;
@@ -70,6 +71,16 @@ public class DoubleInviteNotifyView extends ConstraintLayout {
                 }
             }
         });
+
+        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
+        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
+            mSexIv.setVisibility(VISIBLE);
+            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
+        } else {
+            mSexIv.setVisibility(GONE);
+        }
     }
 
     public void setListener(Listener l) {
