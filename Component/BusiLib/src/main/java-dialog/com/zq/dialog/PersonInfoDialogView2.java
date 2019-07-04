@@ -65,6 +65,7 @@ import com.zq.live.proto.Common.ESex;
 import com.zq.person.StringFromatUtils;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
+import com.zq.person.model.TagModel;
 import com.zq.person.view.PersonMoreOpView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -374,7 +375,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mTagAdapter = new TagAdapter<TagModel>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, TagModel tagModel) {
-                if (tagModel.type != CHARMS_TAG) {
+                if (tagModel.getType() != CHARMS_TAG) {
                     ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_center_business_tag,
                             mFlowlayout, false);
                     tv.setText(tagModel.getContent());
@@ -819,23 +820,5 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
         mTagAdapter.setTagDatas(mTags);
         mTagAdapter.notifyDataChanged();
-    }
-
-    class TagModel {
-        String content;
-        int type;
-
-        public TagModel(int type, String content) {
-            this.type = type;
-            this.content = content;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
     }
 }

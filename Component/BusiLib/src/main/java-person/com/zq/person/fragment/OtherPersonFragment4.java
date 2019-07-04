@@ -68,6 +68,7 @@ import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.StringFromatUtils;
+import com.zq.person.model.TagModel;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.EditRemarkView;
 import com.zq.person.view.IOtherPersonView;
@@ -98,7 +99,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     private static final int FANS_NUM_TAG = 1;         // 粉丝数标签
     private static final int LOCATION_TAG = 2;         // 地区标签  省
 
-    private List<String> mTags = new ArrayList<>();  //标签
+    private List<TagModel> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
 
     TagAdapter mTagAdapter;
@@ -422,13 +423,20 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
 
-        mTagAdapter = new TagAdapter<String>(mTags) {
+        mTagAdapter = new TagAdapter<TagModel>(mTags) {
             @Override
-            public View getView(FlowLayout parent, int position, String o) {
-                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.other_person_tag_textview,
-                        mFlowlayout, false);
-                tv.setText(o);
-                return tv;
+            public View getView(FlowLayout parent, int position, TagModel tagModel) {
+                if (tagModel.getType() != CHARM_TAG) {
+                    ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.other_person_tag_textview,
+                            mFlowlayout, false);
+                    tv.setText(tagModel.getContent());
+                    return tv;
+                } else {
+                    ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.other_person_charm_tag,
+                            mFlowlayout, false);
+                    tv.setText(tagModel.getContent());
+                    return tv;
+                }
             }
         };
         mFlowlayout.setAdapter(mTagAdapter);
@@ -711,15 +719,15 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mTags.clear();
         if (mHashMap != null) {
             if (!TextUtils.isEmpty(mHashMap.get(CHARM_TAG))) {
-                mTags.add(mHashMap.get(CHARM_TAG));
+                mTags.add(new TagModel(CHARM_TAG, mHashMap.get(CHARM_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
-                mTags.add(mHashMap.get(FANS_NUM_TAG));
+                mTags.add(new TagModel(FANS_NUM_TAG, mHashMap.get(FANS_NUM_TAG)));
             }
 
             if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
-                mTags.add(mHashMap.get(LOCATION_TAG));
+                mTags.add(new TagModel(LOCATION_TAG, mHashMap.get(LOCATION_TAG)));
             }
 
         }

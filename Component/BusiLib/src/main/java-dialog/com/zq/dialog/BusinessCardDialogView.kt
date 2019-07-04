@@ -2,12 +2,12 @@ package com.zq.dialog
 
 import android.content.Context
 import android.graphics.Color
+import android.nfc.Tag
 import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.flowlayout.FlowLayout
@@ -17,6 +17,7 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.R
 import com.zq.live.proto.Common.ESex
 import com.zq.person.StringFromatUtils
+import com.zq.person.model.TagModel
 import kotlinx.android.synthetic.main.business_card_dialog_view.view.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -28,9 +29,9 @@ class BusinessCardDialogView : ConstraintLayout {
     private val FANS_NUM_TAG = 2           //粉丝数
     private val LOCATION_TAG = 3           //城市标签
 
-    private val mTags = ArrayList<String>()  //标签
+    private val mTags = ArrayList<TagModel>()  //标签
     private val mHashMap = HashMap<Int, String>()
-    private var mTagAdapter: TagAdapter<String>? = null
+    private var mTagAdapter: TagAdapter<TagModel>? = null
 
     private var mUserInfo: UserInfoModel
     private var mFansNums: Int
@@ -65,12 +66,19 @@ class BusinessCardDialogView : ConstraintLayout {
             sex_iv.visibility = View.GONE
         }
 
-        mTagAdapter = object : TagAdapter<String>(mTags) {
-            override fun getView(parent: FlowLayout, position: Int, o: String): View {
-                val tv = LayoutInflater.from(context).inflate(R.layout.person_center_business_tag,
-                        flowlayout, false) as ExTextView
-                tv.text = o
-                return tv
+        mTagAdapter = object : TagAdapter<TagModel>(mTags) {
+            override fun getView(parent: FlowLayout, position: Int, tagModel: TagModel): View {
+                if (tagModel.type != CHARM_TAG) {
+                    val tv = LayoutInflater.from(context).inflate(R.layout.person_center_business_tag,
+                            flowlayout, false) as ExTextView
+                    tv.text = tagModel.content
+                    return tv
+                } else {
+                    val tv = LayoutInflater.from(context).inflate(R.layout.person_card_charm_tag,
+                            flowlayout, false) as ExTextView
+                    tv.text = tagModel.content
+                    return tv
+                }
             }
         }
         flowlayout.adapter = mTagAdapter
@@ -92,15 +100,15 @@ class BusinessCardDialogView : ConstraintLayout {
         if (mHashMap != null) {
 
             if (!TextUtils.isEmpty(mHashMap[CHARM_TAG])) {
-                mTags.add(mHashMap[CHARM_TAG]!!)
+                mTags.add(TagModel(CHARM_TAG, mHashMap[CHARM_TAG]!!))
             }
 
             if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {
-                mTags.add(mHashMap[FANS_NUM_TAG]!!)
+                mTags.add(TagModel(FANS_NUM_TAG, mHashMap[FANS_NUM_TAG]!!))
             }
 
             if (!TextUtils.isEmpty(mHashMap[LOCATION_TAG])) {
-                mTags.add(mHashMap[LOCATION_TAG]!!)
+                mTags.add(TagModel(LOCATION_TAG, mHashMap[LOCATION_TAG]!!))
             }
         }
         mTagAdapter!!.setTagDatas(mTags)
