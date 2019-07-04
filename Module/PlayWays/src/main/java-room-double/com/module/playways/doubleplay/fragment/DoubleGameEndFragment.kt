@@ -25,6 +25,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
@@ -57,6 +58,8 @@ class DoubleGameEndFragment : BaseFragment() {
     var mAgeStageDialogView: AgeStageDialogView? = null
 
     lateinit var mDoubleRoomData: DoubleRoomData
+
+    val skrVerifyUtils = SkrVerifyUtils()
 
     private var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
 
@@ -192,23 +195,26 @@ class DoubleGameEndFragment : BaseFragment() {
                 mLastNumTv.text = stringBuilder
                 mLastNumTv.visibility = View.VISIBLE
                 onClickBottomBtn = {
-                    activity?.finish()
-                    Observable.create<Bundle> {
-                        val bundle = Bundle()
-                        bundle.putBoolean("is_find_male", U.getPreferenceUtils().getSettingBoolean("is_find_male", true))
-                        bundle.putBoolean("is_me_male", U.getPreferenceUtils().getSettingBoolean("is_me_male", true))
-                        it.onNext(bundle)
-                        it.onComplete()
-                    }.subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                ARouter.getInstance()
-                                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                        .withBundle("bundle", it)
-                                        .navigation()
-                            }, {
-                                MyLog.e(mTag, it)
-                            })
+                    skrVerifyUtils.checkJoinDoubleRoomPermission {
+                        Observable.create<Bundle> {
+                            val bundle = Bundle()
+                            bundle.putBoolean("is_find_male", U.getPreferenceUtils().getSettingBoolean("is_find_male", true))
+                            bundle.putBoolean("is_me_male", U.getPreferenceUtils().getSettingBoolean("is_me_male", true))
+                            it.onNext(bundle)
+                            it.onComplete()
+                        }.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe({
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                            .withBundle("bundle", it)
+                                            .navigation()
+                                }, {
+                                    MyLog.e(mTag, it)
+                                }, {
+                                    activity?.finish()
+                                })
+                    }
                 }
             }
         }
