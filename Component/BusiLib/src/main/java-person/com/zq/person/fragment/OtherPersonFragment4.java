@@ -1,6 +1,7 @@
 package com.zq.person.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +46,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
@@ -150,6 +152,19 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     ExTextView mMessageIv;
 
     DialogPlus mEditRemarkDialog;
+
+    // 未关注
+    Drawable mUnFollowDrawable = new DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#FFC15B"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .build();
+
+    // 已关注 或 互关
+    Drawable mFollowDrawable = new DrawableCreator.Builder()
+            .setStrokeColor(Color.parseColor("#AD6C00"))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1f))
+            .setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .build();
 
     @Override
     public int initView() {
@@ -775,19 +790,19 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mUserInfoModel.setFollow(isFollow);
         if (isFriend) {
             mFollowIv.setClickable(false);
-            mFollowIv.setAlpha(0.5f);
             mFollowIv.setText("互关");
+            mFollowIv.setBackground(mFollowDrawable);
             mFollowIv.setTag(RELATION_FOLLOWED);
         } else if (isFollow) {
             mFollowIv.setClickable(false);
-            mFollowIv.setAlpha(0.5f);
             mFollowIv.setText("已关注");
             mFollowIv.setTag(RELATION_FOLLOWED);
+            mFollowIv.setBackground(mFollowDrawable);
         } else {
             mFollowIv.setClickable(true);
-            mFollowIv.setAlpha(1f);
             mFollowIv.setText("关注Ta");
             mFollowIv.setTag(RELATION_UN_FOLLOW);
+            mFollowIv.setBackground(mUnFollowDrawable);
         }
     }
 

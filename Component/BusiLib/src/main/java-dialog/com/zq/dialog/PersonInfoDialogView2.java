@@ -153,6 +153,19 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             .setSolidColor(Color.parseColor("#D0EFFF"))
             .build();
 
+    // 未关注
+    Drawable mUnFollowDrawable = new DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#FFC15B"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .build();
+
+    // 已关注 或 互关
+    Drawable mFollowDrawable = new DrawableCreator.Builder()
+            .setStrokeColor(Color.parseColor("#AD6C00"))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1f))
+            .setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .build();
+
     PersonInfoDialogView2(Context context, int userID, boolean showKick, boolean showInvite) {
         super(context);
 
@@ -782,16 +795,16 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mUserInfoModel.setFriend(isFriend);
         if (isFriend) {
             mFollowIv.setText("互关");
-            mFollowIv.setAlpha(0.5f);
             mFollowIv.setClickable(false);
+            mFollowIv.setBackground(mFollowDrawable);
         } else if (isFollow) {
             mFollowIv.setText("已关注");
-            mFollowIv.setAlpha(0.5f);
             mFollowIv.setClickable(false);
+            mFollowIv.setBackground(mFollowDrawable);
         } else {
             mFollowIv.setText("关注Ta");
-            mFollowIv.setAlpha(1f);
             mFollowIv.setClickable(true);
+            mFollowIv.setBackground(mUnFollowDrawable);
         }
     }
 
