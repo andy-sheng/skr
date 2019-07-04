@@ -116,6 +116,8 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
 
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(lastFollowModel.getAvatar())
+                            .setBorderColor(Color.WHITE)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
                             .setCircle(true)
                             .build());
             mNameTv.setText(UserInfoManager.getInstance().getRemarkName(lastFollowModel.getUserID(), lastFollowModel.getNickname()));
