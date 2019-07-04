@@ -45,35 +45,37 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     val PICK_MSG = 1
     val SYNC_DURATION = 12000L
 
-    internal var syncStatusTimeMs: Long = 0 //状态同步时的毫秒时间戳
+    internal var mSyncStatusTimeMs: Long = 0 //状态同步时的毫秒时间戳
     private var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
 
-    var uiHandler: Handler
+    var mUiHandler: Handler
 
-    var pickNum: Int = 0
+    var mPickNum: Int = 0
+
+    var mIsCloseByTimeOver: Boolean = false
 
     init {
         EventBus.getDefault().register(this)
-        uiHandler = object : Handler() {
+        mUiHandler = object : Handler() {
             override fun handleMessage(msg: Message?) {
                 when (msg?.what) {
                     SYNC_MSG -> syncStatus()
                     PICK_MSG -> {
-                        val mutableSet1 = mutableMapOf("count" to pickNum, "fromPickuserID" to MyUserInfoManager.getInstance().uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
+                        val mutableSet1 = mutableMapOf("count" to mPickNum, "fromPickuserID" to MyUserInfoManager.getInstance().uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
                         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
                         ApiMethods.subscribe(mDoubleRoomServerApi.pickOther(body), object : ApiObserver<ApiResult>() {
                             override fun process(obj: ApiResult?) {
 
                             }
                         }, this@DoubleCorePresenter)
-                        pickNum = 0
+                        mPickNum = 0
                     }
                 }
             }
         }
 
         if (mRoomData.isRoomPrepared()) {
-            uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+            mUiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
             joinRoomAndInit(true)
         }
 
@@ -147,11 +149,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun pickOther() {
-        if (!uiHandler.hasMessages(PICK_MSG)) {
-            uiHandler.sendEmptyMessageDelayed(PICK_MSG, 200)
+        if (!mUiHandler.hasMessages(PICK_MSG)) {
+            mUiHandler.sendEmptyMessageDelayed(PICK_MSG, 200)
         }
 
-        pickNum++
+        mPickNum++
     }
 
     fun closeByTimeOver() {
@@ -159,6 +161,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         val mutableSet = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
         ApiMethods.subscribe(mDoubleRoomServerApi.closeByTimerOver(body), null)
+        mIsCloseByTimeOver = true
 
         mIDoublePlayView.finishActivity()
         ARouter.getInstance()
@@ -197,8 +200,8 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun syncStatus() {
-        uiHandler.removeMessages(SYNC_MSG)
-        uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+        mUiHandler.removeMessages(SYNC_MSG)
+        mUiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
         MyLog.d(tag, "syncStatus 1")
         ApiMethods.subscribe(mDoubleRoomServerApi.syncStatus(mRoomData.gameId), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
@@ -301,9 +304,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleCombineRoomSycPushEvent) {
         MyLog.d(tag, "onEvent DoubleCombineRoomSycPushEvent")
-        if (event.doubleSyncModel.syncStatusTimeMs > syncStatusTimeMs) {
+        if (event.doubleSyncModel.syncStatusTimeMs > mSyncStatusTimeMs) {
             MyLog.d(tag, "onEvent SycPush is $event")
-            syncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
+            mSyncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
             if (event.doubleSyncModel.status == ECombineStatus.CS_Finished.value) {
                 mIDoublePlayView.finishActivity()
                 ARouter.getInstance()
@@ -320,8 +323,8 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 if (map == null || map.size < 2) {
                     syncRoomPlayer()
                 }
-                uiHandler.removeMessages(SYNC_MSG)
-                uiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
+                mUiHandler.removeMessages(SYNC_MSG)
+                mUiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
             }
         }
     }
@@ -369,7 +372,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleEndCombineRoomPushEvent) {
         MyLog.d(tag, "DoubleEndCombineRoomPushEvent 1")
-        if (event.basePushInfo.timeMs > syncStatusTimeMs) {
+        if (event.basePushInfo.timeMs > mSyncStatusTimeMs) {
             MyLog.d(tag, "DoubleEndCombineRoomPushEvent 2")
             mRoomData!!.updateGameState(DoubleRoomData.DoubleGameState.END)
             mIDoublePlayView.gameEnd(event)
@@ -378,14 +381,14 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleLoadMusicInfoPushEvent) {
-        if (event.basePushInfo.timeMs > syncStatusTimeMs) {
+        if (event.basePushInfo.timeMs > mSyncStatusTimeMs) {
             mRoomData!!.updateCombineRoomMusic(event.currentMusic, event.nextMusicDesc, event.isHasNext)
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleUnlockUserInfoPushEvent) {
-        if (event.basePushInfo.timeMs > syncStatusTimeMs) {
+        if (event.basePushInfo.timeMs > mSyncStatusTimeMs) {
             mRoomData!!.updateLockInfo(event.userLockInfo, event.isEnableNoLimitDuration)
         }
     }
@@ -398,12 +401,12 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     override fun destroy() {
         MyLog.d(tag, "destroy begin")
         super.destroy()
-        exit()
+        if (!mIsCloseByTimeOver) exit()
         EventBus.getDefault().unregister(this)
         Params.save2Pref(ZqEngineKit.getInstance().params)
         ZqEngineKit.getInstance().destroy("doubleRoom")
         JiGuangPush.exitSkrRoomId(mRoomData.gameId.toString())
-        uiHandler.removeCallbacksAndMessages(null)
+        mUiHandler.removeCallbacksAndMessages(null)
         MyLog.d(tag, "destroy end")
     }
 }
