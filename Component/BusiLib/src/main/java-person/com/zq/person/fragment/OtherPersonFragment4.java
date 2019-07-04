@@ -151,8 +151,6 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
     DialogPlus mEditRemarkDialog;
 
-    boolean isBlacked = false;
-
     @Override
     public int initView() {
         return R.layout.other_person_fragment_layout;
@@ -329,13 +327,11 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                             mPersonMoreOpView.dismiss();
                         }
 
-                        isBlacked = isInBlack;
-                        if (isBlacked) {
+                        if (isInBlack) {
                             UserInfoManager.getInstance().removeBlackList(mUserId, new UserInfoManager.ResponseCallBack() {
                                 @Override
                                 public void onServerSucess(Object o) {
                                     U.getToastUtil().showShort("移除黑名单成功");
-                                    isBlacked = false;
                                 }
 
                                 @Override
@@ -348,7 +344,6 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                                 @Override
                                 public void onServerSucess(Object o) {
                                     U.getToastUtil().showShort("加入黑名单成功");
-                                    isBlacked = true;
                                 }
 
                                 @Override

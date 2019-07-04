@@ -141,8 +141,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     boolean hasInitHeight = false;
     boolean isAppBarCanScroll = true;   // AppBarLayout是否可以滚动
 
-    boolean isInBlacked = false;   //是否在黑名单中
-
     PersonInfoDialog.PersonCardClickListener mClickListener;
 
     Drawable mBackground1 = new DrawableCreator.Builder()
@@ -429,7 +427,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView.dismiss();
                 }
-                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.getUserId(), isShowKick, isInBlacked);
+                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.getUserId(), false, isShowKick);
                 mPersonMoreOpView.setListener(new PersonMoreOpView.Listener() {
                     @Override
                     public void onClickRemark() {
@@ -471,13 +469,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                         if (mPersonMoreOpView != null) {
                             mPersonMoreOpView.dismiss();
                         }
-                        isInBlacked = isInBlack;
-                        if (isInBlacked) {
+
+                        if (isInBlack) {
                             UserInfoManager.getInstance().removeBlackList(mUserId, new UserInfoManager.ResponseCallBack() {
                                 @Override
                                 public void onServerSucess(Object o) {
                                     U.getToastUtil().showShort("移除黑名单成功");
-                                    isInBlacked = false;
                                 }
 
                                 @Override
@@ -490,7 +487,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                                 @Override
                                 public void onServerSucess(Object o) {
                                     U.getToastUtil().showShort("加入黑名单成功");
-                                    isInBlacked = true;
                                 }
 
                                 @Override
