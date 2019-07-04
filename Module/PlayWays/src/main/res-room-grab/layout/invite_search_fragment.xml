@@ -51,23 +51,26 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search_area"
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        android:background="@drawable/common_bg_2"
         android:paddingLeft="@dimen/view_3_dp"
-        android:paddingRight="@dimen/view_3_dp">
+        android:paddingRight="@dimen/view_3_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </RelativeLayout>
+    </com.common.view.ex.ExRelativeLayout>
 
 
 </RelativeLayout>

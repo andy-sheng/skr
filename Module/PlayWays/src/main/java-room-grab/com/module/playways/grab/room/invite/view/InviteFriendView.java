@@ -79,6 +79,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
             @Override
             public void onClickSearch() {
                 Bundle bundle = new Bundle();
+                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
                 bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
                 bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
                 U.getFragmentUtils().addFragment(FragmentUtils
