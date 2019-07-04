@@ -1,11 +1,15 @@
 package com.module.playways.room.song.adapter;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.utils.U;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.room.song.holder.GrabSongInfoHolder;
@@ -22,7 +26,6 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
 
     Boolean mHasFooterBack = false;     //是否含底部搜索反馈
 
-
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
 
     public static int NORMAL_ITEM_TYPE = 0;      // 正常view
@@ -30,6 +33,27 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
 
     int mode = DEFAULT_MODE;
     boolean isOwner = false;
+
+    public static Drawable pk = new DrawableCreator.Builder()
+            .setStrokeColor(U.getColor(R.color.white_trans_70))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
+            .setSolidColor(Color.parseColor("#CB5883"))
+            .build();
+
+    public static Drawable togather = new DrawableCreator.Builder()
+            .setStrokeColor(U.getColor(R.color.white_trans_70))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
+            .setSolidColor(Color.parseColor("#7088FF"))
+            .build();
+
+    public static Drawable game = new DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#61B14F"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(10))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+            .setStrokeColor(U.getColor(R.color.white_trans_70))
+            .build();
 
     public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener) {
         this.mRecyclerOnItemClickListener = onItemClickListener;
@@ -90,7 +114,6 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         } else if (holder instanceof SongSearchFooter) {
             SongSearchFooter songSearchFooter = (SongSearchFooter) holder;
             songSearchFooter.bind(position);
-
         }
     }
 

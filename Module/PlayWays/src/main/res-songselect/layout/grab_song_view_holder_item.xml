@@ -1,21 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_72_dp">
-
-    <!--<com.facebook.drawee.view.SimpleDraweeView-->
-    <!--android:id="@+id/song_cover_iv"-->
-    <!--android:layout_width="@dimen/view_48_dp"-->
-    <!--android:layout_height="@dimen/view_48_dp"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--android:layout_marginLeft="@dimen/view_22_dp" />-->
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_select_tv"
         android:layout_width="@dimen/view_58_dp"
         android:layout_height="@dimen/view_33_dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_16_dp"
         android:gravity="center"
         android:text="添加"
@@ -25,70 +16,60 @@
         app:bl_shape="rectangle"
         app:bl_solid_color="#EDA734"
         app:bl_stroke_color="#202239"
-        app:bl_stroke_width="@dimen/view_2_dp" />
+        app:bl_stroke_width="@dimen/view_2_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_14_dp"
-        android:layout_toRightOf="@+id/song_cover_iv"
         android:ellipsize="end"
         android:maxLines="1"
-        android:paddingRight="@dimen/view_125_dp"
         android:singleLine="true"
         android:text="有多少爱可以重来"
         android:textColor="#B2B6D6"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/song_desc"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/song_tag"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/chorus_song_tag"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_18_dp"
-        android:layout_alignTop="@id/song_name_tv"
-        android:layout_marginLeft="-120dp"
-        android:layout_marginTop="@dimen/view_2_dp"
-        android:layout_toRightOf="@id/song_name_tv"
+        android:id="@+id/song_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
         android:gravity="center"
-        android:text="合唱"
-        android:textColor="#FFDCA2"
-        android:textSize="@dimen/textsize_14_dp"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_10_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#7088FF" />
+        android:paddingLeft="@dimen/view_8_dp"
+        android:paddingRight="@dimen/view_8_dp"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_10_dp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/song_name_tv"
+        app:layout_constraintLeft_toRightOf="@id/song_name_tv"
+        app:layout_constraintRight_toLeftOf="@id/song_select_tv"
+        app:layout_constraintTop_toTopOf="@id/song_name_tv" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/pk_song_tag"
-        android:layout_width="@dimen/view_42_dp"
+    <TextView
+        android:id="@+id/song_desc"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/view_18_dp"
-        android:layout_alignTop="@id/song_name_tv"
-        android:layout_marginLeft="-120dp"
-        android:layout_marginTop="@dimen/view_2_dp"
-        android:layout_toRightOf="@id/song_name_tv"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
         android:gravity="center"
-        android:text="PK"
-        android:textColor="#FFDCA2"
-        android:textSize="@dimen/textsize_14_dp"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_10_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#E55088" />
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/song_name_tv"
+        app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
 
-    <!--<com.common.view.ex.ExTextView-->
-    <!--android:id="@+id/song_owner_tv"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="@dimen/view_17_dp"-->
-    <!--android:layout_below="@+id/song_name_tv"-->
-    <!--android:layout_alignLeft="@+id/song_name_tv"-->
-    <!--android:ellipsize="end"-->
-    <!--android:maxLines="1"-->
-    <!--android:singleLine="true"-->
-    <!--android:text="迪克牛仔"-->
-    <!--android:textColor="#99B2B6D6"-->
-    <!--android:textSize="@dimen/textsize_12_dp" />-->
-
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

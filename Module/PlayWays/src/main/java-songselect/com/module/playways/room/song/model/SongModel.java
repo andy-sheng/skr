@@ -432,7 +432,7 @@ public class SongModel implements Serializable {
         }
         if (!TextUtils.isEmpty(desc)) {
             if (!TextUtils.isEmpty(composer)) {
-                desc = " 曲/" + composer;
+                desc = desc + " 曲/" + composer;
             }
         } else {
             if (!TextUtils.isEmpty(composer)) {
