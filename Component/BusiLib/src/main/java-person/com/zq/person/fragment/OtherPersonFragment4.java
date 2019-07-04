@@ -94,8 +94,9 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     public static final int RELATION_FOLLOWED = 1; // 已关注关系
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
 
-    private static final int LOCATION_TAG = 0;         // 地区标签  省
-    private static final int FANS_NUM_TAG = 2;         // 粉丝数标签
+    private static final int CHARM_TAG = 0;            // 魅力值
+    private static final int FANS_NUM_TAG = 1;         // 粉丝数标签
+    private static final int LOCATION_TAG = 2;         // 地区标签  省
 
     private List<String> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
@@ -131,7 +132,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     ImageView mBusinessCard;
     ExTextView mSignTv;
     TagFlowLayout mFlowlayout;
-    TextView mCharmTv;
+    TextView mUseridTv;
 
     Toolbar mToolbar;
     TextView mSrlNameTv;
@@ -417,7 +418,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
-        mCharmTv = (TextView) mRootView.findViewById(R.id.charm_tv);
+        mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
 
@@ -646,7 +647,9 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
     private void showCharms(int meiLiCntTotal) {
         charmNum = meiLiCntTotal;
-        mCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
+
+        mHashMap.put(CHARM_TAG, "魅力 " + StringFromatUtils.formatCharmNum(meiLiCntTotal));
+        refreshTag();
     }
 
     public void showUserLevel(List<UserLevelModel> list) {
@@ -681,6 +684,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                         .build());
 
         mNameTv.setText(model.getNicknameRemark());
+        mUseridTv.setText("ID:" + model.getUserId());
         if (model.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(View.VISIBLE);
             mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
@@ -706,6 +710,10 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     private void refreshTag() {
         mTags.clear();
         if (mHashMap != null) {
+            if (!TextUtils.isEmpty(mHashMap.get(CHARM_TAG))) {
+                mTags.add(mHashMap.get(CHARM_TAG));
+            }
+
             if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
                 mTags.add(mHashMap.get(FANS_NUM_TAG));
             }
