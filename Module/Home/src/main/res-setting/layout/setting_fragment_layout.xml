@@ -521,15 +521,22 @@
             </RelativeLayout>
 
             <!--退出登录-->
-            <ImageView
+            <com.common.view.ex.ExTextView
                 android:id="@+id/exit_login"
                 android:layout_width="@dimen/view_132_dp"
-                android:layout_height="@dimen/view_50_dp"
+                android:layout_height="@dimen/view_48_dp"
                 android:layout_below="@+id/service_agreen"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_16_dp"
                 android:layout_marginBottom="@dimen/view_20_dp"
-                android:background="@drawable/shezhi_tuichudenglu" />
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_18_dp"
+                android:textStyle="bold"
+                app:bl_corners_radius="@dimen/view_24_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#FF8AB6" />
 
         </RelativeLayout>
 

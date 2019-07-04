@@ -84,7 +84,7 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout mComment;
     RelativeLayout mServiceAgreen;
     RelativeLayout mRlExchange;
-    ImageView mExitLogin;
+    ExTextView mExitLogin;
 
     boolean hasNewVersion = false; // 判断是否有新版本
 
@@ -115,21 +115,21 @@ public class SettingFragment extends BaseFragment {
         mCacheArraw = (ExImageView) mRootView.findViewById(R.id.cache_arraw);
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
 
-        mVersionArea = (RelativeLayout) mRootView.findViewById(R.id.version_area);
-        mVersionTips = (ExTextView) mRootView.findViewById(R.id.version_tips);
-        mNewVersionIv = (ExImageView) mRootView.findViewById(R.id.new_version_iv);
-        mVersionArrow = (ExImageView) mRootView.findViewById(R.id.version_arrow);
-        mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
+        mVersionArea = mRootView.findViewById(R.id.version_area);
+        mVersionTips = mRootView.findViewById(R.id.version_tips);
+        mNewVersionIv = mRootView.findViewById(R.id.new_version_iv);
+        mVersionArrow = mRootView.findViewById(R.id.version_arrow);
+        mVersionTv = mRootView.findViewById(R.id.version_tv);
 
-        mInviteCode = (RelativeLayout) mRootView.findViewById(R.id.invite_code);
-        mUserBlacklist = (RelativeLayout) mRootView.findViewById(R.id.user_blacklist);
-        mUploadMusicArea = (RelativeLayout) mRootView.findViewById(R.id.upload_music_area);
-        mUserFeedback = (RelativeLayout) mRootView.findViewById(R.id.user_feedback);
-        mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
-        mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
-        mExitLogin = (ImageView) mRootView.findViewById(R.id.exit_login);
+        mInviteCode = mRootView.findViewById(R.id.invite_code);
+        mUserBlacklist = mRootView.findViewById(R.id.user_blacklist);
+        mUploadMusicArea = mRootView.findViewById(R.id.upload_music_area);
+        mUserFeedback = mRootView.findViewById(R.id.user_feedback);
+        mComment = mRootView.findViewById(R.id.comment);
+        mServiceAgreen = mRootView.findViewById(R.id.service_agreen);
+        mExitLogin = mRootView.findViewById(R.id.exit_login);
 
-        mRlExchange = (RelativeLayout) mRootView.findViewById(R.id.Rl_exchange);
+        mRlExchange = mRootView.findViewById(R.id.Rl_exchange);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
@@ -159,7 +159,7 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url",ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=uc"))
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=uc"))
                         .greenChannel().navigation();
             }
         });
