@@ -86,7 +86,7 @@ public class FollowNotifyView extends RelativeLayout {
                                     mFollowTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDisplayUtils().dip2px(18f));
                                     mFollowTv.setClickable(false);
                                     mFollowTv.setText("互相关注");
-                                    mFollowTv.setBackground(null);
+                                    mFollowTv.setBackground(mFriendDrawable);
                                 }
 
                                 @Override
