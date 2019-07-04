@@ -72,8 +72,8 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ChorusLineLyricModel chorusLineLyricModel = (ChorusLineLyricModel) mDataList.get(position);
         if (holder instanceof ChorusSelfLyricHolder) {
+            ChorusLineLyricModel chorusLineLyricModel = (ChorusLineLyricModel) mDataList.get(position);
             ((ChorusSelfLyricHolder) holder).bindData(chorusLineLyricModel, position);
         } else if (holder instanceof ChorusUploaderHolder) {
             ((ChorusUploaderHolder) holder).bindData(mUploaderName);
