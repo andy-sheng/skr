@@ -13,13 +13,11 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
-import com.common.player.IPlayer;
-import com.common.player.IPlayerCallback;
-import com.common.player.ExoPlayer;
 import com.common.player.AndroidMediaPlayer;
+import com.common.player.ExoPlayer;
+import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -29,18 +27,18 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.common.utils.ActivityUtils;
-import com.component.busilib.SkrConfig;
-import com.engine.Params;
-import com.zq.dialog.ShareWorksDialog;
-import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.module.playways.room.song.model.SongModel;
+import com.component.busilib.SkrConfig;
+import com.engine.Params;
 import com.module.playways.R;
+import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.zq.dialog.ShareWorksDialog;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.utils.SongResUtils;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.mediaengine.kit.ZqEngineKit;
@@ -107,6 +105,7 @@ public class PlayRecordFragment extends BaseFragment {
 
         playLyrics(mSongModel);
         playRecord();
+        mManyLyricsView.setAuthorName(mSongModel.getUploaderName());
 
         mBackArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -155,9 +154,9 @@ public class PlayRecordFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 if (!TextUtils.isEmpty(mUrl) && mWorksId > 0) {
-                    if(SkrConfig.getInstance().worksShareOpen()){
+                    if (SkrConfig.getInstance().worksShareOpen()) {
                         showShareDialog(false);
-                    }else{
+                    } else {
 
                     }
                 } else {
@@ -166,9 +165,9 @@ public class PlayRecordFragment extends BaseFragment {
             }
         });
 
-        if(SkrConfig.getInstance().worksShareOpen()){
+        if (SkrConfig.getInstance().worksShareOpen()) {
 
-        }else{
+        } else {
             mSaveShareTv.setText("保存");
         }
 
@@ -269,7 +268,7 @@ public class PlayRecordFragment extends BaseFragment {
                 mPlayer = new ExoPlayer();
             }
 
-            mPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter(){
+            mPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                 @Override
                 public void onCompletion() {
                     super.onCompletion();
@@ -350,11 +349,11 @@ public class PlayRecordFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mWorksId = result.getData().getIntValue("worksID");
-                    if(SkrConfig.getInstance().worksShareOpen()){
+                    if (SkrConfig.getInstance().worksShareOpen()) {
                         mSaveShareTv.setText("分享");
                         mSaveShareTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.audition_share, 0, 0);
                         showShareDialog(true);
-                    }else{
+                    } else {
                         mSaveShareTv.setText("已保存");
                         mSaveShareTv.setClickable(false);
                     }

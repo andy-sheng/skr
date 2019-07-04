@@ -1072,7 +1072,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
         mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
                 songModel.getLyric(), songModel.getRankLrcBeginT(), songModel.getRankLrcEndT(),
-                songModel.getBeginMs(), songModel.getEndMs());
+                songModel.getBeginMs(), songModel.getEndMs(), songModel.getUploaderName());
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
             @Override
             public void onLyricParseSuccess() {

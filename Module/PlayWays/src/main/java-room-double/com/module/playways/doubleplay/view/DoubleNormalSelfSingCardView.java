@@ -1,5 +1,6 @@
 package com.module.playways.doubleplay.view;
 
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
@@ -7,6 +8,7 @@ import android.widget.ScrollView;
 
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ExViewStub;
 import com.common.view.ex.ExTextView;
@@ -124,7 +126,12 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
                     .subscribe(new Consumer<String>() {
                         @Override
                         public void accept(String s) throws Exception {
-                            mLyricTv.setText(s);
+                            SpannableStringBuilder ssb = createLyricSpan(s, mSongModel);
+                            if (ssb == null) {
+                                mLyricTv.setText(s);
+                            } else {
+                                mLyricTv.setText(ssb);
+                            }
                             mLoadService.showSuccess();
                         }
                     }, throwable -> {
@@ -134,6 +141,18 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
         } else {
             MyLog.e(TAG, "没有歌词呀，mSongModel is " + mSongModel);
         }
+    }
+
+    protected SpannableStringBuilder createLyricSpan(String lyric, SongModel songModel) {
+        if (songModel != null) {
+            SpannableStringBuilder ssb = new SpanUtils()
+                    .append(lyric)
+                    .append("\n")
+                    .append("上传者:" + songModel.getUploaderName()).setFontSize(12, true)
+                    .create();
+            return ssb;
+        }
+        return null;
     }
 
     public void destroy() {

@@ -13,6 +13,7 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -30,7 +31,6 @@ import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
-import com.common.utils.ColorUtils;
 import com.zq.lyrics.utils.LyricsUtils;
 import com.zq.lyrics.utils.TimeUtils;
 
@@ -178,6 +178,13 @@ public class ManyLyricsView extends AbstractLrcView {
     private int mDownLineNum = 100;
 
     /**
+     * 要不要展示上传者
+     */
+    private boolean mShowAuthor = false;
+
+    private String mAuthorName;
+
+    /**
      * Handler处理滑动指示器隐藏和歌词滚动到当前播放的位置
      */
     private Handler mHandler = new Handler() {
@@ -240,6 +247,10 @@ public class ManyLyricsView extends AbstractLrcView {
             //上下一样
             mUpLineNum = upLineNum;
             mDownLineNum = upLineNum;
+        }
+
+        if (typedArray.hasValue(R.styleable.many_line_lrc_view_ly_show_author)) {
+            mShowAuthor = typedArray.getBoolean(R.styleable.many_line_lrc_view_ly_show_author, false);
         }
 
         typedArray.recycle();
@@ -367,6 +378,11 @@ public class ManyLyricsView extends AbstractLrcView {
         List<LyricsLineInfo> splitLyricsLineInfos = lyricsLineInfo.getSplitLyricsLineInfos();
         float lineBottomY = drawDownLyrics(canvas, paint, paintHL, splitLyricsLineInfos, splitLyricsLineNum, splitLyricsWordIndex, spaceLineHeight, lyricsWordHLTime, mCentreY);
 
+        if (lyricsLineNum == lrcLineInfos.size() - 1) {
+            if (mShowAuthor)
+                drawAuthor(paint, canvas, lineBottomY);
+        }
+
         //画倒计时圆点
         if (getNeedCountDownLine().contains(lyricsLineNum)) {
             drawCountDownPoint(canvas, lineBottomY);
@@ -386,6 +402,11 @@ public class ManyLyricsView extends AbstractLrcView {
                 lineBottomY = drawDownLyrics(canvas, paint, paintHL, lyricsLineInfos, -1, -2, spaceLineHeight, -1, lineBottomY);
                 //画额外歌词
                 lineBottomY = drawDownExtraLyrics(canvas, extraLrcPaint, extraLrcPaintHL, i, -1, -2, extraLrcSpaceLineHeight, -1, -1, lineBottomY);
+                //最后一行
+                if (i == lrcLineInfos.size() - 1) {
+                    if (mShowAuthor)
+                        drawAuthor(paint, canvas, lineBottomY);
+                }
             }
         }
 
@@ -407,6 +428,24 @@ public class ManyLyricsView extends AbstractLrcView {
         if ((mIsTouchIntercept || mTouchEventStatus != TOUCHEVENTSTATUS_INIT) && mIsDrawIndicator) {
             drawIndicator(canvas);
         }
+    }
+
+    public void setAuthorName(String authorName) {
+        mAuthorName = "上传者：" + authorName;
+    }
+
+    private void drawAuthor(Paint paint, Canvas canvas, float lineBottomY) {
+        if (TextUtils.isEmpty(mAuthorName)) {
+            return;
+        }
+
+        float size = paint.getTextSize();
+        paint.setTextSize(size * 0.8f);
+        float textWidth = LyricsUtils.getTextWidth(paint, mAuthorName);
+        float textX = (getWidth() - textWidth) * 0.5f;
+        int[] paintColors = getPaintColors();
+        LyricsUtils.drawText(canvas, paint, paintColors, mAuthorName, textX, lineBottomY);
+        paint.setTextSize(size);
     }
 
     private void drawCountDownPoint(Canvas canvas, float y) {
@@ -435,7 +474,7 @@ public class ManyLyricsView extends AbstractLrcView {
             return;
         }
         float radius = 10.0f;
-        float dy = y - textHeight - radius*2 - U.getDisplayUtils().dip2px(33);
+        float dy = y - textHeight - radius * 2 - U.getDisplayUtils().dip2px(33);
 
         if (degree <= 1000) {
 //            MyLog.v(TAG, "倒计时 1");

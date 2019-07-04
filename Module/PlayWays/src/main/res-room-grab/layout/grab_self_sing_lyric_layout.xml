@@ -62,6 +62,7 @@
         app:ly_paint_color_from="@color/black_trans_30"
         app:ly_paint_color_to="@color/black_trans_30"
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
+        app:ly_show_author="true"
         app:ly_top_line_num="2" />
 
     <LinearLayout

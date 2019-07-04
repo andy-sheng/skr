@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.view.normal.view;
 
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -11,14 +10,13 @@ import android.widget.TextView;
 import com.common.log.MyLog;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.ExViewStub;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.common.view.ExViewStub;
 import com.module.playways.others.LyricAndAccMatchManager;
-import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
@@ -111,7 +109,7 @@ public class SelfSingLyricView extends ExViewStub {
         mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
                 curSong.getLyric(),
                 curSong.getStandLrcBeginT(), curSong.getStandLrcBeginT() + totalTs,
-                curSong.getBeginMs(), curSong.getBeginMs() + totalTs);
+                curSong.getBeginMs(), curSong.getBeginMs() + totalTs, curSong.getUploaderName());
 
         SongModel finalCurSong = curSong;
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
@@ -147,7 +145,7 @@ public class SelfSingLyricView extends ExViewStub {
         initLyric();
         mManyLyricsView.setVisibility(View.GONE);
         mSvlyric.setVisibility(View.VISIBLE);
-        mSvlyric.scrollTo(0,0);
+        mSvlyric.scrollTo(0, 0);
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
@@ -156,10 +154,10 @@ public class SelfSingLyricView extends ExViewStub {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        SpannableStringBuilder ssb = createLyricSpan(s,songModel);
-                        if(ssb==null){
+                        SpannableStringBuilder ssb = createLyricSpan(s, songModel);
+                        if (ssb == null) {
                             mTvLyric.setText(s);
-                        }else{
+                        } else {
                             mTvLyric.setText(ssb);
                         }
 
@@ -173,12 +171,12 @@ public class SelfSingLyricView extends ExViewStub {
         mLyricAndAccMatchManager.stop();
     }
 
-    protected  SpannableStringBuilder createLyricSpan(String lyric,SongModel songModel){
-        if(songModel!=null){
+    protected SpannableStringBuilder createLyricSpan(String lyric, SongModel songModel) {
+        if (songModel != null) {
             SpannableStringBuilder ssb = new SpanUtils()
                     .append(lyric)
                     .append("\n")
-                    .append("上传者:"+songModel.getUploaderName()).setFontSize(12,true)
+                    .append("上传者:" + songModel.getUploaderName()).setFontSize(12, true)
                     .create();
             return ssb;
         }
