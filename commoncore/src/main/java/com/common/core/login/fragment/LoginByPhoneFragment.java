@@ -226,7 +226,6 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                     public void onComplete() {
                         super.onComplete();
                         mGetCodeTv.setText("");
-                        mGetCodeTv.setBackground(getResources().getDrawable(R.drawable.get_verify_normal));
                         mGetCodeTv.setSelected(false);
                         mGetCodeTv.setClickable(true);
                     }
