@@ -398,37 +398,37 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     void tryGoDoubleRoom(int mediaType, int ownerId, int roomID, int inviteType) {
         StatisticsAdapter.recordCountEvent("cp", "invite2_success", null);
 
-        final HashMap<String, Object> map = new HashMap<>();
-        map.put("peerUserID", ownerId);
-        map.put("roomID", roomID);
-
-        mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
+        mSkrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
-                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-                ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleFromCreateRoom(body), new ApiObserver<ApiResult>() {
+                mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
                     @Override
-                    public void process(ApiResult result) {
-                        if (result.getErrno() == 0) {
-                            mSkrAudioPermission.ensurePermission(new Runnable() {
-                                @Override
-                                public void run() {
+                    public void run() {
+                        final HashMap<String, Object> map = new HashMap<>();
+                        map.put("peerUserID", ownerId);
+                        map.put("roomID", roomID);
+                        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                        ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleFromCreateRoom(body), new ApiObserver<ApiResult>() {
+                            @Override
+                            public void process(ApiResult result) {
+                                if (result.getErrno() == 0) {
                                     IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                                     iRankingModeService.jumpToDoubleRoomFromDoubleRoomInvite(result.getData());
+                                } else {
+                                    U.getToastUtil().showShort(result.getErrmsg());
                                 }
-                            }, true);
-                        } else {
-                            U.getToastUtil().showShort(result.getErrmsg());
-                        }
-                    }
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, e);
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.e(TAG, e);
+                            }
+                        }, NotifyCorePresenter.this);
                     }
-                }, NotifyCorePresenter.this);
+                });
             }
-        });
+        }, true);
+
     }
 
 
@@ -553,35 +553,36 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 StatisticsAdapter.recordCountEvent("cp", "invite1_success", null);
                 mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW);
                 FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW);
-                mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
+                mSkrAudioPermission.ensurePermission(new Runnable() {
                     @Override
                     public void run() {
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("peerUserID", userInfoModel.getUserId());
-                        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-                        ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleRoom(body), new ApiObserver<ApiResult>() {
+                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
                             @Override
-                            public void process(ApiResult result) {
-                                if (result.getErrno() == 0) {
-                                    mSkrAudioPermission.ensurePermission(new Runnable() {
-                                        @Override
-                                        public void run() {
+                            public void run() {
+                                HashMap<String, Object> map = new HashMap<>();
+                                map.put("peerUserID", userInfoModel.getUserId());
+                                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                                ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleRoom(body), new ApiObserver<ApiResult>() {
+                                    @Override
+                                    public void process(ApiResult result) {
+                                        if (result.getErrno() == 0) {
                                             IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                                             iRankingModeService.jumpToDoubleRoom(result.getData());
+                                        } else {
+                                            U.getToastUtil().showShort(result.getErrmsg());
                                         }
-                                    }, true);
-                                } else {
-                                    U.getToastUtil().showShort(result.getErrmsg());
-                                }
-                            }
+                                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                MyLog.e(TAG, e);
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        MyLog.e(TAG, e);
+                                    }
+                                }, NotifyCorePresenter.this);
                             }
-                        }, NotifyCorePresenter.this);
+                        });
                     }
-                });
+                }, true);
+
             }
         });
 
