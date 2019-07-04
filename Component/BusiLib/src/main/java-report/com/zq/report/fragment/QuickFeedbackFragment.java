@@ -33,6 +33,7 @@ import com.common.utils.KeyboardEvent;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.R;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
@@ -73,7 +74,7 @@ public class QuickFeedbackFragment extends BaseFragment {
 
     private int mFrom;  //标记举报来源
 
-    RelativeLayout mContainer;
+    ExRelativeLayout mContainer;
     FeedbackView mFeedBackView;
     View mPlaceView;
     ProgressBar mUploadProgressBar;
@@ -113,10 +114,10 @@ public class QuickFeedbackFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
-        mFeedBackView = (FeedbackView) mRootView.findViewById(R.id.feed_back_view);
-        mPlaceView = (View) mRootView.findViewById(R.id.place_view);
-        mUploadProgressBar = (ProgressBar) mRootView.findViewById(R.id.upload_progress_bar);
+        mContainer = mRootView.findViewById(R.id.container);
+        mFeedBackView = mRootView.findViewById(R.id.feed_back_view);
+        mPlaceView = mRootView.findViewById(R.id.place_view);
+        mUploadProgressBar = mRootView.findViewById(R.id.upload_progress_bar);
         mFeedBackView.setActionType(mActionType);
 
         mFeedBackView.setListener(new FeedbackView.Listener() {
