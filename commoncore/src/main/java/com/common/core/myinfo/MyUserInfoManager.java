@@ -395,14 +395,14 @@ public class MyUserInfoManager {
     }
 
     public String getLocationDesc() {
-        if (mUser.getLocation() == null) {
+        if (!hasLocation()) {
             return "火星";
         }
         return mUser.getLocation().getDesc();
     }
 
     public String getLocationProvince() {
-        if (mUser.getLocation() == null) {
+        if (!hasLocation()) {
             return "火星";
         }
         return mUser.getLocation().getProvince();
