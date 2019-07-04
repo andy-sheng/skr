@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Message;
@@ -167,11 +168,10 @@ public class ConversationActivity extends BaseActivity {
         } else {
             channels.add(getString(R.string.add_to_black_list));
         }
-        channels.add(getString(R.string.cancel));
         listDialog = new ListDialog(this);
         List<DialogListItem> listItems = new ArrayList<>();
         for (final String channel : channels) {
-            listItems.add(new DialogListItem(channel, new Runnable() {
+            listItems.add(new DialogListItem(channel, "#FF3529", new Runnable() {
                 @Override
                 public void run() {
                     if (channel.equals(getString(R.string.add_to_black_list))) {
@@ -203,6 +203,12 @@ public class ConversationActivity extends BaseActivity {
                 }
             }));
         }
+        listItems.add(new DialogListItem(getString(R.string.cancel), "#007AFF", new Runnable() {
+            @Override
+            public void run() {
+                listDialog.dissmiss();
+            }
+        }));
         listDialog.showList(listItems);
     }
 

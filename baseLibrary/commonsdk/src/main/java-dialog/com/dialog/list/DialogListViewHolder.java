@@ -1,5 +1,6 @@
 package com.dialog.list;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class DialogListViewHolder extends RecyclerView.ViewHolder {
 
     public void bindData(DialogListItem data) {
         this.data = data;
+        titleTv.setTextColor(Color.parseColor(data.color));
         titleTv.setText(data.title);
     }
 }
