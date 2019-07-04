@@ -240,7 +240,7 @@
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold" />
 
-    <com.dialog.view.StrokeTextView
+    <com.common.view.ex.ExTextView
         android:id="@+id/submit_tv"
         android:layout_width="@dimen/view_132_dp"
         android:layout_height="@dimen/view_54_dp"
@@ -251,8 +251,11 @@
         android:gravity="center"
         android:paddingBottom="@dimen/view_6_dp"
         android:text="提交"
-        android:textColor="#0C2275"
+        android:textColor="#AD6C00"
         android:textSize="@dimen/textsize_20_dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:bl_shape="rectangle"
+        app:bl_corners_radius="@dimen/view_27_dp"
+        app:bl_solid_color="#FFC15B"/>
 
 </merge>
