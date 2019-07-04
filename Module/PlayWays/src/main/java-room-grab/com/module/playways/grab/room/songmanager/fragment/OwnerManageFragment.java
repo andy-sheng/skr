@@ -75,6 +75,13 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        if (mSongManageData == null) {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+            return;
+        }
+
         mCommonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mRlContent = (ExRelativeLayout) mRootView.findViewById(R.id.rl_content);
         mSearchSongIv = (ExTextView) mRootView.findViewById(R.id.search_song_iv);
