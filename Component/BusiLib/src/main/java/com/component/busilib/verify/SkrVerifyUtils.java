@@ -115,7 +115,7 @@ public class SkrVerifyUtils {
                 }
                 // 去实名认证
                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                        .setMessageTip("完成实名认证\n解锁视频专场永久开启权限")
+                        .setMessageTip(obj.getErrmsg())
                         .setConfirmTip("快速认证")
                         .setCancelTip("残忍拒绝")
                         .setConfirmBtnClickListener(new AnimateClickListener() {
