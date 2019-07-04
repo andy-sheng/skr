@@ -61,7 +61,7 @@ public class SongManageData implements Serializable {
         }
 
         if (mDoubleRoomData != null) {
-            return "一个人的时间，两个人的空间";
+            return "点歌";
         }
 
         return "";
