@@ -326,7 +326,7 @@ public class LoginFragment extends BaseFragment implements Callback {
                             mTipsDialogView.dismiss();
                         }
                         mTipsDialogView = new TipsDialogView.Builder(getActivity())
-                                .setConfirmTip(apiResult.getErrmsg())
+                                .setMessageTip(apiResult.getErrmsg())
                                 .setOkBtnTip("确认")
                                 .setOkBtnClickListener(new DebounceViewClickListener() {
                                     @Override
