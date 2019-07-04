@@ -15,10 +15,8 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
-        app:rightText="···"
-        app:rightTextColor="@color/white"
-        app:rightTextSize="@dimen/textsize_30_dp"
-        app:rightType="textView"
+        app:rightImageResource="@drawable/liaotian_gengduo"
+        app:rightType="imageButton"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
         app:titleBarColor="@color/colorPrimary" />

@@ -74,9 +74,9 @@ public class ConversationActivity extends BaseActivity {
         });
 
         if (mUserId.equals(UserInfoModel.USER_ID_XIAOZHUSHOU + "")) {
-            mTitleBar.getRightTextView().setVisibility(View.GONE);
+            mTitleBar.getRightImageButton().setVisibility(View.GONE);
         } else {
-            mTitleBar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            mTitleBar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
                     showConfirmOptions();
