@@ -248,7 +248,7 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
+                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
                             //U.getToastUtil().showShort(obj.getErrmsg());
@@ -256,6 +256,9 @@ public class UserAccountManager {
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                             EventBus.getDefault().post(new LoginApiErrorEvent(obj.getErrno(), obj.getErrmsg()));
+                        }
+                        if (callback != null) {
+                            callback.onCallback(1,obj);
                         }
                     }
 
@@ -277,7 +280,7 @@ public class UserAccountManager {
      * @param accessToken
      * @param openId
      */
-    public void loginByThirdPart(final int mode, String accessToken, String openId) {
+    public void loginByThirdPart(final int mode, String accessToken, String openId, final Callback callback) {
         StatisticsAdapter.recordCountEvent("signup", "api_begin", null);
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         String deviceId = U.getDeviceUtils().getImei();
@@ -294,17 +297,20 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), "", null);
+                            UserAccount userAccount = parseRsp(obj.getData(), "");
                             if (mode == 3) {
                                 UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
                             } else if (mode == 2) {
                                 UmengStatistics.onProfileSignIn("icon_qq", userAccount.getUid());
                             }
                         } else {
-                            U.getToastUtil().showShort(obj.getErrmsg());
+                            //U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
+                        }
+                        if (callback != null) {
+                            callback.onCallback(1,obj);
                         }
                     }
 
@@ -318,7 +324,7 @@ public class UserAccountManager {
                 });
     }
 
-    UserAccount parseRsp(JSONObject jsonObject, String phoneNum, Callback callback) {
+    UserAccount parseRsp(JSONObject jsonObject, String phoneNum) {
         String secretToken = jsonObject.getJSONObject("token").getString("T");
         String serviceToken = jsonObject.getJSONObject("token").getString("S");
         String rongToken = jsonObject.getJSONObject("token").getString("RC");
@@ -365,9 +371,6 @@ public class UserAccountManager {
         userAccount.setNeedEditUserInfo(isFirstLogin);
         userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
         onLoginResult(userAccount);
-        if (callback != null) {
-            callback.onCallback(1, null);
-        }
         return userAccount;
     }
 

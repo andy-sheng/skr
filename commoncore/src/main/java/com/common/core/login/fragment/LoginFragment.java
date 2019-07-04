@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.callback.Callback;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrBasePermission;
@@ -22,11 +24,13 @@ import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.share.ShareManager;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -35,7 +39,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment implements Callback {
 
     public static final int QQ_MODE = 2;
     public static final int WX_MODE = 3;
@@ -278,7 +282,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void loginWithThirdPard(int mode, String accessToken, String openId) {
-        UserAccountManager.getInstance().loginByThirdPart(mode, accessToken, openId);
+        UserAccountManager.getInstance().loginByThirdPart(mode, accessToken, openId, this);
     }
 
     @Override
@@ -305,6 +309,38 @@ public class LoginFragment extends BaseFragment {
         super.destroy();
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    TipsDialogView mTipsDialogView;
+
+    @Override
+    public void onCallback(int r, Object obj) {
+        if (r == 1) {
+            final ApiResult apiResult = (ApiResult) obj;
+            if (apiResult != null && apiResult.getErrno() != 0 && !TextUtils.isEmpty(apiResult.getErrmsg())) {
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mTipsDialogView != null) {
+                            mTipsDialogView.dismiss();
+                        }
+                        mTipsDialogView = new TipsDialogView.Builder(getActivity())
+                                .setConfirmTip(apiResult.getErrmsg())
+                                .setOkBtnTip("确认")
+                                .setOkBtnClickListener(new DebounceViewClickListener() {
+                                    @Override
+                                    public void clickValid(View v) {
+                                        if (mTipsDialogView != null) {
+                                            mTipsDialogView.dismiss();
+                                        }
+                                    }
+                                })
+                                .build();
+                        mTipsDialogView.showByDialog();
+                    }
+                });
+            }
         }
     }
 }
