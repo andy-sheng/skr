@@ -1,13 +1,13 @@
 package com.common.core.account.event;
 
 /**
- * 验证码验证出错事件
+ * 登陆错误的文案提示
  */
-public class VerifyCodeErrorEvent {
+public class LoginApiErrorEvent {
     int errno;
     String errmsg;
 
-    public VerifyCodeErrorEvent(int errno, String errmsg) {
+    public LoginApiErrorEvent(int errno, String errmsg) {
         this.errno = errno;
         this.errmsg = errmsg;
     }

@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.bugly.BuglyInit;
 import com.common.callback.Callback;
 import com.common.core.account.event.AccountEvent;
-import com.common.core.account.event.VerifyCodeErrorEvent;
+import com.common.core.account.event.LoginApiErrorEvent;
 import com.common.core.channel.HostChannelManager;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
@@ -251,11 +251,11 @@ public class UserAccountManager {
                             UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
-                            U.getToastUtil().showShort(obj.getErrmsg());
+                            //U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
-                            EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
+                            EventBus.getDefault().post(new LoginApiErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
                     }
 

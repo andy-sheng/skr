@@ -13,7 +13,7 @@ import com.common.callback.Callback;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
-import com.common.core.account.event.VerifyCodeErrorEvent;
+import com.common.core.account.event.LoginApiErrorEvent;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
@@ -51,7 +51,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     String mPhoneNumber; //发送验证码的电话号码
     String mCode; //验证码
-
+    
     HandlerTaskTimer mTaskTimer; // 倒计时验证码
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
@@ -153,7 +153,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(VerifyCodeErrorEvent event) {
+    public void onEventMainThread(LoginApiErrorEvent event) {
         MyLog.d(TAG, "onEventMainThread" + " event=" + event);
         setHintText(event.getErrmsg(), true);
     }
