@@ -36,7 +36,17 @@ public class FollowNotifyView extends RelativeLayout {
     ExTextView mFollowTv;
 
     UserInfoModel mUserInfoModel;
-    Drawable unFollowDrawable;
+
+    Drawable unFollowDrawable = new DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#FFC15B"))
+            .setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .build();
+
+    Drawable mFriendDrawable = new DrawableCreator.Builder()
+            .setStrokeColor(Color.parseColor("#AD6C00"))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1f))
+            .setCornersRadius(U.getDisplayUtils().dip2px(20))
+            .build();
 
     public FollowNotifyView(Context context) {
         super(context);
@@ -55,10 +65,6 @@ public class FollowNotifyView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.relation_notification_view_layout, this);
-        unFollowDrawable = new DrawableCreator.Builder()
-                .setSolidColor(Color.parseColor("#FFC15B"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(20))
-                .build();
         mAvatarIv = findViewById(R.id.avatar_iv);
         mNameTv = findViewById(R.id.name_tv);
         mSexIv = findViewById(R.id.sex_iv);
@@ -118,10 +124,10 @@ public class FollowNotifyView extends RelativeLayout {
 
         if (mUserInfoModel.isFriend()) {
             // 好友怎么展示
-            mFollowTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDisplayUtils().dip2px(18f));
+            mFollowTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDisplayUtils().dip2px(16f));
             mFollowTv.setClickable(false);
             mFollowTv.setText("互相关注");
-            mFollowTv.setBackground(null);
+            mFollowTv.setBackground(mFriendDrawable);
         } else if (mUserInfoModel.isFollow()) {
             MyLog.w(TAG, "error 他关注我，为什么我能收到我关注他，但是我们不是好友？？？");
         } else {
