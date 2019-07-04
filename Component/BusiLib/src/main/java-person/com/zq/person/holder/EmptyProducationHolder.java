@@ -19,7 +19,7 @@ public class EmptyProducationHolder extends RecyclerView.ViewHolder {
 
     public void bindData(boolean isSelf) {
         if (isSelf) {
-            mEmptyTxt.setText("嗨唱结束记得保存你的作品哦～");
+            mEmptyTxt.setText("可以去练歌房录制作品哦～");
         } else {
             mEmptyTxt.setText("ta还没有作品哦～");
         }
