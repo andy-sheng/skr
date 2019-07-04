@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.module.RouterConstants
@@ -31,7 +32,12 @@ class DoublePlayActivity : BaseActivity() {
             activity.finish()
         }
 
-        val doubleRoomData = intent.getSerializableExtra("roomData") as DoubleRoomData
+        var doubleRoomData: DoubleRoomData? = intent.getSerializableExtra("roomData") as DoubleRoomData
+        if (doubleRoomData == null) {
+            MyLog.e("DoublePlayActivity", "doubleRoomData is null")
+            finish()
+            return
+        }
 
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoublePlayWaysFragment::class.java)
                 .setAddToBackStack(false)
