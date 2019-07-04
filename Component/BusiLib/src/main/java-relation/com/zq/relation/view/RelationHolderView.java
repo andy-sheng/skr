@@ -100,8 +100,8 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已互关");
                         mFollowTv.setClickable(false);
-                        mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
-                        mFollowTv.setBackground(RelationAdapter.mFollowDrawable);
+                        mFollowTv.setTextColor(Color.parseColor("#AD6C00"));
+                        mFollowTv.setBackground(RelationAdapter.mFriendDrawable);
                     } else if (userInfoModel.isFollow()) {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已关注");
@@ -112,7 +112,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("+关注");
                         mFollowTv.setClickable(true);
-                        mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
+                        mFollowTv.setTextColor(Color.parseColor("#AD6C00"));
                         mFollowTv.setBackground(RelationAdapter.mUnFollowDrawable);
                     }
                 } else {

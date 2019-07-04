@@ -26,8 +26,9 @@ public class RelationAdapter extends RecyclerView.Adapter {
     int mMode = 0;
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
 
-    public static Drawable mUnFollowDrawable;
-    public static Drawable mFollowDrawable;
+    public static Drawable mUnFollowDrawable;  // 未关注
+    public static Drawable mFollowDrawable;  // 已关注
+    public static Drawable mFriendDrawable;  // 好友
 
     public RelationAdapter(int mode, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
         this.mMode = mode;
@@ -36,14 +37,20 @@ public class RelationAdapter extends RecyclerView.Adapter {
 
         mUnFollowDrawable = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#FFC15B"))
-                .setStrokeColor(Color.parseColor("#3B4E79"))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setStrokeColor(Color.parseColor("#AD6C00"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1f))
                 .setCornersRadius(U.getDisplayUtils().dip2px(16))
                 .build();
 
         mFollowDrawable = new DrawableCreator.Builder()
                 .setStrokeColor(Color.parseColor("#3B4E79"))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1f))
+                .setCornersRadius(U.getDisplayUtils().dip2px(16))
+                .build();
+
+        mFriendDrawable = new DrawableCreator.Builder()
+                .setStrokeColor(Color.parseColor("#AD6C00"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1f))
                 .setCornersRadius(U.getDisplayUtils().dip2px(16))
                 .build();
     }
