@@ -25,6 +25,7 @@ import com.common.floatwindow.MoveType;
 import com.common.floatwindow.Screen;
 import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.log.MyLog;
+import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CRRefuseInviteNotifyEvent;
@@ -64,7 +65,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -237,7 +241,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                         confirmDialog.setListener(new ConfirmDialog.Listener() {
                             @Override
                             public void onClickConfirm(UserInfoModel userInfoModel) {
-                                tryGoDoubleRoom(event.mediaType, event.ownerId, event.roomId, 2);
+                                Observable.timer(500, TimeUnit.MILLISECONDS)
+                                        .compose(NotifyCorePresenter.this.bindUntilEvent(PresenterEvent.DESTROY))
+                                        .subscribe(new Consumer<Long>() {
+                                            @Override
+                                            public void accept(Long aLong) throws Exception {
+                                                tryGoDoubleRoom(event.mediaType, event.ownerId, event.roomId, 2);
+                                            }
+                                        });
                             }
                         });
                         confirmDialog.show();
@@ -387,33 +398,37 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     void tryGoDoubleRoom(int mediaType, int ownerId, int roomID, int inviteType) {
         StatisticsAdapter.recordCountEvent("cp", "invite2_success", null);
 
-        HashMap<String, Object> map = new HashMap<>();
+        final HashMap<String, Object> map = new HashMap<>();
         map.put("peerUserID", ownerId);
         map.put("roomID", roomID);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleFromCreateRoom(body), new ApiObserver<ApiResult>() {
+        mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
             @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mSkrAudioPermission.ensurePermission(new Runnable() {
-                        @Override
-                        public void run() {
-                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                            iRankingModeService.jumpToDoubleRoomFromDoubleRoomInvite(result.getData());
+            public void run() {
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                ApiMethods.subscribe(mMainPageSlideApi.enterInvitedDoubleFromCreateRoom(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            mSkrAudioPermission.ensurePermission(new Runnable() {
+                                @Override
+                                public void run() {
+                                    IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                    iRankingModeService.jumpToDoubleRoomFromDoubleRoomInvite(result.getData());
+                                }
+                            }, true);
+                        } else {
+                            U.getToastUtil().showShort(result.getErrmsg());
                         }
-                    }, true);
-                } else {
-                    U.getToastUtil().showShort(result.getErrmsg());
-                }
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, e);
+                    }
+                }, NotifyCorePresenter.this);
             }
-        }, NotifyCorePresenter.this);
-
+        });
     }
 
 
@@ -636,12 +651,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             public void onClickAgree() {
                 mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
                 FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW);
-                mRealNameVerifyUtils.checkJoinDoubleRoomPermission(new Runnable() {
-                    @Override
-                    public void run() {
-                        tryGoDoubleRoom(floatWindowData.mMediaType, userInfoModel.getUserId(), floatWindowData.getRoomID(), 1);
-                    }
-                });
+                tryGoDoubleRoom(floatWindowData.mMediaType, userInfoModel.getUserId(), floatWindowData.getRoomID(), 1);
             }
         });
 
