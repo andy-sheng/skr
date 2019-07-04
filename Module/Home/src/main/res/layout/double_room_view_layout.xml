@@ -21,7 +21,7 @@
         android:layout_marginBottom="@dimen/view_82_dp"
         android:gravity="center"
         android:paddingRight="@dimen/view_20_dp"
-        android:text="异性匹配"
+        android:text="随机匹配"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_corners_radius="@dimen/view_30_dp"
