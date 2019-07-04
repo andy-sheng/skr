@@ -228,6 +228,17 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             } else {
                 unLockSelf()
                 toInviteUI()
+                mLeftNameTv?.setOnClickListener(object : DebounceViewClickListener() {
+                    override fun clickValid(v: View?) {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, InviteFriendFragment2.FROM_DOUBLE_ROOM)
+                                .addDataBeforeAdd(1, mRoomData!!.gameId)
+                                .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+                                .build())
+                    }
+                })
             }
         } else {
             if (mRoomData!!.needMaskUserInfo) {
@@ -397,6 +408,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 mMicIv?.setSelected(!isSelected)
             }
         })
+
+        mLeftNameTv?.setOnClickListener(null)
     }
 
     override fun noMusic() {
