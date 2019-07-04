@@ -11,6 +11,7 @@ import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
 import com.dialog.view.StrokeTextView;
@@ -26,8 +27,8 @@ public class EditRemarkView extends RelativeLayout {
     View mPlaceTopView;
     NoLeakEditText mRemarkNameEdt;
     ImageView mClearEditIv;
-    StrokeTextView mCancelTv;
-    StrokeTextView mSaveTv;
+    ExTextView mCancelTv;
+    ExTextView mSaveTv;
 
     public EditRemarkView(Activity activity, String nickName, String remarkName) {
         super(activity);
@@ -40,12 +41,12 @@ public class EditRemarkView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.remark_edit_view_layout, this);
 
-        mRemarkNameEdt = (NoLeakEditText) findViewById(R.id.remark_name_edt);
-        mClearEditIv = (ImageView) findViewById(R.id.clear_edit_iv);
-        mCancelTv = (StrokeTextView) findViewById(R.id.cancel_tv);
-        mSaveTv = (StrokeTextView) findViewById(R.id.save_tv);
-        mPlaceBottomView = (View) findViewById(R.id.place_bottom_view);
-        mPlaceTopView = (View) findViewById(R.id.place_top_view);
+        mRemarkNameEdt = findViewById(R.id.remark_name_edt);
+        mClearEditIv = findViewById(R.id.clear_edit_iv);
+        mCancelTv = findViewById(R.id.cancel_tv);
+        mSaveTv = findViewById(R.id.save_tv);
+        mPlaceBottomView = findViewById(R.id.place_bottom_view);
+        mPlaceTopView = findViewById(R.id.place_top_view);
 
         ViewGroup.LayoutParams layoutParams = mPlaceBottomView.getLayoutParams();
         layoutParams.height = U.getKeyBoardUtils().getKeyBoardHeight();
