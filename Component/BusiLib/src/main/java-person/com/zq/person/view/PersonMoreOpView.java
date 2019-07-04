@@ -65,9 +65,9 @@ public class PersonMoreOpView extends RelativeLayout {
         mKickArea.setVisibility(mHasKick ? VISIBLE : GONE);
 
         if (isInBlacked) {
-            mBlackTv.setText("取消拉黑");
+            mBlackTv.setText("移出黑名单");
         } else {
-            mBlackTv.setText("拉黑");
+            mBlackTv.setText("加入黑名单");
         }
 
         mModifyRemarkArea.setOnClickListener(new DebounceViewClickListener() {
@@ -124,7 +124,7 @@ public class PersonMoreOpView extends RelativeLayout {
 
     public void showAt(View view) {
         if (mPopupWindow == null) {
-            mPopupWindow = new PopupWindow(this, U.getDisplayUtils().dip2px(118), ViewGroup.LayoutParams.WRAP_CONTENT);
+            mPopupWindow = new PopupWindow(this, U.getDisplayUtils().dip2px(134), ViewGroup.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
             mPopupWindow.setOutsideTouchable(true);
         }
