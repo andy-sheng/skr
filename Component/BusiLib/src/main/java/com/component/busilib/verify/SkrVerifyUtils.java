@@ -117,7 +117,7 @@ public class SkrVerifyUtils {
                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
                         .setMessageTip(obj.getErrmsg())
                         .setConfirmTip("快速认证")
-                        .setCancelTip("残忍拒绝")
+                        .setCancelTip("放弃")
                         .setConfirmBtnClickListener(new AnimateClickListener() {
                             @Override
                             public void click(View view) {
@@ -157,7 +157,7 @@ public class SkrVerifyUtils {
                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
                         .setMessageTip(obj.getErrmsg())
                         .setConfirmTip("快速认证")
-                        .setCancelTip("残忍拒绝")
+                        .setCancelTip("放弃")
                         .setConfirmBtnClickListener(new AnimateClickListener() {
                             @Override
                             public void click(View view) {
