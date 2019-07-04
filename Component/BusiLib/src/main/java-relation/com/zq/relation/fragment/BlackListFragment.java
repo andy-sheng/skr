@@ -107,9 +107,9 @@ public class BlackListFragment extends BaseFragment {
         mRecyclerView.setAdapter(mRelationAdapter);
 
         LoadSir mLoadSir = new LoadSir.Builder()
-                .addCallback(new LoadingCallback(R.drawable.wuhaoyou, "数据真的在加载中..."))
-                .addCallback(new EmptyCallback(R.drawable.wuhaoyou, "黑名单为空", null))
-                .addCallback(new ErrorCallback(R.drawable.wuhaoyou, "请求出错了"))
+                .addCallback(new LoadingCallback(R.drawable.blacklist_empty_icon, "数据真的在加载中..."))
+                .addCallback(new EmptyCallback(R.drawable.blacklist_empty_icon, "暂无黑名单", "#993B4E79"))
+                .addCallback(new ErrorCallback(R.drawable.blacklist_empty_icon, "请求出错了"))
                 .setDefaultCallback(LoadingCallback.class)
                 .build();
         mLoadService = mLoadSir.register(mRecyclerView, new Callback.OnReloadListener() {
