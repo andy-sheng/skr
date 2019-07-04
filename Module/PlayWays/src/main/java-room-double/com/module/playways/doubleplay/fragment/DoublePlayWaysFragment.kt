@@ -183,7 +183,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         })
 
         mPickIv?.setOnClickListener {
-            mDoubleCorePresenter.pickOther()
+            if(mRoomData!!.isRoomPrepared()){
+                mDoubleCorePresenter.pickOther()
+            }
             mRightZanView?.addZanXin(1)
         }
 
