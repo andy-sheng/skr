@@ -163,22 +163,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         })
 
-        mReportTv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // 举报
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_DOUBLE_ROOM)
-                                .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
-                                .addDataBeforeAdd(2, mRoomData!!.getAntherUser()?.userId ?: 0)
-                                .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                                .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
-                                .build())
-            }
-        })
-
         mExitIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 // 退出
@@ -414,6 +398,23 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         })
 
         mLeftNameTv?.setOnClickListener(null)
+
+        mReportTv?.visibility = VISIBLE
+        mReportTv?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                // 举报
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_DOUBLE_ROOM)
+                                .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
+                                .addDataBeforeAdd(2, mRoomData!!.getAntherUser()?.userId ?: 0)
+                                .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                                .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                                .build())
+            }
+        })
     }
 
     override fun noMusic() {

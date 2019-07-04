@@ -15,17 +15,18 @@
         android:text="举报"
         android:textColor="#FF8AB6"
         android:textSize="@dimen/textsize_14_dp"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:scaleType="fitXY"
         android:id="@+id/exit_iv"
         android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_36_dp"
         android:layout_marginRight="@dimen/view_18_dp"
-        android:src="@drawable/srf_guanbi"
         android:padding="@dimen/view_9_dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/srf_guanbi"
         app:layout_constraintBottom_toBottomOf="@+id/report_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/report_tv" />
@@ -240,10 +241,10 @@
         android:layout_width="@dimen/view_42_dp"
         android:layout_height="@dimen/view_42_dp"
         android:layout_marginBottom="@dimen/view_54_dp"
+        android:src="@drawable/srf_jingyin_bukedianji"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/pick_iv"
-        android:src="@drawable/srf_jingyin_bukedianji" />
+        app:layout_constraintRight_toLeftOf="@id/pick_iv" />
 
     <ImageView
         android:id="@+id/pick_iv"
