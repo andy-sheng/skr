@@ -251,28 +251,19 @@ public class MyUserInfoManager {
                         }
                     }
 
-                    if (isCompleteInfo) {
-                        // 是否在上传资料过程中
+                    if (!updateLocalIfServerFailed) {
                         UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
-                        if (userInfoModel != null) {
-                            // TODO: 2019/3/10  这么解析是因为目前服务器只返回这几个字段
-                            if (!TextUtils.isEmpty(userInfoModel.getNickname())) {
-                                mUser.setUserNickname(userInfoModel.getNickname());
-                            }
-
-                            if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
-                                mUser.setAvatar(userInfoModel.getAvatar());
-                            }
-
-                            if (userInfoModel.getSex() != -1) {
-                                mUser.setSex(userInfoModel.getSex());
-                            }
-
-                            if (TextUtils.isEmpty(userInfoModel.getBirthday())) {
-                                mUser.setBirthday(userInfoModel.getBirthday());
-                            }
-                        }
+                        mUser.setUserId(userInfoModel.getUserId());
+                        mUser.setUserNickname(userInfoModel.getNickname());
+                        mUser.setAvatar(userInfoModel.getAvatar());
+                        mUser.setBirthday(userInfoModel.getBirthday());
+                        mUser.setLocation(userInfoModel.getLocation());
+                        mUser.setSex(userInfoModel.getSex());
+                        mUser.setSignature(userInfoModel.getSignature());
+                        mUser.setUserDisplayname(userInfoModel.getNickname());
+                        mUser.setAgeStage(userInfoModel.getAgeStage());
                     }
+
                     if (callback != null) {
                         callback.onSucess();
                     }
