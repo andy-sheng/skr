@@ -280,7 +280,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView.dismiss();
                 }
-                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.isFollow(), false, isBlacked);
+                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.getUserId(), mUserInfoModel.isFollow(), false);
                 mPersonMoreOpView.setListener(new PersonMoreOpView.Listener() {
                     @Override
                     public void onClickRemark() {
@@ -324,11 +324,12 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
                     }
 
                     @Override
-                    public void onClickBlack() {
+                    public void onClickBlack(boolean isInBlack) {
                         if (mPersonMoreOpView != null) {
                             mPersonMoreOpView.dismiss();
                         }
 
+                        isBlacked = isInBlack;
                         if (isBlacked) {
                             UserInfoManager.getInstance().removeBlackList(mUserId, new UserInfoManager.ResponseCallBack() {
                                 @Override
@@ -641,7 +642,7 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     public void showHomePageInfo(UserInfoModel userInfoModel, List<RelationNumModel> relationNumModels,
                                  List<UserRankModel> userRankModels, List<UserLevelModel> userLevelModels,
                                  List<GameStatisModel> gameStatisModels,
-                                 boolean isFriend, boolean isFollow, boolean isBlacked,
+                                 boolean isFriend, boolean isFollow,
                                  int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showUserInfo(userInfoModel);
@@ -650,7 +651,6 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         showUserRelation(isFriend, isFollow);
         showUserLevel(userLevelModels);
         showCharms(meiLiCntTotal);
-        this.isBlacked = isBlacked;
     }
 
     private void showCharms(int meiLiCntTotal) {

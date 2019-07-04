@@ -37,11 +37,11 @@ public class PersonMoreOpView extends RelativeLayout {
     Listener mListener;
     PopupWindow mPopupWindow;
 
-    public PersonMoreOpView(Context context, boolean hasUnFollow, boolean hasKick, boolean isInBlacked) {
+    public PersonMoreOpView(Context context, int mUserID, boolean hasUnFollow, boolean hasKick) {
         super(context);
+        this.mUserID = mUserID;
         this.mHasUnFollow = hasUnFollow;
         this.mHasKick = hasKick;
-        this.isInBlacked = isInBlacked;
         init();
     }
 
@@ -63,12 +63,6 @@ public class PersonMoreOpView extends RelativeLayout {
 
         mUnfollowArea.setVisibility(mHasUnFollow ? VISIBLE : GONE);
         mKickArea.setVisibility(mHasKick ? VISIBLE : GONE);
-
-        if (isInBlacked) {
-            mBlackTv.setText("移出黑名单");
-        } else {
-            mBlackTv.setText("加入黑名单");
-        }
 
         mModifyRemarkArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -110,10 +104,30 @@ public class PersonMoreOpView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    mListener.onClickBlack();
+                    mListener.onClickBlack(isInBlacked);
                 }
             }
         });
+
+        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserID), new UserInfoManager.ResponseCallBack() {
+            @Override
+            public void onServerSucess(Object obj) {
+                if (obj != null) {
+                    isInBlacked = (boolean) obj;
+                    if (isInBlacked) {
+                        mBlackTv.setText("移出黑名单");
+                    } else {
+                        mBlackTv.setText("加入黑名单");
+                    }
+                }
+            }
+
+            @Override
+            public void onServerFailed() {
+
+            }
+        });
+
     }
 
     public void dismiss() {
@@ -149,6 +163,6 @@ public class PersonMoreOpView extends RelativeLayout {
 
         void onClickKick();
 
-        void onClickBlack();
+        void onClickBlack(boolean isInBlack);
     }
 }

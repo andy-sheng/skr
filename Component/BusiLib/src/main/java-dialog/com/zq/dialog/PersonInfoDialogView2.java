@@ -251,7 +251,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
-                    boolean isBlacked = result.getData().getJSONObject("userMateInfo").getBooleanValue("isBlacked");
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
@@ -260,7 +259,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                         userInfoModel.setFriend(isFriend);
                         UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel);
                     }
-                    isInBlacked = isBlacked;
                     showUserInfo(userInfoModel);
                     showUserRelationNum(relationNumModes);
                     showUserLevel(userLevelModels);
@@ -431,7 +429,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView.dismiss();
                 }
-                mPersonMoreOpView = new PersonMoreOpView(getContext(), false, isShowKick, isInBlacked);
+                mPersonMoreOpView = new PersonMoreOpView(getContext(), mUserInfoModel.getUserId(), isShowKick, isInBlacked);
                 mPersonMoreOpView.setListener(new PersonMoreOpView.Listener() {
                     @Override
                     public void onClickRemark() {
@@ -469,10 +467,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     }
 
                     @Override
-                    public void onClickBlack() {
+                    public void onClickBlack(boolean isInBlack) {
                         if (mPersonMoreOpView != null) {
                             mPersonMoreOpView.dismiss();
                         }
+                        isInBlacked = isInBlack;
                         if (isInBlacked) {
                             UserInfoManager.getInstance().removeBlackList(mUserId, new UserInfoManager.ResponseCallBack() {
                                 @Override
