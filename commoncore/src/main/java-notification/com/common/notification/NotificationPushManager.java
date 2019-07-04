@@ -58,8 +58,10 @@ public class NotificationPushManager {
             processInviteStandMsg(baseNotiInfo, msg.getInviteStandMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_SYS_WARNING_MSG) {
             processSysWarnMsg(baseNotiInfo, msg.getSysWarningMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_INVITE) {
+            processInviteMsg(baseNotiInfo, msg.getInviteMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_INVITEV2) {
-            processInviteMsg(baseNotiInfo, msg.getInviteV2Msg());
+            processInviteMsgV2(baseNotiInfo, msg.getInviteV2Msg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_ENTER) {
             processEnterRoomMsg(baseNotiInfo, msg.getEnterMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_REFUSE) {
@@ -102,7 +104,7 @@ public class NotificationPushManager {
     /**
      * 邀请解析，所有邀请都包括
      */
-    private void processInviteMsg(BaseNotiInfo baseNotiInfo, CombineRoomInviteV2Msg combineRoomInviteMsg) {
+    private void processInviteMsg(BaseNotiInfo baseNotiInfo, CombineRoomInviteMsg combineRoomInviteMsg) {
         if (combineRoomInviteMsg != null) {
             if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_OUT_COMBINE_ROOM) {
                 //房间外，目前是一场到底里面
@@ -116,6 +118,26 @@ public class NotificationPushManager {
             }
         } else {
             MyLog.e(TAG, "processInviteMsg combineRoomInviteMsg=null");
+        }
+    }
+
+    /**
+     * 邀请解析，所有邀请都包括
+     */
+    private void processInviteMsgV2(BaseNotiInfo baseNotiInfo, CombineRoomInviteV2Msg combineRoomInviteMsg) {
+        if (combineRoomInviteMsg != null) {
+            if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_OUT_COMBINE_ROOM) {
+                //房间外，目前是一场到底里面
+                CRSendInviteUserNotifyEvent combineRoomSendInviteUserEvent = new CRSendInviteUserNotifyEvent(baseNotiInfo, combineRoomInviteMsg);
+                EventBus.getDefault().post(combineRoomSendInviteUserEvent);
+            } else if (combineRoomInviteMsg.getInviteType() == EInviteType.IT_IN_COMBINE_ROOM) {
+                //双人房房间里
+                EventBus.getDefault().post(new CRInviteInCreateRoomNotifyEvent(baseNotiInfo, combineRoomInviteMsg));
+            } else {
+                MyLog.e(TAG, "processInviteMsgV2 unknown type=" + combineRoomInviteMsg.getInviteType());
+            }
+        } else {
+            MyLog.e(TAG, "processInviteMsgV2 combineRoomInviteMsg=null");
         }
     }
 
