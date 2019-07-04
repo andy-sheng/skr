@@ -302,6 +302,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     .enableOppoPush("b6476d0350bf448da381e589e232add8", "1b038723163d485b9d739ad9ee0fbe8e")
                     .build();
             RongPushClient.setPushConfig(config);
+            //RongPushClient.init(U.app(),rongKey);
 
             RongIM.init(application, rongKey);
             RongIM.setUserInfoProvider(this, true);

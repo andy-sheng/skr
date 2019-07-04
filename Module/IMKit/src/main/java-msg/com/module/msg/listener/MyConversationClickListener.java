@@ -53,11 +53,14 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
 
     @Override
     public boolean onMessageLinkClick(Context context, String s, Message message) {
-        if(!TextUtils.isEmpty(s)){
-            if(s.startsWith("http://") || s.startsWith("https://")){
+        if (!TextUtils.isEmpty(s)) {
+            if (s.startsWith("http://") || s.startsWith("https://")) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", ApiManager.getInstance().findRealUrlByChannel(s))
                         .greenChannel().navigation();
+                return true;
+            } else if (s.startsWith("tel:") && s.length() < 15) {
+                // 不是标准的手机号
                 return true;
             }
         }
