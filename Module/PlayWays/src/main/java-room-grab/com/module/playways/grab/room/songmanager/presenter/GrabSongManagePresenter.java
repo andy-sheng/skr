@@ -351,14 +351,8 @@ public class GrabSongManagePresenter extends BaseSongManagePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddSuggestSongEvent event) {
         // 添加非房主想唱的歌曲
-        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
         GrabWishSongModel grabWishSongModel = event.getGrabWishSongModel();
-        grabRoomSongModel.setOwner(grabWishSongModel.getOwner());
-        grabRoomSongModel.setItemName(grabWishSongModel.getItemName());
-        grabRoomSongModel.setItemID(grabWishSongModel.getItemID());
-        grabRoomSongModel.setPlayType(grabWishSongModel.getPlayType());
-        grabRoomSongModel.setChallengeAvailable(grabWishSongModel.isChallengeAvailable());
-        addToUiList(grabRoomSongModel);
+        addToUiList(grabWishSongModel);
     }
 
     /**
