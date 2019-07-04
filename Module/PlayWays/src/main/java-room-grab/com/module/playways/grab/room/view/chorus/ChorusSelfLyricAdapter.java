@@ -263,6 +263,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
 
         public void bindData(String name) {
             mUploaderTv.setText("上传者:" + name);
+            mUploaderTv.setTextColor(colorEnable);
         }
 
     }
