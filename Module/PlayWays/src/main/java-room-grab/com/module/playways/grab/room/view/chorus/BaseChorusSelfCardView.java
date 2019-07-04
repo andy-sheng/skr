@@ -145,6 +145,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
                                 }
                             }
                         }
+                        mChorusSelfLyricAdapter.setSongModel(mSongModel);
                         mChorusSelfLyricAdapter.computeFlag();
                         mChorusSelfLyricAdapter.setDataList(lyrics);
                         // 移到顶部

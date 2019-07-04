@@ -3,9 +3,11 @@ package com.module.playways.grab.room.view.chorus;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -16,17 +18,19 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
+import com.module.playways.room.song.model.SongModel;
 
-public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.ChorusLineLyricModel, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
+public class ChorusSelfLyricAdapter extends DiffAdapter {
 
     public final static String TAG = "ChorusSelfLyricAdapter";
+    public final static int TYPE_UPLOADER = 11;
     ChorusSelfSingCardView.DH mLeft;
     ChorusSelfSingCardView.DH mRight;
     boolean mLeftGiveUp = false;
     boolean mRightGiveUp = false;
     boolean mIsForVideo = false;
     DoubleRoomData mDoubleRoomData;
-
+    String mUploaderName = null;
     int colorDisable = Color.parseColor("#beb19d");
     int colorEnable = Color.parseColor("#364E7C");
 
@@ -47,33 +51,60 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
 
     @NonNull
     @Override
-    public ChorusSelfLyricHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chorus_self_lyric_item_layout, parent, false);
-        ChorusSelfLyricHolder chorusSelfLyric = null;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         if (viewType == ChorusLineLyricModel.GRAB_TYPE) {
-            chorusSelfLyric = new ChorusSelfLyricHolder(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chorus_self_lyric_item_layout, parent, false);
+            ChorusSelfLyricHolder chorusSelfLyric = new ChorusSelfLyricHolder(view);
+            return chorusSelfLyric;
         } else if (viewType == ChorusLineLyricModel.DOUBLE_TYPE) {
-            chorusSelfLyric = new DoubleChorusSelfLyricHolder(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chorus_self_lyric_item_layout, parent, false);
+            ChorusSelfLyricHolder chorusSelfLyric = new DoubleChorusSelfLyricHolder(view);
+            return chorusSelfLyric;
+        } else if (viewType == TYPE_UPLOADER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chorus_self_uploader_item_layout, parent, false);
+            ChorusUploaderHolder chorusUploaderHolder = new ChorusUploaderHolder(view);
+            return chorusUploaderHolder;
         }
 
-        return chorusSelfLyric;
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChorusSelfLyricHolder holder, int position) {
-        ChorusLineLyricModel chorusLineLyricModel = mDataList.get(position);
-        holder.bindData(chorusLineLyricModel, position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ChorusLineLyricModel chorusLineLyricModel = (ChorusLineLyricModel) mDataList.get(position);
+        if (holder instanceof ChorusSelfLyricHolder) {
+            ((ChorusSelfLyricHolder) holder).bindData(chorusLineLyricModel, position);
+        } else if (holder instanceof ChorusUploaderHolder) {
+            ((ChorusUploaderHolder) holder).bindData(mUploaderName);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        int size = mDataList.size();
+        if (!TextUtils.isEmpty(mUploaderName)) {
+            size = size + 1;
+        }
+        return size;
     }
 
     @Override
     public int getItemViewType(int position) {
-        ChorusLineLyricModel chorusLineLyricModel = mDataList.get(position);
-        return chorusLineLyricModel.getType();
+        if (position < mDataList.size()) {
+            ChorusLineLyricModel chorusLineLyricModel = (ChorusLineLyricModel) mDataList.get(position);
+            return chorusLineLyricModel.getType();
+        } else {
+            return TYPE_UPLOADER;
+        }
+    }
+
+    public void setSongModel(SongModel songModel) {
+        mUploaderName = null;
+        if (songModel != null) {
+            mUploaderName = songModel.getUploaderName();
+        }
     }
 
     /**
@@ -221,6 +252,21 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<ChorusSelfLyricAdapter.C
             }
         }
     }
+
+    class ChorusUploaderHolder extends RecyclerView.ViewHolder {
+        TextView mUploaderTv;
+
+        public ChorusUploaderHolder(View itemView) {
+            super(itemView);
+            mUploaderTv = itemView.findViewById(R.id.uploader_tv);
+        }
+
+        public void bindData(String name) {
+            mUploaderTv.setText("上传者:" + name);
+        }
+
+    }
+
 
     public static class ChorusLineLyricModel {
         public final static int GRAB_TYPE = 0;
