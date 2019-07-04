@@ -96,7 +96,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                                 mTipsDialogView.dismiss();
                             }
                             mTipsDialogView = new TipsDialogView.Builder(getContext())
-                                    .setMessageTip("应相关法律法规要求\n解锁开房权限，需要完成实名认证")
+                                    .setMessageTip(result.getErrmsg())
                                     .setConfirmTip("立即认证")
                                     .setCancelTip("放弃")
                                     .setConfirmBtnClickListener(new AnimateClickListener() {
