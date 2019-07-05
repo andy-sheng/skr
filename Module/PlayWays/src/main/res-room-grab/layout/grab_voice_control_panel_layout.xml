@@ -83,7 +83,7 @@
                 android:minHeight="@dimen/view_3_dp"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
-                android:progressDrawable="@drawable/beauty_control_seek_bar_bg"
+                android:progressDrawable="@drawable/voice_control_seek_bar_bg"
                 android:thumb="@drawable/beauty_seekbar_thumb" />
         </LinearLayout>
 
@@ -120,7 +120,7 @@
                 android:minHeight="@dimen/view_3_dp"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
-                android:progressDrawable="@drawable/voice_control_panel_seekbar_bg"
+                android:progressDrawable="@drawable/voice_control_seek_bar_bg"
                 android:thumb="@drawable/beauty_seekbar_thumb" />
         </LinearLayout>
 
@@ -204,7 +204,7 @@
                 android:gravity="center"
                 android:text="空灵"
                 app:fillColor="@color/transparent"
-                app:fillColor_checked="#995EBB"
+                app:fillColor_checked="#D7ABEE"
                 app:strokeColor="#D7ABEE"
                 app:textColor_checked="@color/white"
                 app:textColor_normal="#D7ABEE" />
