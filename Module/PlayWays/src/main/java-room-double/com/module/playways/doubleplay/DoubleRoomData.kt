@@ -291,6 +291,13 @@ class DoubleRoomData() : Serializable {
     /**
      * 是不是创建的房间，通过首页邀请进来
      */
+    fun isGrabInviteRoom(): Boolean {
+        return doubleRoomOri == DoubleRoomOri.GRAB_INVITE
+    }
+
+    /**
+     * 是不是创建的房间，通过首页邀请进来
+     */
     fun isMatchRoom(): Boolean {
         return doubleRoomOri == DoubleRoomOri.MATCH
     }

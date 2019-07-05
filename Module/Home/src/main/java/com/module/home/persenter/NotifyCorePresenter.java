@@ -396,8 +396,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
      * @param inviteType 1是弹窗，2是剪切板的邀请
      */
     void tryGoDoubleRoom(int mediaType, int ownerId, int roomID, int inviteType) {
-        StatisticsAdapter.recordCountEvent("cp", "invite2_success", null);
-
         mSkrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
@@ -550,7 +548,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         doubleInviteNotifyView.setListener(new DoubleInviteNotifyView.Listener() {
             @Override
             public void onClickAgree() {
-                StatisticsAdapter.recordCountEvent("cp", "invite1_success", null);
                 mUiHandler.removeMessages(MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW);
                 FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW);
                 mSkrAudioPermission.ensurePermission(new Runnable() {

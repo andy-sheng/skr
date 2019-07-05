@@ -16,6 +16,7 @@ import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
@@ -183,7 +184,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         })
 
         mPickIv?.setOnClickListener {
-            if(mRoomData!!.isRoomPrepared()){
+            if (mRoomData!!.isRoomPrepared()) {
                 mDoubleCorePresenter.pickOther()
             }
             mRightZanView?.addZanXin(1)
@@ -417,6 +418,12 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                                 .build())
             }
         })
+
+        if (mRoomData!!.isGrabInviteRoom()) {
+            StatisticsAdapter.recordCountEvent("cp", "invite1_success", null)
+        } else if (mRoomData!!.isCreateRoom()) {
+            StatisticsAdapter.recordCountEvent("cp", "invite2_success", null)
+        }
     }
 
     override fun noMusic() {
