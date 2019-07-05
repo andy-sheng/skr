@@ -2,6 +2,7 @@ package com.module.playways.grab.room.presenter
 
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -77,6 +78,7 @@ class DoubleRoomInvitePresenter() : RxLifeCyclePresenter() {
                 if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
                     val doubleRoomData = DoubleRoomData.makeRoomDataFromJsonObject(obj.data)
                     doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.GRAB_INVITE
+                    doubleRoomData.inviterId = MyUserInfoManager.getInstance().uid
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation()
