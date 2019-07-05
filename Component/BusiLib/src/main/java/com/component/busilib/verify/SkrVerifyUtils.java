@@ -163,7 +163,7 @@ public class SkrVerifyUtils {
                             public void click(View view) {
                                 mTipsDialogView.dismiss();
                                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=duoble"))
+                                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=double"))
                                         .greenChannel().navigation();
                             }
                         })
