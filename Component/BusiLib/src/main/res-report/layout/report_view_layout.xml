@@ -204,14 +204,13 @@
         android:layout_marginTop="@dimen/view_15_dp"
         android:layout_marginRight="@dimen/view_12_dp" />
 
-    <EditText
+    <com.common.view.ex.NoLeakEditText
         android:id="@+id/feedback_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_125_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_330_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:background="@drawable/common_edit_no_stroke_bg"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="left|top"
@@ -223,9 +222,12 @@
         android:paddingRight="@dimen/view_15_dp"
         android:paddingBottom="@dimen/view_30_dp"
         android:textColor="@color/textColorPrimary"
-        android:textColorHint="#663B4E79"
+        android:textColorHint="#91AFC8"
         android:textSize="@dimen/view_16_dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#B6DAEC" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/content_text_size"
@@ -242,20 +244,18 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/submit_tv"
-        android:layout_width="@dimen/view_132_dp"
-        android:layout_height="@dimen/view_54_dp"
+        android:layout_width="@dimen/view_152_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_below="@+id/feedback_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:background="@drawable/yellow_button_icon"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:gravity="center"
-        android:paddingBottom="@dimen/view_6_dp"
         android:text="提交"
         android:textColor="#AD6C00"
-        android:textSize="@dimen/textsize_20_dp"
+        android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_shape="rectangle"
-        app:bl_corners_radius="@dimen/view_27_dp"
-        app:bl_solid_color="#FFC15B"/>
+        app:bl_solid_color="#FFC15B" />
 
 </merge>

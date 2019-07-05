@@ -17,6 +17,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
 import com.dialog.view.StrokeTextView;
 import com.respicker.ResPicker;
@@ -38,7 +39,7 @@ public class FeedbackView extends RelativeLayout {
 
     int mActionType;
 
-    EditText mFeedbackContent;
+    NoLeakEditText mFeedbackContent;
     ExTextView mContentTextSize;
     ExTextView mSubmitTv;
     ExImageView mSelfSingCatonIv;
