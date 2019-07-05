@@ -1,17 +1,19 @@
 package com.common.notification.event;
 
-import com.common.core.userinfo.model.LocalCombineRoomConfig;
-import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.notification.BaseNotiInfo;
 import com.zq.live.proto.Notification.CombineRoomEnterMsg;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 通过在唱聊房内邀请之后对方同意之后收到的push
  */
-public class CRStartByCreateNotifyEvent extends BaseEnterRoomEvent{
+public class CRStartByCreateNotifyEvent extends BaseEnterRoomEvent {
+    private long inviterId = MyUserInfoManager.getInstance().getUid();
+
+    public long getInviterId() {
+        return inviterId;
+    }
+
     public CRStartByCreateNotifyEvent(BaseNotiInfo basePushInfo, CombineRoomEnterMsg combineRoomEnterMsg) {
         super(basePushInfo, combineRoomEnterMsg);
     }

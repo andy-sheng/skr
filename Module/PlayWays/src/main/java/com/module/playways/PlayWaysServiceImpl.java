@@ -207,6 +207,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
             }
 
             doubleRoomData.setNeedMaskUserInfo(event.isNeedMaskUserInfo());
+            doubleRoomData.setInviterId(event.getInviterId());
         } else if (o instanceof JSONObject) {
             JSONObject obj = (JSONObject) o;
             doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(obj);

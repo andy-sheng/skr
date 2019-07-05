@@ -263,6 +263,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 hashMap.put(userInfoModel.userId, userInfoModel)
             }
             mRoomData.userInfoListMap = hashMap
+            mRoomData.inviterId = event.inviterId
             syncStatus()
             joinRoomAndInit(true)
             MyLog.d(tag, "onEvent StartCombineRoomByCreateNotifyEvent 2")

@@ -80,6 +80,8 @@ class DoubleRoomData() : Serializable {
 
     var doubleRoomOri: DoubleRoomOri? = null
 
+    var inviterId: Long? = null
+
     init {
 
     }
