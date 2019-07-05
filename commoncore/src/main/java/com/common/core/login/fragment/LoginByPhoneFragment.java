@@ -1,6 +1,7 @@
 package com.common.core.login.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.module.RouterConstants;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -47,14 +49,24 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     NoLeakEditText mCodeInputTv;
     ExTextView mGetCodeTv;
     ExTextView mErrorHint;
-    ExImageView mLoginIv;
+    ExTextView mLoginIv;
 
     String mPhoneNumber; //发送验证码的电话号码
     String mCode; //验证码
-    
+
     HandlerTaskTimer mTaskTimer; // 倒计时验证码
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
+
+    Drawable mGrayDrawable = new DrawableCreator.Builder()
+            .setCornersRadius(U.getDisplayUtils().dip2px(25))
+            .setSolidColor(Color.parseColor("#DBD8CD"))
+            .build();
+
+    Drawable mYellowDraable = new DrawableCreator.Builder()
+            .setCornersRadius(U.getDisplayUtils().dip2px(25))
+            .setSolidColor(Color.parseColor("#FFC15B"))
+            .build();
 
     @Override
     public int initView() {
@@ -63,13 +75,13 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mPhoneInputTv = (NoLeakEditText) mRootView.findViewById(R.id.phone_input_tv);
-        mCodeInputTv = (NoLeakEditText) mRootView.findViewById(R.id.code_input_tv);
-        mGetCodeTv = (ExTextView) mRootView.findViewById(R.id.get_code_tv);
-        mErrorHint = (ExTextView) mRootView.findViewById(R.id.error_hint);
-        mLoginIv = (ExImageView) mRootView.findViewById(R.id.login_iv);
+        mMainActContainer = mRootView.findViewById(R.id.main_act_container);
+        mIvBack = mRootView.findViewById(R.id.iv_back);
+        mPhoneInputTv = mRootView.findViewById(R.id.phone_input_tv);
+        mCodeInputTv = mRootView.findViewById(R.id.code_input_tv);
+        mGetCodeTv = mRootView.findViewById(R.id.get_code_tv);
+        mErrorHint = mRootView.findViewById(R.id.error_hint);
+        mLoginIv = mRootView.findViewById(R.id.login_iv);
 
         mPhoneInputTv.setText(U.getPreferenceUtils().getSettingString(PREF_KEY_PHONE_NUM, ""));
 
@@ -194,11 +206,12 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                         U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
                         mGetCodeTv.setSelected(true);
                         mGetCodeTv.setClickable(false);
+                        mGetCodeTv.setBackground(mGrayDrawable);
                         mCodeInputTv.setFocusable(true);
                         mCodeInputTv.setFocusableInTouchMode(true);
                         mCodeInputTv.requestFocus();
                         mLoginIv.setClickable(true);
-                        mLoginIv.setBackgroundResource(R.drawable.login_normal_icon);
+                        mLoginIv.setBackground(mYellowDraable);
                         startTimeTask();
                     } else {
                         setHintText(result.getErrmsg(), true);
@@ -225,9 +238,13 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                     @Override
                     public void onComplete() {
                         super.onComplete();
-                        mGetCodeTv.setText("");
+                        mGetCodeTv.setText("获取验证码");
                         mGetCodeTv.setSelected(false);
                         mGetCodeTv.setClickable(true);
+                        mGetCodeTv.setBackground(mYellowDraable);
+
+                        mLoginIv.setClickable(false);
+                        mLoginIv.setBackground(mGrayDrawable);
                     }
                 });
     }
