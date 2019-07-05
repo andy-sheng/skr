@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.notification.event.CRSyncInviteUserNotifyEvent;
@@ -245,6 +246,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 if (result.getErrno() == 0) {
                     DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(result.getData());
                     doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
+                    doubleRoomData.setInviterId(MyUserInfoManager.getInstance().getUid());
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation();
