@@ -9,9 +9,7 @@
     android:layout_marginBottom="@dimen/view_16_dp"
     app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="#ffebebeb"
-    app:bl_stroke_color="#ffacacac"
-    app:bl_stroke_width="@dimen/view_1_dp">
+    app:bl_solid_color="#D0EFFF">
 
     <RelativeLayout
         android:layout_width="wrap_content"
