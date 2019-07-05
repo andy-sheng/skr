@@ -446,10 +446,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     return mPhotoWallView;
                 } else if (position == 1) {
                     // 作品
-                    UserInfoModel userInfoModel = new UserInfoModel();
-                    userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
-                    userInfoModel.setNickname(MyUserInfoManager.getInstance().getNickName());
-                    userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
                     if (mProducationWallView == null) {
                         mProducationWallView = new ProducationWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
                     }
@@ -643,6 +640,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         refreshUserInfoView();
+        if (mProducationWallView != null) {
+            UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+            mProducationWallView.setUserInfoModel(userInfoModel);
+        }
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
