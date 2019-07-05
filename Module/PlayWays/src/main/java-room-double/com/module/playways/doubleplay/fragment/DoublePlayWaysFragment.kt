@@ -499,6 +499,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                         .setBorderColor(Color.WHITE)
                         .build())
 
+                mLeftNameTv?.setTextColor(U.getColor(R.color.white_trans_50))
                 mLeftNameTv?.text = mRoomData?.getAntherUser()?.getNicknameRemark()
                 mLeftNameTv?.visibility = VISIBLE
                 mLeftLockIcon?.visibility = GONE
