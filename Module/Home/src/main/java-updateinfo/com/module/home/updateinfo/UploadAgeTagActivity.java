@@ -47,6 +47,7 @@ public class UploadAgeTagActivity extends BaseActivity {
         mNickName = getIntent().getStringExtra("nickname");
         mSex = getIntent().getIntExtra("sex", 0);
 
+        mAgeTagView.setTextColor(U.getColor(R.color.white_trans_50));
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
