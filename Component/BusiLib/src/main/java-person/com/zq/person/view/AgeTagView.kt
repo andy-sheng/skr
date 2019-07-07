@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 
 
@@ -39,22 +40,29 @@ class AgeTagView : ConstraintLayout {
         mCollegeTv = findViewById(com.component.busilib.R.id.college_tv)
         mWorksTv = findViewById(com.component.busilib.R.id.works_tv)
 
-        mPrimaryIv.setOnClickListener {
-            setSelectTag(1)
-        }
+        mPrimaryIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                setSelectTag(1)
+            }
+        })
 
-        mSeniorIv.setOnClickListener {
-            setSelectTag(2)
-        }
+        mSeniorIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                setSelectTag(2)
+            }
+        })
 
-        mCollegeIv.setOnClickListener {
-            setSelectTag(3)
-        }
+        mCollegeIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                setSelectTag(3)
+            }
+        })
 
-        mWorksIv.setOnClickListener {
-            setSelectTag(4)
-        }
-
+        mWorksIv.setOnClickListener(object : DebounceViewClickListener(){
+            override fun clickValid(v: View?) {
+                setSelectTag(4)
+            }
+        })
     }
 
     fun setTextColor(color: Int) {
