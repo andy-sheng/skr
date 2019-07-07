@@ -204,17 +204,31 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <com.common.view.ex.ExTextView
-                            android:id="@+id/userid_tv"
+                            android:id="@+id/charm_tv"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_20_dp"
+                            android:layout_height="@dimen/view_24_dp"
                             android:layout_marginLeft="@dimen/view_6_dp"
                             android:layout_marginTop="@dimen/view_6_dp"
                             android:gravity="center"
-                            android:textColor="@color/white_trans_80"
+                            android:paddingLeft="@dimen/view_28_dp"
+                            android:paddingRight="@dimen/view_10_dp"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/textsize_14_dp"
+                            app:bl_shape="rectangle"
+                            app:bl_solid_color="@color/black_trans_10"
+                            app:bl_corners_radius="@dimen/view_12_dp"
                             app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
                             app:layout_constraintLeft_toLeftOf="@id/name_tv"
                             app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+                        <ImageView
+                            android:layout_width="@dimen/view_16_dp"
+                            android:layout_height="@dimen/view_15_dp"
+                            android:layout_marginLeft="@dimen/view_9_dp"
+                            android:background="@drawable/grab_charm_icon"
+                            app:layout_constraintBottom_toBottomOf="@id/charm_tv"
+                            app:layout_constraintLeft_toLeftOf="@id/charm_tv"
+                            app:layout_constraintTop_toTopOf="@id/charm_tv" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/friends_num_tv"
@@ -335,14 +349,28 @@
                                 app:layout_constraintTop_toTopOf="@id/srl_name_tv" />
 
                             <com.common.view.ex.ExTextView
-                                android:id="@+id/srl_userid_tv"
+                                android:id="@+id/srl_charm_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/view_24_dp"
                                 android:layout_marginTop="@dimen/view_6_dp"
                                 android:gravity="center"
+                                android:paddingLeft="@dimen/view_28_dp"
+                                android:paddingRight="@dimen/view_11_dp"
                                 android:textColor="@color/white"
+                                app:bl_corners_radius="@dimen/view_12_dp"
+                                app:bl_shape="rectangle"
+                                app:bl_solid_color="@color/black_trans_10"
                                 app:layout_constraintLeft_toLeftOf="@id/srl_name_tv"
                                 app:layout_constraintTop_toBottomOf="@id/srl_name_tv" />
+
+                            <ImageView
+                                android:layout_width="@dimen/view_16_dp"
+                                android:layout_height="@dimen/view_15_dp"
+                                android:layout_marginLeft="@dimen/view_9_dp"
+                                android:background="@drawable/grab_charm_icon"
+                                app:layout_constraintBottom_toBottomOf="@id/srl_charm_tv"
+                                app:layout_constraintLeft_toLeftOf="@id/srl_charm_tv"
+                                app:layout_constraintTop_toTopOf="@id/srl_charm_tv" />
 
                         </android.support.constraint.ConstraintLayout>
 

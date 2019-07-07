@@ -95,7 +95,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ImageView mSexIv;
     SimpleDraweeView mAvatarIv;
     NormalLevelView2 mLevelView;
-    ExTextView mUseridTv;
+    ExTextView mCharmTv;
+
     ExTextView mNameTv;
     ExTextView mSignTv;
 
@@ -116,7 +117,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     SimpleDraweeView mSrlAvatarIv;
     TextView mSrlNameTv;
     ImageView mSrlSexIv;
-    ExTextView mSrlUseridTv;
+    ExTextView mSrlCharmTv;
 
     PersonCorePresenter mPresenter;
 
@@ -188,7 +189,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSrlAvatarIv = mRootView.findViewById(R.id.srl_avatar_iv);
         mSrlNameTv = mRootView.findViewById(R.id.srl_name_tv);
         mSrlSexIv = mRootView.findViewById(R.id.srl_sex_iv);
-        mSrlUseridTv = (ExTextView) mRootView.findViewById(R.id.srl_userid_tv);
+        mSrlCharmTv = (ExTextView) mRootView.findViewById(R.id.srl_charm_tv);
 
         FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
                 .build());
@@ -280,7 +281,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
-        mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
+        mCharmTv = (ExTextView) mRootView.findViewById(R.id.charm_tv);
+
         mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
@@ -547,6 +549,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void showCharmsTotal(int meiLiCntTotal) {
         mCharmNum = meiLiCntTotal;
+        mCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
+        mSrlCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
     }
 
     public void showUserLevel(List<UserLevelModel> list) {
@@ -617,8 +621,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     .build());
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
             mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            mUseridTv.setText("ID:" + MyUserInfoManager.getInstance().getUid());
-            mSrlUseridTv.setText("ID:" + MyUserInfoManager.getInstance().getUid());
             if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
                 mSexIv.setVisibility(View.VISIBLE);
                 mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
