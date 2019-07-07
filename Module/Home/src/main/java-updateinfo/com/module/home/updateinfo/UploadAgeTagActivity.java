@@ -29,6 +29,9 @@ public class UploadAgeTagActivity extends BaseActivity {
     AgeTagView mAgeTagView;
     ExTextView mSubmitTv;
 
+    String mNickName;
+    int mSex;
+
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.upload_account_age_tag_activity_layout;
@@ -40,6 +43,9 @@ public class UploadAgeTagActivity extends BaseActivity {
         mHintTv = findViewById(R.id.hint_tv);
         mAgeTagView = findViewById(R.id.age_tag_view);
         mSubmitTv = findViewById(R.id.submit_tv);
+
+        mNickName = getIntent().getStringExtra("nickname");
+        mSex = getIntent().getIntExtra("sex", 0);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -54,10 +60,10 @@ public class UploadAgeTagActivity extends BaseActivity {
                 int ageStage = mAgeTagView.getSelectTag();
                 if (ageStage == 0) {
                     U.getToastUtil().showShort("您当前选择的年龄段为空");
-                } else if (ageStage == MyUserInfoManager.getInstance().getAgeStage()) {
-                    goNewMatch();
                 } else {
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                            .setNickName(mNickName)
+                            .setSex(mSex)
                             .setAgeStage(ageStage)
                             .build(), false, false, new MyUserInfoManager.ServerCallback() {
                         @Override

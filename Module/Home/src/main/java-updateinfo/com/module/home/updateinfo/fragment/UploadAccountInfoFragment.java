@@ -222,20 +222,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     if (isValid) {
                         // 昵称可用
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                .setNickName(nickName).setSex(mSex)
-                                .build(), true, true, new MyUserInfoManager.ServerCallback() {
-                            @Override
-                            public void onSucess() {
-                                // 进入下一页
-                                goAgeTagUpload();
-                            }
-
-                            @Override
-                            public void onFail() {
-
-                            }
-                        });
+                        // 进入下一页
+                        goAgeTagUpload();
                     } else {
                         // 昵称不可用
                         setNicknameHintText(unValidReason, true);
@@ -247,7 +235,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     public void goAgeTagUpload() {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD_AGE)
-                .greenChannel().navigation();
+                .withString("nickname", mNickName)
+                .withInt("sex", mSex)
+                .greenChannel()
+                .navigation();
     }
 
     private void setNicknameHintText(String text, boolean isError) {
