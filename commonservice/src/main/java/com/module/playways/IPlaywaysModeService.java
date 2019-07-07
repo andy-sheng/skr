@@ -1,5 +1,7 @@
 package com.module.playways;
 
+import android.app.Activity;
+
 import com.alibaba.android.arouter.facade.template.IProvider;
 
 /**
@@ -16,7 +18,7 @@ public interface IPlaywaysModeService extends IProvider {
 
     void tryGoGrabMatch(int tagId);
 
-    void tryGoNewGrabMatch();
+    void tryGoNewGrabMatch(Activity activity);
 
     //    private Integer roomID;
 //    private Long createdTimeMs;
