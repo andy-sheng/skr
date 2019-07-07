@@ -1,5 +1,6 @@
 package com.zq.mediaengine.kit.filter;
 
+import com.engine.Params;
 import com.engine.effect.ITbAgcProcessor;
 import com.zq.mediaengine.filter.audio.AudioFilterBase;
 import com.zq.mediaengine.framework.AudioBufFormat;
@@ -10,9 +11,12 @@ public class TbAudioAgcFilter extends AudioFilterBase {
 
     private ITbAgcProcessor mAgcProcessor;
 
-    public TbAudioAgcFilter() {
+    Params mConfig;
+
+    public TbAudioAgcFilter(Params params) {
         mAgcProcessor = new ITbAgcProcessor();
         mAgcProcessor.init();
+        mConfig = params;
     }
 
     @Override
@@ -22,8 +26,23 @@ public class TbAudioAgcFilter extends AudioFilterBase {
 
     @Override
     protected AudioBufFrame doFilter(AudioBufFrame frame) {
-        mAgcProcessor.processV1(frame.buf, frame.buf.limit(),
-                frame.format.channels, frame.format.sampleRate);
+        // 针对不同场景，处理agc
+        switch (mConfig.getScene()) {
+            case grab:
+                if (mConfig.isGrabSingNoAcc()) {
+                    // 只有单人清唱才走天宝的agc
+                    mAgcProcessor.processV1(frame.buf, frame.buf.limit(),
+                            frame.format.channels, frame.format.sampleRate);
+                }
+                break;
+            case voice:
+                break;
+            case rank:
+            case audiotest:
+                mAgcProcessor.processV1(frame.buf, frame.buf.limit(),
+                        frame.format.channels, frame.format.sampleRate);
+                break;
+        }
         return frame;
     }
 

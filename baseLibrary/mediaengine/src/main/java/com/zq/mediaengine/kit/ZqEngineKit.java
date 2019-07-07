@@ -439,7 +439,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (SCORE_DEBUG) {
             mAudioDummyFilter.init(SCORE_DEBUG_PATH, mConfig);
         }
-        setAudioEffectStyle(mConfig.getStyleEnum());
+        doSetAudioEffect(mConfig.getStyleEnum(),true);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -968,8 +968,8 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     /*音频高级扩展开始*/
 
-    private void doSetAudioEffect(Params.AudioEffect styleEnum) {
-        if (styleEnum == mConfig.getStyleEnum()) {
+    private void doSetAudioEffect(Params.AudioEffect styleEnum,boolean fromInit) {
+        if (styleEnum == mConfig.getStyleEnum() && !fromInit) {
             return;
         }
 
@@ -987,21 +987,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             filters.add(new CbAudioEffectFilter(1));
         }
 
-        // 针对不同场景，处理agc
-        switch (mConfig.getScene()) {
-            case grab:
-                // 只有单人清唱才走天宝的agc
-                if (mConfig.isGrabSingNoAcc()) {
-                    filters.add(new TbAudioAgcFilter());
-                }
-                break;
-            case voice:
-                break;
-            case rank:
-            case audiotest:
-                filters.add(new TbAudioAgcFilter());
-                break;
-        }
+        filters.add(new TbAudioAgcFilter(mConfig));
 
         mAudioFilterMgt.setFilter(filters);
     }
@@ -1011,7 +997,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("setAudioEffectStyle") {
                 @Override
                 public void realRun() {
-                    doSetAudioEffect(styleEnum);
+                    doSetAudioEffect(styleEnum,false);
                 }
             });
         }

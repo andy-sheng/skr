@@ -94,6 +94,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 val params = Params.getFromPref()
                 params.scene = Params.Scene.grab
                 params.isEnableVideo = false
+                params.isGrabSingNoAcc = true
                 ZqEngineKit.getInstance().init("doubleRoom", params)
             }
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), true, mRoomData.getToken())
