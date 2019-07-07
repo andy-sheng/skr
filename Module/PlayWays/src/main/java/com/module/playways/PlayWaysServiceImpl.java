@@ -168,12 +168,12 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
      * 新手引导匹配
      */
     @Override
-    public void tryGoNewGrabMatch() {
+    public void tryGoNewGrabMatch(Activity activity) {
         PrepareData prepareData = new PrepareData();
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
         prepareData.setTagId(0);
         prepareData.setNewUser(true);
-        GrabMatchActivity.open(prepareData);
+        GrabMatchActivity.open(activity,prepareData);
     }
 
     @Override

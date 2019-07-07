@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,10 +21,10 @@ import com.module.playways.room.prepare.model.PrepareData;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
 public class GrabMatchActivity extends BaseActivity {
-    public static void open(PrepareData prepareData) {
-        Intent intent = new Intent(U.app(),GrabMatchActivity.class);
+    public static void open(Activity activity, PrepareData prepareData) {
+        Intent intent = new Intent(activity,GrabMatchActivity.class);
         intent.putExtra("prepare_data", prepareData);
-        U.app().startActivity(intent);
+        activity.startActivity(intent);
     }
 
     /**
