@@ -336,6 +336,10 @@ public class MyUserInfoManager {
         return mUser != null ? mUser.getAgeStage() : 0;
     }
 
+    public boolean hasAgeStage() {
+        return mUser != null && mUser.getAgeStage() != 0;
+    }
+
     public String getAgeStageString() {
         if (mUser != null && mUser.getAgeStage() != 0) {
             if (mUser.getAgeStage() == 1) {

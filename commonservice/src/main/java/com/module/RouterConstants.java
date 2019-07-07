@@ -9,6 +9,7 @@ public interface RouterConstants {
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
     String ACTIVITY_UPLOAD_AGE = "/home/UploadAgeTagActivity";
     String ACTIVITY_EDIT_INFO = "/home/EditInfoActivity";
+    String ACTIVITY_EDIT_AGE = "/home/EditAgeTagActivity";
 
     String ACTIVITY_LOGIN = "/core/LoginActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";

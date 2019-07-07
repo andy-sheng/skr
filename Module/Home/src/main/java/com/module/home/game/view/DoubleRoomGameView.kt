@@ -9,8 +9,10 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.UserInfoServerApi
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -27,7 +29,10 @@ import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.person.view.ConfirmMatchInfoView
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.double_room_view_layout.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -75,40 +80,50 @@ class DoubleRoomGameView : RelativeLayout {
                     U.getToastUtil().showLong("网络连接失败 请检查网络")
                     return
                 }
+
+                /**
+                 * 判断有没有年龄段
+                 */
+                if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                            .withInt("from", 0)
+                            .navigation()
+                    return
+                }
+
                 if (hasRemainTime) {
-//                    var hasConfirm = U.getPreferenceUtils().getSettingBoolean(SP_HAS_CONFIRM_INFO, false)
-//                    if (!hasConfirm) {
-//                        showConfirmView()
-//                    } else {
-                    StatisticsAdapter.recordCountEvent("cp", "invite1", null)
-                    mSkrAudioPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-                            if (mSelectSexDialogPlus == null) {
-                                mSelectView = SelectSexDialogView(this@DoubleRoomGameView.context)
-                                mSelectView?.onClickMatch = { isFindMale, isMeMale ->
-                                    mSelectSexDialogPlus?.dismiss()
+                    val sex = object {
+                        var mIsFindMale: Boolean? = null
+                        var mMeIsMale: Boolean? = null
+                    }
+
+                    Observable.create<Boolean> {
+                        if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
+                            sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
+                            sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
+                            it.onNext(true)
+                        } else {
+                            it.onNext(false)
+                        }
+
+                        it.onComplete()
+                    }.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                if (it) {
                                     val bundle = Bundle()
-                                    bundle.putBoolean("is_find_male", isFindMale ?: true)
-                                    bundle.putBoolean("is_me_male", isMeMale ?: true)
+                                    bundle.putBoolean("is_find_male", sex.mIsFindMale ?: true)
+                                    bundle.putBoolean("is_me_male", sex.mMeIsMale ?: true)
                                     ARouter.getInstance()
                                             .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
                                             .withBundle("bundle", bundle)
                                             .navigation()
+                                } else {
+                                    showSexFilterView()
                                 }
-
-                                mSelectSexDialogPlus = DialogPlus.newDialog(context!!)
-                                        .setContentHolder(ViewHolder(mSelectView))
-                                        .setGravity(Gravity.BOTTOM)
-                                        .setContentBackgroundResource(R.color.transparent)
-                                        .setOverlayBackgroundResource(R.color.black_trans_80)
-                                        .setExpanded(false)
-                                        .create()
-                            }
-
-                            mSelectSexDialogPlus?.show()
-                        }
-                    }, true)
-//                    }
+                            }, {
+                                MyLog.e("SelectSexDialogView", it)
+                            })
                 } else {
                     U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
                 }
@@ -117,6 +132,16 @@ class DoubleRoomGameView : RelativeLayout {
 
         invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                /**
+                 * 判断有没有年龄段
+                 */
+                if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                            .withInt("from", 0)
+                            .navigation()
+                    return
+                }
+
                 mSkrAudioPermission.ensurePermission({
                     mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
                         val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
@@ -125,10 +150,48 @@ class DoubleRoomGameView : RelativeLayout {
                 }, true)
             }
         })
+
+        filter_tv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                showSexFilterView()
+            }
+        })
     }
 
     fun initData() {
         getRemainTimes(false)
+    }
+
+    fun showSexFilterView() {
+        StatisticsAdapter.recordCountEvent("cp", "invite1", null)
+        mSkrAudioPermission.ensurePermission({
+            mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+                if (mSelectSexDialogPlus == null) {
+                    mSelectView = SelectSexDialogView(this@DoubleRoomGameView.context)
+                    mSelectView?.onClickMatch = { isFindMale, isMeMale ->
+                        mSelectSexDialogPlus?.dismiss()
+//                        val bundle = Bundle()
+//                        bundle.putBoolean("is_find_male", isFindMale ?: true)
+//                        bundle.putBoolean("is_me_male", isMeMale ?: true)
+//                        ARouter.getInstance()
+//                                .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+//                                .withBundle("bundle", bundle)
+//                                .navigation()
+                    }
+
+                    mSelectSexDialogPlus = DialogPlus.newDialog(context!!)
+                            .setContentHolder(ViewHolder(mSelectView))
+                            .setGravity(Gravity.BOTTOM)
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_80)
+                            .setExpanded(false)
+                            .create()
+                }
+
+                mSelectView?.reset()
+                mSelectSexDialogPlus?.show()
+            }
+        }, true)
     }
 
     fun showConfirmView() {

@@ -15,6 +15,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".updateinfo.activity.EditAgeTagActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".ranked.RankedActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

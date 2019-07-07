@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -33,7 +34,6 @@ import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.updateinfo.fragment.EditInfoAgeTagFragment;
 import com.module.home.updateinfo.fragment.EditInfoLocationFragment;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 import com.module.home.updateinfo.fragment.EditInfoSexFragment;
@@ -218,11 +218,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     //修改年龄
     private void onClickAgeContainer() {
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, EditInfoAgeTagFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                .withInt("from", 1)
+                .navigation();
     }
 
     //修改性别

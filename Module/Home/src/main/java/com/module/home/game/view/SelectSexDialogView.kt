@@ -1,6 +1,7 @@
 package com.module.home.game.view
 
 import android.content.Context
+import android.graphics.Rect
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
@@ -9,6 +10,7 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.module.home.R
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,6 +30,16 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
 
     var onClickMatch: ((mIsFindMale: Boolean?, mMeIsMale: Boolean?) -> Unit)? = null
 
+    val mMeMaleDrawable = DrawableCreator.Builder()
+            .setSelectedDrawable(U.getDrawable(R.drawable.small_select_male))
+            .setUnSelectedDrawable(U.getDrawable(R.drawable.small_unselect_male))
+            .build()
+
+    val mMeFeMaleDrawable = DrawableCreator.Builder()
+            .setSelectedDrawable(U.getDrawable(R.drawable.small_select_female))
+            .setUnSelectedDrawable(U.getDrawable(R.drawable.small_unselect_female))
+            .build()
+
     init {
         View.inflate(context, R.layout.select_sex_layout, this)
         mFindMaleIv = findViewById(R.id.find_male_iv);
@@ -43,6 +55,23 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
         setOnClickListener(mMeFemaleIv)
         setOnClickListener(mStartMatchTv)
         mStartMatchTv?.isEnabled = false
+        reset()
+
+        mMeMaleDrawable.bounds = Rect(0, 0, U.getDisplayUtils().dip2px(24.0f), U.getDisplayUtils().dip2px(24.0f))
+        mMeMaleIv?.setCompoundDrawables(mMeMaleDrawable, null, null, null)
+
+        mMeFeMaleDrawable.bounds = Rect(0, 0, U.getDisplayUtils().dip2px(24.0f), U.getDisplayUtils().dip2px(24.0f))
+        mMeFemaleIv?.setCompoundDrawables(mMeFeMaleDrawable, null, null, null)
+    }
+
+    fun reset() {
+        mFindMaleIv?.isSelected = false
+        mFindFemaleIv?.isSelected = false
+        mMeMaleIv?.isSelected = false
+        mMeFemaleIv?.isSelected = false
+        mStartMatchTv?.isEnabled = false
+        mIsFindMale = null
+        mMeIsMale = null
 
         Observable.create<Any> {
             if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {

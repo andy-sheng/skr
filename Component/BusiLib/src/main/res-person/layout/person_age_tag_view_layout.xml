@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -19,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/primary_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_16_dp"
@@ -42,6 +42,7 @@
         app:layout_constraintTop_toTopOf="@id/primary_iv" />
 
     <TextView
+        android:id="@+id/senior_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_16_dp"
@@ -68,6 +69,7 @@
         app:layout_constraintTop_toBottomOf="@id/primary_iv" />
 
     <TextView
+        android:id="@+id/college_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_16_dp"
@@ -91,6 +93,7 @@
         app:layout_constraintTop_toTopOf="@id/college_iv" />
 
     <TextView
+        android:id="@+id/works_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_16_dp"

@@ -4,8 +4,9 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
+import android.widget.TextView
 import com.common.view.ex.ExImageView
-import com.component.busilib.R
+
 
 class AgeTagView : ConstraintLayout {
 
@@ -13,6 +14,10 @@ class AgeTagView : ConstraintLayout {
     private var mSeniorIv: ExImageView
     private var mCollegeIv: ExImageView
     private var mWorksIv: ExImageView
+    private val mPrimaryTv: TextView
+    private val mSeniorTv: TextView
+    private val mCollegeTv: TextView
+    private val mWorksTv: TextView
 
     private var ageStage: Int = 0
 
@@ -23,12 +28,16 @@ class AgeTagView : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     init {
-        View.inflate(context, R.layout.person_age_tag_view_layout, this)
+        View.inflate(context, com.component.busilib.R.layout.person_age_tag_view_layout, this)
 
-        mPrimaryIv = findViewById(R.id.primary_iv)
-        mSeniorIv = findViewById(R.id.senior_iv)
-        mCollegeIv = findViewById(R.id.college_iv)
-        mWorksIv = findViewById(R.id.works_iv)
+        mPrimaryIv = findViewById(com.component.busilib.R.id.primary_iv)
+        mSeniorIv = findViewById(com.component.busilib.R.id.senior_iv)
+        mCollegeIv = findViewById(com.component.busilib.R.id.college_iv)
+        mWorksIv = findViewById(com.component.busilib.R.id.works_iv)
+        mPrimaryTv = findViewById(com.component.busilib.R.id.primary_tv)
+        mSeniorTv = findViewById(com.component.busilib.R.id.senior_tv)
+        mCollegeTv = findViewById(com.component.busilib.R.id.college_tv)
+        mWorksTv = findViewById(com.component.busilib.R.id.works_tv)
 
         mPrimaryIv.setOnClickListener {
             setSelectTag(1)
@@ -46,6 +55,13 @@ class AgeTagView : ConstraintLayout {
             setSelectTag(4)
         }
 
+    }
+
+    fun setTextColor(color: Int) {
+        mPrimaryTv.setTextColor(color)
+        mSeniorTv.setTextColor(color)
+        mCollegeTv.setTextColor(color)
+        mWorksTv.setTextColor(color)
     }
 
     fun setSelectTag(ageTag: Int) {
