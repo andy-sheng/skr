@@ -20,6 +20,7 @@ class AgeTagView : ConstraintLayout {
     private val mCollegeTv: TextView
     private val mWorksTv: TextView
 
+    private var mListener: Listener? = null
     private var ageStage: Int = 0
 
     constructor(context: Context) : super(context) {}
@@ -58,7 +59,7 @@ class AgeTagView : ConstraintLayout {
             }
         })
 
-        mWorksIv.setOnClickListener(object : DebounceViewClickListener(){
+        mWorksIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setSelectTag(4)
             }
@@ -74,6 +75,7 @@ class AgeTagView : ConstraintLayout {
 
     fun setSelectTag(ageTag: Int) {
         ageStage = ageTag
+        mListener?.onSelectedAge(ageTag)
         when (ageTag) {
             1 -> {
                 mPrimaryIv.isSelected = true
@@ -106,4 +108,11 @@ class AgeTagView : ConstraintLayout {
         return ageStage
     }
 
+    fun setListener(listener: Listener) {
+        mListener = listener
+    }
+
+    public interface Listener {
+        fun onSelectedAge(ageTag: Int)
+    }
 }

@@ -55,6 +55,14 @@ public class UploadAgeTagActivity extends BaseActivity {
             }
         });
 
+        mAgeTagView.setListener(new AgeTagView.Listener() {
+            @Override
+            public void onSelectedAge(int ageTag) {
+                mSubmitTv.setAlpha(1f);
+                mSubmitTv.setClickable(true);
+            }
+        });
+
         mSubmitTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -80,6 +88,9 @@ public class UploadAgeTagActivity extends BaseActivity {
                 }
             }
         });
+
+        mSubmitTv.setClickable(false);
+        mSubmitTv.setAlpha(0.5f);
     }
 
     private void goNewMatch() {
