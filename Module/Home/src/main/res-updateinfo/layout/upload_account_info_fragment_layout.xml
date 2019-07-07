@@ -123,6 +123,18 @@
         app:layout_constraintLeft_toLeftOf="@id/nickname_et"
         app:layout_constraintTop_toBottomOf="@id/set_hint" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:text="保密"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@id/secret_iv"
+        app:layout_constraintRight_toRightOf="@id/secret_iv"
+        app:layout_constraintTop_toBottomOf="@id/secret_iv" />
+
+
     <com.common.view.ex.ExImageView
         android:id="@+id/male_iv"
         android:layout_width="@dimen/view_64_dp"
@@ -134,6 +146,17 @@
         app:layout_constraintRight_toLeftOf="@id/female_iv"
         app:layout_constraintTop_toBottomOf="@id/set_hint" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:text="男生"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#79BEFA"
+        android:layout_marginTop="@dimen/view_8_dp"
+        app:layout_constraintLeft_toLeftOf="@id/male_iv"
+        app:layout_constraintRight_toRightOf="@id/male_iv"
+        app:layout_constraintTop_toBottomOf="@id/male_iv" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/female_iv"
         android:layout_width="@dimen/view_64_dp"
@@ -143,6 +166,17 @@
         app:bl_unSelected_drawable="@drawable/un_select_famale"
         app:layout_constraintRight_toRightOf="@id/nickname_et"
         app:layout_constraintTop_toBottomOf="@id/set_hint" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:text="女生"
+        android:textColor="#F59EC5"
+        android:textSize="@dimen/textsize_12_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        app:layout_constraintLeft_toLeftOf="@id/female_iv"
+        app:layout_constraintRight_toRightOf="@id/female_iv"
+        app:layout_constraintTop_toBottomOf="@id/female_iv" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/next_iv"
