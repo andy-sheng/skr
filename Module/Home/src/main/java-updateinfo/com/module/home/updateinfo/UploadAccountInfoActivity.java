@@ -34,14 +34,11 @@ public class UploadAccountInfoActivity extends BaseActivity {
         }else{
             finish();
         }
-
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     @Override
     protected void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
     }
 
     @Override
@@ -52,11 +49,6 @@ public class UploadAccountInfoActivity extends BaseActivity {
     @Override
     public boolean canSlide() {
         return false;
-    }
-
-    @Override
-    public boolean onBackPressedForActivity() {
-        return true;
     }
 
     @Override
