@@ -59,6 +59,7 @@
         android:id="@+id/sex_iv"
         android:layout_width="@dimen/view_16_dp"
         android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_4_dp"
         app:layout_constraintBottom_toBottomOf="@id/name_tv"
         app:layout_constraintLeft_toRightOf="@id/name_tv"
         app:layout_constraintRight_toRightOf="parent"
