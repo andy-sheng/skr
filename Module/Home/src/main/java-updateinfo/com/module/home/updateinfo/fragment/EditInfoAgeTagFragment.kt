@@ -10,6 +10,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.home.R
+import com.module.home.updateinfo.activity.EditAgeTagActivity
 import com.zq.person.view.AgeTagView
 
 class EditInfoAgeTagFragment : BaseFragment() {
@@ -19,6 +20,8 @@ class EditInfoAgeTagFragment : BaseFragment() {
     lateinit var mAgeTagView: AgeTagView
     var mSaveBtn: ExTextView? = null
     var mFrom = FROM_PERSON_INFO
+    //被选中的年龄
+    var mAgeStage: Int? = 0
 
     override fun initView(): Int {
         return if (mFrom == FROM_HOME) R.layout.direct_edit_info_age_tag_fragment_layout else R.layout.edit_info_age_tag_fragment_layout
@@ -57,6 +60,7 @@ class EditInfoAgeTagFragment : BaseFragment() {
         if (ageStage == 0) {
             U.getToastUtil().showShort("您当前选择的年龄段为空")
         } else if (ageStage == MyUserInfoManager.getInstance().ageStage) {
+            mAgeStage = ageStage
             activity?.finish()
         } else {
             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
@@ -64,6 +68,7 @@ class EditInfoAgeTagFragment : BaseFragment() {
                     .build(), false, false, object : MyUserInfoManager.ServerCallback {
                 override fun onSucess() {
                     U.getToastUtil().showShort("年龄段更新成功")
+                    mAgeStage = ageStage
                     activity?.finish()
                 }
 
@@ -71,6 +76,14 @@ class EditInfoAgeTagFragment : BaseFragment() {
 
                 }
             })
+        }
+    }
+
+    override fun destroy() {
+        super.destroy()
+        if (mAgeStage != 0) {
+            EditAgeTagActivity.runnable?.run()
+            EditAgeTagActivity.setRun(null)
         }
     }
 

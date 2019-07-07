@@ -18,6 +18,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.constans.GrabRoomType;
+import com.component.busilib.verify.SkrVerifyUtils;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.playways.R;
@@ -39,6 +40,8 @@ public class GrabCreateRoomFragment extends BaseFragment {
 
     TipsDialogView mTipsDialogView;
 
+    SkrVerifyUtils mSkrVerifyUtils;
+
     @Override
     public int initView() {
         return R.layout.grab_create_room_fragment_layout;
@@ -50,6 +53,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
         mFriendsRoom = (ExImageView) mRootView.findViewById(R.id.friends_room);
         mSecretRoom = (ExImageView) mRootView.findViewById(R.id.secret_room);
         mPublicRoom = (ExImageView) mRootView.findViewById(R.id.public_room);
+        mSkrVerifyUtils = new SkrVerifyUtils();
 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -157,20 +161,18 @@ public class GrabCreateRoomFragment extends BaseFragment {
             mTipsDialogView.dismiss(false);
         }
 
-        if (!MyUserInfoManager.getInstance().hasAgeStage()) {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
-                    .withInt("from", 0)
-                    .navigation();
-            return;
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putInt(KEY_ROOM_TYPE, roomType);
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
-                .setBundle(bundle)
-                .build());
+        mSkrVerifyUtils.checkAgeSettingState(new Runnable() {
+            @Override
+            public void run() {
+                Bundle bundle = new Bundle();
+                bundle.putInt(KEY_ROOM_TYPE, roomType);
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setBundle(bundle)
+                        .build());
+            }
+        });
     }
 
     @Override

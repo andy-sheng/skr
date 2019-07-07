@@ -15,6 +15,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.tencent.mm.opensdk.constants.Build;
 
 public class SkrVerifyUtils {
@@ -74,6 +75,19 @@ public class SkrVerifyUtils {
                 process2(obj, successCallback);
             }
         }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
+    }
+
+    public void checkAgeSettingState(final Runnable successCallback) {
+        if (MyUserInfoManager.getInstance().hasAgeStage()) {
+            if (successCallback != null) {
+                successCallback.run();
+            }
+
+            return;
+        }
+
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+        channelService.goEditAgeActivity(successCallback);
     }
 
     /**

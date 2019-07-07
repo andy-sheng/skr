@@ -12,6 +12,13 @@ import com.module.home.updateinfo.fragment.EditInfoAgeTagFragment
 
 @Route(path = RouterConstants.ACTIVITY_EDIT_AGE)
 class EditAgeTagActivity : BaseActivity() {
+    companion object {
+        var runnable: Runnable? = null
+
+        fun setRun(r: Runnable?) {
+            runnable = r
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.empty_activity_layout

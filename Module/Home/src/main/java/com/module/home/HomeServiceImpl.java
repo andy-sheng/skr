@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.module.RouterConstants;
 import com.module.home.event.AuthSuccessEvent;
 import com.module.home.feedback.FeedbackFragment;
 import com.module.home.fragment.HalfRechargeFragment;
 import com.module.home.fragment.PersonFragment4;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
+import com.module.home.updateinfo.activity.EditAgeTagActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -55,5 +57,14 @@ public class HomeServiceImpl implements IHomeService {
     @Override
     public void goHomeActivity(Activity loginActivity) {
         HomeActivity.open(loginActivity);
+    }
+
+    @Override
+    public void goEditAgeActivity(Runnable runnable) {
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                .withInt("from", 0)
+                .navigation();
+
+        EditAgeTagActivity.Companion.setRun(runnable);
     }
 }
