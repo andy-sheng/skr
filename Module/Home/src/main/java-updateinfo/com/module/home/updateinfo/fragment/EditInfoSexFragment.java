@@ -98,8 +98,8 @@ public class EditInfoSexFragment extends BaseFragment {
     // 选一个，另一个需要缩放动画
     private void selectSex(boolean isMale) {
         this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
-        mMale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_man_xuanzhong) : getResources().getDrawable(R.drawable.head_man_weixuanzhong));
-        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_woman_xuanzhong));
+        mMale.setSelected(isMale ? true : false);
+        mFemale.setSelected(isMale ? false : true);
 
         mMale.setClickable(isMale ? false : true);
         mFemale.setClickable(isMale ? true : false);
