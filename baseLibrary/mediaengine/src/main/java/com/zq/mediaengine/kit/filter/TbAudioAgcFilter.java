@@ -35,6 +35,8 @@ public class TbAudioAgcFilter extends AudioFilterBase {
                             frame.format.channels, frame.format.sampleRate);
                 }
                 break;
+            case doubleChat:
+                break;
             case voice:
                 break;
             case rank:

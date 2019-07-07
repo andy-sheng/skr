@@ -350,6 +350,10 @@ public class AgoraRTCAdapter {
                 case grab:
                     b = 3;
                     break;
+                case doubleChat:
+                    b = 3;
+                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
+                    break;
                 case voice:
                     b = 3;
                     break;
