@@ -32,7 +32,6 @@ import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleEndRoomModel
 import com.trello.rxlifecycle2.android.FragmentEvent
-import com.zq.dialog.AgeStageDialogView
 import com.zq.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -54,8 +53,6 @@ class DoubleGameEndFragment : BaseFragment() {
     lateinit var mMatchAgain: ExTextView
     lateinit var mLastNumTv: ExTextView
     var onClickBottomBtn: (() -> Unit)? = null
-
-    var mAgeStageDialogView: AgeStageDialogView? = null
 
     lateinit var mDoubleRoomData: DoubleRoomData
 
@@ -130,12 +127,6 @@ class DoubleGameEndFragment : BaseFragment() {
             }, this@DoubleGameEndFragment)
         }.compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .retryWhen(RxRetryAssist(10, "")).subscribe()
-
-
-        if (MyUserInfoManager.getInstance().ageStage == 0) {
-            mAgeStageDialogView = AgeStageDialogView(context!!)
-            mAgeStageDialogView?.showByDialog()
-        }
     }
 
     fun setEndData(model: DoubleEndRoomModel) {
@@ -298,7 +289,6 @@ class DoubleGameEndFragment : BaseFragment() {
 
     override fun destroy() {
         super.destroy()
-        mAgeStageDialogView?.dismiss(false)
     }
 
     override fun useEventBus(): Boolean {

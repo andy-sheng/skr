@@ -1,40 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_454_dp"
-    app:bl_corners_radius="@dimen/view_6_dp"
-    app:bl_shape="rectangle"
-    app:bl_solid_color="#D0EFFF">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_25_dp"
-        android:layout_marginTop="@dimen/view_34_dp"
-        android:gravity="center"
-        android:text="寻找更有趣的小伙伴"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/textsize_18_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_64_dp"
-        android:gravity="center"
-        android:text="完善一下年龄信息吧"
-        android:textColor="#993B4E79"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/primary_iv"
         android:layout_width="@dimen/view_74_dp"
         android:layout_height="@dimen/view_74_dp"
-        android:layout_marginTop="@dimen/view_120_dp"
         android:layout_marginRight="@dimen/view_60_dp"
         app:bl_pressed_drawable="@drawable/age_tag_primary_icon_selected"
         app:bl_selected_drawable="@drawable/age_tag_primary_icon_selected"
@@ -47,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
         android:gravity="center"
         android:text="小学党"
         android:textColor="@color/textColorPrimary"
@@ -70,7 +44,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
         android:gravity="center"
         android:text="中学党"
         android:textColor="@color/textColorPrimary"
@@ -83,7 +57,7 @@
         android:id="@+id/college_iv"
         android:layout_width="@dimen/view_74_dp"
         android:layout_height="@dimen/view_74_dp"
-        android:layout_marginTop="@dimen/view_54_dp"
+        android:layout_marginTop="@dimen/view_56_dp"
         android:layout_marginRight="@dimen/view_60_dp"
         app:bl_pressed_drawable="@drawable/age_tag_college_icon_selected"
         app:bl_selected_drawable="@drawable/age_tag_college_icon_selected"
@@ -96,7 +70,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
         android:gravity="center"
         android:text="大学党"
         android:textColor="@color/textColorPrimary"
@@ -128,40 +102,4 @@
         app:layout_constraintRight_toRightOf="@id/works_iv"
         app:layout_constraintTop_toBottomOf="@id/works_iv" />
 
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/jump_tv"
-        android:layout_width="@dimen/view_152_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:gravity="center"
-        android:text="跳过"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_16_dp"
-        android:textStyle="bold"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#FF8AB6"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:layout_marginRight="@dimen/view_22_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/save_tv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/save_tv"
-        android:layout_width="@dimen/view_152_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:gravity="center"
-        android:text="保存"
-        android:textColor="#AD6C00"
-        android:textSize="@dimen/textsize_16_dp"
-        android:textStyle="bold"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#FFC15B"
-        app:layout_constraintLeft_toRightOf="@id/jump_tv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/jump_tv" />
-
-</com.common.view.ex.ExConstraintLayout>
+</android.support.constraint.ConstraintLayout>

@@ -68,102 +68,13 @@
         app:layout_constraintRight_toRightOf="@id/age_tag_bg"
         app:layout_constraintTop_toTopOf="@id/age_tag_bg" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/primary_iv"
-        android:layout_width="@dimen/view_74_dp"
-        android:layout_height="@dimen/view_74_dp"
+    <com.zq.person.view.AgeTagView
+        android:id="@+id/age_tag_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_136_dp"
-        android:layout_marginRight="@dimen/view_30_dp"
-        app:bl_pressed_drawable="@drawable/age_tag_primary_icon_selected"
-        app:bl_selected_drawable="@drawable/age_tag_primary_icon_selected"
-        app:bl_unSelected_drawable="@drawable/age_tag_primary_icon_normal"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="@id/age_tag_bg"
-        app:layout_constraintRight_toLeftOf="@id/senior_iv"
+        app:layout_constraintRight_toRightOf="@id/age_tag_bg"
         app:layout_constraintTop_toTopOf="@id/age_tag_bg" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:gravity="center"
-        android:text="小学党"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintLeft_toLeftOf="@id/primary_iv"
-        app:layout_constraintRight_toRightOf="@id/primary_iv"
-        app:layout_constraintTop_toBottomOf="@id/primary_iv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/senior_iv"
-        android:layout_width="@dimen/view_74_dp"
-        android:layout_height="@dimen/view_74_dp"
-        app:bl_pressed_drawable="@drawable/age_tag_senior_icon_selected"
-        app:bl_selected_drawable="@drawable/age_tag_senior_icon_selected"
-        app:bl_unSelected_drawable="@drawable/age_tag_senior_icon_normal"
-        app:layout_constraintLeft_toRightOf="@id/primary_iv"
-        app:layout_constraintRight_toRightOf="@id/age_tag_bg"
-        app:layout_constraintTop_toTopOf="@id/primary_iv" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:gravity="center"
-        android:text="中学党"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintLeft_toLeftOf="@id/senior_iv"
-        app:layout_constraintRight_toRightOf="@id/senior_iv"
-        app:layout_constraintTop_toBottomOf="@id/senior_iv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/college_iv"
-        android:layout_width="@dimen/view_74_dp"
-        android:layout_height="@dimen/view_74_dp"
-        android:layout_marginTop="@dimen/view_56_dp"
-        android:layout_marginRight="@dimen/view_30_dp"
-        app:bl_pressed_drawable="@drawable/age_tag_college_icon_selected"
-        app:bl_selected_drawable="@drawable/age_tag_college_icon_selected"
-        app:bl_unSelected_drawable="@drawable/age_tag_college_icon_normal"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="@id/age_tag_bg"
-        app:layout_constraintRight_toLeftOf="@id/works_iv"
-        app:layout_constraintTop_toBottomOf="@id/primary_iv" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:gravity="center"
-        android:text="大学党"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintLeft_toLeftOf="@id/college_iv"
-        app:layout_constraintRight_toRightOf="@id/college_iv"
-        app:layout_constraintTop_toBottomOf="@id/college_iv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/works_iv"
-        android:layout_width="@dimen/view_74_dp"
-        android:layout_height="@dimen/view_74_dp"
-        app:bl_pressed_drawable="@drawable/age_tag_works_icon_selected"
-        app:bl_selected_drawable="@drawable/age_tag_works_icon_selected"
-        app:bl_unSelected_drawable="@drawable/age_tag_works_icon_normal"
-        app:layout_constraintLeft_toRightOf="@id/college_iv"
-        app:layout_constraintRight_toRightOf="@id/age_tag_bg"
-        app:layout_constraintTop_toTopOf="@id/college_iv" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:gravity="center"
-        android:text="工作党"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintLeft_toLeftOf="@id/works_iv"
-        app:layout_constraintRight_toRightOf="@id/works_iv"
-        app:layout_constraintTop_toBottomOf="@id/works_iv" />
 
 </android.support.constraint.ConstraintLayout>

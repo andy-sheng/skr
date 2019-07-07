@@ -1,11 +1,9 @@
 package com.module.playways.grab.room.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Group;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -31,7 +28,6 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.NumericDetailModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.R;
-import com.zq.dialog.AgeStageDialogView;
 
 import java.util.List;
 
@@ -67,8 +63,6 @@ public class GrabResultFragment extends BaseFragment {
     ExTextView mTvAgain;
 
     Handler mUiHandler = new Handler();
-
-    AgeStageDialogView mAgeStageDialogView;
 
     @Override
     public int initView() {
@@ -155,9 +149,6 @@ public class GrabResultFragment extends BaseFragment {
         super.destroy();
         U.getSoundUtils().release(GrabResultFragment.TAG);
         mUiHandler.removeCallbacksAndMessages(null);
-        if (mAgeStageDialogView != null) {
-            mAgeStageDialogView.dismiss(false);
-        }
     }
 
     private void bindData() {
@@ -181,11 +172,6 @@ public class GrabResultFragment extends BaseFragment {
             bindData(mHzArea, mHzNumTv, hzModel, "+", "枚");
         } else {
             MyLog.w(TAG, "bindData 数据为空了");
-        }
-
-        if (MyUserInfoManager.getInstance().getAgeStage() == 0) {
-            mAgeStageDialogView = new AgeStageDialogView(getContext());
-            mAgeStageDialogView.showByDialog();
         }
     }
 
