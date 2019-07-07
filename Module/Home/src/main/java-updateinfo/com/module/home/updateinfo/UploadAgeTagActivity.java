@@ -90,7 +90,7 @@ public class UploadAgeTagActivity extends BaseActivity {
         }
         IPlaywaysModeService playwaysModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
         if (playwaysModeService != null) {
-            playwaysModeService.tryGoNewGrabMatch();
+            playwaysModeService.tryGoNewGrabMatch(this);
         }
         // TODO: 2019/5/16 因为fastLogin的标记为用在是否要完善资料上了
         MyUserInfoManager.getInstance().setFirstLogin(false);
