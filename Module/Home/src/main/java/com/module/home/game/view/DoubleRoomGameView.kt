@@ -81,17 +81,17 @@ class DoubleRoomGameView : RelativeLayout {
                     return
                 }
 
-                /**
-                 * 判断有没有年龄段
-                 */
-                if (!MyUserInfoManager.getInstance().hasAgeStage()) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
-                            .withInt("from", 0)
-                            .navigation()
-                    return
-                }
-
                 if (hasRemainTime) {
+                    /**
+                     * 判断有没有年龄段
+                     */
+                    if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                                .withInt("from", 0)
+                                .navigation()
+                        return
+                    }
+
                     val sex = object {
                         var mIsFindMale: Boolean? = null
                         var mMeIsMale: Boolean? = null
@@ -132,20 +132,19 @@ class DoubleRoomGameView : RelativeLayout {
 
         invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                /**
-                 * 判断有没有年龄段
-                 */
-                if (!MyUserInfoManager.getInstance().hasAgeStage()) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
-                            .withInt("from", 0)
-                            .navigation()
-                    return
-                }
-
                 mSkrAudioPermission.ensurePermission({
                     mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-                        val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                        playWaysService?.createDoubleRoom()
+                        /**
+                         * 判断有没有年龄段
+                         */
+                        if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                                    .withInt("from", 0)
+                                    .navigation()
+                        } else {
+                            val playWaysService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                            playWaysService?.createDoubleRoom()
+                        }
                     }
                 }, true)
             }
