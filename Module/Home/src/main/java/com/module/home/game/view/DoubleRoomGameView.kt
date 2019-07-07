@@ -82,48 +82,54 @@ class DoubleRoomGameView : RelativeLayout {
                 }
 
                 if (hasRemainTime) {
-                    /**
-                     * 判断有没有年龄段
-                     */
-                    if (!MyUserInfoManager.getInstance().hasAgeStage()) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
-                                .withInt("from", 0)
-                                .navigation()
-                        return
-                    }
-
-                    val sex = object {
-                        var mIsFindMale: Boolean? = null
-                        var mMeIsMale: Boolean? = null
-                    }
-
-                    Observable.create<Boolean> {
-                        if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
-                            sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
-                            sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
-                            it.onNext(true)
-                        } else {
-                            it.onNext(false)
-                        }
-
-                        it.onComplete()
-                    }.subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                if (it) {
-                                    val bundle = Bundle()
-                                    bundle.putBoolean("is_find_male", sex.mIsFindMale ?: true)
-                                    bundle.putBoolean("is_me_male", sex.mMeIsMale ?: true)
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                            .withBundle("bundle", bundle)
-                                            .navigation()
-                                } else {
-                                    showSexFilterView()
+                    StatisticsAdapter.recordCountEvent("cp", "invite1", null)
+                    mSkrAudioPermission.ensurePermission({
+                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+                            /**
+                             * 判断有没有年龄段
+                             */
+                            if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                                        .withInt("from", 0)
+                                        .navigation()
+                            } else {
+                                val sex = object {
+                                    var mIsFindMale: Boolean? = null
+                                    var mMeIsMale: Boolean? = null
                                 }
-                            }, {
-                                MyLog.e("SelectSexDialogView", it)
-                            })
+
+                                Observable.create<Boolean> {
+                                    if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
+                                        sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
+                                        sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
+                                        it.onNext(true)
+                                    } else {
+                                        it.onNext(false)
+                                    }
+
+                                    it.onComplete()
+                                }.subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe({
+                                            if (it) {
+                                                val bundle = Bundle()
+                                                bundle.putBoolean("is_find_male", sex.mIsFindMale
+                                                        ?: true)
+                                                bundle.putBoolean("is_me_male", sex.mMeIsMale
+                                                        ?: true)
+                                                ARouter.getInstance()
+                                                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                                        .withBundle("bundle", bundle)
+                                                        .navigation()
+                                            } else {
+                                                showSexFilterView()
+                                            }
+                                        }, {
+                                            MyLog.e("SelectSexDialogView", it)
+                                        })
+                            }
+                        }
+                    }, true)
                 } else {
                     U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
                 }
@@ -162,35 +168,23 @@ class DoubleRoomGameView : RelativeLayout {
     }
 
     fun showSexFilterView() {
-        StatisticsAdapter.recordCountEvent("cp", "invite1", null)
-        mSkrAudioPermission.ensurePermission({
-            mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-                if (mSelectSexDialogPlus == null) {
-                    mSelectView = SelectSexDialogView(this@DoubleRoomGameView.context)
-                    mSelectView?.onClickMatch = { isFindMale, isMeMale ->
-                        mSelectSexDialogPlus?.dismiss()
-//                        val bundle = Bundle()
-//                        bundle.putBoolean("is_find_male", isFindMale ?: true)
-//                        bundle.putBoolean("is_me_male", isMeMale ?: true)
-//                        ARouter.getInstance()
-//                                .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-//                                .withBundle("bundle", bundle)
-//                                .navigation()
-                    }
-
-                    mSelectSexDialogPlus = DialogPlus.newDialog(context!!)
-                            .setContentHolder(ViewHolder(mSelectView))
-                            .setGravity(Gravity.BOTTOM)
-                            .setContentBackgroundResource(R.color.transparent)
-                            .setOverlayBackgroundResource(R.color.black_trans_80)
-                            .setExpanded(false)
-                            .create()
-                }
-
-                mSelectView?.reset()
-                mSelectSexDialogPlus?.show()
+        if (mSelectSexDialogPlus == null) {
+            mSelectView = SelectSexDialogView(this@DoubleRoomGameView.context)
+            mSelectView?.onClickMatch = { isFindMale, isMeMale ->
+                mSelectSexDialogPlus?.dismiss()
             }
-        }, true)
+
+            mSelectSexDialogPlus = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(mSelectView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create()
+        }
+
+        mSelectView?.reset()
+        mSelectSexDialogPlus?.show()
     }
 
     fun showConfirmView() {
