@@ -13,10 +13,10 @@ import com.module.home.updateinfo.fragment.EditInfoAgeTagFragment
 @Route(path = RouterConstants.ACTIVITY_EDIT_AGE)
 class EditAgeTagActivity : BaseActivity() {
     companion object {
-        var runnable: Runnable? = null
+        var sActionRunnable: Runnable? = null
 
-        fun setRun(r: Runnable?) {
-            runnable = r
+        @JvmStatic fun setActionRunnable(r: Runnable?) {
+            sActionRunnable = r
         }
     }
 
@@ -29,8 +29,10 @@ class EditAgeTagActivity : BaseActivity() {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, EditInfoAgeTagFragment::class.java)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, from ?: 0)
+                .addDataBeforeAdd(1, sActionRunnable)
                 .setHasAnimation(false)
                 .build())
+        sActionRunnable = null
     }
 
     override fun useEventBus(): Boolean {

@@ -22,6 +22,7 @@ class EditInfoAgeTagFragment : BaseFragment() {
     var mFrom = FROM_PERSON_INFO
     //被选中的年龄
     var mAgeStage: Int? = 0
+    var mActionRunnable:Runnable? = null
 
     override fun initView(): Int {
         return if (mFrom == FROM_HOME) R.layout.direct_edit_info_age_tag_fragment_layout else R.layout.edit_info_age_tag_fragment_layout
@@ -61,6 +62,7 @@ class EditInfoAgeTagFragment : BaseFragment() {
             U.getToastUtil().showShort("您当前选择的年龄段为空")
         } else if (ageStage == MyUserInfoManager.getInstance().ageStage) {
             mAgeStage = ageStage
+            mActionRunnable?.run()
             activity?.finish()
         } else {
             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
@@ -69,6 +71,7 @@ class EditInfoAgeTagFragment : BaseFragment() {
                 override fun onSucess() {
                     U.getToastUtil().showShort("年龄段更新成功")
                     mAgeStage = ageStage
+                    mActionRunnable?.run()
                     activity?.finish()
                 }
 
@@ -81,15 +84,13 @@ class EditInfoAgeTagFragment : BaseFragment() {
 
     override fun destroy() {
         super.destroy()
-        if (mAgeStage != 0) {
-            EditAgeTagActivity.runnable?.run()
-        }
-        EditAgeTagActivity.setRun(null)
     }
 
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
             mFrom = data as Int
+        }else if(type == 1){
+            mActionRunnable = data as Runnable
         }
     }
 

@@ -65,6 +65,6 @@ public class HomeServiceImpl implements IHomeService {
                 .withInt("from", 0)
                 .navigation();
 
-        EditAgeTagActivity.Companion.setRun(runnable);
+        EditAgeTagActivity.setActionRunnable(runnable);
     }
 }
