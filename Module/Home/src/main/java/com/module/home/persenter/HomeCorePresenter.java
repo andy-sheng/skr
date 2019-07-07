@@ -192,37 +192,9 @@ public class HomeCorePresenter {
         BgMusicManager.getInstance().destory();
     }
 
-    public boolean checkUserInfo(String from) {
+    public void checkUserInfo(String from) {
         MyLog.d(TAG, "checkUserInfo" + " from=" + from);
-        if (UserAccountManager.getInstance().hasLoadAccountFromDB()) {
-            if (!UserAccountManager.getInstance().hasAccount()) {
-                // 到时会有广告页或者启动页挡一下的，先不用管
-                LoginActivity.open(mBaseActivity);
-//                ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
-                return true;
-            } else {
-                if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
-                    // 如果有账号了
-                    if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
-                        boolean isUpAc = U.getActivityUtils().getTopActivity() instanceof UploadAccountInfoActivity;
-                        if (!isUpAc) {
-                            // 顶层的不是这个activity
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
-                                    .greenChannel().navigation();
-                        } else {
-                            MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
-                        }
-                    } else {
-                        //MyUserInfoManager.getInstance().trySyncLocation();
-                        //账号正常
-                        mView.tryJumpSchemeIfNeed();
-                    }
-                } else {
-
-                }
-            }
-        }
-        return false;
+        mView.tryJumpSchemeIfNeed();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

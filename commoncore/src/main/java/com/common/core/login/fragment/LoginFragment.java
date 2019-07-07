@@ -5,20 +5,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.callback.Callback;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
+import com.common.core.login.LoginActivity;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.permission.SkrSdcardPermission;
@@ -30,7 +29,6 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -312,34 +310,13 @@ public class LoginFragment extends BaseFragment implements Callback {
         }
     }
 
-    TipsDialogView mTipsDialogView;
-
     @Override
     public void onCallback(int r, Object obj) {
         if (r == 1) {
             final ApiResult apiResult = (ApiResult) obj;
-            if (apiResult != null && apiResult.getErrno() != 0 && !TextUtils.isEmpty(apiResult.getErrmsg())) {
-                mUiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mTipsDialogView != null) {
-                            mTipsDialogView.dismiss();
-                        }
-                        mTipsDialogView = new TipsDialogView.Builder(getActivity())
-                                .setMessageTip(apiResult.getErrmsg())
-                                .setOkBtnTip("确认")
-                                .setOkBtnClickListener(new DebounceViewClickListener() {
-                                    @Override
-                                    public void clickValid(View v) {
-                                        if (mTipsDialogView != null) {
-                                            mTipsDialogView.dismiss();
-                                        }
-                                    }
-                                })
-                                .build();
-                        mTipsDialogView.showByDialog();
-                    }
-                });
+            Activity activity = getActivity();
+            if(activity instanceof LoginActivity){
+                ((LoginActivity)activity).onLoginResult(1,apiResult);
             }
         }
     }

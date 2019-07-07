@@ -252,6 +252,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
     }
 
     private void goNewMatch() {
+        if (!U.getActivityUtils().isHomeActivityExist()) {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                    .navigation();
+        }
         IPlaywaysModeService playwaysModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
         if (playwaysModeService != null) {
             playwaysModeService.tryGoNewGrabMatch();
@@ -263,7 +267,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         if (getActivity() != null) {
             getActivity().finish();
         }
-        StatisticsAdapter.recordCountEvent("signup", "success2", null,true);
+        StatisticsAdapter.recordCountEvent("signup", "success2", null, true);
     }
 
 
@@ -360,7 +364,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null,true);
+        StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null, true);
     }
 
     @Override

@@ -139,13 +139,11 @@ public class UserAccountManager {
 
             trySetAlias();
 //            ScreenLogView.addInfo("用户id", account.getUid());
+            UserInfoManager.getInstance().initRemark();
+            EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         } else {
 
         }
-
-        UserInfoManager.getInstance().initRemark();
-        EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
-        // 只有非游客模式才发已有账号的事件
     }
 
     public boolean hasLoadAccountFromDB() {

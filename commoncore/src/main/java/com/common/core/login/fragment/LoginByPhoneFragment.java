@@ -1,5 +1,6 @@
 package com.common.core.login.fragment;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
 import com.common.core.account.event.LoginApiErrorEvent;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
@@ -305,21 +307,10 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     public void onCallback(int r, Object obj) {
         MyLog.d(TAG, "onCallback" + " r=" + r + " obj=" + obj);
         if (r == 1) {
-            // 表示登录成功了，这里判断下跳转
-            if (UserAccountManager.getInstance().hasAccount()) {
-                if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
-                    // 如果有账号了
-                    if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
-                        boolean isUpAc = U.getActivityUtils().getTopActivity().getClass().getSimpleName().equals("UploadAccountInfoActivity");
-                        if (!isUpAc) {
-                            // 顶层的不是这个activity
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
-                                    .greenChannel().navigation();
-                        } else {
-                            MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
-                        }
-                    }
-                }
+            final ApiResult apiResult = (ApiResult) obj;
+            Activity activity = getActivity();
+            if (activity instanceof LoginActivity) {
+                ((LoginActivity) activity).onLoginResult(2, apiResult);
             }
         }
     }

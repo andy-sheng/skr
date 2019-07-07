@@ -3,8 +3,11 @@ package com.common.core.login;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -15,9 +18,12 @@ import com.common.core.account.event.AccountEvent;
 import com.common.core.login.fragment.LoginFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.umeng.socialize.UMShareAPI;
@@ -36,6 +42,8 @@ public class LoginActivity extends BaseActivity {
     public static final int REASON_NORMAL = 0; // 因为没有账号到这个页面
     public static final int REASON_LOGOFF = 1; // 因为退出登录所以要到登录页
     int mReason = REASON_NORMAL;
+    Handler mUiHandler = new Handler(Looper.getMainLooper());
+    TipsDialogView mTipsDialogView;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -67,35 +75,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
-        //登陆成功
-        if (mReason == REASON_LOGOFF) {
-            // 因为是因为退出登录 或者 被踢 才到这个登录页面的，所以要清除除了 LoginActivity 外的所有 Activity
-            // 所以这里还要跳到 HomeActivity
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
-                    .navigation();
-        } else {
-            Intent intent = getIntent();
-            String originPath = intent.getStringExtra(KEY_ORIGIN_PATH);
-            MyLog.d(TAG, "登录成功，跳回原页面 originPath:" + originPath);
-            if (!TextUtils.isEmpty(originPath)) {
-                // 登录成功后，跳回原页面
-                ARouter.getInstance().build(originPath)
-                        .with(intent.getExtras())
-                        .navigation();
-            } else {
-                // 必须放在这，防止当前栈中没有activity导致底部露出
-                if (!U.getActivityUtils().isHomeActivityExist()) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
-                            .navigation();
-                } else {
-                }
-            }
-        }
-        finish();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -103,7 +82,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public boolean useEventBus() {
-        return true;
+        return false;
     }
 
     @Override
@@ -126,6 +105,7 @@ public class LoginActivity extends BaseActivity {
     protected void destroy() {
         super.destroy();
         UMShareAPI.get(U.app()).release();
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -134,10 +114,10 @@ public class LoginActivity extends BaseActivity {
         UMShareAPI.get(U.app()).onSaveInstanceState(outState);
     }
 
-    public static void open(Activity activity){
-        Intent intent = new Intent(activity,LoginActivity.class);
+    public static void open(Activity activity) {
+        Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
-        activity.overridePendingTransition(0,0);
+        activity.overridePendingTransition(0, 0);
     }
 
     @Override
@@ -151,4 +131,81 @@ public class LoginActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * @param from      1代表 qq wx 登陆 2 代表手机号登陆
+     * @param apiResult
+     */
+    public void onLoginResult(final int from, final ApiResult apiResult) {
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                onLoginResultInner(from, apiResult);
+            }
+        });
+    }
+
+    public void onLoginResultInner(int from, ApiResult apiResult) {
+        if (from == 1) {
+            if (apiResult.getErrno() != 0) {
+                final String errmsg = apiResult.getErrmsg();
+                if (!TextUtils.isEmpty(errmsg)) {
+                    if (mTipsDialogView != null) {
+                        mTipsDialogView.dismiss();
+                    }
+                    mTipsDialogView = new TipsDialogView.Builder(LoginActivity.this)
+                            .setMessageTip(errmsg)
+                            .setOkBtnTip("确认")
+                            .setOkBtnClickListener(new DebounceViewClickListener() {
+                                @Override
+                                public void clickValid(View v) {
+                                    if (mTipsDialogView != null) {
+                                        mTipsDialogView.dismiss();
+                                    }
+                                }
+                            })
+                            .build();
+                    mTipsDialogView.showByDialog();
+                    return;
+                }
+            }
+        }
+        if (apiResult.getErrno() == 0) {
+            if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
+                // 如果有账号了
+                if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
+                    boolean isUpAc = U.getActivityUtils().getTopActivity().getClass().getSimpleName().equals("UploadAccountInfoActivity");
+                    if (!isUpAc) {
+                        // 顶层的不是这个activity
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+                                .greenChannel().navigation();
+                        /**
+                         * 前去完善资料
+                         */
+                        finish();
+                        return;
+                    } else {
+                        MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
+                    }
+                }
+            }
+            // 如果不需要完善资料,则跳到主页或者来源页
+            Intent intent = getIntent();
+            String originPath = intent.getStringExtra(KEY_ORIGIN_PATH);
+            MyLog.d(TAG, "登录成功，跳回原页面 originPath:" + originPath);
+            if (!TextUtils.isEmpty(originPath)) {
+                // 登录成功后，跳回原页面
+                ARouter.getInstance().build(originPath)
+                        .with(intent.getExtras())
+                        .navigation();
+            } else {
+                // 必须放在这，防止当前栈中没有activity导致底部露出
+                if (!U.getActivityUtils().isHomeActivityExist()) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                            .navigation();
+                } else {
+                }
+            }
+            finish();
+        }
+    }
 }

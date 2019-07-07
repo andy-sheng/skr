@@ -24,6 +24,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.scheme.SchemeSdkActivity;
@@ -181,7 +182,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setAdapter(fragmentPagerAdapter);
 
         mHomePresenter = new HomeCorePresenter(this, this);
-        if (mHomePresenter.checkUserInfo("HomeActivity onCreate")) {
+        if(!UserAccountManager.getInstance().hasAccount()){
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override
@@ -189,6 +190,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                     mMainActContainer.setVisibility(View.VISIBLE);
                 }
             }, 3000);
+            // 没有账号 跳到登陆页面
+            LoginActivity.open(this);
         }
         mCheckInPresenter = new CheckInPresenter(this);
         addPresent(mCheckInPresenter);
