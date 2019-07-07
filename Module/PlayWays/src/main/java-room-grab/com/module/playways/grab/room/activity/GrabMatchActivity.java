@@ -1,10 +1,12 @@
 package com.module.playways.grab.room.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
@@ -18,6 +20,12 @@ import com.module.playways.room.prepare.model.PrepareData;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
 public class GrabMatchActivity extends BaseActivity {
+    public static void open(PrepareData prepareData) {
+        Intent intent = new Intent(U.app(),GrabMatchActivity.class);
+        intent.putExtra("prepare_data", prepareData);
+        U.app().startActivity(intent);
+    }
+
     /**
      * 存起该房间一些状态信息
      */

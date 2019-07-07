@@ -1,5 +1,6 @@
 package com.module.home;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -8,6 +9,7 @@ import com.module.home.event.AuthSuccessEvent;
 import com.module.home.feedback.FeedbackFragment;
 import com.module.home.fragment.HalfRechargeFragment;
 import com.module.home.fragment.PersonFragment4;
+import com.module.home.updateinfo.UploadAccountInfoActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,5 +45,15 @@ public class HomeServiceImpl implements IHomeService {
     @Override
     public void authSuccess() {
         EventBus.getDefault().post(new AuthSuccessEvent());
+    }
+
+    @Override
+    public void goUploadAccountInfoActivity(Activity activity) {
+        UploadAccountInfoActivity.open(activity);
+    }
+
+    @Override
+    public void goHomeActivity(Activity loginActivity) {
+        HomeActivity.open(loginActivity);
     }
 }

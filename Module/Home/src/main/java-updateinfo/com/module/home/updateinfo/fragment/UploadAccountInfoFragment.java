@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
@@ -85,6 +86,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                // HomeAcitivy的
+                UserAccountManager.getInstance().logoff();
                 if (getActivity() != null) {
                     getActivity().finish();
                 }

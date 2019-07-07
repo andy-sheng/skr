@@ -1,5 +1,7 @@
 package com.module.home;
 
+import android.app.Activity;
+
 import com.alibaba.android.arouter.facade.template.IProvider;
 
 /**
@@ -8,4 +10,8 @@ import com.alibaba.android.arouter.facade.template.IProvider;
 public interface IHomeService extends IProvider {
     Object getData(int type, Object object);
     void authSuccess();
+
+    void goUploadAccountInfoActivity(Activity activity);
+
+    void goHomeActivity(Activity loginActivity);
 }

@@ -16,6 +16,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.module.home.R;
 import com.module.playways.IPlaywaysModeService;
 import com.zq.person.view.AgeTagView;
@@ -75,11 +76,16 @@ public class UploadAgeTagActivity extends BaseActivity {
     }
 
     private void goNewMatch() {
+        if (!U.getActivityUtils().isHomeActivityExist()) {
+            IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+            if (channelService != null) {
+                channelService.goHomeActivity(this);
+            }
+        }
         IPlaywaysModeService playwaysModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
         if (playwaysModeService != null) {
             playwaysModeService.tryGoNewGrabMatch();
         }
-
         // TODO: 2019/5/16 因为fastLogin的标记为用在是否要完善资料上了
         MyUserInfoManager.getInstance().setFirstLogin(false);
 

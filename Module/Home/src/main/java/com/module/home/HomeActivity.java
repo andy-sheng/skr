@@ -98,6 +98,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     HomeDialogManager mHomeDialogManager = new HomeDialogManager();
 
+    public static void open(Activity activity) {
+        Intent intent = new Intent(activity,HomeActivity.class);
+        activity.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         boolean needFinish = false;

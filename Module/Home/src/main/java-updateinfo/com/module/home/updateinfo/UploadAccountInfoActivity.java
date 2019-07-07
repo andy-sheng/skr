@@ -1,5 +1,7 @@
 package com.module.home.updateinfo;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -17,6 +19,11 @@ import com.module.home.updateinfo.fragment.UploadAccountInfoFragment;
 public class UploadAccountInfoActivity extends BaseActivity {
 
     public final static String TAG = "UploadAccountInfoActivity";
+
+    public static void open(Activity activity) {
+        Intent intent = new Intent(activity,UploadAccountInfoActivity.class);
+        activity.startActivity(intent);
+    }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {

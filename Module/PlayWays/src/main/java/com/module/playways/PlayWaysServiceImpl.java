@@ -26,6 +26,7 @@ import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.activity.GrabMatchActivity;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
@@ -172,11 +173,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
         prepareData.setTagId(0);
         prepareData.setNewUser(true);
-
-        ARouter.getInstance()
-                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
-                .withSerializable("prepare_data", prepareData)
-                .navigation();
+        GrabMatchActivity.open(prepareData);
     }
 
     @Override

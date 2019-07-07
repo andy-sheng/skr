@@ -175,14 +175,18 @@ public class LoginActivity extends BaseActivity {
                 if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
                     boolean isUpAc = U.getActivityUtils().getTopActivity().getClass().getSimpleName().equals("UploadAccountInfoActivity");
                     if (!isUpAc) {
-                        // 顶层的不是这个activity
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
-                                .greenChannel().navigation();
-                        /**
-                         * 前去完善资料
-                         */
-                        finish();
-                        return;
+                        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+                        if (channelService != null) {
+                            channelService.goUploadAccountInfoActivity(this);
+                            /**
+                             * 前去完善资料
+                             */
+                            finish();
+                            return;
+                        }
+                        // 顶层的不是这个activity 不用这个跳转，这因为慢，会导致露桌面
+//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+//                                .greenChannel().navigation();
                     } else {
                         MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
                     }
@@ -200,8 +204,15 @@ public class LoginActivity extends BaseActivity {
             } else {
                 // 必须放在这，防止当前栈中没有activity导致底部露出
                 if (!U.getActivityUtils().isHomeActivityExist()) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
-                            .navigation();
+                    IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+                    if (channelService != null) {
+                        channelService.goHomeActivity(this);
+                        /**
+                         * 前去完善资料
+                         */
+                        finish();
+                        return;
+                    }
                 } else {
                 }
             }
