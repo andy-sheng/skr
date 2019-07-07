@@ -3,11 +3,11 @@ package com.module.playways.grab.createroom.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -22,8 +22,6 @@ import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 
 /**
  * 一唱到底，创建房间页面
@@ -158,6 +156,14 @@ public class GrabCreateRoomFragment extends BaseFragment {
         if (mTipsDialogView != null) {
             mTipsDialogView.dismiss(false);
         }
+
+        if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                    .withInt("from", 0)
+                    .navigation();
+            return;
+        }
+
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_ROOM_TYPE, roomType);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)

@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.image.fresco.FrescoWorker
@@ -96,6 +97,13 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
 
             override fun selectSpecial(specialModel: SpecialModel?) {
                 MyLog.d(TAG, "selectSpecial specialModel=$specialModel")
+                if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                            .withInt("from", 0)
+                            .navigation()
+                    return
+                }
+
                 if (specialModel != null) {
                     if (specialModel.tagType == SpecialModel.TYPE_VIDEO) {
                         mSkrAudioPermission.ensurePermission({

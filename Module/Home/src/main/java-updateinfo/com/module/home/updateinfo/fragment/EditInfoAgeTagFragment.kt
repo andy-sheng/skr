@@ -13,7 +13,7 @@ import com.module.home.R
 import com.zq.person.view.AgeTagView
 
 class EditInfoAgeTagFragment : BaseFragment() {
-    val FROM_HOME = 0;
+    val FROM_HOME = 0
     val FROM_PERSON_INFO = 1
     lateinit var mTitlebar: CommonTitleBar
     lateinit var mAgeTagView: AgeTagView
