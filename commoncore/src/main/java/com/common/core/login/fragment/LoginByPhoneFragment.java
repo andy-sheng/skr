@@ -60,16 +60,6 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
-    Drawable mGrayDrawable = new DrawableCreator.Builder()
-            .setCornersRadius(U.getDisplayUtils().dip2px(25))
-            .setSolidColor(Color.parseColor("#DBD8CD"))
-            .build();
-
-    Drawable mYellowDraable = new DrawableCreator.Builder()
-            .setCornersRadius(U.getDisplayUtils().dip2px(25))
-            .setSolidColor(Color.parseColor("#FFC15B"))
-            .build();
-
     @Override
     public int initView() {
         return R.layout.core_phone_login_layout;
@@ -208,12 +198,11 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                         U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
                         mGetCodeTv.setSelected(true);
                         mGetCodeTv.setClickable(false);
-                        mGetCodeTv.setBackground(mGrayDrawable);
                         mCodeInputTv.setFocusable(true);
                         mCodeInputTv.setFocusableInTouchMode(true);
                         mCodeInputTv.requestFocus();
                         mLoginIv.setClickable(true);
-                        mLoginIv.setBackground(mYellowDraable);
+                        mLoginIv.setAlpha(1f);
                         startTimeTask();
                     } else {
                         setHintText(result.getErrmsg(), true);
@@ -243,10 +232,9 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                         mGetCodeTv.setText("获取验证码");
                         mGetCodeTv.setSelected(false);
                         mGetCodeTv.setClickable(true);
-                        mGetCodeTv.setBackground(mYellowDraable);
 
                         mLoginIv.setClickable(false);
-                        mLoginIv.setBackground(mGrayDrawable);
+                        mLoginIv.setAlpha(0.5f);
                     }
                 });
     }
