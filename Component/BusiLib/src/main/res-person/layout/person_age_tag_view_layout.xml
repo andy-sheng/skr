@@ -57,7 +57,7 @@
         android:id="@+id/college_iv"
         android:layout_width="@dimen/view_74_dp"
         android:layout_height="@dimen/view_74_dp"
-        android:layout_marginTop="@dimen/view_56_dp"
+        android:layout_marginTop="@dimen/view_74_dp"
         android:layout_marginRight="@dimen/view_60_dp"
         app:bl_pressed_drawable="@drawable/age_tag_college_icon_selected"
         app:bl_selected_drawable="@drawable/age_tag_college_icon_selected"

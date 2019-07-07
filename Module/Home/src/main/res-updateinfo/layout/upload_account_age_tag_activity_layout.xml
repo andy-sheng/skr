@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4C56AA">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/grab_back"
+        app:leftType="textView"
+        app:rightText="2/2"
+        app:rightTextColor="@color/white_trans_80"
+        app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightTextStyle="BOLD"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#4C56AA"
+        app:titleBarColor="#4C56AA" />
+
+    <TextView
+        android:id="@+id/hint_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:text="让撕歌更懂你，匹配更精准"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titlebar" />
+
+    <com.zq.person.view.AgeTagView
+        android:id="@+id/age_tag_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_66_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hint_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/submit_tv"
+        android:layout_width="@dimen/view_134_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_80_dp"
+        android:gravity="center"
+        android:text="开启嗨唱之旅"
+        android:textColor="#AD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFC15B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

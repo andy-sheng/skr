@@ -18,11 +18,6 @@ public class UploadAccountInfoActivity extends BaseActivity {
 
     public final static String TAG = "UploadAccountInfoActivity";
 
-    public static final String BUNDLE_IS_UPLOAD = "bundle_is_upload";
-    public static final String BUNDLE_UPLOAD_NICKNAME = "upload_nickname";
-    public static final String BUNDLE_UPLOAD_SEX = "upload_sex";
-    public static final String BUNDLE_UPLOAD_AGE = "upload_age";
-
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.upload_account_info_activity_layout;
@@ -30,13 +25,9 @@ public class UploadAccountInfoActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(BUNDLE_IS_UPLOAD, true);
-
         if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
-                    .setBundle(bundle)
                     .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
