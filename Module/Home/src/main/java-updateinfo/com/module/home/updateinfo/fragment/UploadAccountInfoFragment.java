@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.callback.Callback;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -87,10 +88,15 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 // HomeAcitivy的
-                UserAccountManager.getInstance().logoff();
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
+                UserAccountManager.getInstance().logoff(1, new Callback() {
+                    @Override
+                    public void onCallback(int r, Object obj) {
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
+                    }
+                });
+
             }
         });
 

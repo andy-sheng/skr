@@ -135,16 +135,7 @@ public class LoginActivity extends BaseActivity {
      * @param from      1代表 qq wx 登陆 2 代表手机号登陆
      * @param apiResult
      */
-    public void onLoginResult(final int from, final ApiResult apiResult) {
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                onLoginResultInner(from, apiResult);
-            }
-        });
-    }
-
-    public void onLoginResultInner(int from, ApiResult apiResult) {
+    public void onLoginResult(int from, ApiResult apiResult) {
         if (from == 1) {
             if (apiResult.getErrno() != 0) {
                 final String errmsg = apiResult.getErrmsg();

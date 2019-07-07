@@ -244,7 +244,7 @@ public class UserAccountManager {
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
-                    public void process(ApiResult obj) {
+                    public void process(final ApiResult obj) {
                         if (obj.getErrno() == 0) {
                             UserAccount userAccount = parseRsp(obj.getData(), phoneNum);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
@@ -255,9 +255,14 @@ public class UserAccountManager {
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                             EventBus.getDefault().post(new LoginApiErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
-                        if (callback != null) {
-                            callback.onCallback(1,obj);
-                        }
+                        mUiHanlder.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (callback != null) {
+                                    callback.onCallback(1,obj);
+                                }
+                            }
+                        });
                     }
 
                     @Override
@@ -293,7 +298,7 @@ public class UserAccountManager {
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
-                    public void process(ApiResult obj) {
+                    public void process(final ApiResult obj) {
                         if (obj.getErrno() == 0) {
                             UserAccount userAccount = parseRsp(obj.getData(), "");
                             if (mode == 3) {
@@ -307,9 +312,14 @@ public class UserAccountManager {
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                         }
-                        if (callback != null) {
-                            callback.onCallback(1,obj);
-                        }
+                        mUiHanlder.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (callback != null) {
+                                    callback.onCallback(1,obj);
+                                }
+                            }
+                        });
                     }
 
                     @Override
@@ -375,8 +385,8 @@ public class UserAccountManager {
     /**
      * 用户主动退出登录
      */
-    public void logoff() {
-        logoff(false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true);
+    public void logoff(int from,Callback callback) {
+        logoff(from,false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true,callback);
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
@@ -384,7 +394,7 @@ public class UserAccountManager {
      * 收到账号过期的通知，被踢下线等等
      */
     public void notifyAccountExpired() {
-        logoff(false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false);
+        logoff(1,false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false,null);
     }
 
     /**
@@ -400,7 +410,7 @@ public class UserAccountManager {
      *
      * @param deleteAccount
      */
-    public void logoff(final boolean deleteAccount, final int reason, boolean notifyServer) {
+    public void logoff(final int from, final boolean deleteAccount, final int reason, boolean notifyServer, final Callback callback) {
         MyLog.w(TAG, "logoff" + " deleteAccount=" + deleteAccount + " reason=" + reason + " notifyServer=" + notifyServer);
         if (!UserAccountManager.getInstance().hasAccount()) {
             MyLog.w(TAG, "logoff but hasAccount = false");
@@ -412,7 +422,9 @@ public class UserAccountManager {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        U.getToastUtil().showShort("登出成功了");
+                        if(from==2){
+                            U.getToastUtil().showShort("登出成功了");
+                        }
                     }
                 }
             });
@@ -441,6 +453,14 @@ public class UserAccountManager {
                     JiGuangPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
+                    mUiHanlder.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onCallback(1,null);
+                            }
+                        }
+                    });
                     emitter.onComplete();
                 }
             })

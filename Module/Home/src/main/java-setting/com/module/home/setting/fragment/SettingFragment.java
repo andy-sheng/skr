@@ -347,7 +347,7 @@ public class SettingFragment extends BaseFragment {
                             mDialogPlus.dismiss(false);
                         }
                         U.getFragmentUtils().popFragment(SettingFragment.this);
-                        UserAccountManager.getInstance().logoff();
+                        UserAccountManager.getInstance().logoff(2,null);
                     }
                 })
                 .setCancelBtnClickListener(new AnimateClickListener() {
