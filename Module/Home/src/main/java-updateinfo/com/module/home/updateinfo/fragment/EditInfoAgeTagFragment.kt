@@ -83,8 +83,8 @@ class EditInfoAgeTagFragment : BaseFragment() {
         super.destroy()
         if (mAgeStage != 0) {
             EditAgeTagActivity.runnable?.run()
-            EditAgeTagActivity.setRun(null)
         }
+        EditAgeTagActivity.setRun(null)
     }
 
     override fun setData(type: Int, data: Any?) {

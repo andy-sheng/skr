@@ -58,6 +58,8 @@
         app:constraint_referenced_ids="song_name_tv,song_owner_iv" />
 
     <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/double_video_self_sing_card_stub"
         layout="@layout/double_video_self_sing_card_layout" />
 

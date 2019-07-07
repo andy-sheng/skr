@@ -24,6 +24,8 @@
         android:layout_marginBottom="@dimen/view_55_dp"
         android:layout="@layout/double_normal_lyric_stub_layout"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ViewStub
