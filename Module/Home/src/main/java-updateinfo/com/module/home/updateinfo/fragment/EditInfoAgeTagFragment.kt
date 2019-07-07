@@ -6,6 +6,7 @@ import android.view.View
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
 import com.module.home.R
 import com.zq.person.view.AgeTagView
@@ -27,27 +28,29 @@ class EditInfoAgeTagFragment : BaseFragment() {
             U.getFragmentUtils().popFragment(this@EditInfoAgeTagFragment)
         }
 
-        mTitlebar.rightTextView.setOnClickListener {
-            var ageStage = mAgeTagView.getSelectTag()
-            if (ageStage == 0) {
-                U.getToastUtil().showShort("您当前选择的年龄段为空")
-            } else if (ageStage == MyUserInfoManager.getInstance().ageStage) {
-                U.getFragmentUtils().popFragment(this@EditInfoAgeTagFragment)
-            } else {
-                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                        .setAgeStage(ageStage)
-                        .build(), false, false, object : MyUserInfoManager.ServerCallback {
-                    override fun onSucess() {
-                        U.getToastUtil().showShort("年龄段更新成功")
-                        U.getFragmentUtils().popFragment(this@EditInfoAgeTagFragment)
-                    }
+        mTitlebar.rightTextView.setOnClickListener(object :DebounceViewClickListener(){
+            override fun clickValid(v: View?) {
+                var ageStage = mAgeTagView.getSelectTag()
+                if (ageStage == 0) {
+                    U.getToastUtil().showShort("您当前选择的年龄段为空")
+                } else if (ageStage == MyUserInfoManager.getInstance().ageStage) {
+                    U.getFragmentUtils().popFragment(this@EditInfoAgeTagFragment)
+                } else {
+                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                            .setAgeStage(ageStage)
+                            .build(), false, false, object : MyUserInfoManager.ServerCallback {
+                        override fun onSucess() {
+                            U.getToastUtil().showShort("年龄段更新成功")
+                            U.getFragmentUtils().popFragment(this@EditInfoAgeTagFragment)
+                        }
 
-                    override fun onFail() {
+                        override fun onFail() {
 
-                    }
-                })
+                        }
+                    })
+                }
             }
-        }
+        })
 
         if (MyUserInfoManager.getInstance().ageStage != 0) {
             mAgeTagView.setSelectTag(MyUserInfoManager.getInstance().ageStage)

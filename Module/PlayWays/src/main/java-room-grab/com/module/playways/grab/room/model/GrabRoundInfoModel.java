@@ -842,6 +842,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 totalTs = 30 * 1000;
             } else if (getWantSingType() == EWantSingType.EWST_MIN_GAME.getValue()) {
                 totalTs = 90 * 1000;
+            } else if (getWantSingType() == EWantSingType.EWST_FREE_MICRO.getValue()) {
+                totalTs = 180 * 1000;
+            } else {
+                totalTs = 20 * 1000;
             }
         }
         return totalTs;
