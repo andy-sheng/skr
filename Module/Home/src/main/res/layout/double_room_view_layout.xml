@@ -7,9 +7,9 @@
     android:background="@drawable/double_room_view_bg">
 
     <ImageView
-        android:layout_width="@dimen/view_248_dp"
-        android:layout_height="@dimen/view_115_dp"
-        android:layout_marginTop="@dimen/view_90_dp"
+        android:layout_width="@dimen/view_262_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_135_dp"
         android:background="@drawable/double_game_view_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
