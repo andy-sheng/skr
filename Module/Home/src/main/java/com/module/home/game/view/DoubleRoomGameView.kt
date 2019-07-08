@@ -122,7 +122,7 @@ class DoubleRoomGameView : RelativeLayout {
                                                         .withBundle("bundle", bundle)
                                                         .navigation()
                                             } else {
-                                                showSexFilterView()
+                                                showSexFilterView(true)
                                             }
                                         }, {
                                             MyLog.e("SelectSexDialogView", it)
@@ -158,7 +158,7 @@ class DoubleRoomGameView : RelativeLayout {
 
         filter_tv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                showSexFilterView()
+                showSexFilterView(false)
             }
         })
     }
@@ -167,13 +167,9 @@ class DoubleRoomGameView : RelativeLayout {
         getRemainTimes(false)
     }
 
-    fun showSexFilterView() {
+    fun showSexFilterView(needMatch: Boolean) {
         if (mSelectSexDialogPlus == null) {
             mSelectView = SelectSexDialogView(this@DoubleRoomGameView.context)
-            mSelectView?.onClickMatch = { isFindMale, isMeMale ->
-                mSelectSexDialogPlus?.dismiss()
-            }
-
             mSelectSexDialogPlus = DialogPlus.newDialog(context!!)
                     .setContentHolder(ViewHolder(mSelectView))
                     .setGravity(Gravity.BOTTOM)
@@ -181,6 +177,21 @@ class DoubleRoomGameView : RelativeLayout {
                     .setOverlayBackgroundResource(R.color.black_trans_80)
                     .setExpanded(false)
                     .create()
+        }
+
+        mSelectView?.onClickMatch = { isFindMale, isMeMale ->
+            mSelectSexDialogPlus?.dismiss()
+            if (needMatch) {
+                val bundle = Bundle()
+                bundle.putBoolean("is_find_male", isFindMale
+                        ?: true)
+                bundle.putBoolean("is_me_male", isMeMale
+                        ?: true)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                        .withBundle("bundle", bundle)
+                        .navigation()
+            }
         }
 
         mSelectView?.reset()
