@@ -82,6 +82,7 @@ class DoubleRoomGameView : RelativeLayout {
                 }
 
                 if (hasRemainTime) {
+                    StatisticsAdapter.recordCountEvent("cp", "invite1", null)
                     mSkrAudioPermission.ensurePermission({
                         mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
                             /**
