@@ -49,6 +49,7 @@
             gameType:type="grab" />
 
         <com.module.playways.view.EdgeTransparentView
+            android:id="@+id/comment_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
@@ -79,7 +80,7 @@
             android:id="@+id/mini_owner_mic_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/comment_view"
+            android:layout_alignBottom="@id/comment_bg"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_10_dp"
