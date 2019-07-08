@@ -167,12 +167,15 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mPresenter.initGameKConfig()
         if (mGameVp.currentItem == 0) {
             mFriendRoomGameView?.initData()
+            StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
         } else if (mGameVp.currentItem == 1) {
             mFriendRoomGameView?.stopTimer()
             mQuickGameView?.initData()
+            StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
         } else if (mGameVp.currentItem == 2) {
             mFriendRoomGameView?.stopTimer()
             mDoubleRoomGameView?.initData()
+            StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
         }
         StatisticsAdapter.recordCountEvent("grab", "expose", null)
     }
