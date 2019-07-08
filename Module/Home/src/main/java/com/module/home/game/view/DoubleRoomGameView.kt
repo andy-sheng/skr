@@ -82,7 +82,6 @@ class DoubleRoomGameView : RelativeLayout {
                 }
 
                 if (hasRemainTime) {
-                    StatisticsAdapter.recordCountEvent("cp", "invite1", null)
                     mSkrAudioPermission.ensurePermission({
                         mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
                             /**
@@ -138,6 +137,7 @@ class DoubleRoomGameView : RelativeLayout {
 
         invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                StatisticsAdapter.recordCountEvent("cp", "invite3", null)
                 mSkrAudioPermission.ensurePermission({
                     mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
                         /**
