@@ -90,7 +90,7 @@ class EditInfoAgeTagFragment : BaseFragment() {
         if (type == 0) {
             mFrom = data as Int
         }else if(type == 1){
-            mActionRunnable = data as Runnable
+            mActionRunnable = data as Runnable?
         }
     }
 
