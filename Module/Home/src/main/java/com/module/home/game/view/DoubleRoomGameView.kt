@@ -132,6 +132,7 @@ class DoubleRoomGameView : RelativeLayout {
                     }, true)
                 } else {
                     U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
+                    StatisticsAdapter.recordCountEvent("cp", "invite1_outchance", null)
                 }
             }
         })
