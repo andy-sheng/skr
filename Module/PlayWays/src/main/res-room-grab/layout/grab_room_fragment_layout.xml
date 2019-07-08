@@ -181,7 +181,6 @@
 
     <!--纯音频模式下特有的view 结束-->
 
-
     <com.module.playways.grab.room.view.GrabGameOverView
         android:id="@+id/grab_game_over_view"
         android:layout_width="match_parent"
@@ -262,7 +261,7 @@
 
     <!--放弃演唱-->
     <com.module.playways.grab.room.view.GrabGiveupView
-        android:id="@+id/grab_pass_view"
+        android:id="@+id/grab_giveup_view"
         android:layout_width="@dimen/view_97_dp"
         android:layout_height="@dimen/view_60_dp"
         android:layout_alignTop="@+id/bottom_bg_vp"

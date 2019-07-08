@@ -16,6 +16,9 @@ import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RoundOverCardView {
 
     NormalRoundOverCardView mNormalRoundOverCardView;   // 轮次结束的卡片
@@ -96,5 +99,13 @@ public class RoundOverCardView {
                 mMiniGameOverCardView.setVisibility(View.GONE);
             }
         }
+    }
+
+    public List<View> getRealViews() {
+        List<View> list = new ArrayList<>();
+        list.add(mNormalRoundOverCardView.getRealView());
+        list.add(mPKRoundOverCardView.getRealView());
+        list.add(mMiniGameOverCardView.getRealView());
+        return list;
     }
 }

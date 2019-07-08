@@ -37,7 +37,6 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.beauty.JumpBeautyFromKt;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
@@ -222,6 +221,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabVoiceControlPanelView mGrabVoiceControlPanelView;
 
     GiftPanelView mGiftPanelView;
+
+    GiftContinueViewGroup mGiftContinueViewGroup;
 
     ContinueSendView mContinueSendView;
 
@@ -1075,8 +1076,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initGiftDisplayView() {
-        GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
-        giftContinueViewGroup.setRoomData(mRoomData);
+        mGiftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
+        mGiftContinueViewGroup.setRoomData(mRoomData);
         GiftOverlayAnimationViewGroup giftOverlayAnimationViewGroup = mRootView.findViewById(R.id.gift_overlay_animation_vg);
         giftOverlayAnimationViewGroup.setRoomData(mRoomData);
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
@@ -1172,7 +1173,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         mGrabOpBtn.hide("initGrabOpView");
 
-        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_pass_view);
+        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_giveup_view);
         mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
             public void giveUp(boolean ownerControl) {

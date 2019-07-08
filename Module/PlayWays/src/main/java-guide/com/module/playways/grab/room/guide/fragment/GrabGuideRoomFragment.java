@@ -449,7 +449,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
 
         mGrabOpBtn.hide("initGrabOpView");
 
-        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_pass_view);
+        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_giveup_view);
         mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
             public void giveUp(boolean b) {

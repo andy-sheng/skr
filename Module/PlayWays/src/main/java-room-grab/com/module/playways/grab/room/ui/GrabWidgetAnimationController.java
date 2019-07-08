@@ -114,6 +114,13 @@ public class GrabWidgetAnimationController {
         viewList.add(mF.mGrabTopContentView);
         viewList.add(mF.mPracticeFlagIv);
         viewList.add(mF.mGameTipsManager.getViewByKey(mF.TAG_SELF_SING_TIP_VIEW));
+        viewList.add(mF.mGrabOpBtn);
+        viewList.add(mF.mGrabGiveupView);
+        viewList.add(mF.mTurnInfoCardView);
+        viewList.add(mF.mSongInfoCardView);
+        viewList.add(mF.mRoundOverCardView.getRealViews());
+        viewList.add(mF.mGiftContinueViewGroup);
+
         if (mF.mRoomData.isVideoRoom()) {
             viewList.add(mF.mGrabVideoDisplayView.getRealView());
         } else {
