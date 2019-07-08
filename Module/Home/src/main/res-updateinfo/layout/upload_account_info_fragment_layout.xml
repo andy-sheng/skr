@@ -13,7 +13,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDrawable="@drawable/grab_back"
+        app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
         app:rightText="1/2"
         app:rightTextColor="@color/white_trans_80"

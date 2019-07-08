@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_40_dp"
-        android:background="@drawable/grab_back"
+        android:background="@drawable/img_back"
         android:padding="@dimen/view_16_dp" />
 
     <com.common.view.ex.ExImageView
