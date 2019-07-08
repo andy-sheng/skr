@@ -22,7 +22,7 @@ import com.module.playways.room.prepare.model.PrepareData;
 @Route(path = RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
 public class GrabMatchActivity extends BaseActivity {
     public static void open(Activity activity, PrepareData prepareData) {
-        Intent intent = new Intent(activity,GrabMatchActivity.class);
+        Intent intent = new Intent(activity, GrabMatchActivity.class);
         intent.putExtra("prepare_data", prepareData);
         activity.startActivity(intent);
     }
@@ -37,6 +37,15 @@ public class GrabMatchActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue;
+            }
+            if (activity == this) {
+                continue;
+            }
+            activity.finish();
+        }
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData == null) {
             MyLog.e("GrabMatchActivity", "initData prepareData is null");

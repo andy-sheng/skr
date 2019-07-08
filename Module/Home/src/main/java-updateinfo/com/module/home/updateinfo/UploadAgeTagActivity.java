@@ -107,12 +107,6 @@ public class UploadAgeTagActivity extends BaseActivity {
         // TODO: 2019/5/16 因为fastLogin的标记为用在是否要完善资料上了
         MyUserInfoManager.getInstance().setFirstLogin(false);
 
-        for (Activity activity : U.getActivityUtils().getActivityList()) {
-            if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue;
-            }
-            activity.finish();
-        }
         StatisticsAdapter.recordCountEvent("signup", "success2", null, true);
     }
 
