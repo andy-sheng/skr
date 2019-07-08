@@ -91,6 +91,8 @@ public class UploadAgeTagActivity extends BaseActivity {
 
         mSubmitTv.setClickable(false);
         mSubmitTv.setAlpha(0.5f);
+
+        StatisticsAdapter.recordCountEvent("signup", "age_expose", null, true);
     }
 
     private void goNewMatch() {
