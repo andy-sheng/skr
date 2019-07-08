@@ -36,7 +36,7 @@ public class UploadAccountInfoActivity extends BaseActivity {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
                     .setAddToBackStack(false)
-                    .setHasAnimation(true)
+                    .setHasAnimation(false)
                     .build());
         }else{
             finish();
