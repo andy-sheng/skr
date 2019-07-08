@@ -35,6 +35,7 @@ public class DyEffectResManager {
     private File sRootDir = U.app().getExternalFilesDir("dy_effects");// 抖音资源文件根目录
     private File mLicenseFile = new File(sRootDir, "license/dy_android_license.licbag");// 抖音资源文件根目录
     private File mModelDir = new File(sRootDir, "model/");
+    private int mDeep = 0;
 
     public DyEffectResManager() {
 
@@ -48,6 +49,7 @@ public class DyEffectResManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 step1();
+                emitter.onComplete();
             }
         }).subscribeOn(U.getThreadUtils().urgentIO())
                 .subscribe();
@@ -78,7 +80,7 @@ public class DyEffectResManager {
                 mCallback.onResReady(mModelDir.getPath(), mLicenseFile.getPath());
             }
         } else {
-            downloadRes();
+            downloadRes(0);
         }
     }
 
@@ -90,15 +92,15 @@ public class DyEffectResManager {
                 .subscribe(new Consumer<ApiResult>() {
                     @Override
                     public void accept(ApiResult apiResult) throws Exception {
-                        if (apiResult.getErrno() == 0) {
+                        if (apiResult!=null && apiResult.getErrno() == 0) {
                             String url = apiResult.getData().getString("caURL");
                             String expireMs = apiResult.getData().getString("expireMs");
                             if (U.getHttpUtils().downloadFileSync(url, mLicenseFile, true, null)) {
-                                MyLog.e(TAG, "证书下载成功");
+                                MyLog.w(TAG, "证书下载成功");
                                 U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().longlySp(), "license_expire_ts", Long.parseLong(expireMs));
                                 step2();
                             } else {
-                                MyLog.e(TAG, "证书下载失败");
+                                MyLog.w(TAG, "证书下载失败");
                             }
 
                         }
@@ -111,11 +113,15 @@ public class DyEffectResManager {
                 });
     }
 
-    private void downloadRes() {
+
+    private void downloadRes(int deep) {
+        if(deep>5){
+            return;
+        }
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("dy_effects"));
         File resZipFile = new File(U.getAppInfoUtils().getMainDir(), "dy_effect_resource.zip");
         if (U.getHttpUtils().downloadFileSync(RES_DOWNLOAD_URL, resZipFile, true, null)) {
-            MyLog.d(TAG, "资源下载成功");
+            MyLog.w(TAG, "资源下载成功");
             try {
                 String tempFile = U.getAppInfoUtils().getSubDirPath("effect_temp");
                 U.getZipUtils().unzipFile(resZipFile.getPath(), tempFile);
@@ -142,6 +148,7 @@ public class DyEffectResManager {
             }
         } else {
             MyLog.e(TAG, "资源下载失败");
+            downloadRes(deep+1);
         }
     }
 
