@@ -118,7 +118,7 @@ public class GrabWidgetAnimationController {
         viewList.add(mF.mGrabGiveupView);
         viewList.add(mF.mTurnInfoCardView);
         viewList.add(mF.mSongInfoCardView);
-        viewList.add(mF.mRoundOverCardView.getRealViews());
+        viewList.addAll(mF.mRoundOverCardView.getRealViews());
         viewList.add(mF.mGiftContinueViewGroup);
 
         if (mF.mRoomData.isVideoRoom()) {
