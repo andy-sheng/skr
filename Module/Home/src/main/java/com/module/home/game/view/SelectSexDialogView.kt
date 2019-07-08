@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
@@ -65,6 +66,7 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
     }
 
     fun reset() {
+        StatisticsAdapter.recordCountEvent("cp", "filter_expose", null)
         mFindMaleIv?.isSelected = false
         mFindFemaleIv?.isSelected = false
         mMeMaleIv?.isSelected = false
