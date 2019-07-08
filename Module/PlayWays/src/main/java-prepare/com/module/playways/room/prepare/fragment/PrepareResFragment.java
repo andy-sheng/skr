@@ -1,6 +1,5 @@
 package com.module.playways.room.prepare.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,24 +10,16 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
-import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.manager.BgMusicManager;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.room.prepare.model.PrepareData;
@@ -40,8 +31,6 @@ import com.module.playways.room.song.model.SongModel;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.HashMap;
-
 /**
  * 准备资源界面
  */
@@ -52,7 +41,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     RelativeLayout mMainActContainer;
 
     ExImageView mIvTop;
-//    SimpleDraweeView mSongIcon;
+    //    SimpleDraweeView mSongIcon;
     ExTextView mSongName;
     ExTextView mTvDuration;
     ExTextView mTvLyric;
@@ -70,6 +59,9 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     Handler mUiHandler;
 
     boolean mSetBackGround = false;
+
+    boolean mIsLyricPrepared = false;
+    boolean mIsResPrepared = false;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -122,7 +114,8 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                 mUiHandler.post(() -> {
 //                    U.getToastUtil().showShort("歌曲资源已经准备好了");
                     songResProgressbar.setProgress(100);
-                    mIvStartMatch.setEnabled(true);
+                    mIsResPrepared = true;
+                    tryEnableStartMatchBtn();
                 });
             }
 
@@ -176,6 +169,12 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         playBackgroundMusic();
     }
 
+    private void tryEnableStartMatchBtn() {
+        if (mIsLyricPrepared && mIsResPrepared) {
+            mIvStartMatch.setEnabled(true);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -193,12 +192,20 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     public void onLyricReady(String lyrics) {
         MyLog.d(TAG, "onLyricReady" + " lyrics=" + lyrics);
         mTvLyric.setText(lyrics);
+        mIsLyricPrepared = true;
+        tryEnableStartMatchBtn();
+    }
+
+    @Override
+    public void lyricReadyFailed() {
+        U.getToastUtil().showShort("下载资源失败，请退出重试");
+        MyLog.w(TAG, "lyricReadyFailed");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if(mPrepareSongPresenter != null){
+        if (mPrepareSongPresenter != null) {
             mPrepareSongPresenter.cancelTask();
         }
     }
