@@ -1346,6 +1346,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         if (grabRoundInfoModel != null && grabRoundInfoModel.isFreeMicRound()) {
             // 自由麦环节 直接显示卡片了
             mSelfSingCardView.playLyric();
+            mGrabOpBtn.hide("onSongInfoCardPlayOver2");
             if (mRoomData.isOwner()) {
                 mGrabGiveupView.delayShowGiveUpView(true);
             }
