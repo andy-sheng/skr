@@ -48,10 +48,18 @@
         android:layout_height="@dimen/view_18_dp"
         android:layout_marginLeft="@dimen/view_4_dp"
         android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical|left"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="@id/tv_song_name"
+        app:layout_constraintRight_toLeftOf="@id/tv_manage"
         app:layout_constraintTop_toBottomOf="@id/tv_song_name" />
 
     <com.common.view.ex.ExTextView

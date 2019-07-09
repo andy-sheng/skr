@@ -61,11 +61,18 @@
         android:layout_height="@dimen/view_18_dp"
         android:layout_marginLeft="@dimen/view_4_dp"
         android:layout_marginTop="@dimen/view_4_dp"
-        android:gravity="center"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="@id/song_name_tv"
+        app:layout_constraintRight_toLeftOf="@id/select_tv"
         app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
     <View
