@@ -3,6 +3,8 @@ package com.module.home.game.view
 import android.content.Context
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
 import android.view.View
@@ -48,6 +50,7 @@ class FriendRoomGameView : RelativeLayout {
         const val TAG = "FriendRoomGameView"
     }
 
+    private var mListener: RecyclerView.OnScrollListener? = null
     private var mFriendRoomVeritAdapter: FriendRoomVerticalAdapter
     private var mDisposable: Disposable? = null
     private var mSkrAudioPermission: SkrAudioPermission
@@ -130,6 +133,22 @@ class FriendRoomGameView : RelativeLayout {
         })
         recycler_view.adapter = mFriendRoomVeritAdapter
 
+        mListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == SCROLL_STATE_IDLE) {
+                    starTimer((mRecommendInterval * 1000).toLong())
+                } else {
+                    stopTimer()
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        }
+        recycler_view.addOnScrollListener(mListener)
+
         val mLoadSir = LoadSir.Builder()
                 .addCallback(EmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "暂时没有房间了～", "#4cffffff"))
                 .build()
@@ -146,11 +165,16 @@ class FriendRoomGameView : RelativeLayout {
     }
 
     fun initData() {
+        starTimer(0)
+    }
+
+    fun starTimer(delayTimeMill: Long) {
         if (mRecommendInterval <= 0) {
             mRecommendInterval = 15
         }
         stopTimer()
         mRecommendTimer = HandlerTaskTimer.newBuilder()
+                .delay(delayTimeMill)
                 .take(-1)
                 .interval((mRecommendInterval * 1000).toLong())
                 .start(object : HandlerTaskTimer.ObserverW() {
@@ -158,7 +182,6 @@ class FriendRoomGameView : RelativeLayout {
                         loadRecommendData()
                     }
                 })
-
     }
 
     fun stopTimer() {
@@ -205,5 +228,7 @@ class FriendRoomGameView : RelativeLayout {
         mRecommendTimer?.dispose()
         mDisposable?.dispose()
         mInviteFriendDialog?.dismiss(false)
+        recycler_view.removeOnScrollListener(mListener)
+        mListener = null
     }
 }
