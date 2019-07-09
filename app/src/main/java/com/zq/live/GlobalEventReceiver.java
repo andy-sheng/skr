@@ -166,19 +166,22 @@ public class GlobalEventReceiver {
         if (mTipsDialogView != null) {
             mTipsDialogView.dismiss(false);
         }
-        mTipsDialogView  = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                .setMessageTip("网络异常\n请检查网络连接后重试")
-                .setOkBtnTip("确认")
-                .setOkBtnClickListener(new AnimateClickListener() {
-                    @Override
-                    public void click(View view) {
-                        if (mTipsDialogView != null) {
-                            mTipsDialogView.dismiss();
+        Activity activity = U.getActivityUtils().getTopActivity();
+        if(activity!=null){
+            mTipsDialogView  = new TipsDialogView.Builder(activity)
+                    .setMessageTip("网络异常\n请检查网络连接后重试")
+                    .setOkBtnTip("确认")
+                    .setOkBtnClickListener(new AnimateClickListener() {
+                        @Override
+                        public void click(View view) {
+                            if (mTipsDialogView != null) {
+                                mTipsDialogView.dismiss();
+                            }
                         }
-                    }
-                })
-                .build();
-        mTipsDialogView.showByDialog();
+                    })
+                    .build();
+            mTipsDialogView.showByDialog();
+        }
     }
 
 }

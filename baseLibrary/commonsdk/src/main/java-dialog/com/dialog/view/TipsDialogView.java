@@ -25,16 +25,6 @@ public class TipsDialogView extends RelativeLayout {
         init();
     }
 
-    private TipsDialogView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    private TipsDialogView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
     private void init() {
         inflate(getContext(), R.layout.template_tips1_dialog, this);
 
@@ -83,8 +73,6 @@ public class TipsDialogView extends RelativeLayout {
 
     public static final class Builder {
         TipsDialogView tipsDialogView;
-        private ExTextView mMessageTv;
-        private ExTextView mOkBtn;
 
         public Builder(Context context) {
             tipsDialogView = new TipsDialogView(context);

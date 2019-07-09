@@ -86,12 +86,15 @@ public class MyMediaRecorder {
         config(filePath);
         try {
             if (mMediaRecorder != null) {
+                if(mRecording){
+                    mMediaRecorder.reset();
+                }
                 mMediaRecorder.prepare();
                 mMediaRecorder.start();
             }
             mStartRecordingTs = System.currentTimeMillis();
             mRecording = true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             MyLog.e(TAG, e);
         }
     }
