@@ -1,7 +1,9 @@
 package com.module.home.game.view
 
 import android.content.Context
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
@@ -33,6 +35,7 @@ import com.module.home.R
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.zq.dialog.InviteFriendDialog
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 
@@ -55,6 +58,7 @@ class FriendRoomGameView : RelativeLayout {
     var mRecommendInterval: Int = 0
 
     var mLoadService: LoadService<*>
+    var mInviteFriendDialog: InviteFriendDialog? = null
 
     constructor(context: Context) : super(context) {}
 
@@ -83,13 +87,13 @@ class FriendRoomGameView : RelativeLayout {
                 initData()
             }
         })
-        recycler_view.setLayoutManager(LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false))
 
+        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(object : RecyclerOnItemClickListener<RecommendModel> {
 
             override fun onItemClicked(view: View, position: Int, model: RecommendModel?) {
-                StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
                 if (model != null) {
+                    StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
                     val friendRoomModel = model as RecommendModel?
                     if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
                         if (friendRoomModel.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
@@ -116,7 +120,11 @@ class FriendRoomGameView : RelativeLayout {
                         MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
                     }
                 } else {
-                    MyLog.w(TAG, "onItemClicked view=$view position=$position model=$model")
+                    if (position == 0) {
+                        showShareDialog();
+                    } else {
+                        MyLog.w(TAG, "onItemClicked view=$view position=$position model=$model")
+                    }
                 }
             }
         })
@@ -128,6 +136,13 @@ class FriendRoomGameView : RelativeLayout {
         mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
             initData()
         })
+    }
+
+    fun showShareDialog() {
+        if (mInviteFriendDialog == null) {
+            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, null)
+        }
+        mInviteFriendDialog?.show()
     }
 
     fun initData() {
@@ -156,7 +171,7 @@ class FriendRoomGameView : RelativeLayout {
         }
 
         val grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
-        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(RA.getVars(),RA.getTestList()), object : ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(RA.getVars(), RA.getTestList()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)
@@ -189,5 +204,6 @@ class FriendRoomGameView : RelativeLayout {
     fun destory() {
         mRecommendTimer?.dispose()
         mDisposable?.dispose()
+        mInviteFriendDialog?.dismiss(false)
     }
 }
