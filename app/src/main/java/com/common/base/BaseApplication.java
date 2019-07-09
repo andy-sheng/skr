@@ -24,7 +24,6 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.common.base.delegate.AppDelegate;
@@ -32,7 +31,6 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.base.delegate.PluginAppDelegate;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.component.busilib.BusiLibConfiguration;
 
 import java.util.List;
 
@@ -147,6 +145,7 @@ public class BaseApplication extends Application {
      */
     @Override
     public void onTerminate() {
+        MyLog.w(TAG,"onTerminate" );
         super.onTerminate();
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onTerminate(this);
@@ -160,6 +159,7 @@ public class BaseApplication extends Application {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        MyLog.w(TAG,"onConfigurationChanged" + " newConfig=" + newConfig);
         super.onConfigurationChanged(newConfig);
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onConfigurationChanged(newConfig);
@@ -168,6 +168,7 @@ public class BaseApplication extends Application {
 
     @Override
     public void onLowMemory() {
+        MyLog.w(TAG,"onLowMemory" );
         super.onLowMemory();
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onLowMemory();
@@ -176,16 +177,27 @@ public class BaseApplication extends Application {
 
     @Override
     public void onTrimMemory(int level) {
+        MyLog.w(TAG,"onTrimMemory" + " level=" + level);
         super.onTrimMemory(level);
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onTrimMemory(level);
         }
     }
 
+    long mRegisterTs = 0;
+
     @Override
     public Intent registerReceiver(
             BroadcastReceiver receiver, IntentFilter filter) {
         MyLog.w(TAG,"registerReceiver" + " receiver=" + receiver + " filter=" + filter);
+        if(receiver==null && filter.getAction(0).equals("android.intent.action.BATTERY_CHANGED")){
+            // 说明是声网的那个注册电量广播，做个保护，不让每次都执行，可能会崩溃
+            if(System.currentTimeMillis() - mRegisterTs < 60*1000){
+                MyLog.w(TAG,"频繁注册 cancel");
+                return null;
+            }
+            mRegisterTs = System.currentTimeMillis();
+        }
         return super.registerReceiver(receiver, filter);
     }
 

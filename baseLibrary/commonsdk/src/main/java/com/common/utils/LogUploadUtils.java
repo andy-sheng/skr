@@ -83,12 +83,12 @@ public class LogUploadUtils {
                         .setFileName(uid + "_" + U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis()) + ".zip")
                         .startUploadAsync(new UploadCallback() {
                             @Override
-                            public void onProgress(long currentSize, long totalSize) {
+                            public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                             }
 
                             @Override
-                            public void onSuccess(String url) {
+                            public void onSuccessNotInUiThread(String url) {
                                 MyLog.w(TAG, "日志上传成功");
                                 file.delete();
                                 EventBus.getDefault().post(new UploadLogEvent(url, true));
@@ -98,7 +98,7 @@ public class LogUploadUtils {
                             }
 
                             @Override
-                            public void onFailure(String msg) {
+                            public void onFailureNotInUiThread(String msg) {
                                 MyLog.e(TAG, msg);
                                 file.delete();
                                 EventBus.getDefault().post(new UploadLogEvent(null, false));

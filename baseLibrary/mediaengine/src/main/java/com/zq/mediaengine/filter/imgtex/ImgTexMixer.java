@@ -58,6 +58,7 @@ public class ImgTexMixer extends ImgTexFilterBase {
     private float[] mRenderAlphas;
     private int[] mRenderScalingMode;
     private boolean[] mMirrors;
+    private boolean[] mFlipVerticals;
     private ImgTexFormat mOutFormat;
 
     private FloatBuffer[] mTexCoordsBuf;
@@ -75,6 +76,7 @@ public class ImgTexMixer extends ImgTexFilterBase {
         mRenderAlphas = new float[getSinkPinNum()];
         mRenderScalingMode = new int[getSinkPinNum()];
         mMirrors = new boolean[getSinkPinNum()];
+        mFlipVerticals = new boolean[getSinkPinNum()];
         mTexCoordsBuf = new FloatBuffer[getSinkPinNum()];
         mVertexCoordsBuf = new FloatBuffer[getSinkPinNum()];
         mCropRects = new RectF[getSinkPinNum()];
@@ -198,7 +200,7 @@ public class ImgTexMixer extends ImgTexFilterBase {
     }
 
     /**
-     * Enable or disable frame mirror in specified sink pin while rending to the next module.
+     * Enable or disable frame mirror in specified sink pin while rendering to the next module.
      *
      * @param idx    dedicated sink pin index
      * @param mirror true to enable mirror, false to disable
@@ -207,6 +209,18 @@ public class ImgTexMixer extends ImgTexFilterBase {
         if (idx < mMirrors.length) {
             mMirrors[idx] = mirror;
             updateCoordsBuf(idx);
+        }
+    }
+
+    /**
+     * Flip source image vertically in specified sink pin while rendering to the next module.
+     *
+     * @param idx           dedicated sink pin index
+     * @param flipVertical  flip or not
+     */
+    public void setFlipVertical(int idx, boolean flipVertical) {
+        if (idx < mFlipVerticals.length) {
+            mFlipVerticals[idx] = flipVertical;
         }
     }
 
@@ -427,14 +441,14 @@ public class ImgTexMixer extends ImgTexFilterBase {
         }
 
         mTexCoordsBuf[idx] = TexTransformUtil.getTexCoordsBuf(left, top, right,
-                bottom, 0, mMirrors[idx], false);
+                bottom, 0, mMirrors[idx], mFlipVerticals[idx]);
     }
 
     private FloatBuffer genVertexCoordsBuf(RectF rect) {
         float vertexArray[] = {
-                -1 + 2 * rect.left, 1 - 2 * rect.bottom,   // 0 bottom left
+                -1 + 2 * rect.left,  1 - 2 * rect.bottom,   // 0 bottom left
                 -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 1 bottom right
-                -1 + 2 * rect.left, 1 - 2 * rect.top,      // 2 top left
+                -1 + 2 * rect.left,  1 - 2 * rect.top,      // 2 top left
                 -1 + 2 * rect.right, 1 - 2 * rect.top,      // 3 top right
         };
         return GlUtil.createFloatBuffer(vertexArray);

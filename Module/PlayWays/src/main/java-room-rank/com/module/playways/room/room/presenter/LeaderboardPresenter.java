@@ -37,15 +37,6 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
         this.mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
-    public void setRankMode(int rankMode) {
-        mOffset = 0;
-        mRankMode = rankMode;
-        mRankInfoModelList.clear();
-
-        getLeaderBoardInfo();
-        getOwnInfo(rankMode);
-    }
-
     public void getLeaderBoardInfo() {
         if (!U.getNetworkUtils().hasNetwork()) {
             mILeaderBoardView.noNetWork();
@@ -92,13 +83,13 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getOwnInfo(int rankMode) {
+    public void getOwnInfo() {
         if (!U.getNetworkUtils().hasNetwork()) {
             mILeaderBoardView.noNetWork();
             return;
         }
 
-        ApiMethods.subscribe(mUserInfoServerApi.getMyRegion(rankMode), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getMyRegion(mRankMode), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

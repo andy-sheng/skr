@@ -1,21 +1,22 @@
 package com.module.playways.grab.room.view.normal.view;
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.ExViewStub;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.CharmsView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
@@ -30,74 +31,58 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-/**
- * 自己唱的歌词板(正常和pk都可以用)
- */
-public class SelfSingLyricView extends RelativeLayout {
-
+public class SelfSingLyricView extends ExViewStub {
     public final static String TAG = "SelfSingLyricView";
 
-    CharmsView mCharmsView;
-    TextView mTvLyric;
-    ManyLyricsView mManyLyricsView;
-    VoiceScaleView mVoiceScaleView;
-    ImageView mIvChallengeIcon;
+    protected ScrollView mSvlyric;
+    protected TextView mTvLyric;
+    protected ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
-    GrabRoomData mRoomData;
+    protected GrabRoomData mRoomData;
     SongModel mSongModel;
+    VoiceScaleView mVoiceScaleView;
+
+    ImageView mIvChallengeIcon;
 
     LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
-    public SelfSingLyricView(Context context) {
-        super(context);
-        init();
+    public SelfSingLyricView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
+        mRoomData = roomData;
     }
 
-    public SelfSingLyricView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+    @Override
+    protected void init(View parentView) {
+        mSvlyric = mParentView.findViewById(R.id.sv_lyric);
+        mTvLyric = mParentView.findViewById(R.id.tv_lyric);
+        mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view);
+        mVoiceScaleView = mParentView.findViewById(R.id.voice_scale_view);
+        mIvChallengeIcon = mParentView.findViewById(R.id.iv_challenge_icon);
     }
 
-    public SelfSingLyricView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_self_sing_lyric_layout;
     }
 
-    private void init() {
-        inflate(getContext(), R.layout.grab_self_sing_lyric_layout, this);
-
-        mCharmsView = findViewById(R.id.charms_view);
-        mTvLyric = findViewById(R.id.tv_lyric);
-        mManyLyricsView = findViewById(R.id.many_lyrics_view);
-        mVoiceScaleView = findViewById(R.id.voice_scale_view);
-        mIvChallengeIcon = findViewById(R.id.iv_challenge_icon);
-    }
-
-    public void initLyric() {
-        mCharmsView.bindData(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
-        if (mRoomData == null) {
-            MyLog.w(TAG, "playLyric mRoomData = null");
-            return;
-        }
+    private void initLyric() {
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (infoModel == null) {
-            MyLog.d(TAG, "infoModel 是空的");
-            return;
-        }
-
-        if (infoModel.getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue()
-                || infoModel.getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()) {
-            mIvChallengeIcon.setVisibility(VISIBLE);
-        } else {
-            mIvChallengeIcon.setVisibility(GONE);
-        }
-        mSongModel = infoModel.getMusic();
-        mTvLyric.setText("歌词加载中...");
-        mTvLyric.setVisibility(VISIBLE);
-        mManyLyricsView.setVisibility(GONE);
+        mSvlyric.setVisibility(View.VISIBLE);
+        mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.initLrcData();
-        mVoiceScaleView.setVisibility(View.GONE);
+
+        if (mIvChallengeIcon != null) {
+            if (infoModel != null &&
+                    (infoModel.getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue() || infoModel.getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue())) {
+                mIvChallengeIcon.setVisibility(View.VISIBLE);
+            } else {
+                mIvChallengeIcon.setVisibility(View.GONE);
+            }
+        }
+        if (mVoiceScaleView != null) {
+            mVoiceScaleView.setVisibility(View.GONE);
+        }
     }
 
     public void playWithAcc(GrabRoundInfoModel infoModel, int totalTs) {
@@ -105,6 +90,8 @@ public class SelfSingLyricView extends RelativeLayout {
             MyLog.w(TAG, "playWithAcc" + " infoModel = null totalTs=" + totalTs);
             return;
         }
+        tryInflate();
+        initLyric();
         mSongModel = infoModel.getMusic();
         if (mSongModel == null) {
             MyLog.w(TAG, "playWithAcc" + " mSongModel = null totalTs=" + totalTs);
@@ -123,13 +110,13 @@ public class SelfSingLyricView extends RelativeLayout {
         mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
                 curSong.getLyric(),
                 curSong.getStandLrcBeginT(), curSong.getStandLrcBeginT() + totalTs,
-                curSong.getBeginMs(), curSong.getBeginMs() + totalTs);
+                curSong.getBeginMs(), curSong.getBeginMs() + totalTs, curSong.getUploaderName());
 
         SongModel finalCurSong = curSong;
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
             @Override
             public void onLyricParseSuccess() {
-                mTvLyric.setVisibility(GONE);
+                mSvlyric.setVisibility(View.GONE);
             }
 
             @Override
@@ -155,8 +142,11 @@ public class SelfSingLyricView extends RelativeLayout {
         if (songModel == null) {
             return;
         }
-        mManyLyricsView.setVisibility(GONE);
-        mTvLyric.setVisibility(VISIBLE);
+        tryInflate();
+        initLyric();
+        mManyLyricsView.setVisibility(View.GONE);
+        mSvlyric.setVisibility(View.VISIBLE);
+        mSvlyric.scrollTo(0, 0);
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
@@ -165,7 +155,13 @@ public class SelfSingLyricView extends RelativeLayout {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        mTvLyric.setText(s);
+                        SpannableStringBuilder ssb = createLyricSpan(s, songModel);
+                        if (ssb == null) {
+                            mTvLyric.setText(s);
+                        } else {
+                            mTvLyric.setText(ssb);
+                        }
+
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -176,9 +172,21 @@ public class SelfSingLyricView extends RelativeLayout {
         mLyricAndAccMatchManager.stop();
     }
 
+    protected SpannableStringBuilder createLyricSpan(String lyric, SongModel songModel) {
+        if (songModel != null && !TextUtils.isEmpty(songModel.getUploaderName())) {
+            SpannableStringBuilder ssb = new SpanUtils()
+                    .append(lyric)
+                    .append("\n")
+                    .append("上传者:" + songModel.getUploaderName()).setFontSize(12, true)
+                    .create();
+            return ssb;
+        }
+        return null;
+    }
+
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
@@ -193,16 +201,20 @@ public class SelfSingLyricView extends RelativeLayout {
         }
     }
 
-    public void setRoomData(GrabRoomData roomData) {
-        mRoomData = roomData;
-    }
-
     public void reset() {
         if (mManyLyricsView != null) {
             mManyLyricsView.setLyricsReader(null);
         }
         if (mLyricAndAccMatchManager != null) {
             mLyricAndAccMatchManager.stop();
+        }
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == View.GONE) {
+            reset();
         }
     }
 }

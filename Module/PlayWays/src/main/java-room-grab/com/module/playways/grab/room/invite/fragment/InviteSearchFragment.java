@@ -27,6 +27,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExTextView;
 import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -47,11 +48,13 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     public final static String TAG = "InviteSearchFragment";
 
+    public static String INVITE_SEARCH_FROM = "invite_search_from";
     public static String INVITE_SEARCH_MODE = "invite_search_mode";
     public static String INVITE_ROOM_ID = "invite_room_id";
 
     private int mMode;
     private int mRoomID;
+    private int mFrom;
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
@@ -81,14 +84,19 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         if (bundle != null) {
             mMode = bundle.getInt(INVITE_SEARCH_MODE);
             mRoomID = bundle.getInt(INVITE_ROOM_ID);
+            mFrom = bundle.getInt(INVITE_SEARCH_FROM);
         }
 
         mPresenter = new InviteSearchPresenter(this);
         addPresent(mPresenter);
         mInviteFirendAdapter = new InviteFirendAdapter(new InviteFirendAdapter.OnInviteClickListener() {
             @Override
-            public void onClick(UserInfoModel model, StrokeTextView view) {
-                mPresenter.inviteFriend(mRoomID, model, view);
+            public void onClick(UserInfoModel model, ExTextView view) {
+                if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
+                    mPresenter.inviteFriend(mRoomID, model, view);
+                } else {
+                    mPresenter.inviteDoubleFriend(mRoomID, model, view);
+                }
             }
 
             @Override
@@ -179,7 +187,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                         showUserInfoList(userInfoModels);
                     }
                 }
-            },this);
+            }, this);
         } else {
             // 好友
             ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
@@ -200,7 +208,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                 public void process(List<UserInfoModel> list) {
                     showUserInfoList(list);
                 }
-            },this);
+            }, this);
         }
     }
 
@@ -217,7 +225,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
     }
 
     @Override
-    public void updateInvited(StrokeTextView view) {
+    public void updateInvited(ExTextView view) {
         if (view != null) {
             view.setVisibility(View.VISIBLE);
             view.setClickable(false);

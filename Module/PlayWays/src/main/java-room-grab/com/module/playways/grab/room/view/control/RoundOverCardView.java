@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.control;
 
 import android.view.View;
+import android.view.ViewStub;
 
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
@@ -15,6 +16,9 @@ import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RoundOverCardView {
 
     NormalRoundOverCardView mNormalRoundOverCardView;   // 轮次结束的卡片
@@ -25,10 +29,20 @@ public class RoundOverCardView {
 
     public RoundOverCardView(View mRootView, GrabRoomData roomData) {
         mRoomData = roomData;
-        mNormalRoundOverCardView = mRootView.findViewById(R.id.normal_round_over_card_view);
-        mPKRoundOverCardView = mRootView.findViewById(R.id.pk_round_over_card_view);
-        mPKRoundOverCardView.setRoomData(mRoomData);
-        mMiniGameOverCardView = mRootView.findViewById(R.id.mini_game_over_card_view);
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.normal_round_over_card_view_stub);
+            mNormalRoundOverCardView = new NormalRoundOverCardView(viewStub);
+        }
+
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.pk_round_over_card_view_stub);
+            mPKRoundOverCardView = new PKRoundOverCardView(viewStub, mRoomData);
+        }
+
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.mini_game_over_card_view_stub);
+            mMiniGameOverCardView = new MiniGameRoundOverCardView(viewStub);
+        }
     }
 
     public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener svgaListener) {
@@ -85,5 +99,13 @@ public class RoundOverCardView {
                 mMiniGameOverCardView.setVisibility(View.GONE);
             }
         }
+    }
+
+    public List<View> getRealViews() {
+        List<View> list = new ArrayList<>();
+        list.add(mNormalRoundOverCardView.getRealView());
+        list.add(mPKRoundOverCardView.getRealView());
+        list.add(mMiniGameOverCardView.getRealView());
+        return list;
     }
 }

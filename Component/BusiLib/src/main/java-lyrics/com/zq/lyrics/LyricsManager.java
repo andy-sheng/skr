@@ -17,6 +17,7 @@ import com.zq.lyrics.utils.SongResUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,7 +85,6 @@ public class LyricsManager {
                         if (file.exists()) {
                             file.delete();
                         }
-
                         emitter.onError(new Throwable("解析后无歌词"));
                         return;
                     }
@@ -131,7 +131,7 @@ public class LyricsManager {
     }
 
     public Observable<File> fetchLyricTask(final String url) {
-        MyLog.d(TAG, "fetchLyricTask" + " url =" + url);
+        MyLog.w(TAG, "fetchLyricTask" + " url =" + url);
         return Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
@@ -142,13 +142,13 @@ public class LyricsManager {
                     return;
                 }
 
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(url, newName,true, null);
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(url, newName, true, null);
 
                 if (isSuccess) {
-                        emitter.onNext(newName);
-                        emitter.onComplete();
+                    emitter.onNext(newName);
+                    emitter.onComplete();
                 } else {
-                    emitter.onError(new Throwable("下载失败" + TAG));
+                    emitter.onError(new Throwable("fetchLyricTask"));
                 }
             }
         }).subscribeOn(Schedulers.io())
@@ -162,38 +162,42 @@ public class LyricsManager {
      * @return
      */
     public Observable<String> loadGrabPlainLyric(final String url) {
-        MyLog.d(TAG,"loadGrabPlainLyric" + " url=" + url);
-        return Observable.create(new ObservableOnSubscribe<File>() {
+        MyLog.w(TAG,"loadGrabPlainLyric" + " url=" + url);
+        return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
+            public void subscribe(ObservableEmitter<String> emitter) {
                 File file = SongResUtils.getGrabLyricFileByUrl(url);
                 if (file == null || !file.exists()) {
-                    boolean isSuccess = U.getHttpUtils().downloadFileSync(url, file,true, null);
-                    if(isSuccess){
-                        emitter.onNext(file);
-                    }else{
+                    boolean isSuccess = U.getHttpUtils().downloadFileSync(url, file, true, null);
+                    if (isSuccess) {
+                        BufferedSource source = null;
+                        try {
+                            source = Okio.buffer(Okio.source(file));
+                            emitter.onNext(source.readUtf8());
+                        } catch (Exception e) {
+                            MyLog.e(TAG,e);
+                            emitter.onNext("歌词buffer读取失败");
+                        }
+                    } else {
                         MyLog.w(TAG, "loadGrabPlainLyric 下载失败");
+                        emitter.onNext("歌词下载失败");
+                        emitter.onError(new IgnoreException("loadGrabPlainLyric"));
+                        return;
                     }
                 } else {
                     MyLog.w(TAG, "playLyric is exist");
-                    emitter.onNext(file);
+                    BufferedSource source = null;
+                    try {
+                        source = Okio.buffer(Okio.source(file));
+                        emitter.onNext(source.readUtf8());
+                    } catch (Exception e) {
+                        MyLog.e(TAG,e);
+                        emitter.onNext("歌词buffer读取失败");
+                    }
                 }
                 emitter.onComplete();
             }
         })
-                .map(new Function<File, String>() {
-                    @Override
-                    public String apply(File file) throws Exception {
-                        if (file != null && file.exists() && file.isFile()) {
-                            try (BufferedSource source = Okio.buffer(Okio.source(file))) {
-                                return source.readUtf8();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        return null;
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .retryWhen(new RxRetryAssist(3, ""))
                 .observeOn(AndroidSchedulers.mainThread());

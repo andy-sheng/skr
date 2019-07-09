@@ -7,8 +7,8 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
-        android:layout_width="@dimen/view_18_dp"
-        android:layout_height="@dimen/view_30_dp"
+        android:layout_width="@dimen/view_22_dp"
+        android:layout_height="@dimen/view_22_dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/view_20_dp"

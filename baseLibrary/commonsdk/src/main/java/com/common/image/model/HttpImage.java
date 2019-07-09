@@ -36,19 +36,28 @@ public class HttpImage extends BaseImage {
         if (!TextUtils.isEmpty(mUrl)) {
             mUri = Uri.parse(mUrl);
             if (mLowImageUri == null) {
-                //低分辨率的没有
-                if (canHasLowUri) {
-                    String lowUrl_320 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
-                            .setW(ImageUtils.SIZE.SIZE_320.getW())
+                if (mLowImageSize != null) {
+                    String lowUrl = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                            .setW(mLowImageSize.getW())
                             .build());
-                    File file = FrescoWorker.getCacheFileFromFrescoDiskCache(lowUrl_320);
-                    if (file != null && file.exists()) {
-                        mLowImageUri = Uri.parse(lowUrl_320);
-                    } else {
-                        String lowUrl_160 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
-                                .setW(ImageUtils.SIZE.SIZE_160.getW())
+                    mLowImageUri = Uri.parse(lowUrl);
+                } else {
+                    //低分辨率的没有
+                    if (canHasLowUri) {
+                        String lowUrl_320 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                                .setW(ImageUtils.SIZE.SIZE_320.getW())
                                 .build());
-                        mLowImageUri = Uri.parse(lowUrl_160);
+                        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(lowUrl_320);
+                        if (file != null && file.exists()) {
+                            mLowImageUri = Uri.parse(lowUrl_320);
+                        } else {
+                            String lowUrl_160 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
+                                    .build());
+                            mLowImageUri = Uri.parse(lowUrl_160);
+                        }
+                    }else{
+                        // 不需要设置
                     }
                 }
             }

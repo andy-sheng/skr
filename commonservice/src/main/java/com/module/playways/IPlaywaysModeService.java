@@ -1,5 +1,7 @@
 package com.module.playways;
 
+import android.app.Activity;
+
 import com.alibaba.android.arouter.facade.template.IProvider;
 
 /**
@@ -10,13 +12,23 @@ public interface IPlaywaysModeService extends IProvider {
 
     Class getLeaderboardFragmentClass();
 
-    void tryGoGrabRoom(int roomID,int inviteType);
+    void tryGoGrabRoom(int roomID, int inviteType);
 
     void tryGoCreateRoom();
 
     void tryGoGrabMatch(int tagId);
 
-    void tryGoGrabGuide(int tagId);
+    void tryGoNewGrabMatch(Activity activity);
 
-    void tryGoNewGrabMatch();
+    //    private Integer roomID;
+//    private Long createdTimeMs;
+//    private Long passedTimeMs;
+//    private List<UserInfoModel> users;
+//    private LocalCombineRoomConfig config;
+    void jumpToDoubleRoom(Object o);
+
+    void jumpToDoubleRoomFromDoubleRoomInvite(Object o);
+
+    void createDoubleRoom();
+
 }

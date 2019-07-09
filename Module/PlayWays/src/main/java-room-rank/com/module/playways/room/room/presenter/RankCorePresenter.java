@@ -1,7 +1,5 @@
 package com.module.playways.room.room.presenter;
 
-
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -13,7 +11,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
-import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.ExoPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -52,6 +50,7 @@ import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.RankRoomServerApi;
 import com.module.playways.room.room.SwapStatusType;
 import com.module.playways.room.room.comment.model.CommentAiModel;
+import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentSysModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PkSomeOneOnlineChangeEvent;
@@ -97,8 +96,6 @@ import okhttp3.RequestBody;
 
 import static com.module.playways.room.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
 import static com.module.playways.room.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
-import static com.module.playways.room.room.comment.model.CommentModel.TEXT_WHITE;
-import static com.module.playways.room.room.comment.model.CommentModel.TEXT_YELLOW;
 
 public class RankCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankCorePresenter";
@@ -128,7 +125,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     ExoPlayer mExoPlayer;
 
-    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter<RoomMsg>() {
         @Override
         public boolean doFilter(RoomMsg msg) {
             if (msg.getRoomID() == mRoomData.getGameId()) {
@@ -256,10 +253,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         commentTextModel.setUserId(playerInfoModel.getUserInfo().getUserId());
         commentTextModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
         commentTextModel.setUserName(playerInfoModel.getUserInfo().getNicknameRemark());
-        commentTextModel.setAvatarColor(Color.WHITE);
+        commentTextModel.setAvatarColor(CommentModel.AVATAR_COLOR);
         SpannableStringBuilder ssb = new SpanUtils()
-                .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(TEXT_YELLOW)
-                .append(String.format("第%s个唱", index + 1)).setForegroundColor(TEXT_WHITE)
+                .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
+                .append(String.format("第%s个唱", index + 1)).setForegroundColor(CommentModel.RANK_TEXT_COLOR)
                 .create();
         commentTextModel.setStringBuilder(ssb);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentTextModel));
@@ -752,7 +749,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         checkMachineUser(uid);
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
-                                    + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
+                                    + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + (mRoomData.getRealRoundInfo() == null ? 0 : mRoomData.getRealRoundInfo().getSingEndMs()), "HH:mm:ss:SSS"));
                         } else {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
@@ -807,9 +804,14 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void tryStopRobotPlay() {
-        if (mExoPlayer != null) {
-            mExoPlayer.reset();
-        }
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mExoPlayer != null) {
+                    mExoPlayer.reset();
+                }
+            }
+        });
     }
 
     public void sendBurst(int seq) {
@@ -957,17 +959,17 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     .setFileType(UploadParams.FileType.audioAi)
                     .startUploadAsync(new UploadCallback() {
                         @Override
-                        public void onProgress(long currentSize, long totalSize) {
+                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                         }
 
                         @Override
-                        public void onSuccess(String url) {
+                        public void onSuccessNotInUiThread(String url) {
                             uploadRes2ForAi(roundInfoModel, url);
                         }
 
                         @Override
-                        public void onFailure(String msg) {
+                        public void onFailureNotInUiThread(String msg) {
 
                         }
                     });
@@ -991,17 +993,17 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             .setFileType(UploadParams.FileType.midiAi)
                             .startUploadAsync(new UploadCallback() {
                                 @Override
-                                public void onProgress(long currentSize, long totalSize) {
+                                public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                                 }
 
                                 @Override
-                                public void onSuccess(String url) {
+                                public void onSuccessNotInUiThread(String url) {
                                     sendUploadRequest(roundInfoModel, audioUrl, url);
                                 }
 
                                 @Override
-                                public void onFailure(String msg) {
+                                public void onFailureNotInUiThread(String msg) {
 
                                 }
                             });

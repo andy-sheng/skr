@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/double_room_view_bg">
+
+    <ImageView
+        android:layout_width="@dimen/view_262_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_135_dp"
+        android:background="@drawable/double_game_view_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/invite_friend_iv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_76_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginBottom="@dimen/view_80_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#FF88D0AB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/start_match_iv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="323dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/exTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/textsize_14_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:text="邀请好友"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constraintStart_toStartOf="@+id/invite_friend_iv"
+        app:layout_constraintTop_toTopOf="@+id/invite_friend_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:text="私密唱聊，快乐无限"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintStart_toStartOf="@+id/exTextView"
+        app:layout_constraintTop_toBottomOf="@+id/exTextView" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/start_match_iv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_76_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:layout_marginBottom="@dimen/view_80_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#FF68CCFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/invite_friend_iv"
+        tools:layout_editor_absoluteY="323dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/random_match_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_14_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:text="随机匹配"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constraintStart_toStartOf="@+id/start_match_iv"
+        app:layout_constraintTop_toTopOf="@+id/start_match_iv" />
+
+    <TextView
+        android:id="@+id/remain_times_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_marginBottom="@dimen/view_56_dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintStart_toStartOf="@+id/random_match_tv"
+        app:layout_constraintTop_toBottomOf="@+id/random_match_tv" />
+
+    <View
+        android:layout_width="@dimen/view_1_dp"
+        android:layout_height="@dimen/view_39_dp"
+        android:layout_marginRight="@dimen/view_55_dp"
+        android:background="@color/white_trans_50"
+        app:layout_constraintBottom_toBottomOf="@+id/start_match_iv"
+        app:layout_constraintRight_toRightOf="@+id/start_match_iv"
+        app:layout_constraintTop_toTopOf="@+id/start_match_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/filter_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/shaixuan"
+        android:drawablePadding="@dimen/view_6_dp"
+        android:padding="@dimen/view_15_dp"
+        android:text="筛选"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/start_match_iv"
+        app:layout_constraintRight_toRightOf="@+id/start_match_iv"
+        app:layout_constraintTop_toTopOf="@+id/start_match_iv" />
+</android.support.constraint.ConstraintLayout>

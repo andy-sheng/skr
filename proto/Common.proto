@@ -51,6 +51,9 @@ message MusicInfo {
     StandPlayType playType = 27; //一唱到底演唱类型
     repeated MusicInfo SPKMusic = 28; //一唱到底模式下spk歌曲信息
     MiniGameInfo miniGame       = 29; //连麦小游戏演唱类型
+    string writer = 30; //作词人
+    string composer = 31; //作曲人
+    string uploaderName = 32; //上传者用户名
 }
 
 message MiniGameInfo
@@ -138,6 +141,7 @@ enum StandPlayType {
     PT_SPK_TYPE     = 2; //PK玩法
     PT_CHO_TYPE     = 3; //合唱玩法
     PT_MINI_GAME_TYPE = 4; //连麦进行小游戏玩法
+    PT_FREE_MICRO     = 5; //自由麦玩法
 }
 
 enum ESex {
@@ -155,3 +159,23 @@ message ResourceInfo {
     sint32 sysScore = 5; //系统打分分值
 }
 
+message CombineRoomConfig
+{
+    sint32 durationTimeMs   = 1; //房间持续时间（4000ms）
+    string maskMaleAvatar   = 2; //隐藏的男性用户头像
+    string maskFemaleAvatar = 3; //隐藏的女性用户头像
+    string roomSignature    = 4; //房间描述签名
+}
+
+message AgoraTokenInfo
+{
+    uint32 userID = 1; //用户id
+    string token  = 2; //声网token
+}
+
+//房间类型
+enum EMsgRoomMediaType {
+    EMR_UNKNOWN = 0; // 未知
+    EMR_AUDIO   = 1; // 音频房
+    EMR_VIDEO   = 2; // 视频房
+}

@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/view_32_dp"
         android:paddingRight="@dimen/view_32_dp"
         android:singleLine="true"
-        android:textSize="@dimen/textsize_15_dp"
+        android:textSize="@dimen/textsize_18_dp"
         app:bl_selected_textColor="@color/white"
         app:bl_unSelected_textColor="#803B4E79" />
 

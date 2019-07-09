@@ -1,5 +1,7 @@
 package com.module.home.updateinfo;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -18,10 +20,10 @@ public class UploadAccountInfoActivity extends BaseActivity {
 
     public final static String TAG = "UploadAccountInfoActivity";
 
-    public static final String BUNDLE_IS_UPLOAD = "bundle_is_upload";
-    public static final String BUNDLE_UPLOAD_NICKNAME = "upload_nickname";
-    public static final String BUNDLE_UPLOAD_SEX = "upload_sex";
-    public static final String BUNDLE_UPLOAD_AGE = "upload_age";
+    public static void open(Activity activity) {
+        Intent intent = new Intent(activity,UploadAccountInfoActivity.class);
+        activity.startActivity(intent);
+    }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -30,27 +32,20 @@ public class UploadAccountInfoActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(BUNDLE_IS_UPLOAD, true);
-
         if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
-                    .setBundle(bundle)
                     .setAddToBackStack(false)
-                    .setHasAnimation(true)
+                    .setHasAnimation(false)
                     .build());
         }else{
             finish();
         }
-
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     @Override
     protected void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
     }
 
     @Override
@@ -61,11 +56,6 @@ public class UploadAccountInfoActivity extends BaseActivity {
     @Override
     public boolean canSlide() {
         return false;
-    }
-
-    @Override
-    public boolean onBackPressedForActivity() {
-        return true;
     }
 
     @Override

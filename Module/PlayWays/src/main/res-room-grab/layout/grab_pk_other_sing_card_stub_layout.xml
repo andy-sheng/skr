@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.module.playways.grab.room.view.pk.view.PKSingCardView
+        android:id="@+id/pk_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.module.playways.grab.room.view.SingCountDownView2
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_78_dp" />
+
+</RelativeLayout>

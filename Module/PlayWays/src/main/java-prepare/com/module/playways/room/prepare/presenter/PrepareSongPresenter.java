@@ -81,6 +81,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
         if (lyricFile == null || !lyricFile.exists()) {
             LyricsManager.getLyricsManager(U.app())
                     .fetchLyricTask(mSongModel.getLyric())
+                    .retry(10)
                     .compose(bindUntilEvent(PresenterEvent.DESTROY))
                     .subscribe(new Consumer<File>() {
                         @Override
@@ -129,6 +130,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         MyLog.e(TAG, throwable);
+                        mIPrepareResView.lyricReadyFailed();
                     }
                 });
     }

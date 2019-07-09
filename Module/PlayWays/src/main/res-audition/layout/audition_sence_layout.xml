@@ -132,6 +132,7 @@
             android:layout_height="150dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/view_105_dp"
+            app:ly_show_author="true"
             app:ly_eable_scroll="false"
             app:ly_eable_verbatim="true"
             app:ly_high_light_paint_color_from="#EF5E85"

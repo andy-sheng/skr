@@ -1,6 +1,7 @@
 package com.zq.relation.view;
 
 import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,7 +22,7 @@ import com.zq.live.proto.Common.ESex;
 import com.zq.relation.adapter.RelationAdapter;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
-    RelativeLayout mContent;
+    ConstraintLayout mContent;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     ImageView mSexIv;
@@ -36,12 +37,12 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         super(itemView);
 
         this.mMode = mode;
-        mContent = (RelativeLayout) itemView.findViewById(R.id.content);
-        mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
-        mSexIv = (ImageView) itemView.findViewById(R.id.sex_iv);
-        mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
-        mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
-        mStatusTv = (ExTextView) itemView.findViewById(R.id.status_tv);
+        mContent = itemView.findViewById(R.id.content);
+        mAvatarIv = itemView.findViewById(R.id.avatar_iv);
+        mSexIv = itemView.findViewById(R.id.sex_iv);
+        mNameTv = itemView.findViewById(R.id.name_tv);
+        mFollowTv = itemView.findViewById(R.id.follow_tv);
+        mStatusTv = itemView.findViewById(R.id.status_tv);
 
         mFollowTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -68,6 +69,8 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2f))
                         .setCircle(true)
                         .build());
         mNameTv.setText(userInfoModel.getNicknameRemark());
@@ -86,7 +89,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             mFollowTv.setClickable(true);
             mFollowTv.setText("移出");
             mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
-            mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yellow_button_icon));
+            mFollowTv.setBackground(RelationAdapter.mFollowDrawable);
         } else {
             if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                 mFollowTv.setVisibility(View.GONE);
@@ -97,8 +100,8 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已互关");
                         mFollowTv.setClickable(false);
-                        mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
-                        mFollowTv.setBackground(RelationAdapter.mFollowDrawable);
+                        mFollowTv.setTextColor(Color.parseColor("#AD6C00"));
+                        mFollowTv.setBackground(RelationAdapter.mFriendDrawable);
                     } else if (userInfoModel.isFollow()) {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("已关注");
@@ -109,7 +112,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                         mFollowTv.setVisibility(View.VISIBLE);
                         mFollowTv.setText("+关注");
                         mFollowTv.setClickable(true);
-                        mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
+                        mFollowTv.setTextColor(Color.parseColor("#AD6C00"));
                         mFollowTv.setBackground(RelationAdapter.mUnFollowDrawable);
                     }
                 } else {

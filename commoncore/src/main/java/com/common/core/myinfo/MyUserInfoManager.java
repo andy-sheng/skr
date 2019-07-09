@@ -1,13 +1,10 @@
 package com.common.core.myinfo;
 
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
@@ -18,26 +15,20 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.LbsUtils;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
-import com.zq.live.proto.Common.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Scheduler;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.http.Query;
 
 /**
  * 保存个人详细信息，我的信息的管理, 其实是对User的decorate
@@ -53,7 +44,9 @@ public class MyUserInfoManager {
     private boolean mUserInfoFromServer = false;
     private boolean needBeginnerGuide = false;
     private boolean mIsFirstLogin = false;    // 标记是否第一次登录
-//    private boolean mHasLoadFromDB = false;
+    //    private boolean mHasLoadFromDB = false;
+    private boolean mHasGrabCertifyPassed = false;// 抢唱时的认证
+    private int mRealNameVerified = 0; // 实名认证
 
     public void init() {
         load();
@@ -151,7 +144,7 @@ public class MyUserInfoManager {
                             final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                             MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                            setMyUserInfo(myUserInfo, true,"syncMyInfoFromServer");
+                            setMyUserInfo(myUserInfo, true, "syncMyInfoFromServer");
                         } else if (obj.getErrno() == 107) {
                             UserAccountManager.getInstance().notifyAccountExpired();
                         }
@@ -220,6 +213,13 @@ public class MyUserInfoManager {
             }
         }
 
+        if (updateParams.ageStage != 0) {
+            map.put("ageStage", updateParams.ageStage);
+            if (updateLocalIfServerFailed) {
+                mUser.setAgeStage(updateParams.ageStage);
+            }
+        }
+
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
         MyUserInfoServerApi myUserAccountServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
         Observable<ApiResult> apiResultObservable = myUserAccountServerApi.updateInfo(body);
@@ -246,30 +246,24 @@ public class MyUserInfoManager {
                         if (updateParams.location != null) {
                             mUser.setLocation(updateParams.location);
                         }
-                    }
-
-                    if (isCompleteInfo) {
-                        // 是否在上传资料过程中
-                        UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
-                        if (userInfoModel != null) {
-                            // TODO: 2019/3/10  这么解析是因为目前服务器只返回这几个字段
-                            if (!TextUtils.isEmpty(userInfoModel.getNickname())) {
-                                mUser.setUserNickname(userInfoModel.getNickname());
-                            }
-
-                            if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
-                                mUser.setAvatar(userInfoModel.getAvatar());
-                            }
-
-                            if (userInfoModel.getSex() != -1) {
-                                mUser.setSex(userInfoModel.getSex());
-                            }
-
-                            if (TextUtils.isEmpty(userInfoModel.getBirthday())) {
-                                mUser.setBirthday(userInfoModel.getBirthday());
-                            }
+                        if (updateParams.ageStage != 0) {
+                            mUser.setAgeStage(updateParams.ageStage);
                         }
                     }
+
+                    if (!updateLocalIfServerFailed) {
+                        UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
+                        mUser.setUserId(userInfoModel.getUserId());
+                        mUser.setUserNickname(userInfoModel.getNickname());
+                        mUser.setAvatar(userInfoModel.getAvatar());
+                        mUser.setBirthday(userInfoModel.getBirthday());
+                        mUser.setLocation(userInfoModel.getLocation());
+                        mUser.setSex(userInfoModel.getSex());
+                        mUser.setSignature(userInfoModel.getSignature());
+                        mUser.setUserDisplayname(userInfoModel.getNickname());
+                        mUser.setAgeStage(userInfoModel.getAgeStage());
+                    }
+
                     if (callback != null) {
                         callback.onSucess();
                     }
@@ -281,7 +275,7 @@ public class MyUserInfoManager {
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(mUser, true,"updateInfo");
+                                setMyUserInfo(mUser, true, "updateInfo");
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
@@ -338,13 +332,38 @@ public class MyUserInfoManager {
         return 0;
     }
 
+    public int getAgeStage() {
+        return mUser != null ? mUser.getAgeStage() : 0;
+    }
+
+    public boolean hasAgeStage() {
+        return mUser != null && mUser.getAgeStage() != 0;
+    }
+
+    public String getAgeStageString() {
+        if (mUser != null && mUser.getAgeStage() != 0) {
+            if (mUser.getAgeStage() == 1) {
+                return "小学党";
+            } else if (mUser.getAgeStage() == 2) {
+                return "中学党";
+            } else if (mUser.getAgeStage() == 3) {
+                return "大学党";
+            } else if (mUser.getAgeStage() == 4) {
+                return "工作党";
+            }
+        }
+        return "";
+    }
+
     public String getConstellation() {
         if (mUser != null && !TextUtils.isEmpty(mUser.getBirthday())) {
             String[] array = mUser.getBirthday().split("-");
-            if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
-                int month = Integer.valueOf(array[1]);
-                int day = Integer.valueOf(array[2]);
-                return U.getDateTimeUtils().getConstellation(month, day);
+            if (array != null && array.length >= 3) {
+                if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+                    int month = Integer.valueOf(array[1]);
+                    int day = Integer.valueOf(array[2]);
+                    return U.getDateTimeUtils().getConstellation(month, day);
+                }
             }
         }
         return "";
@@ -371,10 +390,17 @@ public class MyUserInfoManager {
     }
 
     public String getLocationDesc() {
-        if (mUser.getLocation() == null) {
-            return "未知位置";
+        if (!hasLocation()) {
+            return "火星";
         }
         return mUser.getLocation().getDesc();
+    }
+
+    public String getLocationProvince() {
+        if (!hasLocation()) {
+            return "火星";
+        }
+        return mUser.getLocation().getProvince();
     }
 
     public boolean hasMyUserInfo() {
@@ -428,8 +454,52 @@ public class MyUserInfoManager {
         });
     }
 
+    /**
+     * 是否通过了抢唱时的认证
+     *
+     * @return
+     */
+    public boolean hasGrabCertifyPassed() {
+        if (MyLog.isDebugLogOpen()) {
+            return true;
+        }
+        if (!mHasGrabCertifyPassed) {
+            mHasGrabCertifyPassed = U.getPreferenceUtils().getSettingBoolean("hasGrabCertifyPassed", false);
+        }
+        return mHasGrabCertifyPassed;
+    }
 
-//    public boolean hasLoadFromDB() {
+    public void setGrabCertifyPassed(boolean mHasPassedCertify) {
+        if (!mHasPassedCertify) {
+            U.getPreferenceUtils().setSettingBoolean("hasGrabCertifyPassed", mHasPassedCertify);
+            mHasGrabCertifyPassed = true;
+        }
+    }
+
+    /**
+     * 是否实名认证
+     *
+     * @return
+     */
+    public boolean isRealNameVerified() {
+        if (mRealNameVerified == 0) {
+            boolean v = U.getPreferenceUtils().getSettingBoolean("mRealNameVerified", false);
+            if (v) {
+                mRealNameVerified = 1;
+            } else {
+                mRealNameVerified = -1;
+            }
+        }
+        return mRealNameVerified == 1;
+    }
+
+    public void setRealNameVerified(boolean realNameVerified) {
+        if (realNameVerified) {
+            U.getPreferenceUtils().setSettingBoolean("mRealNameVerified", realNameVerified);
+        }
+    }
+
+    //    public boolean hasLoadFromDB() {
 //        return mHasLoadFromDB;
 //    }
 
@@ -456,6 +526,7 @@ public class MyUserInfoManager {
         String avatar;
         String sign;
         Location location;
+        int ageStage;
 
         private MyInfoUpdateParams() {
         }
@@ -505,6 +576,14 @@ public class MyUserInfoManager {
             this.location = location;
         }
 
+        public int getAgeStage() {
+            return ageStage;
+        }
+
+        public void setAgeStage(int ageStage) {
+            this.ageStage = ageStage;
+        }
+
         public static class Builder {
             MyInfoUpdateParams mParams = new MyInfoUpdateParams();
 
@@ -538,6 +617,11 @@ public class MyUserInfoManager {
 
             public Builder setLocation(Location location) {
                 mParams.setLocation(location);
+                return this;
+            }
+
+            public Builder setAgeStage(int ageStage) {
+                mParams.setAgeStage(ageStage);
                 return this;
             }
 

@@ -1,31 +1,32 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_200_dp"
-        android:layout_marginLeft="@dimen/view_18_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_18_dp"
-        android:background="@drawable/self_lyric_bg" />
+        android:layout_height="@dimen/view_220_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_133_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFE0AD" />
 
     <ScrollView
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_180_dp"
-        android:layout_marginLeft="@dimen/view_18_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_18_dp"
+        android:layout_alignTop="@id/iv_bg"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
         android:fadeScrollbars="false"
         android:fadingEdge="none"
         android:overScrollMode="never"
-        android:paddingTop="@dimen/view_45_dp"
-        android:paddingBottom="@dimen/view_10_dp"
         android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
         android:scrollbars="vertical">
 
@@ -45,11 +46,11 @@
     <com.zq.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_150_dp"
-        android:layout_alignParentTop="true"
+        android:layout_height="@dimen/view_170_dp"
+        android:layout_alignTop="@id/iv_bg"
         android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_142_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:visibility="visible"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
@@ -61,6 +62,7 @@
         app:ly_paint_color_from="@color/black_trans_30"
         app:ly_paint_color_to="@color/black_trans_30"
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
+        app:ly_show_author="true"
         app:ly_top_line_num="2" />
 
     <LinearLayout
@@ -70,14 +72,6 @@
         android:layout_alignRight="@+id/iv_bg"
         android:gravity="right"
         android:orientation="horizontal">
-
-        <com.module.playways.grab.room.view.CharmsView
-            android:id="@+id/charms_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_7_dp"
-            android:layout_marginRight="@dimen/view_15_dp"
-            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_challenge_icon"
@@ -97,7 +91,7 @@
         android:layout_height="@dimen/view_56_dp"
         android:layout_below="@+id/many_lyrics_view"
         android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_d_25_dp"
+        android:layout_marginTop="-27dp"
         android:layout_marginRight="@dimen/view_20_dp"
         android:visibility="visible"
         app:leftBgPaintColor="@color/transparent"
@@ -108,4 +102,4 @@
         app:rightBgPaintColor="@color/transparent"
         app:rightPaintColor="#D4AF72" />
 
-</merge>
+</RelativeLayout>

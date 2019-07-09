@@ -13,6 +13,7 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -30,7 +31,6 @@ import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
-import com.common.utils.ColorUtils;
 import com.zq.lyrics.utils.LyricsUtils;
 import com.zq.lyrics.utils.TimeUtils;
 
@@ -178,6 +178,13 @@ public class ManyLyricsView extends AbstractLrcView {
     private int mDownLineNum = 100;
 
     /**
+     * 要不要展示上传者
+     */
+    private boolean mShowAuthor = false;
+
+    private String mAuthorName;
+
+    /**
      * Handler处理滑动指示器隐藏和歌词滚动到当前播放的位置
      */
     private Handler mHandler = new Handler() {
@@ -242,6 +249,10 @@ public class ManyLyricsView extends AbstractLrcView {
             mDownLineNum = upLineNum;
         }
 
+        if (typedArray.hasValue(R.styleable.many_line_lrc_view_ly_show_author)) {
+            mShowAuthor = typedArray.getBoolean(R.styleable.many_line_lrc_view_ly_show_author, false);
+        }
+
         typedArray.recycle();
         //初始化
         mScroller = new Scroller(context, new LinearInterpolator());
@@ -252,19 +263,19 @@ public class ManyLyricsView extends AbstractLrcView {
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
 
         //画指时间示器
-        mPaintIndicator = new Paint();
+        mPaintIndicator = new com.common.view.ExPaint();
         mPaintIndicator.setDither(true);
         mPaintIndicator.setAntiAlias(true);
 
         //画线
-        mPaintLine = new Paint();
+        mPaintLine = new com.common.view.ExPaint();
         mPaintLine.setDither(true);
         mPaintLine.setAntiAlias(true);
         mPaintLine.setStyle(Paint.Style.FILL);
 
 
         //绘画播放按钮
-        mPaintPlay = new Paint();
+        mPaintPlay = new com.common.view.ExPaint();
         mPaintPlay.setDither(true);
         mPaintPlay.setAntiAlias(true);
         mPaintPlay.setStrokeWidth(2);
@@ -367,6 +378,11 @@ public class ManyLyricsView extends AbstractLrcView {
         List<LyricsLineInfo> splitLyricsLineInfos = lyricsLineInfo.getSplitLyricsLineInfos();
         float lineBottomY = drawDownLyrics(canvas, paint, paintHL, splitLyricsLineInfos, splitLyricsLineNum, splitLyricsWordIndex, spaceLineHeight, lyricsWordHLTime, mCentreY);
 
+        if (lyricsLineNum == lrcLineInfos.size() - 1) {
+            if (mShowAuthor)
+                drawAuthor(paint, canvas, lineBottomY);
+        }
+
         //画倒计时圆点
         if (getNeedCountDownLine().contains(lyricsLineNum)) {
             drawCountDownPoint(canvas, lineBottomY);
@@ -386,6 +402,11 @@ public class ManyLyricsView extends AbstractLrcView {
                 lineBottomY = drawDownLyrics(canvas, paint, paintHL, lyricsLineInfos, -1, -2, spaceLineHeight, -1, lineBottomY);
                 //画额外歌词
                 lineBottomY = drawDownExtraLyrics(canvas, extraLrcPaint, extraLrcPaintHL, i, -1, -2, extraLrcSpaceLineHeight, -1, -1, lineBottomY);
+                //最后一行
+                if (i == lrcLineInfos.size() - 1) {
+                    if (mShowAuthor)
+                        drawAuthor(paint, canvas, lineBottomY);
+                }
             }
         }
 
@@ -409,6 +430,24 @@ public class ManyLyricsView extends AbstractLrcView {
         }
     }
 
+    public void setAuthorName(String authorName) {
+        mAuthorName = authorName;
+    }
+
+    private void drawAuthor(Paint paint, Canvas canvas, float lineBottomY) {
+        if (TextUtils.isEmpty(mAuthorName)) {
+            return;
+        }
+
+        float size = paint.getTextSize();
+        paint.setTextSize(size * 0.8f);
+        float textWidth = LyricsUtils.getTextWidth(paint, "上传者：" + mAuthorName);
+        float textX = (getWidth() - textWidth) * 0.5f;
+        int[] paintColors = getPaintColors();
+        LyricsUtils.drawText(canvas, paint, paintColors, "上传者：" + mAuthorName, textX, lineBottomY);
+        paint.setTextSize(size);
+    }
+
     private void drawCountDownPoint(Canvas canvas, float y) {
         int lyricsLineNum = getLyricsLineNum();
         LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);
@@ -426,7 +465,7 @@ public class ManyLyricsView extends AbstractLrcView {
         float textX = (getWidth() - textWidth) * 0.5f + 10;
         int textHeight = LyricsUtils.getTextHeight(getPaintHL());
 
-        Paint circlePaint = new Paint();
+        Paint circlePaint = new com.common.view.ExPaint();
         circlePaint.setColor(getPaintHLColors()[0]);
 //        MyLog.v(TAG, "degree " + degree);
 
@@ -434,19 +473,21 @@ public class ManyLyricsView extends AbstractLrcView {
 //            MyLog.v(TAG, "倒计时 0");
             return;
         }
+        float radius = 10.0f;
+        float dy = y - textHeight - radius * 2 - U.getDisplayUtils().dip2px(33);
 
         if (degree <= 1000) {
 //            MyLog.v(TAG, "倒计时 1");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX, dy, radius, circlePaint);
             return;
         }
 
         if (degree <= 2000) {
 //            MyLog.v(TAG, "倒计时 2");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
-            canvas.drawCircle(textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX, dy, radius, circlePaint);
+            canvas.drawCircle(textX + 40, dy, radius, circlePaint);
             circlePaint.setColor(getSubPaintHLColor());
             return;
         }
@@ -454,9 +495,9 @@ public class ManyLyricsView extends AbstractLrcView {
         if (degree <= 3000) {
 //            MyLog.v(TAG, "倒计时 3");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
-            canvas.drawCircle(textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
-            canvas.drawCircle(textX + 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX, dy, radius, circlePaint);
+            canvas.drawCircle(textX + 40, dy, radius, circlePaint);
+            canvas.drawCircle(textX + 80, dy, radius, circlePaint);
             return;
         }
     }

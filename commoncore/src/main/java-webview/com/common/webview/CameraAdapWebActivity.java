@@ -11,6 +11,7 @@ import android.webkit.ValueCallback;
 
 import com.common.base.BaseActivity;
 import com.common.core.permission.SkrCameraPermission;
+import com.common.log.MyLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,7 @@ abstract class CameraAdapWebActivity extends BaseActivity {
     public String mCameraPhotoPath;
     public static final int INPUT_FILE_REQUEST_CODE = 1;
     public static final int INPUT_VIDEO_CODE = 2;
+    public static final int INPUT_IMAGE_CODE = 3;
     public Uri photoURI;
 
     SkrCameraPermission mSkrCameraPermission;
@@ -61,34 +63,48 @@ abstract class CameraAdapWebActivity extends BaseActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != INPUT_FILE_REQUEST_CODE && requestCode != INPUT_VIDEO_CODE) {
+        if (requestCode != INPUT_FILE_REQUEST_CODE && requestCode != INPUT_VIDEO_CODE && INPUT_IMAGE_CODE != requestCode) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
+
         Uri[] results = null;
         Uri mUri = null;
-        if (resultCode == Activity.RESULT_OK && requestCode == INPUT_FILE_REQUEST_CODE) {
-            if (data == null) {
-                if (Build.VERSION.SDK_INT > M) {
-                    mUri = photoURI;
-                    results = new Uri[]{mUri};
-                } else {
-                    if (mCameraPhotoPath != null) {
-                        mUri = Uri.parse(mCameraPhotoPath);
-                        results = new Uri[]{Uri.parse(mCameraPhotoPath)};
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case INPUT_FILE_REQUEST_CODE:
+                    if (data == null) {
+                        if (Build.VERSION.SDK_INT > M) {
+                            mUri = photoURI;
+                            results = new Uri[]{mUri};
+                        } else {
+                            if (mCameraPhotoPath != null) {
+                                mUri = Uri.parse(mCameraPhotoPath);
+                                results = new Uri[]{Uri.parse(mCameraPhotoPath)};
+                            }
+                        }
+                    } else {
+                        Uri nUri = data.getData();
+                        if (nUri != null) {
+                            mUri = nUri;
+                            results = new Uri[]{nUri};
+                        }
                     }
-                }
-            } else {
-                Uri nUri = data.getData();
-                if (nUri != null) {
-                    mUri = nUri;
-                    results = new Uri[]{nUri};
-                }
+                    break;
+                case INPUT_VIDEO_CODE:
+                    mUri = data.getData();
+                    results = new Uri[]{mUri};
+                    break;
+                case INPUT_IMAGE_CODE:
+                    mUri = data.getData();
+                    results = new Uri[]{mUri};
+                    break;
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == INPUT_VIDEO_CODE) {
-            mUri = data.getData();
-            results = new Uri[]{mUri};
+
+        } else {
+            MyLog.d(TAG, "onActivityResult " + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         }
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             if (nFilePathCallback != null) {
                 nFilePathCallback.onReceiveValue(mUri);

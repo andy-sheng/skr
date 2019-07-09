@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_220_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_133_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFE0AD" />
+
+    <ScrollView
+        android:id="@+id/sv_lyric"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_180_dp"
+        android:layout_alignTop="@id/iv_bg"
+        android:layout_margin="@dimen/view_20_dp"
+        android:fadeScrollbars="false"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar">
+
+        <TextView
+            android:id="@+id/tv_lyric"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/first_tips_area"
+            android:gravity="center"
+            android:lineSpacingExtra="7dp"
+            android:textColor="#364E7C"
+            android:textSize="@dimen/textsize_18_dp" />
+
+    </ScrollView>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mic_control_btn"
+        android:layout_width="@dimen/view_38_dp"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_alignRight="@+id/iv_bg"
+        android:layout_alignBottom="@+id/iv_bg"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:src="@drawable/free_mic_close_mic" />
+
+
+    <com.module.playways.grab.room.view.SingCountDownView2
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_78_dp" />
+
+</RelativeLayout>

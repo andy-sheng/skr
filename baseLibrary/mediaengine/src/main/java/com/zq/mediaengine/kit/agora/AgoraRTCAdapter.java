@@ -9,6 +9,7 @@ import com.engine.Params;
 import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
+import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -20,6 +21,7 @@ import com.zq.mediaengine.util.gles.GLRender;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +50,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AgoraRTCAdapter {
     public final static String TAG = "AgoraRTCAdapter";
+    private final static boolean VERBOSE = false;
 
     private static AgoraRTCAdapter sInstance;
     private static final String APP_ID;
@@ -55,6 +58,7 @@ public class AgoraRTCAdapter {
     static {
         if (U.getChannelUtils().isStaging()) {
             APP_ID = "f23bd32ce6484113b02d14bd878e694c";
+//            APP_ID = "9624261076ba437c9eac190e88c3403e";
         } else {
             APP_ID = "2cceda2dbb2d46d28cab627f30c1a6f7";
         }
@@ -230,7 +234,7 @@ public class AgoraRTCAdapter {
         @Override
         public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
             super.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
-            // 一般可以在这里绑定视图
+            // 绑定远端渲染视图交由业务层处理
             if (mOutCallback != null) {
                 mOutCallback.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
             }
@@ -305,6 +309,12 @@ public class AgoraRTCAdapter {
                         // 模式为广播,必须在加入频道前调用
                         // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
                         mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
+                        if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
+                            /**
+                             * 直播模式下允许与web互通
+                             */
+                            mRtcEngine.enableWebSdkInteroperability(true);
+                        }
                         initRtcEngineInner();
                     }
                 } catch (Exception e) {
@@ -329,7 +339,7 @@ public class AgoraRTCAdapter {
 
             int a = 3, b = 4;
             /**
-             * 如果b==3 ，onRecordFrame 里是人声，但是stopMixMusic后数据会有问题
+             * 如果b==3 ，onRecordFrame 里是人声
              * 如果b==4 ，onRecordFrame 是伴奏+人声
              */
             switch (mConfig.getScene()) {
@@ -339,6 +349,10 @@ public class AgoraRTCAdapter {
                     break;
                 case grab:
                     b = 3;
+                    break;
+                case doubleChat:
+                    b = 3;
+                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case voice:
                     b = 3;
@@ -351,6 +365,7 @@ public class AgoraRTCAdapter {
             mRtcEngine.setAudioProfile(a, b);
 
 //            mRtcEngine.setParameters("{\"che.audio.opensl\": true}");
+            mRtcEngine.setParameters("{\"che.audio.specify.codec\": \"OPUS\"}");
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
@@ -400,7 +415,8 @@ public class AgoraRTCAdapter {
                     mConfig.getAudioSampleRate(),   // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
                     mConfig.getAudioChannels()      // 外部音源的通道数，最多2个
             );
-        } else {
+        }
+        {
             mLocalAudioFormat = null;
             mRemoteAudioFormat = null;
             // 注册音频回调
@@ -412,6 +428,19 @@ public class AgoraRTCAdapter {
                                              int channels,// 2
                                              int samplesPerSec//44100
                 ) {
+                    if (VERBOSE) {
+                        Log.d(TAG, "onRecordFrame" +
+                                " samples=" + samples +
+                                " numOfSamples=" + numOfSamples +
+                                " bytesPerSample=" + bytesPerSample +
+                                " channels=" + channels +
+                                " samplesPerSec=" + samplesPerSec);
+                    }
+
+                    if (samples == null || numOfSamples <= 0 || samplesPerSec == 0) {
+                        return true;
+                    }
+
                     long curTime = System.nanoTime() / 1000 / 1000;
                     if (mLocalAudioFormat == null) {
                         MyLog.i(TAG, "mLocalAudioFormat changed");
@@ -440,6 +469,8 @@ public class AgoraRTCAdapter {
                     }
                     int size = numOfSamples * bytesPerSample * channels;
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
+                    byteBuffer.order(ByteOrder.nativeOrder());
+
                     AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, byteBuffer, pts);
                     mLocalAudioSrcPin.onFrameAvailable(frame);
                     return true;
@@ -452,6 +483,19 @@ public class AgoraRTCAdapter {
                                                int channels,
                                                int samplesPerSec
                 ) {
+                    if (VERBOSE) {
+                        Log.d(TAG, "onPlaybackFrame" +
+                                " samples=" + samples +
+                                " numOfSamples=" + numOfSamples +
+                                " bytesPerSample=" + bytesPerSample +
+                                " channels=" + channels +
+                                " samplesPerSec=" + samplesPerSec);
+                    }
+
+                    if (samples == null || numOfSamples <= 0 || samplesPerSec == 0) {
+                        return true;
+                    }
+
                     long curTime = System.nanoTime() / 1000 / 1000;
                     if (mRemoteAudioFormat == null) {
                         MyLog.i(TAG, "mRemoteAudioFormat changed");
@@ -462,9 +506,12 @@ public class AgoraRTCAdapter {
                     long pts = curTime - (long) numOfSamples * 1000 / samplesPerSec;
                     int size = numOfSamples * bytesPerSample * channels;
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
+                    byteBuffer.order(ByteOrder.nativeOrder());
+
                     AudioBufFrame frame = new AudioBufFrame(mRemoteAudioFormat, byteBuffer, pts);
                     mRemoteAudioSrcPin.onFrameAvailable(frame);
-                    return true;
+
+                    return !mConfig.isUseExternalAudio();
                 }
             });
         }
@@ -515,6 +562,7 @@ public class AgoraRTCAdapter {
         if (mRtcEngine != null) {
             mRtcEngine.getAudioEffectManager().stopAllEffects();
         }
+        mRemoteVideoSrcPins.clear();
         if (destroyAll) {
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
             RtcEngine.destroy();
@@ -581,7 +629,9 @@ public class AgoraRTCAdapter {
         int bitrate = mConfig.getBitrate();
         VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = mConfig.getOrientationMode();
         VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(dimensions, frameRate, bitrate, orientationMode);
-        mRtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+        if (mRtcEngine != null) {
+            mRtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+        }
     }
 
     /**
@@ -687,8 +737,26 @@ public class AgoraRTCAdapter {
      */
     public void addRemoteVideo(int uid) {
         AgoraImgTexSrcPin srcPin = new AgoraImgTexSrcPin(mGLRender);
-        mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
-        mRemoteVideoSrcPins.put(uid, srcPin);
+        if (mRtcEngine != null) {
+            mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
+        }
+        if (mRemoteVideoSrcPins != null) {
+            mRemoteVideoSrcPins.put(uid, srcPin);
+        }
+    }
+
+    /**
+     * 移除对应uid的远程视频流的SrcPin.
+     *
+     * @param uid uid
+     */
+    public void removeRemoteVideo(int uid) {
+        if (mRtcEngine != null) {
+            mRtcEngine.setRemoteVideoRenderer(uid, null);
+        }
+        if (mRemoteVideoSrcPins != null) {
+            mRemoteVideoSrcPins.remove(uid);
+        }
     }
 
     /**
@@ -806,7 +874,9 @@ public class AgoraRTCAdapter {
         if (volume > 400) {
             volume = 400;
         }
-        mRtcEngine.adjustRecordingSignalVolume(volume);
+        if (mRtcEngine != null) {
+            mRtcEngine.adjustRecordingSignalVolume(volume);
+        }
     }
 
     /**
@@ -821,7 +891,9 @@ public class AgoraRTCAdapter {
         if (volume > 400) {
             volume = 400;
         }
-        mRtcEngine.adjustPlaybackSignalVolume(volume);
+        if (mRtcEngine != null) {
+            mRtcEngine.adjustPlaybackSignalVolume(volume);
+        }
     }
 
     /**
@@ -1229,7 +1301,9 @@ public class AgoraRTCAdapter {
             frame.buf.get(mAudioData, 0, len);
             frame.buf.rewind();
             int ret = mRtcEngine.pushExternalAudioFrame(mAudioData, frame.pts);
-            MyLog.d(TAG, "pushExternalAudioFrame ret=" + ret);
+            if (VERBOSE) {
+                MyLog.d(TAG, "pushExternalAudioFrame ret=" + ret);
+            }
         }
 
         @Override
@@ -1263,7 +1337,7 @@ public class AgoraRTCAdapter {
             vf.transform = frame.texMatrix;
             vf.rotation = 0;
             boolean ret = mRtcEngine.pushExternalVideoFrame(vf);
-            MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + frame.textureId + " ret=" + ret);
+//            MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + frame.textureId + " ret=" + ret);
         }
     }
 }

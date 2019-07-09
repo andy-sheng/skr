@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF4C56AA">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bottomLineColor="#0C2275"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_18_dp"
+        app:centerTextStyle="BOLD"
+        app:centerType="textView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightTextColor="@color/white_trans_70"
+        app:rightTextSize="@dimen/textsize_18_dp"
+        app:rightTextStyle="BOLD"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#FF4C56AA"
+        app:titleBarColor="#FF4C56AA" />
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_89_dp"
+        android:gravity="center"
+        android:text="让撕歌更懂你"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/textsize_20_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_11_dp"
+        android:gravity="center"
+        android:text="选择年龄，匹配更精准"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_tv" />
+
+    <com.zq.person.view.AgeTagView
+        android:id="@+id/age_tag_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_206_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/save_btn"
+        android:layout_width="@dimen/view_152_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_32_dp"
+        android:gravity="center"
+        android:text="保存"
+        android:textColor="#FFAD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="#FFFFC15B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

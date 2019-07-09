@@ -117,7 +117,7 @@ public class VoiceLineView extends View {
 
     private void drawMiddleLine(Canvas canvas) {
         if (paint == null) {
-            paint = new Paint();
+            paint = new com.common.view.ExPaint();
             paint.setColor(middleLineColor);
             paint.setAntiAlias(true);
         }
@@ -129,7 +129,7 @@ public class VoiceLineView extends View {
     private void drawVoiceLine(Canvas canvas) {
         lineChange();
         if (paintVoicLine == null) {
-            paintVoicLine = new Paint();
+            paintVoicLine = new com.common.view.ExPaint();
             paintVoicLine.setColor(voiceLineColor);
             paintVoicLine.setAntiAlias(true);
             paintVoicLine.setStyle(Paint.Style.STROKE);
@@ -163,7 +163,7 @@ public class VoiceLineView extends View {
 
     private void drawVoiceRect(Canvas canvas) {
         if (paintVoicLine == null) {
-            paintVoicLine = new Paint();
+            paintVoicLine = new com.common.view.ExPaint();
             paintVoicLine.setColor(voiceLineColor);
             paintVoicLine.setAntiAlias(true);
             paintVoicLine.setStyle(Paint.Style.STROKE);

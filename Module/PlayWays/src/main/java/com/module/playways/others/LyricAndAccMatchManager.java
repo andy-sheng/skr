@@ -12,7 +12,6 @@ import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.arccloud.SongInfo;
 import com.engine.score.Score2Callback;
-import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
@@ -106,10 +105,12 @@ public class LyricAndAccMatchManager {
                         int lyricBeginTs,
                         int lyricEndTs,
                         int accBeginTs,
-                        int accEndTs
+                        int accEndTs,
+                        String authorName
     ) {
-        MyLog.w(TAG,"setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
+        MyLog.w(TAG, "setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
         mManyLyricsView = manyLyricsView;
+        mManyLyricsView.setAuthorName(authorName);
         mVoiceScaleView = voiceScaleView;
         mLyricUrl = lyricUrl;
         mLyricBeginTs = lyricBeginTs;

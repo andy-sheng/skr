@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bottomLineColor="#0C2275"
+        app:centerText="选择年龄阶段"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_18_dp"
+        app:centerTextStyle="BOLD"
+        app:centerType="textView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText="保存"
+        app:rightTextColor="@color/white_trans_70"
+        app:rightTextSize="@dimen/textsize_18_dp"
+        app:rightTextStyle="BOLD"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/age_tag_bg"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titlebar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_52_dp"
+        android:gravity="center"
+        android:text="寻找更有趣的小伙伴"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constraintLeft_toLeftOf="@id/age_tag_bg"
+        app:layout_constraintRight_toRightOf="@id/age_tag_bg"
+        app:layout_constraintTop_toTopOf="@id/age_tag_bg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:gravity="center"
+        android:text="完善一下年龄信息吧"
+        android:textColor="#993B4E79"
+        app:layout_constraintLeft_toLeftOf="@id/age_tag_bg"
+        app:layout_constraintRight_toRightOf="@id/age_tag_bg"
+        app:layout_constraintTop_toTopOf="@id/age_tag_bg" />
+
+    <com.zq.person.view.AgeTagView
+        android:id="@+id/age_tag_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_136_dp"
+        app:layout_constraintLeft_toLeftOf="@id/age_tag_bg"
+        app:layout_constraintRight_toRightOf="@id/age_tag_bg"
+        app:layout_constraintTop_toTopOf="@id/age_tag_bg" />
+
+</android.support.constraint.ConstraintLayout>

@@ -4,6 +4,7 @@
 
 #include <jni.h>
 #include <include/android_nio_utils.h>
+#include <include/log.h>
 #include "jni_AudioResample.h"
 #include "audio/AudioResample.h"
 

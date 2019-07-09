@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bottomLineColor="#0C2275"
+        app:centerText="设置城市"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_18_dp"
+        app:centerTextStyle="BOLD"
+        app:centerType="textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightTextColor="@color/white_trans_70"
+        app:rightTextSize="@dimen/textsize_18_dp"
+        app:rightTextStyle="BOLD"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_solid_color="#FFD0EFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlebar" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/gps_location"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_39_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:drawableLeft="@drawable/location_icon"
+        android:drawablePadding="@dimen/view_8_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_8_dp"
+        android:paddingRight="@dimen/view_30_dp"
+        android:text="未知位置"
+        android:textColor="#ff3d507b"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="@+id/background"
+        app:layout_constraintTop_toTopOf="@+id/background" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/whole_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:text="全部"
+        android:textColor="#803b4e79"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/background"
+        app:layout_constraintTop_toBottomOf="@+id/gps_location" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/whole_tv" />
+</android.support.constraint.ConstraintLayout>

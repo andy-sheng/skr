@@ -1,18 +1,16 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewStub;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
-import com.common.core.account.UserAccountManager;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
-import com.module.playways.grab.room.fragment.GrabRoomFragment;
+import com.module.playways.grab.room.ui.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.R;
+import com.common.view.ExViewStub;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -21,13 +19,10 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
 
-
-import java.util.HashMap;
-
 /**
  * 轮次结束 合唱和正常结束都用此板
  */
-public class NormalRoundOverCardView extends RelativeLayout {
+public class NormalRoundOverCardView extends ExViewStub {
 
     public final static String TAG = "RoundOverCardView";
 
@@ -37,30 +32,25 @@ public class NormalRoundOverCardView extends RelativeLayout {
 
     String assetsName = "";
 
-    public NormalRoundOverCardView(Context context) {
-        super(context);
-        init();
+    public NormalRoundOverCardView(ViewStub viewStub) {
+        super(viewStub);
     }
 
-    public NormalRoundOverCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+    @Override
+    protected void init(View parentView) {
+        mSingResultSvga = (SVGAImageView) parentView.findViewById(R.id.sing_result_svga);
     }
 
-    public NormalRoundOverCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_normal_round_over_card_layout, this);
-        mSingResultSvga = (SVGAImageView) findViewById(R.id.sing_result_svga);
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_normal_round_over_card_stub_layout;
     }
 
     public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener listener) {
         if (lastRoundInfo == null) {
             return;
         }
+        tryInflate();
         int songId = 0;
         if (lastRoundInfo.getMusic() != null) {
             songId = lastRoundInfo.getMusic().getItemID();
@@ -68,7 +58,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
         int reason = lastRoundInfo.getOverReason();
         int resultType = lastRoundInfo.getResultType();
         this.mSVGAListener = listener;
-        setVisibility(VISIBLE);
+        mParentView.setVisibility(View.VISIBLE);
 
         if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
             // 无人想唱
@@ -133,7 +123,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     private void startOKNoneWith(int songId) {
-        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(190);
         lp.topMargin = U.getDisplayUtils().dip2px(139);
         mSingResultSvga.setLayoutParams(lp);
@@ -144,7 +134,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     private void startChorusNoneWith(int songId) {
-        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(190);
         lp.topMargin = U.getDisplayUtils().dip2px(139);
         mSingResultSvga.setLayoutParams(lp);
@@ -155,7 +145,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     private void startNoneSing(int songId) {
-        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(560);
         lp.topMargin = 0;
         mSingResultSvga.setLayoutParams(lp);
@@ -169,7 +159,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     private void startChorusSucess(int songId) {
-        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(180);
         lp.topMargin = U.getDisplayUtils().dip2px(150);
         mSingResultSvga.setLayoutParams(lp);
@@ -178,7 +168,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     private void startChorusFailed(int songId) {
-        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(180);
         lp.topMargin = U.getDisplayUtils().dip2px(139);
         mSingResultSvga.setLayoutParams(lp);
@@ -190,7 +180,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
 
     // 优秀, 目前缺动画
     private void startPerfect(int songId) {
-        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(180);
         lp.topMargin = U.getDisplayUtils().dip2px(139);
         mSingResultSvga.setLayoutParams(lp);
@@ -207,7 +197,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     // 不够优秀，换字即可，目前缺动画
     private void startFailed(int songId) {
 
-        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(180);
         lp.topMargin = U.getDisplayUtils().dip2px(139);
         mSingResultSvga.setLayoutParams(lp);
@@ -223,7 +213,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
 
 
     private void playAnimation() {
-        mSingResultSvga.setVisibility(VISIBLE);
+        mSingResultSvga.setVisibility(View.VISIBLE);
         mSingResultSvga.setLoops(1);
         SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
@@ -250,7 +240,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
                 if (mSingResultSvga != null) {
                     mSingResultSvga.setCallback(null);
                     mSingResultSvga.stopAnimation(true);
-                    mSingResultSvga.setVisibility(GONE);
+                    mSingResultSvga.setVisibility(View.GONE);
                 }
 
                 if (mSVGAListener != null) {
@@ -275,7 +265,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (visibility == GONE) {
+        if (visibility == View.GONE){
             this.mSVGAListener = null;
             if (mSingResultSvga != null) {
                 mSingResultSvga.setCallback(null);
@@ -285,8 +275,8 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
         this.mSVGAListener = null;
         if (mSingResultSvga != null) {
             mSingResultSvga.setCallback(null);

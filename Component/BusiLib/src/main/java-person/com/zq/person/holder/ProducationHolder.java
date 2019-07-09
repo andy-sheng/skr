@@ -79,7 +79,7 @@ public class ProducationHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        mPlayBackIv.setOnClickListener(new DebounceViewClickListener() {
+        mPlayBackIv.setOnClickListener(new DebounceViewClickListener(1000) {
             @Override
             public void clickValid(View v) {
                 if (mIsPlay) {

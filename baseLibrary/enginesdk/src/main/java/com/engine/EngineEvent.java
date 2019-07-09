@@ -4,7 +4,7 @@ public class EngineEvent {
     public static final int TYPE_USER_SELF_JOIN_SUCCESS = 21;
     public static final int TYPE_USER_JOIN = 1;
     public static final int TYPE_USER_LEAVE = 2;
-    public static final int TYPE_FIRST_VIDEO_DECODED = 3;
+    public static final int TYPE_FIRST_REMOTE_VIDEO_DECODED = 3;
     public static final int TYPE_USER_MUTE_AUDIO = 4;
     public static final int TYPE_USER_MUTE_VIDEO = 5;
     public static final int TYPE_USER_REJOIN = 6;
@@ -19,7 +19,13 @@ public class EngineEvent {
 
     public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 14;// 伴奏时间流逝
 
-    public static final int TYPE_ENGINE_DESTROY = 99;
+    public static final int TYPE_ENGINE_INITED = 100;// 引擎初始化完毕
+    public static final int TYPE_ENGINE_DESTROY = 99;// 引擎销毁完毕
+
+    public static final int TYPE_CAMERA_OPENED = 200;// 相机打开
+    public static final int TYPE_CAMERA_FIRST_FRAME_RENDERED = 201;//相机首帧渲染
+    public static final int TYPE_CAMERA_FACING_CHANGED = 202;// 摄像头切换
+    public static final int TYPE_CAMERA_ERROR = 203;// 摄像头出错
 
     public int type;
     public UserStatus userStatus;
@@ -144,10 +150,57 @@ public class EngineEvent {
         }
     }
 
+    String getTypeDesc(int type){
+        switch (type){
+            case TYPE_USER_SELF_JOIN_SUCCESS:
+                return "SELF_JOIN_SUCCESS";
+            case TYPE_USER_JOIN:
+                return "USER_JOIN";
+            case TYPE_USER_LEAVE:
+                return "USER_LEAVE";
+            case TYPE_FIRST_REMOTE_VIDEO_DECODED:
+                return "FIRST_REMOTE_VIDEO_DECODED";
+            case TYPE_USER_MUTE_AUDIO:
+                return "MUTE_AUDIO";
+            case TYPE_USER_MUTE_VIDEO:
+                return "MUTE_VIDEO";
+            case TYPE_USER_REJOIN:
+                return "REJOIN";
+            case TYPE_USER_ROLE_CHANGE:
+                return "ROLE_CHANGE";
+            case TYPE_USER_VIDEO_ENABLE:
+                return "VIDEO_ENABLE";
+            case TYPE_USER_AUDIO_VOLUME_INDICATION:
+                return "AUDIO_VOLUME_INDICATION";
+            case TYPE_MUSIC_PLAY_START:
+                return "MUSIC_PLAY_START";
+            case TYPE_MUSIC_PLAY_PAUSE:
+                return "MUSIC_PLAY_PAUSE";
+            case TYPE_MUSIC_PLAY_STOP:
+                return "MUSIC_PLAY_STOP";
+            case TYPE_MUSIC_PLAY_FINISH:
+                return "USIC_PLAY_FINISH";
+            case TYPE_ENGINE_DESTROY:
+                return "ENGINE_DESTROY";
+            case TYPE_ENGINE_INITED:
+                return "ENGINE_INITED";
+            case TYPE_CAMERA_OPENED:
+                return "CAMERA_OPENED";
+            case TYPE_CAMERA_FIRST_FRAME_RENDERED:
+                return "CAMERA_FIRST_FRAME_RENDERED";
+            case TYPE_CAMERA_FACING_CHANGED:
+                return "CAMERA_FACING_CHANGED";
+            case TYPE_CAMERA_ERROR:
+                return "CAMERA_ERROR";
+        }
+        return type+"";
+    }
+
     @Override
     public String toString() {
         return "EngineEvent{" +
-                "type=" + type +
+                "type=" + getTypeDesc(type) +
+                " user="+userStatus+
                 '}';
     }
 }

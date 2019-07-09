@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <ViewStub
+        android:id="@+id/grab_video_chorus_self_sing_card_stub"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_55_dp"
+        android:layout_marginBottom="@dimen/view_55_dp"
+        android:layout="@layout/grab_video_chorus_self_sing_card_stub_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ViewStub
+        android:id="@+id/double_normal_lyric_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_55_dp"
+        android:layout_marginBottom="@dimen/view_55_dp"
+        android:layout="@layout/double_normal_lyric_stub_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ViewStub
+        android:id="@+id/grab_video_mini_game_self_sing_card_stub"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_55_dp"
+        android:layout_marginBottom="@dimen/view_55_dp"
+        android:layout="@layout/grab_video_mini_game_self_sing_card_stub_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</merge>

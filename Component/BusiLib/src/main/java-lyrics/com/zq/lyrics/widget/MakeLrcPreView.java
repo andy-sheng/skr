@@ -71,21 +71,21 @@ public class MakeLrcPreView extends View {
      */
     protected void init(Context context) {
         //默认画笔
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
         mPaint.setTextSize(mFontSize);
         setPaintColor(mPaintColor);
 
         //高亮画笔
-        mPaintHL = new Paint();
+        mPaintHL = new com.common.view.ExPaint();
         mPaintHL.setDither(true);
         mPaintHL.setAntiAlias(true);
         mPaintHL.setTextSize(mFontSize);
         setPaintHLColor(mPaintHLColor);
 
         //画边框
-        mPaintRect = new Paint();
+        mPaintRect = new com.common.view.ExPaint();
         mPaintRect.setDither(true);
         mPaintRect.setAntiAlias(true);
         mPaintRect.setStyle(Paint.Style.STROKE);

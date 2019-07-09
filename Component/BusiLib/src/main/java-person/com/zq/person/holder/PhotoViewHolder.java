@@ -1,6 +1,7 @@
 package com.zq.person.holder;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
+
+import java.io.File;
 
 public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
@@ -88,12 +91,14 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         if (TextUtils.isEmpty(path)) {
             path = mPhotoModel.getLocalPath();
         }
+
         FrescoWorker.loadImage(mPhotoIv,
                 ImageFactory.newPathImage(path)
                         .setCornerRadius(U.getDisplayUtils().dip2px(8))
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.load_img_error))
                         .setLoadingDrawable(U.app().getResources().getDrawable(R.drawable.loading_place_holder_img))
+                        .setLowImageUri(ImageUtils.SIZE.SIZE_160)
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.getW()).build())
                         .setBorderColor(Color.parseColor("#3B4E79")).build());
         mUploadTipsTv.setVisibility(View.VISIBLE);

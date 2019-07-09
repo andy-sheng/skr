@@ -1,52 +1,37 @@
 package com.module.home.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
-import com.common.core.pay.EPayPlatform;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
 import com.common.utils.FragmentUtils;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.StrokeTextView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.adapter.RechargeAdapter;
 import com.module.home.event.PhoneAuthSuccessEvent;
 import com.module.home.event.WithDrawSuccessEvent;
-import com.module.home.inter.IBallanceView;
 import com.module.home.inter.IInComeView;
 import com.module.home.model.ExChangeInfoModel;
-import com.module.home.model.RechargeItemModel;
 import com.module.home.model.WithDrawInfoModel;
-import com.module.home.presenter.BallencePresenter;
 import com.module.home.presenter.InComePresenter;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.respicker.view.GridSpacingItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 /**
  * 余额明细
@@ -137,7 +122,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
             public void clickValid(View v) {
                 float hz = Float.parseFloat(mTvDqNum.getText().toString());
                 if (hz <= 0.0) {
-                    ToastUtils.showShort("无可兑换红钻");
+                    U.getToastUtil().showShort("无可兑换红钻");
                     return;
                 }
 
@@ -165,7 +150,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                 } else if (!mWithDrawInfoModel.isIsRealAuth()) {
                     mWithDrawInfoModel = null;
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                            .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/faceauth"))
+                            .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/oauth?from=cash"))
                             .navigation();
                 } else {
                     if (!U.getNetworkUtils().hasNetwork()) {
@@ -185,7 +170,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
             public void clickValid(View v) {
                 float hz = Float.parseFloat(mTvDqNum.getText().toString());
                 if (hz < 1) {
-                    ToastUtils.showShort("红钻数量少于1个无法兑换哦");
+                    U.getToastUtil().showShort("红钻数量少于1个无法兑换哦");
                     return;
                 }
 

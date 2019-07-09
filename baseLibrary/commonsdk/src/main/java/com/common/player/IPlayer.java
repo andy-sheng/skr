@@ -71,4 +71,10 @@ public interface IPlayer {
     float getVolume();
 
     void setDecreaseVolumeEnd(boolean b);
+
+    /**
+     * 是否监听进度
+     * @param b
+     */
+    void setMonitorProgress(boolean b);
 }

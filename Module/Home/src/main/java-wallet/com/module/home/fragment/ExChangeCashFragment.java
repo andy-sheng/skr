@@ -80,7 +80,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 }
 
                 if (hfToYuan((long) (Float.parseFloat(mEditCashNum.getText().toString()) * mExChangeInfoModel.getToRMBRatio())) <= 0) {
-                    ToastUtils.showShort("提现需要大于0.00元");
+                    U.getToastUtil().showShort("提现需要大于0.00元");
                     return;
                 }
 
@@ -124,7 +124,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
 //                    if (editDq > 10000 * HF) {
 //                        mEditCashNum.setText(beforeTextChanged);
 //                        mEditCashNum.setSelection(beforeTextChanged.length() - 1);
-//                        ToastUtils.showShort("一次最多兑换10000元");
+//                        U.getToastUtil().showShort("一次最多兑换10000元");
 //                        return;
 //                    }
 
@@ -185,7 +185,7 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
 
     @Override
     public void exChangeFailed(String errorMsg) {
-        ToastUtils.showShort(errorMsg);
+        U.getToastUtil().showShort(errorMsg);
     }
 
     @Override

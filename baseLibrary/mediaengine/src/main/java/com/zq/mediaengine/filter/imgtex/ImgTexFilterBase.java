@@ -19,6 +19,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The base class of gpu filters.
@@ -43,10 +45,15 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
     private int[] mViewPort = new int[4];
 
     protected boolean mReuseFbo = true;
+    protected boolean mIsRender = false;
     protected GLRender mGLRender;
     protected boolean mInited;
     protected int mOutTexture = ImgTexFrame.NO_TEXTURE;
     private ImgTexFormat mLastOutFormat;
+
+    protected boolean mEnableAutoRefresh = false;
+    protected float mAutoRefreshFps = 30.0f;
+    protected Timer mAutoRefreshTimer;
 
     protected Handler mMainHandler;
 
@@ -68,14 +75,17 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
 
         mGLRender = glRender;
         mGLRender.addListener(mGLReadyListener);
+        mGLRender.addListener(mFboCacheClearedListener);
     }
 
     public void setGLRender(GLRender glRender) {
         if (mGLRender != null) {
             mGLRender.removeListener(mGLReadyListener);
+            mGLRender.removeListener(mFboCacheClearedListener);
         }
         mGLRender = glRender;
         mGLRender.addListener(mGLReadyListener);
+        mGLRender.addListener(mFboCacheClearedListener);
     }
 
     /**
@@ -107,7 +117,7 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         return mSrcPin;
     }
 
-    protected boolean isReuseFbo() {
+    public boolean isReuseFbo() {
         return mReuseFbo;
     }
 
@@ -115,8 +125,64 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         mReuseFbo = reuse;
     }
 
+    public boolean isEnableAutoRefresh() {
+        return mEnableAutoRefresh;
+    }
+
+    public void setEnableAutoRefresh(boolean enableAutoRefresh, float fps) {
+        Log.d(TAG, "setEnableAutoRefresh: " + enableAutoRefresh + " fps: " + fps);
+        if (enableAutoRefresh == mEnableAutoRefresh) {
+            return;
+        }
+
+        if (enableAutoRefresh) {
+            long delay = (long) (1000 / fps);
+            mAutoRefreshTimer = new Timer("AutoRefreshTimer");
+            TimerTask refreshTask = new TimerTask() {
+                @Override
+                public void run() {
+                    mGLRender.queueEvent(new Runnable() {
+                        @Override
+                        public void run() {
+                            render(null);
+                        }
+                    });
+                }
+            };
+            mAutoRefreshTimer.schedule(refreshTask, delay, delay);
+        } else {
+            mAutoRefreshTimer.cancel();
+            mAutoRefreshTimer = null;
+        }
+
+        mEnableAutoRefresh = enableAutoRefresh;
+        mAutoRefreshFps = fps;
+    }
+
+    /**
+     * Get if this module directly render to view.
+     *
+     * @return isRender
+     */
+    public boolean getIsRender() {
+        return mIsRender;
+    }
+
+    /**
+     * Set if this module should render to view.
+     * Take no effect if glRender is based offscreen render.
+     *
+     * @param isRender isRender
+     */
+    public void setIsRender(boolean isRender) {
+        mIsRender = isRender;
+    }
+
     @Override
     public void release() {
+        if (mAutoRefreshTimer != null) {
+            mAutoRefreshTimer.cancel();
+        }
         mSrcPin.disconnect(true);
         mGLRender.queueEvent(new Runnable() {
             @Override
@@ -125,6 +191,7 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
             }
         });
         mGLRender.removeListener(mGLReadyListener);
+        mGLRender.removeListener(mFboCacheClearedListener);
         if (mScreenShotThread != null && mScreenShotThread.isAlive()) {
             mScreenShotThread.interrupt();
             mScreenShotThread = null;
@@ -181,6 +248,103 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         });
     }
 
+    private void render(ImgTexFrame frame) {
+        // render mode
+        if (mIsRender) {
+            try {
+                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+                GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+                ImgTexFilterBase.this.onDraw(mInputFrames);
+            } catch (Exception e) {
+                if (e instanceof GLProgramLoadException) {
+                    sendError(ERROR_LOAD_PROGRAM_FAILED);
+                } else {
+                    sendError(ERROR_UNKNOWN);
+                }
+                Log.e(TAG, "Draw frame error!");
+                e.printStackTrace();
+                return;
+            } finally {
+                if (frame != null) {
+                    // we can only unref fbo if SrcPin is implemented by ImgTexFilterBase
+                    if (mUnRefFbos[mMainSinkPinIndex]) {
+                        frame.unref();
+                    }
+                }
+            }
+            return;
+        }
+
+        if (!mSrcPin.isConnected()) {
+            return;
+        }
+
+        final ImgTexFormat outFormat = ImgTexFilterBase.this.getSrcPinFormat();
+        if (outFormat == null) {
+            return;
+        }
+
+        if (mLastOutFormat != null && (mLastOutFormat.width != outFormat.width ||
+                mLastOutFormat.height != outFormat.height)) {
+            mSrcPin.onFormatChanged(outFormat);
+        }
+        mLastOutFormat = outFormat;
+
+        if (mOutTexture == ImgTexFrame.NO_TEXTURE) {
+            mOutTexture = mGLRender.getFboManager().getTextureAndLock(outFormat.width,
+                    outFormat.height);
+        }
+        int outFrameBuffer = mGLRender.getFboManager().getFramebuffer(mOutTexture);
+
+        GLES20.glGetIntegerv(GLES20.GL_VIEWPORT, mViewPort, 0);
+        GLES20.glViewport(0, 0, outFormat.width, outFormat.height);
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, outFrameBuffer);
+        try {
+            GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+            ImgTexFilterBase.this.onDraw(mInputFrames);
+
+            if (mIsRequestScreenShot) {
+                saveFrame(outFormat.width, outFormat.height);
+                mIsRequestScreenShot = false;
+            }
+        } catch (Exception e) {
+            if (isReuseFbo()) {
+                mGLRender.getFboManager().unlock(mOutTexture);
+                mOutTexture = ImgTexFrame.NO_TEXTURE;
+            }
+            if (e instanceof GLProgramLoadException) {
+                sendError(ERROR_LOAD_PROGRAM_FAILED);
+            } else {
+                sendError(ERROR_UNKNOWN);
+            }
+            Log.e(TAG, "Draw frame error!");
+            e.printStackTrace();
+            return;
+        } finally {
+            if (frame != null) {
+                // we can only unref fbo if SrcPin is implemented by ImgTexFilterBase
+                if (mUnRefFbos[mMainSinkPinIndex]) {
+                    frame.unref();
+                }
+            }
+            // reset gl state
+            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+            GLES20.glViewport(mViewPort[0], mViewPort[1], mViewPort[2], mViewPort[3]);
+        }
+
+        // send to the next module
+        long pts = frame != null ? frame.pts : System.nanoTime() / 1000 / 1000;
+        int flags = frame != null ? frame.flags : 0;
+        FboManager fboManager = isReuseFbo() ? mGLRender.getFboManager() : null;
+        ImgTexFrame outFrame = new ImgTexFrame(outFormat, fboManager, mOutTexture,
+                null, pts);
+        outFrame.flags = flags;
+        mSrcPin.onFrameAvailable(outFrame);
+        if (isReuseFbo()) {
+            mOutTexture = ImgTexFrame.NO_TEXTURE;
+        }
+    }
+
     private class ImgTexFilterSinkPin extends SinkPin<ImgTexFrame> {
         private int mIndex;
 
@@ -206,7 +370,11 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
 
         @Override
         public void onFrameAvailable(ImgTexFrame frame) {
-            if (mIndex != mMainSinkPinIndex) {
+            if (mIndex == mMainSinkPinIndex && !mEnableAutoRefresh) {
+                mInputFrames[mIndex] = frame;
+                render(frame);
+                mInputFrames[mIndex] = null;
+            } else {
                 // unref previous fbo if needed
                 if (mInputFrames[mIndex] != null && mInputFrames[mIndex].isRefCounted()) {
                     mInputFrames[mIndex].unref();
@@ -216,10 +384,6 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
                     frame.ref();
                 }
                 mInputFrames[mIndex] = frame;
-            } else {
-                mInputFrames[mIndex] = frame;
-                render(frame);
-                mInputFrames[mIndex] = null;
             }
         }
 
@@ -241,75 +405,6 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
                         mInputFrames[mIndex] = null;
                     }
                 });
-            }
-        }
-
-        private void render(ImgTexFrame frame) {
-            if (!mSrcPin.isConnected()) {
-                return;
-            }
-
-            final ImgTexFormat outFormat = ImgTexFilterBase.this.getSrcPinFormat();
-            if (outFormat == null) {
-                return;
-            }
-
-            if (mLastOutFormat != null && (mLastOutFormat.width != outFormat.width ||
-                    mLastOutFormat.height != outFormat.height)) {
-                if (mIndex == mMainSinkPinIndex) {
-                    mSrcPin.onFormatChanged(outFormat);
-                }
-            }
-            mLastOutFormat = outFormat;
-
-            if (mOutTexture == ImgTexFrame.NO_TEXTURE) {
-                mOutTexture = mGLRender.getFboManager().getTextureAndLock(outFormat.width,
-                        outFormat.height);
-            }
-            int outFrameBuffer = mGLRender.getFboManager().getFramebuffer(mOutTexture);
-
-            GLES20.glGetIntegerv(GLES20.GL_VIEWPORT, mViewPort, 0);
-            GLES20.glViewport(0, 0, outFormat.width, outFormat.height);
-            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, outFrameBuffer);
-            try {
-                GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-                ImgTexFilterBase.this.onDraw(mInputFrames);
-
-                if (mIsRequestScreenShot) {
-                    saveFrame(outFormat.width, outFormat.height);
-                    mIsRequestScreenShot = false;
-                }
-            } catch (Exception e) {
-                if (isReuseFbo()) {
-                    mGLRender.getFboManager().unlock(mOutTexture);
-                    mOutTexture = ImgTexFrame.NO_TEXTURE;
-                }
-                if (e instanceof GLProgramLoadException) {
-                    sendError(ERROR_LOAD_PROGRAM_FAILED);
-                } else {
-                    sendError(ERROR_UNKNOWN);
-                }
-                Log.e(TAG, "Draw frame error!");
-                e.printStackTrace();
-                return;
-            } finally {
-                // we can only unref fbo if SrcPin is implemented by ImgTexFilterBase
-                if (mUnRefFbos[mIndex]) {
-                    frame.unref();
-                }
-                // reset gl state
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-                GLES20.glViewport(mViewPort[0], mViewPort[1], mViewPort[2], mViewPort[3]);
-            }
-            
-            // send to the next module
-            FboManager fboManager = isReuseFbo() ? mGLRender.getFboManager() : null;
-            ImgTexFrame outFrame = new ImgTexFrame(outFormat, fboManager, mOutTexture,
-                    null, frame.pts);
-            outFrame.flags = frame.flags;
-            mSrcPin.onFrameAvailable(outFrame);
-            if (isReuseFbo()) {
-                mOutTexture = ImgTexFrame.NO_TEXTURE;
             }
         }
     }
@@ -362,6 +457,14 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
                 mInputFrames[i] = null;
             }
             ImgTexFilterBase.this.onGLContextReady();
+        }
+    };
+
+    private GLRender.OnFboCacheClearedListener mFboCacheClearedListener = new GLRender.OnFboCacheClearedListener() {
+        @Override
+        public void onFboCacheClearedListener() {
+            // Fbo cache清空后需要重新获取fbo
+            mOutTexture = ImgTexFrame.NO_TEXTURE;
         }
     };
 

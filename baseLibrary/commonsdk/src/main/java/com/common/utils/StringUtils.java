@@ -3,6 +3,8 @@ package com.common.utils;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -130,6 +132,17 @@ public class StringUtils {
             }
         }
         return buf.toString();
+    }
+
+    public boolean isJSON(String str) {
+        boolean result;
+        try {
+            Object obj = JSON.parse(str);
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
     }
 
     /**
@@ -597,7 +610,7 @@ public class StringUtils {
             }
         }
         if (maxIndex >= 0) {
-            String r = input.substring(maxIndex - max+1, maxIndex+1);
+            String r = input.substring(maxIndex - max + 1, maxIndex + 1);
             return r;
         } else {
             return "";

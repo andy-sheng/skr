@@ -124,26 +124,25 @@ public class ImgTexScaleFilter extends ImgTexFilter {
         }
         mVertexCoordsBuf = genVertexCoordsBuf(rectF);
 
-        float crop;
-        float left = 0.f;
-        float top = 0.f;
+        cropX = 0;
+        cropY = 0;
         if (mRenderScalingMode == SCALING_MODE_CENTER_CROP) {
             if (sar > dar) {
-                crop = 1.0f - dar / sar;
-                left = crop / 2.0f;
+                cropX = (1.0f - dar / sar) / 2;
+                cropY = 0;
             } else {
-                crop = 1.0f - sar / dar;
-                top = crop / 2.0f;
+                cropX = 0;
+                cropY = (1.0f - sar / dar) / 2;
             }
         }
-        mTexCoordsBuf = TexTransformUtil.getTexCoordsBuf(left, top, mRotateDegrees, false, false);
+        mTexCoordsBuf = TexTransformUtil.getTexCoordsBuf(cropX, cropY, mRotateDegrees, mMirror, mFlipVertical);
     }
 
     private FloatBuffer genVertexCoordsBuf(RectF rect) {
         float vertexArray[] = {
-                -1 + 2 * rect.left, 1 - 2 * rect.bottom,   // 0 bottom left
+                -1 + 2 * rect.left,  1 - 2 * rect.bottom,   // 0 bottom left
                 -1 + 2 * rect.right, 1 - 2 * rect.bottom,   // 1 bottom right
-                -1 + 2 * rect.left, 1 - 2 * rect.top,      // 2 top left
+                -1 + 2 * rect.left,  1 - 2 * rect.top,      // 2 top left
                 -1 + 2 * rect.right, 1 - 2 * rect.top,      // 3 top right
         };
         return GlUtil.createFloatBuffer(vertexArray);

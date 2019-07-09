@@ -45,8 +45,8 @@ public class BlockMonitorKit implements IKit {
 
     @Override
     public void onAppInit(Context context) {
-        if(MyLog.isDebugLogOpen()) {
-            BlockMonitorManager.getInstance().start(context);
-        }
+//        if(MyLog.isDebugLogOpen()) {
+//            BlockMonitorManager.getInstance().start(context);
+//        }
     }
 }

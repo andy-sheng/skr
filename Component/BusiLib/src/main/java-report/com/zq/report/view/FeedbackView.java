@@ -13,9 +13,11 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
 import com.common.utils.ToastUtils;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
 import com.dialog.view.StrokeTextView;
 import com.respicker.ResPicker;
@@ -37,9 +39,9 @@ public class FeedbackView extends RelativeLayout {
 
     int mActionType;
 
-    EditText mFeedbackContent;
+    NoLeakEditText mFeedbackContent;
     ExTextView mContentTextSize;
-    StrokeTextView mSubmitTv;
+    ExTextView mSubmitTv;
     ExImageView mSelfSingCatonIv;
     ExImageView mAccNoVoiceIv;
     ExImageView mOtherIv;
@@ -89,18 +91,18 @@ public class FeedbackView extends RelativeLayout {
             inflate(getContext(), R.layout.report_view_layout, this);
         }
 
-        mPicNumTv = (ExTextView) findViewById(R.id.pic_num_tv);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mSelfSingCatonIv = (ExImageView) findViewById(R.id.self_sing_caton_iv);
-        mAccNoVoiceIv = (ExImageView) findViewById(R.id.acc_no_voice_iv);
-        mOtherIv = (ExImageView) findViewById(R.id.other_iv);
-        mOtherSingCatonIv = (ExImageView) findViewById(R.id.other_sing_caton_iv);
-        mLyricNoShowIv = (ExImageView) findViewById(R.id.lyric_no_show_iv);
-        mNewFunIv = (ExImageView) findViewById(R.id.new_fun_iv);
+        mPicNumTv = findViewById(R.id.pic_num_tv);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mSelfSingCatonIv = findViewById(R.id.self_sing_caton_iv);
+        mAccNoVoiceIv = findViewById(R.id.acc_no_voice_iv);
+        mOtherIv = findViewById(R.id.other_iv);
+        mOtherSingCatonIv = findViewById(R.id.other_sing_caton_iv);
+        mLyricNoShowIv = findViewById(R.id.lyric_no_show_iv);
+        mNewFunIv = findViewById(R.id.new_fun_iv);
         mSelectIvList = new ExImageView[]{mSelfSingCatonIv, mAccNoVoiceIv, mOtherIv, mOtherSingCatonIv, mLyricNoShowIv, mNewFunIv};
-        mFeedbackContent = (EditText) findViewById(R.id.feedback_content);
-        mContentTextSize = (ExTextView) findViewById(R.id.content_text_size);
-        mSubmitTv = (StrokeTextView) findViewById(R.id.submit_tv);
+        mFeedbackContent = findViewById(R.id.feedback_content);
+        mContentTextSize = findViewById(R.id.content_text_size);
+        mSubmitTv = findViewById(R.id.submit_tv);
 
         mFeedbackContent.addTextChangedListener(new TextWatcher() {
             @Override
@@ -139,7 +141,7 @@ public class FeedbackView extends RelativeLayout {
                     }
 
                     if (tags.size() == 0) {
-                        ToastUtils.showShort("请选择顶部的选项哦");
+                        U.getToastUtil().showShort("请选择顶部的选项哦");
                     } else {
                         mListener.onClickSubmit(tags, mFeedbackContent.getText().toString().trim(), mImageItemArrayList);
                     }

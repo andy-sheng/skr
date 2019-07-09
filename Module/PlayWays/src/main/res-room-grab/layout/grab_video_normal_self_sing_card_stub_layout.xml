@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:id="@+id/sv_lyric"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:fadeScrollbars="false"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:id="@+id/tv_lyric"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:lineSpacingExtra="7dp"
+            android:paddingLeft="@dimen/view_40_dp"
+            android:paddingRight="@dimen/view_40_dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_18_dp" />
+    </ScrollView>
+
+    <com.zq.lyrics.widget.ManyLyricsView
+        android:id="@+id/many_lyrics_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:visibility="visible"
+        app:ly_eable_scroll="false"
+        app:ly_eable_verbatim="true"
+        app:ly_high_light_paint_color_from="#FFC15B"
+        app:ly_high_light_paint_color_to="#FFC15B"
+        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_18"
+        app:ly_high_light_sub_paint_color="@color/white"
+        app:ly_outline_paint_color="@color/white"
+        app:ly_paint_color_from="@color/white"
+        app:ly_paint_color_to="@color/white"
+        app:ly_paint_text_size="@dimen/textsize_dimen_18"
+        app:ly_show_author="true"
+        app:ly_top_line_num="3" />
+
+
+</RelativeLayout>

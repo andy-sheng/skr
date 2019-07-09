@@ -10,13 +10,14 @@
     <attr name="ly_outline_paint_color" format="color|reference" />
     <attr name="ly_eable_verbatim" format="boolean" />
     <attr name="ly_eable_scroll" format="boolean" />
+    <attr name="ly_show_author" format="boolean" />
     <attr name="ly_top_line_num" format="integer" />
 
     <declare-styleable name="lrc_view">
-        <attr name="ly_high_light_sub_paint_color"/>
+        <attr name="ly_high_light_sub_paint_color" />
         <attr name="ly_high_light_paint_color_from" />
         <attr name="ly_high_light_paint_color_to" />
-        <attr name="ly_high_light_paint_text_size"/>
+        <attr name="ly_high_light_paint_text_size" />
         <attr name="ly_paint_color_from" />
         <attr name="ly_paint_color_to" />
         <attr name="ly_paint_text_size" />
@@ -27,6 +28,7 @@
 
     <declare-styleable name="many_line_lrc_view">
         <attr name="ly_eable_scroll" />
+        <attr name="ly_show_author" />
         <attr name="ly_top_line_num" />
     </declare-styleable>
 </resources>

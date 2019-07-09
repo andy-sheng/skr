@@ -13,9 +13,10 @@
         android:id="@+id/lyric_line_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/avatar_iv"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_42_dp"
-        android:gravity="left"
+        android:gravity="left|top"
         android:text="沙漠骆驼好听"
         android:textColor="#364E7C"
         android:textSize="@dimen/textsize_18_dp" />

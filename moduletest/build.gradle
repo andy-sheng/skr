@@ -85,8 +85,8 @@ android {
             res.srcDirs += 'src/main/res-drawer'
 
             // 索引rv
-            java.srcDirs += 'src/main/java-wxcontact'
-            res.srcDirs += 'src/main/res-wxcontact'
+//            java.srcDirs += 'src/main/java-wxcontact'
+//            res.srcDirs += 'src/main/res-wxcontact'
 
             // 二维码
             java.srcDirs += 'src/main/java-qrcode'
@@ -103,6 +103,10 @@ android {
             // rxretrofit
             java.srcDirs += 'src/main/java-rxretrofit'
             res.srcDirs += 'src/main/res-rxretrofit'
+
+            // 视频测试
+            java.srcDirs += 'src/main/java-videortc'
+            res.srcDirs += 'src/main/res-videortc'
         }
     }
 }
@@ -110,6 +114,8 @@ android {
 dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
     api project(':commoncore')
+    api project(':baseLibrary:effectsdk')
+    api project(':baseLibrary:mediaengine')
     if (isBuildModule.toBoolean()) {
 //        tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]

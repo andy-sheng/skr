@@ -752,7 +752,9 @@ public class AgoraEngineAdapter {
         if (volume > 400) {
             volume = 400;
         }
-        mRtcEngine.adjustRecordingSignalVolume(volume);
+        if (mRtcEngine != null) {
+            mRtcEngine.adjustRecordingSignalVolume(volume);
+        }
     }
 
     /**
@@ -767,7 +769,9 @@ public class AgoraEngineAdapter {
         if (volume > 400) {
             volume = 400;
         }
-        mRtcEngine.adjustPlaybackSignalVolume(volume);
+        if(mRtcEngine!=null){
+            mRtcEngine.adjustPlaybackSignalVolume(volume);
+        }
     }
 
     /**
@@ -860,7 +864,10 @@ public class AgoraEngineAdapter {
                                                 int channel,
                                                 int mode,
                                                 int samplesPerCall) {
-        return mRtcEngine.setRecordingAudioFrameParameters(sampleRate, channel, mode, samplesPerCall);
+        if (mRtcEngine != null) {
+            return mRtcEngine.setRecordingAudioFrameParameters(sampleRate, channel, mode, samplesPerCall);
+        }
+        return 0;
     }
 
     /**

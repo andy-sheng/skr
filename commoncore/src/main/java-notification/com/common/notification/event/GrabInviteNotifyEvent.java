@@ -10,13 +10,13 @@ public class GrabInviteNotifyEvent {
 
     public UserInfoModel mUserInfoModel;
     public int roomID;
+    public int mediaType;
 
-    public GrabInviteNotifyEvent() {
-    }
 
     public GrabInviteNotifyEvent(BaseNotiInfo baseNotiInfo, InviteStandMsg inviteStandMsg) {
         this.mBaseNotiInfo = baseNotiInfo;
         this.roomID = inviteStandMsg.getRoomID();
         this.mUserInfoModel = UserInfoModel.parseFromPB(inviteStandMsg.getUser());
+        this.mediaType = inviteStandMsg.getMediaType().getValue();
     }
 }

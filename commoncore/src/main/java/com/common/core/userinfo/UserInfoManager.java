@@ -20,6 +20,9 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
+import com.module.msg.IMsgService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,6 +99,7 @@ public class UserInfoManager {
     public static final int ONLINE_PULL_GAME = 2;
 
     UserInfoServerApi userInfoServerApi;
+    IMsgService msgService;
 
     /**
      * 备注名的映射缓存住了
@@ -112,6 +116,7 @@ public class UserInfoManager {
 
     private UserInfoManager() {
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        msgService = ModuleServiceManager.getInstance().getMsgService();
         initRemark();
     }
 
@@ -279,6 +284,108 @@ public class UserInfoManager {
         }
     }
 
+    public void checkIsFans(int from, int to, final ResponseCallBack<Boolean> responseCallBack) {
+        if (from <= 0 || to <= 0) {
+            MyLog.w(TAG, "checkIsFans" + " from=" + from + " to=" + to + " responseCallBack=" + responseCallBack);
+            return;
+        }
+        ApiMethods.subscribe(userInfoServerApi.checkIsFans(from, to), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    boolean isFans = result.getData().getBooleanValue("isFans");
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerSucess(isFans);
+                    }
+                } else {
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerFailed();
+                    }
+                }
+            }
+        });
+    }
+
+    public void addToBlacklist(final int userID, final ResponseCallBack responseCallBack) {
+        if (userID <= 0 || userID <= 0) {
+            MyLog.w(TAG, "addToBlacklist" + " userID=" + userID);
+            return;
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userID", userID);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(userInfoServerApi.addToBlackList(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userID, false, false));
+                    // TODO: 2019-07-03 可能服务器加成功，加融云失败，有问题找服务器
+                    msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            if (responseCallBack != null) {
+                                responseCallBack.onServerSucess(obj);
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            MyLog.w(TAG, "onFailed" + " obj=" + obj + " errcode=" + errcode + " message=" + message);
+                            if (responseCallBack != null) {
+                                responseCallBack.onServerFailed();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void removeBlackList(final int userID, final ResponseCallBack responseCallBack) {
+        if (userID <= 0 || userID <= 0) {
+            MyLog.w(TAG, "removeBlackList" + " userID=" + userID + " responseCallBack=" + responseCallBack);
+            return;
+        }
+        msgService.removeFromBlacklist(String.valueOf(userID), new ICallback() {
+            @Override
+            public void onSucess(Object obj) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerSucess(obj);
+                }
+            }
+
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerFailed();
+                }
+            }
+        });
+    }
+
+    public void getBlacklistStatus(final int userID, final ResponseCallBack responseCallBack) {
+        if (userID <= 0 || userID <= 0) {
+            MyLog.w(TAG, "getBlacklistStatus" + " userID=" + userID + " responseCallBack=" + responseCallBack);
+            return;
+        }
+        msgService.getBlacklistStatus(String.valueOf(userID), new ICallback() {
+            @Override
+            public void onSucess(Object obj) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerSucess(obj);
+                }
+            }
+
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+                if (responseCallBack != null) {
+                    responseCallBack.onServerFailed();
+                }
+            }
+        });
+    }
+
     public void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
             @Override
@@ -340,20 +447,13 @@ public class UserInfoManager {
                     }
                     if (action == RA_BUILD) {
                         StatisticsAdapter.recordCountEvent("social", "follow", null);
-                        if (isOldFriend) {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, true, isFriend, isFollow));
-                        } else {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, false, isFriend, isFollow));
-                        }
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, isFriend, isFollow));
                     } else if (action == RA_UNBUILD) {
-                        if (isOldFriend) {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, true, isFriend, isFollow));
-                        } else {
-                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, false, isFriend, isFollow));
-                        }
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, isFriend, isFollow));
                     }
                 } else {
-                    U.getToastUtil().showShort("关系请求处理出错");
+                    MyLog.w(TAG, "process" + " obj=" + obj);
+                    U.getToastUtil().showShort(obj.getErrmsg());
                 }
             }
         });
@@ -489,7 +589,9 @@ public class UserInfoManager {
                 for (UserInfoModel userInfoModel : resutlSet) {
                     resultList.add(userInfoModel);
                 }
-                mStatusMap.resize(resultList.size());
+                if (resultList.size() > 0) {
+                    mStatusMap.resize(resultList.size());
+                }
 
                 if (pullOnlineStatus == ONLINE_PULL_GAME) {
                     if (resultList.size() > 100) {
@@ -528,6 +630,41 @@ public class UserInfoManager {
 
                     }
                 });
+
+    }
+
+    /**
+     * 拉取粉丝
+     *
+     * @param offset
+     * @param cnt
+     * @param userInfoListCallback
+     */
+    public void getFans(final int offset, final int cnt, final UserInfoListCallback userInfoListCallback) {
+        ApiMethods.subscribe(userInfoServerApi.listFansByPage(offset, cnt), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
+                    List<UserInfoModel> friendList = new ArrayList<>();
+                    if (list != null) {
+                        for (UserInfoModel userInfoModel : list) {
+                            if (userInfoModel.isFriend()) {
+                                friendList.add(userInfoModel);
+                            }
+                        }
+                    }
+                    if (!friendList.isEmpty()) {
+                        // 好友列表存到数据库
+                        UserInfoLocalApi.insertOrUpdate(friendList);
+                    }
+                    int newOffset = obj.getData().getIntValue("offset");
+                    if (userInfoListCallback != null) {
+                        userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
+                    }
+                }
+            }
+        });
 
     }
 
@@ -701,27 +838,6 @@ public class UserInfoManager {
 
 
     /**
-     * 拉取粉丝
-     *
-     * @param offset
-     * @param cnt
-     * @param userInfoListCallback
-     */
-    public void getFans(final int offset, final int cnt, final UserInfoListCallback userInfoListCallback) {
-        ApiMethods.subscribe(userInfoServerApi.listFansByPage(offset, cnt), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult obj) {
-                List<UserInfoModel> list = JSON.parseArray(obj.getData().getString("fans"), UserInfoModel.class);
-                int newOffset = obj.getData().getIntValue("offset");
-                if (userInfoListCallback != null) {
-                    userInfoListCallback.onSuccess(FROM.SERVER_PAGE, newOffset, list);
-                }
-            }
-        });
-
-    }
-
-    /**
      * 更新备注名
      *
      * @param remark
@@ -845,15 +961,15 @@ public class UserInfoManager {
         Collections.sort(list, new Comparator<UserInfoModel>() {
             @Override
             public int compare(UserInfoModel u1, UserInfoModel u2) {
-                MyLog.d(TAG,"compare" + " u1=" + u1 + " u2=" + u2);
+                MyLog.d(TAG, "compare" + " u1=" + u1 + " u2=" + u2);
                 if (u1.getStatus() == UserInfoModel.EF_OFFLINE && u2.getStatus() == UserInfoModel.EF_OFFLINE) {
                     // 两者都是离线
                     // 按离线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else if(u1.getStatusTs() < u2.getStatusTs()){
+                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
                         return 1;
-                    }else{
+                    } else {
                         return 0;
                     }
                 }
@@ -862,9 +978,9 @@ public class UserInfoManager {
                     // 按在线时间排序
                     if (u1.getStatusTs() > u2.getStatusTs()) {
                         return -1;
-                    } else if(u1.getStatusTs() < u2.getStatusTs()){
+                    } else if (u1.getStatusTs() < u2.getStatusTs()) {
                         return 1;
-                    }else{
+                    } else {
                         return 0;
                     }
                 }

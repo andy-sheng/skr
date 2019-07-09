@@ -8,6 +8,7 @@ import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.gles.GLRender;
+import com.zq.mediaengine.util.gles.TexTransformUtil;
 
 import java.nio.ByteBuffer;
 
@@ -19,12 +20,15 @@ public class AgoraImgTexSrcPin extends SrcPin<ImgTexFrame> implements IVideoSink
 
     private GLRender mGLRender;
     private ImgTexFormat mImgTexFormat;
+    private int mRotation;
+    private float[] mTexMatrix;
 
     public AgoraImgTexSrcPin(GLRender glRender) {
         if (glRender == null) {
             throw new IllegalArgumentException("glRender should not be null!");
         }
         mGLRender = glRender;
+        mTexMatrix = new float[16];
     }
 
     @Override
@@ -37,6 +41,7 @@ public class AgoraImgTexSrcPin extends SrcPin<ImgTexFrame> implements IVideoSink
     public boolean onStart() {
         Log.i(TAG, "onStart");
         mImgTexFormat = null;
+        mRotation = 0;
         return true;
     }
 
@@ -91,12 +96,26 @@ public class AgoraImgTexSrcPin extends SrcPin<ImgTexFrame> implements IVideoSink
 
     @Override
     public void consumeTextureFrame(int texId, int format, int width, int height, int rotation, long ts, float[] matrix) {
-        Log.d(TAG, "consumeTextureFrame texId: " + texId + " format: " + format +
-                " res: " + width + "x" + height + " rotation: " + rotation + " ts: " + ts);
-        if (mImgTexFormat == null) {
-            mImgTexFormat = new ImgTexFormat(ImgTexFormat.COLOR_RGBA, width, height);
+//        Log.d(TAG, "consumeTextureFrame texId: " + texId + " format: " + format +
+//                " res: " + width + "x" + height + " rotation: " + rotation + " ts: " + ts);
+        if (mImgTexFormat == null || mRotation != rotation) {
+            int w = width;
+            int h = height;
+            if (rotation % 180 != 0) {
+                w = height;
+                h = width;
+            }
+            mRotation = rotation;
+            mImgTexFormat = new ImgTexFormat(ImgTexFormat.COLOR_RGBA, w, h);
             onFormatChanged(mImgTexFormat);
         }
+
+        // 当前未考虑matrix不为单位矩阵的情况，远程画面的matrix应该就是单位矩阵
+        if (matrix == null) {
+            matrix = mTexMatrix;
+        }
+        TexTransformUtil.calTransformMatrix(matrix, 1.0f, 1.0f, rotation);
+
         ImgTexFrame frame = new ImgTexFrame(mImgTexFormat, texId, matrix, ts);
         onFrameAvailable(frame);
     }

@@ -3,9 +3,10 @@ package com.common.player;
 import android.view.Surface;
 
 import com.common.log.MyLog;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
 
+/**
+ * 兼容一些 AndroidMediaPlayer 没法播放的问题
+ */
 public class MyMediaPlayer implements IPlayer {
     public final static String TAG = "MyMediaPlayer";
 
@@ -21,7 +22,7 @@ public class MyMediaPlayer implements IPlayer {
             @Override
             public void notSupport() {
                 if (useAndroidMediaPlayer) {
-                    MyLog.d(TAG, "mAndroidMediaPlayer 没法正常播放，自动切换");
+                    MyLog.w(TAG, "mAndroidMediaPlayer 没法正常播放，自动切换");
                     mAndroidMediaPlayer.reset();
                     useAndroidMediaPlayer = false;
                     mExoPlayer.setCallback(mIPlayerCallback);
@@ -233,5 +234,11 @@ public class MyMediaPlayer implements IPlayer {
     public void setDecreaseVolumeEnd(boolean b) {
         mAndroidMediaPlayer.setDecreaseVolumeEnd(b);
         mExoPlayer.setDecreaseVolumeEnd(b);
+    }
+
+    @Override
+    public void setMonitorProgress(boolean b) {
+        mAndroidMediaPlayer.setMonitorProgress(b);
+        mExoPlayer.setMonitorProgress(b);
     }
 }

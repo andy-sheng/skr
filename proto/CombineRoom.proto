@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package com.zq.live.proto.CombineRoom;
+
+import "Common.proto";
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ CombineRoom.proto
+
+*/
+
+// 联合[双人]房信令消息
+message CombineRoomMsg
+{
+    sint64 timeMs               = 1; //房间消息产生时间，单位毫秒
+    ECombineRoomMsgType msgType = 2; //消息类型
+    uint32 roomID               = 3; //房间ID
+
+    PickMsg pickMsg                        = 10;
+    EndCombineRoomMsg endCombineRoomMsg    = 11; //结束双人房
+    UnlockUserInfoMsg unlockUserInfoMsg    = 12; //解锁用户信息
+    LoadMusicInfoMsg loadMusicInfoMsg      = 13; //加载歌曲信息
+    CombineRoomSyncStatusMsg syncStatusMsg = 14; //同步状态
+    AddMusicInfoMsg addMuicInfoMsg         = 15; //添加歌曲信息
+    DelMusicInfoMsg delMuicInfoMsg         = 16; //删除歌曲信息
+
+}
+
+message AddMusicInfoMsg
+{
+    CombineRoomMusic music = 1; //添加的歌曲
+    bool needLoad          = 2; //是否需要加载
+}
+
+message DelMusicInfoMsg
+{
+    string uniqTag = 1; //唯一id
+}
+
+
+// ECombineRoomMsgType 房间消息类型
+enum ECombineRoomMsgType {
+    DRM_UNKNOWN = 0; //未知消息
+
+        DRM_PICK             = 1; //pick类型
+        DRM_END_COMBINE_ROOM = 2; //结束双人房
+        DRM_UNLOCK_USER_INFO = 3; //解锁用户信息
+        DRM_LOAD_MUSIC_INFO  = 4; //加载歌曲信息
+        DRM_SYNC_STATUS      = 5; //同步状态
+        DRM_ADD_MUSIC_INFO   = 6; //添加歌曲信息
+        DRM_DEL_MUSIC_INFO   = 7; //删除歌曲信息
+
+}
+
+message CombineRoomSyncStatusMsg
+{
+    sint64 syncStatusTimeMs            = 1; //状态同步时的毫秒时间戳
+    sint64 passedTimeMs                = 2; //房间已经经历的毫秒数
+    repeated UserLockInfo userLockInfo = 3;
+    bool enableNoLimitDuration         = 4; //开启没有限制的持续时间
+    CombineRoomMusic currentMusic      = 5;
+    string nextMusicDesc               = 6;
+    bool hasNextMusic                  = 7; //是否有下首歌曲
+        ECombineStatus status              = 8; //房间状态
+
+}
+
+enum ECombineStatus {
+    CS_UnPlay   = 0; //房间游戏未开始
+    CS_Playing  = 1; //房间游戏进行中
+    CS_Finished = 2; //房间游戏结束
+}
+
+
+message CombineRoomMusic
+{
+    Common.MusicInfo Music = 1; //当前歌曲
+    uint32 userID   = 2; //点歌用户id
+    string uniqTag  = 3; //歌曲的唯一标识
+}
+
+message LoadMusicInfoMsg
+{
+    CombineRoomMusic currentMusic = 1;
+    string nextMusicDesc          = 2;
+    bool hasNextMusic             = 3;
+}
+
+message UserLockInfo
+{
+    uint32 userID = 1; //解锁信息的用户ID
+    bool hasLock  = 2;
+}
+
+message UnlockUserInfoMsg
+{
+    repeated UserLockInfo userLockInfo = 1; //解锁信息
+    bool enableNoLimitDuration         = 2; //开启没有限制的持续时间
+}
+
+
+message PickMsg
+{
+    uint32 fromPickUserID = 1; //pick发出者
+    uint32 toPickUserID   = 2; //pick接受者
+    uint32 count          = 3; //计数
+}
+
+message EndCombineRoomMsg
+{
+    uint32 roomID                  = 1; //房间ID
+    ECombineRoomCloseReason reason = 2; //关闭原因
+    uint32 exitUserID              = 3;
+    uint32 noResponseUserID        = 4;
+}
+
+enum ECombineRoomCloseReason {
+    DRCR_UNKNOWN          = 0; //未知
+    DRCR_USER_EXIT        = 1; //用户退出
+    DRCR_END_COUNTDOWN    = 2; //倒计时结束
+    DRCR_USER_NO_RESPONSE = 3; //用户无响应
+}

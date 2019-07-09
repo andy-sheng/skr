@@ -14,7 +14,7 @@
         android:layout_marginLeft="@dimen/view_4_dp"
         android:layout_marginTop="@dimen/view_30_dp"
         android:padding="@dimen/view_16_dp"
-        android:src="@drawable/grab_back" />
+        android:src="@drawable/img_back" />
 
     <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"
@@ -43,6 +43,6 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_100_dp"
-        android:layout_marginRight="@dimen/view_16_dp"></com.module.playways.grab.createroom.view.SpecialSelectView>
+        android:layout_marginRight="@dimen/view_16_dp"/>
 
 </com.common.view.ex.ExRelativeLayout>

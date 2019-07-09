@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -28,18 +28,10 @@ import com.component.busilib.callback.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
-import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
-import com.module.common.ICallback;
-import com.module.msg.IMsgService;
 import com.zq.relation.adapter.RelationAdapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 /**
  * 黑名单列表
@@ -87,18 +79,23 @@ public class BlackListFragment extends BaseFragment {
                             .navigation();
                 } else if (view.getId() == R.id.follow_tv) {
                     // 移除黑名单
-                    IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-                    msgService.removeFromBlacklist(String.valueOf(userInfoModel.getUserId()), new ICallback() {
+                    UserInfoManager.getInstance().removeBlackList(userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack() {
                         @Override
-                        public void onSucess(Object obj) {
+                        public void onServerSucess(Object o) {
                             if (mRelationAdapter.getData() != null) {
                                 mRelationAdapter.getData().remove(userInfoModel);
                                 mRelationAdapter.notifyDataSetChanged();
                             }
+
+                            if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() > 0) {
+                                mLoadService.showSuccess();
+                            } else {
+                                mLoadService.showCallback(EmptyCallback.class);
+                            }
                         }
 
                         @Override
-                        public void onFailed(Object obj, int errcode, String message) {
+                        public void onServerFailed() {
 
                         }
                     });
@@ -110,9 +107,9 @@ public class BlackListFragment extends BaseFragment {
         mRecyclerView.setAdapter(mRelationAdapter);
 
         LoadSir mLoadSir = new LoadSir.Builder()
-                .addCallback(new LoadingCallback(R.drawable.wuhaoyou, "数据真的在加载中..."))
-                .addCallback(new EmptyCallback(R.drawable.wuhaoyou, "黑名单为空"))
-                .addCallback(new ErrorCallback(R.drawable.wuhaoyou, "请求出错了"))
+                .addCallback(new LoadingCallback(R.drawable.blacklist_empty_icon, "数据真的在加载中..."))
+                .addCallback(new EmptyCallback(R.drawable.blacklist_empty_icon, "暂无黑名单", "#993B4E79"))
+                .addCallback(new ErrorCallback(R.drawable.blacklist_empty_icon, "请求出错了"))
                 .setDefaultCallback(LoadingCallback.class)
                 .build();
         mLoadService = mLoadSir.register(mRecyclerView, new Callback.OnReloadListener() {
@@ -128,51 +125,25 @@ public class BlackListFragment extends BaseFragment {
     }
 
     private void loadData() {
-        IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-        msgService.getBlacklist(new ICallback() {
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.getBlackList(), new ApiObserver<ApiResult>() {
             @Override
-            public void onSucess(Object obj) {
-                if (obj != null) {
-                    String[] strings = (String[]) obj;
-                    final List<Integer> useIDs = new ArrayList<>();
-                    for (String string : strings) {
-                        useIDs.add(Integer.valueOf(string));
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<UserInfoModel> userInfoModels = JSONObject.parseArray(result.getData().getString("users"), UserInfoModel.class);
+                    if (userInfoModels != null && userInfoModels.size() > 0) {
+                        mLoadService.showSuccess();
+                        mRelationAdapter.addData(userInfoModels);
+                        mRelationAdapter.notifyDataSetChanged();
+                    } else {
+                        mLoadService.showCallback(EmptyCallback.class);
                     }
-
-                    UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("userIDs", JSON.toJSON(useIDs));
-
-                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-                    ApiMethods.subscribe(userInfoServerApi.getUserInfos(body), new ApiObserver<ApiResult>() {
-                        @Override
-                        public void process(ApiResult result) {
-                            if (result.getErrno() == 0) {
-                                List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("profiles"), UserInfoModel.class);
-                                if (userInfoModels != null && userInfoModels.size() > 0) {
-                                    mLoadService.showSuccess();
-                                    mRelationAdapter.addData(userInfoModels);
-                                    mRelationAdapter.notifyDataSetChanged();
-                                } else {
-                                    mLoadService.showCallback(EmptyCallback.class);
-                                }
-                            } else {
-                                mLoadService.showCallback(ErrorCallback.class);
-                            }
-
-                        }
-                    }, BlackListFragment.this);
                 } else {
-                    mLoadService.showCallback(EmptyCallback.class);
+                    mLoadService.showCallback(ErrorCallback.class);
                 }
 
             }
-
-            @Override
-            public void onFailed(Object obj, int errcode, String message) {
-
-            }
-        });
+        }, this);
     }
 
     @Override

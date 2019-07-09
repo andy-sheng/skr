@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -16,8 +17,10 @@ import com.component.busilib.R;
 
 public class PersonMoreOpView extends RelativeLayout {
 
+    int mUserID;
     boolean mHasUnFollow;
     boolean mHasKick;
+    boolean isInBlacked;
 
     LinearLayout mMenuContainer;
     RelativeLayout mModifyRemarkArea;
@@ -26,14 +29,17 @@ public class PersonMoreOpView extends RelativeLayout {
     ExTextView mUnfollowTv;
     RelativeLayout mKickArea;
     ExTextView mKickTv;
+    RelativeLayout mBlackArea;
+    ExTextView mBlackTv;
     RelativeLayout mReportArea;
     ExTextView mReportTv;
 
     Listener mListener;
     PopupWindow mPopupWindow;
 
-    public PersonMoreOpView(Context context, boolean hasUnFollow, boolean hasKick) {
+    public PersonMoreOpView(Context context, int mUserID, boolean hasUnFollow, boolean hasKick) {
         super(context);
+        this.mUserID = mUserID;
         this.mHasUnFollow = hasUnFollow;
         this.mHasKick = hasKick;
         init();
@@ -50,6 +56,8 @@ public class PersonMoreOpView extends RelativeLayout {
         mUnfollowTv = (ExTextView) findViewById(R.id.unfollow_tv);
         mKickArea = (RelativeLayout) findViewById(R.id.kick_area);
         mKickTv = (ExTextView) findViewById(R.id.kick_tv);
+        mBlackArea = (RelativeLayout) findViewById(R.id.black_area);
+        mBlackTv = (ExTextView) findViewById(R.id.black_tv);
         mReportArea = (RelativeLayout) findViewById(R.id.report_area);
         mReportTv = (ExTextView) findViewById(R.id.report_tv);
 
@@ -91,6 +99,35 @@ public class PersonMoreOpView extends RelativeLayout {
                 }
             }
         });
+
+        mBlackArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.onClickBlack(isInBlacked);
+                }
+            }
+        });
+
+        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserID), new UserInfoManager.ResponseCallBack() {
+            @Override
+            public void onServerSucess(Object obj) {
+                if (obj != null) {
+                    isInBlacked = (boolean) obj;
+                    if (isInBlacked) {
+                        mBlackTv.setText("移出黑名单");
+                    } else {
+                        mBlackTv.setText("加入黑名单");
+                    }
+                }
+            }
+
+            @Override
+            public void onServerFailed() {
+
+            }
+        });
+
     }
 
     public void dismiss() {
@@ -101,7 +138,7 @@ public class PersonMoreOpView extends RelativeLayout {
 
     public void showAt(View view) {
         if (mPopupWindow == null) {
-            mPopupWindow = new PopupWindow(this, U.getDisplayUtils().dip2px(118), ViewGroup.LayoutParams.WRAP_CONTENT);
+            mPopupWindow = new PopupWindow(this, U.getDisplayUtils().dip2px(134), ViewGroup.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
             mPopupWindow.setOutsideTouchable(true);
         }
@@ -125,5 +162,7 @@ public class PersonMoreOpView extends RelativeLayout {
         void onClickReport();
 
         void onClickKick();
+
+        void onClickBlack(boolean isInBlack);
     }
 }

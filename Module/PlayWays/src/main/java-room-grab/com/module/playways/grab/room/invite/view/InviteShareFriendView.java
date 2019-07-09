@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
+import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
 import com.module.playways.grab.room.invite.model.ShareModel;
 import com.module.playways.grab.room.invite.adapter.InviteShareAdapter;
 
@@ -48,8 +49,10 @@ public class InviteShareFriendView extends RelativeLayout {
         inflate(getContext(), R.layout.invite_share_view_layout, this);
         mTextTitle = (TextView) findViewById(R.id.text_title);
         mShareRecycle = (RecyclerView) findViewById(R.id.share_recycle);
+    }
 
-        initSharModel();
+    public void setData(int from) {
+        initSharModel(from);
         mAdapter = new InviteShareAdapter(new RecyclerOnItemClickListener<ShareModel>() {
             @Override
             public void onItemClicked(View view, int position, ShareModel model) {
@@ -68,11 +71,18 @@ public class InviteShareFriendView extends RelativeLayout {
         this.mItemClickListener = onItemClickListener;
     }
 
-    private void initSharModel() {
-        list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
-        list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.yaoqing_qq, "QQ好友"));
-        list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ_QZON, R.drawable.yaoqing_kongjian, "QQ空间"));
-        list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.yaoqing_weixin, "微信好友"));
-        list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT_FRIEND, R.drawable.yaoqing_quan, "朋友圈"));
+    private void initSharModel(int from) {
+        if (from == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.yaoqing_qq, "QQ好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.yaoqing_weixin, "微信好友"));
+        } else {
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_CIPHER, R.drawable.yaoqing_anhao, "暗号邀请"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ, R.drawable.yaoqing_qq, "QQ好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_QQ_QZON, R.drawable.yaoqing_kongjian, "QQ空间"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT, R.drawable.yaoqing_weixin, "微信好友"));
+            list.add(new ShareModel(ShareModel.SHARE_TYPE_WECHAT_FRIEND, R.drawable.yaoqing_quan, "朋友圈"));
+        }
+
     }
 }

@@ -40,7 +40,7 @@ public class WaveView extends View {
 
     private Interpolator mInterpolator = new LinearInterpolator();
 
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
 
     public WaveView(Context context) {
         super(context);

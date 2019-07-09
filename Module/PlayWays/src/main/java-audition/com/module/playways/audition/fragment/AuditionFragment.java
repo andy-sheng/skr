@@ -243,7 +243,7 @@ public class AuditionFragment extends BaseFragment {
 
         mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView, mSongModel.getLyric(),
                 mSongModel.getRankLrcBeginT(), mSongModel.getRankLrcEndT(),
-                mSongModel.getBeginMs(), mSongModel.getEndMs());
+                mSongModel.getBeginMs(), mSongModel.getEndMs(), mSongModel.getUploaderName());
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
             @Override
             public void onLyricParseSuccess() {

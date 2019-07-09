@@ -27,8 +27,8 @@ public class LQREmotionKit {
     public static void tryInit(Context context) {
         if (!mHasInit) {
             mContext = context.getApplicationContext();
-            STICKER_PATH = new File(context.getFilesDir(), STICKER_NAME_IN_ASSETS).getAbsolutePath();
-            copyStickerToStickerPath(STICKER_NAME_IN_ASSETS);
+//            STICKER_PATH = new File(context.getFilesDir(), STICKER_NAME_IN_ASSETS).getAbsolutePath();
+//            copyStickerToStickerPath(STICKER_NAME_IN_ASSETS);
             mHasInit = true;
         }
     }

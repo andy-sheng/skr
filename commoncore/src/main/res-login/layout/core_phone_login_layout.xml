@@ -1,101 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7187FF">
 
-    <ScrollView
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/phone_input_tv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginLeft="@dimen/view_52_dp"
+        android:layout_marginTop="@dimen/view_120_dp"
+        android:layout_marginRight="@dimen/view_52_dp"
+        android:gravity="center_vertical"
+        android:hint="手机号"
+        android:inputType="number"
+        android:maxLength="11"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white_trans_50"
+        android:textCursorDrawable="@drawable/login_edit_cursor_color"
+        android:textSize="@dimen/view_16_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white_trans_10"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_25_dp"
-            android:layout_marginRight="@dimen/view_25_dp">
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/code_input_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_below="@+id/phone_input_tv"
+        android:layout_marginLeft="@dimen/view_52_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_52_dp"
+        android:cursorVisible="true"
+        android:gravity="center_vertical"
+        android:hint="验证码"
+        android:inputType="number"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white_trans_50"
+        android:textCursorDrawable="@drawable/login_edit_cursor_color"
+        android:textSize="@dimen/view_16_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white_trans_10"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp" />
 
-            <com.common.view.ex.NoLeakEditText
-                android:id="@+id/phone_input_tv"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_58_dp"
-                android:layout_marginTop="@dimen/view_124_dp"
-                android:background="@drawable/common_edit_bg"
-                android:gravity="center_vertical"
-                android:hint="手机号"
-                android:inputType="number"
-                android:maxLength="14"
-                android:maxLines="1"
-                android:paddingLeft="@dimen/view_25_dp"
-                android:paddingRight="@dimen/view_12_dp"
-                android:singleLine="true"
-                android:textColor="#0C2275"
-                android:textColorHint="#660C2275"
-                android:textCursorDrawable="@drawable/login_edit_cursor_color"
-                android:textSize="@dimen/view_18_dp" />
+    <com.common.view.ex.ExTextView
+        android:id="@+id/error_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/code_input_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:layout_marginRight="@dimen/view_25_dp"
+        android:gravity="center"
+        android:minHeight="@dimen/view_20_dp"
+        android:textColor="#EDADC5"
+        android:textSize="@dimen/textsize_14_dp" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/get_code_tv"
+        android:layout_width="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_alignTop="@+id/code_input_tv"
+        android:layout_alignRight="@+id/code_input_tv"
+        android:layout_marginTop="@dimen/view_2_dp"
+        android:gravity="center"
+        android:text="获取验证码"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_14_dp"
+        android:textStyle="bold" />
 
-            <com.common.view.ex.NoLeakEditText
-                android:id="@+id/code_input_tv"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_58_dp"
-                android:layout_below="@+id/phone_input_tv"
-                android:layout_marginTop="@dimen/view_25_dp"
-                android:background="@drawable/common_edit_bg"
-                android:cursorVisible="true"
-                android:gravity="center_vertical"
-                android:hint="验证码"
-                android:inputType="number"
-                android:maxLength="6"
-                android:maxLines="1"
-                android:paddingLeft="@dimen/view_25_dp"
-                android:paddingRight="@dimen/view_20_dp"
-                android:singleLine="true"
-                android:textColor="#0C2275"
-                android:textColorHint="#660C2275"
-                android:textCursorDrawable="@drawable/login_edit_cursor_color"
-                android:textSize="@dimen/view_18_dp" />
+    <View
+        android:layout_width="@dimen/view_1_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_alignTop="@id/get_code_tv"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_toLeftOf="@id/get_code_tv"
+        android:background="@color/white_trans_20" />
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/error_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_20_dp"
-                android:layout_below="@+id/code_input_tv"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/view_14_dp"
-                android:textColor="#EDADC5"
-                android:textSize="@dimen/textsize_14_dp" />
-
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/get_code_tv"
-                android:layout_width="@dimen/view_95_dp"
-                android:layout_height="@dimen/view_45_dp"
-                android:layout_alignTop="@+id/code_input_tv"
-                android:layout_alignRight="@+id/code_input_tv"
-                android:layout_marginTop="@dimen/view_6_dp"
-                android:layout_marginRight="@dimen/view_6_dp"
-                android:paddingBottom="@dimen/view_2_dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/view_16_dp"
-                app:bl_selected_drawable="@drawable/get_verify_selected"
-                app:bl_unSelected_drawable="@drawable/get_verify_normal" />
-
-            <com.common.view.ex.ExImageView
-                android:id="@+id/login_iv"
-                android:layout_width="@dimen/view_176_dp"
-                android:layout_height="@dimen/view_62_dp"
-                android:layout_below="@+id/code_input_tv"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_40_dp"
-                android:background="@drawable/login_unclick_icon" />
-
-        </RelativeLayout>
-    </ScrollView>
+    <com.common.view.ex.ExTextView
+        android:id="@+id/login_iv"
+        android:layout_width="@dimen/view_134_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_below="@+id/error_hint"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="#AD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        android:alpha="0.5"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFC15B" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
@@ -107,7 +120,7 @@
         android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginBottom="@dimen/view_4_dp"
         android:padding="@dimen/view_16_dp"
-        android:src="@drawable/grab_back" />
+        android:src="@drawable/img_back" />
 
     <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"

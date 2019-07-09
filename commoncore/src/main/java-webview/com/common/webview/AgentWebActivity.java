@@ -1,6 +1,7 @@
 package com.common.webview;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -65,6 +67,8 @@ class AgentWebActivity extends CameraAdapWebActivity {
     private ErrorLayoutEntity mErrorLayoutEntity;
     private MiddleWareWebChromeBase mMiddleWareWebChrome;
     private MiddleWareWebClientBase mMiddleWareWebClient;
+    AlertDialog mAlertDialog;
+    private String[] mDialogSelectTexts = new String[]{"相册", "相机"};
 
     //    private SharedPrefsCookiePersistor mSharedPrefsCookiePersistor;
     CommonTitleBar mTitlebar;
@@ -79,35 +83,74 @@ class AgentWebActivity extends CameraAdapWebActivity {
         public void showFileChooser(ValueCallback<String[]> filePathCallback,
                                     String acceptType, boolean paramBoolean) {
 
-
         }
 
         //for  Android 4.0+
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
-
+            MyLog.d(TAG, "openFileChooser 1");
             if (nFilePathCallback != null) {
                 nFilePathCallback.onReceiveValue(null);
             }
             nFilePathCallback = uploadMsg;
             if ("image/*".equals(acceptType)) {
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    Log.e("TAG", "Unable to create Image File", ex);
-                }
+                mAlertDialog = new AlertDialog.Builder(AgentWebActivity.this)//
+                        .setSingleChoiceItems(mDialogSelectTexts, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (mAlertDialog != null) {
+                                    mAlertDialog.dismiss();
+                                }
 
-                Intent takePictureIntent = AgentWebX5Utils.getIntentCaptureCompat(U.app(), photoFile);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    if (photoFile != null) {
-                        mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                Uri.fromFile(photoFile));
-                    } else {
-                        takePictureIntent = null;
-                    }
-                }
-                startActivityForResult(takePictureIntent, INPUT_FILE_REQUEST_CODE);
+                                if (which == 1) {
+                                    //相机
+                                    File photoFile = null;
+                                    try {
+                                        photoFile = createImageFile();
+                                    } catch (IOException ex) {
+                                        Log.e("TAG", "Unable to create Image File", ex);
+                                    }
+
+                                    Intent takePictureIntent = AgentWebX5Utils.getIntentCaptureCompat(U.app(), photoFile);
+                                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                        if (photoFile != null) {
+                                            mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                                    Uri.fromFile(photoFile));
+                                        } else {
+                                            takePictureIntent = null;
+                                        }
+                                    }
+
+                                    startActivityForResult(takePictureIntent, INPUT_FILE_REQUEST_CODE);
+                                } else {
+                                    //相册
+                                    Intent takePictureIntent = AgentWebX5Utils.getIntentGetContentCompat();
+
+                                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                        startActivityForResult(takePictureIntent, INPUT_IMAGE_CODE);
+                                    }
+                                }
+                            }
+                        }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                                    if (nFilePathCallback != null) {
+                                        nFilePathCallback.onReceiveValue(null);
+                                        nFilePathCallback = null;
+                                    }
+                                    return;
+                                } else {
+                                    if (mFilePathCallback != null) {
+                                        mFilePathCallback.onReceiveValue(null);
+                                        mFilePathCallback = null;
+                                    }
+                                    return;
+                                }
+                            }
+                        }).create();
+
+                mAlertDialog.show();
             } else if ("video/*".equals(acceptType)) {
                 Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                 if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
@@ -118,45 +161,66 @@ class AgentWebActivity extends CameraAdapWebActivity {
 
         @SuppressLint("NewApi")
         @Override
-        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
-                                         WebChromeClient.FileChooserParams fileChooserParams) {
+        public boolean onShowFileChooser(final WebView webView, final ValueCallback<Uri[]> filePathCallback,
+                                         final WebChromeClient.FileChooserParams fileChooserParams) {
+            MyLog.d(TAG, "onShowFileChooser 2 fileChooserParams mode is " + fileChooserParams.getMode() + " getAcceptTypes is " + fileChooserParams.getAcceptTypes() + " isCaptureEnabled " + fileChooserParams.isCaptureEnabled() + " getTitle is " + fileChooserParams.getTitle() + " getFilenameHint is " + fileChooserParams.getFilenameHint());
             if (mFilePathCallback != null) {
                 mFilePathCallback.onReceiveValue(null);
             }
             mFilePathCallback = filePathCallback;
             String[] acceptTypes = fileChooserParams.getAcceptTypes();
             if (acceptTypes[0].equals("image/*")) {
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    Log.e("TAG", "Unable to create Image File", ex);
-                }
+                if (fileChooserParams.getMode() == FileChooserParams.MODE_OPEN) {
+                    oponCameraNewApi();
+                } else if (fileChooserParams.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE) {
+                    mAlertDialog = new AlertDialog.Builder(AgentWebActivity.this)//
+                            .setSingleChoiceItems(mDialogSelectTexts, -1, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (mAlertDialog != null) {
+                                        mAlertDialog.dismiss();
+                                    }
 
-                Intent takePictureIntent = AgentWebX5Utils.getIntentCaptureCompat(U.app(), photoFile);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    if (Build.VERSION.SDK_INT > M) {
-                        if (photoFile != null) {
-                            photoURI = takePictureIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT);
-                        }
-                    } else {
-                        if (photoFile != null) {
-                            mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                    Uri.fromFile(photoFile));
-                        } else {
-                            takePictureIntent = null;
-                        }
-                    }
-                }
+                                    if (which == 1) {
+                                        //相机
+                                        oponCameraNewApi();
+                                    } else {
+                                        //相册
+                                        Intent takePictureIntent = AgentWebX5Utils.getIntentGetContentCompat();
 
-                startActivityForResult(takePictureIntent, INPUT_FILE_REQUEST_CODE);
+                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                            startActivityForResult(takePictureIntent, INPUT_IMAGE_CODE);
+                                        }
+                                    }
+                                }
+                            }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                                        if (nFilePathCallback != null) {
+                                            nFilePathCallback.onReceiveValue(null);
+                                            nFilePathCallback = null;
+                                        }
+                                        return;
+                                    } else {
+                                        if (mFilePathCallback != null) {
+                                            mFilePathCallback.onReceiveValue(null);
+                                            mFilePathCallback = null;
+                                        }
+                                        return;
+                                    }
+                                }
+                            }).create();
+
+                    mAlertDialog.show();
+                }
             } else if (acceptTypes[0].equals("video/*")) {
                 Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                 if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takeVideoIntent, INPUT_VIDEO_CODE);
                 }
             }
+
             return true;
         }
 
@@ -180,6 +244,34 @@ class AgentWebActivity extends CameraAdapWebActivity {
             receivedTitle(view, title);
         }
     };
+
+    public void oponCameraNewApi() {
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            Log.e("TAG", "Unable to create Image File", ex);
+        }
+
+        Intent takePictureIntent = AgentWebX5Utils.getIntentCaptureCompat(U.app(), photoFile);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            if (Build.VERSION.SDK_INT > M) {
+                if (photoFile != null) {
+                    photoURI = takePictureIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT);
+                }
+            } else {
+                if (photoFile != null) {
+                    mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(photoFile));
+                } else {
+                    takePictureIntent = null;
+                }
+            }
+        }
+
+        startActivityForResult(takePictureIntent, INPUT_FILE_REQUEST_CODE);
+    }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {

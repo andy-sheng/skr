@@ -268,7 +268,7 @@ public class ProducationWallView extends RelativeLayout {
                     mAdapter.notifyDataSetChanged();
                 }
             }
-        }, mFragment);
+        }, mFragment, new ApiMethods.RequestControl("playWorks", ApiMethods.ControlType.CancelThis));
     }
 
     private void addProducation(List<ProducationModel> list, int newOffset, int totalCnt, boolean isClear) {

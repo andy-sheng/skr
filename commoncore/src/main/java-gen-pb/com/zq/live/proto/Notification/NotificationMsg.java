@@ -105,13 +105,59 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   )
   private final InviteStandMsg inviteStandMsg;
 
+  @WireField(
+      tag = 12,
+      adapter = "com.zq.live.proto.Notification.SysWarningMsg#ADAPTER"
+  )
+  private final SysWarningMsg sysWarningMsg;
+
+  /**
+   * 双人房邀请信令
+   */
+  @WireField(
+      tag = 13,
+      adapter = "com.zq.live.proto.Notification.CombineRoomInviteMsg#ADAPTER"
+  )
+  private final CombineRoomInviteMsg inviteMsg;
+
+  /**
+   * 双人房进房信令
+   */
+  @WireField(
+      tag = 14,
+      adapter = "com.zq.live.proto.Notification.CombineRoomEnterMsg#ADAPTER"
+  )
+  private final CombineRoomEnterMsg enterMsg;
+
+  /**
+   * 双人房拒绝邀请信令
+   */
+  @WireField(
+      tag = 15,
+      adapter = "com.zq.live.proto.Notification.CombineRoomRefuseMsg#ADAPTER"
+  )
+  private final CombineRoomRefuseMsg refuseMsg;
+
+  /**
+   * 双人房邀请信令
+   */
+  @WireField(
+      tag = 16,
+      adapter = "com.zq.live.proto.Notification.CombineRoomInviteV2Msg#ADAPTER"
+  )
+  private final CombineRoomInviteV2Msg inviteV2Msg;
+
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
-      EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, ByteString.EMPTY);
+      EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
+      SysWarningMsg sysWarningMsg, CombineRoomInviteMsg inviteMsg, CombineRoomEnterMsg enterMsg,
+      CombineRoomRefuseMsg refuseMsg, CombineRoomInviteV2Msg inviteV2Msg) {
+    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, ByteString.EMPTY);
   }
 
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
+      SysWarningMsg sysWarningMsg, CombineRoomInviteMsg inviteMsg, CombineRoomEnterMsg enterMsg,
+      CombineRoomRefuseMsg refuseMsg, CombineRoomInviteV2Msg inviteV2Msg,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
@@ -122,6 +168,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     this.sender = sender;
     this.followMsg = followMsg;
     this.inviteStandMsg = inviteStandMsg;
+    this.sysWarningMsg = sysWarningMsg;
+    this.inviteMsg = inviteMsg;
+    this.enterMsg = enterMsg;
+    this.refuseMsg = refuseMsg;
+    this.inviteV2Msg = inviteV2Msg;
   }
 
   @Override
@@ -135,6 +186,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     builder.sender = sender;
     builder.followMsg = followMsg;
     builder.inviteStandMsg = inviteStandMsg;
+    builder.sysWarningMsg = sysWarningMsg;
+    builder.inviteMsg = inviteMsg;
+    builder.enterMsg = enterMsg;
+    builder.refuseMsg = refuseMsg;
+    builder.inviteV2Msg = inviteV2Msg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -152,7 +208,12 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
         && Internal.equals(posType, o.posType)
         && Internal.equals(sender, o.sender)
         && Internal.equals(followMsg, o.followMsg)
-        && Internal.equals(inviteStandMsg, o.inviteStandMsg);
+        && Internal.equals(inviteStandMsg, o.inviteStandMsg)
+        && Internal.equals(sysWarningMsg, o.sysWarningMsg)
+        && Internal.equals(inviteMsg, o.inviteMsg)
+        && Internal.equals(enterMsg, o.enterMsg)
+        && Internal.equals(refuseMsg, o.refuseMsg)
+        && Internal.equals(inviteV2Msg, o.inviteV2Msg);
   }
 
   @Override
@@ -168,6 +229,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       result = result * 37 + (sender != null ? sender.hashCode() : 0);
       result = result * 37 + (followMsg != null ? followMsg.hashCode() : 0);
       result = result * 37 + (inviteStandMsg != null ? inviteStandMsg.hashCode() : 0);
+      result = result * 37 + (sysWarningMsg != null ? sysWarningMsg.hashCode() : 0);
+      result = result * 37 + (inviteMsg != null ? inviteMsg.hashCode() : 0);
+      result = result * 37 + (enterMsg != null ? enterMsg.hashCode() : 0);
+      result = result * 37 + (refuseMsg != null ? refuseMsg.hashCode() : 0);
+      result = result * 37 + (inviteV2Msg != null ? inviteV2Msg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -184,6 +250,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     if (sender != null) builder.append(", sender=").append(sender);
     if (followMsg != null) builder.append(", followMsg=").append(followMsg);
     if (inviteStandMsg != null) builder.append(", inviteStandMsg=").append(inviteStandMsg);
+    if (sysWarningMsg != null) builder.append(", sysWarningMsg=").append(sysWarningMsg);
+    if (inviteMsg != null) builder.append(", inviteMsg=").append(inviteMsg);
+    if (enterMsg != null) builder.append(", enterMsg=").append(enterMsg);
+    if (refuseMsg != null) builder.append(", refuseMsg=").append(refuseMsg);
+    if (inviteV2Msg != null) builder.append(", inviteV2Msg=").append(inviteV2Msg);
     return builder.replace(0, 2, "NotificationMsg{").append('}').toString();
   }
 
@@ -271,6 +342,53 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return inviteStandMsg;
   }
 
+  public SysWarningMsg getSysWarningMsg() {
+    if(sysWarningMsg==null){
+        return new SysWarningMsg.Builder().build();
+    }
+    return sysWarningMsg;
+  }
+
+  /**
+   * 双人房邀请信令
+   */
+  public CombineRoomInviteMsg getInviteMsg() {
+    if(inviteMsg==null){
+        return new CombineRoomInviteMsg.Builder().build();
+    }
+    return inviteMsg;
+  }
+
+  /**
+   * 双人房进房信令
+   */
+  public CombineRoomEnterMsg getEnterMsg() {
+    if(enterMsg==null){
+        return new CombineRoomEnterMsg.Builder().build();
+    }
+    return enterMsg;
+  }
+
+  /**
+   * 双人房拒绝邀请信令
+   */
+  public CombineRoomRefuseMsg getRefuseMsg() {
+    if(refuseMsg==null){
+        return new CombineRoomRefuseMsg.Builder().build();
+    }
+    return refuseMsg;
+  }
+
+  /**
+   * 双人房邀请信令
+   */
+  public CombineRoomInviteV2Msg getInviteV2Msg() {
+    if(inviteV2Msg==null){
+        return new CombineRoomInviteV2Msg.Builder().build();
+    }
+    return inviteV2Msg;
+  }
+
   /**
    * 消息产生时间，单位毫秒
    */
@@ -321,6 +439,38 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return inviteStandMsg!=null;
   }
 
+  public boolean hasSysWarningMsg() {
+    return sysWarningMsg!=null;
+  }
+
+  /**
+   * 双人房邀请信令
+   */
+  public boolean hasInviteMsg() {
+    return inviteMsg!=null;
+  }
+
+  /**
+   * 双人房进房信令
+   */
+  public boolean hasEnterMsg() {
+    return enterMsg!=null;
+  }
+
+  /**
+   * 双人房拒绝邀请信令
+   */
+  public boolean hasRefuseMsg() {
+    return refuseMsg!=null;
+  }
+
+  /**
+   * 双人房邀请信令
+   */
+  public boolean hasInviteV2Msg() {
+    return inviteV2Msg!=null;
+  }
+
   public static final class Builder extends Message.Builder<NotificationMsg, Builder> {
     private Long timeMs;
 
@@ -337,6 +487,16 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     private FollowMsg followMsg;
 
     private InviteStandMsg inviteStandMsg;
+
+    private SysWarningMsg sysWarningMsg;
+
+    private CombineRoomInviteMsg inviteMsg;
+
+    private CombineRoomEnterMsg enterMsg;
+
+    private CombineRoomRefuseMsg refuseMsg;
+
+    private CombineRoomInviteV2Msg inviteV2Msg;
 
     public Builder() {
     }
@@ -399,9 +559,46 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       return this;
     }
 
+    public Builder setSysWarningMsg(SysWarningMsg sysWarningMsg) {
+      this.sysWarningMsg = sysWarningMsg;
+      return this;
+    }
+
+    /**
+     * 双人房邀请信令
+     */
+    public Builder setInviteMsg(CombineRoomInviteMsg inviteMsg) {
+      this.inviteMsg = inviteMsg;
+      return this;
+    }
+
+    /**
+     * 双人房进房信令
+     */
+    public Builder setEnterMsg(CombineRoomEnterMsg enterMsg) {
+      this.enterMsg = enterMsg;
+      return this;
+    }
+
+    /**
+     * 双人房拒绝邀请信令
+     */
+    public Builder setRefuseMsg(CombineRoomRefuseMsg refuseMsg) {
+      this.refuseMsg = refuseMsg;
+      return this;
+    }
+
+    /**
+     * 双人房邀请信令
+     */
+    public Builder setInviteV2Msg(CombineRoomInviteV2Msg inviteV2Msg) {
+      this.inviteV2Msg = inviteV2Msg;
+      return this;
+    }
+
     @Override
     public NotificationMsg build() {
-      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, super.buildUnknownFields());
+      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, super.buildUnknownFields());
     }
   }
 
@@ -420,6 +617,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           + UserInfo.ADAPTER.encodedSizeWithTag(6, value.sender)
           + FollowMsg.ADAPTER.encodedSizeWithTag(10, value.followMsg)
           + InviteStandMsg.ADAPTER.encodedSizeWithTag(11, value.inviteStandMsg)
+          + SysWarningMsg.ADAPTER.encodedSizeWithTag(12, value.sysWarningMsg)
+          + CombineRoomInviteMsg.ADAPTER.encodedSizeWithTag(13, value.inviteMsg)
+          + CombineRoomEnterMsg.ADAPTER.encodedSizeWithTag(14, value.enterMsg)
+          + CombineRoomRefuseMsg.ADAPTER.encodedSizeWithTag(15, value.refuseMsg)
+          + CombineRoomInviteV2Msg.ADAPTER.encodedSizeWithTag(16, value.inviteV2Msg)
           + value.unknownFields().size();
     }
 
@@ -433,6 +635,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       UserInfo.ADAPTER.encodeWithTag(writer, 6, value.sender);
       FollowMsg.ADAPTER.encodeWithTag(writer, 10, value.followMsg);
       InviteStandMsg.ADAPTER.encodeWithTag(writer, 11, value.inviteStandMsg);
+      SysWarningMsg.ADAPTER.encodeWithTag(writer, 12, value.sysWarningMsg);
+      CombineRoomInviteMsg.ADAPTER.encodeWithTag(writer, 13, value.inviteMsg);
+      CombineRoomEnterMsg.ADAPTER.encodeWithTag(writer, 14, value.enterMsg);
+      CombineRoomRefuseMsg.ADAPTER.encodeWithTag(writer, 15, value.refuseMsg);
+      CombineRoomInviteV2Msg.ADAPTER.encodeWithTag(writer, 16, value.inviteV2Msg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -464,6 +671,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           case 6: builder.setSender(UserInfo.ADAPTER.decode(reader)); break;
           case 10: builder.setFollowMsg(FollowMsg.ADAPTER.decode(reader)); break;
           case 11: builder.setInviteStandMsg(InviteStandMsg.ADAPTER.decode(reader)); break;
+          case 12: builder.setSysWarningMsg(SysWarningMsg.ADAPTER.decode(reader)); break;
+          case 13: builder.setInviteMsg(CombineRoomInviteMsg.ADAPTER.decode(reader)); break;
+          case 14: builder.setEnterMsg(CombineRoomEnterMsg.ADAPTER.decode(reader)); break;
+          case 15: builder.setRefuseMsg(CombineRoomRefuseMsg.ADAPTER.decode(reader)); break;
+          case 16: builder.setInviteV2Msg(CombineRoomInviteV2Msg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -481,6 +693,11 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       if (builder.sender != null) builder.sender = UserInfo.ADAPTER.redact(builder.sender);
       if (builder.followMsg != null) builder.followMsg = FollowMsg.ADAPTER.redact(builder.followMsg);
       if (builder.inviteStandMsg != null) builder.inviteStandMsg = InviteStandMsg.ADAPTER.redact(builder.inviteStandMsg);
+      if (builder.sysWarningMsg != null) builder.sysWarningMsg = SysWarningMsg.ADAPTER.redact(builder.sysWarningMsg);
+      if (builder.inviteMsg != null) builder.inviteMsg = CombineRoomInviteMsg.ADAPTER.redact(builder.inviteMsg);
+      if (builder.enterMsg != null) builder.enterMsg = CombineRoomEnterMsg.ADAPTER.redact(builder.enterMsg);
+      if (builder.refuseMsg != null) builder.refuseMsg = CombineRoomRefuseMsg.ADAPTER.redact(builder.refuseMsg);
+      if (builder.inviteV2Msg != null) builder.inviteV2Msg = CombineRoomInviteV2Msg.ADAPTER.redact(builder.inviteV2Msg);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -1,21 +1,24 @@
 package com.zq.person.view;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
 import com.dialog.view.StrokeTextView;
 
 public class EditRemarkView extends RelativeLayout {
 
-    BaseFragment mFragment;
+    Activity mActivity;
     String mNickName;
     String mRemarkName;
     Listener mListener;
@@ -24,17 +27,12 @@ public class EditRemarkView extends RelativeLayout {
     View mPlaceTopView;
     NoLeakEditText mRemarkNameEdt;
     ImageView mClearEditIv;
-    StrokeTextView mCancelTv;
-    StrokeTextView mSaveTv;
+    ExTextView mCancelTv;
+    ExTextView mSaveTv;
 
-    /**
-     * @param fragment
-     * @param nickName   昵称
-     * @param remarkName 真的备注
-     */
-    public EditRemarkView(BaseFragment fragment, String nickName, String remarkName) {
-        super(fragment.getContext());
-        this.mFragment = fragment;
+    public EditRemarkView(Activity activity, String nickName, String remarkName) {
+        super(activity);
+        this.mActivity = activity;
         this.mNickName = nickName;
         this.mRemarkName = remarkName;
         init();
@@ -43,12 +41,12 @@ public class EditRemarkView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.remark_edit_view_layout, this);
 
-        mRemarkNameEdt = (NoLeakEditText) findViewById(R.id.remark_name_edt);
-        mClearEditIv = (ImageView) findViewById(R.id.clear_edit_iv);
-        mCancelTv = (StrokeTextView) findViewById(R.id.cancel_tv);
-        mSaveTv = (StrokeTextView) findViewById(R.id.save_tv);
-        mPlaceBottomView = (View) findViewById(R.id.place_bottom_view);
-        mPlaceTopView = (View) findViewById(R.id.place_top_view);
+        mRemarkNameEdt = findViewById(R.id.remark_name_edt);
+        mClearEditIv = findViewById(R.id.clear_edit_iv);
+        mCancelTv = findViewById(R.id.cancel_tv);
+        mSaveTv = findViewById(R.id.save_tv);
+        mPlaceBottomView = findViewById(R.id.place_bottom_view);
+        mPlaceTopView = findViewById(R.id.place_top_view);
 
         ViewGroup.LayoutParams layoutParams = mPlaceBottomView.getLayoutParams();
         layoutParams.height = U.getKeyBoardUtils().getKeyBoardHeight();
@@ -117,7 +115,7 @@ public class EditRemarkView extends RelativeLayout {
                     mRemarkNameEdt.setSelection(editRemark.length());
                 }
                 mRemarkNameEdt.requestFocus();
-                U.getKeyBoardUtils().showSoftInputKeyBoard(mFragment.getActivity());
+                U.getKeyBoardUtils().showSoftInputKeyBoard(mActivity);
             }
         }, 300);
 

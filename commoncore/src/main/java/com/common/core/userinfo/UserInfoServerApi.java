@@ -282,9 +282,9 @@ public interface UserInfoServerApi {
      * 新增作品
      *
      * @param body "category": EPC_Stand_Normal	1一唱到底
-     *                         EPC_Stand_Highlight	2一唱到底高光时刻
-     *                         EPC_Practice	3 练歌房
-     *                         EPC_Team	4 团队赛
+     *             EPC_Stand_Highlight	2一唱到底高光时刻
+     *             EPC_Practice	3 练歌房
+     *             EPC_Team	4 团队赛
      *             "duration": "string",
      *             "songID": 0,
      *             "worksURL": "string"
@@ -296,7 +296,7 @@ public interface UserInfoServerApi {
     /**
      * 删除作品
      *
-     * @param body  "worksID": 0
+     * @param body "worksID": 0
      * @return
      */
     @PUT("/v1/profile/del-works")
@@ -305,8 +305,8 @@ public interface UserInfoServerApi {
     /**
      * 播放作品
      *
-     * @param body  "toUserID": 0,
-     *              "worksID": 0
+     * @param body "toUserID": 0,
+     *             "worksID": 0
      * @return
      */
     @PUT("/v1/profile/play-works")
@@ -315,7 +315,8 @@ public interface UserInfoServerApi {
 
     /**
      * 查看作品
-     * @param toUserID  查看用户ID（别人必填，自己选填）
+     *
+     * @param toUserID 查看用户ID（别人必填，自己选填）
      * @param offset
      * @param cnt
      * @return
@@ -334,4 +335,36 @@ public interface UserInfoServerApi {
 
     @GET("v1/mate/search-fans")
     Observable<ApiResult> searchFans(@Query("searchContent") String searchContent);
+
+
+    /**
+     * 双人房进去前，修改用户的性别和年龄段
+     *
+     * @param body "sex": "unknown",
+     *             "stage": "stage_unknown"
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/modify-user-info")
+    Observable<ApiResult> modifyDoubleUserInfo(@Body RequestBody body);
+
+
+    /**
+     * 检查to是否是from的粉丝
+     *
+     * @param from
+     * @param to
+     * @return
+     */
+    @GET("/v1/mate/check-fans-relation")
+    Observable<ApiResult> checkIsFans(@Query("from") int from, @Query("to") int to);
+
+
+    @PUT("/v1/mate/my-blacklist")
+    Observable<ApiResult> addToBlackList(@Body RequestBody body);
+
+    @GET("/v1/mate/my-blacklist")
+    Observable<ApiResult> getBlackList();
+
+    @GET("/v1/mate/is-blacked")
+    Observable<ApiResult> checkIsBlack(@Query("userID")int userID);
 }

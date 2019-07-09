@@ -62,16 +62,17 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
     private static final int START_PREVIEW_DONE = 2;
     private static final int CLOSE_CAMERA_DONE = 3;
     private static final int SWITCH_CAMERA_DONE = 4;
+    private static final int FIRST_FRAME_RENDERED = 5;
     private static final int CAMERA_FAILED = 11;
 
     /**
      * Source pin transfer ImgTexFrame, used for gpu path and preview
      */
-    public final SrcPin<ImgTexFrame> mImgTexSrcPin;
+    private final SrcPin<ImgTexFrame> mImgTexSrcPin;
     /**
      * Source pin transfer ImgBufFrame, used for fallback cpu path
      */
-    public final SrcPin<ImgBufFrame> mImgBufSrcPin;
+    private final SrcPin<ImgBufFrame> mImgBufSrcPin;
 
     private Context mContext;
     private OnCameraCaptureListener mOnCameraCaptureListener;
@@ -109,6 +110,7 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
     private boolean mBufInited = false;
     private boolean mFrameAvailable = false;
     private boolean mIsRecording = false;
+    private boolean mFirstFrameRendered = false;
 
     // AE workaround
     private boolean mEnableExposureWorkaround = true;
@@ -136,6 +138,14 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
         mGLRender.addListener(mGLSizeChangedListener);
         mGLRender.addListener(mGLDrawFrameListener);
         mGLRender.addListener(mGLReleasedListener);
+    }
+
+    public SrcPin<ImgTexFrame> getImgTexSrcPin() {
+        return mImgTexSrcPin;
+    }
+
+    public SrcPin<ImgBufFrame> getImgBufSrcPin() {
+        return mImgBufSrcPin;
     }
 
     /**
@@ -525,6 +535,11 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
         void onStarted();
 
         /**
+         * Notify the first camera video frame rendered.
+         */
+        void onFirstFrameRendered();
+
+        /**
          * Notify camera facing changed.
          *
          * @param facing new facing
@@ -779,7 +794,15 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
                     }
                     break;
                 }
+                case FIRST_FRAME_RENDERED: {
+                    if (VERBOSE) Log.d(TAG, "Camera first frame rendered");
+                    if (cameraCapture.mOnCameraCaptureListener != null) {
+                        cameraCapture.mOnCameraCaptureListener.onFirstFrameRendered();
+                    }
+                    break;
+                }
                 case SWITCH_CAMERA_DONE: {
+                    if (VERBOSE) Log.d(TAG, "Camera switched");
                     if (cameraCapture.mOnCameraCaptureListener != null) {
                         cameraCapture.mOnCameraCaptureListener.
                                 onFacingChanged(cameraCapture.mFacing);
@@ -876,6 +899,11 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
                 Log.e(TAG, "Draw frame failed, ignore");
             }
 
+            if (!mFirstFrameRendered) {
+                mMainHandler.sendEmptyMessage(FIRST_FRAME_RENDERED);
+                mFirstFrameRendered = true;
+            }
+
             // cal preview fps
             mFrameDrawn++;
             long tm = System.currentTimeMillis();
@@ -908,6 +936,9 @@ public class CameraCapture implements SurfaceTexture.OnFrameAvailableListener {
             mLastTraceTime = System.currentTimeMillis();
             mFrameDrawn = 0;
             mCurrentFps = 0;
+
+            // every camera open/switch, notify first frame rendered
+            mFirstFrameRendered = false;
         }
     };
 

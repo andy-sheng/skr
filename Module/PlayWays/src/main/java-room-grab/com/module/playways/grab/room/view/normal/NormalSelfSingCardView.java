@@ -1,13 +1,13 @@
 package com.module.playways.grab.room.view.normal;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.view.View;
+import android.view.ViewStub;
 
 import com.common.log.MyLog;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.module.playways.grab.room.view.SingCountDownView2;
+import com.common.view.ExViewStub;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 import com.module.playways.R;
@@ -15,34 +15,44 @@ import com.module.playways.R;
 /**
  * 你的主场景歌词
  */
-public class NormalSelfSingCardView extends RelativeLayout {
+public class NormalSelfSingCardView extends ExViewStub {
     public final static String TAG = "SelfSingCardView2";
 
     GrabRoomData mRoomData;
 
     SelfSingLyricView mSelfSingLyricView;
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
-    public NormalSelfSingCardView(Context context) {
-        super(context);
-        init();
+    SelfSingCardView.Listener mListener;
+
+    public NormalSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
+        mRoomData = roomData;
     }
 
-    public NormalSelfSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+    @Override
+    protected void init(View parentView) {
+        {
+            ViewStub viewStub = mParentView.findViewById(R.id.self_sing_lyric_view_stub);
+            mSelfSingLyricView = new SelfSingLyricView(viewStub, mRoomData);
+        }
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView.setListener(mListener);
     }
 
-    public NormalSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_normal_self_sing_card_stub_layout;
     }
 
-    private void init() {
-        inflate(getContext(), R.layout.grab_normal_self_sing_card_layout, this);
+    @Override
+    public void onViewAttachedToWindow(View v) {
+        super.onViewAttachedToWindow(v);
+    }
 
-        mSelfSingLyricView = (SelfSingLyricView) findViewById(R.id.self_sing_lyric_view);
-        mSingCountDownView = (SingCountDownView) findViewById(R.id.sing_count_down_view);
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
     }
 
     public void playLyric() {
@@ -51,8 +61,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-
-        mSelfSingLyricView.initLyric();
+        tryInflate();
         if (infoModel.getMusic() == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
@@ -64,27 +73,23 @@ public class NormalSelfSingCardView extends RelativeLayout {
             withAcc = true;
         }
         if (!withAcc) {
-            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_qingchang);
             mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
         } else {
-            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_banzou);
             mSelfSingLyricView.playWithAcc(infoModel, totalTs);
         }
         mSingCountDownView.startPlay(0, totalTs, true);
     }
 
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-    }
-
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (visibility == GONE) {
-            mSingCountDownView.reset();
-            mSelfSingLyricView.reset();
+        if (visibility == View.GONE) {
+            if (mSingCountDownView != null) {
+                mSingCountDownView.reset();
+            }
+            if (mSelfSingLyricView != null) {
+                mSelfSingLyricView.reset();
+            }
         }
     }
 
@@ -94,20 +99,8 @@ public class NormalSelfSingCardView extends RelativeLayout {
         }
     }
 
-    public void setRoomData(GrabRoomData roomData) {
-        this.mRoomData = roomData;
-        if (mSelfSingLyricView != null) {
-            mSelfSingLyricView.setRoomData(roomData);
-        }
-    }
-
-    SelfSingCardView.Listener mListener;
-
     public void setListener(SelfSingCardView.Listener l) {
         mListener = l;
-        if (mSingCountDownView != null) {
-            mSingCountDownView.setListener(mListener);
-        }
     }
 
 }

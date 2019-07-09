@@ -21,18 +21,20 @@
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="@color/colorPrimary"
-        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="@color/colorPrimary" />
 
-    <RelativeLayout
+    <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/titlebar"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:background="@drawable/common_dialog_bg"
         android:paddingLeft="@dimen/view_3_dp"
-        android:paddingRight="@dimen/view_3_dp">
+        android:paddingRight="@dimen/view_3_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF">
 
         <!--修改头像-->
         <RelativeLayout
@@ -303,7 +305,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/view_17_dp"
-                android:src="@drawable/refresh_bg" />
+                android:src="@drawable/icon_back" />
 
             <View
                 android:layout_width="match_parent"
@@ -313,7 +315,7 @@
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </com.common.view.ex.ExRelativeLayout>
 
 
     <ProgressBar

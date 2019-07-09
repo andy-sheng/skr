@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_72_dp"
+    android:layout_marginLeft="@dimen/view_10_dp"
+    android:layout_marginRight="@dimen/view_10_dp"
+    app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#D0EFFF">
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_46_dp"
+        android:layout_height="@dimen/view_46_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/inviter_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/view_1_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_130_dp"
+        android:maxLines="1"
+        android:text=""
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constraintStart_toEndOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/sex_iv"
+        android:layout_width="@dimen/view_18_dp"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginStart="@dimen/view_3_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/inviter_name_tv"
+        app:layout_constraintStart_toEndOf="@+id/inviter_name_tv"
+        app:layout_constraintTop_toTopOf="@+id/inviter_name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sub_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_1_dp"
+        android:text="献上2金币，邀你双人唱聊"
+        android:textColor="#ff3b4e79"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        app:layout_constraintStart_toStartOf="@+id/inviter_name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/agree_button"
+        android:layout_width="@dimen/view_93_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="同意"
+        android:textColor="#AD6C00"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="#FFC15B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</com.common.view.ex.ExConstraintLayout>

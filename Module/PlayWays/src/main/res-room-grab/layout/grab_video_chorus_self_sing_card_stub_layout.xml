@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lyric_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_12_dp"
+        android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+        android:fadeScrollbars="false"
+        android:fadingEdge="none"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="vertical" />
+
+</RelativeLayout>

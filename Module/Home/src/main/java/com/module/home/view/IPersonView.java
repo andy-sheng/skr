@@ -23,7 +23,7 @@ public interface IPersonView {
     void loadHomePageFailed();
 
     // 展示好友，粉丝和关注数量
-    void showRelationNum(List<RelationNumModel> list);
+//    void showRelationNum(List<RelationNumModel> list);
 
 //    // 展示个人基本信息
 //    void showUserInfo(UserInfoModel userInfoModel);
@@ -38,5 +38,5 @@ public interface IPersonView {
 //    void showGameStatic(List<GameStatisModel> list);
 
     // 展示排行数据
-    void showRankView(UserRankModel userRankModel);
+//    void showRankView(UserRankModel userRankModel);
 }

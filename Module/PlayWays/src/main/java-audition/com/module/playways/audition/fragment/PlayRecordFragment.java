@@ -13,13 +13,12 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
+import com.common.player.AndroidMediaPlayer;
+import com.common.player.ExoPlayer;
 import com.common.player.IPlayer;
-import com.common.player.IPlayerCallback;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.player.VideoPlayerAdapter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -28,18 +27,18 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.common.utils.ActivityUtils;
-import com.component.busilib.SkrConfig;
-import com.engine.Params;
-import com.zq.dialog.ShareWorksDialog;
-import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.module.playways.room.song.model.SongModel;
+import com.component.busilib.SkrConfig;
+import com.engine.Params;
 import com.module.playways.R;
+import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.zq.dialog.ShareWorksDialog;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.utils.SongResUtils;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.mediaengine.kit.ZqEngineKit;
@@ -106,6 +105,7 @@ public class PlayRecordFragment extends BaseFragment {
 
         playLyrics(mSongModel);
         playRecord();
+        mManyLyricsView.setAuthorName(mSongModel.getUploaderName());
 
         mBackArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -154,9 +154,9 @@ public class PlayRecordFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 if (!TextUtils.isEmpty(mUrl) && mWorksId > 0) {
-                    if(SkrConfig.getInstance().worksShareOpen()){
+                    if (SkrConfig.getInstance().worksShareOpen()) {
                         showShareDialog(false);
-                    }else{
+                    } else {
 
                     }
                 } else {
@@ -165,9 +165,9 @@ public class PlayRecordFragment extends BaseFragment {
             }
         });
 
-        if(SkrConfig.getInstance().worksShareOpen()){
+        if (SkrConfig.getInstance().worksShareOpen()) {
 
-        }else{
+        } else {
             mSaveShareTv.setText("保存");
         }
 
@@ -268,14 +268,10 @@ public class PlayRecordFragment extends BaseFragment {
                 mPlayer = new ExoPlayer();
             }
 
-            mPlayer.setCallback(new IPlayerCallback() {
-                @Override
-                public void onPrepared(long duration) {
-
-                }
-
+            mPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                 @Override
                 public void onCompletion() {
+                    super.onCompletion();
                     mManyLyricsView.seekto(mSongModel.getBeginMs());
                     mUiHanlder.postDelayed(new Runnable() {
                         @Override
@@ -289,26 +285,6 @@ public class PlayRecordFragment extends BaseFragment {
                     mPlayer.seekTo(0);
                     mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_bofang), null, null);
                     mOptTv.setText("播放");
-                }
-
-                @Override
-                public void onSeekComplete() {
-
-                }
-
-                @Override
-                public void onVideoSizeChanged(int width, int height) {
-
-                }
-
-                @Override
-                public void onError(int what, int extra) {
-
-                }
-
-                @Override
-                public void onInfo(int what, int extra) {
-
                 }
             });
         }
@@ -334,19 +310,19 @@ public class PlayRecordFragment extends BaseFragment {
                 .startUploadAsync(new UploadCallback() {
 
                     @Override
-                    public void onProgress(long currentSize, long totalSize) {
+                    public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                     }
 
                     @Override
-                    public void onSuccess(String url) {
+                    public void onSuccessNotInUiThread(String url) {
                         MyLog.d(TAG, "onSuccess" + " url=" + url);
                         mUrl = url;
                         saveWorksStep2();
                     }
 
                     @Override
-                    public void onFailure(String msg) {
+                    public void onFailureNotInUiThread(String msg) {
                         U.getToastUtil().showShort("保存失败");
                         mUrl = "";
                     }
@@ -373,11 +349,11 @@ public class PlayRecordFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mWorksId = result.getData().getIntValue("worksID");
-                    if(SkrConfig.getInstance().worksShareOpen()){
+                    if (SkrConfig.getInstance().worksShareOpen()) {
                         mSaveShareTv.setText("分享");
                         mSaveShareTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.audition_share, 0, 0);
                         showShareDialog(true);
-                    }else{
+                    } else {
                         mSaveShareTv.setText("已保存");
                         mSaveShareTv.setClickable(false);
                     }

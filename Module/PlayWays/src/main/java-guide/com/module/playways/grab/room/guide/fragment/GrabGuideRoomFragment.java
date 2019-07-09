@@ -34,7 +34,7 @@ import com.module.playways.grab.room.guide.IGrabGuideView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.top.GrabTopContainerView;
-import com.module.playways.grab.room.top.GrabTopView;
+import com.module.playways.grab.room.top.GrabTopOpView;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabGiveupView;
@@ -449,7 +449,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
 
         mGrabOpBtn.hide("initGrabOpView");
 
-        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_pass_view);
+        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_giveup_view);
         mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
             public void giveUp(boolean b) {
@@ -966,7 +966,6 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
     }
 
     private void onGrabGameOver(String from) {
-        // TODO: 2019/5/8 跳到毕业页面
         MyLog.d(TAG, "onGrabGameOver " + from);
         //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
 

@@ -97,19 +97,19 @@ public class LrcImgPreView extends View {
     protected void init(Context context) {
         mDefText = context.getString(R.string.def_text);
         //默认画笔
-        mPaint = new Paint();
+        mPaint = new com.common.view.ExPaint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
         mPaint.setTextSize(mFontSize);
 
         //高亮画笔
-        mPaintHL = new Paint();
+        mPaintHL = new com.common.view.ExPaint();
         mPaintHL.setDither(true);
         mPaintHL.setAntiAlias(true);
         mPaintHL.setTextSize(mFontSize);
 
         //轮廓画笔
-        mPaintOutline = new Paint();
+        mPaintOutline = new com.common.view.ExPaint();
         mPaintOutline.setDither(true);
         mPaintOutline.setAntiAlias(true);
         mPaintOutline.setColor(Color.BLACK);

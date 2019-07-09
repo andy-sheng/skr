@@ -50,6 +50,7 @@ import retrofit2.Response;
 /**
  * 关于音视频引擎的都放在这个类里
  */
+@Deprecated
 public class EngineManager implements AgoraOutCallback {
 
     public final static String TAG = "EngineManager";
@@ -124,7 +125,7 @@ public class EngineManager implements AgoraOutCallback {
         status.setFirstVideoWidth(width);
         status.setFirstVideoHeight(height);
         tryBindRemoteViewAutoOnMainThread("onFirstRemoteVideoDecoded");
-        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_VIDEO_DECODED, status));
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED, status));
     }
 
     @Override

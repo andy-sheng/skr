@@ -63,6 +63,10 @@ public abstract class CustomHandlerThread {
         this.mHandler.removeMessages(what, obj);
     }
 
+    public void removeCallbacksAndMessages(Object token) {
+        this.mHandler.removeCallbacksAndMessages(token);
+    }
+
     public final boolean post(Runnable r) {
         if(hasDestroy){
             return false;

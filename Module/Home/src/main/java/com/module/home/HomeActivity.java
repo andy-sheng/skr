@@ -6,7 +6,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.scheme.SchemeSdkActivity;
@@ -33,7 +33,6 @@ import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -44,10 +43,9 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
-import com.module.home.fragment.GrabGuideHomePageFragment;
-import com.module.home.fragment.PersonFragment3;
-import com.module.home.game.GameFragment2;
+import com.module.home.fragment.PersonFragment4;
 import com.module.home.fragment.PkInfoFragment;
+import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
@@ -100,6 +98,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     HomeDialogManager mHomeDialogManager = new HomeDialogManager();
 
+    public static void open(Activity activity) {
+        Intent intent = new Intent(activity,HomeActivity.class);
+        activity.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         boolean needFinish = false;
@@ -129,7 +132,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameArea = (RelativeLayout) findViewById(R.id.game_area);
         mGameBtn = findViewById(R.id.game_btn);
-        mRankArea = (RelativeLayout) findViewById(R.id.rank_area);
+        mRankArea = findViewById(R.id.rank_area);
         mRankBtn = findViewById(R.id.rank_btn);
         mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
         mMessageBtn = findViewById(R.id.message_btn);
@@ -156,17 +159,17 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             public Fragment getItem(int position) {
                 MyLog.d(TAG, "getItem" + " position=" + position);
                 if (position == 0) {
-                    return new GameFragment2();
+                    return new GameFragment3();
                 } else if (position == 1) {
                     return new PkInfoFragment();
                 } else if (position == 2) {
                     if (mMsgService == null) {
-                        return new PersonFragment3();
+                        return new PersonFragment4();
                     } else {
                         return (Fragment) mMsgService.getMessageFragment();
                     }
                 } else if (position == 3) {
-                    return new PersonFragment3();
+                    return new PersonFragment4();
                 }
                 return null;
             }
@@ -184,14 +187,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setAdapter(fragmentPagerAdapter);
 
         mHomePresenter = new HomeCorePresenter(this, this);
-        if(mHomePresenter.checkUserInfo("HomeActivity onCreate")){
+        if(!UserAccountManager.getInstance().hasAccount()){
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mMainActContainer.setVisibility(View.VISIBLE);
                 }
-            },3000);
+            }, 3000);
+            // 没有账号 跳到登陆页面
+            LoginActivity.open(this);
         }
         mCheckInPresenter = new CheckInPresenter(this);
         addPresent(mCheckInPresenter);
@@ -204,7 +209,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-        mRankArea.setOnClickListener(new DebounceViewClickListener(100) {
+        mRankArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 mMainVp.setCurrentItem(1, false);
@@ -322,9 +327,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     private void setTabDrawable(ExTextView textView, Drawable drawable) {
-        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-        textView.setCompoundDrawables(null, drawable,
-                null, null);
+//        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+//        textView.setCompoundDrawables(null, drawable,
+//                null, null);
+        textView.setBackground(drawable);
     }
 
     private void checkIfFromSchema() {
@@ -397,18 +403,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
         mFromCreate = false;
 
-        if (MyUserInfoManager.getInstance().isNeedBeginnerGuide()) {
-            U.getFragmentUtils().addFragment(
-                    FragmentUtils.newAddParamsBuilder(this, GrabGuideHomePageFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(false)
-                            .build());
-        } else {
-            UpgradeManager.getInstance().checkUpdate1();
-            mRedPkgPresenter.checkRedPkg();
-            mCheckInPresenter.check();
-        }
-        if(UserAccountManager.getInstance().hasAccount()){
+        UpgradeManager.getInstance().checkUpdate1();
+        mRedPkgPresenter.checkRedPkg();
+        mCheckInPresenter.check();
+
+        if (UserAccountManager.getInstance().hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
         }
     }

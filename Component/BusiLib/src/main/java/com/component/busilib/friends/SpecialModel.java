@@ -3,6 +3,10 @@ package com.component.busilib.friends;
 import java.io.Serializable;
 
 public class SpecialModel implements Serializable {
+
+    public static final int TYPE_AUDIO = 1;
+    public static final int TYPE_VIDEO = 2;
+
     /**
      * tagID : 8
      * tagName : 疯狂00后
@@ -17,6 +21,7 @@ public class SpecialModel implements Serializable {
     private String bgImage1;
     private String bgImage2;
     private String bgImage3;
+    private int tagType;
 
     public int getTagID() {
         return tagID;
@@ -74,6 +79,15 @@ public class SpecialModel implements Serializable {
         this.bgImage2 = bgImage2;
     }
 
+
+    public int getTagType() {
+        return tagType;
+    }
+
+    public void setTagType(int tagType) {
+        this.tagType = tagType;
+    }
+
     @Override
     public String toString() {
         return "SpecialModel{" +
@@ -83,6 +97,8 @@ public class SpecialModel implements Serializable {
                 ", bgColor='" + bgColor + '\'' +
                 ", bgImage1='" + bgImage1 + '\'' +
                 ", bgImage2='" + bgImage2 + '\'' +
+                ", bgImage3='" + bgImage3 + '\'' +
+                ", tagType=" + tagType +
                 '}';
     }
 }

@@ -29,6 +29,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.recommend.RA;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -126,6 +127,11 @@ public class GrabInputContainerView extends InputContainerView {
                                 } else {
                                     EventHelper.pretendCommentPush(content, mRoomData.getGameId());
                                 }
+                            }
+                            if(RA.hasTestList()){
+                                HashMap map = new HashMap();
+                                map.put("testList", RA.getTestList());
+                                StatisticsAdapter.recordCountEvent("ra","sendmsg",map);
                             }
                         }
                     }

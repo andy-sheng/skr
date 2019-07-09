@@ -185,26 +185,26 @@ public class SeparatedEditText extends EditText {
             }
         }, 500);
 
-        blockPaint = new Paint();
+        blockPaint = new com.common.view.ExPaint();
         blockPaint.setAntiAlias(true);
         blockPaint.setColor(blockColor);
         blockPaint.setStyle(Paint.Style.FILL);
         blockPaint.setStrokeWidth(1);
 
-        textPaint = new Paint();
+        textPaint = new com.common.view.ExPaint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(textColor);
         textPaint.setTextSize(textSize);
         textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         textPaint.setStrokeWidth(1);
 
-        borderPaint = new Paint();
+        borderPaint = new com.common.view.ExPaint();
         borderPaint.setAntiAlias(true);
         borderPaint.setColor(borderColor);
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setStrokeWidth(borderWidth);
 
-        cursorPaint = new Paint();
+        cursorPaint = new com.common.view.ExPaint();
         cursorPaint.setAntiAlias(true);
         cursorPaint.setColor(cursorColor);
         cursorPaint.setStyle(Paint.Style.FILL_AND_STROKE);

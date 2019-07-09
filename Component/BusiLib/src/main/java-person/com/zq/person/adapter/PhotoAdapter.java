@@ -29,7 +29,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
     PhotoManageListener mPhotoManageListener;
 
     boolean mHasUpdate;
-    int type;
+    int mType;
 
     private int PHOTO_ADD_TYPE = 0;     //上传
     private int PHOTO_ITEM_TYPE = 1;    //照片
@@ -37,7 +37,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
 
     public PhotoAdapter(RecyclerOnItemClickListener mListener, int type) {
         this.mListener = mListener;
-        this.type = type;
+        this.mType = type;
         if (type == TYPE_PERSON_CENTER) {
             mHasUpdate = true;
         } else {
@@ -54,7 +54,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == PHOTO_ITEM_TYPE) {
             View view;
-            if (type == TYPE_PERSON_CARD) {
+            if (mType == TYPE_PERSON_CARD) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_card_item_view_layout, parent, false);
             } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item_view_layout, parent, false);
@@ -108,7 +108,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
     }
 
     private boolean isContainEmpty() {
-        if (type == TYPE_OTHER_PERSON_CENTER) {
+        if (mType == TYPE_OTHER_PERSON_CENTER) {
             if (mDataList != null && mDataList.size() > 0) {
                 return false;
             } else {

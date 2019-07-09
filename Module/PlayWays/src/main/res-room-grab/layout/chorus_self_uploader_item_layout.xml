@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/uploader_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="沙漠骆驼好听"
+        android:textColor="#95364E7C"
+        android:textSize="@dimen/textsize_12_dp" />
+
+</RelativeLayout>

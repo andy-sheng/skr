@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:topContainer="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2E3041"
@@ -123,5 +122,6 @@
         app:ly_outline_paint_color="@color/black"
         app:ly_paint_color_from="@color/white_trans_50"
         app:ly_paint_color_to="@color/white_trans_50"
-        app:ly_paint_text_size="@dimen/textsize_dimen_20" />
+        app:ly_paint_text_size="@dimen/textsize_dimen_20"
+        app:ly_show_author="true" />
 </RelativeLayout>

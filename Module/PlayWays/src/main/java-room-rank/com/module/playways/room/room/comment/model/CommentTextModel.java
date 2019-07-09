@@ -1,8 +1,6 @@
 package com.module.playways.room.room.comment.model;
 
-import android.graphics.Color;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.SpanUtils;
@@ -23,43 +21,40 @@ public class CommentTextModel extends CommentModel {
     public static CommentTextModel parseFromEvent(CommentMsgEvent event, BaseRoomData roomData) {
         CommentTextModel commentModel = new CommentTextModel();
         commentModel.setUserId(event.info.getSender().getUserID());
-        if (!TextUtils.isEmpty(event.info.getSender().getNickName())) {
-            commentModel.setUserName(event.info.getSender().getNickName());
-        } else {
-            UserInfoModel userInfoModel = roomData.getUserInfo(event.info.getSender().getUserID());
-            commentModel.setUserName(userInfoModel.getNicknameRemark());
-        }
 
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
-            commentModel.setAvatarColor(Color.WHITE);
+            commentModel.setUserName(sender.getNicknameRemark());
+            commentModel.setAvatarColor(CommentModel.AVATAR_COLOR);
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
+                commentModel.setUserName(sender.getNicknameRemark());
             } else {
                 commentModel.setAvatar(event.info.getSender().getAvatar());
+                commentModel.setUserName(event.info.getSender().getNickName());
             }
         }
 
         if (roomData != null && roomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
             if (event.mUserInfoModelList == null || event.mUserInfoModelList.size() == 0) {
                 SpannableStringBuilder ssb = new SpanUtils()
-                        .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                        .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
+                        .append(commentModel.getUserName() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .append(event.text).setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                         .create();
                 commentModel.setStringBuilder(ssb);
             } else {
                 SpannableStringBuilder ssb = new SpanUtils()
-                        .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                        .append("@ ").setForegroundColor(Color.parseColor("#586D94"))
-                        .append(event.mUserInfoModelList.get(0).getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                        .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
+                        .append(commentModel.getUserName() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .append("@ ").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                        .append(event.mUserInfoModelList.get(0).getNicknameRemark() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                        .append(event.text).setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                         .create();
                 commentModel.setStringBuilder(ssb);
             }
         } else {
             SpannableStringBuilder ssb = new SpanUtils()
-                    .append(commentModel.getUserName() + " ").setForegroundColor(TEXT_YELLOW)
-                    .append(event.text).setForegroundColor(TEXT_WHITE)
+                    .append(commentModel.getUserName() + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
+                    .append(event.text).setForegroundColor(CommentModel.RANK_TEXT_COLOR)
                     .create();
             commentModel.setStringBuilder(ssb);
         }

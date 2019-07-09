@@ -1,13 +1,17 @@
 package com.module.home;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.module.RouterConstants;
 import com.module.home.event.AuthSuccessEvent;
 import com.module.home.feedback.FeedbackFragment;
 import com.module.home.fragment.HalfRechargeFragment;
-import com.module.home.fragment.PersonFragment3;
+import com.module.home.fragment.PersonFragment4;
+import com.module.home.updateinfo.UploadAccountInfoActivity;
+import com.module.home.updateinfo.activity.EditAgeTagActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +27,7 @@ public class HomeServiceImpl implements IHomeService {
     @Override
     public Object getData(int type, Object object) {
         if (0 == type) {
-            return PersonFragment3.class;
+            return PersonFragment4.class;
         } else if (1 == type) {
             return HomeActivity.class.getSimpleName();
         } else if (2 == type) {
@@ -43,5 +47,24 @@ public class HomeServiceImpl implements IHomeService {
     @Override
     public void authSuccess() {
         EventBus.getDefault().post(new AuthSuccessEvent());
+    }
+
+    @Override
+    public void goUploadAccountInfoActivity(Activity activity) {
+        UploadAccountInfoActivity.open(activity);
+    }
+
+    @Override
+    public void goHomeActivity(Activity loginActivity) {
+        HomeActivity.open(loginActivity);
+    }
+
+    @Override
+    public void goEditAgeActivity(Runnable runnable) {
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                .withInt("from", 0)
+                .navigation();
+
+        EditAgeTagActivity.setActionRunnable(runnable);
     }
 }

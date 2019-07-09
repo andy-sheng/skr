@@ -1,10 +1,17 @@
 package com.common.rxretrofit;
 
+import android.support.constraint.ConstraintLayout;
+import android.view.View;
+
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.view.ex.ExConstraintLayout;
+import com.common.view.ex.ExRelativeLayout;
+import com.common.view.ex.RxLifecycleView;
+import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
@@ -36,6 +43,22 @@ public class ApiMethods {
 
     public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver,final RequestControl requestControl) {
         return innerSubscribe(observable, apiObserver, null,requestControl);
+    }
+
+    /**
+     * 订阅数据，并绑定View的生命周期，在onDetach中取消事件
+     *
+     * @param observable
+     * @param apiObserver
+     * @param view
+     * @param <T>
+     */
+    public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, RxLifecycleView view) {
+        return innerSubscribe(observable, apiObserver, view.bindDetachEvent(),null);
+    }
+
+    public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, RxLifecycleView view,final RequestControl requestControl) {
+        return innerSubscribe(observable, apiObserver, view.bindDetachEvent(),requestControl);
     }
 
     /**

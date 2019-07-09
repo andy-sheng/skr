@@ -17,12 +17,33 @@ public class GrabRoomSongModel implements Serializable {
      * challengeAvailable : false
      */
 
-    private String itemName;
-    private String owner;
-    private int roundSeq;
-    private int itemID;
-    private int playType;
-    private boolean challengeAvailable;
+    protected String itemName;
+    protected String owner;
+    protected int roundSeq;
+    protected int itemID;
+    protected int playType;
+    protected boolean challengeAvailable;
+    protected String uniqTag;
+    protected boolean couldDelete;
+    protected String writer;    //作词人
+    protected String composer;   //作曲人
+    protected String uploaderName; //上传用户名
+
+    public boolean isCouldDelete() {
+        return couldDelete;
+    }
+
+    public void setCouldDelete(boolean couldDelete) {
+        this.couldDelete = couldDelete;
+    }
+
+    public String getUniqTag() {
+        return uniqTag;
+    }
+
+    public void setUniqTag(String uniqTag) {
+        this.uniqTag = uniqTag;
+    }
 
     public String getItemName() {
         return itemName;
@@ -68,6 +89,30 @@ public class GrabRoomSongModel implements Serializable {
         return challengeAvailable;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getComposer() {
+        return composer;
+    }
+
+    public void setComposer(String composer) {
+        this.composer = composer;
+    }
+
+    public String getUploaderName() {
+        return uploaderName;
+    }
+
+    public void setUploaderName(String uploaderName) {
+        this.uploaderName = uploaderName;
+    }
+
     public void setChallengeAvailable(boolean challengeAvailable) {
         this.challengeAvailable = challengeAvailable;
     }
@@ -83,5 +128,34 @@ public class GrabRoomSongModel implements Serializable {
             }
         }
         return itemName;
+    }
+
+    public String getSongDesc() {
+        String desc = "";
+        if (!TextUtils.isEmpty(writer)) {
+            desc = "词/" + writer;
+        }
+        if (!TextUtils.isEmpty(desc)) {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = desc + " 曲/" + composer;
+            }
+        } else {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = "曲/" + composer;
+            }
+        }
+        return desc;
+    }
+
+    @Override
+    public String toString() {
+        return "GrabRoomSongModel{" +
+                "itemName='" + itemName + '\'' +
+                ", owner='" + owner + '\'' +
+                ", roundSeq=" + roundSeq +
+                ", itemID=" + itemID +
+                ", playType=" + playType +
+                ", challengeAvailable=" + challengeAvailable +
+                '}';
     }
 }

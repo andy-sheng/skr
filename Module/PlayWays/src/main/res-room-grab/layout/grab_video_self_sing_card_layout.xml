@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+
+    <ViewStub
+        android:id="@+id/grab_video_normal_self_sing_card_stub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_90_dp"
+        android:layout_marginTop="@dimen/view_71_dp"
+        android:layout="@layout/grab_video_normal_self_sing_card_stub_layout" />
+
+    <ViewStub
+        android:id="@+id/grab_video_pk_self_sing_card_stub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout="@layout/grab_video_pk_self_sing_card_stub_layout" />
+
+    <ViewStub
+        android:id="@+id/grab_video_chorus_self_sing_card_stub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout="@layout/grab_video_chorus_self_sing_card_stub_layout" />
+
+    <ViewStub
+        android:id="@+id/grab_video_mini_game_self_sing_card_stub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout="@layout/grab_video_mini_game_self_sing_card_stub_layout" />
+</merge>

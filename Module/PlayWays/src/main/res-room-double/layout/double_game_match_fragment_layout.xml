@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/top_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_233_dp"
+        android:background="#210B1C"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bottom_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_53_dp"
+        android:background="#572C70"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_0_dp"
+        app:bl_gradient_endColor="#572C70"
+        app:bl_gradient_startColor="#210B1C"
+        app:layout_constraintBottom_toTopOf="@id/bottom_area"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_area" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/match_svga"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_667_dp"
+        app:antiAlias="true"
+        app:autoPlay="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:loopCount="-1"
+        app:source="double_match.svga" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/calcel_match_tv"
+        android:layout_width="@dimen/view_154_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_122_dp"
+        android:gravity="center"
+        android:text="取消匹配"
+        android:textColor="#FF8AB6"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="visible"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_solid_color="@color/transparent"
+        app:bl_stroke_color="#FF8AB6"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

@@ -16,6 +16,7 @@ import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.utils.VideoUtils;
 import com.common.view.AnimateClickListener;
+import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -32,7 +33,6 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     RecommendModel mFriendRoomModel;
     int position;
 
-    ExRelativeLayout mBackground;
     SimpleDraweeView mIv1;
     SimpleDraweeView mIv2;
     SimpleDraweeView mIv3;
@@ -41,21 +41,22 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     SimpleDraweeView mRecommendTagSdv;
     ExTextView mRoomInfoTv;
     ExTextView mTipsTv;
+    SimpleDraweeView mMediaTagSdv;
 
     SimpleDraweeView[] mSimpleDraweeViewList;
 
     public FriendRoomVerticalViewHolder(View itemView) {
         super(itemView);
 
-        mBackground = (ExRelativeLayout) itemView.findViewById(R.id.background);
-        mIv1 = (SimpleDraweeView) itemView.findViewById(R.id.iv_1);
-        mIv2 = (SimpleDraweeView) itemView.findViewById(R.id.iv_2);
-        mIv3 = (SimpleDraweeView) itemView.findViewById(R.id.iv_3);
-        mMoreUserIv = (ImageView) itemView.findViewById(R.id.more_user_iv);
-        mRoomPlayerNumTv = (ExTextView) itemView.findViewById(R.id.room_player_num_tv);
-        mRecommendTagSdv = (SimpleDraweeView) itemView.findViewById(R.id.recommend_tag_sdv);
-        mRoomInfoTv = (ExTextView) itemView.findViewById(R.id.room_info_tv);
-        mTipsTv = (ExTextView) itemView.findViewById(R.id.tips_tv);
+        mIv1 = itemView.findViewById(R.id.iv_1);
+        mIv2 = itemView.findViewById(R.id.iv_2);
+        mIv3 = itemView.findViewById(R.id.iv_3);
+        mMoreUserIv = itemView.findViewById(R.id.more_user_iv);
+        mRoomPlayerNumTv = itemView.findViewById(R.id.room_player_num_tv);
+        mRecommendTagSdv = itemView.findViewById(R.id.recommend_tag_sdv);
+        mRoomInfoTv = itemView.findViewById(R.id.room_info_tv);
+        mTipsTv = itemView.findViewById(R.id.tips_tv);
+        mMediaTagSdv = itemView.findViewById(R.id.media_tag_sdv);
 
         mSimpleDraweeViewList = new SimpleDraweeView[]{mIv1, mIv2, mIv3};
 
@@ -111,6 +112,15 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                         .build());
             } else {
                 mRecommendTagSdv.setVisibility(View.GONE);
+            }
+
+            if (!TextUtils.isEmpty(mFriendRoomModel.getMediaTagURL())) {
+                mMediaTagSdv.setVisibility(View.VISIBLE);
+                FrescoWorker.loadImage(mMediaTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getMediaTagURL())
+                        .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
+                        .build());
+            } else {
+                mMediaTagSdv.setVisibility(View.GONE);
             }
 
             if (mFriendRoomModel.getRoomInfo().getInPlayersNum() > 3) {

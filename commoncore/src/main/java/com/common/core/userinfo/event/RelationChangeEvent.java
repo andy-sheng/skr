@@ -10,14 +10,12 @@ public class RelationChangeEvent {
 
     public boolean isFriend;
     public boolean isFollow;
-    public boolean isOldFriend;
     public int useId;
     public int type;
 
-    public RelationChangeEvent(int type, int userId, boolean isOldFriend, boolean isFriend, boolean isFollow) {
+    public RelationChangeEvent(int type, int userId, boolean isFriend, boolean isFollow) {
         this.type = type;
         this.useId = userId;
-        this.isOldFriend = isOldFriend;
         this.isFriend = isFriend;
         this.isFollow = isFollow;
     }

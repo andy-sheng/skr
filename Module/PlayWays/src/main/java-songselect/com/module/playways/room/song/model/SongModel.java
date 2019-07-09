@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongModel implements Serializable {
+
+    public static final int ID_FREE_MIC = 9277;
+    public static final int ID_CUSTOM_GAME = 9276;
     /**
      * itemID : 44
      * itemName : 过火
@@ -54,7 +57,7 @@ public class SongModel implements Serializable {
     private int standLrcBeginT;        //一唱到底第一句歌词的开始毫秒
     private int standLrcEndT;          //一唱到底歌词的结束毫秒
     private boolean isblank = false;   //一唱到底是否是白板item
-    private String standLrc = "";   //一唱到底是否是白板item
+    private String standLrc = "";   //一唱到底歌词
     private String rankUserVoice;   //排位进入游戏前的背景音乐
     private int rankLrcEndT;   //排位进入游戏前的背景音乐
     private boolean challengeAvailable;// 挑战是否可用
@@ -63,6 +66,9 @@ public class SongModel implements Serializable {
     private List<SongModel> pkMusicList;
     private int singCount;
     private MiniGameInfoModel miniGame;
+    private String writer;    //作词人
+    private String composer;   //作曲人
+    private String uploaderName; //上传用户名
 
     public int getSingCount() {
         return singCount;
@@ -289,6 +295,30 @@ public class SongModel implements Serializable {
         this.miniGame = miniGame;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getComposer() {
+        return composer;
+    }
+
+    public void setComposer(String composer) {
+        this.composer = composer;
+    }
+
+    public String getUploaderName() {
+        return uploaderName;
+    }
+
+    public void setUploaderName(String uploaderName) {
+        this.uploaderName = uploaderName;
+    }
+
     public void parse(MusicInfo musicInfo) {
         if (musicInfo == null) {
             MyLog.e("SongModel MusicInfo == null");
@@ -333,6 +363,9 @@ public class SongModel implements Serializable {
         if (musicInfo.getMiniGame() != null) {
             this.setMiniGame(MiniGameInfoModel.parse(musicInfo.getMiniGame()));
         }
+        this.setWriter(musicInfo.getWriter());
+        this.setComposer(musicInfo.getComposer());
+        this.setUploaderName(musicInfo.getUploaderName());
     }
 
     public SongModel getPkMusic() {
@@ -390,6 +423,23 @@ public class SongModel implements Serializable {
             }
         }
         return itemName;
+    }
+
+    public String getSongDesc() {
+        String desc = "";
+        if (!TextUtils.isEmpty(writer)) {
+            desc = "词/" + writer;
+        }
+        if (!TextUtils.isEmpty(desc)) {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = desc + " 曲/" + composer;
+            }
+        } else {
+            if (!TextUtils.isEmpty(composer)) {
+                desc = "曲/" + composer;
+            }
+        }
+        return desc;
     }
 
     @Override

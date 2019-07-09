@@ -3,39 +3,31 @@ package com.module.playways.grab.room.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.text.SpannableStringBuilder;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.share.SharePanel;
-import com.common.core.share.ShareType;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
-import com.component.busilib.view.BitmapTextView;
-import com.dialog.view.StrokeTextView;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.room.model.GrabResultInfoModel;
+import com.module.playways.grab.room.model.NumericDetailModel;
 import com.module.playways.room.prepare.model.PrepareData;
-import com.module.playways.room.room.model.score.ScoreResultModel;
-import com.module.playways.room.room.model.score.ScoreStateModel;
 import com.module.playways.R;
-import com.zq.level.view.LevelStarProgressBar;
-import com.zq.level.view.NormalLevelView2;
 
 import java.util.List;
 
@@ -48,19 +40,27 @@ public class GrabResultFragment extends BaseFragment {
 
     GrabRoomData mRoomData;
     GrabResultData mGrabResultData;
-    ScoreStateModel mScoreStateModel;
 
-    RelativeLayout mSingEndRecord;
-    ExRelativeLayout mResultArea;
-    ExTextView mLevelDescTv;
-    LevelStarProgressBar mLevelProgress;
-    BitmapTextView mSongNum;
-    BitmapTextView mSongEndPer;
-    BitmapTextView mBaodengNum;
-    NormalLevelView2 mLevelView;
-    LinearLayout mLlBottomArea;
-    StrokeTextView mTvBack;
-    StrokeTextView mTvAgain;
+    ConstraintLayout mGrabNumArea;
+    TextView mGrabNumTv;
+
+    ConstraintLayout mBurstArea;
+    TextView mBurstNumTv;
+
+    ConstraintLayout mFlowerArea;
+    TextView mFlowerNumTv;
+
+    ConstraintLayout mCharmArea;
+    TextView mCharmNumTv;
+
+    ConstraintLayout mCoinArea;
+    TextView mCoinNumTv;
+
+    ConstraintLayout mHzArea;
+    TextView mHzNumTv;
+
+    ExTextView mTvBack;
+    ExTextView mTvAgain;
 
     Handler mUiHandler = new Handler();
 
@@ -71,17 +71,27 @@ public class GrabResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSingEndRecord = (RelativeLayout) mRootView.findViewById(R.id.sing_end_record);
-        mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
-        mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
-        mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
-        mSongNum = (BitmapTextView) mRootView.findViewById(R.id.song_num);
-        mSongEndPer = (BitmapTextView) mRootView.findViewById(R.id.song_end_per);
-        mBaodengNum = (BitmapTextView) mRootView.findViewById(R.id.baodeng_num);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mLlBottomArea = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_area);
-        mTvBack = (StrokeTextView) mRootView.findViewById(R.id.tv_back);
-        mTvAgain = (StrokeTextView) mRootView.findViewById(R.id.tv_again);
+
+        mGrabNumArea = mRootView.findViewById(R.id.grab_num_area);
+        mGrabNumTv = mRootView.findViewById(R.id.grab_num_tv);
+
+        mBurstArea = mRootView.findViewById(R.id.burst_area);
+        mBurstNumTv = mRootView.findViewById(R.id.burst_num_tv);
+
+        mFlowerArea = mRootView.findViewById(R.id.flower_area);
+        mFlowerNumTv = mRootView.findViewById(R.id.flower_num_tv);
+
+        mCharmArea = mRootView.findViewById(R.id.charm_area);
+        mCharmNumTv = mRootView.findViewById(R.id.charm_num_tv);
+
+        mCoinArea = mRootView.findViewById(R.id.coin_area);
+        mCoinNumTv = mRootView.findViewById(R.id.coin_num_tv);
+
+        mHzArea = mRootView.findViewById(R.id.hz_area);
+        mHzNumTv = mRootView.findViewById(R.id.hz_num_tv);
+
+        mTvBack = mRootView.findViewById(R.id.tv_back);
+        mTvAgain = mRootView.findViewById(R.id.tv_again);
 
         if (mRoomData != null) {
             mGrabResultData = mRoomData.getGrabResultData();
@@ -106,15 +116,6 @@ public class GrabResultFragment extends BaseFragment {
                 }
             }
         });
-
-//        mTvShare.setOnClickListener(new AnimateClickListener() {
-//            @Override
-//            public void click(View view) {
-//                SharePanel sharePanel = new SharePanel(getActivity());
-//                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
-//                sharePanel.show(ShareType.IMAGE_RUL);
-//            }
-//        });
 
         mTvAgain.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -157,28 +158,43 @@ public class GrabResultFragment extends BaseFragment {
         }
 
         if (mGrabResultData != null) {
-            for (ScoreResultModel scoreResultModel : mGrabResultData.getScoreResultModels()) {
-                if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                    mScoreStateModel = scoreResultModel.getSeq(3);
-                }
-            }
-
-            if (mScoreStateModel != null && mGrabResultData.getGrabResultInfoModel() != null) {
-                mLevelView.bindData(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking());
-                mLevelDescTv.setText(mScoreStateModel.getRankingDesc());
-                int progress = 0;
-                if (mScoreStateModel.getMaxExp() != 0) {
-                    progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
-                }
-                mLevelProgress.setCurProgress(progress);
-                mSongNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingCnt()) + "");
-                mSongEndPer.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio()) + "");
-                mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
-            }
+            NumericDetailModel standModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_SUCCESS_STAND);
+            bindData(mGrabNumArea, mGrabNumTv, standModel, "", "首");
+            NumericDetailModel blightModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_GET_BLIGHT);
+            bindData(mBurstArea, mBurstNumTv, blightModel, "", "次");
+            NumericDetailModel flowerModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_GIFT_FLOWER);
+            bindData(mFlowerArea, mFlowerNumTv, flowerModel, "", "朵");
+            NumericDetailModel meiliModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_MEILI);
+            bindData(mCharmArea, mCharmNumTv, meiliModel, "+", "点");
+            NumericDetailModel coinModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_COIN);
+            bindData(mCoinArea, mCoinNumTv, coinModel, "+", "枚");
+            NumericDetailModel hzModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_HONGZHUAN);
+            bindData(mHzArea, mHzNumTv, hzModel, "+", "枚");
         } else {
             MyLog.w(TAG, "bindData 数据为空了");
         }
     }
+
+    private void bindData(ConstraintLayout group, TextView textView, NumericDetailModel model, String before, String after) {
+        if (model == null) {
+            group.setVisibility(View.GONE);
+            return;
+        }
+
+        if (model.isNeedShow()) {
+            group.setVisibility(View.VISIBLE);
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(before).setFontSize(12, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                    .append(String.valueOf(model.getNumericVal())).setFontSize(32, true).setForegroundColor(U.getColor(R.color.white_trans_80))
+                    .append(after).setFontSize(12, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                    .create();
+            textView.setText(stringBuilder);
+        } else {
+            group.setVisibility(View.GONE);
+            return;
+        }
+    }
+
 
     private void syncFromServer() {
         if (mRoomData != null) {
@@ -187,10 +203,9 @@ public class GrabResultFragment extends BaseFragment {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        GrabResultInfoModel resultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
-                        List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
-                        if (resultInfoModel != null && scoreResultModels != null) {
-                            mGrabResultData = new GrabResultData(resultInfoModel, scoreResultModels);
+                        List<NumericDetailModel> models = JSON.parseArray(result.getData().getString("numericDetail"), NumericDetailModel.class);
+                        if (models != null) {
+                            mGrabResultData = new GrabResultData(models);
                             mRoomData.setGrabResultData(mGrabResultData);
                             bindData();
                         } else {

@@ -71,7 +71,17 @@ public enum EQRoundOverReason implements WireEnum {
   /**
    * 用户不玩了
    */
-  ROR_MIN_GAME_NOT_PLAY(12);
+  ROR_MIN_GAME_NOT_PLAY(12),
+
+  /**
+   * 自由麦模式正常结束
+   */
+  ROR_FREE_MICRO_NORMAL_END(13),
+
+  /**
+   * 自由麦模式房主停止
+   */
+  ROR_FREE_MICRO_OWNER_STOP(14);
 
   public static final ProtoAdapter<EQRoundOverReason> ADAPTER = new ProtoAdapter_EQRoundOverReason();
 
@@ -99,6 +109,8 @@ public enum EQRoundOverReason implements WireEnum {
       case 10: return ROR_MIN_GAME_NOT_ENOUTH_PLAYER;
       case 11: return ROR_MIN_GAME_OWNER_END_ROUND;
       case 12: return ROR_MIN_GAME_NOT_PLAY;
+      case 13: return ROR_FREE_MICRO_NORMAL_END;
+      case 14: return ROR_FREE_MICRO_OWNER_STOP;
       default: return null;
     }
   }

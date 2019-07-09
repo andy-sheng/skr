@@ -1,28 +1,40 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="android.widget.RelativeLayout">
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/view_148_dp"-->
+    <!--android:background="#404A9A" />-->
 
     <LinearLayout
         android:id="@+id/content_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_7_dp"
-        android:layout_marginRight="@dimen/view_7_dp"
+        android:layout_marginRight="@dimen/view_48_dp"
+        android:clipChildren="false"
         android:orientation="horizontal" />
 
-    <!--<com.common.view.ex.ExImageView-->
-    <!--android:id="@+id/erji_iv"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:visibility="gone"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:src="@drawable/yanchang_erji" />-->
+    <com.module.playways.grab.room.top.GrabAudienceView
+        android:id="@+id/grab_audience_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_60_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/miedeng_iv"
-        android:layout_width="@dimen/view_100_dp"
-        android:layout_height="@dimen/view_100_dp"
-        app:antiAlias="true"
-        app:autoPlay="false" />
+    <ImageView
+        android:id="@+id/arrow_iv"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_marginTop="@dimen/view_2_dp"
+        android:padding="@dimen/view_10_dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/yichangdaodi_dingbuzhankai"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/content_ll" />
+
 </merge>

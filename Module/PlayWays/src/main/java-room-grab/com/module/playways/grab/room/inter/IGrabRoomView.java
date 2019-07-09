@@ -73,5 +73,10 @@ public interface IGrabRoomView {
     void hideManageTipView();
 
     //切换房间了，把所有的板子Gone掉，重新显示
-    void hideAllCardView();
+    //void hideAllCardView();
+
+    //开始实名认证
+    void beginOuath();
+
+    void changeRoomMode(boolean isVideo);
 }

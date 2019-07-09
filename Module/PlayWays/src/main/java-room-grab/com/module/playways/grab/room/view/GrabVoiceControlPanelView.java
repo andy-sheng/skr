@@ -2,12 +2,10 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -18,12 +16,6 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
     public final static String TAG = "VoiceControlPanelView";
 
     LinearLayout mLlSwitchContainer;
-
-    ExTextView mTvYuansheng;
-    ExTextView mTvKtv;
-    ExTextView mTvLiuxing;
-    ExTextView mTvYaogun;
-    ExTextView mTvKongling;
 
     SwitchButton mSbAcc;
 
@@ -49,21 +41,8 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
     @Override
     public void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        mLlSwitchContainer = (LinearLayout) findViewById(R.id.ll_switch_container);
-        mSbAcc = (SwitchButton) findViewById(R.id.sb_acc);
-        mTvYuansheng = (ExTextView) findViewById(R.id.tv_yuansheng);
-        mTvKtv = (ExTextView) findViewById(R.id.tv_ktv);
-        mTvLiuxing = (ExTextView) findViewById(R.id.tv_liuxing);
-        mTvYaogun = (ExTextView) findViewById(R.id.tv_yaogun);
-        mTvKongling = (ExTextView) findViewById(R.id.tv_kongling);
-
-        int marginLeft = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(44 * 5);
-        marginLeft = marginLeft / 6;
-
-        setTextMarginLeft(mTvKtv, marginLeft);
-        setTextMarginLeft(mTvLiuxing, marginLeft);
-        setTextMarginLeft(mTvYaogun, marginLeft);
-        setTextMarginLeft(mTvKongling, marginLeft);
+        mLlSwitchContainer = findViewById(R.id.ll_switch_container);
+        mSbAcc = findViewById(R.id.sb_acc);
 
         mSbAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -71,7 +50,7 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
                 GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
                 if (infoModel != null && infoModel.singBySelf()) {
                     U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式");
-                    if(mGrabRoomData!=null){
+                    if (mGrabRoomData != null) {
                         mSbAcc.setChecked(!mGrabRoomData.isAccEnable());
                     }
                     return;
@@ -93,28 +72,7 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
         }
     }
 
-    //    public void setSingerId(long singUid) {
-//        if (singUid == MyUserInfoManager.getInstance().getUid()) {
-//            setAccSwitchBtnStatus(false);
-//        } else {
-//            setAccSwitchBtnStatus(true);
-//        }
-//    }
-//
-//    private void setAccSwitchBtnStatus(boolean visibale) {
-//        if (visibale) {
-//            mLlSwitchContainer.setVisibility(VISIBLE);
-//        } else {
-//            mLlSwitchContainer.setVisibility(GONE);
-//        }
-//    }
-
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
-    }
-
-    private void setTextMarginLeft(View view, int marginLeft) {
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-        layoutParams.setMargins(marginLeft, 0, 0, 0);
     }
 }

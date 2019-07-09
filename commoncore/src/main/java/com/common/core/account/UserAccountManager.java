@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.bugly.BuglyInit;
 import com.common.callback.Callback;
 import com.common.core.account.event.AccountEvent;
-import com.common.core.account.event.VerifyCodeErrorEvent;
+import com.common.core.account.event.LoginApiErrorEvent;
 import com.common.core.channel.HostChannelManager;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
@@ -139,13 +139,11 @@ public class UserAccountManager {
 
             trySetAlias();
 //            ScreenLogView.addInfo("用户id", account.getUid());
+            UserInfoManager.getInstance().initRemark();
+            EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         } else {
 
         }
-
-        UserInfoManager.getInstance().initRemark();
-        EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
-        // 只有非游客模式才发已有账号的事件
     }
 
     public boolean hasLoadAccountFromDB() {
@@ -246,17 +244,25 @@ public class UserAccountManager {
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
-                    public void process(ApiResult obj) {
+                    public void process(final ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum, callback);
+                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
-                            U.getToastUtil().showShort(obj.getErrmsg());
+                            //U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
-                            EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
+                            EventBus.getDefault().post(new LoginApiErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
+                        mUiHanlder.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (callback != null) {
+                                    callback.onCallback(1,obj);
+                                }
+                            }
+                        });
                     }
 
                     @Override
@@ -277,7 +283,7 @@ public class UserAccountManager {
      * @param accessToken
      * @param openId
      */
-    public void loginByThirdPart(final int mode, String accessToken, String openId) {
+    public void loginByThirdPart(final int mode, String accessToken, String openId, final Callback callback) {
         StatisticsAdapter.recordCountEvent("signup", "api_begin", null);
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         String deviceId = U.getDeviceUtils().getImei();
@@ -292,20 +298,28 @@ public class UserAccountManager {
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
-                    public void process(ApiResult obj) {
+                    public void process(final ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), "", null);
+                            UserAccount userAccount = parseRsp(obj.getData(), "");
                             if (mode == 3) {
                                 UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
                             } else if (mode == 2) {
                                 UmengStatistics.onProfileSignIn("icon_qq", userAccount.getUid());
                             }
                         } else {
-                            U.getToastUtil().showShort(obj.getErrmsg());
+                            //U.getToastUtil().showShort(obj.getErrmsg());
                             HashMap map = new HashMap();
                             map.put("error", obj.getErrno() + "");
                             StatisticsAdapter.recordCountEvent("signup", "api_failed", map);
                         }
+                        mUiHanlder.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (callback != null) {
+                                    callback.onCallback(1,obj);
+                                }
+                            }
+                        });
                     }
 
                     @Override
@@ -318,7 +332,7 @@ public class UserAccountManager {
                 });
     }
 
-    UserAccount parseRsp(JSONObject jsonObject, String phoneNum, Callback callback) {
+    UserAccount parseRsp(JSONObject jsonObject, String phoneNum) {
         String secretToken = jsonObject.getJSONObject("token").getString("T");
         String serviceToken = jsonObject.getJSONObject("token").getString("S");
         String rongToken = jsonObject.getJSONObject("token").getString("RC");
@@ -330,6 +344,7 @@ public class UserAccountManager {
         String avatar = profileJO.getString("avatar");
         String sign = profileJO.getString("signature");
         Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
+        int ageStage = profileJO.getIntValue("ageStage");
 
         boolean isFirstLogin = jsonObject.getBooleanValue("isFirstLogin");
         if (isFirstLogin) {
@@ -349,6 +364,7 @@ public class UserAccountManager {
         myUserInfo.setAvatar(avatar);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
+        myUserInfo.setAgeStage(ageStage);
         MyUserInfoManager.getInstance().setFirstLogin(isFirstLogin);
         MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
@@ -363,17 +379,14 @@ public class UserAccountManager {
         userAccount.setNeedEditUserInfo(isFirstLogin);
         userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
         onLoginResult(userAccount);
-        if (callback != null) {
-            callback.onCallback(1, null);
-        }
         return userAccount;
     }
 
     /**
      * 用户主动退出登录
      */
-    public void logoff() {
-        logoff(false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true);
+    public void logoff(int from,Callback callback) {
+        logoff(from,false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true,callback);
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
@@ -381,7 +394,7 @@ public class UserAccountManager {
      * 收到账号过期的通知，被踢下线等等
      */
     public void notifyAccountExpired() {
-        logoff(false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false);
+        logoff(1,false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false,null);
     }
 
     /**
@@ -397,7 +410,7 @@ public class UserAccountManager {
      *
      * @param deleteAccount
      */
-    public void logoff(final boolean deleteAccount, final int reason, boolean notifyServer) {
+    public void logoff(final int from, final boolean deleteAccount, final int reason, boolean notifyServer, final Callback callback) {
         MyLog.w(TAG, "logoff" + " deleteAccount=" + deleteAccount + " reason=" + reason + " notifyServer=" + notifyServer);
         if (!UserAccountManager.getInstance().hasAccount()) {
             MyLog.w(TAG, "logoff but hasAccount = false");
@@ -409,7 +422,9 @@ public class UserAccountManager {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        U.getToastUtil().showShort("登出成功了");
+                        if(from==2){
+                            U.getToastUtil().showShort("登出成功了");
+                        }
                     }
                 }
             });
@@ -438,6 +453,14 @@ public class UserAccountManager {
                     JiGuangPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
+                    mUiHanlder.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (callback != null) {
+                                callback.onCallback(1,null);
+                            }
+                        }
+                    });
                     emitter.onComplete();
                 }
             })
@@ -534,10 +557,10 @@ public class UserAccountManager {
                         MyLog.e(TAG, "getIMToken from Server is null");
                     }
                 } else {
-                    if (result.getErrno() == 8302102) {
-                        U.getToastUtil().showShort("GET融云token失败，测试用户账号超过100限度");
+                    if (MyLog.isDebugLogOpen() && result.getErrno() == 8302102) {
+                        U.getToastUtil().showShort("GET融云token失败  errorCode = 8302102 errmsg = " + result.getErrmsg());
                     } else {
-                        U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                        MyLog.e(TAG, "process" + " GET融云token error=" + result);
                     }
 
                 }
@@ -592,7 +615,7 @@ public class UserAccountManager {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
             BuglyInit.setUserId(UserAccountManager.getInstance().getUuid());
             if (U.getChannelUtils().isStaging()) {
-                com.common.jiguang.JiGuangPush.setAlias("dev_"+UserAccountManager.getInstance().getUuid());
+                com.common.jiguang.JiGuangPush.setAlias("dev_" + UserAccountManager.getInstance().getUuid());
             } else {
                 com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
             }

@@ -173,10 +173,10 @@ public class LastFollowFragment extends BaseFragment {
             // 有权限
         } else {
             long lastShowTs = U.getPreferenceUtils().getSettingLong("show_go_notification_page", 0);
-            if (System.currentTimeMillis() - lastShowTs > 24 * 3600 * 1000) {
+            if (System.currentTimeMillis() - lastShowTs > 24 * 60 * 60 * 1000) {
                 U.getPreferenceUtils().setSettingLong("show_go_notification_page", System.currentTimeMillis());
                 SkrNotificationPermission skrNotificationPermission = new SkrNotificationPermission();
-                skrNotificationPermission.ensurePermission(getActivity(), null, true);
+                skrNotificationPermission.ensurePermission(U.getActivityUtils().getHomeActivity(), null, true);
             }
         }
     }

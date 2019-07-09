@@ -119,8 +119,8 @@ public class SwitchButton extends CompoundButton {
         mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         mClickTimeout = ViewConfiguration.getPressedStateDuration() + ViewConfiguration.getTapTimeout();
 
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
+        mRectPaint = new com.common.view.ExPaint(Paint.ANTI_ALIAS_FLAG);
         mRectPaint.setStyle(Paint.Style.STROKE);
         mRectPaint.setStrokeWidth(getResources().getDisplayMetrics().density);
 

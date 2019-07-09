@@ -66,7 +66,7 @@ public final class ToastUtils {
      *
      * @param backgroundColor The color of background.
      */
-    public static void setBgColor(@ColorInt final int backgroundColor) {
+    public void setBgColor(@ColorInt final int backgroundColor) {
         sBgColor = backgroundColor;
     }
 
@@ -75,7 +75,7 @@ public final class ToastUtils {
      *
      * @param bgResource The resource of background.
      */
-    public static void setBgResource(@DrawableRes final int bgResource) {
+    public void setBgResource(@DrawableRes final int bgResource) {
         sBgResource = bgResource;
     }
 
@@ -84,7 +84,7 @@ public final class ToastUtils {
      *
      * @param msgColor The color of message.
      */
-    public static void setMsgColor(@ColorInt final int msgColor) {
+    public void setMsgColor(@ColorInt final int msgColor) {
         sMsgColor = msgColor;
     }
 
@@ -93,7 +93,7 @@ public final class ToastUtils {
      *
      * @param textSize The text size of message.
      */
-    public static void setMsgTextSize(final int textSize) {
+    public void setMsgTextSize(final int textSize) {
         sMsgTextSize = textSize;
     }
 
@@ -102,7 +102,7 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public static void showShort(final CharSequence text) {
+    public void showShort(final CharSequence text) {
         show(text == null ? NULL : text, Toast.LENGTH_SHORT, 0, -1,-1,-1);
     }
 
@@ -111,7 +111,7 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public static void showShort(final CharSequence text, int priority,int gravity) {
+    public void showShort(final CharSequence text, int priority,int gravity) {
         show(text == null ? NULL : text, Toast.LENGTH_SHORT, priority, gravity,-1,-1);
     }
 
@@ -120,7 +120,7 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public static void showLong(final CharSequence text) {
+    public void showLong(final CharSequence text) {
         show(text == null ? NULL : text, Toast.LENGTH_LONG, 0, -1,-1,-1);
     }
 

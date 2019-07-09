@@ -76,7 +76,10 @@ public class BitmapTextView extends View {
     protected void drawText(Canvas canvas, List<Bitmap> bitmaps) {
         float left = 0;
         for (Bitmap bitmap : bitmaps) {
-            canvas.drawBitmap(bitmap, left, 0, new Paint());
+            if (bitmap.isRecycled()) {
+                continue;
+            }
+            canvas.drawBitmap(bitmap, left, 0, new com.common.view.ExPaint());
             left = left + bitmap.getWidth() - diff * scale;
         }
     }
@@ -113,9 +116,9 @@ public class BitmapTextView extends View {
             switch (aChar) {
                 case '0':
                     return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_0);
-                case '1':
-                    return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_1);
-                case '2':
+                case '1':return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_1);
+
+                               case '2':
                     return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_2);
                 case '3':
                     return BitmapFactoryAdapter.decodeResource(getResources(), R.drawable.pk_zhanji_3);

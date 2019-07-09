@@ -399,12 +399,14 @@ public class ArcCloudManager implements IACRCloudListener {
                     List<SongInfo> list = JSON.parseArray(text, SongInfo.class);
                     String songName = mRecognizeConfig.getSongName();
                     SongInfo targetSongInfo = null;
-                    for (SongInfo songInfo : list) {
-                        if (songInfo.getTitle().equalsIgnoreCase(songName)) {
-                            targetSongInfo = songInfo;
-                            // 识别成功打点
-                            StatisticsAdapter.recordCountEvent("acr", "recognize_success", null);
-                            break;
+                    if (list != null && list.size() > 0) {
+                        for (SongInfo songInfo : list) {
+                            if (songInfo.getTitle().equalsIgnoreCase(songName)) {
+                                targetSongInfo = songInfo;
+                                // 识别成功打点
+                                StatisticsAdapter.recordCountEvent("acr", "recognize_success", null);
+                                break;
+                            }
                         }
                     }
                     MyLog.d(TAG, " list=" + list + " targetSongInfo=" + targetSongInfo);

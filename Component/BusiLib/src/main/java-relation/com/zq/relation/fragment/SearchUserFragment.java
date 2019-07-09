@@ -106,6 +106,7 @@ public class SearchUserFragment extends BaseFragment {
             public void onItemClicked(View view, int position, Object model) {
                 UserInfoModel userInfoModel = (UserInfoModel) model;
                 if (view.getId() == R.id.content) {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
                     bundle.putInt("bundle_user_id", userInfoModel.getUserId());

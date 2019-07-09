@@ -7,6 +7,9 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
+import com.common.core.permission.SkrNotificationPermission;
+import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -17,9 +20,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
-import com.module.ModuleServiceManager;
-import com.module.common.ICallback;
-import com.module.msg.IMsgService;
 import com.module.msg.api.IMsgServerApi;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -27,9 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Message;
@@ -43,11 +41,9 @@ public class ConversationActivity extends BaseActivity {
 
     CommonTitleBar mTitleBar;
 
-    public String mUserId;
+    String mUserId;
 
     boolean mIsFriend;
-
-    IMsgService msgService;
 
     ListDialog listDialog;
 
@@ -70,20 +66,23 @@ public class ConversationActivity extends BaseActivity {
         }
         mIsFriend = getIntent().getBooleanExtra("isFriend", false);
 
-        msgService = ModuleServiceManager.getInstance().getMsgService();
-
         mTitleBar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 finish();
             }
         });
-        mTitleBar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                showConfirmOptions();
-            }
-        });
+
+        if (mUserId.equals(UserInfoModel.USER_ID_XIAOZHUSHOU + "")) {
+            mTitleBar.getRightImageButton().setVisibility(View.GONE);
+        } else {
+            mTitleBar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    showConfirmOptions();
+                }
+            });
+        }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
         RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
@@ -144,9 +143,9 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void showConfirmOptions() {
-        msgService.getBlacklistStatus(mUserId, new ICallback() {
+        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserId), new UserInfoManager.ResponseCallBack() {
             @Override
-            public void onSucess(Object obj) {
+            public void onServerSucess(Object obj) {
                 if (obj != null) {
                     boolean result = (boolean) obj;
                     showConfirmOptions(result);
@@ -154,11 +153,10 @@ public class ConversationActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailed(Object obj, int errcode, String message) {
+            public void onServerFailed() {
 
             }
         });
-
     }
 
     private void showConfirmOptions(boolean isBlack) {
@@ -170,34 +168,33 @@ public class ConversationActivity extends BaseActivity {
         } else {
             channels.add(getString(R.string.add_to_black_list));
         }
-        channels.add(getString(R.string.cancel));
         listDialog = new ListDialog(this);
         List<DialogListItem> listItems = new ArrayList<>();
         for (final String channel : channels) {
-            listItems.add(new DialogListItem(channel, new Runnable() {
+            listItems.add(new DialogListItem(channel, "#FF3529", new Runnable() {
                 @Override
                 public void run() {
                     if (channel.equals(getString(R.string.add_to_black_list))) {
-                        msgService.addToBlacklist(mUserId, new ICallback() {
+                        UserInfoManager.getInstance().addToBlacklist(Integer.valueOf(mUserId), new UserInfoManager.ResponseCallBack() {
                             @Override
-                            public void onSucess(Object obj) {
-                                U.getToastUtil().showShort("加入成功");
+                            public void onServerSucess(Object o) {
+                                U.getToastUtil().showShort("加入黑名单成功");
                             }
 
                             @Override
-                            public void onFailed(Object obj, int errcode, String message) {
+                            public void onServerFailed() {
 
                             }
                         });
                     } else if (channel.equals(getString(R.string.remove_from_black_list))) {
-                        msgService.removeFromBlacklist(mUserId, new ICallback() {
+                        UserInfoManager.getInstance().removeBlackList(Integer.valueOf(mUserId), new UserInfoManager.ResponseCallBack() {
                             @Override
-                            public void onSucess(Object obj) {
-                                U.getToastUtil().showShort("移除成功");
+                            public void onServerSucess(Object o) {
+                                U.getToastUtil().showShort("移除黑名单成功");
                             }
 
                             @Override
-                            public void onFailed(Object obj, int errcode, String message) {
+                            public void onServerFailed() {
 
                             }
                         });
@@ -206,7 +203,31 @@ public class ConversationActivity extends BaseActivity {
                 }
             }));
         }
+        listItems.add(new DialogListItem(getString(R.string.cancel), "#007AFF", new Runnable() {
+            @Override
+            public void run() {
+                listDialog.dissmiss();
+            }
+        }));
         listDialog.showList(listItems);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        /**
+         * 如果没有通知栏权限，提示一次
+         */
+        if (U.getPermissionUtils().checkNotification(U.app())) {
+            // 有权限
+        } else {
+            long lastShowTs = U.getPreferenceUtils().getSettingLong("show_go_notification_page", 0);
+            if (System.currentTimeMillis() - lastShowTs > 24 * 60 * 60 * 1000) {
+                U.getPreferenceUtils().setSettingLong("show_go_notification_page", System.currentTimeMillis());
+                SkrNotificationPermission skrNotificationPermission = new SkrNotificationPermission();
+                skrNotificationPermission.ensurePermission(U.getActivityUtils().getHomeActivity(), null, true);
+            }
+        }
     }
 
     @Subscribe

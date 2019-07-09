@@ -8,4 +8,6 @@ public interface CustomMsgType {
     int MSG_TYPE_ROOM = 4;  // RoomMsg 消息类型
 
     int MSG_TYPE_NOTIFICATION = 5; // NotificationMsg 消息类型
+
+    int MSG_TYPE_COMBINE_ROOM = 6; // CombineRoomMsg 消息类型
 }

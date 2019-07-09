@@ -28,6 +28,7 @@ public class MyUserInfo implements Serializable {
     private String signature;     // 签名
 
     private Location location;
+    private int ageStage = 0;
 
     private String phoneNum;
     private String ext; //待扩展
@@ -125,6 +126,14 @@ public class MyUserInfo implements Serializable {
         this.location = location;
     }
 
+    public int getAgeStage() {
+        return ageStage;
+    }
+
+    public void setAgeStage(int ageStage) {
+        this.ageStage = ageStage;
+    }
+
     public static MyUserInfo parseFromUserInfoModel(UserInfoModel userInfoModel) {
         MyUserInfo myUserInfo = new MyUserInfo();
         myUserInfo.setUserId(userInfoModel.getUserId());
@@ -135,7 +144,23 @@ public class MyUserInfo implements Serializable {
         myUserInfo.setSex(userInfoModel.getSex());
         myUserInfo.setSignature(userInfoModel.getSignature());
         myUserInfo.setUserDisplayname(userInfoModel.getNickname());
+        myUserInfo.setAgeStage(userInfoModel.getAgeStage());
         return myUserInfo;
+    }
+
+    public static UserInfoModel toUserInfoModel(MyUserInfo myUserInfo) {
+        UserInfoModel userInfoModel = new UserInfoModel();
+        if (myUserInfo != null) {
+            // 简易版本
+            userInfoModel.setUserId((int) myUserInfo.getUserId());
+            userInfoModel.setNickname(myUserInfo.getUserNickname());
+            userInfoModel.setAvatar(myUserInfo.getAvatar());
+            userInfoModel.setBirthday(myUserInfo.getBirthday());
+            userInfoModel.setLocation(myUserInfo.getLocation());
+            userInfoModel.setSex(myUserInfo.getSex());
+            userInfoModel.setSignature(myUserInfo.getSignature());
+        }
+        return userInfoModel;
     }
 
     public static UserInfoDB toUserInfoDB(MyUserInfo myUserInfo) {
@@ -158,6 +183,7 @@ public class MyUserInfo implements Serializable {
                 }
                 jsonObject.put("phoneNum", myUserInfo.getPhoneNum());
                 jsonObject.put("ext", myUserInfo.getExt());
+                jsonObject.put("ageStage", myUserInfo.getAgeStage());
 
             } catch (JSONException e) {
                 MyLog.d(e);
@@ -184,15 +210,20 @@ public class MyUserInfo implements Serializable {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
                 String phoneNum = jsonObject.getString("phoneNum");
                 myInfoModel.setPhoneNum(phoneNum);
+
                 String ext = jsonObject.getString("ext");
                 myInfoModel.setExt(ext);
 
                 Location location = jsonObject.getObject("location", Location.class);
                 myInfoModel.setLocation(location);
+
+                int ageStage = jsonObject.getIntValue("ageStage");
+                myInfoModel.setAgeStage(ageStage);
             }
         }
         return myInfoModel;
     }
+
 
     @Override
     public String toString() {
@@ -206,6 +237,7 @@ public class MyUserInfo implements Serializable {
                 ", birthday='" + birthday + '\'' +
                 ", signature='" + signature + '\'' +
                 ", location=" + location +
+                ", ageStage=" + ageStage +
                 ", phoneNum='" + phoneNum + '\'' +
                 ", ext='" + ext + '\'' +
                 '}';

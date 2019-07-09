@@ -121,28 +121,4 @@ public class ChannelUtils {
         return mSubChannel;
     }
 
-    public String getUrlByChannel(String url){
-        if(TextUtils.isEmpty(url)){
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder(url);
-        int index = url.indexOf("app.inframe.mobi");
-        if ("DEV".equals(channelNameFromBuildConfig)) {
-            sb.insert(index, "dev.");
-            return sb.toString();
-        }
-
-        if ("TEST".equals(channelNameFromBuildConfig)) {
-            sb.insert(index, "test.");
-            return sb.toString();
-        }
-
-        if ("SANDBOX".equals(channelNameFromBuildConfig)) {
-            sb.insert(index, "sandbox.");
-            return sb.toString();
-        }
-
-        return url;
-    }
 }

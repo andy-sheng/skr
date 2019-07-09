@@ -165,6 +165,8 @@ public class SysInfoFragment extends BaseFragment {
         sysInfoItems.add(new SysInfoItem("数据库调试地址", U.getAppInfoUtils().getDebugDBAddressLog()));
         sysInfoItems.add(new SysInfoItem("deviceId(参考miui唯一设备号的方法)", U.getDeviceUtils().getDeviceID()));
         sysInfoItems.add(new SysInfoItem("手机性能级别", U.getDeviceUtils().getLevel().name()));
+        String[] devices = U.getDeviceUtils().getTestDeviceInfo(U.app());
+        sysInfoItems.add(new SysInfoItem("友盟组件化", devices[0] + "  " + devices[1]));
 
         ExtraInfoProvider extraInfoProvider = DoraemonKit.getExtraInfoProvider();
         if (extraInfoProvider != null) {

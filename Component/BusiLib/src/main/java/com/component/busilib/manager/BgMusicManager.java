@@ -7,7 +7,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.common.log.MyLog;
 import com.common.player.IPlayerCallback;
-import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.ExoPlayer;
 import com.common.utils.U;
 
 public class BgMusicManager {
@@ -85,7 +85,7 @@ public class BgMusicManager {
 
         mExoPlayer.setCallback(new IPlayerCallback() {
             @Override
-            public void onPrepared(long duration) {
+            public void onPrepared() {
 
             }
 

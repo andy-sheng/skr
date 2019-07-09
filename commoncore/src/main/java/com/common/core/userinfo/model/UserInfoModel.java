@@ -20,6 +20,8 @@ import java.util.List;
 // TODO: 2019/1/2 该类会作为json来解析，不要改变量名
 public class UserInfoModel implements Serializable, Cloneable {
 
+    public static final int USER_ID_XIAOZHUSHOU = 4;
+
     public static final int EF_OFFLINE = 10;      //离线
     public static final int EF_ONLINE = 20;       //在线
     public static final int EF_ONLINE_BUSY = EF_ONLINE + 1;  //在线忙碌中
@@ -50,6 +52,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private int status;    // 状态 在线  离线
     private long statusTs;// 在线或者离线的时间
     private String statusDesc;  //状态描述
+    private int ageStage;   // 年龄段（目前只有homepage的接口里面带）
 
     public UserInfoModel() {
     }
@@ -176,21 +179,52 @@ public class UserInfoModel implements Serializable, Cloneable {
         this.statusDesc = statusDesc;
     }
 
+    public int getAgeStage() {
+        return ageStage;
+    }
+
+    public String getAgeStageString() {
+        if (ageStage != 0) {
+            if (ageStage == 1) {
+                return "小学党";
+            } else if (ageStage == 2) {
+                return "中学党";
+            } else if (ageStage == 3) {
+                return "大学党";
+            } else if (ageStage == 4) {
+                return "工作党";
+            }
+        }
+        return "";
+    }
+
+    public void setAgeStage(int ageStage) {
+        this.ageStage = ageStage;
+    }
+
     public int getAge() {
-        String[] array = this.birthday.split("-");
-        if (!TextUtils.isEmpty(array[0])) {
-            int year = Integer.valueOf(array[0]);
-            return Calendar.getInstance().get(Calendar.YEAR) - year;
+        if (!TextUtils.isEmpty(birthday)) {
+            String[] array = this.birthday.split("-");
+            if (array != null && array.length > 0) {
+                if (!TextUtils.isEmpty(array[0])) {
+                    int year = Integer.valueOf(array[0]);
+                    return Calendar.getInstance().get(Calendar.YEAR) - year;
+                }
+            }
         }
         return 0;
     }
 
     public String getConstellation() {
-        String[] array = this.birthday.split("-");
-        if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
-            int month = Integer.valueOf(array[1]);
-            int day = Integer.valueOf(array[2]);
-            return U.getDateTimeUtils().getConstellation(month, day);
+        if (!TextUtils.isEmpty(this.birthday)) {
+            String[] array = this.birthday.split("-");
+            if (array != null && array.length >= 3) {
+                if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+                    int month = Integer.valueOf(array[1]);
+                    int day = Integer.valueOf(array[2]);
+                    return U.getDateTimeUtils().getConstellation(month, day);
+                }
+            }
         }
         return "";
     }
@@ -346,7 +380,9 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", isFollow=" + isFollow +
                 ", mainLevel=" + mainLevel +
                 ", status=" + status +
+                ", statusTs=" + statusTs +
                 ", statusDesc='" + statusDesc + '\'' +
+                ", ageStage=" + ageStage +
                 '}';
     }
 

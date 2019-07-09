@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -112,47 +113,104 @@
             android:layout_marginLeft="@dimen/view_12_dp"
             android:layout_marginRight="@dimen/view_12_dp">
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/iv_recharge"
-                android:layout_width="@dimen/view_92_dp"
-                android:layout_height="@dimen/view_38_dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/fangzhushijiao_chongzhianniu" />
-
             <com.common.view.ex.ExTextView
-                android:id="@+id/tv_diamond"
+                android:id="@+id/iv_recharge"
+                android:layout_width="@dimen/view_64_dp"
+                android:layout_height="@dimen/view_32_dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="充值"
+                android:textColor="#3B4E79"
+                android:textStyle="bold"
+                app:bl_corners_radius="@dimen/view_16_dp"
+                app:bl_solid_color="#FF8AB6" />
+
+            <com.common.view.ex.ExFrameLayout
+                android:id="@+id/diamond_area"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_27_dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/view_d_13_dp"
-                android:layout_toRightOf="@+id/iv_diamond_icon"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/view_16_dp"
-                android:paddingRight="@dimen/view_10_dp"
-                android:text="158"
-                android:textColor="#D0EFFF"
-                android:textSize="@dimen/textsize_18_dp"
-                app:bl_corners_bottomRightRadius="@dimen/view_14_dp"
-                app:bl_corners_topRightRadius="@dimen/view_14_dp"
-                app:bl_solid_color="@color/black_trans_20" />
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_toRightOf="@id/iv_recharge"
+                android:paddingLeft="@dimen/view_5_dp"
+                android:paddingRight="@dimen/view_6_dp"
+                app:bl_corners_radius="@dimen/view_14_dp"
+                app:bl_solid_color="@color/black_trans_20">
 
-            <ImageView
-                android:id="@+id/iv_diamond_icon"
-                android:layout_width="@dimen/view_26_dp"
-                android:layout_height="30dp"
+                <ImageView
+                    android:id="@+id/iv_diamond_icon"
+                    android:layout_width="@dimen/view_14_dp"
+                    android:layout_height="@dimen/view_16_dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/diamond_icon" />
+
+                <com.component.busilib.view.BitmapTextView
+                    android:id="@+id/tv_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:layout_toRightOf="@+id/iv_diamond_icon"
+                    android:layout_gravity="center_vertical"
+                    BitmapTextView:scale="0.5" />
+
+            </com.common.view.ex.ExFrameLayout>
+
+            <com.common.view.ex.ExFrameLayout
+                android:id="@+id/coin_area"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_27_dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/view_12_dp"
-                android:layout_toRightOf="@+id/iv_recharge"
-                android:background="@drawable/diamond_icon" />
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_toRightOf="@+id/diamond_area"
+                android:paddingLeft="@dimen/view_5_dp"
+                android:paddingRight="@dimen/view_6_dp"
+                BitmapTextView:bl_corners_radius="@dimen/view_16_dp"
+                BitmapTextView:bl_solid_color="@color/black_trans_20">
 
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_money_coin"
+                    android:layout_width="@dimen/view_14_dp"
+                    android:layout_height="@dimen/view_16_dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ycdd_daojishi_jinbi" />
 
-            <com.common.view.ex.ExImageView
+                <com.component.busilib.view.BitmapTextView
+                    android:id="@+id/tv_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/view_18_dp"
+                    BitmapTextView:scale="0.5" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/tv_coin_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_22_dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/view_10_dp"
+                    android:gravity="center"
+                    android:textColor="#B2B6D6"
+                    android:textSize="@dimen/textsize_16_dp"
+                    android:visibility="gone" />
+
+            </com.common.view.ex.ExFrameLayout>
+
+            <com.common.view.ex.ExTextView
                 android:id="@+id/iv_send"
-                android:layout_width="@dimen/view_92_dp"
-                android:layout_height="@dimen/view_38_dp"
+                android:layout_width="@dimen/view_64_dp"
+                android:layout_height="@dimen/view_32_dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/fangzhushijiao_fasonganniu" />
+                android:gravity="center"
+                android:text="赠送"
+                android:textColor="#3B4E79"
+                android:textStyle="bold"
+                app:bl_corners_radius="@dimen/view_16_dp"
+                app:bl_solid_color="#FFC15B" />
         </RelativeLayout>
     </com.common.view.ex.ExRelativeLayout>
 </merge>

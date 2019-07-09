@@ -36,6 +36,7 @@
             app:ly_paint_color_from="@color/white_trans_50"
             app:ly_paint_color_to="@color/white_trans_50"
             app:ly_paint_text_size="@dimen/textsize_dimen_16"
+            app:ly_show_author="true"
             app:ly_top_line_num="2" />
 
         <com.zq.lyrics.widget.VoiceScaleView
@@ -101,13 +102,13 @@
         android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
     <!--<com.module.playways.room.room.gift.GiftContinueViewGroup-->
-        <!--android:id="@+id/gift_continue_vg"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="@dimen/view_75_dp"-->
-        <!--android:layout_alignTop="@+id/comment_view"-->
-        <!--android:layout_marginLeft="@dimen/view_16_dp"-->
-        <!--android:layout_marginTop="-30dp"-->
-        <!--android:layout_marginBottom="@dimen/view_10_dp" />-->
+    <!--android:id="@+id/gift_continue_vg"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="@dimen/view_75_dp"-->
+    <!--android:layout_alignTop="@+id/comment_view"-->
+    <!--android:layout_marginLeft="@dimen/view_16_dp"-->
+    <!--android:layout_marginTop="-30dp"-->
+    <!--android:layout_marginBottom="@dimen/view_10_dp" />-->
 
     <com.module.playways.room.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
@@ -116,8 +117,7 @@
         android:layout_alignTop="@+id/comment_view"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="-50dp"
-        android:layout_marginBottom="@dimen/view_10_dp"
-        />
+        android:layout_marginBottom="@dimen/view_10_dp" />
 
     <com.module.playways.room.room.view.TurnChangeCardView
         android:id="@+id/turn_change_view"

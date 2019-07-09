@@ -13,6 +13,7 @@ import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.dialog.view.StrokeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -22,8 +23,8 @@ public class ConfirmDialogView extends RelativeLayout {
 
     SimpleDraweeView mAvatarIv;
     TextView mContentTv;
-    StrokeTextView mCancleTv;
-    StrokeTextView mConfirmTv;
+    ExTextView mCancleTv;
+    ExTextView mConfirmTv;
     ImageView mKickMaskIv;
 
     UserInfoModel mUserInfoModel;
@@ -45,11 +46,11 @@ public class ConfirmDialogView extends RelativeLayout {
     public void initView() {
         inflate(getContext(), R.layout.confirm_dialog_view, this);
 
-        mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
-        mContentTv = (TextView) findViewById(R.id.content_tv);
-        mCancleTv = (StrokeTextView) findViewById(R.id.cancle_tv);
-        mConfirmTv = (StrokeTextView) findViewById(R.id.confirm_tv);
-        mKickMaskIv = (ImageView) this.findViewById(R.id.kick_mask_iv);
+        mAvatarIv = findViewById(R.id.avatar_iv);
+        mContentTv = findViewById(R.id.content_tv);
+        mCancleTv = findViewById(R.id.cancle_tv);
+        mConfirmTv = findViewById(R.id.confirm_tv);
+        mKickMaskIv = findViewById(R.id.kick_mask_iv);
     }
 
     private void initData() {
@@ -99,7 +100,18 @@ public class ConfirmDialogView extends RelativeLayout {
 
             mCancleTv.setText("忽略");
             mConfirmTv.setText("同意");
-        }else if(type == ConfirmDialog.TYPE_OWNER_KICK_CONFIRM){
+        } else if (type == ConfirmDialog.TYPE_DOUBLE_INVITE_CONFIRM) {
+            mKickMaskIv.setVisibility(GONE);
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                    .append("\n")
+                    .append("邀请你加入ta的双人唱聊房").setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .create();
+            mContentTv.setText(stringBuilder);
+
+            mCancleTv.setText("忽略");
+            mConfirmTv.setText("同意");
+        } else if (type == ConfirmDialog.TYPE_OWNER_KICK_CONFIRM) {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append("是否将").setForegroundColor(Color.parseColor("#3B4E79"))
                     .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
@@ -125,7 +137,7 @@ public class ConfirmDialogView extends RelativeLayout {
                     public void onNext(Integer integer) {
                         SpannableStringBuilder stringBuilder = new SpanUtils()
                                 .append("是否同意将").setForegroundColor(U.getColor(R.color.black_trans_50))
-                                .append("" + mUserInfoModel.getNicknameRemark()+"\n").setForegroundColor(Color.parseColor("#F5A623"))
+                                .append("" + mUserInfoModel.getNicknameRemark() + "\n").setForegroundColor(Color.parseColor("#F5A623"))
                                 .append("移出房间").setForegroundColor(U.getColor(R.color.black_trans_50))
                                 .append((counDown - integer) + "s").setForegroundColor(Color.parseColor("#F5A623"))
                                 .create();

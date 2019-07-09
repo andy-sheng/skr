@@ -18,14 +18,14 @@
                 android:id="@+id/modify_remark_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:drawableLeft="@drawable/person_remark_icon"
                 android:drawablePadding="@dimen/view_5_dp"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="修改备注"
-                android:textColor="@color/white"
+                android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_16_dp" />
 
         </RelativeLayout>
@@ -40,14 +40,14 @@
                 android:id="@+id/unfollow_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:drawableLeft="@drawable/person_unfollow_icon"
                 android:drawablePadding="@dimen/view_5_dp"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="取消关注"
-                android:textColor="@color/white"
+                android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_16_dp" />
 
         </RelativeLayout>
@@ -62,14 +62,35 @@
                 android:id="@+id/kick_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:drawableLeft="@drawable/person_unfollow_icon"
                 android:drawablePadding="@dimen/view_5_dp"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="踢人"
-                android:textColor="@color/white"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_16_dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/black_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_45_dp">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/black_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:drawableLeft="@drawable/person_black_icon"
+                android:drawablePadding="@dimen/view_5_dp"
+                android:gravity="left"
+                android:text="拉黑"
+                android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_16_dp" />
 
         </RelativeLayout>
@@ -84,14 +105,14 @@
                 android:id="@+id/report_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:drawableLeft="@drawable/quick_feedback_icon"
                 android:drawablePadding="@dimen/view_5_dp"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="举报"
-                android:textColor="@color/white"
+                android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_16_dp" />
 
         </RelativeLayout>

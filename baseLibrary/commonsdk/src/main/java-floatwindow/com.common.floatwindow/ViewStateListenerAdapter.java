@@ -21,9 +21,10 @@ public class ViewStateListenerAdapter implements ViewStateListener {
     }
 
     @Override
-    public void onDismiss() {
+    public void onDismiss(int dismissReason) {
 
     }
+
 
     @Override
     public void onMoveAnimStart() {

@@ -1,12 +1,12 @@
 package com.module.playways.grab.room.view.pk;
 
-import android.content.Context;
+
 import android.os.Handler;
 import android.os.Message;
-import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -15,7 +15,8 @@ import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
-import com.module.playways.grab.room.view.normal.view.SingCountDownView;
+import com.common.view.ExViewStub;
+import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
 import com.module.playways.R;
 import com.zq.live.proto.Room.EQRoundStatus;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * 别人唱歌PK时，自己看到的板子
  */
-public class PKOthersSingCardView extends RelativeLayout {
+public class PKOthersSingCardView extends ExViewStub {
     public final static String TAG = "PKOthersSingCardView";
 
     final static int COUNT_DOWN_STATUS_WAIT = 2;
@@ -35,7 +36,7 @@ public class PKOthersSingCardView extends RelativeLayout {
     int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
 
     PKSingCardView mPkCardView;
-    SingCountDownView mSingCountDownView;
+    SingCountDownView2 mSingCountDownView;
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
@@ -53,30 +54,27 @@ public class PKOthersSingCardView extends RelativeLayout {
         }
     };
 
-    public PKOthersSingCardView(Context context) {
-        super(context);
-        init();
-    }
-
-    public PKOthersSingCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public PKOthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.grab_pk_other_sing_card_layout, this);
-        mPkCardView = (PKSingCardView) findViewById(R.id.pk_card_view);
-        mSingCountDownView = findViewById(R.id.sing_count_down_view);
-    }
-
-    public void setRoomData(GrabRoomData roomData) {
+    public PKOthersSingCardView(ViewStub viewStub, GrabRoomData roomData) {
+        super(viewStub);
         mGrabRoomData = roomData;
-        mPkCardView.setRoomData(roomData);
+    }
+
+    @Override
+    protected void init(View parentView) {
+        mPkCardView = (PKSingCardView) mParentView.findViewById(R.id.pk_card_view);
+        mPkCardView.setRoomData(mGrabRoomData);
+        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+    }
+
+    @Override
+    protected int layoutDesc() {
+        return R.layout.grab_pk_other_sing_card_stub_layout;
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        super.onViewDetachedFromWindow(v);
+        destoryAnimation();
     }
 
     public void bindData() {
@@ -84,7 +82,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
-        mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_pk);
+        tryInflate();
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
@@ -94,7 +92,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         }
         mHasPlayFullAnimation = false;
         mUiHandler.removeCallbacksAndMessages(null);
-        setVisibility(VISIBLE);
+        mParentView.setVisibility(View.VISIBLE);
         // 绑定数据
         mPkCardView.bindData();
         if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
@@ -164,43 +162,47 @@ public class PKOthersSingCardView extends RelativeLayout {
 
             }
         });
-        this.startAnimation(mEnterTranslateAnimation);
+        if (mParentView != null) {
+            mParentView.startAnimation(mEnterTranslateAnimation);
+        }
     }
 
     /**
      * 离场动画
      */
     public void hide() {
-        if (this != null && this.getVisibility() == VISIBLE) {
-            if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
-                mLeaveTranslateAnimation.setDuration(200);
+        if(mParentView!=null){
+            if (mParentView.getVisibility() == View.VISIBLE) {
+                if (mLeaveTranslateAnimation == null) {
+                    mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                    mLeaveTranslateAnimation.setDuration(200);
+                }
+                mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        destoryAnimation();
+                        mSingCountDownView.reset();
+                        mParentView.clearAnimation();
+                        mParentView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mParentView.startAnimation(mLeaveTranslateAnimation);
+            } else {
+                destoryAnimation();
+                mSingCountDownView.reset();
+                mParentView.clearAnimation();
+                mParentView.setVisibility(View.GONE);
             }
-            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    destoryAnimation();
-                    mSingCountDownView.reset();
-                    clearAnimation();
-                    setVisibility(GONE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            this.startAnimation(mLeaveTranslateAnimation);
-        } else {
-            destoryAnimation();
-            mSingCountDownView.reset();
-            clearAnimation();
-            setVisibility(GONE);
         }
     }
 
@@ -223,12 +225,6 @@ public class PKOthersSingCardView extends RelativeLayout {
             leaveTime = totalMs;
         }
         mSingCountDownView.startPlay(progress, leaveTime, true);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        destoryAnimation();
     }
 
     private void destoryAnimation() {

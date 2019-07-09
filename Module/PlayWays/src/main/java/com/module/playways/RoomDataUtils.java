@@ -327,6 +327,15 @@ public class RoomDataUtils {
         return false;
     }
 
+    public static boolean isFreeMicRound(GrabRoomData roomData) {
+        if (roomData != null) {
+            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
+            if (infoModel != null) {
+                return infoModel.isFreeMicRound();
+            }
+        }
+        return false;
+    }
     /**
      * 这个轮次的演唱者
      *
@@ -362,4 +371,5 @@ public class RoomDataUtils {
         return false;
 
     }
+
 }

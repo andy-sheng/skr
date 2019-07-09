@@ -13,7 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -32,7 +34,7 @@ import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.updateinfo.fragment.EditInfoAgeFragment2;
+import com.module.home.updateinfo.fragment.EditInfoLocationFragment;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.EditInfoSignFragment;
@@ -134,15 +136,10 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-        String age = String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge());
-        if (MyUserInfoManager.getInstance().getAge() == 0) {
-            age = "未知";
-        }
-        String constellation = MyUserInfoManager.getInstance().getConstellation();
-        if (!TextUtils.isEmpty(constellation)) {
-            mAgeTv.setText(age + " " + constellation);
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getAgeStageString())) {
+            mAgeTv.setText("无");
         } else {
-            mAgeTv.setText(age + "");
+            mAgeTv.setText(MyUserInfoManager.getInstance().getAgeStageString());
         }
 
         String sex = "保密";
@@ -152,7 +149,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             sex = "女";
         }
         mSexTv.setText(sex);
-        mLocationTv.setText(MyUserInfoManager.getInstance().getLocationDesc());
+        mLocationTv.setText(MyUserInfoManager.getInstance().getLocationProvince());
     }
 
     @Override
@@ -168,9 +165,25 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             onClickAgeContainer(); // 年龄
         } else if (viewId == R.id.edit_sex) {
             onClickSexContainer(); // 性别
-        } else if (viewId == R.id.location_refresh_btn) {
-            onClickLocationRefresh();
+        } else if (viewId == R.id.edit_location) {
+            onClickEditLocation();
         }
+    }
+
+    private void onClickEditLocation() {
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, EditInfoLocationFragment.class)
+                        .setAddToBackStack(true)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                                if (requestCode == 0) {
+                                    mLocationTv.setText(MyUserInfoManager.getInstance().getLocationProvince());
+                                }
+                            }
+                        })
+                        .setHasAnimation(true)
+                        .build());
     }
 
     //修改头像
@@ -205,11 +218,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     //修改年龄
     private void onClickAgeContainer() {
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, EditInfoAgeFragment2.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                .withInt("from", 1)
+                .navigation();
     }
 
     //修改性别
@@ -267,12 +278,12 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                     .setNeedCompress(true)
                     .startUploadAsync(new UploadCallback() {
                         @Override
-                        public void onProgress(long currentSize, long totalSize) {
+                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
 
                         }
 
                         @Override
-                        public void onSuccess(String url) {
+                        public void onSuccessNotInUiThread(String url) {
                             mUiHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -283,7 +294,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         }
 
                         @Override
-                        public void onFailure(String msg) {
+                        public void onFailureNotInUiThread(String msg) {
                             mUiHandler.post(new Runnable() {
                                 @Override
                                 public void run() {

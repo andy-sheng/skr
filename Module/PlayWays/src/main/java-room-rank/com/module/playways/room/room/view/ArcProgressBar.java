@@ -78,7 +78,7 @@ public class ArcProgressBar extends View {
         typedArray.recycle();
 
         // 内测虚线的画笔
-        mDottedLinePaint = new Paint();
+        mDottedLinePaint = new com.common.view.ExPaint();
         mDottedLinePaint.setAntiAlias(true);
         mDottedLinePaint.setStrokeWidth(mDottedLineHeight);
         mDottedLinePaint.setStrokeCap(Paint.Cap.ROUND);

@@ -14,9 +14,12 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.callback.Callback;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -24,14 +27,13 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.updateinfo.UploadAccountInfoActivity;
-import com.module.playways.IPlaywaysModeService;
 import com.zq.live.proto.Common.ESex;
 
 import java.util.concurrent.TimeUnit;
@@ -47,24 +49,16 @@ import io.reactivex.subjects.PublishSubject;
 
 public class UploadAccountInfoFragment extends BaseFragment {
 
-    boolean isUpload = false; //当前是否是完善个人资料
-
-
-    RelativeLayout mMainActContainer;
-
     CommonTitleBar mTitlebar;
     SimpleDraweeView mAvatarIv;
     NoLeakEditText mNicknameEt;
     ExTextView mNicknameHintTv;
 
-    ImageView mEditTipsIv;
+    ExImageView mSecretIv;
+    ExImageView mMaleIv;
+    ExImageView mFemaleIv;
 
-    RadioGroup mSexButtonArea;
-    RadioButton mSecre;
-    RadioButton mMale;
-    RadioButton mFemale;
-
-    ImageView mNextIv;
+    ExTextView mNextIv;
 
     int mSex = 0;// 未知、非法参数
     String mNickName = "";
@@ -80,32 +74,29 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
-        mNicknameEt = (NoLeakEditText) mRootView.findViewById(R.id.nickname_et);
-        mEditTipsIv = (ImageView) mRootView.findViewById(R.id.edit_tips_iv);
-        mNicknameHintTv = (ExTextView) mRootView.findViewById(R.id.nickname_hint_tv);
+        mTitlebar = mRootView.findViewById(R.id.titlebar);
+        mAvatarIv = mRootView.findViewById(R.id.avatar_iv);
+        mNicknameEt = mRootView.findViewById(R.id.nickname_et);
+        mNicknameHintTv = mRootView.findViewById(R.id.nickname_hint_tv);
 
-        mSexButtonArea = (RadioGroup) mRootView.findViewById(R.id.sex_button_area);
-        mSecre = (RadioButton) mRootView.findViewById(R.id.secre);
-        mMale = (RadioButton) mRootView.findViewById(R.id.male);
-        mFemale = (RadioButton) mRootView.findViewById(R.id.female);
-        mNextIv = (ImageView) mRootView.findViewById(R.id.next_iv);
+        mSecretIv = mRootView.findViewById(R.id.secret_iv);
+        mMaleIv = mRootView.findViewById(R.id.male_iv);
+        mFemaleIv = mRootView.findViewById(R.id.female_iv);
+        mNextIv = mRootView.findViewById(R.id.next_iv);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
-        }
-
-        mNicknameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    mEditTipsIv.setVisibility(View.GONE);
-                } else {
-                    mEditTipsIv.setVisibility(View.VISIBLE);
-                }
+            public void clickValid(View v) {
+                // HomeAcitivy的
+                UserAccountManager.getInstance().logoff(1, new Callback() {
+                    @Override
+                    public void onCallback(int r, Object obj) {
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
+                    }
+                });
+
             }
         });
 
@@ -139,6 +130,27 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
+        mMaleIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                setSex(ESex.SX_MALE.getValue());
+            }
+        });
+
+        mFemaleIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                setSex(ESex.SX_FEMALE.getValue());
+            }
+        });
+
+        mSecretIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                setSex(ESex.SX_UNKNOWN.getValue());
+            }
+        });
+
         mNextIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -152,27 +164,12 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        mSexButtonArea.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.male) {
-                    selectSex(ESex.SX_MALE.getValue());
-                } else if (checkedId == R.id.female) {
-                    selectSex(ESex.SX_FEMALE.getValue());
-                } else if (checkedId == R.id.secre) {
-                    selectSex(0);
-                }
-                changeFocus();
-            }
-        });
-
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
                         .build());
 
         if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-            mEditTipsIv.setVisibility(View.VISIBLE);
             mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
             mNicknameEt.setSelection(MyUserInfoManager.getInstance().getNickName().length());
             setCompleteTv(true);
@@ -180,22 +177,25 @@ public class UploadAccountInfoFragment extends BaseFragment {
             setCompleteTv(false);
         }
 
-        selectSex(MyUserInfoManager.getInstance().getSex());
+        setSex(MyUserInfoManager.getInstance().getSex());
 
         initPublishSubject();
     }
 
-    private void changeFocus() {
-        mNickName = mNicknameEt.getText().toString().trim();
-        if (TextUtils.isEmpty(mNickName)) {
-            if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-                mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
-                mNicknameEt.clearFocus();
-            } else {
-                mNicknameEt.requestFocus();
-            }
+    public void setSex(int sex) {
+        this.mSex = sex;
+        if (sex == ESex.SX_MALE.getValue()) {
+            mMaleIv.setSelected(true);
+            mFemaleIv.setSelected(false);
+            mSecretIv.setSelected(false);
+        } else if (sex == ESex.SX_FEMALE.getValue()) {
+            mMaleIv.setSelected(false);
+            mFemaleIv.setSelected(true);
+            mSecretIv.setSelected(false);
         } else {
-            mNicknameEt.clearFocus();
+            mMaleIv.setSelected(false);
+            mFemaleIv.setSelected(false);
+            mSecretIv.setSelected(true);
         }
     }
 
@@ -214,7 +214,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     private void verifyName(String nickName) {
         if (nickName.equals(MyUserInfoManager.getInstance().getNickName()) && (mSex == MyUserInfoManager.getInstance().getSex())) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            goNewMatch();
+            goAgeTagUpload();
             return;
         }
 
@@ -228,20 +228,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     if (isValid) {
                         // 昵称可用
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                .setNickName(nickName).setSex(mSex)
-                                .build(), true, true, new MyUserInfoManager.ServerCallback() {
-                            @Override
-                            public void onSucess() {
-                                // 进入新手引导房间匹配
-                                goNewMatch();
-                            }
-
-                            @Override
-                            public void onFail() {
-
-                            }
-                        });
+                        // 进入下一页
+                        goAgeTagUpload();
                     } else {
                         // 昵称不可用
                         setNicknameHintText(unValidReason, true);
@@ -251,21 +239,13 @@ public class UploadAccountInfoFragment extends BaseFragment {
         });
     }
 
-    private void goNewMatch() {
-        IPlaywaysModeService playwaysModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-        if (playwaysModeService != null) {
-            playwaysModeService.tryGoNewGrabMatch();
-        }
-
-        // TODO: 2019/5/16 因为fastLogin的标记为用在是否要完善资料上了
-        MyUserInfoManager.getInstance().setFirstLogin(false);
-
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
-        StatisticsAdapter.recordCountEvent("signup", "success2", null,true);
+    public void goAgeTagUpload() {
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD_AGE)
+                .withString("nickname", mNickName)
+                .withInt("sex", mSex)
+                .greenChannel()
+                .navigation();
     }
-
 
     private void setNicknameHintText(String text, boolean isError) {
         if (isError) {
@@ -280,27 +260,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
     private void setCompleteTv(boolean isClick) {
         if (isClick && !TextUtils.isEmpty(mNicknameEt.getText().toString().trim())) {
             mNextIv.setClickable(true);
-            mNextIv.setBackgroundResource(R.drawable.complete_normal_icon);
+            mNextIv.setAlpha(1f);
         } else {
             mNextIv.setClickable(false);
-            mNextIv.setBackgroundResource(R.drawable.complete_unclick_icon);
-        }
-    }
-
-    private void selectSex(int sex) {
-        this.mSex = sex;
-        if (sex == ESex.SX_MALE.getValue()) {
-            mMale.setChecked(true);
-            mFemale.setChecked(false);
-            mSecre.setChecked(false);
-        } else if (sex == ESex.SX_FEMALE.getValue()) {
-            mMale.setChecked(false);
-            mFemale.setChecked(true);
-            mSecre.setChecked(false);
-        } else {
-            mMale.setChecked(false);
-            mFemale.setChecked(false);
-            mSecre.setChecked(true);
+            mNextIv.setAlpha(0.5f);
         }
     }
 
@@ -360,7 +323,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null,true);
+        StatisticsAdapter.recordCountEvent("signup", "namesex_expose2", null, true);
     }
 
     @Override

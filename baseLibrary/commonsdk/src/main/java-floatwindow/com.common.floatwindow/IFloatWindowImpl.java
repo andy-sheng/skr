@@ -130,12 +130,12 @@ public class IFloatWindowImpl extends IFloatWindow {
     }
 
     @Override
-    void dismiss() {
-        MyLog.d(TAG, "dismiss");
+    void dismiss(int dismissReason) {
+        MyLog.d(TAG,"dismiss" + " dismissReason=" + dismissReason);
         mFloatView.dismiss();
         isShow = false;
         if (mB.mViewStateListener != null) {
-            mB.mViewStateListener.onDismiss();
+            mB.mViewStateListener.onDismiss(dismissReason);
         }
         EventBus.getDefault().unregister(this);
     }
@@ -330,7 +330,7 @@ public class IFloatWindowImpl extends IFloatWindow {
                                                     @Override
                                                     public void onAnimationEnd(Animator animation) {
                                                         super.onAnimationEnd(animation);
-                                                        FloatWindow.destroy(mB.mTag);
+                                                        FloatWindow.destroy(mB.mTag,1);
                                                         //dismiss();
                                                     }
                                                 });
@@ -376,7 +376,7 @@ public class IFloatWindowImpl extends IFloatWindow {
                                                     @Override
                                                     public void onAnimationEnd(Animator animation) {
                                                         super.onAnimationEnd(animation);
-                                                        FloatWindow.destroy(mB.mTag);
+                                                        FloatWindow.destroy(mB.mTag,1);
                                                         //dismiss();
                                                     }
                                                 });

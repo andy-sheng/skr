@@ -12,7 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 
-import com.common.core.account.event.VerifyCodeErrorEvent;
+import com.common.core.account.event.LoginApiErrorEvent;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.log.MyLog;
@@ -20,7 +20,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -143,7 +142,7 @@ public class SmsAuthFragment extends BaseFragment {
 
                                         //短信验证完实人认证
                                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/faceauth"))
+                                                .withString(RouterConstants.KEY_WEB_URL, ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth/card"))
                                                 .navigation();
                                     } else {
                                         U.getToastUtil().showShort(result.getErrmsg());
@@ -186,7 +185,7 @@ public class SmsAuthFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(VerifyCodeErrorEvent event) {
+    public void onEventMainThread(LoginApiErrorEvent event) {
         MyLog.d(TAG, "onEventMainThread" + " event=" + event);
         setHintText(event.getErrmsg(), true);
     }

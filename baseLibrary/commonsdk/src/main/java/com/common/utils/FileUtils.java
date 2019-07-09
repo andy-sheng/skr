@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -353,6 +355,62 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 移动文件夹
+     */
+    public void moveFile(String fromPath, String toPath) {
+        File fromFolder = new File(fromPath);
+        File[] fromFiles = fromFolder.listFiles();
+        if (fromFiles == null) {
+            return;
+        }
+        File toFolder = new File(toPath);
+        if (!toFolder.exists()) {
+            toFolder.mkdirs();
+        }
+        for (int i = 0; i < fromFiles.length; i++) {
+            File file = fromFiles[i];
+            if (file.isDirectory()) {
+                moveFile(file.getPath(), toPath + File.separator + file.getName());
+                //亦可删除
+                //file.delete();
+            }
+            if (file.isFile()) {
+                File toFile = new File(toFolder + File.separator + file.getName());
+                if (toFile.exists()) {
+                    //亦可删除
+                    //toFile.delete();
+                }
+                //移动文件
+                file.renameTo(toFile);
+            }
 
+        }
+    }
+
+    /**
+     * 广搜法 查找rootFile 下 第一个 name 为 findFileName 文件或文件夹的路径
+     *
+     * @param rootFile
+     * @param fileName
+     * @return
+     */
+    public File findSubDirByName(File rootFile, String fileName) {
+        LinkedList<File> queue = new LinkedList<>();
+        queue.add(rootFile);
+        while (!queue.isEmpty()) {
+            File file = queue.removeFirst();
+            if (file != null) {
+                if (file.getName().equals(fileName)) {
+                    return file;
+                } else if (file.isDirectory()) {
+                    for (File childFile : file.listFiles()) {
+                        queue.add(childFile);
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
 

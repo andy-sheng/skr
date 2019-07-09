@@ -12,7 +12,7 @@ import com.common.utils.U;
  * Created by yurui on 3/22/16.
  */
 public class RoundRectDradable extends Drawable {
-    private Paint mPaint = new Paint();
+    private Paint mPaint = new com.common.view.ExPaint();
     private RoundRectShape mShape;
     private float[] mOuter;
     private float mRadius;

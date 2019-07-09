@@ -16,13 +16,18 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
+import com.module.msg.custom.MyPrivateConversationProvider;
 import com.module.msg.listener.MyConversationClickListener;
+import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
+import com.module.msg.model.CustomChatCombineRoomMsg;
+import com.module.msg.model.CustomChatRoomLowLevelMsg;
 import com.module.msg.model.CustomChatRoomMsg;
 import com.module.msg.model.CustomNotificationMsg;
 import com.module.msg.model.SpecailOpMsg;
@@ -40,12 +45,17 @@ import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
+import io.rong.imkit.widget.provider.PrivateConversationProvider;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
+import io.rong.push.RongPushClient;
+import io.rong.push.pushconfig.PushConfig;
 
+import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
@@ -136,14 +146,25 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             if (message.getContent() instanceof CustomChatRoomMsg) {
                 // 是自定义消息 其content即整个RoomMsg
                 CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
-                byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
+                dispatchCustomRoomMsg(customChatRoomMsg);
 
-                HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
-                if (processors != null) {
-                    for (IPushMsgProcess process : processors) {
-                        process.process(MSG_TYPE_ROOM, data);
-                    }
-                }
+                return true;
+            } else if (message.getContent() instanceof CustomChatRoomLowLevelMsg) {
+
+                CustomChatRoomLowLevelMsg customChatRoomMsg = (CustomChatRoomLowLevelMsg) message.getContent();
+                dispatchCustomRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof CustomChatCombineRoomMsg) {
+
+                CustomChatCombineRoomMsg customChatRoomMsg = (CustomChatCombineRoomMsg) message.getContent();
+                dispatchCustomCombineRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof CustomChatCombineRoomLowLevelMsg) {
+
+                CustomChatCombineRoomLowLevelMsg customChatRoomMsg = (CustomChatCombineRoomLowLevelMsg) message.getContent();
+                dispatchCustomCombineRoomMsg(customChatRoomMsg);
 
                 return true;
             } else if (message.getContent() instanceof CustomNotificationMsg) {
@@ -202,11 +223,62 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     EventBus.getDefault().post(event);
                 }
             }
-
             // TODO: 2019/5/19  收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
-            return true;
+            if (U.getActivityUtils().isAppForeground()) {
+                return true;
+            } else {
+                return false;
+            }
         }
     };
+
+    private void dispatchCustomRoomMsg(MessageContent messageContent) {
+        if (messageContent instanceof CustomChatRoomMsg) {
+            CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_ROOM, data);
+                }
+            }
+        } else if (messageContent instanceof CustomChatRoomLowLevelMsg) {
+            CustomChatRoomLowLevelMsg customChatRoomMsg = (CustomChatRoomLowLevelMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_ROOM, data);
+                }
+            }
+        }
+    }
+
+    private void dispatchCustomCombineRoomMsg(MessageContent messageContent) {
+        if (messageContent instanceof CustomChatCombineRoomMsg) {
+            CustomChatCombineRoomMsg customChatRoomMsg = (CustomChatCombineRoomMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_COMBINE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_COMBINE_ROOM, data);
+                }
+            }
+        } else if (messageContent instanceof CustomChatCombineRoomLowLevelMsg) {
+            CustomChatCombineRoomLowLevelMsg customChatRoomMsg = (CustomChatCombineRoomLowLevelMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_COMBINE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_COMBINE_ROOM, data);
+                }
+            }
+        }
+    }
 
     // 是否初始化
     private boolean mIsInit = false;
@@ -223,12 +295,27 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 rongKey = "e5t4ouvpec57a";
             }
             RongIM.getInstance().disconnect();
+
+            PushConfig config = new PushConfig.Builder()
+                    .enableHWPush(true)  // 配置华为推送
+                    .enableMiPush("2882303761517932750", "5701793259750")
+                    .enableOppoPush("b6476d0350bf448da381e589e232add8", "1b038723163d485b9d739ad9ee0fbe8e")
+                    .build();
+            RongPushClient.setPushConfig(config);
+            //RongPushClient.init(U.app(),rongKey);
+
             RongIM.init(application, rongKey);
             RongIM.setUserInfoProvider(this, true);
             mIsInit = true;
             RongIM.registerMessageType(CustomChatRoomMsg.class);
+            RongIM.registerMessageType(CustomChatRoomLowLevelMsg.class);
+            RongIM.registerMessageType(CustomChatCombineRoomMsg.class);
+            RongIM.registerMessageType(CustomChatCombineRoomLowLevelMsg.class);
             RongIM.registerMessageType(CustomNotificationMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
+
+            RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
+
             RongIM.getInstance().setConversationClickListener(new MyConversationClickListener());
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
                 @Override
@@ -257,6 +344,36 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
             });
             RongIM.setOnReceiveMessageListener(mReceiveMessageListener);
+            /**
+             * 融云服务不可用时，用极光来补一下
+             */
+            JiGuangPush.setCustomMsgListener(new JiGuangPush.JPushCustomMsgListener() {
+                @Override
+                public void onReceive(String contentType, byte[] data) {
+                    if ("SKR:CustomMsg".equals(contentType) || "SKR:CustomMsgLow".equals(contentType)) {
+                        HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
+                        if (processors != null) {
+                            for (IPushMsgProcess process : processors) {
+                                process.process(MSG_TYPE_ROOM, data);
+                            }
+                        }
+                    } else if ("SKR:NotificationMsg".equals(contentType)) {
+                        HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_NOTIFICATION);
+                        if (processors != null) {
+                            for (IPushMsgProcess process : processors) {
+                                process.process(MSG_TYPE_NOTIFICATION, data);
+                            }
+                        }
+                    } else if ("SKR:CombineRoomMsgHigh".equals(contentType) || "SKR:CombineRoomMsgLow".equals(contentType)) {
+                        HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_COMBINE_ROOM);
+                        if (processors != null) {
+                            for (IPushMsgProcess process : processors) {
+                                process.process(MSG_TYPE_COMBINE_ROOM, data);
+                            }
+                        }
+                    }
+                }
+            });
             setInputProvider();
         }
     }
@@ -310,7 +427,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
 
         if (buddyCacheEntry != null) {
-            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), UserInfoManager.getInstance().getRemarkName(buddyCacheEntry.getUuid(),buddyCacheEntry.getName()), Uri.parse(buddyCacheEntry.getAvatar()));
+            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), UserInfoManager.getInstance().getRemarkName(buddyCacheEntry.getUuid(), buddyCacheEntry.getName()), Uri.parse(buddyCacheEntry.getAvatar()));
         } else {
             // TODO: 2019/4/16 此时靠 RongIM.getInstance().refreshUserInfoCache去更新
             return null;
@@ -539,14 +656,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             if (RongContext.getInstance() == null) {
                 throw new ExceptionInInitializerError("RongCloud SDK not init");
             } else {
-                for(Activity activity  : U.getActivityUtils().getActivityList()){
-                    if(activity instanceof ConversationActivity){
+                for (Activity activity : U.getActivityUtils().getActivityList()) {
+                    if (activity instanceof ConversationActivity) {
                         // 已经有会话页面了
                         ConversationActivity conversationActivity = (ConversationActivity) activity;
-                        if(targetUserId.equals(conversationActivity.getUserId())){
+                        if (targetUserId.equals(conversationActivity.getUserId())) {
                             // 正好期望会话的人，已经有一个与这个人的会话Activity存在了
                             return true;
-                        }else{
+                        } else {
                             // 有一个会话，但是不是与当前人的，强制finish调
                             conversationActivity.finish();
                         }
@@ -566,14 +683,16 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         } else {
             throw new IllegalArgumentException();
         }
-        return  false;
+        return false;
     }
 
     public void updateCurrentUserInfo() {
-        UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
-                MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
-        RongIM.getInstance().setCurrentUserInfo(userInfo);
-        RongIM.getInstance().refreshUserInfoCache(userInfo);
+        if (RongContext.getInstance() != null) {
+            UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
+                    MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
+            RongIM.getInstance().setCurrentUserInfo(userInfo);
+            RongIM.getInstance().refreshUserInfoCache(userInfo);
+        }
     }
 
     public void addToBlacklist(String userId, ICallback callback) {

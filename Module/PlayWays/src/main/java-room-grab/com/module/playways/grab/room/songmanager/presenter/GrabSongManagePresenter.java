@@ -3,20 +3,23 @@ package com.module.playways.grab.room.songmanager.presenter;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.ToastUtils;
+import com.common.utils.U;
+import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
-import com.component.busilib.friends.SpecialModel;
-import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.event.AddCustomGameEvent;
 import com.module.playways.grab.room.songmanager.event.AddSongEvent;
+import com.module.playways.grab.room.songmanager.event.AddSuggestSongEvent;
+import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.grab.room.songmanager.model.GrabWishSongModel;
 import com.module.playways.room.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,7 +35,10 @@ import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class GrabSongManagePresenter extends RxLifeCyclePresenter {
+/**
+ * 房主可以看到的 所有轮次 的歌曲 view
+ */
+public class GrabSongManagePresenter extends BaseSongManagePresenter {
     public final static String TAG = "GrabSongManagePresenter";
 
     IGrabSongManageView mIGrabSongManageView;
@@ -62,6 +68,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         mGrabRoomData = grabRoomData;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         mUiHandler = new Handler();
+        addToLifeCycle();
         EventBus.getDefault().register(this);
     }
 
@@ -75,14 +82,14 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "已经加载中了...");
             return;
         }
+        MyLog.d(TAG, "getTagList");
 
-        mGetTagsTask = ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
+        mGetTagsTask = ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20, mGrabRoomData.isVideoRoom() ? 2 : 1), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mSpecialModelList = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
                     if (mSpecialModelList != null && mSpecialModelList.size() > 0) {
-
                         mIGrabSongManageView.showTagList(mSpecialModelList);
                     }
                 } else {
@@ -109,7 +116,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         } else {
             offset = mGrabRoomData.getRealRoundSeq() - 1;
         }
-
         if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
             offset = mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq();
         }
@@ -216,12 +222,12 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     public void updateSongList() {
         Iterator<GrabRoomSongModel> iterator = mGrabRoomSongModelList.iterator();
-        int seq = mGrabRoomData.getRealRoundSeq();
-
         while (iterator.hasNext()) {
             GrabRoomSongModel grabRoomSongModel = iterator.next();
-            if (grabRoomSongModel.getRoundSeq() < seq) {
+            if (grabRoomSongModel.getRoundSeq() < mGrabRoomData.getRealRoundSeq()) {
                 iterator.remove();
+            } else if (grabRoomSongModel.getRoundSeq() > mGrabRoomData.getRealRoundSeq()) {
+                break;
             }
         }
 
@@ -232,6 +238,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    // 添加新歌
     public void addSong(SongModel songModel) {
         MyLog.d(TAG, "addSong");
         HashMap<String, Object> map = new HashMap<>();
@@ -246,13 +253,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
-                        if (mGrabRoomSongModelList.size() > 2) {
-                            for (int i = 2; i < mGrabRoomSongModelList.size(); i++) {
-                                GrabRoomSongModel grabRoomSongModel = mGrabRoomSongModelList.get(i);
-                                grabRoomSongModel.setRoundSeq(grabRoomSongModel.getRoundSeq() + 1);
-                            }
-                        }
-
                         //加一个保护
                         GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
                         grabRoomSongModel.setOwner(songModel.getOwner());
@@ -260,23 +260,12 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         grabRoomSongModel.setItemID(songModel.getItemID());
                         grabRoomSongModel.setPlayType(songModel.getPlayType());
                         grabRoomSongModel.setChallengeAvailable(songModel.isChallengeAvailable());
-
-                        if (mGrabRoomSongModelList.size() <= 2) {
-                            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
-                            mGrabRoomSongModelList.add(grabRoomSongModel);
-                        } else {
-                            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
-                            mGrabRoomSongModelList.add(2, grabRoomSongModel);
-                        }
-
-                        mIGrabSongManageView.showNum(++mTotalNum);
-                        updateSongList();
+                        addToUiList(grabRoomSongModel);
                     }
-
-                    ToastUtils.showShort(songModel.getItemName() + " 添加成功");
+                    U.getToastUtil().showShort(songModel.getItemName() + " 添加成功");
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
-                    ToastUtils.showShort(result.getErrmsg());
+                    U.getToastUtil().showShort(result.getErrmsg());
                 }
             }
 
@@ -334,12 +323,81 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         if (event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1) {
             mIGrabSongManageView.showNum(--mTotalNum);
         }
+        /**
+         * 因为现在用Activity 里，所以这里的 mGrabRoomData 跟之前不是一个引用了
+         */
+        mGrabRoomData.setExpectRoundInfo(event.newRoundInfo);
+        mGrabRoomData.setRealRoundInfo(event.newRoundInfo);
         updateSongList();
     }
 
+    /**
+     * 增加歌曲
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddSongEvent event) {
-        addSong(event.getSongModel());
+        if (mGrabRoomData.isOwner()) {
+            addSong(event.getSongModel());
+        }
+    }
+
+    /**
+     * 房主处理愿望清单
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddSuggestSongEvent event) {
+        // 添加非房主想唱的歌曲
+        GrabWishSongModel grabWishSongModel = event.getGrabWishSongModel();
+        addToUiList(grabWishSongModel);
+    }
+
+    /**
+     * 添加自定义小游戏成功
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddCustomGameEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        // 添加非房主想唱的歌曲
+        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
+        grabRoomSongModel.setOwner(MyUserInfoManager.getInstance().getNickName());
+        grabRoomSongModel.setItemName("自定义小游戏");
+        grabRoomSongModel.setItemID(SongModel.ID_CUSTOM_GAME);
+        grabRoomSongModel.setPlayType(4);
+        grabRoomSongModel.setChallengeAvailable(false);
+        addToUiList(grabRoomSongModel);
+    }
+
+    /**
+     * 如果list size >=2 加到 index =2的位置 ，并把之前所有的seq++
+     * 否则加到最后
+     *
+     * @param grabRoomSongModel
+     */
+    void addToUiList(GrabRoomSongModel grabRoomSongModel) {
+        MyLog.d(TAG, "addToUiList" + " grabRoomSongModel=" + grabRoomSongModel);
+        if (mGrabRoomSongModelList.size() >= 2) {
+            for (int i = 2; i < mGrabRoomSongModelList.size(); i++) {
+                GrabRoomSongModel g = mGrabRoomSongModelList.get(i);
+                g.setRoundSeq(g.getRoundSeq() + 1);
+            }
+            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
+            mGrabRoomSongModelList.add(2, grabRoomSongModel);
+        } else {
+            if (mGrabRoomSongModelList.size() == 0) {
+                mGrabRoomSongModelList.add(grabRoomSongModel);
+            } else {
+                grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
+                mGrabRoomSongModelList.add(grabRoomSongModel);
+            }
+        }
+        mIGrabSongManageView.showNum(++mTotalNum);
+        updateSongList();
     }
 
     @Override
