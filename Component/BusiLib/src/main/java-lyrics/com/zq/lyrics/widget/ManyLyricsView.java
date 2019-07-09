@@ -431,7 +431,7 @@ public class ManyLyricsView extends AbstractLrcView {
     }
 
     public void setAuthorName(String authorName) {
-        mAuthorName = "上传者：" + authorName;
+        mAuthorName = authorName;
     }
 
     private void drawAuthor(Paint paint, Canvas canvas, float lineBottomY) {
@@ -441,10 +441,10 @@ public class ManyLyricsView extends AbstractLrcView {
 
         float size = paint.getTextSize();
         paint.setTextSize(size * 0.8f);
-        float textWidth = LyricsUtils.getTextWidth(paint, mAuthorName);
+        float textWidth = LyricsUtils.getTextWidth(paint, "上传者：" + mAuthorName);
         float textX = (getWidth() - textWidth) * 0.5f;
         int[] paintColors = getPaintColors();
-        LyricsUtils.drawText(canvas, paint, paintColors, mAuthorName, textX, lineBottomY);
+        LyricsUtils.drawText(canvas, paint, paintColors, "上传者：" + mAuthorName, textX, lineBottomY);
         paint.setTextSize(size);
     }
 
