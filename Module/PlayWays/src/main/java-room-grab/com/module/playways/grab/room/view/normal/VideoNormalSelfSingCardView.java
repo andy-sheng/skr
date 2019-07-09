@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.normal;
 
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -85,7 +86,7 @@ public class VideoNormalSelfSingCardView extends SelfSingLyricView {
         SpanUtils spanUtils = new SpanUtils();
         spanUtils = spanUtils.append(lyric)
                 .setShadow(U.getDisplayUtils().dip2px(1), 0, U.getDisplayUtils().dip2px(1), U.getColor(R.color.black_trans_50));
-        if (songModel != null) {
+        if (songModel != null && !TextUtils.isEmpty(songModel.getUploaderName())) {
             spanUtils = spanUtils.append("\n")
                     .append("上传者:" + songModel.getUploaderName()).setFontSize(12, true)
                     .setShadow(U.getDisplayUtils().dip2px(1), 0, U.getDisplayUtils().dip2px(1), U.getColor(R.color.black_trans_50));

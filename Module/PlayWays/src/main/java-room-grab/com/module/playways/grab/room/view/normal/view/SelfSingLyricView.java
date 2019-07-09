@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view.normal.view;
 
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -172,7 +173,7 @@ public class SelfSingLyricView extends ExViewStub {
     }
 
     protected SpannableStringBuilder createLyricSpan(String lyric, SongModel songModel) {
-        if (songModel != null) {
+        if (songModel != null && !TextUtils.isEmpty(songModel.getUploaderName())) {
             SpannableStringBuilder ssb = new SpanUtils()
                     .append(lyric)
                     .append("\n")
