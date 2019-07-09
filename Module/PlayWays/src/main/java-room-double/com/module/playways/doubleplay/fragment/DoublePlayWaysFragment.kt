@@ -37,8 +37,8 @@ import com.module.playways.doubleplay.presenter.DoubleCorePresenter
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
 import com.module.playways.doubleplay.view.DoubleSingCardView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
-import com.module.playways.grab.room.songmanager.OwnerManagerActivity
-import com.module.playways.grab.room.songmanager.SongManageData
+import com.module.playways.songmanager.OwnerManagerActivity
+import com.module.playways.songmanager.SongManageData
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder

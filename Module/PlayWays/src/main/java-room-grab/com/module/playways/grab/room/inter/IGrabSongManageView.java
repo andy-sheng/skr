@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.inter;
 
-import com.module.playways.grab.room.songmanager.model.GrabRoomSongModel;
+import com.module.playways.songmanager.model.GrabRoomSongModel;
 import com.component.busilib.friends.SpecialModel;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.inter;
 
-import com.module.playways.grab.room.songmanager.model.GrabWishSongModel;
+import com.module.playways.songmanager.model.GrabWishSongModel;
 
 import java.util.List;
 

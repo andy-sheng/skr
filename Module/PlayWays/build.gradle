@@ -98,6 +98,9 @@ android {
 
             java.srcDirs += 'src/main/java-room-double'
             res.srcDirs += 'src/main/res-room-double'
+
+            java.srcDirs += 'src/main/java-songmanage'
+            res.srcDirs += 'src/main/res-songmanage'
         }
     }
 }

@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -22,14 +21,13 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
-import com.module.playways.grab.room.songmanager.SongManageData;
+import com.module.playways.songmanager.SongManageData;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 import com.module.playways.room.song.view.SearchFeedbackView;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.toast.CommonToastView;
@@ -45,8 +43,6 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
-
-import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
 public class GrabSearchSongFragment extends BaseFragment {
 
