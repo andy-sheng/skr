@@ -8,6 +8,13 @@ import java.util.List;
 
 
 public class RecommendModel implements Serializable {
+
+    public static final int TYPE_FRIEND = 1;  //好友房
+    public static final int TYPE_RECOMMEND = 2;  //机器推荐房间
+    public static final int TYPE_FOLLOW = 3;  //关注房间
+    public static final int TYPE_OP_RECOMMEND = 4; //运营推荐房间
+    public static final int TYPE_ROOM_CITY = 5; //同城推荐房间
+
     /**
      * roomInfo : {"inPlayersNum":0,"isOwner":true,"roomID":0,"roomTag":"URT_UNKNOWN","roomType":"RT_UNKNOWN","tagID":0,"totalPlayersNum":0,"userID":0}
      * tagInfo : {"bgColor":"string","introduction":"string","tagID":0,"tagName":"string"}

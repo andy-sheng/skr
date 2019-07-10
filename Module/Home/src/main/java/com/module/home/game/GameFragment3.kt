@@ -120,7 +120,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 val color: Int = drawable.color
                 if (position == 0) {
                     animation(color, Color.parseColor("#7088FF"))
-                    mFriendRoomGameView?.initData()
+                    mFriendRoomGameView?.initData(false)
                     StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
                 } else if (position == 1) {
                     animation(color, Color.parseColor("#7088FF"))
@@ -166,7 +166,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         super.onFragmentVisible()
         mPresenter.initGameKConfig()
         if (mGameVp.currentItem == 0) {
-            mFriendRoomGameView?.initData()
+            mFriendRoomGameView?.initData(false)
             StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
         } else if (mGameVp.currentItem == 1) {
             mFriendRoomGameView?.stopTimer()
@@ -188,7 +188,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
         mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
         if (mGameVp.currentItem == 0) {
-            mFriendRoomGameView.initData()
+            mFriendRoomGameView.initData(true)
         }
     }
 

@@ -115,16 +115,20 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
             mRoomPlayerNumTv.setText(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum());
 
-            if (mFriendRoomModel.getTagInfo() != null) {
-                // 只显示专场名称
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(mFriendRoomModel.getTagInfo().getTagName())
-                        .create();
-                mRoomInfoTv.setVisibility(View.VISIBLE);
-                mRoomInfoTv.setText(stringBuilder);
+            if (TextUtils.isEmpty(mFriendRoomModel.getRoomInfo().getRoomName())) {
+                mRoomInfoTv.setText(mFriendRoomModel.getRoomInfo().getRoomName());
             } else {
-                mRoomInfoTv.setVisibility(View.GONE);
-                MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
+                if (mFriendRoomModel.getTagInfo() != null) {
+                    // 只显示专场名称
+                    SpannableStringBuilder stringBuilder = new SpanUtils()
+                            .append(mFriendRoomModel.getTagInfo().getTagName())
+                            .create();
+                    mRoomInfoTv.setVisibility(View.VISIBLE);
+                    mRoomInfoTv.setText(stringBuilder);
+                } else {
+                    mRoomInfoTv.setVisibility(View.GONE);
+                    MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
+                }
             }
         } else {
             MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);

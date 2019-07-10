@@ -77,10 +77,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginBottom="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
         android:text="中华小曲库"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintRight_toLeftOf="@id/room_player_num_tv"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 

@@ -1,9 +1,11 @@
 package com.component.busilib.friends;
 
+import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface GrabSongApi {
@@ -68,4 +70,14 @@ public interface GrabSongApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room")
     Observable<ApiResult> getFirstPageRecommendRoomList();
+
+
+    /**
+     * 检查某个人在房间的状态
+     *
+     * @param userID
+     * @return
+     */
+    @GET("http://dev.room.inframe.mobi/v1/room/roominfo")
+    Observable<ApiResult> checkUserRoom(@Query("userID")int userID);
 }

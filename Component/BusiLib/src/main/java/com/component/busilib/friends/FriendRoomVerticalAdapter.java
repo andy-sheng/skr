@@ -89,6 +89,20 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void update(RecommendModel model, int position) {
+        if (mDataList != null && mDataList.size() >= position && position > 0) {
+            mDataList.set(position - 1, model);
+            notifyItemChanged(position);
+        }
+    }
+
+    public void remove(int position) {
+        if (mDataList != null && mDataList.size() >= position && position > 0) {
+            mDataList.remove(position - 1);
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mDataList.size() + 1;
