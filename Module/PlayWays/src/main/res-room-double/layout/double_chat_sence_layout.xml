@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mute_mic_iv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_95_dp"
+        app:bl_selected_drawable="@drawable/skr_jingyin_able"
+        app:bl_unSelected_drawable="@drawable/srf_bimai"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:text="静音"
+        android:textColor="@color/white_trans_50"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/mute_mic_iv"
+        app:layout_constraintStart_toStartOf="@+id/mute_mic_iv"
+        app:layout_constraintTop_toBottomOf="@+id/mute_mic_iv" />
+</android.support.constraint.ConstraintLayout>
