@@ -6,6 +6,62 @@
     android:layout_height="match_parent"
     android:background="#404A9A">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/tag_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_56_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/chat_tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="聊天"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_selected_textColor="#FFFFC15B"
+        app:bl_unSelected_textColor="@color/white_trans_50"
+        app:layout_constraintBottom_toBottomOf="@+id/tag_bg"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/game_tag_tv"
+        app:layout_constraintTop_toTopOf="@+id/tag_bg" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/game_tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_40_dp"
+        android:text="游戏"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_selected_textColor="#FFFFC15B"
+        app:bl_unSelected_textColor="@color/white_trans_50"
+        app:layout_constraintBottom_toBottomOf="@+id/tag_bg"
+        app:layout_constraintLeft_toRightOf="@id/chat_tag_tv"
+        app:layout_constraintRight_toLeftOf="@id/sing_tag_tv"
+        app:layout_constraintTop_toTopOf="@+id/tag_bg" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sing_tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="嗨唱"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_selected_textColor="#FFFFC15B"
+        app:bl_unSelected_textColor="@color/white_trans_50"
+        app:layout_constraintBottom_toBottomOf="@+id/tag_bg"
+        app:layout_constraintLeft_toRightOf="@id/game_tag_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tag_bg" />
+
     <TextView
         android:id="@+id/report_tv"
         android:layout_width="wrap_content"
@@ -161,100 +217,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="0dp" />
-
-    <com.module.playways.doubleplay.view.DoubleSingCardView
-        android:id="@+id/show_card1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/view_210_dp"
-        android:layout_marginBottom="@dimen/view_140_dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.module.playways.doubleplay.view.DoubleSingCardView
-        android:id="@+id/show_card2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/view_210_dp"
-        android:layout_marginBottom="@dimen/view_140_dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/mic_iv"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_42_dp"
-        android:layout_marginBottom="@dimen/view_54_dp"
-        android:background="@drawable/srf_jingyin_bukedianji"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/pick_iv" />
-
-    <com.module.playways.doubleplay.view.DiffuseView
-        android:id="@+id/pick_diffuse_view"
-        android:layout_width="@dimen/view_200_dp"
-        android:layout_height="@dimen/view_200_dp"
-        app:diffuse_color="#FF8AB6"
-        app:diffuse_coreRadius="@dimen/view_28_dp"
-        app:diffuse_maxRadius="@dimen/view_100_dp"
-        app:diffuse_speed="@dimen/view_1_33_dp"
-        app:diffuse_stroke_width="@dimen/view_10_dp"
-        app:diffuse_addNewRadius="@dimen/view_50_dp"
-        app:layout_constraintBottom_toBottomOf="@id/pick_iv"
-        app:layout_constraintLeft_toLeftOf="@+id/pick_iv"
-        app:layout_constraintRight_toRightOf="@+id/pick_iv"
-        app:layout_constraintTop_toTopOf="@+id/pick_iv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/pick_iv"
-        android:layout_width="@dimen/view_56_dp"
-        android:layout_height="@dimen/view_56_dp"
-        android:layout_marginBottom="@dimen/view_48_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/mic_iv"
-        app:layout_constraintRight_toLeftOf="@id/select_iv"
-        app:src_pressed_drawable="@drawable/srf_pick_xuanzhong"
-        app:src_unPressed_drawable="@drawable/srf_pick" />
-
-
-    <ImageView
-        android:id="@+id/select_iv"
-        android:layout_width="@dimen/view_42_dp"
-        android:layout_height="@dimen/view_42_dp"
-        android:layout_marginBottom="@dimen/view_54_dp"
-        android:background="@drawable/srf_diange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/pick_iv"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <TextView
-        android:id="@+id/mic_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:text="静音"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/mic_iv"
-        app:layout_constraintRight_toRightOf="@id/mic_iv" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:text="点歌"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/select_iv"
-        app:layout_constraintRight_toRightOf="@id/select_iv" />
 
     <com.module.playways.view.ZanView
         android:id="@+id/zan_display_view"
