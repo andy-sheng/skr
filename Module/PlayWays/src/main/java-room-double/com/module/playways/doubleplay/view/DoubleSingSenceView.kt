@@ -123,6 +123,10 @@ class DoubleSingSenceView : ConstraintLayout {
         mMicIv?.setSelected(ZqEngineKit.getInstance().params.isLocalAudioStreamMute)
     }
 
+    fun unselected(){
+        pick_diffuse_view.visibility = View.GONE
+    }
+
     fun updateLockState() {
         mCurrentCardView?.updateLockState()
     }

@@ -83,8 +83,19 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     var mHasInit: Boolean = false
 
-    var mPagerPosition: Int by Delegates.observable(1, { _, _, newPosition ->
+    var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
         mViewPager?.setCurrentItem(newPosition, false)
+        when (oldPositon) {
+            0 -> {
+                mDoubleChatSenceView?.unselected()
+            }
+            1 -> {
+                mDoubleGameSenceView?.unselected()
+            }
+            2 -> {
+                mDoubleSingSenceView?.unselected()
+            }
+        }
         when (newPosition) {
             0 -> {
                 mDoubleChatSenceView?.selected()
@@ -136,6 +147,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mChatTagTv = mRootView.findViewById(R.id.chat_tag_tv) as ExTextView
         mGameTagTv = mRootView.findViewById(R.id.game_tag_tv) as ExTextView
         mSingTagTv = mRootView.findViewById(R.id.sing_tag_tv) as ExTextView
+        mZanDisplayView = mRootView.findViewById(R.id.zan_display_view) as ZanView
 
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {

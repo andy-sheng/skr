@@ -46,6 +46,10 @@ class DoubleChatSenceView : ConstraintLayout {
         mMicIv?.setSelected(ZqEngineKit.getInstance().params.isLocalAudioStreamMute)
     }
 
+    fun unselected(){
+
+    }
+
     fun setData() {
 
     }
