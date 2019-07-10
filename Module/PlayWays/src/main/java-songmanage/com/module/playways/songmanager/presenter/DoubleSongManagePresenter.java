@@ -14,7 +14,7 @@ import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent;
 import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
-import com.module.playways.grab.room.inter.IGrabSongManageView;
+import com.module.playways.songmanager.view.IGrabSongManageView;
 import com.module.playways.songmanager.SongManageData;
 import com.module.playways.songmanager.event.AddCustomGameEvent;
 import com.module.playways.songmanager.event.AddSongEvent;

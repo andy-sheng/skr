@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.inter;
+package com.module.playways.songmanager.view;
 
 import com.module.playways.songmanager.model.GrabWishSongModel;
 

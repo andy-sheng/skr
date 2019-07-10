@@ -12,7 +12,6 @@ import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.inter.IGrabWishManageView;
 import com.module.playways.songmanager.adapter.WishSongAdapter;
 import com.module.playways.songmanager.model.GrabWishSongModel;
 import com.module.playways.songmanager.presenter.GrabWishSongPresenter;

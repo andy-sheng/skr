@@ -11,7 +11,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.room.inter.IGrabWishManageView;
+import com.module.playways.songmanager.view.IGrabWishManageView;
 import com.module.playways.songmanager.event.AddSuggestSongEvent;
 import com.module.playways.songmanager.model.GrabWishSongModel;
 

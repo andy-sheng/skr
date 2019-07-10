@@ -9,7 +9,7 @@ import com.common.base.BaseActivity;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.playways.R;
-import com.module.playways.songmanager.fragment.OwnerManageFragment;
+import com.module.playways.songmanager.fragment.GrabSongManageFragment;
 
 public class OwnerManagerActivity extends BaseActivity {
     public static void open(FragmentActivity activity, SongManageData roomData) {
@@ -28,7 +28,7 @@ public class OwnerManagerActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         SongManageData mRoomData = (SongManageData) getIntent().getSerializableExtra("room_data");
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, OwnerManageFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSongManageFragment.class)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .setEnterAnim(R.anim.slide_right_in)
