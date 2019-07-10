@@ -78,13 +78,14 @@ class FriendRoomGameView : RelativeLayout {
         mCameraPermission = SkrCameraPermission()
 
         refreshLayout.setEnableRefresh(true)
-        refreshLayout.setEnableLoadMore(false)
+        refreshLayout.setEnableLoadMore(true)
         refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         refreshLayout.setEnableOverScrollDrag(true)
         refreshLayout.setHeaderMaxDragRate(1.5f)
         refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-
+                loadRecommendData(mOffset)
+                starTimer((mRecommendInterval * 1000).toLong())
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -180,7 +181,7 @@ class FriendRoomGameView : RelativeLayout {
                 .interval((mRecommendInterval * 1000).toLong())
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
-                        refreshRecommendData()
+                        loadRecommendData(0)
                     }
                 })
     }
@@ -189,18 +190,23 @@ class FriendRoomGameView : RelativeLayout {
         mRecommendTimer?.dispose()
     }
 
-    private fun refreshRecommendData() {
+    private fun loadRecommendData(offset: Int) {
         if (mDisposable != null && !mDisposable!!.isDisposed) {
             mDisposable?.dispose()
         }
 
         val grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
-        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(0, RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(offset, RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)
-                    mOffset = obj.data!!.getIntValue("offset")
-                    refreshView(list, true)
+                    val newOffset = obj.data!!.getIntValue("offset")
+                    if (offset == 0) {
+                        refreshView(list, true, newOffset)
+                    } else {
+                        refreshView(list, false, newOffset)
+                    }
+
                 }
             }
         })
@@ -211,7 +217,8 @@ class FriendRoomGameView : RelativeLayout {
      *
      * @param list
      */
-    private fun refreshView(list: List<RecommendModel>?, clear: Boolean) {
+    private fun refreshView(list: List<RecommendModel>?, clear: Boolean, newOffset: Int) {
+        mOffset = newOffset
         refreshLayout.finishRefresh()
         refreshLayout.finishLoadMore()
 
