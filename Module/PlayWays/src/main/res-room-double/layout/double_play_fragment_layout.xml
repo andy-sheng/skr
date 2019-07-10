@@ -33,20 +33,12 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/left_avatar_sdv"
-        android:layout_width="@dimen/view_67_dp"
-        android:layout_height="@dimen/view_67_dp"
+        android:layout_width="@dimen/view_62_dp"
+        android:layout_height="@dimen/view_62_dp"
         android:layout_marginLeft="@dimen/view_65_dp"
-        android:layout_marginTop="@dimen/view_82_dp"
+        android:layout_marginTop="@dimen/view_62_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!--<com.module.playways.view.ZanView-->
-        <!--android:id="@+id/left_zanView"-->
-        <!--android:layout_width="@dimen/view_67_dp"-->
-        <!--android:layout_height="@dimen/view_90_dp"-->
-        <!--app:layout_constraintEnd_toEndOf="@+id/left_avatar_sdv"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/left_avatar_sdv"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/left_lock_icon"
@@ -60,6 +52,7 @@
         android:id="@+id/no_limit_tip"
         android:layout_width="@dimen/view_122_dp"
         android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_52_dp"
         android:background="@drawable/srf_tishi"
         android:gravity="center"
         android:paddingBottom="@dimen/view_8_dp"
@@ -67,7 +60,7 @@
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/left_avatar_sdv"
+        app:layout_constraintBottom_toBottomOf="@+id/left_avatar_sdv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -116,8 +109,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/right_avatar_sdv"
-        android:layout_width="@dimen/view_67_dp"
-        android:layout_height="@dimen/view_67_dp"
+        android:layout_width="@dimen/view_62_dp"
+        android:layout_height="@dimen/view_62_dp"
         android:layout_marginRight="@dimen/view_65_dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/left_avatar_sdv" />
@@ -155,7 +148,7 @@
         android:id="@+id/unlock_tv"
         android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_24_dp"
-        android:layout_marginTop="@dimen/view_162_dp"
+        android:layout_marginTop="@dimen/view_120_dp"
         android:gravity="center"
         android:text="亮灯"
         android:textColor="#404A9A"
@@ -169,41 +162,6 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <com.common.view.ex.ExFrameLayout
-        android:id="@+id/word_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_40_dp"
-        android:layout_marginTop="@dimen/view_243_dp"
-        android:layout_marginRight="@dimen/view_40_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_solid_color="@color/black_trans_20"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/word_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="left"
-            android:lineSpacingExtra="@dimen/view_8_dp"
-            android:paddingTop="@dimen/view_30_dp"
-            android:paddingBottom="@dimen/view_30_dp"
-            android:text="茫茫人海中遇见你\n如同阳光照进心底\n这最美的时光有你相依\n我心情无法言喻"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/view_14_dp" />
-    </com.common.view.ex.ExFrameLayout>
-
-
-    <ViewStub
-        android:id="@+id/double_sing_card_view_layout_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/double_sing_card_view_layout" />
-
-    <!--视频模式下自己演唱时歌词面板 合唱小游戏歌词 以及 清唱 伴奏歌词-->
     <com.module.playways.doubleplay.view.DoubleSingCardView
         android:id="@+id/show_card1"
         android:layout_width="match_parent"

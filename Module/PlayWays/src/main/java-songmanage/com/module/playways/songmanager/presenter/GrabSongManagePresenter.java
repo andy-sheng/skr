@@ -14,7 +14,7 @@ import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
-import com.module.playways.grab.room.inter.IGrabSongManageView;
+import com.module.playways.songmanager.view.IGrabSongManageView;
 import com.module.playways.songmanager.event.AddCustomGameEvent;
 import com.module.playways.songmanager.event.AddSongEvent;
 import com.module.playways.songmanager.event.AddSuggestSongEvent;

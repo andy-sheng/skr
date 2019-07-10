@@ -22,7 +22,6 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
-import com.common.view.ex.ExFrameLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
@@ -56,7 +55,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mLeftLockIcon: ImageView? = null
     private var mLeftNameTv: ExTextView? = null
     private var mUnlockTv: ExTextView? = null
-    private var mWordTv: ExTextView? = null
     private var mRightAvatarSdv: SimpleDraweeView? = null   //右边固定是自己
     private var mRightLockIcon: ImageView? = null
     private var mRightNameTv: ExTextView? = null
@@ -65,7 +63,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mMicTv: TextView? = null
     private var mMicIv: ExImageView? = null
     private var mNoLimitIcon: ExImageView? = null
-    private var mWordArea: ExFrameLayout? = null
     private var mPickIv: ImageView? = null
     private var mSelectIv: ImageView? = null
     private var mZanDisplayView: ZanView? = null
@@ -105,7 +102,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightNameTv = mRootView.findViewById<View>(R.id.right_name_tv) as ExTextView
         mMicIv = mRootView.findViewById<View>(R.id.mic_iv) as ExImageView
         mPickIv = mRootView.findViewById<View>(R.id.pick_iv) as ImageView
-        mWordTv = mRootView.findViewById(R.id.word_tv) as ExTextView
         mSelectIv = mRootView.findViewById<View>(R.id.select_iv) as ImageView
         mUnlockTv = mRootView.findViewById<View>(R.id.unlock_tv) as ExTextView
         mCountDownTv = mRootView.findViewById<View>(R.id.count_down_tv) as ExTextView
@@ -113,11 +109,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
         mNoLimitTip = mRootView.findViewById(R.id.no_limit_tip) as ExTextView
         mMicTv = mRootView.findViewById(R.id.mic_tv) as TextView
-        mWordArea = mRootView.findViewById(R.id.word_area) as ExFrameLayout
         mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
         mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
-
-        mWordTv?.text = mRoomData!!.config?.roomSignature
 
         var mListener = object : DoubleSingCardView.Listener() {
             override fun clickChangeSong() {
@@ -359,7 +352,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun startGame(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
-        mWordArea?.visibility = GONE
         toNextSongCardView()
         mCurrentCardView?.visibility = VISIBLE
         mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
@@ -430,7 +422,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun noMusic() {
         mDoubleSingCardView1.visibility = GONE
         mDoubleSingCardView2.visibility = GONE
-        mWordArea?.visibility = VISIBLE
     }
 
     override fun picked(count: Int) {

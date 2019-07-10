@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -17,7 +18,6 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.R;
-import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.songmanager.SongManageData;
 import com.module.playways.songmanager.adapter.ManageSongAdapter;
 import com.module.playways.songmanager.event.SongNumChangeEvent;
@@ -191,7 +191,9 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
         mSpecialModelId = specialModel.getTagID();
         mTvSelectedTag.setText(specialModel.getTagName());
-        mTvSelectedTag.setTextColor(Color.parseColor(specialModel.getBgColor()));
+        if (!TextUtils.isEmpty(specialModel.getBgColor())) {
+            mTvSelectedTag.setTextColor(Color.parseColor(specialModel.getBgColor()));
+        }
     }
 
     @Override

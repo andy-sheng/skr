@@ -47,10 +47,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class OwnerManageFragment extends BaseFragment implements IOwnerManageView {
+/**
+ * 一唱到底，房主点歌或房成员点歌
+ */
+public class GrabSongManageFragment extends BaseFragment implements IOwnerManageView {
     public final static String TAG = "OwnerManageFragment";
 
-    ExRelativeLayout mRlContent;
     ExTextView mSearchSongIv;
     ViewPager mViewpager;
     SlidingTabLayout mTagTab;
@@ -70,7 +72,7 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
 
     @Override
     public int initView() {
-        return R.layout.owner_manage_fragment_layout;
+        return R.layout.grab_song_manage_fragment_layout;
     }
 
     @Override
@@ -83,7 +85,6 @@ public class OwnerManageFragment extends BaseFragment implements IOwnerManageVie
         }
 
         mCommonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mRlContent = (ExRelativeLayout) mRootView.findViewById(R.id.rl_content);
         mSearchSongIv = (ExTextView) mRootView.findViewById(R.id.search_song_iv);
         mTagTab = (SlidingTabLayout) mRootView.findViewById(R.id.tag_tab);
         mViewpager = (ViewPager) mRootView.findViewById(R.id.viewpager);
