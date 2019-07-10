@@ -207,7 +207,16 @@ class FriendRoomGameView : RelativeLayout {
                         refreshView(list, false, newOffset)
                     }
 
+                } else {
+                    refreshLayout.finishRefresh()
+                    refreshLayout.finishLoadMore()
                 }
+            }
+
+            override fun onNetworkError(errorType: ErrorType?) {
+                super.onNetworkError(errorType)
+                refreshLayout.finishRefresh()
+                refreshLayout.finishLoadMore()
             }
         })
     }
