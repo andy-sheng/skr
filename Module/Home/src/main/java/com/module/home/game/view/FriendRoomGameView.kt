@@ -308,9 +308,11 @@ class FriendRoomGameView : RelativeLayout {
             mFriendRoomVeritAdapter.dataList.addAll(list)
             mFriendRoomVeritAdapter.notifyDataSetChanged()
         } else {
-            mLoadService.showCallback(EmptyCallback::class.java)
-            mFriendRoomVeritAdapter.dataList.clear()
-            mFriendRoomVeritAdapter.notifyDataSetChanged()
+            if (mFriendRoomVeritAdapter.dataList != null && mFriendRoomVeritAdapter.dataList.size > 0) {
+
+            } else {
+                mLoadService.showCallback(EmptyCallback::class.java)
+            }
         }
     }
 
