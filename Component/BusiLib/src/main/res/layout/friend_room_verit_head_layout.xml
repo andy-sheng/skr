@@ -3,20 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_88_dp"
-    app:bl_corners_radius="@dimen/view_8_dp"
     android:layout_margin="@dimen/view_6_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_shape="rectangle"
     app:bl_solid_color="#D3D0FF">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_8_dp"
         android:text="邀请好友一起玩"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/qq_iv"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:background="@drawable/icon_weixin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/weixin_iv" />
+
+    <ImageView
+        android:id="@+id/weixin_iv"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:background="@drawable/icon_qq"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/qq_iv"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </com.common.view.ex.ExConstraintLayout>
