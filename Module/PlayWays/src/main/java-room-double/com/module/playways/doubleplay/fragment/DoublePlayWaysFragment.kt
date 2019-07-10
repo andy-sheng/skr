@@ -68,8 +68,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mWordArea: ExFrameLayout? = null
     private var mPickIv: ImageView? = null
     private var mSelectIv: ImageView? = null
-    private var mRightZanView: ZanView? = null
-    private var mLeftZanView: ZanView? = null
+    private var mZanDisplayView: ZanView? = null
     private var mDialogPlus: DialogPlus? = null
 
     lateinit var mDoubleCorePresenter: DoubleCorePresenter
@@ -110,8 +109,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mSelectIv = mRootView.findViewById<View>(R.id.select_iv) as ImageView
         mUnlockTv = mRootView.findViewById<View>(R.id.unlock_tv) as ExTextView
         mCountDownTv = mRootView.findViewById<View>(R.id.count_down_tv) as ExTextView
-        mRightZanView = mRootView.findViewById<View>(R.id.right_zanView) as ZanView
-        mLeftZanView = mRootView.findViewById<View>(R.id.left_zanView) as ZanView
+        mZanDisplayView = mRootView.findViewById<View>(R.id.zan_display_view) as ZanView
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
         mNoLimitTip = mRootView.findViewById(R.id.no_limit_tip) as ExTextView
         mMicTv = mRootView.findViewById(R.id.mic_tv) as TextView
@@ -187,7 +185,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             if (mRoomData!!.isRoomPrepared()) {
                 mDoubleCorePresenter.pickOther()
             }
-            mRightZanView?.addZanXin(1)
+            mZanDisplayView?.addZanXin(1)
         }
 
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
@@ -436,7 +434,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun picked(count: Int) {
-        mLeftZanView?.addZanXin(count)
+        mZanDisplayView?.addZanXin(count)
     }
 
     fun toNextSongCardView() {
@@ -572,8 +570,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun destroy() {
         super.destroy()
         countDownTimer?.dispose()
-        mLeftZanView?.stop()
-        mRightZanView?.stop()
+        mZanDisplayView?.destroy()
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {

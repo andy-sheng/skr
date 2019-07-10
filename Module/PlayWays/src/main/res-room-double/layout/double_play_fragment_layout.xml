@@ -40,13 +40,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.module.playways.view.ZanView
-        android:id="@+id/left_zanView"
-        android:layout_width="@dimen/view_67_dp"
-        android:layout_height="@dimen/view_90_dp"
-        app:layout_constraintEnd_toEndOf="@+id/left_avatar_sdv"
-        app:layout_constraintStart_toStartOf="@+id/left_avatar_sdv"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--<com.module.playways.view.ZanView-->
+        <!--android:id="@+id/left_zanView"-->
+        <!--android:layout_width="@dimen/view_67_dp"-->
+        <!--android:layout_height="@dimen/view_90_dp"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/left_avatar_sdv"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/left_avatar_sdv"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/left_lock_icon"
@@ -121,14 +121,6 @@
         android:layout_marginRight="@dimen/view_65_dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/left_avatar_sdv" />
-
-    <com.module.playways.view.ZanView
-        android:id="@+id/right_zanView"
-        android:layout_width="@dimen/view_67_dp"
-        android:layout_height="@dimen/view_90_dp"
-        app:layout_constraintEnd_toEndOf="@+id/right_avatar_sdv"
-        app:layout_constraintStart_toStartOf="@+id/right_avatar_sdv"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/right_lock_icon"
@@ -289,5 +281,10 @@
         app:layout_constraintLeft_toLeftOf="@id/select_iv"
         app:layout_constraintRight_toRightOf="@id/select_iv" />
 
+    <com.module.playways.view.ZanView
+        android:id="@+id/zan_display_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
 </android.support.constraint.ConstraintLayout>
