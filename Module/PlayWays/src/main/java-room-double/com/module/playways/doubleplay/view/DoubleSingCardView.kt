@@ -20,12 +20,6 @@ import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 
 
 class DoubleSingCardView : ConstraintLayout {
-    companion object {
-        const val TAG = "DoubleSingCardView"
-        const val TAG_ADD_SONG = 1
-        const val TAG_CHANGE_SONG = 2
-    }
-
     var mCurMusic: LocalCombineRoomMusic? = null
     var mSongOwnerIv: BaseImageView
     var mSongNameTv: TextView
@@ -36,15 +30,15 @@ class DoubleSingCardView : ConstraintLayout {
     }
     var mEnterTranslateAnimation: TranslateAnimation? = null
     var mScaleAnimation: ScaleAnimation? = null
-    var mListener: DoubleSingCardView.Listener? = null
     var mDoubleRoomData: DoubleRoomData? = null
+    var mOnClickNextSongListener: (() -> Unit)? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        View.inflate(context, R.layout.double_sing_card_view_layout, this)
+        inflate(context, R.layout.double_sing_card_view_layout, this)
         mSongOwnerIv = findViewById(com.module.playways.R.id.song_owner_iv)
         mSongNameTv = findViewById(com.module.playways.R.id.song_name_tv)
         mNextSongTipTv = findViewById(com.module.playways.R.id.next_song_tip_tv)
@@ -52,7 +46,7 @@ class DoubleSingCardView : ConstraintLayout {
 
         mCutSongTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                mListener?.clickChangeSong()
+                mOnClickNextSongListener?.invoke()
             }
         })
     }
@@ -142,10 +136,4 @@ class DoubleSingCardView : ConstraintLayout {
             mNextSongTipTv?.text = mNext
         }
     }
-
-    abstract class Listener {
-        abstract fun clickChangeSong()
-        abstract fun clickToAddMusic()
-    }
-
 }

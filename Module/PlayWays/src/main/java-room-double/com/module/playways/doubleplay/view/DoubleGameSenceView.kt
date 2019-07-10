@@ -6,27 +6,77 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.log.MyLog
+import com.common.rxretrofit.ApiManager
+import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.common.view.ex.drawable.DrawableCreator
+import com.module.playways.R
+import com.module.playways.doubleplay.DoubleRoomData
+import com.module.playways.doubleplay.DoubleRoomServerApi
+import com.zq.mediaengine.kit.ZqEngineKit
 
 
-class DoubleGameSenceView(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
+class DoubleGameSenceView : ConstraintLayout {
     val mShowCard: DoubleSingCardView
     val mMicIv: ExImageView
     val mPickIv: ImageView
     val mSelectIv: ImageView
     val mMicTv: TextView
+    var mPickFun: (() -> Unit)? = null
+    var mRoomData: DoubleRoomData? = null
+    internal var mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
+
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        View.inflate(context, com.module.playways.R.layout.double_game_sence_layout, this)
+        inflate(context, com.module.playways.R.layout.double_game_sence_layout, this)
 
         mShowCard = findViewById(com.module.playways.R.id.show_card)
         mMicIv = findViewById(com.module.playways.R.id.mic_iv)
         mPickIv = findViewById(com.module.playways.R.id.pick_iv) as ImageView
         mSelectIv = findViewById(com.module.playways.R.id.select_iv) as ImageView
         mMicTv = findViewById(com.module.playways.R.id.mic_tv)
+        mShowCard.mCutSongTv.text = "结束"
+        mShowCard.mOnClickNextSongListener = {
+            mDoubleRoomServerApi.nextSong(null)
+        }
+
+        mPickIv.setOnClickListener {
+            mPickFun?.invoke()
+        }
+    }
+
+    fun joinAgora() {
+        MyLog.d("DoubleGameSenceView", "joinAgora")
+        val drawable = DrawableCreator.Builder()
+                .setSelectedDrawable(U.getDrawable(R.drawable.skr_jingyin_able))
+                .setUnSelectedDrawable(U.getDrawable(R.drawable.srf_bimai))
+                .build()
+        mMicIv?.background = drawable
+
+        mMicIv?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                // 开关麦克
+                val isSelected = mMicIv?.isSelected
+                ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
+                mMicIv?.setSelected(!isSelected)
+            }
+        })
+    }
+
+    fun selected() {
+        mMicIv?.setSelected(ZqEngineKit.getInstance().params.isLocalAudioStreamMute)
     }
 
     fun setData() {
+
+    }
+
+    fun destroy() {
 
     }
 }

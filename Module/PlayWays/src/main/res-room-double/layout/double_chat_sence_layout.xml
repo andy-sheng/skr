@@ -9,8 +9,7 @@
         android:layout_width="@dimen/view_40_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginBottom="@dimen/view_95_dp"
-        app:bl_selected_drawable="@drawable/skr_jingyin_able"
-        app:bl_unSelected_drawable="@drawable/srf_bimai"
+        android:background="@drawable/srf_jingyin_bukedianji"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
