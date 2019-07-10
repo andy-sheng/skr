@@ -16,6 +16,7 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.android.synthetic.main.double_game_sence_layout.view.*
 
 
 class DoubleGameSenceView : ConstraintLayout {
@@ -47,6 +48,7 @@ class DoubleGameSenceView : ConstraintLayout {
 
         mPickIv.setOnClickListener {
             mPickFun?.invoke()
+            pick_diffuse_view.start(2000)
         }
     }
 

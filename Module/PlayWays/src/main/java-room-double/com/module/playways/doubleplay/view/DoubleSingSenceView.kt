@@ -25,6 +25,7 @@ import com.module.playways.songmanager.OwnerManagerActivity
 import com.module.playways.songmanager.SongManageData
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.double_sing_sence_layout.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -74,6 +75,7 @@ class DoubleSingSenceView : ConstraintLayout {
 
         mPickIv.setOnClickListener {
             mPickFun?.invoke()
+            pick_diffuse_view.start(2000)
         }
     }
 
