@@ -19,20 +19,6 @@ public class RecommendModel implements Serializable {
     private SpecialModel tagInfo;
     private UserInfoModel userInfo;
     private int category;
-    private String displayName;
-    private String displayURL;
-    private String displayAvatar;
-    private String displayDesc;
-    private String mediaTagURL;
-    private List<PlayUser> playUsers;
-
-    public List<PlayUser> getPlayUsers() {
-        return playUsers;
-    }
-
-    public void setPlayUsers(List<PlayUser> playUsers) {
-        this.playUsers = playUsers;
-    }
 
     public SimpleRoomInfo getRoomInfo() {
         return roomInfo;
@@ -67,47 +53,6 @@ public class RecommendModel implements Serializable {
         this.category = category;
     }
 
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getDisplayURL() {
-        return displayURL;
-    }
-
-    public void setDisplayURL(String displayURL) {
-        this.displayURL = displayURL;
-    }
-
-    public String getDisplayAvatar() {
-        return displayAvatar;
-    }
-
-    public void setDisplayAvatar(String displayAvatar) {
-        this.displayAvatar = displayAvatar;
-    }
-
-    public String getDisplayDesc() {
-        return displayDesc;
-    }
-
-    public void setDisplayDesc(String displayDesc) {
-        this.displayDesc = displayDesc;
-    }
-
-    public String getMediaTagURL() {
-        return mediaTagURL;
-    }
-
-    public void setMediaTagURL(String mediaTagURL) {
-        this.mediaTagURL = mediaTagURL;
-    }
-
     @Override
     public String toString() {
         return "RecommendModel{" +
@@ -115,34 +60,7 @@ public class RecommendModel implements Serializable {
                 ", tagInfo=" + tagInfo +
                 ", userInfo=" + userInfo +
                 ", category=" + category +
-                ", displayName='" + displayName + '\'' +
-                ", displayURL='" + displayURL + '\'' +
-                ", displayAvatar='" + displayAvatar + '\'' +
-                ", displayDesc='" + displayDesc + '\'' +
-                ", mediaTagURL='" + mediaTagURL + '\'' +
-                ", playUsers=" + playUsers +
                 '}';
-    }
-
-    public static class PlayUser implements Serializable {
-        private int userID;
-        private String avatar;
-
-        public int getUserID() {
-            return userID;
-        }
-
-        public void setUserID(int userID) {
-            this.userID = userID;
-        }
-
-        public String getAvatar() {
-            return avatar;
-        }
-
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
-        }
     }
 
 }

@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
@@ -34,6 +35,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     SimpleDraweeView mRecommendTagSdv;
     SimpleDraweeView mMediaTagSdv;
     SimpleDraweeView mAvatarIv;
+    ExTextView mNameTv;
     ExTextView mRoomPlayerNumTv;
     ExTextView mRoomInfoTv;
 
@@ -44,6 +46,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         mRecommendTagSdv = itemView.findViewById(R.id.recommend_tag_sdv);
         mMediaTagSdv = itemView.findViewById(R.id.media_tag_sdv);
         mAvatarIv = itemView.findViewById(R.id.avatar_iv);
+        mNameTv = itemView.findViewById(R.id.name_tv);
         mRoomPlayerNumTv = itemView.findViewById(R.id.room_player_num_tv);
         mRoomInfoTv = itemView.findViewById(R.id.room_info_tv);
 
@@ -84,18 +87,26 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                         .build());
 
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
-            if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayURL())) {
+            if (!TextUtils.isEmpty(mFriendRoomModel.getRoomInfo().getRoomTagURL())) {
                 mRecommendTagSdv.setVisibility(View.VISIBLE);
-                FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getDisplayURL())
+                FrescoWorker.loadImage(mRecommendTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getRoomInfo().getRoomTagURL())
                         .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                         .build());
             } else {
                 mRecommendTagSdv.setVisibility(View.GONE);
             }
 
-            if (!TextUtils.isEmpty(mFriendRoomModel.getMediaTagURL())) {
+            String nickName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getUserInfo().getNickname());
+            if (!TextUtils.isEmpty(nickName)) {
+                mNameTv.setVisibility(View.VISIBLE);
+                mNameTv.setText(nickName);
+            } else {
+                mNameTv.setVisibility(View.GONE);
+            }
+
+            if (!TextUtils.isEmpty(mFriendRoomModel.getRoomInfo().getMediaTagURL())) {
                 mMediaTagSdv.setVisibility(View.VISIBLE);
-                FrescoWorker.loadImage(mMediaTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getMediaTagURL())
+                FrescoWorker.loadImage(mMediaTagSdv, ImageFactory.newPathImage(mFriendRoomModel.getRoomInfo().getMediaTagURL())
                         .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                         .build());
             } else {
@@ -115,22 +126,6 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                 mRoomInfoTv.setVisibility(View.GONE);
                 MyLog.w(TAG, "服务器数据有问题" + " friendRoomModel=" + friendRoomModel + " position=" + position);
             }
-
-//            if (!TextUtils.isEmpty(mFriendRoomModel.getDisplayDesc()) && !TextUtils.isEmpty(mFriendRoomModel.getUserInfo().getNickname())) {
-//                String remark = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), mFriendRoomModel.getUserInfo().getNickname());
-//                if (!TextUtils.isEmpty(remark) && remark.length() > 7) {
-//                    remark = remark.substring(0, 7) + "...";
-//                }
-//                SpannableStringBuilder stringBuilder = new SpanUtils()
-//                        .append(remark).setForegroundColor(Color.parseColor("#7088FF"))
-//                        .append(mFriendRoomModel.getDisplayDesc()).setForegroundColor(U.getColor(R.color.textColorPrimary))
-//                        .create();
-//                mTipsTv.setVisibility(View.VISIBLE);
-//                mTipsTv.setText(stringBuilder);
-//            } else {
-//                mTipsTv.setVisibility(View.GONE);
-//                MyLog.w(TAG, "bindData" + " 服务器bug 啥都没有让我显示什么");
-//            }
         } else {
             MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);
         }

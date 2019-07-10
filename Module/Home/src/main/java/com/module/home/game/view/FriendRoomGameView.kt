@@ -55,6 +55,7 @@ class FriendRoomGameView : RelativeLayout {
     private var mDisposable: Disposable? = null
     private var mSkrAudioPermission: SkrAudioPermission
     private var mCameraPermission: SkrCameraPermission
+    private var mOffset: Int = 0
     internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
     var mRecommendTimer: HandlerTaskTimer? = null
@@ -179,7 +180,7 @@ class FriendRoomGameView : RelativeLayout {
                 .interval((mRecommendInterval * 1000).toLong())
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
-                        loadRecommendData()
+                        refreshRecommendData()
                     }
                 })
     }
@@ -188,17 +189,18 @@ class FriendRoomGameView : RelativeLayout {
         mRecommendTimer?.dispose()
     }
 
-    private fun loadRecommendData() {
+    private fun refreshRecommendData() {
         if (mDisposable != null && !mDisposable!!.isDisposed) {
             mDisposable?.dispose()
         }
 
         val grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
-        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(RA.getVars(), RA.getTestList()), object : ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(0, RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)
-                    refreshView(list)
+                    mOffset = obj.data!!.getIntValue("offset")
+                    refreshView(list, true)
                 }
             }
         })
@@ -209,11 +211,16 @@ class FriendRoomGameView : RelativeLayout {
      *
      * @param list
      */
-    private fun refreshView(list: List<RecommendModel>?) {
+    private fun refreshView(list: List<RecommendModel>?, clear: Boolean) {
         refreshLayout.finishRefresh()
+        refreshLayout.finishLoadMore()
+
+        if (clear) {
+            mFriendRoomVeritAdapter.dataList.clear()
+        }
+
         if (list != null && list!!.isNotEmpty()) {
             mLoadService.showSuccess()
-            mFriendRoomVeritAdapter.dataList.clear()
             mFriendRoomVeritAdapter.dataList.addAll(list)
             mFriendRoomVeritAdapter.notifyDataSetChanged()
         } else {

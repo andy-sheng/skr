@@ -55,13 +55,15 @@ public interface GrabSongApi {
 
     /**
      * 更多房间，只能刷新，不能加载更多
+     *
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v2/mate/index-recommend-room-more")
-    Observable<ApiResult> getRecommendRoomList(@Query("vars") String vars, @Query("testList") String testList);
+    @GET("http://dev.api.inframe.mobi/v1/fuel/room-list")
+    Observable<ApiResult> getRecommendRoomList(@Query("offset") int offset, @Query("testList") String testList, @Query("vars") String vars);
 
     /**
      * 首页推荐房间，只能刷新，不能加载更多
+     *
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room")
