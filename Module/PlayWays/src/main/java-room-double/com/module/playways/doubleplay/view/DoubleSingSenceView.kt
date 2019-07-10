@@ -47,13 +47,13 @@ class DoubleSingSenceView : ConstraintLayout {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        inflate(context, com.module.playways.R.layout.double_sing_sence_layout, this)
-        mShowCard1 = findViewById(com.module.playways.R.id.show_card1)
-        mShowCard2 = findViewById(com.module.playways.R.id.show_card2)
-        mMicIv = findViewById(com.module.playways.R.id.mic_iv)
-        mPickIv = findViewById(com.module.playways.R.id.pick_iv) as ImageView
-        mSelectIv = findViewById(com.module.playways.R.id.select_iv) as ImageView
-        mMicTv = findViewById(com.module.playways.R.id.mic_tv)
+        inflate(context, R.layout.double_sing_sence_layout, this)
+        mShowCard1 = findViewById(R.id.show_card1)
+        mShowCard2 = findViewById(R.id.show_card2)
+        mMicIv = findViewById(R.id.mic_iv)
+        mPickIv = findViewById(R.id.pick_iv) as ImageView
+        mSelectIv = findViewById(R.id.select_iv) as ImageView
+        mMicTv = findViewById(R.id.mic_tv)
 
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
