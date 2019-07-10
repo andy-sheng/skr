@@ -34,6 +34,7 @@ import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.presenter.DoubleCorePresenter
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
+import com.module.playways.doubleplay.view.DiffuseView
 import com.module.playways.doubleplay.view.DoubleSingCardView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.songmanager.OwnerManagerActivity
@@ -63,7 +64,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mMicTv: TextView? = null
     private var mMicIv: ExImageView? = null
     private var mNoLimitIcon: ExImageView? = null
-    private var mPickIv: ImageView? = null
+    private var mPickIv: View? = null
+    private var mPickDiffuseView:DiffuseView? = null
     private var mSelectIv: ImageView? = null
     private var mZanDisplayView: ZanView? = null
     private var mDialogPlus: DialogPlus? = null
@@ -101,7 +103,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightLockIcon = mRootView.findViewById<View>(R.id.right_lock_icon) as ImageView
         mRightNameTv = mRootView.findViewById<View>(R.id.right_name_tv) as ExTextView
         mMicIv = mRootView.findViewById<View>(R.id.mic_iv) as ExImageView
-        mPickIv = mRootView.findViewById<View>(R.id.pick_iv) as ImageView
+        mPickIv = mRootView.findViewById<View>(R.id.pick_iv)
+        mPickDiffuseView = mRootView.findViewById<View>(R.id.pick_diffuse_view) as DiffuseView
         mSelectIv = mRootView.findViewById<View>(R.id.select_iv) as ImageView
         mUnlockTv = mRootView.findViewById<View>(R.id.unlock_tv) as ExTextView
         mCountDownTv = mRootView.findViewById<View>(R.id.count_down_tv) as ExTextView
@@ -179,6 +182,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 mDoubleCorePresenter.pickOther()
             }
             mZanDisplayView?.addZanXin(1)
+            mPickDiffuseView?.start(2000)
         }
 
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {

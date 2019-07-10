@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--扩散圆颜色-->
+    <attr name="diffuse_color" format="color" />
+    <!--中心圆颜色-->
+    <attr name="diffuse_coreColor" format="color" />
+    <!--中心圆图片-->
+    <attr name="diffuse_normalImage" format="reference" />
+    <!--中心圆图片-->
+    <attr name="diffuse_pressedImage" format="reference" />
+
+    <!--中心圆半径-->
+    <attr name="diffuse_coreRadius" format="dimension" />
+    <!--最大扩散宽度-->
+    <attr name="diffuse_maxRadius" format="dimension" />
+    <!--到达这个半径，新增扩散-->
+    <attr name="diffuse_addNewRadius" format="dimension" />
+    <!--扩散速度，值越大越快-->
+    <attr name="diffuse_speed" format="dimension" />
+    <!--圆环宽度-->
+    <attr name="diffuse_stroke_width" format="dimension" />
+
+    <declare-styleable name="DiffuseView">
+        <attr name="diffuse_color" />
+        <attr name="diffuse_coreColor" />
+        <attr name="diffuse_normalImage" />
+        <attr name="diffuse_pressedImage" />
+
+        <attr name="diffuse_coreRadius" />
+        <attr name="diffuse_addNewRadius" />
+        <attr name="diffuse_maxRadius" />
+        <attr name="diffuse_stroke_width" />
+        <attr name="diffuse_speed" />
+    </declare-styleable>
+
+</resources>
