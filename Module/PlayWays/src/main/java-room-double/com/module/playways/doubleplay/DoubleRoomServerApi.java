@@ -186,7 +186,7 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @GET("http://dev.game.inframe.mobi/v1/magpie/sync-status")
+    @GET("http://dev.game.inframe.mobi/v2/magpie/sync-status")
     Observable<ApiResult> syncStatus(@Query("roomID") int roomID);
 
     /**
@@ -275,4 +275,51 @@ public interface DoubleRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/magpie/room-invite-user-enter")
     Observable<ApiResult> roomInviteEnter(@Body RequestBody body);
 
+    /**
+     * 请求切换场景
+     * {
+     * "roomID": 0,
+     * "sceneType": "ST_Unknown"
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/req-change-scene")
+    Observable<ApiResult> sendChangeScene(@Body RequestBody body);
+
+    /**
+     * 同意切换场景
+     * {
+     * "roomID": 0,
+     * "sceneType": "ST_Unknown"
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/agree-change-scene")
+    Observable<ApiResult> agreeChangeScene(@Body RequestBody body);
+
+    /**
+     * 拒绝切换场景
+     * {
+     * "peerUserID": 0,
+     * "refuseType": "RT_UNKNOWN"
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/refuse-enter")
+    Observable<ApiResult> refuseChangeScene(@Body RequestBody body);
+
+    /**
+     * 选定游戏请求
+     * {
+     * "itmeID": 0,
+     * "panelSeq": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/choice-game-item")
+    Observable<ApiResult> choiceGameItem(@Body RequestBody body);
 }

@@ -48,6 +48,8 @@ message CombineRoomEnterMsg
     Common.CombineRoomConfig config        = 6; //配置信息
     repeated Common.AgoraTokenInfo tokens  = 7; //声网token
     bool needMaskUserInfo           = 8; //是否需要隐藏用户信息
+    Common.ESceneType currentSceneType     = 9; //当前场景类型
+    Common.GamePanelInfo gamePanelInfo     = 10; //游戏面板信息
 }
 
 message CombineRoomRefuseMsg
