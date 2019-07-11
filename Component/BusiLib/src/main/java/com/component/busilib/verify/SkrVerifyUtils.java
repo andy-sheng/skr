@@ -89,6 +89,13 @@ public class SkrVerifyUtils {
             }
             return;
         }
+        if (tagId == 44 || tagId == 45 || tagId == 47 || tagId == 48 || tagId == 40) {
+            // 这些专场不用权限校验就能进
+            if (successCallback != null) {
+                successCallback.run();
+            }
+            return;
+        }
         final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
         ApiMethods.subscribe(grabRoomServerApi.checkJoinAudioRoomPermission(tagId), new ApiObserver<ApiResult>() {
             @Override
