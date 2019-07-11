@@ -140,6 +140,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
         })
 
+        mGameVp.offscreenPageLimit = 2
         mGameVp.setAdapter(mTabPagerAdapter)
         mGameTab.setViewPager(mGameVp)
         mTabPagerAdapter.notifyDataSetChanged()
