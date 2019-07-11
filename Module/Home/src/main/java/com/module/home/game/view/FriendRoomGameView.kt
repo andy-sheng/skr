@@ -84,7 +84,7 @@ class FriendRoomGameView : RelativeLayout {
         grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
 
         refreshLayout.setEnableRefresh(true)
-        refreshLayout.setEnableLoadMore(true)
+        refreshLayout.setEnableLoadMore(false)
         refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         refreshLayout.setEnableOverScrollDrag(true)
         refreshLayout.setHeaderMaxDragRate(1.5f)
