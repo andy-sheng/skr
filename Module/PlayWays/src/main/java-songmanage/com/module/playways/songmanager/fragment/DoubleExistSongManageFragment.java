@@ -48,13 +48,6 @@ public class DoubleExistSongManageFragment extends BaseFragment implements IExis
         mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(DoubleExistSongManageFragment.this);
-            }
-        });
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mManageSongAdapter = new ManageSongAdapter(SongManagerActivity.TYPE_FROM_DOUBLE);
         mRecyclerView.setAdapter(mManageSongAdapter);
@@ -84,6 +77,18 @@ public class DoubleExistSongManageFragment extends BaseFragment implements IExis
         mRecyclerView.setItemAnimator(defaultItemAnimator);
 
         mPresenter.getPlayBookList();
+
+
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(DoubleExistSongManageFragment.this);
+            }
+        });
+
+        mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
+            mPresenter.deleteSong(grabRoomSongModel);
+        });
     }
 
     @Override

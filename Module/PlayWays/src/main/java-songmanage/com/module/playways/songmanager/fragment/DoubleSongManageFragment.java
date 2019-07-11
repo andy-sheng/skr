@@ -115,7 +115,7 @@ public class DoubleSongManageFragment extends BaseFragment implements ISongManag
             }
         });
 
-        mPresenter = new DoubleSongManagePresenter(this);
+        mPresenter = new DoubleSongManagePresenter(this, mRoomData);
         addPresent(mPresenter);
         mPresenter.getRecommendTag();
     }

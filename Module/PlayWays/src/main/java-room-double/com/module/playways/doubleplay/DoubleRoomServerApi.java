@@ -322,4 +322,13 @@ public interface DoubleRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/magpie/choice-game-item")
     Observable<ApiResult> choiceGameItem(@Body RequestBody body);
+
+
+    /**
+     * 获取推荐tag列表
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/magpie-billboards")
+    Observable<ApiResult> getDoubleStandBillBoards();
 }

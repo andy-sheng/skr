@@ -158,59 +158,10 @@ public class DoubleExitSongManagePresenter extends RxLifeCyclePresenter {
         mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
     }
 
-    // 添加新歌
-    public void addSong(SongModel songModel) {
-        MyLog.d(TAG, "addSong");
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("itemID", songModel.getItemID());
-        map.put("roomID", mDoubleRoomData.getGameId());
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
-        ApiMethods.subscribe(mDoubleRoomServerApi.addSong(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
-                if (result.getErrno() == 0) {
-//                    if (mGrabRoomSongModelList != null) {
-//                        //加一个保护
-//                        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
-//                        grabRoomSongModel.setOwner(songModel.getOwner());
-//                        grabRoomSongModel.setItemName(songModel.getItemName());
-//                        grabRoomSongModel.setItemID(songModel.getItemID());
-//                        grabRoomSongModel.setPlayType(songModel.getPlayType());
-//                        grabRoomSongModel.setChallengeAvailable(songModel.isChallengeAvailable());
-//                        addToUiList(grabRoomSongModel);
-//                    }
-                    U.getToastUtil().showShort(songModel.getItemName() + " 添加成功");
-                } else {
-                    MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
-                    U.getToastUtil().showShort(result.getErrmsg());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, e);
-            }
-        }, this);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
 
         updateSongList();
-    }
-
-    /**
-     * 自己添加的歌曲
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(AddSongEvent event) {
-        // 双人房都可以点歌
-        addSong(event.getSongModel());
     }
 
     /**
