@@ -50,12 +50,12 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     int mTagID;
     LoadService mLoadService;
 
-    public InviteFriendView(BaseFragment fragment, int from, int roomID,int tagID, int mode) {
+    public InviteFriendView(BaseFragment fragment, int from, int roomID, int tagID, int mode) {
         super(fragment.getContext());
-        init(fragment, from, roomID,tagID, mode);
+        init(fragment, from, roomID, tagID, mode);
     }
 
-    private void init(BaseFragment fragment, int from, int roomID,int tagID, int mode) {
+    private void init(BaseFragment fragment, int from, int roomID, int tagID, int mode) {
         this.mFrom = from;
         this.mBaseFragment = fragment;
         this.mRoomID = roomID;
@@ -71,7 +71,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
                 if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
-                    mGrabInvitePresenter.inviteGrabFriend(mRoomID,mTagID, model, view);
+                    mGrabInvitePresenter.inviteGrabFriend(mRoomID, mTagID, model, view);
                 } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
                     mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
                 }
@@ -83,6 +83,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
                 bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
                 bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
                 bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
+                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mTagID);
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
                         .setUseOldFragmentIfExist(false)

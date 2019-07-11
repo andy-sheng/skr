@@ -34,10 +34,11 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
     }
 
-    public void inviteFriend(int roomID, UserInfoModel model, ExTextView view) {
+    public void inviteFriend(int roomID, int tagID, UserInfoModel model, ExTextView view) {
         MyLog.d(TAG, "deleteSong");
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
+        map.put("tagID", tagID);
         map.put("userID", model.getUserId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
