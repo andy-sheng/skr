@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * 已点歌单
  */
-public class ExistSongManageView extends FrameLayout implements IExistSongManageView {
+public class GrabExistSongManageView extends FrameLayout implements IExistSongManageView {
     public final static String TAG = "GrabSongManageView";
 
     GrabRoomData mRoomData;
@@ -62,7 +62,7 @@ public class ExistSongManageView extends FrameLayout implements IExistSongManage
 
     int mSpecialModelId;
 
-    public ExistSongManageView(Context context, GrabRoomData roomData) {
+    public GrabExistSongManageView(Context context, GrabRoomData roomData) {
         super(context);
         this.mRoomData = roomData;
         initView();

@@ -30,7 +30,7 @@ import com.module.playways.songmanager.event.SongNumChangeEvent;
 import com.module.playways.songmanager.model.RecommendTagModel;
 import com.module.playways.songmanager.presenter.GrabSongManagePresenter;
 import com.module.playways.songmanager.view.GrabEditRoomNameView;
-import com.module.playways.songmanager.view.ExistSongManageView;
+import com.module.playways.songmanager.view.GrabExistSongManageView;
 import com.module.playways.songmanager.view.GrabSongWishView;
 import com.module.playways.songmanager.view.ISongManageView;
 import com.module.playways.songmanager.view.RecommendSongView;
@@ -59,7 +59,7 @@ public class GrabSongManageFragment extends BaseFragment implements ISongManageV
 
     PagerAdapter mPagerAdapter;
 
-    ExistSongManageView mGrabSongManageView;
+    GrabExistSongManageView mGrabSongManageView;
     GrabSongWishView mGrabSongWishView;
     DialogPlus mEditRoomDialog;
 
@@ -226,8 +226,8 @@ public class GrabSongManageFragment extends BaseFragment implements ISongManageV
                         ((RecommendSongView) view).tryLoad();
                     } else if (view instanceof GrabSongWishView) {
                         ((GrabSongWishView) view).tryLoad();
-                    } else if (view instanceof ExistSongManageView) {
-                        ((ExistSongManageView) view).tryLoad();
+                    } else if (view instanceof GrabExistSongManageView) {
+                        ((GrabExistSongManageView) view).tryLoad();
                     }
                 }
             }
@@ -250,7 +250,7 @@ public class GrabSongManageFragment extends BaseFragment implements ISongManageV
         if (mRoomData.isOwner()) {
             if (position == 0) {
                 if (mGrabSongManageView == null) {
-                    mGrabSongManageView = new ExistSongManageView(getContext(), mRoomData);
+                    mGrabSongManageView = new GrabExistSongManageView(getContext(), mRoomData);
                 }
                 view = mGrabSongManageView;
             } else if (position == 1) {

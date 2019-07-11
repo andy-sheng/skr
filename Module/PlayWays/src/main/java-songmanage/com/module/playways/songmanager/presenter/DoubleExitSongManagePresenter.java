@@ -5,17 +5,18 @@ import android.os.Handler;
 import com.alibaba.fastjson.JSON;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent;
 import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.songmanager.view.IExistSongManageView;
-import com.module.playways.songmanager.SongManageData;
 import com.module.playways.songmanager.event.AddCustomGameEvent;
 import com.module.playways.songmanager.event.AddSongEvent;
 import com.module.playways.songmanager.model.GrabRoomSongModel;
@@ -37,14 +38,14 @@ import okhttp3.RequestBody;
 /**
  * 房主可以看到的 所有轮次 的歌曲 view
  */
-public class DoubleExitSongManagePresenter extends BaseExitSongManagePresenter {
+public class DoubleExitSongManagePresenter extends RxLifeCyclePresenter {
     public final static String TAG = "DoubleExitSongManagePresenter";
 
     IExistSongManageView mIGrabSongManageView;
 
     DoubleRoomServerApi mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi.class);
 
-    SongManageData mGrabRoomData;
+    DoubleRoomData mDoubleRoomData;
 
     Disposable mGetSongModelListTask;
 
@@ -58,9 +59,9 @@ public class DoubleExitSongManagePresenter extends BaseExitSongManagePresenter {
 
     int mLimit = 20;
 
-    public DoubleExitSongManagePresenter(IExistSongManageView view, SongManageData grabRoomData) {
+    public DoubleExitSongManagePresenter(IExistSongManageView view, DoubleRoomData doubleRoomData) {
         this.mIGrabSongManageView = view;
-        mGrabRoomData = grabRoomData;
+        mDoubleRoomData = doubleRoomData;
         mUiHandler = new Handler();
         addToLifeCycle();
         EventBus.getDefault().register(this);
@@ -75,7 +76,7 @@ public class DoubleExitSongManagePresenter extends BaseExitSongManagePresenter {
 
         MyLog.d(TAG, "getPlayBookList offset is " + offset);
 
-        mGetSongModelListTask = ApiMethods.subscribe(mDoubleRoomServerApi.getSongList(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
+        mGetSongModelListTask = ApiMethods.subscribe(mDoubleRoomServerApi.getSongList(mDoubleRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -125,7 +126,7 @@ public class DoubleExitSongManagePresenter extends BaseExitSongManagePresenter {
         }
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", mGrabRoomData.getGameId());
+        map.put("roomID", mDoubleRoomData.getGameId());
         map.put("uniqTag", grabRoomSongModel.getUniqTag());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -162,7 +163,7 @@ public class DoubleExitSongManagePresenter extends BaseExitSongManagePresenter {
         MyLog.d(TAG, "addSong");
         HashMap<String, Object> map = new HashMap<>();
         map.put("itemID", songModel.getItemID());
-        map.put("roomID", mGrabRoomData.getGameId());
+        map.put("roomID", mDoubleRoomData.getGameId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 

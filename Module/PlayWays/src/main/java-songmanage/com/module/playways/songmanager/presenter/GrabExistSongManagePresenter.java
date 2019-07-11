@@ -5,6 +5,7 @@ import android.os.Handler;
 import com.alibaba.fastjson.JSON;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -38,7 +39,7 @@ import okhttp3.RequestBody;
 /**
  * 房主可以看到的 所有轮次 的歌曲 view
  */
-public class GrabExistSongManagePresenter extends BaseExitSongManagePresenter {
+public class GrabExistSongManagePresenter extends RxLifeCyclePresenter {
     public final static String TAG = "GrabExistSongManagePresenter";
 
     IExistSongManageView mIGrabSongManageView;

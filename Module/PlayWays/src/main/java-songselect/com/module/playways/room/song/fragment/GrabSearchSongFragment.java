@@ -21,7 +21,6 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
-import com.module.playways.songmanager.SongManageData;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;

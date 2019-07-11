@@ -27,7 +27,7 @@ import com.module.playways.songmanager.event.AddSongEvent;
 import com.module.playways.songmanager.event.SongNumChangeEvent;
 import com.module.playways.songmanager.model.RecommendTagModel;
 import com.module.playways.songmanager.presenter.DoubleSongManagePresenter;
-import com.module.playways.songmanager.view.ExistSongManageView;
+import com.module.playways.songmanager.view.GrabExistSongManageView;
 import com.module.playways.songmanager.view.GrabSongWishView;
 import com.module.playways.songmanager.view.ISongManageView;
 import com.module.playways.songmanager.view.RecommendSongView;
@@ -88,6 +88,7 @@ public class DoubleSongManageFragment extends BaseFragment implements ISongManag
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), DoubleExistSongManageFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
+                        .addDataBeforeAdd(0, mRoomData)
                         .build());
             }
         });
@@ -189,8 +190,8 @@ public class DoubleSongManageFragment extends BaseFragment implements ISongManag
                         ((RecommendSongView) view).tryLoad();
                     } else if (view instanceof GrabSongWishView) {
                         ((GrabSongWishView) view).tryLoad();
-                    } else if (view instanceof ExistSongManageView) {
-                        ((ExistSongManageView) view).tryLoad();
+                    } else if (view instanceof GrabExistSongManageView) {
+                        ((GrabExistSongManageView) view).tryLoad();
                     }
                 }
             }

@@ -1,7 +1,6 @@
 package com.module.playways.songmanager.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,7 +64,7 @@ public class RecommendSongView extends FrameLayout {
 
     Drawable mDrawableBg = new DrawableCreator.Builder()
             .setSolidColor(U.getColor(R.color.white_trans_20))
-            .setCornersRadius(U.getDisplayUtils().dip2px(8))
+            .setCornersRadius(0, 0, U.getDisplayUtils().dip2px(8f), U.getDisplayUtils().dip2px(8f))
             .build();
 
     public RecommendSongView(Context context, int type, boolean isOwner, int gameID, RecommendTagModel recommendTagModel) {
