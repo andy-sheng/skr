@@ -49,7 +49,42 @@ public enum ECombineRoomMsgType implements WireEnum {
   /**
    * 删除歌曲信息
    */
-  DRM_DEL_MUSIC_INFO(7);
+  DRM_DEL_MUSIC_INFO(7),
+
+  /**
+   * 发起切换场景
+   */
+  DRM_REQ_CHANGE_SCENE(8),
+
+  /**
+   * 同意切换场景
+   */
+  DRM_AGREE_CHANGE_SCENE(9),
+
+  /**
+   * 选定游戏
+   */
+  DRM_CHOICE_GAME_TIEM(10),
+
+  /**
+   * 开始游戏
+   */
+  DRM_START_GAME(11),
+
+  /**
+   * 换游戏面板
+   */
+  DRM_CHANGE_GAME_PANEL(12),
+
+  /**
+   * 结束游戏
+   */
+  DRM_END_GAME(13),
+
+  /**
+   * 同步状态
+   */
+  DRM_CR_SYNC_STATUS_V2(14);
 
   public static final ProtoAdapter<ECombineRoomMsgType> ADAPTER = new ProtoAdapter_ECombineRoomMsgType();
 
@@ -72,6 +107,13 @@ public enum ECombineRoomMsgType implements WireEnum {
       case 5: return DRM_SYNC_STATUS;
       case 6: return DRM_ADD_MUSIC_INFO;
       case 7: return DRM_DEL_MUSIC_INFO;
+      case 8: return DRM_REQ_CHANGE_SCENE;
+      case 9: return DRM_AGREE_CHANGE_SCENE;
+      case 10: return DRM_CHOICE_GAME_TIEM;
+      case 11: return DRM_START_GAME;
+      case 12: return DRM_CHANGE_GAME_PANEL;
+      case 13: return DRM_END_GAME;
+      case 14: return DRM_CR_SYNC_STATUS_V2;
       default: return null;
     }
   }
