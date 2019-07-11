@@ -177,6 +177,8 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
                     mGrabSongManagePresenter.getTagList();
                 }
             });
+            // TODO: 2019-07-11 展示让其不能点击切换 
+            mTvSelectedTag.setClickable(false);
         }
 
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
