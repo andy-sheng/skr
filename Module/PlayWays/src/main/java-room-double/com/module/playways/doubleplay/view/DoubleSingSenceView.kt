@@ -21,8 +21,7 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
-import com.module.playways.songmanager.OwnerManagerActivity
-import com.module.playways.songmanager.SongManageData
+import com.module.playways.songmanager.SongManagerActivity
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.double_sing_sence_layout.view.*
@@ -58,7 +57,7 @@ class DoubleSingSenceView : ConstraintLayout {
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (mRoomData!!.isRoomPrepared()) {
-                    OwnerManagerActivity.open(context as FragmentActivity, SongManageData(mRoomData))
+                    SongManagerActivity.open(context as FragmentActivity, mRoomData)
                 } else {
                     U.getToastUtil().showShort("房间里还没有人哦～")
                 }

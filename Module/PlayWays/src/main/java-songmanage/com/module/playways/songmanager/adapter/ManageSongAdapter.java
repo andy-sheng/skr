@@ -17,14 +17,15 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
-import com.module.playways.songmanager.SongManageData;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.songmanager.SongManagerActivity;
 import com.module.playways.songmanager.model.GrabRoomSongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {
     OnClickDeleteListener mOnClickDeleteListener;
 
-    SongManageData mGrabRoomData;
+    GrabRoomData mRoomData;
 
     Drawable mGrayDrawable;
     Drawable mRedDrawable;
@@ -34,7 +35,11 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     Drawable mMiniGameDrawable;
     Drawable mFreeMicDrawable;
 
-    public ManageSongAdapter() {
+    int mType;
+
+    public ManageSongAdapter(int type) {
+        mType = type;
+
         mGrayDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                 .setSolidColor(Color.parseColor("#B1AC99"))
                 .setStrokeColor(Color.parseColor("#3B4E79"))
@@ -93,8 +98,8 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         reportItemHolder.bind(model, position);
     }
 
-    public void setGrabRoomData(SongManageData grabRoomData) {
-        mGrabRoomData = grabRoomData;
+    public void setGrabRoomData(GrabRoomData grabRoomData) {
+        mRoomData = grabRoomData;
     }
 
     public void setOnClickDeleteListener(OnClickDeleteListener onClickDeleteListener) {
@@ -163,7 +168,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                 mTvSongDesc.setText(model.getSongDesc());
             }
 
-            if (mGrabRoomData.isDoubleRoom()) {
+            if (mType == SongManagerActivity.TYPE_FROM_DOUBLE) {
                 if (model.isCouldDelete()) {
                     mTvManage.setVisibility(View.VISIBLE);
                     mTvManage.setText("删除");
@@ -173,12 +178,12 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                     mTvManage.setVisibility(View.GONE);
                 }
             } else {
-                if (mGrabRoomData.hasGameBegin()) {
-                    if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
+                if (mRoomData.hasGameBegin()) {
+                    if (mRoomData.getRealRoundSeq() == model.getRoundSeq()) {
                         mTvManage.setEnabled(false);
                         mTvManage.setText("演唱中");
                         mTvManage.setBackground(mGrayDrawable);
-                    } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
+                    } else if (mRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
                         mTvManage.setEnabled(false);
                         mTvManage.setText("已加载");
                         mTvManage.setBackground(mGrayDrawable);

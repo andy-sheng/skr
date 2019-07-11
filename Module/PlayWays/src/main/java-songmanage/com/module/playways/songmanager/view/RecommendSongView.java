@@ -17,7 +17,7 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.songmanager.SongManageData;
+import com.module.playways.songmanager.SongManagerActivity;
 import com.module.playways.songmanager.adapter.RecommendSongAdapter;
 import com.module.playways.songmanager.customgame.MakeGamePanelView;
 import com.module.playways.songmanager.event.AddSongEvent;
@@ -40,22 +40,29 @@ import io.reactivex.disposables.Disposable;
  */
 public class RecommendSongView extends FrameLayout {
     public final static String TAG = "GrabSongManageView";
-    private RecyclerView mRecyclerView;
+
+    RecyclerView mRecyclerView;
+    SmartRefreshLayout mRefreshLayout;
+
+    int mType;
+    boolean isOwner;
+    int mGameID;
+
     private RecommendTagModel mRecommendTagModel;
     RecommendSongAdapter mRecommendSongAdapter;
-    GrabRoomServerApi mGrabRoomServerApi;
-    SmartRefreshLayout mRefreshLayout;
+
     Disposable mDisposable;
     int mOffset = 0;
     int mLimit = 20;
-    //    boolean hasInit = false;
     MakeGamePanelView mMakeGamePanelView;
 
-    SongManageData mRoomData;
+    GrabRoomServerApi mGrabRoomServerApi;
 
-    public RecommendSongView(Context context, SongManageData roomData, RecommendTagModel recommendTagModel) {
+    public RecommendSongView(Context context, int type, boolean isOwner, int gameID, RecommendTagModel recommendTagModel) {
         super(context);
-        this.mRoomData = roomData;
+        this.mType = type;
+        this.isOwner = isOwner;
+        this.mGameID = gameID;
         this.mRecommendTagModel = recommendTagModel;
         initView();
     }
@@ -71,16 +78,16 @@ public class RecommendSongView extends FrameLayout {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (mRoomData.isGrabRoom()) {
-            mRecommendSongAdapter = new RecommendSongAdapter(mRoomData.isOwner(), new RecyclerOnItemClickListener<SongModel>() {
+        if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
+            mRecommendSongAdapter = new RecommendSongAdapter(isOwner, new RecyclerOnItemClickListener<SongModel>() {
                 @Override
                 public void onItemClicked(View view, int position, SongModel model) {
-                    if (mRoomData.isOwner() && model != null && model.getItemID() == SongModel.ID_CUSTOM_GAME) {
+                    if (isOwner && model != null && model.getItemID() == SongModel.ID_CUSTOM_GAME) {
                         if (mMakeGamePanelView != null) {
                             mMakeGamePanelView.dismiss();
                         }
                         mMakeGamePanelView = new MakeGamePanelView(getContext());
-                        mMakeGamePanelView.showByDialog(mRoomData.getGameId());
+                        mMakeGamePanelView.showByDialog(mGameID);
                     } else {
                         EventBus.getDefault().post(new AddSongEvent(model));
                     }
@@ -149,7 +156,7 @@ public class RecommendSongView extends FrameLayout {
                     }
                     if (offset == 0) {
                         mRecommendSongAdapter.getDataList().clear();
-                        if (mRecommendTagModel.getType() == 4 && mRoomData.isOwner()) {
+                        if (mRecommendTagModel.getType() == 4 && isOwner) {
                             // 是双人游戏那一例
                             SongModel songModel = new SongModel();
                             songModel.setItemID(SongModel.ID_CUSTOM_GAME);
@@ -169,7 +176,7 @@ public class RecommendSongView extends FrameLayout {
     }
 
     private Observable<ApiResult> getListStandBoardObservable(int offset) {
-        if (mRoomData.isGrabRoom()) {
+        if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
             return mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), offset, mLimit);
         } else {
             return mGrabRoomServerApi.getDoubleListStandBoards(mRecommendTagModel.getType(), offset, mLimit);

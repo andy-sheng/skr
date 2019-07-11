@@ -16,7 +16,7 @@ import com.module.playways.R;
 /**
  * 修改房间名字
  */
-public class GrabEditView extends RelativeLayout {
+public class GrabEditRoomNameView extends RelativeLayout {
 
     NoLeakEditText mRoomName;
     ImageView mClearEditIv;
@@ -30,7 +30,7 @@ public class GrabEditView extends RelativeLayout {
     String mRoomNameText;
 
 
-    public GrabEditView(Context context, String roomName) {
+    public GrabEditRoomNameView(Context context, String roomName) {
         super(context);
         this.mRoomNameText = roomName;
         init();

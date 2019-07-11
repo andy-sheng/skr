@@ -69,7 +69,7 @@
 
         <!-- 尝试修复hwui 问题，用户反馈点歌崩溃问题 -->
         <activity
-            android:name=".songmanager.OwnerManagerActivity"
+            android:name=".songmanager.SongManagerActivity"
             android:hardwareAccelerated="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

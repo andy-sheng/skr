@@ -4,7 +4,7 @@ import com.module.playways.songmanager.model.RecommendTagModel;
 
 import java.util.List;
 
-public interface IOwnerManageView {
+public interface ISongManageView {
     void showRoomName(String roomName);
 
     void showRecommendSong(List<RecommendTagModel> recommendTagModelList);

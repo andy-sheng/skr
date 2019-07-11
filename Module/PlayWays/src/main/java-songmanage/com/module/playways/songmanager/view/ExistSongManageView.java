@@ -18,14 +18,13 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.R;
-import com.module.playways.songmanager.SongManageData;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.songmanager.SongManagerActivity;
 import com.module.playways.songmanager.adapter.ManageSongAdapter;
 import com.module.playways.songmanager.event.SongNumChangeEvent;
 import com.module.playways.songmanager.model.ChangeTagSuccessEvent;
 import com.module.playways.songmanager.model.GrabRoomSongModel;
-import com.module.playways.songmanager.presenter.BaseSongManagePresenter;
-import com.module.playways.songmanager.presenter.DoubleSongManagePresenter;
-import com.module.playways.songmanager.presenter.GrabSongManagePresenter;
+import com.module.playways.songmanager.presenter.GrabExistSongManagePresenter;
 import com.module.playways.songmanager.adapter.GrabTagsAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -36,12 +35,12 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 /**
- * 房主已点
+ * 已点歌单
  */
-public class GrabSongManageView extends FrameLayout implements IGrabSongManageView {
+public class ExistSongManageView extends FrameLayout implements IExistSongManageView {
     public final static String TAG = "GrabSongManageView";
 
-    SongManageData mSongManageData;
+    GrabRoomData mRoomData;
 
     SmartRefreshLayout mRefreshLayout;
 
@@ -55,7 +54,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
     ManageSongAdapter mManageSongAdapter;
 
-    BaseSongManagePresenter mGrabSongManagePresenter;
+    GrabExistSongManagePresenter mGrabSongManagePresenter;
 
     GrabSongTagsView mGrabSongTagsView;
 
@@ -63,9 +62,9 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
     int mSpecialModelId;
 
-    public GrabSongManageView(Context context, SongManageData grabRoomData) {
+    public ExistSongManageView(Context context, GrabRoomData roomData) {
         super(context);
-        mSongManageData = grabRoomData;
+        this.mRoomData = roomData;
         initView();
     }
 
@@ -75,11 +74,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
     }
 
     public void initData() {
-        if (mSongManageData.isGrabRoom()) {
-            mGrabSongManagePresenter = new GrabSongManagePresenter(this, mSongManageData.getGrabRoomData());
-        } else {
-            mGrabSongManagePresenter = new DoubleSongManagePresenter(this, mSongManageData);
-        }
+        mGrabSongManagePresenter = new GrabExistSongManagePresenter(this, mRoomData);
 
         mIvArrow = (ImageView) findViewById(R.id.iv_arrow);
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
@@ -88,7 +83,7 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
         mTopTagView = (FrameLayout) findViewById(R.id.top_tag_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mManageSongAdapter = new ManageSongAdapter();
+        mManageSongAdapter = new ManageSongAdapter(SongManagerActivity.TYPE_FROM_GRAB);
         mRecyclerView.setAdapter(mManageSongAdapter);
 
         mRefreshLayout.setEnableRefresh(false);
@@ -114,13 +109,11 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
 
         initListener();
 
-        if (mSongManageData.isGrabRoom()) {
-            if (mSongManageData.getSpecialModel() != null) {
-                setTagTv(mSongManageData.getSpecialModel());
-            }
-        } else {
-            mTopTagView.setVisibility(GONE);
+
+        if (mRoomData.getSpecialModel() != null) {
+            setTagTv(mRoomData.getSpecialModel());
         }
+
 
         mGrabSongManagePresenter.getPlayBookList();
     }
@@ -132,62 +125,61 @@ public class GrabSongManageView extends FrameLayout implements IGrabSongManageVi
     }
 
     private void initListener() {
-        if (mSongManageData.isGrabRoom()) {
-            mTvSelectedTag.setOnClickListener(v -> {
-                if (mGrabSongTagsView == null) {
-                    mGrabSongTagsView = new GrabSongTagsView(getContext());
+        mTvSelectedTag.setOnClickListener(v -> {
+            if (mGrabSongTagsView == null) {
+                mGrabSongTagsView = new GrabSongTagsView(getContext());
 
-                    mGrabSongTagsView.setOnTagClickListener(new GrabTagsAdapter.OnTagClickListener() {
-                        @Override
-                        public void onClick(SpecialModel specialModel) {
-                            mGrabSongManagePresenter.changeMusicTag(specialModel, mSongManageData.getGameId());
-                        }
-
-                        @Override
-                        public void dismissDialog() {
-                            if (mPopupWindow != null) {
-                                mPopupWindow.dismiss();
-                            }
-                        }
-                    });
-                    mPopupWindow = new PopupWindow(mGrabSongTagsView);
-                    mPopupWindow.setWidth(mTvSelectedTag.getWidth());
-                    mPopupWindow.setOutsideTouchable(true);
-                    mPopupWindow.setFocusable(true);
-
-                    MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
-                    if (Build.VERSION.SDK_INT < 23) {
-                        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                mGrabSongTagsView.setOnTagClickListener(new GrabTagsAdapter.OnTagClickListener() {
+                    @Override
+                    public void onClick(SpecialModel specialModel) {
+                        mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.getGameId());
                     }
 
-                    mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                        @Override
-                        public void onDismiss() {
-                            mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_xia));
+                    @Override
+                    public void dismissDialog() {
+                        if (mPopupWindow != null) {
+                            mPopupWindow.dismiss();
                         }
-                    });
+                    }
+                });
+                mPopupWindow = new PopupWindow(mGrabSongTagsView);
+                mPopupWindow.setWidth(mTvSelectedTag.getWidth());
+                mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setFocusable(true);
+
+                MyLog.d(TAG, "initListener Build.VERSION.SDK_INT " + Build.VERSION.SDK_INT);
+                if (Build.VERSION.SDK_INT < 23) {
+                    mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
                 }
 
-                mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
+                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_xia));
+                    }
+                });
+            }
 
-                if (mPopupWindow != null && mPopupWindow.isShowing()) {
-                    mPopupWindow.dismiss();
-                } else {
-                    mGrabSongManagePresenter.getTagList();
-                }
-            });
-        }
+            mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
+
+            if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss();
+            } else {
+                mGrabSongManagePresenter.getTagList();
+            }
+        });
+
 
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
             mGrabSongManagePresenter.deleteSong(grabRoomSongModel);
         });
 
-        mManageSongAdapter.setGrabRoomData(mSongManageData);
+        mManageSongAdapter.setGrabRoomData(mRoomData);
     }
 
     private void setTagTv(SpecialModel specialModel) {
-        mSongManageData.setSpecialModel(specialModel);
-        mSongManageData.setTagId(specialModel.getTagID());
+        mRoomData.setSpecialModel(specialModel);
+        mRoomData.setTagId(specialModel.getTagID());
 
         mSpecialModelId = specialModel.getTagID();
         mTvSelectedTag.setText(specialModel.getTagName());

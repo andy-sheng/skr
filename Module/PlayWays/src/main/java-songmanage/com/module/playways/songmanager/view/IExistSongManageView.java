@@ -5,7 +5,7 @@ import com.component.busilib.friends.SpecialModel;
 
 import java.util.List;
 
-public interface IGrabSongManageView {
+public interface IExistSongManageView {
     void showTagList(List<SpecialModel> specialModelList);
 
     void updateSongList(List<GrabRoomSongModel> grabRoomSongModelsList);
