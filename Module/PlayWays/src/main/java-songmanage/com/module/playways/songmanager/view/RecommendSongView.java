@@ -1,6 +1,8 @@
 package com.module.playways.songmanager.view;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,8 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.ex.ExFrameLayout;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -41,6 +45,7 @@ import io.reactivex.disposables.Disposable;
 public class RecommendSongView extends FrameLayout {
     public final static String TAG = "GrabSongManageView";
 
+    ExFrameLayout mContainer;
     RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
 
@@ -58,6 +63,11 @@ public class RecommendSongView extends FrameLayout {
 
     GrabRoomServerApi mGrabRoomServerApi;
 
+    Drawable mDrawableBg = new DrawableCreator.Builder()
+            .setSolidColor(U.getColor(R.color.white_trans_20))
+            .setCornersRadius(U.getDisplayUtils().dip2px(8))
+            .build();
+
     public RecommendSongView(Context context, int type, boolean isOwner, int gameID, RecommendTagModel recommendTagModel) {
         super(context);
         this.mType = type;
@@ -73,6 +83,7 @@ public class RecommendSongView extends FrameLayout {
     }
 
     public void initData() {
+        mContainer = findViewById(R.id.container);
         mRecyclerView = findViewById(R.id.recycler_view);
         mRefreshLayout = findViewById(R.id.refreshLayout);
 
@@ -97,6 +108,7 @@ public class RecommendSongView extends FrameLayout {
             /**
              * 双人房默认是直接 点唱
              */
+            mContainer.setBackground(mDrawableBg);
             mRecommendSongAdapter = new RecommendSongAdapter(true, new RecyclerOnItemClickListener<SongModel>() {
                 @Override
                 public void onItemClicked(View view, int position, SongModel model) {

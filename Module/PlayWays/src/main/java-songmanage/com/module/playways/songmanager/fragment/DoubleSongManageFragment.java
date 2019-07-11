@@ -82,6 +82,16 @@ public class DoubleSongManageFragment extends BaseFragment implements ISongManag
             }
         });
 
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), DoubleExistSongManageFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
+
         mSearchSongIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -128,7 +138,7 @@ public class DoubleSongManageFragment extends BaseFragment implements ISongManag
 
         mTagModelList = recommendTagModelList;
         mTagTab.setCustomTabView(R.layout.manage_song_tab, R.id.tab_tv);
-        mTagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
+        mTagTab.setSelectedIndicatorColors(U.getColor(R.color.white_trans_20));
         mTagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
         mTagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL);
         mTagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24));
