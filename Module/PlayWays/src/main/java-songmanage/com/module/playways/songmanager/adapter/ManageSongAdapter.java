@@ -85,7 +85,13 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_song_item_layout, parent, false);
+        View view;
+        if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_manage_song_item_layout, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.double_manage_song_item_layout, parent, false);
+        }
+
         ItemHolder viewHolder = new ItemHolder(view);
         return viewHolder;
     }
@@ -173,7 +179,6 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                     mTvManage.setVisibility(View.VISIBLE);
                     mTvManage.setText("删除");
                     mTvManage.setEnabled(true);
-                    mTvManage.setBackground(mRedDrawable);
                 } else {
                     mTvManage.setVisibility(View.GONE);
                 }
