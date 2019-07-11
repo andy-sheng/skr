@@ -5,4 +5,5 @@ public class GrabInviteFromSchemeEvent {
     public int roomId;
     public int mediaType;
     public int ask;
+    public int tagId;
 }

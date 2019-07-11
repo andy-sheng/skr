@@ -314,7 +314,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mGrabRootView.addOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mInputContainerView.hideSoftInput();
                 }
                 return false;
@@ -773,6 +773,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 .addDataBeforeAdd(0, InviteFriendFragment2.FROM_GRAB_ROOM)
                 .addDataBeforeAdd(1, mRoomData.getGameId())
                 .addDataBeforeAdd(2, mRoomData.isVideoRoom() ? EMsgRoomMediaType.EMR_VIDEO.getValue() : EMsgRoomMediaType.EMR_AUDIO.getValue())
+                .addDataBeforeAdd(3, mRoomData.getTagId())
                 .build()
         );
 
@@ -804,7 +805,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
         }
 
-        mPersonInfoDialog = new PersonInfoDialog.Builder(getActivity(), QuickFeedbackFragment.FROM_GRAB_ROOM,userID,mShowKick,true)
+        mPersonInfoDialog = new PersonInfoDialog.Builder(getActivity(), QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, true)
                 .setRoomID(mRoomData.getGameId())
                 .setInviteDoubleListener(new PersonInfoDialog.InviteDoubleListener() {
                     @Override

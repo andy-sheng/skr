@@ -21,8 +21,8 @@ public class InviteFriendDialog {
 
     DialogPlus mShareDialog;
 
-    public InviteFriendDialog(Context context, int type, int gameId,int mediaType, String kouLingToken) {
-        InviteFriendDialogView inviteFriendDialogView = new InviteFriendDialogView(context, type, gameId,mediaType, kouLingToken);
+    public InviteFriendDialog(Context context, int type, int gameId,int tagId,int mediaType, String kouLingToken) {
+        InviteFriendDialogView inviteFriendDialogView = new InviteFriendDialogView(context, type, gameId,tagId,mediaType, kouLingToken);
 
         inviteFriendDialogView.setListener(new InviteFriendDialogView.Listener() {
             @Override

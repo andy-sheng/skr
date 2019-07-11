@@ -155,7 +155,7 @@ class FriendRoomGameView : RelativeLayout {
 
     fun showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, null)
+            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0,0, 0, null)
         }
         mInviteFriendDialog?.show()
     }
@@ -215,8 +215,10 @@ class FriendRoomGameView : RelativeLayout {
             }, true)
         } else {
             mSkrAudioPermission.ensurePermission({
-                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                iRankingModeService?.tryGoGrabRoom(roomInfo.roomID, 0)
+                mRealNameVerifyUtils.checkJoinAudioPermission(roomInfo.tagID){
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService?.tryGoGrabRoom(roomInfo.roomID, 0)
+                }
             }, true)
         }
     }
@@ -274,7 +276,6 @@ class FriendRoomGameView : RelativeLayout {
                     } else {
                         refreshView(list, false, newOffset)
                     }
-
                 } else {
                     refreshLayout.finishRefresh()
                     refreshLayout.finishLoadMore()

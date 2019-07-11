@@ -77,17 +77,25 @@ public class SkrVerifyUtils {
         }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
     }
 
-    public void checkAgeSettingState(final Runnable successCallback) {
-        if (MyUserInfoManager.getInstance().hasAgeStage()) {
+    /**
+     * 是否达到语音房门槛
+     *
+     * @param successCallback
+     */
+    public void checkJoinAudioPermission(int tagId, final Runnable successCallback) {
+        if (MyLog.isDebugLogOpen()) {
             if (successCallback != null) {
                 successCallback.run();
             }
-
             return;
         }
-
-        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
-        channelService.goEditAgeActivity(successCallback);
+        final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
+        ApiMethods.subscribe(grabRoomServerApi.checkJoinAudioRoomPermission(tagId), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                process2(obj, successCallback);
+            }
+        }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
     }
 
     /**
@@ -110,6 +118,17 @@ public class SkrVerifyUtils {
                 process2(obj, successCallback);
             }
         }, new ApiMethods.RequestControl("checkJoinDoubleRoomPermission", ApiMethods.ControlType.CancelThis));
+    }
+
+    public void checkAgeSettingState(final Runnable successCallback) {
+        if (MyUserInfoManager.getInstance().hasAgeStage()) {
+            if (successCallback != null) {
+                successCallback.run();
+            }
+            return;
+        }
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+        channelService.goEditAgeActivity(successCallback);
     }
 
     private void process2(ApiResult obj, Runnable successCallback) {
@@ -149,7 +168,16 @@ public class SkrVerifyUtils {
                         })
                         .build();
                 mTipsDialogView.showByDialog();
-            } else if (8344304 == obj.getErrno()) {
+            } else if (8344304 == obj.getErrno()
+                    || 8344306 == obj.getErrno()
+                    || 8344307 == obj.getErrno()
+            ) {
+//                8344304; //参与抢唱并完成100首歌曲表演，即可解锁视频专场
+//                8344306; //参与抢唱并完成100首歌曲表演，即可解锁怀旧金曲专场
+//                8344307; //获得100个爆灯，即可解锁唱将专场
+                if (mTipsDialogView != null) {
+                    mTipsDialogView.dismiss();
+                }
                 // 未满100首
                 mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
                         .setMessageTip(obj.getErrmsg())

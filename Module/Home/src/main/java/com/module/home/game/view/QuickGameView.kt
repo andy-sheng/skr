@@ -114,11 +114,13 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
                         }, true)
                     } else {
                         mSkrAudioPermission.ensurePermission({
-                            mRealNameVerifyUtils.checkAgeSettingState {
-                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                                if (iRankingModeService != null) {
-                                    if (specialModel != null) {
-                                        iRankingModeService.tryGoGrabMatch(specialModel.tagID)
+                            mRealNameVerifyUtils.checkJoinAudioPermission(specialModel.tagID) {
+                                mRealNameVerifyUtils.checkAgeSettingState {
+                                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                                    if (iRankingModeService != null) {
+                                        if (specialModel != null) {
+                                            iRankingModeService.tryGoGrabMatch(specialModel.tagID)
+                                        }
                                     }
                                 }
                             }

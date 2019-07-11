@@ -155,6 +155,7 @@ public class InframeProcessor implements ISchemeProcessor {
         if ("/grabjoin".equals(path)) {
             int ownerId = SchemeUtils.getInt(uri, "owner", 0);
             int roomId = SchemeUtils.getInt(uri, "gameId", 0);
+            int tagId = SchemeUtils.getInt(uri, "tagId", 0);
             int ask = SchemeUtils.getInt(uri, "ask", 0);
             int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
             if (ownerId > 0 && roomId > 0) {
@@ -166,6 +167,7 @@ public class InframeProcessor implements ISchemeProcessor {
                 event.ask = ask;
                 event.ownerId = ownerId;
                 event.roomId = roomId;
+                event.tagId = tagId;
                 event.mediaType = mediaType;
                 EventBus.getDefault().post(event);
             }
