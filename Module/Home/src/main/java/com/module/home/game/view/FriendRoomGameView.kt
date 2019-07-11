@@ -66,7 +66,6 @@ class FriendRoomGameView : RelativeLayout {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
-
     init {
         View.inflate(context, R.layout.friend_room_view_layout, this)
 

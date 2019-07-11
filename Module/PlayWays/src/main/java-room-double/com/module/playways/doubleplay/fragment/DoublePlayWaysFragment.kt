@@ -1,5 +1,7 @@
 package com.module.playways.doubleplay.fragment
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
@@ -77,6 +79,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mDoubleGameSenceView: DoubleGameSenceView? = null
 
     lateinit var mDoubleCorePresenter: DoubleCorePresenter
+
+    private var mCountDownScaleAnimators: AnimatorSet? = null
+
     var mRoomData: DoubleRoomData? = null
 
     var countDownTimer: HandlerTaskTimer? = null
@@ -246,8 +251,13 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             mUnlockTv?.visibility = VISIBLE
             startCountDown()
         }
-    }
 
+        val objectAnimator1 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_X, 1.5f,1.0f)
+        val objectAnimator2 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_Y, 1.5f,1.0f)
+        mCountDownScaleAnimators = AnimatorSet();
+        mCountDownScaleAnimators?.setDuration(1000)
+        mCountDownScaleAnimators?.playTogether(objectAnimator1,objectAnimator2)
+    }
 
 
     private fun initPager() {
@@ -256,7 +266,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleGameSenceView = DoubleGameSenceView(context)
         mDoubleGameSenceView?.mRoomData = mRoomData
 
-        var mPickFun:()->Unit = {
+        var mPickFun: () -> Unit = {
             if (mRoomData!!.isRoomPrepared()) {
                 mDoubleCorePresenter.pickOther()
             }
@@ -319,15 +329,25 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private fun startCountDown() {
         val take = (mRoomData!!.config?.durationTimeMs ?: 0) / 1000
         MyLog.d(mTag, "startCountDown take is " + take)
-        countDownTimer = HandlerTaskTimer.newBuilder().interval(1000).take(take).start(object : HandlerTaskTimer.ObserverW() {
-            override fun onNext(t: Int) {
-                mCountDownTv?.text = U.getDateTimeUtils().formatTimeStringForDate((take - t).toLong() * 1000, "mm:ss")
-            }
+        countDownTimer = HandlerTaskTimer.newBuilder().interval(1000)
+                .take(take)
+                .start(object : HandlerTaskTimer.ObserverW() {
+                    override fun onNext(t: Int) {
+                        var leftSecond = take - t
+                        if (leftSecond > 10) {
+                            mCountDownTv?.text = U.getDateTimeUtils().formatTimeStringForDate((leftSecond * 1000).toLong(), "mm:ss")
+                        } else {
+                            mCountDownTv?.text = "${leftSecond}s"
+                            mCountDownTv?.setTextColor(Color.parseColor("#FFC15B"))
+                            mCountDownScaleAnimators?.cancel()
+                            mCountDownScaleAnimators?.start()
+                        }
+                    }
 
-            override fun onComplete() {
-                mDoubleCorePresenter.closeByTimeOver()
-            }
-        })
+                    override fun onComplete() {
+                        mDoubleCorePresenter.closeByTimeOver()
+                    }
+                })
     }
 
     fun View.setDebounceViewClickListener(click: (view: View?) -> Unit) {
@@ -645,6 +665,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleGameSenceView?.destroy()
         mDoubleChatSenceView?.destroy()
         mDoubleSingSenceView?.destroy()
+        mCountDownScaleAnimators?.cancel()
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {
