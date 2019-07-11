@@ -47,6 +47,13 @@
             android:paddingBottom="@dimen/view_15_dp" />
     </ScrollView>
 
+    <View
+        android:id="@id/place_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlebar"
+        android:visibility="gone"/>
+
     <ProgressBar
         android:id="@+id/upload_progress_bar"
         android:layout_width="wrap_content"
