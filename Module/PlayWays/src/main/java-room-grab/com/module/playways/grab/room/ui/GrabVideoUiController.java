@@ -17,6 +17,12 @@ public class GrabVideoUiController extends GrabBaseUiController {
     }
 
     @Override
+    public void grabBegin() {
+        mF.mGrabVideoDisplayView.reset();
+        mF.mGrabVideoDisplayView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void singBySelf() {
         GrabRoundInfoModel infoModel = mF.mRoomData.getRealRoundInfo();
         if (infoModel != null) {
@@ -98,6 +104,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
                 // 普通轮次
                 UserInfoModel userInfoModel = getUserInfoModel(infoModel.getUserID());
                 mF.mGrabVideoDisplayView.bindVideoStream(userInfoModel);
+                mF.mGrabVideoDisplayView.setMarginTop(0);
             } else if (infoModel.isChorusRound()) {
                 if (infoModel.getChorusRoundInfoModels().size() >= 2) {
                     int userID1 = infoModel.getChorusRoundInfoModels().get(0).getUserID();

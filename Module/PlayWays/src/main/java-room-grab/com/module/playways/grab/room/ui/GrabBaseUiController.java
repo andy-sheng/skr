@@ -41,6 +41,8 @@ public abstract class GrabBaseUiController {
         mF = f;
     }
 
+    public abstract void grabBegin();
+
     public abstract void singBySelf();
 
     public abstract void singByOthers();

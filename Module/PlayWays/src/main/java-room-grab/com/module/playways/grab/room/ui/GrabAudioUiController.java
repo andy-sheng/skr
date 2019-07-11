@@ -12,6 +12,11 @@ public class GrabAudioUiController extends GrabBaseUiController{
     }
 
     @Override
+    public void grabBegin() {
+
+    }
+
+    @Override
     public void singBySelf() {
 // 显示歌词
         mF.mSelfSingCardView.setVisibility(View.VISIBLE);

@@ -1306,6 +1306,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mOthersSingCardView.setVisibility(GONE);
         mSelfSingCardView.setVisibility(GONE);
         mMiniOwnerMicIv.setVisibility(GONE);
+        mGrabBaseUiController.grabBegin();
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
