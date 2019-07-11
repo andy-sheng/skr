@@ -161,6 +161,21 @@ public class DialogPlus {
     }
 
     /**
+     * 判断这个Activity 此时是否正在显示着一个 DialogPlus
+     *
+     * @param activity
+     * @return
+     */
+    public static boolean hasDialogShow(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        View decorView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        View view = decorView.findViewById(R.id.dialogplus_outmost_container);
+        return view != null;
+    }
+
+    /**
      * Displays the dialog if it is not shown already.
      */
     public void show() {

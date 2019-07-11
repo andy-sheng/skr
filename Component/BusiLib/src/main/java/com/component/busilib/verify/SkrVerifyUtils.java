@@ -1,5 +1,6 @@
 package com.component.busilib.verify;
 
+import android.app.Activity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -16,6 +17,7 @@ import com.common.view.DebounceViewClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
+import com.orhanobut.dialogplus.DialogPlus;
 import com.tencent.mm.opensdk.constants.Build;
 
 public class SkrVerifyUtils {
@@ -185,18 +187,23 @@ public class SkrVerifyUtils {
                 if (mTipsDialogView != null) {
                     mTipsDialogView.dismiss();
                 }
+                Activity activity = U.getActivityUtils().getTopActivity();
                 // 未满100首
-                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                        .setMessageTip(obj.getErrmsg())
-                        .setOkBtnTip("确认")
-                        .setOkBtnClickListener(new DebounceViewClickListener() {
-                            @Override
-                            public void clickValid(View v) {
-                                mTipsDialogView.dismiss();
-                            }
-                        })
-                        .build();
-                mTipsDialogView.showByDialog();
+                if (DialogPlus.hasDialogShow(activity)) {
+                    U.getToastUtil().showShort(obj.getErrmsg());
+                } else {
+                    mTipsDialogView = new TipsDialogView.Builder(activity)
+                            .setMessageTip(obj.getErrmsg())
+                            .setOkBtnTip("确认")
+                            .setOkBtnClickListener(new DebounceViewClickListener() {
+                                @Override
+                                public void clickValid(View v) {
+                                    mTipsDialogView.dismiss();
+                                }
+                            })
+                            .build();
+                    mTipsDialogView.showByDialog();
+                }
             } else if (8376042 == obj.getErrno()) {
                 // 双人唱聊实名认证
                 if (mTipsDialogView != null) {
