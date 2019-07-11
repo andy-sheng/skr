@@ -116,6 +116,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
             mRoomPlayerNumTv.setText(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum());
 
             if (TextUtils.isEmpty(mFriendRoomModel.getRoomInfo().getRoomName())) {
+                mRoomInfoTv.setVisibility(View.VISIBLE);
                 mRoomInfoTv.setText(mFriendRoomModel.getRoomInfo().getRoomName());
             } else {
                 if (mFriendRoomModel.getTagInfo() != null) {
