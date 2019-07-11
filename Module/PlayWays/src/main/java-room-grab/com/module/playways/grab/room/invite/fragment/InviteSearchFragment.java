@@ -97,7 +97,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             public void onClick(UserInfoModel model, ExTextView view) {
                 if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
                     mPresenter.inviteFriend(mRoomID, mTagID, model, view);
-                } else {
+                } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
                     mPresenter.inviteDoubleFriend(mRoomID, model, view);
                 }
             }

@@ -83,7 +83,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
                 bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
                 bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
                 bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
-                bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mTagID);
+                bundle.putSerializable(InviteSearchFragment.INVITE_TAG_ID, mTagID);
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
                         .setUseOldFragmentIfExist(false)
