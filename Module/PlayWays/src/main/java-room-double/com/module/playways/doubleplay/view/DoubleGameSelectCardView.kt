@@ -28,10 +28,10 @@ class DoubleGameSelectCardView : ConstraintLayout {
     var itemId: Int? = -1
 
     init {
-        inflate(context, com.module.playways.R.layout.double_gameselect_card_layout, this)
-        mGameNameTv = findViewById(com.module.playways.R.id.game_name_tv)
-        mIconIv1 = findViewById(com.module.playways.R.id.icon_iv_1)
-        mIconIv2 = findViewById(com.module.playways.R.id.icon_iv_2)
+        inflate(context, R.layout.double_gameselect_card_layout, this)
+        mGameNameTv = findViewById(R.id.game_name_tv)
+        mIconIv1 = findViewById(R.id.icon_iv_1)
+        mIconIv2 = findViewById(R.id.icon_iv_2)
     }
 
     fun acceptItem(itemId: Int): Boolean {
@@ -81,7 +81,7 @@ class DoubleGameSelectCardView : ConstraintLayout {
                 else -> MyLog.w("DoubleGameSelectCardView", "setSelectUser 什么情况")
             }
         } else {
-            MyLog.w("DoubleGameSelectCardView", "setSelectUser, 这个人设置了两次？？，userId is $userInfoModel.userId")
+            MyLog.w("DoubleGameSelectCardView", "setSelectUser, 这个人设置了两次？？，userId is $userInfoModel.userId, itemID is $itemId")
         }
     }
 }
