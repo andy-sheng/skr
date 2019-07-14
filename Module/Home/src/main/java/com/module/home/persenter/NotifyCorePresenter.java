@@ -204,7 +204,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
                                 }
-                                tryGoGrabRoom(event.mediaType, event.roomId, 2);
+                                tryGoGrabRoom(event.mediaType, event.roomId,event.tagId, 2);
                             }
                         });
                         confirmDialog.show();
@@ -214,7 +214,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             // 不需要直接进
-            tryGoGrabRoom(event.mediaType, event.roomId, 2);
+            tryGoGrabRoom(event.mediaType, event.roomId, event.tagId,2);
         }
     }
 
@@ -351,7 +351,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    void tryGoGrabRoom(int mediaType, int roomID, int inviteType) {
+    void tryGoGrabRoom(int mediaType, int roomID,int tagID, int inviteType) {
         if (mSkrAudioPermission != null) {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
@@ -377,10 +377,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             }
                         }, true);
                     } else {
-                        IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                        if (iRankingModeService != null) {
-                            iRankingModeService.tryGoGrabRoom(roomID, inviteType);
-                        }
+                        mRealNameVerifyUtils.checkJoinAudioPermission(tagID, new Runnable() {
+                            @Override
+                            public void run() {
+                                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                if (iRankingModeService != null) {
+                                    iRankingModeService.tryGoGrabRoom(roomID, inviteType);
+                                }
+                            }
+                        });
                     }
 
                 }
@@ -464,6 +469,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
             floatWindowData.setUserInfoModel(event.mUserInfoModel);
             floatWindowData.setRoomID(event.roomID);
+            floatWindowData.setTagID(event.tagID);
             floatWindowData.setMediaType(event.mediaType);
             mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
         } else {
@@ -491,7 +497,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     void showGrabInviteFloatWindow(FloatWindowData floatWindowData) {
         UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
-        int roomID = floatWindowData.getRoomID();
 
         resendGrabInviterFloatWindowDismissMsg();
         GrabInviteNotifyView grabInviteNotifyView = new GrabInviteNotifyView(U.app());
@@ -505,7 +510,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onAgree() {
-                tryGoGrabRoom(floatWindowData.mMediaType, roomID, 1);
+                tryGoGrabRoom(floatWindowData.mMediaType, floatWindowData.mRoomID,floatWindowData.mTagID, 1);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
             }
@@ -662,7 +667,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onDismiss(int dismissReason) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
-
                     }
 
                     @Override
@@ -724,6 +728,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         private UserInfoModel mUserInfoModel;
         private Type mType;
         private int mRoomID;
+        private int mTagID;
         private int mMediaType;
         private String mExtra;
 
@@ -753,6 +758,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         public int getRoomID() {
             return mRoomID;
+        }
+
+        public int getTagID() {
+            return mTagID;
+        }
+
+        public void setTagID(int tagID) {
+            mTagID = tagID;
         }
 
         public int getMediaType() {

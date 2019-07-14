@@ -60,7 +60,7 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
                 public void clickValid(View v) {
                     mOnTagClickListener.dismissDialog();
                     TipsDialogView tipsDialogView = new TipsDialogView.Builder(itemView.getContext())
-                            .setMessageTip("确认切换为 " + mSpecialModel.getTagName() + " 专场歌单吗？\n当前待下发歌单内的所有歌曲将会被重置")
+                            .setMessageTip("确认切换为 " + mSpecialModel.getTagName() + " 歌单吗？\n当前待下发歌单内的所有歌曲将会被重置")
                             .setConfirmTip("确认切换")
                             .setCancelTip("取消")
                             .build();

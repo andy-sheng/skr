@@ -16,6 +16,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -147,6 +148,9 @@ public class GrabRoomActivity extends BaseActivity {
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
+        if (mRoomData.isVideoRoom()) {
+            StatisticsAdapter.recordCountEvent("grabroom", "video", null);
+        }
         // 销毁其他的除一唱到底页面所有界面
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity == this) {
@@ -183,7 +187,7 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        MyLog.w(TAG,"finish" );
+        MyLog.w(TAG, "finish");
     }
 
     @Override

@@ -83,7 +83,7 @@
             android:layout_centerVertical="true"
             android:drawableTop="@drawable/icon_weixin"
             android:gravity="center_horizontal|bottom"
-            android:text="微信好友"
+            android:text="微信"
             android:textSize="@dimen/textsize_12_dp" />
 
 

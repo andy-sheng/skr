@@ -28,6 +28,8 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
 
   public static final EMsgRoomMediaType DEFAULT_MEDIATYPE = EMsgRoomMediaType.EMR_UNKNOWN;
 
+  public static final Integer DEFAULT_TAGID = 0;
+
   /**
    * 发起邀请的用户详情
    */
@@ -55,16 +57,26 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
   )
   private final EMsgRoomMediaType mediaType;
 
-  public InviteStandMsg(UserInfo user, Integer roomID, EMsgRoomMediaType mediaType) {
-    this(user, roomID, mediaType, ByteString.EMPTY);
+  /**
+   * 房间专场id
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer tagID;
+
+  public InviteStandMsg(UserInfo user, Integer roomID, EMsgRoomMediaType mediaType, Integer tagID) {
+    this(user, roomID, mediaType, tagID, ByteString.EMPTY);
   }
 
-  public InviteStandMsg(UserInfo user, Integer roomID, EMsgRoomMediaType mediaType,
+  public InviteStandMsg(UserInfo user, Integer roomID, EMsgRoomMediaType mediaType, Integer tagID,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
     this.roomID = roomID;
     this.mediaType = mediaType;
+    this.tagID = tagID;
   }
 
   @Override
@@ -73,6 +85,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     builder.user = user;
     builder.roomID = roomID;
     builder.mediaType = mediaType;
+    builder.tagID = tagID;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -85,7 +98,8 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(user, o.user)
         && Internal.equals(roomID, o.roomID)
-        && Internal.equals(mediaType, o.mediaType);
+        && Internal.equals(mediaType, o.mediaType)
+        && Internal.equals(tagID, o.tagID);
   }
 
   @Override
@@ -96,6 +110,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
       result = result * 37 + (user != null ? user.hashCode() : 0);
       result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
       result = result * 37 + (mediaType != null ? mediaType.hashCode() : 0);
+      result = result * 37 + (tagID != null ? tagID.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -107,6 +122,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     if (user != null) builder.append(", user=").append(user);
     if (roomID != null) builder.append(", roomID=").append(roomID);
     if (mediaType != null) builder.append(", mediaType=").append(mediaType);
+    if (tagID != null) builder.append(", tagID=").append(tagID);
     return builder.replace(0, 2, "InviteStandMsg{").append('}').toString();
   }
 
@@ -151,6 +167,16 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
   }
 
   /**
+   * 房间专场id
+   */
+  public Integer getTagID() {
+    if(tagID==null){
+        return DEFAULT_TAGID;
+    }
+    return tagID;
+  }
+
+  /**
    * 发起邀请的用户详情
    */
   public boolean hasUser() {
@@ -171,12 +197,21 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
     return mediaType!=null;
   }
 
+  /**
+   * 房间专场id
+   */
+  public boolean hasTagID() {
+    return tagID!=null;
+  }
+
   public static final class Builder extends Message.Builder<InviteStandMsg, Builder> {
     private UserInfo user;
 
     private Integer roomID;
 
     private EMsgRoomMediaType mediaType;
+
+    private Integer tagID;
 
     public Builder() {
     }
@@ -205,9 +240,17 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
       return this;
     }
 
+    /**
+     * 房间专场id
+     */
+    public Builder setTagID(Integer tagID) {
+      this.tagID = tagID;
+      return this;
+    }
+
     @Override
     public InviteStandMsg build() {
-      return new InviteStandMsg(user, roomID, mediaType, super.buildUnknownFields());
+      return new InviteStandMsg(user, roomID, mediaType, tagID, super.buildUnknownFields());
     }
   }
 
@@ -221,6 +264,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
       return UserInfo.ADAPTER.encodedSizeWithTag(1, value.user)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roomID)
           + EMsgRoomMediaType.ADAPTER.encodedSizeWithTag(3, value.mediaType)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.tagID)
           + value.unknownFields().size();
     }
 
@@ -229,6 +273,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
       UserInfo.ADAPTER.encodeWithTag(writer, 1, value.user);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roomID);
       EMsgRoomMediaType.ADAPTER.encodeWithTag(writer, 3, value.mediaType);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.tagID);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -248,6 +293,7 @@ public final class InviteStandMsg extends Message<InviteStandMsg, InviteStandMsg
             }
             break;
           }
+          case 4: builder.setTagID(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

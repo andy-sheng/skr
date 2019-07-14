@@ -113,7 +113,6 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     } else {
                         U.getToastUtil().showShort("" + result.getErrmsg());
                     }
-
                 }
             }
 

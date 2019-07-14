@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -63,6 +64,7 @@ public class FeedbackFragment extends BaseFragment {
 
     CommonTitleBar mTitlebar;
     FeedbackView mFeedBackView;
+    View mPlaceView;
     ProgressBar mUploadProgressBar;
 
     List<PhotoModel> mPhotoModelList;
@@ -102,6 +104,7 @@ public class FeedbackFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mFeedBackView = (FeedbackView) mRootView.findViewById(R.id.feed_back_view);
         mUploadProgressBar = (ProgressBar) mRootView.findViewById(R.id.upload_progress_bar);
+        mPlaceView = (View) mRootView.findViewById(R.id.place_view);
         mFeedBackView.setActionType(mActionType);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
@@ -119,10 +122,18 @@ public class FeedbackFragment extends BaseFragment {
             mTitlebar.getCenterTextView().setText("举报");
         }
 
+        mPlaceView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         mFeedBackView.setListener(new FeedbackView.Listener() {
             @Override
             public void onClickSubmit(List<Integer> typeList, String content, List<ImageItem> imageItemList) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                mPlaceView.setVisibility(View.VISIBLE);
                 mUploadProgressBar.setVisibility(View.VISIBLE);
                 if (mActionType == FEED_BACK) {
                     U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
@@ -136,6 +147,7 @@ public class FeedbackFragment extends BaseFragment {
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    mPlaceView.setVisibility(View.GONE);
                                     mUploadProgressBar.setVisibility(View.GONE);
                                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                                             .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
@@ -272,6 +284,7 @@ public class FeedbackFragment extends BaseFragment {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result);
                 if (result.getErrno() == 0) {
+                    mPlaceView.setVisibility(View.GONE);
                     mUploadProgressBar.setVisibility(View.GONE);
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(com.component.busilib.R.drawable.touxiangshezhichenggong_icon)
@@ -280,6 +293,7 @@ public class FeedbackFragment extends BaseFragment {
 
                     U.getFragmentUtils().popFragment(FeedbackFragment.this);
                 } else {
+                    mPlaceView.setVisibility(View.GONE);
                     mUploadProgressBar.setVisibility(View.GONE);
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
@@ -293,6 +307,7 @@ public class FeedbackFragment extends BaseFragment {
             @Override
             public void onNetworkError(ErrorType errorType) {
                 super.onNetworkError(errorType);
+                mPlaceView.setVisibility(View.GONE);
                 mUploadProgressBar.setVisibility(View.GONE);
                 U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                         .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
@@ -300,7 +315,7 @@ public class FeedbackFragment extends BaseFragment {
                         .build());
                 U.getFragmentUtils().popFragment(FeedbackFragment.this);
             }
-        },new ApiMethods.RequestControl("feedback",ApiMethods.ControlType.CancelThis));
+        }, new ApiMethods.RequestControl("feedback", ApiMethods.ControlType.CancelThis));
     }
 
     private void submitReport(List<Integer> typeList, String content, List<String> picUrls) {
@@ -331,7 +346,7 @@ public class FeedbackFragment extends BaseFragment {
                     U.getFragmentUtils().popFragment(FeedbackFragment.this);
                 }
             }
-        }, this,new ApiMethods.RequestControl("feedback",ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("feedback", ApiMethods.ControlType.CancelThis));
     }
 
     @Override

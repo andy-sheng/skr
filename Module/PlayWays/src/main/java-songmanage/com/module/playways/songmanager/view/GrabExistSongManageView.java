@@ -159,17 +159,16 @@ public class GrabExistSongManageView extends FrameLayout implements IExistSongMa
                     }
                 });
             }
-
             mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
-
             if (mPopupWindow != null && mPopupWindow.isShowing()) {
                 mPopupWindow.dismiss();
             } else {
                 mGrabSongManagePresenter.getTagList();
             }
         });
-
-
+        // TODO: 2019-07-11 展示让其不能点击切换
+        mTvSelectedTag.setClickable(false);
+        
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
             mGrabSongManagePresenter.deleteSong(grabRoomSongModel);
         });

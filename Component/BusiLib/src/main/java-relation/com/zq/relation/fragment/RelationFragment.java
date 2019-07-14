@@ -255,7 +255,7 @@ public class RelationFragment extends BaseFragment {
 
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0,0, null);
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0,0,0, null);
         }
         mInviteFriendDialog.show();
     }

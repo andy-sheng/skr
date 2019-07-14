@@ -25,7 +25,7 @@
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginRight="@dimen/view_20_dp"
         android:layout_marginBottom="@dimen/view_20_dp"
-        android:background="@drawable/icon_weixin"
+        android:background="@drawable/icon_qq"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -36,7 +36,7 @@
         android:layout_width="@dimen/view_24_dp"
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginBottom="@dimen/view_20_dp"
-        android:background="@drawable/icon_qq"
+        android:background="@drawable/icon_weixin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/qq_iv"
         app:layout_constraintRight_toRightOf="parent" />

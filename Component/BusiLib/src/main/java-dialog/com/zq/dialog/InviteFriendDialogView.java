@@ -31,14 +31,16 @@ public class InviteFriendDialogView extends RelativeLayout {
     private int mType;      //类别
     private int mMediaType;
     private int mGameId;    //游戏id
+    private int mTagID;
     private String mKouLingToken = "";  //口令
 
     Listener mListener;
 
-    public InviteFriendDialogView(Context context, int type, int gameId, int mediaType, String kouLingToken) {
+    public InviteFriendDialogView(Context context, int type, int gameId,int tagID, int mediaType, String kouLingToken) {
         super(context);
         this.mType = type;
         this.mGameId = gameId;
+        this.mTagID = tagID;
         this.mMediaType = mediaType;
         this.mKouLingToken = kouLingToken;
         init(context);
@@ -61,7 +63,7 @@ public class InviteFriendDialogView extends RelativeLayout {
                     MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
                     return;
                 }
-                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId, mMediaType, new ICallback() {
+                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId,mTagID, mMediaType, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {

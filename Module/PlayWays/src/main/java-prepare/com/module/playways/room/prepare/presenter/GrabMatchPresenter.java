@@ -1,6 +1,7 @@
 package com.module.playways.room.prepare.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.rxretrofit.ApiManager;
@@ -110,6 +111,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         map.put("tagID", playbookItemID);
         if (mIsNewUser) {
             map.put("isNewUser", mIsNewUser);
+            map.put("ageStage", MyUserInfoManager.getInstance().getAgeStage());
         }
         map.put("vars", RA.getVars());
         map.put("testList", RA.getTestList());

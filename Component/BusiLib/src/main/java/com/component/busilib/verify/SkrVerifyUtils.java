@@ -1,5 +1,6 @@
 package com.component.busilib.verify;
 
+import android.app.Activity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -16,6 +17,7 @@ import com.common.view.DebounceViewClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
+import com.orhanobut.dialogplus.DialogPlus;
 import com.tencent.mm.opensdk.constants.Build;
 
 public class SkrVerifyUtils {
@@ -77,17 +79,32 @@ public class SkrVerifyUtils {
         }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
     }
 
-    public void checkAgeSettingState(final Runnable successCallback) {
-        if (MyUserInfoManager.getInstance().hasAgeStage()) {
+    /**
+     * 是否达到语音房门槛
+     *
+     * @param successCallback
+     */
+    public void checkJoinAudioPermission(int tagId, final Runnable successCallback) {
+        if (MyLog.isDebugLogOpen()) {
             if (successCallback != null) {
                 successCallback.run();
             }
-
             return;
         }
-
-        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
-        channelService.goEditAgeActivity(successCallback);
+        if (tagId == 44 || tagId == 45 || tagId == 47 || tagId == 48 || tagId == 40) {
+            // 这些专场不用权限校验就能进
+            if (successCallback != null) {
+                successCallback.run();
+            }
+            return;
+        }
+        final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
+        ApiMethods.subscribe(grabRoomServerApi.checkJoinAudioRoomPermission(tagId), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                process2(obj, successCallback);
+            }
+        }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
     }
 
     /**
@@ -110,6 +127,17 @@ public class SkrVerifyUtils {
                 process2(obj, successCallback);
             }
         }, new ApiMethods.RequestControl("checkJoinDoubleRoomPermission", ApiMethods.ControlType.CancelThis));
+    }
+
+    public void checkAgeSettingState(final Runnable successCallback) {
+        if (MyUserInfoManager.getInstance().hasAgeStage()) {
+            if (successCallback != null) {
+                successCallback.run();
+            }
+            return;
+        }
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+        channelService.goEditAgeActivity(successCallback);
     }
 
     private void process2(ApiResult obj, Runnable successCallback) {
@@ -149,19 +177,33 @@ public class SkrVerifyUtils {
                         })
                         .build();
                 mTipsDialogView.showByDialog();
-            } else if (8344304 == obj.getErrno()) {
+            } else if (8344304 == obj.getErrno()
+                    || 8344306 == obj.getErrno()
+                    || 8344307 == obj.getErrno()
+            ) {
+//                8344304; //参与抢唱并完成100首歌曲表演，即可解锁视频专场
+//                8344306; //参与抢唱并完成100首歌曲表演，即可解锁怀旧金曲专场
+//                8344307; //获得100个爆灯，即可解锁唱将专场
+                if (mTipsDialogView != null) {
+                    mTipsDialogView.dismiss();
+                }
+                Activity activity = U.getActivityUtils().getTopActivity();
                 // 未满100首
-                mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                        .setMessageTip(obj.getErrmsg())
-                        .setOkBtnTip("确认")
-                        .setOkBtnClickListener(new DebounceViewClickListener() {
-                            @Override
-                            public void clickValid(View v) {
-                                mTipsDialogView.dismiss();
-                            }
-                        })
-                        .build();
-                mTipsDialogView.showByDialog();
+                if (DialogPlus.hasDialogShow(activity)) {
+                    U.getToastUtil().showShort(obj.getErrmsg());
+                } else {
+                    mTipsDialogView = new TipsDialogView.Builder(activity)
+                            .setMessageTip(obj.getErrmsg())
+                            .setOkBtnTip("确认")
+                            .setOkBtnClickListener(new DebounceViewClickListener() {
+                                @Override
+                                public void clickValid(View v) {
+                                    mTipsDialogView.dismiss();
+                                }
+                            })
+                            .build();
+                    mTipsDialogView.showByDialog();
+                }
             } else if (8376042 == obj.getErrno()) {
                 // 双人唱聊实名认证
                 if (mTipsDialogView != null) {

@@ -34,7 +34,7 @@ public interface GrabSongApi {
      * "traceId": "5c4429cf53a42b1c5900001b"
      * }
      */
-    @GET("http://dev.api.inframe.mobi/v2/playbook/list-stand-tags")
+    @GET("http://dev.api.inframe.mobi/v3/playbook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
