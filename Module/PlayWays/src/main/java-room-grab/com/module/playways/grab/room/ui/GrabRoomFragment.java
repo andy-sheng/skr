@@ -61,9 +61,8 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
-import com.module.playways.grab.room.songmanager.OwnerManagerActivity;
-import com.module.playways.grab.room.songmanager.SongManageData;
-import com.module.playways.grab.room.songmanager.model.ChangeTagSuccessEvent;
+import com.module.playways.songmanager.SongManagerActivity;
+import com.module.playways.songmanager.model.ChangeTagSuccessEvent;
 import com.module.playways.grab.room.top.GrabTopContentView;
 import com.module.playways.grab.room.top.GrabTopOpView;
 import com.module.playways.grab.room.view.GameTipsManager;
@@ -687,7 +686,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //                        .setExitAnim(R.anim.slide_right_out)
 //                        .addDataBeforeAdd(0, mRoomData)
 //                        .build());
-                OwnerManagerActivity.open(getActivity(), new SongManageData(mRoomData));
+                SongManagerActivity.open(getActivity(), mRoomData);
                 removeManageSongTipView();
             }
 
@@ -1746,7 +1745,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     if (activity1 instanceof GrabRoomActivity) {
                         activity1.finish();
                     }
-                    if (activity1 instanceof OwnerManagerActivity) {
+                    if (activity1 instanceof SongManagerActivity) {
                         activity1.finish();
                     }
                 }

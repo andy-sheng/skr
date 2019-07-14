@@ -151,6 +151,25 @@ enum ESex {
     SX_SECRET = 3; //保密
 }
 
+enum ESceneType {
+    ST_Unknown = 0; //未知场景
+    ST_Game    = 1; //游戏场景
+    ST_Sing    = 2; //唱歌场景
+    ST_Chat    = 3; //聊天场景
+}
+
+message GamePanelInfo
+{
+    uint32 panelSeq             = 1; //面板序号
+    repeated GameItemInfo items = 2; //游戏条目信息
+}
+
+message GameItemInfo
+{
+    uint32 itemID   = 1; //游戏id
+    string itemDesc = 2; //游戏描述
+}
+
 message ResourceInfo {
     uint32 resourceID = 1; //资源id
     uint32 itemID = 2; //音乐条目id

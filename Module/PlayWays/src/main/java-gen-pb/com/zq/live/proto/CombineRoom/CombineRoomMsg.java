@@ -121,17 +121,88 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
   )
   private final DelMusicInfoMsg delMuicInfoMsg;
 
+  /**
+   * 发起切换场景
+   */
+  @WireField(
+      tag = 17,
+      adapter = "com.zq.live.proto.CombineRoom.ReqChangeSceneMsg#ADAPTER"
+  )
+  private final ReqChangeSceneMsg reqChangeSceneMsg;
+
+  /**
+   * 同意切换场景
+   */
+  @WireField(
+      tag = 18,
+      adapter = "com.zq.live.proto.CombineRoom.AgreeChangeSceneMsg#ADAPTER"
+  )
+  private final AgreeChangeSceneMsg agreeChangeSceneMsg;
+
+  /**
+   * 选定游戏
+   */
+  @WireField(
+      tag = 19,
+      adapter = "com.zq.live.proto.CombineRoom.ChoiceGameItemMsg#ADAPTER"
+  )
+  private final ChoiceGameItemMsg choiceGameItemMsg;
+
+  /**
+   * 开始游戏
+   */
+  @WireField(
+      tag = 20,
+      adapter = "com.zq.live.proto.CombineRoom.StartGameMsg#ADAPTER"
+  )
+  private final StartGameMsg startGameMsg;
+
+  /**
+   * 换游戏面板
+   */
+  @WireField(
+      tag = 21,
+      adapter = "com.zq.live.proto.CombineRoom.ChangeGamePanelMsg#ADAPTER"
+  )
+  private final ChangeGamePanelMsg changeGamePanelMsg;
+
+  /**
+   * 结束游戏
+   */
+  @WireField(
+      tag = 22,
+      adapter = "com.zq.live.proto.CombineRoom.EndGameMsg#ADAPTER"
+  )
+  private final EndGameMsg endGameMsg;
+
+  /**
+   * 同步状
+   */
+  @WireField(
+      tag = 23,
+      adapter = "com.zq.live.proto.CombineRoom.CombineRoomSyncStatusV2Msg#ADAPTER"
+  )
+  private final CombineRoomSyncStatusV2Msg syncStatusV2Msg;
+
   public CombineRoomMsg(Long timeMs, ECombineRoomMsgType msgType, Integer roomID, PickMsg pickMsg,
       EndCombineRoomMsg endCombineRoomMsg, UnlockUserInfoMsg unlockUserInfoMsg,
       LoadMusicInfoMsg loadMusicInfoMsg, CombineRoomSyncStatusMsg syncStatusMsg,
-      AddMusicInfoMsg addMuicInfoMsg, DelMusicInfoMsg delMuicInfoMsg) {
-    this(timeMs, msgType, roomID, pickMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, addMuicInfoMsg, delMuicInfoMsg, ByteString.EMPTY);
+      AddMusicInfoMsg addMuicInfoMsg, DelMusicInfoMsg delMuicInfoMsg,
+      ReqChangeSceneMsg reqChangeSceneMsg, AgreeChangeSceneMsg agreeChangeSceneMsg,
+      ChoiceGameItemMsg choiceGameItemMsg, StartGameMsg startGameMsg,
+      ChangeGamePanelMsg changeGamePanelMsg, EndGameMsg endGameMsg,
+      CombineRoomSyncStatusV2Msg syncStatusV2Msg) {
+    this(timeMs, msgType, roomID, pickMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, addMuicInfoMsg, delMuicInfoMsg, reqChangeSceneMsg, agreeChangeSceneMsg, choiceGameItemMsg, startGameMsg, changeGamePanelMsg, endGameMsg, syncStatusV2Msg, ByteString.EMPTY);
   }
 
   public CombineRoomMsg(Long timeMs, ECombineRoomMsgType msgType, Integer roomID, PickMsg pickMsg,
       EndCombineRoomMsg endCombineRoomMsg, UnlockUserInfoMsg unlockUserInfoMsg,
       LoadMusicInfoMsg loadMusicInfoMsg, CombineRoomSyncStatusMsg syncStatusMsg,
-      AddMusicInfoMsg addMuicInfoMsg, DelMusicInfoMsg delMuicInfoMsg, ByteString unknownFields) {
+      AddMusicInfoMsg addMuicInfoMsg, DelMusicInfoMsg delMuicInfoMsg,
+      ReqChangeSceneMsg reqChangeSceneMsg, AgreeChangeSceneMsg agreeChangeSceneMsg,
+      ChoiceGameItemMsg choiceGameItemMsg, StartGameMsg startGameMsg,
+      ChangeGamePanelMsg changeGamePanelMsg, EndGameMsg endGameMsg,
+      CombineRoomSyncStatusV2Msg syncStatusV2Msg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -143,6 +214,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     this.syncStatusMsg = syncStatusMsg;
     this.addMuicInfoMsg = addMuicInfoMsg;
     this.delMuicInfoMsg = delMuicInfoMsg;
+    this.reqChangeSceneMsg = reqChangeSceneMsg;
+    this.agreeChangeSceneMsg = agreeChangeSceneMsg;
+    this.choiceGameItemMsg = choiceGameItemMsg;
+    this.startGameMsg = startGameMsg;
+    this.changeGamePanelMsg = changeGamePanelMsg;
+    this.endGameMsg = endGameMsg;
+    this.syncStatusV2Msg = syncStatusV2Msg;
   }
 
   @Override
@@ -158,6 +236,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     builder.syncStatusMsg = syncStatusMsg;
     builder.addMuicInfoMsg = addMuicInfoMsg;
     builder.delMuicInfoMsg = delMuicInfoMsg;
+    builder.reqChangeSceneMsg = reqChangeSceneMsg;
+    builder.agreeChangeSceneMsg = agreeChangeSceneMsg;
+    builder.choiceGameItemMsg = choiceGameItemMsg;
+    builder.startGameMsg = startGameMsg;
+    builder.changeGamePanelMsg = changeGamePanelMsg;
+    builder.endGameMsg = endGameMsg;
+    builder.syncStatusV2Msg = syncStatusV2Msg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -177,7 +262,14 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
         && Internal.equals(loadMusicInfoMsg, o.loadMusicInfoMsg)
         && Internal.equals(syncStatusMsg, o.syncStatusMsg)
         && Internal.equals(addMuicInfoMsg, o.addMuicInfoMsg)
-        && Internal.equals(delMuicInfoMsg, o.delMuicInfoMsg);
+        && Internal.equals(delMuicInfoMsg, o.delMuicInfoMsg)
+        && Internal.equals(reqChangeSceneMsg, o.reqChangeSceneMsg)
+        && Internal.equals(agreeChangeSceneMsg, o.agreeChangeSceneMsg)
+        && Internal.equals(choiceGameItemMsg, o.choiceGameItemMsg)
+        && Internal.equals(startGameMsg, o.startGameMsg)
+        && Internal.equals(changeGamePanelMsg, o.changeGamePanelMsg)
+        && Internal.equals(endGameMsg, o.endGameMsg)
+        && Internal.equals(syncStatusV2Msg, o.syncStatusV2Msg);
   }
 
   @Override
@@ -195,6 +287,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
       result = result * 37 + (syncStatusMsg != null ? syncStatusMsg.hashCode() : 0);
       result = result * 37 + (addMuicInfoMsg != null ? addMuicInfoMsg.hashCode() : 0);
       result = result * 37 + (delMuicInfoMsg != null ? delMuicInfoMsg.hashCode() : 0);
+      result = result * 37 + (reqChangeSceneMsg != null ? reqChangeSceneMsg.hashCode() : 0);
+      result = result * 37 + (agreeChangeSceneMsg != null ? agreeChangeSceneMsg.hashCode() : 0);
+      result = result * 37 + (choiceGameItemMsg != null ? choiceGameItemMsg.hashCode() : 0);
+      result = result * 37 + (startGameMsg != null ? startGameMsg.hashCode() : 0);
+      result = result * 37 + (changeGamePanelMsg != null ? changeGamePanelMsg.hashCode() : 0);
+      result = result * 37 + (endGameMsg != null ? endGameMsg.hashCode() : 0);
+      result = result * 37 + (syncStatusV2Msg != null ? syncStatusV2Msg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -213,6 +312,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     if (syncStatusMsg != null) builder.append(", syncStatusMsg=").append(syncStatusMsg);
     if (addMuicInfoMsg != null) builder.append(", addMuicInfoMsg=").append(addMuicInfoMsg);
     if (delMuicInfoMsg != null) builder.append(", delMuicInfoMsg=").append(delMuicInfoMsg);
+    if (reqChangeSceneMsg != null) builder.append(", reqChangeSceneMsg=").append(reqChangeSceneMsg);
+    if (agreeChangeSceneMsg != null) builder.append(", agreeChangeSceneMsg=").append(agreeChangeSceneMsg);
+    if (choiceGameItemMsg != null) builder.append(", choiceGameItemMsg=").append(choiceGameItemMsg);
+    if (startGameMsg != null) builder.append(", startGameMsg=").append(startGameMsg);
+    if (changeGamePanelMsg != null) builder.append(", changeGamePanelMsg=").append(changeGamePanelMsg);
+    if (endGameMsg != null) builder.append(", endGameMsg=").append(endGameMsg);
+    if (syncStatusV2Msg != null) builder.append(", syncStatusV2Msg=").append(syncStatusV2Msg);
     return builder.replace(0, 2, "CombineRoomMsg{").append('}').toString();
   }
 
@@ -324,6 +430,76 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
   }
 
   /**
+   * 发起切换场景
+   */
+  public ReqChangeSceneMsg getReqChangeSceneMsg() {
+    if(reqChangeSceneMsg==null){
+        return new ReqChangeSceneMsg.Builder().build();
+    }
+    return reqChangeSceneMsg;
+  }
+
+  /**
+   * 同意切换场景
+   */
+  public AgreeChangeSceneMsg getAgreeChangeSceneMsg() {
+    if(agreeChangeSceneMsg==null){
+        return new AgreeChangeSceneMsg.Builder().build();
+    }
+    return agreeChangeSceneMsg;
+  }
+
+  /**
+   * 选定游戏
+   */
+  public ChoiceGameItemMsg getChoiceGameItemMsg() {
+    if(choiceGameItemMsg==null){
+        return new ChoiceGameItemMsg.Builder().build();
+    }
+    return choiceGameItemMsg;
+  }
+
+  /**
+   * 开始游戏
+   */
+  public StartGameMsg getStartGameMsg() {
+    if(startGameMsg==null){
+        return new StartGameMsg.Builder().build();
+    }
+    return startGameMsg;
+  }
+
+  /**
+   * 换游戏面板
+   */
+  public ChangeGamePanelMsg getChangeGamePanelMsg() {
+    if(changeGamePanelMsg==null){
+        return new ChangeGamePanelMsg.Builder().build();
+    }
+    return changeGamePanelMsg;
+  }
+
+  /**
+   * 结束游戏
+   */
+  public EndGameMsg getEndGameMsg() {
+    if(endGameMsg==null){
+        return new EndGameMsg.Builder().build();
+    }
+    return endGameMsg;
+  }
+
+  /**
+   * 同步状
+   */
+  public CombineRoomSyncStatusV2Msg getSyncStatusV2Msg() {
+    if(syncStatusV2Msg==null){
+        return new CombineRoomSyncStatusV2Msg.Builder().build();
+    }
+    return syncStatusV2Msg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -390,6 +566,55 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     return delMuicInfoMsg!=null;
   }
 
+  /**
+   * 发起切换场景
+   */
+  public boolean hasReqChangeSceneMsg() {
+    return reqChangeSceneMsg!=null;
+  }
+
+  /**
+   * 同意切换场景
+   */
+  public boolean hasAgreeChangeSceneMsg() {
+    return agreeChangeSceneMsg!=null;
+  }
+
+  /**
+   * 选定游戏
+   */
+  public boolean hasChoiceGameItemMsg() {
+    return choiceGameItemMsg!=null;
+  }
+
+  /**
+   * 开始游戏
+   */
+  public boolean hasStartGameMsg() {
+    return startGameMsg!=null;
+  }
+
+  /**
+   * 换游戏面板
+   */
+  public boolean hasChangeGamePanelMsg() {
+    return changeGamePanelMsg!=null;
+  }
+
+  /**
+   * 结束游戏
+   */
+  public boolean hasEndGameMsg() {
+    return endGameMsg!=null;
+  }
+
+  /**
+   * 同步状
+   */
+  public boolean hasSyncStatusV2Msg() {
+    return syncStatusV2Msg!=null;
+  }
+
   public static final class Builder extends Message.Builder<CombineRoomMsg, Builder> {
     private Long timeMs;
 
@@ -410,6 +635,20 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
     private AddMusicInfoMsg addMuicInfoMsg;
 
     private DelMusicInfoMsg delMuicInfoMsg;
+
+    private ReqChangeSceneMsg reqChangeSceneMsg;
+
+    private AgreeChangeSceneMsg agreeChangeSceneMsg;
+
+    private ChoiceGameItemMsg choiceGameItemMsg;
+
+    private StartGameMsg startGameMsg;
+
+    private ChangeGamePanelMsg changeGamePanelMsg;
+
+    private EndGameMsg endGameMsg;
+
+    private CombineRoomSyncStatusV2Msg syncStatusV2Msg;
 
     public Builder() {
     }
@@ -491,9 +730,65 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
       return this;
     }
 
+    /**
+     * 发起切换场景
+     */
+    public Builder setReqChangeSceneMsg(ReqChangeSceneMsg reqChangeSceneMsg) {
+      this.reqChangeSceneMsg = reqChangeSceneMsg;
+      return this;
+    }
+
+    /**
+     * 同意切换场景
+     */
+    public Builder setAgreeChangeSceneMsg(AgreeChangeSceneMsg agreeChangeSceneMsg) {
+      this.agreeChangeSceneMsg = agreeChangeSceneMsg;
+      return this;
+    }
+
+    /**
+     * 选定游戏
+     */
+    public Builder setChoiceGameItemMsg(ChoiceGameItemMsg choiceGameItemMsg) {
+      this.choiceGameItemMsg = choiceGameItemMsg;
+      return this;
+    }
+
+    /**
+     * 开始游戏
+     */
+    public Builder setStartGameMsg(StartGameMsg startGameMsg) {
+      this.startGameMsg = startGameMsg;
+      return this;
+    }
+
+    /**
+     * 换游戏面板
+     */
+    public Builder setChangeGamePanelMsg(ChangeGamePanelMsg changeGamePanelMsg) {
+      this.changeGamePanelMsg = changeGamePanelMsg;
+      return this;
+    }
+
+    /**
+     * 结束游戏
+     */
+    public Builder setEndGameMsg(EndGameMsg endGameMsg) {
+      this.endGameMsg = endGameMsg;
+      return this;
+    }
+
+    /**
+     * 同步状
+     */
+    public Builder setSyncStatusV2Msg(CombineRoomSyncStatusV2Msg syncStatusV2Msg) {
+      this.syncStatusV2Msg = syncStatusV2Msg;
+      return this;
+    }
+
     @Override
     public CombineRoomMsg build() {
-      return new CombineRoomMsg(timeMs, msgType, roomID, pickMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, addMuicInfoMsg, delMuicInfoMsg, super.buildUnknownFields());
+      return new CombineRoomMsg(timeMs, msgType, roomID, pickMsg, endCombineRoomMsg, unlockUserInfoMsg, loadMusicInfoMsg, syncStatusMsg, addMuicInfoMsg, delMuicInfoMsg, reqChangeSceneMsg, agreeChangeSceneMsg, choiceGameItemMsg, startGameMsg, changeGamePanelMsg, endGameMsg, syncStatusV2Msg, super.buildUnknownFields());
     }
   }
 
@@ -514,6 +809,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
           + CombineRoomSyncStatusMsg.ADAPTER.encodedSizeWithTag(14, value.syncStatusMsg)
           + AddMusicInfoMsg.ADAPTER.encodedSizeWithTag(15, value.addMuicInfoMsg)
           + DelMusicInfoMsg.ADAPTER.encodedSizeWithTag(16, value.delMuicInfoMsg)
+          + ReqChangeSceneMsg.ADAPTER.encodedSizeWithTag(17, value.reqChangeSceneMsg)
+          + AgreeChangeSceneMsg.ADAPTER.encodedSizeWithTag(18, value.agreeChangeSceneMsg)
+          + ChoiceGameItemMsg.ADAPTER.encodedSizeWithTag(19, value.choiceGameItemMsg)
+          + StartGameMsg.ADAPTER.encodedSizeWithTag(20, value.startGameMsg)
+          + ChangeGamePanelMsg.ADAPTER.encodedSizeWithTag(21, value.changeGamePanelMsg)
+          + EndGameMsg.ADAPTER.encodedSizeWithTag(22, value.endGameMsg)
+          + CombineRoomSyncStatusV2Msg.ADAPTER.encodedSizeWithTag(23, value.syncStatusV2Msg)
           + value.unknownFields().size();
     }
 
@@ -529,6 +831,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
       CombineRoomSyncStatusMsg.ADAPTER.encodeWithTag(writer, 14, value.syncStatusMsg);
       AddMusicInfoMsg.ADAPTER.encodeWithTag(writer, 15, value.addMuicInfoMsg);
       DelMusicInfoMsg.ADAPTER.encodeWithTag(writer, 16, value.delMuicInfoMsg);
+      ReqChangeSceneMsg.ADAPTER.encodeWithTag(writer, 17, value.reqChangeSceneMsg);
+      AgreeChangeSceneMsg.ADAPTER.encodeWithTag(writer, 18, value.agreeChangeSceneMsg);
+      ChoiceGameItemMsg.ADAPTER.encodeWithTag(writer, 19, value.choiceGameItemMsg);
+      StartGameMsg.ADAPTER.encodeWithTag(writer, 20, value.startGameMsg);
+      ChangeGamePanelMsg.ADAPTER.encodeWithTag(writer, 21, value.changeGamePanelMsg);
+      EndGameMsg.ADAPTER.encodeWithTag(writer, 22, value.endGameMsg);
+      CombineRoomSyncStatusV2Msg.ADAPTER.encodeWithTag(writer, 23, value.syncStatusV2Msg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -555,6 +864,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
           case 14: builder.setSyncStatusMsg(CombineRoomSyncStatusMsg.ADAPTER.decode(reader)); break;
           case 15: builder.setAddMuicInfoMsg(AddMusicInfoMsg.ADAPTER.decode(reader)); break;
           case 16: builder.setDelMuicInfoMsg(DelMusicInfoMsg.ADAPTER.decode(reader)); break;
+          case 17: builder.setReqChangeSceneMsg(ReqChangeSceneMsg.ADAPTER.decode(reader)); break;
+          case 18: builder.setAgreeChangeSceneMsg(AgreeChangeSceneMsg.ADAPTER.decode(reader)); break;
+          case 19: builder.setChoiceGameItemMsg(ChoiceGameItemMsg.ADAPTER.decode(reader)); break;
+          case 20: builder.setStartGameMsg(StartGameMsg.ADAPTER.decode(reader)); break;
+          case 21: builder.setChangeGamePanelMsg(ChangeGamePanelMsg.ADAPTER.decode(reader)); break;
+          case 22: builder.setEndGameMsg(EndGameMsg.ADAPTER.decode(reader)); break;
+          case 23: builder.setSyncStatusV2Msg(CombineRoomSyncStatusV2Msg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -576,6 +892,13 @@ public final class CombineRoomMsg extends Message<CombineRoomMsg, CombineRoomMsg
       if (builder.syncStatusMsg != null) builder.syncStatusMsg = CombineRoomSyncStatusMsg.ADAPTER.redact(builder.syncStatusMsg);
       if (builder.addMuicInfoMsg != null) builder.addMuicInfoMsg = AddMusicInfoMsg.ADAPTER.redact(builder.addMuicInfoMsg);
       if (builder.delMuicInfoMsg != null) builder.delMuicInfoMsg = DelMusicInfoMsg.ADAPTER.redact(builder.delMuicInfoMsg);
+      if (builder.reqChangeSceneMsg != null) builder.reqChangeSceneMsg = ReqChangeSceneMsg.ADAPTER.redact(builder.reqChangeSceneMsg);
+      if (builder.agreeChangeSceneMsg != null) builder.agreeChangeSceneMsg = AgreeChangeSceneMsg.ADAPTER.redact(builder.agreeChangeSceneMsg);
+      if (builder.choiceGameItemMsg != null) builder.choiceGameItemMsg = ChoiceGameItemMsg.ADAPTER.redact(builder.choiceGameItemMsg);
+      if (builder.startGameMsg != null) builder.startGameMsg = StartGameMsg.ADAPTER.redact(builder.startGameMsg);
+      if (builder.changeGamePanelMsg != null) builder.changeGamePanelMsg = ChangeGamePanelMsg.ADAPTER.redact(builder.changeGamePanelMsg);
+      if (builder.endGameMsg != null) builder.endGameMsg = EndGameMsg.ADAPTER.redact(builder.endGameMsg);
+      if (builder.syncStatusV2Msg != null) builder.syncStatusV2Msg = CombineRoomSyncStatusV2Msg.ADAPTER.redact(builder.syncStatusV2Msg);
       builder.clearUnknownFields();
       return builder.build();
     }

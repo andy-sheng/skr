@@ -26,6 +26,81 @@ message CombineRoomMsg
     AddMusicInfoMsg addMuicInfoMsg         = 15; //添加歌曲信息
     DelMusicInfoMsg delMuicInfoMsg         = 16; //删除歌曲信息
 
+    ReqChangeSceneMsg reqChangeSceneMsg        = 17; //发起切换场景
+    AgreeChangeSceneMsg agreeChangeSceneMsg    = 18; //同意切换场景
+    ChoiceGameItemMsg choiceGameItemMsg        = 19; //选定游戏
+    StartGameMsg startGameMsg                  = 20; //开始游戏
+    ChangeGamePanelMsg changeGamePanelMsg      = 21; //换游戏面板
+    EndGameMsg endGameMsg                      = 22; //结束游戏
+    CombineRoomSyncStatusV2Msg syncStatusV2Msg = 23; //同步状
+}
+
+message CombineRoomSyncStatusV2Msg
+{
+    sint64 syncStatusTimeMs                       = 1; //状态同步时的毫秒时间戳
+    sint64 passedTimeMs                           = 2; //房间已经经历的毫秒数
+    repeated UserLockInfo userLockInfo     = 3; //用户锁定信息
+    bool enableNoLimitDuration                    = 4; //开启没有限制的持续时间
+    ECombineStatus status                         = 5; //房间状态
+    Common.ESceneType curScene                           = 6; //当前场景
+    SceneGameSyncStatusMsg sceneGameSyncStatusMsg = 7; //游戏场景信息
+    SceneSingSyncStatusMsg sceneSingSyncStatusMsg = 8; //嗨唱场景信息
+    SceneChatSyncStatusMsg sceneChatSyncStatusMsg = 9; //聊天场景信息
+}
+
+message SceneSingSyncStatusMsg
+{
+    CombineRoomMusic currentMusic = 1; //当前歌曲
+    string nextMusicDesc          = 2; //下首歌曲
+    bool hasNextMusic             = 3; //是否有下首歌曲
+}
+
+message SceneGameSyncStatusMsg
+{
+    EGameStage gameStage = 1; //游戏阶段
+    uint32 panelSeq      = 2; //如果是选择游戏阶段，则panelSeq为当前面板信息
+    uint32 itemID        = 3; //如果是游戏进行阶段，则itemID为正在进行的游戏id
+}
+
+enum EGameStage {
+    GS_Unknown       = 0; //未知场景
+    GS_ChoicGameItem = 1; //选择游戏阶段
+    GS_InGamePlay    = 2; //游戏进行阶段
+}
+
+message EndGameMsg
+{
+    Common.GamePanelInfo nextPanel = 1; //当前游戏结束后的下个面板
+}
+
+message ChangeGamePanelMsg
+{
+    Common.GamePanelInfo nextPanel = 1; //更换后的下个面板
+}
+
+message StartGameMsg
+{
+    Common.GameItemInfo item = 1; //开始游戏的信息
+}
+
+message ChoiceGameItemMsg
+{
+    uint32 userID   = 1; //选择游戏的用户id
+    uint32 panelSeq = 2; //当前面板次序
+    uint32 itemID   = 3; //当前选择的游戏id
+}
+
+
+message AgreeChangeSceneMsg
+{
+    uint32 agreeChangeUserID = 1; //同意请求用户id
+    Common.ESceneType sceneType     = 2; //需要切换场景
+}
+
+message ReqChangeSceneMsg
+{
+    uint32 reqChangeUserID = 1; //发起请求用户id
+    Common.ESceneType sceneType   = 2; //需要切换场景
 }
 
 message AddMusicInfoMsg
@@ -52,6 +127,14 @@ enum ECombineRoomMsgType {
         DRM_ADD_MUSIC_INFO   = 6; //添加歌曲信息
         DRM_DEL_MUSIC_INFO   = 7; //删除歌曲信息
 
+        DRM_REQ_CHANGE_SCENE   = 8; //发起切换场景
+            DRM_AGREE_CHANGE_SCENE = 9; //同意切换场景
+            DRM_CHOICE_GAME_TIEM   = 10; //选定游戏
+            DRM_START_GAME         = 11; //开始游戏
+            DRM_CHANGE_GAME_PANEL  = 12; //换游戏面板
+            DRM_END_GAME           = 13; //结束游戏
+            DRM_CR_SYNC_STATUS_V2  = 14; //同步状态
+
 }
 
 message CombineRoomSyncStatusMsg
@@ -73,6 +156,9 @@ enum ECombineStatus {
     CS_Finished = 2; //房间游戏结束
 }
 
+message SceneChatSyncStatusMsg
+{
+}
 
 message CombineRoomMusic
 {
@@ -99,7 +185,6 @@ message UnlockUserInfoMsg
     repeated UserLockInfo userLockInfo = 1; //解锁信息
     bool enableNoLimitDuration         = 2; //开启没有限制的持续时间
 }
-
 
 message PickMsg
 {
