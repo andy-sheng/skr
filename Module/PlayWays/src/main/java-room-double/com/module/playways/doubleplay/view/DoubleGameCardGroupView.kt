@@ -1,7 +1,6 @@
 package com.module.playways.doubleplay.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.view.ex.ExConstraintLayout
@@ -49,6 +48,7 @@ class DoubleGameCardGroupView : ExConstraintLayout {
 
     fun setPanelInfo(localGamePanelInfo: LocalGamePanelInfo) {
         if (panelId != localGamePanelInfo.panelSeq) {
+            panelId = localGamePanelInfo.panelSeq
             repeat(4) {
                 val info = localGamePanelInfo.items[it]
                 when (it) {
