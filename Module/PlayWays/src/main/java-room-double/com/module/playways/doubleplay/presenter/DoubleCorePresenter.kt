@@ -285,7 +285,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     /**
-     * 对方想切换游戏的板子，这个时候需要弹出确认弹窗
+     * 更新房间场景
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
