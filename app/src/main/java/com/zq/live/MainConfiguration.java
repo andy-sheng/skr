@@ -59,7 +59,7 @@ public class MainConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
-                GlobalEventReceiver.getInstance().register();
+                GlobalEventReceiver.INSTANCE.register();
             }
 
             @Override
