@@ -1,7 +1,6 @@
 package com.module.playways.doubleplay.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.FragmentActivity
 import android.util.AttributeSet
 import android.view.View
@@ -15,6 +14,7 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.R
@@ -23,13 +23,12 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.songmanager.SongManagerActivity
 import com.zq.mediaengine.kit.ZqEngineKit
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.double_sing_sence_layout.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
 
-class DoubleSingSenceView : ConstraintLayout {
+class DoubleSingSenceView : ExConstraintLayout {
     val mShowCard1: DoubleSingCardView
     val mShowCard2: DoubleSingCardView
     val mMicIv: ExImageView
@@ -78,12 +77,10 @@ class DoubleSingSenceView : ConstraintLayout {
         }
     }
 
-    var mDisposable: Disposable? = null
     fun nextSong() {
-        mDisposable?.dispose()
         val mutableSet1 = mutableMapOf("roomID" to mRoomData!!.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        mDisposable = ApiMethods.subscribe(mDoubleRoomServerApi.nextSong(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mDoubleRoomServerApi.nextSong(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     MyLog.w("DoubleSingSenceView", "nextSong success")
@@ -95,8 +92,7 @@ class DoubleSingSenceView : ConstraintLayout {
             override fun onError(e: Throwable) {
                 U.getToastUtil().showShort("网络错误")
             }
-
-        })
+        }, this@DoubleSingSenceView)
     }
 
     fun joinAgora() {
@@ -122,7 +118,7 @@ class DoubleSingSenceView : ConstraintLayout {
         mMicIv?.setSelected(ZqEngineKit.getInstance().params.isLocalAudioStreamMute)
     }
 
-    fun unselected(){
+    fun unselected() {
         pick_diffuse_view.visibility = View.GONE
     }
 
@@ -134,7 +130,7 @@ class DoubleSingSenceView : ConstraintLayout {
         mCurrentCardView?.updateNextSongDec(mNext, hasNext)
     }
 
-    fun startGame(mRoomData: DoubleRoomData, mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
+    fun startSing(mRoomData: DoubleRoomData, mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
         toNextSongCardView()
         mCurrentCardView?.visibility = View.VISIBLE
         mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
@@ -170,6 +166,6 @@ class DoubleSingSenceView : ConstraintLayout {
     }
 
     fun destroy() {
-        mDisposable?.dispose()
+
     }
 }

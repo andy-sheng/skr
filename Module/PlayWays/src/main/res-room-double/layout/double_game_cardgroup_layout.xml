@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/black_trans_20"
     android:paddingLeft="@dimen/view_16_dp"
     android:paddingTop="@dimen/view_21_dp"
     android:paddingRight="@dimen/view_16_dp"
-    android:paddingBottom="@dimen/view_19_dp">
+    android:paddingBottom="@dimen/view_19_dp"
+    tools:parentTag="com.common.view.ex.ExConstraintLayout">
 
     <com.module.playways.doubleplay.view.DoubleGameSelectCardView
         android:id="@+id/card_1"
@@ -63,4 +65,4 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_3" />
-</android.support.constraint.ConstraintLayout>
+</merge>

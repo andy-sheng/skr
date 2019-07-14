@@ -2,22 +2,35 @@ package com.module.playways.room.msg.process.pushprocess;
 
 import com.common.log.MyLog;
 import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent;
-import com.module.playways.doubleplay.pushEvent.DoubleCombineRoomSycPushEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleAgreeChangeSceneEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleChangeGamePanelEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleAskChangeSceneEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleChoiceGameItemEvent;
 import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent;
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleEndGameEvent;
 import com.module.playways.doubleplay.pushEvent.DoubleLoadMusicInfoPushEvent;
 import com.module.playways.doubleplay.pushEvent.DoublePickPushEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleStartGameEvent;
+import com.module.playways.doubleplay.pushEvent.DoubleSyncStatusV2Event;
 import com.module.playways.doubleplay.pushEvent.DoubleUnlockUserInfoPushEvent;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
 import com.zq.live.proto.CombineRoom.AddMusicInfoMsg;
+import com.zq.live.proto.CombineRoom.AgreeChangeSceneMsg;
+import com.zq.live.proto.CombineRoom.ChangeGamePanelMsg;
+import com.zq.live.proto.CombineRoom.ChoiceGameItemMsg;
 import com.zq.live.proto.CombineRoom.CombineRoomMsg;
 import com.zq.live.proto.CombineRoom.CombineRoomSyncStatusMsg;
+import com.zq.live.proto.CombineRoom.CombineRoomSyncStatusV2Msg;
 import com.zq.live.proto.CombineRoom.DelMusicInfoMsg;
 import com.zq.live.proto.CombineRoom.ECombineRoomMsgType;
 import com.zq.live.proto.CombineRoom.EndCombineRoomMsg;
+import com.zq.live.proto.CombineRoom.EndGameMsg;
 import com.zq.live.proto.CombineRoom.LoadMusicInfoMsg;
 import com.zq.live.proto.CombineRoom.PickMsg;
+import com.zq.live.proto.CombineRoom.ReqChangeSceneMsg;
+import com.zq.live.proto.CombineRoom.StartGameMsg;
 import com.zq.live.proto.CombineRoom.UnlockUserInfoMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,7 +47,14 @@ public class DoubleRoomGameMsgProcess implements IPushChatRoomMsgProcess<ECombin
                 ECombineRoomMsgType.DRM_LOAD_MUSIC_INFO,
                 ECombineRoomMsgType.DRM_SYNC_STATUS,
                 ECombineRoomMsgType.DRM_ADD_MUSIC_INFO,
-                ECombineRoomMsgType.DRM_DEL_MUSIC_INFO
+                ECombineRoomMsgType.DRM_DEL_MUSIC_INFO,
+                ECombineRoomMsgType.DRM_REQ_CHANGE_SCENE,
+                ECombineRoomMsgType.DRM_AGREE_CHANGE_SCENE,
+                ECombineRoomMsgType.DRM_CHOICE_GAME_TIEM,
+                ECombineRoomMsgType.DRM_START_GAME,
+                ECombineRoomMsgType.DRM_CHANGE_GAME_PANEL,
+                ECombineRoomMsgType.DRM_END_GAME,
+                ECombineRoomMsgType.DRM_CR_SYNC_STATUS_V2
         };
     }
 
@@ -58,8 +78,78 @@ public class DoubleRoomGameMsgProcess implements IPushChatRoomMsgProcess<ECombin
             processAddMusicMsg(basePushInfo, msg.getAddMuicInfoMsg());
         } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_DEL_MUSIC_INFO) {
             processDelMusicMsg(basePushInfo, msg.getDelMuicInfoMsg());
+        } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_REQ_CHANGE_SCENE) {
+            processChangeSceneMsg(basePushInfo, msg.getReqChangeSceneMsg());
+        } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_AGREE_CHANGE_SCENE) {
+            processAgreeChangeSceneMsg(basePushInfo, msg.getAgreeChangeSceneMsg());
+        } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_CHOICE_GAME_TIEM) {
+            processChoiceGameItemMsg(basePushInfo, msg.getChoiceGameItemMsg());
+        } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_START_GAME) {
+            processStartGameMsg(basePushInfo, msg.getStartGameMsg());
+        } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_CHANGE_GAME_PANEL) {
+            processChangeGamePanelMsg(basePushInfo, msg.getChangeGamePanelMsg());
+        } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_END_GAME) {
+            processEndGamsMsg(basePushInfo, msg.getEndGameMsg());
+        } else if (msg.getMsgType() == ECombineRoomMsgType.DRM_CR_SYNC_STATUS_V2) {
+            processSyncStatusV2Msg(basePushInfo, msg.getSyncStatusV2Msg());
         } else {
             MyLog.d(TAG, "unknown msg messageType=" + messageType + " msg=" + msg);
+        }
+    }
+
+    private void processChangeSceneMsg(BasePushInfo basePushInfo, ReqChangeSceneMsg reqChangeSceneMsg) {
+        if (reqChangeSceneMsg != null) {
+            EventBus.getDefault().post(new DoubleAskChangeSceneEvent(basePushInfo, reqChangeSceneMsg));
+        } else {
+            MyLog.e(TAG, "reqChangeSceneMsg" + " Msg=null");
+        }
+    }
+
+    private void processAgreeChangeSceneMsg(BasePushInfo basePushInfo, AgreeChangeSceneMsg agreeChangeSceneMsg) {
+        if (agreeChangeSceneMsg != null) {
+            EventBus.getDefault().post(new DoubleAgreeChangeSceneEvent(basePushInfo, agreeChangeSceneMsg));
+        } else {
+            MyLog.e(TAG, "agreeChangeSceneMsg" + " Msg=null");
+        }
+    }
+
+    private void processChoiceGameItemMsg(BasePushInfo basePushInfo, ChoiceGameItemMsg choiceGameItemMsg) {
+        if (choiceGameItemMsg != null) {
+            EventBus.getDefault().post(new DoubleChoiceGameItemEvent(basePushInfo, choiceGameItemMsg));
+        } else {
+            MyLog.e(TAG, "choiceGameItemMsg" + " Msg=null");
+        }
+    }
+
+    private void processStartGameMsg(BasePushInfo basePushInfo, StartGameMsg startGameMsg) {
+        if (startGameMsg != null) {
+            EventBus.getDefault().post(new DoubleStartGameEvent(basePushInfo, startGameMsg));
+        } else {
+            MyLog.e(TAG, "startGameMsg" + " Msg=null");
+        }
+    }
+
+    private void processChangeGamePanelMsg(BasePushInfo basePushInfo, ChangeGamePanelMsg changeGamePanelMsg) {
+        if (changeGamePanelMsg != null) {
+            EventBus.getDefault().post(new DoubleChangeGamePanelEvent(basePushInfo, changeGamePanelMsg));
+        } else {
+            MyLog.e(TAG, "processChangeGamePanelMsg" + " Msg=null");
+        }
+    }
+
+    private void processEndGamsMsg(BasePushInfo basePushInfo, EndGameMsg endGameMsg) {
+        if (endGameMsg != null) {
+            EventBus.getDefault().post(new DoubleEndGameEvent(basePushInfo, endGameMsg));
+        } else {
+            MyLog.e(TAG, "processEndGamsMsg" + " Msg=null");
+        }
+    }
+
+    private void processSyncStatusV2Msg(BasePushInfo basePushInfo, CombineRoomSyncStatusV2Msg combineRoomSyncStatusV2Msg) {
+        if (combineRoomSyncStatusV2Msg != null) {
+            EventBus.getDefault().post(new DoubleSyncStatusV2Event(basePushInfo, combineRoomSyncStatusV2Msg));
+        } else {
+            MyLog.e(TAG, "processSyncStatusV2Msg" + " Msg=null");
         }
     }
 
@@ -97,7 +187,7 @@ public class DoubleRoomGameMsgProcess implements IPushChatRoomMsgProcess<ECombin
 
     private void processSysMsg(BasePushInfo basePushInfo, CombineRoomSyncStatusMsg combineRoomSyncStatusMsg) {
         if (combineRoomSyncStatusMsg != null) {
-            EventBus.getDefault().post(new DoubleCombineRoomSycPushEvent(basePushInfo, combineRoomSyncStatusMsg));
+//            EventBus.getDefault().post(new DoubleCombineRoomSycPushEvent(basePushInfo, combineRoomSyncStatusMsg));
         } else {
             MyLog.e(TAG, "processSysMsg" + " Msg=null");
         }

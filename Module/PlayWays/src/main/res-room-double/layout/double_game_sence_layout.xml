@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF3B1039">
+    tools:parentTag="com.common.view.ex.ExConstraintLayout">
 
     <com.module.playways.doubleplay.view.DoubleSingCardView
         android:id="@+id/show_card"
@@ -18,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.module.playways.doubleplay.view.DoubleGameCardGroupView
+        android:id="@+id/card_group_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_173_dp"
@@ -38,12 +40,12 @@
         android:id="@+id/pick_diffuse_view"
         android:layout_width="@dimen/view_200_dp"
         android:layout_height="@dimen/view_200_dp"
+        app:diffuse_addNewRadius="@dimen/view_50_dp"
         app:diffuse_color="#FF8AB6"
         app:diffuse_coreRadius="@dimen/view_28_dp"
         app:diffuse_maxRadius="@dimen/view_100_dp"
         app:diffuse_speed="@dimen/view_1_33_dp"
         app:diffuse_stroke_width="@dimen/view_10_dp"
-        app:diffuse_addNewRadius="@dimen/view_50_dp"
         app:layout_constraintBottom_toBottomOf="@id/pick_iv"
         app:layout_constraintLeft_toLeftOf="@+id/pick_iv"
         app:layout_constraintRight_toRightOf="@+id/pick_iv"
@@ -53,19 +55,19 @@
         android:id="@+id/pick_iv"
         android:layout_width="@dimen/view_56_dp"
         android:layout_height="@dimen/view_56_dp"
-        app:src_pressed_drawable="@drawable/srf_pick_xuanzhong"
-        app:src_unPressed_drawable="@drawable/srf_pick"
         app:layout_constraintBottom_toBottomOf="@+id/mic_iv"
         app:layout_constraintLeft_toRightOf="@id/mic_iv"
         app:layout_constraintRight_toLeftOf="@id/select_iv"
-        app:layout_constraintTop_toTopOf="@+id/mic_iv" />
+        app:layout_constraintTop_toTopOf="@+id/mic_iv"
+        app:src_pressed_drawable="@drawable/srf_pick_xuanzhong"
+        app:src_unPressed_drawable="@drawable/srf_pick" />
 
     <ImageView
         android:id="@+id/select_iv"
         android:layout_width="@dimen/view_42_dp"
         android:layout_height="@dimen/view_42_dp"
         android:layout_marginBottom="@dimen/view_95_dp"
-        android:background="@drawable/srf_diange"
+        android:background="@drawable/srf_huanyihuan"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/pick_iv"
         app:layout_constraintRight_toRightOf="parent" />
@@ -92,4 +94,4 @@
         app:layout_constraintLeft_toLeftOf="@id/select_iv"
         app:layout_constraintRight_toRightOf="@id/select_iv"
         app:layout_constraintTop_toBottomOf="@+id/select_iv" />
-</android.support.constraint.ConstraintLayout>
+</merge>

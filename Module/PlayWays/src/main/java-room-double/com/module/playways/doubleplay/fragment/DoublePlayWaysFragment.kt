@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
@@ -37,6 +38,9 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
+import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
+import com.module.playways.doubleplay.pbLocalModel.LocalGamePanelInfo
+import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
 import com.module.playways.doubleplay.presenter.DoubleCorePresenter
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
 import com.module.playways.doubleplay.view.DoubleChatSenceView
@@ -48,6 +52,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.dialog.PersonInfoDialog
 import com.zq.live.proto.Common.EMsgRoomMediaType
+import com.zq.live.proto.Common.ESceneType
 import com.zq.report.fragment.QuickFeedbackFragment
 import kotlin.properties.Delegates
 
@@ -69,6 +74,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     private var mZanDisplayView: ZanView? = null
     private var mDialogPlus: DialogPlus? = null
     private var mChangeSenceDialog: DialogPlus? = null
+    private var mReceiveChangeSenceDialog: DialogPlus? = null
     private var mViewPager: ViewPager? = null
     private var mChatTagTv: ExTextView? = null
     private var mGameTagTv: ExTextView? = null
@@ -183,15 +189,15 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
         mChatTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mChatTagTv?.text.toString())
+            confirmChangeSenceDialog(mChatTagTv?.text.toString(), 1)
         }
 
         mGameTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mGameTagTv?.text.toString())
+            confirmChangeSenceDialog(mGameTagTv?.text.toString(), 2)
         }
 
         mSingTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mSingTagTv?.text.toString())
+            confirmChangeSenceDialog(mSingTagTv?.text.toString(), 3)
         }
 
         mExitIv?.setDebounceViewClickListener {
@@ -257,12 +263,12 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mCountDownScaleAnimators = AnimatorSet();
         mCountDownScaleAnimators?.setDuration(1000)
         mCountDownScaleAnimators?.playTogether(objectAnimator1,objectAnimator2)
+        mDoubleGameSenceView?.setFirstGamePanelInfo(mRoomData!!.localGamePanelInfo)
     }
 
 
     private fun initPager() {
         mDoubleChatSenceView = DoubleChatSenceView(context)
-
         mDoubleGameSenceView = DoubleGameSenceView(context)
         mDoubleGameSenceView?.mRoomData = mRoomData
 
@@ -323,7 +329,16 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         })
         mViewPager?.offscreenPageLimit = 3
 
-        mPagerPosition = 1
+        mPagerPosition = getPagerPositionByScene(mRoomData!!.sceneType)
+    }
+
+    private fun getPagerPositionByScene(scene: Int): Int {
+        return when (scene) {
+            ESceneType.ST_Chat.value -> 0
+            ESceneType.ST_Game.value -> 1
+            ESceneType.ST_Sing.value -> 2
+            else -> 0
+        }
     }
 
     private fun startCountDown() {
@@ -408,7 +423,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
     }
 
-    private fun confirmChangeSenceDialog(text: String) {
+    private fun confirmChangeSenceDialog(text: String, sceneType: Int) {
         if (!mRoomData!!.isRoomPrepared()) {
             U.getToastUtil().showShort("人齐了才可以开始玩哦～")
         } else {
@@ -419,7 +434,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View) {
                             mChangeSenceDialog?.dismiss()
-
+                            mDoubleCorePresenter?.sendChangeScene(sceneType)
                         }
                     })
                     .setCancelBtnClickListener(object : AnimateClickListener() {
@@ -437,6 +452,39 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                     .setExpanded(false)
                     .create()
             mChangeSenceDialog?.show()
+        }
+    }
+
+    private fun receiveChangeSenceDialog(text: String, sceneType: Int) {
+        if (!mRoomData!!.isRoomPrepared()) {
+            U.getToastUtil().showShort("人齐了才可以开始玩哦～")
+        } else {
+            val tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip("对方邀请你进入${text}场景")
+                    .setConfirmTip("邀请")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mReceiveChangeSenceDialog?.dismiss()
+                            mDoubleCorePresenter?.agreeChangeScene(sceneType)
+                        }
+                    })
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mReceiveChangeSenceDialog?.dismiss()
+                            mDoubleCorePresenter?.refuseChangeScene(sceneType)
+                        }
+                    })
+                    .build()
+
+            mReceiveChangeSenceDialog = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create()
+            mReceiveChangeSenceDialog?.show()
         }
     }
 
@@ -485,8 +533,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleSingSenceView?.updateNextSongDec(mNext, hasNext)
     }
 
-    override fun startGame(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
-        mDoubleSingSenceView?.startGame(mRoomData!!, mCur, mNext, hasNext)
+    override fun startSing(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
+        mDoubleSingSenceView?.startSing(mRoomData!!, mCur, mNext, hasNext)
     }
 
     override fun changeRound(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
@@ -499,6 +547,30 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     override fun unLockSelfSuccess() {
         unLockSelf()
+    }
+
+    override fun updateGameSenceData(localGameSenceDataModel: LocalGameSenceDataModel) {
+        mDoubleGameSenceView?.setData(localGameSenceDataModel)
+    }
+
+    override fun showGameSceneGamePanel(localGamePanelInfo: LocalGamePanelInfo) {
+        mDoubleGameSenceView?.showGamePanel(localGamePanelInfo)
+    }
+
+    override fun showGameSceneGameCard(localGameItemInfo: LocalGameItemInfo) {
+        mDoubleGameSenceView?.playGame(localGameItemInfo)
+    }
+
+    override fun updateGameSceneSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int) {
+        mDoubleGameSenceView?.changeChoiceGameState(userInfoModel, panelSeq, itemID)
+    }
+
+    override fun updateGameScene(sceneType: Int) {
+        mPagerPosition = getPagerPositionByScene(sceneType)
+    }
+
+    override fun askSceneChange(sceneType: Int) {
+        receiveChangeSenceDialog("", sceneType)
     }
 
     /**
@@ -680,6 +752,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             unLockOther()
             countDownTimer?.dispose()
             mDoubleSingSenceView?.updateLockState()
+            mDoubleGameSenceView?.updateLockState()
         } else {
             selfLockState()
             guestLockState()

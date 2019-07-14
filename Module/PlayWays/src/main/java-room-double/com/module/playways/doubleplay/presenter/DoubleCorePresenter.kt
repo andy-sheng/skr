@@ -27,8 +27,11 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.model.DoubleSyncModel
+import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel
+import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
 import com.module.playways.doubleplay.pushEvent.*
 import com.zq.live.proto.CombineRoom.ECombineStatus
+import com.zq.live.proto.CombineRoom.EGameStage
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -148,6 +151,51 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 .navigation()
     }
 
+    fun sendChangeScene(sceneType: Int) {
+        MyLog.e(tag, "sendChangeScene, sceneType is $sceneType")
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+        ApiMethods.subscribe(mDoubleRoomServerApi.sendChangeScene(body), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+
+                } else {
+                    MyLog.w(tag, "sendChangeScene faild, sceneType is $sceneType, errno is ${obj?.errno}")
+                }
+            }
+        }, this@DoubleCorePresenter)
+    }
+
+    fun agreeChangeScene(sceneType: Int) {
+        MyLog.e(tag, "agreeChangeScene, roomID is ${mRoomData.gameId}")
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+        ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    U.getToastUtil().showShort("切换场景成功")
+                } else {
+                    MyLog.w(tag, "agreeChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
+                }
+            }
+        }, this@DoubleCorePresenter)
+    }
+
+    fun refuseChangeScene(sceneType: Int) {
+        MyLog.e(tag, "agreeChangeScene, roomID is ${mRoomData.gameId}")
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+        ApiMethods.subscribe(mDoubleRoomServerApi.refuseChangeScene(body), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    U.getToastUtil().showShort("拒绝切换场景成功")
+                } else {
+                    MyLog.w(tag, "refuseChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
+                }
+            }
+        }, this@DoubleCorePresenter)
+    }
+
     fun pickOther() {
         if (!mUiHandler.hasMessages(PICK_MSG)) {
             mUiHandler.sendEmptyMessageDelayed(PICK_MSG, 200)
@@ -180,25 +228,6 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), null)
     }
 
-    fun nextSong() {
-        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        ApiMethods.subscribe(mDoubleRoomServerApi.nextSong(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    MyLog.d(tag, "nextSong success")
-                } else {
-                    U.getToastUtil().showShort(obj?.errmsg)
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                U.getToastUtil().showShort("网络错误")
-            }
-
-        }, this@DoubleCorePresenter)
-    }
-
     fun syncStatus() {
         mUiHandler.removeMessages(SYNC_MSG)
         mUiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
@@ -208,7 +237,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 if (obj?.errno == 0) {
                     MyLog.d(tag, "syncStatus 2")
                     val model = JSON.parseObject(obj.data.toJSONString(), DoubleSyncModel::class.java)
-                    if (model.status == ECombineStatus.CS_Finished.value) {
+                    if (model.combineStatus == ECombineStatus.CS_Finished.value) {
                         mIDoublePlayView.finishActivity()
                         ARouter.getInstance()
                                 .build(RouterConstants.ACTIVITY_DOUBLE_END)
@@ -240,7 +269,6 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     /**
      * 双方添加的音乐
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -251,15 +279,113 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         }
     }
 
+    /**
+     * 对方想切换游戏的板子，这个时候需要弹出确认弹窗
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleAskChangeSceneEvent) {
+        mIDoublePlayView.askSceneChange(event.sceneType)
+    }
+
+    /**
+     * 对方想切换游戏的板子，这个时候需要弹出确认弹窗
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: UpdateRoomSceneEvent) {
+        mIDoublePlayView.updateGameScene(event.curScene)
+    }
+
+    /**
+     * 对方同意了我发出的切换场景的push
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleAgreeChangeSceneEvent) {
+        if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
+            mRoomData!!.changeScene(event.sceneType)
+        }
+    }
+
+    /**
+     * 某个人选中一个游戏卡片的push,只有这个push不需要检测sync时间，
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleChoiceGameItemEvent) {
+        mRoomData.userInfoListMap?.get(event.userID)?.let {
+            mIDoublePlayView.updateGameSceneSelectState(it, event.panelSeq, event.itemID)
+        }
+    }
+
+    /**
+     * 游戏开始的push
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleStartGameEvent) {
+        if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
+            //这里只更新id相关数据
+            val model = LocalGameSenceDataModel()
+            model.gameStage = EGameStage.GS_InGamePlay.value
+            model.itemID = event.localGameItemInfo.itemID
+            mRoomData!!.gameSenceDataModel = model
+            mIDoublePlayView.showGameSceneGameCard(event.localGameItemInfo)
+        }
+    }
+
+    /**
+     * 切换了游戏板子的push
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleChangeGamePanelEvent) {
+        if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
+            //这里只更新id相关数据
+            val model = LocalGameSenceDataModel()
+            model.gameStage = EGameStage.GS_ChoicGameItem.value
+            model.panelSeq = event.localGamePanelInfo.panelSeq
+            mRoomData!!.gameSenceDataModel = model
+            mIDoublePlayView.showGameSceneGamePanel(event.localGamePanelInfo)
+        }
+    }
+
+    /**
+     * 游戏场景游戏结束的push
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleEndGameEvent) {
+        if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
+            //这里只更新id相关数据
+            val model = LocalGameSenceDataModel()
+            model.gameStage = EGameStage.GS_ChoicGameItem.value
+            model.panelSeq = event.localGamePanelInfo.panelSeq
+            mRoomData!!.gameSenceDataModel = model
+            mIDoublePlayView.showGameSceneGamePanel(event.localGamePanelInfo)
+        }
+    }
+
+    /**
+     * 更新房间场景
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: UpdateGameSceneEvent) {
+        mIDoublePlayView.updateGameSenceData(event.localGameSenceDataModel)
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: CRStartByCreateNotifyEvent) {
         MyLog.d(tag, "onEvent StartCombineRoomByCreateNotifyEvent 1")
+        val enterRoomModel = LocalEnterRoomModel(event.basePushInfo, event.combineRoomEnterMsg)
         //在唱聊房邀请别人之后当对方同意之后收到的push，如果房间人数已经2个了就说名这个房间已经
-        if (mRoomData.gameId == event.roomID && !mRoomData.isRoomPrepared()) {
+        if (mRoomData.gameId == enterRoomModel.roomID && !mRoomData.isRoomPrepared()) {
             //游戏开始了
-            mRoomData.config = event.config
+            mRoomData.config = enterRoomModel.config
             val hashMap = HashMap<Int, UserInfoModel>()
-            for (userInfoModel in event.users) {
+            for (userInfoModel in enterRoomModel.users) {
                 hashMap.put(userInfoModel.userId, userInfoModel)
             }
             mRoomData.userInfoListMap = hashMap
@@ -286,8 +412,8 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: StartDoubleGameEvent) {
-        mIDoublePlayView.startGame(event.music, event.nextDec, event.isHasNext)
+    fun onEvent(event: StartSingEvent) {
+        mIDoublePlayView.startSing(event.music, event.nextDec, event.isHasNext)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -303,12 +429,12 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: DoubleCombineRoomSycPushEvent) {
+    fun onEvent(event: DoubleSyncStatusV2Event) {
         MyLog.d(tag, "onEvent DoubleCombineRoomSycPushEvent")
         if (event.doubleSyncModel.syncStatusTimeMs > mSyncStatusTimeMs) {
             MyLog.d(tag, "onEvent SycPush is $event")
             mSyncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
-            if (event.doubleSyncModel.status == ECombineStatus.CS_Finished.value) {
+            if (event.doubleSyncModel.combineStatus == ECombineStatus.CS_Finished.value) {
                 mIDoublePlayView.finishActivity()
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_DOUBLE_END)

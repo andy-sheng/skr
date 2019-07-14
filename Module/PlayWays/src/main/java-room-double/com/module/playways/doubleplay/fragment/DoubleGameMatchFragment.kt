@@ -7,7 +7,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
-import com.common.notification.event.CRStartByMatchPushEvent
 import com.common.statistics.StatisticsAdapter
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
@@ -16,6 +15,8 @@ import com.module.RouterConstants
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.inter.IMatchView
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
+import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel
+import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
 import com.module.playways.doubleplay.presenter.DoubleMatchPresenter
 
 
@@ -76,26 +77,29 @@ class DoubleGameMatchFragment : BaseFragment(), IMatchView {
         }
     }
 
-    override fun matchSuccessFromPush(doubleStartCombineRoomByMatchPushEvent: CRStartByMatchPushEvent) {
+    override fun matchSuccessFromPush(localEnterRoomModel: LocalEnterRoomModel) {
         MyLog.d(mTag, "matchSuccessFromPush")
         val doubleRoomData = DoubleRoomData()
-        doubleRoomData.gameId = doubleStartCombineRoomByMatchPushEvent.roomID
-        doubleRoomData.passedTimeMs = doubleStartCombineRoomByMatchPushEvent.passedTimeMs
-        doubleRoomData.config = doubleStartCombineRoomByMatchPushEvent.config
+        doubleRoomData.gameId = localEnterRoomModel.roomID
+        doubleRoomData.passedTimeMs = localEnterRoomModel.passedTimeMs
+        doubleRoomData.config = localEnterRoomModel.config
         doubleRoomData.enableNoLimitDuration = doubleRoomData.config?.durationTimeMs == -1
+        doubleRoomData.localGamePanelInfo = localEnterRoomModel.gamePanelInfo
+        doubleRoomData.sceneType = localEnterRoomModel.currentSceneType
+        doubleRoomData.gameSenceDataModel = LocalGameSenceDataModel(localEnterRoomModel.gamePanelInfo.panelSeq)
 
         val hashMap = HashMap<Int, UserInfoModel>()
-        for (userInfoModel in doubleStartCombineRoomByMatchPushEvent.users) {
+        for (userInfoModel in localEnterRoomModel.users) {
             hashMap.put(userInfoModel.userId, userInfoModel)
         }
         doubleRoomData.userInfoListMap = hashMap
 
         val list = ArrayList<LocalAgoraTokenInfo>();
-        for (value in doubleStartCombineRoomByMatchPushEvent.tokens) {
+        for (value in localEnterRoomModel.tokens) {
             list.add(LocalAgoraTokenInfo(value.key, value.value))
         }
         doubleRoomData.tokens = list
-        doubleRoomData.needMaskUserInfo = doubleStartCombineRoomByMatchPushEvent.isNeedMaskUserInfo
+        doubleRoomData.needMaskUserInfo = localEnterRoomModel.isNeedMaskUserInfo
         doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.MATCH
 
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
