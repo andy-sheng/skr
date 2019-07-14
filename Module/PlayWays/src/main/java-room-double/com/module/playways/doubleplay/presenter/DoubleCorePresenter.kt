@@ -66,11 +66,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                     PICK_MSG -> {
                         val mutableSet1 = mutableMapOf("count" to mPickNum, "fromPickuserID" to MyUserInfoManager.getInstance().uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
                         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-                        ApiMethods.subscribe(mDoubleRoomServerApi.pickOther(body), object : ApiObserver<ApiResult>() {
-                            override fun process(obj: ApiResult?) {
-
-                            }
-                        }, this@DoubleCorePresenter)
+                        ApiMethods.subscribe(mDoubleRoomServerApi.pickOther(body), null, this@DoubleCorePresenter)
                         mPickNum = 0
                     }
                 }
