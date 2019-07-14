@@ -276,6 +276,18 @@ public interface DoubleRoomServerApi {
     Observable<ApiResult> roomInviteEnter(@Body RequestBody body);
 
     /**
+     * 换游戏卡片
+     * {
+     * "curPanelSeq": 0,
+     * "roomID": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/change-game-panel")
+    Observable<ApiResult> changeGamePanel(@Body RequestBody body);
+
+    /**
      * 请求切换场景
      * {
      * "roomID": 0,
@@ -323,7 +335,6 @@ public interface DoubleRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/magpie/choice-game-item")
     Observable<ApiResult> choiceGameItem(@Body RequestBody body);
 
-
     /**
      * 获取推荐tag列表
      *
@@ -331,4 +342,28 @@ public interface DoubleRoomServerApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/magpie-billboards")
     Observable<ApiResult> getDoubleStandBillBoards();
+
+    /**
+     * 获取游戏一个小卡片信息
+     * {
+     * "itmeID": 0,
+     * "panelSeq": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/game-item-info")
+    Observable<ApiResult> getGameItemInfo(@Body RequestBody body);
+
+    /**
+     * 获取一面卡片信息
+     * {
+     * "itmeID": 0,
+     * "panelSeq": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/game-panel-info")
+    Observable<ApiResult> getGamePanelInfo(@Body RequestBody body);
 }

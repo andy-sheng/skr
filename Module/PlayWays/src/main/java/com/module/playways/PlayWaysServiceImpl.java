@@ -24,6 +24,8 @@ import com.module.playways.doubleplay.DoublePlayActivity;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
+import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel;
+import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabMatchActivity;
@@ -172,7 +174,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
         prepareData.setTagId(0);
         prepareData.setNewUser(true);
-        GrabMatchActivity.open(activity,prepareData);
+        GrabMatchActivity.open(activity, prepareData);
     }
 
     @Override
@@ -180,14 +182,18 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         DoubleRoomData doubleRoomData = new DoubleRoomData();
         if (o instanceof CRSyncInviteUserNotifyEvent) {
             CRSyncInviteUserNotifyEvent event = (CRSyncInviteUserNotifyEvent) o;
-            doubleRoomData.setGameId(event.getRoomID());
+            LocalEnterRoomModel localEnterRoomModel = new LocalEnterRoomModel(event.getBasePushInfo(), event.getCombineRoomEnterMsg());
+            doubleRoomData.setGameId(localEnterRoomModel.getRoomID());
             doubleRoomData.setEnableNoLimitDuration(true);
-            doubleRoomData.setPassedTimeMs(event.getPassedTimeMs());
-            doubleRoomData.setConfig(event.getConfig());
+            doubleRoomData.setPassedTimeMs(localEnterRoomModel.getPassedTimeMs());
+            doubleRoomData.setConfig(localEnterRoomModel.getConfig());
+            doubleRoomData.setLocalGamePanelInfo(localEnterRoomModel.getGamePanelInfo());
+            doubleRoomData.setSceneType(localEnterRoomModel.getCurrentSceneType());
+            doubleRoomData.setGameSenceDataModel(new LocalGameSenceDataModel(localEnterRoomModel.getGamePanelInfo().getPanelSeq()));
 
             {
                 HashMap<Integer, UserInfoModel> hashMap = new HashMap();
-                for (UserInfoModel userInfoModel : event.getUsers()) {
+                for (UserInfoModel userInfoModel : localEnterRoomModel.getUsers()) {
                     hashMap.put(userInfoModel.getUserId(), userInfoModel);
                 }
                 doubleRoomData.setUserInfoListMap(hashMap);
@@ -195,7 +201,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
 
             {
                 List<LocalAgoraTokenInfo> list = new ArrayList<>();
-                Iterator<Map.Entry<Integer, String>> iterator = event.getTokens().entrySet().iterator();
+                Iterator<Map.Entry<Integer, String>> iterator = localEnterRoomModel.getTokens().entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry<Integer, String> entry = iterator.next();
                     list.add(new LocalAgoraTokenInfo(entry.getKey(), entry.getValue()));
@@ -203,7 +209,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 doubleRoomData.setTokens(list);
             }
 
-            doubleRoomData.setNeedMaskUserInfo(event.isNeedMaskUserInfo());
+            doubleRoomData.setNeedMaskUserInfo(localEnterRoomModel.isNeedMaskUserInfo());
             doubleRoomData.setInviterId(event.getInviterId());
         } else if (o instanceof JSONObject) {
             JSONObject obj = (JSONObject) o;

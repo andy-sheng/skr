@@ -1,4 +1,4 @@
-package com.common.notification.event;
+package com.module.playways.doubleplay.pbLocalModel;
 
 import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BaseEnterRoomEvent {
+public class LocalEnterRoomModel {
     BaseNotiInfo basePushInfo;
     int roomID; //房间ID
     long createdTimeMs; //房间创建的时间戳
@@ -19,6 +19,16 @@ public class BaseEnterRoomEvent {
     LocalCombineRoomConfig config; //配置信息
     Map<Integer, String> tokens; //声网token
     boolean needMaskUserInfo; //是否需要隐藏用户信息
+    int currentSceneType;
+    LocalGamePanelInfo gamePanelInfo;
+
+    public int getCurrentSceneType() {
+        return currentSceneType;
+    }
+
+    public LocalGamePanelInfo getGamePanelInfo() {
+        return gamePanelInfo;
+    }
 
     public BaseNotiInfo getBasePushInfo() {
         return basePushInfo;
@@ -52,7 +62,7 @@ public class BaseEnterRoomEvent {
         return needMaskUserInfo;
     }
 
-    public BaseEnterRoomEvent(BaseNotiInfo basePushInfo, CombineRoomEnterMsg combineRoomEnterMsg) {
+    public LocalEnterRoomModel(BaseNotiInfo basePushInfo, CombineRoomEnterMsg combineRoomEnterMsg) {
         this.basePushInfo = basePushInfo;
         this.roomID = combineRoomEnterMsg.getRoomID();
         this.createdTimeMs = combineRoomEnterMsg.getCreatedTimeMs();
@@ -64,5 +74,7 @@ public class BaseEnterRoomEvent {
             tokens.put(agoraTokenInfo.getUserID(), agoraTokenInfo.getToken());
         }
         needMaskUserInfo = combineRoomEnterMsg.getNeedMaskUserInfo();
+        currentSceneType = combineRoomEnterMsg.getCurrentSceneType().getValue();
+        gamePanelInfo = LocalGamePanelInfo.pb2LocalModel(combineRoomEnterMsg.getGamePanelInfo());
     }
 }

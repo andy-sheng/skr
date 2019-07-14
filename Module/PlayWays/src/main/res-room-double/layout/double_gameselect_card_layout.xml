@@ -20,7 +20,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.view.ex.ExImageView
+    <com.common.image.fresco.BaseImageView
         android:id="@+id/icon_iv_1"
         android:layout_width="@dimen/view_24_dp"
         android:layout_height="@dimen/view_24_dp"
@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <com.common.view.ex.ExImageView
+    <com.common.image.fresco.BaseImageView
         android:id="@+id/icon_iv_2"
         android:layout_width="@dimen/view_24_dp"
         android:layout_height="@dimen/view_24_dp"

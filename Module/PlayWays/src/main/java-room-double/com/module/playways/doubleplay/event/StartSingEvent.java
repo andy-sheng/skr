@@ -2,12 +2,13 @@ package com.module.playways.doubleplay.event;
 
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 
-public class StartDoubleGameEvent {
+//从无到有的歌曲
+public class StartSingEvent {
     LocalCombineRoomMusic mMusic;
     String nextDec;
     boolean hasNext = false;
 
-    public StartDoubleGameEvent(LocalCombineRoomMusic music, String nextDec, boolean hasNext) {
+    public StartSingEvent(LocalCombineRoomMusic music, String nextDec, boolean hasNext) {
         this.mMusic = music;
         this.nextDec = nextDec;
         this.hasNext = hasNext;
