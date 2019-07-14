@@ -7,6 +7,13 @@ if (walleEnable.toBoolean()) {
     apply plugin: 'walle'
 }
 
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
+//kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
+apply plugin: 'kotlin-kapt'
+
 if (MatrixEnable.toBoolean()) {
     apply plugin: 'com.tencent.matrix-plugin'
     matrix {
@@ -286,7 +293,7 @@ dependencies {
         //api(rootProject.ext.dependencies["multidex"])
 //        implementation project(":Module:IMLib")
         //  tools
-        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
     }
 }
 

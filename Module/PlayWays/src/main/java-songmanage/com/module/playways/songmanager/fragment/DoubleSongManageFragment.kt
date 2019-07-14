@@ -116,8 +116,8 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
 
     }
 
-    override fun showRecommendSong(recommendTagModelList: List<RecommendTagModel>?) {
 
+    override fun showRecommendSong(recommendTagModelList: MutableList<RecommendTagModel>) {
         if (recommendTagModelList == null || recommendTagModelList.size == 0) {
             return
         }
@@ -189,7 +189,7 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
         MyLog.d(TAG, "instantiateItem container=$container position=$position")
         val view: View
         val recommendTagModel = recommendTagModelList[position]
-        val recommendSongView = RecommendSongView(activity, SongManagerActivity.TYPE_FROM_DOUBLE,
+        val recommendSongView = RecommendSongView(activity!!, SongManagerActivity.TYPE_FROM_DOUBLE,
                 false, mRoomData!!.gameId, recommendTagModel)
         recommendSongView.tag = position
         view = recommendSongView

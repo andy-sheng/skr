@@ -46,7 +46,6 @@ import org.greenrobot.eventbus.ThreadMode
  * 一唱到底，房主点歌或房成员点歌
  */
 class GrabSongManageFragment : BaseFragment(), ISongManageView {
-
     lateinit var mCommonTitleBar: CommonTitleBar
     lateinit var mSearchSongIv: ExTextView
     lateinit var mTagTab: SlidingTabLayout
@@ -140,7 +139,8 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
      *
      * @param recommendTagModelList
      */
-    override fun showRecommendSong(recommendTagModelList: MutableList<RecommendTagModel>?) {
+
+    override fun showRecommendSong(recommendTagModelList: MutableList<RecommendTagModel>) {
         if (recommendTagModelList == null || recommendTagModelList.size == 0) {
             return
         }
@@ -223,25 +223,25 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
         if (mRoomData!!.isOwner) {
             if (position == 0) {
                 if (mGrabSongManageView == null) {
-                    mGrabSongManageView = GrabExistSongManageView(context, mRoomData)
+                    mGrabSongManageView = GrabExistSongManageView(context!!, mRoomData!!)
                 }
                 view = mGrabSongManageView!!
             } else if (position == 1) {
                 if (mGrabSongWishView == null) {
-                    mGrabSongWishView = GrabSongWishView(context, mRoomData)
+                    mGrabSongWishView = GrabSongWishView(context!!, mRoomData!!)
                 }
                 mGrabSongWishView!!.tag = position
                 view = mGrabSongWishView!!
             } else {
                 val recommendTagModel = recommendTagModelList[position]
-                val recommendSongView = RecommendSongView(activity, SongManagerActivity.TYPE_FROM_GRAB,
+                val recommendSongView = RecommendSongView(activity!!, SongManagerActivity.TYPE_FROM_GRAB,
                         mRoomData!!.isOwner, mRoomData!!.gameId, recommendTagModel)
                 recommendSongView.tag = position
                 view = recommendSongView
             }
         } else {
             val recommendTagModel = recommendTagModelList[position]
-            val recommendSongView = RecommendSongView(activity, SongManagerActivity.TYPE_FROM_GRAB,
+            val recommendSongView = RecommendSongView(activity!!, SongManagerActivity.TYPE_FROM_GRAB,
                     mRoomData!!.isOwner, mRoomData!!.gameId, recommendTagModel)
             recommendSongView.tag = position
             view = recommendSongView
@@ -268,29 +268,22 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
     }
 
     private fun showEditRoomDialog() {
-        val grabEditView = GrabEditRoomNameView(context, mRoomData!!.roomName)
-        grabEditView.setListener(object : GrabEditRoomNameView.Listener {
-            override fun onClickCancel() {
-                if (mEditRoomDialog != null) {
-                    mEditRoomDialog!!.dismiss()
-                }
-            }
-
-            override fun onClickSave(roomName: String) {
-                if (!TextUtils.isEmpty(roomName)) {
-                    // TODO: 2019/4/18 修改房间名
-                    mEditRoomDialog!!.dismiss(false)
-                    mOwnerManagePresenter.updateRoomName(mRoomData!!.gameId, roomName)
-                } else {
-                    // TODO: 2019/4/18 房间名为空
-                    U.getToastUtil().showShort("输入的房间名为空")
-                }
-            }
-        })
-
-        if (mEditRoomDialog != null) {
-            mEditRoomDialog!!.dismiss(false)
+        val grabEditView = GrabEditRoomNameView(context!!, mRoomData!!.roomName)
+        grabEditView.onClickCancel = {
+            mEditRoomDialog?.dismiss()
         }
+        grabEditView.onClickSave = {
+            if (!TextUtils.isEmpty(it)) {
+                // TODO: 2019/4/18 修改房间名
+                mEditRoomDialog?.dismiss(false)
+                mOwnerManagePresenter.updateRoomName(mRoomData!!.gameId, it)
+            } else {
+                // TODO: 2019/4/18 房间名为空
+                U.getToastUtil().showShort("输入的房间名为空")
+            }
+        }
+
+        mEditRoomDialog?.dismiss(false)
         mEditRoomDialog = DialogPlus.newDialog(context!!)
                 .setContentHolder(ViewHolder(grabEditView))
                 .setContentBackgroundResource(R.color.transparent)
