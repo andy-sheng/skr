@@ -78,8 +78,10 @@ class DoubleGameSelectCardView : ConstraintLayout {
                     mIconIv2.visibility = View.VISIBLE
                     userInfoListMap[userInfoModel.userId] = userInfoModel
                 }
-                else -> MyLog.w("DoubleGameSelectCardView", "什么情况")
+                else -> MyLog.w("DoubleGameSelectCardView", "setSelectUser 什么情况")
             }
+        } else {
+            MyLog.w("DoubleGameSelectCardView", "setSelectUser, 这个人设置了两次？？，userId is $userInfoModel.userId")
         }
     }
 }

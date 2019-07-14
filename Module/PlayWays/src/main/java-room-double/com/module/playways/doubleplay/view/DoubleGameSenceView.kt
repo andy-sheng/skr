@@ -190,7 +190,11 @@ class DoubleGameSenceView : ExConstraintLayout {
 
     //这个是有人选择的某一个游戏卡片
     fun changeChoiceGameState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int) {
-        mDoubleGameCardGroupView.updateSelectState(userInfoModel, panelSeq, itemID)
+        if (mGameStage == EGameStage.GS_ChoicGameItem.value && panelSeq == mPanelSeq) {
+            mDoubleGameCardGroupView.updateSelectState(userInfoModel, panelSeq, itemID)
+        } else {
+            MyLog.w(mTag, "changeChoiceGameState failed panelSeq is $panelSeq, itemID is $itemID, local stage is $mGameStage, panelSeq is $mPanelSeq")
+        }
     }
 
     fun setData(localGameSenceDataModel: LocalGameSenceDataModel) {
