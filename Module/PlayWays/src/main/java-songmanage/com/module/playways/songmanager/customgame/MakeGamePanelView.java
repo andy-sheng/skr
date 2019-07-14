@@ -371,9 +371,9 @@ public class MakeGamePanelView extends RelativeLayout {
                     }
                 });
         if (mMyMediaRecorder == null) {
-            mMyMediaRecorder = MyMediaRecorder.newBuilder().build();
+            mMyMediaRecorder = MyMediaRecorder.Companion.newBuilder().build();
         }
-        mMyMediaRecorder.start(mMakeAudioFilePath);
+        mMyMediaRecorder.start(mMakeAudioFilePath,null);
     }
 
     private void changeToRecordOk() {
