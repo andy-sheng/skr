@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.HashSet;
 
@@ -27,10 +26,9 @@ public class JiGuangPush {
             /**
              * 强制关闭 MiPush 的日志捕获
              */
-            U.getReflectUtils().writeField(MiPushClient.class, null, "isCrashHandlerSuggested", Boolean.valueOf(true));
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            Class cls = Class.forName("com.xiaomi.mipush.sdk.MiPushClient");
+            U.getReflectUtils().writeField(cls, null, "isCrashHandlerSuggested", Boolean.valueOf(true));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         JPushInterface.setDebugMode(MyLog.isDebugLogOpen());

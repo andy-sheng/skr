@@ -37,7 +37,7 @@ android {
         debug {
             debuggable true
 
-                resValue("string", "PORT_NUMBER", "8089")
+            resValue("string", "PORT_NUMBER", "8089")
         }
         release {
             minifyEnabled false
@@ -145,20 +145,20 @@ android {
             java.srcDirs += 'src/main/java-svga'
             res.srcDirs += 'src/main/res-svga'
 
-            if(UmengPushEnable.toBoolean()) {
+            if (UmengPushEnable.toBoolean()) {
                 // umengpush
                 java.srcDirs += 'src/main/java-push-umeng'
             }
-            if(JPushEnable.toBoolean()) {
+            if (JPushEnable.toBoolean()) {
                 // 极光push
                 java.srcDirs += 'src/main/java-push-jiguang'
-            }else{
+            } else {
                 java.srcDirs += 'src/main/java-push-jiguang-noop'
             }
-            if(MatrixEnable.toBoolean()){
+            if (MatrixEnable.toBoolean()) {
                 java.srcDirs += 'src/main/java-matrix'
                 res.srcDirs += 'src/main/res-matrix'
-            }else{
+            } else {
                 java.srcDirs += 'src/main/java-matrix-noop'
             }
         }
@@ -264,7 +264,7 @@ dependencies {
     api files('libs/bugly_crash_release.jar')
     //implementation 'com.tencent.bugly:nativecrashreport:3.6.0' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     // 友盟push
-    if(UmengPushEnable.toBoolean()){
+    if (UmengPushEnable.toBoolean()) {
         implementation rootProject.ext.dependencies['umeng-push']
         implementation rootProject.ext.dependencies['umeng-utdid']
 //
@@ -283,14 +283,16 @@ dependencies {
     }
 
     // 极光推送
-    if(JPushEnable.toBoolean()){
-        implementation 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
-        implementation 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
-        implementation 'cn.jiguang.sdk.plugin:xiaomi:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        implementation 'cn.jiguang.sdk.plugin:huawei:3.2.1'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        implementation 'cn.jiguang.sdk.plugin:meizu:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
-        implementation 'cn.jiguang.sdk.plugin:oppo:3.2.0'//此版本插件仅支持JPushSDK3.1.8及以上版本
-        implementation 'cn.jiguang.sdk.plugin:vivo:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+    if (JPushEnable.toBoolean()) {
+        implementation 'cn.jiguang.sdk:jpush:3.3.2'  // 此处以JPush 3.2.0 版本为例。
+        implementation 'cn.jiguang.sdk:jcore:2.1.0'  // 此处以JCore 1.2.7 版本为例。
+        if (RomPushUseJiGuang.toBoolean()) {
+            implementation 'cn.jiguang.sdk.plugin:xiaomi:3.3.2'//此版本插件仅支持JPushSDK3.2.0及以上版本
+            implementation 'cn.jiguang.sdk.plugin:huawei:3.3.2'//此版本插件仅支持JPushSDK3.2.0及以上版本
+            implementation 'cn.jiguang.sdk.plugin:meizu:3.3.2'//此版本插件仅支持JPushSDK3.2.0及以上版本
+            implementation 'cn.jiguang.sdk.plugin:oppo:3.3.2'//此版本插件仅支持JPushSDK3.1.8及以上版本
+            implementation 'cn.jiguang.sdk.plugin:vivo:3.3.2'//此版本插件仅支持JPushSDK3.2.0及以上版本
+        }
     }
 
 //  debugApi rootProject.ext.dependencies["stetho"]
@@ -342,7 +344,7 @@ dependencies {
     // ConstraintLayout布局
     api 'com.android.support.constraint:constraint-layout:1.1.3'
 
-    if(MatrixEnable.toBoolean()){
+    if (MatrixEnable.toBoolean()) {
         implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
         implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
         implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: MATRIX_VERSION, changing: true
