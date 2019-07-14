@@ -49,14 +49,14 @@ class DoubleSingSenceView : ExConstraintLayout {
         mShowCard1 = findViewById(R.id.show_card1)
         mShowCard2 = findViewById(R.id.show_card2)
         mMicIv = findViewById(R.id.mic_iv)
-        mPickIv = findViewById(R.id.pick_iv) as ImageView
-        mSelectIv = findViewById(R.id.select_iv) as ImageView
+        mPickIv = findViewById(R.id.pick_iv)
+        mSelectIv = findViewById(R.id.select_iv)
         mMicTv = findViewById(R.id.mic_tv)
 
         mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (mRoomData!!.isRoomPrepared()) {
-                    SongManagerActivity.open(context as FragmentActivity, mRoomData)
+                    SongManagerActivity.open(context as FragmentActivity, mRoomData!!)
                 } else {
                     U.getToastUtil().showShort("房间里还没有人哦～")
                 }
@@ -109,13 +109,13 @@ class DoubleSingSenceView : ExConstraintLayout {
                 // 开关麦克
                 val isSelected = mMicIv?.isSelected
                 ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
-                mMicIv?.setSelected(!isSelected)
+                mMicIv?.isSelected = !isSelected
             }
         })
     }
 
     fun selected() {
-        mMicIv?.setSelected(ZqEngineKit.getInstance().params.isLocalAudioStreamMute)
+        mMicIv?.isSelected = ZqEngineKit.getInstance().params.isLocalAudioStreamMute
     }
 
     fun unselected() {

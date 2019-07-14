@@ -88,7 +88,7 @@ public class RecommendSongView extends FrameLayout {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
+        if (mType == SongManagerActivity.Companion.getTYPE_FROM_GRAB()) {
             mRecommendSongAdapter = new RecommendSongAdapter(isOwner, new RecyclerOnItemClickListener<SongModel>() {
                 @Override
                 public void onItemClicked(View view, int position, SongModel model) {
@@ -187,7 +187,7 @@ public class RecommendSongView extends FrameLayout {
     }
 
     private Observable<ApiResult> getListStandBoardObservable(int offset) {
-        if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
+        if (mType == SongManagerActivity.Companion.getTYPE_FROM_GRAB()) {
             return mGrabRoomServerApi.getListStandBoards(mRecommendTagModel.getType(), offset, mLimit);
         } else {
             return mGrabRoomServerApi.getDoubleListStandBoards(mRecommendTagModel.getType(), offset, mLimit);

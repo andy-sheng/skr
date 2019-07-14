@@ -86,7 +86,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
+        if (mType == SongManagerActivity.Companion.getTYPE_FROM_GRAB()) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_manage_song_item_layout, parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.double_manage_song_item_layout, parent, false);
@@ -174,7 +174,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                 mTvSongDesc.setText(model.getSongDesc());
             }
 
-            if (mType == SongManagerActivity.TYPE_FROM_DOUBLE) {
+            if (mType == SongManagerActivity.Companion.getTYPE_FROM_DOUBLE()) {
                 if (model.isCouldDelete()) {
                     mTvManage.setVisibility(View.VISIBLE);
                     mTvManage.setText("删除");

@@ -62,7 +62,7 @@ import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.songmanager.SongManagerActivity;
-import com.module.playways.songmanager.model.ChangeTagSuccessEvent;
+import com.module.playways.songmanager.event.ChangeTagSuccessEvent;
 import com.module.playways.grab.room.top.GrabTopContentView;
 import com.module.playways.grab.room.top.GrabTopOpView;
 import com.module.playways.grab.room.view.GameTipsManager;
@@ -686,7 +686,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //                        .setExitAnim(R.anim.slide_right_out)
 //                        .addDataBeforeAdd(0, mRoomData)
 //                        .build());
-                SongManagerActivity.open(getActivity(), mRoomData);
+                SongManagerActivity.Companion.open(getActivity(), mRoomData);
                 removeManageSongTipView();
             }
 

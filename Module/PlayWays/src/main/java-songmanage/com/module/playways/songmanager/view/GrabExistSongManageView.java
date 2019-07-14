@@ -22,7 +22,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.songmanager.SongManagerActivity;
 import com.module.playways.songmanager.adapter.ManageSongAdapter;
 import com.module.playways.songmanager.event.SongNumChangeEvent;
-import com.module.playways.songmanager.model.ChangeTagSuccessEvent;
+import com.module.playways.songmanager.event.ChangeTagSuccessEvent;
 import com.module.playways.songmanager.model.GrabRoomSongModel;
 import com.module.playways.songmanager.presenter.GrabExistSongManagePresenter;
 import com.module.playways.songmanager.adapter.GrabTagsAdapter;
@@ -83,7 +83,7 @@ public class GrabExistSongManageView extends FrameLayout implements IExistSongMa
         mTopTagView = (FrameLayout) findViewById(R.id.top_tag_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mManageSongAdapter = new ManageSongAdapter(SongManagerActivity.TYPE_FROM_GRAB);
+        mManageSongAdapter = new ManageSongAdapter(SongManagerActivity.Companion.getTYPE_FROM_GRAB());
         mRecyclerView.setAdapter(mManageSongAdapter);
 
         mRefreshLayout.setEnableRefresh(false);

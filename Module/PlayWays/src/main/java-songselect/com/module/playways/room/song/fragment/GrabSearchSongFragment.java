@@ -77,7 +77,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         mSearchResult.setLayoutManager(mLinearLayoutManager);
 
         int selectMode = SongSelectAdapter.GRAB_MODE;
-        if (mFrom == SongManagerActivity.TYPE_FROM_DOUBLE) {
+        if (mFrom == SongManagerActivity.Companion.getTYPE_FROM_DOUBLE()) {
             selectMode = SongSelectAdapter.DOUBLE_MODE;
         }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
@@ -153,7 +153,7 @@ public class GrabSearchSongFragment extends BaseFragment {
             return;
         }
         SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(mFrom == SongManagerActivity.TYPE_FROM_GRAB ? songSelectServerApi.searchGrabMusicItems(keyword)
+        ApiMethods.subscribe(mFrom == SongManagerActivity.Companion.getTYPE_FROM_GRAB() ? songSelectServerApi.searchGrabMusicItems(keyword)
                 : songSelectServerApi.searchDoubleMusicItems(keyword), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -278,7 +278,7 @@ public class GrabSearchSongFragment extends BaseFragment {
             @Override
             public ObservableSource<ApiResult> apply(String string) throws Exception {
                 SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-                if (mFrom == SongManagerActivity.TYPE_FROM_GRAB) {
+                if (mFrom == SongManagerActivity.Companion.getTYPE_FROM_GRAB()) {
                     return songSelectServerApi.searchGrabMusicItems(string).subscribeOn(Schedulers.io());
                 } else {
                     return songSelectServerApi.searchDoubleMusicItems(string).subscribeOn(Schedulers.io());
