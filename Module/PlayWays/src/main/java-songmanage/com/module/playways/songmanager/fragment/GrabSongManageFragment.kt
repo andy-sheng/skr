@@ -97,7 +97,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
             }
         })
 
-        mOwnerManagePresenter = GrabSongManagePresenter(this, mRoomData)
+        mOwnerManagePresenter = GrabSongManagePresenter(this, mRoomData!!)
         addPresent(mOwnerManagePresenter)
         mOwnerManagePresenter.getRecommendTag()
         showRoomName(mRoomData!!.roomName)

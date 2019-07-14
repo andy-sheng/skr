@@ -43,6 +43,7 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
 
     lateinit var mPresenter: DoubleSongManagePresenter
     lateinit var mPagerAdapter: PagerAdapter
+
     private var mRoomData: DoubleRoomData? = null
     private var mTagModelList: List<RecommendTagModel>? = null
 
@@ -52,9 +53,7 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
 
     override fun initData(savedInstanceState: Bundle?) {
         if (mRoomData == null) {
-            if (activity != null) {
-                activity!!.finish()
-            }
+            activity?.finish()
             return
         }
 
@@ -103,7 +102,7 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
             }
         })
 
-        mPresenter = DoubleSongManagePresenter(this, mRoomData)
+        mPresenter = DoubleSongManagePresenter(this, mRoomData!!)
         addPresent(mPresenter)
         mPresenter.getRecommendTag()
     }

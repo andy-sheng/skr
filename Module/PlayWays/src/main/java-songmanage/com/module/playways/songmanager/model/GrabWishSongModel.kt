@@ -6,11 +6,11 @@ import java.io.Serializable
 
 class GrabWishSongModel : GrabRoomSongModel(), Serializable {
 
-    private var pID: String? = null
+    private var pID: String = ""
 
     var suggester: UserInfoModel? = null
 
-    fun getpID(): String? {
+    fun getpID(): String {
         return pID
     }
 

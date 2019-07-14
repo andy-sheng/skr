@@ -43,17 +43,18 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
 
     private fun initData() {
         mGrabWishSongPresenter = GrabWishSongPresenter(this, mGrabRoomData)
-        mWishSongAdapter = WishSongAdapter(object : WishSongAdapter.Listener {
-            override fun onClickDeleteWish(view: View, position: Int, songModel: GrabWishSongModel) {
-                // 删除用户选的歌曲
-                mGrabWishSongPresenter!!.deleteWishSong(songModel)
+        mWishSongAdapter?.onClickDeleteWish = { view, position, songModel ->
+            // 删除用户选的歌曲
+            songModel?.let {
+                mGrabWishSongPresenter?.deleteWishSong(songModel)
             }
-
-            override fun onClickSelectWish(view: View, position: Int, songModel: GrabWishSongModel) {
-                // 添加用户选的歌曲
-                mGrabWishSongPresenter!!.addWishSong(songModel)
+        }
+        mWishSongAdapter?.onClickSelectWish = { view, position, songModel ->
+            // 添加用户选的歌曲
+            songModel?.let {
+                mGrabWishSongPresenter?.addWishSong(songModel)
             }
-        })
+        }
         mRecyclerView!!.layoutManager = LinearLayoutManager(context)
         mRecyclerView!!.adapter = mWishSongAdapter
 
@@ -90,11 +91,12 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
     }
 
     override fun addGrabWishSongModels(clear: Boolean, newOffset: Long, grabWishSongModels: List<GrabWishSongModel>?) {
+        mOffset = newOffset
+        mRefreshLayout.finishLoadMore()
+
         if (clear) {
             mWishSongAdapter?.dataList?.clear()
         }
-        mOffset = newOffset
-        mRefreshLayout.finishLoadMore()
         if (grabWishSongModels != null) {
             mWishSongAdapter?.dataList?.addAll(grabWishSongModels)
             mWishSongAdapter?.notifyDataSetChanged()

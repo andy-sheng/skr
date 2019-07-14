@@ -21,7 +21,7 @@ class GrabSongTagsView : RelativeLayout {
 
     val TAG = "GrabSongTagsView"
     val mRecyclerView: RecyclerView
-    val mGrabTagsAdapter: GrabTagsAdapter
+    var mGrabTagsAdapter: GrabTagsAdapter
 
     var mCurSpecialModelId: Int = 0
 
@@ -42,10 +42,6 @@ class GrabSongTagsView : RelativeLayout {
                 .setCornersRadius(U.getDisplayUtils().dip2px(13f).toFloat())
                 .build()
         background = drawable
-    }
-
-    fun setOnTagClickListener(onTagClickListener: GrabTagsAdapter.OnTagClickListener) {
-        mGrabTagsAdapter.setOnTagClickListener(onTagClickListener)
     }
 
     fun setSpecialModelList(specialModelList: List<SpecialModel>?) {

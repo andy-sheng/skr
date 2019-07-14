@@ -107,17 +107,13 @@ class GrabExistSongManageView(context: Context, internal var mRoomData: GrabRoom
             if (mGrabSongTagsView == null) {
                 mGrabSongTagsView = GrabSongTagsView(context)
 
-                mGrabSongTagsView!!.setOnTagClickListener(object : GrabTagsAdapter.OnTagClickListener {
-                    override fun onClick(specialModel: SpecialModel) {
-                        mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.gameId)
-                    }
+                mGrabSongTagsView?.mGrabTagsAdapter?.onDismissDialog = {
+                    mPopupWindow?.dismiss()
+                }
 
-                    override fun dismissDialog() {
-                        if (mPopupWindow != null) {
-                            mPopupWindow!!.dismiss()
-                        }
-                    }
-                })
+                mGrabSongTagsView?.mGrabTagsAdapter?.onClickItem = {
+                    mGrabSongManagePresenter.changeMusicTag(it!!, mRoomData.gameId)
+                }
                 mPopupWindow = PopupWindow(mGrabSongTagsView)
                 mPopupWindow!!.width = mTvSelectedTag.width
                 mPopupWindow!!.isOutsideTouchable = true
@@ -140,7 +136,11 @@ class GrabExistSongManageView(context: Context, internal var mRoomData: GrabRoom
         // TODO: 2019-07-11 展示让其不能点击切换
         mTvSelectedTag.isClickable = false
 
-        mManageSongAdapter.setOnClickDeleteListener { grabRoomSongModel -> mGrabSongManagePresenter.deleteSong(grabRoomSongModel) }
+        mManageSongAdapter.onClickDelete = {
+            it?.let {
+                mGrabSongManagePresenter.deleteSong(it)
+            }
+        }
 
         mManageSongAdapter.setGrabRoomData(mRoomData)
     }

@@ -29,8 +29,9 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
     lateinit var mRecyclerView: RecyclerView
 
     lateinit var mPresenter: DoubleExitSongManagePresenter
-    private var mDoubleRoomData: DoubleRoomData? = null
     lateinit var mManageSongAdapter: ManageSongAdapter
+
+    private var mDoubleRoomData: DoubleRoomData? = null
 
     override fun initView(): Int {
         return R.layout.double_exist_song_manage_fragment_layout
@@ -46,7 +47,7 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
         mManageSongAdapter = ManageSongAdapter(SongManagerActivity.TYPE_FROM_DOUBLE)
         mRecyclerView.adapter = mManageSongAdapter
 
-        mPresenter = DoubleExitSongManagePresenter(this, mDoubleRoomData)
+        mPresenter = DoubleExitSongManagePresenter(this, mDoubleRoomData!!)
         addPresent(mPresenter)
 
         mRefreshLayout.setEnableRefresh(false)
@@ -77,7 +78,11 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
             }
         })
 
-        mManageSongAdapter.setOnClickDeleteListener { grabRoomSongModel -> mPresenter.deleteSong(grabRoomSongModel) }
+        mManageSongAdapter.onClickDelete = {
+            it?.let {
+                mPresenter.deleteSong(it)
+            }
+        }
     }
 
     override fun useEventBus(): Boolean {
