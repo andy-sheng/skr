@@ -233,7 +233,7 @@ class DoubleGameSenceView : ExConstraintLayout {
                     it.onError(Throwable("网络错误"))
                 }
             }, this@DoubleGameSenceView, ApiMethods.RequestControl("getGameItemInfo", ApiMethods.ControlType.CancelThis))
-        }.retryWhen(RxRetryAssist(10, "")).subscribe()
+        }.compose(bindDetachEvent()).retryWhen(RxRetryAssist(10, "")).subscribe()
     }
 
     private fun getGamePanelInfo(panelSeq: Int) {
@@ -258,7 +258,7 @@ class DoubleGameSenceView : ExConstraintLayout {
                     it.onError(Throwable("网络延迟"))
                 }
             }, this@DoubleGameSenceView, ApiMethods.RequestControl("getGamePanelInfo", ApiMethods.ControlType.CancelThis))
-        }.retryWhen(RxRetryAssist(10, "")).subscribe()
+        }.compose(bindDetachEvent()).retryWhen(RxRetryAssist(10, "")).subscribe()
     }
 
     fun destroy() {
