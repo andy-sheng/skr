@@ -201,7 +201,6 @@ class DoubleGameSenceView : ExConstraintLayout {
             if (mItemId != localGameSenceDataModel.itemID) {
                 getGameItemInfo(localGameSenceDataModel.itemID)
             }
-            mItemId = localGameSenceDataModel.itemID
         } else if (localGameSenceDataModel.gameStage == EGameStage.GS_ChoicGameItem.value) {
             mGameStage = EGameStage.GS_ChoicGameItem.value
             mShowCard.visibility = View.GONE
@@ -209,7 +208,6 @@ class DoubleGameSenceView : ExConstraintLayout {
             if (mPanelSeq != localGameSenceDataModel.panelSeq) {
                 getGamePanelInfo(localGameSenceDataModel.panelSeq)
             }
-            mPanelSeq = localGameSenceDataModel.panelSeq
         }
     }
 
@@ -221,7 +219,7 @@ class DoubleGameSenceView : ExConstraintLayout {
                 override fun process(obj: ApiResult?) {
                     it.onComplete()
                     if (obj?.errno == 0) {
-
+                        mItemId = itemID
                     } else {
                         MyLog.w(mTag, "getGameItemInfo faild, errno is ${obj?.errno}")
                     }
@@ -238,17 +236,26 @@ class DoubleGameSenceView : ExConstraintLayout {
         }.retryWhen(RxRetryAssist(10, "")).subscribe()
     }
 
-    private fun getGamePanelInfo(itemID: Int) {
+    private fun getGamePanelInfo(panelSeq: Int) {
         Observable.create<Any> {
-            val mutableSet1 = mutableMapOf("itemID" to itemID, "panelSeq" to mPanelSeq)
+            val mutableSet1 = mutableMapOf("roomID" to mRoomData!!.gameId, "panelSeq" to panelSeq)
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             ApiMethods.subscribe(mDoubleRoomServerApi.getGamePanelInfo(body), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
+                    it.onComplete()
                     if (obj?.errno == 0) {
-
+                        mPanelSeq = panelSeq
                     } else {
                         MyLog.w(mTag, "getGamePanelInfo faild, errno is ${obj?.errno}")
                     }
+                }
+
+                override fun onError(e: Throwable) {
+                    it.onError(Throwable("网络错误"))
+                }
+
+                override fun onNetworkError(errorType: ErrorType?) {
+                    it.onError(Throwable("网络延迟"))
                 }
             }, this@DoubleGameSenceView, ApiMethods.RequestControl("getGamePanelInfo", ApiMethods.ControlType.CancelThis))
         }.retryWhen(RxRetryAssist(10, "")).subscribe()

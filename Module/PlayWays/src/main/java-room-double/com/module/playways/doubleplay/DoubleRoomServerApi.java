@@ -357,10 +357,8 @@ public interface DoubleRoomServerApi {
 
     /**
      * 获取一面卡片信息
-     * {
-     * "itmeID": 0,
-     * "panelSeq": 0
-     * }
+     * roomID
+     * panelSeq
      *
      * @return
      */
