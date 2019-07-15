@@ -143,6 +143,7 @@
             android:name="com.module.msg.rc.rompush.ThirdPushActivity"
             android:exported="true"
             android:launchMode="singleTask"
+            android:theme="@style/AppTheme_MainActivity"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -155,7 +156,6 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-
 
         <!-- 小米 配置开始 < -->
         <service android:name="com.xiaomi.push.service.XMPushService" android:enabled="true" />

@@ -80,7 +80,6 @@ public class ThirdPushActivity extends BaseActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
         finish();
     }

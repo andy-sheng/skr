@@ -25,7 +25,6 @@ public class JiGuangPush {
     public static void clearAlias(String alias) {
     }
 
-
     public static void joinSkrRoomId(String roomid) {
     }
 
