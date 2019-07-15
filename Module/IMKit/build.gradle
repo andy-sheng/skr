@@ -46,7 +46,11 @@ android {
             if (isBuildModule.toBoolean()) {
                 manifest.srcFile 'src/main/debug/AndroidManifest.xml'
             } else {
-                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                if(RomPushUseRC.toBoolean()) {
+                    manifest.srcFile 'src/main/release/AndroidManifestWithRomPush.xml'
+                }else{
+                    manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                }
             }
         }
 

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="io.rong.imkit">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 获取机型信息权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 录音 -->
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- 小米 配置开始 < -->
+    <permission
+        android:name="${applicationId}.permission.MIPUSH_RECEIVE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.MIPUSH_RECEIVE" /> <!-- 小米 配置结束 < -->
+
+    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE"/>
+
+    <application>
+
+        <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
+        <meta-data
+            android:name="com.module.msg.RongIMConfiguration"
+            android:value="ConfigModule" />
+
+
+        <receiver android:name="com.module.msg.custom.MyRcPushMessageReceiver">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.THIRD_PARTY_PUSH_STATE" />
+            </intent-filter>
+        </receiver>
+        <!--会话列表-->
+
+        <!--会话界面-->
+        <activity
+            android:name="com.module.msg.activity.ConversationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.zq.live"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+
+        </activity>
+
+        <!-- 开发者可以修改 RongBaseActivity 的 rc_base_activity_layout 布局文件调整 actionbar-->
+        <activity
+            android:name="io.rong.imkit.tools.RongWebviewActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="io.rong.imkit.intent.action.webview" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="io.rong.imkit.plugin.image.PictureSelectorActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="io.rong.imkit.plugin.image.PicturePreviewActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="io.rong.imkit.widget.provider.TakingPicturesActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.module.msg.activity.LastFollowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="io.rong.imkit.activity.PicturePagerActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="io.rong.imkit.intent.action.picturepagerview" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="io.rong.imkit.mention.MemberMentionedActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name="io.rong.imkit.activity.FileManagerActivity" />
+        <activity android:name="io.rong.imkit.activity.FileListActivity" />
+        <activity
+            android:name="io.rong.imkit.activity.FilePreviewActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="io.rong.imkit.intent.action.openfile" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.CSLeaveMessageActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+        <!-- 此部分代码需要移植到您的 app 下的 manifest，并且 authorities 指定您的包名。例如：com.android.FileProvider -->
+        <!-- 否则使用拍照功能时，会崩溃 -->
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="包名.FileProvider"-->
+        <!--android:grantUriPermissions="true"-->
+        <!--android:exported="false">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/rc_file_path"/>-->
+        <!--</provider>-->
+
+        <activity
+            android:name="com.module.msg.rc.rompush.ThirdPushActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme_MainActivity"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="${applicationId}"
+                    android:pathPrefix="/push_message"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+
+        <!-- 小米 配置开始 < -->
+        <service android:name="com.xiaomi.push.service.XMPushService" android:enabled="true" />
+        <service android:name="com.xiaomi.mipush.sdk.PushMessageHandler" android:enabled="true" android:exported="true" />
+        <service android:name="com.xiaomi.mipush.sdk.MessageHandleService" android:enabled="true" />
+        <!--注：此service必须在2.2.5版本以后（包括2.2.5版本）加入-->
+
+        <service
+            android:name="com.xiaomi.push.service.XMJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <!--注：此service必须在3.0.1版本以后（包括3.0.1版本）加入-->
+
+        <receiver android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.xiaomi.push.service.receivers.PingReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="io.rong.push.platform.mi.MiMessageReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+        <!-- 小米 配置结束 < -->
+
+        <!--华为 开始-->
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="100590735" />
+        <!-- BridgeActivity定义了HMS-SDK中一些跳转所需要的透明页面-->
+        <activity
+            android:name="com.huawei.hms.activity.BridgeActivity"
+            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent" >
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+
+        <!-- 解决华为移动服务升级问题的透明界面（必须声明）-->
+        <activity
+            android:name="com.huawei.android.hms.agent.common.HMSAgentActivity"
+            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent" >
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+
+        <provider
+            android:name="com.huawei.hms.update.provider.UpdateProvider"
+            android:authorities="xxx.xxx.xxx.hms.update.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+        </provider>
+        <!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播 -->
+        <receiver android:name="io.rong.push.platform.hms.HMSReceiver" >
+            <intent-filter>
+                <!-- 必须,用于接收token -->
+                <action android:name="com.huawei.android.push.intent.REGISTRATION" />
+                <!-- 必须，用于接收消息 -->
+                <action android:name="com.huawei.android.push.intent.RECEIVE" />
+                <!-- 可选，用于点击通知栏或通知栏上的按钮后触发onEvent回调 -->
+                <action android:name="com.huawei.android.push.intent.CLICK" />
+                <!-- 可选，查看push通道是否连接，不查看则不需要 -->
+                <action android:name="com.huawei.intent.action.PUSH_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.huawei.hms.support.api.push.PushEventReceiver" >
+            <intent-filter>
+                <!-- 接收通道发来的通知栏消息，兼容老版本Push -->
+                <action android:name="com.huawei.intent.action.PUSH" />
+            </intent-filter>
+        </receiver>
+        <!--华为结束-->
+
+        <!--oppo开始-->
+        <service
+            android:name="com.coloros.mcssdk.PushService"
+            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
+            <intent-filter>
+                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>
+            </intent-filter>
+        </service>
+        <!--oppo结束-->
+
+        <!--vivo开始-->
+        <!-- vivo 推送服务需要配置的 service、activity -->
+        <!-- vivo 推送配置项 -->
+        <meta-data
+            android:name="com.vivo.push.api_key"
+            android:value="5c26c7b0-8e5c-477e-96a1-294559c71da1"/>
+        <meta-data
+            android:name="com.vivo.push.app_id"
+            android:value="13303"/>
+        <service
+            android:name="com.vivo.push.sdk.service.CommandClientService"
+            android:exported="true"/>
+        <activity
+            android:name="com.vivo.push.sdk.LinkProxyClientActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <!-- vivo push 推送 receiver 声明 -->
+        <receiver android:name="io.rong.push.platform.vivo.VivoPushMessageReceiver" >
+            <intent-filter>
+                <!-- 接收 vivo push 消息 -->
+                <action android:name="com.vivo.pushclient.action.RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <!--vivo结束-->
+    </application>
+
+</manifest>

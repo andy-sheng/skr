@@ -75,10 +75,15 @@ public class FeedbackFragment extends BaseFragment {
     int mTargetId;
 
     Handler mHandler = new Handler(Looper.getMainLooper());
+    boolean mUploading = false;
 
     ObjectPlayControlTemplate<PhotoModel, FeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, FeedbackFragment>() {
         @Override
         protected FeedbackFragment accept(PhotoModel cur) {
+            if(mUploading){
+                return null;
+            }
+            mUploading = true;
             return FeedbackFragment.this;
         }
 
@@ -219,6 +224,8 @@ public class FeedbackFragment extends BaseFragment {
                         photoModel.setStatus(STATUS_SUCCESS);
                         photoModel.setPicPath(url);
                         checkUploadState(mPhotoModelList);
+                        mUploading = false;
+                        mPlayControlTemplate.endCurrent(photoModel);
                     }
 
                     @Override
@@ -226,6 +233,8 @@ public class FeedbackFragment extends BaseFragment {
                         MyLog.d(TAG, "上传失败" + " msg=" + msg);
                         photoModel.setStatus(STATUS_FAILED);
                         checkUploadState(mPhotoModelList);
+                        mUploading = false;
+                        mPlayControlTemplate.endCurrent(photoModel);
                     }
                 });
     }
