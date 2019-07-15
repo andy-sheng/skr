@@ -61,7 +61,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                     AvatarUtils.loadAvatarByUrl(mIconIv1,
                             AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                                     .setBorderColor(U.getColor(R.color.white))
-                                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                                    .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
                                     .setCircle(true)
                                     .build())
                     mIconIv1.visibility = View.VISIBLE
@@ -72,7 +72,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                     AvatarUtils.loadAvatarByUrl(mIconIv2,
                             AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                                     .setBorderColor(U.getColor(R.color.white))
-                                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                                    .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
                                     .setCircle(true)
                                     .build())
                     mIconIv2.visibility = View.VISIBLE
