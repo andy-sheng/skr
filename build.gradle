@@ -102,7 +102,7 @@ allprojects {
             }
         }
 
-        if(JPushEnable.toBoolean()){
+        if(JPushEnable.toBoolean() || RomPushUseRC.toBoolean()){
             maven{url'http://developer.huawei.com/repo/'}
         }
         google()

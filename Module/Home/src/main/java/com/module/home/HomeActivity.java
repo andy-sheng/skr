@@ -99,7 +99,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     HomeDialogManager mHomeDialogManager = new HomeDialogManager();
 
     public static void open(Activity activity) {
-        Intent intent = new Intent(activity,HomeActivity.class);
+        Intent intent = new Intent(activity, HomeActivity.class);
         activity.startActivity(intent);
     }
 
@@ -126,7 +126,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        MyLog.w(TAG, "HomeActivity initData" + ", version is " + U.getAppInfoUtils().getVersionCode());
+        MyLog.w(TAG, "HomeActivity initData" + " version=" + U.getAppInfoUtils().getVersionCode());
+        MyLog.w(TAG, "HomeActivity initData" + " intent=" + getIntent());
+        if (getIntent() != null) {
+            MyLog.w(TAG, "HomeActivity initData" + " intent.getData()=" + getIntent().getData());
+        }
         U.getStatusBarUtil().setTransparentBar(this, false);
         mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
@@ -187,7 +191,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setAdapter(fragmentPagerAdapter);
 
         mHomePresenter = new HomeCorePresenter(this, this);
-        if(!UserAccountManager.getInstance().hasAccount()){
+        if (!UserAccountManager.getInstance().hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override

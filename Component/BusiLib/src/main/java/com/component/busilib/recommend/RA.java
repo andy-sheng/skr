@@ -30,14 +30,16 @@ public class RA {
 
     public static void setVar(String var) {
         RA.var = var;
+        U.getPreferenceUtils().setSettingString("key_vars", var);
     }
 
     public static void setTestList(String testList) {
         RA.testList = testList;
+        U.getPreferenceUtils().setSettingString("key_testList", testList);
     }
 
     public static boolean hasTestList() {
-        if(TextUtils.isEmpty(testList)){
+        if(TextUtils.isEmpty(getTestList())){
             return false;
         }
         return true;

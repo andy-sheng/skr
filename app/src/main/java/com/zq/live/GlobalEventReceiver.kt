@@ -105,7 +105,7 @@ object GlobalEventReceiver{
                 StatisticsAdapter.recordCountEvent("ra", "active", map)
             }
         }
-        ApiMethods.subscribe(raServerApi.getABtestInfo(RA.getTestList()), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(raServerApi.getABtestInfo(RA.getTestList(),U.getAppInfoUtils().versionCode.toString()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val vars = obj.data!!.getString("vars")
