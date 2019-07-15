@@ -396,6 +396,8 @@ class DoubleRoomData() : Serializable {
 
             doubleRoomData.tokens = JSON.parseArray(obj.getString("tokens"), LocalAgoraTokenInfo::class.java)
             doubleRoomData.needMaskUserInfo = obj.getBooleanValue("needMaskUserInfo")
+            doubleRoomData.localGamePanelInfo = LocalGamePanelInfo.json2LocalModel(obj.getJSONObject("gamePanelInfo"))
+            doubleRoomData.sceneType = obj.getIntValue("currentSceneType")
             return doubleRoomData
         }
     }

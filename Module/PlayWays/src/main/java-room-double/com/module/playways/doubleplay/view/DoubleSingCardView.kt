@@ -17,6 +17,7 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
+import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
 
 
 class DoubleSingCardView : ConstraintLayout {
@@ -64,6 +65,11 @@ class DoubleSingCardView : ConstraintLayout {
         mSongNameTv?.text = "《${mCur?.music?.itemName}》"
         mDoubleSelfSingCardView.playLyric(mCur, roomData)
         updateNextSongDec(mNext, hasNext)
+    }
+
+    fun playLyric(mCur: LocalGameItemInfo.MusicBean?) {
+        mSongNameTv?.text = mCur?.title
+        mDoubleSelfSingCardView.showDoubleGame(mCur)
     }
 
     /**

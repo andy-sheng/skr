@@ -3,6 +3,9 @@ package com.module.playways.doubleplay.pushEvent;
 import com.module.playways.room.msg.BasePushInfo;
 import com.zq.live.proto.CombineRoom.ChoiceGameItemMsg;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DoubleChoiceGameItemEvent {
     public BasePushInfo mBasePushInfo;
 
@@ -11,6 +14,8 @@ public class DoubleChoiceGameItemEvent {
     private int panelSeq;
 
     private int itemID;
+
+    List<Integer> itemIDs;
 
     public int getUserID() {
         return userID;
@@ -29,5 +34,12 @@ public class DoubleChoiceGameItemEvent {
         userID = choiceGameItemMsg.getUserID();
         panelSeq = choiceGameItemMsg.getPanelSeq();
         itemID = choiceGameItemMsg.getItemID();
+
+        if (choiceGameItemMsg.hasItemIDsList()) {
+            itemIDs = new ArrayList<>();
+            for (Integer integer : choiceGameItemMsg.getItemIDsList()) {
+                itemIDs.add(integer);
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.module.playways.doubleplay.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import com.common.core.avatar.AvatarUtils
@@ -9,12 +8,13 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.utils.U
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
 import java.util.*
 
-class DoubleGameSelectCardView : ConstraintLayout {
+class DoubleGameSelectCardView : ExConstraintLayout {
     val mGameNameTv: ExTextView
     val mIconIv1: BaseImageView
     val mIconIv2: BaseImageView
@@ -41,7 +41,7 @@ class DoubleGameSelectCardView : ConstraintLayout {
     fun setItemData(localGameItemInfo: LocalGameItemInfo) {
         reset()
         if (itemId != localGameItemInfo.itemID) {
-            mGameNameTv.text = localGameItemInfo.itemDesc
+            mGameNameTv.text = localGameItemInfo.desc
             itemId = localGameItemInfo.itemID
         }
     }

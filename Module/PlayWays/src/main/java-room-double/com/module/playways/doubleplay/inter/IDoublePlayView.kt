@@ -36,7 +36,7 @@ interface IDoublePlayView {
 
     fun joinAgora()
 
-    fun askSceneChange(sceneType: Int)
+    fun askSceneChange(sceneType: Int, str: String)
 
     fun updateGameSenceData(localGameSenceDataModel: LocalGameSenceDataModel)
 

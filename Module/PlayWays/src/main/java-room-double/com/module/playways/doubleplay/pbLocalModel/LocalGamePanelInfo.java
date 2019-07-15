@@ -1,5 +1,7 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zq.live.proto.Common.GameItemInfo;
 import com.zq.live.proto.Common.GamePanelInfo;
 
@@ -32,6 +34,15 @@ public class LocalGamePanelInfo implements Serializable {
                 localGamePanelInfo.items.add(new LocalGameItemInfo(gameItemInfo.getItemID(), gameItemInfo.getItemDesc()));
             }
         }
+
+        return localGamePanelInfo;
+    }
+
+    public static LocalGamePanelInfo json2LocalModel(JSONObject jsonObject) {
+        LocalGamePanelInfo localGamePanelInfo = new LocalGamePanelInfo();
+        localGamePanelInfo.panelSeq = jsonObject.getIntValue("panelSeq");
+        List<LocalGameItemInfo> list = JSON.parseArray(jsonObject.getString("items"), LocalGameItemInfo.class);
+        localGamePanelInfo.items = list;
 
         return localGamePanelInfo;
     }

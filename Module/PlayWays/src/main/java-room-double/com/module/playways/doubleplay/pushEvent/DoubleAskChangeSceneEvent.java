@@ -10,6 +10,12 @@ public class DoubleAskChangeSceneEvent {
 
     private int sceneType;
 
+    String noticeMsgDesc;
+
+    public String getNoticeMsgDesc() {
+        return noticeMsgDesc;
+    }
+
     public int getReqChangeUserID() {
         return reqChangeUserID;
     }
@@ -22,5 +28,6 @@ public class DoubleAskChangeSceneEvent {
         mBasePushInfo = basePushInfo;
         reqChangeUserID = reqChangeSceneMsg.getReqChangeUserID();
         sceneType = reqChangeSceneMsg.getSceneType().getValue();
+        noticeMsgDesc = reqChangeSceneMsg.getNoticeMsgDesc();
     }
 }

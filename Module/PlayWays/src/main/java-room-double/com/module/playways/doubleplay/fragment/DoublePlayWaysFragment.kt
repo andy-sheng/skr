@@ -189,15 +189,15 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
         mChatTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mChatTagTv?.text.toString(), 1)
+            confirmChangeSenceDialog(mChatTagTv?.text.toString(), ESceneType.ST_Chat.value)
         }
 
         mGameTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mGameTagTv?.text.toString(), 2)
+            confirmChangeSenceDialog(mGameTagTv?.text.toString(), ESceneType.ST_Game.value)
         }
 
         mSingTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mSingTagTv?.text.toString(), 3)
+            confirmChangeSenceDialog(mSingTagTv?.text.toString(), ESceneType.ST_Sing.value)
         }
 
         mExitIv?.setDebounceViewClickListener {
@@ -569,8 +569,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mPagerPosition = getPagerPositionByScene(sceneType)
     }
 
-    override fun askSceneChange(sceneType: Int) {
-        receiveChangeSenceDialog("", sceneType)
+    override fun askSceneChange(sceneType: Int, str: String) {
+        receiveChangeSenceDialog(str, sceneType)
     }
 
     /**
