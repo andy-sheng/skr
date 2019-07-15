@@ -107,6 +107,19 @@ public interface DoubleRoomServerApi {
 
     /**
      * {
+     * "panelSeq": 0,
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/end-game")
+    Observable<ApiResult> endGameCard(@Body RequestBody body);
+
+    /**
+     * {
      * "roomID" : 11111,
      * }
      *

@@ -9,12 +9,9 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+
 import java.io.IOException;
-import java.lang.Integer;
-import java.lang.Object;
-import java.lang.Override;
-import java.lang.String;
-import java.lang.StringBuilder;
+
 import okio.ByteString;
 
 public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Builder> {
@@ -24,7 +21,9 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
 
   public static final Integer DEFAULT_ITEMID = 0;
 
-  public static final String DEFAULT_ITEMDESC = "";
+  public static final EGameType DEFAULT_GAMETYPE = EGameType.GT_Unknown;
+
+  public static final String DEFAULT_DESC = "";
 
   /**
    * 游戏id
@@ -36,29 +35,64 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
   private final Integer itemID;
 
   /**
-   * 游戏描述
+   * 游戏类型
    */
   @WireField(
       tag = 2,
+      adapter = "com.zq.live.proto.Common.EGameType#ADAPTER"
+  )
+  private final EGameType gameType;
+
+  /**
+   * 描述说明
+   */
+  @WireField(
+      tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final String itemDesc;
+  private final String desc;
 
-  public GameItemInfo(Integer itemID, String itemDesc) {
-    this(itemID, itemDesc, ByteString.EMPTY);
+  /**
+   * 音乐类游戏数据
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.Common.GameMusic#ADAPTER"
+  )
+  private final GameMusic music;
+
+  /**
+   * 问答类游戏数据
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.Common.GameQuestion#ADAPTER"
+  )
+  private final GameQuestion question;
+
+  public GameItemInfo(Integer itemID, EGameType gameType, String desc, GameMusic music,
+      GameQuestion question) {
+    this(itemID, gameType, desc, music, question, ByteString.EMPTY);
   }
 
-  public GameItemInfo(Integer itemID, String itemDesc, ByteString unknownFields) {
+  public GameItemInfo(Integer itemID, EGameType gameType, String desc, GameMusic music,
+      GameQuestion question, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
-    this.itemDesc = itemDesc;
+    this.gameType = gameType;
+    this.desc = desc;
+    this.music = music;
+    this.question = question;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.itemID = itemID;
-    builder.itemDesc = itemDesc;
+    builder.gameType = gameType;
+    builder.desc = desc;
+    builder.music = music;
+    builder.question = question;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -70,7 +104,10 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
     GameItemInfo o = (GameItemInfo) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(itemID, o.itemID)
-        && Internal.equals(itemDesc, o.itemDesc);
+        && Internal.equals(gameType, o.gameType)
+        && Internal.equals(desc, o.desc)
+        && Internal.equals(music, o.music)
+        && Internal.equals(question, o.question);
   }
 
   @Override
@@ -79,7 +116,10 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
-      result = result * 37 + (itemDesc != null ? itemDesc.hashCode() : 0);
+      result = result * 37 + (gameType != null ? gameType.hashCode() : 0);
+      result = result * 37 + (desc != null ? desc.hashCode() : 0);
+      result = result * 37 + (music != null ? music.hashCode() : 0);
+      result = result * 37 + (question != null ? question.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -89,7 +129,10 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (itemID != null) builder.append(", itemID=").append(itemID);
-    if (itemDesc != null) builder.append(", itemDesc=").append(itemDesc);
+    if (gameType != null) builder.append(", gameType=").append(gameType);
+    if (desc != null) builder.append(", desc=").append(desc);
+    if (music != null) builder.append(", music=").append(music);
+    if (question != null) builder.append(", question=").append(question);
     return builder.replace(0, 2, "GameItemInfo{").append('}').toString();
   }
 
@@ -114,13 +157,43 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
   }
 
   /**
-   * 游戏描述
+   * 游戏类型
    */
-  public String getItemDesc() {
-    if(itemDesc==null){
-        return DEFAULT_ITEMDESC;
+  public EGameType getGameType() {
+    if(gameType==null){
+        return new EGameType.Builder().build();
     }
-    return itemDesc;
+    return gameType;
+  }
+
+  /**
+   * 描述说明
+   */
+  public String getDesc() {
+    if(desc==null){
+        return DEFAULT_DESC;
+    }
+    return desc;
+  }
+
+  /**
+   * 音乐类游戏数据
+   */
+  public GameMusic getMusic() {
+    if(music==null){
+        return new GameMusic.Builder().build();
+    }
+    return music;
+  }
+
+  /**
+   * 问答类游戏数据
+   */
+  public GameQuestion getQuestion() {
+    if(question==null){
+        return new GameQuestion.Builder().build();
+    }
+    return question;
   }
 
   /**
@@ -131,16 +204,43 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
   }
 
   /**
-   * 游戏描述
+   * 游戏类型
    */
-  public boolean hasItemDesc() {
-    return itemDesc!=null;
+  public boolean hasGameType() {
+    return gameType!=null;
+  }
+
+  /**
+   * 描述说明
+   */
+  public boolean hasDesc() {
+    return desc!=null;
+  }
+
+  /**
+   * 音乐类游戏数据
+   */
+  public boolean hasMusic() {
+    return music!=null;
+  }
+
+  /**
+   * 问答类游戏数据
+   */
+  public boolean hasQuestion() {
+    return question!=null;
   }
 
   public static final class Builder extends Message.Builder<GameItemInfo, Builder> {
     private Integer itemID;
 
-    private String itemDesc;
+    private EGameType gameType;
+
+    private String desc;
+
+    private GameMusic music;
+
+    private GameQuestion question;
 
     public Builder() {
     }
@@ -154,16 +254,40 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
     }
 
     /**
-     * 游戏描述
+     * 游戏类型
      */
-    public Builder setItemDesc(String itemDesc) {
-      this.itemDesc = itemDesc;
+    public Builder setGameType(EGameType gameType) {
+      this.gameType = gameType;
+      return this;
+    }
+
+    /**
+     * 描述说明
+     */
+    public Builder setDesc(String desc) {
+      this.desc = desc;
+      return this;
+    }
+
+    /**
+     * 音乐类游戏数据
+     */
+    public Builder setMusic(GameMusic music) {
+      this.music = music;
+      return this;
+    }
+
+    /**
+     * 问答类游戏数据
+     */
+    public Builder setQuestion(GameQuestion question) {
+      this.question = question;
       return this;
     }
 
     @Override
     public GameItemInfo build() {
-      return new GameItemInfo(itemID, itemDesc, super.buildUnknownFields());
+      return new GameItemInfo(itemID, gameType, desc, music, question, super.buildUnknownFields());
     }
   }
 
@@ -175,14 +299,20 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
     @Override
     public int encodedSize(GameItemInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.itemID)
-          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.itemDesc)
+          + EGameType.ADAPTER.encodedSizeWithTag(2, value.gameType)
+          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.desc)
+          + GameMusic.ADAPTER.encodedSizeWithTag(4, value.music)
+          + GameQuestion.ADAPTER.encodedSizeWithTag(5, value.question)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, GameItemInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.itemID);
-      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.itemDesc);
+      EGameType.ADAPTER.encodeWithTag(writer, 2, value.gameType);
+      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.desc);
+      GameMusic.ADAPTER.encodeWithTag(writer, 4, value.music);
+      GameQuestion.ADAPTER.encodeWithTag(writer, 5, value.question);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -193,7 +323,17 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setItemDesc(ProtoAdapter.STRING.decode(reader)); break;
+          case 2: {
+            try {
+              builder.setGameType(EGameType.ADAPTER.decode(reader));
+            } catch (EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 3: builder.setDesc(ProtoAdapter.STRING.decode(reader)); break;
+          case 4: builder.setMusic(GameMusic.ADAPTER.decode(reader)); break;
+          case 5: builder.setQuestion(GameQuestion.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -208,6 +348,8 @@ public final class GameItemInfo extends Message<GameItemInfo, GameItemInfo.Build
     @Override
     public GameItemInfo redact(GameItemInfo value) {
       Builder builder = value.newBuilder();
+      if (builder.music != null) builder.music = GameMusic.ADAPTER.redact(builder.music);
+      if (builder.question != null) builder.question = GameQuestion.ADAPTER.redact(builder.question);
       builder.clearUnknownFields();
       return builder.build();
     }

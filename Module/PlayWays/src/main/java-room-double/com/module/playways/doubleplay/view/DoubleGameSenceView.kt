@@ -62,8 +62,20 @@ class DoubleGameSenceView : ExConstraintLayout {
         mDoubleGameCardGroupView = findViewById(R.id.card_group_view)
         mShowCard.mCutSongTv.text = "结束"
         mShowCard.mOnClickNextSongListener = {
-            mDoubleRoomServerApi.nextSong(null)
+            val mutableSet1 = mutableMapOf("roomID" to mRoomData!!.gameId, "panelSeq" to mPanelSeq)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+            ApiMethods.subscribe(mDoubleRoomServerApi.endGameCard(body), object : ApiObserver<ApiResult>() {
+                override fun process(obj: ApiResult?) {
+                    if (obj?.errno == 0) {
+                        val panel = LocalGamePanelInfo.json2LocalModel(obj?.data.getJSONObject("nextPanel"))
+                        showGamePanel(panel)
+                    } else {
+                        MyLog.w(mTag, "changeGamePanel faild，errno is ${obj?.errno}")
+                    }
+                }
+            }, this@DoubleGameSenceView)
         }
+        mShowCard.mNextSongTipTv.text = ""
 
         mPickIv.setOnClickListener {
             mPickFun?.invoke()
@@ -76,7 +88,8 @@ class DoubleGameSenceView : ExConstraintLayout {
             ApiMethods.subscribe(mDoubleRoomServerApi.changeGamePanel(body), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
                     if (obj?.errno == 0) {
-
+                        val panel = LocalGamePanelInfo.json2LocalModel(obj?.data.getJSONObject("nextPanel"))
+                        showGamePanel(panel)
                     } else {
                         MyLog.w(mTag, "changeGamePanel faild，errno is ${obj?.errno}")
                     }
@@ -253,6 +266,8 @@ class DoubleGameSenceView : ExConstraintLayout {
                 override fun process(obj: ApiResult?) {
                     it.onComplete()
                     if (obj?.errno == 0) {
+                        val panel = LocalGamePanelInfo.json2LocalModel(obj?.data.getJSONObject("panel"))
+                        showGamePanel(panel)
                         mPanelSeq = panelSeq
                     } else {
                         MyLog.w(mTag, "getGamePanelInfo faild, errno is ${obj?.errno}")

@@ -1,5 +1,8 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
+import com.zq.live.proto.CombineRoom.StartGameMsg;
+import com.zq.live.proto.Common.GameItemInfo;
+
 import java.io.Serializable;
 
 public class LocalGameItemInfo implements Serializable {
@@ -19,9 +22,14 @@ public class LocalGameItemInfo implements Serializable {
     private MusicBean music;
     private Object question;
 
-    public LocalGameItemInfo(int itemID, String itemDesc) {
-        this.itemID = itemID;
-        this.desc = itemDesc;
+    public LocalGameItemInfo(GameItemInfo gameItemInfo) {
+        this.itemID = gameItemInfo.getItemID();
+        this.desc = gameItemInfo.getDesc();
+        music = new MusicBean();
+        music.content = gameItemInfo.getMusic().getContent();
+        music.example = gameItemInfo.getMusic().getExample();
+        music.title = gameItemInfo.getMusic().getTitle();
+        question = gameItemInfo.getQuestion().getContent();
     }
 
     public LocalGameItemInfo() {

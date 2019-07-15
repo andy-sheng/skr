@@ -31,7 +31,7 @@ public class LocalGamePanelInfo implements Serializable {
         if (gamePanelInfo.hasItemsList()) {
             localGamePanelInfo.items = new ArrayList<>();
             for (GameItemInfo gameItemInfo : gamePanelInfo.getItemsList()) {
-                localGamePanelInfo.items.add(new LocalGameItemInfo(gameItemInfo.getItemID(), gameItemInfo.getItemDesc()));
+                localGamePanelInfo.items.add(new LocalGameItemInfo(gameItemInfo));
             }
         }
 
