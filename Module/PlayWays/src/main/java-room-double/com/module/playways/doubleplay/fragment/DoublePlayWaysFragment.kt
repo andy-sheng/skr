@@ -258,11 +258,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             startCountDown()
         }
 
-        val objectAnimator1 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_X, 1.5f,1.0f)
-        val objectAnimator2 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_Y, 1.5f,1.0f)
+        val objectAnimator1 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_X, 1.5f, 1.0f)
+        val objectAnimator2 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_Y, 1.5f, 1.0f)
         mCountDownScaleAnimators = AnimatorSet();
         mCountDownScaleAnimators?.setDuration(1000)
-        mCountDownScaleAnimators?.playTogether(objectAnimator1,objectAnimator2)
+        mCountDownScaleAnimators?.playTogether(objectAnimator1, objectAnimator2)
         mDoubleGameSenceView?.setFirstGamePanelInfo(mRoomData!!.localGamePanelInfo)
     }
 
@@ -613,7 +613,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun picked(count: Int) {
-
+        mZanDisplayView?.addZanXin(count)
     }
 
     override fun gameEnd(doubleEndCombineRoomPushEvent: DoubleEndCombineRoomPushEvent) {
