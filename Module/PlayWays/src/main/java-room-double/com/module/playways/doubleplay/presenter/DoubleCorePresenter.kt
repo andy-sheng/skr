@@ -187,11 +187,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    U.getToastUtil().showShort("拒绝切换场景成功")
-                } else {
-                    MyLog.w(tag, "refuseChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
-                }
+                MyLog.w(tag, "refuseChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
             }
         }, this@DoubleCorePresenter)
     }
@@ -326,7 +322,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 if (event.isAgree) {
                     mRoomData!!.changeScene(event.sceneType)
                 } else {
-                    U.getToastUtil().showShort("对方拒绝了切换板子")
+                    U.getToastUtil().showShort(event.noticeMsgDesc)
                 }
             }
         }
