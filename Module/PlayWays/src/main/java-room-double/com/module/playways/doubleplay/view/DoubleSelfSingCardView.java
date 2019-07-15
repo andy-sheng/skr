@@ -83,8 +83,8 @@ public class DoubleSelfSingCardView {
         }
     }
 
-    public void showDoubleGame(LocalGameItemInfo.MusicBean mCur) {
-        mDoubleMiniGameSelfSingCardView.playLyric(mCur);
+    public void showDoubleGame(LocalGameItemInfo localGameItemInfo) {
+        mDoubleMiniGameSelfSingCardView.playLyric(localGameItemInfo);
         mDoubleMiniGameSelfSingCardView.setVisibility(View.VISIBLE);
     }
 

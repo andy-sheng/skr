@@ -27,11 +27,14 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.model.DoubleSyncModel
+import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel
 import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
+import com.module.playways.doubleplay.pbLocalModel.LocalSingSenceDataModel
 import com.module.playways.doubleplay.pushEvent.*
 import com.zq.live.proto.CombineRoom.ECombineStatus
 import com.zq.live.proto.CombineRoom.EGameStage
+import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -184,11 +187,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    U.getToastUtil().showShort("拒绝切换场景成功")
-                } else {
-                    MyLog.w(tag, "refuseChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
-                }
+                MyLog.w(tag, "refuseChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
             }
         }, this@DoubleCorePresenter)
     }
@@ -234,6 +233,22 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 if (obj?.errno == 0) {
                     MyLog.d(tag, "syncStatus 2")
                     val model = JSON.parseObject(obj.data.toJSONString(), DoubleSyncModel::class.java)
+                    if (model.curScene == ESceneType.ST_Chat.value) {
+
+                    } else if (model.curScene == ESceneType.ST_Game.value) {
+                        model.localGameSenceDataModel = LocalGameSenceDataModel()
+                        val jsonObject = obj.data.getJSONObject("sceneGameSyncStatusMsg")
+                        model.localGameSenceDataModel.gameStage = jsonObject.getIntValue("gameStage")
+                        model.localGameSenceDataModel.panelSeq = jsonObject.getIntValue("panelSeq")
+                        model.localGameSenceDataModel.itemID = jsonObject.getIntValue("itemID")
+                    } else if (model.curScene == ESceneType.ST_Sing.value) {
+                        model.localSingSenceDataModel = LocalSingSenceDataModel()
+                        val jsonObject = obj.data.getJSONObject("sceneSingSyncStatusMsg")
+                        model.localSingSenceDataModel.currentMusic = JSON.parseObject(jsonObject.getString("currentMusic"), LocalCombineRoomMusic::class.java)
+                        model.localSingSenceDataModel.nextMusicDesc = jsonObject.getString("nextMusicDesc")
+                        model.localSingSenceDataModel.isHasNextMusic = jsonObject.getBooleanValue("hasNextMusic")
+                    }
+
                     if (model.combineStatus == ECombineStatus.CS_Finished.value) {
                         mIDoublePlayView.finishActivity()
                         ARouter.getInstance()
@@ -282,7 +297,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAskChangeSceneEvent) {
-        mIDoublePlayView.askSceneChange(event.sceneType, event.noticeMsgDesc)
+        if (event.reqChangeUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+            mIDoublePlayView.askSceneChange(event.sceneType, event.noticeMsgDesc)
+        }
     }
 
     /**
@@ -300,11 +317,13 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAgreeChangeSceneEvent) {
-        if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
-            if (event.isAgree) {
-                mRoomData!!.changeScene(event.sceneType)
-            } else {
-                U.getToastUtil().showShort("对方拒绝了切换板子")
+        if (event.agreeChangeUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+            if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
+                if (event.isAgree) {
+                    mRoomData!!.changeScene(event.sceneType)
+                } else {
+                    U.getToastUtil().showShort(event.noticeMsgDesc)
+                }
             }
         }
     }

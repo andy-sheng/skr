@@ -16,7 +16,7 @@ public class DoubleStartGameEvent {
     public DoubleStartGameEvent(BasePushInfo basePushInfo, StartGameMsg startGameMsg) {
         mBasePushInfo = basePushInfo;
         if (startGameMsg.hasItem()) {
-            localGameItemInfo = new LocalGameItemInfo(startGameMsg.getItem().getItemID(), startGameMsg.getItem().getItemDesc());
+            localGameItemInfo = new LocalGameItemInfo(startGameMsg.getItem());
         }
     }
 }

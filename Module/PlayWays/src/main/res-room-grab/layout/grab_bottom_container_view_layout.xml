@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
         android:gravity="right">
 
         <com.common.view.ex.ExImageView
@@ -48,17 +48,32 @@
 
     </RelativeLayout>
 
+    <com.module.playways.grab.room.bottom.SpeakingDotAnimationView
+        android:id="@+id/speaking_dot_animation_view"
+        android:layout_width="@dimen/view_90_dp"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_toRightOf="@+id/quick_btn"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/input_btn"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:background="@drawable/grab_bottom_voice_icon" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/show_input_container_btn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_32_dp"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_23_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
         android:layout_toLeftOf="@+id/emoji_area"
+        android:layout_toRightOf="@+id/input_btn"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/view_75_dp"
-        android:paddingRight="@dimen/view_5_dp"
+        android:paddingLeft="@dimen/view_28_dp"
         android:singleLine="true"
         android:text="夸赞是一种美德"
         android:textColor="@color/white_trans_30"
@@ -66,29 +81,22 @@
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_solid_color="#5B72E8" />
 
-    <com.module.playways.grab.room.bottom.SpeakingDotAnimationView
-        android:id="@+id/speaking_dot_animation_view"
-        android:layout_width="@dimen/view_90_dp"
-        android:layout_height="@dimen/view_38_dp"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/quick_btn"
-        android:visibility="gone" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/quick_btn"
-        android:layout_width="@dimen/view_68_dp"
-        android:layout_height="@dimen/view_28_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_12_dp"
-        android:drawableRight="@drawable/kuaijiehuifu_fang"
-        android:gravity="center_vertical"
-        android:paddingLeft="14dp"
-        android:paddingRight="@dimen/view_12_dp"
-        android:text="快捷"
-        android:textColor="#333B7B"
-        android:textSize="@dimen/textsize_14_dp"
-        app:bl_corners_radius="@dimen/view_15_dp"
-        app:bl_solid_color="#68CCFF" />
-
+    <com.module.playways.grab.room.voicemsg.VoiceRecordTextView
+        android:id="@+id/voice_record_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_toLeftOf="@+id/emoji_area"
+        android:layout_toRightOf="@+id/input_btn"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="按住说话"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_solid_color="#5B72E8" />
 
 </merge>

@@ -9,6 +9,18 @@ public class LocalSingSenceDataModel implements Serializable {
     String nextMusicDesc; //下首歌曲
     boolean hasNextMusic; //是否有下首歌曲
 
+    public void setCurrentMusic(LocalCombineRoomMusic currentMusic) {
+        this.currentMusic = currentMusic;
+    }
+
+    public void setNextMusicDesc(String nextMusicDesc) {
+        this.nextMusicDesc = nextMusicDesc;
+    }
+
+    public void setHasNextMusic(boolean hasNextMusic) {
+        this.hasNextMusic = hasNextMusic;
+    }
+
     public LocalCombineRoomMusic getCurrentMusic() {
         return currentMusic;
     }
@@ -19,6 +31,10 @@ public class LocalSingSenceDataModel implements Serializable {
 
     public boolean isHasNextMusic() {
         return hasNextMusic;
+    }
+
+    public LocalSingSenceDataModel() {
+
     }
 
     public LocalSingSenceDataModel(SceneSingSyncStatusMsg sceneSingSyncStatusMsg) {
@@ -33,5 +49,14 @@ public class LocalSingSenceDataModel implements Serializable {
         if (sceneSingSyncStatusMsg.hasHasNextMusic()) {
             hasNextMusic = sceneSingSyncStatusMsg.getHasNextMusic();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "LocalSingSenceDataModel{" +
+                "currentMusic=" + currentMusic +
+                ", nextMusicDesc='" + nextMusicDesc + '\'' +
+                ", hasNextMusic=" + hasNextMusic +
+                '}';
     }
 }

@@ -67,9 +67,10 @@ class DoubleSingCardView : ConstraintLayout {
         updateNextSongDec(mNext, hasNext)
     }
 
-    fun playLyric(mCur: LocalGameItemInfo.MusicBean?) {
-        mSongNameTv?.text = mCur?.title
-        mDoubleSelfSingCardView.showDoubleGame(mCur)
+    fun playLyric(localGameItemInfo: LocalGameItemInfo?) {
+        mSongOwnerIv?.visibility = View.GONE
+        mSongNameTv?.text = localGameItemInfo?.desc
+        mDoubleSelfSingCardView.showDoubleGame(localGameItemInfo)
     }
 
     /**

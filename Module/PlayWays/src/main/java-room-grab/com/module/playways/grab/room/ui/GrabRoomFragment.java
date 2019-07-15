@@ -48,6 +48,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.grab.room.bottom.GrabBottomContainerView;
+import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
@@ -118,6 +119,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
 
 import static android.view.View.GONE;
 
@@ -234,6 +239,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     GrabVideoSelfSingCardView mGrabVideoSelfSingCardView; // 视频模式下 自己演唱时的歌词面板view
 
     BeautyControlPanelView mBeautyControlPanelView;
+
+    VoiceRecordTipsView mVoiceRecordTipsView;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -651,7 +658,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             ViewStub viewStub = mRootView.findViewById(R.id.grab_beauty_control_panel_view_stub);
             mBeautyControlPanelView = new BeautyControlPanelView(viewStub);
         }
-
     }
 
     private void initInputView() {
@@ -660,6 +666,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initBottomView() {
+        {
+            ViewStub viewStub = mRootView.findViewById(R.id.grab_voice_record_tip_view_stub);
+            mVoiceRecordTipsView = new VoiceRecordTipsView(viewStub);
+        }
+
         mBottomBgVp = mRootView.findViewById(R.id.bottom_bg_vp);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mBottomBgVp.getLayoutParams();
         /**
@@ -716,6 +727,46 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
         });
         mBottomContainerView.setRoomData(mRoomData);
+
+        mBottomContainerView.getMVoiceRecordBtn().setMShowTips(new Function1<Boolean, Unit>() {
+            @Override
+            public Unit invoke(Boolean aBoolean) {
+                if (aBoolean) {
+                    mVoiceRecordTipsView.show();
+                } else {
+                    mVoiceRecordTipsView.hide();
+                }
+                return null;
+            }
+        });
+        mBottomContainerView.getMVoiceRecordBtn().setMChangeVoiceLevel(new Function1<Integer, Unit>() {
+            @Override
+            public Unit invoke(Integer integer) {
+                mVoiceRecordTipsView.changeVoiceLevel(integer);
+                return null;
+            }
+        });
+        mBottomContainerView.getMVoiceRecordBtn().setMCancelRecord(new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                mVoiceRecordTipsView.cancelRecord();
+                return null;
+            }
+        });
+        mBottomContainerView.getMVoiceRecordBtn().setMRemainTime(new Function1<String, Unit>() {
+            @Override
+            public Unit invoke(String s) {
+                mVoiceRecordTipsView.remainTime(s);
+                return null;
+            }
+        });
+        mBottomContainerView.getMVoiceRecordBtn().setMTimeLimit(new Function1<Boolean, Unit>() {
+            @Override
+            public Unit invoke(Boolean aBoolean) {
+                mVoiceRecordTipsView.showLimitTime(aBoolean);
+                return null;
+            }
+        });
     }
 
     private void initCommentView() {
