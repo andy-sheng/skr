@@ -163,6 +163,8 @@ class DoubleGameSenceView : ExConstraintLayout {
             mGameStage = EGameStage.GS_ChoicGameItem.value
             mPanelSeq = gamePanelInfo.panelSeq
             mDoubleGameCardGroupView.setPanelInfo(it)
+            mShowCard.visibility = View.GONE
+            mDoubleGameCardGroupView.visibility = View.VISIBLE
         }
     }
 
@@ -171,7 +173,9 @@ class DoubleGameSenceView : ExConstraintLayout {
         localGameItemInfo?.let {
             mGameStage = EGameStage.GS_InGamePlay.value
             mItemId = localGameItemInfo.itemID
-            mShowCard.playLyric(mRoomData!!, null, "", false)
+            mShowCard.playLyric(localGameItemInfo.music)
+            mShowCard.visibility = View.VISIBLE
+            mDoubleGameCardGroupView.visibility = View.GONE
         }
     }
 
@@ -181,6 +185,8 @@ class DoubleGameSenceView : ExConstraintLayout {
             mGameStage = EGameStage.GS_ChoicGameItem.value
             mPanelSeq = localGamePanelInfo.panelSeq
             mDoubleGameCardGroupView.setPanelInfo(it)
+            mShowCard.visibility = View.GONE
+            mDoubleGameCardGroupView.visibility = View.VISIBLE
         }
     }
 
@@ -217,13 +223,14 @@ class DoubleGameSenceView : ExConstraintLayout {
 
     private fun getGameItemInfo(itemID: Int) {
         Observable.create<Any> {
-            val mutableSet1 = mutableMapOf("itemID" to itemID)
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-            ApiMethods.subscribe(mDoubleRoomServerApi.getGameItemInfo(body), object : ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(mDoubleRoomServerApi.getGameItemInfo(mRoomData!!.gameId, mPanelSeq
+                    ?: 0, itemID), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
                     it.onComplete()
                     if (obj?.errno == 0) {
                         mItemId = itemID
+                        val localGameItemInfo = JSON.parseObject(obj.data.getString("item"), LocalGameItemInfo::class.java)
+                        playGame(localGameItemInfo)
                     } else {
                         MyLog.w(mTag, "getGameItemInfo faild, errno is ${obj?.errno}")
                     }
@@ -242,9 +249,7 @@ class DoubleGameSenceView : ExConstraintLayout {
 
     private fun getGamePanelInfo(panelSeq: Int) {
         Observable.create<Any> {
-            val mutableSet1 = mutableMapOf("roomID" to mRoomData!!.gameId, "panelSeq" to panelSeq)
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-            ApiMethods.subscribe(mDoubleRoomServerApi.getGamePanelInfo(body), object : ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(mDoubleRoomServerApi.getGamePanelInfo(mRoomData!!.gameId, panelSeq), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
                     it.onComplete()
                     if (obj?.errno == 0) {

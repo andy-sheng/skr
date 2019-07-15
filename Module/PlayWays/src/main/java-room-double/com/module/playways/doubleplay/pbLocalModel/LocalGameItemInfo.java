@@ -101,5 +101,25 @@ public class LocalGameItemInfo implements Serializable {
         public void setExample(String example) {
             this.example = example;
         }
+
+        @Override
+        public String toString() {
+            return "MusicBean{" +
+                    "title='" + title + '\'' +
+                    ", content='" + content + '\'' +
+                    ", example='" + example + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "LocalGameItemInfo{" +
+                "itemID=" + itemID +
+                ", gameType=" + gameType +
+                ", desc='" + desc + '\'' +
+                ", music=" + music +
+                ", question=" + question +
+                '}';
     }
 }

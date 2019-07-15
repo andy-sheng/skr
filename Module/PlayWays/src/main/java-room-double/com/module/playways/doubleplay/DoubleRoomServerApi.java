@@ -341,8 +341,8 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/magpie/game-item-info")
-    Observable<ApiResult> getGameItemInfo(@Body RequestBody body);
+    @GET("http://dev.game.inframe.mobi/v1/magpie/game-item-info")
+    Observable<ApiResult> getGameItemInfo(@Query("roomID") int roomID, @Query("panelSeq") int panelSeq, @Query("itemID") int itemID);
 
     /**
      * 获取一面卡片信息
@@ -351,6 +351,6 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/magpie/game-panel-info")
-    Observable<ApiResult> getGamePanelInfo(@Body RequestBody body);
+    @GET("http://dev.game.inframe.mobi/v1/magpie/game-panel-info")
+    Observable<ApiResult> getGamePanelInfo(@Query("roomID") int roomID, @Query("panelSeq") int panelSeq);
 }
