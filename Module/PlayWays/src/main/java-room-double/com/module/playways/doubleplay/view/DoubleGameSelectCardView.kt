@@ -10,12 +10,14 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
-import com.module.playways.R
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
+import com.zq.live.proto.Common.EGameType
 import java.util.*
+
 
 class DoubleGameSelectCardView : ExConstraintLayout {
     val mGameNameTv: ExTextView
+    val mGameTypeTv: ExTextView
     val mIconIv1: BaseImageView
     val mIconIv2: BaseImageView
 
@@ -28,10 +30,11 @@ class DoubleGameSelectCardView : ExConstraintLayout {
     var itemId: Int? = -1
 
     init {
-        inflate(context, R.layout.double_gameselect_card_layout, this)
-        mGameNameTv = findViewById(R.id.game_name_tv)
-        mIconIv1 = findViewById(R.id.icon_iv_1)
-        mIconIv2 = findViewById(R.id.icon_iv_2)
+        inflate(context, com.module.playways.R.layout.double_gameselect_card_layout, this)
+        mGameNameTv = findViewById(com.module.playways.R.id.game_name_tv)
+        mIconIv1 = findViewById(com.module.playways.R.id.icon_iv_1)
+        mIconIv2 = findViewById(com.module.playways.R.id.icon_iv_2)
+        mGameTypeTv = findViewById(com.module.playways.R.id.gameType_tv)
     }
 
     fun acceptItem(itemId: Int): Boolean {
@@ -43,6 +46,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
         if (itemId != localGameItemInfo.itemID) {
             mGameNameTv.text = localGameItemInfo.desc
             itemId = localGameItemInfo.itemID
+            mGameTypeTv.text = if (localGameItemInfo.gameType == EGameType.GT_Music.value) "唱歌" else "问答"
         }
     }
 
@@ -60,7 +64,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                 0 -> {
                     AvatarUtils.loadAvatarByUrl(mIconIv1,
                             AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
-                                    .setBorderColor(U.getColor(R.color.white))
+                                    .setBorderColor(U.getColor(com.module.playways.R.color.white))
                                     .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
                                     .setCircle(true)
                                     .build())
@@ -71,7 +75,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                 1 -> {
                     AvatarUtils.loadAvatarByUrl(mIconIv2,
                             AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
-                                    .setBorderColor(U.getColor(R.color.white))
+                                    .setBorderColor(U.getColor(com.module.playways.R.color.white))
                                     .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
                                     .setCircle(true)
                                     .build())
