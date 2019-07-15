@@ -302,6 +302,7 @@ public interface DoubleRoomServerApi {
     /**
      * 同意切换场景
      * {
+     * "agree": true,
      * "roomID": 0,
      * "sceneType": "ST_Unknown"
      * }
@@ -310,18 +311,6 @@ public interface DoubleRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/magpie/agree-change-scene")
     Observable<ApiResult> agreeChangeScene(@Body RequestBody body);
-
-    /**
-     * 拒绝切换场景
-     * {
-     * "peerUserID": 0,
-     * "refuseType": "RT_UNKNOWN"
-     * }
-     *
-     * @return
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/magpie/refuse-enter")
-    Observable<ApiResult> refuseChangeScene(@Body RequestBody body);
 
     /**
      * 选定游戏请求

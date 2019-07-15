@@ -164,7 +164,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     fun agreeChangeScene(sceneType: Int) {
         MyLog.e(tag, "agreeChangeScene, roomID is ${mRoomData.gameId}")
-        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType)
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType, "agree" to true)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
@@ -180,9 +180,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     fun refuseChangeScene(sceneType: Int) {
         MyLog.e(tag, "agreeChangeScene, roomID is ${mRoomData.gameId}")
-        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType)
+        val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType, "agree" to false)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        ApiMethods.subscribe(mDoubleRoomServerApi.refuseChangeScene(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     U.getToastUtil().showShort("拒绝切换场景成功")
@@ -282,7 +282,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAskChangeSceneEvent) {
-        mIDoublePlayView.askSceneChange(event.sceneType)
+        mIDoublePlayView.askSceneChange(event.sceneType, event.noticeMsgDesc)
     }
 
     /**
@@ -301,7 +301,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAgreeChangeSceneEvent) {
         if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
-            mRoomData!!.changeScene(event.sceneType)
+            if (event.isAgree) {
+                mRoomData!!.changeScene(event.sceneType)
+            } else {
+                U.getToastUtil().showShort("对方拒绝了切换板子")
+            }
         }
     }
 

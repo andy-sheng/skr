@@ -569,8 +569,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mPagerPosition = getPagerPositionByScene(sceneType)
     }
 
-    override fun askSceneChange(sceneType: Int) {
-        receiveChangeSenceDialog("", sceneType)
+    override fun askSceneChange(sceneType: Int, str: String) {
+        receiveChangeSenceDialog(str, sceneType)
     }
 
     /**
