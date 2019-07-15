@@ -15,10 +15,22 @@ public class DoubleSyncModel implements Serializable {
     List<LocalUserLockInfo> userLockInfo;
     boolean enableNoLimitDuration; //开启没有限制的持续时间
     int combineStatus;
-    int sceneType;
+    int curScene;
     LocalSingSenceDataModel localSingSenceDataModel;
     LocalGameSenceDataModel localGameSenceDataModel;
     LocalChatSenceDataModel localChatSenceDataModel;
+
+    public void setLocalSingSenceDataModel(LocalSingSenceDataModel localSingSenceDataModel) {
+        this.localSingSenceDataModel = localSingSenceDataModel;
+    }
+
+    public void setLocalGameSenceDataModel(LocalGameSenceDataModel localGameSenceDataModel) {
+        this.localGameSenceDataModel = localGameSenceDataModel;
+    }
+
+    public void setLocalChatSenceDataModel(LocalChatSenceDataModel localChatSenceDataModel) {
+        this.localChatSenceDataModel = localChatSenceDataModel;
+    }
 
     public long getSyncStatusTimeMs() {
         return syncStatusTimeMs;
@@ -45,6 +57,14 @@ public class DoubleSyncModel implements Serializable {
         this.enableNoLimitDuration = enableNoLimitDuration;
     }
 
+    public int getCurScene() {
+        return curScene;
+    }
+
+    public void setCurScene(int curScene) {
+        this.curScene = curScene;
+    }
+
     public List<LocalUserLockInfo> getUserLockInfo() {
         return userLockInfo;
     }
@@ -59,10 +79,6 @@ public class DoubleSyncModel implements Serializable {
 
     public void setCombineStatus(int combineStatus) {
         this.combineStatus = combineStatus;
-    }
-
-    public int getSceneType() {
-        return sceneType;
     }
 
     public LocalSingSenceDataModel getLocalSingSenceDataModel() {
@@ -85,7 +101,7 @@ public class DoubleSyncModel implements Serializable {
                 ", userLockInfo=" + userLockInfo +
                 ", enableNoLimitDuration=" + enableNoLimitDuration +
                 ", combineStatus=" + combineStatus +
-                ", sceneType=" + sceneType +
+                ", curScene=" + curScene +
                 ", localSingSenceDataModel=" + localSingSenceDataModel +
                 ", localGameSenceDataModel=" + localGameSenceDataModel +
                 ", localChatSenceDataModel=" + localChatSenceDataModel +
@@ -100,7 +116,7 @@ public class DoubleSyncModel implements Serializable {
         doubleRoundInfoModel.userLockInfo = LocalUserLockInfo.toList(combineRoomSyncStatusMsg.getUserLockInfoList());
         doubleRoundInfoModel.enableNoLimitDuration = combineRoomSyncStatusMsg.getEnableNoLimitDuration();
         if (combineRoomSyncStatusMsg.hasCurScene()) {
-            doubleRoundInfoModel.sceneType = combineRoomSyncStatusMsg.getCurScene().getValue();
+            doubleRoundInfoModel.curScene = combineRoomSyncStatusMsg.getCurScene().getValue();
         }
 
         if (combineRoomSyncStatusMsg.hasSceneSingSyncStatusMsg()) {

@@ -115,17 +115,23 @@ class DoubleRoomData() : Serializable {
         MyLog.d(Tag, "setData model is " + model.toString())
         syncStatusTimeMs = model.syncStatusTimeMs
         passedTimeMs = model.passedTimeMs
-        if (sceneType != model.sceneType) {
-            EventBus.getDefault().post(UpdateRoomSceneEvent(sceneType, model.sceneType))
-            sceneType = model.sceneType
+        if (sceneType != model.curScene) {
+            EventBus.getDefault().post(UpdateRoomSceneEvent(sceneType, model.curScene))
+            sceneType = model.curScene
         }
 
-        if (model.sceneType == ESceneType.ST_Chat.value) {
-            updateChatSceneData(model.localChatSenceDataModel)
-        } else if (model.sceneType == ESceneType.ST_Game.value) {
-            updateGameSceneData(model.localGameSenceDataModel)
-        } else if (model.sceneType == ESceneType.ST_Sing.value) {
-            updateCombineRoomMusic(model.localSingSenceDataModel.currentMusic, model.localSingSenceDataModel.nextMusicDesc, model.localSingSenceDataModel.isHasNextMusic)
+        if (model.curScene == ESceneType.ST_Chat.value) {
+            model.localChatSenceDataModel?.let {
+                updateChatSceneData(model.localChatSenceDataModel)
+            }
+        } else if (model.curScene == ESceneType.ST_Game.value) {
+            model.localGameSenceDataModel?.let {
+                updateGameSceneData(model.localGameSenceDataModel)
+            }
+        } else if (model.curScene == ESceneType.ST_Sing.value) {
+            model.localSingSenceDataModel?.let {
+                updateCombineRoomMusic(model.localSingSenceDataModel.currentMusic, model.localSingSenceDataModel.nextMusicDesc, model.localSingSenceDataModel.isHasNextMusic)
+            }
         }
 
         updateLockInfo(model.userLockInfo, model.isEnableNoLimitDuration)

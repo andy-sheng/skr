@@ -54,4 +54,13 @@ public class LocalGameSenceDataModel implements Serializable {
         gameStage = EGameStage.GS_ChoicGameItem.getValue();
         this.panelSeq = panelSeq;
     }
+
+    @Override
+    public String toString() {
+        return "LocalGameSenceDataModel{" +
+                "gameStage=" + gameStage +
+                ", panelSeq=" + panelSeq +
+                ", itemID=" + itemID +
+                '}';
+    }
 }

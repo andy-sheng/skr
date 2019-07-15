@@ -27,11 +27,14 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.model.DoubleSyncModel
+import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel
 import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
+import com.module.playways.doubleplay.pbLocalModel.LocalSingSenceDataModel
 import com.module.playways.doubleplay.pushEvent.*
 import com.zq.live.proto.CombineRoom.ECombineStatus
 import com.zq.live.proto.CombineRoom.EGameStage
+import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -234,6 +237,22 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 if (obj?.errno == 0) {
                     MyLog.d(tag, "syncStatus 2")
                     val model = JSON.parseObject(obj.data.toJSONString(), DoubleSyncModel::class.java)
+                    if (model.curScene == ESceneType.ST_Chat.value) {
+
+                    } else if (model.curScene == ESceneType.ST_Game.value) {
+                        model.localGameSenceDataModel = LocalGameSenceDataModel()
+                        val jsonObject = obj.data.getJSONObject("sceneGameSyncStatusMsg")
+                        model.localGameSenceDataModel.gameStage = jsonObject.getIntValue("gameStage")
+                        model.localGameSenceDataModel.panelSeq = jsonObject.getIntValue("panelSeq")
+                        model.localGameSenceDataModel.itemID = jsonObject.getIntValue("itemID")
+                    } else if (model.curScene == ESceneType.ST_Sing.value) {
+                        model.localSingSenceDataModel = LocalSingSenceDataModel()
+                        val jsonObject = obj.data.getJSONObject("sceneSingSyncStatusMsg")
+                        model.localSingSenceDataModel.currentMusic = JSON.parseObject(jsonObject.getString("currentMusic"), LocalCombineRoomMusic::class.java)
+                        model.localSingSenceDataModel.nextMusicDesc = jsonObject.getString("nextMusicDesc")
+                        model.localSingSenceDataModel.isHasNextMusic = jsonObject.getBooleanValue("hasNextMusic")
+                    }
+
                     if (model.combineStatus == ECombineStatus.CS_Finished.value) {
                         mIDoublePlayView.finishActivity()
                         ARouter.getInstance()
