@@ -301,7 +301,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAskChangeSceneEvent) {
-        mIDoublePlayView.askSceneChange(event.sceneType, event.noticeMsgDesc)
+        if (event.reqChangeUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+            mIDoublePlayView.askSceneChange(event.sceneType, event.noticeMsgDesc)
+        }
     }
 
     /**
@@ -319,11 +321,13 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAgreeChangeSceneEvent) {
-        if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
-            if (event.isAgree) {
-                mRoomData!!.changeScene(event.sceneType)
-            } else {
-                U.getToastUtil().showShort("对方拒绝了切换板子")
+        if (event.agreeChangeUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+            if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
+                if (event.isAgree) {
+                    mRoomData!!.changeScene(event.sceneType)
+                } else {
+                    U.getToastUtil().showShort("对方拒绝了切换板子")
+                }
             }
         }
     }
