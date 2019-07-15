@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.permission.SkrNotificationPermission;
@@ -20,6 +21,8 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
+import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.module.msg.api.IMsgServerApi;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -215,6 +218,15 @@ public class ConversationActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
+        if(!U.getActivityUtils().isHomeActivityExist()){
+            /**
+             * 可能是通过离线push打开的
+             */
+            IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+            if (channelService != null) {
+                channelService.goHomeActivity(this);
+            }
+        }
         /**
          * 如果没有通知栏权限，提示一次
          */

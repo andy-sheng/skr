@@ -57,6 +57,10 @@ android {
             java.srcDirs += 'src/main/java-msg'
             res.srcDirs += 'src/main/res-msg'
 
+            if(RomPushUseRC.toBoolean()){
+                java.srcDirs += 'src/main/java-rom-push'
+                res.srcDirs += 'src/main/res-rom-push'
+            }
 //            java.srcDirs += 'src/main/java-contacts'
 //            res.srcDirs += 'src/main/res-contacts'
 
@@ -83,6 +87,10 @@ dependencies {
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     } else {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
+    }
+
+    if(RomPushUseRC.toBoolean()){
+        api files('libs/MiPush_SDK_Client_3_6_12.jar')
     }
 }
 
