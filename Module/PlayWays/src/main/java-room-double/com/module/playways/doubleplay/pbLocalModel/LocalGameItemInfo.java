@@ -1,6 +1,5 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
-import com.zq.live.proto.CombineRoom.StartGameMsg;
 import com.zq.live.proto.Common.GameItemInfo;
 
 import java.io.Serializable;
@@ -20,7 +19,7 @@ public class LocalGameItemInfo implements Serializable {
     private int gameType;
     private String desc;
     private MusicBean music;
-    private Object question;
+    private QuestionBean question;
 
     public LocalGameItemInfo(GameItemInfo gameItemInfo) {
         this.itemID = gameItemInfo.getItemID();
@@ -29,7 +28,9 @@ public class LocalGameItemInfo implements Serializable {
         music.content = gameItemInfo.getMusic().getContent();
         music.example = gameItemInfo.getMusic().getExample();
         music.title = gameItemInfo.getMusic().getTitle();
-        question = gameItemInfo.getQuestion().getContent();
+        gameType = gameItemInfo.getGameType().getValue();
+        question = new QuestionBean();
+        question.content = gameItemInfo.getQuestion().getContent();
     }
 
     public LocalGameItemInfo() {
@@ -67,11 +68,11 @@ public class LocalGameItemInfo implements Serializable {
         this.music = music;
     }
 
-    public Object getQuestion() {
+    public QuestionBean getQuestion() {
         return question;
     }
 
-    public void setQuestion(Object question) {
+    public void setQuestion(QuestionBean question) {
         this.question = question;
     }
 
@@ -116,6 +117,31 @@ public class LocalGameItemInfo implements Serializable {
                     "title='" + title + '\'' +
                     ", content='" + content + '\'' +
                     ", example='" + example + '\'' +
+                    '}';
+        }
+    }
+
+    public static class QuestionBean implements Serializable {
+        /**
+         * title : 【一起唱隔壁老樊的歌】
+         * content : 轮流演唱隔壁老樊的歌 看谁会的多
+         * example : 例如：我曾把完整的镜子打碎
+         */
+
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        @Override
+        public String toString() {
+            return "QuestionBean{" +
+                    "content='" + content + '\'' +
                     '}';
         }
     }

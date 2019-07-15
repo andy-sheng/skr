@@ -24,6 +24,7 @@ import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
+import com.zq.live.proto.Common.EGameType;
 import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.lyrics.LyricsManager;
 
@@ -81,8 +82,8 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
         mFirstTipsTv.setText("【" + mOwnerName + "】" + "先开始");
     }
 
-    public boolean playLyric(LocalGameItemInfo.MusicBean mCur) {
-        if (mCur == null) {
+    public boolean playLyric(LocalGameItemInfo localGameItemInfo) {
+        if (localGameItemInfo == null) {
             MyLog.w(TAG, "playLyric mCur 是空的");
             return false;
         }
@@ -91,7 +92,13 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
         mSvLyric.scrollTo(0, 0);
 
         mTvLyric.setTextColor(U.getColor(R.color.black_trans_60));
-        mTvLyric.setText(mCur.getContent());
+
+        if (localGameItemInfo.getGameType() == EGameType.GT_Music.getValue()) {
+            mTvLyric.setText(localGameItemInfo.getMusic().getContent());
+        } else if (localGameItemInfo.getGameType() == EGameType.GT_Question.getValue()) {
+            mTvLyric.setText(localGameItemInfo.getQuestion().getContent());
+        }
+
         mLoadService.showSuccess();
         return true;
     }

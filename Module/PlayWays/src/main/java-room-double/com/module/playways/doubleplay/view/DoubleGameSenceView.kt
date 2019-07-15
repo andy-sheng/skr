@@ -186,7 +186,7 @@ class DoubleGameSenceView : ExConstraintLayout {
         localGameItemInfo?.let {
             mGameStage = EGameStage.GS_InGamePlay.value
             mItemId = localGameItemInfo.itemID
-            mShowCard.playLyric(localGameItemInfo.music)
+            mShowCard.playLyric(localGameItemInfo)
             mShowCard.visibility = View.VISIBLE
             mDoubleGameCardGroupView.visibility = View.GONE
         }
