@@ -339,7 +339,7 @@ class MakeGamePanelView : RelativeLayout {
         if (mMyMediaRecorder == null) {
             mMyMediaRecorder = MyMediaRecorder.newBuilder().build()
         }
-        mMyMediaRecorder!!.start(mMakeAudioFilePath, null!!)
+        mMyMediaRecorder?.start(mMakeAudioFilePath, null)
     }
 
     private fun changeToRecordOk() {

@@ -46,7 +46,7 @@ class MyMediaRecorder {
         mMediaRecorder?.setAudioEncodingBitRate(audioEncodingBitRate)
     }
 
-    fun start(filePath: String, callback: (Int) -> Unit) {
+    fun start(filePath: String, callback: ((Int) -> Unit)?) {
         config(filePath)
         try {
             if (mRecording) {
