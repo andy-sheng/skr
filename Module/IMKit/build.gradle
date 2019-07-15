@@ -92,6 +92,8 @@ dependencies {
     if(RomPushUseRC.toBoolean()){
         api files('libs/MiPush_SDK_Client_3_6_12.jar')
         api files('libs/com.coloros.mcssdk.jar')
+        api files('libs/pushsdk_v2.3.4.jar')
+
         api 'com.huawei.android.hms:push:2.6.1.301'
     }
 }
