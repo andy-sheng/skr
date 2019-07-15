@@ -29,6 +29,7 @@
         android:layout_height="@dimen/view_185_dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shipin_mengceng" />
+
     <!-- 会在代码中按比例动态适配 -->
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/bottom_bg_vp"
@@ -274,6 +275,13 @@
         android:layout_height="match_parent"
         android:inflatedId="@+id/grab_beauty_control_panel_view"
         android:layout="@layout/grab_beauty_control_panel_view_stub_layout" />
+
+    <ViewStub
+        android:id="@+id/grab_voice_record_tip_view_stub"
+        android:layout_width="@dimen/view_174_dp"
+        android:layout_height="@dimen/view_145_dp"
+        android:layout_centerInParent="true"
+        android:layout="@layout/grab_voice_record_tips_view_layout" />
 
     <com.module.playways.room.gift.view.GiftPanelView
         android:id="@+id/gift_panel_view"

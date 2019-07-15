@@ -278,7 +278,7 @@ class MakeGamePanelView : RelativeLayout {
         // 上传提交
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomID
-        map["standIntro"] = mUploadUrl?:""
+        map["standIntro"] = mUploadUrl ?: ""
         map["standIntroEndT"] = mMyMediaRecorder!!.duration
         map["totalMs"] = mPlayTimeExpect * 1000
 

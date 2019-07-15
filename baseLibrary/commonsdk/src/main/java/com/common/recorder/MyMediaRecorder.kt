@@ -89,18 +89,18 @@ class MyMediaRecorder {
             var db = 0// 分贝
             if (ratio > 1) {
                 db = (20 * Math.log10(ratio.toDouble())).toInt()
-                if(mVolumeListener!=null){
+                if (mVolumeListener != null) {
                     mVolumeListener?.invoke(db)
                     getHandler()?.removeMessages(MSG_UPDATE_VOLUME)
-                    getHandler()?.sendEmptyMessageDelayed(MSG_UPDATE_VOLUME,1000)
+                    getHandler()?.sendEmptyMessageDelayed(MSG_UPDATE_VOLUME, 1000)
                 }
             }
         }
     }
 
-    private fun getHandler():Handler?{
-        if(mUiHandler==null){
-            mUiHandler = object:Handler(Looper.getMainLooper()){
+    private fun getHandler(): Handler? {
+        if (mUiHandler == null) {
+            mUiHandler = object : Handler(Looper.getMainLooper()) {
                 override fun handleMessage(msg: Message) {}
             }
         }

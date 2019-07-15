@@ -59,13 +59,9 @@ public abstract class BottomContainerView extends RelativeLayout {
 
     protected Listener mBottomContainerListener;
 
-    protected View mQuickBtn;
-
-    protected ExTextView mShowInputContainerBtn;
+    ExTextView mShowInputContainerBtn;
     protected ExImageView mEmoji2Btn;
     protected ExImageView mEmoji1Btn;
-
-    protected PopupWindow mQuickMsgPopWindow;  //快捷词弹出面板
 
     protected SpecialEmojiMsgType mLastSendType = null;
     protected int mContinueCount = 1;
@@ -101,10 +97,13 @@ public abstract class BottomContainerView extends RelativeLayout {
     protected void init() {
         inflate(getContext(), getLayout(), this);
 
-        mQuickBtn = this.findViewById(R.id.quick_btn);
-        mShowInputContainerBtn = this.findViewById(R.id.show_input_container_btn);
         mEmoji2Btn = this.findViewById(R.id.emoji2_btn);
         mEmoji1Btn = this.findViewById(R.id.emoji1_btn);
+        mShowInputContainerBtn = this.findViewById(R.id.show_input_container_btn);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         mShowInputContainerBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -114,51 +113,6 @@ public abstract class BottomContainerView extends RelativeLayout {
                 }
             }
         });
-
-        mQuickBtn.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
-                int h = U.getDisplayUtils().dip2px(172);
-                if (mQuickMsgPopWindow == null) {
-                    QuickMsgView quickMsgView = new QuickMsgView(getContext());
-                    quickMsgView.setRoomData(mRoomData);
-                    quickMsgView.setListener(new QuickMsgView.Listener() {
-                        @Override
-                        public void onSendMsgOver() {
-                            if (mQuickMsgPopWindow != null) {
-                                mQuickMsgPopWindow.dismiss();
-                            }
-                        }
-                    });
-                    mQuickMsgPopWindow = new PopupWindow(quickMsgView, w, h);
-//                    mQuickMsgPopWindow.setFocusable(false);
-                    // 去除动画
-                    mQuickMsgPopWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
-                    mQuickMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
-                    mQuickMsgPopWindow.setOutsideTouchable(true);
-                    mQuickMsgPopWindow.setFocusable(true);
-                    mQuickMsgPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                        @Override
-                        public void onDismiss() {
-                            onQuickMsgDialogShow(false);
-                        }
-                    });
-                }
-                if (!mQuickMsgPopWindow.isShowing()) {
-                    int l[] = new int[2];
-                    mQuickBtn.getLocationInWindow(l);
-                    mQuickMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
-                    onQuickMsgDialogShow(true);
-                } else {
-                    mQuickMsgPopWindow.dismiss();
-                }
-            }
-        });
-
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
 
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -255,9 +209,7 @@ public abstract class BottomContainerView extends RelativeLayout {
     }
 
     public void dismissPopWindow() {
-        if (mQuickMsgPopWindow != null) {
-            mQuickMsgPopWindow.dismiss();
-        }
+
     }
 
     @Override

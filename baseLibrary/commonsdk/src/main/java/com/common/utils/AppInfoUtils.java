@@ -58,24 +58,28 @@ public class AppInfoUtils {
 
     /**
      * 返回 类似 /ZQ_Live/logs/
+     *
      * @param dirName
      * @return
      */
-    public String getSubDirPath(String dirName){
-        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator;
+    public String getSubDirPath(String dirName) {
+        return getMainDir().getAbsolutePath() + File.separator + dirName + File.separator;
     }
 
-    public File getSubDirFile(String dirName){
-        return new File(getMainDir().getAbsolutePath()+File.separator+dirName+File.separator);
+    public File getSubDirFile(String dirName) {
+        return new File(getMainDir().getAbsolutePath() + File.separator + dirName + File.separator);
     }
+
     /**
      * 返回 类似 /ZQ_Live/logs/aaa.png
+     *
      * @param dirName
      * @return
      */
-    public String getFilePathInSubDir(String dirName,String fileName){
-        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator+fileName;
+    public String getFilePathInSubDir(String dirName, String fileName) {
+        return getMainDir().getAbsolutePath() + File.separator + dirName + File.separator + fileName;
     }
+
     /**
      * 获取应用程序名称
      * 如 直播助手
