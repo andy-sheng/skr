@@ -169,6 +169,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
+                    mRoomData.changeScene(sceneType)
                     U.getToastUtil().showShort("切换场景成功")
                 } else {
                     MyLog.w(tag, "agreeChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")

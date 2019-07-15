@@ -27,6 +27,8 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
 
   public static final ESceneType DEFAULT_SCENETYPE = ESceneType.ST_Unknown;
 
+  public static final String DEFAULT_NOTICEMSGDESC = "";
+
   /**
    * 发起请求用户id
    */
@@ -45,15 +47,25 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
   )
   private final ESceneType sceneType;
 
-  public ReqChangeSceneMsg(Integer reqChangeUserID, ESceneType sceneType) {
-    this(reqChangeUserID, sceneType, ByteString.EMPTY);
+  /**
+   * 提醒消息描述
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String noticeMsgDesc;
+
+  public ReqChangeSceneMsg(Integer reqChangeUserID, ESceneType sceneType, String noticeMsgDesc) {
+    this(reqChangeUserID, sceneType, noticeMsgDesc, ByteString.EMPTY);
   }
 
-  public ReqChangeSceneMsg(Integer reqChangeUserID, ESceneType sceneType,
+  public ReqChangeSceneMsg(Integer reqChangeUserID, ESceneType sceneType, String noticeMsgDesc,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.reqChangeUserID = reqChangeUserID;
     this.sceneType = sceneType;
+    this.noticeMsgDesc = noticeMsgDesc;
   }
 
   @Override
@@ -61,6 +73,7 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
     Builder builder = new Builder();
     builder.reqChangeUserID = reqChangeUserID;
     builder.sceneType = sceneType;
+    builder.noticeMsgDesc = noticeMsgDesc;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -72,7 +85,8 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
     ReqChangeSceneMsg o = (ReqChangeSceneMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(reqChangeUserID, o.reqChangeUserID)
-        && Internal.equals(sceneType, o.sceneType);
+        && Internal.equals(sceneType, o.sceneType)
+        && Internal.equals(noticeMsgDesc, o.noticeMsgDesc);
   }
 
   @Override
@@ -82,6 +96,7 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
       result = unknownFields().hashCode();
       result = result * 37 + (reqChangeUserID != null ? reqChangeUserID.hashCode() : 0);
       result = result * 37 + (sceneType != null ? sceneType.hashCode() : 0);
+      result = result * 37 + (noticeMsgDesc != null ? noticeMsgDesc.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -92,6 +107,7 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
     StringBuilder builder = new StringBuilder();
     if (reqChangeUserID != null) builder.append(", reqChangeUserID=").append(reqChangeUserID);
     if (sceneType != null) builder.append(", sceneType=").append(sceneType);
+    if (noticeMsgDesc != null) builder.append(", noticeMsgDesc=").append(noticeMsgDesc);
     return builder.replace(0, 2, "ReqChangeSceneMsg{").append('}').toString();
   }
 
@@ -126,6 +142,16 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
   }
 
   /**
+   * 提醒消息描述
+   */
+  public String getNoticeMsgDesc() {
+    if(noticeMsgDesc==null){
+        return DEFAULT_NOTICEMSGDESC;
+    }
+    return noticeMsgDesc;
+  }
+
+  /**
    * 发起请求用户id
    */
   public boolean hasReqChangeUserID() {
@@ -139,10 +165,19 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
     return sceneType!=null;
   }
 
+  /**
+   * 提醒消息描述
+   */
+  public boolean hasNoticeMsgDesc() {
+    return noticeMsgDesc!=null;
+  }
+
   public static final class Builder extends Message.Builder<ReqChangeSceneMsg, Builder> {
     private Integer reqChangeUserID;
 
     private ESceneType sceneType;
+
+    private String noticeMsgDesc;
 
     public Builder() {
     }
@@ -163,9 +198,17 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
       return this;
     }
 
+    /**
+     * 提醒消息描述
+     */
+    public Builder setNoticeMsgDesc(String noticeMsgDesc) {
+      this.noticeMsgDesc = noticeMsgDesc;
+      return this;
+    }
+
     @Override
     public ReqChangeSceneMsg build() {
-      return new ReqChangeSceneMsg(reqChangeUserID, sceneType, super.buildUnknownFields());
+      return new ReqChangeSceneMsg(reqChangeUserID, sceneType, noticeMsgDesc, super.buildUnknownFields());
     }
   }
 
@@ -178,6 +221,7 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
     public int encodedSize(ReqChangeSceneMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.reqChangeUserID)
           + ESceneType.ADAPTER.encodedSizeWithTag(2, value.sceneType)
+          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.noticeMsgDesc)
           + value.unknownFields().size();
     }
 
@@ -185,6 +229,7 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
     public void encode(ProtoWriter writer, ReqChangeSceneMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.reqChangeUserID);
       ESceneType.ADAPTER.encodeWithTag(writer, 2, value.sceneType);
+      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.noticeMsgDesc);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -203,6 +248,7 @@ public final class ReqChangeSceneMsg extends Message<ReqChangeSceneMsg, ReqChang
             }
             break;
           }
+          case 3: builder.setNoticeMsgDesc(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

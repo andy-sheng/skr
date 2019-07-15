@@ -110,7 +110,7 @@ class DoubleGameSenceView : ExConstraintLayout {
     }
 
     fun select(itemID: Int) {
-        val mutableSet1 = mutableMapOf("itemID" to itemID, "panelSeq" to mPanelSeq)
+        val mutableSet1 = mutableMapOf("itemID" to itemID, "panelSeq" to mPanelSeq, "roomID" to mRoomData?.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.choiceGameItem(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {

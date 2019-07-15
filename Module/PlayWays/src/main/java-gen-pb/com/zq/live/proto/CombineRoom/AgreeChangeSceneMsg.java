@@ -11,6 +11,7 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import com.zq.live.proto.Common.ESceneType;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -26,6 +27,10 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
   public static final Integer DEFAULT_AGREECHANGEUSERID = 0;
 
   public static final ESceneType DEFAULT_SCENETYPE = ESceneType.ST_Unknown;
+
+  public static final Boolean DEFAULT_AGREE = false;
+
+  public static final String DEFAULT_NOTICEMSGDESC = "";
 
   /**
    * 同意请求用户id
@@ -45,15 +50,36 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
   )
   private final ESceneType sceneType;
 
-  public AgreeChangeSceneMsg(Integer agreeChangeUserID, ESceneType sceneType) {
-    this(agreeChangeUserID, sceneType, ByteString.EMPTY);
+  /**
+   * 是否同意
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean agree;
+
+  /**
+   * 提醒消息描述
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String noticeMsgDesc;
+
+  public AgreeChangeSceneMsg(Integer agreeChangeUserID, ESceneType sceneType, Boolean agree,
+      String noticeMsgDesc) {
+    this(agreeChangeUserID, sceneType, agree, noticeMsgDesc, ByteString.EMPTY);
   }
 
-  public AgreeChangeSceneMsg(Integer agreeChangeUserID, ESceneType sceneType,
-      ByteString unknownFields) {
+  public AgreeChangeSceneMsg(Integer agreeChangeUserID, ESceneType sceneType, Boolean agree,
+      String noticeMsgDesc, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.agreeChangeUserID = agreeChangeUserID;
     this.sceneType = sceneType;
+    this.agree = agree;
+    this.noticeMsgDesc = noticeMsgDesc;
   }
 
   @Override
@@ -61,6 +87,8 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
     Builder builder = new Builder();
     builder.agreeChangeUserID = agreeChangeUserID;
     builder.sceneType = sceneType;
+    builder.agree = agree;
+    builder.noticeMsgDesc = noticeMsgDesc;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -72,7 +100,9 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
     AgreeChangeSceneMsg o = (AgreeChangeSceneMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(agreeChangeUserID, o.agreeChangeUserID)
-        && Internal.equals(sceneType, o.sceneType);
+        && Internal.equals(sceneType, o.sceneType)
+        && Internal.equals(agree, o.agree)
+        && Internal.equals(noticeMsgDesc, o.noticeMsgDesc);
   }
 
   @Override
@@ -82,6 +112,8 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
       result = unknownFields().hashCode();
       result = result * 37 + (agreeChangeUserID != null ? agreeChangeUserID.hashCode() : 0);
       result = result * 37 + (sceneType != null ? sceneType.hashCode() : 0);
+      result = result * 37 + (agree != null ? agree.hashCode() : 0);
+      result = result * 37 + (noticeMsgDesc != null ? noticeMsgDesc.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -92,6 +124,8 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
     StringBuilder builder = new StringBuilder();
     if (agreeChangeUserID != null) builder.append(", agreeChangeUserID=").append(agreeChangeUserID);
     if (sceneType != null) builder.append(", sceneType=").append(sceneType);
+    if (agree != null) builder.append(", agree=").append(agree);
+    if (noticeMsgDesc != null) builder.append(", noticeMsgDesc=").append(noticeMsgDesc);
     return builder.replace(0, 2, "AgreeChangeSceneMsg{").append('}').toString();
   }
 
@@ -126,6 +160,26 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
   }
 
   /**
+   * 是否同意
+   */
+  public Boolean getAgree() {
+    if(agree==null){
+        return DEFAULT_AGREE;
+    }
+    return agree;
+  }
+
+  /**
+   * 提醒消息描述
+   */
+  public String getNoticeMsgDesc() {
+    if(noticeMsgDesc==null){
+        return DEFAULT_NOTICEMSGDESC;
+    }
+    return noticeMsgDesc;
+  }
+
+  /**
    * 同意请求用户id
    */
   public boolean hasAgreeChangeUserID() {
@@ -139,10 +193,28 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
     return sceneType!=null;
   }
 
+  /**
+   * 是否同意
+   */
+  public boolean hasAgree() {
+    return agree!=null;
+  }
+
+  /**
+   * 提醒消息描述
+   */
+  public boolean hasNoticeMsgDesc() {
+    return noticeMsgDesc!=null;
+  }
+
   public static final class Builder extends Message.Builder<AgreeChangeSceneMsg, Builder> {
     private Integer agreeChangeUserID;
 
     private ESceneType sceneType;
+
+    private Boolean agree;
+
+    private String noticeMsgDesc;
 
     public Builder() {
     }
@@ -163,9 +235,25 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
       return this;
     }
 
+    /**
+     * 是否同意
+     */
+    public Builder setAgree(Boolean agree) {
+      this.agree = agree;
+      return this;
+    }
+
+    /**
+     * 提醒消息描述
+     */
+    public Builder setNoticeMsgDesc(String noticeMsgDesc) {
+      this.noticeMsgDesc = noticeMsgDesc;
+      return this;
+    }
+
     @Override
     public AgreeChangeSceneMsg build() {
-      return new AgreeChangeSceneMsg(agreeChangeUserID, sceneType, super.buildUnknownFields());
+      return new AgreeChangeSceneMsg(agreeChangeUserID, sceneType, agree, noticeMsgDesc, super.buildUnknownFields());
     }
   }
 
@@ -178,6 +266,8 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
     public int encodedSize(AgreeChangeSceneMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.agreeChangeUserID)
           + ESceneType.ADAPTER.encodedSizeWithTag(2, value.sceneType)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.agree)
+          + ProtoAdapter.STRING.encodedSizeWithTag(4, value.noticeMsgDesc)
           + value.unknownFields().size();
     }
 
@@ -185,6 +275,8 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
     public void encode(ProtoWriter writer, AgreeChangeSceneMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.agreeChangeUserID);
       ESceneType.ADAPTER.encodeWithTag(writer, 2, value.sceneType);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.agree);
+      ProtoAdapter.STRING.encodeWithTag(writer, 4, value.noticeMsgDesc);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -203,6 +295,8 @@ public final class AgreeChangeSceneMsg extends Message<AgreeChangeSceneMsg, Agre
             }
             break;
           }
+          case 3: builder.setAgree(ProtoAdapter.BOOL.decode(reader)); break;
+          case 4: builder.setNoticeMsgDesc(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

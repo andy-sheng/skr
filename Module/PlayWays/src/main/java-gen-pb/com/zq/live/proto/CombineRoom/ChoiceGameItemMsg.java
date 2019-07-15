@@ -15,6 +15,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGameItemMsg.Builder> {
@@ -55,16 +56,28 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
   )
   private final Integer itemID;
 
-  public ChoiceGameItemMsg(Integer userID, Integer panelSeq, Integer itemID) {
-    this(userID, panelSeq, itemID, ByteString.EMPTY);
-  }
+  /**
+   * 已经选择的游戏id
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32",
+      label = WireField.Label.REPEATED
+  )
+  private final List<Integer> itemIDs;
 
   public ChoiceGameItemMsg(Integer userID, Integer panelSeq, Integer itemID,
+      List<Integer> itemIDs) {
+    this(userID, panelSeq, itemID, itemIDs, ByteString.EMPTY);
+  }
+
+  public ChoiceGameItemMsg(Integer userID, Integer panelSeq, Integer itemID, List<Integer> itemIDs,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.panelSeq = panelSeq;
     this.itemID = itemID;
+    this.itemIDs = Internal.immutableCopyOf("itemIDs", itemIDs);
   }
 
   @Override
@@ -73,6 +86,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     builder.userID = userID;
     builder.panelSeq = panelSeq;
     builder.itemID = itemID;
+    builder.itemIDs = Internal.copyOf("itemIDs", itemIDs);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -85,7 +99,8 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(panelSeq, o.panelSeq)
-        && Internal.equals(itemID, o.itemID);
+        && Internal.equals(itemID, o.itemID)
+        && itemIDs.equals(o.itemIDs);
   }
 
   @Override
@@ -96,6 +111,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (panelSeq != null ? panelSeq.hashCode() : 0);
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
+      result = result * 37 + itemIDs.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -107,6 +123,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     if (userID != null) builder.append(", userID=").append(userID);
     if (panelSeq != null) builder.append(", panelSeq=").append(panelSeq);
     if (itemID != null) builder.append(", itemID=").append(itemID);
+    if (!itemIDs.isEmpty()) builder.append(", itemIDs=").append(itemIDs);
     return builder.replace(0, 2, "ChoiceGameItemMsg{").append('}').toString();
   }
 
@@ -151,6 +168,16 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
   }
 
   /**
+   * 已经选择的游戏id
+   */
+  public List<Integer> getItemIDsList() {
+    if(itemIDs==null){
+        return new java.util.ArrayList<Integer>();
+    }
+    return itemIDs;
+  }
+
+  /**
    * 选择游戏的用户id
    */
   public boolean hasUserID() {
@@ -171,6 +198,13 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     return itemID!=null;
   }
 
+  /**
+   * 已经选择的游戏id
+   */
+  public boolean hasItemIDsList() {
+    return itemIDs!=null;
+  }
+
   public static final class Builder extends Message.Builder<ChoiceGameItemMsg, Builder> {
     private Integer userID;
 
@@ -178,7 +212,10 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
 
     private Integer itemID;
 
+    private List<Integer> itemIDs;
+
     public Builder() {
+      itemIDs = Internal.newMutableList();
     }
 
     /**
@@ -205,9 +242,18 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
       return this;
     }
 
+    /**
+     * 已经选择的游戏id
+     */
+    public Builder addAllItemIDs(List<Integer> itemIDs) {
+      Internal.checkElementsNotNull(itemIDs);
+      this.itemIDs = itemIDs;
+      return this;
+    }
+
     @Override
     public ChoiceGameItemMsg build() {
-      return new ChoiceGameItemMsg(userID, panelSeq, itemID, super.buildUnknownFields());
+      return new ChoiceGameItemMsg(userID, panelSeq, itemID, itemIDs, super.buildUnknownFields());
     }
   }
 
@@ -221,6 +267,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.panelSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.itemID)
+          + ProtoAdapter.UINT32.asRepeated().encodedSizeWithTag(4, value.itemIDs)
           + value.unknownFields().size();
     }
 
@@ -229,6 +276,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.panelSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.itemID);
+      ProtoAdapter.UINT32.asRepeated().encodeWithTag(writer, 4, value.itemIDs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -241,6 +289,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setPanelSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.itemIDs.add(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

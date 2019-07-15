@@ -88,6 +88,7 @@ message ChoiceGameItemMsg
     uint32 userID   = 1; //选择游戏的用户id
     uint32 panelSeq = 2; //当前面板次序
     uint32 itemID   = 3; //当前选择的游戏id
+    repeated uint32 itemIDs = 4; //已经选择的游戏id
 }
 
 
@@ -95,12 +96,15 @@ message AgreeChangeSceneMsg
 {
     uint32 agreeChangeUserID = 1; //同意请求用户id
     Common.ESceneType sceneType     = 2; //需要切换场景
+    bool agree               = 3; //是否同意
+    string noticeMsgDesc     = 4; //提醒消息描述
 }
 
 message ReqChangeSceneMsg
 {
     uint32 reqChangeUserID = 1; //发起请求用户id
     Common.ESceneType sceneType   = 2; //需要切换场景
+    string noticeMsgDesc   = 3; //提醒消息描述
 }
 
 message AddMusicInfoMsg
