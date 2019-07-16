@@ -62,6 +62,7 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
+import com.module.playways.grab.room.voicemsg.VoiceRecordUiController;
 import com.module.playways.songmanager.SongManagerActivity;
 import com.module.playways.songmanager.event.ChangeTagSuccessEvent;
 import com.module.playways.grab.room.top.GrabTopContentView;
@@ -241,6 +242,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     BeautyControlPanelView mBeautyControlPanelView;
 
     VoiceRecordTipsView mVoiceRecordTipsView;
+
+    VoiceRecordUiController mVoiceRecordUiController;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -728,45 +731,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         });
         mBottomContainerView.setRoomData(mRoomData);
 
-        mBottomContainerView.getMVoiceRecordBtn().setMShowTips(new Function1<Boolean, Unit>() {
-            @Override
-            public Unit invoke(Boolean aBoolean) {
-                if (aBoolean) {
-                    mVoiceRecordTipsView.show();
-                } else {
-                    mVoiceRecordTipsView.hide();
-                }
-                return null;
-            }
-        });
-        mBottomContainerView.getMVoiceRecordBtn().setMChangeVoiceLevel(new Function1<Integer, Unit>() {
-            @Override
-            public Unit invoke(Integer integer) {
-                mVoiceRecordTipsView.changeVoiceLevel(integer);
-                return null;
-            }
-        });
-        mBottomContainerView.getMVoiceRecordBtn().setMCancelRecord(new Function0<Unit>() {
-            @Override
-            public Unit invoke() {
-                mVoiceRecordTipsView.cancelRecord();
-                return null;
-            }
-        });
-        mBottomContainerView.getMVoiceRecordBtn().setMRemainTime(new Function1<String, Unit>() {
-            @Override
-            public Unit invoke(String s) {
-                mVoiceRecordTipsView.remainTime(s);
-                return null;
-            }
-        });
-        mBottomContainerView.getMVoiceRecordBtn().setMTimeLimit(new Function1<Boolean, Unit>() {
-            @Override
-            public Unit invoke(Boolean aBoolean) {
-                mVoiceRecordTipsView.showLimitTime(aBoolean);
-                return null;
-            }
-        });
+        mVoiceRecordUiController = new VoiceRecordUiController(mBottomContainerView.getMVoiceRecordBtn(),mVoiceRecordTipsView);
     }
 
     private void initCommentView() {

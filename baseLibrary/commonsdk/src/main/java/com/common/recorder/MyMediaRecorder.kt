@@ -72,6 +72,7 @@ class MyMediaRecorder {
         mRecording = false
         mMediaRecorder?.reset()
         mUiHandler?.removeCallbacksAndMessages(null)
+        mVolumeListener = null
     }
 
     fun destroy() {
@@ -81,27 +82,29 @@ class MyMediaRecorder {
         mMediaRecorder = null
         mUiHandler?.removeCallbacksAndMessages(null)
         mUiHandler = null
+        mVolumeListener = null
     }
 
     private fun updateVolume() {
         if (mMediaRecorder != null) {
-            val ratio = mMediaRecorder!!.maxAmplitude / 600
-            var db = 0// 分贝
-            if (ratio > 1) {
-                db = (20 * Math.log10(ratio.toDouble())).toInt()
-                if (mVolumeListener != null) {
-                    mVolumeListener?.invoke(db)
-                    getHandler()?.removeMessages(MSG_UPDATE_VOLUME)
-                    getHandler()?.sendEmptyMessageDelayed(MSG_UPDATE_VOLUME, 1000)
-                }
+            var maxAmplitude = mMediaRecorder?.maxAmplitude ?: 0
+            var level = 9* 3 * maxAmplitude / (32768*2) + 1
+            if (mVolumeListener != null) {
+                mVolumeListener?.invoke(level)
             }
+            getHandler()?.removeMessages(MSG_UPDATE_VOLUME)
+            getHandler()?.sendEmptyMessageDelayed(MSG_UPDATE_VOLUME, 200)
         }
     }
 
     private fun getHandler(): Handler? {
         if (mUiHandler == null) {
             mUiHandler = object : Handler(Looper.getMainLooper()) {
-                override fun handleMessage(msg: Message) {}
+                override fun handleMessage(msg: Message) {
+                    if (msg.what == MSG_UPDATE_VOLUME) {
+                        updateVolume()
+                    }
+                }
             }
         }
         return mUiHandler;
