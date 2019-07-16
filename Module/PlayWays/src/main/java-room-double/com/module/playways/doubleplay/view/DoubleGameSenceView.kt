@@ -83,6 +83,11 @@ class DoubleGameSenceView : ExConstraintLayout {
         }
 
         mSelectIv.setDebounceViewClickListener {
+            if (mGameStage == EGameStage.GS_ChoicGameItem.value) {
+                U.getToastUtil().showShort("请结束游戏再换")
+                return@setDebounceViewClickListener
+            }
+
             val mutableSet1 = mutableMapOf("roomID" to mRoomData!!.gameId, "curPanelSeq" to mPanelSeq)
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             ApiMethods.subscribe(mDoubleRoomServerApi.changeGamePanel(body), object : ApiObserver<ApiResult>() {
