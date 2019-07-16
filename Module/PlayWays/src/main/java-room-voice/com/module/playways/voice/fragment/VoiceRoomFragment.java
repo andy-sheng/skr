@@ -143,11 +143,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
             public void clickAvatar(int userId) {
                 showPersonInfoView(userId);
             }
-
-            @Override
-            public void clickAudio(boolean isPlaying, String localPath, String msgUrl) {
-
-            }
         });
         mCommentView.setRoomData(mRoomData);
 

@@ -106,6 +106,7 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
 
     public void setCurrentPlayAudioModel(CommentAudioModel commentAudioModel) {
         mCurPlayAudioModel = commentAudioModel;
+        notifyDataSetChanged();
     }
 
     public interface CommentAdapterListener {

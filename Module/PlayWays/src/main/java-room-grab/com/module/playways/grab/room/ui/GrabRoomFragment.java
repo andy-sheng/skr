@@ -741,16 +741,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             public void clickAvatar(int userId) {
                 showPersonInfoView(userId);
             }
-
-            @Override
-            public void clickAudio(boolean isPlay, String localPath, String msgUrl) {
-                GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-                if (now.isSingStatus() && now.singBySelf()) {
-                    U.getToastUtil().showShort("演唱中无法收听语音");
-                } else {
-                    mCommentView.playAudio(isPlay,localPath, msgUrl);
-                }
-            }
         });
         mCommentView.setRoomData(mRoomData);
 //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();

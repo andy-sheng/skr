@@ -18,6 +18,7 @@ import com.common.player.IPlayerCallback;
 import com.common.player.MyMediaPlayer;
 import com.common.utils.U;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.msg.event.AudioMsgEvent;
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.room.room.comment.adapter.CommentAdapter;
@@ -174,7 +175,7 @@ public class CommentView extends RelativeLayout {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        mCommentRv = (RecyclerView) this.findViewById(R.id.comment_rv);
+        mCommentRv = this.findViewById(R.id.comment_rv);
         mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         mLinearLayoutManager.setStackFromEnd(true);
         mCommentRv.setLayoutManager(mLinearLayoutManager);
@@ -194,50 +195,65 @@ public class CommentView extends RelativeLayout {
                 if (commentAudioModel == null) {
                     return;
                 }
-                // 直接在此处播放，有需要在放到外面去
-                mCommentAdapter.setCurrentPlayAudioModel(commentAudioModel);
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = new MyMediaPlayer();
-                    mMediaPlayer.setCallback(new IPlayerCallback() {
-                        @Override
-                        public void onPrepared() {
-
-                        }
-
-                        @Override
-                        public void onCompletion() {
-                            mCommentAdapter.setCurrentPlayAudioModel(null);
-                            EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
-                        }
-
-                        @Override
-                        public void onSeekComplete() {
-
-                        }
-
-                        @Override
-                        public void onVideoSizeChanged(int width, int height) {
-
-                        }
-
-                        @Override
-                        public void onError(int what, int extra) {
-
-                        }
-
-                        @Override
-                        public void onInfo(int what, int extra) {
-
-                        }
-                    });
-                }
-                if (!TextUtils.isEmpty(commentAudioModel.getLocalPath())) {
-                    // 播放本地
-                    mMediaPlayer.startPlay(commentAudioModel.getLocalPath());
+                if (isPlaying) {
+                    // 暂停播放
+                    if (mMediaPlayer != null) {
+                        mMediaPlayer.reset();
+                    }
                 } else {
-                    // 播放url
-                    mMediaPlayer.startPlay(commentAudioModel.getMsgUrl());
+                    // 重新开始播放
+                    GrabRoundInfoModel now = (GrabRoundInfoModel) mRoomData.getRealRoundInfo();
+                    if (now.isSingStatus() && now.singBySelf()) {
+                        U.getToastUtil().showShort("演唱中无法收听语音");
+                    } else {
+                        // 直接在此处播放，有需要在放到外面去
+                        mCommentAdapter.setCurrentPlayAudioModel(commentAudioModel);
+                        if (mMediaPlayer == null) {
+                            mMediaPlayer = new MyMediaPlayer();
+                            mMediaPlayer.setCallback(new IPlayerCallback() {
+                                @Override
+                                public void onPrepared() {
+
+                                }
+
+                                @Override
+                                public void onCompletion() {
+                                    mCommentAdapter.setCurrentPlayAudioModel(null);
+                                    EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
+                                }
+
+                                @Override
+                                public void onSeekComplete() {
+
+                                }
+
+                                @Override
+                                public void onVideoSizeChanged(int width, int height) {
+
+                                }
+
+                                @Override
+                                public void onError(int what, int extra) {
+
+                                }
+
+                                @Override
+                                public void onInfo(int what, int extra) {
+
+                                }
+                            });
+                        }
+                        if (!TextUtils.isEmpty(commentAudioModel.getLocalPath())) {
+                            // 播放本地
+                            mMediaPlayer.startPlay(commentAudioModel.getLocalPath());
+                        } else {
+                            // 播放url
+                            mMediaPlayer.startPlay(commentAudioModel.getMsgUrl());
+                        }
+                        EventBus.getDefault().post(new BeginRecordCustomGameEvent(true));
+                    }
                 }
+
             }
         });
         mCommentAdapter.setGameType(mGameType);
