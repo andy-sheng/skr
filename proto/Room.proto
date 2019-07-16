@@ -75,6 +75,7 @@ enum ERoomMsgType {
     RM_COMMENT = 10; //普通评论消息
     RM_SPECIAL_EMOJI = 11; //特殊表情消息
     RM_DYNAMIC_EMOJI = 12; //动态表情消息
+    RM_AUDIO_MSG = 13; //语音消息
 
     RM_JOIN_ACTION = 100; //加入游戏指令消息
     RM_JOIN_NOTICE = 101; //加入游戏通知消息
@@ -116,8 +117,6 @@ enum ERoomMsgType {
     RM_Q_PK_INNER_ROUND_OVER = 132; //一唱到底：spk模式内部轮次结束
     RM_Q_CHANGE_ROOM_NAME = 133; //一唱到底：房主修改房间名称
     RM_G_PRESENT_GIFT = 134; //送礼
-
-    RM_AUDIO_MSG = 135; //语音消息
 
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
 }

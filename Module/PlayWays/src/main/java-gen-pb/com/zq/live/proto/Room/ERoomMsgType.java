@@ -32,6 +32,11 @@ public enum ERoomMsgType implements WireEnum {
   RM_DYNAMIC_EMOJI(12),
 
   /**
+   * 语音消息
+   */
+  RM_AUDIO_MSG(13),
+
+  /**
    * 加入游戏指令消息
    */
   RM_JOIN_ACTION(100),
@@ -202,11 +207,6 @@ public enum ERoomMsgType implements WireEnum {
   RM_G_PRESENT_GIFT(134),
 
   /**
-   * 语音消息
-   */
-  RM_AUDIO_MSG(135),
-
-  /**
    * 告知伴奏开始
    */
   RM_ROUND_ACC_BEGIN(190);
@@ -228,6 +228,7 @@ public enum ERoomMsgType implements WireEnum {
       case 10: return RM_COMMENT;
       case 11: return RM_SPECIAL_EMOJI;
       case 12: return RM_DYNAMIC_EMOJI;
+      case 13: return RM_AUDIO_MSG;
       case 100: return RM_JOIN_ACTION;
       case 101: return RM_JOIN_NOTICE;
       case 102: return RM_READY_NOTICE;
@@ -262,7 +263,6 @@ public enum ERoomMsgType implements WireEnum {
       case 132: return RM_Q_PK_INNER_ROUND_OVER;
       case 133: return RM_Q_CHANGE_ROOM_NAME;
       case 134: return RM_G_PRESENT_GIFT;
-      case 135: return RM_AUDIO_MSG;
       case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }
