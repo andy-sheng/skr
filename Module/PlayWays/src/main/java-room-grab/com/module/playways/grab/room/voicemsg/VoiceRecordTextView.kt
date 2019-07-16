@@ -17,6 +17,9 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 
 import com.common.view.ex.ExTextView
+import com.module.playways.BaseRoomData
+import com.module.playways.grab.room.GrabRoomData
+import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
 import com.module.playways.room.room.RankRoomServerApi
 import com.module.playways.songmanager.event.BeginRecordCustomGameEvent
@@ -58,7 +61,7 @@ class VoiceRecordTextView : ExTextView {
     val mVoiceDir = U.getAppInfoUtils().getSubDirFile("voice")
     var mRecordAudioFilePath: String? = null
     var mDuration: Long = 0
-    var mGameId: Int = 0
+    var mRoomData: GrabRoomData? = null
 
     constructor(context: Context) : super(context) {}
 
@@ -95,10 +98,15 @@ class VoiceRecordTextView : ExTextView {
         val x = event.x
         val y = event.y
 
+        val roundInfoModel = mRoomData?.getRealRoundInfo<GrabRoundInfoModel>()
+        if (roundInfoModel != null && roundInfoModel!!.isSingStatus && roundInfoModel!!.singBySelf()) {
+            U.getToastUtil().showShort("演唱中无法录音")
+            return false
+        }
+
         when {
             action == MotionEvent.ACTION_DOWN -> {
                 MyLog.d(TAG, "ACTION_DOWN")
-
                 if (mCurrentState == STATE_IDLE || mCurrentState == STATE_RECORD_OK) {
                     // 开始录音，显示手指上滑，取消发送
                     mCurrentState = STATE_RECORDING
@@ -168,8 +176,11 @@ class VoiceRecordTextView : ExTextView {
 
                     override fun onComplete() {
                         super.onComplete()
+                        cancelRecordCountDown()
+                        mCurrentState = STATE_RECORD_OK
+                        mDuration = mMyMediaRecorder?.duration?.toLong() ?: 0L
+                        mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath!!, mDuration), true)
                         mTimeLimitListener?.invoke(false)
-                        mMyMediaRecorder?.stop()
                         EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
                     }
                 })
@@ -177,7 +188,7 @@ class VoiceRecordTextView : ExTextView {
             mMyMediaRecorder = MyMediaRecorder.newBuilder().build()
         }
 
-        var file = File(mVoiceDir, "${mGameId}-${System.currentTimeMillis()}.aac")
+        var file = File(mVoiceDir, "${mRoomData?.gameId}-${System.currentTimeMillis()}.aac")
         if (!file.exists()) {
             file.parentFile.mkdir()
             try {
@@ -239,7 +250,7 @@ class VoiceRecordTextView : ExTextView {
     private fun sendToServer(file: VoiceRecordTextView.AudioFile, url: String) {
         val roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi::class.java)
         val map = HashMap<String, Any>()
-        map["gameID"] = mGameId
+        map["gameID"] = mRoomData!!.gameId
         map["msgUrl"] = url
         map["duration"] = file.duration
 
@@ -252,7 +263,7 @@ class VoiceRecordTextView : ExTextView {
             }
         })
 
-        EventHelper.pretendAudioPush(file.localPath, file.duration, url, mGameId);
+        EventHelper.pretendAudioPush(file.localPath, file.duration, url, mRoomData!!.gameId)
     }
 
 

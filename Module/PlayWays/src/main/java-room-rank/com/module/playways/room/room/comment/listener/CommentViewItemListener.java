@@ -7,4 +7,6 @@ public interface CommentViewItemListener {
      * @param userId
      */
     void clickAvatar(int userId);
+
+    void clickAudio(boolean isPlaying, String localPath, String msgUrl);
 }

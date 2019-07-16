@@ -1,7 +1,6 @@
 package com.module.playways.room.room.comment.adapter;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +72,7 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
             CommentAudioHolder commentAudioHolder = (CommentAudioHolder) holder;
             CommentAudioModel commentAudioModel = (CommentAudioModel) model;
             commentAudioHolder.bind(position, commentAudioModel);
-            if (commentAudioModel.getMsgUrl() == mPlayurl) {
+            if (commentAudioModel.getMsgUrl().equals(mPlayurl)) {
                 commentAudioHolder.setPlay(true);
             } else {
                 commentAudioHolder.setPlay(false);
@@ -123,6 +122,6 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
          */
         void clickAvatar(int userId);
 
-        void clickAudio(int position, String localPath, String msgUrl);
+        void clickAudio(boolean isPlaying, String localPath, String msgUrl);
     }
 }

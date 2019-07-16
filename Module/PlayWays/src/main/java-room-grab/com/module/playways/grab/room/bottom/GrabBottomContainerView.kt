@@ -162,7 +162,7 @@ class GrabBottomContainerView : BottomContainerView {
             if (mGrabRoomData?.roomType == GrabRoomType.ROOM_TYPE_GUIDE) {
                 mEmoji2Btn.visibility = View.GONE
             }
-            mVoiceRecordBtn.mGameId = mGrabRoomData!!.gameId
+            mVoiceRecordBtn.mRoomData = mGrabRoomData
         }
     }
 

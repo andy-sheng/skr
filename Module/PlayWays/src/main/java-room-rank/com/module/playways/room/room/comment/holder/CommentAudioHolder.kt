@@ -24,6 +24,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
 
     internal var position: Int = 0
     internal var mCommentAudioModel: CommentAudioModel? = null
+    var isPlaying = false
 
     init {
         mAvatarIv = itemView.findViewById(R.id.avatar_iv)
@@ -42,7 +43,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
             override fun clickValid(v: View?) {
                 mCommentAudioModel?.isRead = true
                 mRedIv.visibility = View.GONE
-                listener?.clickAudio(position, mCommentAudioModel?.localPath, mCommentAudioModel?.msgUrl)
+                listener?.clickAudio(isPlaying, mCommentAudioModel?.localPath, mCommentAudioModel?.msgUrl)
             }
         })
     }
@@ -68,6 +69,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
 
 
     fun setPlay(isPlay: Boolean) {
+        isPlaying = isPlay
         if (isPlay) {
             // 播放动画
         } else {
