@@ -431,7 +431,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             U.getToastUtil().showShort("人齐了才可以开始玩哦～")
         } else {
             val tipsDialogView = TipsDialogView.Builder(context)
-                    .setMessageTip("是否邀请对方进入${text}场景")
+                    .setMessageTip("邀请对方一起${text}？")
                     .setConfirmTip("是的")
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
@@ -463,7 +463,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             U.getToastUtil().showShort("人齐了才可以开始玩哦～")
         } else {
             val tipsDialogView = TipsDialogView.Builder(context)
-                    .setMessageTip("对方邀请你进入${text}场景")
+                    .setMessageTip(text)
                     .setConfirmTip("同意")
                     .setCancelTip("不同意")
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
