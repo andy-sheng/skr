@@ -4,6 +4,8 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.Gravity
@@ -93,6 +95,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     var countDownTimer: HandlerTaskTimer? = null
 
     var mHasInit: Boolean = false
+
+    val mUiHandler = Handler(Looper.getMainLooper())
 
     var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
         mViewPager?.setCurrentItem(newPosition, false)
@@ -462,32 +466,35 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         if (!mRoomData!!.isRoomPrepared()) {
             U.getToastUtil().showShort("人齐了才可以开始玩哦～")
         } else {
-            val tipsDialogView = TipsDialogView.Builder(context)
-                    .setMessageTip(text)
-                    .setConfirmTip("同意")
-                    .setCancelTip("不同意")
-                    .setConfirmBtnClickListener(object : AnimateClickListener() {
-                        override fun click(view: View) {
-                            mReceiveChangeSenceDialog?.dismiss()
-                            mDoubleCorePresenter?.agreeChangeScene(sceneType)
-                        }
-                    })
-                    .setCancelBtnClickListener(object : AnimateClickListener() {
-                        override fun click(view: View) {
-                            mReceiveChangeSenceDialog?.dismiss()
-                            mDoubleCorePresenter?.refuseChangeScene(sceneType)
-                        }
-                    })
-                    .build()
+            mReceiveChangeSenceDialog?.dismiss()
+            mUiHandler.postDelayed({
+                val tipsDialogView = TipsDialogView.Builder(context)
+                        .setMessageTip(text)
+                        .setConfirmTip("同意")
+                        .setCancelTip("不同意")
+                        .setConfirmBtnClickListener(object : AnimateClickListener() {
+                            override fun click(view: View) {
+                                mReceiveChangeSenceDialog?.dismiss()
+                                mDoubleCorePresenter?.agreeChangeScene(sceneType)
+                            }
+                        })
+                        .setCancelBtnClickListener(object : AnimateClickListener() {
+                            override fun click(view: View) {
+                                mReceiveChangeSenceDialog?.dismiss()
+                                mDoubleCorePresenter?.refuseChangeScene(sceneType)
+                            }
+                        })
+                        .build()
 
-            mReceiveChangeSenceDialog = DialogPlus.newDialog(context!!)
-                    .setContentHolder(ViewHolder(tipsDialogView))
-                    .setGravity(Gravity.BOTTOM)
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_80)
-                    .setExpanded(false)
-                    .create()
-            mReceiveChangeSenceDialog?.show()
+                mReceiveChangeSenceDialog = DialogPlus.newDialog(context!!)
+                        .setContentHolder(ViewHolder(tipsDialogView))
+                        .setGravity(Gravity.BOTTOM)
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_80)
+                        .setExpanded(false)
+                        .create()
+                mReceiveChangeSenceDialog?.show()
+            }, 500)
         }
     }
 
