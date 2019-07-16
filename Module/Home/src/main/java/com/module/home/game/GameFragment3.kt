@@ -7,22 +7,22 @@ import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
-
+import android.view.animation.AlphaAnimation
+import android.widget.ImageView
 import com.common.base.BaseFragment
+import com.common.core.account.event.AccountEvent
+import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.home.R
+import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.DoubleRoomGameView
 import com.module.home.game.view.FriendRoomGameView
-import com.module.home.game.view.QuickGameView
-import android.widget.ImageView
-import android.view.animation.AlphaAnimation
-import com.common.core.account.event.AccountEvent
-import com.common.statistics.StatisticsAdapter
-import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.IGameView3
+import com.module.home.game.view.QuickGameView
 import com.module.home.model.GameKConfigModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -204,6 +204,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         mPresenter.initGameKConfig()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: JumpHomeDoubleChatPageEvent) {
+        mGameVp.setCurrentItem(2, false)
     }
 
     override fun useEventBus(): Boolean {

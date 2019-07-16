@@ -28,6 +28,7 @@ import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.scheme.SchemeSdkActivity;
+import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
@@ -452,6 +453,17 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (event.channel == 2) {
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
         }
+    }
+
+    /**
+     * 跳到个人中心
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(JumpHomeDoubleChatPageEvent event) {
+        U.getActivityUtils().goHomeActivity();
+        mMainVp.setCurrentItem(0, false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

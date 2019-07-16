@@ -12,6 +12,7 @@ import com.common.core.scheme.SchemeUtils;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
+import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -230,6 +231,8 @@ public class InframeProcessor implements ISchemeProcessor {
             EventBus.getDefault().post(new JumpHomeFromSchemeEvent(0));
         } else if ("trywakeup".equals(path)) {
             // 不做任何操作，只是唤启app
+        } else if ("/chat_page".equals(path)) {
+            EventBus.getDefault().post(new JumpHomeDoubleChatPageEvent());
         }
     }
 
