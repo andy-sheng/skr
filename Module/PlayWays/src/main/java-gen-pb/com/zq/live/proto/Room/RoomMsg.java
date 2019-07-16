@@ -121,6 +121,15 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   private final DynamicEmojiMsg dynamicemojiMsg;
 
   /**
+   * 语音消息
+   */
+  @WireField(
+      tag = 13,
+      adapter = "com.zq.live.proto.Room.AudioMsg#ADAPTER"
+  )
+  private final AudioMsg audioMsg;
+
+  /**
    * 加入游戏指令消息 msgType == RM_JOIN_ACTION
    */
   @WireField(
@@ -428,8 +437,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
-      DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
-      ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
+      DynamicEmojiMsg dynamicemojiMsg, AudioMsg audioMsg, JoinActionMsg joinActionMsg,
+      JoinNoticeMsg joinNoticeMsg, ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
       RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
       ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
       ExitGameOutRoundMsg exitGameOutRoundMsg, VoteResultMsg voteResultMsg,
@@ -443,13 +452,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QGameBeginMsg qGameBeginMsg, QChangeMusicTag qChangeMusicTag, QCoinChangeMsg qCoinChangeMsg,
       QCHOGiveUpMsg qCHOGiveUpMsg, QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg,
       QChangeRoomName qChangeRoomName, GPrensentGiftMsg gPrensentGiftMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, gPrensentGiftMsg, ByteString.EMPTY);
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, audioMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, gPrensentGiftMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
-      DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
-      ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
+      DynamicEmojiMsg dynamicemojiMsg, AudioMsg audioMsg, JoinActionMsg joinActionMsg,
+      JoinNoticeMsg joinNoticeMsg, ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
       RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
       ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
       ExitGameOutRoundMsg exitGameOutRoundMsg, VoteResultMsg voteResultMsg,
@@ -474,6 +483,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.commentMsg = commentMsg;
     this.specialEmojiMsg = specialEmojiMsg;
     this.dynamicemojiMsg = dynamicemojiMsg;
+    this.audioMsg = audioMsg;
     this.joinActionMsg = joinActionMsg;
     this.joinNoticeMsg = joinNoticeMsg;
     this.readyNoticeMsg = readyNoticeMsg;
@@ -522,6 +532,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.commentMsg = commentMsg;
     builder.specialEmojiMsg = specialEmojiMsg;
     builder.dynamicemojiMsg = dynamicemojiMsg;
+    builder.audioMsg = audioMsg;
     builder.joinActionMsg = joinActionMsg;
     builder.joinNoticeMsg = joinNoticeMsg;
     builder.readyNoticeMsg = readyNoticeMsg;
@@ -575,6 +586,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(commentMsg, o.commentMsg)
         && Internal.equals(specialEmojiMsg, o.specialEmojiMsg)
         && Internal.equals(dynamicemojiMsg, o.dynamicemojiMsg)
+        && Internal.equals(audioMsg, o.audioMsg)
         && Internal.equals(joinActionMsg, o.joinActionMsg)
         && Internal.equals(joinNoticeMsg, o.joinNoticeMsg)
         && Internal.equals(readyNoticeMsg, o.readyNoticeMsg)
@@ -625,6 +637,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (commentMsg != null ? commentMsg.hashCode() : 0);
       result = result * 37 + (specialEmojiMsg != null ? specialEmojiMsg.hashCode() : 0);
       result = result * 37 + (dynamicemojiMsg != null ? dynamicemojiMsg.hashCode() : 0);
+      result = result * 37 + (audioMsg != null ? audioMsg.hashCode() : 0);
       result = result * 37 + (joinActionMsg != null ? joinActionMsg.hashCode() : 0);
       result = result * 37 + (joinNoticeMsg != null ? joinNoticeMsg.hashCode() : 0);
       result = result * 37 + (readyNoticeMsg != null ? readyNoticeMsg.hashCode() : 0);
@@ -676,6 +689,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (commentMsg != null) builder.append(", commentMsg=").append(commentMsg);
     if (specialEmojiMsg != null) builder.append(", specialEmojiMsg=").append(specialEmojiMsg);
     if (dynamicemojiMsg != null) builder.append(", dynamicemojiMsg=").append(dynamicemojiMsg);
+    if (audioMsg != null) builder.append(", audioMsg=").append(audioMsg);
     if (joinActionMsg != null) builder.append(", joinActionMsg=").append(joinActionMsg);
     if (joinNoticeMsg != null) builder.append(", joinNoticeMsg=").append(joinNoticeMsg);
     if (readyNoticeMsg != null) builder.append(", readyNoticeMsg=").append(readyNoticeMsg);
@@ -811,6 +825,16 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         return new DynamicEmojiMsg.Builder().build();
     }
     return dynamicemojiMsg;
+  }
+
+  /**
+   * 语音消息
+   */
+  public AudioMsg getAudioMsg() {
+    if(audioMsg==null){
+        return new AudioMsg.Builder().build();
+    }
+    return audioMsg;
   }
 
   /**
@@ -1217,6 +1241,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
+   * 语音消息
+   */
+  public boolean hasAudioMsg() {
+    return audioMsg!=null;
+  }
+
+  /**
    * 加入游戏指令消息 msgType == RM_JOIN_ACTION
    */
   public boolean hasJoinActionMsg() {
@@ -1473,6 +1504,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
 
     private DynamicEmojiMsg dynamicemojiMsg;
 
+    private AudioMsg audioMsg;
+
     private JoinActionMsg joinActionMsg;
 
     private JoinNoticeMsg joinNoticeMsg;
@@ -1613,6 +1646,14 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
      */
     public Builder setDynamicemojiMsg(DynamicEmojiMsg dynamicemojiMsg) {
       this.dynamicemojiMsg = dynamicemojiMsg;
+      return this;
+    }
+
+    /**
+     * 语音消息
+     */
+    public Builder setAudioMsg(AudioMsg audioMsg) {
+      this.audioMsg = audioMsg;
       return this;
     }
 
@@ -1890,7 +1931,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
 
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, gPrensentGiftMsg, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, audioMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, gPrensentGiftMsg, super.buildUnknownFields());
     }
   }
 
@@ -1910,6 +1951,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + CommentMsg.ADAPTER.encodedSizeWithTag(10, value.commentMsg)
           + SpecialEmojiMsg.ADAPTER.encodedSizeWithTag(11, value.specialEmojiMsg)
           + DynamicEmojiMsg.ADAPTER.encodedSizeWithTag(12, value.dynamicemojiMsg)
+          + AudioMsg.ADAPTER.encodedSizeWithTag(13, value.audioMsg)
           + JoinActionMsg.ADAPTER.encodedSizeWithTag(100, value.joinActionMsg)
           + JoinNoticeMsg.ADAPTER.encodedSizeWithTag(101, value.joinNoticeMsg)
           + ReadyNoticeMsg.ADAPTER.encodedSizeWithTag(102, value.readyNoticeMsg)
@@ -1958,6 +2000,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       CommentMsg.ADAPTER.encodeWithTag(writer, 10, value.commentMsg);
       SpecialEmojiMsg.ADAPTER.encodeWithTag(writer, 11, value.specialEmojiMsg);
       DynamicEmojiMsg.ADAPTER.encodeWithTag(writer, 12, value.dynamicemojiMsg);
+      AudioMsg.ADAPTER.encodeWithTag(writer, 13, value.audioMsg);
       JoinActionMsg.ADAPTER.encodeWithTag(writer, 100, value.joinActionMsg);
       JoinNoticeMsg.ADAPTER.encodeWithTag(writer, 101, value.joinNoticeMsg);
       ReadyNoticeMsg.ADAPTER.encodeWithTag(writer, 102, value.readyNoticeMsg);
@@ -2024,6 +2067,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 10: builder.setCommentMsg(CommentMsg.ADAPTER.decode(reader)); break;
           case 11: builder.setSpecialEmojiMsg(SpecialEmojiMsg.ADAPTER.decode(reader)); break;
           case 12: builder.setDynamicemojiMsg(DynamicEmojiMsg.ADAPTER.decode(reader)); break;
+          case 13: builder.setAudioMsg(AudioMsg.ADAPTER.decode(reader)); break;
           case 100: builder.setJoinActionMsg(JoinActionMsg.ADAPTER.decode(reader)); break;
           case 101: builder.setJoinNoticeMsg(JoinNoticeMsg.ADAPTER.decode(reader)); break;
           case 102: builder.setReadyNoticeMsg(ReadyNoticeMsg.ADAPTER.decode(reader)); break;
@@ -2076,6 +2120,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.commentMsg != null) builder.commentMsg = CommentMsg.ADAPTER.redact(builder.commentMsg);
       if (builder.specialEmojiMsg != null) builder.specialEmojiMsg = SpecialEmojiMsg.ADAPTER.redact(builder.specialEmojiMsg);
       if (builder.dynamicemojiMsg != null) builder.dynamicemojiMsg = DynamicEmojiMsg.ADAPTER.redact(builder.dynamicemojiMsg);
+      if (builder.audioMsg != null) builder.audioMsg = AudioMsg.ADAPTER.redact(builder.audioMsg);
       if (builder.joinActionMsg != null) builder.joinActionMsg = JoinActionMsg.ADAPTER.redact(builder.joinActionMsg);
       if (builder.joinNoticeMsg != null) builder.joinNoticeMsg = JoinNoticeMsg.ADAPTER.redact(builder.joinNoticeMsg);
       if (builder.readyNoticeMsg != null) builder.readyNoticeMsg = ReadyNoticeMsg.ADAPTER.redact(builder.readyNoticeMsg);

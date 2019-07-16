@@ -29,10 +29,16 @@ public class EventHelper {
             BasePushInfo basePushInfo = new BasePushInfo();
             basePushInfo.setRoomID(roomId);
 
+            ESex sex = ESex.SX_UNKNOWN;
+            if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+                sex = ESex.SX_MALE;
+            } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+                sex = ESex.SX_FEMALE;
+            }
             UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
                     , MyUserInfoManager.getInstance().getNickName()
                     , MyUserInfoManager.getInstance().getAvatar()
-                    , ESex.SX_FEMALE
+                    , sex
                     , ""
                     , false
                     , 0);
@@ -56,10 +62,16 @@ public class EventHelper {
             BasePushInfo basePushInfo = new BasePushInfo();
             basePushInfo.setRoomID(roomId);
 
+            ESex sex = ESex.SX_UNKNOWN;
+            if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+                sex = ESex.SX_MALE;
+            } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+                sex = ESex.SX_FEMALE;
+            }
             UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
                     , MyUserInfoManager.getInstance().getNickName()
                     , MyUserInfoManager.getInstance().getAvatar()
-                    , ESex.SX_FEMALE
+                    , sex
                     , ""
                     , false
                     , 0);
@@ -69,4 +81,25 @@ public class EventHelper {
         }
     }
 
+
+    public static void pretendAudioPush(String localPath, long duration, String url, int roomId) {
+        BasePushInfo basePushInfo = new BasePushInfo();
+        basePushInfo.setRoomID(roomId);
+
+        ESex sex = ESex.SX_UNKNOWN;
+        if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+            sex = ESex.SX_MALE;
+        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+            sex = ESex.SX_FEMALE;
+        }
+        UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
+                , MyUserInfoManager.getInstance().getNickName()
+                , MyUserInfoManager.getInstance().getAvatar()
+                , sex
+                , ""
+                , false
+                , 0);
+        basePushInfo.setSender(userInfo);
+        EventBus.getDefault().post(new AudioMsgEvent(basePushInfo, AudioMsgEvent.MSG_TYPE_SEND, localPath, duration, url));
+    }
 }

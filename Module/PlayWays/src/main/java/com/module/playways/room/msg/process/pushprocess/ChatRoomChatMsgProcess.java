@@ -3,11 +3,13 @@ package com.module.playways.room.msg.process.pushprocess;
 import android.text.TextUtils;
 
 import com.common.log.MyLog;
+import com.module.playways.room.msg.event.AudioMsgEvent;
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
+import com.zq.live.proto.Room.AudioMsg;
 import com.zq.live.proto.Room.CommentMsg;
 import com.zq.live.proto.Room.DynamicEmojiMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
@@ -31,6 +33,8 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgT
             processRMSpecialEmoji(info, msg.getSpecialEmojiMsg());
         } else if (messageType == ERoomMsgType.RM_DYNAMIC_EMOJI) {
             processRMDynamicEmoji(info, msg.getDynamicemojiMsg());
+        } else if (messageType == ERoomMsgType.RM_AUDIO_MSG) {
+            processRMAudio(info, msg.getAudioMsg());
         }
     }
 
@@ -39,7 +43,8 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgT
         return new ERoomMsgType[]{
                 ERoomMsgType.RM_COMMENT,
                 ERoomMsgType.RM_SPECIAL_EMOJI,
-                ERoomMsgType.RM_DYNAMIC_EMOJI
+                ERoomMsgType.RM_DYNAMIC_EMOJI,
+                ERoomMsgType.RM_AUDIO_MSG
         };
     }
 
@@ -80,5 +85,13 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgT
         }
 
         EventBus.getDefault().post(new DynamicEmojiMsgEvent(info, DynamicEmojiMsgEvent.MSG_TYPE_RECE, dynamicEmojiMsg));
+    }
+
+    private void processRMAudio(BasePushInfo info, AudioMsg audioMsg) {
+        if (audioMsg == null) {
+            MyLog.e(TAG, "processRMAudio" + " info=" + info + " audioMsg = null");
+        }
+
+        EventBus.getDefault().post(new AudioMsgEvent(info, AudioMsgEvent.MSG_TYPE_RECE, audioMsg));
     }
 }

@@ -14,9 +14,11 @@ import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.room.msg.event.AudioMsgEvent;
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.room.room.comment.adapter.CommentAdapter;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.room.comment.model.CommentAudioModel;
 import com.module.playways.room.room.comment.model.CommentDynamicModel;
 import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
@@ -26,6 +28,7 @@ import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.playways.R;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.BaseRoomData;
+import com.zq.live.proto.Room.AudioMsg;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -178,13 +181,6 @@ public class CommentView extends RelativeLayout {
                     }
                 }
             }
-
-            @Override
-            public void clickAgreeKick(int userId, boolean isAgree) {
-                if (mCommentItemListener != null) {
-                    mCommentItemListener.clickAgreeKick(userId, isAgree);
-                }
-            }
         });
         mCommentAdapter.setGameType(mGameType);
         mCommentRv.setAdapter(mCommentAdapter);
@@ -218,6 +214,16 @@ public class CommentView extends RelativeLayout {
         }
         CommentTextModel commentTextModel = CommentTextModel.parseFromEvent(event, mRoomData);
         processCommentModel(commentTextModel);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AudioMsgEvent event) {
+        MyLog.d(TAG, "onEvent" + " AudioMsgEvent=" + event);
+        if (event.type == AudioMsgEvent.MSG_TYPE_SEND) {
+            setOnBottom("AudioMsgEvent", true);
+        }
+        CommentAudioModel commentAudioModel = CommentAudioModel.Companion.parseFromEvent(event, mRoomData);
+        processCommentModel(commentAudioModel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
