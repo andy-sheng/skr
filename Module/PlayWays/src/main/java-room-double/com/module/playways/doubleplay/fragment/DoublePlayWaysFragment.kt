@@ -432,7 +432,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         } else {
             val tipsDialogView = TipsDialogView.Builder(context)
                     .setMessageTip("是否邀请对方进入${text}场景")
-                    .setConfirmTip("邀请")
+                    .setConfirmTip("是的")
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View) {
@@ -464,8 +464,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         } else {
             val tipsDialogView = TipsDialogView.Builder(context)
                     .setMessageTip("对方邀请你进入${text}场景")
-                    .setConfirmTip("邀请")
-                    .setCancelTip("取消")
+                    .setConfirmTip("同意")
+                    .setCancelTip("不同意")
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View) {
                             mReceiveChangeSenceDialog?.dismiss()
