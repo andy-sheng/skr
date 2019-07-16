@@ -324,7 +324,8 @@ class AgentWebActivity extends CameraAdapWebActivity {
                         String au = uri.getAuthority();
                         String pa = uri.getPath();
                         if (("home".equals(au) && "/jump".equals(pa))
-                                || ("person".equals(au) && "/jump_person_center".equals(pa))
+                                || ("person".equals(au) && "/jump_person_center".equals(pa)
+                                || ("room".equals(au) && "/chat_page".equals(pa)))
                         ) {
                             finish();
                         }
