@@ -1,24 +1,16 @@
 package com.zq.lyrics;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.common.core.crash.IgnoreException;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
-import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.model.LyricsInfo;
-import com.zq.lyrics.utils.LyricsIOUtils;
 import com.zq.lyrics.utils.LyricsUtils;
 import com.zq.lyrics.utils.SongResUtils;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,15 +18,11 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSource;
 import okio.Okio;
-
-import static okhttp3.internal.Util.closeQuietly;
 
 public class LyricsManager {
     public static final String TAG = "LyricsManager";
@@ -175,11 +163,11 @@ public class LyricsManager {
                             source = Okio.buffer(Okio.source(file));
                             emitter.onNext(source.readUtf8());
                         } catch (Exception e) {
-                            MyLog.e(TAG,e);
+                            MyLog.e(TAG, e);
                             emitter.onNext("歌词buffer读取失败");
                         }
                     } else {
-                        MyLog.w(TAG, "loadGrabPlainLyric 下载失败");
+                        MyLog.w(TAG, "loadGrabPlainLyric 下载失败, url is " + url);
                         emitter.onNext("歌词下载失败");
                         emitter.onError(new IgnoreException("loadGrabPlainLyric"));
                         return;
@@ -191,7 +179,7 @@ public class LyricsManager {
                         source = Okio.buffer(Okio.source(file));
                         emitter.onNext(source.readUtf8());
                     } catch (Exception e) {
-                        MyLog.e(TAG,e);
+                        MyLog.e(TAG, e);
                         emitter.onNext("歌词buffer读取失败");
                     }
                 }
