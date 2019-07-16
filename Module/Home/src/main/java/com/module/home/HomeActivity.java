@@ -367,6 +367,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mUnreadNumTv.setVisibility(View.GONE);
         } else {
             mUnreadNumTv.setVisibility(View.VISIBLE);
+            mMessageRedDot.setVisibility(View.GONE);
             if (unReadNum > 99) {
                 mUnreadNumTv.setText("99+");
             } else {
@@ -524,7 +525,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (mMessageFollowRedDotValue < 2) {
             mMessageRedDot.setVisibility(View.GONE);
         } else {
-            mMessageRedDot.setVisibility(View.VISIBLE);
+            if (mUnreadNumTv.getVisibility() == View.VISIBLE) {
+                mMessageRedDot.setVisibility(View.GONE);
+            } else {
+                mMessageRedDot.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

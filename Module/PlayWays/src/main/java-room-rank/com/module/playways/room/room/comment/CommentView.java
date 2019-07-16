@@ -202,9 +202,9 @@ public class CommentView extends RelativeLayout {
                         mMediaPlayer.reset();
                     }
                     mCommentAdapter.setCurrentPlayAudioModel(null);
+                    EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
                 } else {
                     // 重新开始播放
-
                     GrabRoundInfoModel now = ((GrabRoomData) mRoomData).getRealRoundInfo();
                     if (now != null && now.isSingStatus() && now.singBySelf()) {
                         U.getToastUtil().showShort("演唱中无法收听语音");
