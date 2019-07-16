@@ -266,10 +266,10 @@
         <!-- vivo 推送配置项 -->
         <meta-data
             android:name="com.vivo.push.api_key"
-            android:value="5c26c7b0-8e5c-477e-96a1-294559c71da1"/>
+            android:value="bf106171-18fc-497a-8544-532b3b9aafe2"/>
         <meta-data
             android:name="com.vivo.push.app_id"
-            android:value="13303"/>
+            android:value="13605"/>
         <service
             android:name="com.vivo.push.sdk.service.CommandClientService"
             android:exported="true"/>
