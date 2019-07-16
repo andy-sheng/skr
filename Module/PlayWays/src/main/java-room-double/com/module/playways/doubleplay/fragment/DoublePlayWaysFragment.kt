@@ -189,15 +189,18 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
         mChatTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mChatTagTv?.text.toString(), ESceneType.ST_Chat.value)
+            if (mRoomData!!.sceneType != ESceneType.ST_Chat.value)
+                confirmChangeSenceDialog(mChatTagTv?.text.toString(), ESceneType.ST_Chat.value)
         }
 
         mGameTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mGameTagTv?.text.toString(), ESceneType.ST_Game.value)
+            if (mRoomData!!.sceneType != ESceneType.ST_Game.value)
+                confirmChangeSenceDialog(mGameTagTv?.text.toString(), ESceneType.ST_Game.value)
         }
 
         mSingTagTv?.setDebounceViewClickListener {
-            confirmChangeSenceDialog(mSingTagTv?.text.toString(), ESceneType.ST_Sing.value)
+            if (mRoomData!!.sceneType != ESceneType.ST_Sing.value)
+                confirmChangeSenceDialog(mSingTagTv?.text.toString(), ESceneType.ST_Sing.value)
         }
 
         mExitIv?.setDebounceViewClickListener {
