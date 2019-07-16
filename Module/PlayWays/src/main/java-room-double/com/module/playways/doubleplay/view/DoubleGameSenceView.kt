@@ -83,7 +83,7 @@ class DoubleGameSenceView : ExConstraintLayout {
         }
 
         mSelectIv.setDebounceViewClickListener {
-            if (mGameStage == EGameStage.GS_ChoicGameItem.value) {
+            if (mGameStage == EGameStage.GS_InGamePlay.value) {
                 U.getToastUtil().showShort("请结束游戏再换")
                 return@setDebounceViewClickListener
             }
