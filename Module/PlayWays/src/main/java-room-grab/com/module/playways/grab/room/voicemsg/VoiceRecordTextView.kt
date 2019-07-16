@@ -120,7 +120,7 @@ class VoiceRecordTextView : ExTextView {
             }
             action == MotionEvent.ACTION_MOVE -> {
                 MyLog.d(TAG, "ACTION_MOVE")
-                if (wantToCancle(x.toInt(), y.toInt())) {
+                if (mCurrentState == STATE_RECORDING && wantToCancle(x.toInt(), y.toInt())) {
                     // 停止录音，显示松开手指，取消发送
                     mCurrentState = STATE_CANCEL
                     cancelRecordCountDown()
@@ -177,6 +177,8 @@ class VoiceRecordTextView : ExTextView {
                     override fun onComplete() {
                         super.onComplete()
                         cancelRecordCountDown()
+                        text = "按住说话"
+                        alpha = 1f
                         mCurrentState = STATE_RECORD_OK
                         mDuration = mMyMediaRecorder?.duration?.toLong() ?: 0L
                         mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath!!, mDuration), true)

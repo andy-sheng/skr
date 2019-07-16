@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.log.MyLog;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.room.room.comment.holder.CommentAudioHolder;
 import com.module.playways.room.room.comment.holder.CommentDynamicHolder;

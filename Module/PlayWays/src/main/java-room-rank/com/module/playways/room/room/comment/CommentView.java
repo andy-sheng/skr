@@ -193,6 +193,7 @@ public class CommentView extends RelativeLayout {
 
             @Override
             public void clickAudio(boolean isPlaying, CommentAudioModel commentAudioModel) {
+                MyLog.d(TAG, "clickAudio" + " isPlaying=" + isPlaying + " commentAudioModel=" + commentAudioModel);
                 if (commentAudioModel == null) {
                     return;
                 }
