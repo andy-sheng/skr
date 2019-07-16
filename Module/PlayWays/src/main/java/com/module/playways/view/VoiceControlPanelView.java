@@ -121,7 +121,7 @@ public class VoiceControlPanelView extends ScrollView {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mAfterMusicVoice = progress;
-                ZqEngineKit.getInstance().adjustAudioMixingVolume(progress);
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(progress);
             }
 
             @Override
@@ -182,15 +182,15 @@ public class VoiceControlPanelView extends ScrollView {
             mScenesBtnGroup.check(R.id.default_sbtn);
         }
         mPeopleVoiceSeekbar.setProgress(ZqEngineKit.getInstance().getParams().getRecordingSignalVolume());
-        mMusicVoiceSeekbar.setProgress(ZqEngineKit.getInstance().getParams().getAudioMixingVolume());
+        mMusicVoiceSeekbar.setProgress(ZqEngineKit.getInstance().getParams().getAudioMixingPlayoutVolume());
 
         mBeforeMode = styleEnum;
         mBeforePeopleVoice = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
-        mBeforeMusicVoice = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
+        mBeforeMusicVoice = ZqEngineKit.getInstance().getParams().getAudioMixingPlayoutVolume();
 
         mAfterMode = styleEnum;
         mAfterPeopleVoice = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
-        mAfterMusicVoice = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
+        mAfterMusicVoice = ZqEngineKit.getInstance().getParams().getAudioMixingPlayoutVolume();
     }
 
     public boolean isChange() {

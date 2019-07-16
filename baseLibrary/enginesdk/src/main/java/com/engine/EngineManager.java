@@ -1264,7 +1264,7 @@ public class EngineManager implements AgoraOutCallback {
                 @Override
                 public void run() {
                     if (setConfig) {
-                        mConfig.setAudioMixingVolume(volume);
+                        mConfig.setAudioMixingPlayoutVolume(volume);
                     }
                     AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
                 }

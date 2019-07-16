@@ -2,7 +2,6 @@ package com.engine.agora;
 
 import android.os.Environment;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -368,7 +367,7 @@ public class AgoraEngineAdapter {
         // 初始化各个音量
         adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
         adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
-        adjustAudioMixingVolume(mConfig.getAudioMixingVolume());
+        adjustAudioMixingVolume(mConfig.getAudioMixingPlayoutVolume());
     }
 
     /**

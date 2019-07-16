@@ -208,13 +208,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     break;
                 case MSG_RECOVER_VOLUME:
                     if (mEngineParamsTemp != null) {
-                        ZqEngineKit.getInstance().adjustAudioMixingVolume(mEngineParamsTemp.audioVolume, false);
+                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(mEngineParamsTemp.audioVolume, false);
                         ZqEngineKit.getInstance().adjustRecordingSignalVolume(mEngineParamsTemp.recordVolume, false);
 
                         if (ZqEngineKit.getInstance().getParams().isAnchor()) {
-                            int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
+                            int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingPlayoutVolume();
                             int recordVolume = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
-                            ZqEngineKit.getInstance().adjustAudioMixingVolume(audioVolume, false);
+                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(audioVolume, false);
                             ZqEngineKit.getInstance().adjustRecordingSignalVolume(recordVolume, false);
                         } else {
                             MyLog.d(TAG, "我不是主播，忽略");
@@ -1982,10 +1982,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.sendEmptyMessageDelayed(MSG_RECOVER_VOLUME, time);
         if (ZqEngineKit.getInstance().getParams().isAnchor()) {
             if (mEngineParamsTemp == null) {
-                int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
+                int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingPlayoutVolume();
                 int recordVolume = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
                 mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
-                ZqEngineKit.getInstance().adjustAudioMixingVolume((int) (audioVolume * 0.2), false);
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume((int) (audioVolume * 0.2), false);
                 ZqEngineKit.getInstance().adjustRecordingSignalVolume((int) (recordVolume * 0.2), false);
             }
         } else {
