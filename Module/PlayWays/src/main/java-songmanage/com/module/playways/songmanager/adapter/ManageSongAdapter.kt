@@ -128,8 +128,7 @@ class ManageSongAdapter(internal var mType: Int) : DiffAdapter<GrabRoomSongModel
 
             mTvManage.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View) {
-                    onClickDelete?.invoke(null)
-//                    onClickDelete?.invoke(mSongModel)
+                    onClickDelete?.invoke(mSongModel)
                 }
             })
         }
