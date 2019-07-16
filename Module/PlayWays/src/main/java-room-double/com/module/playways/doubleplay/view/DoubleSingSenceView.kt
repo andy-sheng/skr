@@ -20,7 +20,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
-import com.module.playways.doubleplay.model.DoubleCurSongInfo
+import com.module.playways.doubleplay.model.DoubleCurSongInfoEvent
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.songmanager.SongManagerActivity
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -136,13 +136,13 @@ class DoubleSingSenceView : ExConstraintLayout {
         toNextSongCardView()
         mCurrentCardView?.visibility = View.VISIBLE
         mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
-        EventBus.getDefault().post(DoubleCurSongInfo(mCur.music.itemName))
+        EventBus.getDefault().post(DoubleCurSongInfoEvent(mCur.music.itemName))
     }
 
     fun changeRound(mRoomData: DoubleRoomData, mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
         toNextSongCardView()
         mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
-        EventBus.getDefault().post(DoubleCurSongInfo(mCur.music.itemName))
+        EventBus.getDefault().post(DoubleCurSongInfoEvent(mCur.music.itemName))
     }
 
     fun noMusic() {
