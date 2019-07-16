@@ -590,10 +590,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 showPersonInfoView(userId);
             }
 
-            @Override
-            public void clickAgreeKick(int userId, boolean isAgree) {
-
-            }
         });
         mCommentView.setRoomData(mRoomData);
 

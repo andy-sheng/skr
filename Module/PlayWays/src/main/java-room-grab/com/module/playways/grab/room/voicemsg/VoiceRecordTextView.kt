@@ -1,19 +1,32 @@
 package com.module.playways.grab.room.voicemsg
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.widget.TextView
+import com.alibaba.fastjson.JSON
+import com.common.anim.ObjectPlayControlTemplate
 import com.common.log.MyLog
 import com.common.recorder.MyMediaRecorder
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiMethods
+import com.common.rxretrofit.ApiObserver
+import com.common.rxretrofit.ApiResult
+import com.common.upload.UploadCallback
+import com.common.upload.UploadParams
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 
 import com.common.view.ex.ExTextView
+import com.module.playways.room.msg.event.EventHelper
+import com.module.playways.room.room.RankRoomServerApi
 import com.module.playways.songmanager.event.BeginRecordCustomGameEvent
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.io.IOException
+import java.util.HashMap
 
 class VoiceRecordTextView : ExTextView {
 
@@ -40,14 +53,38 @@ class VoiceRecordTextView : ExTextView {
     var mRemainTime: ((text: String) -> Unit)? = null
     var mTimeLimit: ((short: Boolean) -> Unit)? = null
 
+    val minDuration = 1 * 1000;
+    val maxDuration = 15 * 1000;
+
     val mVoiceDir = U.getAppInfoUtils().getSubDirFile("voice")
     var mRecordAudioFilePath: String? = null
+    var mDuration: Long = 0
+    var mGameId: Int = 0
 
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+
+    var mIsUpload = false;
+
+    internal var mPlayControlTemplate: ObjectPlayControlTemplate<AudioFile, VoiceRecordTextView?> = object : ObjectPlayControlTemplate<AudioFile, VoiceRecordTextView?>() {
+        override fun accept(cur: AudioFile): VoiceRecordTextView? {
+            if (mIsUpload) {
+                return null
+            }
+            return this@VoiceRecordTextView
+        }
+
+        override fun onStart(file: AudioFile, view: VoiceRecordTextView?) {
+            execUploadAudio(file)
+        }
+
+        override fun onEnd(file: AudioFile) {
+            MyLog.d(TAG, "onEnd 上传结束 File=$file")
+        }
+    }
 
     init {
         // 每次进来可以直接清空音频文件
@@ -80,7 +117,6 @@ class VoiceRecordTextView : ExTextView {
                     mCurrentState = STATE_CANCEL
                     cancelCountDown()
                     mCancelRecord?.invoke()
-                    U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
                     EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
                 }
             }
@@ -91,19 +127,25 @@ class VoiceRecordTextView : ExTextView {
                 text = "按住说话"
                 alpha = 1f
                 if (mCurrentState == STATE_RECORDING) {
-                    if ((System.currentTimeMillis() - mBeginRecordingTs) < 3 * 1000) {
+                    if ((System.currentTimeMillis() - mBeginRecordingTs) < minDuration) {
                         // 时间太短, 提示太短再消失
                         mTimeLimit?.invoke(true)
+                        U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
                         mCurrentState = STATE_IDLE
                     } else {
                         // 上传录音文件，并发送(同时需要处理用户可能的再录制)
                         mCurrentState = STATE_RECORD_OK
+                        mDuration = mMyMediaRecorder!!.duration.toLong()
+                        mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath!!, mDuration), true)
                         mShowTips?.invoke(false)
                     }
                 } else if (mCurrentState == STATE_CANCEL) {
                     // 弹框消失
                     mCurrentState = STATE_IDLE
                     mShowTips?.invoke(false)
+                    U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
+                } else {
+                    U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
                 }
             }
         }
@@ -114,10 +156,10 @@ class VoiceRecordTextView : ExTextView {
         cancelCountDown()
         isRecording = true
         mHandlerTaskTimer = HandlerTaskTimer.newBuilder().interval(1000)
-                .take(20)
+                .take(maxDuration / 1000)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(integer: Int) {
-                        val t = 20 - integer
+                        val t = maxDuration / 1000 - integer
                         if (t <= 5) {
                             mRemainTime?.invoke("还可以说$t" + "秒")
                         }
@@ -175,8 +217,53 @@ class VoiceRecordTextView : ExTextView {
         if (y < -DISTANCE_Y_CANCEL || y > getHeight() + DISTANCE_Y_CANCEL) {
             return true
         }
-
         return false
     }
+
+    private fun execUploadAudio(file: AudioFile) {
+        MyLog.d(TAG, "execUploadAudio file=$file")
+        mIsUpload = true;
+        val uploadTask = UploadParams.newBuilder(file.localPath)
+                .setFileType(UploadParams.FileType.msgAudio)
+                .startUploadAsync(object : UploadCallback {
+                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+
+                    }
+
+                    override fun onSuccessNotInUiThread(url: String) {
+                        MyLog.d(TAG, "上传成功 url=$url")
+                        // 向服务器发送语音消息
+                        sendToServer(file, url)
+                        mIsUpload = false
+                        mPlayControlTemplate.endCurrent(file)
+                    }
+
+                    override fun onFailureNotInUiThread(msg: String) {
+                        MyLog.d(TAG, "上传失败 msg=$msg")
+                    }
+                })
+    }
+
+
+    private fun sendToServer(file: VoiceRecordTextView.AudioFile, url: String) {
+        val roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi::class.java)
+        val map = HashMap<String, Any>()
+        map["gameID"] = mGameId
+        map["msgUrl"] = url
+        map["duration"] = file.duration
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(roomServerApi.sendAudioMsg(body), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                }
+            }
+        })
+
+        EventHelper.pretendAudioPush(file.localPath, file.duration, url, mGameId);
+    }
+
+
+    class AudioFile(var localPath: String, var duration: Long) {}
 
 }

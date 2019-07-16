@@ -777,10 +777,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 showPersonInfoView(userId);
             }
 
-            @Override
-            public void clickAgreeKick(int userId, boolean isAgree) {
-
-            }
         });
         mCommentView.setRoomData(mRoomData);
 //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();

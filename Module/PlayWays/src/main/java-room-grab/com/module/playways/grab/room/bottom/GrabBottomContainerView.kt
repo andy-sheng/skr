@@ -88,9 +88,6 @@ class GrabBottomContainerView : BottomContainerView {
                     mInputBtn.background = U.getDrawable(R.drawable.grab_bottom_voice_icon)
                     mShowInputContainerBtn.visibility = View.VISIBLE
                     mVoiceRecordBtn.visibility = View.GONE
-                    if (mBottomContainerListener != null) {
-                        mBottomContainerListener.showInputBtnClick()
-                    }
                 }
             }
         })
@@ -137,35 +134,6 @@ class GrabBottomContainerView : BottomContainerView {
                 }
             }
         })
-
-//        mVoiceRecordBtn.mShowTips = {
-//            when (it) {
-//                true -> {
-//                    // 显示提示
-//                    mVoiceRecordTipsView?.visibility = View.VISIBLE
-//                }
-//                false -> {
-//                    // 隐藏提示
-//                    mVoiceRecordTipsView?.visibility = View.GONE
-//                }
-//            }
-//        }
-//
-//        mVoiceRecordBtn.mChangeVoiceLevel = {
-//            mVoiceRecordTipsView?.changeVoiceLevel(it)
-//        }
-//
-//        mVoiceRecordBtn.mCancelRecord = {
-//            mVoiceRecordTipsView?.cancelRecord()
-//        }
-//
-//        mVoiceRecordBtn.mRemainTime = {
-//            mVoiceRecordTipsView?.remainTime(it)
-//        }
-//
-//        mVoiceRecordBtn.mShortTime = {
-//            mVoiceRecordTipsView?.shortTime()
-//        }
     }
 
     fun setOpVisible(visible: Boolean) {
@@ -194,6 +162,7 @@ class GrabBottomContainerView : BottomContainerView {
             if (mGrabRoomData?.roomType == GrabRoomType.ROOM_TYPE_GUIDE) {
                 mEmoji2Btn.visibility = View.GONE
             }
+            mVoiceRecordBtn.mGameId = mGrabRoomData!!.gameId
         }
     }
 
