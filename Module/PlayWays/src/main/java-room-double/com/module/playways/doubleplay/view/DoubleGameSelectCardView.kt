@@ -10,6 +10,7 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
+import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
 import com.zq.live.proto.Common.EGameType
 import java.util.*
@@ -20,7 +21,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
     val mGameTypeTv: ExTextView
     val mIconIv1: BaseImageView
     val mIconIv2: BaseImageView
-
+    var mRoomData: DoubleRoomData? = null
     val userInfoListMap: HashMap<Int, UserInfoModel> = HashMap()
 
     constructor(context: Context?) : super(context)
@@ -58,12 +59,43 @@ class DoubleGameSelectCardView : ExConstraintLayout {
         mIconIv2.visibility = View.GONE
     }
 
-    fun setSelectUser(userInfoModel: UserInfoModel) {
+    fun updateLockState() {
+        var index: Int = 0
+        for (userInfoModel in userInfoListMap) {
+            if (mRoomData != null) {
+                when (index) {
+                    0 -> {
+                        AvatarUtils.loadAvatarByUrl(mIconIv1,
+                                AvatarUtils.newParamsBuilder(mRoomData!!.getAvatarById(userInfoModel.key))
+                                        .setBorderColor(U.getColor(com.module.playways.R.color.white))
+                                        .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                                        .setCircle(true)
+                                        .build())
+                        mIconIv1.visibility = View.VISIBLE
+                    }
+
+                    1 -> {
+                        AvatarUtils.loadAvatarByUrl(mIconIv2,
+                                AvatarUtils.newParamsBuilder(mRoomData!!.getAvatarById(userInfoModel.key))
+                                        .setBorderColor(U.getColor(com.module.playways.R.color.white))
+                                        .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                                        .setCircle(true)
+                                        .build())
+                        mIconIv2.visibility = View.VISIBLE
+                    }
+                }
+            }
+            index++
+        }
+    }
+
+    fun setSelectUser(userInfoModel: UserInfoModel, roomData: DoubleRoomData) {
+        mRoomData = roomData
         if (userInfoListMap[userInfoModel.userId] == null) {
             when (userInfoListMap.size) {
                 0 -> {
                     AvatarUtils.loadAvatarByUrl(mIconIv1,
-                            AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                            AvatarUtils.newParamsBuilder(roomData.getAvatarById(userInfoModel.userId))
                                     .setBorderColor(U.getColor(com.module.playways.R.color.white))
                                     .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
                                     .setCircle(true)
@@ -74,7 +106,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
 
                 1 -> {
                     AvatarUtils.loadAvatarByUrl(mIconIv2,
-                            AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                            AvatarUtils.newParamsBuilder(roomData.getAvatarById(userInfoModel.userId))
                                     .setBorderColor(U.getColor(com.module.playways.R.color.white))
                                     .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
                                     .setCircle(true)

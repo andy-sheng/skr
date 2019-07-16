@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.Animation
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.view.ex.ExConstraintLayout
+import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalGamePanelInfo
 
 
@@ -36,16 +37,16 @@ class DoubleGameCardGroupView : ExConstraintLayout, Animation.AnimationListener 
         mCard4 = findViewById(com.module.playways.R.id.card_4)
     }
 
-    fun updateSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int) {
+    fun updateSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, roomData: DoubleRoomData) {
         if (this.panelId == panelSeq) {
             if (mCard1.acceptItem(itemID)) {
-                mCard1.setSelectUser(userInfoModel)
+                mCard1.setSelectUser(userInfoModel, roomData)
             } else if (mCard2.acceptItem(itemID)) {
-                mCard2.setSelectUser(userInfoModel)
+                mCard2.setSelectUser(userInfoModel, roomData)
             } else if (mCard3.acceptItem(itemID)) {
-                mCard3.setSelectUser(userInfoModel)
+                mCard3.setSelectUser(userInfoModel, roomData)
             } else if (mCard4.acceptItem(itemID)) {
-                mCard4.setSelectUser(userInfoModel)
+                mCard4.setSelectUser(userInfoModel, roomData)
             }
         }
     }
@@ -85,6 +86,13 @@ class DoubleGameCardGroupView : ExConstraintLayout, Animation.AnimationListener 
 
             mUiHandler.postDelayed({ clearAnimation() }, 620)
         }
+    }
+
+    fun updateLockState() {
+        mCard1.updateLockState()
+        mCard2.updateLockState()
+        mCard3.updateLockState()
+        mCard4.updateLockState()
     }
 
     /**
