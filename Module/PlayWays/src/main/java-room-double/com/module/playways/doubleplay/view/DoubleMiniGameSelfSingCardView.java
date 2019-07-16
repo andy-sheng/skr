@@ -94,7 +94,7 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
         mTvLyric.setTextColor(U.getColor(R.color.black_trans_60));
 
         if (localGameItemInfo.getGameType() == EGameType.GT_Music.getValue()) {
-            mTvLyric.setText(localGameItemInfo.getMusic().getContent());
+            mTvLyric.setText(localGameItemInfo.getMusic().getContent() + "\n\n" + localGameItemInfo.getMusic().getExample());
         } else if (localGameItemInfo.getGameType() == EGameType.GT_Question.getValue()) {
             mTvLyric.setText(localGameItemInfo.getQuestion().getContent());
         }
