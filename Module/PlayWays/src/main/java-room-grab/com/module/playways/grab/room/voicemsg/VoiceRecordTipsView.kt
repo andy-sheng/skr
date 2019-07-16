@@ -20,7 +20,7 @@ class VoiceRecordTipsView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mHintText = parentView?.findViewById(R.id.hint_text)
         mVoiceHintIv = parentView?.findViewById(R.id.voice_hint_iv)
         mVoiceVolumeView = parentView?.findViewById(R.id.voice_volume_view)
-
+        parentView?.setOnTouchListener { _, _ -> true }
         mHandler = Handler()
     }
 

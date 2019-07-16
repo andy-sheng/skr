@@ -75,8 +75,8 @@ public class AndroidMediaPlayer extends BasePlayer {
                  */
                 if (mCallback != null && (System.currentTimeMillis() - resetTs) > 500) {
                     mCallback.onCompletion();
+                    reset();
                 }
-                reset();
                 mHandler.removeMessages(MSG_DECREASE_VOLUME);
                 stopMusicPlayTimeListener();
                 long a = System.currentTimeMillis() - startTs;

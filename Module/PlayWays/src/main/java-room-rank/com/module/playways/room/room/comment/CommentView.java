@@ -203,7 +203,7 @@ public class CommentView extends RelativeLayout {
                 } else {
                     // 重新开始播放
                     GrabRoundInfoModel now = (GrabRoundInfoModel) mRoomData.getRealRoundInfo();
-                    if (now.isSingStatus() && now.singBySelf()) {
+                    if (now!=null && now.isSingStatus() && now.singBySelf()) {
                         U.getToastUtil().showShort("演唱中无法收听语音");
                     } else {
                         // 直接在此处播放，有需要在放到外面去

@@ -278,9 +278,9 @@
 
     <ViewStub
         android:id="@+id/grab_voice_record_tip_view_stub"
-        android:layout_width="@dimen/view_174_dp"
-        android:layout_height="@dimen/view_145_dp"
-        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/view_18_dp"
         android:layout="@layout/grab_voice_record_tips_view_layout" />
 
     <com.module.playways.room.gift.view.GiftPanelView
