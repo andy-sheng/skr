@@ -17,6 +17,7 @@ import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
 import com.common.player.MyMediaPlayer;
 import com.common.utils.U;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.msg.event.AudioMsgEvent;
@@ -200,10 +201,12 @@ public class CommentView extends RelativeLayout {
                     if (mMediaPlayer != null) {
                         mMediaPlayer.reset();
                     }
+                    mCommentAdapter.setCurrentPlayAudioModel(null);
                 } else {
                     // 重新开始播放
-                    GrabRoundInfoModel now = (GrabRoundInfoModel) mRoomData.getRealRoundInfo();
-                    if (now!=null && now.isSingStatus() && now.singBySelf()) {
+
+                    GrabRoundInfoModel now = ((GrabRoomData) mRoomData).getRealRoundInfo();
+                    if (now != null && now.isSingStatus() && now.singBySelf()) {
                         U.getToastUtil().showShort("演唱中无法收听语音");
                     } else {
                         // 直接在此处播放，有需要在放到外面去

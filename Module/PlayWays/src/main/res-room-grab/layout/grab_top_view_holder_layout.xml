@@ -1,6 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:speaking="http://schemas.android.com/apk/res-auto"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.module.playways.grab.room.top.CircleAnimationView
@@ -51,7 +52,8 @@
         android:layout_alignLeft="@+id/avatar_iv"
         android:layout_alignTop="@+id/avatar_iv"
         android:layout_marginLeft="-7dp"
-        android:layout_marginTop="-7dp" />
+        android:layout_marginTop="-7dp"
+        speaking:animationtype="speak"/>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/flag_iv"
