@@ -98,7 +98,7 @@ class DoubleGameCardGroupView : ExConstraintLayout, Animation.AnimationListener 
         val centerX = view.width / 2.0f;
         val centerY = view.height / 2.0f;
         mAnimate = Rotate3dAnimation(start, end,
-                centerX, centerY, 300.0f, reverse)
+                centerX, centerY, 500.0f, reverse)
         mAnimate?.duration = 300
         mAnimate?.fillAfter = true
         if (reverse)
