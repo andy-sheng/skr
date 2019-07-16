@@ -151,13 +151,13 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun sendChangeScene(sceneType: Int) {
-        MyLog.e(tag, "sendChangeScene, sceneType is $sceneType")
+        MyLog.d(tag, "sendChangeScene, sceneType is $sceneType")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.sendChangeScene(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-
+                    U.getToastUtil().showShort("邀请已发送")
                 } else {
                     MyLog.w(tag, "sendChangeScene faild, sceneType is $sceneType, errno is ${obj?.errno}")
                 }

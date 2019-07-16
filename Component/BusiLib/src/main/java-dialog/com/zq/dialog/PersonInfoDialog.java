@@ -1,7 +1,6 @@
 package com.zq.dialog;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -170,6 +169,7 @@ public class PersonInfoDialog {
     public void dismiss(boolean useAnimation) {
         mKickListener = null;
         mInviteDoubleListener = null;
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(useAnimation);
         }
