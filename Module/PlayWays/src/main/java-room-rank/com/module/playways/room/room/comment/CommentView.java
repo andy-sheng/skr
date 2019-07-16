@@ -190,10 +190,53 @@ public class CommentView extends RelativeLayout {
             }
 
             @Override
-            public void clickAudio(boolean isPlaying, String localPath, String msgUrl) {
+            public void clickAudio(boolean isPlaying, CommentAudioModel commentAudioModel) {
+                if (commentAudioModel == null) {
+                    return;
+                }
                 // 直接在此处播放，有需要在放到外面去
-                if (mCommentItemListener != null) {
-                    mCommentItemListener.clickAudio(isPlaying, localPath, msgUrl);
+                mCommentAdapter.setCurrentPlayAudioModel(commentAudioModel);
+                if (mMediaPlayer == null) {
+                    mMediaPlayer = new MyMediaPlayer();
+                    mMediaPlayer.setCallback(new IPlayerCallback() {
+                        @Override
+                        public void onPrepared() {
+
+                        }
+
+                        @Override
+                        public void onCompletion() {
+                            mCommentAdapter.setCurrentPlayAudioModel(null);
+                            EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
+                        }
+
+                        @Override
+                        public void onSeekComplete() {
+
+                        }
+
+                        @Override
+                        public void onVideoSizeChanged(int width, int height) {
+
+                        }
+
+                        @Override
+                        public void onError(int what, int extra) {
+
+                        }
+
+                        @Override
+                        public void onInfo(int what, int extra) {
+
+                        }
+                    });
+                }
+                if (!TextUtils.isEmpty(commentAudioModel.getLocalPath())) {
+                    // 播放本地
+                    mMediaPlayer.startPlay(commentAudioModel.getLocalPath());
+                } else {
+                    // 播放url
+                    mMediaPlayer.startPlay(commentAudioModel.getMsgUrl());
                 }
             }
         });
@@ -208,62 +251,6 @@ public class CommentView extends RelativeLayout {
                 mCommentAdapter.setDataList(rankToVoiceTransformDataEvent.mCommentModelList);
             }
             mCommentRv.scrollToPosition(0);
-        }
-    }
-
-    // isPlaying表示点击是否在播放
-    public void playAudio(boolean isPlaying, String localPath, String msgUrl) {
-        if (isPlaying) {
-            // 暂停播放
-            if (mMediaPlayer != null) {
-                mMediaPlayer.reset();
-            }
-        } else {
-            // 重新开始播放
-            mCommentAdapter.setCurrentPlay(msgUrl);
-            if (mMediaPlayer == null) {
-                mMediaPlayer = new MyMediaPlayer();
-            }
-            mMediaPlayer.setCallback(new IPlayerCallback() {
-                @Override
-                public void onPrepared() {
-
-                }
-
-                @Override
-                public void onCompletion() {
-                    mCommentAdapter.setCurrentPlay("");
-                    EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
-                }
-
-                @Override
-                public void onSeekComplete() {
-
-                }
-
-                @Override
-                public void onVideoSizeChanged(int width, int height) {
-
-                }
-
-                @Override
-                public void onError(int what, int extra) {
-
-                }
-
-                @Override
-                public void onInfo(int what, int extra) {
-
-                }
-            });
-            if (!TextUtils.isEmpty(localPath)) {
-                // 播放本地
-                mMediaPlayer.startPlay(localPath);
-            } else {
-                // 播放url
-                mMediaPlayer.startPlay(msgUrl);
-            }
-            EventBus.getDefault().post(new BeginRecordCustomGameEvent(true));
         }
     }
 

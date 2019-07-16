@@ -118,7 +118,6 @@ public class ProducationWallView extends RelativeLayout {
                             @Override
                             public void onCompletion() {
                                 super.onCompletion();
-                                //mIPlayer.stop();
                                 mAdapter.setPlayPosition(-1);
                             }
                         });

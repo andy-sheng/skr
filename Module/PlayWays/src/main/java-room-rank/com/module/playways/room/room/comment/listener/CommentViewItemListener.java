@@ -1,5 +1,7 @@
 package com.module.playways.room.room.comment.listener;
 
+import com.module.playways.room.room.comment.model.CommentAudioModel;
+
 public interface CommentViewItemListener {
     /**
      * 头像的点击
@@ -8,5 +10,5 @@ public interface CommentViewItemListener {
      */
     void clickAvatar(int userId);
 
-    void clickAudio(boolean isPlaying, String localPath, String msgUrl);
+    void clickAudio(boolean isPlaying, CommentAudioModel commentAudioModel);
 }

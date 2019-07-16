@@ -24,7 +24,7 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
     public int mGameType = 0;
 
     CommentAdapterListener mCommentItemListener;
-    String mPlayurl = "";
+    CommentAudioModel mCurPlayAudioModel = null;
 
     public CommentAdapter(CommentAdapterListener mCommentItemListener) {
         this.mCommentItemListener = mCommentItemListener;
@@ -72,22 +72,12 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
             CommentAudioHolder commentAudioHolder = (CommentAudioHolder) holder;
             CommentAudioModel commentAudioModel = (CommentAudioModel) model;
             commentAudioHolder.bind(position, commentAudioModel);
-            if (commentAudioModel.getMsgUrl().equals(mPlayurl)) {
+            if (commentAudioModel == mCurPlayAudioModel) {
                 commentAudioHolder.setPlay(true);
             } else {
                 commentAudioHolder.setPlay(false);
             }
 
-        }
-    }
-
-    // 记录当前播放的位置
-    public void setCurrentPlay(String msgUrl) {
-        if (msgUrl == mPlayurl) {
-            return;
-        } else {
-            mPlayurl = msgUrl;
-            notifyDataSetChanged();
         }
     }
 
@@ -114,6 +104,10 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
         }
     }
 
+    public void setCurrentPlayAudioModel(CommentAudioModel commentAudioModel) {
+        mCurPlayAudioModel = commentAudioModel;
+    }
+
     public interface CommentAdapterListener {
         /**
          * 头像的点击
@@ -122,6 +116,6 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
          */
         void clickAvatar(int userId);
 
-        void clickAudio(boolean isPlaying, String localPath, String msgUrl);
+        void clickAudio(boolean isPlaying, CommentAudioModel commentAudioModel);
     }
 }

@@ -43,7 +43,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
             override fun clickValid(v: View?) {
                 mCommentAudioModel?.isRead = true
                 mRedIv.visibility = View.GONE
-                listener?.clickAudio(isPlaying, mCommentAudioModel?.localPath, mCommentAudioModel?.msgUrl)
+                listener?.clickAudio(position, mCommentAudioModel)
             }
         })
     }

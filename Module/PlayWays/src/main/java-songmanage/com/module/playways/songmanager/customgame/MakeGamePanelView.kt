@@ -218,7 +218,6 @@ class MakeGamePanelView : RelativeLayout {
                 mMediaPlayer!!.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
                     override fun onCompletion() {
                         super.onCompletion()
-                        mMediaPlayer!!.reset()
                         mStatus = STATUS_RECORD_OK
                         mPlayBtn?.setImageResource(R.drawable.make_game_bofang)
                         mRecordingTipsTv?.text = "播放"

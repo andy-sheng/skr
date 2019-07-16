@@ -282,7 +282,6 @@ public class PlayRecordFragment extends BaseFragment {
                     }, 30);
 
                     mIsPlay = false;
-                    mPlayer.seekTo(0);
                     mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_bofang), null, null);
                     mOptTv.setText("播放");
                 }

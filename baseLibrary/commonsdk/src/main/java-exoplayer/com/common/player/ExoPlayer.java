@@ -135,6 +135,7 @@ public class ExoPlayer extends BasePlayer {
                         if (mCallback != null) {
                             mCallback.onCompletion();
                         }
+                        reset();
                         stopMusicPlayTimeListener();
                         mHandler.removeMessages(MSG_DECREASE_VOLUME);
                         MyLog.d(TAG, "onCompletion");
