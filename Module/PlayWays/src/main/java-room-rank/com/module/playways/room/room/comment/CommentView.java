@@ -260,6 +260,10 @@ public class CommentView extends RelativeLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
