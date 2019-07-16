@@ -94,7 +94,7 @@ import com.module.playways.room.gift.view.GiftPanelView;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.comment.CommentView;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.room.comment.listener.CommentViewItemListener;
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftBigContinuousView;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
@@ -771,12 +771,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
-        mCommentView.setListener(new CommentItemListener() {
+        mCommentView.setListener(new CommentViewItemListener() {
             @Override
             public void clickAvatar(int userId) {
                 showPersonInfoView(userId);
             }
-
         });
         mCommentView.setRoomData(mRoomData);
 //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();

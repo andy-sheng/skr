@@ -21,9 +21,9 @@ import com.common.view.ex.ExImageView;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
+import com.module.playways.room.room.comment.listener.CommentViewItemListener;
 import com.zq.person.event.ShowPersonCardEvent;
 import com.module.playways.room.room.RankRoomData;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
 import com.module.playways.room.room.fragment.RankResultFragment;
 import com.module.playways.room.room.view.InputContainerView;
@@ -138,7 +138,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
-        mCommentView.setListener(new CommentItemListener() {
+        mCommentView.setListener(new CommentViewItemListener() {
             @Override
             public void clickAvatar(int userId) {
                 showPersonInfoView(userId);
@@ -211,7 +211,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog.Builder(getActivity(),QuickFeedbackFragment.FROM_RANK_ROOM, userID, false, true )
+        mPersonInfoDialog = new PersonInfoDialog.Builder(getActivity(), QuickFeedbackFragment.FROM_RANK_ROOM, userID, false, true)
                 .setInviteDoubleListener(new PersonInfoDialog.InviteDoubleListener() {
                     @Override
                     public void onClickDoubleInvite(UserInfoModel userInfoModel) {

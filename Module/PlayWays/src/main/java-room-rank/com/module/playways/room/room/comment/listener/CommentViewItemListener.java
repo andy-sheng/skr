@@ -1,9 +1,10 @@
 package com.module.playways.room.room.comment.listener;
 
-public interface CommentItemListener {
+public interface CommentViewItemListener {
     /**
      * 头像的点击
+     *
      * @param userId
      */
-   void clickAvatar(int userId);
+    void clickAvatar(int userId);
 }

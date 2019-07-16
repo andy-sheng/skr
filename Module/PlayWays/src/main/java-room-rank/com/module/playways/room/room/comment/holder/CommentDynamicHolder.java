@@ -11,7 +11,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.room.comment.adapter.CommentAdapter;
 import com.module.playways.room.room.comment.model.CommentDynamicModel;
 import com.module.playways.R;
 
@@ -22,7 +22,7 @@ public class CommentDynamicHolder extends RecyclerView.ViewHolder {
     int position;
     CommentDynamicModel commentModel;
 
-    public CommentDynamicHolder(View itemView, CommentItemListener mCommentItemListener) {
+    public CommentDynamicHolder(View itemView, CommentAdapter.CommentAdapterListener mCommentItemListener) {
         super(itemView);
 
         mAvatarIv = (BaseImageView) itemView.findViewById(R.id.avatar_iv);

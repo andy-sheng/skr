@@ -1,6 +1,7 @@
 package com.module.playways.room.room.comment.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.room.room.comment.holder.CommentAudioHolder;
 import com.module.playways.room.room.comment.holder.CommentDynamicHolder;
 import com.module.playways.room.room.comment.holder.CommentHolder;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.model.CommentAudioModel;
 import com.module.playways.room.room.comment.model.CommentDynamicModel;
 import com.module.playways.room.room.comment.model.CommentModel;
@@ -24,9 +24,10 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
 
     public int mGameType = 0;
 
-    CommentItemListener mCommentItemListener;
+    CommentAdapterListener mCommentItemListener;
+    String mPlayurl = "";
 
-    public CommentAdapter(CommentItemListener mCommentItemListener) {
+    public CommentAdapter(CommentAdapterListener mCommentItemListener) {
         this.mCommentItemListener = mCommentItemListener;
     }
 
@@ -70,7 +71,24 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
             commentDynamicHolder.bind(position, (CommentDynamicModel) model);
         } else if (holder instanceof CommentAudioHolder) {
             CommentAudioHolder commentAudioHolder = (CommentAudioHolder) holder;
-            commentAudioHolder.bind(position, (CommentAudioModel) model);
+            CommentAudioModel commentAudioModel = (CommentAudioModel) model;
+            commentAudioHolder.bind(position, commentAudioModel);
+            if (commentAudioModel.getMsgUrl() == mPlayurl) {
+                commentAudioHolder.setPlay(true);
+            } else {
+                commentAudioHolder.setPlay(false);
+            }
+
+        }
+    }
+
+    // 记录当前播放的位置
+    public void setCurrentPlay(String msgUrl) {
+        if (msgUrl == mPlayurl) {
+            return;
+        } else {
+            mPlayurl = msgUrl;
+            notifyDataSetChanged();
         }
     }
 
@@ -95,5 +113,16 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
         if (mDataList.size() > 500) {
             mDataList.remove(mDataList.size() - 1);
         }
+    }
+
+    public interface CommentAdapterListener {
+        /**
+         * 头像的点击
+         *
+         * @param userId
+         */
+        void clickAvatar(int userId);
+
+        void clickAudio(int position, String localPath, String msgUrl);
     }
 }

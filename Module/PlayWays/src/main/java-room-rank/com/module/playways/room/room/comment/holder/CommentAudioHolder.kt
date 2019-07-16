@@ -11,10 +11,10 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
-import com.module.playways.room.room.comment.listener.CommentItemListener
+import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.model.CommentAudioModel
 
-class CommentAudioHolder(itemView: View, listener: CommentItemListener?) : RecyclerView.ViewHolder(itemView) {
+class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapterListener?) : RecyclerView.ViewHolder(itemView) {
 
     internal var mAvatarIv: BaseImageView
     internal var mNameTv: ExTextView
@@ -37,6 +37,14 @@ class CommentAudioHolder(itemView: View, listener: CommentItemListener?) : Recyc
                 listener?.clickAvatar(mCommentAudioModel!!.userId)
             }
         })
+
+        mAudioTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                mCommentAudioModel?.isRead = true
+                mRedIv.visibility = View.GONE
+                listener?.clickAudio(position, mCommentAudioModel?.localPath, mCommentAudioModel?.msgUrl)
+            }
+        })
     }
 
     fun bind(position: Int, model: CommentAudioModel) {
@@ -56,5 +64,14 @@ class CommentAudioHolder(itemView: View, listener: CommentItemListener?) : Recyc
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setBorderColor(model.avatarColor)
                 .build())
+    }
+
+
+    fun setPlay(isPlay: Boolean) {
+        if (isPlay) {
+            // 播放动画
+        } else {
+            // 停止动画
+        }
     }
 }

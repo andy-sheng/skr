@@ -6,29 +6,34 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.player.IPlayer;
+import com.common.player.IPlayerCallback;
+import com.common.player.MyMediaPlayer;
 import com.common.utils.U;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.room.msg.event.AudioMsgEvent;
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.room.room.comment.adapter.CommentAdapter;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.room.comment.holder.CommentAudioHolder;
+import com.module.playways.room.room.comment.listener.CommentViewItemListener;
 import com.module.playways.room.room.comment.model.CommentAudioModel;
 import com.module.playways.room.room.comment.model.CommentDynamicModel;
 import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent;
+import com.module.playways.songmanager.event.BeginRecordCustomGameEvent;
 import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.playways.R;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.BaseRoomData;
-import com.zq.live.proto.Room.AudioMsg;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,7 +52,9 @@ public class CommentView extends RelativeLayout {
 
     CommentAdapter mCommentAdapter;
 
-    CommentItemListener mCommentItemListener;
+    CommentViewItemListener mCommentItemListener;
+
+    IPlayer mMediaPlayer = null;
 
     int maxHeight = U.getDisplayUtils().dip2px(260);
 
@@ -81,7 +88,7 @@ public class CommentView extends RelativeLayout {
         init(attrs);
     }
 
-    public void setListener(CommentItemListener listener) {
+    public void setListener(CommentViewItemListener listener) {
         this.mCommentItemListener = listener;
     }
 
@@ -172,7 +179,7 @@ public class CommentView extends RelativeLayout {
         mLinearLayoutManager.setStackFromEnd(true);
         mCommentRv.setLayoutManager(mLinearLayoutManager);
 
-        mCommentAdapter = new CommentAdapter(new CommentItemListener() {
+        mCommentAdapter = new CommentAdapter(new CommentAdapter.CommentAdapterListener() {
             @Override
             public void clickAvatar(int userId) {
                 if (mCommentItemListener != null) {
@@ -180,6 +187,55 @@ public class CommentView extends RelativeLayout {
                         mCommentItemListener.clickAvatar(userId);
                     }
                 }
+            }
+
+            @Override
+            public void clickAudio(int position, String localPath, String msgUrl) {
+                // 直接在此处播放，有需要在放到外面去
+                mCommentAdapter.setCurrentPlay(msgUrl);
+                if (mMediaPlayer == null) {
+                    mMediaPlayer = new MyMediaPlayer();
+                }
+                mMediaPlayer.setCallback(new IPlayerCallback() {
+                    @Override
+                    public void onPrepared() {
+
+                    }
+
+                    @Override
+                    public void onCompletion() {
+                        mCommentAdapter.setCurrentPlay("");
+                        EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
+                    }
+
+                    @Override
+                    public void onSeekComplete() {
+
+                    }
+
+                    @Override
+                    public void onVideoSizeChanged(int width, int height) {
+
+                    }
+
+                    @Override
+                    public void onError(int what, int extra) {
+
+                    }
+
+                    @Override
+                    public void onInfo(int what, int extra) {
+
+                    }
+                });
+                if (!TextUtils.isEmpty(localPath)) {
+                    // 播放本地
+                    mMediaPlayer.startPlay(localPath);
+                } else {
+                    // 播放url
+                    mMediaPlayer.startPlay(msgUrl);
+                }
+                EventBus.getDefault().post(new BeginRecordCustomGameEvent(true));
             }
         });
         mCommentAdapter.setGameType(mGameType);
