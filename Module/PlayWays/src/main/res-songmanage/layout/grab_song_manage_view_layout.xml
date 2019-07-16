@@ -5,6 +5,8 @@
     android:id="@+id/fl_song_list_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/view_12_dp"
+    android:layout_marginRight="@dimen/view_12_dp"
     android:orientation="vertical"
     android:padding="@dimen/view_2_dp"
     app:bl_corners_radius="@dimen/view_16_dp"

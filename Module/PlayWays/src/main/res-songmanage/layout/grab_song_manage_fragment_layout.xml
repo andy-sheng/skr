@@ -61,7 +61,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tag_tab"
-        android:layout_marginLeft="@dimen/view_12_dp"
-        android:layout_marginRight="@dimen/view_12_dp"
         android:layout_marginBottom="@dimen/view_30_dp" />
 </com.common.view.ex.ExRelativeLayout>

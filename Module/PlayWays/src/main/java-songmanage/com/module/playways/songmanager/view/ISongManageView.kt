@@ -6,4 +6,6 @@ interface ISongManageView {
     fun showRoomName(roomName: String)
 
     fun showRecommendSong(recommendTagModelList: MutableList<RecommendTagModel>)
+
+    fun showAddSongCnt(cnt : Int)
 }

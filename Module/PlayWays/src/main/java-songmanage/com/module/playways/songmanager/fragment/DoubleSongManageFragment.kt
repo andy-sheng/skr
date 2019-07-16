@@ -35,7 +35,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class DoubleSongManageFragment : BaseFragment(), ISongManageView {
-
     lateinit var mTitlebar: CommonTitleBar
     lateinit var mSearchSongIv: ExTextView
     lateinit var mTagTab: SlidingTabLayout
@@ -105,6 +104,7 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
         mPresenter = DoubleSongManagePresenter(this, mRoomData!!)
         addPresent(mPresenter)
         mPresenter.getRecommendTag()
+        mPresenter.getAddMusicCnt()
     }
 
     override fun useEventBus(): Boolean {
@@ -113,6 +113,10 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
 
     override fun showRoomName(roomName: String) {
 
+    }
+
+    override fun showAddSongCnt(cnt: Int) {
+        mTitlebar.rightTextView.text = "已点$cnt"
     }
 
 
@@ -208,6 +212,6 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: SongNumChangeEvent) {
-
+        mTitlebar.rightTextView.text = "已点${event.songNum}"
     }
 }

@@ -49,6 +49,21 @@ class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, i
         }, this, ApiMethods.RequestControl("getStandBillBoards", ApiMethods.ControlType.CancelThis))
     }
 
+    fun getAddMusicCnt() {
+        ApiMethods.subscribe(mDoubleRoomServerApi.getAddMusicCnt(mDoubleRoomData.gameId), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    val musicCnt = result.data.getIntValue("musicCnt")
+                    mSongManageView.showAddSongCnt(musicCnt)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg + "")
+                }
+
+            }
+        }, this, ApiMethods.RequestControl("getAddMusicCnt", ApiMethods.ControlType.CancelThis))
+    }
+
+
     // 添加新歌
     fun addSong(songModel: SongModel) {
         MyLog.d(TAG, "addSong")

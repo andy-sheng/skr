@@ -4,6 +4,8 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/view_12_dp"
+    android:layout_marginRight="@dimen/view_12_dp"
     android:background="@color/black_trans_20"
     android:padding="@dimen/view_2_dp"
     app:bl_corners_radius="@dimen/view_16_dp"
@@ -15,6 +17,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

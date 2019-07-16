@@ -35,7 +35,6 @@ import com.module.playways.songmanager.view.RecommendSongView
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.OnDismissListener
 import com.orhanobut.dialogplus.ViewHolder
 
 import org.greenrobot.eventbus.EventBus
@@ -132,6 +131,10 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
         } else {
             mCommonTitleBar.centerTextView.isClickable = false
         }
+    }
+
+    override fun showAddSongCnt(cnt: Int) {
+
     }
 
     /**

@@ -345,6 +345,10 @@ public interface DoubleRoomServerApi {
     @GET("http://dev.api.inframe.mobi/v1/playbook/magpie-billboards")
     Observable<ApiResult> getDoubleStandBillBoards();
 
+
+    @GET("http://dev.game.inframe.mobi/v1/magpie/get-add-music-cnt")
+    Observable<ApiResult> getAddMusicCnt(@Query("roomID") int roomID);
+
     /**
      * 获取游戏一个小卡片信息
      * {
