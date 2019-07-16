@@ -1,19 +1,27 @@
 package com.module.playways.doubleplay.view
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
+import android.view.View
+import android.view.animation.Animation
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.view.ex.ExConstraintLayout
 import com.module.playways.doubleplay.pbLocalModel.LocalGamePanelInfo
 
 
-class DoubleGameCardGroupView : ExConstraintLayout {
+class DoubleGameCardGroupView : ExConstraintLayout, Animation.AnimationListener {
     val mCard1: DoubleGameSelectCardView
     val mCard2: DoubleGameSelectCardView
     val mCard3: DoubleGameSelectCardView
     val mCard4: DoubleGameSelectCardView
 
     var panelId: Int? = null
+
+    val mUiHandler = Handler(Looper.getMainLooper())
+
+    var mAnimate: Animation? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -46,18 +54,61 @@ class DoubleGameCardGroupView : ExConstraintLayout {
 
     }
 
+    override fun onAnimationEnd(animation: Animation?) {
+        applyRotation(this, 90f, 0f, false)
+    }
+
+    override fun onAnimationStart(animation: Animation?) {
+
+    }
+
+    override fun onAnimationRepeat(animation: Animation?) {
+
+    }
+
     fun setPanelInfo(localGamePanelInfo: LocalGamePanelInfo) {
         if (panelId != localGamePanelInfo.panelSeq) {
+            clearAnimation()
             panelId = localGamePanelInfo.panelSeq
-            repeat(4) {
-                val info = localGamePanelInfo.items[it]
-                when (it) {
-                    0 -> mCard1.setItemData(info)
-                    1 -> mCard2.setItemData(info)
-                    2 -> mCard3.setItemData(info)
-                    3 -> mCard4.setItemData(info)
+            applyRotation(this, 0f, -90f, true)
+            mUiHandler.postDelayed({
+                repeat(4) {
+                    val info = localGamePanelInfo.items[it]
+                    when (it) {
+                        0 -> mCard1.setItemData(info)
+                        1 -> mCard2.setItemData(info)
+                        2 -> mCard3.setItemData(info)
+                        3 -> mCard4.setItemData(info)
+                    }
                 }
-            }
+            }, 300)
+
+            mUiHandler.postDelayed({ clearAnimation() }, 620)
         }
     }
+
+    /**
+     * @param view
+     * @param start
+     * @param end
+     * @param reverse
+     */
+    fun applyRotation(view: View, start: Float, end: Float, reverse: Boolean) {
+        // 计算中心点
+        val centerX = view.width / 2.0f;
+        val centerY = view.height / 2.0f;
+        mAnimate = Rotate3dAnimation(start, end,
+                centerX, centerY, 300.0f, reverse)
+        mAnimate?.duration = 300
+        mAnimate?.fillAfter = true
+        if (reverse)
+            mAnimate?.setAnimationListener(this)
+        view.startAnimation(mAnimate)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        mAnimate?.cancel()
+    }
+
 }
