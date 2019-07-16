@@ -12,7 +12,7 @@ import java.util.List;
 public class LocalGamePanelInfo implements Serializable {
     private int panelSeq;
 
-    private List<LocalGameItemInfo> items;
+    private List<LocalGameItemInfo> items = new ArrayList<>();
 
     public int getPanelSeq() {
         return panelSeq;
@@ -40,10 +40,11 @@ public class LocalGamePanelInfo implements Serializable {
 
     public static LocalGamePanelInfo json2LocalModel(JSONObject jsonObject) {
         LocalGamePanelInfo localGamePanelInfo = new LocalGamePanelInfo();
-        localGamePanelInfo.panelSeq = jsonObject.getIntValue("panelSeq");
-        List<LocalGameItemInfo> list = JSON.parseArray(jsonObject.getString("items"), LocalGameItemInfo.class);
-        localGamePanelInfo.items = list;
-
+        if(jsonObject!=null){
+            localGamePanelInfo.panelSeq = jsonObject.getIntValue("panelSeq");
+            List<LocalGameItemInfo> list = JSON.parseArray(jsonObject.getString("items"), LocalGameItemInfo.class);
+            localGamePanelInfo.items = list;
+        }
         return localGamePanelInfo;
     }
 
