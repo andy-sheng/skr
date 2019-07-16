@@ -177,10 +177,6 @@ class GrabBottomContainerView : BottomContainerView {
             } else {
                 mIvRoomManage.visibility = View.GONE
             }
-            val drawable = U.getDrawable(R.drawable.kuaijiehuifu_shou)
-            drawable.bounds = Rect(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-            mInputBtn.setCompoundDrawables(null, null,
-                    drawable, null)
         }
     }
 
