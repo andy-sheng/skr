@@ -369,12 +369,23 @@ class AgentWebActivity extends CameraAdapWebActivity {
 
         WebSettings settings = mBridgeWebView.getSettings();
         String userAgentString = settings.getUserAgentString();
-        mBridgeWebView.getSettings().setUserAgentString(userAgentString + " pid/" + U.getDeviceUtils().getDeviceID());
+        mBridgeWebView.getSettings().setUserAgentString(userAgentString
+                + " pid/" + U.getDeviceUtils().getDeviceID()
+                + " NetType/" + getNet()
+                + " Pixel/" + U.getDisplayUtils().getPhoneWidth());
 
         mJsRegister = new JsRegister(mBridgeWebView, this);
         mJsRegister.register();
 
         setCookie(url);
+    }
+
+    private String getNet() {
+        if (U.getNetworkUtils().isWifi()) {
+            return "wifi";
+        } else {
+            return "WWAN";
+        }
     }
 
     private void setCookie(String url) {
