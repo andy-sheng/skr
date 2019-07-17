@@ -78,6 +78,8 @@ class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, i
                 MyLog.d(TAG, "addSong process" + " result=" + result.errno)
                 if (result.errno == 0) {
                     U.getToastUtil().showShort(songModel.itemName + " 添加成功")
+                    // 更新下歌曲数量
+                    getAddMusicCnt()
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.traceId)
                     U.getToastUtil().showShort(result.errmsg)
