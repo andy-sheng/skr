@@ -159,17 +159,20 @@ public class PersonInfoDialog {
     }
 
     public void dismiss() {
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
         mKickListener = null;
         mInviteDoubleListener = null;
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);
         }
+
     }
 
     public void dismiss(boolean useAnimation) {
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
         mKickListener = null;
         mInviteDoubleListener = null;
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(useAnimation);
         }
