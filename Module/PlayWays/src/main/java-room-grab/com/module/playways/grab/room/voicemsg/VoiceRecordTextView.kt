@@ -103,6 +103,10 @@ class VoiceRecordTextView : ExTextView {
             return false
         }
 
+        if (roundInfoModel != null && roundInfoModel!!.isFreeMicRound) {
+            U.getToastUtil().showShort("自由麦轮次无法录音")
+            return false
+        }
         when {
             action == MotionEvent.ACTION_DOWN -> {
                 MyLog.d(TAG, "ACTION_DOWN")
