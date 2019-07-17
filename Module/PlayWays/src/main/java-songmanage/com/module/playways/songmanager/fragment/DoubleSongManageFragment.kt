@@ -3,6 +3,7 @@ package com.module.playways.songmanager.fragment
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 
@@ -18,6 +19,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
+import com.module.playways.doubleplay.model.DoubleCurSongInfoEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
@@ -105,14 +107,20 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
         addPresent(mPresenter)
         mPresenter.getRecommendTag()
         mPresenter.getAddMusicCnt()
+
+        showRoomName(mRoomData?.localCombineRoomMusic?.music?.displaySongName)
     }
 
     override fun useEventBus(): Boolean {
         return true
     }
 
-    override fun showRoomName(roomName: String) {
-
+    override fun showRoomName(roomName: String?) {
+        if (TextUtils.isEmpty(roomName)) {
+            mTitlebar.centerTextView.text = "点歌"
+        } else {
+            mTitlebar.centerTextView.text = "正在演唱《${roomName}》"
+        }
     }
 
     override fun showAddSongCnt(cnt: Int) {
@@ -213,5 +221,10 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: SongNumChangeEvent) {
         mTitlebar.rightTextView.text = "已点${event.songNum}"
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleCurSongInfoEvent) {
+        showRoomName("正在演唱《${event.name}》")
     }
 }

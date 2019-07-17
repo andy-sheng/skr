@@ -136,13 +136,13 @@ class DoubleSingSenceView : ExConstraintLayout {
         toNextSongCardView()
         mCurrentCardView?.visibility = View.VISIBLE
         mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
-        EventBus.getDefault().post(DoubleCurSongInfoEvent(mCur.music.itemName))
+        EventBus.getDefault().post(DoubleCurSongInfoEvent(mCur.music.displaySongName))
     }
 
     fun changeRound(mRoomData: DoubleRoomData, mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
         toNextSongCardView()
         mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
-        EventBus.getDefault().post(DoubleCurSongInfoEvent(mCur.music.itemName))
+        EventBus.getDefault().post(DoubleCurSongInfoEvent(mCur.music.displaySongName))
     }
 
     fun noMusic() {

@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
+import com.module.playways.doubleplay.model.DoubleCurSongInfoEvent
 import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent
 import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent
 import com.module.playways.grab.room.event.GrabRoundChangeEvent
@@ -143,7 +144,6 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabRoundChangeEvent) {
-
         updateSongList()
     }
 
