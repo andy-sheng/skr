@@ -46,6 +46,8 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
 
     public ZanView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        //设置透明
+        setOpaque(false);
 //        this.setZOrderOnTop(true);
 //        /**设置画布  背景透明*/
 //        this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
