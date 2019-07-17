@@ -48,24 +48,12 @@ public class AuditionActivity extends BaseActivity {
                         .setAddToBackStack(false)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, prepareData)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
                         .build());
             } else {
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, AuditionPrepareResFragment.class)
                         .setAddToBackStack(false)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
                         .build());
             }
         } else {

@@ -1,18 +1,13 @@
-package com.module.home.game.view
+package com.component.busilib.friends
 
-import android.content.Context
-import android.content.SyncContext
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.util.AttributeSet
 import android.view.View
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
+
+import com.common.base.BaseFragment
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
@@ -23,70 +18,71 @@ import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.recyclerview.RecyclerOnItemClickListener
+import com.component.busilib.R
+import com.component.busilib.verify.SkrVerifyUtils
+import com.kingja.loadsir.core.LoadService
+import com.zq.dialog.InviteFriendDialog
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.callback.EmptyCallback
-import com.component.busilib.friends.*
 import com.component.busilib.recommend.RA
-import com.component.busilib.verify.SkrVerifyUtils
 import com.kingja.loadsir.callback.Callback
-import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
-import com.module.home.R
-import com.module.home.game.model.RecommendRoomModel
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.zq.dialog.InviteFriendDialog
-import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 
-/**
- * 好友房(暂时不用)
- */
-class FriendRoomGameView : RelativeLayout {
+class FriendMoreRoomFragment : BaseFragment() {
 
-    companion object {
-        const val TAG = "FriendRoomGameView"
-    }
+    lateinit var mTitlebar: CommonTitleBar
+    lateinit var mRefreshLayout: SmartRefreshLayout
+    lateinit var mClassicsHeader: ClassicsHeader
+    lateinit var mRecyclerView: RecyclerView
 
-    private var mListener: RecyclerView.OnScrollListener? = null
-    private var mFriendRoomVeritAdapter: FriendRoomVerticalAdapter
-    private var mDisposable: Disposable? = null
-    private var mCheckDisposable: Disposable? = null
-    private var mSkrAudioPermission: SkrAudioPermission
-    private var mCameraPermission: SkrCameraPermission
+    lateinit var mListener: RecyclerView.OnScrollListener
+    lateinit var mFriendRoomVeritAdapter: FriendRoomVerticalAdapter
+
+    private var mSkrAudioPermission: SkrAudioPermission = SkrAudioPermission()
+    private var mCameraPermission: SkrCameraPermission = SkrCameraPermission()
+    private var mRealNameVerifyUtils = SkrVerifyUtils()
+
     private var mOffset: Int = 0
     private var grabSongApi: GrabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
-    internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
     var mRecommendTimer: HandlerTaskTimer? = null
     var mRecommendInterval: Int = 0
 
-    var mLoadService: LoadService<*>
+    lateinit var mLoadService: LoadService<*>
     var mInviteFriendDialog: InviteFriendDialog? = null
 
     internal var mLastLoadDateTime: Long = 0    //记录上次获取接口的时间
+    override fun initView(): Int {
+        return R.layout.friend_room_more_fragment_layout
+    }
 
-    constructor(context: Context) : super(context) {}
+    override fun initData(savedInstanceState: Bundle?) {
+        mTitlebar = mRootView.findViewById(R.id.titlebar)
+        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout)
+        mClassicsHeader = mRootView.findViewById(R.id.classics_header)
+        mRecyclerView = mRootView.findViewById(R.id.recycler_view)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+        mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                U.getFragmentUtils().popFragment(this@FriendMoreRoomFragment)
+            }
+        })
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
-
-    init {
-        View.inflate(context, R.layout.friend_room_view_layout, this)
-
-        mSkrAudioPermission = SkrAudioPermission()
-        mCameraPermission = SkrCameraPermission()
-
-        refreshLayout.setEnableRefresh(true)
-        refreshLayout.setEnableLoadMore(false)
-        refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
-        refreshLayout.setEnableOverScrollDrag(true)
-        refreshLayout.setHeaderMaxDragRate(1.5f)
-        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+        mRefreshLayout.setEnableRefresh(true)
+        mRefreshLayout.setEnableLoadMore(false)
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
+        mRefreshLayout.setEnableOverScrollDrag(true)
+        mRefreshLayout.setHeaderMaxDragRate(1.5f)
+        mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
                 loadRecommendData(mOffset)
                 starTimer((mRecommendInterval * 1000).toLong())
@@ -97,7 +93,7 @@ class FriendRoomGameView : RelativeLayout {
             }
         })
 
-        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        mRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(object : RecyclerOnItemClickListener<RecommendModel> {
 
             override fun onItemClicked(view: View, position: Int, model: RecommendModel?) {
@@ -125,12 +121,12 @@ class FriendRoomGameView : RelativeLayout {
                 }
             }
         })
-        recycler_view.adapter = mFriendRoomVeritAdapter
+        mRecyclerView.adapter = mFriendRoomVeritAdapter
 
         mListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (newState == SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     starTimer((mRecommendInterval * 1000).toLong())
                 } else {
                     stopTimer()
@@ -141,21 +137,14 @@ class FriendRoomGameView : RelativeLayout {
                 super.onScrolled(recyclerView, dx, dy)
             }
         }
-        recycler_view.addOnScrollListener(mListener)
+        mRecyclerView.addOnScrollListener(mListener)
 
         val mLoadSir = LoadSir.Builder()
                 .addCallback(EmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "暂时没有房间了～", "#4cffffff"))
                 .build()
-        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
+        mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
             initData(true)
         })
-    }
-
-    fun showShareDialog() {
-        if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null)
-        }
-        mInviteFriendDialog?.show()
     }
 
     /**
@@ -179,54 +168,13 @@ class FriendRoomGameView : RelativeLayout {
         }
     }
 
-    fun starTimer(delayTimeMill: Long) {
-        stopTimer()
-        mRecommendTimer = HandlerTaskTimer.newBuilder()
-                .delay(delayTimeMill)
-                .take(-1)
-                .interval((mRecommendInterval * 1000).toLong())
-                .start(object : HandlerTaskTimer.ObserverW() {
-                    override fun onNext(t: Int) {
-                        loadRecommendData(0)
-                    }
-                })
-    }
-
-    fun stopTimer() {
-        mRecommendTimer?.dispose()
-    }
-
-    fun tryJoinRoom(roomInfo: SimpleRoomInfo) {
-        if (roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
-            mSkrAudioPermission.ensurePermission({
-                mCameraPermission.ensurePermission({
-                    mRealNameVerifyUtils.checkJoinVideoPermission {
-                        // 进入视频预览
-                        ARouter.getInstance()
-                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                .withInt("mFrom", FROM_FRIEND_RECOMMEND)
-                                .withInt("mRoomId", roomInfo.roomID)
-                                .withInt("mInviteType", 0)
-                                .navigation()
-                    }
-                }, true)
-            }, true)
-        } else {
-            mSkrAudioPermission.ensurePermission({
-                mRealNameVerifyUtils.checkJoinAudioPermission(roomInfo.tagID) {
-                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    iRankingModeService?.tryGoGrabRoom(roomInfo.roomID, 0)
-                }
-            }, true)
-        }
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        initData(false)
     }
 
     fun checkUserRoom(userID: Int, friendRoomModel: RecommendModel, position: Int) {
-        if (mCheckDisposable != null && !mCheckDisposable!!.isDisposed) {
-            mCheckDisposable?.dispose()
-        }
-
-        mCheckDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.checkUserRoom(userID), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe<ApiResult>(grabSongApi.checkUserRoom(userID), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     var roomInfo = JSON.parseObject(obj.data.getString("roomInfo"), SimpleRoomInfo::class.java)
@@ -255,15 +203,36 @@ class FriendRoomGameView : RelativeLayout {
                 super.onNetworkError(errorType)
 
             }
-        })
+        }, this)
+    }
+
+    fun tryJoinRoom(roomInfo: SimpleRoomInfo) {
+        if (roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
+            mSkrAudioPermission.ensurePermission({
+                mCameraPermission.ensurePermission({
+                    mRealNameVerifyUtils.checkJoinVideoPermission {
+                        // 进入视频预览
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                .withInt("mFrom", FROM_FRIEND_RECOMMEND)
+                                .withInt("mRoomId", roomInfo.roomID)
+                                .withInt("mInviteType", 0)
+                                .navigation()
+                    }
+                }, true)
+            }, true)
+        } else {
+            mSkrAudioPermission.ensurePermission({
+                mRealNameVerifyUtils.checkJoinAudioPermission(roomInfo.tagID) {
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    iRankingModeService?.tryGoGrabRoom(roomInfo.roomID, 0)
+                }
+            }, true)
+        }
     }
 
     private fun loadRecommendData(offset: Int) {
-        if (mDisposable != null && !mDisposable!!.isDisposed) {
-            mDisposable?.dispose()
-        }
-
-        mDisposable = ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(offset, RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe<ApiResult>(grabSongApi.getRecommendRoomList(offset, RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     mLastLoadDateTime = System.currentTimeMillis()
@@ -275,15 +244,15 @@ class FriendRoomGameView : RelativeLayout {
                         refreshView(list, false, newOffset)
                     }
                 } else {
-                    refreshLayout.finishRefresh()
-                    refreshLayout.finishLoadMore()
+                    mRefreshLayout.finishRefresh()
+                    mRefreshLayout.finishLoadMore()
                 }
             }
 
             override fun onNetworkError(errorType: ErrorType?) {
                 super.onNetworkError(errorType)
-                refreshLayout.finishRefresh()
-                refreshLayout.finishLoadMore()
+                mRefreshLayout.finishRefresh()
+                mRefreshLayout.finishLoadMore()
             }
         })
     }
@@ -295,14 +264,14 @@ class FriendRoomGameView : RelativeLayout {
      */
     private fun refreshView(list: List<RecommendModel>?, clear: Boolean, newOffset: Int) {
         mOffset = newOffset
-        refreshLayout.finishRefresh()
-        refreshLayout.finishLoadMore()
+        mRefreshLayout.finishRefresh()
+        mRefreshLayout.finishLoadMore()
 
         if (clear) {
             mFriendRoomVeritAdapter.dataList.clear()
         }
 
-        if (list != null && list!!.isNotEmpty()) {
+        if (list != null && list.isNotEmpty()) {
             mLoadService.showSuccess()
             mFriendRoomVeritAdapter.dataList.addAll(list)
             mFriendRoomVeritAdapter.notifyDataSetChanged()
@@ -316,12 +285,31 @@ class FriendRoomGameView : RelativeLayout {
     }
 
 
-    fun destory() {
+    fun showShareDialog() {
+        if (mInviteFriendDialog == null) {
+            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null)
+        }
+        mInviteFriendDialog?.show()
+    }
+
+    fun starTimer(delayTimeMill: Long) {
+        stopTimer()
+        mRecommendTimer = HandlerTaskTimer.newBuilder()
+                .delay(delayTimeMill)
+                .take(-1)
+                .interval((mRecommendInterval * 1000).toLong())
+                .start(object : HandlerTaskTimer.ObserverW() {
+                    override fun onNext(t: Int) {
+                        loadRecommendData(0)
+                    }
+                })
+    }
+
+    fun stopTimer() {
         mRecommendTimer?.dispose()
-        mDisposable?.dispose()
-        mCheckDisposable?.dispose()
-        mInviteFriendDialog?.dismiss(false)
-        recycler_view.removeOnScrollListener(mListener)
-        mListener = null
+    }
+
+    override fun useEventBus(): Boolean {
+        return false
     }
 }

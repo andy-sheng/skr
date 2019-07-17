@@ -33,7 +33,8 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mTabPagerAdapter: PagerAdapter
     lateinit var mPresenter: GamePresenter3
 
-    val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
+    //    val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
+    val mGrabGameView: GrabGameView by lazy { GrabGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
     val mDoubleRoomGameView: DoubleRoomGameView by lazy { DoubleRoomGameView(context!!) }
     val mPkGameView: PKGameView by lazy { PKGameView(this) }
@@ -69,7 +70,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 MyLog.d(TAG, "instantiateItem container=$container position=$position")
                 var view: View? = when (position) {
-                    0 -> mFriendRoomGameView
+                    0 -> mGrabGameView
                     1 -> mQuickGameView
                     2 -> mDoubleRoomGameView
                     3 -> mPkGameView
@@ -91,7 +92,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
             override fun getPageTitle(position: Int): CharSequence? {
                 return when (position) {
-                    0 -> "好友房"
+                    0 -> "抢唱"
                     1 -> "首页"
                     2 -> "唱聊"
                     3 -> "排位"
@@ -116,27 +117,28 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 when (position) {
                     0 -> {
                         animation(color, Color.parseColor("#7088FF"))
+                        mGrabGameView.initData(false)
                         mQuickGameView?.stopTimer()
-                        mFriendRoomGameView?.initData(false)
+//                        mFriendRoomGameView?.initData(false)
                         StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
                     }
                     1 -> {
                         animation(color, Color.parseColor("#7088FF"))
-                        mFriendRoomGameView?.stopTimer()
+//                        mFriendRoomGameView?.stopTimer()
                         mQuickGameView?.initData()
                         StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                     }
                     2 -> {
                         animation(color, Color.parseColor("#261127"))
                         mQuickGameView?.stopTimer()
-                        mFriendRoomGameView?.stopTimer()
+//                        mFriendRoomGameView?.stopTimer()
                         mDoubleRoomGameView?.initData()
                         StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
                     }
                     3 -> {
                         mQuickGameView?.stopTimer()
                         animation(color, Color.parseColor("#7088FF"))
-                        mFriendRoomGameView?.stopTimer()
+//                        mFriendRoomGameView?.stopTimer()
                         mPkGameView?.initData(false)
                     }
                 }
@@ -175,24 +177,25 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mPresenter.initGameKConfig()
         when {
             mGameVp.currentItem == 0 -> {
+                mGrabGameView.initData(false)
                 mQuickGameView?.stopTimer()
-                mFriendRoomGameView?.initData(false)
+//                mFriendRoomGameView?.initData(false)
                 StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
             }
             mGameVp.currentItem == 1 -> {
-                mFriendRoomGameView?.stopTimer()
+//                mFriendRoomGameView?.stopTimer()
                 mQuickGameView?.initData()
                 StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
             }
             mGameVp.currentItem == 2 -> {
                 mQuickGameView?.stopTimer()
-                mFriendRoomGameView?.stopTimer()
+//                mFriendRoomGameView?.stopTimer()
                 mDoubleRoomGameView?.initData()
                 StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
             }
             mGameVp.currentItem == 3 -> {
                 mQuickGameView?.stopTimer()
-                mFriendRoomGameView?.stopTimer()
+//                mFriendRoomGameView?.stopTimer()
                 mPkGameView?.initData(false)
             }
         }
@@ -201,14 +204,19 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun onFragmentInvisible() {
         super.onFragmentInvisible()
-        mFriendRoomGameView.stopTimer()
+//        mFriendRoomGameView.stopTimer()
+        mQuickGameView.stopTimer()
     }
 
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
-        mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+//        mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+//        if (mGameVp.currentItem == 0) {
+//            mFriendRoomGameView.initData(true)
+//        }
+
         mQuickGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
-        if (mGameVp.currentItem == 0) {
-            mFriendRoomGameView.initData(true)
+        if (mGameVp.currentItem == 1) {
+            mQuickGameView.initData()
         }
     }
 
@@ -240,8 +248,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun destroy() {
         super.destroy()
+        mGrabGameView?.destory()
         mQuickGameView?.destory()
-        mFriendRoomGameView?.destory()
+//        mFriendRoomGameView?.destory()
         mDoubleRoomGameView?.destory()
         mPkGameView?.destory()
         alphaAnimation?.cancel()

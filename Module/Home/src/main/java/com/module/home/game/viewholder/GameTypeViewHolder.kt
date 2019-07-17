@@ -3,6 +3,7 @@ package com.module.home.game.viewholder
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
@@ -26,7 +27,11 @@ class GameTypeViewHolder(itemView: View,
     init {
         mDoubleIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                onDoubleRoomListener?.invoke()
+                if ((mGameTypeModel?.mRemainTime) ?: 0 > 0) {
+                    onDoubleRoomListener?.invoke()
+                } else {
+                    U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
+                }
             }
 
         })
@@ -45,16 +50,12 @@ class GameTypeViewHolder(itemView: View,
 
         mGrabIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                if ((mGameTypeModel?.mRemainTime) ?: 0 > 0) {
-                    onSelectSpecialListener?.invoke(mGameTypeModel?.mSpecialModel)
-                } else {
-                    U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
-                }
+                onSelectSpecialListener?.invoke(mGameTypeModel?.mSpecialModel)
             }
         })
     }
 
     fun bindData(gameTypeModel: GameTypeModel) {
-        this.mGameTypeModel = mGameTypeModel
+        this.mGameTypeModel = gameTypeModel
     }
 }

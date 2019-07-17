@@ -16,11 +16,13 @@ import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
 import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.constans.GameModeType
+import com.component.busilib.friends.FriendMoreRoomFragment
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
@@ -81,6 +83,10 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
         mGameAdapter.onMoreRoomListener = {
             // 更多房间
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(fragment.activity, FriendMoreRoomFragment::class.java)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .build())
         }
         mGameAdapter.onEnterRoomListener = {
             // 进入房间

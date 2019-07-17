@@ -127,4 +127,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
         mGrabGameAdapter.mDataList = list
         mGrabGameAdapter.notifyDataSetChanged()
     }
+
+    fun destory(){
+    }
 }
