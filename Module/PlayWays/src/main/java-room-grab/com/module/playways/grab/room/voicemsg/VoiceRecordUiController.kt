@@ -1,10 +1,13 @@
 package com.module.playways.grab.room.voicemsg
 
-class VoiceRecordUiController(voiceRecordTextView: VoiceRecordTextView, voiceRecordTipsView: VoiceRecordTipsView) {
+import com.module.playways.room.room.comment.CommentView
+
+class VoiceRecordUiController(voiceRecordTextView: VoiceRecordTextView, voiceRecordTipsView: VoiceRecordTipsView,commentView: CommentView) {
     init {
         voiceRecordTextView.mShowTipsListener = {
             if (it) {
                 voiceRecordTipsView.show()
+                commentView.tryStopPlay()
             } else {
                 voiceRecordTipsView.hide()
             }

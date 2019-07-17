@@ -33,7 +33,7 @@ public interface UpgradeCheckApi {
      * @param versionCode
      * @return
      */
-    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @Headers({ApiManager.ALWAYS_LOG_TAG,ApiManager.NO_NEED_LOGIN_TAG})
     @GET("http://dev.api.inframe.mobi/v1/kconf/app-version")
     io.reactivex.Observable<ApiResult> getUpdateInfo(@Query("packageName")String packageName,
                                                      @Query("platform")int platform,

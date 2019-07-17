@@ -286,6 +286,12 @@ public class CommentView extends RelativeLayout {
         }
     }
 
+    public void tryStopPlay(){
+        if (mMediaPlayer != null) {
+            mMediaPlayer.reset();
+            mCommentAdapter.setCurrentPlayAudioModel(null);
+        }
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " CommentMsgEvent = " + event.text);
@@ -322,18 +328,6 @@ public class CommentView extends RelativeLayout {
         CommentDynamicModel commentDynamicModel = CommentDynamicModel.parseFromEvent(event, mRoomData);
         processCommentModel(commentDynamicModel);
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MuteAllVoiceEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
-        if(event.getBegin()){
-            if (mMediaPlayer != null) {
-                mMediaPlayer.reset();
-            }
-            mCommentAdapter.setCurrentPlayAudioModel(null);
-        }
-    }
-
 
     void processCommentModel(CommentModel commentModel) {
         mCommentAdapter.addToHead(commentModel);

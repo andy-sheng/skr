@@ -730,8 +730,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
         });
         mBottomContainerView.setRoomData(mRoomData);
-
-        mVoiceRecordUiController = new VoiceRecordUiController(mBottomContainerView.getMVoiceRecordBtn(), mVoiceRecordTipsView);
     }
 
     private void initCommentView() {
@@ -745,6 +743,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mCommentView.setRoomData(mRoomData);
 //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
 //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
+        mVoiceRecordUiController = new VoiceRecordUiController(mBottomContainerView.getMVoiceRecordBtn(), mVoiceRecordTipsView,mCommentView);
     }
 
     private void initChangeRoomTransitionView() {
