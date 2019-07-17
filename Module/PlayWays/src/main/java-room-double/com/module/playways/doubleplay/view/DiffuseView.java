@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.log.MyLog;
 import com.module.playways.R;
 
 import java.util.ArrayList;
@@ -108,6 +109,10 @@ public class DiffuseView extends View {
     public void onDraw(Canvas canvas) {
         // 绘制扩散圆
         boolean going = System.currentTimeMillis() < mStopTs;
+        if (!going) {
+            mCircleCount = 0;
+        }
+
         if (mColor != 0) {
             mPaint.setColor(mColor);
             if (mWidths.isEmpty() && going) {
@@ -146,7 +151,6 @@ public class DiffuseView extends View {
                 float r = mCoreRadius + mWidths.get(i);
                 int alpha = mAlphas.get(i);
                 if (alpha <= 0 || r >= mMaxRadius) {
-                    mCircleCount--;
                     mAlphas.remove(i);
                     mWidths.remove(i);
                 }
