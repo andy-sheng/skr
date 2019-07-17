@@ -3,6 +3,7 @@ package com.common.webview;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -284,6 +285,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
         mContentContainer = (RelativeLayout) this.findViewById(R.id.content_container);
         mBridgeWebView = new BridgeWebView(this);
         buildAgentWeb();
+        mBridgeWebView.setBackgroundColor(Color.parseColor("#FF7088FF"));
     }
 
     protected void pageFinished(WebView view, String url) {
