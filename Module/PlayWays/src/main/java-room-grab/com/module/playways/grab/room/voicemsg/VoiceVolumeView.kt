@@ -24,9 +24,6 @@ class VoiceVolumeView : View {
     internal var height = U.getDisplayUtils().dip2px(3f)    // 高度
     internal var marginHight = U.getDisplayUtils().dip2px(3f)  // 间距离
 
-    internal var bgColor = Color.parseColor("#474750")
-    internal var volumeColor = Color.WHITE
-
     internal var mBgPaint: Paint = ExPaint()
     internal var mVolumePaint: Paint = ExPaint()
 
@@ -36,6 +33,11 @@ class VoiceVolumeView : View {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
+    init {
+        mBgPaint.color = Color.parseColor("#474750")
+        mVolumePaint.color = Color.WHITE
+    }
+
     fun setVoiceLevel(level: Int) {
         MyLog.d(TAG, "setVoiceLevel level=$level")
         mVoiceLevel = level
@@ -43,25 +45,18 @@ class VoiceVolumeView : View {
     }
 
     override fun onDraw(canvas: Canvas) {
+        MyLog.d(TAG,"onDraw")
         super.onDraw(canvas)
-
-        mBgPaint.color = bgColor
-        mVolumePaint.color = volumeColor
-
         for (i in 0..8) {
+            val rectF = RectF()
+            rectF.left = 0f
+            rectF.right = rectF.left + ((maxWith - minWith) / 8 * i).toFloat() + minWith.toFloat()
+            rectF.bottom = (getHeight() - i * (height + marginHight)).toFloat()
+            rectF.top = rectF.bottom - height
             if (mVoiceLevel >= i + 1) {
-                val rectF = RectF()
-                rectF.left = 0f
-                rectF.right = rectF.left + ((maxWith - minWith) / 8 * i).toFloat() + minWith.toFloat()
-                rectF.top = (getHeight() - i * (height + marginHight)).toFloat()
-                rectF.bottom = rectF.top - height
                 canvas.drawRoundRect(rectF, 0f, 0f, mVolumePaint)
             } else {
                 val rectF = RectF()
-                rectF.left = 0f
-                rectF.right = rectF.left + ((maxWith - minWith) / 8 * i).toFloat() + minWith.toFloat()
-                rectF.top = (getHeight() - i * (height + marginHight)).toFloat()
-                rectF.bottom = rectF.top - height
                 canvas.drawRoundRect(rectF, 0f, 0f, mBgPaint)
             }
 

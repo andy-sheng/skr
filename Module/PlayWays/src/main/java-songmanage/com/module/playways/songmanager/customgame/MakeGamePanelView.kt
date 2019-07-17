@@ -278,7 +278,7 @@ class MakeGamePanelView : RelativeLayout {
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomID
         map["standIntro"] = mUploadUrl ?: ""
-        map["standIntroEndT"] = mMyMediaRecorder!!.duration
+        map["standIntroEndT"] = mMyMediaRecorder!!.mDuration
         map["totalMs"] = mPlayTimeExpect * 1000
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
