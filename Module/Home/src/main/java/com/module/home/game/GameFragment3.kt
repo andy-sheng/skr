@@ -27,7 +27,7 @@ import com.module.home.model.GameKConfigModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-
+// 主页
 class GameFragment3 : BaseFragment(), IGameView3 {
 
     lateinit var mNavigationBgIv: ImageView
@@ -188,6 +188,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
         mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+        mQuickGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
         if (mGameVp.currentItem == 0) {
             mFriendRoomGameView.initData(true)
         }

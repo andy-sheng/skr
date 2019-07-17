@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
+import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
@@ -32,6 +33,9 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     internal var mIsFirstQuick = true
 
     internal var mRecommendTimer: HandlerTaskTimer? = null
+
+    internal var mLastUpdateRecomendInfo: Long = 0    //上次拉去剩余次数的时间
+    var mRecommendInterval: Int = 0
 
     init {
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
@@ -139,21 +143,22 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
         }, this, ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis))
     }
 
-//    fun initRecommendRoom(interval: Int) {
-//        mRecommendInterval = interval
-//        if (interval <= 0) {
-//            mRecommendInterval = 15
-//        }
-//        stopTimer()
-//        mRecommendTimer = HandlerTaskTimer.newBuilder()
-//                .take(-1)
-//                .interval((mRecommendInterval * 1000).toLong())
-//                .start(object : HandlerTaskTimer.ObserverW() {
-//                    override fun onNext(t: Int) {
-//                        loadRecommendRoomData()
-//                    }
-//                })
-//    }
+    //TODO 这个接口得换，等服务器更新
+    fun initRecommendRoom(interval: Int) {
+        mRecommendInterval = interval
+        if (interval <= 0) {
+            mRecommendInterval = 15
+        }
+        stopTimer()
+        mRecommendTimer = HandlerTaskTimer.newBuilder()
+                .take(-1)
+                .interval((mRecommendInterval * 1000).toLong())
+                .start(object : HandlerTaskTimer.ObserverW() {
+                    override fun onNext(t: Int) {
+                        loadRecommendRoomData()
+                    }
+                })
+    }
 
     fun stopTimer() {
         if (mRecommendTimer != null) {
@@ -161,24 +166,24 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
         }
     }
 
-//    private fun loadRecommendRoomData() {
-//        ApiMethods.subscribe(mGrabSongApi.firstPageRecommendRoomList, object : ApiObserver<ApiResult>() {
-//            override fun process(obj: ApiResult) {
-//                if (obj.errno == 0) {
-//                    mLastUpdateRecomendInfo = System.currentTimeMillis()
-//                    val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)
-//                    mIGameView3.setRecommendInfo(list)
-//                }
-//            }
-//        }, this, ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis))
-//    }
-
+    private fun loadRecommendRoomData() {
+        ApiMethods.subscribe(mGrabSongApi.firstPageRecommendRoomList, object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult) {
+                if (obj.errno == 0) {
+                    mLastUpdateRecomendInfo = System.currentTimeMillis()
+                    val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)
+                    mIGameView3.setRecommendInfo(list)
+                }
+            }
+        }, this, ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis))
+    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
-        initQuickRoom(true)
+        initRecommendRoom(mRecommendInterval)
+//        initQuickRoom(true)
         checkTaskRedDot()
     }
 

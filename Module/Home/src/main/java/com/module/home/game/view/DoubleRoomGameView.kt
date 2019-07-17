@@ -39,7 +39,7 @@ import okhttp3.RequestBody
 import java.util.*
 
 /**
- * 邂逅好声音
+ * 双人唱聊
  */
 class DoubleRoomGameView : RelativeLayout {
     companion object {
