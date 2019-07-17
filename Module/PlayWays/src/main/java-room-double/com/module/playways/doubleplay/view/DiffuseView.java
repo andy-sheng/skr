@@ -58,6 +58,8 @@ public class DiffuseView extends View {
     private boolean mPressing = false;
     private long mStopTs = System.currentTimeMillis();
 
+    private int mCircleCount = 0;
+
     public DiffuseView(Context context) {
         this(context, null);
     }
@@ -109,6 +111,7 @@ public class DiffuseView extends View {
         if (mColor != 0) {
             mPaint.setColor(mColor);
             if (mWidths.isEmpty() && going) {
+                mCircleCount--;
                 mAlphas.add(255);
                 mWidths.add(0);
             }
@@ -133,7 +136,8 @@ public class DiffuseView extends View {
             // 判断当扩散圆扩散到指定宽度时添加新扩散圆
             if (mWidths.size() > 0 && going) {
                 float mr = mWidths.get(mWidths.size() - 1) + mCoreRadius;
-                if (mr > mDiffuseRaduis) {
+                if (mr > mDiffuseRaduis && mCircleCount > 0) {
+                    mCircleCount--;
                     mAlphas.add(255);
                     mWidths.add(0);
                 }
@@ -142,6 +146,7 @@ public class DiffuseView extends View {
                 float r = mCoreRadius + mWidths.get(i);
                 int alpha = mAlphas.get(i);
                 if (alpha <= 0 || r >= mMaxRadius) {
+                    mCircleCount--;
                     mAlphas.remove(i);
                     mWidths.remove(i);
                 }
@@ -188,6 +193,7 @@ public class DiffuseView extends View {
      */
     public void start(long delay) {
         mStopTs = System.currentTimeMillis() + delay;
+        mCircleCount++;
         setVisibility(VISIBLE);
         invalidate();
     }
