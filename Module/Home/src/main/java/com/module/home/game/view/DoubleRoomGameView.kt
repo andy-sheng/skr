@@ -242,7 +242,7 @@ class DoubleRoomGameView : RelativeLayout {
         val now = System.currentTimeMillis()
         if (!isFlag) {
             // 距离上次拉去已经超过10秒了
-            if (now - mLastUpdateRemainTime < 10 * 1000) {
+            if (now - mLastUpdateRemainTime < 5 * 1000) {
                 return
             }
         }

@@ -250,6 +250,11 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
         return spannableString
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        destory()
+    }
+
     fun destory() {
         mPkInfoPresenter?.destroy()
     }

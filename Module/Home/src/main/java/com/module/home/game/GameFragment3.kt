@@ -92,7 +92,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             override fun getPageTitle(position: Int): CharSequence? {
                 return when (position) {
                     0 -> "好友房"
-                    1 -> "多人抢唱"
+                    1 -> "首页"
                     2 -> "唱聊"
                     3 -> "排位"
                     else -> super.getPageTitle(position)
@@ -116,6 +116,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 when (position) {
                     0 -> {
                         animation(color, Color.parseColor("#7088FF"))
+                        mQuickGameView?.stopTimer()
                         mFriendRoomGameView?.initData(false)
                         StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
                     }
@@ -127,11 +128,13 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                     }
                     2 -> {
                         animation(color, Color.parseColor("#261127"))
+                        mQuickGameView?.stopTimer()
                         mFriendRoomGameView?.stopTimer()
                         mDoubleRoomGameView?.initData()
                         StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
                     }
                     3 -> {
+                        mQuickGameView?.stopTimer()
                         animation(color, Color.parseColor("#7088FF"))
                         mFriendRoomGameView?.stopTimer()
                         mPkGameView?.initData(false)
@@ -172,6 +175,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mPresenter.initGameKConfig()
         when {
             mGameVp.currentItem == 0 -> {
+                mQuickGameView?.stopTimer()
                 mFriendRoomGameView?.initData(false)
                 StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
             }
@@ -181,11 +185,13 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
             }
             mGameVp.currentItem == 2 -> {
+                mQuickGameView?.stopTimer()
                 mFriendRoomGameView?.stopTimer()
                 mDoubleRoomGameView?.initData()
                 StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
             }
             mGameVp.currentItem == 3 -> {
+                mQuickGameView?.stopTimer()
                 mFriendRoomGameView?.stopTimer()
                 mPkGameView?.initData(false)
             }
@@ -237,6 +243,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mQuickGameView?.destory()
         mFriendRoomGameView?.destory()
         mDoubleRoomGameView?.destory()
+        mPkGameView?.destory()
         alphaAnimation?.cancel()
     }
 }

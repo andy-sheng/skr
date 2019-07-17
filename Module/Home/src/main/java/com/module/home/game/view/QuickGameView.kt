@@ -1,10 +1,13 @@
 package com.module.home.game.view
 
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.image.fresco.FrescoWorker
@@ -17,6 +20,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
 import com.component.busilib.beauty.FROM_MATCH
+import com.component.busilib.constans.GameModeType
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
@@ -31,6 +35,11 @@ import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
 import com.module.playways.IPlaywaysModeService
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
 
 /**
@@ -47,6 +56,9 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     var mRealNameVerifyUtils = SkrVerifyUtils()
 
     var mRecommendInterval = 0
+
+    var mSelectSexDialogPlus: DialogPlus? = null
+    var mSelectView: SelectSexDialogView? = null
 
     init {
         View.inflate(context, R.layout.quick_game_view_layout, this)
@@ -131,10 +143,65 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
 
         mGameAdapter.onPkRoomListener = {
-
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                    .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
+                    .withBoolean("selectSong", true)
+                    .navigation()
         }
 
         mGameAdapter.onDoubleRoomListener = {
+            if (!U.getNetworkUtils().hasNetwork()) {
+                U.getToastUtil().showLong("网络连接失败 请检查网络")
+            } else {
+                mSkrAudioPermission.ensurePermission({
+                    mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+                        /**
+                         * 判断有没有年龄段
+                         */
+                        if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                                    .withInt("from", 0)
+                                    .navigation()
+                        } else {
+                            val sex = object {
+                                var mIsFindMale: Boolean? = null
+                                var mMeIsMale: Boolean? = null
+                            }
+
+                            Observable.create<Boolean> {
+                                if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
+                                    sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
+                                    sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
+                                    it.onNext(true)
+                                } else {
+                                    it.onNext(false)
+                                }
+
+                                it.onComplete()
+                            }.subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe({
+                                        if (it) {
+                                            val bundle = Bundle()
+                                            bundle.putBoolean("is_find_male", sex.mIsFindMale
+                                                    ?: true)
+                                            bundle.putBoolean("is_me_male", sex.mMeIsMale
+                                                    ?: true)
+                                            ARouter.getInstance()
+                                                    .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                                    .withBundle("bundle", bundle)
+                                                    .navigation()
+                                        } else {
+                                            showSexFilterView(true)
+                                        }
+                                    }, {
+                                        MyLog.e("SelectSexDialogView", it)
+                                    })
+                        }
+                    }
+                }, true)
+            }
+
 
         }
 
@@ -145,8 +212,44 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     fun initData() {
         mQuickGamePresenter.initOperationArea(false)
         mQuickGamePresenter.initRecommendRoom(mRecommendInterval)
+        mQuickGamePresenter.getRemainTimes(false)
 //        mQuickGamePresenter.initQuickRoom(false)
         mQuickGamePresenter.checkTaskRedDot()
+    }
+
+    fun stopTimer() {
+        mQuickGamePresenter.stopTimer()
+    }
+
+    fun showSexFilterView(needMatch: Boolean) {
+        if (mSelectSexDialogPlus == null) {
+            mSelectView = SelectSexDialogView(this@QuickGameView.context)
+            mSelectSexDialogPlus = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(mSelectView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create()
+        }
+
+        mSelectView?.onClickMatch = { isFindMale, isMeMale ->
+            mSelectSexDialogPlus?.dismiss()
+            if (needMatch) {
+                val bundle = Bundle()
+                bundle.putBoolean("is_find_male", isFindMale
+                        ?: true)
+                bundle.putBoolean("is_me_male", isMeMale
+                        ?: true)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                        .withBundle("bundle", bundle)
+                        .navigation()
+            }
+        }
+
+        mSelectView?.reset()
+        mSelectSexDialogPlus?.show()
     }
 
     override fun setBannerImage(slideShowModelList: List<SlideShowModel>?) {
@@ -197,6 +300,10 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
         val quickJoinRoomModel = QuickJoinRoomModel(list, offset)
         mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel)
+    }
+
+    override fun showRemainTimes(remainTimes: Int) {
+        mGameAdapter.updateDoubleRemainTime(remainTimes)
     }
 
     fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {

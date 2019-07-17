@@ -3,6 +3,7 @@ package com.module.home.game.viewholder
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
+import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.friends.SpecialModel
@@ -44,7 +45,11 @@ class GameTypeViewHolder(itemView: View,
 
         mGrabIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                onSelectSpecialListener?.invoke(mGameTypeModel?.mSpecialModel)
+                if ((mGameTypeModel?.mRemainTime) ?: 0 > 0) {
+                    onSelectSpecialListener?.invoke(mGameTypeModel?.mSpecialModel)
+                } else {
+                    U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
+                }
             }
         })
     }

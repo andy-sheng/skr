@@ -15,4 +15,6 @@ interface IQuickGameView3 {
     //    void setGameConfig(GameKConfigModel gameKConfigModel);
 
     fun showTaskRedDot(show: Boolean)
+
+    fun showRemainTimes(remainTimes : Int)
 }

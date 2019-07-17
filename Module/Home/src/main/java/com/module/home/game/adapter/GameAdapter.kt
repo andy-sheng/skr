@@ -62,8 +62,19 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
         setDataList()
     }
 
-    fun updateGameTypeInfo(gameTypeModel: GameTypeModel) {
-        mObjArr[TYPE_GAMETYPE_HOLDER] = gameTypeModel;
+    fun updateGrabGameInfo(model: SpecialModel) {
+        var gameTypeModel = mObjArr[TYPE_GAMETYPE_HOLDER]
+        if (gameTypeModel is GameTypeModel) {
+            gameTypeModel.mSpecialModel = model
+        }
+        setDataList()
+    }
+
+    fun updateDoubleRemainTime(times: Int) {
+        var gameTypeModel = mObjArr[TYPE_GAMETYPE_HOLDER]
+        if (gameTypeModel is GameTypeModel) {
+            gameTypeModel.mRemainTime = times
+        }
         setDataList()
     }
 

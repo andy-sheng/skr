@@ -58,7 +58,7 @@ class FriendRoomGameView : RelativeLayout {
     private var mSkrAudioPermission: SkrAudioPermission
     private var mCameraPermission: SkrCameraPermission
     private var mOffset: Int = 0
-    private var grabSongApi: GrabSongApi
+    private var grabSongApi: GrabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
     internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
     var mRecommendTimer: HandlerTaskTimer? = null
@@ -80,7 +80,6 @@ class FriendRoomGameView : RelativeLayout {
 
         mSkrAudioPermission = SkrAudioPermission()
         mCameraPermission = SkrCameraPermission()
-        grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
 
         refreshLayout.setEnableRefresh(true)
         refreshLayout.setEnableLoadMore(false)
@@ -154,7 +153,7 @@ class FriendRoomGameView : RelativeLayout {
 
     fun showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0,0, 0, null)
+            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null)
         }
         mInviteFriendDialog?.show()
     }
@@ -214,7 +213,7 @@ class FriendRoomGameView : RelativeLayout {
             }, true)
         } else {
             mSkrAudioPermission.ensurePermission({
-                mRealNameVerifyUtils.checkJoinAudioPermission(roomInfo.tagID){
+                mRealNameVerifyUtils.checkJoinAudioPermission(roomInfo.tagID) {
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     iRankingModeService?.tryGoGrabRoom(roomInfo.roomID, 0)
                 }
