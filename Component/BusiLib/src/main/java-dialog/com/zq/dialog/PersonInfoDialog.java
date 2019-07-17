@@ -54,8 +54,10 @@ public class PersonInfoDialog {
         init();
     }
 
+    PersonInfoDialogView2 personInfoDialogView;
+
     private void init() {
-        PersonInfoDialogView2 personInfoDialogView = new PersonInfoDialogView2(mActivity, mUserID, mShowKick, mShowInvite);
+        personInfoDialogView = new PersonInfoDialogView2(mActivity, mUserID, mShowKick, mShowInvite);
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
             public void onClickReport(int userID) {
@@ -160,6 +162,9 @@ public class PersonInfoDialog {
 
     public void dismiss() {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+        if (personInfoDialogView != null && personInfoDialogView.mPersonMoreOpView != null) {
+            personInfoDialogView.mPersonMoreOpView.dismiss();
+        }
         mKickListener = null;
         mInviteDoubleListener = null;
         if (mDialogPlus != null) {
@@ -170,6 +175,9 @@ public class PersonInfoDialog {
 
     public void dismiss(boolean useAnimation) {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
+        if (personInfoDialogView != null && personInfoDialogView.mPersonMoreOpView != null) {
+            personInfoDialogView.mPersonMoreOpView.dismiss();
+        }
         mKickListener = null;
         mInviteDoubleListener = null;
 
