@@ -167,7 +167,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mZanDisplayView = mRootView.findViewById(R.id.zan_display_view) as ZanView
         mPaddingView = mRootView.findViewById(R.id.padding_view)
 
-        (mPaddingView?.layoutParams as ConstraintLayout.LayoutParams).topMargin = U.getStatusBarUtil().getStatusBarHeight(activity) / 2
+        (mPaddingView?.layoutParams as ConstraintLayout.LayoutParams).topMargin = U.getStatusBarUtil().getStatusBarHeight(activity)
 
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
