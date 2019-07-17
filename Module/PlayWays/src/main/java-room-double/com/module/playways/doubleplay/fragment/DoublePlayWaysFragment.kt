@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.support.constraint.ConstraintLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.Gravity
@@ -61,6 +62,7 @@ import kotlin.properties.Delegates
 
 class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     val mTag = "DoublePlayWaysFragment"
+    private var mPaddingView: View? = null
     private var mReportTv: TextView? = null
     private var mExitIv: ImageView? = null
     private var mLeftAvatarSdv: SimpleDraweeView? = null
@@ -163,6 +165,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mGameTagTv = mRootView.findViewById(R.id.game_tag_tv) as ExTextView
         mSingTagTv = mRootView.findViewById(R.id.sing_tag_tv) as ExTextView
         mZanDisplayView = mRootView.findViewById(R.id.zan_display_view) as ZanView
+        mPaddingView = mRootView.findViewById(R.id.padding_view)
+
+        (mPaddingView?.layoutParams as ConstraintLayout.LayoutParams).topMargin = U.getStatusBarUtil().getStatusBarHeight(activity) / 2
 
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
