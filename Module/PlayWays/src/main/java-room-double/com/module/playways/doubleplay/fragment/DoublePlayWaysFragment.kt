@@ -463,39 +463,38 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     private fun receiveChangeSenceDialog(text: String, sceneType: Int) {
-        if (!mRoomData!!.isRoomPrepared()) {
-            U.getToastUtil().showShort("人齐了才可以开始玩哦～")
-        } else {
-            mReceiveChangeSenceDialog?.dismiss()
-            mUiHandler.postDelayed({
-                val tipsDialogView = TipsDialogView.Builder(context)
-                        .setMessageTip(text)
-                        .setConfirmTip("同意")
-                        .setCancelTip("不同意")
-                        .setConfirmBtnClickListener(object : AnimateClickListener() {
-                            override fun click(view: View) {
-                                mReceiveChangeSenceDialog?.dismiss()
-                                mDoubleCorePresenter?.agreeChangeScene(sceneType)
-                            }
-                        })
-                        .setCancelBtnClickListener(object : AnimateClickListener() {
-                            override fun click(view: View) {
-                                mReceiveChangeSenceDialog?.dismiss()
-                                mDoubleCorePresenter?.refuseChangeScene(sceneType)
-                            }
-                        })
-                        .build()
+        mChangeSenceDialog?.dismiss()
+        mDialogPlus?.dismiss()
+        mPersonInfoDialog?.dismiss()
+        mReceiveChangeSenceDialog?.dismiss()
+        mUiHandler.postDelayed({
+            val tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip(text)
+                    .setConfirmTip("同意")
+                    .setCancelTip("不同意")
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mReceiveChangeSenceDialog?.dismiss()
+                            mDoubleCorePresenter?.agreeChangeScene(sceneType)
+                        }
+                    })
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mReceiveChangeSenceDialog?.dismiss()
+                            mDoubleCorePresenter?.refuseChangeScene(sceneType)
+                        }
+                    })
+                    .build()
 
-                mReceiveChangeSenceDialog = DialogPlus.newDialog(context!!)
-                        .setContentHolder(ViewHolder(tipsDialogView))
-                        .setGravity(Gravity.BOTTOM)
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_80)
-                        .setExpanded(false)
-                        .create()
-                mReceiveChangeSenceDialog?.show()
-            }, 500)
-        }
+            mReceiveChangeSenceDialog = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create()
+            mReceiveChangeSenceDialog?.show()
+        }, 500)
     }
 
     override fun setData(type: Int, data: Any?) {
@@ -748,6 +747,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleChatSenceView?.destroy()
         mDoubleSingSenceView?.destroy()
         mCountDownScaleAnimators?.cancel()
+        mUiHandler.removeCallbacksAndMessages(null)
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {

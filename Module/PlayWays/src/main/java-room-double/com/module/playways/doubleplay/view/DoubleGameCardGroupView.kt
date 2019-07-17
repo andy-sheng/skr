@@ -68,7 +68,7 @@ class DoubleGameCardGroupView : ExConstraintLayout, Animation.AnimationListener 
     }
 
     fun setPanelInfo(localGamePanelInfo: LocalGamePanelInfo) {
-        if (panelId != localGamePanelInfo.panelSeq) {
+        if (panelId != localGamePanelInfo.panelSeq && localGamePanelInfo.items?.size == 4) {
             clearAnimation()
             panelId = localGamePanelInfo.panelSeq
             applyRotation(this, 0f, -90f, true)
