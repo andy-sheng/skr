@@ -349,6 +349,7 @@ public class CommentView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GrabSwitchRoomEvent event) {
+        tryStopPlay();
         mCommentAdapter.getDataList().clear();
         mCommentAdapter.notifyDataSetChanged();
         mOnBottom = true;
