@@ -23,7 +23,6 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.msg.event.AudioMsgEvent;
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.room.room.comment.adapter.CommentAdapter;
-import com.module.playways.room.room.comment.holder.CommentAudioHolder;
 import com.module.playways.room.room.comment.listener.CommentViewItemListener;
 import com.module.playways.room.room.comment.model.CommentAudioModel;
 import com.module.playways.room.room.comment.model.CommentDynamicModel;
@@ -31,7 +30,7 @@ import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent;
-import com.module.playways.songmanager.event.BeginRecordCustomGameEvent;
+import com.module.playways.songmanager.event.MuteAllVoiceEvent;
 import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.playways.R;
 import com.module.playways.room.msg.event.CommentMsgEvent;
@@ -203,7 +202,7 @@ public class CommentView extends RelativeLayout {
                         mMediaPlayer.reset();
                     }
                     mCommentAdapter.setCurrentPlayAudioModel(null);
-                    EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
+                    EventBus.getDefault().post(new MuteAllVoiceEvent(false));
                 } else {
                     // 重新开始播放
                     GrabRoundInfoModel now = ((GrabRoomData) mRoomData).getRealRoundInfo();
@@ -223,7 +222,7 @@ public class CommentView extends RelativeLayout {
                                 @Override
                                 public void onCompletion() {
                                     mCommentAdapter.setCurrentPlayAudioModel(null);
-                                    EventBus.getDefault().post(new BeginRecordCustomGameEvent(false));
+                                    EventBus.getDefault().post(new MuteAllVoiceEvent(false));
                                 }
 
                                 @Override
@@ -254,7 +253,7 @@ public class CommentView extends RelativeLayout {
                             // 播放url
                             mMediaPlayer.startPlay(commentAudioModel.getMsgUrl());
                         }
-                        EventBus.getDefault().post(new BeginRecordCustomGameEvent(true));
+                        EventBus.getDefault().post(new MuteAllVoiceEvent(true));
                     }
                 }
 
@@ -323,6 +322,18 @@ public class CommentView extends RelativeLayout {
         CommentDynamicModel commentDynamicModel = CommentDynamicModel.parseFromEvent(event, mRoomData);
         processCommentModel(commentDynamicModel);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MuteAllVoiceEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        if(event.getBegin()){
+            if (mMediaPlayer != null) {
+                mMediaPlayer.reset();
+            }
+            mCommentAdapter.setCurrentPlayAudioModel(null);
+        }
+    }
+
 
     void processCommentModel(CommentModel commentModel) {
         mCommentAdapter.addToHead(commentModel);

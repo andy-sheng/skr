@@ -73,7 +73,7 @@ import com.module.playways.grab.room.model.NumericDetailModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
-import com.module.playways.songmanager.event.BeginRecordCustomGameEvent;
+import com.module.playways.songmanager.event.MuteAllVoiceEvent;
 import com.module.playways.songmanager.event.RoomNameChangeEvent;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
@@ -2578,7 +2578,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(BeginRecordCustomGameEvent event) {
+    public void onEvent(MuteAllVoiceEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         if (event.getBegin()) {
             muteAllRemoteAudioStreams(true, false);

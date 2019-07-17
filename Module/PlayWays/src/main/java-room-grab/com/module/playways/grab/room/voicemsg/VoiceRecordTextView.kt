@@ -17,12 +17,11 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 
 import com.common.view.ex.ExTextView
-import com.module.playways.BaseRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
 import com.module.playways.room.room.RankRoomServerApi
-import com.module.playways.songmanager.event.BeginRecordCustomGameEvent
+import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -115,7 +114,7 @@ class VoiceRecordTextView : ExTextView {
                     text = "松开 结束"
                     alpha = 0.5f
                     startRecordCountDown()
-                    EventBus.getDefault().post(BeginRecordCustomGameEvent(true))
+                    EventBus.getDefault().post(MuteAllVoiceEvent(true))
                 }
             }
             action == MotionEvent.ACTION_MOVE -> {
@@ -152,10 +151,12 @@ class VoiceRecordTextView : ExTextView {
                     mCurrentState = STATE_IDLE
                     mShowTipsListener?.invoke(false)
                     U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
+                } else if (mCurrentState == STATE_RECORD_OK) {
+
                 } else {
                     U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
                 }
-                EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+                EventBus.getDefault().post(MuteAllVoiceEvent(false))
             }
         }
         return true
@@ -180,10 +181,11 @@ class VoiceRecordTextView : ExTextView {
                         text = "按住说话"
                         alpha = 1f
                         mCurrentState = STATE_RECORD_OK
+                        mMyMediaRecorder?.stop()
                         mDuration = mMyMediaRecorder?.duration?.toLong() ?: 0L
                         mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath!!, mDuration), true)
                         mTimeLimitListener?.invoke(false)
-                        EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+                        EventBus.getDefault().post(MuteAllVoiceEvent(false))
                     }
                 })
         if (mMyMediaRecorder == null) {
