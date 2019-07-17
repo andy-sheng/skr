@@ -10,7 +10,7 @@
     <com.scwang.smartrefresh.layout.header.ClassicsHeader
         android:id="@+id/classics_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -24,18 +24,8 @@
             android:layout_height="match_parent"
             android:clipChildren="false">
 
-            <!--只是做一下刘海屏幕的适配-->
-            <com.common.view.titlebar.CommonTitleBar
-                android:id="@+id/titlebar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:showBottomLine="false"
-                app:statusBarColor="@color/transparent"
-                app:titleBarHeight="@dimen/view_0_dp"/>
-
             <com.module.home.widget.UserInfoTitleView
                 android:id="@+id/user_info_title"
-                android:layout_below="@+id/titlebar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true" />
@@ -61,7 +51,7 @@
                     levelView2:mainWidth2="@dimen/view_125_dp"
                     levelView2:subBottom2="@dimen/view_6_dp"
                     levelView2:subHeight2="@dimen/view_13_dp"
-                    levelView2:subWidth2="@dimen/view_24_dp"/>
+                    levelView2:subWidth2="@dimen/view_24_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/level_tv"

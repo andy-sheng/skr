@@ -36,30 +36,20 @@ import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
 /**
  * 快速游戏
  */
-class QuickGameView : ExRelativeLayout, IQuickGameView3 {
-    companion object {
-        const val TAG: String = "QuickGameView"
-    }
+class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.context), IQuickGameView3 {
 
-    var mFragment: BaseFragment
-    lateinit var mQuickGamePresenter: QuickGamePresenter
-    lateinit var mSkrAudioPermission: SkrAudioPermission
-    lateinit var mCameraPermission: SkrCameraPermission
-    lateinit var mGameAdapter: GameAdapter
-    internal var mRealNameVerifyUtils = SkrVerifyUtils()
+    val TAG: String = "QuickGameView"
+
+    var mQuickGamePresenter: QuickGamePresenter
+    var mSkrAudioPermission: SkrAudioPermission
+    var mCameraPermission: SkrCameraPermission
+    var mGameAdapter: GameAdapter
+    var mRealNameVerifyUtils = SkrVerifyUtils()
 
     var mRecommendInterval = 0
 
-    constructor(fragment: BaseFragment) : super(fragment.context) {
-        mFragment = fragment
-        initView()
-    }
-
     init {
         View.inflate(context, R.layout.quick_game_view_layout, this)
-    }
-
-    fun initView() {
         mQuickGamePresenter = QuickGamePresenter(this)
         mSkrAudioPermission = SkrAudioPermission()
         mCameraPermission = SkrCameraPermission()
@@ -68,31 +58,7 @@ class QuickGameView : ExRelativeLayout, IQuickGameView3 {
         refreshLayout.setEnableLoadMore(false)
         refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         refreshLayout.setEnableOverScrollDrag(true)
-//        mGameAdapter = GameAdapter(mFragment, object : GameAdapter.GameAdapterListener {
-//            override fun moreRoom() {
-//
-//            }
-//
-//            override fun enterRoom(model: RecommendModel?) {
-//                // 直接进入房间
-//            }
-//
-//            override fun clickPractice() {
-//            }
-//
-//            override fun clickRank() {
-//            }
-//
-//            override fun clickTask() {
-//            }
-//
-//            override fun createRoom() {
-//            }
-//
-//            override fun selectSpecial(specialModel: SpecialModel?) {
-//            }
-//        })
-        mGameAdapter = GameAdapter(mFragment)
+        mGameAdapter = GameAdapter(fragment)
         mGameAdapter.onCreateRoomListener = {
             // 创建房间
             MyLog.d(TAG, "createRoom")

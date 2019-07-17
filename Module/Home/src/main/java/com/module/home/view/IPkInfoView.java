@@ -18,4 +18,7 @@ public interface IPkInfoView {
 
     // 展示排行数据
     void showRankView(UserRankModel userRankModel);
+
+    // 刷新个人信息
+    void refreshBaseInfo();
 }
