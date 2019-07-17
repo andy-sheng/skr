@@ -786,6 +786,19 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     /**
+     * 本轮自己是否参与抢唱
+     * @return
+     */
+    public boolean isSelfGrab() {
+        for (WantSingerInfo wantSingerInfo :
+                getWantSingInfos()) {
+            if (wantSingerInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
      * 返回当前演唱者的id信息
      *
      * @return
@@ -882,6 +895,5 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", mMINIGameRoundInfoModels" + mMINIGameRoundInfoModels +
                 '}';
     }
-
 
 }

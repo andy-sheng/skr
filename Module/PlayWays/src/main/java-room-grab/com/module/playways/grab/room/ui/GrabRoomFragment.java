@@ -1020,11 +1020,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 if (mRoomData.isVideoRoom()) {
                     GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                     if (grabRoundInfoModel != null) {
-                        for (WantSingerInfo wantSingerInfo :
-                                grabRoundInfoModel.getWantSingInfos()) {
-                            if (wantSingerInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                                return;
-                            }
+                        if(grabRoundInfoModel.isSelfGrab()){
+                            return;
                         }
                     }
                     // 进入视频预览 判断是否实名验证过
