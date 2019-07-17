@@ -37,14 +37,12 @@ class VoiceRecordTextView : ExTextView {
         private val STATE_IDLE = 1       //正常空闲（默认状态）
         private val STATE_RECORDING = 2  //正在录音
         private val STATE_CANCEL = 3     //取消录音
-        private val STATE_RECORD_OK = 4  //录音完成
         private val DISTANCE_Y_CANCEL = 50  //判断上滑取消距离
     }
 
     val TAG = "VoiceRecordTextView"
 
     var mCurrentState = STATE_IDLE
-    var mIsRecording = false
 
     var mHandlerTaskTimer: HandlerTaskTimer? = null
     var mMyMediaRecorder: MyMediaRecorder? = null
@@ -118,7 +116,7 @@ class VoiceRecordTextView : ExTextView {
                     U.getToastUtil().showShort("在麦上无法录音")
                     return false
                 }
-                if (mCurrentState == STATE_IDLE || mCurrentState == STATE_RECORD_OK) {
+                if (mCurrentState == STATE_IDLE ) {
                     // 开始录音，显示手指上滑，取消发送
                     mCurrentState = STATE_RECORDING
                     mShowTipsListener?.invoke(true)
@@ -130,44 +128,23 @@ class VoiceRecordTextView : ExTextView {
             }
             action == MotionEvent.ACTION_MOVE -> {
                 MyLog.d(TAG, "ACTION_MOVE")
-                if (mCurrentState == STATE_RECORDING && wantToCancle(x.toInt(), y.toInt())) {
-                    // 停止录音，显示松开手指，取消发送
-                    mCurrentState = STATE_CANCEL
-                    cancelRecordCountDown()
-                    mCancelRecordListener?.invoke()
+                if(wantToCancle(x.toInt(), y.toInt())){
+                    if(mCurrentState == STATE_RECORDING){
+                        mCurrentState = STATE_CANCEL
+                        mCancelRecordListener?.invoke()
+                    }
+                }else{
+                    if(mCurrentState == STATE_CANCEL){
+                        mCurrentState = STATE_RECORDING
+                        mShowTipsListener?.invoke(true)
+                    }
                 }
             }
             (action == MotionEvent.ACTION_CANCEL ||
                     action == MotionEvent.ACTION_UP) -> {
                 MyLog.d(TAG, "ACTION_UP $mCurrentState")
                 // 停止录音
-                cancelRecordCountDown()
-                text = "按住说话"
-                alpha = 1f
-                if (mCurrentState == STATE_RECORDING) {
-                    val duration = mMyMediaRecorder?.mDuration?.toLong() ?: 0L
-                    if (duration < 1000) {
-                        // 时间太短, 提示太短再消失
-                        mTimeLimitListener?.invoke(true)
-                        U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
-                        mCurrentState = STATE_IDLE
-                    } else {
-                        // 上传录音文件，并发送(同时需要处理用户可能的再录制)
-                        mCurrentState = STATE_RECORD_OK
-                        mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath, duration), true)
-                        mShowTipsListener?.invoke(false)
-                    }
-                } else if (mCurrentState == STATE_CANCEL) {
-                    // 弹框消失
-                    mCurrentState = STATE_IDLE
-                    mShowTipsListener?.invoke(false)
-                    U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
-                } else if (mCurrentState == STATE_RECORD_OK) {
-
-                } else {
-                    U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
-                }
-                EventBus.getDefault().post(MuteAllVoiceEvent(false))
+                onActionUp()
             }
         }
         return true
@@ -175,28 +152,20 @@ class VoiceRecordTextView : ExTextView {
 
     private fun startRecordCountDown() {
         cancelRecordCountDown()
-        mIsRecording = true
         mHandlerTaskTimer = HandlerTaskTimer.newBuilder().interval(1000)
                 .take(maxDuration / 1000)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(integer: Int) {
                         val t = maxDuration / 1000 - integer
-                        if (t <= 5) {
+                        if (t <= 5 && mCurrentState == STATE_RECORDING) {
                             mRemainTimeListener?.invoke("还可以说${t}秒")
                         }
                     }
 
                     override fun onComplete() {
                         super.onComplete()
-                        cancelRecordCountDown()
-                        text = "按住说话"
-                        alpha = 1f
-                        mCurrentState = STATE_RECORD_OK
-                        mMyMediaRecorder?.stop()
-                        val duration = mMyMediaRecorder?.mDuration?.toLong() ?: 0L
-                        mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath, duration), true)
+                        onActionUp()
                         mTimeLimitListener?.invoke(false)
-                        EventBus.getDefault().post(MuteAllVoiceEvent(false))
                     }
                 })
         if (mMyMediaRecorder == null) {
@@ -218,13 +187,35 @@ class VoiceRecordTextView : ExTextView {
                 mChangeVoiceLevelListener?.invoke(it)
             }
         }
+    }
 
+    private fun onActionUp(){
+        cancelRecordCountDown()
+        text = "按住说话"
+        alpha = 1f
+        if (mCurrentState == STATE_RECORDING) {
+            val duration = mMyMediaRecorder?.mDuration?.toLong() ?: 0L
+            if (duration < 1000) {
+                // 时间太短, 提示太短再消失
+                mTimeLimitListener?.invoke(true)
+                U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
+            } else {
+                // 上传录音文件，并发送(同时需要处理用户可能的再录制)
+                mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath, duration), true)
+                mShowTipsListener?.invoke(false)
+            }
+        } else if (mCurrentState == STATE_CANCEL) {
+            // 弹框消失
+            mShowTipsListener?.invoke(false)
+            U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
+        }
+        mCurrentState = STATE_IDLE
+        EventBus.getDefault().post(MuteAllVoiceEvent(false))
     }
 
     private fun cancelRecordCountDown() {
         mHandlerTaskTimer?.dispose()
         mMyMediaRecorder?.stop()
-        mIsRecording = false
     }
 
     private fun wantToCancle(x: Int, y: Int): Boolean {
