@@ -129,7 +129,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                         StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                     }
                     2 -> {
-                        animation(color, Color.parseColor("#261127"))
+                        animation(color, Color.parseColor("#122042"))
                         mQuickGameView?.stopTimer()
 //                        mFriendRoomGameView?.stopTimer()
                         mDoubleRoomGameView?.initData()

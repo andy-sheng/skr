@@ -30,15 +30,13 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/task_red_iv"
-        android:layout_width="@dimen/view_12_dp"
-        android:layout_height="@dimen/view_12_dp"
+        android:layout_width="@dimen/view_8_dp"
+        android:layout_height="@dimen/view_8_dp"
         android:layout_alignTop="@+id/task_iv"
         android:layout_alignRight="@+id/task_iv"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="#FF8AB6"
-        app:bl_stroke_color="#CB5883"
-        app:bl_stroke_width="@dimen/view_2_dp"
         app:layout_constraintRight_toRightOf="@id/task_iv"
         app:layout_constraintTop_toTopOf="@id/task_iv" />
 
