@@ -41,6 +41,7 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
 
     init {
         mObjArr[TYPE_GAMETYPE_HOLDER] = GameTypeModel()
+        mObjArr[TYPE_FUNCATION_HOLDER] = FuncationModel(false)
     }
 
     fun updateBanner(bannerModel: BannerModel?) {
