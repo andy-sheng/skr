@@ -9,8 +9,6 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:src="@drawable/grab_game_create_icon"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

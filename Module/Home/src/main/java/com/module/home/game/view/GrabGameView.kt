@@ -114,7 +114,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
             while (iterator.hasNext()) {
                 val specialModel = iterator.next()
                 if (specialModel != null) {
-                    if (TextUtils.isEmpty(specialModel.bgImage2) || TextUtils.isEmpty(specialModel.bgImage1)) {
+                    if (specialModel.biggest == null || specialModel.longer == null) {
                         iterator.remove()
                     }
                 }
@@ -131,6 +131,6 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
         mGrabGameAdapter.notifyDataSetChanged()
     }
 
-    fun destory(){
+    fun destory() {
     }
 }
