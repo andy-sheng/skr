@@ -6,6 +6,7 @@ import android.widget.ImageView
 
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -47,7 +48,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
 
         mAudioTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if(listener?.clickAudio(isPlaying, mCommentAudioModel) == true){
+                if (listener?.clickAudio(isPlaying, mCommentAudioModel) == true) {
                     mCommentAudioModel?.isRead = true
                     mRedIv.visibility = View.GONE
                 }
@@ -59,11 +60,13 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         this.position = position
         this.mCommentAudioModel = model
 
-        val duration = Math.ceil((model.duration / 1000).toDouble())
-
-        val width = when (duration.toInt()) {
+        var duration = Math.round((model.duration.toFloat() / 1000.toFloat()).toDouble()).toInt()
+        if (duration > 15) {
+            duration = 15
+        }
+        val width = when (duration) {
             in 0..5 -> minSize
-            in 6..10 -> minSize + (maxSize - minSize) / 5 * (duration.toInt() - 5)
+            in 6..10 -> minSize + (maxSize - minSize) / 5 * (duration - 5)
             else -> maxSize
         }
         var lp = mAudioTv.layoutParams

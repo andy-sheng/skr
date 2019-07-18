@@ -152,6 +152,7 @@ class VoiceRecordTextView : ExTextView {
     private fun startRecordCountDown() {
         cancelRecordCountDown()
         mHandlerTaskTimer = HandlerTaskTimer.newBuilder().interval(1000)
+                .delay(1000)
                 .take(maxDuration / 1000)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(integer: Int) {
