@@ -35,7 +35,6 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         mNicknameTv = (ExTextView) itemView.findViewById(R.id.nickname_tv);
         mRecommendTagSdv = (SimpleDraweeView) itemView.findViewById(R.id.recommend_tag_sdv);
 
-
         itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {

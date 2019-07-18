@@ -32,11 +32,12 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
     var onClickTaskListener: (() -> Unit)? = null
     var onClickRankListener: (() -> Unit)? = null
     var onClickPracticeListener: (() -> Unit)? = null
-    var onEnterRoomListener: ((model: RecommendModel) -> Unit)? = null
     var onMoreRoomListener: (() -> Unit)? = null
 
+    var onEnterRoomListener: ((model: RecommendModel) -> Unit)? = null
     var onPkRoomListener: (() -> Unit)? = null
     var onDoubleRoomListener: (() -> Unit)? = null
+    var onGrabRoomListener: (() -> Unit)? = null
 
     init {
         mObjArr[TYPE_GAMETYPE_HOLDER] = GameTypeModel()
@@ -103,7 +104,7 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
             return QuickRoomViewHolder(view, mBaseFragment, onCreateRoomListener, onSelectSpecialListener)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.game_type_item_view, parent, false)
-            return GameTypeViewHolder(view, onDoubleRoomListener, onPkRoomListener, onCreateRoomListener, onSelectSpecialListener)
+            return GameTypeViewHolder(view, onDoubleRoomListener, onPkRoomListener, onCreateRoomListener, onGrabRoomListener)
         }
     }
 

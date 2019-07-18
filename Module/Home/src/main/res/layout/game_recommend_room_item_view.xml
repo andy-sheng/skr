@@ -32,6 +32,7 @@
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_12_dp"
         android:drawableRight="@drawable/grab_recommend_more_icon"
+        android:drawablePadding="@dimen/view_6_dp"
         android:text="更多在线好友"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_14_dp" />

@@ -20,10 +20,12 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
+import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.friends.FriendMoreRoomFragment
 import com.component.busilib.friends.RecommendModel
+import com.component.busilib.friends.SimpleRoomInfo
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
@@ -103,27 +105,49 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
         mGameAdapter.onEnterRoomListener = {
             // 进入房间
-            StatisticsAdapter.recordCountEvent("game","express_room_outsideclick",null)
+            if (it.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
+                mSkrAudioPermission.ensurePermission({
+                    mCameraPermission.ensurePermission({
+                        mRealNameVerifyUtils.checkJoinVideoPermission {
+                            // 进入视频预览
+                            ARouter.getInstance()
+                                    .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                    .withInt("mFrom", FROM_FRIEND_RECOMMEND)
+                                    .withInt("mRoomId", it.roomInfo.roomID)
+                                    .withInt("mInviteType", 0)
+                                    .navigation()
+                        }
+                    }, true)
+                }, true)
+            } else {
+                mSkrAudioPermission.ensurePermission({
+                    mRealNameVerifyUtils.checkJoinAudioPermission(it.roomInfo.tagID) {
+                        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                        iRankingModeService?.tryGoGrabRoom(it.roomInfo.roomID, 0)
+                    }
+                }, true)
+            }
+            StatisticsAdapter.recordCountEvent("game", "express_room_outsideclick", null)
         }
         mGameAdapter.onClickTaskListener = {
             // 进入任务
             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                     .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
                     .navigation()
-            StatisticsAdapter.recordCountEvent("game","express_tasks",null)
+            StatisticsAdapter.recordCountEvent("game", "express_tasks", null)
         }
         mGameAdapter.onClickRankListener = {
             // 新的排行榜
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKED)
                     .navigation()
-            StatisticsAdapter.recordCountEvent("game","express_ranklist",null)
+            StatisticsAdapter.recordCountEvent("game", "express_ranklist", null)
         }
         mGameAdapter.onClickPracticeListener = {
             // 进入练歌房
             ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                     .withBoolean("selectSong", true)
                     .navigation()
-            StatisticsAdapter.recordCountEvent("game","express_practice",null)
+            StatisticsAdapter.recordCountEvent("game", "express_practice", null)
         }
         mGameAdapter.onSelectSpecialListener = { it ->
             // 选择专场
@@ -159,10 +183,6 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                     }, true)
                 }
             }
-            /**
-             * 点击首页热门
-             */
-            StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
         }
 
         mGameAdapter.onPkRoomListener = {
@@ -226,8 +246,28 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                     }
                 }, true)
             }
+        }
 
-
+        mGameAdapter.onGrabRoomListener = {
+            var tagID = when {
+                MyUserInfoManager.getInstance().ageStage == 1 -> 44
+                MyUserInfoManager.getInstance().ageStage == 2 -> 45
+                MyUserInfoManager.getInstance().ageStage == 3 -> 47
+                MyUserInfoManager.getInstance().ageStage == 4 -> 48
+                else -> 47
+            }
+            mSkrAudioPermission.ensurePermission({
+                mRealNameVerifyUtils.checkJoinAudioPermission(tagID) {
+                    mRealNameVerifyUtils.checkAgeSettingState {
+                        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                        iRankingModeService?.tryGoGrabMatch(tagID)
+                    }
+                }
+            }, true)
+            /**
+             * 点击首页热门
+             */
+            StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
         }
 
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

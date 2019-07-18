@@ -15,7 +15,7 @@ class GameTypeViewHolder(itemView: View,
                          onDoubleRoomListener: (() -> Unit)?,
                          onPkRoomListener: (() -> Unit)?,
                          onCreateRoomListener: (() -> Unit)?,
-                         onSelectSpecialListener: ((specialModel: SpecialModel?) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
+                         onGrabRoomListener: (() -> Unit)?) : RecyclerView.ViewHolder(itemView) {
 
     val mDoubleIv: ImageView = itemView.findViewById(R.id.double_iv)
     val mPkIv: ImageView = itemView.findViewById(R.id.pk_iv)
@@ -50,7 +50,7 @@ class GameTypeViewHolder(itemView: View,
 
         mGrabIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                onSelectSpecialListener?.invoke(mGameTypeModel?.mSpecialModel)
+                onGrabRoomListener?.invoke()
             }
         })
     }
