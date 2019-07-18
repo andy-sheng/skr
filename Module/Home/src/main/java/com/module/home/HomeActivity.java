@@ -45,7 +45,6 @@ import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
 import com.module.home.fragment.PersonFragment4;
-import com.module.home.fragment.PkInfoFragment;
 import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
@@ -75,8 +74,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mPersonArea;
     ExTextView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
-    RelativeLayout mRankArea;
-    ExTextView mRankBtn;
+    //    RelativeLayout mRankArea;
+//    ExTextView mRankBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
@@ -133,20 +132,20 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             MyLog.w(TAG, "HomeActivity initData" + " intent.getData()=" + getIntent().getData());
         }
         U.getStatusBarUtil().setTransparentBar(this, false);
-        mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
-        mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
-        mGameArea = (RelativeLayout) findViewById(R.id.game_area);
+        mMainActContainer = findViewById(R.id.main_act_container);
+        mBottomContainer = findViewById(R.id.bottom_container);
+        mGameArea = findViewById(R.id.game_area);
         mGameBtn = findViewById(R.id.game_btn);
-        mRankArea = findViewById(R.id.rank_area);
-        mRankBtn = findViewById(R.id.rank_btn);
-        mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
+//        mRankArea = findViewById(R.id.rank_area);
+//        mRankBtn = findViewById(R.id.rank_btn);
+        mMessageArea = findViewById(R.id.message_area);
         mMessageBtn = findViewById(R.id.message_btn);
-        mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
-        mMessageRedDot = (ExImageView) findViewById(R.id.message_red_dot);
-        mPersonArea = (RelativeLayout) findViewById(R.id.person_area);
+        mUnreadNumTv = findViewById(R.id.unread_num_tv);
+        mMessageRedDot = findViewById(R.id.message_red_dot);
+        mPersonArea = findViewById(R.id.person_area);
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
-        mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
-        mMainVp = (NestViewPager) findViewById(R.id.main_vp);
+        mPersonInfoRedDot = findViewById(R.id.person_info_red_dot);
+        mMainVp = findViewById(R.id.main_vp);
         mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -156,7 +155,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
-        mMainVp.setOffscreenPageLimit(3);
+        mMainVp.setOffscreenPageLimit(2);
         checkIfFromSchema();
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -166,14 +165,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (position == 0) {
                     return new GameFragment3();
                 } else if (position == 1) {
-                    return new PkInfoFragment();
-                } else if (position == 2) {
                     if (mMsgService == null) {
                         return new PersonFragment4();
                     } else {
                         return (Fragment) mMsgService.getMessageFragment();
                     }
-                } else if (position == 3) {
+                } else if (position == 2) {
                     return new PersonFragment4();
                 }
                 return null;
@@ -182,9 +179,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             @Override
             public int getCount() {
                 if (mMsgService == null) {
-                    return 3;
+                    return 2;
                 } else {
-                    return 4;
+                    return 3;
                 }
             }
         };
@@ -213,20 +210,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 selectTab(0);
             }
         });
-
-        mRankArea.setOnClickListener(new DebounceViewClickListener() {
+        
+        mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
                 mMainVp.setCurrentItem(1, false);
                 selectTab(1);
-            }
-        });
-
-        mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
-            @Override
-            public void clickValid(View v) {
-                mMainVp.setCurrentItem(2, false);
-                selectTab(2);
 
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
             }
@@ -235,8 +224,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                mMainVp.setCurrentItem(3, false);
-                selectTab(3);
+                mMainVp.setCurrentItem(2, false);
+                selectTab(2);
             }
         });
 
@@ -297,12 +286,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     private void selectTab(int tabSeq) {
         Drawable drawable0 = U.getDrawable(R.drawable.ic_home_normal);
-        Drawable drawable1 = U.getDrawable(R.drawable.ic_rank_normal);
-        Drawable drawable2 = U.getDrawable(R.drawable.ic_chat_normal);
-        Drawable drawable3 = U.getDrawable(R.drawable.ic_me_normal);
+        Drawable drawable1 = U.getDrawable(R.drawable.ic_chat_normal);
+        Drawable drawable2 = U.getDrawable(R.drawable.ic_me_normal);
 
         mGameBtn.setSelected(false);
-        mRankBtn.setSelected(false);
         mMessageBtn.setSelected(false);
         mPersonInfoBtn.setSelected(false);
 
@@ -312,23 +299,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 mGameBtn.setSelected(true);
                 break;
             case 1:
-                drawable1 = U.getDrawable(R.drawable.ic_rank_selected);
-                mRankBtn.setSelected(true);
-                break;
-            case 2:
-                drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
+                drawable1 = U.getDrawable(R.drawable.ic_chat_selected);
                 mMessageBtn.setSelected(true);
                 break;
-            case 3:
-                drawable3 = U.getDrawable(R.drawable.ic_me_selected);
+            case 2:
+                drawable2 = U.getDrawable(R.drawable.ic_me_selected);
                 mPersonInfoBtn.setSelected(true);
                 break;
         }
 
         setTabDrawable(mGameBtn, drawable0);
-        setTabDrawable(mRankBtn, drawable1);
-        setTabDrawable(mMessageBtn, drawable2);
-        setTabDrawable(mPersonInfoBtn, drawable3);
+        setTabDrawable(mMessageBtn, drawable1);
+        setTabDrawable(mPersonInfoBtn, drawable2);
     }
 
     private void setTabDrawable(ExTextView textView, Drawable drawable) {

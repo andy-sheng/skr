@@ -56,7 +56,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * 暂时弃用
+ */
 public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     public final static String TAG = "PkInfoFragment";
 
