@@ -78,7 +78,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             MyLog.d(TAG, "createRoom")
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
             iRankingModeService?.tryGoCreateRoom()
-            StatisticsAdapter.recordCountEvent("grab", "room_create", null)
+            StatisticsAdapter.recordCountEvent("game", "express_create", null)
 
         }
         mGameAdapter.onMoreRoomListener = {
@@ -90,26 +90,27 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
         mGameAdapter.onEnterRoomListener = {
             // 进入房间
+            StatisticsAdapter.recordCountEvent("game","express_room_outsideclick",null)
         }
         mGameAdapter.onClickTaskListener = {
             // 进入任务
             ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                     .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
                     .navigation()
-            StatisticsAdapter.recordCountEvent("grab", "task_click", null)
+            StatisticsAdapter.recordCountEvent("game","express_tasks",null)
         }
         mGameAdapter.onClickRankListener = {
             // 新的排行榜
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKED)
                     .navigation()
-            StatisticsAdapter.recordCountEvent("grab", "ranklist", null)
+            StatisticsAdapter.recordCountEvent("game","express_ranklist",null)
         }
         mGameAdapter.onClickPracticeListener = {
             // 进入练歌房
             ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                     .withBoolean("selectSong", true)
                     .navigation()
-            StatisticsAdapter.recordCountEvent("grab", "practice", null)
+            StatisticsAdapter.recordCountEvent("game","express_practice",null)
         }
         mGameAdapter.onSelectSpecialListener = { it ->
             // 选择专场
@@ -145,10 +146,14 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                     }, true)
                 }
             }
-            StatisticsAdapter.recordCountEvent("grab", "categoryall2", null)
+            /**
+             * 点击首页热门
+             */
+            StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
         }
 
         mGameAdapter.onPkRoomListener = {
+            StatisticsAdapter.recordCountEvent("game", "express_rank", null)
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                     .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
                     .withBoolean("selectSong", true)
@@ -156,6 +161,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
 
         mGameAdapter.onDoubleRoomListener = {
+            StatisticsAdapter.recordCountEvent("game", "express_cp", null)
             if (!U.getNetworkUtils().hasNetwork()) {
                 U.getToastUtil().showLong("网络连接失败 请检查网络")
             } else {

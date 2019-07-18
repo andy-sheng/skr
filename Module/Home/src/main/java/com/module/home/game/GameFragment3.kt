@@ -180,26 +180,27 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 mGrabGameView.initData(false)
                 mQuickGameView?.stopTimer()
 //                mFriendRoomGameView?.initData(false)
-                StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
+                StatisticsAdapter.recordCountEvent("game", "grab_expose", null)
             }
             mGameVp.currentItem == 1 -> {
 //                mFriendRoomGameView?.stopTimer()
                 mQuickGameView?.initData()
-                StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
+                StatisticsAdapter.recordCountEvent("game", "express_expose", null)
             }
             mGameVp.currentItem == 2 -> {
                 mQuickGameView?.stopTimer()
 //                mFriendRoomGameView?.stopTimer()
                 mDoubleRoomGameView?.initData()
-                StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
+                StatisticsAdapter.recordCountEvent("game", "cp_expose", null)
             }
             mGameVp.currentItem == 3 -> {
                 mQuickGameView?.stopTimer()
 //                mFriendRoomGameView?.stopTimer()
                 mPkGameView?.initData(false)
+                StatisticsAdapter.recordCountEvent("game", "rank_expose", null)
             }
         }
-        StatisticsAdapter.recordCountEvent("grab", "expose", null)
+        StatisticsAdapter.recordCountEvent("game", "all_expose", null)
     }
 
     override fun onFragmentInvisible() {

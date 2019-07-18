@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
@@ -60,6 +61,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
             MyLog.d(TAG, "createRoom")
             val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
             iRankingModeService?.tryGoCreateRoom()
+            StatisticsAdapter.recordCountEvent("game", "grab_create", null)
         }
         mGrabGameAdapter.onClickTagListener = {
             // 点击专场
@@ -95,6 +97,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
                     }, true)
                 }
             }
+            StatisticsAdapter.recordCountEvent("game", "grab_category", null)
         }
         recycler_view.adapter = mGrabGameAdapter
     }

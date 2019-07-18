@@ -98,7 +98,7 @@ class FriendMoreRoomFragment : BaseFragment() {
 
             override fun onItemClicked(view: View, position: Int, model: RecommendModel?) {
                 if (model != null) {
-                    StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
+                    StatisticsAdapter.recordCountEvent("moreroom","room_insideclick",null)
                     val friendRoomModel = model as RecommendModel?
 
                     if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
@@ -113,7 +113,7 @@ class FriendMoreRoomFragment : BaseFragment() {
                     }
                 } else {
                     if (position == 0) {
-                        StatisticsAdapter.recordCountEvent("grab", "1.1tab_invite", null)
+                        StatisticsAdapter.recordCountEvent("moreroom", "1.1tab_invite", null)
                         showShareDialog()
                     } else {
                         MyLog.w(TAG, "onItemClicked view=$view position=$position model=$model")
@@ -180,9 +180,9 @@ class FriendMoreRoomFragment : BaseFragment() {
                     var roomInfo = JSON.parseObject(obj.data.getString("roomInfo"), SimpleRoomInfo::class.java)
                     if (roomInfo != null) {
                         if (roomInfo.roomID == friendRoomModel.roomInfo.roomID) {
-                            StatisticsAdapter.recordCountEvent("grab", "1.1roomclick_same", null)
+                            StatisticsAdapter.recordCountEvent("moreroom", "1.1roomclick_same", null)
                         } else {
-                            StatisticsAdapter.recordCountEvent("grab", "1.1roomclick_diff", null)
+                            StatisticsAdapter.recordCountEvent("moreroom", "1.1roomclick_diff", null)
                             // 更新下本地的数据
                             friendRoomModel.roomInfo = roomInfo
                             mFriendRoomVeritAdapter.update(friendRoomModel, position)
