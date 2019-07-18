@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.common.log.MyLog
 import com.component.busilib.friends.SpecialModel
 import com.module.home.R
 import com.module.home.game.viewholder.GrabSelectViewHolder

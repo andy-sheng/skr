@@ -8,14 +8,16 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_6_dp"
+        android:layout_marginRight="@dimen/view_6_dp">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:id="@+id/classics_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srlAccentColor="@color/white"
-            android:background="@color/transparent"/>
+            android:background="@color/transparent"
+            app:srlAccentColor="@color/white" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
