@@ -37,7 +37,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
     init {
         View.inflate(context, R.layout.grab_game_view_layout, this)
 
-        refreshLayout.setEnableRefresh(true)
+        refreshLayout.setEnableRefresh(false)
         refreshLayout.setEnableLoadMore(false)
         refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         refreshLayout.setEnableOverScrollDrag(true)
