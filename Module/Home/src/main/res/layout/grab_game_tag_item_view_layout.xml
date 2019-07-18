@@ -9,9 +9,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_sdv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent" />
 
 
 </android.support.constraint.ConstraintLayout>

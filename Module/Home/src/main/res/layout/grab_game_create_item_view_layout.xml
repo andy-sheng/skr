@@ -8,6 +8,6 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/grab_game_create_icon"/>
+        android:background="@drawable/grab_game_create_icon" />
 
 </android.support.constraint.ConstraintLayout>

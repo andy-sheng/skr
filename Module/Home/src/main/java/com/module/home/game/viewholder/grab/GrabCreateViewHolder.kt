@@ -9,12 +9,13 @@ import com.module.home.R
 
 class GrabCreateViewHolder(itemView: View, onClickCreateListener: (() -> Unit)?) : RecyclerView.ViewHolder(itemView) {
 
-    var mBackground: ConstraintLayout = itemView.findViewById(R.id.background);
+    var mBackground: ConstraintLayout = itemView.findViewById(R.id.background)
 
     init {
 
         var lp = mBackground.layoutParams //此为父布局
-        lp.height = 348 * (U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(18f)) / 510
+        lp.width = U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(6f)
+        lp.height = 348 * (U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(6f)) / 510
         mBackground.layoutParams = lp
 
         itemView.setOnClickListener(object : AnimateClickListener() {
