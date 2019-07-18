@@ -1,11 +1,11 @@
 package com.module.playways.doubleplay.view
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.OvershootInterpolator
-import android.view.animation.ScaleAnimation
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -81,9 +81,6 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                                         .setCircle(true)
                                         .build())
                         mIconIv1.visibility = View.VISIBLE
-                        if (maxIndex == 0) {
-                            startAnimation(mIconIv1)
-                        }
                     }
 
                     1 -> {
@@ -94,9 +91,6 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                                         .setCircle(true)
                                         .build())
                         mIconIv2.visibility = View.VISIBLE
-                        if (maxIndex == 1) {
-                            startAnimation(mIconIv2)
-                        }
                     }
                 }
             }
@@ -104,11 +98,15 @@ class DoubleGameSelectCardView : ExConstraintLayout {
         }
     }
 
-    private fun startAnimation(view: View) {
-        val animation = ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        animation?.setDuration(300)
-        animation.interpolator = OvershootInterpolator()
-        view.startAnimation(animation)
+    private fun startAnimation() {
+        val animatorSet = AnimatorSet()
+        val scaleX = ObjectAnimator.ofFloat(this, "scaleX", 1.0f, 1.15f, 1.0f)
+        val scaleY = ObjectAnimator.ofFloat(this, "scaleY", 1.0f, 1.15f, 1.0f)
+
+        animatorSet.setDuration(500)
+        animatorSet.interpolator = OvershootInterpolator()
+        animatorSet.play(scaleX).with(scaleY)
+        animatorSet.start()
     }
 
     fun getSelect(): Boolean {
@@ -118,6 +116,10 @@ class DoubleGameSelectCardView : ExConstraintLayout {
     fun setSelectUser(userInfoModel: UserInfoModel, roomData: DoubleRoomData, isChoiced: Boolean) {
         mRoomData = roomData
         if (isChoiced) {
+            if (userInfoModel.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                startAnimation()
+            }
+
             if (userInfoListMap[userInfoModel.userId] == null) {
                 userInfoListMap[userInfoModel.userId] = userInfoModel
                 updateLockState(true)
