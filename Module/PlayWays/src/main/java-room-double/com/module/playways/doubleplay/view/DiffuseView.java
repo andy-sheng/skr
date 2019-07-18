@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.common.log.MyLog;
 import com.module.playways.R;
 
 import java.util.ArrayList;
@@ -197,7 +196,7 @@ public class DiffuseView extends View {
      */
     public void start(long delay) {
         mStopTs = System.currentTimeMillis() + delay;
-        mCircleCount++;
+        mCircleCount = 1;
         setVisibility(VISIBLE);
         invalidate();
     }
