@@ -95,8 +95,8 @@ class VoiceRecordTextView : ExTextView {
         val x = event.x
         val y = event.y
 
-        when {
-            action == MotionEvent.ACTION_DOWN -> {
+        when (action) {
+            MotionEvent.ACTION_DOWN -> {
                 MyLog.d(TAG, "ACTION_DOWN")
                 val roundInfoModel = mRoomData?.getRealRoundInfo<GrabRoundInfoModel>()
                 if (roundInfoModel != null && roundInfoModel!!.isSingStatus && roundInfoModel!!.singBySelf()) {
@@ -111,12 +111,12 @@ class VoiceRecordTextView : ExTextView {
                     U.getToastUtil().showShort("参与抢唱无法录音")
                     return false
                 }
-                if(ZqEngineKit.getInstance().params.isAnchor && !ZqEngineKit.getInstance().params.isLocalAudioStreamMute){
+                if (ZqEngineKit.getInstance().params.isAnchor && !ZqEngineKit.getInstance().params.isLocalAudioStreamMute) {
                     // 是主播切开麦不能录音
                     U.getToastUtil().showShort("在麦上无法录音")
                     return false
                 }
-                if (mCurrentState == STATE_IDLE ) {
+                if (mCurrentState == STATE_IDLE) {
                     // 开始录音，显示手指上滑，取消发送
                     mCurrentState = STATE_RECORDING
                     mShowTipsListener?.invoke(true)
@@ -126,22 +126,21 @@ class VoiceRecordTextView : ExTextView {
                     EventBus.getDefault().post(MuteAllVoiceEvent(true))
                 }
             }
-            action == MotionEvent.ACTION_MOVE -> {
+            MotionEvent.ACTION_MOVE -> {
                 MyLog.d(TAG, "ACTION_MOVE")
-                if(wantToCancle(x.toInt(), y.toInt())){
-                    if(mCurrentState == STATE_RECORDING){
+                if (wantToCancle(x.toInt(), y.toInt())) {
+                    if (mCurrentState == STATE_RECORDING) {
                         mCurrentState = STATE_CANCEL
                         mCancelRecordListener?.invoke()
                     }
-                }else{
-                    if(mCurrentState == STATE_CANCEL){
+                } else {
+                    if (mCurrentState == STATE_CANCEL) {
                         mCurrentState = STATE_RECORDING
                         mShowTipsListener?.invoke(true)
                     }
                 }
             }
-            (action == MotionEvent.ACTION_CANCEL ||
-                    action == MotionEvent.ACTION_UP) -> {
+            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                 MyLog.d(TAG, "ACTION_UP $mCurrentState")
                 // 停止录音
                 onActionUp()
@@ -189,7 +188,7 @@ class VoiceRecordTextView : ExTextView {
         }
     }
 
-    private fun onActionUp(){
+    private fun onActionUp() {
         cancelRecordCountDown()
         text = "按住说话"
         alpha = 1f
@@ -236,8 +235,8 @@ class VoiceRecordTextView : ExTextView {
         mIsUpload = true
         file.localPath?.let {
             val file2 = File(it)
-            if(file2.exists() && file2.isFile && file2.length()>10){
-                 UploadParams.newBuilder(file2.path)
+            if (file2.exists() && file2.isFile && file2.length() > 10) {
+                UploadParams.newBuilder(file2.path)
                         .setFileType(UploadParams.FileType.msgAudio)
                         .startUploadAsync(object : UploadCallback {
                             override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
