@@ -615,9 +615,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         //只有主动邀请的人打点
         if (mRoomData!!.inviterId != null && mRoomData!!.inviterId == MyUserInfoManager.getInstance().uid) {
             if (mRoomData!!.isGrabInviteRoom()) {
-                StatisticsAdapter.recordCountEvent("cp", "invite3_success", null)
-            } else if (mRoomData!!.isCreateRoom()) {
                 StatisticsAdapter.recordCountEvent("cp", "invite2_success", null)
+            } else if (mRoomData!!.isCreateRoom()) {
+                StatisticsAdapter.recordCountEvent("game_cp", "invite3_success", null)
             }
         }
     }

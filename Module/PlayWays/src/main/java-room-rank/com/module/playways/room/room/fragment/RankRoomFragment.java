@@ -760,7 +760,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
-//                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new AnimateClickListener() {

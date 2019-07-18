@@ -14,6 +14,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExRelativeLayout
+import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.friends.FriendRoomHorizontalAdapter
 import com.component.busilib.friends.GrabSongApi
@@ -34,7 +35,7 @@ class RecommendRoomViewHolder(itemView: View, internal var mBaseFragment: BaseFr
 
     init {
         var mFriendsRecycle: RecyclerView = itemView.findViewById(R.id.friends_recycle)
-        var mMoreFriends: ExImageView = itemView.findViewById(R.id.more_friends)
+        var mMoreFriends: ExTextView = itemView.findViewById(R.id.more_friends)
 
         mFriendsRecycle.isFocusableInTouchMode = false
         mFriendsRecycle.layoutManager = LinearLayoutManager(mBaseFragment.context, LinearLayoutManager.HORIZONTAL, false)

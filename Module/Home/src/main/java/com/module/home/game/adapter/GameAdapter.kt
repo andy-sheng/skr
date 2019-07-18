@@ -108,15 +108,12 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val obj = mDataList[position]
-        if (obj is BannerModel) {
-            (holder as BannerViewHolder).bindData(obj)
-        } else if (obj is FuncationModel) {
-            (holder as FuncationAreaViewHolder).bindData(obj)
-        } else if (obj is QuickJoinRoomModel) {
-            (holder as QuickRoomViewHolder).bindData(obj)
-        } else if (obj is GameTypeModel) {
-            (holder as GameTypeViewHolder).bindData(obj)
+        when (val obj = mDataList[position]) {
+            is BannerModel -> (holder as BannerViewHolder).bindData(obj)
+            is FuncationModel -> (holder as FuncationAreaViewHolder).bindData(obj)
+            is RecommendRoomModel -> (holder as RecommendRoomViewHolder).bindData(obj)
+            is QuickJoinRoomModel -> (holder as QuickRoomViewHolder).bindData(obj)
+            is GameTypeModel -> (holder as GameTypeViewHolder).bindData(obj)
         }
     }
 
@@ -125,18 +122,13 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
     }
 
     override fun getItemViewType(position: Int): Int {
-        val obj = mDataList[position]
-        if (obj is BannerModel) {
-            return TYPE_BANNER_HOLDER
-        } else if (obj is FuncationModel) {
-            return TYPE_FUNCATION_HOLDER
-        } else if (obj is RecommendRoomModel) {
-            return TYPE_RECOMMEND_HOLDER
-        } else if (obj is QuickJoinRoomModel) {
-            return TYPE_QUICK_ROOM_HOLDER
-        } else if (obj is GameTypeModel) {
-            return TYPE_GAMETYPE_HOLDER
+        return when (mDataList[position]) {
+            is BannerModel -> TYPE_BANNER_HOLDER
+            is FuncationModel -> TYPE_FUNCATION_HOLDER
+            is RecommendRoomModel -> TYPE_RECOMMEND_HOLDER
+            is QuickJoinRoomModel -> TYPE_QUICK_ROOM_HOLDER
+            is GameTypeModel -> TYPE_GAMETYPE_HOLDER
+            else -> 0
         }
-        return 0
     }
 }

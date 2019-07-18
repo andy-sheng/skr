@@ -50,7 +50,6 @@ public class VoiceRightOpView extends RelativeLayout {
                 if (params != null) {
                     if (params.isLocalAudioStreamMute()) {
                         mMicIv.setImageResource(R.drawable.jingyin_changtai);
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_micon", null);
                     } else {
                         mMicIv.setImageResource(R.drawable.jingyin_anxia);
                     }

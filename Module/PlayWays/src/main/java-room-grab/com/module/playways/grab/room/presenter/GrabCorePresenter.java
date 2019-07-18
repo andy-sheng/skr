@@ -642,11 +642,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         SongModel songModel = null;
         if (infoModel != null && infoModel.getMusic() != null) {
-//            HashMap map1 = new HashMap();
-//            map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-//            map.put("songName", infoModel.getMusic().getItemName());
-//            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                    "game_grab", map1);
             songModel = infoModel.getMusic();
         }
 

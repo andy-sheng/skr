@@ -4,19 +4,12 @@
     android:layout_width="@dimen/view_78_dp"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="@dimen/view_62_dp"
-        android:layout_height="@dimen/view_67_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:background="@drawable/s_touxiang" />
-
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_52_dp"
         android:layout_height="@dimen/view_52_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_35_dp" />
+        android:layout_marginTop="@dimen/view_48_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/nickname_tv"
@@ -25,7 +18,7 @@
         android:layout_below="@id/avatar_iv"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/view_4_dp"
-        android:layout_marginTop="@dimen/view_28_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_4_dp"
         android:ellipsize="end"
         android:gravity="center"
@@ -35,69 +28,15 @@
         android:textColor="@color/white_trans_60"
         android:textSize="@dimen/textsize_12_dp" />
 
-
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/recommend_tag_sdv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_16_dp"
-        android:layout_below="@id/avatar_iv"
+        android:layout_above="@id/nickname_tv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_6_dp"
+        android:layout_marginBottom="-14dp"
         android:gravity="center"
         android:visibility="gone" />
 
-    <!--<com.common.view.ex.ExTextView-->
-    <!--android:id="@+id/friend_tv"-->
-    <!--android:layout_width="@dimen/view_36_dp"-->
-    <!--android:layout_height="@dimen/view_16_dp"-->
-    <!--android:layout_below="@id/avatar_iv"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="@dimen/view_6_dp"-->
-    <!--android:gravity="center"-->
-    <!--android:text="好友"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="@dimen/textsize_10_dp"-->
-    <!--android:visibility="gone"-->
-    <!--app:bl_corners_radius="@dimen/view_8_dp"-->
-    <!--app:bl_shape="rectangle"-->
-    <!--app:bl_solid_color="#68CCFF"-->
-    <!--app:bl_stroke_color="@color/white"-->
-    <!--app:bl_stroke_width="@dimen/view_1_dp" />-->
-
-    <!--<com.common.view.ex.ExTextView-->
-    <!--android:id="@+id/recommend_tv"-->
-    <!--android:layout_width="@dimen/view_36_dp"-->
-    <!--android:layout_height="@dimen/view_16_dp"-->
-    <!--android:layout_below="@id/avatar_iv"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="@dimen/view_6_dp"-->
-    <!--android:gravity="center"-->
-    <!--android:text="推荐"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="@dimen/textsize_10_dp"-->
-    <!--android:visibility="gone"-->
-    <!--app:bl_corners_radius="@dimen/view_8_dp"-->
-    <!--app:bl_shape="rectangle"-->
-    <!--app:bl_solid_color="#82C43B"-->
-    <!--app:bl_stroke_color="@color/white"-->
-    <!--app:bl_stroke_width="@dimen/view_1_dp" />-->
-
-    <!--<com.common.view.ex.ExTextView-->
-    <!--android:id="@+id/follow_tv"-->
-    <!--android:layout_width="@dimen/view_36_dp"-->
-    <!--android:layout_height="@dimen/view_16_dp"-->
-    <!--android:layout_below="@id/avatar_iv"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="@dimen/view_6_dp"-->
-    <!--android:gravity="center"-->
-    <!--android:text="关注"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="@dimen/textsize_10_dp"-->
-    <!--android:visibility="gone"-->
-    <!--app:bl_corners_radius="@dimen/view_8_dp"-->
-    <!--app:bl_shape="rectangle"-->
-    <!--app:bl_solid_color="#F5A623"-->
-    <!--app:bl_stroke_color="@color/white"-->
-    <!--app:bl_stroke_width="@dimen/view_1_dp" />-->
 
 </RelativeLayout>

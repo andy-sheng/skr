@@ -1,5 +1,6 @@
 package com.component.busilib.friends;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,6 +9,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -57,6 +59,8 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(mFriendRoomModel.getUserInfo().getAvatar())
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
+                            .setBorderColor(Color.WHITE)
                             .setCircle(true)
                             .build());
             String disName = mFriendRoomModel.getUserInfo().getNickname();
