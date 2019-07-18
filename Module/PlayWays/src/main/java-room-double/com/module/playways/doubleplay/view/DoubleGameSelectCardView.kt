@@ -3,6 +3,9 @@ package com.module.playways.doubleplay.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.OvershootInterpolator
+import android.view.animation.ScaleAnimation
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -13,7 +16,6 @@ import com.common.view.ex.ExTextView
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
 import com.zq.live.proto.Common.EGameType
-import java.util.*
 
 
 class DoubleGameSelectCardView : ExConstraintLayout {
@@ -22,7 +24,7 @@ class DoubleGameSelectCardView : ExConstraintLayout {
     val mIconIv1: BaseImageView
     val mIconIv2: BaseImageView
     var mRoomData: DoubleRoomData? = null
-    val userInfoListMap: HashMap<Int, UserInfoModel> = HashMap()
+    val userInfoListMap: LinkedHashMap<Int, UserInfoModel> = LinkedHashMap()
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -60,9 +62,14 @@ class DoubleGameSelectCardView : ExConstraintLayout {
     }
 
     fun updateLockState() {
+        updateLockState(false)
+    }
+
+    fun updateLockState(animate: Boolean) {
         var index = 0
         mIconIv1.visibility = View.GONE
         mIconIv2.visibility = View.GONE
+        val maxIndex = userInfoListMap.size - 1
         for (userInfoModel in userInfoListMap) {
             if (mRoomData != null) {
                 when (index) {
@@ -74,6 +81,9 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                                         .setCircle(true)
                                         .build())
                         mIconIv1.visibility = View.VISIBLE
+                        if (maxIndex == 0) {
+                            startAnimation(mIconIv1)
+                        }
                     }
 
                     1 -> {
@@ -84,11 +94,21 @@ class DoubleGameSelectCardView : ExConstraintLayout {
                                         .setCircle(true)
                                         .build())
                         mIconIv2.visibility = View.VISIBLE
+                        if (maxIndex == 1) {
+                            startAnimation(mIconIv2)
+                        }
                     }
                 }
             }
             index++
         }
+    }
+
+    private fun startAnimation(view: View) {
+        val animation = ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        animation?.setDuration(300)
+        animation.interpolator = OvershootInterpolator()
+        view.startAnimation(animation)
     }
 
     fun getSelect(): Boolean {
@@ -100,41 +120,13 @@ class DoubleGameSelectCardView : ExConstraintLayout {
         if (isChoiced) {
             if (userInfoListMap[userInfoModel.userId] == null) {
                 userInfoListMap[userInfoModel.userId] = userInfoModel
-                updateLockState()
+                updateLockState(true)
             }
         } else {
             if (userInfoListMap[userInfoModel.userId] != null) {
                 userInfoListMap.remove(userInfoModel.userId)
-                updateLockState()
+                updateLockState(false)
             }
         }
-//        if (userInfoListMap[userInfoModel.userId] == null) {
-//            when (userInfoListMap.size) {
-//                0 -> {
-//                    AvatarUtils.loadAvatarByUrl(mIconIv1,
-//                            AvatarUtils.newParamsBuilder(roomData.getAvatarById(userInfoModel.userId))
-//                                    .setBorderColor(U.getColor(com.module.playways.R.color.white))
-//                                    .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
-//                                    .setCircle(true)
-//                                    .build())
-//                    mIconIv1.visibility = View.VISIBLE
-//                    userInfoListMap[userInfoModel.userId] = userInfoModel
-//                }
-//
-//                1 -> {
-//                    AvatarUtils.loadAvatarByUrl(mIconIv2,
-//                            AvatarUtils.newParamsBuilder(roomData.getAvatarById(userInfoModel.userId))
-//                                    .setBorderColor(U.getColor(com.module.playways.R.color.white))
-//                                    .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
-//                                    .setCircle(true)
-//                                    .build())
-//                    mIconIv2.visibility = View.VISIBLE
-//                    userInfoListMap[userInfoModel.userId] = userInfoModel
-//                }
-//                else -> MyLog.w("DoubleGameSelectCardView", "setSelectUser 什么情况")
-//            }
-//        } else {
-//            MyLog.w("DoubleGameSelectCardView", "setSelectUser, 这个人设置了两次？？，userId is $userInfoModel.userId, itemID is $itemId")
-//        }
     }
 }
