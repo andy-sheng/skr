@@ -293,7 +293,6 @@ public class LoginFragment extends BaseFragment implements Callback {
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        StatisticsAdapter.recordCountEvent("login", "expose", null);
         StatisticsAdapter.recordCountEvent("signup", "expose", null, true);
     }
 

@@ -993,10 +993,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void onVoiceChange(boolean voiceOpen) {
                 mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-//            if (!voiceOpen) {
-//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                        "game_muteon", null);
-//            }
             }
 
             @Override
@@ -1646,8 +1642,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                                 mQuitTipsDialog.dismiss(false);
                             }
                             mCorePresenter.exitRoom("quitGame tipsDialog");
-//                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                                    "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
@@ -1757,8 +1751,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                         activity1.finish();
                     }
                 }
-//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                        StatConstants.KEY_GAME_FINISH, null);
+
             } else {
                 MyLog.d(TAG, "onGrabGameOver activity hasdestroy");
             }

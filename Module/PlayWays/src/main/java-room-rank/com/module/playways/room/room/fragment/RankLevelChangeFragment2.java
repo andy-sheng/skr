@@ -355,8 +355,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
                             .withSerializable("voice_room_data", mRoomData)
                             .navigation();
                     activity.finish();
-//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-//                            StatConstants.KEY_GAME_FINISH, null);
+
                 }
             }
         }, 1000);

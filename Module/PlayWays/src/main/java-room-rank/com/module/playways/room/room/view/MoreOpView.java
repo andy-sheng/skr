@@ -81,7 +81,6 @@ public class MoreOpView extends RelativeLayout {
                         mVoiceControlBtn.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                                 null, null, null);
                     } else {
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_muteon", null);
                         mVoiceControlBtn.setText("打开声音");
                         Drawable drawableLeft = getResources().getDrawable(
                                 R.drawable.soundon);
