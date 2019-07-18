@@ -47,9 +47,10 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
 
         mAudioTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                mCommentAudioModel?.isRead = true
-                mRedIv.visibility = View.GONE
-                listener?.clickAudio(isPlaying, mCommentAudioModel)
+                if(listener?.clickAudio(isPlaying, mCommentAudioModel) == true){
+                    mCommentAudioModel?.isRead = true
+                    mRedIv.visibility = View.GONE
+                }
             }
         })
     }

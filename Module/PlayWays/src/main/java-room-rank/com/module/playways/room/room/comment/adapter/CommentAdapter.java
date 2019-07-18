@@ -120,6 +120,6 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
          */
         void clickAvatar(int userId);
 
-        void clickAudio(boolean isPlaying, CommentAudioModel commentAudioModel);
+        boolean clickAudio(boolean isPlaying, CommentAudioModel commentAudioModel);
     }
 }

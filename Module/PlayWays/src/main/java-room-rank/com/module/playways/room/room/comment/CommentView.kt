@@ -174,10 +174,10 @@ class CommentView : RelativeLayout {
                 }
             }
 
-            override fun clickAudio(isPlaying: Boolean, commentAudioModel: CommentAudioModel?) {
+            override fun clickAudio(isPlaying: Boolean, commentAudioModel: CommentAudioModel?): Boolean {
                 MyLog.d(TAG, "clickAudio isPlaying=$isPlaying commentAudioModel=$commentAudioModel")
                 if (commentAudioModel == null) {
-                    return
+                    return false
                 }
                 if (isPlaying) {
                     // 暂停播放
@@ -189,7 +189,7 @@ class CommentView : RelativeLayout {
                     if (ZqEngineKit.getInstance().params.isAnchor && !ZqEngineKit.getInstance().params.isLocalAudioStreamMute) {
                         // 是主播切开麦不能录音
                         U.getToastUtil().showShort("在麦上无法收听语音")
-                        return
+                        return false
                     }
                     // 直接在此处播放，有需要在放到外面去
                     mCommentAdapter?.setCurrentPlayAudioModel(commentAudioModel)
@@ -231,7 +231,7 @@ class CommentView : RelativeLayout {
                     }
                     EventBus.getDefault().post(MuteAllVoiceEvent(true))
                 }
-
+                return true
             }
         })
         mCommentAdapter?.setGameType(mGameType)
