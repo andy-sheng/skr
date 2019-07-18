@@ -304,7 +304,7 @@ public class AndroidMediaPlayer extends BasePlayer {
      */
     @Override
     public void startPlay(String path) {
-        MyLog.d(TAG, "startPlay" + " path=" + path);
+        MyLog.d(TAG, "startPlay" + " path=" + path +" oldPath="+mPath);
         if (mPlayer == null) {
             MyLog.w(TAG, "startPlay but mPlayer === null,return");
             return;
@@ -319,8 +319,8 @@ public class AndroidMediaPlayer extends BasePlayer {
         }
         if (mUrlChange) {
             mUrlChange = false;
+            String p = mPath;
             try {
-                String p = mPath;
                 MyLog.d(TAG, "startPlay2" + " p=" + p);
                 if (needReset) {
                     reset();
@@ -329,6 +329,14 @@ public class AndroidMediaPlayer extends BasePlayer {
                 mPlayer.prepareAsync();
             } catch (Exception e) {
                 MyLog.e(e);
+                MyLog.d(TAG, "startPlay2" + " 有异常，再次尝试");
+                try {
+                    mPlayer.reset();
+                    mPlayer.setDataSource(p);
+                    mPlayer.prepareAsync();
+                } catch (IOException e1) {
+                    MyLog.e(e);
+                }
             }
         }
 

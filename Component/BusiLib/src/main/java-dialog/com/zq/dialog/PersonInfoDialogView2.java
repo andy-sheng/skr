@@ -129,7 +129,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     boolean isFollow;
     boolean isFriend;
 
-    PersonMoreOpView mPersonMoreOpView;
+    public PersonMoreOpView mPersonMoreOpView;
 
     Context mContext;
     UserInfoServerApi mUserInfoServerApi;

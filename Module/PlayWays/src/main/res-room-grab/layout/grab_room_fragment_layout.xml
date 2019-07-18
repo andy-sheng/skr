@@ -44,7 +44,6 @@
             android:id="@+id/bottom_container_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/input_container_view"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/view_18_dp"
             gameType:type="grab" />
@@ -276,13 +275,6 @@
         android:inflatedId="@+id/grab_beauty_control_panel_view"
         android:layout="@layout/grab_beauty_control_panel_view_stub_layout" />
 
-    <ViewStub
-        android:id="@+id/grab_voice_record_tip_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/view_18_dp"
-        android:layout="@layout/grab_voice_record_tips_view_layout" />
-
     <com.module.playways.room.gift.view.GiftPanelView
         android:id="@+id/gift_panel_view"
         android:layout_width="match_parent"
@@ -297,13 +289,18 @@
         android:background="@color/black_trans_80"
         android:visibility="gone" />
 
-
     <com.module.playways.grab.room.view.GrabInputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
+    <ViewStub
+        android:id="@+id/grab_voice_record_tip_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/view_18_dp"
+        android:layout="@layout/grab_voice_record_tips_view_layout" />
 
     <ViewStub
         android:id="@+id/debug_log_view_stub"

@@ -26,7 +26,7 @@ import java.util.HashSet;
  * CSDN_LQR
  * 表情键盘协调工具
  */
-public class EmotionKeyboard {
+public class  EmotionKeyboard {
 
     public final static String TAG = "EmotionKeyboard";
 

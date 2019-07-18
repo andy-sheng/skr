@@ -33,7 +33,7 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomServerApi
 import com.module.playways.songmanager.event.AddCustomGameEvent
-import com.module.playways.songmanager.event.BeginRecordCustomGameEvent
+import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
@@ -119,7 +119,7 @@ class MakeGamePanelView : RelativeLayout {
                         mCircleCountDownView?.go(0, 15 * 1000)
                         mBeginRecordingTs = System.currentTimeMillis()
                         startCountDown()
-                        EventBus.getDefault().post(BeginRecordCustomGameEvent(true))
+                        EventBus.getDefault().post(MuteAllVoiceEvent(true))
                     }
                 }
                 MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
@@ -137,7 +137,7 @@ class MakeGamePanelView : RelativeLayout {
                             mStatus = STATUS_RECORD_OK
                             changeToRecordOk()
                         }
-                        EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+                        EventBus.getDefault().post(MuteAllVoiceEvent(false))
                     } else if (mStatus == STATUS_RECORD_OK) {
                         mStatus = STATUS_RECORD_PLAYING
                         mPlayBtn?.setImageResource(R.drawable.make_game_zanting)
@@ -221,14 +221,14 @@ class MakeGamePanelView : RelativeLayout {
                         mStatus = STATUS_RECORD_OK
                         mPlayBtn?.setImageResource(R.drawable.make_game_bofang)
                         mRecordingTipsTv?.text = "播放"
-                        EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+                        EventBus.getDefault().post(MuteAllVoiceEvent(false))
                     }
                 })
             }
             mMediaPlayer!!.startPlay(mMakeAudioFilePath)
-            EventBus.getDefault().post(BeginRecordCustomGameEvent(true))
+            EventBus.getDefault().post(MuteAllVoiceEvent(true))
         } else {
-            EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+            EventBus.getDefault().post(MuteAllVoiceEvent(false))
             if (mMediaPlayer != null) {
                 mMediaPlayer!!.reset()
             }
@@ -278,7 +278,7 @@ class MakeGamePanelView : RelativeLayout {
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomID
         map["standIntro"] = mUploadUrl ?: ""
-        map["standIntroEndT"] = mMyMediaRecorder!!.duration
+        map["standIntroEndT"] = mMyMediaRecorder!!.mDuration
         map["totalMs"] = mPlayTimeExpect * 1000
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
@@ -332,7 +332,7 @@ class MakeGamePanelView : RelativeLayout {
                             mMyMediaRecorder!!.stop()
                         }
                         changeToRecordOk()
-                        EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+                        EventBus.getDefault().post(MuteAllVoiceEvent(false))
                     }
                 })
         if (mMyMediaRecorder == null) {
@@ -392,7 +392,7 @@ class MakeGamePanelView : RelativeLayout {
         if (mUploadTask != null) {
             mUploadTask!!.cancel()
         }
-        EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+        EventBus.getDefault().post(MuteAllVoiceEvent(false))
     }
 
     fun showByDialog(roomId: Int) {

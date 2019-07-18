@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     android:background="#404A9A">
 
+    <View
+        android:id="@+id/padding_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.module.playways.doubleplay.view.NoScrollViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -67,13 +73,13 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginLeft="@dimen/view_15_dp"
-        android:layout_marginTop="@dimen/view_34_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
         android:text="举报"
         android:textColor="#FF8AB6"
         android:textSize="@dimen/textsize_14_dp"
         android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/padding_view" />
 
     <ImageView
         android:id="@+id/exit_iv"
@@ -92,9 +98,9 @@
         android:layout_width="@dimen/view_62_dp"
         android:layout_height="@dimen/view_62_dp"
         android:layout_marginLeft="@dimen/view_65_dp"
-        android:layout_marginTop="@dimen/view_62_dp"
+        android:layout_marginTop="@dimen/view_35_dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/padding_view" />
 
     <ImageView
         android:id="@+id/left_lock_icon"
@@ -204,7 +210,7 @@
         android:id="@+id/unlock_tv"
         android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_24_dp"
-        android:layout_marginTop="@dimen/view_120_dp"
+        android:layout_marginTop="@dimen/view_98_dp"
         android:gravity="center"
         android:text="亮灯"
         android:textColor="#404A9A"
@@ -214,7 +220,7 @@
         app:bl_solid_color="#FFC15B"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/padding_view"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="0dp" />
 

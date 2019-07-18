@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
+import com.module.playways.doubleplay.model.DoubleCurSongInfoEvent
 import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent
 import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent
 import com.module.playways.grab.room.event.GrabRoundChangeEvent
@@ -43,6 +44,7 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
     var mGrabRoomSongModelList: MutableList<GrabRoomSongModel>? = ArrayList()
 
     var mUiHandler: Handler = Handler()
+    var mOffset = 0
     var mHasMore = false
     var mTotalNum = 0
     var mLimit = 20
@@ -54,19 +56,19 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
         }
     }
 
-    fun getPlayBookList() {
+    fun getPlayBookList(isRefresh: Boolean) {
         if (mGetSongModelListTask != null) {
             mGetSongModelListTask!!.dispose()
         }
 
-        val offset = mGrabRoomSongModelList!!.size
-
-        MyLog.d(TAG, "getPlayBookList offset is $offset")
-
-        mGetSongModelListTask = ApiMethods.subscribe(mDoubleRoomServerApi.getSongList(mDoubleRoomData.gameId, offset.toLong(), mLimit), object : ApiObserver<ApiResult>() {
+        if (isRefresh) {
+            mOffset = 0
+        }
+        mGetSongModelListTask = ApiMethods.subscribe(mDoubleRoomServerApi.getSongList(mDoubleRoomData.gameId, mOffset.toLong(), mLimit), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val grabRoomSongModels = JSON.parseArray(result.data!!.getString("playbook"), GrabRoomSongModel::class.java)
+                    mOffset = result.data!!.getIntValue("offset")
                     if (grabRoomSongModels == null || grabRoomSongModels.size == 0) {
                         //没有更多了
                         mIGrabSongManageView.hasMoreSongList(false)
@@ -142,7 +144,6 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabRoundChangeEvent) {
-
         updateSongList()
     }
 
@@ -155,7 +156,7 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
     fun onEvent(event: DoubleAddMusicEvent) {
         // 双人房都可以点歌
         mGrabRoomSongModelList!!.clear()
-        getPlayBookList()
+        getPlayBookList(true)
     }
 
     /**

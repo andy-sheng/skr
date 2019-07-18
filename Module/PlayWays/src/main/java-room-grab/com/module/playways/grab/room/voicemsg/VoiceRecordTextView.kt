@@ -17,12 +17,13 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 
 import com.common.view.ex.ExTextView
-import com.module.playways.BaseRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
 import com.module.playways.room.room.RankRoomServerApi
-import com.module.playways.songmanager.event.BeginRecordCustomGameEvent
+import com.module.playways.songmanager.event.MuteAllVoiceEvent
+import com.zq.live.proto.Room.EQRoundStatus
+import com.zq.mediaengine.kit.ZqEngineKit
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -36,15 +37,12 @@ class VoiceRecordTextView : ExTextView {
         private val STATE_IDLE = 1       //正常空闲（默认状态）
         private val STATE_RECORDING = 2  //正在录音
         private val STATE_CANCEL = 3     //取消录音
-        private val STATE_RECORD_OK = 4  //录音完成
         private val DISTANCE_Y_CANCEL = 50  //判断上滑取消距离
     }
 
     val TAG = "VoiceRecordTextView"
 
     var mCurrentState = STATE_IDLE
-    var mBeginRecordingTs: Long = 0
-    var mIsRecording = false
 
     var mHandlerTaskTimer: HandlerTaskTimer? = null
     var mMyMediaRecorder: MyMediaRecorder? = null
@@ -60,7 +58,6 @@ class VoiceRecordTextView : ExTextView {
 
     val mVoiceDir = U.getAppInfoUtils().getSubDirFile("voice")
     var mRecordAudioFilePath: String? = null
-    var mDuration: Long = 0
     var mRoomData: GrabRoomData? = null
 
     constructor(context: Context) : super(context) {}
@@ -98,64 +95,56 @@ class VoiceRecordTextView : ExTextView {
         val x = event.x
         val y = event.y
 
-        val roundInfoModel = mRoomData?.getRealRoundInfo<GrabRoundInfoModel>()
-        if (roundInfoModel != null && roundInfoModel!!.isSingStatus && roundInfoModel!!.singBySelf()) {
-            U.getToastUtil().showShort("演唱中无法录音")
-            return false
-        }
-
         when {
             action == MotionEvent.ACTION_DOWN -> {
                 MyLog.d(TAG, "ACTION_DOWN")
-                if (mCurrentState == STATE_IDLE || mCurrentState == STATE_RECORD_OK) {
+                val roundInfoModel = mRoomData?.getRealRoundInfo<GrabRoundInfoModel>()
+                if (roundInfoModel != null && roundInfoModel!!.isSingStatus && roundInfoModel!!.singBySelf()) {
+                    U.getToastUtil().showShort("演唱中无法录音")
+                    return false
+                }
+                if (roundInfoModel != null && roundInfoModel!!.isFreeMicRound) {
+                    U.getToastUtil().showShort("自由麦轮次无法录音")
+                    return false
+                }
+                if (roundInfoModel != null && roundInfoModel!!.status == EQRoundStatus.QRS_INTRO.value && roundInfoModel.isSelfGrab) {
+                    U.getToastUtil().showShort("参与抢唱无法录音")
+                    return false
+                }
+                if(ZqEngineKit.getInstance().params.isAnchor && !ZqEngineKit.getInstance().params.isLocalAudioStreamMute){
+                    // 是主播切开麦不能录音
+                    U.getToastUtil().showShort("在麦上无法录音")
+                    return false
+                }
+                if (mCurrentState == STATE_IDLE ) {
                     // 开始录音，显示手指上滑，取消发送
                     mCurrentState = STATE_RECORDING
-                    mBeginRecordingTs = System.currentTimeMillis()
                     mShowTipsListener?.invoke(true)
                     text = "松开 结束"
                     alpha = 0.5f
                     startRecordCountDown()
-                    EventBus.getDefault().post(BeginRecordCustomGameEvent(true))
+                    EventBus.getDefault().post(MuteAllVoiceEvent(true))
                 }
             }
             action == MotionEvent.ACTION_MOVE -> {
                 MyLog.d(TAG, "ACTION_MOVE")
-                if (mCurrentState == STATE_RECORDING && wantToCancle(x.toInt(), y.toInt())) {
-                    // 停止录音，显示松开手指，取消发送
-                    mCurrentState = STATE_CANCEL
-                    cancelRecordCountDown()
-                    mCancelRecordListener?.invoke()
+                if(wantToCancle(x.toInt(), y.toInt())){
+                    if(mCurrentState == STATE_RECORDING){
+                        mCurrentState = STATE_CANCEL
+                        mCancelRecordListener?.invoke()
+                    }
+                }else{
+                    if(mCurrentState == STATE_CANCEL){
+                        mCurrentState = STATE_RECORDING
+                        mShowTipsListener?.invoke(true)
+                    }
                 }
             }
             (action == MotionEvent.ACTION_CANCEL ||
                     action == MotionEvent.ACTION_UP) -> {
                 MyLog.d(TAG, "ACTION_UP $mCurrentState")
                 // 停止录音
-                cancelRecordCountDown()
-                text = "按住说话"
-                alpha = 1f
-                if (mCurrentState == STATE_RECORDING) {
-                    if ((System.currentTimeMillis() - mBeginRecordingTs) < minDuration) {
-                        // 时间太短, 提示太短再消失
-                        mTimeLimitListener?.invoke(true)
-                        U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
-                        mCurrentState = STATE_IDLE
-                    } else {
-                        // 上传录音文件，并发送(同时需要处理用户可能的再录制)
-                        mCurrentState = STATE_RECORD_OK
-                        mDuration = mMyMediaRecorder?.duration?.toLong() ?: 0L
-                        mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath!!, mDuration), true)
-                        mShowTipsListener?.invoke(false)
-                    }
-                } else if (mCurrentState == STATE_CANCEL) {
-                    // 弹框消失
-                    mCurrentState = STATE_IDLE
-                    mShowTipsListener?.invoke(false)
-                    U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
-                } else {
-                    U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
-                }
-                EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
+                onActionUp()
             }
         }
         return true
@@ -163,27 +152,20 @@ class VoiceRecordTextView : ExTextView {
 
     private fun startRecordCountDown() {
         cancelRecordCountDown()
-        mIsRecording = true
         mHandlerTaskTimer = HandlerTaskTimer.newBuilder().interval(1000)
                 .take(maxDuration / 1000)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(integer: Int) {
                         val t = maxDuration / 1000 - integer
-                        if (t <= 5) {
+                        if (t <= 5 && mCurrentState == STATE_RECORDING) {
                             mRemainTimeListener?.invoke("还可以说${t}秒")
                         }
                     }
 
                     override fun onComplete() {
                         super.onComplete()
-                        cancelRecordCountDown()
-                        text = "按住说话"
-                        alpha = 1f
-                        mCurrentState = STATE_RECORD_OK
-                        mDuration = mMyMediaRecorder?.duration?.toLong() ?: 0L
-                        mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath!!, mDuration), true)
+                        onActionUp()
                         mTimeLimitListener?.invoke(false)
-                        EventBus.getDefault().post(BeginRecordCustomGameEvent(false))
                     }
                 })
         if (mMyMediaRecorder == null) {
@@ -200,15 +182,40 @@ class VoiceRecordTextView : ExTextView {
             }
         }
         mRecordAudioFilePath = file.path
-        mMyMediaRecorder?.start(mRecordAudioFilePath!!) {
-            mChangeVoiceLevelListener?.invoke(it)
+        mRecordAudioFilePath?.let {
+            mMyMediaRecorder?.start(it) {
+                mChangeVoiceLevelListener?.invoke(it)
+            }
         }
+    }
+
+    private fun onActionUp(){
+        cancelRecordCountDown()
+        text = "按住说话"
+        alpha = 1f
+        if (mCurrentState == STATE_RECORDING) {
+            val duration = mMyMediaRecorder?.mDuration?.toLong() ?: 0L
+            if (duration < 1000) {
+                // 时间太短, 提示太短再消失
+                mTimeLimitListener?.invoke(true)
+                U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
+            } else {
+                // 上传录音文件，并发送(同时需要处理用户可能的再录制)
+                mPlayControlTemplate.add(AudioFile(mRecordAudioFilePath, duration), true)
+                mShowTipsListener?.invoke(false)
+            }
+        } else if (mCurrentState == STATE_CANCEL) {
+            // 弹框消失
+            mShowTipsListener?.invoke(false)
+            U.getFileUtils().deleteAllFiles(mRecordAudioFilePath)
+        }
+        mCurrentState = STATE_IDLE
+        EventBus.getDefault().post(MuteAllVoiceEvent(false))
     }
 
     private fun cancelRecordCountDown() {
         mHandlerTaskTimer?.dispose()
         mMyMediaRecorder?.stop()
-        mIsRecording = false
     }
 
     private fun wantToCancle(x: Int, y: Int): Boolean {
@@ -227,29 +234,37 @@ class VoiceRecordTextView : ExTextView {
     private fun execUploadAudio(file: AudioFile) {
         MyLog.d(TAG, "execUploadAudio file=$file")
         mIsUpload = true
-        val uploadTask = UploadParams.newBuilder(file.localPath)
-                .setFileType(UploadParams.FileType.msgAudio)
-                .startUploadAsync(object : UploadCallback {
-                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+        file.localPath?.let {
+            val file2 = File(it)
+            if(file2.exists() && file2.isFile && file2.length()>10){
+                 UploadParams.newBuilder(file2.path)
+                        .setFileType(UploadParams.FileType.msgAudio)
+                        .startUploadAsync(object : UploadCallback {
+                            override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
 
-                    }
+                            }
 
-                    override fun onSuccessNotInUiThread(url: String) {
-                        MyLog.d(TAG, "上传成功 url=$url")
-                        // 向服务器发送语音消息
-                        sendToServer(file, url)
-                        mIsUpload = false
-                        mPlayControlTemplate.endCurrent(file)
-                    }
+                            override fun onSuccessNotInUiThread(url: String) {
+                                MyLog.d(TAG, "上传成功 url=$url")
+                                // 向服务器发送语音消息
+                                sendToServer(file, url)
+                                mIsUpload = false
+                                mPlayControlTemplate.endCurrent(file)
+                            }
 
-                    override fun onFailureNotInUiThread(msg: String) {
-                        MyLog.d(TAG, "上传失败 msg=$msg")
-                    }
-                })
+                            override fun onFailureNotInUiThread(msg: String) {
+                                MyLog.d(TAG, "上传失败 msg=$msg")
+                                mIsUpload = false
+                                mPlayControlTemplate.endCurrent(file)
+                            }
+                        })
+            }
+        }
+
     }
 
 
-    private fun sendToServer(file: VoiceRecordTextView.AudioFile, url: String) {
+    private fun sendToServer(file: AudioFile, url: String) {
         val roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi::class.java)
         val map = HashMap<String, Any>()
         map["gameID"] = mRoomData!!.gameId
@@ -269,6 +284,6 @@ class VoiceRecordTextView : ExTextView {
     }
 
 
-    class AudioFile(var localPath: String, var duration: Long) {}
+    class AudioFile(var localPath: String?, var duration: Long)
 
 }

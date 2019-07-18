@@ -15,12 +15,14 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.adapter.ManageSongAdapter
+import com.module.playways.songmanager.event.SongNumChangeEvent
 import com.module.playways.songmanager.model.GrabRoomSongModel
 import com.module.playways.songmanager.presenter.DoubleExitSongManagePresenter
 import com.module.playways.songmanager.view.IExistSongManageView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import org.greenrobot.eventbus.EventBus
 
 class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
 
@@ -56,11 +58,11 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
         mRefreshLayout.setEnableOverScrollDrag(false)
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mPresenter.getPlayBookList()
+                mPresenter.getPlayBookList(false)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                mPresenter.getPlayBookList()
+                mPresenter.getPlayBookList(true)
             }
         })
 
@@ -69,7 +71,7 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
         defaultItemAnimator.removeDuration = 50
         mRecyclerView.itemAnimator = defaultItemAnimator
 
-        mPresenter.getPlayBookList()
+        mPresenter.getPlayBookList(true)
 
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
@@ -114,7 +116,7 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
     }
 
     override fun showNum(num: Int) {
-
+        EventBus.getDefault().post(SongNumChangeEvent(num))
     }
 
     override fun deleteSong(grabRoomSongModel: GrabRoomSongModel) {

@@ -73,11 +73,11 @@
         android:layout_toLeftOf="@+id/emoji_area"
         android:layout_toRightOf="@+id/input_btn"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/view_28_dp"
+        android:paddingLeft="@dimen/view_10_dp"
         android:singleLine="true"
         android:text="夸赞是一种美德"
         android:textColor="@color/white_trans_30"
-        android:textSize="@dimen/textsize_16_dp"
+        android:textSize="@dimen/textsize_15_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_solid_color="#5B72E8" />
 
@@ -93,7 +93,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="按住说话"
-        android:textColor="@color/white"
+        android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_16_dp"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_16_dp"

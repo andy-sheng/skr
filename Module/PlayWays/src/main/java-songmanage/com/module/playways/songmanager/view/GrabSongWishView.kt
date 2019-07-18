@@ -28,8 +28,8 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
     private var mRecyclerView: RecyclerView
     private var mRefreshLayout: SmartRefreshLayout
 
-    private var mWishSongAdapter: WishSongAdapter? = null
-    private var mGrabWishSongPresenter: GrabWishSongPresenter? = null
+    private var mWishSongAdapter: WishSongAdapter
+    private var mGrabWishSongPresenter: GrabWishSongPresenter
     private var mLoadService: LoadService<*>? = null
     private var mOffset: Long = 0   //此处是时间戳，int64
 
@@ -38,25 +38,26 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
 
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mRecyclerView = findViewById(R.id.recycler_view)
+        mWishSongAdapter = WishSongAdapter()
+        mGrabWishSongPresenter = GrabWishSongPresenter(this, mGrabRoomData)
         initData()
     }
 
     private fun initData() {
-        mGrabWishSongPresenter = GrabWishSongPresenter(this, mGrabRoomData)
-        mWishSongAdapter?.onClickDeleteWish = { view, position, songModel ->
+        mWishSongAdapter.onClickDeleteWish = { _, _, songModel ->
             // 删除用户选的歌曲
             songModel?.let {
-                mGrabWishSongPresenter?.deleteWishSong(songModel)
+                mGrabWishSongPresenter.deleteWishSong(songModel)
             }
         }
-        mWishSongAdapter?.onClickSelectWish = { view, position, songModel ->
+        mWishSongAdapter.onClickSelectWish = { _, _, songModel ->
             // 添加用户选的歌曲
             songModel?.let {
-                mGrabWishSongPresenter?.addWishSong(songModel)
+                mGrabWishSongPresenter.addWishSong(songModel)
             }
         }
-        mRecyclerView!!.layoutManager = LinearLayoutManager(context)
-        mRecyclerView!!.adapter = mWishSongAdapter
+        mRecyclerView.layoutManager = LinearLayoutManager(context)
+        mRecyclerView.adapter = mWishSongAdapter
 
         mRefreshLayout.setEnableRefresh(false)
         mRefreshLayout.setEnableLoadMore(true)
@@ -65,11 +66,11 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
 
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mGrabWishSongPresenter!!.getListMusicSuggested(mOffset)
+                mGrabWishSongPresenter.getListMusicSuggested(mOffset)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                mGrabWishSongPresenter!!.getListMusicSuggested(0)
+                mGrabWishSongPresenter.getListMusicSuggested(0)
             }
         })
 
@@ -81,13 +82,11 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
     }
 
     fun destroy() {
-        if (mGrabWishSongPresenter != null) {
-            mGrabWishSongPresenter!!.destroy()
-        }
+        mGrabWishSongPresenter.destroy()
     }
 
     fun tryLoad() {
-        mGrabWishSongPresenter!!.getListMusicSuggested(0)
+        mGrabWishSongPresenter.getListMusicSuggested(0)
     }
 
     override fun addGrabWishSongModels(clear: Boolean, newOffset: Long, grabWishSongModels: List<GrabWishSongModel>?) {
@@ -95,13 +94,13 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
         mRefreshLayout.finishLoadMore()
 
         if (clear) {
-            mWishSongAdapter?.dataList?.clear()
+            mWishSongAdapter.dataList.clear()
         }
         if (grabWishSongModels != null) {
-            mWishSongAdapter?.dataList?.addAll(grabWishSongModels)
-            mWishSongAdapter?.notifyDataSetChanged()
+            mWishSongAdapter.dataList.addAll(grabWishSongModels)
+            mWishSongAdapter.notifyDataSetChanged()
         }
-        if (mWishSongAdapter?.dataList != null) {
+        if (mWishSongAdapter.dataList != null) {
             // 没有更多了
             mLoadService?.showSuccess()
         } else {
@@ -111,8 +110,8 @@ class GrabSongWishView(context: Context, internal var mGrabRoomData: GrabRoomDat
     }
 
     override fun deleteWishSong(grabWishSongModel: GrabWishSongModel) {
-        mWishSongAdapter?.delete(grabWishSongModel)
-        if (mWishSongAdapter?.dataList != null) {
+        mWishSongAdapter.delete(grabWishSongModel)
+        if (mWishSongAdapter.dataList != null) {
             // 没有更多了
             mLoadService?.showSuccess()
         } else {

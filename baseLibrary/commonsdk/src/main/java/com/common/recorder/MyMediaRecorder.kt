@@ -7,8 +7,6 @@ import android.os.Message
 
 import com.common.log.MyLog
 
-import java.util.function.Function
-
 class MyMediaRecorder {
 
     //    String filePath;
@@ -26,7 +24,7 @@ class MyMediaRecorder {
      *
      * @return
      */
-    var duration = 0
+    var mDuration = 0
         internal set
     private var mMediaRecorder: MediaRecorder? = null
     private var mRecording = false
@@ -54,6 +52,7 @@ class MyMediaRecorder {
             }
             mMediaRecorder?.prepare()
             mMediaRecorder?.start()
+            mDuration = 0
             mStartRecordingTs = System.currentTimeMillis()
             mRecording = true
             mVolumeListener = callback
@@ -67,7 +66,7 @@ class MyMediaRecorder {
 
     fun stop() {
         if (mRecording) {
-            duration = (System.currentTimeMillis() - mStartRecordingTs).toInt()
+            mDuration = (System.currentTimeMillis() - mStartRecordingTs).toInt()
         }
         mRecording = false
         mMediaRecorder?.reset()

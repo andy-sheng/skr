@@ -20,6 +20,7 @@ import android.view.Gravity;
 import com.alibaba.fastjson.JSON;
 import com.common.core.R;
 import com.common.core.global.event.ShowDialogInHomeEvent;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.provideer.MyFileProvider;
@@ -322,7 +323,12 @@ public class UpgradeManager {
             /**
              * 强更弹窗写死用主activity，避免从别的activity跳导致topactivity失效的问题
              */
-            Activity activity = U.getActivityUtils().getHomeActivity();
+            Activity activity = U.getActivityUtils().getTopActivity();
+            if(activity instanceof LoginActivity){
+
+            }else {
+                activity = U.getActivityUtils().getHomeActivity();
+            }
             if (activity != null) {
                 mForceUpgradeDialog = DialogPlus.newDialog(activity)
                         .setContentHolder(new ViewHolder(mForceUpgradeView))

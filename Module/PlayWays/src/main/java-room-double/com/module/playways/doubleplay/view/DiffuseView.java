@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.log.MyLog;
 import com.module.playways.R;
 
 import java.util.ArrayList;
@@ -58,6 +59,8 @@ public class DiffuseView extends View {
     private boolean mPressing = false;
     private long mStopTs = System.currentTimeMillis();
 
+    private int mCircleCount = 0;
+
     public DiffuseView(Context context) {
         this(context, null);
     }
@@ -106,9 +109,14 @@ public class DiffuseView extends View {
     public void onDraw(Canvas canvas) {
         // 绘制扩散圆
         boolean going = System.currentTimeMillis() < mStopTs;
+        if (!going) {
+            mCircleCount = 0;
+        }
+
         if (mColor != 0) {
             mPaint.setColor(mColor);
             if (mWidths.isEmpty() && going) {
+                mCircleCount--;
                 mAlphas.add(255);
                 mWidths.add(0);
             }
@@ -133,7 +141,8 @@ public class DiffuseView extends View {
             // 判断当扩散圆扩散到指定宽度时添加新扩散圆
             if (mWidths.size() > 0 && going) {
                 float mr = mWidths.get(mWidths.size() - 1) + mCoreRadius;
-                if (mr > mDiffuseRaduis) {
+                if (mr > mDiffuseRaduis && mCircleCount > 0) {
+                    mCircleCount--;
                     mAlphas.add(255);
                     mWidths.add(0);
                 }
@@ -188,6 +197,7 @@ public class DiffuseView extends View {
      */
     public void start(long delay) {
         mStopTs = System.currentTimeMillis() + delay;
+        mCircleCount++;
         setVisibility(VISIBLE);
         invalidate();
     }

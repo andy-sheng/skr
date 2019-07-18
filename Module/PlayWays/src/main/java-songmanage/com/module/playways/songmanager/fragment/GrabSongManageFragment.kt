@@ -99,7 +99,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
         mOwnerManagePresenter = GrabSongManagePresenter(this, mRoomData!!)
         addPresent(mOwnerManagePresenter)
         mOwnerManagePresenter.getRecommendTag()
-        showRoomName(mRoomData!!.roomName)
+        showRoomName(mRoomData?.roomName)
 
         mSearchSongIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -120,9 +120,9 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
         })
     }
 
-    override fun showRoomName(roomName: String) {
+    override fun showRoomName(roomName: String?) {
         mCommonTitleBar.centerTextView.text = roomName
-        if (mRoomData!!.isOwner) {
+        if ((mRoomData?.isOwner) == true) {
             val drawable = U.getDrawable(R.drawable.ycdd_edit_roomname_icon)
             drawable.bounds = Rect(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
             mCommonTitleBar.centerTextView.setCompoundDrawables(null, null, drawable, null)
