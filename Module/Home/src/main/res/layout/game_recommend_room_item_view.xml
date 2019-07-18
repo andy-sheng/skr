@@ -8,31 +8,32 @@
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/recycler_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_146_dp"
+        android:layout_height="@dimen/view_144_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_15_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        app:bl_corners_bottomLeftRadius="@dimen/view_16_dp"
-        app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_0_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#25000000">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/friends_recycle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </com.common.view.ex.ExRelativeLayout>
 
-    <com.common.view.ex.ExImageView
+    <com.common.view.ex.ExTextView
         android:id="@+id/more_friends"
-        android:layout_width="@dimen/view_137_dp"
-        android:layout_height="@dimen/view_28_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_alignLeft="@id/recycler_area"
         android:layout_alignTop="@id/recycler_area"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="-14dp"
-        android:background="@drawable/grab_more_friend_party" />
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:drawableRight="@drawable/grab_recommend_more_icon"
+        android:text="更多在线好友"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp" />
 
 </RelativeLayout>

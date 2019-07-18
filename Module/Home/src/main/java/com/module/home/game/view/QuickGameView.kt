@@ -39,10 +39,15 @@ import com.module.home.model.SlideShowModel
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
+import kotlinx.android.synthetic.main.quick_game_view_layout.view.recycler_view
+import kotlinx.android.synthetic.main.quick_game_view_layout.view.refreshLayout
 
 /**
  * 快速游戏
@@ -68,10 +73,18 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         mSkrAudioPermission = SkrAudioPermission()
         mCameraPermission = SkrCameraPermission()
 
-        refreshLayout.setEnableRefresh(false)
+        refreshLayout.setEnableRefresh(true)
         refreshLayout.setEnableLoadMore(false)
         refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         refreshLayout.setEnableOverScrollDrag(true)
+        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                initData()
+            }
+        })
         mGameAdapter = GameAdapter(fragment)
         mGameAdapter.onCreateRoomListener = {
             // 创建房间
@@ -274,6 +287,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     }
 
     override fun setRecommendInfo(list: MutableList<RecommendModel>?) {
+        refreshLayout.finishRefresh()
         if (list == null || list.size == 0) {
             // 清空好友派对列表
             mGameAdapter.updateRecommendRoomInfo(null)
