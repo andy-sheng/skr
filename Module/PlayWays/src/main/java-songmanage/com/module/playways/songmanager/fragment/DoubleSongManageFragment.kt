@@ -225,6 +225,6 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleCurSongInfoEvent) {
-        showRoomName("正在演唱《${event.name}》")
+        showRoomName(event.name)
     }
 }
