@@ -110,10 +110,6 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
         addPresent(mPresenter)
 
         showRoomName(mRoomData?.localCombineRoomMusic?.music?.displaySongName)
-    }
-
-    override fun onFragmentVisible() {
-        super.onFragmentVisible()
         mPresenter.getRecommendTag()
         mPresenter.getAddMusicCnt()
     }

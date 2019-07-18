@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_144_dp"
         android:layout_marginLeft="@dimen/view_12_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_12_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
