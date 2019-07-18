@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/double_room_view_bg">
 
-    <ImageView
-        android:layout_width="@dimen/view_262_dp"
-        android:layout_height="@dimen/view_60_dp"
-        android:layout_marginTop="@dimen/view_135_dp"
-        android:background="@drawable/double_game_view_icon"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.common.view.ex.ExTextView
         android:id="@+id/invite_friend_iv"
         android:layout_width="0dp"
@@ -22,7 +13,8 @@
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginBottom="@dimen/view_80_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_solid_color="#FF88D0AB"
+        app:bl_gradient_startColor="#88D0AB"
+        app:bl_gradient_endColor="#446C9F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/start_match_iv"
         app:layout_constraintHorizontal_bias="0.5"
@@ -36,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/textsize_14_dp"
         android:layout_marginTop="@dimen/view_14_dp"
-        android:text="邀请好友"
-        android:textColor="#ffffffff"
+        android:text="好友唱聊"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_18_dp"
         app:layout_constraintStart_toStartOf="@+id/invite_friend_iv"
         app:layout_constraintTop_toTopOf="@+id/invite_friend_iv" />
@@ -46,8 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_4_dp"
-        android:text="私密唱聊，快乐无限"
-        android:textColor="#ffffffff"
+        android:text="邀请好友，唱歌谈心"
+        android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintStart_toStartOf="@+id/exTextView"
         app:layout_constraintTop_toBottomOf="@+id/exTextView" />
@@ -60,7 +52,8 @@
         android:layout_marginRight="@dimen/view_12_dp"
         android:layout_marginBottom="@dimen/view_80_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_solid_color="#FF68CCFF"
+        app:bl_gradient_startColor="#BA85B9"
+        app:bl_gradient_endColor="#5A64A7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -74,8 +67,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_14_dp"
         android:layout_marginTop="@dimen/view_14_dp"
-        android:text="随机匹配"
-        android:textColor="#ffffffff"
+        android:text="匹配唱聊"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_18_dp"
         app:layout_constraintStart_toStartOf="@+id/start_match_iv"
         app:layout_constraintTop_toTopOf="@+id/start_match_iv" />

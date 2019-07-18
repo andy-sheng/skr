@@ -315,6 +315,10 @@ class FriendRoomGameView : RelativeLayout {
         }
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        destory()
+    }
 
     fun destory() {
         mRecommendTimer?.dispose()

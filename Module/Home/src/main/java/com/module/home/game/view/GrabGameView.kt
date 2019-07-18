@@ -131,6 +131,12 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
         mGrabGameAdapter.notifyDataSetChanged()
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        destory()
+    }
+
     fun destory() {
+        mPresenter.destroy()
     }
 }
