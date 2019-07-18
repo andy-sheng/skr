@@ -1,6 +1,8 @@
 package com.module.msg.custom;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -14,6 +16,7 @@ import io.rong.push.notification.PushNotificationMessage;
 
 public class MyRcPushMessageReceiver extends PushMessageReceiver {
     public final String TAG = "MyRcPushMessageReceiver";
+
 
     @Override
     public boolean onNotificationMessageArrived(Context context, PushType pushType, PushNotificationMessage pushNotificationMessage) {
@@ -46,4 +49,5 @@ public class MyRcPushMessageReceiver extends PushMessageReceiver {
         }
         return false;
     }
+
 }

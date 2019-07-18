@@ -218,4 +218,14 @@ public class BaseApplication extends Application {
         MyLog.w(TAG,"unregisterReceiver" + " receiver=" + receiver);
         super.unregisterReceiver(receiver);
     }
+
+    @Override
+    public void startActivity(Intent intent) {
+        try {
+            super.startActivity(intent);
+        }catch (Exception e){
+            MyLog.e(TAG,e);
+        }
+
+    }
 }
