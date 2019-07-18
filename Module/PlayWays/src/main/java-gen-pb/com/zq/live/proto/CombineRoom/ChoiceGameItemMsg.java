@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -28,6 +29,8 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
   public static final Integer DEFAULT_PANELSEQ = 0;
 
   public static final Integer DEFAULT_ITEMID = 0;
+
+  public static final Boolean DEFAULT_ISCHOICED = false;
 
   /**
    * 选择游戏的用户id
@@ -66,18 +69,28 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
   )
   private final List<Integer> itemIDs;
 
-  public ChoiceGameItemMsg(Integer userID, Integer panelSeq, Integer itemID,
-      List<Integer> itemIDs) {
-    this(userID, panelSeq, itemID, itemIDs, ByteString.EMPTY);
+  /**
+   * 是否为选中，[true：选中， false：取消选中]
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isChoiced;
+
+  public ChoiceGameItemMsg(Integer userID, Integer panelSeq, Integer itemID, List<Integer> itemIDs,
+      Boolean isChoiced) {
+    this(userID, panelSeq, itemID, itemIDs, isChoiced, ByteString.EMPTY);
   }
 
   public ChoiceGameItemMsg(Integer userID, Integer panelSeq, Integer itemID, List<Integer> itemIDs,
-      ByteString unknownFields) {
+      Boolean isChoiced, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.panelSeq = panelSeq;
     this.itemID = itemID;
     this.itemIDs = Internal.immutableCopyOf("itemIDs", itemIDs);
+    this.isChoiced = isChoiced;
   }
 
   @Override
@@ -87,6 +100,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     builder.panelSeq = panelSeq;
     builder.itemID = itemID;
     builder.itemIDs = Internal.copyOf("itemIDs", itemIDs);
+    builder.isChoiced = isChoiced;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -100,7 +114,8 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
         && Internal.equals(userID, o.userID)
         && Internal.equals(panelSeq, o.panelSeq)
         && Internal.equals(itemID, o.itemID)
-        && itemIDs.equals(o.itemIDs);
+        && itemIDs.equals(o.itemIDs)
+        && Internal.equals(isChoiced, o.isChoiced);
   }
 
   @Override
@@ -112,6 +127,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
       result = result * 37 + (panelSeq != null ? panelSeq.hashCode() : 0);
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
       result = result * 37 + itemIDs.hashCode();
+      result = result * 37 + (isChoiced != null ? isChoiced.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -124,6 +140,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     if (panelSeq != null) builder.append(", panelSeq=").append(panelSeq);
     if (itemID != null) builder.append(", itemID=").append(itemID);
     if (!itemIDs.isEmpty()) builder.append(", itemIDs=").append(itemIDs);
+    if (isChoiced != null) builder.append(", isChoiced=").append(isChoiced);
     return builder.replace(0, 2, "ChoiceGameItemMsg{").append('}').toString();
   }
 
@@ -178,6 +195,16 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
   }
 
   /**
+   * 是否为选中，[true：选中， false：取消选中]
+   */
+  public Boolean getIsChoiced() {
+    if(isChoiced==null){
+        return DEFAULT_ISCHOICED;
+    }
+    return isChoiced;
+  }
+
+  /**
    * 选择游戏的用户id
    */
   public boolean hasUserID() {
@@ -205,6 +232,13 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     return itemIDs!=null;
   }
 
+  /**
+   * 是否为选中，[true：选中， false：取消选中]
+   */
+  public boolean hasIsChoiced() {
+    return isChoiced!=null;
+  }
+
   public static final class Builder extends Message.Builder<ChoiceGameItemMsg, Builder> {
     private Integer userID;
 
@@ -213,6 +247,8 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
     private Integer itemID;
 
     private List<Integer> itemIDs;
+
+    private Boolean isChoiced;
 
     public Builder() {
       itemIDs = Internal.newMutableList();
@@ -251,9 +287,17 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
       return this;
     }
 
+    /**
+     * 是否为选中，[true：选中， false：取消选中]
+     */
+    public Builder setIsChoiced(Boolean isChoiced) {
+      this.isChoiced = isChoiced;
+      return this;
+    }
+
     @Override
     public ChoiceGameItemMsg build() {
-      return new ChoiceGameItemMsg(userID, panelSeq, itemID, itemIDs, super.buildUnknownFields());
+      return new ChoiceGameItemMsg(userID, panelSeq, itemID, itemIDs, isChoiced, super.buildUnknownFields());
     }
   }
 
@@ -268,6 +312,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.panelSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.itemID)
           + ProtoAdapter.UINT32.asRepeated().encodedSizeWithTag(4, value.itemIDs)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(5, value.isChoiced)
           + value.unknownFields().size();
     }
 
@@ -277,6 +322,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.panelSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.itemID);
       ProtoAdapter.UINT32.asRepeated().encodeWithTag(writer, 4, value.itemIDs);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 5, value.isChoiced);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -290,6 +336,7 @@ public final class ChoiceGameItemMsg extends Message<ChoiceGameItemMsg, ChoiceGa
           case 2: builder.setPanelSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.itemIDs.add(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.setIsChoiced(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

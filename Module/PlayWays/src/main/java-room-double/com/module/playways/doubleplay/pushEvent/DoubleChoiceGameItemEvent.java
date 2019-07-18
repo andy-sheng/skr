@@ -17,6 +17,12 @@ public class DoubleChoiceGameItemEvent {
 
     List<Integer> itemIDs;
 
+    boolean isChoice;
+
+    public boolean isChoice() {
+        return isChoice;
+    }
+
     public int getUserID() {
         return userID;
     }
@@ -34,6 +40,7 @@ public class DoubleChoiceGameItemEvent {
         userID = choiceGameItemMsg.getUserID();
         panelSeq = choiceGameItemMsg.getPanelSeq();
         itemID = choiceGameItemMsg.getItemID();
+        isChoice = choiceGameItemMsg.getIsChoiced();
 
         if (choiceGameItemMsg.hasItemIDsList()) {
             itemIDs = new ArrayList<>();

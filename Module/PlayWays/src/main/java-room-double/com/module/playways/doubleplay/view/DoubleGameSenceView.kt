@@ -104,41 +104,55 @@ class DoubleGameSenceView : ExConstraintLayout {
 
         mDoubleGameCardGroupView.mCard1.setDebounceViewClickListener {
             mDoubleGameCardGroupView.mCard1.itemId?.let {
-                select(it)
+                select(it, mDoubleGameCardGroupView.mCard1.getSelect())
             }
         }
 
         mDoubleGameCardGroupView.mCard2.setDebounceViewClickListener {
             mDoubleGameCardGroupView.mCard2.itemId?.let {
-                select(it)
+                select(it, mDoubleGameCardGroupView.mCard2.getSelect())
             }
         }
 
         mDoubleGameCardGroupView.mCard3.setDebounceViewClickListener {
             mDoubleGameCardGroupView.mCard3.itemId?.let {
-                select(it)
+                select(it, mDoubleGameCardGroupView.mCard3.getSelect())
             }
         }
 
         mDoubleGameCardGroupView.mCard4.setDebounceViewClickListener {
             mDoubleGameCardGroupView.mCard4.itemId?.let {
-                select(it)
+                select(it, mDoubleGameCardGroupView.mCard4.getSelect())
             }
         }
     }
 
-    fun select(itemID: Int) {
-        val mutableSet1 = mutableMapOf("itemID" to itemID, "panelSeq" to mPanelSeq, "roomID" to mRoomData?.gameId)
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        ApiMethods.subscribe(mDoubleRoomServerApi.choiceGameItem(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    MyLog.w(mTag, "选择游戏卡片成功，itemID is $itemID")
-                } else {
-                    U.getToastUtil().showShort(obj?.errmsg)
+    fun select(itemID: Int, choice: Boolean) {
+        if (choice) {
+            val mutableSet1 = mutableMapOf("itemID" to itemID, "panelSeq" to mPanelSeq, "roomID" to mRoomData?.gameId)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+            ApiMethods.subscribe(mDoubleRoomServerApi.choiceGameItem(body), object : ApiObserver<ApiResult>() {
+                override fun process(obj: ApiResult?) {
+                    if (obj?.errno == 0) {
+                        MyLog.w(mTag, "选择游戏卡片成功，itemID is $itemID")
+                    } else {
+                        U.getToastUtil().showShort(obj?.errmsg)
+                    }
                 }
-            }
-        }, this@DoubleGameSenceView)
+            }, this@DoubleGameSenceView)
+        } else {
+            val mutableSet1 = mutableMapOf("itemID" to itemID, "panelSeq" to mPanelSeq, "roomID" to mRoomData?.gameId)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+            ApiMethods.subscribe(mDoubleRoomServerApi.unChoiceGameItem(body), object : ApiObserver<ApiResult>() {
+                override fun process(obj: ApiResult?) {
+                    if (obj?.errno == 0) {
+                        MyLog.w(mTag, "取消选择游戏卡片成功，itemID is $itemID")
+                    } else {
+                        U.getToastUtil().showShort(obj?.errmsg)
+                    }
+                }
+            }, this@DoubleGameSenceView)
+        }
     }
 
     fun View.setDebounceViewClickListener(click: (view: View?) -> Unit) {
@@ -214,9 +228,9 @@ class DoubleGameSenceView : ExConstraintLayout {
     }
 
     //这个是有人选择的某一个游戏卡片
-    fun changeChoiceGameState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int) {
+    fun changeChoiceGameState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, isChoiced: Boolean) {
         if (mGameStage == EGameStage.GS_ChoicGameItem.value && panelSeq == mPanelSeq) {
-            mDoubleGameCardGroupView.updateSelectState(userInfoModel, panelSeq, itemID, mRoomData!!)
+            mDoubleGameCardGroupView.updateSelectState(userInfoModel, panelSeq, itemID, mRoomData!!, isChoiced)
         } else {
             MyLog.w(mTag, "changeChoiceGameState failed panelSeq is $panelSeq, itemID is $itemID, local stage is $mGameStage, panelSeq is $mPanelSeq")
         }

@@ -328,6 +328,7 @@ public interface DoubleRoomServerApi {
     /**
      * 选定游戏请求
      * {
+     * roomID
      * "itmeID": 0,
      * "panelSeq": 0
      * }
@@ -336,6 +337,19 @@ public interface DoubleRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/magpie/choice-game-item")
     Observable<ApiResult> choiceGameItem(@Body RequestBody body);
+
+    /**
+     * 取消选定游戏请求
+     * {
+     * roomID
+     * "itmeID": 0,
+     * "panelSeq": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/unchoice-game-item")
+    Observable<ApiResult> unChoiceGameItem(@Body RequestBody body);
 
     /**
      * 获取推荐tag列表

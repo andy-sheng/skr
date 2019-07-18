@@ -44,7 +44,7 @@ interface IDoublePlayView {
 
     fun showGameSceneGameCard(localGameItemInfo: LocalGameItemInfo)
 
-    fun updateGameSceneSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int)
+    fun updateGameSceneSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, unChoiced: Boolean)
 
     fun updateGameScene(sceneType: Int)
 }

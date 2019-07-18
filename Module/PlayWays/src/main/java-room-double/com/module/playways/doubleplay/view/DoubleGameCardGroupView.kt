@@ -37,16 +37,16 @@ class DoubleGameCardGroupView : ExConstraintLayout, Animation.AnimationListener 
         mCard4 = findViewById(com.module.playways.R.id.card_4)
     }
 
-    fun updateSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, roomData: DoubleRoomData) {
+    fun updateSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, roomData: DoubleRoomData, isChoiced: Boolean) {
         if (this.panelId == panelSeq) {
             if (mCard1.acceptItem(itemID)) {
-                mCard1.setSelectUser(userInfoModel, roomData)
+                mCard1.setSelectUser(userInfoModel, roomData, isChoiced)
             } else if (mCard2.acceptItem(itemID)) {
-                mCard2.setSelectUser(userInfoModel, roomData)
+                mCard2.setSelectUser(userInfoModel, roomData, isChoiced)
             } else if (mCard3.acceptItem(itemID)) {
-                mCard3.setSelectUser(userInfoModel, roomData)
+                mCard3.setSelectUser(userInfoModel, roomData, isChoiced)
             } else if (mCard4.acceptItem(itemID)) {
-                mCard4.setSelectUser(userInfoModel, roomData)
+                mCard4.setSelectUser(userInfoModel, roomData, isChoiced)
             }
         }
     }

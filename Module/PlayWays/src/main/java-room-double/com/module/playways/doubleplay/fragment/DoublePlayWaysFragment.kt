@@ -575,8 +575,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleGameSenceView?.playGame(localGameItemInfo)
     }
 
-    override fun updateGameSceneSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int) {
-        mDoubleGameSenceView?.changeChoiceGameState(userInfoModel, panelSeq, itemID)
+    override fun updateGameSceneSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, isChoiced: Boolean) {
+        mDoubleGameSenceView?.changeChoiceGameState(userInfoModel, panelSeq, itemID, isChoiced)
     }
 
     override fun updateGameScene(sceneType: Int) {

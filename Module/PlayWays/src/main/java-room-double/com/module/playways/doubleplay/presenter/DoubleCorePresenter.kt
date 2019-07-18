@@ -335,7 +335,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleChoiceGameItemEvent) {
         mRoomData.userInfoListMap?.get(event.userID)?.let {
-            mIDoublePlayView.updateGameSceneSelectState(it, event.panelSeq, event.itemID)
+            mIDoublePlayView.updateGameSceneSelectState(it, event.panelSeq, event.itemID, event.isChoice)
         }
     }
 
