@@ -151,7 +151,7 @@ public class AppInfoUtils {
     public int getVersionCode() {
         try {
             versionCode = U.app().getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             MyLog.e(TAG, e);
         }
         return versionCode;
@@ -160,7 +160,7 @@ public class AppInfoUtils {
     public String getVersionName() {
         try {
             versionName = U.app().getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             MyLog.e(TAG, e);
         }
         return versionName;
