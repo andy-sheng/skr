@@ -18,6 +18,7 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
+import com.zq.live.proto.Common.EGameType
 
 
 class DoubleSingCardView : ConstraintLayout {
@@ -69,7 +70,7 @@ class DoubleSingCardView : ConstraintLayout {
 
     fun playLyric(localGameItemInfo: LocalGameItemInfo?) {
         mSongOwnerIv?.visibility = View.GONE
-        mSongNameTv?.text = localGameItemInfo?.desc
+        mSongNameTv?.text = if (localGameItemInfo?.gameType == EGameType.GT_Music.value) "唱歌" else "问答"
         mDoubleSelfSingCardView.showDoubleGame(localGameItemInfo)
     }
 
