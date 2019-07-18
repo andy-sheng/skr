@@ -21,6 +21,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -137,6 +138,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
         mLatestFollowArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                StatisticsAdapter.recordCountEvent("IMtab", "newfollow", null);
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LAST_FOLLOW)
                         .navigation();
 
@@ -152,7 +154,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
 
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0,0,0, null);
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null);
         }
         mInviteFriendDialog.show();
     }
@@ -160,6 +162,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
+        StatisticsAdapter.recordCountEvent("IMtab", "expose", null);
         getLastRelationOne(false);
     }
 

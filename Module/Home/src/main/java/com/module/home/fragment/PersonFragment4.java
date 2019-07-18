@@ -35,6 +35,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.ImageUtils;
 import com.common.utils.SpanUtils;
@@ -158,6 +159,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
+        StatisticsAdapter.recordCountEvent("Metab", "expose", null);
         mPresenter.getHomePage(false);
         if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
             mPhotoWallView.getPhotos(false);
