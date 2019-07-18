@@ -82,7 +82,7 @@ class DoubleRoomGameView : RelativeLayout {
                 }
 
                 if (hasRemainTime) {
-                    StatisticsAdapter.recordCountEvent("cp", "invite1", null)
+                    StatisticsAdapter.recordCountEvent("game_cp", "invite1", null)
                     mSkrAudioPermission.ensurePermission({
                         mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
                             /**
@@ -132,14 +132,14 @@ class DoubleRoomGameView : RelativeLayout {
                     }, true)
                 } else {
                     U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
-                    StatisticsAdapter.recordCountEvent("cp", "invite1_outchance", null)
+                    StatisticsAdapter.recordCountEvent("game_cp", "invite1_outchance", null)
                 }
             }
         })
 
         invite_friend_iv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                StatisticsAdapter.recordCountEvent("cp", "invite3", null)
+                StatisticsAdapter.recordCountEvent("game_cp", "invite3", null)
                 mSkrAudioPermission.ensurePermission({
                     mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
                         /**
