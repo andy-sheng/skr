@@ -93,11 +93,6 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
         mIvVoiceRoom = findViewById(R.id.iv_voice_room)
         mMedalIv = findViewById(R.id.medal_iv)
         mUserInfoTitle.topUserBg.visibility = View.GONE
-        mClassicsHeader.background = DrawableCreator.Builder()
-                .setGradientColor(Color.parseColor("#7088FF"), Color.parseColor("#7088FF"))
-                .setGradientAngle(0)
-                .build()
-
         mSmartRefreshLayout.setEnableRefresh(true)
         mSmartRefreshLayout.setEnableLoadMore(false)
         mSmartRefreshLayout.setEnableLoadMoreWhenContentNotFull(true)
