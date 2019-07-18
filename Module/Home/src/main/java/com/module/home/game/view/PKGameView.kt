@@ -17,6 +17,7 @@ import com.common.core.userinfo.model.GameStatisModel
 import com.common.core.userinfo.model.UserLevelModel
 import com.common.core.userinfo.model.UserRankModel
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -114,6 +115,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
 
         mIvAthleticsPk.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View) {
+                StatisticsAdapter.recordCountEvent("game_rank", "rankgame", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                         .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
                         .withBoolean("selectSong", true)
@@ -126,6 +128,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
 
         mRankArea.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
+                StatisticsAdapter.recordCountEvent("game_rank", "ranklist", null)
                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                 val baseFragment = iRankingModeService.leaderboardFragmentClass as Class<BaseFragment>
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(context as BaseActivity, baseFragment)
@@ -137,6 +140,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
 
         mIvVoiceRoom.setOnClickListener(object : AnimateClickListener() {
             override fun click(v: View) {
+                StatisticsAdapter.recordCountEvent("game_rank", "practice", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                         .withBoolean("selectSong", true)
                         .navigation()
