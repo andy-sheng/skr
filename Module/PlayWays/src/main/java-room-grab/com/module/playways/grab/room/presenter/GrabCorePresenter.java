@@ -1465,7 +1465,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
             public void onNext(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
                     onChangeRoomSuccess(joinGrabRoomRspModel);
                 } else {
@@ -1496,6 +1495,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onChangeRoomSuccess(JoinGrabRoomRspModel joinGrabRoomRspModel) {
         MyLog.d(TAG, "onChangeRoomSuccess" + " joinGrabRoomRspModel=" + joinGrabRoomRspModel);
         if (joinGrabRoomRspModel != null) {
+            EventBus.getDefault().post(new GrabSwitchRoomEvent());
             stopGuide();
             mRoomData.loadFromRsp(joinGrabRoomRspModel);
             joinRoomAndInit(false);

@@ -171,7 +171,7 @@ class VoiceRecordTextView : ExTextView {
             mMyMediaRecorder = MyMediaRecorder.newBuilder().build()
         }
 
-        var file = File(mVoiceDir, "${mRoomData?.gameId}-${System.currentTimeMillis()}.aac")
+        var file = File(mVoiceDir, "${mRoomData?.gameId}-${System.currentTimeMillis()}.m4a")
         if (!file.exists()) {
             file.parentFile.mkdir()
             try {
