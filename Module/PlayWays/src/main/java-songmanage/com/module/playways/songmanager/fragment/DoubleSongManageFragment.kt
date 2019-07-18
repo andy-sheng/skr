@@ -19,7 +19,10 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
+import com.module.playways.doubleplay.event.NoMusicEvent
 import com.module.playways.doubleplay.model.DoubleCurSongInfoEvent
+import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent
+import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
@@ -105,10 +108,14 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
 
         mPresenter = DoubleSongManagePresenter(this, mRoomData!!)
         addPresent(mPresenter)
-        mPresenter.getRecommendTag()
-        mPresenter.getAddMusicCnt()
 
         showRoomName(mRoomData?.localCombineRoomMusic?.music?.displaySongName)
+    }
+
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        mPresenter.getRecommendTag()
+        mPresenter.getAddMusicCnt()
     }
 
     override fun useEventBus(): Boolean {
@@ -227,4 +234,21 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
     fun onEvent(event: DoubleCurSongInfoEvent) {
         showRoomName(event.name)
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: NoMusicEvent) {
+        showRoomName("")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleAddMusicEvent) {
+        mPresenter.getAddMusicCnt()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleDelMusicEvent) {
+        mPresenter.getAddMusicCnt()
+    }
+
 }

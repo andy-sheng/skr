@@ -37,12 +37,12 @@ class GrabTagViewHolder(itemView: View, onClickTagListener: ((model: SpecialMode
         this.pos = position
 
 
-        var lp = mBackground.layoutParams //此为父布局
-        lp.height = (model?.biggest.h) * (U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(18f)) / (model?.biggest.w)
-        mBackground.layoutParams = lp
+//        var lp = mBackground.layoutParams //此为父布局
+//        lp.height = (model?.biggest.h) * (U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(18f)) / (model?.biggest.w)
+//        mBackground.layoutParams = lp
 
         FrescoWorker.loadImage(mImageSdv, ImageFactory.newPathImage(model?.biggest.url)
-                .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
                 .build<BaseImage>())
     }
 }
