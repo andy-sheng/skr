@@ -3,6 +3,7 @@ package com.module.home.game.presenter
 import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
+import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
@@ -13,6 +14,9 @@ import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.SpecialModel
 import com.module.home.game.view.IGrabGameView
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class GrabGamePresenter(internal var grabGameView: IGrabGameView) : RxLifeCyclePresenter() {
 
@@ -22,6 +26,9 @@ class GrabGamePresenter(internal var grabGameView: IGrabGameView) : RxLifeCycleP
 
     init {
         addToLifeCycle()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     fun initQuickRoom(isFlag: Boolean) {
@@ -67,7 +74,15 @@ class GrabGamePresenter(internal var grabGameView: IGrabGameView) : RxLifeCycleP
         }, this, ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis))
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
+        initQuickRoom(true)
+    }
+
     override fun destroy() {
         super.destroy()
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
     }
 }
