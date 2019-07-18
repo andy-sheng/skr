@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/black_trans_20"
-    android:paddingTop="@dimen/view_21_dp"
     android:paddingBottom="@dimen/view_19_dp"
     tools:parentTag="com.common.view.ex.ExConstraintLayout">
 
@@ -14,6 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/view_117_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_21_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="#FFFFC15B"
         app:layout_constraintEnd_toStartOf="@+id/card_2"
@@ -27,6 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/view_117_dp"
         android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginTop="@dimen/view_21_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="#FF68CCFF"

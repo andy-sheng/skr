@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalGamePanelInfo
