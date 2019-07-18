@@ -56,6 +56,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.dialog.PersonInfoDialog
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Common.ESceneType
+import com.zq.mediaengine.kit.ZqEngineKit
 import com.zq.report.fragment.QuickFeedbackFragment
 import kotlin.properties.Delegates
 
@@ -147,6 +148,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             return
         }
 
+        ZqEngineKit.getInstance().muteLocalAudioStream(false)
         MyLog.w(mTag, "initData mRoomData='${mRoomData}'")
         mReportTv = mRootView.findViewById<View>(R.id.report_tv) as TextView
         mExitIv = mRootView.findViewById<View>(R.id.exit_iv) as ImageView
