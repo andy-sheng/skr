@@ -26,15 +26,13 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     private val mMainPageSlideApi: MainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
     private val mGrabSongApi: GrabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
 
-    private var mLastUpdateOperaArea: Long = 0    //广告位上次更新成功时间
-//    private var mLastUpdateQuickInfo: Long = 0    //快速加入房间更新成功时间
+    private var mLastUpdateOperaArea = 0L    //广告位上次更新成功时间
+    private var mLastUpdateRemainTime = 0L   // 上次拉取唱聊剩余次数时间
+    //    private var mLastUpdateQuickInfo: Long = 0    //快速加入房间更新成功时间
 //    private var mIsFirstQuick = true
     private var mRecommendTimer: HandlerTaskTimer? = null
-
-    private var mLastUpdateRecomendInfo: Long = 0    //上次拉去剩余次数的时间
-    var mRecommendInterval: Int = 0
-
-    private var mLastUpdateRemainTime = 0L
+    private var mLastUpdateRecomendInfo = 0L    //上次拉去推荐房间剩余次数的时间
+    var mRecommendInterval: Int = 0    // 拉去推荐房的时间间隔
 
     init {
         addToLifeCycle()
@@ -162,13 +160,32 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     }
 
     //TODO 这个接口得换，等服务器更新
-    fun initRecommendRoom(interval: Int) {
+    fun initRecommendRoom(flag: Boolean, interval: Int) {
         mRecommendInterval = interval
         if (interval <= 0) {
             mRecommendInterval = 15
         }
+
+        if (!flag) {
+            var now = System.currentTimeMillis();
+            if ((now - mLastUpdateRecomendInfo) > mRecommendInterval * 1000) {
+                // 距离上次已经过去一个时间间隔
+                starTimer(0)
+            } else {
+                // 没过去一个间隔
+                var delayTime = mRecommendInterval * 1000 - (now - mLastUpdateRecomendInfo)
+                starTimer(delayTime)
+            }
+        } else {
+            // 立即更新
+            starTimer(0)
+        }
+    }
+
+    fun starTimer(delayTimeMill: Long) {
         stopTimer()
         mRecommendTimer = HandlerTaskTimer.newBuilder()
+                .delay(delayTimeMill)
                 .take(-1)
                 .interval((mRecommendInterval * 1000).toLong())
                 .start(object : HandlerTaskTimer.ObserverW() {
@@ -200,7 +217,8 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
-        initRecommendRoom(mRecommendInterval)
+        initRecommendRoom(true, mRecommendInterval)
+        getRemainTimes(true)
 //        initQuickRoom(true)
         checkTaskRedDot()
     }

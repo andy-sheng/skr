@@ -125,7 +125,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                     1 -> {
                         animation(color, Color.parseColor("#7088FF"))
 //                        mFriendRoomGameView?.stopTimer()
-                        mQuickGameView?.initData()
+                        mQuickGameView?.initData(false)
                         StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                     }
                     2 -> {
@@ -184,7 +184,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
             mGameVp.currentItem == 1 -> {
 //                mFriendRoomGameView?.stopTimer()
-                mQuickGameView?.initData()
+                mQuickGameView?.initData(false)
                 StatisticsAdapter.recordCountEvent("game", "express_expose", null)
             }
             mGameVp.currentItem == 2 -> {
@@ -217,7 +217,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
         mQuickGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
         if (mGameVp.currentItem == 1) {
-            mQuickGameView.initData()
+            mQuickGameView.initData(true)
         }
     }
 

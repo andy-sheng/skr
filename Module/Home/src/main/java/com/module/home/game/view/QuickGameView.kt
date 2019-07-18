@@ -25,7 +25,6 @@ import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.friends.FriendMoreRoomFragment
 import com.component.busilib.friends.RecommendModel
-import com.component.busilib.friends.SimpleRoomInfo
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
@@ -46,7 +45,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.recycler_view
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.refreshLayout
@@ -84,7 +82,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                initData()
+                initData(true)
             }
         })
         mGameAdapter = GameAdapter(fragment)
@@ -274,10 +272,10 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         recycler_view.adapter = mGameAdapter
     }
 
-    fun initData() {
-        mQuickGamePresenter.initOperationArea(false)
-        mQuickGamePresenter.initRecommendRoom(mRecommendInterval)
-        mQuickGamePresenter.getRemainTimes(false)
+    fun initData(flag: Boolean) {
+        mQuickGamePresenter.initOperationArea(flag)
+        mQuickGamePresenter.initRecommendRoom(flag, mRecommendInterval)
+        mQuickGamePresenter.getRemainTimes(flag)
 //        mQuickGamePresenter.initQuickRoom(false)
         mQuickGamePresenter.checkTaskRedDot()
     }
