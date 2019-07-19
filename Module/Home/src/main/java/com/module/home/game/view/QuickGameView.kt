@@ -96,10 +96,8 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
         mGameAdapter.onMoreRoomListener = {
             // 更多房间
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(fragment.activity, FriendMoreRoomFragment::class.java)
-                    .setAddToBackStack(true)
-                    .setHasAnimation(true)
-                    .build())
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FRIEND_ROOM)
+                    .navigation()
         }
         mGameAdapter.onEnterRoomListener = {
             // 进入房间

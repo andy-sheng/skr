@@ -73,7 +73,7 @@ class FriendMoreRoomFragment : BaseFragment() {
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                U.getFragmentUtils().popFragment(this@FriendMoreRoomFragment)
+               activity?.finish()
             }
         })
 
@@ -98,7 +98,7 @@ class FriendMoreRoomFragment : BaseFragment() {
 
             override fun onItemClicked(view: View, position: Int, model: RecommendModel?) {
                 if (model != null) {
-                    StatisticsAdapter.recordCountEvent("moreroom","room_insideclick",null)
+                    StatisticsAdapter.recordCountEvent("moreroom", "room_insideclick", null)
                     val friendRoomModel = model as RecommendModel?
 
                     if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
@@ -307,6 +307,11 @@ class FriendMoreRoomFragment : BaseFragment() {
 
     fun stopTimer() {
         mRecommendTimer?.dispose()
+    }
+
+    override fun destroy() {
+        super.destroy()
+        stopTimer()
     }
 
     override fun useEventBus(): Boolean {
