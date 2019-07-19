@@ -120,6 +120,9 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
     }
 
     private void drawXin() {
+        if(mIsDestroy){
+            return;
+        }
         Canvas canvas = null;
         try {
             canvas = lockCanvas();
