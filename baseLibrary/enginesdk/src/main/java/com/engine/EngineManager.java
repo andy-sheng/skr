@@ -19,7 +19,7 @@ import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
 import com.engine.token.AgoraTokenApi;
@@ -1415,7 +1415,7 @@ public class EngineManager implements AgoraOutCallback {
         AgoraEngineAdapter.getInstance().startRecognize(recognizeConfig);
     }
 
-    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+    public void setRecognizeListener(AcrRecognizeListener recognizeConfig) {
         AgoraEngineAdapter.getInstance().setRecognizeListener(recognizeConfig);
     }
 

@@ -33,7 +33,7 @@ import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 //import com.engine.EngineManager;
 import com.engine.Params;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
@@ -275,7 +275,7 @@ public class AuditionFragment extends BaseFragment {
                 .setMode(RecognizeConfig.MODE_MANUAL)
                 .setSongName(mSongModel.getItemName())
                 .setArtist(mSongModel.getOwner())
-                .setMResultListener(new ArcRecognizeListener() {
+                .setMResultListener(new AcrRecognizeListener() {
                     @Override
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                         mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);

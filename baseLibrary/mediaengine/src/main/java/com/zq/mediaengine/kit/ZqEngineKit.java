@@ -22,7 +22,7 @@ import com.engine.Params;
 import com.engine.UserStatus;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
 import com.engine.token.AgoraTokenApi;
@@ -1485,7 +1485,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAcrRecognizer.startRecognize(recognizeConfig);
     }
 
-    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+    public void setRecognizeListener(AcrRecognizeListener recognizeConfig) {
         mAcrRecognizer.setRecognizeListener(recognizeConfig);
     }
 

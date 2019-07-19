@@ -29,7 +29,7 @@ import okio.BufferedSink;
 import okio.Okio;
 import okio.Sink;
 
-public class ArcCloudManager implements IACRCloudListener {
+public class AcrCloudManager implements IACRCloudListener {
     public final static String TAG = "ArcCloudManager";
 
     static final int BUFFER_LEN = 10 * 44100 * 2;
@@ -131,7 +131,7 @@ public class ArcCloudManager implements IACRCloudListener {
         }
     }
 
-    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+    public void setRecognizeListener(AcrRecognizeListener recognizeConfig) {
         if (this.mRecognizeConfig != null) {
             this.mRecognizeConfig.setResultListener(recognizeConfig);
         }
@@ -262,7 +262,7 @@ public class ArcCloudManager implements IACRCloudListener {
                             // 识别次数打点
                             StatisticsAdapter.recordCountEvent("acr", "recognize", null);
                             long beginTs = System.currentTimeMillis();
-                            RecognizeConfig recognizeConfig = ArcCloudManager.this.mRecognizeConfig;
+                            RecognizeConfig recognizeConfig = AcrCloudManager.this.mRecognizeConfig;
                             if (recognizeConfig != null
                                     && recognizeConfig.getResultListener() != null
                                     && mLength >= BUFFER_LEN) {

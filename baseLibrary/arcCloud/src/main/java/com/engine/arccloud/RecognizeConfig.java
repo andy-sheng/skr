@@ -20,7 +20,7 @@ public class RecognizeConfig {
 
     boolean wantRecognizeInManualMode = false;
 
-    ArcRecognizeListener resultListener;
+    AcrRecognizeListener resultListener;
 
     MelpRecognizeListener mMelpRecognizeListener;
 
@@ -72,11 +72,11 @@ public class RecognizeConfig {
         this.wantRecognizeInManualMode = wantRecognizeInManualMode;
     }
 
-    public ArcRecognizeListener getResultListener() {
+    public AcrRecognizeListener getResultListener() {
         return resultListener;
     }
 
-    public void setResultListener(ArcRecognizeListener resultListener) {
+    public void setResultListener(AcrRecognizeListener resultListener) {
         this.resultListener = resultListener;
     }
 
@@ -123,7 +123,7 @@ public class RecognizeConfig {
             return this;
         }
 
-        public Builder setMResultListener(ArcRecognizeListener mResultListener) {
+        public Builder setMResultListener(AcrRecognizeListener mResultListener) {
             mParams.setResultListener(mResultListener);
             return this;
         }

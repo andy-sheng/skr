@@ -38,7 +38,7 @@ import com.component.busilib.recommend.RA;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
@@ -502,7 +502,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             .setArtist(now.getMusic().getOwner())
                             .setMode(RecognizeConfig.MODE_AUTO)
                             .setAutoTimes(3)
-                            .setMResultListener(new ArcRecognizeListener() {
+                            .setMResultListener(new AcrRecognizeListener() {
                                 @Override
                                 public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                                     int mAcrScore = 0;
