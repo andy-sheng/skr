@@ -1484,7 +1484,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mSwitchRooming = false;
                 mIGrabView.onChangeRoomResult(false, "网络错误");
             }
-        }, this);
+        }, this,new ApiMethods.RequestControl("changeRoom", ApiMethods.ControlType.CancelThis));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

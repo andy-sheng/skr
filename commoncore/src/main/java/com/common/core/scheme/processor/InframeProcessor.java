@@ -96,6 +96,23 @@ public class InframeProcessor implements ISchemeProcessor {
                         return ProcessResult.AcceptedAndReturn;
                 }
             }
+        } else if ("rong".equals(scheme)) {
+            if (beforeHomeExistJudge) {
+
+            } else {
+                if (!UserAccountManager.getInstance().hasAccount()) {
+                    MyLog.w(TAG, "processWebUrl 没有登录");
+                    return ProcessResult.AcceptedAndReturn;
+                }
+                String path = uri.getPath();
+                if (TextUtils.isEmpty(path)) {
+                    MyLog.w(TAG, "processWalletUrl path is empty");
+                    return ProcessResult.AcceptedAndReturn;
+                }
+                if ("/conversationlist".equals(path)) {
+                    EventBus.getDefault().post(new JumpHomeFromSchemeEvent(1));
+                }
+            }
         }
         return ProcessResult.NotAccepted;
     }
@@ -146,6 +163,7 @@ public class InframeProcessor implements ISchemeProcessor {
                     .withBoolean("selectSong", true)
                     .navigation();
         } else if (SchemeConstants.PATH_GRAB_MATCH.equals(path)) {
+
         } else {
 
         }
@@ -223,7 +241,7 @@ public class InframeProcessor implements ISchemeProcessor {
                     .navigation();
         } else if ("/jump_person_center".equals(path)) {
             // 跳到个人中心
-            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(3));
+            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(2));
         }
     }
 

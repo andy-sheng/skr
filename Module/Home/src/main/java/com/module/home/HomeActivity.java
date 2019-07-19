@@ -446,7 +446,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         U.getActivityUtils().goHomeActivity();
         mMainVp.setCurrentItem(event.channel, false);
         selectTab(event.channel);
-        if (event.channel == 2) {
+        if (event.channel == 1) {
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
         }
     }

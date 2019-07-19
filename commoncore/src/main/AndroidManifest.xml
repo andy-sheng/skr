@@ -42,7 +42,7 @@
             android:name="com.common.core.login.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 
@@ -67,6 +67,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="inframeskr" />
+                <data
+                    android:host="com.zq.live"
+                    android:pathPrefix="/conversationlist"
+                    android:scheme="rong" />
             </intent-filter>
         </activity>
 
@@ -155,32 +159,31 @@
         <activity
             android:name="com.zq.live.wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!--<activity-->
-            <!--android:name="com.common.webview.AgentWebActivity"-->
-            <!--android:configChanges="orientation|screenSize"-->
-            <!--android:launchMode="singleTop"-->
-            <!--android:screenOrientation="portrait"/>-->
+        <!--android:name="com.common.webview.AgentWebActivity"-->
+        <!--android:configChanges="orientation|screenSize"-->
+        <!--android:launchMode="singleTop"-->
+        <!--android:screenOrientation="portrait"/>-->
 
         <activity
             android:name="com.common.webview.ExpendWebActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize"
             android:launchMode="singleTop"
             android:process=":tools"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <provider
             android:name="com.common.webview.aidl.WebIpcProvider"
-            android:authorities="com.zq.live.web.binder.service"
-             />
+            android:authorities="com.zq.live.web.binder.service" />
     </application>
 
 </manifest>

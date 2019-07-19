@@ -29,10 +29,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <data
-                    android:host="com.zq.live"
-                    android:pathPrefix="/conversationlist/"
-                    android:scheme="rong" />
             </intent-filter>
 
         </activity>
