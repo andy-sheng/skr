@@ -99,7 +99,7 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        drawXin();
+        mHandler.sendEmptyMessageDelayed(DRAW_XIN_MSG, 0);
     }
 
     @Override
@@ -149,7 +149,11 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
             mHandler.sendEmptyMessageDelayed(DRAW_XIN_MSG, ZanBean.DURATION_INTERVAL);
         } finally {
             if (canvas != null) {
-                unlockCanvasAndPost(canvas);
+                try {
+                    unlockCanvasAndPost(canvas);
+                } catch (Exception e) {
+                    MyLog.e(TAG, e);
+                }
             }
         }
     }
