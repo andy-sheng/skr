@@ -210,7 +210,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 selectTab(0);
             }
         });
-        
+
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
@@ -256,6 +256,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 }
             }
         }, 5000);
+
+        tryGoConversationList(getIntent());
 
     }
 
@@ -376,6 +378,17 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        tryGoConversationList(intent);
+    }
+
+    private void tryGoConversationList(Intent intent) {
+        if (intent != null && intent.getData() != null && "conversationlist".equals(intent.getData().getPath())) {
+            mMainVp.setCurrentItem(1);
+        }
+    }
 
     @Override
     protected void onResume() {
