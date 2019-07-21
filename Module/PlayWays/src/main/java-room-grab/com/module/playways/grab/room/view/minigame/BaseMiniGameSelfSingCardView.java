@@ -27,7 +27,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
-    public final static String TAG = "BaseMiniGameSelfSingCardView";
+    public final String TAG = "BaseMiniGameSelfSingCardView";
 
     GrabRoomData mGrabRoomData;
     MiniGameInfoModel mMiniGameInfoModel;

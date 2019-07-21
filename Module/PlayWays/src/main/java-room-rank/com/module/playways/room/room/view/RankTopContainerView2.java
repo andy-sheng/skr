@@ -46,7 +46,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 public class RankTopContainerView2 extends RelativeLayout {
-    public final static String TAG = "RankTopContainerView";
+    public final String TAG = "RankTopContainerView";
     static final int MAX_USER_NUM = 3;
 
     private int mMode = 0; // 模式默认为0，即rank模式  1为调音间

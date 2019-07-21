@@ -28,7 +28,7 @@ import java.util.List;
  * 别人唱歌PK时，自己看到的板子
  */
 public class PKOthersSingCardView extends ExViewStub {
-    public final static String TAG = "PKOthersSingCardView";
+    public final String TAG = "PKOthersSingCardView";
 
     final static int COUNT_DOWN_STATUS_WAIT = 2;
     final static int COUNT_DOWN_STATUS_PLAYING = 3;

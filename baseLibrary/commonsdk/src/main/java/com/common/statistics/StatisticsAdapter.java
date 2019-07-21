@@ -17,7 +17,7 @@ import java.util.HashMap;
  */
 public class StatisticsAdapter {
 
-    public final static String TAG = "StatisticsAdapter";
+    public static final String TAG = "StatisticsAdapter";
 
 //    static boolean useXiaomi = false;
     static boolean userUmeng = true;

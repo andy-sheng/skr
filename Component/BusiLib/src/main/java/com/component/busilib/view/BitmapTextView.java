@@ -22,7 +22,7 @@ import java.util.List;
 
 public class BitmapTextView extends View {
 
-    public final static String TAG = "BitmapTextView";
+    public final String TAG = "BitmapTextView";
 
     protected List<Bitmap> mBitmapList = new ArrayList<>();
     int diff = U.getDisplayUtils().dip2px(2);  //两张图片的偏移量重合部分

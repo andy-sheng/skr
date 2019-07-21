@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RongIMConfiguration implements ConfigModule {
 
-    public final static String TAG = "RongIMConfiguration";
+    public final String TAG = "RongIMConfiguration";
 
     @Override
     public void applyOptions(GlobalParams.Builder builder) {

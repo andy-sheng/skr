@@ -18,7 +18,7 @@ import com.module.playways.R;
 import java.util.ArrayList;
 
 public class ZanView extends TextureView implements TextureView.SurfaceTextureListener {
-    public final static String TAG = "ZanView";
+    public final String TAG = "ZanView";
     public final static int ADD_XIN_MSG = 0;
     public final static int DRAW_XIN_MSG = 1;
 //    private SurfaceHolder mSurfaceHolder;

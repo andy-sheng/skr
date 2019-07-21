@@ -60,7 +60,7 @@ import java.util.regex.Pattern;
  * 暂时弃用
  */
 public class PkInfoFragment extends BaseFragment implements IPkInfoView {
-    public final static String TAG = "PkInfoFragment";
+    public final String TAG = "PkInfoFragment";
 
     SmartRefreshLayout mSmartRefreshLayout;
     ExImageView mIvVoiceRoom;

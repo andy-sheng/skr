@@ -15,7 +15,7 @@ import com.common.utils.U;
  * 房主说话时底部 点点点 动画view
  */
 public class SpeakingDotAnimationView extends View {
-    public final static String TAG = "SpeakingDotAnimationView";
+    public final String TAG = "SpeakingDotAnimationView";
 
     int mDotNum = 5;
     Paint mPaint;

@@ -9,7 +9,7 @@ import com.common.log.MyLog;
 
 
 public class BannerViewPager extends ViewPager {
-    public final static String TAG = "BannerViewPager";
+    public final String TAG = "BannerViewPager";
     private boolean scrollable = true;
 
     public BannerViewPager(Context context) {

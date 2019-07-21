@@ -18,7 +18,7 @@ import com.common.utils.U;
  * 从坐上角开始
  */
 public class RoundRectangleView extends View {
-    public final static String TAG = "RoundRectangleView";
+    public final String TAG = "RoundRectangleView";
     private int max = 100;
     private int min = 0;
 

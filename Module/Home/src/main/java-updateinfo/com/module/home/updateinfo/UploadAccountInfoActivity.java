@@ -18,7 +18,7 @@ import com.module.home.updateinfo.fragment.UploadAccountInfoFragment;
 @Route(path = RouterConstants.ACTIVITY_UPLOAD)
 public class UploadAccountInfoActivity extends BaseActivity {
 
-    public final static String TAG = "UploadAccountInfoActivity";
+    public final String TAG = "UploadAccountInfoActivity";
 
     public static void open(Activity activity) {
         Intent intent = new Intent(activity,UploadAccountInfoActivity.class);

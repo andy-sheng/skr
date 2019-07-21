@@ -24,7 +24,7 @@ import com.zq.live.proto.Room.EQRoundResultType;
  */
 public class NormalRoundOverCardView extends ExViewStub {
 
-    public final static String TAG = "RoundOverCardView";
+    public final String TAG = "RoundOverCardView";
 
     SVGAImageView mSingResultSvga;
 

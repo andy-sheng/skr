@@ -36,7 +36,7 @@ import java.io.InputStreamReader;
  * 如果想实时监听网络状态，请用 Eventbus 监听 {@link NetworkChangeEvent }
  */
 public class NetworkUtils {
-    public final static String TAG = "NetworkUtils";
+    public final String TAG = "NetworkUtils";
 
     NetworkUtils() {
     }

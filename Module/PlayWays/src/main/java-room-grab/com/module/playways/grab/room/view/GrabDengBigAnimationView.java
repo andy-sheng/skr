@@ -23,7 +23,7 @@ import java.util.List;
  * 灯的全屏效果
  */
 public class GrabDengBigAnimationView extends RelativeLayout {
-    public final static String TAG = "GrabDengBigAnimationView";
+    public final String TAG = "GrabDengBigAnimationView";
 
     List<SVGAImageViewEx> mDengSvgaViewList = new ArrayList<>();
 

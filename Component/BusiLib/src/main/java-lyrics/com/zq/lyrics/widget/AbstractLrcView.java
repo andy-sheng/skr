@@ -39,7 +39,7 @@ import java.util.TreeMap;
  * @date: 2018-04-21 9:06
  */
 public abstract class AbstractLrcView extends View {
-    public final static String TAG = "AbstractLrcView";
+    public final String TAG = "AbstractLrcView";
     /**
      * 初始
      */

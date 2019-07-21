@@ -9,7 +9,7 @@ import com.zq.live.proto.Room.RoomMsg;
 import java.io.IOException;
 
 public class ChatRoomMsgProcess implements IPushMsgProcess {
-    public final static String TAG = "ChatRoomMsgProcess";
+    public final String TAG = "ChatRoomMsgProcess";
 
     @Override
     public void process(int messageType, byte[] data) {

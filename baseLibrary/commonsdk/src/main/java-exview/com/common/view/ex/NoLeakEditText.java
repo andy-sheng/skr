@@ -13,7 +13,7 @@ import java.util.logging.Handler;
  */
 
 public class NoLeakEditText extends AppCompatEditText {
-    public final static String TAG = "NoLeakEditText";
+    public final String TAG = "NoLeakEditText";
     private ArrayList<TextWatcher> mAddedList = new ArrayList<>();//已经加入的
     private ArrayList<TextWatcher> mRemovedList = new ArrayList<>();//被remove，待恢复的
 

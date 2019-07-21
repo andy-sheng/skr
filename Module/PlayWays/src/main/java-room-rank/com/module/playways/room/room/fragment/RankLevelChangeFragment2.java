@@ -66,7 +66,7 @@ import static android.view.View.VISIBLE;
 
 public class RankLevelChangeFragment2 extends BaseFragment {
 
-    public final static String TAG = "RankLevelChange2Fragment";
+    public final String TAG = "RankLevelChange2Fragment";
 
     RelativeLayout mMainActContainer;
     ImageView mBackgroundIv;

@@ -40,7 +40,7 @@ import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrSystem
 import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrZSNotEnough;
 
 public class ContinueSendView extends FrameLayout implements IContinueSendView {
-    public final static String TAG = "ContinueSendView";
+    public final String TAG = "ContinueSendView";
 
     public static final int MSG_HIDE = 101;
     public static final int MSG_SHOW_RECHARGE = 102;

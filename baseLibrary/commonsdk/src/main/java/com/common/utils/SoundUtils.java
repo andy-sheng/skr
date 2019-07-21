@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class SoundUtils {
 
-    public final static String TAG = "SoundUtils";
+    public final String TAG = "SoundUtils";
 
     public static final String PREF_KEY_GAME_VOLUME_SWITCH = "pref_game_volume_switch";
 

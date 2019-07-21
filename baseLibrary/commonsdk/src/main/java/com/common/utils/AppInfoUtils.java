@@ -27,7 +27,7 @@ import java.util.Locale;
  * 获得本app的一些信息，手机上别的app用{@link DeviceUtils}
  */
 public class AppInfoUtils {
-    public final static String TAG = "AppInfoUtils";
+    public final String TAG = "AppInfoUtils";
 
     AppInfoUtils() {
 

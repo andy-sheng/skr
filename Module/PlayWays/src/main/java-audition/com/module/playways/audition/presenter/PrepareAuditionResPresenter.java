@@ -16,7 +16,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 import java.util.LinkedList;
 
 public class PrepareAuditionResPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "PrepareAuditionResPresenter";
+    public final String TAG = "PrepareAuditionResPresenter";
     HttpUtils.OnDownloadProgress mOnDownloadProgress;
     SongModel mSongModel;
 

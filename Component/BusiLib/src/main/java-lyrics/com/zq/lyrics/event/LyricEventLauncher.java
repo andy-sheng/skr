@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class LyricEventLauncher {
-    public final static String TAG = "LyricEventLauncher";
+    public final String TAG = "LyricEventLauncher";
     //模拟机器人打分事件
     static final int MSG_LYRIC_LINE_END_EVENT = 11;//某行结束
     static final int MSG_LYRIC_LINE_START_EVENT = 12;//某行开始

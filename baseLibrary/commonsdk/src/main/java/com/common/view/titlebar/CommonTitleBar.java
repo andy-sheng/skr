@@ -99,7 +99,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("ResourceType")
 public class CommonTitleBar extends RelativeLayout implements View.OnClickListener {
-    public final static String TAG = "CommonTitleBar";
+    public final String TAG = "CommonTitleBar";
 
     private View viewStatusBarFill;                     // 状态栏填充视图
     private View viewBottomLine;                        // 分隔线视图

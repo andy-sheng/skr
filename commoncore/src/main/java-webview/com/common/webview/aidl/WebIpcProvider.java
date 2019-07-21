@@ -11,7 +11,7 @@ import android.util.Log;
 
 
 public class WebIpcProvider extends ContentProvider {
-    public final static String TAG = "WebviewIpcServer";
+    public final String TAG = "WebviewIpcServer";
 
     public final static String AUTHORITY = "com.zq.live.web.binder.service";
 

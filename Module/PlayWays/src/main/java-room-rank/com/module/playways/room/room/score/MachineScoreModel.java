@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MachineScoreModel implements Serializable {
-    public final static String TAG = "MachineScoreModel";
+    public final String TAG = "MachineScoreModel";
     @JSONField(name = "data")
     private List<MachineScoreItem> mDataList = new ArrayList<>();
 

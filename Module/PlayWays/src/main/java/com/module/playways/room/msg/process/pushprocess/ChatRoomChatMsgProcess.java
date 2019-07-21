@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgType, RoomMsg> {
 
-    public final static String TAG = "ChatRoomChatMsgProcess";
+    public final String TAG = "ChatRoomChatMsgProcess";
 
     @Override
     public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {

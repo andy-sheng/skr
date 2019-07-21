@@ -52,7 +52,7 @@ import org.greenrobot.eventbus.ThreadMode;
 @Route(path = RouterConstants.ACTIVITY_EDIT_INFO)
 public class EditInfoActivity extends BaseActivity implements View.OnClickListener {
 
-    public final static String TAG = "EditInfoActivity";
+    public final String TAG = "EditInfoActivity";
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;

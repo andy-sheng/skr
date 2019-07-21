@@ -24,7 +24,7 @@ import android.support.annotation.NonNull;
  */
 public class PluginAppDelegate {
 
-    public final static String TAG = "PluginAppDelegate";
+    public final String TAG = "PluginAppDelegate";
 
     public void attachBaseContext(@NonNull Application base) {
     }

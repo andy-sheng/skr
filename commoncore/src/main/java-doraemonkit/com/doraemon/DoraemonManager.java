@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoraemonManager {
-    public final static String TAG = "DoraemonManager";
+    public static final String TAG = "DoraemonManager";
 
     public static void init() {
         DoraemonKit.install(U.app());

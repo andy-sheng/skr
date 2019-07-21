@@ -12,7 +12,7 @@ import android.view.View;
 import com.common.utils.U;
 
 public class CircleAnimationView extends View {
-    public final static String TAG = "CircleAnimationView";
+    public final String TAG = "CircleAnimationView";
 
     public CircleAnimationView(Context context) {
         super(context);

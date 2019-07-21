@@ -35,7 +35,7 @@ import static com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter.C
  * 合唱的歌唱者看到的板子
  */
 public class DoubleChorusSelfSingCardView extends ExViewStub {
-    public final static String TAG = "DoubleChorusSelfSingCardView";
+    public final String TAG = "DoubleChorusSelfSingCardView";
     UserInfoModel mFirstModel;
     UserInfoModel mSecondModel;
     DoubleRoomData mRoomData;

@@ -18,7 +18,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 public class SharePanel {
-    public final static String TAG = "SharePanel";
+    public final String TAG = "SharePanel";
 
     DialogPlus mDialogPlus;
 

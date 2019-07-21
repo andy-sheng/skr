@@ -34,7 +34,7 @@ import io.reactivex.functions.Consumer;
 import static com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter.ChorusLineLyricModel.GRAB_TYPE;
 
 public abstract class BaseChorusSelfCardView extends ExViewStub {
-    public final static String TAG = "ChorusSelfSingCardView";
+    public final String TAG = "ChorusSelfSingCardView";
 
     protected RecyclerView mLyricRecycleView;
     ChorusSelfLyricAdapter mChorusSelfLyricAdapter;

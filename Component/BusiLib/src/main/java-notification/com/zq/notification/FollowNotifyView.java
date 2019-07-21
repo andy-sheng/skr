@@ -27,7 +27,7 @@ import com.zq.live.proto.Common.ESex;
  */
 public class FollowNotifyView extends RelativeLayout {
 
-    public final static String TAG = "FollowNotifyView";
+    public final String TAG = "FollowNotifyView";
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;

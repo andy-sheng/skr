@@ -22,7 +22,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
  */
 public class RankTopLEDView extends RelativeLayout {
 
-    public final static String TAG = "RankTopLEDView";
+    public final String TAG = "RankTopLEDView";
     public static int MID_MODE = 0;      //中间跳动一下的动画
     public static int DEFAULT_MODE = 1;  //默认模式
     public static int MIE_MODE = 2;      //灭灯模式

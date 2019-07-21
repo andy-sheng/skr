@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GrabAudienceView extends RelativeLayout {
-    public final static String TAG = "GrabAudienceView";
+    public final String TAG = "GrabAudienceView";
     public static final int MAX_COUNT = 3;
     List<VH> mBaseImageViewList = new ArrayList<>(MAX_COUNT);
     List<GrabPlayerInfoModel> mWaitInfoModelList = new ArrayList<>();

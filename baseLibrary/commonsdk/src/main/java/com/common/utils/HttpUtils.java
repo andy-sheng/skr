@@ -38,7 +38,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 
 public class HttpUtils {
-    public final static String TAG = "HttpUtils";
+    public final String TAG = "HttpUtils";
 
     private String USER_AGENT = null;
 

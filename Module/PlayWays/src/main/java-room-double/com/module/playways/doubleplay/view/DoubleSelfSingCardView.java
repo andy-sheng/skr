@@ -13,7 +13,7 @@ import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
 public class DoubleSelfSingCardView {
-    public final static String TAG = "DoubleSelfSingCardView";
+    public final String TAG = "DoubleSelfSingCardView";
     DoubleChorusSelfSingCardView mDoubleChorusSelfSingCardView;
     DoubleNormalSelfSingCardView mDoubleNormalSelfSingCardView;
     DoubleMiniGameSelfSingCardView mDoubleMiniGameSelfSingCardView;

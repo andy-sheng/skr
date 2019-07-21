@@ -44,7 +44,7 @@ import okhttp3.RequestBody;
  * 手机方式登陆界面
  */
 public class SmsAuthFragment extends BaseFragment {
-    public final static String TAG = "SmsAuthFragment";
+    public final String TAG = "SmsAuthFragment";
     public static final String PREF_KEY_PHONE_NUM = "pref_key_phone_num";
 
     RelativeLayout mMainActContainer;

@@ -36,7 +36,7 @@ import retrofit2.Response;
  */
 public class MyUserInfoManager {
 
-    public final static String TAG = "MyUserInfoManager";
+    public final String TAG = "MyUserInfoManager";
 
     static final String PREF_KEY_UPDATE_LACATION_TS = "update_location_ts";
 

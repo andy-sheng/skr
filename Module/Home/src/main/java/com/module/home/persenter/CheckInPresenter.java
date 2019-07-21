@@ -41,7 +41,7 @@ import okhttp3.RequestBody;
  * 签到
  */
 public class CheckInPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "CheckInPresenter";
+    public final String TAG = "CheckInPresenter";
     public final static String RED_PKG_TASK_ID = "1";
 
     public static final String PREF_KEY_SHOW_CHECKIN = "checkin";

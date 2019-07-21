@@ -25,7 +25,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "GrabRedPkgPresenter";
+    public final String TAG = "GrabRedPkgPresenter";
     public final static String KEY_HAS_RESEIVE_RED_PKG = "hasReceiveRedPkg";
     public static final int RED_PKG_COUNT_DOWN_TIME = 15000;
     public static final long ERROR_CODE_RED_RULE = 8302202;

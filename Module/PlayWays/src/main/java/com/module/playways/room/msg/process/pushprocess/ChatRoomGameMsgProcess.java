@@ -79,7 +79,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgType, RoomMsg> {
 
-    public final static String TAG = "ChatRoomGameMsgProcess";
+    public final String TAG = "ChatRoomGameMsgProcess";
 
     @Override
     public ERoomMsgType[] acceptType() {

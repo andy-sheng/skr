@@ -33,7 +33,7 @@ import java.util.Set;
  * Created by lan on 16-1-11.
  */
 public class FrescoInitManager {
-    public final static String TAG = "FrescoInitManager";
+    public static final String TAG = "FrescoInitManager";
 
 
     public static void initFresco(Context context) {

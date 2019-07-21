@@ -44,7 +44,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class SpecialSelectView extends RelativeLayout {
 
-    public final static String TAG = "SpecialSelectView";
+    public final String TAG = "SpecialSelectView";
 
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mContentRv;

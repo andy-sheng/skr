@@ -6,7 +6,7 @@ import com.common.log.MyLog;
 import java.nio.ByteBuffer;
 
 public class ITbAgcProcessor {
-    public final static String TAG = "ITbEffectProcessor";
+    public static final String TAG = "ITbEffectProcessor";
 
     static {
         try {

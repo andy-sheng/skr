@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter {
-    public final static String TAG = "PhotoAdapter";
+    public final String TAG = "PhotoAdapter";
 
     public final static int TYPE_PERSON_CARD = 1; // dialogcarnd
     public final static int TYPE_PERSON_CENTER = 2; // 个人中心

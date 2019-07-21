@@ -20,7 +20,7 @@ import com.common.utils.U;
  */
 
 class FloatPhone extends FloatView {
-    public final static String TAG = "FloatPhone";
+    public final String TAG = "FloatPhone";
     private FloatWindow.B mB;
     private WindowManager mWindowManager;
     private final WindowManager.LayoutParams mLayoutParams;

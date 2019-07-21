@@ -53,7 +53,7 @@ import retrofit2.Response;
 @Deprecated
 public class EngineManager implements AgoraOutCallback {
 
-    public final static String TAG = "EngineManager";
+    public final String TAG = "EngineManager";
 
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;

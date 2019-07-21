@@ -33,7 +33,7 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
 public class RankMatchPresenter extends BaseMatchPresenter {
-    public final static String TAG = "RankMatchPresenter";
+    public final String TAG = "RankMatchPresenter";
     public static final int CHECK_NUM = 10;
     IRankMatchingView mView;
     MatchServerApi mMatchServerApi;
@@ -300,7 +300,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
 
                             @Override
                             public void onError(Throwable e) {
-                                MyLog.d(RankMatchPresenter.TAG, "checkCurrentGameData2 process" + " e=" + e);
+                                MyLog.d(TAG, "checkCurrentGameData2 process" + " e=" + e);
                                 startLoopMatchTask(mCurrentMusicId, mGameType);
                                 exitGame(mJoinActionEvent.gameId);
                             }
@@ -336,7 +336,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
 
             @Override
             public void onError(Throwable e) {
-                MyLog.w(RankMatchPresenter.TAG, "exitGame error, " + " e=" + e);
+                MyLog.w(TAG, "exitGame error, " + " e=" + e);
             }
         }, RankMatchPresenter.this);
     }

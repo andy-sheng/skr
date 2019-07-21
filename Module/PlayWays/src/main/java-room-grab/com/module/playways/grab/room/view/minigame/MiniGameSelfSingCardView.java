@@ -17,7 +17,7 @@ import com.module.playways.grab.room.view.control.SelfSingCardView;
  */
 public class MiniGameSelfSingCardView extends BaseMiniGameSelfSingCardView {
 
-    public final static String TAG = "MiniGameSelfSingCardView";
+    public final String TAG = "MiniGameSelfSingCardView";
 
     SingCountDownView2 mSingCountDownView;
 

@@ -81,7 +81,7 @@ import model.RelationNumModel;
 
 public class PersonInfoDialogView2 extends RelativeLayout {
 
-    public final static String TAG = "PersonInfoDialogView2";
+    public final String TAG = "PersonInfoDialogView2";
 
     Handler mUiHandler = new Handler();
 

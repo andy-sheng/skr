@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 
 @Route(path = RouterConstants.SERVICE_HOME, name = "测试服务")
 public class HomeServiceImpl implements IHomeService {
-    public final static String TAG = "ChannelServiceImpl";
+    public final String TAG = "ChannelServiceImpl";
 
     /**
      * 主要返回的是只在 channel 自定义类型，注意在 commonservice 中增加接口，

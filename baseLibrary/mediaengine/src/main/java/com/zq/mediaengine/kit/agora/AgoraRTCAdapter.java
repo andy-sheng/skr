@@ -47,7 +47,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class AgoraRTCAdapter {
-    public final static String TAG = "AgoraRTCAdapter";
+    public final String TAG = "AgoraRTCAdapter";
     private final static boolean VERBOSE = false;
 
     private static AgoraRTCAdapter sInstance;

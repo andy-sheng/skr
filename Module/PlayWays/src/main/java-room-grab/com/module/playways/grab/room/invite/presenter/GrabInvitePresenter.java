@@ -27,7 +27,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class GrabInvitePresenter {
-    public final static String TAG = "GrabRedPkgPresenter";
+    public final String TAG = "GrabRedPkgPresenter";
 
     GrabRoomServerApi mGrabRoomServerApi;
     DoubleRoomServerApi mDoubleRoomServerApi;

@@ -15,7 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 
 public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
-    public final static String TAG = "SpecialCardViewHolder";
+    public final String TAG = "SpecialCardViewHolder";
     SimpleDraweeView mBackground;
 
     SpecialModel mSpecialModel;

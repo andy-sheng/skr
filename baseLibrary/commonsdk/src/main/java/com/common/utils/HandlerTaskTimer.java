@@ -20,7 +20,7 @@ import io.reactivex.functions.Consumer;
  * Handler 定时器 用于倒计时 、延迟执行、循环执行 任务
  */
 public final class HandlerTaskTimer {
-    public final static String TAG = "HandlerTaskTimer";
+    public final String TAG = "HandlerTaskTimer";
 
     public static final int MSG_EXECUTE = 100;
     long initialDelay = 0;

@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * 首页弹窗管理，保证首页有N个弹窗要显示时，能有序显示
  */
 public class HomeDialogManager {
-    public final static String TAG = "HomeDialogManager";
+    public final String TAG = "HomeDialogManager";
 
     private boolean mHasShowDialog = false;
     ObjectPlayControlTemplate<ExDialogData, HomeDialogManager> mObjectPlayControlTemplate;

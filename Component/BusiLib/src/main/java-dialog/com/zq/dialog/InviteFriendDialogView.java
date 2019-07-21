@@ -20,7 +20,7 @@ import static com.zq.dialog.InviteFriendDialog.INVITE_GRAB_FRIEND;
 import static com.zq.dialog.InviteFriendDialog.INVITE_GRAB_GAME;
 
 public class InviteFriendDialogView extends RelativeLayout {
-    public final static String TAG = "InviteFriendDialogView";
+    public final String TAG = "InviteFriendDialogView";
 
     ExTextView mTvTitle;
     TextView mTvKouling;

@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class FloatWindow {
 
-    public final static String TAG = "FloatWindow";
+    public static final String TAG = "FloatWindow";
 
     private FloatWindow() {
 

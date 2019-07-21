@@ -13,7 +13,7 @@ import java.util.HashSet;
  */
 public class DoubleRoomMsgManager extends BaseMsgManager<ECombineRoomMsgType, CombineRoomMsg> {
 
-    public final static String TAG = "DoubleRoomMsgManager";
+    public final String TAG = "DoubleRoomMsgManager";
 
     private static class ChatRoomMsgAdapterHolder {
         private static final DoubleRoomMsgManager INSTANCE = new DoubleRoomMsgManager();

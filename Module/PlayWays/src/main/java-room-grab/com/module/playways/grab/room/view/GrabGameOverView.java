@@ -18,7 +18,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
  */
 public class GrabGameOverView extends RelativeLayout {
 
-    public final static String TAG = "GrabGameOverView";
+    public final String TAG = "GrabGameOverView";
 
     SVGAImageView mEndGameIv;
     SVGAListener mSVGAListener;

@@ -45,7 +45,7 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class EnhancedImageView extends RelativeLayout {
 
-    public final static String TAG = "ImageBrowseView";
+    public final String TAG = "ImageBrowseView";
 
     protected BaseImageView mPhotoDraweeView;
     protected GifImageView mGifImageView;

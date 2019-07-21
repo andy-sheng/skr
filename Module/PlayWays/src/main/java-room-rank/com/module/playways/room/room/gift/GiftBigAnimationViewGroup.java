@@ -24,7 +24,7 @@ import static com.module.playways.room.room.gift.model.GiftPlayControlTemplate.B
 
 public class GiftBigAnimationViewGroup extends RelativeLayout {
 
-    public final static String TAG = GiftBigAnimationViewGroup.class.getSimpleName();
+    public final String TAG = GiftBigAnimationViewGroup.class.getSimpleName();
 
     static final int MAX_CONSUMER_NUM = 1;
 

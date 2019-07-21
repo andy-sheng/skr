@@ -63,7 +63,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public static final int MSG_RECONNECT = 11;
 
-    public final static String TAG = "RongMsgManager";
+    public final String TAG = "RongMsgManager";
 
     private static class RongMsgAdapterHolder {
         private static final RongMsgManager INSTANCE = new RongMsgManager();

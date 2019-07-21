@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class PhotoWallView extends RelativeLayout implements IPhotoWallView {
 
-    public final static String TAG = "PhotoWallView";
+    public final String TAG = "PhotoWallView";
 
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
     boolean mHasMore = false;

@@ -23,7 +23,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
  * 方便头像加载的工具类，请维护好
  */
 public class AvatarUtils {
-    public final static String TAG = "AvatarUtils";
+    public static final String TAG = "AvatarUtils";
 
     final static int MAX_CACHE_SIZE = 500;
     /**

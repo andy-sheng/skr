@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ScoreResultModel implements Serializable {
 
-    public final static String TAG = "ScoreResultModel";
+    public final String TAG = "ScoreResultModel";
 
     private int userID;
     private List<ScoreStateModel> states;             //分值状态：初始、中间、最终状态，第0个为占位用

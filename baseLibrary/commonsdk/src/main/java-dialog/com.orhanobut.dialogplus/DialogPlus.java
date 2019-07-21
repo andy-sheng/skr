@@ -21,7 +21,7 @@ import com.common.view.DebounceViewClickListener;
 
 public class DialogPlus {
 
-    public final static String TAG = "DialogPlus";
+    public final String TAG = "DialogPlus";
 
     public final static int MSG_ENSURE_DISMISS = 88;
 

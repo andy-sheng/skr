@@ -31,7 +31,7 @@ import com.zq.lyrics.LyricsManager;
 import io.reactivex.functions.Consumer;
 
 public class DoubleMiniGameSelfSingCardView extends ExViewStub {
-    public final static String TAG = "DoubleMiniGameSelfSingCardView";
+    public final String TAG = "DoubleMiniGameSelfSingCardView";
     LocalCombineRoomMusic mMusic;
     //是不是这个人点的歌儿
     boolean mIsOwner = false;

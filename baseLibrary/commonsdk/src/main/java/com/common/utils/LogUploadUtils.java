@@ -21,7 +21,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class LogUploadUtils {
-    public final static String TAG = "LogUploadUtils";
+    public final String TAG = "LogUploadUtils";
     Disposable mUploadLogTask;
 
     public void upload(final long uid, Callback callback,boolean fromSelf) {

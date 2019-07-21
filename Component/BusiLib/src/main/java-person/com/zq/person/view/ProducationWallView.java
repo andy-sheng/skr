@@ -40,7 +40,7 @@ import okhttp3.RequestBody;
  */
 public class ProducationWallView extends RelativeLayout {
 
-    public final static String TAG = "ProducationWallView";
+    public final String TAG = "ProducationWallView";
 
     BaseFragment mFragment;
     RequestCallBack mCallBack;

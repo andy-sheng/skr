@@ -14,7 +14,7 @@ import java.util.Date;
  * 通过 U.getDateTimeUtils() 调用
  */
 public class DateTimeUtils {
-    public final static String TAG = "DateTimeUtils";
+    public final String TAG = "DateTimeUtils";
 
 
     public static final String DATETIME_FORMAT_SECOND = "yyyy.MM.dd HH:mm:ss";

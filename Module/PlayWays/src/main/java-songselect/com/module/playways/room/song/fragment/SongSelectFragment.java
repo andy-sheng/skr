@@ -42,7 +42,7 @@ import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 public class SongSelectFragment extends BaseFragment implements ISongTagDetailView, SwipeFlingAdapterView.onFlingListener,
         SwipeFlingAdapterView.OnItemClickListener {
 
-    public final static String TAG = "SongSelectFragment";
+    public final String TAG = "SongSelectFragment";
 
     public int DEFAULT_COUNT = 6;  // 从服务器拉去歌曲数，即每个页面默认个数
     public int DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5; // 第一次从推荐页面拉去歌曲数

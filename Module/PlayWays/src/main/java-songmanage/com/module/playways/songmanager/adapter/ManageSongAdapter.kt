@@ -81,7 +81,7 @@ class ManageSongAdapter(internal var mType: Int) : DiffAdapter<GrabRoomSongModel
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = mDataList[position]
-        MyLog.d(DiffAdapter.TAG, "onBindViewHolder model=$model position=$position")
+        MyLog.d(TAG, "onBindViewHolder model=$model position=$position")
         val reportItemHolder = holder as ItemHolder
         reportItemHolder.bind(model, position)
     }

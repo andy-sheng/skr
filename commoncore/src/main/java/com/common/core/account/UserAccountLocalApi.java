@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class UserAccountLocalApi {
 
-    public final static String TAG = "UserAccountLocalApi";
+    public static final String TAG = "UserAccountLocalApi";
 
     private static UserAccountDao getAccountDao() {
         return GreenDaoManager.getDaoSession().getUserAccountDao();

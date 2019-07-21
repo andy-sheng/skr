@@ -31,7 +31,7 @@ import okhttp3.RequestBody;
 
 //同时只能有一个订单
 public class InComePresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "BallencePresenter";
+    public final String TAG = "BallencePresenter";
 
     IInComeView mIInComeView;
 

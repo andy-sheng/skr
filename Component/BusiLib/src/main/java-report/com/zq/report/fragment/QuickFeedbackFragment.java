@@ -62,7 +62,7 @@ import static com.zq.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
  * 快速一键反馈
  */
 public class QuickFeedbackFragment extends BaseFragment {
-    public final static String TAG = "QuickFeedbackFragment";
+    public final String TAG = "QuickFeedbackFragment";
     //反馈
     public static final int FEED_BACK = 0;
     //举报

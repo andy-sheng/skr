@@ -34,7 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 public class RedPkgPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "RedPkgPresenter";
+    public final String TAG = "RedPkgPresenter";
     public final static String RED_PKG_TASK_ID = "1";
 
     public static final String PREF_KEY_RED_PKG_SHOW = "red_pkg_show";

@@ -24,7 +24,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
-    public final static String TAG = "FriendRoomVerticalViewHolder";
+    public final String TAG = "FriendRoomVerticalViewHolder";
 
     RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 

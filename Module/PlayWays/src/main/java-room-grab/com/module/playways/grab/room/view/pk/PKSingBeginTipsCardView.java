@@ -31,7 +31,7 @@ import java.io.File;
  */
 public class PKSingBeginTipsCardView {
 
-    public final static String TAG = "PKSingBeginTipsCardView";
+    public final String TAG = "PKSingBeginTipsCardView";
 
 
     public void bindData(SVGAImageView svagaImageView, UserInfoModel left, UserInfoModel right, SVGAListener listener) {

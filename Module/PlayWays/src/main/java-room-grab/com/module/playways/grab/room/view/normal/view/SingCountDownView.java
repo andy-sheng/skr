@@ -18,7 +18,7 @@ import com.module.playways.grab.room.view.control.SelfSingCardView;
  */
 public class SingCountDownView extends RelativeLayout {
 
-    public final static String TAG = "SingCountDownView";
+    public final String TAG = "SingCountDownView";
 
     SelfSingCardView.Listener mListener;
 

@@ -36,7 +36,7 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class PrepareResFragment extends BaseFragment implements IPrepareResView {
 
-    public final static String TAG = "PrepareResFragment";
+    public final String TAG = "PrepareResFragment";
 
     RelativeLayout mMainActContainer;
 

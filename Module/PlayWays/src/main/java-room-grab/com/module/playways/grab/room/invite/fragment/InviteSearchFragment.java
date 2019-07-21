@@ -46,7 +46,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class InviteSearchFragment extends BaseFragment implements IInviteSearchView {
 
-    public final static String TAG = "InviteSearchFragment";
+    public final String TAG = "InviteSearchFragment";
 
     public static String INVITE_SEARCH_FROM = "invite_search_from";
     public static String INVITE_SEARCH_MODE = "invite_search_mode";

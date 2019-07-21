@@ -26,7 +26,7 @@ import com.zq.live.proto.Room.EWantSingType;
 import org.greenrobot.eventbus.EventBus;
 
 public class GrabTopItemView extends RelativeLayout {
-    public final static String TAG = "GrabTopItemView";
+    public final String TAG = "GrabTopItemView";
     public static final int MODE_GRAB = 1;
     public static final int MODE_SING = 2;
 

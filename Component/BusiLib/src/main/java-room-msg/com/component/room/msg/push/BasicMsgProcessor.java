@@ -8,7 +8,7 @@ import com.module.msg.IPushMsgProcess;
  * 基础消息处理器，几乎每个房间内模块都要使用
  */
 public class BasicMsgProcessor implements IPushMsgProcess {
-    public final static String TAG = "BasicMsgProcessor";
+    public final String TAG = "BasicMsgProcessor";
 
     @Override
     public void process(int messageType, byte[] data) {

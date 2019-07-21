@@ -50,7 +50,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class SearchFriendFragment extends BaseFragment {
 
-    public final static String TAG = "SearchFriendFragment";
+    public final String TAG = "SearchFriendFragment";
 
     public static String BUNDLE_SEARCH_MODE = "bundle_search_mode";
 

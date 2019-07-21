@@ -13,7 +13,7 @@ import com.module.playways.view.VoiceControlPanelView;
 import com.module.playways.R;
 
 public class GrabVoiceControlPanelView extends VoiceControlPanelView {
-    public final static String TAG = "VoiceControlPanelView";
+    public final String TAG = "VoiceControlPanelView";
 
     LinearLayout mLlSwitchContainer;
 

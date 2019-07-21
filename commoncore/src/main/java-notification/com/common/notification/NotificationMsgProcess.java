@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class NotificationMsgProcess implements IPushMsgProcess {
 
-    public final static String TAG = "NotificationMsgProcess";
+    public final String TAG = "NotificationMsgProcess";
 
 
     @Override

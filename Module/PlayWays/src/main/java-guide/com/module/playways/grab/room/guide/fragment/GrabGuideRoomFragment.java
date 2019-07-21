@@ -67,7 +67,7 @@ import java.util.List;
 
 public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideView {
 
-    public final static String TAG = "GrabGuideFragment";
+    public final String TAG = "GrabGuideFragment";
 
     public static final int MSG_ENSURE_SONGCARD_OVER = 2;
 

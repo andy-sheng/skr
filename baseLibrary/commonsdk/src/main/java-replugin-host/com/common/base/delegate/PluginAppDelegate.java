@@ -41,7 +41,7 @@ import java.util.List;
  */
 public class PluginAppDelegate {
 
-    public final static String TAG = "PluginAppDelegate";
+    public final String TAG = "PluginAppDelegate";
 
     public void attachBaseContext(@NonNull Application base) {
         // DroidPlugin 必须在这初始化， 因为会新起进程，两边的进程都要初始化到

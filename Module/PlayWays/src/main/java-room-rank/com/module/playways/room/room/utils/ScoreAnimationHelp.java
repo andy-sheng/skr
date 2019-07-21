@@ -10,7 +10,7 @@ import com.zq.level.view.NormalLevelView;
 
 // 辅助战绩动画的类
 public class ScoreAnimationHelp {
-    public final static String TAG = "ScoreAnimationHelp";
+    public static final String TAG = "ScoreAnimationHelp";
 
     /**
      * 星星变化动画

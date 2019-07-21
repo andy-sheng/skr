@@ -11,7 +11,7 @@ import com.common.log.MyLog;
  */
 public class MyUserInfoLocalApi {
     //Relation中的relative  0为默认值, 1为双方未关注, 2为我关注该用户, 3为该用户关注我, 4为双方关注
-    public final static String TAG = "MyUserInfoLocalApi";
+    public static final String TAG = "MyUserInfoLocalApi";
 
     private static UserInfoDBDao getUserInfoDao() {
         return GreenDaoManager.getDaoSession().getUserInfoDBDao();

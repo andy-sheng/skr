@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 
 public class VoiceTopContainerView extends RelativeLayout {
-    public final static String TAG = "VoiceTopContainerView";
+    public final String TAG = "VoiceTopContainerView";
     ExTextView mBackTv;
 
 

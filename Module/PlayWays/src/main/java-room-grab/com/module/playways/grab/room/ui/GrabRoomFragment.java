@@ -129,15 +129,15 @@ import static android.view.View.GONE;
 
 public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
 
-    public final static String TAG = "GrabRoomFragment";
+    public static final String TAG = "GrabRoomFragment";
 
-    public final static String TAG_MANAGE_SONG_TIP_VIEW = "ownerShowTimes";
-    public final static String TAG_INVITE_TIP_VIEW = "inviteShowTimes";
-    public final static String TAG_CHANLLENGE_TIP_VIEW = "showChallengeTime";
-    public final static String TAG_GRAB_ROB_TIP_VIEW = "showGrabRobTime";
-    public final static String TAG_BURST_TIP_VIEW = "tag_burst_tips";
-    public final static String TAG_SELF_SING_TIP_VIEW = "tag_self_sing_tips";
-    public final static String TAG_NOACC_SROLL_TIP_VIEW = "tag_noacc_sroll_tips";
+    public final String TAG_MANAGE_SONG_TIP_VIEW = "ownerShowTimes";
+    public final String TAG_INVITE_TIP_VIEW = "inviteShowTimes";
+    public final String TAG_CHANLLENGE_TIP_VIEW = "showChallengeTime";
+    public final String TAG_GRAB_ROB_TIP_VIEW = "showGrabRobTime";
+    public final String TAG_BURST_TIP_VIEW = "tag_burst_tips";
+    public final String TAG_SELF_SING_TIP_VIEW = "tag_self_sing_tips";
+    public final String TAG_NOACC_SROLL_TIP_VIEW = "tag_noacc_sroll_tips";
 
 //    public static final int MSG_ENSURE_READYGO_OVER = 1;
 

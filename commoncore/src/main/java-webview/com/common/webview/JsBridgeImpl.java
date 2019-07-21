@@ -25,7 +25,7 @@ import java.util.Map;
 
 
 public class JsBridgeImpl {
-    public final static String TAG = "JsBridgeImpl";
+    public final String TAG = "JsBridgeImpl";
     BaseActivity mBaseActivity;
 
     public JsBridgeImpl(BaseActivity baseActivity) {

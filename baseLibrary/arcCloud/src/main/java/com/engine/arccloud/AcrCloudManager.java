@@ -30,7 +30,7 @@ import okio.Okio;
 import okio.Sink;
 
 public class AcrCloudManager implements IACRCloudListener {
-    public final static String TAG = "ArcCloudManager";
+    public final String TAG = "ArcCloudManager";
 
     static final int BUFFER_LEN = 10 * 44100 * 2;
 

@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class VoiceRightOpView extends RelativeLayout {
-    public final static String TAG = "VoiceRightOpView";
+    public final String TAG = "VoiceRightOpView";
     //    Listener mListener;
     ExImageView mMicIv;
     ExTextView mVoiceTips;

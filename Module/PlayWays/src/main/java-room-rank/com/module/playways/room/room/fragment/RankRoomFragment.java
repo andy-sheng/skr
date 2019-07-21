@@ -75,7 +75,7 @@ import java.util.List;
 
 public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
-    public final static String TAG = "RankingRoomFragment";
+    public final String TAG = "RankingRoomFragment";
 
     static final int ENSURE_SELF_RUN = 99;
     static final int ENSURE_OTHER_RUN = 98;
@@ -925,7 +925,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void startGameEndAniamtion(boolean isGameOver) {
         // 提前加载音效
-        U.getSoundUtils().preLoad(RankLevelChangeFragment2.TAG, R.raw.rank_win, R.raw.rank_lose);
+        U.getSoundUtils().preLoad("RankLevelChangeFragment2", R.raw.rank_win, R.raw.rank_lose);
         if (isGameEndAniamtionShow) {
             // 动画已经在播放
             if (isGameOver) {

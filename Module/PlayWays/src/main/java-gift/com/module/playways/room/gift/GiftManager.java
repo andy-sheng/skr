@@ -19,7 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 public class GiftManager {
-    public final static String TAG = "GiftManager";
+    public final String TAG = "GiftManager";
 
     private static class GiftManagerHolder {
         private static final GiftManager INSTANCE = new GiftManager();

@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DownLoadScoreFilePresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "DownLoadScoreFilePresenter";
+    public final String TAG = "DownLoadScoreFilePresenter";
     ZipUrlResourceManager mZipUrlResourceManager;
     HttpUtils.OnDownloadProgress mOnDownloadProgress;
 

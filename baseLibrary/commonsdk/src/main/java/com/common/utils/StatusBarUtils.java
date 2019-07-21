@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 
 public class StatusBarUtils {
 
-    public final static String TAG = "StatusBarUtil";
+    public final String TAG = "StatusBarUtil";
 //    private int type = -1;
 
     //原生6.0系统以下没办法设置状态栏黑色字,只能用默认白色字体.所以状态栏也不能沉浸为白色,只能设置为黑色状态栏

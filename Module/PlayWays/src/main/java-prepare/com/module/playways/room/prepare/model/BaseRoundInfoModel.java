@@ -5,7 +5,7 @@ import com.module.playways.room.song.model.SongModel;
 import java.io.Serializable;
 
 public abstract class BaseRoundInfoModel implements Serializable {
-    public final static String TAG = "RoundInfoModel";
+    public final String TAG = "RoundInfoModel";
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
 

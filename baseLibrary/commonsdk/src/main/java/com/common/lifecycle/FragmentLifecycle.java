@@ -34,7 +34,7 @@ import com.common.log.MyLog;
  */
 public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallbacks {
 
-    public final static String TAG = "FragmentLifecycle";
+    public final String TAG = "FragmentLifecycle";
     
     public FragmentLifecycle() {
     }

@@ -12,7 +12,7 @@ import com.common.utils.U;
 
 public class BgMusicManager {
 
-    public final static String TAG = "BgMusicManager";
+    public final String TAG = "BgMusicManager";
 
     public static final String PREF_KEY_PIPEI_VOLUME_SWITCH = "pref_pipei_volume_switch";   // 音量开关
     public static final String PREF_KEY_PIPEI_VOLUME = "pref_pipei_volume";                 // 音量百分比

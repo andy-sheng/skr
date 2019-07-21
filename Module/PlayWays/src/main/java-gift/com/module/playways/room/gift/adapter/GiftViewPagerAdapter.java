@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GiftViewPagerAdapter extends PagerAdapter {
-    public final static String TAG = "GiftViewPagerAdapter";
+    public final String TAG = "GiftViewPagerAdapter";
     HashMap<Integer, GiftOnePageView> mGiftOnePageViewHashMap = new HashMap<>();
     HashMap<Integer, List<BaseGift>> mGiftDataHashMap = new HashMap<>();
     Context mContext;

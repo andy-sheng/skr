@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class HomeCorePresenter {
 
-    public final static String TAG = "HomePresenter";
+    public final String TAG = "HomePresenter";
 
     DialogPlus mPerTipsDialogPlus;
     TipsDialogView mTipsDialogView;

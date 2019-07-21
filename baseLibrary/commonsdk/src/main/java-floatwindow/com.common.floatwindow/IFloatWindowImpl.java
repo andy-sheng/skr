@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 
 public class IFloatWindowImpl extends IFloatWindow {
-    public final static String TAG = "IFloatWindowImpl";
+    public final String TAG = "IFloatWindowImpl";
     private FloatWindow.B mB;
     private FloatView mFloatView;
     private FloatLifecycle mFloatLifecycle;

@@ -25,7 +25,7 @@ import static com.common.webview.JsBridgeImpl.getJsonObj;
  */
 @Route(path = "/common/ExpendWebActivity")
 public class ExpendWebActivity extends AgentWebActivity {
-    public final static String TAG = "ExpendWebActivity";
+    public final String TAG = "ExpendWebActivity";
 
     boolean mShowShareBtn = false;
 

@@ -24,7 +24,7 @@ import static com.moudule.playways.beauty.view.BeautyControlPanelView.TYPE_STICK
  */
 public class BeautyFiterStickerView extends FrameLayout {
 
-    public final static String TAG = "BeautyFiterStickerView";
+    public final String TAG = "BeautyFiterStickerView";
 
     RecyclerView mRecyclerView;
     SeekBar mProgressBar;

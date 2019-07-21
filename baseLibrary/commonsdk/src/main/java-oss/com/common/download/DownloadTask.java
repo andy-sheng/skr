@@ -42,7 +42,7 @@ import top.zibin.luban.OnCompressListener;
 
 public class DownloadTask {
 
-    public final static String TAG = "UploadManager";
+    public final String TAG = "UploadManager";
 
     static {
         if (MyLog.isDebugLogOpen()) {

@@ -48,7 +48,7 @@ import java.util.List;
 
 public class RelationView extends RelativeLayout {
 
-    public final static String TAG = "RelationView";
+    public final String TAG = "RelationView";
 
     private int mMode = UserInfoManager.RELATION.FRIENDS.getValue();
     private int mOffset = 0; // 偏移量

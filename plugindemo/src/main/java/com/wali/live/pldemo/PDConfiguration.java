@@ -38,7 +38,7 @@ import java.util.List;
  * ================================================
  */
 public class PDConfiguration implements ConfigModule {
-    public final static String TAG = "PDConfiguration";
+    public final String TAG = "PDConfiguration";
 
     @Override
     public void applyOptions(GlobalParams.Builder builder) {

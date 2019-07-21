@@ -13,7 +13,7 @@ import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.R;
 
 public class CommentHolder extends RecyclerView.ViewHolder {
-    public final static String TAG = "CommentHolder";
+    public final String TAG = "CommentHolder";
 
     BaseImageView mAvatarIv;
     ExTextView mCommentTv;

@@ -14,7 +14,7 @@ import com.module.playways.R;
  * 房主说话时底部 点点点 动画view
  */
 public class SpeakingTipsAnimationView extends AppCompatImageView {
-    public final static String TAG = "SpeakingDotAnimationView";
+    public final String TAG = "SpeakingDotAnimationView";
 
     static final int MSG_START = 2;
     static final int MSG_HIDE = 1;

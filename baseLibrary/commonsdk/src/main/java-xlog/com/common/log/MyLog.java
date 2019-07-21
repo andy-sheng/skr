@@ -29,7 +29,7 @@ public class MyLog {
     static boolean sHasInit = false;
     static boolean sForceOpenFlag = false;
 
-    public final static String TAG = "SKRER";
+    public final String TAG = "SKRER";
 
     static {
         sForceOpenFlag = U.getPreferenceUtils().getSettingBoolean("key_forceOpenFlag", false);

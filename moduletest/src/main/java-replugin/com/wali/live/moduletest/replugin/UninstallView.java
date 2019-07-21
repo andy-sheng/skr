@@ -33,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UninstallView extends RelativeLayout {
 
-    public final static String TAG = "UninstallView";
+    public final String TAG = "UninstallView";
     TextView mRefreshBtn;
 
     RecyclerView mListRv;

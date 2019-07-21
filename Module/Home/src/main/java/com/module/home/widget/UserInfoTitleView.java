@@ -18,7 +18,7 @@ import com.zq.level.utils.LevelConfigUtils;
 
 public class UserInfoTitleView extends RelativeLayout {
 
-    public final static String TAG = "UserInfoTitleView";
+    public final String TAG = "UserInfoTitleView";
 
     ImageView mTopUserBg;
     ImageView mLevelBg;

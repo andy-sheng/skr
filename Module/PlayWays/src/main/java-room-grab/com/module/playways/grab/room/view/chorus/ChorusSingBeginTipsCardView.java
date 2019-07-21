@@ -32,7 +32,7 @@ import java.io.File;
  */
 public class ChorusSingBeginTipsCardView {
 
-    public final static String TAG = "ChorusSingBeginTipsCardView";
+    public final String TAG = "ChorusSingBeginTipsCardView";
 
     public void bindData(SVGAImageView svgaImageView, UserInfoModel left, UserInfoModel right, SVGAListener listener) {
         if (left == null || right == null) {

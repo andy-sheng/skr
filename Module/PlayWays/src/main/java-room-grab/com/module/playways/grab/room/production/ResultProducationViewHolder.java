@@ -23,7 +23,7 @@ import com.module.playways.grab.room.model.WorksUploadModel;
 
 public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
 
-    public final static String TAG = "ResultProducationViewHolder";
+    public final String TAG = "ResultProducationViewHolder";
 
     WorksUploadModel mWonderfulMomentModel;
 

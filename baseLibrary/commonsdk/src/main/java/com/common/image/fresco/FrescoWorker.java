@@ -44,7 +44,7 @@ import java.io.File;
  * 逐步完善
  */
 public class FrescoWorker {
-    public final static String TAG = "FrescoWorker";
+    public static final String TAG = "FrescoWorker";
 
     /**
      * 异步得到bitmap

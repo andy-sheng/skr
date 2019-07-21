@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class AudioEffectParamController {
 
-    public final static String TAG = "AudioEffectParamController";
+    public final String TAG = "AudioEffectParamController";
 
     private static final AudioEffectParamController instance = new AudioEffectParamController();
     public final static String DES_KEY = "236ebd59848e95c80468ac4f6ebab136";

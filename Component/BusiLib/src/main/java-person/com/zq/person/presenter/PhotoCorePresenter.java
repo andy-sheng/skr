@@ -33,7 +33,7 @@ import okhttp3.RequestBody;
 
 public class PhotoCorePresenter {
 
-    public final static String TAG = "PhotoCorePresenter";
+    public final String TAG = "PhotoCorePresenter";
 
     UserInfoServerApi mUserInfoServerApi;
     IPhotoWallView mView;

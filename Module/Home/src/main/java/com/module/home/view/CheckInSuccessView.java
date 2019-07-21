@@ -20,7 +20,7 @@ import com.module.home.R;
 import com.module.home.model.HomeGoldModel;
 
 public class CheckInSuccessView extends RelativeLayout {
-    public final static String TAG = "CheckInSuccessView";
+    public final String TAG = "CheckInSuccessView";
     ExRelativeLayout mRlGoldContent;
     ImageView mIvGold;
     TextView mTvGold;

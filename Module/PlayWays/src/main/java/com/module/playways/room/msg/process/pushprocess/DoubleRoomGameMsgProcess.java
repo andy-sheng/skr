@@ -36,7 +36,7 @@ import com.zq.live.proto.CombineRoom.UnlockUserInfoMsg;
 import org.greenrobot.eventbus.EventBus;
 
 public class DoubleRoomGameMsgProcess implements IPushChatRoomMsgProcess<ECombineRoomMsgType, CombineRoomMsg> {
-    public final static String TAG = "DoubleRoomGameMsgProcess";
+    public final String TAG = "DoubleRoomGameMsgProcess";
 
     @Override
     public ECombineRoomMsgType[] acceptType() {

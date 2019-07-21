@@ -84,7 +84,7 @@ import retrofit2.Response;
 
 public class ZqEngineKit implements AgoraOutCallback {
 
-    public final static String TAG = "ZqEngineKit";
+    public final String TAG = "ZqEngineKit";
     public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
 
     public static final int VIDEO_RESOLUTION_360P = 0;

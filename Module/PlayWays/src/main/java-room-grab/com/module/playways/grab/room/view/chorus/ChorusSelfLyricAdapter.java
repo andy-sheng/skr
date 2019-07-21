@@ -22,7 +22,7 @@ import com.module.playways.room.song.model.SongModel;
 
 public class ChorusSelfLyricAdapter extends DiffAdapter {
 
-    public final static String TAG = "ChorusSelfLyricAdapter";
+    public final String TAG = "ChorusSelfLyricAdapter";
     public final static int TYPE_UPLOADER = 11;
     ChorusSelfSingCardView.DH mLeft;
     ChorusSelfSingCardView.DH mRight;

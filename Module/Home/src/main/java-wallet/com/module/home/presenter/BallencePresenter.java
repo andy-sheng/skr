@@ -34,7 +34,7 @@ import okhttp3.RequestBody;
 
 //同时只能有一个订单
 public class BallencePresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "BallencePresenter";
+    public final String TAG = "BallencePresenter";
 
     public static final int IDLE = 0;
     public static final int SEND_ORDER = 1;

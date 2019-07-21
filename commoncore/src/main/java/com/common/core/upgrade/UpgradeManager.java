@@ -41,7 +41,7 @@ import java.util.List;
 
 
 public class UpgradeManager {
-    public final static String TAG = "UpgradeManager";
+    public final String TAG = "UpgradeManager";
 
     public static final int MSG_UPDATE_PROGRESS = 1;
     //    public static final int MSG_INSTALL = 2;

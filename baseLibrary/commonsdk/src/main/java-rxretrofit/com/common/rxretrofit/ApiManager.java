@@ -23,7 +23,7 @@ import retrofit2.converter.fastjson.FastJsonConverterFactory;
 
 public class ApiManager {
 
-    public final static String TAG = "ApiManager";
+    public final String TAG = "ApiManager";
 
     /**
      * 默认的Retrofit，大部分都由他发包

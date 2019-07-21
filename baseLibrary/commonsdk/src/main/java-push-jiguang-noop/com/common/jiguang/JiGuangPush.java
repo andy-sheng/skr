@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 public class JiGuangPush {
 
-    public final static String TAG = "JiGuangPush";
+    public final String TAG = "JiGuangPush";
 
     public static void init(boolean coreProcess) {
     }

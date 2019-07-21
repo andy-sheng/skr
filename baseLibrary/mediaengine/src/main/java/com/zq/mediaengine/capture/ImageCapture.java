@@ -17,7 +17,7 @@ import java.util.TimerTask;
  */
 
 public class ImageCapture {
-    public final static String TAG = "ImageCapture";
+    public final String TAG = "ImageCapture";
 
     private ImgTexSrcPin mImgTexSrcPin;
     private float mRepeatFps = 0.0f;

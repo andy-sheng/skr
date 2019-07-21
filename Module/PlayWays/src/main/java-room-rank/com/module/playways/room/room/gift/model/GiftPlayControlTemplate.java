@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by chengsimin on 16/6/17.
  */
 public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.GiftProvider {
-    public final static String TAG = "GiftPlayControlTemplate";
+    public final String TAG = "GiftPlayControlTemplate";
 
     public static final int BIG_GIFT = 1;
     public static final int MEDIUM_GIFT = 2;

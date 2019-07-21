@@ -37,7 +37,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class InviteFriendFragment2 extends BaseFragment {
-    public final static String TAG = "InviteFriendFragment2";
+    public final String TAG = "InviteFriendFragment2";
 
     public final static int FROM_GRAB_ROOM = 1;
     public final static int FROM_DOUBLE_ROOM = 2;

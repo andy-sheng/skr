@@ -34,7 +34,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class RankOpView extends RelativeLayout {
-    public final static String TAG = "RankOpView";
+    public final String TAG = "RankOpView";
     public final static int MSG_SHOW_BURST = 0;
     public int mLightOffDelayTime = 20;
     public int mLightBurstDelayTime = 30;

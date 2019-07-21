@@ -42,7 +42,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
-    public final static String TAG = "GrabRoomFragment";
+    public final String TAG = "GrabRoomFragment";
 
     RankRoomData mRoomData;
 

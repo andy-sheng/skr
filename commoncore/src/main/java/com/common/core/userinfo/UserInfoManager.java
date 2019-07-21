@@ -49,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class UserInfoManager {
-    public final static String TAG = "UserInfoManager";
+    public final String TAG = "UserInfoManager";
     static final String PREF_KEY_FOLLOW_MARKER_WATER = "follow_marker_water";
     static final String PREF_KEY_HAS_PULL_REMARK = "remark_marker_water";
 

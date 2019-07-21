@@ -36,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class OpItemAdapter extends RecyclerView.Adapter {
 
-    public final static String TAG = "OpItemAdapter";
+    public final String TAG = "OpItemAdapter";
 
     List<PackageData> mDataList = new ArrayList<>();
     Context mContext;

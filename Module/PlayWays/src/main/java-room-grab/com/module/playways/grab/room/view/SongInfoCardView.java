@@ -60,7 +60,7 @@ import okio.Okio;
  */
 public class SongInfoCardView extends ConstraintLayout {
 
-    public final static String TAG = "SongInfoCardView";
+    public final String TAG = "SongInfoCardView";
 
     //    SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;

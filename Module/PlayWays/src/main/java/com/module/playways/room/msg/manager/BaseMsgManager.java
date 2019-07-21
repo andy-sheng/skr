@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class BaseMsgManager<T, M> {
-    public final static String TAG = "BaseMsgManager";
+    public final String TAG = "BaseMsgManager";
 
     /**
      * 消息类型-->消息处理器的映射

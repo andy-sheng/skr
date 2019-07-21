@@ -28,7 +28,7 @@ import java.util.HashSet;
  */
 public class  EmotionKeyboard {
 
-    public final static String TAG = "EmotionKeyboard";
+    public final String TAG = "EmotionKeyboard";
 
     private Activity mActivity;
     private InputMethodManager mInputManager;//软键盘管理类

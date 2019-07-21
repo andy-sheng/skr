@@ -13,7 +13,7 @@ import java.util.List;
  * 操作本地关系数据库,提供给PhotoModel使用
  */
 public class PhotoLocalApi {
-    public final static String TAG = "PhotoLocalApi";
+    public static final String TAG = "PhotoLocalApi";
 
     private static PhotoModelDBDao getPhotoDao() {
         return GreenDaoManager.getDaoSession().getPhotoModelDBDao();

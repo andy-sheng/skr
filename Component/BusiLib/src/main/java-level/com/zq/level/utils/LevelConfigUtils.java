@@ -11,7 +11,7 @@ import com.common.core.userinfo.model.UserLevelType;
 
 public class LevelConfigUtils {
 
-    public final static String TAG = "LevelConfigUtils";
+    public static final String TAG = "LevelConfigUtils";
 
     // 首页顶部背景
     public static int getHomePageLevelTopBg(int mainLevel) {

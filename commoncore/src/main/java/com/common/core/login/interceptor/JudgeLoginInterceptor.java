@@ -16,7 +16,7 @@ import com.common.log.MyLog;
 
 @Interceptor(priority = 1)
 public class JudgeLoginInterceptor implements IInterceptor {
-    public final static String TAG = "JudgeLoginInterceptor";
+    public final String TAG = "JudgeLoginInterceptor";
 
     /**
      * 我们经常需要在目标页面中配置一些属性，比方说"是否需要登陆"之类的

@@ -34,7 +34,7 @@ import com.module.playways.R;
  */
 
 public class RecordCircleView extends View {
-    public final static String TAG = "RecordCircleView";
+    public final String TAG = "RecordCircleView";
     private int mRadius; // 画布边缘半径（去除padding后的半径）
     private int mStartAngle = 120; // 起始角度
     private int mSweepAngle = 300; // 绘制角度

@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class ScreenLogPrinter implements Printer {
-    public final static String TAG = "ScreenLogPrinter";
+    public final String TAG = "ScreenLogPrinter";
 
     SensorManager mSensorManager;
 

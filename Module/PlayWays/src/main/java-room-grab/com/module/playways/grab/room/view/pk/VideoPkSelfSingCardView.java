@@ -14,7 +14,7 @@ import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
  * 你的主场景歌词
  */
 public class VideoPkSelfSingCardView extends SelfSingLyricView {
-    public final static String TAG = "SelfSingCardView2";
+    public final String TAG = "SelfSingCardView2";
 
 
     public VideoPkSelfSingCardView(ViewStub viewStub, GrabRoomData roomData) {

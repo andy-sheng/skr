@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ChorusSelfSingCardView extends BaseChorusSelfCardView {
 
-    public final static String TAG = "ChorusSelfSingCardView";
+    public final String TAG = "ChorusSelfSingCardView";
 
     SingCountDownView2 mSingCountDownView;
 

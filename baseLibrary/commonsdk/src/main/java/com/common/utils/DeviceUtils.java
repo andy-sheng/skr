@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  * 通过U.getDeviceUtils
  */
 public class DeviceUtils {
-    public final static String TAG = "DeviceUtils";
+    public final String TAG = "DeviceUtils";
     public static final String ROM_MIUI = "MIUI";
     public static final String ROM_EMUI = "EMUI";
     public static final String ROM_FLYME = "FLYME";

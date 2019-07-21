@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class VoiceControlPanelView extends ScrollView {
-    public final static String TAG = "VoiceControlPanelView";
+    public final String TAG = "VoiceControlPanelView";
 
     ExTextView mPeopleVoice;
     SeekBar mPeopleVoiceSeekbar;

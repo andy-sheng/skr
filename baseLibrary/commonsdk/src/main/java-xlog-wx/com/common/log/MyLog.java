@@ -16,7 +16,7 @@ public class MyLog {
     static boolean sHasInit = false;
     static boolean sForceOpenFlag = false;
 
-    public final static String TAG = "SKRER";
+    public static final String TAG = "SKRER";
 
     public static void init() {
         if (!sHasInit) {

@@ -9,7 +9,7 @@ import com.common.core.scheme.SchemeConstants;
 import com.common.log.MyLog;
 
 public class DefaultProcessor implements ISchemeProcessor {
-    public final static String TAG = SchemeConstants.LOG_PREFIX + "DefaultProcessor";
+    public final String TAG = SchemeConstants.LOG_PREFIX + "DefaultProcessor";
 
 
     @Override

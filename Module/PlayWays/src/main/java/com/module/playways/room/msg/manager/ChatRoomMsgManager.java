@@ -13,7 +13,7 @@ import java.util.HashSet;
  */
 public class ChatRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
 
-    public final static String TAG = "ChatRoomMsgManager";
+    public final String TAG = "ChatRoomMsgManager";
 
     private static class ChatRoomMsgAdapterHolder {
         private static final ChatRoomMsgManager INSTANCE = new ChatRoomMsgManager();

@@ -41,7 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * 倒计时 抢 灭 等按钮都在上面
  */
 public class GrabOpView extends RelativeLayout {
-    public final static String TAG = "GrabOpView";
+    public final String TAG = "GrabOpView";
     public long mShowBurstTime = 15000;
     public long mShowLightOffTime = 5000;
 

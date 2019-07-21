@@ -29,7 +29,7 @@ import com.common.log.MyLog;
  */
 public class VideoPlayerAdapter {
 
-    public final static String TAG = "VideoPlayerAdapter";
+    public static final String TAG = "VideoPlayerAdapter";
 
     public static final int PLAY_TYPE_EXO = 1;
 

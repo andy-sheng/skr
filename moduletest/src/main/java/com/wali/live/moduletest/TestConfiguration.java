@@ -38,7 +38,7 @@ import java.util.List;
  * ================================================
  */
 public class TestConfiguration implements ConfigModule {
-    public final static String TAG = "TestConfiguration";
+    public final String TAG = "TestConfiguration";
 
     @Override
     public void applyOptions(GlobalParams.Builder builder) {

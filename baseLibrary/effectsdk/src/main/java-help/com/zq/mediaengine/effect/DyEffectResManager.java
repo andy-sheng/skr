@@ -26,7 +26,7 @@ import io.reactivex.functions.Consumer;
  * 管理抖音特效资源
  */
 public class DyEffectResManager {
-    public final static String TAG = "DyEffectResManager";
+    public final String TAG = "DyEffectResManager";
 
     /**
      * 资源下载地址

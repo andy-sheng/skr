@@ -19,7 +19,7 @@ import com.umeng.socialize.media.UMusic;
 
 public class ShareWorksDialog {
 
-    public final static String TAG = "ShareWorksDialog";
+    public final String TAG = "ShareWorksDialog";
 
     DialogPlus mShareDialog;
 

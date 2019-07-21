@@ -15,7 +15,7 @@ import java.io.InputStream;
  * Created by linjinbin on 15/2/10.
  */
 public class MediaUtils {
-    public final static String TAG = "MediaUtils";
+    public final String TAG = "MediaUtils";
 
 
     public void rawToWave(final File rawFile, final File waveFile, int channels, int sampleRate, int byteRate) throws IOException {

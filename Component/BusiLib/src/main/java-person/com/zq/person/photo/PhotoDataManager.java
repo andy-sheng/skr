@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  * 操作本地关系数据库,提供给PhotoModel使用
  */
 public class PhotoDataManager {
-    public final static String TAG = "PhotoLocalApi";
+    public static final String TAG = "PhotoLocalApi";
 
     public static void insertOrUpdate(final List<PhotoModel> list) {
         Observable.create(new ObservableOnSubscribe<List<PhotoModel>>() {

@@ -8,7 +8,7 @@ import cn.jpush.android.api.JPushMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
 
 public class MyJPushMessageReceiver extends JPushMessageReceiver {
-    public final static String TAG = "OpReceiver";
+    public final String TAG = "OpReceiver";
     @Override
     public void onTagOperatorResult(Context context, JPushMessage jPushMessage) {
         MyLog.d(TAG,"onTagOperatorResult" + " context=" + context + " jPushMessage=" + jPushMessage);

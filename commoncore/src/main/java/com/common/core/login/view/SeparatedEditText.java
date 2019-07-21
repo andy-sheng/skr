@@ -27,7 +27,7 @@ import java.util.TimerTask;
 
 public class SeparatedEditText extends EditText {
 
-    public final static String TAG = "SeparatedEditText";
+    public final String TAG = "SeparatedEditText";
 
     private static final int TYPE_HOLLOW = 1;//空心
     private static final int TYPE_SOLID = 2;//实心

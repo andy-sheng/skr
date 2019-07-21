@@ -12,7 +12,7 @@ import cn.jpush.android.api.JPushInterface;
 
 public class JiGuangPush {
 
-    public final static String TAG = "JiGuangPush";
+    public final String TAG = "JiGuangPush";
 
     static boolean hasInit = false;
     static String sAlias;

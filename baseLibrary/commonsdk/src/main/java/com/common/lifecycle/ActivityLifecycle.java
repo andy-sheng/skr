@@ -48,7 +48,7 @@ import java.util.List;
  * ================================================
  */
 public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks {
-    public final static String TAG = "ActivityLifecycle";
+    public final String TAG = "ActivityLifecycle";
 
     FragmentLifecycle mFragmentLifecycle;
 

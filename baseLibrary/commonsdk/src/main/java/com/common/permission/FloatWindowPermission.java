@@ -18,7 +18,7 @@ import com.common.utils.U;
 import java.lang.reflect.Method;
 
 class FloatWindowPermission {
-    public final static String TAG = "FloatWindowPermission";
+    public static final String TAG = "FloatWindowPermission";
 
     private static final int OP_SYSTEM_ALERT_WINDOW = 24;
 

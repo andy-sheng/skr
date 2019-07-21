@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class ReportPluginListener extends DefaultPluginListener {
 
-    public final static String TAG = "Matrix性能监控";
+    public final String TAG = "Matrix性能监控";
 
     public ReportPluginListener(Context context) {
         super(context);

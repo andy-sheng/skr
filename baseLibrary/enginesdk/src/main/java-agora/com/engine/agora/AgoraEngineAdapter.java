@@ -48,7 +48,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 
 public class AgoraEngineAdapter {
-    public final static String TAG = "AgoraEngineAdapter";
+    public final String TAG = "AgoraEngineAdapter";
 
     static final String APP_ID;
 

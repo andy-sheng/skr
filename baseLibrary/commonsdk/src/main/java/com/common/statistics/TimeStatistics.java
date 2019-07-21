@@ -13,7 +13,7 @@ import java.util.HashMap;
  * 贼猛
  */
 public class TimeStatistics {
-    public final static String TAG = "TimeStatistics";
+    public static final String TAG = "TimeStatistics";
 
 
     public final static int sDt = 100;

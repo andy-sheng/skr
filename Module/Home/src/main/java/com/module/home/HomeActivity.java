@@ -61,7 +61,7 @@ import org.greenrobot.eventbus.ThreadMode;
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
-    public final static String TAG = "HomeActivity";
+    public final String TAG = "HomeActivity";
     public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
     RelativeLayout mMainActContainer;

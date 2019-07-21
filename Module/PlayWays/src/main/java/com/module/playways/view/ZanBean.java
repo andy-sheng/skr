@@ -19,7 +19,7 @@ import com.common.log.MyLog;
 import java.util.Random;
 
 public class ZanBean {
-    public final static String TAG = "ZanBean";
+    public final String TAG = "ZanBean";
     /**
      * 心的当前坐标
      */
