@@ -42,6 +42,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
+import com.module.feeds.IFeedsModuleService;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
 import com.module.home.fragment.PersonFragment4;
@@ -78,6 +79,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 //    ExTextView mRankBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
+    IFeedsModuleService mIFeedsModuleService;
     HomeCorePresenter mHomePresenter;
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
@@ -157,7 +159,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setViewPagerCanScroll(false);
         mMainVp.setOffscreenPageLimit(2);
         checkIfFromSchema();
-
+        mIFeedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -165,12 +167,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (position == 0) {
                     return new GameFragment3();
                 } else if (position == 1) {
-                    if (mMsgService == null) {
-                        return new PersonFragment4();
-                    } else {
-                        return (Fragment) mMsgService.getMessageFragment();
-                    }
+                    return mIFeedsModuleService.getFeedsFragment();
                 } else if (position == 2) {
+                    return (Fragment) mMsgService.getMessageFragment();
+                } else if (position == 3) {
                     return new PersonFragment4();
                 }
                 return null;
@@ -188,8 +188,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMainVp.setAdapter(fragmentPagerAdapter);
 
-        mHomePresenter = new HomeCorePresenter(this, this);
-        if (!UserAccountManager.getInstance().hasAccount()) {
+        mHomePresenter = new
+
+                HomeCorePresenter(this, this);
+        if (!UserAccountManager.getInstance().
+
+                hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override
@@ -200,62 +204,71 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             // 没有账号 跳到登陆页面
             LoginActivity.open(this);
         }
+
         mCheckInPresenter = new CheckInPresenter(this);
+
         addPresent(mCheckInPresenter);
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
-            @Override
-            public void clickValid(View v) {
-                mMainVp.setCurrentItem(0, false);
-                selectTab(0);
-            }
-        });
+                                                 @Override
+                                                 public void clickValid(View v) {
+                                                     mMainVp.setCurrentItem(0, false);
+                                                     selectTab(0);
+                                                 }
+                                             });
 
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
-            @Override
-            public void clickValid(View v) {
-                mMainVp.setCurrentItem(1, false);
-                selectTab(1);
+                                                    @Override
+                                                    public void clickValid(View v) {
+                                                        mMainVp.setCurrentItem(1, false);
+                                                        selectTab(1);
 
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
-            }
-        });
+                                                        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
+                                                    }
+                                                });
 
         mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
-            @Override
-            public void clickValid(View v) {
-                mMainVp.setCurrentItem(2, false);
-                selectTab(2);
-            }
-        });
+                                                   @Override
+                                                   public void clickValid(View v) {
+                                                       mMainVp.setCurrentItem(2, false);
+                                                       selectTab(2);
+                                                   }
+                                               });
 
         mRedPkgPresenter = new RedPkgPresenter(this);
+
         addPresent(mRedPkgPresenter);
 
         mNotifyCorePresenter = new NotifyCorePresenter(this);
+
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
+
         selectTab(0);
         mHomeDialogManager.register();
         mFromCreate = true;
 
         WeakRedDotManager.getInstance().addListener(this);
-        mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+
+        mMessageFollowRedDotValue = U.getPreferenceUtils().
+
+                getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+
         refreshMessageRedDot();
 
         mUiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 * 清除启动页
-                 */
-                Window window = getWindow();
-                if (window != null) {
-                    window.setBackgroundDrawable(null);
-                }
-            }
-        }, 5000);
+                                           @Override
+                                           public void run() {
+                                               /**
+                                                * 清除启动页
+                                                */
+                                               Window window = getWindow();
+                                               if (window != null) {
+                                                   window.setBackgroundDrawable(null);
+                                               }
+                                           }
+                                       }, 5000);
 
         tryGoConversationList(getIntent());
 
