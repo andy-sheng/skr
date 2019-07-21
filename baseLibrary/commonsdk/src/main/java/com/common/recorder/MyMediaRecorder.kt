@@ -45,8 +45,8 @@ class MyMediaRecorder {
     }
 
     fun start(filePath: String, callback: ((Int) -> Unit)?) {
-        config(filePath)
         try {
+            config(filePath)
             if (mRecording) {
                 mMediaRecorder?.reset()
             }
