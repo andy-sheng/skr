@@ -28,21 +28,21 @@
                 android:background="@drawable/ic_home_selected" />
         </RelativeLayout>
 
-        <!--&lt;!&ndash;排位赛&ndash;&gt;-->
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/rank_area"-->
-            <!--android:layout_width="@dimen/view_0_dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_weight="1">-->
+        <!--动态-->
+        <RelativeLayout
+            android:id="@+id/feed_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
 
-            <!--<com.common.view.ex.ExTextView-->
-                <!--android:id="@+id/rank_btn"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:background="@drawable/ic_rank_normal" />-->
-        <!--</RelativeLayout>-->
+            <com.common.view.ex.ExTextView
+                android:id="@+id/feed_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_rank_normal" />
+        </RelativeLayout>
 
         <!--消息-->
         <RelativeLayout

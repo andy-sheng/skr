@@ -474,4 +474,5 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     public boolean isInViewPager() {
         return false;
     }
+
 }

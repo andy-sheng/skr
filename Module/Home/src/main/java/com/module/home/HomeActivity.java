@@ -75,8 +75,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mPersonArea;
     ExTextView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
-    //    RelativeLayout mRankArea;
-//    ExTextView mRankBtn;
+    RelativeLayout mFeedArea;
+    ExTextView mFeedBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
     IFeedsModuleService mIFeedsModuleService;
@@ -138,8 +138,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mBottomContainer = findViewById(R.id.bottom_container);
         mGameArea = findViewById(R.id.game_area);
         mGameBtn = findViewById(R.id.game_btn);
-//        mRankArea = findViewById(R.id.rank_area);
-//        mRankBtn = findViewById(R.id.rank_btn);
+        mFeedArea = findViewById(R.id.feed_area);
+        mFeedBtn = findViewById(R.id.feed_btn);
         mMessageArea = findViewById(R.id.message_area);
         mMessageBtn = findViewById(R.id.message_btn);
         mUnreadNumTv = findViewById(R.id.unread_num_tv);
@@ -179,9 +179,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             @Override
             public int getCount() {
                 if (mMsgService == null) {
-                    return 2;
-                } else {
                     return 3;
+                } else {
+                    return 4;
                 }
             }
         };
@@ -210,30 +210,38 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         addPresent(mCheckInPresenter);
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
-                                                 @Override
-                                                 public void clickValid(View v) {
-                                                     mMainVp.setCurrentItem(0, false);
-                                                     selectTab(0);
-                                                 }
-                                             });
+            @Override
+            public void clickValid(View v) {
+                mMainVp.setCurrentItem(0, false);
+                selectTab(0);
+            }
+        });
+
+        mFeedArea.setOnClickListener(new DebounceViewClickListener(100) {
+            @Override
+            public void clickValid(View v) {
+                mMainVp.setCurrentItem(1, false);
+                selectTab(1);
+            }
+        });
 
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
-                                                    @Override
-                                                    public void clickValid(View v) {
-                                                        mMainVp.setCurrentItem(1, false);
-                                                        selectTab(1);
+            @Override
+            public void clickValid(View v) {
+                mMainVp.setCurrentItem(2, false);
+                selectTab(2);
 
-                                                        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
-                                                    }
-                                                });
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
+            }
+        });
 
         mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
-                                                   @Override
-                                                   public void clickValid(View v) {
-                                                       mMainVp.setCurrentItem(2, false);
-                                                       selectTab(2);
-                                                   }
-                                               });
+            @Override
+            public void clickValid(View v) {
+                mMainVp.setCurrentItem(3, false);
+                selectTab(3);
+            }
+        });
 
         mRedPkgPresenter = new RedPkgPresenter(this);
 
@@ -258,17 +266,17 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         refreshMessageRedDot();
 
         mUiHandler.postDelayed(new Runnable() {
-                                           @Override
-                                           public void run() {
-                                               /**
-                                                * 清除启动页
-                                                */
-                                               Window window = getWindow();
-                                               if (window != null) {
-                                                   window.setBackgroundDrawable(null);
-                                               }
-                                           }
-                                       }, 5000);
+            @Override
+            public void run() {
+                /**
+                 * 清除启动页
+                 */
+                Window window = getWindow();
+                if (window != null) {
+                    window.setBackgroundDrawable(null);
+                }
+            }
+        }, 5000);
 
         tryGoConversationList(getIntent());
 
@@ -301,10 +309,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     private void selectTab(int tabSeq) {
         Drawable drawable0 = U.getDrawable(R.drawable.ic_home_normal);
-        Drawable drawable1 = U.getDrawable(R.drawable.ic_chat_normal);
-        Drawable drawable2 = U.getDrawable(R.drawable.ic_me_normal);
+        Drawable drawable1 = U.getDrawable(R.drawable.ic_rank_normal);
+        Drawable drawable2 = U.getDrawable(R.drawable.ic_chat_normal);
+        Drawable drawable3 = U.getDrawable(R.drawable.ic_me_normal);
 
         mGameBtn.setSelected(false);
+        mFeedBtn.setSelected(false);
         mMessageBtn.setSelected(false);
         mPersonInfoBtn.setSelected(false);
 
@@ -314,18 +324,23 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 mGameBtn.setSelected(true);
                 break;
             case 1:
-                drawable1 = U.getDrawable(R.drawable.ic_chat_selected);
-                mMessageBtn.setSelected(true);
+                drawable1 = U.getDrawable(R.drawable.ic_rank_selected);
+                mFeedBtn.setSelected(true);
                 break;
             case 2:
-                drawable2 = U.getDrawable(R.drawable.ic_me_selected);
+                drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
+                mMessageBtn.setSelected(true);
+                break;
+            case 3:
+                drawable3 = U.getDrawable(R.drawable.ic_me_selected);
                 mPersonInfoBtn.setSelected(true);
                 break;
         }
 
         setTabDrawable(mGameBtn, drawable0);
-        setTabDrawable(mMessageBtn, drawable1);
-        setTabDrawable(mPersonInfoBtn, drawable2);
+        setTabDrawable(mFeedBtn, drawable1);
+        setTabDrawable(mMessageBtn, drawable2);
+        setTabDrawable(mPersonInfoBtn, drawable3);
     }
 
     private void setTabDrawable(ExTextView textView, Drawable drawable) {
