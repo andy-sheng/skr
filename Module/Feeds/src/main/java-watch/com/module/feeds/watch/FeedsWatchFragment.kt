@@ -137,4 +137,8 @@ class FeedsWatchFragment : BaseFragment() {
     override fun isInViewPager(): Boolean {
         return true
     }
+
+    override fun isBlackStatusBarText(): Boolean {
+        return true
+    }
 }

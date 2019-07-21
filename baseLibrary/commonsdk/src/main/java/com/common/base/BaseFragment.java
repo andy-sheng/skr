@@ -119,6 +119,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      * onCreate()
      * onCreateView()
      * onActivityCreated()
+     *
      * @param savedInstanceState
      */
     @Override
@@ -358,6 +359,11 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     protected void onFragmentVisible() {
         MyLog.d(TAG, "onFragmentVisible");
+        if (isBlackStatusBarText()) {
+            U.getStatusBarUtil().setTransparentBar(getActivity(), true);
+        } else {
+            U.getStatusBarUtil().setTransparentBar(getActivity(), false);
+        }
         StatisticsAdapter.recordPageStart(getActivity(), this.getClass().getSimpleName());
     }
 
@@ -475,4 +481,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         return false;
     }
 
+    public boolean isBlackStatusBarText() {
+        return false;
+    }
 }

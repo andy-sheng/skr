@@ -309,7 +309,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     private void selectTab(int tabSeq) {
         Drawable drawable0 = U.getDrawable(R.drawable.ic_home_normal);
-        Drawable drawable1 = U.getDrawable(R.drawable.ic_rank_normal);
+        Drawable drawable1 = U.getDrawable(R.drawable.ic_feed_normal);
         Drawable drawable2 = U.getDrawable(R.drawable.ic_chat_normal);
         Drawable drawable3 = U.getDrawable(R.drawable.ic_me_normal);
 
@@ -324,7 +324,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 mGameBtn.setSelected(true);
                 break;
             case 1:
-                drawable1 = U.getDrawable(R.drawable.ic_rank_selected);
+                drawable1 = U.getDrawable(R.drawable.ic_feed_selected);
                 mFeedBtn.setSelected(true);
                 break;
             case 2:
