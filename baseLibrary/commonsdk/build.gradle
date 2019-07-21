@@ -344,6 +344,8 @@ dependencies {
     // ConstraintLayout布局
     api 'com.android.support.constraint:constraint-layout:1.1.3'
 
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.2'
+
     if (MatrixEnable.toBoolean()) {
         implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
         implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
