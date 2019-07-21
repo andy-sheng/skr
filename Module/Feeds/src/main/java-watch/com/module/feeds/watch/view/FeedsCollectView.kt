@@ -7,7 +7,13 @@ import com.module.feeds.R
 
 class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.context) {
 
+
+
     init {
         View.inflate(context, R.layout.feed_collect_view_layout, this)
+    }
+
+    fun destory(){
+
     }
 }

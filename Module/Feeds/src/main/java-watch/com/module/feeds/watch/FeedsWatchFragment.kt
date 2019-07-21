@@ -1,6 +1,5 @@
 package com.module.feeds.watch
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -26,8 +25,8 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
 
-    val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this) }   //推荐
-    val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this) }       //关注
+    val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
+    val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
 
     override fun initView(): Int {
@@ -106,8 +105,6 @@ class FeedsWatchFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 mFeedTab.notifyDataChange()
-                val drawable = mNavigationBgIv.getBackground() as ColorDrawable
-                val color: Int = drawable.color
                 when (position) {
                     0 -> {
                     }
@@ -140,5 +137,12 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun isBlackStatusBarText(): Boolean {
         return true
+    }
+
+    override fun destroy() {
+        super.destroy()
+        mRecommendFeedsView.destory()
+        mFollowFeesView.destory()
+        mFeedsCollectView.destory()
     }
 }
