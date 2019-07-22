@@ -26,10 +26,15 @@ public class ITbAgcProcessor {
 
     public int processV1(ByteBuffer buffer, int length, int channels, int samplesPerSec) {
         byte[] byteArray = null;
-        ByteBuffer byteBuffer = buffer;
-        if (buffer != null && buffer.hasArray()) {
-            byteArray = buffer.array();
-            byteBuffer = null;
+        ByteBuffer byteBuffer = null;
+        if (buffer != null) {
+            if (buffer.isDirect()) {
+                byteArray = null;
+                byteBuffer = buffer;
+            } else if (buffer.hasArray()) {
+                byteArray = buffer.array();
+                byteBuffer = null;
+            }
         }
         return process(byteArray, byteBuffer, length, channels, samplesPerSec);
     }

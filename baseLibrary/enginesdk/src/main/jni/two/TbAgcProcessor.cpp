@@ -70,7 +70,15 @@ Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject ins, jbyteAr
     }
 
     if (data) {
-        process(data, len, channels, sampleRate);
+        int remain = len;
+        int maxLen = sampleRate * channels * 2 * 20 / 1000;
+        uint8_t *p = data;
+        while (remain > 0) {
+            int curLen = (remain > maxLen) ? maxLen : remain;
+            process(p, curLen, channels, sampleRate);
+            remain -= curLen;
+            p += curLen;
+        }
     }
 
     if (samplesJni) {

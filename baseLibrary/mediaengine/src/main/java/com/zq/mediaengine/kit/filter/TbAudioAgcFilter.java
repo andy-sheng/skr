@@ -1,5 +1,7 @@
 package com.zq.mediaengine.kit.filter;
 
+import android.util.Log;
+
 import com.engine.Params;
 import com.engine.effect.ITbAgcProcessor;
 import com.zq.mediaengine.filter.audio.AudioFilterBase;
@@ -11,7 +13,7 @@ public class TbAudioAgcFilter extends AudioFilterBase {
 
     private ITbAgcProcessor mAgcProcessor;
 
-    Params mConfig;
+    private Params mConfig;
 
     public TbAudioAgcFilter(Params params) {
         mAgcProcessor = new ITbAgcProcessor();

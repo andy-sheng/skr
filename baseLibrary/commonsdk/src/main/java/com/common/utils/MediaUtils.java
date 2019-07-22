@@ -67,7 +67,7 @@ public class MediaUtils {
             header[30] = (byte) ((byteRate >> 16) & 0xff);
             header[31] = (byte) ((byteRate >> 24) & 0xff);
 
-            header[32] = (byte) 2;
+            header[32] = (byte) (2 * channels);
             header[33] = 0;
             header[34] = 16;
             header[35] = 0;

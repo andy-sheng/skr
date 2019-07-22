@@ -132,8 +132,10 @@ public class APMWrapper {
         if (mAPMWrapperInstance == UNINIT) {
             return -1;
         }
-        mAPMProcessFormat.sampleRate = samplerate;
-        mAPMProcessFormat.channels = channels;
+        if (idx == 0) {
+            mAPMProcessFormat.sampleRate = samplerate;
+            mAPMProcessFormat.channels = channels;
+        }
         return config(mAPMWrapperInstance, idx, sampleFmt, samplerate, channels);
     }
 

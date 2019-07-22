@@ -1328,7 +1328,7 @@ public class EngineManager implements AgoraOutCallback {
                         file.delete();
                     }
                     if (fromRecodFrameCallback) {
-                        mConfig.setRecordingFromCallbackSavePath(saveAudioForAiFilePath);
+                        mConfig.setRecordingForDebugSavePath(saveAudioForAiFilePath);
                     } else {
                         AgoraEngineAdapter.getInstance().startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh);
                     }
@@ -1338,7 +1338,7 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     private void saveRecordingFrame(byte[] newBuffer) {
-        String path = mConfig.getRecordingFromCallbackSavePath();
+        String path = mConfig.getRecordingForDebugSavePath();
         if (TextUtils.isEmpty(path)) {
             return;
         }
@@ -1389,10 +1389,10 @@ public class EngineManager implements AgoraOutCallback {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
+                    if (TextUtils.isEmpty(mConfig.getRecordingForDebugSavePath())) {
                         AgoraEngineAdapter.getInstance().stopAudioRecording();
                     } else {
-                        mConfig.setRecordingFromCallbackSavePath(null);
+                        mConfig.setRecordingForDebugSavePath(null);
                     }
                 }
             });

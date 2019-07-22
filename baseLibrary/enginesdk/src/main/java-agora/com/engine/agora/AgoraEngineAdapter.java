@@ -1179,7 +1179,7 @@ public class AgoraEngineAdapter {
                         MyLog.d(TAG, "step4:" + testIn(samples));
                     }
                 }
-                if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
+                if (!TextUtils.isEmpty(mConfig.getRecordingForDebugSavePath())) {
                     if (mOutCallback != null) {
                         mOutCallback.onRecordingBuffer(samples);
                     }

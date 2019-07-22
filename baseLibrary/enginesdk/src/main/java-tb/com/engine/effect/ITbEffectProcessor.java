@@ -32,10 +32,15 @@ public class ITbEffectProcessor {
 
     public int process(int type, ByteBuffer buffer, int length, int channels, int samplesPerSec) {
         byte[] byteArray = null;
-        ByteBuffer byteBuffer = buffer;
-        if (buffer != null && buffer.hasArray()) {
-            byteArray = buffer.array();
-            byteBuffer = null;
+        ByteBuffer byteBuffer = null;
+        if (buffer != null) {
+            if (buffer.isDirect()) {
+                byteArray = null;
+                byteBuffer = buffer;
+            } else if (buffer.hasArray()) {
+                byteArray = buffer.array();
+                byteBuffer = null;
+            }
         }
         if (type == 1) {
             int r = process1(byteArray, byteBuffer, length, channels, samplesPerSec);

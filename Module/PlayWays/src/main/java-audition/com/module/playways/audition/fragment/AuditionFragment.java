@@ -66,9 +66,9 @@ public class AuditionFragment extends BaseFragment {
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
 
-    static final boolean RECORD_BY_CALLBACK = false;
+    static final boolean RECORD_FOR_DEBUG = true;
     static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
-    static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
+    static final String WAV_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.wav").getAbsolutePath();
 
     RankTopContainerView2 mRankTopView;
     LinearLayout mBottomContainer;
@@ -87,6 +87,7 @@ public class AuditionFragment extends BaseFragment {
     PrepareData mPrepareData;
 
     SongModel mSongModel;
+    String mRecordPath;
 
     private boolean mIsVoiceShow = true;
 
@@ -260,10 +261,12 @@ public class AuditionFragment extends BaseFragment {
                 mTotalLineNum = lineNum;
                 mStartRecordTs = System.currentTimeMillis();
                 mCbScoreList.clear();
-                if (RECORD_BY_CALLBACK) {
-                    ZqEngineKit.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
+                if (RECORD_FOR_DEBUG) {
+                    mRecordPath = U.getAppInfoUtils().getMainDir().getAbsolutePath() + "/" + mSongModel.getItemName() + "_" + mSongModel.getOwner() + ".wav";
+                    ZqEngineKit.getInstance().startAudioRecording(mRecordPath, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
                 } else {
-                    ZqEngineKit.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
+                    mRecordPath = AAC_SAVE_PATH;
+                    ZqEngineKit.getInstance().startAudioRecording(mRecordPath, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
                 }
             }
         });
@@ -328,6 +331,7 @@ public class AuditionFragment extends BaseFragment {
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
                 .addDataBeforeAdd(0, mSongModel)
+                .addDataBeforeAdd(1, mRecordPath)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
@@ -408,7 +412,7 @@ public class AuditionFragment extends BaseFragment {
 
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
-            if (RECORD_BY_CALLBACK) {
+            if (RECORD_FOR_DEBUG) {
                 ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
             } else {
                 ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
@@ -566,10 +570,6 @@ public class AuditionFragment extends BaseFragment {
         mLyricAndAccMatchManager.stop();
         mManyLyricsView.release();
         ZqEngineKit.getInstance().destroy("prepare");
-        File recordFile = new File(PCM_SAVE_PATH);
-        if (recordFile != null && recordFile.exists()) {
-            recordFile.delete();
-        }
         mUiHandler.removeCallbacksAndMessages(null);
         U.getSoundUtils().release(TAG);
     }

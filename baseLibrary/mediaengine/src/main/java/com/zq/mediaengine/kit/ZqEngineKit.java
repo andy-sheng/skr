@@ -161,6 +161,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     private MediaCodecAudioEncoder mAudioEncoder;
     private MediaMuxerPublisher mFilePublisher;
     private RawFrameWriter mRawFrameWriter;
+    private RawFrameWriter mCapRawFrameWriter;
+    private RawFrameWriter mBgmRawFrameWriter;
 
     // 视频相关参数
     protected int mScreenRenderWidth = 0;
@@ -479,8 +481,15 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioPreview = new AudioPreview(U.app().getApplicationContext());
             mAPMFilter = new APMFilter();
 
-            mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
-            audioLocalSrcPin = mAPMFilter.getSrcPin();
+            // 测试连接
+            mCapRawFrameWriter = new RawFrameWriter();
+            mBgmRawFrameWriter = new RawFrameWriter();
+            mAudioCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mCapRawFrameWriter.getSinkPin());
+            mAudioPlayerCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mBgmRawFrameWriter.getSinkPin());
+
+//            mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
+//            audioLocalSrcPin = mAPMFilter.getSrcPin();
+            audioLocalSrcPin = mAudioCapture.getSrcPin();
             // 自采集模式下，练歌房不需要声网SDK
             if (mConfig.getScene() != Params.Scene.audiotest) {
                 mRemoteAudioMixer = new AudioMixer();
@@ -761,13 +770,26 @@ public class ZqEngineKit implements AgoraOutCallback {
         joinRoomInner2(roomid, userId, token2);
     }
 
-    // TODO: 自采集模式下，练歌房不需要加入声网房间
     private void joinRoomInner2(final String roomid, final int userId, final String token) {
         MyLog.d(TAG, "joinRoomInner2" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
         mLastJoinChannelToken = token;
         mAgoraRTCAdapter.leaveChannel();
-        int retCode = mAgoraRTCAdapter.joinChannel(token, roomid, "Extra Optional Data", userId);
-        MyLog.d(TAG, "joinRoomInner2" + " retCode=" + retCode);
+
+        int retCode = 0;
+        // TODO: 自采集模式下，练歌房不需要加入声网房间
+        if (mConfig.getScene() == Params.Scene.audiotest &&
+                mConfig.isUseExternalAudio() && mConfig.isUseExternalVideo()) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    onJoinChannelSuccess(roomid, userId, 0);
+                }
+            });
+        } else {
+            retCode = mAgoraRTCAdapter.joinChannel(token, roomid, "Extra Optional Data", userId);
+            MyLog.d(TAG, "joinRoomInner2" + " retCode=" + retCode);
+        }
+
         if (retCode < 0) {
             HashMap map = new HashMap();
             map.put("reason", "" + retCode);
@@ -1384,7 +1406,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * .aac：文件小，有一定的音质保真度损失
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
-    public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
+    public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean recordForDebug) {
         if (mCustomHandlerThread != null) {
             mConfig.setRecording(true);
             mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh) {
@@ -1402,9 +1424,15 @@ public class ZqEngineKit implements AgoraOutCallback {
                         // 用声网采集，需要录制的时候再连接
                         connectRecord();
                     }
-                    if (fromRecodFrameCallback) {
-                        mConfig.setRecordingFromCallbackSavePath(saveAudioForAiFilePath);
+                    if (recordForDebug) {
+                        mConfig.setRecordingForDebugSavePath(saveAudioForAiFilePath);
                         mRawFrameWriter.start(saveAudioForAiFilePath);
+                        if (mConfig.isUseExternalAudio()) {
+                            String subfix = saveAudioForAiFilePath.substring(saveAudioForAiFilePath.lastIndexOf('.'));
+                            String name = saveAudioForAiFilePath.substring(0, saveAudioForAiFilePath.lastIndexOf('.'));
+                            mCapRawFrameWriter.start(name + "_cap" + subfix);
+                            mBgmRawFrameWriter.start(name + "_bgm" + subfix);
+                        }
                     } else {
                         if (mConfig.isUseExternalAudioRecord()) {
                             AudioCodecFormat audioCodecFormat =
@@ -1450,7 +1478,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("stopAudioRecording") {
                 @Override
                 public void realRun() {
-                    if (TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
+                    if (TextUtils.isEmpty(mConfig.getRecordingForDebugSavePath())) {
                         if (mConfig.isUseExternalAudioRecord()) {
                             mAudioEncoder.stop();
                         } else {
@@ -1458,7 +1486,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                         }
                     } else {
                         mRawFrameWriter.stop();
-                        mConfig.setRecordingFromCallbackSavePath(null);
+                        if (mConfig.isUseExternalAudio()) {
+                            mCapRawFrameWriter.stop();
+                            mBgmRawFrameWriter.stop();
+                        }
+                        mConfig.setRecordingForDebugSavePath(null);
                     }
                     if (!mConfig.isUseExternalAudio()) {
                         // 用声网采集，录制完成断开连接

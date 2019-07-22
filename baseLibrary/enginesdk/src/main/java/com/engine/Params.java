@@ -128,7 +128,7 @@ public class Params implements Serializable {
     @JSONField(serialize = false)
     private long mJoinRoomBeginTs; // 开始加入房间的时间
     @JSONField(serialize = false)
-    private String mRecordingFromCallbackSavePath;// 保存录音的路径
+    private String mRecordingForDebugSavePath;// 保存录音的路径
     @JSONField(serialize = false)
     private boolean mIsAnchor; // 是否是主播
     @JSONField(serialize = false)
@@ -509,12 +509,12 @@ public class Params implements Serializable {
         return mJoinRoomBeginTs;
     }
 
-    public void setRecordingFromCallbackSavePath(String recordingFromCallbackSavePath) {
-        mRecordingFromCallbackSavePath = recordingFromCallbackSavePath;
+    public void setRecordingForDebugSavePath(String recordingForDebugSavePath) {
+        mRecordingForDebugSavePath = recordingForDebugSavePath;
     }
 
-    public String getRecordingFromCallbackSavePath() {
-        return mRecordingFromCallbackSavePath;
+    public String getRecordingForDebugSavePath() {
+        return mRecordingForDebugSavePath;
     }
 
     public Scene getScene() {
@@ -857,11 +857,13 @@ public class Params implements Serializable {
         Params params;
         if (!TextUtils.isEmpty(s)) {
             params = JSON.parseObject(s, Params.class);
+            params.setUseExternalAudio(true);
+            params.setAudioChannels(2);
         } else {
             params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(true)
                     .setEnableAudio(true)
-                    .setUseExternalAudio(false)
+                    .setUseExternalAudio(true)
                     .setUseExternalVideo(true)
                     .setUseExternalAudioRecord(true)
                     .setStyleEnum(AudioEffect.none)

@@ -181,6 +181,8 @@ public class PlayRecordFragment extends BaseFragment {
         super.setData(type, data);
         if (type == 0) {
             mSongModel = (SongModel) data;
+        } else if (type == 1) {
+            mPath = (String) data;
         }
     }
 
@@ -262,12 +264,7 @@ public class PlayRecordFragment extends BaseFragment {
             mPlayer.reset();
         }
         if (mPlayer == null) {
-            if (AuditionFragment.RECORD_BY_CALLBACK) {
-                mPlayer = new AndroidMediaPlayer();
-            } else {
-                mPlayer = new ExoPlayer();
-            }
-
+            mPlayer = new ExoPlayer();
             mPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                 @Override
                 public void onCompletion() {
@@ -289,21 +286,10 @@ public class PlayRecordFragment extends BaseFragment {
         }
 
         mIsPlay = true;
-        if (AuditionFragment.RECORD_BY_CALLBACK) {
-            Params params = ZqEngineKit.getInstance().getParams();
-            mPlayer.startPlayPcm(AuditionFragment.PCM_SAVE_PATH, params.getAudioChannels(),
-                    params.getAudioSampleRate(), params.getAudioSampleRate() * params.getAudioChannels());
-        } else {
-            mPlayer.startPlay(AuditionFragment.AAC_SAVE_PATH);
-        }
+        mPlayer.startPlay(mPath);
     }
 
     private void saveWorksStep1() {
-        if (AuditionFragment.RECORD_BY_CALLBACK) {
-            mPath = AuditionFragment.PCM_SAVE_PATH;
-        } else {
-            mPath = AuditionFragment.AAC_SAVE_PATH;
-        }
         UploadTask uploadTask = UploadParams.newBuilder(mPath)
                 .setFileType(UploadParams.FileType.audioAi)
                 .startUploadAsync(new UploadCallback() {
