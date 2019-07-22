@@ -11,7 +11,7 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.module.feeds.R
-import com.module.feeds.watch.view.FeedsCollectView
+import com.module.feeds.watch.view.FeedsLikeView
 import com.module.feeds.watch.view.FeedsWatchView
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
@@ -27,7 +27,7 @@ class FeedsWatchFragment : BaseFragment() {
 
     val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
-    val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
+    val mFeedsCollectView: FeedsLikeView by lazy { FeedsLikeView(this) } //喜欢
 
     override fun initView(): Int {
         return R.layout.feeds_watch_fragment_layout
@@ -107,10 +107,13 @@ class FeedsWatchFragment : BaseFragment() {
                 mFeedTab.notifyDataChange()
                 when (position) {
                     0 -> {
+                        mRecommendFeedsView.initData(false)
                     }
                     1 -> {
+                        mFollowFeesView.initData(false)
                     }
                     2 -> {
+                        mFeedsCollectView.initData(false)
                     }
                 }
             }
@@ -125,6 +128,15 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedTab.setViewPager(mFeedVp)
         mTabPagerAdapter.notifyDataSetChanged()
         mFeedVp.setCurrentItem(1, false)
+    }
+
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        when {
+            mFeedVp.currentItem == 0 -> mRecommendFeedsView.initData(false)
+            mFeedVp.currentItem == 1 -> mFollowFeesView.initData(false)
+            mFeedVp.currentItem == 2 -> mFeedsCollectView.initData(false)
+        }
     }
 
     override fun useEventBus(): Boolean {

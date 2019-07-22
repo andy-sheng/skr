@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/navigation_bg_iv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_81_dp"
         android:background="#EBEDF2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -16,7 +16,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_2_dp"
+        android:layout_height="@dimen/view_1_dp"
         android:background="@color/black_trans_10"
         app:layout_constraintTop_toBottomOf="@id/navigation_bg_iv" />
 

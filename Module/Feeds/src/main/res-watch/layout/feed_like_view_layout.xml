@@ -23,7 +23,6 @@
             android:layout_height="match_parent"
             android:overScrollMode="never" />
 
-
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>

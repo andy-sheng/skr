@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/view_10_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="@color/white">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nickname_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="迪丽冻吧啦"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@id/avatar_iv" />
+
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_14_dp"
+        android:gravity="center"
+        android:text="06-30 23:34"
+        android:textColor="@color/black_trans_30"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintLeft_toLeftOf="@id/nickname_tv"
+        app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
+
+    <ImageView
+        android:id="@+id/more_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:background="@drawable/feed_more_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/content_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/textsize_10_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:text="2000年的夏天周董个的龙卷风把我吹晕了~我也不知道怎么回事，突然就喜欢上了这种感觉"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+
+    <com.common.view.ex.ExConstraintLayout
+        android:id="@+id/tag_area"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#9ED7FF"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content_tv">
+
+        <ImageView
+            android:id="@+id/tag_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:background="@drawable/feed_tag_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tag_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="@dimen/view_10_dp"
+            android:paddingRight="@dimen/view_10_dp"
+            android:text="#制造你的龙卷风# 排行榜第3名"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_14_dp"
+            app:layout_constraintLeft_toRightOf="@id/tag_iv" />
+
+    </com.common.view.ex.ExConstraintLayout>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/song_area_bg"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tag_area" />
+
+    <com.module.feeds.watch.view.RecordAnimationView
+        android:id="@+id/record_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintRight_toRightOf="@id/song_area_bg"
+        app:layout_constraintTop_toTopOf="@id/song_area_bg" />
+
+    <TextView
+        android:id="@+id/like_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:drawableLeft="@drawable/feed_like_icon"
+        android:drawablePadding="@dimen/view_5_dp"
+        android:gravity="center_vertical"
+        android:text="37463"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
+
+    <TextView
+        android:id="@+id/comment_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_108_dp"
+        android:drawableLeft="@drawable/feed_comment_icon"
+        android:drawablePadding="@dimen/view_5_dp"
+        android:gravity="center_vertical"
+        android:text="264"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/like_num_tv" />
+
+    <ImageView
+        android:id="@+id/hit_iv"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/feed_hit_icon"
+        app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/like_num_tv" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/view_70_dp" />
+
+    <com.component.busilib.view.BitmapTextView
+        android:id="@+id/people_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        BitmapTextView:scale="0.5"
+        BitmapTextView:text_color="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/hit_iv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="@id/hit_iv"
+        app:layout_constraintRight_toLeftOf="@id/people_desc"
+        app:layout_constraintTop_toTopOf="@id/hit_iv" />
+
+    <TextView
+        android:id="@+id/people_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_4_dp"
+        android:gravity="bottom"
+        android:text="人"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/hit_iv"
+        app:layout_constraintLeft_toRightOf="@id/people_num_tv"
+        app:layout_constraintRight_toRightOf="@id/guide" />
+
+
+</com.common.view.ex.ExConstraintLayout>
