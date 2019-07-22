@@ -11,7 +11,9 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/input_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_52_dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/view_10_dp"
+        android:paddingBottom="@dimen/view_10_dp"
         android:background="#FFFFFFFF"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -31,9 +33,11 @@
             app:layout_constraintTop_toTopOf="@+id/etContent" />
 
         <com.common.view.ex.NoLeakEditText
+            android:layout_height="wrap_content"
             android:id="@+id/etContent"
             android:layout_width="0dp"
-            android:layout_height="@dimen/view_32_dp"
+            android:maxHeight="@dimen/view_100_dp"
+            android:minHeight="@dimen/view_32_dp"
             android:layout_marginLeft="@dimen/view_15_dp"
             android:layout_marginRight="@dimen/view_18_dp"
             android:layout_weight="1"
