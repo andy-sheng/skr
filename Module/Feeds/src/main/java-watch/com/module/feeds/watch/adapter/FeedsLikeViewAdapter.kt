@@ -1,19 +1,26 @@
 package com.module.feeds.watch.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.module.feeds.R
+import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.viewholder.FeedsLikeViewHolder
 
-class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>(){
+class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>() {
+
+    var mDataList = ArrayList<FeedsLikeModel>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsLikeViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_like_item_holder_layout, parent, false)
+        return FeedsLikeViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mDataList.size
     }
 
     override fun onBindViewHolder(holder: FeedsLikeViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.bindData(position, mDataList[position])
     }
 }

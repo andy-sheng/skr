@@ -1,14 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/top_area_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_72_dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/play_type_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:background="@drawable/like_all_repeat_icon"
+        app:layout_constraintBottom_toBottomOf="@id/top_area_bg"
+        app:layout_constraintLeft_toLeftOf="@id/top_area_bg"
+        app:layout_constraintTop_toTopOf="@id/top_area_bg" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/play_like_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_22_dp"
+        app:bl_selected_drawable="@drawable/feed_like_normal_icon"
+        app:bl_unSelected_drawable="@drawable/feed_like_selected_icon"
+        app:layout_constraintBottom_toBottomOf="@id/top_area_bg"
+        app:layout_constraintRight_toRightOf="@id/top_area_bg"
+        app:layout_constraintTop_toTopOf="@id/top_area_bg" />
+
+    <android.support.constraint.Group
+        android:id="@+id/record_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="record_film,record_cover" />
+
+    <ImageView
+        android:id="@+id/record_film"
+        android:layout_width="@dimen/view_52_dp"
+        android:layout_height="@dimen/view_52_dp"
+        android:background="@drawable/record_film_icon"
+        app:layout_constraintBottom_toBottomOf="@id/top_area_bg"
+        app:layout_constraintLeft_toLeftOf="@id/top_area_bg"
+        app:layout_constraintRight_toRightOf="@id/top_area_bg"
+        app:layout_constraintTop_toTopOf="@id/top_area_bg" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/record_cover"
+        android:layout_width="@dimen/view_34_dp"
+        android:layout_height="@dimen/view_34_dp"
+        app:layout_constraintBottom_toBottomOf="@id/record_film"
+        app:layout_constraintLeft_toLeftOf="@id/record_film"
+        app:layout_constraintRight_toRightOf="@id/record_film"
+        app:layout_constraintTop_toTopOf="@id/record_film" />
+
+    <ImageView
+        android:id="@+id/record_play_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/like_record_play_icon"
+        app:layout_constraintBottom_toBottomOf="@id/record_film"
+        app:layout_constraintLeft_toLeftOf="@id/record_film"
+        app:layout_constraintRight_toRightOf="@id/record_film"
+        app:layout_constraintTop_toTopOf="@id/record_film" />
+
+    <ImageView
+        android:id="@+id/play_last_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_40_dp"
+        android:background="@drawable/like_play_last_icon"
+        app:layout_constraintBottom_toBottomOf="@id/record_film"
+        app:layout_constraintRight_toLeftOf="@id/record_film"
+        app:layout_constraintTop_toTopOf="@id/record_film" />
+
+    <ImageView
+        android:id="@+id/play_next_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:background="@drawable/like_play_next_icon"
+        app:layout_constraintBottom_toBottomOf="@id/record_film"
+        app:layout_constraintLeft_toRightOf="@id/record_film"
+        app:layout_constraintTop_toTopOf="@id/record_film" />
+
+    <TextView
+        android:id="@+id/play_desc_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_26_dp"
+        android:gravity="center"
+        android:text="你是来自天堂的魔鬼"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintTop_toBottomOf="@id/top_area_bg" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintTop_toBottomOf="@id/play_desc_tv" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/view_0_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:id="@+id/classics_header"
