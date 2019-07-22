@@ -1,4 +1,4 @@
 package com.module.feeds.watch.model
 
-class FeedsLikeModel {
+class FeedsLikeModel(var index: Int) {
 }

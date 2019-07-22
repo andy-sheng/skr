@@ -19,11 +19,20 @@ import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.module.feeds.watch.adapter.FeedsLikeViewAdapter
 import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.presenter.FeedLikeViewPresenter
 
 class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedLikeView {
+
+    val ALL_REPEAT_PLAY_TYPE = 1      //全部循环
+    val SINGLE_REPEAT_PLAY_TYPE = 2   //单曲循环
+    val RANDOM_PLAY_TYPE = 3          //随机播放 (只在已经拉到的列表里面随机)
+
+    var mCurrentType = ALL_REPEAT_PLAY_TYPE  //当前播放类型
+    var isPlaying = false
+    var mTopModel: FeedsLikeModel? = null
 
     private val mTopAreaBg: SimpleDraweeView
     private val mPlayDescTv: TextView
@@ -75,12 +84,94 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRefreshLayout.setEnableOverScrollDrag(true)
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
+
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                MyLog.d("FeedsCollectView", "onRefresh")
+
             }
         })
+
+        mPlayTypeIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 更新游戏类别 全部循环，单曲循环，随机播放
+                when (mCurrentType) {
+                    ALL_REPEAT_PLAY_TYPE -> {
+                        mCurrentType = SINGLE_REPEAT_PLAY_TYPE
+                        mPlayTypeIv.background = U.getDrawable(R.drawable.like_single_repeat_icon)
+                        U.getToastUtil().showShort("单曲循环")
+                    }
+                    SINGLE_REPEAT_PLAY_TYPE -> {
+                        mCurrentType = RANDOM_PLAY_TYPE
+                        mPlayTypeIv.background = U.getDrawable(R.drawable.like_random_icon)
+                        U.getToastUtil().showShort("随机播放")
+                    }
+                    RANDOM_PLAY_TYPE -> {
+                        mCurrentType = ALL_REPEAT_PLAY_TYPE
+                        mPlayTypeIv.background = U.getDrawable(R.drawable.like_all_repeat_icon)
+                        U.getToastUtil().showShort("列表循环")
+                    }
+                }
+            }
+        })
+
+
+        mPlayLikeIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 不需要对界面进行任何更新
+                if (mPlayLikeIv.isSelected) {
+                    // 喜欢
+                } else {
+                    // 不喜欢
+                }
+                mPlayLikeIv.isSelected = !mPlayLikeIv.isSelected
+            }
+        })
+
+        mRecordFilm.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                mTopModel?.let {
+                    playOrPause(it)
+                }
+            }
+
+        })
+
+        mPlayLastIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 上一首
+            }
+        })
+
+        mPlayNextIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 下一首
+            }
+        })
+
+        mAdapter.onClickPlayListener = { model ->
+            model?.let {
+                playOrPause(it)
+            }
+        }
+    }
+
+    fun playOrPause(model: FeedsLikeModel) {
+        if (mAdapter.mCurrentPlayModel == model) {
+            // 暂停播放
+            isPlaying = false
+            bindTopData(model, false)
+            mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
+            mAdapter.mCurrentPlayModel = null
+            mAdapter.notifyDataSetChanged()
+        } else {
+            // 开始播放
+            isPlaying = true
+            bindTopData(model, true)
+            mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_pause_icon)
+            mAdapter.mCurrentPlayModel = mTopModel
+            mAdapter.notifyDataSetChanged()
+        }
     }
 
     fun initData(flag: Boolean) {
@@ -92,24 +183,31 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             mAdapter.mDataList.clear()
         }
 
-        bindTopData()
         mAdapter.mDataList.addAll(list)
+        if (mAdapter.mDataList.isNotEmpty() && isClear) {
+            bindTopData(mAdapter.mDataList[0], false)
+        }
         mAdapter.notifyDataSetChanged()
     }
 
     override fun requestError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
-    private fun bindTopData() {
-        AvatarUtils.loadAvatarByUrl(mTopAreaBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setBlur(true)
-                .build())
+    private fun bindTopData(model: FeedsLikeModel?, isPlay: Boolean) {
+        if (this.mTopModel != model) {
+            this.mTopModel = model
+            AvatarUtils.loadAvatarByUrl(mTopAreaBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                    .setBlur(true)
+                    .build())
 
 
-        AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCircle(true)
-                .build())
+            AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                    .setCircle(true)
+                    .build())
+        }
+
+        // 开启和关闭动画
     }
 
     fun destory() {
