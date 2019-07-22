@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
 
-    public final static String TAG = "VideoChorusSelfSingCardView";
+    public final String TAG = "VideoChorusSelfSingCardView";
 
     GrabRootView mGrabRootView;
 

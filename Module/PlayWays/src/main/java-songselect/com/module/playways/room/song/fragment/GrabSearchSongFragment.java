@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -22,14 +21,13 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
-import com.module.playways.grab.room.songmanager.SongManageData;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 import com.module.playways.room.song.view.SearchFeedbackView;
+import com.module.playways.songmanager.SongManagerActivity;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.toast.CommonToastView;
@@ -46,8 +44,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
-
 public class GrabSearchSongFragment extends BaseFragment {
 
     CommonTitleBar mTitlebar;
@@ -56,13 +52,15 @@ public class GrabSearchSongFragment extends BaseFragment {
     LinearLayoutManager mLinearLayoutManager;
     SongSelectAdapter mSongSelectAdapter;
 
-    SongManageData mSongManageData;
     String mKeyword;
     DialogPlus mSearchFeedbackDialog;
 
     CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
     DisposableObserver<ApiResult> mDisposableObserver;
+
+    int mFrom;
+    boolean isOwner;
 
     @Override
     public int initView() {
@@ -79,7 +77,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         mSearchResult.setLayoutManager(mLinearLayoutManager);
 
         int selectMode = SongSelectAdapter.GRAB_MODE;
-        if (mSongManageData.isDoubleRoom()) {
+        if (mFrom == SongManagerActivity.Companion.getTYPE_FROM_DOUBLE()) {
             selectMode = SongSelectAdapter.DOUBLE_MODE;
         }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
@@ -96,7 +94,7 @@ public class GrabSearchSongFragment extends BaseFragment {
                     mFragmentDataListener.onFragmentResult(0, 0, null, songModel);
                 }
             }
-        }, true, selectMode, mSongManageData.isOwner());
+        }, true, selectMode, isOwner);
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
@@ -155,7 +153,7 @@ public class GrabSearchSongFragment extends BaseFragment {
             return;
         }
         SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(mSongManageData.isGrabRoom() ? songSelectServerApi.searchGrabMusicItems(keyword)
+        ApiMethods.subscribe(mFrom == SongManagerActivity.Companion.getTYPE_FROM_GRAB() ? songSelectServerApi.searchGrabMusicItems(keyword)
                 : songSelectServerApi.searchDoubleMusicItems(keyword), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -280,7 +278,7 @@ public class GrabSearchSongFragment extends BaseFragment {
             @Override
             public ObservableSource<ApiResult> apply(String string) throws Exception {
                 SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-                if (mSongManageData.isGrabRoom()) {
+                if (mFrom == SongManagerActivity.Companion.getTYPE_FROM_GRAB()) {
                     return songSelectServerApi.searchGrabMusicItems(string).subscribeOn(Schedulers.io());
                 } else {
                     return songSelectServerApi.searchDoubleMusicItems(string).subscribeOn(Schedulers.io());
@@ -295,7 +293,9 @@ public class GrabSearchSongFragment extends BaseFragment {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mSongManageData = (SongManageData) data;
+            mFrom = (Integer) data;
+        } else if (type == 1) {
+            isOwner = (Boolean) data;
         }
     }
 

@@ -69,8 +69,7 @@
 
         <!-- 尝试修复hwui 问题，用户反馈点歌崩溃问题 -->
         <activity
-            android:name="com.module.playways.grab.room.songmanager.OwnerManagerActivity"
-            android:hardwareAccelerated="false"
+            android:name=".songmanager.SongManagerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">

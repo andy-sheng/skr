@@ -21,7 +21,7 @@ import okhttp3.Response;
  */
 public class UserAgentInterceptor implements Interceptor {
 
-    public final static String TAG = "UserAgentInterceptor";
+    public final String TAG = "UserAgentInterceptor";
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override

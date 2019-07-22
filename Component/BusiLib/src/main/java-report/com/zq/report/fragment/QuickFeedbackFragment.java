@@ -62,7 +62,7 @@ import static com.zq.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
  * 快速一键反馈
  */
 public class QuickFeedbackFragment extends BaseFragment {
-    public final static String TAG = "QuickFeedbackFragment";
+    public final String TAG = "QuickFeedbackFragment";
     //反馈
     public static final int FEED_BACK = 0;
     //举报
@@ -89,9 +89,15 @@ public class QuickFeedbackFragment extends BaseFragment {
 
     Handler mHandler = new Handler(Looper.getMainLooper());
 
+    boolean mUploading = false;
+
     ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment>() {
         @Override
         protected QuickFeedbackFragment accept(PhotoModel cur) {
+            if(mUploading){
+                return null;
+            }
+            mUploading = true;
             return QuickFeedbackFragment.this;
         }
 
@@ -231,6 +237,8 @@ public class QuickFeedbackFragment extends BaseFragment {
                         photoModel.setStatus(STATUS_SUCCESS);
                         photoModel.setPicPath(url);
                         checkUploadState(mPhotoModelList);
+                        mUploading =false;
+                        mPlayControlTemplate.endCurrent(photoModel);
                     }
 
                     @Override
@@ -238,6 +246,8 @@ public class QuickFeedbackFragment extends BaseFragment {
                         MyLog.d(TAG, "上传失败" + " msg=" + msg);
                         photoModel.setStatus(STATUS_FAILED);
                         checkUploadState(mPhotoModelList);
+                        mUploading =false;
+                        mPlayControlTemplate.endCurrent(photoModel);
                     }
                 });
     }

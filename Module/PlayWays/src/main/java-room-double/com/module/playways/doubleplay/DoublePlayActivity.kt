@@ -32,13 +32,14 @@ class DoublePlayActivity : BaseActivity() {
             activity.finish()
         }
 
-        var doubleRoomData: DoubleRoomData? = intent.getSerializableExtra("roomData") as DoubleRoomData
-        if (doubleRoomData == null) {
+        val any: Any? = intent.getSerializableExtra("roomData")
+        if (any == null) {
             MyLog.e("DoublePlayActivity", "doubleRoomData is null")
             finish()
             return
         }
 
+        var doubleRoomData: DoubleRoomData? = any as DoubleRoomData
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, DoublePlayWaysFragment::class.java)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, doubleRoomData)

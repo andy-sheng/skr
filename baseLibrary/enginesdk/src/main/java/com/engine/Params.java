@@ -19,7 +19,7 @@ import io.agora.rtc.video.VideoEncoderConfiguration;
  * 对于含义不清楚的参数，要看这个参数在哪里使用的
  */
 public class Params implements Serializable {
-    public final static String TAG = "Params";
+    public static final String TAG = "Params";
     public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
@@ -91,7 +91,8 @@ public class Params implements Serializable {
     private int bandGain = 0;// 子带增益
     private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
 
-    private int audioMixingVolume = 50; // 混音音量 0-100，默认是100
+    private int audioMixingPlayoutVolume = 50; // 混音音量 0-100，默认是100
+    private int audioMixingPublishVolume = 20; // 推出去的音量大小
     private boolean enableInEarMonitoring = false;// 耳返
     private int earMonitoringVolume = 80; // 耳返音量
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
@@ -308,12 +309,12 @@ public class Params implements Serializable {
         this.mixMusicPlaying = mixMusicPlaying;
     }
 
-    public int getAudioMixingVolume() {
-        return audioMixingVolume;
+    public int getAudioMixingPlayoutVolume() {
+        return audioMixingPlayoutVolume;
     }
 
-    public void setAudioMixingVolume(int audioMixingVolume) {
-        this.audioMixingVolume = audioMixingVolume;
+    public void setAudioMixingPlayoutVolume(int audioMixingPlayoutVolume) {
+        this.audioMixingPlayoutVolume = audioMixingPlayoutVolume;
     }
 
     public void setEnableInEarMonitoring(boolean enableInEarMonitoring) {
@@ -658,6 +659,14 @@ public class Params implements Serializable {
         return accTs;
     }
 
+    public int getAudioMixingPublishVolume() {
+        return audioMixingPublishVolume;
+    }
+
+    public void setAudioMixingPublishVolume(int audioMixingPublishVolume) {
+        this.audioMixingPublishVolume = audioMixingPublishVolume;
+    }
+
     public static class Builder {
         Params mParams = new Params();
 
@@ -755,7 +764,7 @@ public class Params implements Serializable {
         }
 
         public Builder setAudioMixingVolume(int audioMixingVolume) {
-            mParams.setAudioMixingVolume(audioMixingVolume);
+            mParams.setAudioMixingPlayoutVolume(audioMixingVolume);
             return this;
         }
 

@@ -1,6 +1,7 @@
 package com.module.playways.room.prepare.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.rxretrofit.ApiManager;
@@ -33,7 +34,7 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
 public class GrabMatchPresenter extends BaseMatchPresenter {
-    public final static String TAG = "GrabMatchPresenter";
+    public final String TAG = "GrabMatchPresenter";
     public final static int PLAT_FORM = 20;
 
     IGrabMatchingView mView;
@@ -110,6 +111,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         map.put("tagID", playbookItemID);
         if (mIsNewUser) {
             map.put("isNewUser", mIsNewUser);
+            map.put("ageStage", MyUserInfoManager.getInstance().getAgeStage());
         }
         map.put("vars", RA.getVars());
         map.put("testList", RA.getTestList());
@@ -322,7 +324,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
 
             @Override
             public void onError(Throwable e) {
-                MyLog.w(GrabMatchPresenter.TAG, "exitGame error, " + " e=" + e);
+                MyLog.w(TAG, "exitGame error, " + " e=" + e);
             }
         }, GrabMatchPresenter.this);
     }

@@ -21,7 +21,7 @@ import java.util.List;
  * 地理位置相关服务
  */
 public class LbsUtils {
-    public final static String TAG = "LbsUtils";
+    public static final String TAG = "LbsUtils";
 
     public static final String PREF_KEY_LOCATION_SYNC_TS = "location_sync_ts";
 

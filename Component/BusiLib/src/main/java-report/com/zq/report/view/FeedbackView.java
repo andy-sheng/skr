@@ -32,7 +32,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
 public class FeedbackView extends RelativeLayout {
-    public final static String TAG = "FeedbackView";
+    public final String TAG = "FeedbackView";
 
     public static int FEEDBACK_ERRO = 1;  // 反馈问题
     public static int FEEDBACK_SUGGEST = 2; // 功能建议

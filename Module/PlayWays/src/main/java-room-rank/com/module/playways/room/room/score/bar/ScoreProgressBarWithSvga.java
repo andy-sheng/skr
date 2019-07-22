@@ -18,7 +18,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 
 public class ScoreProgressBarWithSvga extends RelativeLayout {
 
-    public final static String TAG = "ScoreProgressBarWithSvga";
+    public final String TAG = "ScoreProgressBarWithSvga";
 
     ScorePrograssBar2 mScoreProgressBar;
     SVGAImageView mScoreAnimationIv;

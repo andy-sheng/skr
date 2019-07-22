@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/view_16_dp">
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/recycler_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_144_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#25000000">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/friends_recycle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/more_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_alignLeft="@id/recycler_area"
+        android:layout_alignTop="@id/recycler_area"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:drawableRight="@drawable/grab_recommend_more_icon"
+        android:drawablePadding="@dimen/view_6_dp"
+        android:text="更多在线好友"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp" />
+
+</RelativeLayout>

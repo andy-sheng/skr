@@ -26,7 +26,7 @@ import io.reactivex.functions.Consumer;
  */
 public class FreeMicSelfSingCardView extends ExViewStub {
 
-    public final static String TAG = "MiniGameSelfSingCardView";
+    public final String TAG = "MiniGameSelfSingCardView";
 
     ExImageView mIvBg;
     ScrollView mSvLyric;

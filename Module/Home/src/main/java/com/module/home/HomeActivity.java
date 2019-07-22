@@ -28,6 +28,7 @@ import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.scheme.SchemeSdkActivity;
+import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
@@ -41,10 +42,10 @@ import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
+import com.module.feeds.IFeedsModuleService;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
 import com.module.home.fragment.PersonFragment4;
-import com.module.home.fragment.PkInfoFragment;
 import com.module.home.game.GameFragment3;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
@@ -60,7 +61,7 @@ import org.greenrobot.eventbus.ThreadMode;
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener, INotifyView {
 
-    public final static String TAG = "HomeActivity";
+    public final String TAG = "HomeActivity";
     public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
     RelativeLayout mMainActContainer;
@@ -74,10 +75,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mPersonArea;
     ExTextView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
-    RelativeLayout mRankArea;
-    ExTextView mRankBtn;
+    RelativeLayout mFeedArea;
+    ExTextView mFeedBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
+    IFeedsModuleService mIFeedsModuleService;
     HomeCorePresenter mHomePresenter;
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
@@ -99,7 +101,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     HomeDialogManager mHomeDialogManager = new HomeDialogManager();
 
     public static void open(Activity activity) {
-        Intent intent = new Intent(activity,HomeActivity.class);
+        Intent intent = new Intent(activity, HomeActivity.class);
         activity.startActivity(intent);
     }
 
@@ -126,22 +128,26 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        MyLog.w(TAG, "HomeActivity initData" + ", version is " + U.getAppInfoUtils().getVersionCode());
+        MyLog.w(TAG, "HomeActivity initData" + " version=" + U.getAppInfoUtils().getVersionCode());
+        MyLog.w(TAG, "HomeActivity initData" + " intent=" + getIntent());
+        if (getIntent() != null) {
+            MyLog.w(TAG, "HomeActivity initData" + " intent.getData()=" + getIntent().getData());
+        }
         U.getStatusBarUtil().setTransparentBar(this, false);
-        mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
-        mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
-        mGameArea = (RelativeLayout) findViewById(R.id.game_area);
+        mMainActContainer = findViewById(R.id.main_act_container);
+        mBottomContainer = findViewById(R.id.bottom_container);
+        mGameArea = findViewById(R.id.game_area);
         mGameBtn = findViewById(R.id.game_btn);
-        mRankArea = findViewById(R.id.rank_area);
-        mRankBtn = findViewById(R.id.rank_btn);
-        mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
+        mFeedArea = findViewById(R.id.feed_area);
+        mFeedBtn = findViewById(R.id.feed_btn);
+        mMessageArea = findViewById(R.id.message_area);
         mMessageBtn = findViewById(R.id.message_btn);
-        mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
-        mMessageRedDot = (ExImageView) findViewById(R.id.message_red_dot);
-        mPersonArea = (RelativeLayout) findViewById(R.id.person_area);
+        mUnreadNumTv = findViewById(R.id.unread_num_tv);
+        mMessageRedDot = findViewById(R.id.message_red_dot);
+        mPersonArea = findViewById(R.id.person_area);
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
-        mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
-        mMainVp = (NestViewPager) findViewById(R.id.main_vp);
+        mPersonInfoRedDot = findViewById(R.id.person_info_red_dot);
+        mMainVp = findViewById(R.id.main_vp);
         mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -151,9 +157,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
-        mMainVp.setOffscreenPageLimit(3);
+        mMainVp.setOffscreenPageLimit(2);
         checkIfFromSchema();
-
+        mIFeedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -161,13 +167,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (position == 0) {
                     return new GameFragment3();
                 } else if (position == 1) {
-                    return new PkInfoFragment();
+                    return mIFeedsModuleService.getFeedsFragment();
                 } else if (position == 2) {
-                    if (mMsgService == null) {
-                        return new PersonFragment4();
-                    } else {
-                        return (Fragment) mMsgService.getMessageFragment();
-                    }
+                    return (Fragment) mMsgService.getMessageFragment();
                 } else if (position == 3) {
                     return new PersonFragment4();
                 }
@@ -186,8 +188,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMainVp.setAdapter(fragmentPagerAdapter);
 
-        mHomePresenter = new HomeCorePresenter(this, this);
-        if(!UserAccountManager.getInstance().hasAccount()){
+        mHomePresenter = new
+
+                HomeCorePresenter(this, this);
+        if (!UserAccountManager.getInstance().
+
+                hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override
@@ -198,7 +204,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             // 没有账号 跳到登陆页面
             LoginActivity.open(this);
         }
+
         mCheckInPresenter = new CheckInPresenter(this);
+
         addPresent(mCheckInPresenter);
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
@@ -209,7 +217,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-        mRankArea.setOnClickListener(new DebounceViewClickListener() {
+        mFeedArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
                 mMainVp.setCurrentItem(1, false);
@@ -236,18 +244,25 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         });
 
         mRedPkgPresenter = new RedPkgPresenter(this);
+
         addPresent(mRedPkgPresenter);
 
         mNotifyCorePresenter = new NotifyCorePresenter(this);
+
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
+
         selectTab(0);
         mHomeDialogManager.register();
         mFromCreate = true;
 
         WeakRedDotManager.getInstance().addListener(this);
-        mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+
+        mMessageFollowRedDotValue = U.getPreferenceUtils().
+
+                getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+
         refreshMessageRedDot();
 
         mUiHandler.postDelayed(new Runnable() {
@@ -262,6 +277,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 }
             }
         }, 5000);
+
+        tryGoConversationList(getIntent());
 
     }
 
@@ -292,12 +309,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     private void selectTab(int tabSeq) {
         Drawable drawable0 = U.getDrawable(R.drawable.ic_home_normal);
-        Drawable drawable1 = U.getDrawable(R.drawable.ic_rank_normal);
+        Drawable drawable1 = U.getDrawable(R.drawable.ic_feed_normal);
         Drawable drawable2 = U.getDrawable(R.drawable.ic_chat_normal);
         Drawable drawable3 = U.getDrawable(R.drawable.ic_me_normal);
 
         mGameBtn.setSelected(false);
-        mRankBtn.setSelected(false);
+        mFeedBtn.setSelected(false);
         mMessageBtn.setSelected(false);
         mPersonInfoBtn.setSelected(false);
 
@@ -307,8 +324,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 mGameBtn.setSelected(true);
                 break;
             case 1:
-                drawable1 = U.getDrawable(R.drawable.ic_rank_selected);
-                mRankBtn.setSelected(true);
+                drawable1 = U.getDrawable(R.drawable.ic_feed_selected);
+                mFeedBtn.setSelected(true);
                 break;
             case 2:
                 drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
@@ -321,7 +338,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
 
         setTabDrawable(mGameBtn, drawable0);
-        setTabDrawable(mRankBtn, drawable1);
+        setTabDrawable(mFeedBtn, drawable1);
         setTabDrawable(mMessageBtn, drawable2);
         setTabDrawable(mPersonInfoBtn, drawable3);
     }
@@ -362,6 +379,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mUnreadNumTv.setVisibility(View.GONE);
         } else {
             mUnreadNumTv.setVisibility(View.VISIBLE);
+            mMessageRedDot.setVisibility(View.GONE);
             if (unReadNum > 99) {
                 mUnreadNumTv.setText("99+");
             } else {
@@ -388,6 +406,17 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        tryGoConversationList(intent);
+    }
+
+    private void tryGoConversationList(Intent intent) {
+        if (intent != null && intent.getData() != null && "conversationlist".equals(intent.getData().getPath())) {
+            mMainVp.setCurrentItem(1);
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -445,9 +474,20 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         U.getActivityUtils().goHomeActivity();
         mMainVp.setCurrentItem(event.channel, false);
         selectTab(event.channel);
-        if (event.channel == 2) {
+        if (event.channel == 1) {
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
         }
+    }
+
+    /**
+     * 跳到个人中心
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(JumpHomeDoubleChatPageEvent event) {
+        U.getActivityUtils().goHomeActivity();
+        mMainVp.setCurrentItem(0, false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -508,7 +548,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (mMessageFollowRedDotValue < 2) {
             mMessageRedDot.setVisibility(View.GONE);
         } else {
-            mMessageRedDot.setVisibility(View.VISIBLE);
+            if (mUnreadNumTv.getVisibility() == View.VISIBLE) {
+                mMessageRedDot.setVisibility(View.GONE);
+            } else {
+                mMessageRedDot.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

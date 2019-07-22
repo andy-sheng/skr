@@ -16,7 +16,7 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class BasePlayer implements IPlayer {
 
-    public final static String TAG = "BasePlayer";
+    public final String TAG = "BasePlayer";
 
     protected boolean mEnableDecreaseVolume = false;
     protected boolean mMonitorProgress = false;

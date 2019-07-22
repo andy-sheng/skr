@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class PKSingCardView extends RelativeLayout {
 
-    public final static String TAG = "PKSingCardView";
+    public final String TAG = "PKSingCardView";
 
     SVGAImageView mLeftSingSvga;
     SVGAImageView mRightSingSvga;

@@ -25,7 +25,7 @@ import java.util.TreeMap;
  */
 
 public class LyricsUtils {
-    public final static String TAG = "LyricsUtils";
+    public static final String TAG = "LyricsUtils";
 
     /**
      * 获取双行动感歌词图片

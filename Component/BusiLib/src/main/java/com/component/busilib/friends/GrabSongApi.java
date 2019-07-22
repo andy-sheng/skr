@@ -1,9 +1,11 @@
 package com.component.busilib.friends;
 
+import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface GrabSongApi {
@@ -32,7 +34,7 @@ public interface GrabSongApi {
      * "traceId": "5c4429cf53a42b1c5900001b"
      * }
      */
-    @GET("http://dev.api.inframe.mobi/v2/playbook/list-stand-tags")
+    @GET("http://dev.api.inframe.mobi/v3/playbook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
@@ -55,15 +57,27 @@ public interface GrabSongApi {
 
     /**
      * 更多房间，只能刷新，不能加载更多
+     *
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v2/mate/index-recommend-room-more")
-    Observable<ApiResult> getRecommendRoomList(@Query("vars") String vars, @Query("testList") String testList);
+    @GET("http://dev.api.inframe.mobi/v1/fuel/room-list")
+    Observable<ApiResult> getRecommendRoomList(@Query("offset") int offset, @Query("testList") String testList, @Query("vars") String vars);
 
     /**
      * 首页推荐房间，只能刷新，不能加载更多
+     *
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/mate/index-recommend-room")
+    @GET("http://dev.api.inframe.mobi/v1/fuel/index-room-list")
     Observable<ApiResult> getFirstPageRecommendRoomList();
+
+
+    /**
+     * 检查某个人在房间的状态
+     *
+     * @param userID
+     * @return
+     */
+    @GET("http://dev.room.inframe.mobi/v1/room/roominfo")
+    Observable<ApiResult> checkUserRoom(@Query("userID")int userID);
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:speaking="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/view_7_dp"
+    android:layout_marginRight="@dimen/view_10_dp"
+    android:layout_marginBottom="@dimen/view_7_dp">
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_28_dp"
+        android:layout_height="@dimen/view_28_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/comment_area"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExConstraintLayout
+        android:id="@+id/comment_area"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginRight="@dimen/view_5_dp"
+        app:bl_corners_radius="@dimen/view_13_dp"
+        app:bl_solid_color="@color/black_trans_30"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/avatar_iv">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/view_15_dp"
+            android:paddingTop="@dimen/view_4_dp"
+            android:paddingRight="@dimen/view_5_dp"
+            android:paddingBottom="@dimen/view_4_dp"
+            android:singleLine="true"
+            android:textColor="#586D94"
+            android:textSize="@dimen/textsize_14_dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/audio_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/audio_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_3_dp"
+            android:gravity="center_vertical|right"
+            android:minWidth="@dimen/view_66_dp"
+            android:paddingRight="@dimen/view_14_dp"
+            android:text="5s"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_12_dp"
+            app:bl_corners_radius="@dimen/view_10_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#71B491"
+            app:layout_constraintBottom_toBottomOf="@id/name_tv"
+            app:layout_constraintLeft_toRightOf="@id/name_tv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/name_tv" />
+
+        <ImageView
+            android:id="@+id/audio_play_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/audio_tv"
+            app:layout_constraintLeft_toLeftOf="@id/audio_tv"
+            app:layout_constraintTop_toTopOf="@id/audio_tv" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/red_iv"
+            android:layout_width="@dimen/view_6_dp"
+            android:layout_height="@dimen/view_6_dp"
+            android:layout_marginRight="@dimen/view_4_dp"
+            app:bl_shape="oval"
+            app:bl_solid_color="#CB5883"
+            app:layout_constraintBottom_toBottomOf="@id/audio_tv"
+            app:layout_constraintRight_toRightOf="@id/audio_tv"
+            app:layout_constraintTop_toTopOf="@id/audio_tv" />
+
+        <com.module.playways.grab.room.top.SpeakingTipsAnimationView
+            android:id="@+id/speaker_animation_iv"
+            android:layout_width="@dimen/view_12_dp"
+            android:layout_height="@dimen/view_14_dp"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/audio_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            speaking:animationtype="msg_audio" />
+
+    </com.common.view.ex.ExConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

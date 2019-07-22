@@ -20,7 +20,7 @@ import com.module.home.model.HomeGoldModel;
 import java.util.List;
 
 public class HomeGoldCheckInView extends RelativeLayout {
-    public final static String TAG = "HomeGoldCheckInView";
+    public final String TAG = "HomeGoldCheckInView";
     RecyclerView mRecyclerView;
     ExTextView mTvNum;
     TextView mTvGold;

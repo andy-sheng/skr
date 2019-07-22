@@ -1,17 +1,26 @@
 package com.module.playways.doubleplay.fragment
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.support.constraint.ConstraintLayout
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.Gravity
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
@@ -22,7 +31,6 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
-import com.common.view.ex.ExFrameLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
@@ -33,56 +41,101 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
+import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
+import com.module.playways.doubleplay.pbLocalModel.LocalGamePanelInfo
+import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
 import com.module.playways.doubleplay.presenter.DoubleCorePresenter
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
-import com.module.playways.doubleplay.view.DoubleSingCardView
+import com.module.playways.doubleplay.view.DoubleChatSenceView
+import com.module.playways.doubleplay.view.DoubleGameSenceView
+import com.module.playways.doubleplay.view.DoubleSingSenceView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
-import com.module.playways.grab.room.songmanager.OwnerManagerActivity
-import com.module.playways.grab.room.songmanager.SongManageData
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.dialog.PersonInfoDialog
 import com.zq.live.proto.Common.EMsgRoomMediaType
+import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
 import com.zq.report.fragment.QuickFeedbackFragment
+import kotlin.properties.Delegates
 
 
 class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     val mTag = "DoublePlayWaysFragment"
+    private var mPaddingView: View? = null
     private var mReportTv: TextView? = null
     private var mExitIv: ImageView? = null
     private var mLeftAvatarSdv: SimpleDraweeView? = null
     private var mLeftLockIcon: ImageView? = null
     private var mLeftNameTv: ExTextView? = null
     private var mUnlockTv: ExTextView? = null
-    private var mWordTv: ExTextView? = null
     private var mRightAvatarSdv: SimpleDraweeView? = null   //右边固定是自己
     private var mRightLockIcon: ImageView? = null
     private var mRightNameTv: ExTextView? = null
     private var mCountDownTv: ExTextView? = null
     private var mNoLimitTip: ExTextView? = null
-    private var mMicTv: TextView? = null
-    private var mMicIv: ExImageView? = null
     private var mNoLimitIcon: ExImageView? = null
-    private var mWordArea: ExFrameLayout? = null
-    private var mPickIv: ImageView? = null
-    private var mSelectIv: ImageView? = null
-    private var mRightZanView: ZanView? = null
-    private var mLeftZanView: ZanView? = null
+    private var mZanDisplayView: ZanView? = null
     private var mDialogPlus: DialogPlus? = null
+    private var mChangeSenceDialog: DialogPlus? = null
+    private var mReceiveChangeSenceDialog: DialogPlus? = null
+    private var mViewPager: ViewPager? = null
+    private var mChatTagTv: ExTextView? = null
+    private var mGameTagTv: ExTextView? = null
+    private var mSingTagTv: ExTextView? = null
+
+    private var mDoubleSingSenceView: DoubleSingSenceView? = null
+    private var mDoubleChatSenceView: DoubleChatSenceView? = null
+    private var mDoubleGameSenceView: DoubleGameSenceView? = null
 
     lateinit var mDoubleCorePresenter: DoubleCorePresenter
+
+    private var mCountDownScaleAnimators: AnimatorSet? = null
+
     var mRoomData: DoubleRoomData? = null
 
     var countDownTimer: HandlerTaskTimer? = null
 
-    lateinit var mDoubleSingCardView1: DoubleSingCardView
-    lateinit var mDoubleSingCardView2: DoubleSingCardView
-
-    var mCurrentCardView: DoubleSingCardView? = null
-
     var mHasInit: Boolean = false
+
+    val mUiHandler = Handler(Looper.getMainLooper())
+
+    var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
+        mViewPager?.setCurrentItem(newPosition, false)
+        when (oldPositon) {
+            0 -> {
+                mDoubleChatSenceView?.unselected()
+            }
+            1 -> {
+                mDoubleGameSenceView?.unselected()
+            }
+            2 -> {
+                mDoubleSingSenceView?.unselected()
+            }
+        }
+        when (newPosition) {
+            0 -> {
+                mDoubleChatSenceView?.selected()
+                mChatTagTv?.isSelected = true
+                mGameTagTv?.isSelected = false
+                mSingTagTv?.isSelected = false
+            }
+            1 -> {
+                mDoubleGameSenceView?.selected()
+                mChatTagTv?.isSelected = false
+                mGameTagTv?.isSelected = true
+                mSingTagTv?.isSelected = false
+            }
+            2 -> {
+                mDoubleSingSenceView?.selected()
+                mChatTagTv?.isSelected = false
+                mGameTagTv?.isSelected = false
+                mSingTagTv?.isSelected = true
+            }
+        }
+    })
+
 
     override fun initView(): Int {
         return R.layout.double_play_fragment_layout
@@ -95,6 +148,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             return
         }
 
+        ZqEngineKit.getInstance().muteLocalAudioStream(false)
         MyLog.w(mTag, "initData mRoomData='${mRoomData}'")
         mReportTv = mRootView.findViewById<View>(R.id.report_tv) as TextView
         mExitIv = mRootView.findViewById<View>(R.id.exit_iv) as ImageView
@@ -104,35 +158,18 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mRightAvatarSdv = mRootView.findViewById<View>(R.id.right_avatar_sdv) as SimpleDraweeView
         mRightLockIcon = mRootView.findViewById<View>(R.id.right_lock_icon) as ImageView
         mRightNameTv = mRootView.findViewById<View>(R.id.right_name_tv) as ExTextView
-        mMicIv = mRootView.findViewById<View>(R.id.mic_iv) as ExImageView
-        mPickIv = mRootView.findViewById<View>(R.id.pick_iv) as ImageView
-        mWordTv = mRootView.findViewById(R.id.word_tv) as ExTextView
-        mSelectIv = mRootView.findViewById<View>(R.id.select_iv) as ImageView
+        mViewPager = mRootView.findViewById<View>(R.id.viewpager) as ViewPager
         mUnlockTv = mRootView.findViewById<View>(R.id.unlock_tv) as ExTextView
         mCountDownTv = mRootView.findViewById<View>(R.id.count_down_tv) as ExTextView
-        mRightZanView = mRootView.findViewById<View>(R.id.right_zanView) as ZanView
-        mLeftZanView = mRootView.findViewById<View>(R.id.left_zanView) as ZanView
         mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
         mNoLimitTip = mRootView.findViewById(R.id.no_limit_tip) as ExTextView
-        mMicTv = mRootView.findViewById(R.id.mic_tv) as TextView
-        mWordArea = mRootView.findViewById(R.id.word_area) as ExFrameLayout
-        mDoubleSingCardView1 = mRootView.findViewById(R.id.show_card1) as DoubleSingCardView
-        mDoubleSingCardView2 = mRootView.findViewById(R.id.show_card2) as DoubleSingCardView
+        mChatTagTv = mRootView.findViewById(R.id.chat_tag_tv) as ExTextView
+        mGameTagTv = mRootView.findViewById(R.id.game_tag_tv) as ExTextView
+        mSingTagTv = mRootView.findViewById(R.id.sing_tag_tv) as ExTextView
+        mZanDisplayView = mRootView.findViewById(R.id.zan_display_view) as ZanView
+        mPaddingView = mRootView.findViewById(R.id.padding_view)
 
-        mWordTv?.text = mRoomData!!.config?.roomSignature
-
-        var mListener = object : DoubleSingCardView.Listener() {
-            override fun clickChangeSong() {
-                mDoubleCorePresenter?.nextSong()
-            }
-
-            override fun clickToAddMusic() {
-                OwnerManagerActivity.open(activity, SongManageData(mRoomData))
-            }
-        }
-        mDoubleSingCardView1.mListener = mListener
-        mDoubleSingCardView2.mListener = mListener
-
+        (mPaddingView?.layoutParams as ConstraintLayout.LayoutParams).topMargin = U.getStatusBarUtil().getStatusBarHeight(activity)
 
         mLeftAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -155,51 +192,39 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         })
 
-        mRightAvatarSdv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                val info = mRoomData!!.userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
-                if (info != null && !info.isHasLock) {
-                    showPersonInfoView(MyUserInfoManager.getInstance().uid.toInt())
-                }
+        mRightAvatarSdv?.setDebounceViewClickListener {
+            val info = mRoomData!!.userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
+            if (info != null && !info.isHasLock) {
+                showPersonInfoView(MyUserInfoManager.getInstance().uid.toInt())
             }
-        })
-
-        mExitIv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // 退出
-                confirmExitRoom()
-            }
-        })
-
-        mRightNameTv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-
-            }
-        })
-
-        mUnlockTv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                mDoubleCorePresenter.unLockInfo()
-            }
-        })
-
-        mPickIv?.setOnClickListener {
-            if (mRoomData!!.isRoomPrepared()) {
-                mDoubleCorePresenter.pickOther()
-            }
-            mRightZanView?.addZanXin(1)
         }
 
-        mSelectIv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // 点歌
-                if (mRoomData!!.isRoomPrepared()) {
-                    OwnerManagerActivity.open(activity, SongManageData(mRoomData))
-                } else {
-                    U.getToastUtil().showShort("房间里还没有人哦～")
-                }
-            }
-        })
+        mChatTagTv?.setDebounceViewClickListener {
+            if (mRoomData!!.sceneType != ESceneType.ST_Chat.value)
+                confirmChangeSenceDialog(mChatTagTv?.text.toString(), ESceneType.ST_Chat.value)
+        }
+
+        mGameTagTv?.setDebounceViewClickListener {
+            if (mRoomData!!.sceneType != ESceneType.ST_Game.value)
+                confirmChangeSenceDialog(mGameTagTv?.text.toString(), ESceneType.ST_Game.value)
+        }
+
+        mSingTagTv?.setDebounceViewClickListener {
+            if (mRoomData!!.sceneType != ESceneType.ST_Sing.value)
+                confirmChangeSenceDialog(mSingTagTv?.text.toString(), ESceneType.ST_Sing.value)
+        }
+
+        mExitIv?.setDebounceViewClickListener {
+            confirmExitRoom()
+        }
+
+        mRightNameTv?.setDebounceViewClickListener {}
+
+        mUnlockTv?.setDebounceViewClickListener {
+            mDoubleCorePresenter.unLockInfo()
+        }
+
+        initPager()
 
         mDoubleCorePresenter = DoubleCorePresenter(mRoomData!!, this)
         addPresent(mDoubleCorePresenter)
@@ -215,17 +240,15 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             } else {
                 unLockSelf()
                 toInviteUI()
-                mLeftNameTv?.setOnClickListener(object : DebounceViewClickListener() {
-                    override fun clickValid(v: View?) {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .addDataBeforeAdd(0, InviteFriendFragment2.FROM_DOUBLE_ROOM)
-                                .addDataBeforeAdd(1, mRoomData!!.gameId)
-                                .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
-                                .build())
-                    }
-                })
+                mLeftNameTv?.setDebounceViewClickListener {
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(activity, InviteFriendFragment2::class.java)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, InviteFriendFragment2.FROM_DOUBLE_ROOM)
+                            .addDataBeforeAdd(1, mRoomData!!.gameId)
+                            .addDataBeforeAdd(2, EMsgRoomMediaType.EMR_AUDIO.value)
+                            .build())
+                }
             }
         } else {
             if (mRoomData!!.needMaskUserInfo) {
@@ -236,7 +259,6 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                 unLockSelf()
             }
         }
-
 
         MyLog.d(mTag, "mRoomData.enableNoLimitDuration " + mRoomData!!.enableNoLimitDuration)
         if (mRoomData!!.enableNoLimitDuration) {
@@ -249,18 +271,118 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             mUnlockTv?.visibility = VISIBLE
             startCountDown()
         }
+
+        val objectAnimator1 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_X, 1.5f, 1.0f)
+        val objectAnimator2 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_Y, 1.5f, 1.0f)
+        mCountDownScaleAnimators = AnimatorSet();
+        mCountDownScaleAnimators?.setDuration(1000)
+        mCountDownScaleAnimators?.playTogether(objectAnimator1, objectAnimator2)
+        mDoubleGameSenceView?.setFirstGamePanelInfo(mRoomData!!.localGamePanelInfo)
+    }
+
+
+    private fun initPager() {
+        mDoubleChatSenceView = DoubleChatSenceView(context)
+        mDoubleGameSenceView = DoubleGameSenceView(context)
+        mDoubleGameSenceView?.mRoomData = mRoomData
+
+        var mPickFun: () -> Unit = {
+            if (mRoomData!!.isRoomPrepared()) {
+                mDoubleCorePresenter.pickOther()
+            }
+            mZanDisplayView?.addZanXin(1)
+        }
+
+        mDoubleGameSenceView?.mPickFun = mPickFun
+
+        mDoubleSingSenceView = DoubleSingSenceView(context)
+        mDoubleSingSenceView?.mRoomData = mRoomData
+        mDoubleSingSenceView?.mPickFun = mPickFun
+
+        val mTabPagerAdapter = object : PagerAdapter() {
+            override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
+                container.removeView(any as View)
+            }
+
+            override fun instantiateItem(container: ViewGroup, position: Int): Any {
+                var view: View? = when (position) {
+                    0 -> mDoubleChatSenceView
+                    1 -> mDoubleGameSenceView
+                    2 -> mDoubleSingSenceView
+                    else -> null
+                }
+
+                if (container.indexOfChild(view) == -1) {
+                    container.addView(view)
+                }
+                return view!!
+            }
+
+            override fun getCount(): Int {
+                return 3
+            }
+
+            override fun isViewFromObject(view: View, any: Any): Boolean {
+                return view === any
+            }
+        }
+
+        mViewPager?.adapter = mTabPagerAdapter
+        mViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                mPagerPosition = position
+            }
+        })
+        mViewPager?.offscreenPageLimit = 3
+
+        mPagerPosition = getPagerPositionByScene(mRoomData!!.sceneType)
+    }
+
+    private fun getPagerPositionByScene(scene: Int): Int {
+        return when (scene) {
+            ESceneType.ST_Chat.value -> 0
+            ESceneType.ST_Game.value -> 1
+            ESceneType.ST_Sing.value -> 2
+            else -> 0
+        }
     }
 
     private fun startCountDown() {
         val take = (mRoomData!!.config?.durationTimeMs ?: 0) / 1000
         MyLog.d(mTag, "startCountDown take is " + take)
-        countDownTimer = HandlerTaskTimer.newBuilder().interval(1000).take(take).start(object : HandlerTaskTimer.ObserverW() {
-            override fun onNext(t: Int) {
-                mCountDownTv?.text = U.getDateTimeUtils().formatTimeStringForDate((take - t).toLong() * 1000, "mm:ss")
-            }
+        countDownTimer = HandlerTaskTimer.newBuilder().interval(1000)
+                .take(take)
+                .start(object : HandlerTaskTimer.ObserverW() {
+                    override fun onNext(t: Int) {
+                        var leftSecond = take - t
+                        if (leftSecond > 10) {
+                            mCountDownTv?.text = U.getDateTimeUtils().formatTimeStringForDate((leftSecond * 1000).toLong(), "mm:ss")
+                        } else {
+                            mCountDownTv?.text = "${leftSecond}s"
+                            mCountDownTv?.setTextColor(Color.parseColor("#FFC15B"))
+                            mCountDownScaleAnimators?.cancel()
+                            mCountDownScaleAnimators?.start()
+                        }
+                    }
 
-            override fun onComplete() {
-                mDoubleCorePresenter.closeByTimeOver()
+                    override fun onComplete() {
+                        mDoubleCorePresenter.closeByTimeOver()
+                    }
+                })
+    }
+
+    fun View.setDebounceViewClickListener(click: (view: View?) -> Unit) {
+        this.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                click(v)
             }
         })
     }
@@ -315,6 +437,73 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
     }
 
+    private fun confirmChangeSenceDialog(text: String, sceneType: Int) {
+        if (!mRoomData!!.isRoomPrepared()) {
+            U.getToastUtil().showShort("人齐了才可以开始玩哦～")
+        } else {
+            val tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip("邀请对方一起${text}？")
+                    .setConfirmTip("是的")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mChangeSenceDialog?.dismiss()
+                            mDoubleCorePresenter?.sendChangeScene(sceneType)
+                        }
+                    })
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mChangeSenceDialog?.dismiss()
+                        }
+                    })
+                    .build()
+
+            mChangeSenceDialog = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create()
+            mChangeSenceDialog?.show()
+        }
+    }
+
+    private fun receiveChangeSenceDialog(text: String, sceneType: Int) {
+        mChangeSenceDialog?.dismiss()
+        mDialogPlus?.dismiss()
+        mPersonInfoDialog?.dismiss()
+        mReceiveChangeSenceDialog?.dismiss()
+        mUiHandler.postDelayed({
+            val tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip(text)
+                    .setConfirmTip("同意")
+                    .setCancelTip("不同意")
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mReceiveChangeSenceDialog?.dismiss()
+                            mDoubleCorePresenter?.agreeChangeScene(sceneType)
+                        }
+                    })
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View) {
+                            mReceiveChangeSenceDialog?.dismiss()
+                            mDoubleCorePresenter?.refuseChangeScene(sceneType)
+                        }
+                    })
+                    .build()
+
+            mReceiveChangeSenceDialog = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create()
+            mReceiveChangeSenceDialog?.show()
+        }, 500)
+    }
+
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
             mRoomData = data as DoubleRoomData
@@ -357,19 +546,15 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     }
 
     override fun updateNextSongDec(mNext: String, hasNext: Boolean) {
-        mCurrentCardView?.updateNextSongDec(mNext, hasNext)
+        mDoubleSingSenceView?.updateNextSongDec(mNext, hasNext)
     }
 
-    override fun startGame(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
-        mWordArea?.visibility = GONE
-        toNextSongCardView()
-        mCurrentCardView?.visibility = VISIBLE
-        mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
+    override fun startSing(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
+        mDoubleSingSenceView?.startSing(mRoomData!!, mCur, mNext, hasNext)
     }
 
     override fun changeRound(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean) {
-        toNextSongCardView()
-        mCurrentCardView?.playLyric(mRoomData!!, mCur, mNext, hasNext)
+        mDoubleSingSenceView?.changeRound(mRoomData!!, mCur, mNext, hasNext)
     }
 
     override fun finishActivity() {
@@ -380,78 +565,71 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         unLockSelf()
     }
 
+    override fun updateGameSenceData(localGameSenceDataModel: LocalGameSenceDataModel) {
+        mDoubleGameSenceView?.setData(localGameSenceDataModel)
+    }
+
+    override fun showGameSceneGamePanel(localGamePanelInfo: LocalGamePanelInfo) {
+        mDoubleGameSenceView?.showGamePanel(localGamePanelInfo)
+    }
+
+    override fun showGameSceneGameCard(localGameItemInfo: LocalGameItemInfo) {
+        mDoubleGameSenceView?.playGame(localGameItemInfo)
+    }
+
+    override fun updateGameSceneSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, isChoiced: Boolean) {
+        mDoubleGameSenceView?.changeChoiceGameState(userInfoModel, panelSeq, itemID, isChoiced)
+    }
+
+    override fun updateGameScene(sceneType: Int) {
+        mPagerPosition = getPagerPositionByScene(sceneType)
+    }
+
+    override fun askSceneChange(sceneType: Int, str: String) {
+        receiveChangeSenceDialog(str, sceneType)
+    }
+
     /**
      * 进入agora
      */
     override fun joinAgora() {
-        val drawable = DrawableCreator.Builder()
-                .setSelectedDrawable(U.getDrawable(R.drawable.skr_jingyin_able))
-                .setUnSelectedDrawable(U.getDrawable(R.drawable.srf_bimai))
-                .build()
-
-        mMicIv?.background = drawable
-
-        mMicIv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // 开关麦克
-                val isSelected = mMicIv?.isSelected ?: false
-                ZqEngineKit.getInstance().muteLocalAudioStream(!isSelected)
-                mMicIv?.setSelected(!isSelected)
-            }
-        })
+        mDoubleSingSenceView?.joinAgora()
+        mDoubleChatSenceView?.joinAgora()
+        mDoubleGameSenceView?.joinAgora()
 
         mLeftNameTv?.setOnClickListener(null)
 
         mReportTv?.visibility = VISIBLE
-        mReportTv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                // 举报
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_DOUBLE_ROOM)
-                                .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
-                                .addDataBeforeAdd(2, mRoomData!!.getAntherUser()?.userId ?: 0)
-                                .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                                .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
-                                .build())
-            }
-        })
+        mReportTv?.setDebounceViewClickListener {
+            // 举报
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_DOUBLE_ROOM)
+                            .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
+                            .addDataBeforeAdd(2, mRoomData!!.getAntherUser()?.userId ?: 0)
+                            .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                            .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                            .build())
+        }
 
         //只有主动邀请的人打点
         if (mRoomData!!.inviterId != null && mRoomData!!.inviterId == MyUserInfoManager.getInstance().uid) {
             if (mRoomData!!.isGrabInviteRoom()) {
-                StatisticsAdapter.recordCountEvent("cp", "invite3_success", null)
-            } else if (mRoomData!!.isCreateRoom()) {
                 StatisticsAdapter.recordCountEvent("cp", "invite2_success", null)
+            } else if (mRoomData!!.isCreateRoom()) {
+                StatisticsAdapter.recordCountEvent("game_cp", "invite3_success", null)
             }
         }
     }
 
     override fun noMusic() {
-        mDoubleSingCardView1.visibility = GONE
-        mDoubleSingCardView2.visibility = GONE
-        mWordArea?.visibility = VISIBLE
+        mDoubleSingSenceView?.noMusic()
     }
 
     override fun picked(count: Int) {
-        mLeftZanView?.addZanXin(count)
-    }
-
-    fun toNextSongCardView() {
-        if (mDoubleSingCardView1.visibility == VISIBLE) {
-            mDoubleSingCardView1.goOut()
-            mDoubleSingCardView2.centerScale()
-            mCurrentCardView = mDoubleSingCardView2
-        } else if (mDoubleSingCardView2.visibility == VISIBLE) {
-            mDoubleSingCardView2.goOut()
-            mDoubleSingCardView1.centerScale()
-            mCurrentCardView = mDoubleSingCardView1
-        } else {
-            mDoubleSingCardView1.centerScale()
-            mCurrentCardView = mDoubleSingCardView1
-        }
+        mZanDisplayView?.addZanXin(count)
     }
 
     override fun gameEnd(doubleEndCombineRoomPushEvent: DoubleEndCombineRoomPushEvent) {
@@ -572,8 +750,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     override fun destroy() {
         super.destroy()
         countDownTimer?.dispose()
-        mLeftZanView?.stop()
-        mRightZanView?.stop()
+        mDoubleGameSenceView?.destroy()
+        mDoubleChatSenceView?.destroy()
+        mDoubleSingSenceView?.destroy()
+        mCountDownScaleAnimators?.cancel()
+        mUiHandler.removeCallbacksAndMessages(null)
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {
@@ -587,7 +768,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             unLockSelf()
             unLockOther()
             countDownTimer?.dispose()
-            mCurrentCardView?.updateLockState()
+            mDoubleSingSenceView?.updateLockState()
+            mDoubleGameSenceView?.updateLockState()
         } else {
             selfLockState()
             guestLockState()

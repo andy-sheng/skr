@@ -107,6 +107,19 @@ public interface DoubleRoomServerApi {
 
     /**
      * {
+     * "panelSeq": 0,
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/end-game")
+    Observable<ApiResult> endGameCard(@Body RequestBody body);
+
+    /**
+     * {
      * "roomID" : 11111,
      * }
      *
@@ -186,7 +199,7 @@ public interface DoubleRoomServerApi {
      *
      * @return
      */
-    @GET("http://dev.game.inframe.mobi/v1/magpie/sync-status")
+    @GET("http://dev.game.inframe.mobi/v2/magpie/sync-status")
     Observable<ApiResult> syncStatus(@Query("roomID") int roomID);
 
     /**
@@ -275,4 +288,100 @@ public interface DoubleRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/magpie/room-invite-user-enter")
     Observable<ApiResult> roomInviteEnter(@Body RequestBody body);
 
+    /**
+     * 换游戏卡片
+     * {
+     * "curPanelSeq": 0,
+     * "roomID": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/change-game-panel")
+    Observable<ApiResult> changeGamePanel(@Body RequestBody body);
+
+    /**
+     * 请求切换场景
+     * {
+     * "roomID": 0,
+     * "sceneType": "ST_Unknown"
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/req-change-scene")
+    Observable<ApiResult> sendChangeScene(@Body RequestBody body);
+
+    /**
+     * 同意切换场景
+     * {
+     * "agree": true,
+     * "roomID": 0,
+     * "sceneType": "ST_Unknown"
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/agree-change-scene")
+    Observable<ApiResult> agreeChangeScene(@Body RequestBody body);
+
+    /**
+     * 选定游戏请求
+     * {
+     * roomID
+     * "itmeID": 0,
+     * "panelSeq": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/choice-game-item")
+    Observable<ApiResult> choiceGameItem(@Body RequestBody body);
+
+    /**
+     * 取消选定游戏请求
+     * {
+     * roomID
+     * "itmeID": 0,
+     * "panelSeq": 0
+     * }
+     *
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/magpie/unchoice-game-item")
+    Observable<ApiResult> unChoiceGameItem(@Body RequestBody body);
+
+    /**
+     * 获取推荐tag列表
+     *
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/magpie-billboards")
+    Observable<ApiResult> getDoubleStandBillBoards();
+
+
+    @GET("http://dev.game.inframe.mobi/v1/magpie/get-add-music-cnt")
+    Observable<ApiResult> getAddMusicCnt(@Query("roomID") int roomID);
+
+    /**
+     * 获取游戏一个小卡片信息
+     * {
+     * "itmeID": 0,
+     * "panelSeq": 0
+     * }
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/magpie/game-item-info")
+    Observable<ApiResult> getGameItemInfo(@Query("roomID") int roomID, @Query("panelSeq") int panelSeq, @Query("itemID") int itemID);
+
+    /**
+     * 获取一面卡片信息
+     * roomID
+     * panelSeq
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/magpie/game-panel-info")
+    Observable<ApiResult> getGamePanelInfo(@Query("roomID") int roomID, @Query("panelSeq") int panelSeq);
 }

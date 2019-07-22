@@ -749,10 +749,12 @@ public class GLRender {
                         return;
                     }
                     initGLThread();
-                    Message msg = Message.obtain(mGLHandler, CMD_READY, surface);
-                    mGLHandler.sendMessage(msg);
-                    msg = Message.obtain(mGLHandler, CMD_SIZE_CHANGED, width, height);
-                    mGLHandler.sendMessage(msg);
+                    if (mGLHandler != null) {
+                        Message msg = Message.obtain(mGLHandler, CMD_READY, surface);
+                        mGLHandler.sendMessage(msg);
+                        msg = Message.obtain(mGLHandler, CMD_SIZE_CHANGED, width, height);
+                        mGLHandler.sendMessage(msg);
+                    }
                 }
 
                 @Override
@@ -763,8 +765,10 @@ public class GLRender {
                     if (mTextureView == null || surface != mTextureView.getSurfaceTexture()) {
                         return;
                     }
-                    Message msg = Message.obtain(mGLHandler, CMD_SIZE_CHANGED, width, height);
-                    mGLHandler.sendMessage(msg);
+                    if (mGLHandler != null) {
+                        Message msg = Message.obtain(mGLHandler, CMD_SIZE_CHANGED, width, height);
+                        mGLHandler.sendMessage(msg);
+                    }
                 }
 
                 @Override

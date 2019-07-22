@@ -46,7 +46,11 @@ android {
             if (isBuildModule.toBoolean()) {
                 manifest.srcFile 'src/main/debug/AndroidManifest.xml'
             } else {
-                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                if(RomPushUseRC.toBoolean()) {
+                    manifest.srcFile 'src/main/release/AndroidManifestWithRomPush.xml'
+                }else{
+                    manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                }
             }
         }
 
@@ -57,6 +61,10 @@ android {
             java.srcDirs += 'src/main/java-msg'
             res.srcDirs += 'src/main/res-msg'
 
+            if(RomPushUseRC.toBoolean()){
+                java.srcDirs += 'src/main/java-rom-push'
+                res.srcDirs += 'src/main/res-rom-push'
+            }
 //            java.srcDirs += 'src/main/java-contacts'
 //            res.srcDirs += 'src/main/res-contacts'
 
@@ -83,6 +91,14 @@ dependencies {
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     } else {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
+    }
+
+    if(RomPushUseRC.toBoolean()){
+        api files('libs/MiPush_SDK_Client_3_6_18.jar')
+        api files('libs/com.coloros.mcssdk.jar')
+        api files('libs/pushsdk_v2.3.4.jar')
+
+        api 'com.huawei.android.hms:push:2.6.1.301'
     }
 }
 

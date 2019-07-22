@@ -24,7 +24,7 @@ import java.util.TreeMap;
 
 public class LyricsReader implements Cloneable {
 
-    public final static String TAG = "LyricsReader";
+    public final String TAG = "LyricsReader";
 
     /**
      * 时间补偿值,其单位是毫秒，正值表示整体提前，负值相反。这是用于总体调整显示快慢的。

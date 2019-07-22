@@ -19,7 +19,7 @@ import com.module.playways.R;
  * 不唱了界面
  */
 public class GrabGiveupView extends RelativeLayout {
-    public final static String TAG = "GrabPassView";
+    public final String TAG = "GrabPassView";
     public static final int MSG_ANIMATION_SHOW = 1;
     ExImageView mIvPass;
     ExImageView mOwnerStopIv;

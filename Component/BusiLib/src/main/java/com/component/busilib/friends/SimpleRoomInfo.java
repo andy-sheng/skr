@@ -7,39 +7,26 @@ import java.io.Serializable;
  */
 public class SimpleRoomInfo implements Serializable {
     /**
-     * roomTag : 1
-     * roomID : 20367094
-     * isOwner : false
-     * roomType : 4
-     * inPlayersNum : 2
-     * totalPlayersNum : 12
-     * userID : 1982416
-     * tagID : 13
-     * currentRoundSeq : 3
-     * totalGameRoundSeq : 36
-     * roomName : 天选05后房间
+     * roomID : 20369723
+     * inPlayersNum : 1
+     * totalPlayersNum : 0
+     * roomName : 视频专场
+     * roomTagURL : http://res-static.inframe.mobi/recommend/friend.png
+     * mediaType : 2
+     * mediaTagURL : http://res-static.inframe.mobi/recommend/vedio-room.png
+     * roomType : 2
+     * tagID : 12
      */
 
-    private int roomTag;
     private int roomID;
-    private boolean isOwner;
-    private int roomType;
     private int inPlayersNum;
     private int totalPlayersNum;
-    private int userID;
-    private int tagID;
-    private int currentRoundSeq;
-    private int totalGameRoundSeq;
     private String roomName;
+    private String roomTagURL;
     private int mediaType;
-
-    public int getRoomTag() {
-        return roomTag;
-    }
-
-    public void setRoomTag(int roomTag) {
-        this.roomTag = roomTag;
-    }
+    private String mediaTagURL;
+    private int roomType;
+    private int tagID;
 
     public int getRoomID() {
         return roomID;
@@ -47,22 +34,6 @@ public class SimpleRoomInfo implements Serializable {
 
     public void setRoomID(int roomID) {
         this.roomID = roomID;
-    }
-
-    public boolean isIsOwner() {
-        return isOwner;
-    }
-
-    public void setIsOwner(boolean isOwner) {
-        this.isOwner = isOwner;
-    }
-
-    public int getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(int roomType) {
-        this.roomType = roomType;
     }
 
     public int getInPlayersNum() {
@@ -81,44 +52,20 @@ public class SimpleRoomInfo implements Serializable {
         this.totalPlayersNum = totalPlayersNum;
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public int getTagID() {
-        return tagID;
-    }
-
-    public void setTagID(int tagID) {
-        this.tagID = tagID;
-    }
-
-    public int getCurrentRoundSeq() {
-        return currentRoundSeq;
-    }
-
-    public void setCurrentRoundSeq(int currentRoundSeq) {
-        this.currentRoundSeq = currentRoundSeq;
-    }
-
-    public int getTotalGameRoundSeq() {
-        return totalGameRoundSeq;
-    }
-
-    public void setTotalGameRoundSeq(int totalGameRoundSeq) {
-        this.totalGameRoundSeq = totalGameRoundSeq;
-    }
-
     public String getRoomName() {
         return roomName;
     }
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getRoomTagURL() {
+        return roomTagURL;
+    }
+
+    public void setRoomTagURL(String roomTagURL) {
+        this.roomTagURL = roomTagURL;
     }
 
     public int getMediaType() {
@@ -129,20 +76,42 @@ public class SimpleRoomInfo implements Serializable {
         this.mediaType = mediaType;
     }
 
+    public String getMediaTagURL() {
+        return mediaTagURL;
+    }
+
+    public void setMediaTagURL(String mediaTagURL) {
+        this.mediaTagURL = mediaTagURL;
+    }
+
+    public int getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(int roomType) {
+        this.roomType = roomType;
+    }
+
+    public int getTagID() {
+        return tagID;
+    }
+
+    public void setTagID(int tagID) {
+        this.tagID = tagID;
+    }
+
     @Override
     public String toString() {
         return "SimpleRoomInfo{" +
-                "roomTag=" + roomTag +
-                ", roomID=" + roomID +
-                ", isOwner=" + isOwner +
-                ", roomType=" + roomType +
+                "roomID=" + roomID +
                 ", inPlayersNum=" + inPlayersNum +
                 ", totalPlayersNum=" + totalPlayersNum +
-                ", userID=" + userID +
-                ", tagID=" + tagID +
-                ", currentRoundSeq=" + currentRoundSeq +
-                ", totalGameRoundSeq=" + totalGameRoundSeq +
                 ", roomName='" + roomName + '\'' +
+                ", roomTagURL='" + roomTagURL + '\'' +
+                ", mediaType=" + mediaType +
+                ", mediaTagURL='" + mediaTagURL + '\'' +
+                ", roomType=" + roomType +
+                ", tagID=" + tagID +
                 '}';
     }
 }

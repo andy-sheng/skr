@@ -2,7 +2,6 @@ package com.engine.agora;
 
 import android.os.Environment;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -14,8 +13,8 @@ import com.common.utils.U;
 import com.engine.Params;
 import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
-import com.engine.arccloud.ArcCloudManager;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrCloudManager;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.effect.IFAudioEffectEngine;
 import com.engine.effect.ITbAgcProcessor;
@@ -49,7 +48,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 
 public class AgoraEngineAdapter {
-    public final static String TAG = "AgoraEngineAdapter";
+    public final String TAG = "AgoraEngineAdapter";
 
     static final String APP_ID;
 
@@ -81,7 +80,7 @@ public class AgoraEngineAdapter {
     private Handler mUiHandler = new Handler();
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
-    private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
+    private AcrCloudManager mArcCloudManager;// ArcClound的打分和识别
     private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 提供的音效处理类
     private ITbAgcProcessor mITbAgcProcessor = new ITbAgcProcessor();// 提供的Agc处理算法
     private IFAudioEffectEngine mCbEffectProcessor = new IFAudioEffectEngine();// 唱吧提供的音效处理类
@@ -368,7 +367,7 @@ public class AgoraEngineAdapter {
         // 初始化各个音量
         adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
         adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
-        adjustAudioMixingVolume(mConfig.getAudioMixingVolume());
+        adjustAudioMixingVolume(mConfig.getAudioMixingPlayoutVolume());
     }
 
     /**
@@ -1410,7 +1409,7 @@ public class AgoraEngineAdapter {
         if (mArcCloudManager == null) {
             synchronized (this) {
                 if (mArcCloudManager == null) {
-                    mArcCloudManager = new ArcCloudManager();
+                    mArcCloudManager = new AcrCloudManager();
                 }
             }
         }
@@ -1421,7 +1420,7 @@ public class AgoraEngineAdapter {
         mArcCloudManager.startRecognize(recognizeConfig);
     }
 
-    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+    public void setRecognizeListener(AcrRecognizeListener recognizeConfig) {
         if (mArcCloudManager != null) {
             mArcCloudManager.setRecognizeListener(recognizeConfig);
         }

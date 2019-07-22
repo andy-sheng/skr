@@ -13,7 +13,7 @@ import com.umeng.message.UmengNotifyClickActivity;
 import org.android.agoo.common.AgooConstants;
 
 public class UmengThirdPushActivity extends UmengNotifyClickActivity {
-    public final static String TAG = "UmengThirdPushActivity";
+    public final String TAG = "UmengThirdPushActivity";
 
     @Override
     protected void onCreate(Bundle bundle) {

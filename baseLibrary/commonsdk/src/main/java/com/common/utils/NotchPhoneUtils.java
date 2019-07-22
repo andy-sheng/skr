@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 public class NotchPhoneUtils {
 
-    public final static String TAG = "NotchPhoneUtils";
+    public final String TAG = "NotchPhoneUtils";
 
     NotchPhoneUtils(){
 

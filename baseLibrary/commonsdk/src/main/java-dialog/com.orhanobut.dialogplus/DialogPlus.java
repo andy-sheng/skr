@@ -21,7 +21,7 @@ import com.common.view.DebounceViewClickListener;
 
 public class DialogPlus {
 
-    public final static String TAG = "DialogPlus";
+    public final String TAG = "DialogPlus";
 
     public final static int MSG_ENSURE_DISMISS = 88;
 
@@ -158,6 +158,21 @@ public class DialogPlus {
      */
     public static DialogPlusBuilder newDialog(@NonNull Context context) {
         return new DialogPlusBuilder(context);
+    }
+
+    /**
+     * 判断这个Activity 此时是否正在显示着一个 DialogPlus
+     *
+     * @param activity
+     * @return
+     */
+    public static boolean hasDialogShow(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        View decorView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        View view = decorView.findViewById(R.id.dialogplus_outmost_container);
+        return view != null;
     }
 
     /**

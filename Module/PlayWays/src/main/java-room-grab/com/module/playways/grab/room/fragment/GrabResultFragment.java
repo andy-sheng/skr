@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class GrabResultFragment extends BaseFragment {
 
-    public final static String TAG = "GrabResultFragment";
+    public final String TAG = "GrabResultFragment";
 
     GrabRoomData mRoomData;
     GrabResultData mGrabResultData;
@@ -139,7 +139,7 @@ public class GrabResultFragment extends BaseFragment {
         mUiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                U.getSoundUtils().play(GrabResultFragment.TAG, R.raw.grab_gameover, 500);
+                U.getSoundUtils().play(TAG, R.raw.grab_gameover, 500);
             }
         }, 500);
     }
@@ -147,7 +147,7 @@ public class GrabResultFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(GrabResultFragment.TAG);
+        U.getSoundUtils().release(TAG);
         mUiHandler.removeCallbacksAndMessages(null);
     }
 

@@ -433,14 +433,6 @@ message STCommitSegmentResultReq
     Observable<ApiResult> getStandBillBoards();
 
     /**
-     * 获取推荐tag列表
-     *
-     * @return
-     */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/magpie-billboards")
-    Observable<ApiResult> getDoubleStandBillBoards();
-
-    /**
      * 获取推荐歌曲
      *
      * @return

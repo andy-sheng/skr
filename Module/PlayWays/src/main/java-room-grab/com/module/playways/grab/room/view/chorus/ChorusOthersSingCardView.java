@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class ChorusOthersSingCardView extends ExViewStub {
 
-    public final static String TAG = "ChorusOthersSingCardView";
+    public final String TAG = "ChorusOthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
     static final int MSG_LEFT_SPEAK_OVER = 2;
     static final int MSG_RIGHT_SPEAK_OVER = 3;

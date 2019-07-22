@@ -29,7 +29,7 @@ import java.util.List;
 
 public class OtherPhotoWallView extends RelativeLayout {
 
-    public final static String TAG = "PhotoWallView";
+    public final String TAG = "PhotoWallView";
     int mUserId;
     RequestCallBack mCallBack;
 

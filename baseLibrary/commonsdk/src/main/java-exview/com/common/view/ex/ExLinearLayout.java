@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import com.common.log.MyLog;
 
 public class ExLinearLayout extends LinearLayout {
-    public final static String TAG = "ExLinearLayout";
+    public final String TAG = "ExLinearLayout";
 
     public ExLinearLayout(Context context) {
         super(context);

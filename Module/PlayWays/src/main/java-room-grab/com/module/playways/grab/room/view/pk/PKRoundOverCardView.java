@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class PKRoundOverCardView extends ExViewStub {
 
-    public final static String TAG = "PKRoundOverCardView";
+    public final String TAG = "PKRoundOverCardView";
 
     LinearLayout mPkArea;
     ImageView mLeftAvatarBg;

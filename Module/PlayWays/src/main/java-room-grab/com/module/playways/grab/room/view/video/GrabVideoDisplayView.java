@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrabVideoDisplayView extends ExViewStub {
-    public final static String TAG = "GrabVideoDisplayView";
+    public final String TAG = "GrabVideoDisplayView";
 
     static final int MSG_ENSURE_FIRST_CAMERA_DECODED = 9;
     static final int MSG_ENSURE_MIDDLE_FIRST_VIDEO_FRAME_DECODED = 10;

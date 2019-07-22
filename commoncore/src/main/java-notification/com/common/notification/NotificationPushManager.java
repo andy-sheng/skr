@@ -29,7 +29,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class NotificationPushManager {
 
-    public final static String TAG = "NotificationManager";
+    public final String TAG = "NotificationManager";
 
     private static class NotificationAdapterHolder {
         private static final NotificationPushManager INSTANCE = new NotificationPushManager();

@@ -40,7 +40,7 @@ import okhttp3.RequestBody;
  */
 public class ProducationWallView extends RelativeLayout {
 
-    public final static String TAG = "ProducationWallView";
+    public final String TAG = "ProducationWallView";
 
     BaseFragment mFragment;
     RequestCallBack mCallBack;
@@ -118,7 +118,6 @@ public class ProducationWallView extends RelativeLayout {
                             @Override
                             public void onCompletion() {
                                 super.onCompletion();
-                                //mIPlayer.stop();
                                 mAdapter.setPlayPosition(-1);
                             }
                         });

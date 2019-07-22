@@ -24,7 +24,7 @@ import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava2.HttpException;
 
 public class CoreInfoInterceptor implements Interceptor {
-    public final static String TAG = "CoreInfoInterceptor";
+    public final String TAG = "CoreInfoInterceptor";
 
     @Override
     public Response intercept(Chain chain) throws IOException {

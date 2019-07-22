@@ -33,13 +33,15 @@ import static android.view.View.GONE;
  * 所以类似的实例都放在Fragment中统一初始化或者各自的子类中。
  */
 public abstract class GrabBaseUiController {
-    public final static String TAG = "GrabBaseUiController";
+    public final String TAG = "GrabBaseUiController";
 
     GrabRoomFragment mF;
 
     public GrabBaseUiController(GrabRoomFragment f) {
         mF = f;
     }
+
+    public abstract void grabBegin();
 
     public abstract void singBySelf();
 

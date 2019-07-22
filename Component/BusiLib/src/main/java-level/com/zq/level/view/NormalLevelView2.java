@@ -15,7 +15,7 @@ import com.zq.level.utils.LevelConfigUtils;
  */
 public class NormalLevelView2 extends RelativeLayout {
 
-    public final static String TAG = "NormalLeveView2";
+    public final String TAG = "NormalLeveView2";
 
     ImageView mLevelIv;
     ImageView mSubLeveIv;

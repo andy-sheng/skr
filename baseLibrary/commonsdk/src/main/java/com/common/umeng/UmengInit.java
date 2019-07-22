@@ -8,7 +8,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
 public class UmengInit {
-    public final static String TAG = "UmengInit";
+    public static final String TAG = "UmengInit";
     private static boolean hasInited = false;
 
     /**

@@ -4,7 +4,9 @@ import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Notification.EMsgPosType;
 import com.zq.live.proto.Notification.NotificationMsg;
 
-public class BaseNotiInfo {
+import java.io.Serializable;
+
+public class BaseNotiInfo implements Serializable {
 
     private long timeMs;          //房间消息产生时间，单位毫秒
     private int roomID;           //房间ID

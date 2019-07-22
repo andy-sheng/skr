@@ -7,9 +7,7 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -21,8 +19,6 @@ import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
@@ -41,7 +37,7 @@ import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.comment.CommentView;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.room.comment.listener.CommentViewItemListener;
 import com.module.playways.room.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
@@ -63,13 +59,11 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialog;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.person.view.EditRemarkView;
 import com.zq.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -81,7 +75,7 @@ import java.util.List;
 
 public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
-    public final static String TAG = "RankingRoomFragment";
+    public final String TAG = "RankingRoomFragment";
 
     static final int ENSURE_SELF_RUN = 99;
     static final int ENSURE_OTHER_RUN = 98;
@@ -584,15 +578,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
-        mCommentView.setListener(new CommentItemListener() {
+        mCommentView.setListener(new CommentViewItemListener() {
             @Override
             public void clickAvatar(int userId) {
                 showPersonInfoView(userId);
-            }
-
-            @Override
-            public void clickAgreeKick(int userId, boolean isAgree) {
-
             }
         });
         mCommentView.setRoomData(mRoomData);
@@ -771,7 +760,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
-//                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new AnimateClickListener() {
@@ -937,7 +925,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void startGameEndAniamtion(boolean isGameOver) {
         // 提前加载音效
-        U.getSoundUtils().preLoad(RankLevelChangeFragment2.TAG, R.raw.rank_win, R.raw.rank_lose);
+        U.getSoundUtils().preLoad("RankLevelChangeFragment2", R.raw.rank_win, R.raw.rank_lose);
         if (isGameEndAniamtionShow) {
             // 动画已经在播放
             if (isGameOver) {

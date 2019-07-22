@@ -8,7 +8,7 @@ import com.common.log.MyLog;
  * 兼容一些 AndroidMediaPlayer 没法播放的问题
  */
 public class MyMediaPlayer implements IPlayer {
-    public final static String TAG = "MyMediaPlayer";
+    public final String TAG = "MyMediaPlayer";
 
     AndroidMediaPlayer mAndroidMediaPlayer = new AndroidMediaPlayer();
 

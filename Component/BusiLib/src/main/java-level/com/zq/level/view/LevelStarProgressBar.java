@@ -16,7 +16,7 @@ import com.component.busilib.R;
 public class LevelStarProgressBar extends View {
 
 
-    public final static String TAG = "LevelStarProgressBar";
+    public final String TAG = "LevelStarProgressBar";
 
     Drawable mBgDrawable = U.app().getResources().getDrawable(R.drawable.level_jindutiaoguan);
     int w1, h1;

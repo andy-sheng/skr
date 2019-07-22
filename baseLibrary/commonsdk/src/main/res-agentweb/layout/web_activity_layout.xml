@@ -30,7 +30,7 @@
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
-        app:leftDrawable="@drawable/h5_back"
+        app:leftDrawable="@drawable/img_back"
         app:leftTextColor="@color/white"
         app:leftType="textView"
         app:rightImageResource="@drawable/gerenzhuye_fenxiang"

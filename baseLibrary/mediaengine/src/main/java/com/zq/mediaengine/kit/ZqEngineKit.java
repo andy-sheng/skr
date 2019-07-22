@@ -22,7 +22,7 @@ import com.engine.Params;
 import com.engine.UserStatus;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
 import com.engine.token.AgoraTokenApi;
@@ -84,7 +84,7 @@ import retrofit2.Response;
 
 public class ZqEngineKit implements AgoraOutCallback {
 
-    public final static String TAG = "ZqEngineKit";
+    public final String TAG = "ZqEngineKit";
     public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
 
     public static final int VIDEO_RESOLUTION_360P = 0;
@@ -439,7 +439,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (SCORE_DEBUG) {
             mAudioDummyFilter.init(SCORE_DEBUG_PATH, mConfig);
         }
-        doSetAudioEffect(mConfig.getStyleEnum(),true);
+        doSetAudioEffect(mConfig.getStyleEnum(), true);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -603,7 +603,7 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy(final String from) {
-        MyLog.d(TAG,"destroy" + " from=" + from);
+        MyLog.d(TAG, "destroy" + " from=" + from);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;
@@ -968,7 +968,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     /*音频高级扩展开始*/
 
-    private void doSetAudioEffect(Params.AudioEffect styleEnum,boolean fromInit) {
+    private void doSetAudioEffect(Params.AudioEffect styleEnum, boolean fromInit) {
         if (styleEnum == mConfig.getStyleEnum() && !fromInit) {
             return;
         }
@@ -997,7 +997,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("setAudioEffectStyle") {
                 @Override
                 public void realRun() {
-                    doSetAudioEffect(styleEnum,false);
+                    doSetAudioEffect(styleEnum, false);
                 }
             });
         }
@@ -1285,27 +1285,46 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     /**
-     * 调节混音音量大小
+     * 调节混音本地播放音量大小
      *
      * @param volume 1-100 默认100
      */
-    public void adjustAudioMixingVolume(final int volume) {
-        adjustAudioMixingVolume(volume, true);
+    public void adjustAudioMixingPlayoutVolume(final int volume) {
+        adjustAudioMixingPlayoutVolume(volume, true);
     }
 
-    public void adjustAudioMixingVolume(final int volume, final boolean setConfig) {
+    public void adjustAudioMixingPlayoutVolume(final int volume, final boolean setConfig) {
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new LogRunnable("adjustAudioMixingVolume" + " volume=" + volume + " setConfig=" + setConfig) {
                 @Override
                 public void realRun() {
                     if (setConfig) {
-                        mConfig.setAudioMixingVolume(volume);
+                        mConfig.setAudioMixingPlayoutVolume(volume);
                     }
                     if (mConfig.isUseExternalAudio()) {
                         mAudioPlayerCapture.setVolume(volume / 100.f);
                     } else {
-                        mAgoraRTCAdapter.adjustAudioMixingVolume(volume);
+                        mAgoraRTCAdapter.adjustAudioMixingPlayoutVolume(volume);
                     }
+                }
+            });
+        }
+    }
+
+    /**
+     * 调节音乐远端播放音量大小
+     *
+     * @param volume 1-100 默认100
+     */
+    public void adjustAudioMixingPublishVolume(final int volume, final boolean setConfig) {
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new LogRunnable("adjustAudioMixingPublishVolume" + " volume=" + volume + " setConfig=" + setConfig) {
+                @Override
+                public void realRun() {
+                    if (setConfig) {
+                        mConfig.setAudioMixingPublishVolume(volume);
+                    }
+                    mAgoraRTCAdapter.adjustAudioMixingPublishVolume(volume);
                 }
             });
         }
@@ -1466,7 +1485,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         mAcrRecognizer.startRecognize(recognizeConfig);
     }
 
-    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+    public void setRecognizeListener(AcrRecognizeListener recognizeConfig) {
         mAcrRecognizer.setRecognizeListener(recognizeConfig);
     }
 

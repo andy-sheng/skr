@@ -7,27 +7,24 @@ import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
-
+import android.view.animation.AlphaAnimation
+import android.widget.ImageView
 import com.common.base.BaseFragment
+import com.common.core.account.event.AccountEvent
+import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.home.R
-import com.module.home.game.view.DoubleRoomGameView
-import com.module.home.game.view.FriendRoomGameView
-import com.module.home.game.view.QuickGameView
-import android.widget.ImageView
-import android.view.animation.AlphaAnimation
-import com.common.core.account.event.AccountEvent
-import com.common.statistics.StatisticsAdapter
 import com.module.home.game.presenter.GamePresenter3
-import com.module.home.game.view.IGameView3
+import com.module.home.game.view.*
 import com.module.home.model.GameKConfigModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-
+// 主页
 class GameFragment3 : BaseFragment(), IGameView3 {
 
     lateinit var mNavigationBgIv: ImageView
@@ -36,9 +33,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mTabPagerAdapter: PagerAdapter
     lateinit var mPresenter: GamePresenter3
 
-    val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
+    //    val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
+    val mGrabGameView: GrabGameView by lazy { GrabGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
     val mDoubleRoomGameView: DoubleRoomGameView by lazy { DoubleRoomGameView(context!!) }
+    val mPkGameView: PKGameView by lazy { PKGameView(this) }
 
     private var alphaAnimation: AlphaAnimation? = null
 
@@ -70,14 +69,12 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 MyLog.d(TAG, "instantiateItem container=$container position=$position")
-                var view: View? = if (position == 0) {
-                    mFriendRoomGameView
-                } else if (position == 1) {
-                    mQuickGameView
-                } else if (position == 2) {
-                    mDoubleRoomGameView
-                } else {
-                    null
+                var view: View? = when (position) {
+                    0 -> mGrabGameView
+                    1 -> mQuickGameView
+                    2 -> mDoubleRoomGameView
+                    3 -> mPkGameView
+                    else -> null
                 }
                 if (container.indexOfChild(view) == -1) {
                     container.addView(view)
@@ -90,18 +87,17 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
 
             override fun getCount(): Int {
-                return 3
+                return 4
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                if (position == 0) {
-                    return "好友房"
-                } else if (position == 1) {
-                    return "多人抢唱"
-                } else if (position == 2) {
-                    return "双人唱聊"
+                return when (position) {
+                    0 -> "抢唱"
+                    1 -> "首页"
+                    2 -> "唱聊"
+                    3 -> "排位"
+                    else -> super.getPageTitle(position)
                 }
-                return super.getPageTitle(position)
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -118,20 +114,33 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 mGameTab.notifyDataChange()
                 val drawable = mNavigationBgIv.getBackground() as ColorDrawable
                 val color: Int = drawable.color
-                if (position == 0) {
-                    animation(color, Color.parseColor("#7088FF"))
-                    mFriendRoomGameView?.initData()
-                    StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
-                } else if (position == 1) {
-                    animation(color, Color.parseColor("#7088FF"))
-                    mFriendRoomGameView?.stopTimer()
-                    mQuickGameView?.initData()
-                    StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
-                } else if (position == 2) {
-                    animation(color, Color.parseColor("#261127"))
-                    mFriendRoomGameView?.stopTimer()
-                    mDoubleRoomGameView?.initData()
-                    StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
+                when (position) {
+                    0 -> {
+                        animation(color, Color.parseColor("#7088FF"))
+                        mGrabGameView.initData(false)
+                        mQuickGameView?.stopTimer()
+//                        mFriendRoomGameView?.initData(false)
+                        StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
+                    }
+                    1 -> {
+                        animation(color, Color.parseColor("#7088FF"))
+//                        mFriendRoomGameView?.stopTimer()
+                        mQuickGameView?.initData(false)
+                        StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
+                    }
+                    2 -> {
+                        animation(color, Color.parseColor("#122042"))
+                        mQuickGameView?.stopTimer()
+//                        mFriendRoomGameView?.stopTimer()
+                        mDoubleRoomGameView?.initData()
+                        StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
+                    }
+                    3 -> {
+                        mQuickGameView?.stopTimer()
+                        animation(color, Color.parseColor("#7088FF"))
+//                        mFriendRoomGameView?.stopTimer()
+                        mPkGameView?.initData(false)
+                    }
                 }
             }
 
@@ -140,6 +149,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
         })
 
+        mGameVp.offscreenPageLimit = 3
         mGameVp.setAdapter(mTabPagerAdapter)
         mGameTab.setViewPager(mGameVp)
         mTabPagerAdapter.notifyDataSetChanged()
@@ -165,30 +175,49 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         mPresenter.initGameKConfig()
-        if (mGameVp.currentItem == 0) {
-            mFriendRoomGameView?.initData()
-            StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
-        } else if (mGameVp.currentItem == 1) {
-            mFriendRoomGameView?.stopTimer()
-            mQuickGameView?.initData()
-            StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
-        } else if (mGameVp.currentItem == 2) {
-            mFriendRoomGameView?.stopTimer()
-            mDoubleRoomGameView?.initData()
-            StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
+        when {
+            mGameVp.currentItem == 0 -> {
+                mGrabGameView.initData(false)
+                mQuickGameView?.stopTimer()
+//                mFriendRoomGameView?.initData(false)
+                StatisticsAdapter.recordCountEvent("game", "grab_expose", null)
+            }
+            mGameVp.currentItem == 1 -> {
+//                mFriendRoomGameView?.stopTimer()
+                mQuickGameView?.initData(false)
+                StatisticsAdapter.recordCountEvent("game", "express_expose", null)
+            }
+            mGameVp.currentItem == 2 -> {
+                mQuickGameView?.stopTimer()
+//                mFriendRoomGameView?.stopTimer()
+                mDoubleRoomGameView?.initData()
+                StatisticsAdapter.recordCountEvent("game", "cp_expose", null)
+            }
+            mGameVp.currentItem == 3 -> {
+                mQuickGameView?.stopTimer()
+//                mFriendRoomGameView?.stopTimer()
+                mPkGameView?.initData(false)
+                StatisticsAdapter.recordCountEvent("game", "rank_expose", null)
+            }
         }
-        StatisticsAdapter.recordCountEvent("grab", "expose", null)
+        StatisticsAdapter.recordCountEvent("game", "all_expose", null)
     }
 
     override fun onFragmentInvisible() {
         super.onFragmentInvisible()
-        mFriendRoomGameView.stopTimer()
+//        mFriendRoomGameView.stopTimer()
+        mQuickGameView.stopTimer()
     }
 
     override fun setGameConfig(gameKConfigModel: GameKConfigModel) {
-        mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
-        if (mGameVp.currentItem == 0) {
-            mFriendRoomGameView.initData()
+//        mFriendRoomGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+//        if (mGameVp.currentItem == 0) {
+//            mFriendRoomGameView.initData(true)
+//        }
+
+        mQuickGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+        if (mGameVp.currentItem == 1) {
+            mQuickGameView.initData(true)
         }
     }
 
@@ -205,6 +234,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mPresenter.initGameKConfig()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: JumpHomeDoubleChatPageEvent) {
+        mGameVp.setCurrentItem(2, false)
+    }
+
     override fun useEventBus(): Boolean {
         return true
     }
@@ -215,9 +249,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun destroy() {
         super.destroy()
+        mGrabGameView?.destory()
         mQuickGameView?.destory()
-        mFriendRoomGameView?.destory()
+//        mFriendRoomGameView?.destory()
         mDoubleRoomGameView?.destory()
+        mPkGameView?.destory()
         alphaAnimation?.cancel()
     }
 }

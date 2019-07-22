@@ -36,7 +36,7 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class PrepareResFragment extends BaseFragment implements IPrepareResView {
 
-    public final static String TAG = "PrepareResFragment";
+    public final String TAG = "PrepareResFragment";
 
     RelativeLayout mMainActContainer;
 
@@ -142,10 +142,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                                 .withSerializable("prepare_data", mPrepareData)
                                 .navigation();
-//                        HashMap map = new HashMap();
-//                        map.put("songId2", String.valueOf(mPrepareData.getSongModel().getItemID()));
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-//                                StatConstants.KEY_MATCH_START, map);
                     }
                 }, true);
             }

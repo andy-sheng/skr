@@ -21,15 +21,17 @@ import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.loadsir.LyricLoadErrorCallBack;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
+import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
+import com.zq.live.proto.Common.EGameType;
 import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.zq.lyrics.LyricsManager;
 
 import io.reactivex.functions.Consumer;
 
 public class DoubleMiniGameSelfSingCardView extends ExViewStub {
-    public final static String TAG = "DoubleMiniGameSelfSingCardView";
+    public final String TAG = "DoubleMiniGameSelfSingCardView";
     LocalCombineRoomMusic mMusic;
     //是不是这个人点的歌儿
     boolean mIsOwner = false;
@@ -78,6 +80,27 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
         }
         mFirstTipsTv.setTextColor(U.getColor(R.color.black_trans_60));
         mFirstTipsTv.setText("【" + mOwnerName + "】" + "先开始");
+    }
+
+    public boolean playLyric(LocalGameItemInfo localGameItemInfo) {
+        if (localGameItemInfo == null) {
+            MyLog.w(TAG, "playLyric mCur 是空的");
+            return false;
+        }
+
+        tryInflate();
+        mSvLyric.scrollTo(0, 0);
+
+        mTvLyric.setTextColor(U.getColor(R.color.black_trans_60));
+
+        if (localGameItemInfo.getGameType() == EGameType.GT_Music.getValue()) {
+            mTvLyric.setText(localGameItemInfo.getMusic().getContent() + "\n\n" + localGameItemInfo.getMusic().getExample());
+        } else if (localGameItemInfo.getGameType() == EGameType.GT_Question.getValue()) {
+            mTvLyric.setText(localGameItemInfo.getQuestion().getContent());
+        }
+
+        mLoadService.showSuccess();
+        return true;
     }
 
     public boolean playLyric(LocalCombineRoomMusic music, DoubleRoomData roomData) {

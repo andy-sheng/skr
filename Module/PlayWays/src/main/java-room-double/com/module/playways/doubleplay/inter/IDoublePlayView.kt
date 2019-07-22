@@ -1,8 +1,11 @@
 package com.module.playways.doubleplay.inter
 
+import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
+import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
+import com.module.playways.doubleplay.pbLocalModel.LocalGamePanelInfo
+import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
 import com.module.playways.doubleplay.pushEvent.DoubleEndCombineRoomPushEvent
-import com.module.playways.room.song.model.SongModel
 
 interface IDoublePlayView {
     /**
@@ -19,7 +22,7 @@ interface IDoublePlayView {
 
     fun showNoLimitDurationState(noLimit: Boolean)
 
-    fun startGame(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean)
+    fun startSing(mCur: LocalCombineRoomMusic, mNext: String, hasNext: Boolean)
 
     fun finishActivityWithError()
 
@@ -32,4 +35,16 @@ interface IDoublePlayView {
     fun noMusic()
 
     fun joinAgora()
+
+    fun askSceneChange(sceneType: Int, str: String)
+
+    fun updateGameSenceData(localGameSenceDataModel: LocalGameSenceDataModel)
+
+    fun showGameSceneGamePanel(localGamePanelInfo: LocalGamePanelInfo)
+
+    fun showGameSceneGameCard(localGameItemInfo: LocalGameItemInfo)
+
+    fun updateGameSceneSelectState(userInfoModel: UserInfoModel, panelSeq: Int, itemID: Int, unChoiced: Boolean)
+
+    fun updateGameScene(sceneType: Int)
 }

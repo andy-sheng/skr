@@ -20,7 +20,7 @@ import okio.Source;
 
 public class RobotScoreHelper {
 
-    public final static String TAG = "RobotScoreHelper";
+    public final String TAG = "RobotScoreHelper";
 
     MachineScoreModel mMachineScoreModel = new MachineScoreModel();
 

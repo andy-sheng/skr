@@ -51,7 +51,7 @@ import java.util.List;
  * ================================================
  */
 public class CommonConfiguration implements ConfigModule {
-    public final static String TAG = "CommonConfiguration";
+    public final String TAG = "CommonConfiguration";
 
     @Override
     public void applyOptions(GlobalParams.Builder builder) {

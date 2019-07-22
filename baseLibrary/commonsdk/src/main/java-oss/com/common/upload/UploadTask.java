@@ -40,7 +40,7 @@ import top.zibin.luban.OnCompressListener;
  */
 public class UploadTask {
 
-    public final static String TAG = "UploadTask";
+    public final String TAG = "UploadTask";
 
     static {
         if (MyLog.isDebugLogOpen()) {

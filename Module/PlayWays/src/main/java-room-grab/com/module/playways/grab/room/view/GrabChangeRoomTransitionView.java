@@ -14,7 +14,7 @@ import com.module.playways.R;
  * 切换房间过场UI
  */
 public class GrabChangeRoomTransitionView extends RelativeLayout {
-    public final static String TAG = "GrabChangeRoomTransitionView";
+    public final String TAG = "GrabChangeRoomTransitionView";
 
     ExTextView mChangeRoomTipTv;
     ExImageView mChangeRoomIv;

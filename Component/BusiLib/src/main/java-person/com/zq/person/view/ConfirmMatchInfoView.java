@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class ConfirmMatchInfoView extends RelativeLayout {
 
-    public final static String TAG = "ConfirmMatchInfoView";
+    public final String TAG = "ConfirmMatchInfoView";
 
     Listener mListener;
 

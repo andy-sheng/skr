@@ -17,7 +17,7 @@ import com.module.playways.R;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 
 public class GiftBigContinuousView extends RelativeLayout {
-    public final static String TAG = "GiftBigContinuousView";
+    public final String TAG = "GiftBigContinuousView";
 
     ExRelativeLayout mInfoContainer;
     BaseImageView mSendAvatarIv;

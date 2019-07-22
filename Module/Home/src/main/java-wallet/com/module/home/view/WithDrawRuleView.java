@@ -17,7 +17,7 @@ import com.module.home.R;
 import java.util.List;
 
 public class WithDrawRuleView extends FrameLayout {
-    public final static String TAG = "WithDrawRuleView";
+    public final String TAG = "WithDrawRuleView";
     LinearLayout mLlRuleContainer;
 
     public WithDrawRuleView(Context context) {

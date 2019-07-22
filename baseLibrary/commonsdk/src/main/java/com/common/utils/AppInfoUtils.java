@@ -27,7 +27,7 @@ import java.util.Locale;
  * 获得本app的一些信息，手机上别的app用{@link DeviceUtils}
  */
 public class AppInfoUtils {
-    public final static String TAG = "AppInfoUtils";
+    public final String TAG = "AppInfoUtils";
 
     AppInfoUtils() {
 
@@ -58,24 +58,28 @@ public class AppInfoUtils {
 
     /**
      * 返回 类似 /ZQ_Live/logs/
+     *
      * @param dirName
      * @return
      */
-    public String getSubDirPath(String dirName){
-        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator;
+    public String getSubDirPath(String dirName) {
+        return getMainDir().getAbsolutePath() + File.separator + dirName + File.separator;
     }
 
-    public File getSubDirFile(String dirName){
-        return new File(getMainDir().getAbsolutePath()+File.separator+dirName+File.separator);
+    public File getSubDirFile(String dirName) {
+        return new File(getMainDir().getAbsolutePath() + File.separator + dirName + File.separator);
     }
+
     /**
      * 返回 类似 /ZQ_Live/logs/aaa.png
+     *
      * @param dirName
      * @return
      */
-    public String getFilePathInSubDir(String dirName,String fileName){
-        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator+fileName;
+    public String getFilePathInSubDir(String dirName, String fileName) {
+        return getMainDir().getAbsolutePath() + File.separator + dirName + File.separator + fileName;
     }
+
     /**
      * 获取应用程序名称
      * 如 直播助手
@@ -147,7 +151,7 @@ public class AppInfoUtils {
     public int getVersionCode() {
         try {
             versionCode = U.app().getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             MyLog.e(TAG, e);
         }
         return versionCode;
@@ -156,7 +160,7 @@ public class AppInfoUtils {
     public String getVersionName() {
         try {
             versionName = U.app().getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             MyLog.e(TAG, e);
         }
         return versionName;

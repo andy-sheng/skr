@@ -11,6 +11,8 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import com.zq.live.proto.Common.AgoraTokenInfo;
 import com.zq.live.proto.Common.CombineRoomConfig;
+import com.zq.live.proto.Common.ESceneType;
+import com.zq.live.proto.Common.GamePanelInfo;
 import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Boolean;
@@ -37,6 +39,8 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
   public static final Long DEFAULT_PASSEDTIMEMS = 0L;
 
   public static final Boolean DEFAULT_NEEDMASKUSERINFO = false;
+
+  public static final ESceneType DEFAULT_CURRENTSCENETYPE = ESceneType.ST_Unknown;
 
   /**
    * 进房方式
@@ -112,15 +116,35 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
   )
   private final Boolean needMaskUserInfo;
 
+  /**
+   * 当前场景类型
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.zq.live.proto.Common.ESceneType#ADAPTER"
+  )
+  private final ESceneType currentSceneType;
+
+  /**
+   * 游戏面板信息
+   */
+  @WireField(
+      tag = 10,
+      adapter = "com.zq.live.proto.Common.GamePanelInfo#ADAPTER"
+  )
+  private final GamePanelInfo gamePanelInfo;
+
   public CombineRoomEnterMsg(ECombineRoomEnterType enterType, Integer roomID, Long createdTimeMs,
       Long passedTimeMs, List<UserInfo> users, CombineRoomConfig config,
-      List<AgoraTokenInfo> tokens, Boolean needMaskUserInfo) {
-    this(enterType, roomID, createdTimeMs, passedTimeMs, users, config, tokens, needMaskUserInfo, ByteString.EMPTY);
+      List<AgoraTokenInfo> tokens, Boolean needMaskUserInfo, ESceneType currentSceneType,
+      GamePanelInfo gamePanelInfo) {
+    this(enterType, roomID, createdTimeMs, passedTimeMs, users, config, tokens, needMaskUserInfo, currentSceneType, gamePanelInfo, ByteString.EMPTY);
   }
 
   public CombineRoomEnterMsg(ECombineRoomEnterType enterType, Integer roomID, Long createdTimeMs,
       Long passedTimeMs, List<UserInfo> users, CombineRoomConfig config,
-      List<AgoraTokenInfo> tokens, Boolean needMaskUserInfo, ByteString unknownFields) {
+      List<AgoraTokenInfo> tokens, Boolean needMaskUserInfo, ESceneType currentSceneType,
+      GamePanelInfo gamePanelInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.enterType = enterType;
     this.roomID = roomID;
@@ -130,6 +154,8 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
     this.config = config;
     this.tokens = Internal.immutableCopyOf("tokens", tokens);
     this.needMaskUserInfo = needMaskUserInfo;
+    this.currentSceneType = currentSceneType;
+    this.gamePanelInfo = gamePanelInfo;
   }
 
   @Override
@@ -143,6 +169,8 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
     builder.config = config;
     builder.tokens = Internal.copyOf("tokens", tokens);
     builder.needMaskUserInfo = needMaskUserInfo;
+    builder.currentSceneType = currentSceneType;
+    builder.gamePanelInfo = gamePanelInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -160,7 +188,9 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
         && users.equals(o.users)
         && Internal.equals(config, o.config)
         && tokens.equals(o.tokens)
-        && Internal.equals(needMaskUserInfo, o.needMaskUserInfo);
+        && Internal.equals(needMaskUserInfo, o.needMaskUserInfo)
+        && Internal.equals(currentSceneType, o.currentSceneType)
+        && Internal.equals(gamePanelInfo, o.gamePanelInfo);
   }
 
   @Override
@@ -176,6 +206,8 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
       result = result * 37 + (config != null ? config.hashCode() : 0);
       result = result * 37 + tokens.hashCode();
       result = result * 37 + (needMaskUserInfo != null ? needMaskUserInfo.hashCode() : 0);
+      result = result * 37 + (currentSceneType != null ? currentSceneType.hashCode() : 0);
+      result = result * 37 + (gamePanelInfo != null ? gamePanelInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -192,6 +224,8 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
     if (config != null) builder.append(", config=").append(config);
     if (!tokens.isEmpty()) builder.append(", tokens=").append(tokens);
     if (needMaskUserInfo != null) builder.append(", needMaskUserInfo=").append(needMaskUserInfo);
+    if (currentSceneType != null) builder.append(", currentSceneType=").append(currentSceneType);
+    if (gamePanelInfo != null) builder.append(", gamePanelInfo=").append(gamePanelInfo);
     return builder.replace(0, 2, "CombineRoomEnterMsg{").append('}').toString();
   }
 
@@ -286,6 +320,26 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
   }
 
   /**
+   * 当前场景类型
+   */
+  public ESceneType getCurrentSceneType() {
+    if(currentSceneType==null){
+        return new ESceneType.Builder().build();
+    }
+    return currentSceneType;
+  }
+
+  /**
+   * 游戏面板信息
+   */
+  public GamePanelInfo getGamePanelInfo() {
+    if(gamePanelInfo==null){
+        return new GamePanelInfo.Builder().build();
+    }
+    return gamePanelInfo;
+  }
+
+  /**
    * 进房方式
    */
   public boolean hasEnterType() {
@@ -341,6 +395,20 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
     return needMaskUserInfo!=null;
   }
 
+  /**
+   * 当前场景类型
+   */
+  public boolean hasCurrentSceneType() {
+    return currentSceneType!=null;
+  }
+
+  /**
+   * 游戏面板信息
+   */
+  public boolean hasGamePanelInfo() {
+    return gamePanelInfo!=null;
+  }
+
   public static final class Builder extends Message.Builder<CombineRoomEnterMsg, Builder> {
     private ECombineRoomEnterType enterType;
 
@@ -357,6 +425,10 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
     private List<AgoraTokenInfo> tokens;
 
     private Boolean needMaskUserInfo;
+
+    private ESceneType currentSceneType;
+
+    private GamePanelInfo gamePanelInfo;
 
     public Builder() {
       users = Internal.newMutableList();
@@ -429,9 +501,25 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
       return this;
     }
 
+    /**
+     * 当前场景类型
+     */
+    public Builder setCurrentSceneType(ESceneType currentSceneType) {
+      this.currentSceneType = currentSceneType;
+      return this;
+    }
+
+    /**
+     * 游戏面板信息
+     */
+    public Builder setGamePanelInfo(GamePanelInfo gamePanelInfo) {
+      this.gamePanelInfo = gamePanelInfo;
+      return this;
+    }
+
     @Override
     public CombineRoomEnterMsg build() {
-      return new CombineRoomEnterMsg(enterType, roomID, createdTimeMs, passedTimeMs, users, config, tokens, needMaskUserInfo, super.buildUnknownFields());
+      return new CombineRoomEnterMsg(enterType, roomID, createdTimeMs, passedTimeMs, users, config, tokens, needMaskUserInfo, currentSceneType, gamePanelInfo, super.buildUnknownFields());
     }
   }
 
@@ -450,6 +538,8 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
           + CombineRoomConfig.ADAPTER.encodedSizeWithTag(6, value.config)
           + AgoraTokenInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.tokens)
           + ProtoAdapter.BOOL.encodedSizeWithTag(8, value.needMaskUserInfo)
+          + ESceneType.ADAPTER.encodedSizeWithTag(9, value.currentSceneType)
+          + GamePanelInfo.ADAPTER.encodedSizeWithTag(10, value.gamePanelInfo)
           + value.unknownFields().size();
     }
 
@@ -463,6 +553,8 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
       CombineRoomConfig.ADAPTER.encodeWithTag(writer, 6, value.config);
       AgoraTokenInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.tokens);
       ProtoAdapter.BOOL.encodeWithTag(writer, 8, value.needMaskUserInfo);
+      ESceneType.ADAPTER.encodeWithTag(writer, 9, value.currentSceneType);
+      GamePanelInfo.ADAPTER.encodeWithTag(writer, 10, value.gamePanelInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -487,6 +579,15 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
           case 6: builder.setConfig(CombineRoomConfig.ADAPTER.decode(reader)); break;
           case 7: builder.tokens.add(AgoraTokenInfo.ADAPTER.decode(reader)); break;
           case 8: builder.setNeedMaskUserInfo(ProtoAdapter.BOOL.decode(reader)); break;
+          case 9: {
+            try {
+              builder.setCurrentSceneType(ESceneType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 10: builder.setGamePanelInfo(GamePanelInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -504,6 +605,7 @@ public final class CombineRoomEnterMsg extends Message<CombineRoomEnterMsg, Comb
       Internal.redactElements(builder.users, UserInfo.ADAPTER);
       if (builder.config != null) builder.config = CombineRoomConfig.ADAPTER.redact(builder.config);
       Internal.redactElements(builder.tokens, AgoraTokenInfo.ADAPTER);
+      if (builder.gamePanelInfo != null) builder.gamePanelInfo = GamePanelInfo.ADAPTER.redact(builder.gamePanelInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

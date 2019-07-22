@@ -5,7 +5,6 @@ package com.zq.live.proto.Common;
 import com.squareup.wire.EnumAdapter;
 import com.squareup.wire.ProtoAdapter;
 import com.squareup.wire.WireEnum;
-import java.lang.Override;
 
 /**
  * 房间类型

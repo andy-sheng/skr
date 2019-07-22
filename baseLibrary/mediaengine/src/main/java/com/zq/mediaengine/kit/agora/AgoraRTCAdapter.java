@@ -9,7 +9,6 @@ import com.engine.Params;
 import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
-import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -21,7 +20,6 @@ import com.zq.mediaengine.util.gles.GLRender;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +47,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class AgoraRTCAdapter {
-    public final static String TAG = "AgoraRTCAdapter";
+    public final String TAG = "AgoraRTCAdapter";
     private final static boolean VERBOSE = false;
 
     private static AgoraRTCAdapter sInstance;
@@ -536,7 +534,8 @@ public class AgoraRTCAdapter {
         // 初始化各个音量
         adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
         adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
-        adjustAudioMixingVolume(mConfig.getAudioMixingVolume());
+        adjustAudioMixingPlayoutVolume(mConfig.getAudioMixingPlayoutVolume());
+        adjustAudioMixingPublishVolume(mConfig.getAudioMixingPublishVolume());
     }
 
     /**
@@ -1109,16 +1108,27 @@ public class AgoraRTCAdapter {
     }
 
     /**
-     * 调节混音音量大小
+     * 调节混音本地播放音量大小
      * 频道内调用
      *
      * @param volume 1-100 默认100
      */
-    public void adjustAudioMixingVolume(int volume) {
+    public void adjustAudioMixingPlayoutVolume(int volume) {
         if (mRtcEngine == null) {
             return;
         }
-        mRtcEngine.adjustAudioMixingVolume(volume);
+        mRtcEngine.adjustAudioMixingPlayoutVolume(volume);
+    }
+
+    /**
+     * 调节音乐远端播放音量大小
+     * @param volume 1-100 默认100
+     */
+    public void adjustAudioMixingPublishVolume(int volume) {
+        if (mRtcEngine == null) {
+            return;
+        }
+        mRtcEngine.adjustAudioMixingPublishVolume(volume);
     }
 
     /**

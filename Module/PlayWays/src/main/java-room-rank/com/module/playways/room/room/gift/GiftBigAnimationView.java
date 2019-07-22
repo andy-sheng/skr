@@ -22,7 +22,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 
 public class GiftBigAnimationView {
 
-    public final static String TAG = "GiftBigAnimationView";
+    public final String TAG = "GiftBigAnimationView";
 
     static final int MSG_ENSURE_FINISH = 101;
 

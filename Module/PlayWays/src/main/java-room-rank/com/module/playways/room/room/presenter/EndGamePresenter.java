@@ -33,7 +33,7 @@ import okhttp3.RequestBody;
 
 public class EndGamePresenter extends RxLifeCyclePresenter {
 
-    public final static String TAG = "EndGamePresenter";
+    public final String TAG = "EndGamePresenter";
 
     final static int MSG_GET_VOTE = 1;
 

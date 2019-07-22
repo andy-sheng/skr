@@ -35,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ResDataSource {
 
-    public final static String TAG = "ImageDataSource";
+    public final String TAG = "ImageDataSource";
 
     private BaseFragment mFragment;
     private OnImagesLoadedListener mLoadedListener;                     //图片加载完成的回调接口

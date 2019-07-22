@@ -8,14 +8,12 @@ import com.common.log.MyLog;
 import com.module.playways.R;
 import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
-import com.module.playways.doubleplay.view.DoubleChorusSelfSingCardView;
-import com.module.playways.doubleplay.view.DoubleMiniGameSelfSingCardView;
-import com.module.playways.doubleplay.view.DoubleNormalSelfSingCardView;
+import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.StandPlayType;
 
 public class DoubleSelfSingCardView {
-    public final static String TAG = "DoubleSelfSingCardView";
+    public final String TAG = "DoubleSelfSingCardView";
     DoubleChorusSelfSingCardView mDoubleChorusSelfSingCardView;
     DoubleNormalSelfSingCardView mDoubleNormalSelfSingCardView;
     DoubleMiniGameSelfSingCardView mDoubleMiniGameSelfSingCardView;
@@ -83,6 +81,11 @@ public class DoubleSelfSingCardView {
             mDoubleNormalSelfSingCardView.playLyric(mSongModel);
             mDoubleNormalSelfSingCardView.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void showDoubleGame(LocalGameItemInfo localGameItemInfo) {
+        mDoubleMiniGameSelfSingCardView.playLyric(localGameItemInfo);
+        mDoubleMiniGameSelfSingCardView.setVisibility(View.VISIBLE);
     }
 
     public void updateLockState() {

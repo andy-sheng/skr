@@ -104,7 +104,11 @@ public class NotificationPermission {
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private static boolean isNotificationEnabled2(Context context) {
-        return NotificationManagerCompat.from(context).areNotificationsEnabled();
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+        if (notificationManagerCompat != null) {
+            return notificationManagerCompat.areNotificationsEnabled();
+        }
+        return false;
     }
 
 }

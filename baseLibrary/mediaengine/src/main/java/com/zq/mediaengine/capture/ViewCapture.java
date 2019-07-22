@@ -20,7 +20,7 @@ import java.util.TimerTask;
  */
 
 public class ViewCapture {
-    public final static String TAG = "ViewCapture";
+    public final String TAG = "ViewCapture";
 
     private ImgTexSrcPin mImgTexSrcPin;
     private float mUpdateFps = 15.0f;

@@ -23,7 +23,7 @@ import java.util.List;
  * 音阶view
  */
 public class VoiceScaleView extends View {
-    public final static String TAG = "VoiceScaleView";
+    public final String TAG = "VoiceScaleView";
     static final int SPEED = U.getDisplayUtils().dip2px(72);// 每秒走72个像素单位
     float mReadLineX = 0.2f;// 红线大约在距离左边 20% 的位置
     float mRedCy;

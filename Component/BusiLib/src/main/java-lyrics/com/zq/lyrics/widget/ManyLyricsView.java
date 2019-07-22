@@ -47,7 +47,7 @@ import java.util.TreeMap;
  * @date: 2018-04-21 20:28
  */
 public class ManyLyricsView extends AbstractLrcView {
-    public final static String TAG = "ManyLyricsView";
+    public final String TAG = "ManyLyricsView";
     /**
      * 初始
      */

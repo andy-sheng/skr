@@ -14,7 +14,7 @@ import java.util.List;
  * 如果是Adapter中有许多类型的 viewHolder 呢
  */
 public abstract class DiffAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-    public final static String TAG = "DiffAdapter";
+    public final String TAG = "DiffAdapter";
 
     protected List<T> mDataList = new ArrayList<>();
 

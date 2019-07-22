@@ -27,7 +27,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class GrabInvitePresenter {
-    public final static String TAG = "GrabRedPkgPresenter";
+    public final String TAG = "GrabRedPkgPresenter";
 
     GrabRoomServerApi mGrabRoomServerApi;
     DoubleRoomServerApi mDoubleRoomServerApi;
@@ -86,10 +86,11 @@ public class GrabInvitePresenter {
     }
 
 
-    public void inviteGrabFriend(int roomID, UserInfoModel model, ExTextView view) {
+    public void inviteGrabFriend(int roomID,int tagID, UserInfoModel model, ExTextView view) {
         MyLog.d(TAG, "inviteGrabFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
+        map.put("tagID", tagID);
         map.put("userID", model.getUserId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));

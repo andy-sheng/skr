@@ -20,6 +20,7 @@ import android.view.Gravity;
 import com.alibaba.fastjson.JSON;
 import com.common.core.R;
 import com.common.core.global.event.ShowDialogInHomeEvent;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.provideer.MyFileProvider;
@@ -40,7 +41,7 @@ import java.util.List;
 
 
 public class UpgradeManager {
-    public final static String TAG = "UpgradeManager";
+    public final String TAG = "UpgradeManager";
 
     public static final int MSG_UPDATE_PROGRESS = 1;
     //    public static final int MSG_INSTALL = 2;
@@ -148,7 +149,8 @@ public class UpgradeManager {
 
     private void loadDataFromServer() {
         UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
-        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.getInstance().getUid()),
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1,
+                U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.getInstance().getUid()),
                 new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult apiResult) {
@@ -253,13 +255,13 @@ public class UpgradeManager {
 
                 @Override
                 public void onQuitBtnClick() {
-                    cancelDownload();
+                    //cancelDownload();
                     dimissDialog();
                 }
 
                 @Override
                 public void onCancelBtnClick() {
-                    cancelDownload();
+                    //cancelDownload();
                     dimissDialog();
                 }
             });
@@ -309,10 +311,10 @@ public class UpgradeManager {
 
                 @Override
                 public void onCancelBtnClick(int progress) {
-                    if (progress == 100) {
+                    if (progress >= 100) {
                         install();
                     } else {
-                        cancelDownload();
+                        //cancelDownload();
                     }
                 }
             });
@@ -321,7 +323,12 @@ public class UpgradeManager {
             /**
              * 强更弹窗写死用主activity，避免从别的activity跳导致topactivity失效的问题
              */
-            Activity activity = U.getActivityUtils().getHomeActivity();
+            Activity activity = U.getActivityUtils().getTopActivity();
+            if(activity instanceof LoginActivity){
+
+            }else {
+                activity = U.getActivityUtils().getHomeActivity();
+            }
             if (activity != null) {
                 mForceUpgradeDialog = DialogPlus.newDialog(activity)
                         .setContentHolder(new ViewHolder(mForceUpgradeView))
@@ -381,10 +388,11 @@ public class UpgradeManager {
 
     // 下载apk
     private void downloadApk(final boolean mute) {
-
+        MyLog.d(TAG, "downloadApk" + " mute=" + mute);
         if (mUpgradeData.getStatus() >= UpgradeData.STATUS_DOWNLOWNING) {
             File saveFile = getSaveFile();
             if (saveFile.exists()) {
+                MyLog.d(TAG, "downloadApk 文件已存在");
                 return;
             } else {
                 mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
@@ -416,6 +424,7 @@ public class UpgradeManager {
     }
 
     private void downloadApkInner1() {
+        MyLog.d(TAG,"downloadApkInner1" );
         cancelDownload2();
         File saveFile = getSaveFile();
         if (saveFile.exists()) {
@@ -455,12 +464,8 @@ public class UpgradeManager {
     private void downloadApkInner2() {
         mUiHandler.removeMessages(MSG_ENSURE_DOWNLOADMANAGER_WORK);
         cancelDownload1();
-        File saveFile = getSaveFile();
-        if (saveFile.exists()) {
-            saveFile.delete();
-        }
         UpgradeInfoModel updateInfoModel = mUpgradeData.getUpgradeInfoModel();
-        U.getHttpUtils().downloadFileAsync(updateInfoModel.getDownloadURL(), saveFile,false, new HttpUtils.OnDownloadProgress() {
+        U.getHttpUtils().downloadFileAsync(updateInfoModel.getDownloadURL(), getSaveFile(), true, new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
                 DS ds = new DS();
@@ -469,7 +474,7 @@ public class UpgradeManager {
                 if (mUpgradeData.getStatus() < UpgradeData.STATUS_DOWNLOWNING) {
                     mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNING);
                 }
-                MyLog.d(TAG, "updateProgress " + ds);
+                MyLog.d(TAG, "downloadApkInner2 updateProgress " + ds);
                 Message msg = mUiHandler.obtainMessage(MSG_UPDATE_PROGRESS);
                 msg.obj = ds;
                 mUiHandler.sendMessage(msg);
@@ -485,7 +490,7 @@ public class UpgradeManager {
                 if (mUpgradeData.getStatus() < UpgradeData.STATUS_DOWNLOWNED) {
                     mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
                 }
-                MyLog.d(TAG, "updateProgress " + ds);
+                MyLog.d(TAG, "downloadApkInner2 updateProgress " + ds);
                 Message msg = mUiHandler.obtainMessage(MSG_UPDATE_PROGRESS);
                 msg.obj = ds;
                 mUiHandler.sendMessage(msg);
@@ -539,16 +544,19 @@ public class UpgradeManager {
     }
 
     private void cancelDownload() {
+        MyLog.d(TAG,"cancelDownload" );
         cancelDownload1();
         cancelDownload2();
         mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
     }
 
     private void cancelDownload1() {
+        MyLog.d(TAG,"cancelDownload1" );
         unregister();
     }
 
     private void cancelDownload2() {
+        MyLog.d(TAG,"cancelDownload2" );
         UpgradeInfoModel upgradeInfoModel = mUpgradeData.getUpgradeInfoModel();
         if (upgradeInfoModel != null) {
             U.getHttpUtils().cancelDownload(upgradeInfoModel.getDownloadURL());
@@ -723,6 +731,7 @@ public class UpgradeManager {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            MyLog.d(TAG,"onReceive" + " context=" + context + " intent=" + intent);
             if (intent.getAction().equals(DownloadManager.EXTRA_DOWNLOAD_ID)) {
                 long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
                 if (id == mUpgradeData.getDownloadId()) {

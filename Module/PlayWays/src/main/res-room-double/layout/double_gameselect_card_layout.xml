@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    tools:parentTag="com.common.view.ex.ExConstraintLayout">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/game_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/view_13_dp"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:maxLines="2"
+        android:text=""
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/icon_iv_1"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:layout_marginBottom="@dimen/view_19_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/icon_iv_2"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginRight="@dimen/view_33_dp"
+        android:layout_marginBottom="@dimen/view_19_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/gameType_tv"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginBottom="@dimen/view_18_dp"
+        android:gravity="center"
+        android:textColor="@color/white_trans_60"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_solid_color="@color/black_trans_40"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+</merge>

@@ -26,7 +26,7 @@ import java.io.File;
 
 public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
-    public final static String TAG = "PhotoViewHolder";
+    public final String TAG = "PhotoViewHolder";
 
     SimpleDraweeView mPhotoIv;
     ExTextView mUploadTipsTv;

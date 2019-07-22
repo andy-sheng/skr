@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/view_12_dp"
+    android:layout_marginRight="@dimen/view_12_dp"
+    android:background="@color/black_trans_20"
+    android:padding="@dimen/view_2_dp"
+    app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_solid_color="#4960CF"
+    app:bl_stroke_color="#3B4E79"
+    app:bl_stroke_width="@dimen/view_2_dp">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</com.common.view.ex.ExFrameLayout>

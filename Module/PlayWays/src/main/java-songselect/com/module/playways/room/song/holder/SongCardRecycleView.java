@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 
 public class SongCardRecycleView extends RecyclerView {
 
-    public final static String TAG = "SongCardRecycleView";
+    public final String TAG = "SongCardRecycleView";
 
     public SongCardRecycleView(Context context) {
         super(context);

@@ -8,6 +8,13 @@ import java.util.List;
 
 
 public class RecommendModel implements Serializable {
+
+    public static final int TYPE_FRIEND = 1;  //好友房
+    public static final int TYPE_RECOMMEND = 2;  //机器推荐房间
+    public static final int TYPE_FOLLOW = 3;  //关注房间
+    public static final int TYPE_OP_RECOMMEND = 4; //运营推荐房间
+    public static final int TYPE_ROOM_CITY = 5; //同城推荐房间
+
     /**
      * roomInfo : {"inPlayersNum":0,"isOwner":true,"roomID":0,"roomTag":"URT_UNKNOWN","roomType":"RT_UNKNOWN","tagID":0,"totalPlayersNum":0,"userID":0}
      * tagInfo : {"bgColor":"string","introduction":"string","tagID":0,"tagName":"string"}
@@ -19,20 +26,6 @@ public class RecommendModel implements Serializable {
     private SpecialModel tagInfo;
     private UserInfoModel userInfo;
     private int category;
-    private String displayName;
-    private String displayURL;
-    private String displayAvatar;
-    private String displayDesc;
-    private String mediaTagURL;
-    private List<PlayUser> playUsers;
-
-    public List<PlayUser> getPlayUsers() {
-        return playUsers;
-    }
-
-    public void setPlayUsers(List<PlayUser> playUsers) {
-        this.playUsers = playUsers;
-    }
 
     public SimpleRoomInfo getRoomInfo() {
         return roomInfo;
@@ -67,47 +60,6 @@ public class RecommendModel implements Serializable {
         this.category = category;
     }
 
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getDisplayURL() {
-        return displayURL;
-    }
-
-    public void setDisplayURL(String displayURL) {
-        this.displayURL = displayURL;
-    }
-
-    public String getDisplayAvatar() {
-        return displayAvatar;
-    }
-
-    public void setDisplayAvatar(String displayAvatar) {
-        this.displayAvatar = displayAvatar;
-    }
-
-    public String getDisplayDesc() {
-        return displayDesc;
-    }
-
-    public void setDisplayDesc(String displayDesc) {
-        this.displayDesc = displayDesc;
-    }
-
-    public String getMediaTagURL() {
-        return mediaTagURL;
-    }
-
-    public void setMediaTagURL(String mediaTagURL) {
-        this.mediaTagURL = mediaTagURL;
-    }
-
     @Override
     public String toString() {
         return "RecommendModel{" +
@@ -115,34 +67,7 @@ public class RecommendModel implements Serializable {
                 ", tagInfo=" + tagInfo +
                 ", userInfo=" + userInfo +
                 ", category=" + category +
-                ", displayName='" + displayName + '\'' +
-                ", displayURL='" + displayURL + '\'' +
-                ", displayAvatar='" + displayAvatar + '\'' +
-                ", displayDesc='" + displayDesc + '\'' +
-                ", mediaTagURL='" + mediaTagURL + '\'' +
-                ", playUsers=" + playUsers +
                 '}';
-    }
-
-    public static class PlayUser implements Serializable {
-        private int userID;
-        private String avatar;
-
-        public int getUserID() {
-            return userID;
-        }
-
-        public void setUserID(int userID) {
-            this.userID = userID;
-        }
-
-        public String getAvatar() {
-            return avatar;
-        }
-
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
-        }
     }
 
 }

@@ -42,7 +42,7 @@ import java.lang.reflect.Field;
  */
 public final class ToastUtils {
 
-    public final static String TAG = "ToastUtils";
+    public static final String TAG = "ToastUtils";
 
     static final boolean LOG_OPEN = false;
 

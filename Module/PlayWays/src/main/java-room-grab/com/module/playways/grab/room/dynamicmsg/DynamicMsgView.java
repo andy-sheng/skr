@@ -30,7 +30,7 @@ import okhttp3.RequestBody;
  */
 public class DynamicMsgView extends RelativeLayout {
 
-    public final static String TAG = "DynamicMsgView";
+    public final String TAG = "DynamicMsgView";
 
     BaseRoomData mRoomData;
 

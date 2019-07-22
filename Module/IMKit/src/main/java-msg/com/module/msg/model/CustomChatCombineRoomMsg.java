@@ -23,7 +23,7 @@ import io.rong.imlib.model.MessageContent;
  */
 @MessageTag(value = "SKR:CombineRoomMsgHigh", flag = MessageTag.NONE)
 public class CustomChatCombineRoomMsg extends MessageContent {
-    public final static String TAG = "CustomChatRoomMsg";
+    public final String TAG = "CustomChatRoomMsg";
 
     int messageType;
     String contentJsonStr;

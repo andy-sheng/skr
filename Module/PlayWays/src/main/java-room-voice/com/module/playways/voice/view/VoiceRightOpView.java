@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class VoiceRightOpView extends RelativeLayout {
-    public final static String TAG = "VoiceRightOpView";
+    public final String TAG = "VoiceRightOpView";
     //    Listener mListener;
     ExImageView mMicIv;
     ExTextView mVoiceTips;
@@ -50,7 +50,6 @@ public class VoiceRightOpView extends RelativeLayout {
                 if (params != null) {
                     if (params.isLocalAudioStreamMute()) {
                         mMicIv.setImageResource(R.drawable.jingyin_changtai);
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_micon", null);
                     } else {
                         mMicIv.setImageResource(R.drawable.jingyin_anxia);
                     }

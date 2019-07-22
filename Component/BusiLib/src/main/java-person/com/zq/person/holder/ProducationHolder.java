@@ -26,7 +26,7 @@ import com.zq.person.model.ProducationModel;
 
 public class ProducationHolder extends RecyclerView.ViewHolder {
 
-    public final static String TAG = "ProducationHolder";
+    public final String TAG = "ProducationHolder";
 
     int mPosition;
     boolean mIsPlay;

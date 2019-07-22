@@ -14,7 +14,7 @@ public class MsgUtils {
         return MsgUtilsHolder.INSTANCE;
     }
 
-    public final static String TAG = "MsgUtils";
+    public final String TAG = "MsgUtils";
 
 
     public void test(String packageName, int i, String ss) {

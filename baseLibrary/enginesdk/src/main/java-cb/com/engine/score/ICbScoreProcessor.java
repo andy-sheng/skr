@@ -11,7 +11,7 @@ import java.io.File;
 
 public class ICbScoreProcessor {
 
-    public final static String TAG = "ICbScoreProcessor";
+    public static final String TAG = "ICbScoreProcessor";
     static final int MSG_PUT_DATA = 1;
     static final int MSG_GET_SCORE = 2;
     static final int MSG_DESTROY = 3;

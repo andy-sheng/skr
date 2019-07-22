@@ -62,7 +62,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 
 public class GiftPanelView extends FrameLayout {
-    public final static String TAG = "GiftPanelView";
+    public final String TAG = "GiftPanelView";
     public static final int SHOW_PANEL = 0;
     public static final int HIDE_PANEL = 1;
     public static final int ANIMATION_DURATION = 300;

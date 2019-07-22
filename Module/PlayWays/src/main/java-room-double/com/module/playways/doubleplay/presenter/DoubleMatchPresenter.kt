@@ -14,6 +14,7 @@ import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.inter.IMatchView
+import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -90,7 +91,8 @@ class DoubleMatchPresenter(val iMatchView: IMatchView) : RxLifeCyclePresenter() 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: CRStartByMatchPushEvent) {
-        iMatchView.matchSuccessFromPush(event)
+        val enterRoomModel = LocalEnterRoomModel(event.basePushInfo, event.combineRoomEnterMsg)
+        iMatchView.matchSuccessFromPush(enterRoomModel)
     }
 
     override fun destroy() {

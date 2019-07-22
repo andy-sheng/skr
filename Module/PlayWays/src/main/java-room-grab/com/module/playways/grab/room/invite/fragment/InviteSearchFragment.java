@@ -46,15 +46,17 @@ import io.reactivex.subjects.PublishSubject;
 
 public class InviteSearchFragment extends BaseFragment implements IInviteSearchView {
 
-    public final static String TAG = "InviteSearchFragment";
+    public final String TAG = "InviteSearchFragment";
 
     public static String INVITE_SEARCH_FROM = "invite_search_from";
     public static String INVITE_SEARCH_MODE = "invite_search_mode";
     public static String INVITE_ROOM_ID = "invite_room_id";
+    public static String INVITE_TAG_ID = "invite_tag_id";
 
     private int mMode;
     private int mRoomID;
     private int mFrom;
+    private int mTagID;
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
@@ -85,6 +87,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             mMode = bundle.getInt(INVITE_SEARCH_MODE);
             mRoomID = bundle.getInt(INVITE_ROOM_ID);
             mFrom = bundle.getInt(INVITE_SEARCH_FROM);
+            mTagID = bundle.getInt(INVITE_TAG_ID);
         }
 
         mPresenter = new InviteSearchPresenter(this);
@@ -93,8 +96,8 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
                 if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
-                    mPresenter.inviteFriend(mRoomID, model, view);
-                } else {
+                    mPresenter.inviteFriend(mRoomID, mTagID, model, view);
+                } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
                     mPresenter.inviteDoubleFriend(mRoomID, model, view);
                 }
             }

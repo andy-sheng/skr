@@ -17,7 +17,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 
 public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "WalletRecordPresenter";
+    public final String TAG = "WalletRecordPresenter";
 
     WalletServerApi mWalletServerApi;
     IWithDrawHistoryView mIWalletView;

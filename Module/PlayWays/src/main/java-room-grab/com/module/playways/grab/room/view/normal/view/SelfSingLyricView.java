@@ -12,7 +12,7 @@ import com.common.log.MyLog;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ExViewStub;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
@@ -32,7 +32,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class SelfSingLyricView extends ExViewStub {
-    public final static String TAG = "SelfSingLyricView";
+    public final String TAG = "SelfSingLyricView";
 
     protected ScrollView mSvlyric;
     protected TextView mTvLyric;
@@ -130,7 +130,7 @@ public class SelfSingLyricView extends ExViewStub {
             }
 
         });
-        ZqEngineKit.getInstance().setRecognizeListener(new ArcRecognizeListener() {
+        ZqEngineKit.getInstance().setRecognizeListener(new AcrRecognizeListener() {
             @Override
             public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                 mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);

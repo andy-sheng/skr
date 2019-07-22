@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_75_dp"
+    android:layout_height="@dimen/view_36_dp"
     android:layout_marginTop="@dimen/view_8_dp">
 
     <android.support.constraint.Guideline
@@ -21,8 +21,8 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/task_iv"
-        android:layout_width="@dimen/view_48_dp"
-        android:layout_height="@dimen/view_48_dp"
+        android:layout_width="@dimen/view_88_dp"
+        android:layout_height="@dimen/view_36_dp"
         android:background="@drawable/game_task_bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@id/guide_1"
@@ -30,70 +30,30 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/task_red_iv"
-        android:layout_width="@dimen/view_12_dp"
-        android:layout_height="@dimen/view_12_dp"
-        android:layout_alignTop="@+id/task_iv"
-        android:layout_alignRight="@+id/task_iv"
+        android:layout_width="@dimen/view_8_dp"
+        android:layout_height="@dimen/view_8_dp"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="#FF8AB6"
-        app:bl_stroke_color="#CB5883"
-        app:bl_stroke_width="@dimen/view_2_dp"
         app:layout_constraintRight_toRightOf="@id/task_iv"
         app:layout_constraintTop_toTopOf="@id/task_iv" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_17_dp"
-        android:layout_marginTop="@dimen/view_6_dp"
-        android:gravity="center"
-        android:text="做任务"
-        android:textColor="@color/white_trans_60"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintLeft_toLeftOf="@id/task_iv"
-        app:layout_constraintRight_toRightOf="@id/task_iv"
-        app:layout_constraintTop_toBottomOf="@id/task_iv" />
-
     <com.common.view.ex.ExImageView
         android:id="@+id/rank_iv"
-        android:layout_width="@dimen/view_48_dp"
-        android:layout_height="@dimen/view_48_dp"
+        android:layout_width="@dimen/view_88_dp"
+        android:layout_height="@dimen/view_36_dp"
         android:background="@drawable/game_rank_bg"
-        app:layout_constraintLeft_toLeftOf="@id/guide_1"
-        app:layout_constraintRight_toRightOf="@id/guide_2"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_17_dp"
-        android:layout_marginTop="@dimen/view_6_dp"
-        android:gravity="center"
-        android:text="排行榜"
-        android:textColor="@color/white_trans_60"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintLeft_toLeftOf="@id/rank_iv"
-        app:layout_constraintRight_toRightOf="@id/rank_iv"
-        app:layout_constraintTop_toBottomOf="@id/rank_iv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/practice_iv"
-        android:layout_width="@dimen/view_48_dp"
-        android:layout_height="@dimen/view_48_dp"
-        android:background="@drawable/game_practice_bg"
         app:layout_constraintLeft_toLeftOf="@id/guide_2"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_17_dp"
-        android:layout_marginTop="@dimen/view_6_dp"
-        android:gravity="center"
-        android:text="练歌房"
-        android:textColor="@color/white_trans_60"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintLeft_toLeftOf="@id/practice_iv"
-        app:layout_constraintRight_toRightOf="@id/practice_iv"
-        app:layout_constraintTop_toBottomOf="@id/practice_iv" />
+    <com.common.view.ex.ExImageView
+        android:id="@+id/practice_iv"
+        android:layout_width="@dimen/view_88_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:background="@drawable/game_practice_bg"
+        app:layout_constraintLeft_toLeftOf="@id/guide_1"
+        app:layout_constraintRight_toRightOf="@id/guide_2"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

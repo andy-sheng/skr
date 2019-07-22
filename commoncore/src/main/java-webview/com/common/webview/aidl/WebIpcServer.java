@@ -21,7 +21,7 @@ import okhttp3.Cookie;
 
 public class WebIpcServer extends com.common.core.WebIpcService.Stub {
 
-    public final static String TAG = "WebIpcServer";
+    public final String TAG = "WebIpcServer";
 
     public static int TYPE_GET_COOKIES = 1;
 

@@ -67,7 +67,7 @@ import java.util.List;
 
 public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideView {
 
-    public final static String TAG = "GrabGuideFragment";
+    public final String TAG = "GrabGuideFragment";
 
     public static final int MSG_ENSURE_SONGCARD_OVER = 2;
 
@@ -323,10 +323,6 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
         @Override
         public void onVoiceChange(boolean voiceOpen) {
             mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-//            if (!voiceOpen) {
-//                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                        "game_muteon", null);
-//            }
         }
 
         @Override
@@ -903,8 +899,6 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
                                 mQuitTipsDialog.dismiss(false);
                             }
                             mCorePresenter.exitRoom();
-//                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                                    "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {

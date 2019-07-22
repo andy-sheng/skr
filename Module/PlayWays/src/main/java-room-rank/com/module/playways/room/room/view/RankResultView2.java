@@ -29,7 +29,7 @@ import java.io.File;
 
 public class RankResultView2 extends FrameLayout {
 
-    public final static String TAG = "RankResultView2";
+    public final String TAG = "RankResultView2";
 
     RelativeLayout mResultArea;
     SimpleDraweeView mAvatarIv;

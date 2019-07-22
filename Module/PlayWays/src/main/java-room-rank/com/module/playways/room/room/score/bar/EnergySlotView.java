@@ -18,7 +18,7 @@ import com.module.playways.R;
 
 
 public class EnergySlotView extends View {
-    public final static String TAG = "EnergySlotView";
+    public final String TAG = "EnergySlotView";
     int mWidth = -1;// view的宽度
     int mHeight = -1;// view的高度
 

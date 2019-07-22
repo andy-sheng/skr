@@ -1,6 +1,7 @@
 package com.module;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.module.feeds.IFeedsModuleService;
 import com.module.msg.IMsgService;
 
 public class ModuleServiceManager {
@@ -18,5 +19,9 @@ public class ModuleServiceManager {
 
     public IMsgService getMsgService(){
         return (IMsgService) ARouter.getInstance().build(RouterConstants.SERVICE_MSG).navigation();
+    }
+
+    public IFeedsModuleService getFeedsService(){
+        return (IFeedsModuleService) ARouter.getInstance().build(RouterConstants.SERVICE_FEEDS).navigation();
     }
 }

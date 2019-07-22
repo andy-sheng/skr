@@ -33,7 +33,7 @@ import java.io.File;
  */
 public class NormalSingBeginTipsCardView {
 
-    public final static String TAG = "SingBeginTipsCardView";
+    public final String TAG = "SingBeginTipsCardView";
 
     public void bindData(SVGAImageView svgaImageView, UserInfoModel info, SongModel songModel, SVGAListener listener, boolean isChallenge) {
         if (info == null || songModel == null) {

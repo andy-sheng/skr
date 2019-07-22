@@ -57,7 +57,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SettingFragment extends BaseFragment {
 
-    public final static String TAG = "SettingFragment";
+    public final String TAG = "SettingFragment";
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;

@@ -32,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
  * 你的主场景歌词
  */
 public class DoubleNormalSelfSingCardView extends ExViewStub {
-    public final static String TAG = "DoubleNormalSelfSingCardView";
+    public final String TAG = "DoubleNormalSelfSingCardView";
 
     SongModel mSongModel;
 

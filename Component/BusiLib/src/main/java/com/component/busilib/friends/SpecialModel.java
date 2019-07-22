@@ -22,6 +22,8 @@ public class SpecialModel implements Serializable {
     private String bgImage2;
     private String bgImage3;
     private int tagType;
+    private TagImageModel biggest;
+    private TagImageModel longer;
 
     public int getTagID() {
         return tagID;
@@ -86,6 +88,22 @@ public class SpecialModel implements Serializable {
 
     public void setTagType(int tagType) {
         this.tagType = tagType;
+    }
+
+    public TagImageModel getBiggest() {
+        return biggest;
+    }
+
+    public void setBiggest(TagImageModel biggest) {
+        this.biggest = biggest;
+    }
+
+    public TagImageModel getLonger() {
+        return longer;
+    }
+
+    public void setLonger(TagImageModel longer) {
+        this.longer = longer;
     }
 
     @Override

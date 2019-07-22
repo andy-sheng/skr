@@ -44,7 +44,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class SpecialSelectView extends RelativeLayout {
 
-    public final static String TAG = "SpecialSelectView";
+    public final String TAG = "SpecialSelectView";
 
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mContentRv;
@@ -110,10 +110,6 @@ public class SpecialSelectView extends RelativeLayout {
                 mSkrAudioPermission.ensurePermission(new Runnable() {
                     @Override
                     public void run() {
-//                        HashMap map = new HashMap();
-//                        map.put("tagId2", String.valueOf(model.getTagID()));
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                                StatConstants.KEY_MATCH_START, map);
                         if (mSpecialSelectListner != null) {
                             mSpecialSelectListner.onClickSpecial(model, musicURLs);
                         }

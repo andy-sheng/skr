@@ -1,8 +1,10 @@
 package com.module.playways.doubleplay.model;
 
-import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
+import com.module.playways.doubleplay.pbLocalModel.LocalChatSenceDataModel;
+import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel;
+import com.module.playways.doubleplay.pbLocalModel.LocalSingSenceDataModel;
 import com.module.playways.doubleplay.pbLocalModel.LocalUserLockInfo;
-import com.zq.live.proto.CombineRoom.CombineRoomSyncStatusMsg;
+import com.zq.live.proto.CombineRoom.CombineRoomSyncStatusV2Msg;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,10 +14,23 @@ public class DoubleSyncModel implements Serializable {
     long passedTimeMs; //房间已经经历的毫秒数
     List<LocalUserLockInfo> userLockInfo;
     boolean enableNoLimitDuration; //开启没有限制的持续时间
-    LocalCombineRoomMusic currentMusic;
-    String nextMusicDesc;
-    int status;
-    boolean hasNextMusic;
+    int combineStatus;
+    int curScene;
+    LocalSingSenceDataModel localSingSenceDataModel;
+    LocalGameSenceDataModel localGameSenceDataModel;
+    LocalChatSenceDataModel localChatSenceDataModel;
+
+    public void setLocalSingSenceDataModel(LocalSingSenceDataModel localSingSenceDataModel) {
+        this.localSingSenceDataModel = localSingSenceDataModel;
+    }
+
+    public void setLocalGameSenceDataModel(LocalGameSenceDataModel localGameSenceDataModel) {
+        this.localGameSenceDataModel = localGameSenceDataModel;
+    }
+
+    public void setLocalChatSenceDataModel(LocalChatSenceDataModel localChatSenceDataModel) {
+        this.localChatSenceDataModel = localChatSenceDataModel;
+    }
 
     public long getSyncStatusTimeMs() {
         return syncStatusTimeMs;
@@ -42,6 +57,14 @@ public class DoubleSyncModel implements Serializable {
         this.enableNoLimitDuration = enableNoLimitDuration;
     }
 
+    public int getCurScene() {
+        return curScene;
+    }
+
+    public void setCurScene(int curScene) {
+        this.curScene = curScene;
+    }
+
     public List<LocalUserLockInfo> getUserLockInfo() {
         return userLockInfo;
     }
@@ -50,36 +73,24 @@ public class DoubleSyncModel implements Serializable {
         this.userLockInfo = userLockInfo;
     }
 
-    public LocalCombineRoomMusic getCurrentMusic() {
-        return currentMusic;
+    public int getCombineStatus() {
+        return combineStatus;
     }
 
-    public void setCurrentMusic(LocalCombineRoomMusic currentMusic) {
-        this.currentMusic = currentMusic;
+    public void setCombineStatus(int combineStatus) {
+        this.combineStatus = combineStatus;
     }
 
-    public String getNextMusicDesc() {
-        return nextMusicDesc;
+    public LocalSingSenceDataModel getLocalSingSenceDataModel() {
+        return localSingSenceDataModel;
     }
 
-    public void setNextMusicDesc(String nextMusicDesc) {
-        this.nextMusicDesc = nextMusicDesc;
+    public LocalGameSenceDataModel getLocalGameSenceDataModel() {
+        return localGameSenceDataModel;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public boolean isHasNextMusic() {
-        return hasNextMusic;
-    }
-
-    public void setHasNextMusic(boolean hasNextMusic) {
-        this.hasNextMusic = hasNextMusic;
+    public LocalChatSenceDataModel getLocalChatSenceDataModel() {
+        return localChatSenceDataModel;
     }
 
     @Override
@@ -89,24 +100,38 @@ public class DoubleSyncModel implements Serializable {
                 ", passedTimeMs=" + passedTimeMs +
                 ", userLockInfo=" + userLockInfo +
                 ", enableNoLimitDuration=" + enableNoLimitDuration +
-                ", currentMusic=" + currentMusic +
-                ", nextMusicDesc='" + nextMusicDesc + '\'' +
-                ", status=" + status +
-                ", hasNextMusic=" + hasNextMusic +
+                ", combineStatus=" + combineStatus +
+                ", curScene=" + curScene +
+                ", localSingSenceDataModel=" + localSingSenceDataModel +
+                ", localGameSenceDataModel=" + localGameSenceDataModel +
+                ", localChatSenceDataModel=" + localChatSenceDataModel +
                 '}';
     }
 
-    public static DoubleSyncModel parse(CombineRoomSyncStatusMsg combineRoomSyncStatusMsg) {
+    public static DoubleSyncModel parse(CombineRoomSyncStatusV2Msg combineRoomSyncStatusMsg) {
         DoubleSyncModel doubleRoundInfoModel = new DoubleSyncModel();
 //        doubleRoundInfoModel.basePushInfo = basePushInfo;
         doubleRoundInfoModel.syncStatusTimeMs = combineRoomSyncStatusMsg.getSyncStatusTimeMs();
         doubleRoundInfoModel.passedTimeMs = combineRoomSyncStatusMsg.getPassedTimeMs();
         doubleRoundInfoModel.userLockInfo = LocalUserLockInfo.toList(combineRoomSyncStatusMsg.getUserLockInfoList());
         doubleRoundInfoModel.enableNoLimitDuration = combineRoomSyncStatusMsg.getEnableNoLimitDuration();
-        doubleRoundInfoModel.currentMusic = new LocalCombineRoomMusic(combineRoomSyncStatusMsg.getCurrentMusic());
-        doubleRoundInfoModel.nextMusicDesc = combineRoomSyncStatusMsg.getNextMusicDesc();
-        doubleRoundInfoModel.hasNextMusic = combineRoomSyncStatusMsg.getHasNextMusic();
-        doubleRoundInfoModel.status = combineRoomSyncStatusMsg.getStatus().getValue();
+        if (combineRoomSyncStatusMsg.hasCurScene()) {
+            doubleRoundInfoModel.curScene = combineRoomSyncStatusMsg.getCurScene().getValue();
+        }
+
+        if (combineRoomSyncStatusMsg.hasSceneSingSyncStatusMsg()) {
+            doubleRoundInfoModel.localSingSenceDataModel = new LocalSingSenceDataModel(combineRoomSyncStatusMsg.getSceneSingSyncStatusMsg());
+        }
+
+        if (combineRoomSyncStatusMsg.hasSceneGameSyncStatusMsg()) {
+            doubleRoundInfoModel.localGameSenceDataModel = new LocalGameSenceDataModel(combineRoomSyncStatusMsg.getSceneGameSyncStatusMsg());
+        }
+
+        if (combineRoomSyncStatusMsg.hasSceneChatSyncStatusMsg()) {
+            doubleRoundInfoModel.localChatSenceDataModel = new LocalChatSenceDataModel(combineRoomSyncStatusMsg.getSceneChatSyncStatusMsg());
+        }
+
+        doubleRoundInfoModel.combineStatus = combineRoomSyncStatusMsg.getStatus().getValue();
         return doubleRoundInfoModel;
     }
 }

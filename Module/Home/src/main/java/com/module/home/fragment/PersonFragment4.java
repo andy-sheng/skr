@@ -35,6 +35,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.ImageUtils;
 import com.common.utils.SpanUtils;
@@ -158,6 +159,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
+        StatisticsAdapter.recordCountEvent("Metab", "expose", null);
         mPresenter.getHomePage(false);
         if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
             mPhotoWallView.getPhotos(false);
@@ -422,7 +424,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
         mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
         mPersonTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
-        mPersonTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
+        mPersonTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
         mPersonTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
         mPersonTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
         mPersonTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(12));

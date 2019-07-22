@@ -438,7 +438,9 @@ public class UserAccountManager {
                     if (deleteAccount) {
                         UserAccountLocalApi.delete(mAccount);
                     } else {
-                        mAccount.setIsLogOff(true);
+                        if (mAccount != null) {
+                            mAccount.setIsLogOff(true);
+                        }
                         UserAccountLocalApi.insertOrReplace(mAccount);
                     }
                     mAccount = null;

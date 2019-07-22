@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/view_16_dp"
+    android:layout_marginBottom="@dimen/view_12_dp">
+
+    <ImageView
+        android:id="@+id/double_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_6_dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/grab_double_home_icon"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/create_room_iv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/pk_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/grab_pk_home_icon"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="@id/double_iv"
+        app:layout_constraintRight_toRightOf="@id/double_iv"
+        app:layout_constraintTop_toBottomOf="@id/double_iv" />
+
+    <ImageView
+        android:id="@+id/create_room_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_6_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/grab_create_home_icon"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/double_iv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/double_iv" />
+
+    <ImageView
+        android:id="@+id/grab_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/grab_tag_home_icon"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="@id/create_room_iv"
+        app:layout_constraintRight_toRightOf="@id/create_room_iv"
+        app:layout_constraintTop_toBottomOf="@id/create_room_iv" />
+
+
+</android.support.constraint.ConstraintLayout>

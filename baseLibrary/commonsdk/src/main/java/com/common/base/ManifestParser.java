@@ -39,7 +39,7 @@ import java.util.List;
  * ================================================
  */
 public final class ManifestParser {
-    public final static String TAG = "ManifestParser";
+    public final String TAG = "ManifestParser";
     private static final String MODULE_VALUE = "ConfigModule";
 
     private final Context context;

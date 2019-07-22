@@ -13,7 +13,7 @@ import com.common.log.MyLog;
 
 
 public class ShadowHelper {
-    public final static String TAG = "ShadowHelper";
+    public final String TAG = "ShadowHelper";
 
     private static final float RATIO = 1.3f;//绘制矩形的区域至少要距离view边框Ratio倍blur,否定导致裁剪掉
 

@@ -19,7 +19,7 @@ import com.dialog.view.StrokeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ConfirmDialogView extends RelativeLayout {
-    public final static String TAG = "GrabKickDialogView";
+    public final String TAG = "GrabKickDialogView";
 
     SimpleDraweeView mAvatarIv;
     TextView mContentTv;

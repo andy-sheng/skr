@@ -66,7 +66,7 @@ import java.util.List;
 //这个是匹配界面，之前的FastMatchingSence
 public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView, IRankMatchingView {
 
-    public final static String TAG = "GrabMatchFragment";
+    public final String TAG = "GrabMatchFragment";
 
     public static final long ANIMATION_DURATION = 1800;
     ExImageView mIvBack;

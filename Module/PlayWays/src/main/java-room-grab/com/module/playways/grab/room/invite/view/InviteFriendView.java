@@ -47,17 +47,19 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
     GrabInvitePresenter mGrabInvitePresenter;
     BaseFragment mBaseFragment;
     int mRoomID;
+    int mTagID;
     LoadService mLoadService;
 
-    public InviteFriendView(BaseFragment fragment, int from, int roomID, int mode) {
+    public InviteFriendView(BaseFragment fragment, int from, int roomID, int tagID, int mode) {
         super(fragment.getContext());
-        init(fragment, from, roomID, mode);
+        init(fragment, from, roomID, tagID, mode);
     }
 
-    private void init(BaseFragment fragment, int from, int roomID, int mode) {
+    private void init(BaseFragment fragment, int from, int roomID, int tagID, int mode) {
         this.mFrom = from;
         this.mBaseFragment = fragment;
         this.mRoomID = roomID;
+        this.mTagID = tagID;
         this.mMode = mode;
         inflate(fragment.getContext(), R.layout.invite_view_layout, this);
 
@@ -69,11 +71,10 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
             @Override
             public void onClick(UserInfoModel model, ExTextView view) {
                 if (mFrom == InviteFriendFragment2.FROM_GRAB_ROOM) {
-                    mGrabInvitePresenter.inviteGrabFriend(mRoomID, model, view);
+                    mGrabInvitePresenter.inviteGrabFriend(mRoomID, mTagID, model, view);
                 } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
                     mGrabInvitePresenter.inviteDoubleFriend(mRoomID, model, view);
                 }
-
             }
 
             @Override
@@ -82,6 +83,7 @@ public class InviteFriendView extends RelativeLayout implements IGrabInviteView 
                 bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_FROM, mFrom);
                 bundle.putSerializable(InviteSearchFragment.INVITE_SEARCH_MODE, mMode);
                 bundle.putSerializable(InviteSearchFragment.INVITE_ROOM_ID, mRoomID);
+                bundle.putSerializable(InviteSearchFragment.INVITE_TAG_ID, mTagID);
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder((BaseActivity) getContext(), InviteSearchFragment.class)
                         .setUseOldFragmentIfExist(false)

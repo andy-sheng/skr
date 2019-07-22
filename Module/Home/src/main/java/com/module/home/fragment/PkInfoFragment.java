@@ -56,9 +56,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * 暂时弃用
+ */
 public class PkInfoFragment extends BaseFragment implements IPkInfoView {
-    public final static String TAG = "PkInfoFragment";
+    public final String TAG = "PkInfoFragment";
 
     SmartRefreshLayout mSmartRefreshLayout;
     ExImageView mIvVoiceRoom;
@@ -136,7 +138,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                initBaseInfo();
+                refreshBaseInfo();
                 mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), true);
             }
         });
@@ -162,12 +164,6 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
                         .build());
             }
         });
@@ -175,57 +171,6 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mIvVoiceRoom.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View v) {
-//                if (true) {
-//                    BigImageBrowseFragment.open(true, getActivity(), new BigImageBrowseFragment.Loader<Integer>() {
-//                        List<Integer> mStrings = new ArrayList<>();
-//
-//                        @Override
-//                        public void init() {
-//                            mStrings.add(50);
-//                            mStrings.add(60);
-//                            mStrings.add(70);
-//                        }
-//
-//                        @Override
-//                        public void load(ImageBrowseView imageBrowseView, int position, Object item) {
-//                            imageBrowseView.load("http://res-static.inframe.mobi/pictures/1752091/48031a16980612dd.png?r=" + item);
-//                        }
-//
-//
-//                        @Override
-//                        public int getInitCurrentItemPostion() {
-//                            return 2;
-//                        }
-//
-//                        @Override
-//                        public List<Integer> getInitList() {
-//                            return mStrings;
-//                        }
-//
-//                        @Override
-//                        public List<Integer> loadMore(boolean backward, int position, Integer item) {
-//                            MyLog.d(TAG, "loadMore" + " backward=" + backward + " position=" + position);
-//                            List<Integer> l = new ArrayList<>();
-//                            if (backward) {
-//                                l.add(item + 10);
-//                            } else {
-//                                l.add(item - 10);
-//                            }
-//                            return l;
-//                        }
-//
-//                        @Override
-//                        public boolean hasMore(boolean backward, int position, Integer item) {
-//                            if (backward) {
-//                                return item < 150;
-//                            } else {
-//                                return item > 0;
-//                            }
-//                        }
-//
-//                    });
-//                    return;
-//                }
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                         .withBoolean("selectSong", true)
                         .navigation();
@@ -241,7 +186,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 
         mPkInfoPresenter = new PkInfoPresenter(this);
         addPresent(mPkInfoPresenter);
-        initBaseInfo();
+        refreshBaseInfo();
     }
 
     @Override
@@ -269,7 +214,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        initBaseInfo();
+        refreshBaseInfo();
         mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), false);
         StatisticsAdapter.recordCountEvent("rank", "expose", null);
     }
@@ -301,15 +246,6 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         }
     }
 
-    private void initBaseInfo() {
-        mUserInfoTitle.showBaseInfo();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        initBaseInfo();
-    }
-
     @Override
     public void showRankView(UserRankModel userRankModel) {
         MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
@@ -339,6 +275,11 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         } else if (userRankModel.getBadge() == UserRankModel.SHANDIAN_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
         }
+    }
+
+    @Override
+    public void refreshBaseInfo() {
+        mUserInfoTitle.showBaseInfo();
     }
 
     private SpannableString highlight(String text, String target, boolean isUp) {

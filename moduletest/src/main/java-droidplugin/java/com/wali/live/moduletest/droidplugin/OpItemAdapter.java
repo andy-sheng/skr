@@ -36,7 +36,7 @@ import static com.morgoo.helper.compat.PackageManagerCompat.INSTALL_SUCCEEDED;
 
 public class OpItemAdapter extends RecyclerView.Adapter {
 
-    public final static String TAG = "OpItemAdapter";
+    public final String TAG = "OpItemAdapter";
 
     List<PackageData> mDataList = new ArrayList<>();
     Context mContext;

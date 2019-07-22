@@ -38,7 +38,7 @@ public interface RouterConstants {
 
     String ACTIVITY_LAST_FOLLOW = "/msg/LastFollowActivity";
 
-    String ACTIVITY_FRIEND_ROOM = "/busilib/GrabFriendRoomActivity";
+    String ACTIVITY_FRIEND_ROOM = "/busilib/FriendMoreRoomActivity";
     String ACTIVITY_RELATION = "/busilib/RelationActivity";
     String ACTIVITY_OTHER_PERSON = "/busilib/OtherPersonActivity";
 
@@ -73,6 +73,7 @@ public interface RouterConstants {
     String SERVICE_HOME = "/home/service1";
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
     String SERVICE_MSG = "/rongmsg/service1";
+    String SERVICE_FEEDS = "/feeds/service1";
     String SERVICE_GRAB_SERVICE = "/game/grab_service1";
     String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
 

@@ -47,7 +47,7 @@ import java.util.List;
  * ================================================
  */
 public class PlayWaysConfiguration implements ConfigModule {
-    public final static String TAG = "ChannelConfiguration";
+    public final String TAG = "ChannelConfiguration";
 
     @Override
     public void applyOptions(GlobalParams.Builder builder) {

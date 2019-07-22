@@ -35,7 +35,7 @@ import org.greenrobot.eventbus.EventBus;
  * 其他人主场景
  */
 public class NormalOthersSingCardView extends ExViewStub {
-    public final static String TAG = "OthersSingCardView";
+    public final String TAG = "OthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
 
     final static int COUNT_DOWN_STATUS_WAIT = 2;

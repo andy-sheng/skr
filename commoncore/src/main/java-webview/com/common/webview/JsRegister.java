@@ -17,7 +17,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
 public class JsRegister {
-    public final static String TAG = "JsRegister";
+    public final String TAG = "JsRegister";
     public static final String OPT = "opt";
     public static final String DATA = "data";
 

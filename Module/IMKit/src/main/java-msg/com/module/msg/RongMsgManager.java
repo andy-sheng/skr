@@ -63,7 +63,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public static final int MSG_RECONNECT = 11;
 
-    public final static String TAG = "RongMsgManager";
+    public final String TAG = "RongMsgManager";
 
     private static class RongMsgAdapterHolder {
         private static final RongMsgManager INSTANCE = new RongMsgManager();
@@ -300,6 +300,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     .enableHWPush(true)  // 配置华为推送
                     .enableMiPush("2882303761517932750", "5701793259750")
                     .enableOppoPush("b6476d0350bf448da381e589e232add8", "1b038723163d485b9d739ad9ee0fbe8e")
+                    .enableVivoPush(true)
                     .build();
             RongPushClient.setPushConfig(config);
             //RongPushClient.init(U.app(),rongKey);

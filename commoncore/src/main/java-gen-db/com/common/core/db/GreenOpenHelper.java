@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.Database;
  * Created by lan on 16/2/27.
  */
 public class GreenOpenHelper extends DaoMaster.OpenHelper {
-    public final static String TAG = "Core.GreenOpenHelper";
+    public final String TAG = "Core.GreenOpenHelper";
 
     public GreenOpenHelper(Context context, String name) {
         super(context, name);

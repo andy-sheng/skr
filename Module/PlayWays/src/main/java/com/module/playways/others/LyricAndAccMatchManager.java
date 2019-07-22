@@ -43,7 +43,7 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
  * 特别是 加入 agora token 验证后，播放音乐就有延迟了
  */
 public class LyricAndAccMatchManager {
-    public final static String TAG = "LyricAndAccMatchManager";
+    public final String TAG = "LyricAndAccMatchManager";
     static final int MSG_ENSURE_LAUNCHER = 1;
     static final int MSG_SHOW_SCORE_EVENT = 32;
 

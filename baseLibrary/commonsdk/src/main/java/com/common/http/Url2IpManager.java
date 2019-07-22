@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author chengsimin
  */
 public class Url2IpManager {
-    public final static String TAG = "Url2IpManager";
+    public final String TAG = "Url2IpManager";
 
     private Map<String, List<String>> mIpMaps = new ConcurrentHashMap<>();
 

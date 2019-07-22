@@ -8,9 +8,9 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.model.DoubleSyncModel
-import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo
-import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
-import com.module.playways.doubleplay.pbLocalModel.LocalUserLockInfo
+import com.module.playways.doubleplay.pbLocalModel.*
+import com.zq.live.proto.CombineRoom.EGameStage
+import com.zq.live.proto.Common.ESceneType
 import org.greenrobot.eventbus.EventBus
 import java.io.Serializable
 import java.util.*
@@ -29,7 +29,7 @@ class DoubleRoomData() : Serializable {
     /*
      点第一首歌前是未开始，点第一首之后是开始状态
      */
-    var doubleGameState = DoubleGameState.HAS_NOT_START
+    var doubleGameState = DoubleGameState.START
 
     /*
      状态同步时的毫秒时间戳
@@ -82,6 +82,18 @@ class DoubleRoomData() : Serializable {
 
     var inviterId: Long? = null
 
+    var gameSenceDataModel: LocalGameSenceDataModel? = null
+
+    /**
+     * 这个是第一次进入游戏场景的时候的数据
+     */
+    var localGamePanelInfo: LocalGamePanelInfo? = null
+
+    /**
+     * 当前场景，默认是0
+     */
+    var sceneType: Int = 0
+
     init {
 
     }
@@ -94,6 +106,8 @@ class DoubleRoomData() : Serializable {
             }
 
             setData(model)
+        } else {
+            MyLog.w(Tag, "syncRoomInfo doubleGameState == DoubleGameState.END")
         }
     }
 
@@ -101,8 +115,54 @@ class DoubleRoomData() : Serializable {
         MyLog.d(Tag, "setData model is " + model.toString())
         syncStatusTimeMs = model.syncStatusTimeMs
         passedTimeMs = model.passedTimeMs
-        updateCombineRoomMusic(model.currentMusic, model.nextMusicDesc, model.isHasNextMusic)
+        if (sceneType != model.curScene) {
+            EventBus.getDefault().post(UpdateRoomSceneEvent(sceneType, model.curScene))
+            sceneType = model.curScene
+        }
+
+        if (model.curScene == ESceneType.ST_Chat.value) {
+            model.localChatSenceDataModel?.let {
+                updateChatSceneData(model.localChatSenceDataModel)
+            }
+        } else if (model.curScene == ESceneType.ST_Game.value) {
+            model.localGameSenceDataModel?.let {
+                updateGameSceneData(model.localGameSenceDataModel)
+            }
+        } else if (model.curScene == ESceneType.ST_Sing.value) {
+            model.localSingSenceDataModel?.let {
+                updateCombineRoomMusic(model.localSingSenceDataModel.currentMusic, model.localSingSenceDataModel.nextMusicDesc, model.localSingSenceDataModel.isHasNextMusic)
+            }
+        }
+
         updateLockInfo(model.userLockInfo, model.isEnableNoLimitDuration)
+    }
+
+    fun changeScene(sceneType: Int) {
+        if (this.sceneType != sceneType) {
+            EventBus.getDefault().post(UpdateRoomSceneEvent(this.sceneType, sceneType))
+            this.sceneType = sceneType
+        }
+    }
+
+    fun updateGameSceneData(localGameSenceDataModel: LocalGameSenceDataModel) {
+        if (gameSenceDataModel == null) {
+            gameSenceDataModel = localGameSenceDataModel
+            EventBus.getDefault().post(UpdateGameSceneEvent(localGameSenceDataModel))
+        } else {
+            if (gameSenceDataModel?.gameStage != localGameSenceDataModel.gameStage) {
+                EventBus.getDefault().post(UpdateGameSceneEvent(localGameSenceDataModel))
+            } else {
+                if (gameSenceDataModel?.gameStage == EGameStage.GS_ChoicGameItem.value && gameSenceDataModel?.panelSeq != localGameSenceDataModel.panelSeq) {
+                    EventBus.getDefault().post(UpdateGameSceneEvent(localGameSenceDataModel))
+                } else if (gameSenceDataModel?.gameStage == EGameStage.GS_InGamePlay.value && gameSenceDataModel?.itemID != localGameSenceDataModel.itemID) {
+                    EventBus.getDefault().post(UpdateGameSceneEvent(localGameSenceDataModel))
+                }
+            }
+        }
+    }
+
+    fun updateChatSceneData(localChatSenceDataModel: LocalChatSenceDataModel) {
+
     }
 
     fun updateCombineRoomMusic(localCombineRoomMusic: LocalCombineRoomMusic?, nextMusicDesc: String?, hasNext: Boolean) {
@@ -124,11 +184,7 @@ class DoubleRoomData() : Serializable {
         if (this.localCombineRoomMusic == null) {
             //localCombineRoomMusic == null 表示之前没有歌曲，localCombineRoomMusic.music == null表示游戏还没开始，还没有人点歌
             if (localCombineRoomMusic.music != null) {
-                if (doubleGameState == DoubleGameState.HAS_NOT_START) {
-                    doubleGameState = DoubleGameState.START
-                }
-
-                EventBus.getDefault().post(StartDoubleGameEvent(localCombineRoomMusic, nextMusicDesc, hasNext))
+                EventBus.getDefault().post(StartSingEvent(localCombineRoomMusic, nextMusicDesc, hasNext))
             }
         } else if (this.localCombineRoomMusic!!.uniqTag.equals(localCombineRoomMusic.uniqTag)) {
             //还是这个歌曲
@@ -310,7 +366,7 @@ class DoubleRoomData() : Serializable {
 
     //未开始，已开始，已结束
     enum class DoubleGameState constructor(private val status: Int?) {
-        HAS_NOT_START(0), START(1), END(2);
+        START(1), END(2);
 
         val value: Int
             get() = status!!
@@ -346,6 +402,8 @@ class DoubleRoomData() : Serializable {
 
             doubleRoomData.tokens = JSON.parseArray(obj.getString("tokens"), LocalAgoraTokenInfo::class.java)
             doubleRoomData.needMaskUserInfo = obj.getBooleanValue("needMaskUserInfo")
+            doubleRoomData.localGamePanelInfo = LocalGamePanelInfo.json2LocalModel(obj.getJSONObject("gamePanelInfo"))
+            doubleRoomData.sceneType = obj.getIntValue("currentSceneType")
             return doubleRoomData
         }
     }

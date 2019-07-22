@@ -16,7 +16,7 @@ import com.orhanobut.dialogplus.ViewHolder;
 import java.util.List;
 
 public abstract class SkrBasePermission {
-    public final static String TAG = "SkrPermission";
+    public final String TAG = "SkrPermission";
     TipsDialogView mTipsDialogView;
     boolean mHasGoPermission = false;
     String mPermissionStr;

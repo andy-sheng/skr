@@ -23,7 +23,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 
 public class RankTopContainerView1 extends RelativeLayout {
-    public final static String TAG = "TopContainerView";
+    public final String TAG = "TopContainerView";
     ExImageView mMoreBtn;
     ScoreProgressBarWithSvga mScoreProgressBar;
     //    BaseImageView mAvatarIv;

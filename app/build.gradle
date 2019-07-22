@@ -7,6 +7,13 @@ if (walleEnable.toBoolean()) {
     apply plugin: 'walle'
 }
 
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
+//kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
+apply plugin: 'kotlin-kapt'
+
 if (MatrixEnable.toBoolean()) {
     apply plugin: 'com.tencent.matrix-plugin'
     matrix {
@@ -52,66 +59,6 @@ android {
                 resValue("string", "channel_desc", '小米应用商店')
             }
 
-            channel_yyb {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"YYB_SHOP\"')
-                resValue("string", "channel_desc", '应用宝')
-            }
-
-            channel_360 {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"360_SHOP\"')
-                resValue("string", "channel_desc", '360应用商店')
-            }
-
-            channel_oppo {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"OPPO_SHOP\"')
-                resValue("string", "channel_desc", 'oppo应用商店')
-            }
-
-            channel_vivo {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"VIVO_SHOP\"')
-                resValue("string", "channel_desc", 'vivo应用商店')
-            }
-
-            channel_huawei {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"HUAWEI_SHOP\"')
-                resValue("string", "channel_desc", '华为应用商店')
-            }
-
-            channel_baidu {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"BAIDU_SHOP\"')
-                resValue("string", "channel_desc", '百度应用商店')
-            }
-
-            channel_kuaishou {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"KUAISHOU_SHOP\"')
-                resValue("string", "channel_desc", '快手应用商店')
-            }
-
-            channel_toutiao {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"TOUTIAO_SHOP\"')
-                resValue("string", "channel_desc", '头条应用商店')
-            }
-
-            channel_douyin {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"DOUYIN_SHOP\"')
-                resValue("string", "channel_desc", '抖音应用商店')
-            }
-
-            channel_market2 {
-                flavorDimensions("channel")
-                buildConfigField("String", "CHANNEL_NAME", '\"MARKET2\"')
-                resValue("string", "channel_desc", '自定义渠道2')
-            }
-
             channel_dev {
                 flavorDimensions("channel")
                 buildConfigField("String", "CHANNEL_NAME", '\"DEV\"')
@@ -137,9 +84,9 @@ android {
     }
 
     defaultConfig {
-        if(compileModuleTest.toBoolean()){
+        if (compileModuleTest.toBoolean()) {
             applicationId "com.bytedance.labcv.demo"
-        }else{
+        } else {
             applicationId "com.zq.live"
         }
 
@@ -168,21 +115,25 @@ android {
         resConfigs "zh"
         if (JPushEnable.toBoolean()) {
             manifestPlaceholders = [
-                    JPUSH_PKGNAME : "com.zq.live",
-                    JPUSH_APPKEY  : "9172d83ddf6a6a1ab46d6dc3", //JPush 上注册的包名对应的 Appkey.
-                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
-                    XIAOMI_APPKEY : "MI‐5701793259750",//小米平台注册的appkey
-                    XIAOMI_APPID  : "MI‐2882303761517932750",//小米平台注册的appid
-                    HUAWEI_APPID  : "100590735",//华为平台注册的appid
-                    MEIZU_APPKEY  : "MZ‐5c60db9001484b70adfad7321133c051",//魅族平台注册的appkey
-                    MEIZU_APPID   : "MZ‐120073",//魅族平台注册的appid
-                    OPPO_APPKEY   : "OP‐b6476d0350bf448da381e589e232add8", // OPPO平台注册的appkey
-                    OPPO_APPID    : "OP‐3733726", // OPPO平台注册的appid
-                    OPPO_APPSECRET: "OP‐1b038723163d485b9d739ad9ee0fbe8e",//OPPO平台注册的appsecret
-                    //TODO vivo 平台 push 通道 申请失败。目前用的测试的推送类型
-                    VIVO_APPKEY   : "5c26c7b0-8e5c-477e-96a1-294559c71da1", // VIVO平台注册的appkey
-                    VIVO_APPID    : "13303", // VIVO平台注册的appid
+                    JPUSH_PKGNAME: "com.zq.live",
+                    JPUSH_APPKEY : "9172d83ddf6a6a1ab46d6dc3", //JPush 上注册的包名对应的 Appkey.
+                    JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
             ]
+            if (RomPushUseJiGuang.toBoolean()) {
+                manifestPlaceholders += [
+                        XIAOMI_APPKEY : "MI‐5701793259750",//小米平台注册的appkey
+                        XIAOMI_APPID  : "MI‐2882303761517932750",//小米平台注册的appid
+                        HUAWEI_APPID  : "100590735",//华为平台注册的appid
+                        MEIZU_APPKEY  : "MZ‐5c60db9001484b70adfad7321133c051",//魅族平台注册的appkey
+                        MEIZU_APPID   : "MZ‐120073",//魅族平台注册的appid
+                        OPPO_APPKEY   : "OP‐b6476d0350bf448da381e589e232add8", // OPPO平台注册的appkey
+                        OPPO_APPID    : "OP‐3733726", // OPPO平台注册的appid
+                        OPPO_APPSECRET: "OP‐1b038723163d485b9d739ad9ee0fbe8e",//OPPO平台注册的appsecret
+                        //TODO vivo 平台 push 通道 申请失败。目前用的测试的推送类型
+                        VIVO_APPKEY   : "bf106171-18fc-497a-8544-532b3b9aafe2", // VIVO平台注册的appkey
+                        VIVO_APPID    : "13605", // VIVO平台注册的appid
+                ]
+            }
         }
     }
 
@@ -282,11 +233,12 @@ dependencies {
         implementation project(":Module:Home")
         implementation project(":Module:PlayWays")
         implementation project(":Module:IMKit")
+        implementation project(":Module:Feeds")
 //        implementation project(":Module:DoublePlayMode")
         //api(rootProject.ext.dependencies["multidex"])
 //        implementation project(":Module:IMLib")
         //  tools
-        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
     }
 }
 

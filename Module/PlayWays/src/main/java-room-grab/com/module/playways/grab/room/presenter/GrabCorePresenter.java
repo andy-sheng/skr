@@ -38,7 +38,7 @@ import com.component.busilib.recommend.RA;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
@@ -73,8 +73,8 @@ import com.module.playways.grab.room.model.NumericDetailModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
-import com.module.playways.grab.room.songmanager.event.BeginRecordCustomGameEvent;
-import com.module.playways.grab.room.songmanager.event.RoomNameChangeEvent;
+import com.module.playways.songmanager.event.MuteAllVoiceEvent;
+import com.module.playways.songmanager.event.RoomNameChangeEvent;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
@@ -110,7 +110,6 @@ import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentSysModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
-import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.score.MachineScoreItem;
 import com.module.playways.room.room.score.RobotScoreHelper;
 import com.module.playways.room.song.model.SongModel;
@@ -209,13 +208,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     break;
                 case MSG_RECOVER_VOLUME:
                     if (mEngineParamsTemp != null) {
-                        ZqEngineKit.getInstance().adjustAudioMixingVolume(mEngineParamsTemp.audioVolume, false);
+                        ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(mEngineParamsTemp.audioVolume, false);
                         ZqEngineKit.getInstance().adjustRecordingSignalVolume(mEngineParamsTemp.recordVolume, false);
 
                         if (ZqEngineKit.getInstance().getParams().isAnchor()) {
-                            int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
+                            int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingPlayoutVolume();
                             int recordVolume = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
-                            ZqEngineKit.getInstance().adjustAudioMixingVolume(audioVolume, false);
+                            ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume(audioVolume, false);
                             ZqEngineKit.getInstance().adjustRecordingSignalVolume(recordVolume, false);
                         } else {
                             MyLog.d(TAG, "我不是主播，忽略");
@@ -503,7 +502,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             .setArtist(now.getMusic().getOwner())
                             .setMode(RecognizeConfig.MODE_AUTO)
                             .setAutoTimes(3)
-                            .setMResultListener(new ArcRecognizeListener() {
+                            .setMResultListener(new AcrRecognizeListener() {
                                 @Override
                                 public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                                     int mAcrScore = 0;
@@ -643,11 +642,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         SongModel songModel = null;
         if (infoModel != null && infoModel.getMusic() != null) {
-//            HashMap map1 = new HashMap();
-//            map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-//            map.put("songName", infoModel.getMusic().getItemName());
-//            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                    "game_grab", map1);
             songModel = infoModel.getMusic();
         }
 
@@ -1471,7 +1465,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
             public void onNext(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
                     onChangeRoomSuccess(joinGrabRoomRspModel);
                 } else {
@@ -1491,7 +1484,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mSwitchRooming = false;
                 mIGrabView.onChangeRoomResult(false, "网络错误");
             }
-        }, this);
+        }, this,new ApiMethods.RequestControl("changeRoom", ApiMethods.ControlType.CancelThis));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1502,6 +1495,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onChangeRoomSuccess(JoinGrabRoomRspModel joinGrabRoomRspModel) {
         MyLog.d(TAG, "onChangeRoomSuccess" + " joinGrabRoomRspModel=" + joinGrabRoomRspModel);
         if (joinGrabRoomRspModel != null) {
+            EventBus.getDefault().post(new GrabSwitchRoomEvent());
             stopGuide();
             mRoomData.loadFromRsp(joinGrabRoomRspModel);
             joinRoomAndInit(false);
@@ -1983,10 +1977,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.sendEmptyMessageDelayed(MSG_RECOVER_VOLUME, time);
         if (ZqEngineKit.getInstance().getParams().isAnchor()) {
             if (mEngineParamsTemp == null) {
-                int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingVolume();
+                int audioVolume = ZqEngineKit.getInstance().getParams().getAudioMixingPlayoutVolume();
                 int recordVolume = ZqEngineKit.getInstance().getParams().getRecordingSignalVolume();
                 mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
-                ZqEngineKit.getInstance().adjustAudioMixingVolume((int) (audioVolume * 0.2), false);
+                ZqEngineKit.getInstance().adjustAudioMixingPlayoutVolume((int) (audioVolume * 0.2), false);
                 ZqEngineKit.getInstance().adjustRecordingSignalVolume((int) (recordVolume * 0.2), false);
             }
         } else {
@@ -2579,7 +2573,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(BeginRecordCustomGameEvent event) {
+    public void onEvent(MuteAllVoiceEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         if (event.getBegin()) {
             muteAllRemoteAudioStreams(true, false);

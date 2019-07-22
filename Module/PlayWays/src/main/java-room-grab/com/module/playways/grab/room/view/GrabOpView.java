@@ -41,7 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * 倒计时 抢 灭 等按钮都在上面
  */
 public class GrabOpView extends RelativeLayout {
-    public final static String TAG = "GrabOpView";
+    public final String TAG = "GrabOpView";
     public long mShowBurstTime = 15000;
     public long mShowLightOffTime = 5000;
 
@@ -163,7 +163,6 @@ public class GrabOpView extends RelativeLayout {
                     if (mStatus == STATUS_GRAP) {
                         if (mListener != null) {
                             mListener.clickGrabBtn(mSeq, false);
-                            StatisticsAdapter.recordCountEvent("grab", "game_grab", null);
                         }
                     }
                 }
@@ -197,9 +196,7 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                                "game_like", null);
-//                        mIvBurst.setEnabled(false);
+
                     }
                 }
             }
@@ -212,8 +209,7 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickLightOff();
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                                "game_dislike", null);
+
                     }
                 }
             }

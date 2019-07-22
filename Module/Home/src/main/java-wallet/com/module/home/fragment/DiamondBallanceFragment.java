@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class DiamondBallanceFragment extends BaseFragment {
-    public final static String TAG = "DiamondBallanceFragment";
+    public final String TAG = "DiamondBallanceFragment";
     LinearLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     ImageView mIvDiamondIcon;

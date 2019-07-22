@@ -92,7 +92,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
                                                         .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
                                                         .withInt("mFrom", FROM_CREATE_GRAB_ROOM)
                                                         .withSerializable("mSpecialModel", model)
-                                                        .withInt("mRoomType",mRoomType)
+                                                        .withInt("mRoomType", mRoomType)
                                                         .navigation();
                                                 //createRoom(model);
                                             }
@@ -105,7 +105,12 @@ public class GrabCreateSpecialFragment extends BaseFragment {
                         mSkrAudioPermission.ensurePermission(new Runnable() {
                             @Override
                             public void run() {
-                                createRoom(model);
+                                mRealNameVerifyUtils.checkJoinAudioPermission(model.getTagID(), new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        createRoom(model);
+                                    }
+                                });
                             }
                         }, true);
                     }

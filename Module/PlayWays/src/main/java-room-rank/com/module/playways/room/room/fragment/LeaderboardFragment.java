@@ -47,7 +47,7 @@ import java.util.List;
  */
 public class LeaderboardFragment extends BaseFragment implements ILeaderBoardView {
 
-    public final static String TAG = "LeaderboardFragment";
+    public final String TAG = "LeaderboardFragment";
 
     RecyclerView mRecyclerView;
 

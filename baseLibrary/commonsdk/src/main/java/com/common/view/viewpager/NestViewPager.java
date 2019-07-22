@@ -19,7 +19,7 @@ import com.common.log.MyLog;
  */
 
 public class NestViewPager extends ViewPager {
-    public final static String TAG = "NestViewPager";
+    public final String TAG = "NestViewPager";
 
     private boolean mCanScroll = true;
 

@@ -23,6 +23,7 @@ message RoomMsg {
     CommentMsg commentMsg = 10; // 评论消息 msgType == RM_COMMENT
     SpecialEmojiMsg specialEmojiMsg = 11; // 特殊表情消息  msgType == RM_SPECIAL_EMOJI
     DynamicEmojiMsg dynamicemojiMsg = 12; // 动态表情消息  msgType == RM_DYNAMIC_EMOJI
+    AudioMsg audioMsg = 13; //语音消息
 
     JoinActionMsg joinActionMsg = 100; //加入游戏指令消息 msgType == RM_JOIN_ACTION
     JoinNoticeMsg joinNoticeMsg = 101; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
@@ -64,6 +65,7 @@ message RoomMsg {
     QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg = 132; //一唱到底：spk模式内部轮次结束
     QChangeRoomName qChangeRoomName = 133; //一唱到底：房主修改房间名称
     GPrensentGiftMsg gPrensentGiftMsg = 134; //送礼物
+
 }
 
 // ERoomMsgType 房间消息类型
@@ -73,6 +75,7 @@ enum ERoomMsgType {
     RM_COMMENT = 10; //普通评论消息
     RM_SPECIAL_EMOJI = 11; //特殊表情消息
     RM_DYNAMIC_EMOJI = 12; //动态表情消息
+    RM_AUDIO_MSG = 13; //语音消息
 
     RM_JOIN_ACTION = 100; //加入游戏指令消息
     RM_JOIN_NOTICE = 101; //加入游戏通知消息
@@ -450,6 +453,14 @@ message ReadyAndStartNoticeMsg {
 message CommentMsg {
     string text = 1; //发表内容
     repeated Common.UserInfo receiver = 2; //接收者信息
+}
+
+// 语音消息
+message AudioMsg
+{
+    string msgUrl              = 1; //语音内容地址
+    repeated Common.UserInfo receiver = 2; //接收者信息
+    sint64 duration = 3; //语音时长
 }
 
 message QJoinActionMsg {

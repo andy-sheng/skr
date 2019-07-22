@@ -14,7 +14,7 @@ import java.util.List;
  * 每种模式的房间内状态信息都由其存储
  */
 public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Serializable {
-    public final static String TAG = "RoomData";
+    public final String TAG = "RoomData";
 
     public final static String RANK_BATTLE_START_SVGA = "http://res-static.inframe.mobi/app/rank_battle_start.svga";
     public final static String RANK_RESULT_WIN_SVGA = "http://res-static.inframe.mobi/app/rank_result_win.svga";

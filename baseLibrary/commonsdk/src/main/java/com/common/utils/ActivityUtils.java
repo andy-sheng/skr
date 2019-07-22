@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ActivityUtils {
-    public final static String TAG = "ActivityUtils";
+    public final String TAG = "ActivityUtils";
 
     ActivityUtils() {
 

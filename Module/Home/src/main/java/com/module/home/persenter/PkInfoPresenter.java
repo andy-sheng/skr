@@ -1,6 +1,7 @@
 package com.module.home.persenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserLevelModel;
@@ -12,6 +13,10 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.home.view.IPkInfoView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -25,6 +30,10 @@ public class PkInfoPresenter extends RxLifeCyclePresenter {
     public PkInfoPresenter(IPkInfoView view) {
         this.mView = view;
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        addToLifeCycle();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     /**
@@ -85,5 +94,18 @@ public class PkInfoPresenter extends RxLifeCyclePresenter {
                 U.getToastUtil().showShort("网络超时");
             }
         }, this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        mView.refreshBaseInfo();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

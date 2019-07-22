@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 
 public class SPkRoundInfoModel implements Serializable {
-    public final static String TAG = "SPkRoundInfoModel";
+    public final String TAG = "SPkRoundInfoModel";
 
     int userID;
     int singBeginMs;

@@ -16,7 +16,7 @@ import com.module.home.model.WithDrawInfoModel;
 import java.util.List;
 
 public class WalletRecordPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "WalletRecordPresenter";
+    public final String TAG = "WalletRecordPresenter";
 
     WalletServerApi mWalletServerApi;
     IWalletView mIWalletView;

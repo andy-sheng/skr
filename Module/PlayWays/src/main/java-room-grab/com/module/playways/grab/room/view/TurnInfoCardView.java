@@ -17,7 +17,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 
 public class TurnInfoCardView extends RelativeLayout {
 
-    public final static String TAG = "TurnInfoCardView";
+    public final String TAG = "TurnInfoCardView";
 
     public static final int MODE_SONG_SEQ = 1;
     public static final int MODE_BATTLE_BEGIN = 2;

@@ -130,6 +130,7 @@
         <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
         <!--android:resource="@xml/rc_file_path"/>-->
         <!--</provider>-->
+
     </application>
 
 </manifest>

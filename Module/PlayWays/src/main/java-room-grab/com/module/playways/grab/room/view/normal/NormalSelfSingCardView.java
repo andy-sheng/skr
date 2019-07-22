@@ -16,7 +16,7 @@ import com.module.playways.R;
  * 你的主场景歌词
  */
 public class NormalSelfSingCardView extends ExViewStub {
-    public final static String TAG = "SelfSingCardView2";
+    public final String TAG = "SelfSingCardView2";
 
     GrabRoomData mRoomData;
 

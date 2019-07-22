@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Map;
 
 public class UmengPush {
-    public final static String TAG = "UmengPush";
+    public final String TAG = "UmengPush";
 
     static String sDeviceToken = "";
 

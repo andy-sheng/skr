@@ -41,8 +41,7 @@ public class LocalAgoraTokenInfo implements Serializable {
             return localAgoraTokenInfo;
         }
 
-        for (AgoraTokenInfo info :
-                agoraTokenInfo) {
+        for (AgoraTokenInfo info : agoraTokenInfo) {
             localAgoraTokenInfo.add(toLocalAgoraTokenInfo(info));
         }
 

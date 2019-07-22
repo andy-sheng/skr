@@ -16,6 +16,7 @@ public abstract class CommentModel {
     public static final int TYPE_LIGHT = 102;    // 爆灭灯消息
     public static final int TYPE_DYNAMIC = 103;  // 特殊表情消息
     public static final int TYPE_GIFT = 104;     // 礼物消息
+    public static final int TYPE_AUDIO = 105;    // 语音消息
 
     public static final int AVATAR_COLOR = Color.WHITE;     // 头像圈的颜色
 

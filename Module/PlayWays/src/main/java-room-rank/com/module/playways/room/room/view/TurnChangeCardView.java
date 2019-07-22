@@ -36,7 +36,7 @@ import java.io.File;
 
 public class TurnChangeCardView extends RelativeLayout {
 
-    public final static String TAG = "TurnChangeCardView";
+    public final String TAG = "TurnChangeCardView";
 
     RankRoomData mRoomData;
 

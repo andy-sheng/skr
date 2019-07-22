@@ -49,7 +49,7 @@ import java.util.List;
  * ================================================
  */
 public class CoreConfiguration implements ConfigModule {
-    public final static String TAG = "CoreConfiguration";
+    public final String TAG = "CoreConfiguration";
 
     @Override
     public void applyOptions(GlobalParams.Builder builder) {

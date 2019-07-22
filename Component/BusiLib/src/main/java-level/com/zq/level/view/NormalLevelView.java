@@ -32,7 +32,7 @@ import java.util.List;
 // 正常的段位 到铂金段位 星星是斜着排的
 public class NormalLevelView extends RelativeLayout {
 
-    public final static String TAG = "NormalLevelView";
+    public final String TAG = "NormalLevelView";
 
     int mainWidth = U.getDisplayUtils().dip2px(99);  // 主段位宽度
     int mainHeight = U.getDisplayUtils().dip2px(86); // 主段位高度

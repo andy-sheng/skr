@@ -8,7 +8,7 @@ import com.common.utils.U;
 
 public abstract class DebounceViewClickListener implements View.OnClickListener {
 
-    public final static String TAGDEB = "DebounceViewClickListener";
+    public final String TAGDEB = "DebounceViewClickListener";
 
     int debounceTime = CommonUtils.FAST_DOUBLE_CLICK_INTERVAL;
 

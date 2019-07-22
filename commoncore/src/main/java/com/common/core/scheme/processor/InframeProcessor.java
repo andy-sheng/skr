@@ -12,6 +12,7 @@ import com.common.core.scheme.SchemeUtils;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
+import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -95,6 +96,23 @@ public class InframeProcessor implements ISchemeProcessor {
                         return ProcessResult.AcceptedAndReturn;
                 }
             }
+        } else if ("rong".equals(scheme)) {
+            if (beforeHomeExistJudge) {
+
+            } else {
+                if (!UserAccountManager.getInstance().hasAccount()) {
+                    MyLog.w(TAG, "processWebUrl 没有登录");
+                    return ProcessResult.AcceptedAndReturn;
+                }
+                String path = uri.getPath();
+                if (TextUtils.isEmpty(path)) {
+                    MyLog.w(TAG, "processWalletUrl path is empty");
+                    return ProcessResult.AcceptedAndReturn;
+                }
+                if ("/conversationlist".equals(path)) {
+                    EventBus.getDefault().post(new JumpHomeFromSchemeEvent(1));
+                }
+            }
         }
         return ProcessResult.NotAccepted;
     }
@@ -145,6 +163,7 @@ public class InframeProcessor implements ISchemeProcessor {
                     .withBoolean("selectSong", true)
                     .navigation();
         } else if (SchemeConstants.PATH_GRAB_MATCH.equals(path)) {
+
         } else {
 
         }
@@ -155,6 +174,7 @@ public class InframeProcessor implements ISchemeProcessor {
         if ("/grabjoin".equals(path)) {
             int ownerId = SchemeUtils.getInt(uri, "owner", 0);
             int roomId = SchemeUtils.getInt(uri, "gameId", 0);
+            int tagId = SchemeUtils.getInt(uri, "tagId", 0);
             int ask = SchemeUtils.getInt(uri, "ask", 0);
             int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
             if (ownerId > 0 && roomId > 0) {
@@ -166,6 +186,7 @@ public class InframeProcessor implements ISchemeProcessor {
                 event.ask = ask;
                 event.ownerId = ownerId;
                 event.roomId = roomId;
+                event.tagId = tagId;
                 event.mediaType = mediaType;
                 EventBus.getDefault().post(event);
             }
@@ -208,6 +229,8 @@ public class InframeProcessor implements ISchemeProcessor {
                     }
                 }
             }, true);
+        } else if ("/chat_page".equals(path)) {
+            EventBus.getDefault().post(new JumpHomeDoubleChatPageEvent());
         }
     }
 
@@ -218,7 +241,7 @@ public class InframeProcessor implements ISchemeProcessor {
                     .navigation();
         } else if ("/jump_person_center".equals(path)) {
             // 跳到个人中心
-            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(3));
+            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(2));
         }
     }
 

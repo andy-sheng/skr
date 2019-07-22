@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class VoiceUserStatusView extends RelativeLayout {
 
-    public final static String TAG = "VoiceUserStatusView";
+    public final String TAG = "VoiceUserStatusView";
 
     static final int MSG_SPEAK_OVER = 1;
     SVGAImageView mSpeakerSvga;

@@ -28,7 +28,7 @@ import java.util.List;
  * 看大图的Fragment
  */
 public class BigImageBrowseFragment extends BaseFragment {
-    public final static String TAG = "ImageBigPreviewFragment";
+    public final String TAG = "ImageBigPreviewFragment";
     public final static String BIG_IMAGE_PATH = "big_image_path";
 
     CommonTitleBar mTitlebar;

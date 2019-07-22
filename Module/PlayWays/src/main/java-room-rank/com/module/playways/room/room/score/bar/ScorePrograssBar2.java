@@ -24,7 +24,7 @@ import com.module.playways.R;
 
 public class ScorePrograssBar2 extends View {
 
-    public final static String TAG = "ScorePrograssBar2";
+    public final String TAG = "ScorePrograssBar2";
 
     DrawableWithLocation mLevelDrawables[];
 

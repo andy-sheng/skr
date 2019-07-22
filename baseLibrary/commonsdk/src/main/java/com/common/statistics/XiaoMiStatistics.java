@@ -11,7 +11,7 @@ package com.common.statistics;
  */
 public class XiaoMiStatistics {
 //
-//    public final static String TAG = "XiaoMiStatistics";
+//    public final String TAG = "XiaoMiStatistics";
 //
 ////    static final String MI_STAT_APP_ID = "2882303761517890001";
 ////    static final String MI_STAT_APP_KEY = "5671789084001";

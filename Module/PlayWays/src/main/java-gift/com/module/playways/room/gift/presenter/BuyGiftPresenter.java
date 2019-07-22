@@ -47,7 +47,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class BuyGiftPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "BuyGiftPresenter";
+    public final String TAG = "BuyGiftPresenter";
     public final static int ErrZSNotEnough = 8362101; //钻石余额不足，充值后就可以送礼啦
     public final static int ErrPresentObjLeave = 8362102; //送礼对象已离开，请重新选择
     public final static int ErrCoinNotEnough = 8362103; //金币余额不足，充值后就可以送礼啦

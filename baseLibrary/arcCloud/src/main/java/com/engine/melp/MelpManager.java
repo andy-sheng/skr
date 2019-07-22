@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
  */
 public class MelpManager {
 
-    public final static String TAG = "MelpManager";
+    public final String TAG = "MelpManager";
 
     static final int BUFFER_LEN = 500 * 2048;  //足够大，必须要放下一句歌词
 

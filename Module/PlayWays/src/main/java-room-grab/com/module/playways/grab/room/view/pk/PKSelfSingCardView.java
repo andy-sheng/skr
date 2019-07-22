@@ -23,7 +23,7 @@ import java.util.List;
 
 public class PKSelfSingCardView extends ExViewStub {
 
-    public final static String TAG = "PKSelfSingCardView";
+    public final String TAG = "PKSelfSingCardView";
 
     SelfSingLyricView mPkSelfSingLyricView;
     PKSingCardView mPkSingCardView;

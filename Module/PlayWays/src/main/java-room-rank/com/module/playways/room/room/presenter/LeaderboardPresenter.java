@@ -17,7 +17,7 @@ import java.util.List;
 
 public class LeaderboardPresenter extends RxLifeCyclePresenter {
 
-    public final static String TAG = "LeaderboardPresenter";
+    public final String TAG = "LeaderboardPresenter";
 
     UserInfoServerApi mUserInfoServerApi;
 

@@ -23,7 +23,6 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.module.common.ICallback;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.invite.view.InviteFriendView;
 import com.module.playways.grab.room.invite.view.InviteShareFriendView;
 import com.module.playways.grab.room.invite.model.ShareModel;
@@ -32,14 +31,13 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zq.dialog.InviteFriendDialog;
-import com.zq.live.proto.Common.EMsgRoomMediaType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class InviteFriendFragment2 extends BaseFragment {
-    public final static String TAG = "InviteFriendFragment2";
+    public final String TAG = "InviteFriendFragment2";
 
     public final static int FROM_GRAB_ROOM = 1;
     public final static int FROM_DOUBLE_ROOM = 2;
@@ -58,7 +56,8 @@ public class InviteFriendFragment2 extends BaseFragment {
     String mKouLingToken = "";
     int mFrom;
     int mGameID;
-    int mediaType;
+    int mTagID;
+    int mMediaType;
 
     @Override
     public int initView() {
@@ -85,12 +84,12 @@ public class InviteFriendFragment2 extends BaseFragment {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
             mTitleList.put(0, "好友");
             mTitleList.put(1, "粉丝");
-            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, UserInfoManager.RELATION.FRIENDS.getValue()));
-            mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, mGameID, UserInfoManager.RELATION.FANS.getValue()));
+            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FRIENDS.getValue()));
+            mTitleAndViewMap.put(1, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FANS.getValue()));
         } else {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.transparent));
             mTitleList.put(0, "好友");
-            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, UserInfoManager.RELATION.FRIENDS.getValue()));
+            mTitleAndViewMap.put(0, new InviteFriendView(this, mFrom, mGameID, mTagID, UserInfoManager.RELATION.FRIENDS.getValue()));
         }
 
 
@@ -193,7 +192,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         });
 
         if (mFrom == FROM_GRAB_ROOM) {
-            SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mediaType, new ICallback() {
+            SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mTagID, mMediaType, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -207,7 +206,7 @@ public class InviteFriendFragment2 extends BaseFragment {
                 }
             });
         } else {
-            SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mediaType, new ICallback() {
+            SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mMediaType, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -280,9 +279,9 @@ public class InviteFriendFragment2 extends BaseFragment {
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
             if (mFrom == FROM_DOUBLE_ROOM) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID, mediaType, mKouLingToken);
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID,0, mMediaType, mKouLingToken);
             } else {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID, mediaType, mKouLingToken);
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID,mTagID, mMediaType, mKouLingToken);
             }
         }
         mInviteFriendDialog.show();
@@ -296,7 +295,9 @@ public class InviteFriendFragment2 extends BaseFragment {
         } else if (type == 1) {
             mGameID = (Integer) data;
         } else if (type == 2) {
-            mediaType = (Integer) data;
+            mMediaType = (Integer) data;
+        } else if (type == 3) {
+            mTagID = (Integer) data;
         }
     }
 

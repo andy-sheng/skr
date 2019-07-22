@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
  */
 
 public class IFAudioEffectEngine {
-    public final static String TAG = "IFAudioEffectEngine";
+    public static final String TAG = "IFAudioEffectEngine";
 
     static {
         try {

@@ -188,7 +188,6 @@ public class RankResultFragment extends BaseFragment {
                         @Override
                         public void onCompletion() {
                             super.onCompletion();
-                            mIPlayer.stop();
                             view.playComplete();
                         }
                     });

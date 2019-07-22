@@ -66,7 +66,7 @@ class SelectSexDialogView(context: Context?, attrs: AttributeSet? = null, defSty
     }
 
     fun reset() {
-        StatisticsAdapter.recordCountEvent("cp", "filter_expose", null)
+        StatisticsAdapter.recordCountEvent("game_cp", "filter_expose", null)
         mFindMaleIv?.isSelected = false
         mFindFemaleIv?.isSelected = false
         mMeMaleIv?.isSelected = false

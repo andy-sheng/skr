@@ -66,7 +66,7 @@ import static android.view.View.VISIBLE;
 
 public class RankLevelChangeFragment2 extends BaseFragment {
 
-    public final static String TAG = "RankLevelChange2Fragment";
+    public final String TAG = "RankLevelChange2Fragment";
 
     RelativeLayout mMainActContainer;
     ImageView mBackgroundIv;
@@ -355,8 +355,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
                             .withSerializable("voice_room_data", mRoomData)
                             .navigation();
                     activity.finish();
-//                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-//                            StatConstants.KEY_GAME_FINISH, null);
+
                 }
             }
         }, 1000);

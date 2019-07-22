@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class FragmentUtils {
 
-    public final static String TAG = "FragmentUtils";
+    public final String TAG = "FragmentUtils";
 
     FragmentUtils() {
 

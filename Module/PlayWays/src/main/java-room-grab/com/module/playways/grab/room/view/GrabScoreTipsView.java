@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GrabScoreTipsView extends RelativeLayout {
 
-    public final static String TAG = "GrabScoreTipsView";
+    public final String TAG = "GrabScoreTipsView";
 
     GrabRoomData mRoomData;
 

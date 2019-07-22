@@ -32,7 +32,7 @@ import static com.android.builder.model.AndroidProject.FD_INTERMEDIATES;
 
 public class U {
 
-    public final static String TAG = "CustomGradleUtils ";
+    public final String TAG = "CustomGradleUtils ";
 
     /**
      * 生成 ClassPool 使用的 ClassPath 集合，同时将要处理的 jar 写入 includeJars
