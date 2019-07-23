@@ -6,7 +6,7 @@ apply from: "config.gradle"
  * buildscript里是gradle脚本执行所需依赖，分别是对应的maven库和插件
  */
 buildscript {
-    ext.kotlin_version = '1.3.11'
+    ext.kotlin_version = '1.3.41'
     repositories {
         /*** 优先从本地 Maven 中找库 ***/
 //        flatDir{dirs '...replugin-host-gradle.jar'} // 直接找 jar 包

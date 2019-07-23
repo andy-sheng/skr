@@ -70,8 +70,6 @@ import io.reactivex.subjects.Subject;
 public abstract class BaseActivity extends AppCompatActivity implements IActivity, ActivityLifecycleable {
     protected final String TAG = this.getClass().getSimpleName();
     private final BehaviorSubject<ActivityEvent> mLifecycleSubject = BehaviorSubject.create();
-    private Cache<String, Object> mCache;
-
     // 想加入activity生命周期管理的presenter放在这里
     private HashSet<Presenter> mPresenterSet = new HashSet<>();
 
@@ -103,15 +101,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 //        MyLog.d(TAG, "before getBaseContext " + getBaseContext() + " " + super.getClass());
         super.attachBaseContext(newBase);
 //        MyLog.d(TAG, "after getBaseContext " + getBaseContext() + " " + super.getClass());
-    }
-
-    @NonNull
-    @Override
-    public synchronized Cache<String, Object> provideCache() {
-        if (mCache == null) {
-            mCache = new IntelligentCache<Object>(50);
-        }
-        return mCache;
     }
 
     @NonNull
@@ -365,9 +354,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
         if (mAndroidBug5497WorkaroundSupportingTranslucentStatus != null) {
             mAndroidBug5497WorkaroundSupportingTranslucentStatus.destroy();
-        }
-        if (mCache != null) {
-            mCache.clear();
         }
     }
 

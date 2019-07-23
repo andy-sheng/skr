@@ -174,7 +174,6 @@ android {
 dependencies {
     // New api keyword is exactly the same as the old compile keyword.
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // implementation 只会引入依赖的A，不会把A依赖的B也引进来
     api(rootProject.ext.dependencies["support-v4"])
     api(rootProject.ext.dependencies["appcompat-v7"])
@@ -344,8 +343,9 @@ dependencies {
     // ConstraintLayout布局
     api 'com.android.support.constraint:constraint-layout:1.1.3'
 
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.2'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.2'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-RC"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-RC"
 
     if (MatrixEnable.toBoolean()) {
         implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
