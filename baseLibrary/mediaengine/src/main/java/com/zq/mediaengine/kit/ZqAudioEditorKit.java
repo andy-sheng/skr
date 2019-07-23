@@ -5,7 +5,7 @@ import android.content.Context;
 /**
  * 音频编辑、合成实现类。
  *
- * 实现人声和伴奏的对齐，以及音量调整。
+ * 实现人声和伴奏的对齐，以及音效、音量的调整。
  */
 
 public class ZqAudioEditorKit {

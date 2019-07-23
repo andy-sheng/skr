@@ -1440,6 +1440,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                         }
                     } else {
                         if (mConfig.isUseExternalAudioRecord()) {
+                            // 未加入房间时需要先开启音频采集
+                            if (!mInChannel) {
+                                mAudioCapture.start();
+                            }
                             AudioCodecFormat audioCodecFormat =
                                     new AudioCodecFormat(AVConst.CODEC_ID_AAC,
                                             AVConst.AV_SAMPLE_FMT_S16,
@@ -1486,6 +1490,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (TextUtils.isEmpty(mConfig.getRecordingForDebugSavePath())) {
                         if (mConfig.isUseExternalAudioRecord()) {
                             mAudioEncoder.stop();
+                            // 未加入房间时需要停止音频采集
+                            if (!mInChannel) {
+                                mAudioCapture.stop();
+                            }
                         } else {
                             mAgoraRTCAdapter.stopAudioRecording();
                         }
