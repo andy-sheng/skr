@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import com.common.base.AbsCoroutineFragment
+import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.image.fresco.BaseImageView
@@ -90,6 +92,10 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
         mRadioView = mRootView.findViewById(com.module.feeds.R.id.radio_view)
         mFeedsCommonLyricView = FeedsCommonLyricView(mRootView)
 
+        AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                .setCircle(false)
+                .setBlur(true)
+                .build())
 
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(55f)
@@ -167,6 +173,8 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
             mRadioView?.play()
             delay(2000)
             mRadioView?.pause()
+            delay(2000)
+            mRadioView?.play()
         }
     }
 
@@ -188,5 +196,10 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        mRadioView?.destroy()
     }
 }
