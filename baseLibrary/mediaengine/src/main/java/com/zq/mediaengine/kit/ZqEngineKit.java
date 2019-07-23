@@ -1346,7 +1346,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                     if (setConfig) {
                         mConfig.setAudioMixingPublishVolume(volume);
                     }
-                    mAgoraRTCAdapter.adjustAudioMixingPublishVolume(volume);
+                    if (mConfig.isUseExternalAudio()) {
+                        mLocalAudioMixer.setInputVolume(1, volume / 100.f);
+                    } else {
+                        mAgoraRTCAdapter.adjustAudioMixingPublishVolume(volume);
+                    }
                 }
             });
         }
@@ -1404,7 +1408,8 @@ public class ZqEngineKit implements AgoraOutCallback {
      * <p>
      * .wav：文件大，音质保真度高
      * .aac：文件小，有一定的音质保真度损失
-     * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
+     * 请确保 App 里指定的目录存在且可写。
+     * 声网采集模式下，该接口需在加入频道之后调用，如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean recordForDebug) {
         if (mCustomHandlerThread != null) {
