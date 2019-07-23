@@ -8,7 +8,7 @@ class FeedsLikeModel : Serializable {
     var feedID: Int = 0
     @JSONField(name = "feedType")
     var feedType: String? = null
-    @JSONField(name = "song")
+    @JSONField(name = "feedSong")
     var song: FeedSongModel? = null
     @JSONField(name = "user")
     var user: FeedUserInfo? = null

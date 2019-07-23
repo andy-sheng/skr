@@ -16,10 +16,12 @@ class FeedsWatchModel : Serializable {
     var hasFollow: Boolean? = null
     @JSONField(name = "rank")
     var rank: FeedRankModel? = null
-    @JSONField(name = "song")
+    @JSONField(name = "feedSong")
     var song: FeedSongModel? = null
     @JSONField(name = "starCnt")
     var starCnt: Int? = null
     @JSONField(name = "user")
     var user: FeedUserInfo? = null
+    @JSONField(name = "status")
+    var status: Int = 2  //0 未知 1待审核 2审核通过
 }

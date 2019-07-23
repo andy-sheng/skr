@@ -107,9 +107,11 @@ class FeedsWatchFragment : BaseFragment() {
                 mFeedTab.notifyDataChange()
                 when (position) {
                     0 -> {
+                        mFeedsCollectView.stopPlay()
                         mRecommendFeedsView.initData(false)
                     }
                     1 -> {
+                        mFeedsCollectView.stopPlay()
                         mFollowFeesView.initData(false)
                     }
                     2 -> {
@@ -132,11 +134,24 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
-        when {
-            mFeedVp.currentItem == 0 -> mRecommendFeedsView.initData(false)
-            mFeedVp.currentItem == 1 -> mFollowFeesView.initData(false)
-            mFeedVp.currentItem == 2 -> mFeedsCollectView.initData(false)
+        when (mFeedVp.currentItem) {
+            0 -> {
+                mFeedsCollectView.stopPlay()
+                mRecommendFeedsView.initData(false)
+            }
+            1 -> {
+                mFeedsCollectView.stopPlay()
+                mFollowFeesView.initData(false)
+            }
+            2 -> {
+                mFeedsCollectView.initData(false)
+            }
         }
+    }
+
+    override fun onFragmentInvisible() {
+        super.onFragmentInvisible()
+        mFeedsCollectView.stopPlay()
     }
 
     override fun useEventBus(): Boolean {

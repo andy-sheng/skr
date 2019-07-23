@@ -87,7 +87,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRefreshLayout.setEnableOverScrollDrag(false)
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-
+                mPersenter.loadMoreFeedLikeList()
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -158,6 +158,22 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             model?.let {
                 playOrPause(it, position, false)
             }
+        }
+    }
+
+    // 初始化数据
+    fun initData(flag: Boolean) {
+        mPersenter.initFeedLikeList(flag)
+    }
+
+    // 停止播放
+    fun stopPlay() {
+        if (isPlaying) {
+            isPlaying = false
+            bindTopData(mTopPosition, mTopModel, false)
+            mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
+            mAdapter.mCurrentPlayModel = null
+            mAdapter.notifyDataSetChanged()
         }
     }
 
@@ -242,12 +258,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mAdapter.notifyDataSetChanged()
     }
 
-
-    fun initData(flag: Boolean) {
-        mPersenter.getFeedsLikeList()
-    }
-
-    override fun addLikeList(list: List<FeedsLikeModel>, offset: Int, isClear: Boolean) {
+    override fun addLikeList(list: List<FeedsLikeModel>, isClear: Boolean) {
         if (isClear) {
             mAdapter.mDataList.clear()
         }
@@ -267,12 +278,11 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         this.mTopPosition = position
         if (this.mTopModel != model) {
             this.mTopModel = model
-            AvatarUtils.loadAvatarByUrl(mTopAreaBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+            AvatarUtils.loadAvatarByUrl(mTopAreaBg, AvatarUtils.newParamsBuilder(mTopModel?.user?.avatar)
                     .setBlur(true)
                     .build())
 
-
-            AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+            AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(mTopModel?.user?.avatar)
                     .setCircle(true)
                     .build())
         }

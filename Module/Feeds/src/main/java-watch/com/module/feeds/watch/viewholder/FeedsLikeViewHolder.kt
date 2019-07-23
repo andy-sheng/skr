@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -14,9 +15,9 @@ import com.module.feeds.watch.model.FeedsLikeModel
 
 class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLikeModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
 
-    val mSongCoverSdv: SimpleDraweeView = item.findViewById(R.id.song_cover_sdv);
+    private val mSongCoverSdv: SimpleDraweeView = item.findViewById(R.id.song_cover_sdv)
     val mSongNameTv: TextView = item.findViewById(R.id.song_name_tv)
-    val mSongWriterTv: TextView = item.findViewById(R.id.song_writer_tv)
+    private val mSongWriterTv: TextView = item.findViewById(R.id.song_writer_tv)
     val mSongPlayIv: ExImageView = item.findViewById(R.id.song_play_iv)
 
     var mModel: FeedsLikeModel? = null
@@ -33,8 +34,14 @@ class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLik
     fun bindData(position: Int, likeModel: FeedsLikeModel) {
         this.mPosition = position
         this.mModel = likeModel
-        AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                .build())
+
+        mSongNameTv.text = likeModel.song?.title
+        mModel?.user?.let {
+            AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                    .build())
+            mSongWriterTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+        }
+
     }
 }

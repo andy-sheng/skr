@@ -9,5 +9,5 @@ class FeedUserInfo : Serializable {
     @JSONField(name = "nickname")
     var nickname: String? = null
     @JSONField(name = "userID")
-    var userID: Int? = null
+    var userID: Int = 0
 }
