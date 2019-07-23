@@ -102,7 +102,7 @@ abstract class CameraAdapWebActivity extends BaseActivity {
             }
 
         } else {
-            MyLog.d(TAG, "onActivityResult " + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
+            MyLog.d(getTAG(), "onActivityResult " + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

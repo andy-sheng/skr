@@ -70,8 +70,8 @@ public class GrabSearchSongFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mSearchResult = (RecyclerView) mRootView.findViewById(R.id.search_result);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mSearchResult = (RecyclerView) getRootView().findViewById(R.id.search_result);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mSearchResult.setLayoutManager(mLinearLayoutManager);
@@ -90,8 +90,8 @@ public class GrabSearchSongFragment extends BaseFragment {
                     return;
                 }
                 SongModel songModel = (SongModel) model;
-                if (mFragmentDataListener != null) {
-                    mFragmentDataListener.onFragmentResult(0, 0, null, songModel);
+                if (getMFragmentDataListener() != null) {
+                    getMFragmentDataListener().onFragmentResult(0, 0, null, songModel);
                 }
             }
         }, true, selectMode, isOwner);

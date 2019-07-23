@@ -120,10 +120,10 @@ public class QuickFeedbackFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mContainer = mRootView.findViewById(R.id.container);
-        mFeedBackView = mRootView.findViewById(R.id.feed_back_view);
-        mPlaceView = mRootView.findViewById(R.id.place_view);
-        mUploadProgressBar = mRootView.findViewById(R.id.upload_progress_bar);
+        mContainer = getRootView().findViewById(R.id.container);
+        mFeedBackView = getRootView().findViewById(R.id.feed_back_view);
+        mPlaceView = getRootView().findViewById(R.id.place_view);
+        mUploadProgressBar = getRootView().findViewById(R.id.upload_progress_bar);
         mFeedBackView.setActionType(mActionType);
 
         mFeedBackView.setListener(new FeedbackView.Listener() {
@@ -176,7 +176,7 @@ public class QuickFeedbackFragment extends BaseFragment {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
                 layoutParams.setMargins(U.getDisplayUtils().dip2px(16), mTopMargin, U.getDisplayUtils().dip2px(16), 0);
                 mPlaceView.getLayoutParams().height = mTopMargin;
-                mRootView.requestLayout();
+                getRootView().requestLayout();
             }
         });
     }
@@ -392,14 +392,14 @@ public class QuickFeedbackFragment extends BaseFragment {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
                 layoutParams.setMargins(U.getDisplayUtils().dip2px(16), mTopMargin, U.getDisplayUtils().dip2px(16), 0);
                 mPlaceView.getLayoutParams().height = mTopMargin;
-                mRootView.requestLayout();
+                getRootView().requestLayout();
                 break;
             }
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
                 layoutParams.setMargins(U.getDisplayUtils().dip2px(16), mTopMargin - event.keybordHeight, U.getDisplayUtils().dip2px(16), 0);
                 mPlaceView.getLayoutParams().height = mTopMargin - event.keybordHeight < 0 ? 0 : mTopMargin - event.keybordHeight;
-                mRootView.requestLayout();
+                getRootView().requestLayout();
                 break;
             }
         }

@@ -37,11 +37,11 @@ class EditInfoLocationFragment : BaseFragment() {
     override fun initView() = com.module.home.R.layout.edit_info_location_fragment_layout
 
     override fun initData(savedInstanceState: Bundle?) {
-        mTitlebar = mRootView.findViewById(com.module.home.R.id.titlebar)
-        mBackground = mRootView.findViewById(com.module.home.R.id.background)
-        mGpsLocationTv = mRootView.findViewById(com.module.home.R.id.gps_location)
-        mWholeTv = mRootView.findViewById(com.module.home.R.id.whole_tv)
-        mRecyclerView = mRootView.findViewById(com.module.home.R.id.recycler_view)
+        mTitlebar = rootView.findViewById(com.module.home.R.id.titlebar)
+        mBackground = rootView.findViewById(com.module.home.R.id.background)
+        mGpsLocationTv = rootView.findViewById(com.module.home.R.id.gps_location)
+        mWholeTv = rootView.findViewById(com.module.home.R.id.whole_tv)
+        mRecyclerView = rootView.findViewById(com.module.home.R.id.recycler_view)
         mRecyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mAdapter = object : DiffAdapter<String, LocationHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationHolder {

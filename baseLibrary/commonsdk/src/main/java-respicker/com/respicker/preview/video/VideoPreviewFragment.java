@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.text.format.Formatter;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,10 +19,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ImageBaseFragment;
 import com.respicker.model.VideoItem;
-import com.respicker.preview.image.ImagePageAdapter;
-import com.respicker.model.ImageItem;
 import com.respicker.model.ResItem;
-import com.respicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
 
@@ -56,12 +51,12 @@ public class VideoPreviewFragment extends ImageBaseFragment implements ResPicker
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mContent = (RelativeLayout) mRootView.findViewById(R.id.content);
-        mViewpager = (NestViewPager) mRootView.findViewById(R.id.viewpager);
-        mBottomBar = (LinearLayout) mRootView.findViewById(R.id.bottom_bar);
-        mMarginBottom = (View) mRootView.findViewById(R.id.margin_bottom);
+        mContent = (RelativeLayout) getRootView().findViewById(R.id.content);
+        mViewpager = (NestViewPager) getRootView().findViewById(R.id.viewpager);
+        mBottomBar = (LinearLayout) getRootView().findViewById(R.id.bottom_bar);
+        mMarginBottom = (View) getRootView().findViewById(R.id.margin_bottom);
 
-        mTitleBar = mRootView.findViewById(R.id.titlebar);
+        mTitleBar = getRootView().findViewById(R.id.titlebar);
         mBtnOk = (TextView) mTitleBar.getRightCustomView();
         mTvDes = mTitleBar.getCenterTextView();
 
@@ -207,7 +202,7 @@ public class VideoPreviewFragment extends ImageBaseFragment implements ResPicker
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         U.getFragmentUtils().popFragment(VideoPreviewFragment.this);
         return true;
     }
@@ -253,9 +248,9 @@ public class VideoPreviewFragment extends ImageBaseFragment implements ResPicker
      */
     private void deliverResult(int requestCode, int resultCode, Bundle bundle) {
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
-        if (mFragmentDataListener != null) {
+        if (getMFragmentDataListener() != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle,null);
+            getMFragmentDataListener().onFragmentResult(requestCode, resultCode, bundle,null);
         }
         U.getFragmentUtils().popFragment(this);
     }

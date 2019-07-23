@@ -69,14 +69,14 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mLatestFollowArea = (RelativeLayout) mRootView.findViewById(R.id.latest_follow_area);
-        mFollowAreaIcon = (ImageView) mRootView.findViewById(R.id.follow_area_icon);
-        mFollowRedDot = (ExImageView) mRootView.findViewById(R.id.follow_red_dot);
-        mFollowTips = (TextView) mRootView.findViewById(R.id.follow_tips);
-        mFollowTimeTv = (TextView) mRootView.findViewById(R.id.follow_time_tv);
-        mContent = (RelativeLayout) mRootView.findViewById(R.id.content);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mLatestFollowArea = (RelativeLayout) getRootView().findViewById(R.id.latest_follow_area);
+        mFollowAreaIcon = (ImageView) getRootView().findViewById(R.id.follow_area_icon);
+        mFollowRedDot = (ExImageView) getRootView().findViewById(R.id.follow_red_dot);
+        mFollowTips = (TextView) getRootView().findViewById(R.id.follow_tips);
+        mFollowTimeTv = (TextView) getRootView().findViewById(R.id.follow_time_tv);
+        mContent = (RelativeLayout) getRootView().findViewById(R.id.content);
 
         mConversationListFragment = initConversationList();
         FragmentManager fragmentManager = getChildFragmentManager();

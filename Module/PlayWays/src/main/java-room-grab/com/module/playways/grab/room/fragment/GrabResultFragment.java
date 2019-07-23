@@ -72,26 +72,26 @@ public class GrabResultFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mGrabNumArea = mRootView.findViewById(R.id.grab_num_area);
-        mGrabNumTv = mRootView.findViewById(R.id.grab_num_tv);
+        mGrabNumArea = getRootView().findViewById(R.id.grab_num_area);
+        mGrabNumTv = getRootView().findViewById(R.id.grab_num_tv);
 
-        mBurstArea = mRootView.findViewById(R.id.burst_area);
-        mBurstNumTv = mRootView.findViewById(R.id.burst_num_tv);
+        mBurstArea = getRootView().findViewById(R.id.burst_area);
+        mBurstNumTv = getRootView().findViewById(R.id.burst_num_tv);
 
-        mFlowerArea = mRootView.findViewById(R.id.flower_area);
-        mFlowerNumTv = mRootView.findViewById(R.id.flower_num_tv);
+        mFlowerArea = getRootView().findViewById(R.id.flower_area);
+        mFlowerNumTv = getRootView().findViewById(R.id.flower_num_tv);
 
-        mCharmArea = mRootView.findViewById(R.id.charm_area);
-        mCharmNumTv = mRootView.findViewById(R.id.charm_num_tv);
+        mCharmArea = getRootView().findViewById(R.id.charm_area);
+        mCharmNumTv = getRootView().findViewById(R.id.charm_num_tv);
 
-        mCoinArea = mRootView.findViewById(R.id.coin_area);
-        mCoinNumTv = mRootView.findViewById(R.id.coin_num_tv);
+        mCoinArea = getRootView().findViewById(R.id.coin_area);
+        mCoinNumTv = getRootView().findViewById(R.id.coin_num_tv);
 
-        mHzArea = mRootView.findViewById(R.id.hz_area);
-        mHzNumTv = mRootView.findViewById(R.id.hz_num_tv);
+        mHzArea = getRootView().findViewById(R.id.hz_area);
+        mHzNumTv = getRootView().findViewById(R.id.hz_num_tv);
 
-        mTvBack = mRootView.findViewById(R.id.tv_back);
-        mTvAgain = mRootView.findViewById(R.id.tv_again);
+        mTvBack = getRootView().findViewById(R.id.tv_back);
+        mTvAgain = getRootView().findViewById(R.id.tv_again);
 
         if (mRoomData != null) {
             mGrabResultData = mRoomData.getGrabResultData();
@@ -229,7 +229,7 @@ public class GrabResultFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (getActivity() != null) {
             getActivity().finish();
         }

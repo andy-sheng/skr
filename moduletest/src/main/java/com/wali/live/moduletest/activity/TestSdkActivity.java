@@ -182,7 +182,7 @@ public class TestSdkActivity extends BaseActivity {
 
                             @Override
                             public void onSuccessNotInUiThread(String url) {
-                                MyLog.w(TAG, "onSuccess" + " url=" + url);
+                                MyLog.w(getTAG(), "onSuccess" + " url=" + url);
                                 U.getToastUtil().showShort("url:" + url);
                             }
 
@@ -325,22 +325,22 @@ public class TestSdkActivity extends BaseActivity {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WATCH).navigation(TestSdkActivity.this, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
-                        MyLog.d(TAG, "onFound" + " postcard=" + postcard);
+                        MyLog.d(getTAG(), "onFound" + " postcard=" + postcard);
                     }
 
                     @Override
                     public void onLost(Postcard postcard) {
-                        MyLog.d(TAG, "onLost" + " postcard=" + postcard);
+                        MyLog.d(getTAG(), "onLost" + " postcard=" + postcard);
                     }
 
                     @Override
                     public void onArrival(Postcard postcard) {
-                        MyLog.d(TAG, "onArrival" + " postcard=" + postcard);
+                        MyLog.d(getTAG(), "onArrival" + " postcard=" + postcard);
                     }
 
                     @Override
                     public void onInterrupt(Postcard postcard) {
-                        MyLog.d(TAG, "onInterrupt" + " postcard=" + postcard);
+                        MyLog.d(getTAG(), "onInterrupt" + " postcard=" + postcard);
                     }
                 });
             }
@@ -654,17 +654,17 @@ public class TestSdkActivity extends BaseActivity {
             U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
-                    MyLog.d(TAG, "onRequestPermissionSuccess");
+                    MyLog.d(getTAG(), "onRequestPermissionSuccess");
                 }
 
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                    MyLog.d(getTAG(), "onRequestPermissionFailure" + " permissions=" + permissions);
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
+                    MyLog.d(getTAG(), "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
                 }
             }, this);
         }
@@ -672,17 +672,17 @@ public class TestSdkActivity extends BaseActivity {
             U.getPermissionUtils().requestRecordAudio(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
-                    MyLog.d(TAG, "onRequestPermissionSuccess");
+                    MyLog.d(getTAG(), "onRequestPermissionSuccess");
                 }
 
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                    MyLog.d(getTAG(), "onRequestPermissionFailure" + " permissions=" + permissions);
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
+                    MyLog.d(getTAG(), "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
                 }
             }, this);
         }

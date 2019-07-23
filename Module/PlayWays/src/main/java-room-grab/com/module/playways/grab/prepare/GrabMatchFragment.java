@@ -24,7 +24,6 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -99,14 +98,14 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
-        mTvMatchedTime = (ExTextView) mRootView.findViewById(R.id.tv_matched_time);
-        mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
-        mIvCancelMatch = (ExTextView) mRootView.findViewById(R.id.iv_cancel_match);
-        mSdvOwnIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_own_icon);
-        mRlIcon1Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon1_root);
-        mSvgaMatchBg = (SVGAImageView) mRootView.findViewById(R.id.svga_match_bg);
+        mIvBack =  getRootView().findViewById(R.id.iv_back);
+        mIvTop =  getRootView().findViewById(R.id.iv_top);
+        mTvMatchedTime =  getRootView().findViewById(R.id.tv_matched_time);
+        mTvTip =  getRootView().findViewById(R.id.tv_tip);
+        mIvCancelMatch =  getRootView().findViewById(R.id.iv_cancel_match);
+        mSdvOwnIcon =  getRootView().findViewById(R.id.sdv_own_icon);
+        mRlIcon1Root =  getRootView().findViewById(R.id.rl_icon1_root);
+        mSvgaMatchBg =  getRootView().findViewById(R.id.svga_match_bg);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back, R.raw.normal_click);
         U.getSoundUtils().preLoad(GrabMatchSuccessFragment.TAG, R.raw.rank_matchpeople, R.raw.rank_matchready, R.raw.normal_countdown);
@@ -415,7 +414,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         goBack();
         return true;
     }
@@ -424,11 +423,11 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
         playBackgroundMusic();
-        mRootView.setVisibility(View.VISIBLE);
+        getRootView().setVisibility(View.VISIBLE);
     }
 
     private void playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && GrabMatchFragment.this.fragmentVisible) {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && GrabMatchFragment.this.getFragmentVisible()) {
             if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
                 BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "GrabMatchFragment1");
             } else {
@@ -464,7 +463,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         if (mExitDialog != null && mExitDialog.isShowing()) {
             mExitDialog.dismiss(false);
         }
-        mRootView.setVisibility(View.GONE);
+        getRootView().setVisibility(View.GONE);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
 //                .setPopFragment(this)
 //                .setPopAbove(false)

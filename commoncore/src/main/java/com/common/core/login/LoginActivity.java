@@ -59,7 +59,7 @@ public class LoginActivity extends BaseActivity {
         if (intent != null) {
             mReason = intent.getIntExtra(KEY_REASON, 0);
         }
-        MyLog.d(TAG, "initData" + " mReason=" + mReason);
+        MyLog.d(getTAG(), "initData" + " mReason=" + mReason);
         U.getFragmentUtils().addFragment(FragmentUtils
                 .newAddParamsBuilder(LoginActivity.this, LoginFragment.class)
                 .setAddToBackStack(false)
@@ -179,14 +179,14 @@ public class LoginActivity extends BaseActivity {
 //                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
 //                                .greenChannel().navigation();
                     } else {
-                        MyLog.d(TAG, "顶部已经是UploadAccountInfoActivity");
+                        MyLog.d(getTAG(), "顶部已经是UploadAccountInfoActivity");
                     }
                 }
             }
             // 如果不需要完善资料,则跳到主页或者来源页
             Intent intent = getIntent();
             String originPath = intent.getStringExtra(KEY_ORIGIN_PATH);
-            MyLog.d(TAG, "登录成功，跳回原页面 originPath:" + originPath);
+            MyLog.d(getTAG(), "登录成功，跳回原页面 originPath:" + originPath);
             if (!TextUtils.isEmpty(originPath)) {
                 // 登录成功后，跳回原页面
                 ARouter.getInstance().build(originPath)

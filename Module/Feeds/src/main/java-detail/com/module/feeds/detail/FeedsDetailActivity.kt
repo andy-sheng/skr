@@ -2,7 +2,7 @@ package com.module.feeds.detail
 
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.common.base.AbsCoroutineActivity
+import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.module.RouterConstants
@@ -10,7 +10,7 @@ import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsDetailFragment
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
-class FeedsDetailActivity : AbsCoroutineActivity() {
+class FeedsDetailActivity : BaseActivity() {
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_detail_activity_layout
     }

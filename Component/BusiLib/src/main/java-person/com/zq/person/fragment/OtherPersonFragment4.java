@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.event.RelationChangeEvent;
@@ -38,9 +37,7 @@ import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
 import com.common.utils.FragmentUtils;
-import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -51,7 +48,6 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
-import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.ModuleServiceManager;
@@ -63,8 +59,6 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
@@ -197,13 +191,13 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
 
 
     private void initBaseContainArea() {
-        mImageBg = (SimpleDraweeView) mRootView.findViewById(R.id.image_bg);
-        mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
-        mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
-        mToolbarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.toolbar_layout);
-        mUserInfoArea = (ConstraintLayout) mRootView.findViewById(R.id.user_info_area);
-        mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
-        mSrlNameTv = (TextView) mRootView.findViewById(R.id.srl_name_tv);
+        mImageBg = (SimpleDraweeView) getRootView().findViewById(R.id.image_bg);
+        mSmartRefresh = (SmartRefreshLayout) getRootView().findViewById(R.id.smart_refresh);
+        mAppbar = (AppBarLayout) getRootView().findViewById(R.id.appbar);
+        mToolbarLayout = (CollapsingToolbarLayout) getRootView().findViewById(R.id.toolbar_layout);
+        mUserInfoArea = (ConstraintLayout) getRootView().findViewById(R.id.user_info_area);
+        mToolbar = (Toolbar) getRootView().findViewById(R.id.toolbar);
+        mSrlNameTv = (TextView) getRootView().findViewById(R.id.srl_name_tv);
 
         FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
                 .build());
@@ -275,8 +269,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     }
 
     private void initTopArea() {
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mMoreBtn = (ExImageView) mRootView.findViewById(R.id.more_btn);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+        mMoreBtn = (ExImageView) getRootView().findViewById(R.id.more_btn);
 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -424,15 +418,15 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     }
 
     private void initUserInfoArea() {
-        mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
-        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
-        mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
-        mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
-        mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
-        mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
+        mAvatarBg = (ImageView) getRootView().findViewById(R.id.avatar_bg);
+        mAvatarIv = (SimpleDraweeView) getRootView().findViewById(R.id.avatar_iv);
+        mLevelView = (NormalLevelView2) getRootView().findViewById(R.id.level_view);
+        mNameTv = (ExTextView) getRootView().findViewById(R.id.name_tv);
+        mSexIv = (ImageView) getRootView().findViewById(R.id.sex_iv);
+        mBusinessCard = (ImageView) getRootView().findViewById(R.id.business_card);
+        mUseridTv = (ExTextView) getRootView().findViewById(R.id.userid_tv);
+        mSignTv = (ExTextView) getRootView().findViewById(R.id.sign_tv);
+        mFlowlayout = (TagFlowLayout) getRootView().findViewById(R.id.flowlayout);
 
         mTagAdapter = new TagAdapter<TagModel>(mTags) {
             @Override
@@ -502,8 +496,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     }
 
     private void initPersonTabArea() {
-        mPersonTab = (SlidingTabLayout) mRootView.findViewById(R.id.person_tab);
-        mPersonVp = (NestViewPager) mRootView.findViewById(R.id.person_vp);
+        mPersonTab = (SlidingTabLayout) getRootView().findViewById(R.id.person_tab);
+        mPersonVp = (NestViewPager) getRootView().findViewById(R.id.person_vp);
 
         mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
         mPersonTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
@@ -602,9 +596,9 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
     }
 
     private void initFunctionArea() {
-        mFunctionArea = mRootView.findViewById(R.id.function_area);
-        mFollowIv = mRootView.findViewById(R.id.follow_iv);
-        mMessageIv = mRootView.findViewById(R.id.message_iv);
+        mFunctionArea = getRootView().findViewById(R.id.function_area);
+        mFollowIv = getRootView().findViewById(R.id.follow_iv);
+        mMessageIv = getRootView().findViewById(R.id.message_iv);
 
         mFollowIv.setOnClickListener(new AnimateClickListener() {
             @Override

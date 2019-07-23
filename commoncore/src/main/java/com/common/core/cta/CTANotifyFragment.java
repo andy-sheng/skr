@@ -34,15 +34,15 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mNeverShowCb = (CheckBox) mRootView.findViewById(R.id.never_show_cb);
+        mNeverShowCb = (CheckBox) getRootView().findViewById(R.id.never_show_cb);
         mNeverShowCb.setChecked(true);
 
-        TextView messageTv = (TextView) mRootView.findViewById(R.id.message);
+        TextView messageTv = (TextView) getRootView().findViewById(R.id.message);
         Linkify.addLinks(messageTv, Linkify.ALL);
         messageTv.setMovementMethod(LinkMovementMethod.getInstance());
-        mCancelButton = (TextView) mRootView.findViewById(R.id.cancel_button);
+        mCancelButton = (TextView) getRootView().findViewById(R.id.cancel_button);
         mCancelButton.setOnClickListener(this);
-        mConfirmButton = (TextView) mRootView.findViewById(R.id.agree_button);
+        mConfirmButton = (TextView) getRootView().findViewById(R.id.agree_button);
         mConfirmButton.setOnClickListener(this);
     }
 

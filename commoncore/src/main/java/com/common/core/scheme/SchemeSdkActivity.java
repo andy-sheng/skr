@@ -64,7 +64,7 @@ public class SchemeSdkActivity extends BaseActivity {
 
     private void process(Intent intent) {
         if (intent == null) {
-            MyLog.w(TAG, "process intent is null");
+            MyLog.w(getTAG(), "process intent is null");
             finish();
             return;
         }
@@ -73,7 +73,7 @@ public class SchemeSdkActivity extends BaseActivity {
         if (TextUtils.isEmpty(uri)) {
             uri = getIntent().getDataString();
             if(TextUtils.isEmpty(uri)){
-                MyLog.w(TAG, "uri is null");
+                MyLog.w(getTAG(), "uri is null");
                 finish();
                 return;
             }
@@ -81,25 +81,25 @@ public class SchemeSdkActivity extends BaseActivity {
         mUri = Uri.parse(uri);
         ZqSchemeProcessorManager.getInstance().process(mUri,this,true);
         if (!isHomeActivityExist()) {
-            MyLog.w(TAG, "HomeActivity不存在，需要先启动HomeActivity");
+            MyLog.w(getTAG(), "HomeActivity不存在，需要先启动HomeActivity");
             ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
                     .withString("from_scheme", uri)
                     .navigation();
             finish();
             return;
         } else {
-            MyLog.w(TAG, "HomeActivity存在");
+            MyLog.w(getTAG(), "HomeActivity存在");
         }
 
         if (TextUtils.isEmpty(uri)) {
-            MyLog.w(TAG, "process uri is empty or null");
+            MyLog.w(getTAG(), "process uri is empty or null");
             finish();
             return;
         }
 
 
         if (mUri == null) {
-            MyLog.w(TAG, "process intent data uri is null");
+            MyLog.w(getTAG(), "process intent data uri is null");
             finish();
             return;
         }
@@ -107,7 +107,7 @@ public class SchemeSdkActivity extends BaseActivity {
         try {
             process(mUri);
         } catch (Exception e) {
-            MyLog.e(TAG, e);
+            MyLog.e(getTAG(), e);
         } finally {
             finish();
         }
@@ -128,7 +128,7 @@ public class SchemeSdkActivity extends BaseActivity {
     }
 
     private void process(final Uri uri) throws Exception {
-        MyLog.w(TAG, "process uri=" + uri);
+        MyLog.w(getTAG(), "process uri=" + uri);
         ZqSchemeProcessorManager.getInstance().process(mUri,this,false);
     }
 

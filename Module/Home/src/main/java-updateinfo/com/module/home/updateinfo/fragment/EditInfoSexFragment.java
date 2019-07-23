@@ -29,9 +29,9 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mMale = (ExImageView) mRootView.findViewById(R.id.male);
-        mFemale = (ExImageView) mRootView.findViewById(R.id.female);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mMale = (ExImageView) getRootView().findViewById(R.id.male);
+        mFemale = (ExImageView) getRootView().findViewById(R.id.female);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override

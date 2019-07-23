@@ -15,15 +15,11 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
@@ -48,9 +44,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -95,24 +88,24 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSmartRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh_layout);
-        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
+        mSmartRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.smart_refresh_layout);
+        mClassicsHeader = (ClassicsHeader) getRootView().findViewById(R.id.classics_header);
 
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
-        mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
-        mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
-        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
-        mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
-        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
-        mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
-        mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
-        mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
-        mIvAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
-        mIvVoiceRoom = (ExImageView) mRootView.findViewById(R.id.iv_voice_room);
-        mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mUserInfoTitle = (UserInfoTitleView) getRootView().findViewById(R.id.user_info_title);
+        mMedalLayout = (ExRelativeLayout) getRootView().findViewById(R.id.medal_layout);
+        mLevelView = (NormalLevelView2) getRootView().findViewById(R.id.level_view);
+        mLevelTv = (ExTextView) getRootView().findViewById(R.id.level_tv);
+        mPaiweiImg = (ImageView) getRootView().findViewById(R.id.paiwei_img);
+        mRankNumTv = (ExTextView) getRootView().findViewById(R.id.rank_num_tv);
+        mSingendImg = (ImageView) getRootView().findViewById(R.id.singend_img);
+        mSingendNumTv = (ExTextView) getRootView().findViewById(R.id.singend_num_tv);
+        mRankArea = (RelativeLayout) getRootView().findViewById(R.id.rank_area);
+        mRankText = (ExTextView) getRootView().findViewById(R.id.rank_text);
+        mRankDiffIv = (ExImageView) getRootView().findViewById(R.id.rank_diff_iv);
+        mIvAthleticsPk = (ExImageView) getRootView().findViewById(R.id.iv_athletics_pk);
+        mIvVoiceRoom = (ExImageView) getRootView().findViewById(R.id.iv_voice_room);
+        mMedalIv = (ExImageView) getRootView().findViewById(R.id.medal_iv);
         mUserInfoTitle.getTopUserBg().setVisibility(View.GONE);
         mClassicsHeader.setBackground(new DrawableCreator.Builder()
                 .setGradientColor(Color.parseColor("#7088FF"), Color.parseColor("#7088FF"))

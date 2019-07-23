@@ -34,10 +34,10 @@ class FeedsWatchFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mNavigationBgIv = mRootView.findViewById(R.id.navigation_bg_iv)
-        mFeedTab = mRootView.findViewById(R.id.feed_tab)
-        mFeedChallengeTv = mRootView.findViewById(R.id.feed_challenge_tv)
-        mFeedVp = mRootView.findViewById(R.id.feed_vp)
+        mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
+        mFeedTab = rootView.findViewById(R.id.feed_tab)
+        mFeedChallengeTv = rootView.findViewById(R.id.feed_challenge_tv)
+        mFeedVp = rootView.findViewById(R.id.feed_vp)
 
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {

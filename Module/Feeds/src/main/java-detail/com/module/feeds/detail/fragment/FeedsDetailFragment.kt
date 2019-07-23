@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
-import com.common.base.AbsCoroutineFragment
+import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
@@ -27,7 +27,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class FeedsDetailFragment : AbsCoroutineFragment() {
+class FeedsDetailFragment : BaseFragment() {
     val mTag = "FeedsDetailFragment"
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
@@ -65,32 +65,32 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mContainer = mRootView.findViewById(com.module.feeds.R.id.container)
-        mAppbar = mRootView.findViewById(com.module.feeds.R.id.appbar)
-        mContentLayout = mRootView.findViewById(com.module.feeds.R.id.content_layout)
-        mBlurBg = mRootView.findViewById(com.module.feeds.R.id.blur_bg)
-        mBtnBack = mRootView.findViewById(com.module.feeds.R.id.btn_back) as ImageView
-        mSongNameTv = mRootView.findViewById(com.module.feeds.R.id.song_name_tv)
-        mMoreTv = mRootView.findViewById(com.module.feeds.R.id.more_iv)
-        mControlTv = mRootView.findViewById(com.module.feeds.R.id.control_tv)
-        mPassTimeTv = mRootView.findViewById(com.module.feeds.R.id.pass_time_tv)
-        mLastTimeTv = mRootView.findViewById(com.module.feeds.R.id.last_time_tv)
-        mSeekBar = mRootView.findViewById(com.module.feeds.R.id.seek_bar)
-        mSingerIv = mRootView.findViewById(com.module.feeds.R.id.singer_iv)
-        mNameTv = mRootView.findViewById(com.module.feeds.R.id.name_tv)
-        mCommentTimeTv = mRootView.findViewById(com.module.feeds.R.id.comment_time_tv)
-        mFollowTv = mRootView.findViewById(com.module.feeds.R.id.follow_tv)
-        mMainCommentTv = mRootView.findViewById(com.module.feeds.R.id.main_comment_tv)
-        mToolbar = mRootView.findViewById(com.module.feeds.R.id.toolbar)
-        mToolbarLayout = mRootView.findViewById(com.module.feeds.R.id.toolbar_layout)
-        mCommentTv = mRootView.findViewById(com.module.feeds.R.id.comment_tv)
-        mXinIv = mRootView.findViewById(com.module.feeds.R.id.xin_iv)
-        mXinNumTv = mRootView.findViewById(com.module.feeds.R.id.xin_num_tv)
-        mShareIv = mRootView.findViewById(com.module.feeds.R.id.share_iv)
-        mShareNumTv = mRootView.findViewById(com.module.feeds.R.id.share_num_tv)
-        mFeedsInputContainerView = mRootView.findViewById(com.module.feeds.R.id.feeds_input_container_view)
-        mRadioView = mRootView.findViewById(com.module.feeds.R.id.radio_view)
-        mFeedsCommonLyricView = FeedsCommonLyricView(mRootView)
+        mContainer = rootView.findViewById(com.module.feeds.R.id.container)
+        mAppbar = rootView.findViewById(com.module.feeds.R.id.appbar)
+        mContentLayout = rootView.findViewById(com.module.feeds.R.id.content_layout)
+        mBlurBg = rootView.findViewById(com.module.feeds.R.id.blur_bg)
+        mBtnBack = rootView.findViewById(com.module.feeds.R.id.btn_back) as ImageView
+        mSongNameTv = rootView.findViewById(com.module.feeds.R.id.song_name_tv)
+        mMoreTv = rootView.findViewById(com.module.feeds.R.id.more_iv)
+        mControlTv = rootView.findViewById(com.module.feeds.R.id.control_tv)
+        mPassTimeTv = rootView.findViewById(com.module.feeds.R.id.pass_time_tv)
+        mLastTimeTv = rootView.findViewById(com.module.feeds.R.id.last_time_tv)
+        mSeekBar = rootView.findViewById(com.module.feeds.R.id.seek_bar)
+        mSingerIv = rootView.findViewById(com.module.feeds.R.id.singer_iv)
+        mNameTv = rootView.findViewById(com.module.feeds.R.id.name_tv)
+        mCommentTimeTv = rootView.findViewById(com.module.feeds.R.id.comment_time_tv)
+        mFollowTv = rootView.findViewById(com.module.feeds.R.id.follow_tv)
+        mMainCommentTv = rootView.findViewById(com.module.feeds.R.id.main_comment_tv)
+        mToolbar = rootView.findViewById(com.module.feeds.R.id.toolbar)
+        mToolbarLayout = rootView.findViewById(com.module.feeds.R.id.toolbar_layout)
+        mCommentTv = rootView.findViewById(com.module.feeds.R.id.comment_tv)
+        mXinIv = rootView.findViewById(com.module.feeds.R.id.xin_iv)
+        mXinNumTv = rootView.findViewById(com.module.feeds.R.id.xin_num_tv)
+        mShareIv = rootView.findViewById(com.module.feeds.R.id.share_iv)
+        mShareNumTv = rootView.findViewById(com.module.feeds.R.id.share_num_tv)
+        mFeedsInputContainerView = rootView.findViewById(com.module.feeds.R.id.feeds_input_container_view)
+        mRadioView = rootView.findViewById(com.module.feeds.R.id.radio_view)
+        mFeedsCommonLyricView = FeedsCommonLyricView(rootView!!)
 
         AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
                 .setCircle(false)

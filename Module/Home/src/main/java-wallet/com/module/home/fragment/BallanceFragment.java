@@ -68,21 +68,21 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mWithdrawTv = (TextView) mRootView.findViewById(R.id.withdraw_tv);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mWithdrawTv = (TextView) getRootView().findViewById(R.id.withdraw_tv);
 
-        mDiaomendLast = (ExTextView) mRootView.findViewById(R.id.diaomend_last);
-        mDiaomentNum = (ExTextView) mRootView.findViewById(R.id.diaoment_num);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mPlatformContainer = (LinearLayout) mRootView.findViewById(R.id.platform_container);
-        mBtbWeixin = (ExTextView) mRootView.findViewById(R.id.btb_weixin);
-        mIvWeixinFlag = (ExImageView) mRootView.findViewById(R.id.iv_weixin_flag);
-        mBtbZhifubao = (ExTextView) mRootView.findViewById(R.id.btb_zhifubao);
-        mZhifubaoFlag = (ExImageView) mRootView.findViewById(R.id.zhifubao_flag);
-        mProtocolContainer = (LinearLayout) mRootView.findViewById(R.id.protocol_container);
-        mCheckbox = (CheckBox) mRootView.findViewById(R.id.checkbox);
-        mTvProtocal = (TextView) mRootView.findViewById(R.id.tv_protocal);
+        mDiaomendLast = (ExTextView) getRootView().findViewById(R.id.diaomend_last);
+        mDiaomentNum = (ExTextView) getRootView().findViewById(R.id.diaoment_num);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
+        mPlatformContainer = (LinearLayout) getRootView().findViewById(R.id.platform_container);
+        mBtbWeixin = (ExTextView) getRootView().findViewById(R.id.btb_weixin);
+        mIvWeixinFlag = (ExImageView) getRootView().findViewById(R.id.iv_weixin_flag);
+        mBtbZhifubao = (ExTextView) getRootView().findViewById(R.id.btb_zhifubao);
+        mZhifubaoFlag = (ExImageView) getRootView().findViewById(R.id.zhifubao_flag);
+        mProtocolContainer = (LinearLayout) getRootView().findViewById(R.id.protocol_container);
+        mCheckbox = (CheckBox) getRootView().findViewById(R.id.checkbox);
+        mTvProtocal = (TextView) getRootView().findViewById(R.id.tv_protocal);
 
         mRechargeAdapter = new RechargeAdapter();
 

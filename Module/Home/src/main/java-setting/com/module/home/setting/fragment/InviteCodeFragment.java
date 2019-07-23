@@ -24,9 +24,7 @@ import com.module.home.R;
 import com.module.home.setting.InviteServerApi;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -54,14 +52,14 @@ public class InviteCodeFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mInviteCodeSpet = (SeparatedEditText) mRootView.findViewById(R.id.invite_code_spet);
-        mPhoneInputTv = (NoLeakEditText) mRootView.findViewById(R.id.phone_input_tv);
-        mCodeInputTv = (NoLeakEditText) mRootView.findViewById(R.id.code_input_tv);
-        mGetCodeTv = (ExTextView) mRootView.findViewById(R.id.get_code_tv);
-        mErrorHint = (ExTextView) mRootView.findViewById(R.id.error_hint);
-        mSubmitTv = (ExTextView) mRootView.findViewById(R.id.submit_tv);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mInviteCodeSpet = (SeparatedEditText) getRootView().findViewById(R.id.invite_code_spet);
+        mPhoneInputTv = (NoLeakEditText) getRootView().findViewById(R.id.phone_input_tv);
+        mCodeInputTv = (NoLeakEditText) getRootView().findViewById(R.id.code_input_tv);
+        mGetCodeTv = (ExTextView) getRootView().findViewById(R.id.get_code_tv);
+        mErrorHint = (ExTextView) getRootView().findViewById(R.id.error_hint);
+        mSubmitTv = (ExTextView) getRootView().findViewById(R.id.submit_tv);
 
 
         mInviteCodeSpet.setTextChangedListener(new SeparatedEditText.TextChangedListener() {
@@ -148,7 +146,7 @@ public class InviteCodeFragment extends BaseFragment {
     }
 
     private void getInviteSmsCode(final String phoneNumber, String inviteCode) {
-        MyLog.d(TAG, "getInviteSmsCode" + " phoneNumber=" + phoneNumber + " inviteCode=" + inviteCode);
+        MyLog.d(getTAG(), "getInviteSmsCode" + " phoneNumber=" + phoneNumber + " inviteCode=" + inviteCode);
         if (!U.getNetworkUtils().hasNetwork()) {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!");
             return;
@@ -259,7 +257,7 @@ public class InviteCodeFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         stopTimeTask();
         return super.onBackPressed();
     }

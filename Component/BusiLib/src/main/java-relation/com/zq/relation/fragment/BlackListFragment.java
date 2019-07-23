@@ -53,9 +53,9 @@ public class BlackListFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -121,7 +121,7 @@ public class BlackListFragment extends BaseFragment {
 
         loadData();
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     private void loadData() {
@@ -154,6 +154,6 @@ public class BlackListFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 }

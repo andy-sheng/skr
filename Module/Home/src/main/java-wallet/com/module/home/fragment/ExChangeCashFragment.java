@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.common.base.BaseFragment;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -56,13 +55,13 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mEditCashNum = (NoLeakEditText) mRootView.findViewById(R.id.edit_cash_num);
-        mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
-        mTvExchangeWhole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_whole);
-        mIvExchangeBtn = mRootView.findViewById(R.id.iv_exchange_btn);
-        mTvExchangeRole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_role);
-        mClearIv = (ImageView) mRootView.findViewById(R.id.clear_iv);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mEditCashNum = (NoLeakEditText) getRootView().findViewById(R.id.edit_cash_num);
+        mTvTip = (ExTextView) getRootView().findViewById(R.id.tv_tip);
+        mTvExchangeWhole = (ExTextView) getRootView().findViewById(R.id.tv_exchange_whole);
+        mIvExchangeBtn = getRootView().findViewById(R.id.iv_exchange_btn);
+        mTvExchangeRole = (ExTextView) getRootView().findViewById(R.id.tv_exchange_role);
+        mClearIv = (ImageView) getRootView().findViewById(R.id.clear_iv);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -195,8 +194,8 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 .setText("兑换成功")
                 .build());
         mExChangeCashPresenter.getDQBalance();
-        if (mFragmentDataListener != null) {
-            mFragmentDataListener.onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
+        if (getMFragmentDataListener() != null) {
+            getMFragmentDataListener().onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
         }
         finish();
     }

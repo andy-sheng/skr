@@ -46,9 +46,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mNavigationBgIv = mRootView.findViewById<View>(R.id.navigation_bg_iv) as ImageView
-        mGameTab = mRootView.findViewById<View>(R.id.game_tab) as SlidingTabLayout
-        mGameVp = mRootView.findViewById<View>(R.id.game_vp) as NestViewPager
+        mNavigationBgIv = rootView.findViewById<View>(R.id.navigation_bg_iv) as ImageView
+        mGameTab = rootView.findViewById<View>(R.id.game_tab) as SlidingTabLayout
+        mGameVp = rootView.findViewById<View>(R.id.game_vp) as NestViewPager
 
         mGameTab?.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
         mGameTab?.setSelectedIndicatorColors(Color.WHITE)

@@ -87,7 +87,7 @@ public class ConversationActivity extends BaseActivity {
             });
         }
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
         RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
             @Override
             public Message onSend(Message message) {
@@ -262,7 +262,7 @@ public class ConversationActivity extends BaseActivity {
     protected void destroy() {
         super.destroy();
         RongIM.getInstance().setSendMessageListener(null);
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 
     public String getUserId() {

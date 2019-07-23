@@ -73,11 +73,11 @@ public class SearchFriendFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSearchArea = (RelativeLayout) mRootView.findViewById(R.id.search_area);
-        mCancleTv = (TextView) mRootView.findViewById(R.id.cancle_tv);
-        mSearchContent = (EditText) mRootView.findViewById(R.id.search_content);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mSearchArea = (RelativeLayout) getRootView().findViewById(R.id.search_area);
+        mCancleTv = (TextView) getRootView().findViewById(R.id.cancle_tv);
+        mSearchContent = (EditText) getRootView().findViewById(R.id.search_content);
+        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
 
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         Bundle bundle = getArguments();

@@ -58,25 +58,25 @@ public class DialogsFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mActivityToolbar = (Toolbar) mRootView.findViewById(R.id.activity_toolbar);
-        mHolderRadioGroup = (RadioGroup) mRootView.findViewById(R.id.holderRadioGroup);
-        mBasicHolderRadioButton = (RadioButton) mRootView.findViewById(R.id.basic_holder_radio_button);
-        mListHolderRadioButton = (RadioButton) mRootView.findViewById(R.id.list_holder_radio_button);
-        mGridHolderRadioButton = (RadioButton) mRootView.findViewById(R.id.grid_holder_radio_button);
-        mPositionRadioGroup = (RadioGroup) mRootView.findViewById(R.id.positionRadioGroup);
-        mBottomPosition = (RadioButton) mRootView.findViewById(R.id.bottomPosition);
-        mCenterPosition = (RadioButton) mRootView.findViewById(R.id.centerPosition);
-        mTopPosition = (RadioButton) mRootView.findViewById(R.id.topPosition);
-        mConfigLayout = (FlexboxLayout) mRootView.findViewById(R.id.configLayout);
-        mHeaderCheckBox = (CheckBox) mRootView.findViewById(R.id.headerCheckBox);
-        mFooterCheckBox = (CheckBox) mRootView.findViewById(R.id.footerCheckBox);
-        mExpandedCheckBox = (CheckBox) mRootView.findViewById(R.id.expandedCheckBox);
-        mFixedHeaderCheckBox = (CheckBox) mRootView.findViewById(R.id.fixedHeaderCheckBox);
-        mFixedFooterCheckBox = (CheckBox) mRootView.findViewById(R.id.fixedFooterCheckBox);
-        mListCountInput = (TextInputEditText) mRootView.findViewById(R.id.listCountInput);
-        mContentHeightInput = (TextInputEditText) mRootView.findViewById(R.id.contentHeightInput);
-        mContentWidthInput = (TextInputEditText) mRootView.findViewById(R.id.contentWidthInput);
-        mShowDialogButton = (Button) mRootView.findViewById(R.id.showDialogButton);
+        mActivityToolbar = (Toolbar) getRootView().findViewById(R.id.activity_toolbar);
+        mHolderRadioGroup = (RadioGroup) getRootView().findViewById(R.id.holderRadioGroup);
+        mBasicHolderRadioButton = (RadioButton) getRootView().findViewById(R.id.basic_holder_radio_button);
+        mListHolderRadioButton = (RadioButton) getRootView().findViewById(R.id.list_holder_radio_button);
+        mGridHolderRadioButton = (RadioButton) getRootView().findViewById(R.id.grid_holder_radio_button);
+        mPositionRadioGroup = (RadioGroup) getRootView().findViewById(R.id.positionRadioGroup);
+        mBottomPosition = (RadioButton) getRootView().findViewById(R.id.bottomPosition);
+        mCenterPosition = (RadioButton) getRootView().findViewById(R.id.centerPosition);
+        mTopPosition = (RadioButton) getRootView().findViewById(R.id.topPosition);
+        mConfigLayout = (FlexboxLayout) getRootView().findViewById(R.id.configLayout);
+        mHeaderCheckBox = (CheckBox) getRootView().findViewById(R.id.headerCheckBox);
+        mFooterCheckBox = (CheckBox) getRootView().findViewById(R.id.footerCheckBox);
+        mExpandedCheckBox = (CheckBox) getRootView().findViewById(R.id.expandedCheckBox);
+        mFixedHeaderCheckBox = (CheckBox) getRootView().findViewById(R.id.fixedHeaderCheckBox);
+        mFixedFooterCheckBox = (CheckBox) getRootView().findViewById(R.id.fixedFooterCheckBox);
+        mListCountInput = (TextInputEditText) getRootView().findViewById(R.id.listCountInput);
+        mContentHeightInput = (TextInputEditText) getRootView().findViewById(R.id.contentHeightInput);
+        mContentWidthInput = (TextInputEditText) getRootView().findViewById(R.id.contentWidthInput);
+        mShowDialogButton = (Button) getRootView().findViewById(R.id.showDialogButton);
 
         mShowDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override

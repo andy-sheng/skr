@@ -28,7 +28,6 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.audition.AudioRoomActivity;
-import com.module.playways.audition.fragment.AuditionPrepareResFragment;
 import com.module.playways.room.prepare.fragment.PrepareResFragment;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
@@ -36,7 +35,6 @@ import com.module.playways.room.song.model.SongModel;
 import com.module.playways.room.song.view.SearchFeedbackView;
 import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.toast.CommonToastView;
@@ -46,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
@@ -78,8 +75,8 @@ public class SearchSongFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mSearchResult = (RecyclerView) mRootView.findViewById(R.id.search_result);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mSearchResult = (RecyclerView) getRootView().findViewById(R.id.search_result);
 
         Bundle bundle = getArguments();
         if (bundle != null) {

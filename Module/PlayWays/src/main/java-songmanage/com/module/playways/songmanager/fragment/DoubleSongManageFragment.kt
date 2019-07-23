@@ -9,7 +9,6 @@ import android.view.ViewGroup
 
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
-import com.common.base.FragmentDataListener
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
@@ -61,10 +60,10 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
             return
         }
 
-        mTitlebar = mRootView.findViewById(R.id.titlebar)
-        mSearchSongIv = mRootView.findViewById(R.id.search_song_iv)
-        mTagTab = mRootView.findViewById(R.id.tag_tab)
-        mViewpager = mRootView.findViewById(R.id.viewpager)
+        mTitlebar = rootView.findViewById(R.id.titlebar)
+        mSearchSongIv = rootView.findViewById(R.id.search_song_iv)
+        mTagTab = rootView.findViewById(R.id.tag_tab)
+        mViewpager = rootView.findViewById(R.id.viewpager)
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {

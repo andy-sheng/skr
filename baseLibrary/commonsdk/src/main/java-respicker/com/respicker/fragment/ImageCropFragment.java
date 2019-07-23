@@ -53,7 +53,7 @@ public class ImageCropFragment extends ImageBaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mImagePicker = ResPicker.getInstance();
-        mTitleBar = mRootView.findViewById(R.id.titlebar);
+        mTitleBar = getRootView().findViewById(R.id.titlebar);
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +74,7 @@ public class ImageCropFragment extends ImageBaseFragment {
         });
 
 
-        mCropImageView = mRootView.findViewById(R.id.cv_crop_image);
+        mCropImageView = getRootView().findViewById(R.id.cv_crop_image);
         mCropImageView.setOnBitmapSaveCompleteListener(new CropImageView.OnBitmapSaveCompleteListener() {
             @Override
             public void onBitmapSaveSuccess(File file) {
@@ -123,7 +123,7 @@ public class ImageCropFragment extends ImageBaseFragment {
 
         mCropImageView.setImageBitmap(mCropImageView.rotate(mBitmap, U.getBitmapUtils().getBitmapDegree(imagePath)));
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -153,7 +153,7 @@ public class ImageCropFragment extends ImageBaseFragment {
             BitmapPoolAdapter.putBitmap(mBitmap);
             mBitmap = null;
         }
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 
     /**
@@ -161,9 +161,9 @@ public class ImageCropFragment extends ImageBaseFragment {
      */
     private void deliverResult(int requestCode, int resultCode, Bundle bundle) {
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
-        if (mFragmentDataListener != null) {
+        if (getMFragmentDataListener() != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle, null);
+            getMFragmentDataListener().onFragmentResult(requestCode, resultCode, bundle, null);
         }
         U.getFragmentUtils().popFragment(this);
     }

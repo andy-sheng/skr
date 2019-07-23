@@ -10,7 +10,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.home.R
-import com.module.home.updateinfo.activity.EditAgeTagActivity
 import com.zq.person.view.AgeTagView
 
 class EditInfoAgeTagFragment : BaseFragment() {
@@ -29,9 +28,9 @@ class EditInfoAgeTagFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mTitlebar = mRootView.findViewById<View>(R.id.titlebar) as CommonTitleBar
-        mAgeTagView = mRootView.findViewById<View>(R.id.age_tag_view) as AgeTagView
-        mSaveBtn = mRootView.findViewById(R.id.save_btn) ?: null
+        mTitlebar = rootView.findViewById<View>(R.id.titlebar) as CommonTitleBar
+        mAgeTagView = rootView.findViewById<View>(R.id.age_tag_view) as AgeTagView
+        mSaveBtn = rootView.findViewById(R.id.save_btn) ?: null
 
         mTitlebar.leftTextView.setOnClickListener {
             activity?.finish()

@@ -42,15 +42,15 @@ public class HalfRechargeFragment extends BallanceFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mPlatformContainer = (LinearLayout) mRootView.findViewById(R.id.platform_container);
-        mBtbWeixin = (ExTextView) mRootView.findViewById(R.id.btb_weixin);
-        mIvWeixinFlag = (ExImageView) mRootView.findViewById(R.id.iv_weixin_flag);
-        mBtbZhifubao = (ExTextView) mRootView.findViewById(R.id.btb_zhifubao);
-        mZhifubaoFlag = (ExImageView) mRootView.findViewById(R.id.zhifubao_flag);
-        mWithdrawTv = (TextView) mRootView.findViewById(R.id.withdraw_tv);
-        mMainActContainer = (FrameLayout) mRootView.findViewById(R.id.main_act_container);
-        mLlContent = (ExLinearLayout) mRootView.findViewById(R.id.ll_content);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
+        mPlatformContainer = (LinearLayout) getRootView().findViewById(R.id.platform_container);
+        mBtbWeixin = (ExTextView) getRootView().findViewById(R.id.btb_weixin);
+        mIvWeixinFlag = (ExImageView) getRootView().findViewById(R.id.iv_weixin_flag);
+        mBtbZhifubao = (ExTextView) getRootView().findViewById(R.id.btb_zhifubao);
+        mZhifubaoFlag = (ExImageView) getRootView().findViewById(R.id.zhifubao_flag);
+        mWithdrawTv = (TextView) getRootView().findViewById(R.id.withdraw_tv);
+        mMainActContainer = (FrameLayout) getRootView().findViewById(R.id.main_act_container);
+        mLlContent = (ExLinearLayout) getRootView().findViewById(R.id.ll_content);
 
         mRechargeAdapter = new HalfRechargeAdapter();
 
@@ -130,8 +130,8 @@ public class HalfRechargeFragment extends BallanceFragment {
             mWaitingDialogPlus.dismiss();
         }
 
-        if (mFragmentDataListener != null) {
-            mFragmentDataListener.onFragmentResult(100, 0, null, null);
+        if (getMFragmentDataListener() != null) {
+            getMFragmentDataListener().onFragmentResult(100, 0, null, null);
         }
 
         mUiHanlder.postDelayed(new Runnable() {

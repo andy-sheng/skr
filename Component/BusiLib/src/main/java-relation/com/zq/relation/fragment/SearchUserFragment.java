@@ -78,9 +78,9 @@ public class SearchUserFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mSearchResult = (RecyclerView) mRootView.findViewById(R.id.search_result);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
+        mSearchResult = (RecyclerView) getRootView().findViewById(R.id.search_result);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mSearchResult.setLayoutManager(mLinearLayoutManager);
@@ -271,7 +271,7 @@ public class SearchUserFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
+        MyLog.d(getTAG(), "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
         // 只更新此页面上的数据
         if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() != 0) {
             for (int i = 0; i < mRelationAdapter.getData().size(); i++) {
@@ -289,7 +289,7 @@ public class SearchUserFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-        MyLog.d(TAG, "FollowNotifyEvent" + " event=" + event);
+        MyLog.d(getTAG(), "FollowNotifyEvent" + " event=" + event);
         // 只更新此页面上的数据
         if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() != 0) {
             for (int i = 0; i < mRelationAdapter.getData().size(); i++) {

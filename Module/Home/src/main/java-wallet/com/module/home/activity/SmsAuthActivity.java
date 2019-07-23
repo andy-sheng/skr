@@ -22,7 +22,7 @@ public class SmsAuthActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        MyLog.d(TAG, "onCreate" + " savedInstanceState=" + savedInstanceState);
+        MyLog.d(getTAG(), "onCreate" + " savedInstanceState=" + savedInstanceState);
         super.onCreate(savedInstanceState);
     }
 

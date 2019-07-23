@@ -10,7 +10,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -103,33 +102,33 @@ public class SettingFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
 
-        mEditPerson = (RelativeLayout) mRootView.findViewById(R.id.edit_person);
-        mShiming = (RelativeLayout) mRootView.findViewById(R.id.shiming);
-        mTuiguang = (RelativeLayout) mRootView.findViewById(R.id.tuiguang);
-        mVolumeSet = (RelativeLayout) mRootView.findViewById(R.id.volume_set);
+        mEditPerson = (RelativeLayout) getRootView().findViewById(R.id.edit_person);
+        mShiming = (RelativeLayout) getRootView().findViewById(R.id.shiming);
+        mTuiguang = (RelativeLayout) getRootView().findViewById(R.id.tuiguang);
+        mVolumeSet = (RelativeLayout) getRootView().findViewById(R.id.volume_set);
 
-        mClearCache = (RelativeLayout) mRootView.findViewById(R.id.clear_cache);
-        mCacheArraw = (ExImageView) mRootView.findViewById(R.id.cache_arraw);
-        mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
+        mClearCache = (RelativeLayout) getRootView().findViewById(R.id.clear_cache);
+        mCacheArraw = (ExImageView) getRootView().findViewById(R.id.cache_arraw);
+        mCacheSizeTv = (ExTextView) getRootView().findViewById(R.id.cache_size_tv);
 
-        mVersionArea = mRootView.findViewById(R.id.version_area);
-        mVersionTips = mRootView.findViewById(R.id.version_tips);
-        mNewVersionIv = mRootView.findViewById(R.id.new_version_iv);
-        mVersionArrow = mRootView.findViewById(R.id.version_arrow);
-        mVersionTv = mRootView.findViewById(R.id.version_tv);
+        mVersionArea = getRootView().findViewById(R.id.version_area);
+        mVersionTips = getRootView().findViewById(R.id.version_tips);
+        mNewVersionIv = getRootView().findViewById(R.id.new_version_iv);
+        mVersionArrow = getRootView().findViewById(R.id.version_arrow);
+        mVersionTv = getRootView().findViewById(R.id.version_tv);
 
-        mInviteCode = mRootView.findViewById(R.id.invite_code);
-        mUserBlacklist = mRootView.findViewById(R.id.user_blacklist);
-        mUploadMusicArea = mRootView.findViewById(R.id.upload_music_area);
-        mUserFeedback = mRootView.findViewById(R.id.user_feedback);
-        mComment = mRootView.findViewById(R.id.comment);
-        mServiceAgreen = mRootView.findViewById(R.id.service_agreen);
-        mExitLogin = mRootView.findViewById(R.id.exit_login);
+        mInviteCode = getRootView().findViewById(R.id.invite_code);
+        mUserBlacklist = getRootView().findViewById(R.id.user_blacklist);
+        mUploadMusicArea = getRootView().findViewById(R.id.upload_music_area);
+        mUserFeedback = getRootView().findViewById(R.id.user_feedback);
+        mComment = getRootView().findViewById(R.id.comment);
+        mServiceAgreen = getRootView().findViewById(R.id.service_agreen);
+        mExitLogin = getRootView().findViewById(R.id.exit_login);
 
-        mRlExchange = mRootView.findViewById(R.id.Rl_exchange);
+        mRlExchange = getRootView().findViewById(R.id.Rl_exchange);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 

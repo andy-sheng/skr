@@ -175,7 +175,7 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (getActivity() != null) {
             getActivity().finish();
         }

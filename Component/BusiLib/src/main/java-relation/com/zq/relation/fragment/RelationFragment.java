@@ -69,20 +69,20 @@ public class RelationFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mAddFriendIv = (ExImageView) mRootView.findViewById(R.id.add_friend_iv);
-        mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
-        mRelationTab = (SlidingTabLayout) mRootView.findViewById(R.id.relation_tab);
-        mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+        mAddFriendIv = (ExImageView) getRootView().findViewById(R.id.add_friend_iv);
+        mContainer = (LinearLayout) getRootView().findViewById(R.id.container);
+        mRelationTab = (SlidingTabLayout) getRootView().findViewById(R.id.relation_tab);
+        mRelationVp = (NestViewPager) getRootView().findViewById(R.id.relation_vp);
 
-        mFriendArea = (RelativeLayout) mRootView.findViewById(R.id.friend_area);
-        mFriend = (ExTextView) mRootView.findViewById(R.id.friend);
-        mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
-        mFansArea = (RelativeLayout) mRootView.findViewById(R.id.fans_area);
-        mFans = (ExTextView) mRootView.findViewById(R.id.fans);
-        mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
-        mFollowArea = (RelativeLayout) mRootView.findViewById(R.id.follow_area);
-        mFollow = (ExTextView) mRootView.findViewById(R.id.follow);
+        mFriendArea = (RelativeLayout) getRootView().findViewById(R.id.friend_area);
+        mFriend = (ExTextView) getRootView().findViewById(R.id.friend);
+        mFriendRedDot = (ExImageView) getRootView().findViewById(R.id.friend_red_dot);
+        mFansArea = (RelativeLayout) getRootView().findViewById(R.id.fans_area);
+        mFans = (ExTextView) getRootView().findViewById(R.id.fans);
+        mFansRedDot = (ExImageView) getRootView().findViewById(R.id.fans_red_dot);
+        mFollowArea = (RelativeLayout) getRootView().findViewById(R.id.follow_area);
+        mFollow = (ExTextView) getRootView().findViewById(R.id.follow);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.add_friend_pop_window_layout, null);
         mSearchArea = (RelativeLayout) linearLayout.findViewById(R.id.search_area);
@@ -153,14 +153,14 @@ public class RelationFragment extends BaseFragment {
 
             @Override
             public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-                MyLog.d(TAG, "destroyItem" + " container=" + container + " position=" + position + " object=" + object);
+                MyLog.d(getTAG(), "destroyItem" + " container=" + container + " position=" + position + " object=" + object);
                 container.removeView((View) object);
             }
 
             @NonNull
             @Override
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
-                MyLog.d(TAG, "instantiateItem" + " container=" + container + " position=" + position);
+                MyLog.d(getTAG(), "instantiateItem" + " container=" + container + " position=" + position);
                 View view = mTitleAndViewMap.get(position);
                 if (container.indexOfChild(view) == -1) {
                     container.addView(view);
@@ -231,10 +231,10 @@ public class RelationFragment extends BaseFragment {
                 }
             }
         } else {
-            MyLog.w(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
+            MyLog.w(getTAG(), "initData" + " savedInstanceState=" + savedInstanceState);
         }
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     private void selectPosition(int position) {
@@ -282,6 +282,6 @@ public class RelationFragment extends BaseFragment {
             mInviteFriendDialog.dismiss(false);
         }
 
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 }

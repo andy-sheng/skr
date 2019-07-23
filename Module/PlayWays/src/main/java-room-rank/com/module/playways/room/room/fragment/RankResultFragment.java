@@ -61,19 +61,19 @@ public class RankResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mResultInfoArea = (RelativeLayout) mRootView.findViewById(R.id.result_info_area);
-        mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
+        mResultInfoArea = (RelativeLayout) getRootView().findViewById(R.id.result_info_area);
+        mResultArea = (ExRelativeLayout) getRootView().findViewById(R.id.result_area);
 
-        mFirstResult = (RankResultView2) mRootView.findViewById(R.id.first_result);
-        mSecondResult = (RankResultView2) mRootView.findViewById(R.id.second_result);
-        mThirdResult = (RankResultView2) mRootView.findViewById(R.id.third_result);
+        mFirstResult = (RankResultView2) getRootView().findViewById(R.id.first_result);
+        mSecondResult = (RankResultView2) getRootView().findViewById(R.id.second_result);
+        mThirdResult = (RankResultView2) getRootView().findViewById(R.id.third_result);
         bindListener(mFirstResult);
         bindListener(mSecondResult);
         bindListener(mThirdResult);
-        mResultTop = (ExImageView) mRootView.findViewById(R.id.result_top);
-        mResultExit = (ExImageView) mRootView.findViewById(R.id.result_exit);
-        mShareIv = (ExImageView) mRootView.findViewById(R.id.share_iv);
-        mIvGameRole = (ExImageView) mRootView.findViewById(R.id.iv_game_role);
+        mResultTop = (ExImageView) getRootView().findViewById(R.id.result_top);
+        mResultExit = (ExImageView) getRootView().findViewById(R.id.result_exit);
+        mShareIv = (ExImageView) getRootView().findViewById(R.id.share_iv);
+        mIvGameRole = (ExImageView) getRootView().findViewById(R.id.iv_game_role);
 
         mResultExit.setOnClickListener(new DebounceViewClickListener() {
             @Override

@@ -865,7 +865,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }

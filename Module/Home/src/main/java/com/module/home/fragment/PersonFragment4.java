@@ -33,11 +33,8 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
-import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.ImageUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
@@ -47,7 +44,6 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -61,8 +57,6 @@ import com.respicker.model.ImageItem;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zq.dialog.BusinessCardDialogView;
 import com.zq.level.view.NormalLevelView2;
@@ -181,17 +175,17 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initBaseContainArea() {
-        mSmartRefresh = mRootView.findViewById(R.id.smart_refresh);
-        mUserInfoArea = mRootView.findViewById(R.id.user_info_area);
+        mSmartRefresh = getRootView().findViewById(R.id.smart_refresh);
+        mUserInfoArea = getRootView().findViewById(R.id.user_info_area);
 
-        mImageBg = mRootView.findViewById(R.id.image_bg);
-        mAppbar = mRootView.findViewById(R.id.appbar);
-        mToolbar = mRootView.findViewById(R.id.toolbar);
-        mToolbarLayout = mRootView.findViewById(R.id.toolbar_layout);
-        mSrlAvatarIv = mRootView.findViewById(R.id.srl_avatar_iv);
-        mSrlNameTv = mRootView.findViewById(R.id.srl_name_tv);
-        mSrlSexIv = mRootView.findViewById(R.id.srl_sex_iv);
-        mSrlCharmTv = (ExTextView) mRootView.findViewById(R.id.srl_charm_tv);
+        mImageBg = getRootView().findViewById(R.id.image_bg);
+        mAppbar = getRootView().findViewById(R.id.appbar);
+        mToolbar = getRootView().findViewById(R.id.toolbar);
+        mToolbarLayout = getRootView().findViewById(R.id.toolbar_layout);
+        mSrlAvatarIv = getRootView().findViewById(R.id.srl_avatar_iv);
+        mSrlNameTv = getRootView().findViewById(R.id.srl_name_tv);
+        mSrlSexIv = getRootView().findViewById(R.id.srl_sex_iv);
+        mSrlCharmTv = (ExTextView) getRootView().findViewById(R.id.srl_charm_tv);
 
         FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
                 .build());
@@ -278,14 +272,14 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initUserInfoArea() {
-        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
-        mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
-        mCharmTv = (ExTextView) mRootView.findViewById(R.id.charm_tv);
+        mAvatarIv = (SimpleDraweeView) getRootView().findViewById(R.id.avatar_iv);
+        mLevelView = (NormalLevelView2) getRootView().findViewById(R.id.level_view);
+        mNameTv = (ExTextView) getRootView().findViewById(R.id.name_tv);
+        mSexIv = (ImageView) getRootView().findViewById(R.id.sex_iv);
+        mSignTv = (ExTextView) getRootView().findViewById(R.id.sign_tv);
+        mCharmTv = (ExTextView) getRootView().findViewById(R.id.charm_tv);
 
-        mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
+        mBusinessCard = (ImageView) getRootView().findViewById(R.id.business_card);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -319,8 +313,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initSettingArea() {
-        mSettingImgIv = (ImageView) mRootView.findViewById(R.id.setting_img_iv);
-        mSettingRedDot = (ExImageView) mRootView.findViewById(R.id.setting_red_dot);
+        mSettingImgIv = (ImageView) getRootView().findViewById(R.id.setting_img_iv);
+        mSettingRedDot = (ExImageView) getRootView().findViewById(R.id.setting_red_dot);
 
         mSettingImgIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -343,13 +337,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initFunctionArea() {
-        mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
-        mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-        mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
+        mFriendsNumTv = (ExTextView) getRootView().findViewById(R.id.friends_num_tv);
+        mFollowsNumTv = (ExTextView) getRootView().findViewById(R.id.follows_num_tv);
+        mFansNumTv = (ExTextView) getRootView().findViewById(R.id.fans_num_tv);
 
-        mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
-        mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
-        mRechargeIv = (ExImageView) mRootView.findViewById(R.id.recharge_iv);
+        mWalletIv = (ExImageView) getRootView().findViewById(R.id.wallet_iv);
+        mIncomeIv = (ExImageView) getRootView().findViewById(R.id.income_iv);
+        mRechargeIv = (ExImageView) getRootView().findViewById(R.id.recharge_iv);
 
         mWalletIv.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -419,8 +413,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initPersonArea() {
-        mPersonTab = (SlidingTabLayout) mRootView.findViewById(R.id.person_tab);
-        mPersonVp = (NestViewPager) mRootView.findViewById(R.id.person_vp);
+        mPersonTab = (SlidingTabLayout) getRootView().findViewById(R.id.person_tab);
+        mPersonVp = (NestViewPager) getRootView().findViewById(R.id.person_vp);
 
         mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
         mPersonTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));

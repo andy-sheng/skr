@@ -16,8 +16,8 @@ public class BFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mRootView = new ExTextView(getContext());
-        ((ExTextView) mRootView).setText("BFragment");
+        setRootView(new ExTextView(getContext()));
+        ((ExTextView) getRootView()).setText("BFragment");
     }
 
     @Override

@@ -1,50 +1,37 @@
 package com.module.home.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
-import com.common.log.MyLog;
-import com.common.rxretrofit.ApiManager;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
-import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.WalletServerApi;
 import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IWithDrawView;
 import com.module.home.model.WithDrawInfoModel;
 import com.module.home.presenter.WithDrawPresenter;
-import com.module.home.view.GetRedPkgCashView;
 import com.module.home.view.WithDrawRuleView;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.EventBus;
-import org.w3c.dom.Text;
 
 import java.util.Map;
 
@@ -84,19 +71,19 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mMainActContainer = (LinearLayout) mRootView.findViewById(R.id.main_act_container);
-        mTvWithdrawCash = (TextView) mRootView.findViewById(R.id.tv_withdraw_cash);
-        mIvAttention = (ImageView) mRootView.findViewById(R.id.iv_attention);
-        mLlInput = (LinearLayout) mRootView.findViewById(R.id.ll_input);
-        mEditCashNum = (EditText) mRootView.findViewById(R.id.edit_cash_num);
-        mDivider = (View) mRootView.findViewById(R.id.divider);
-        mTvTip = (TextView) mRootView.findViewById(R.id.tv_tip);
-        mLlChannel = (LinearLayout) mRootView.findViewById(R.id.ll_channel);
-        mWxIcon = (ImageView) mRootView.findViewById(R.id.wx_icon);
-        mTvWxSelect = (ExTextView) mRootView.findViewById(R.id.tv_wx_select);
-        mTvWithdrawBtn = (ExTextView) mRootView.findViewById(R.id.tv_withdraw_btn);
-        mTvHasNotBindTip = (TextView) mRootView.findViewById(R.id.tv_has_not_bind_tip);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mMainActContainer = (LinearLayout) getRootView().findViewById(R.id.main_act_container);
+        mTvWithdrawCash = (TextView) getRootView().findViewById(R.id.tv_withdraw_cash);
+        mIvAttention = (ImageView) getRootView().findViewById(R.id.iv_attention);
+        mLlInput = (LinearLayout) getRootView().findViewById(R.id.ll_input);
+        mEditCashNum = (EditText) getRootView().findViewById(R.id.edit_cash_num);
+        mDivider = (View) getRootView().findViewById(R.id.divider);
+        mTvTip = (TextView) getRootView().findViewById(R.id.tv_tip);
+        mLlChannel = (LinearLayout) getRootView().findViewById(R.id.ll_channel);
+        mWxIcon = (ImageView) getRootView().findViewById(R.id.wx_icon);
+        mTvWxSelect = (ExTextView) getRootView().findViewById(R.id.tv_wx_select);
+        mTvWithdrawBtn = (ExTextView) getRootView().findViewById(R.id.tv_withdraw_btn);
+        mTvHasNotBindTip = (TextView) getRootView().findViewById(R.id.tv_has_not_bind_tip);
 
         mWithDrawPresenter = new WithDrawPresenter(this);
         addPresent(mWithDrawPresenter);

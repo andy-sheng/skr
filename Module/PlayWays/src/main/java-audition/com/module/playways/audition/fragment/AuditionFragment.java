@@ -136,20 +136,20 @@ public class AuditionFragment extends BaseFragment {
             ZqEngineKit.getInstance().resumeAudioMixing();
         }
 
-        mRankTopView = (RankTopContainerView2) mRootView.findViewById(R.id.rank_top_view);
-        mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
-        mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
-        mAuditionArea = (RelativeLayout) mRootView.findViewById(R.id.audition_area);
-        mTiaoyinIv = (ImageView) mRootView.findViewById(R.id.tiaoyin_iv);
-        mTiaoyinTv = (ExTextView) mRootView.findViewById(R.id.tiaoyin_tv);
-        mResArea = (RelativeLayout) mRootView.findViewById(R.id.res_area);
-        mCompleArea = (RelativeLayout) mRootView.findViewById(R.id.comple_area);
-        mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
-        mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
-        mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
-        mVoiceScaleView = (VoiceScaleView) mRootView.findViewById(R.id.voice_scale_view);
-        mLogView = mRootView.findViewById(R.id.log_view);
-        View mLogViewScrollContainer = mRootView.findViewById(R.id.log_view_scroll_container);
+        mRankTopView = (RankTopContainerView2) getRootView().findViewById(R.id.rank_top_view);
+        mBottomContainer = (LinearLayout) getRootView().findViewById(R.id.bottom_container);
+        mBackArea = (RelativeLayout) getRootView().findViewById(R.id.back_area);
+        mAuditionArea = (RelativeLayout) getRootView().findViewById(R.id.audition_area);
+        mTiaoyinIv = (ImageView) getRootView().findViewById(R.id.tiaoyin_iv);
+        mTiaoyinTv = (ExTextView) getRootView().findViewById(R.id.tiaoyin_tv);
+        mResArea = (RelativeLayout) getRootView().findViewById(R.id.res_area);
+        mCompleArea = (RelativeLayout) getRootView().findViewById(R.id.comple_area);
+        mTvSongName = (ExTextView) getRootView().findViewById(R.id.tv_song_name);
+        mManyLyricsView = (ManyLyricsView) getRootView().findViewById(R.id.many_lyrics_view);
+        mVoiceControlView = (VoiceControlPanelView) getRootView().findViewById(R.id.voice_control_view);
+        mVoiceScaleView = (VoiceScaleView) getRootView().findViewById(R.id.voice_scale_view);
+        mLogView = getRootView().findViewById(R.id.log_view);
+        View mLogViewScrollContainer = getRootView().findViewById(R.id.log_view_scroll_container);
         if (MyLog.isDebugLogOpen()) {
             mLogViewScrollContainer.setVisibility(View.VISIBLE);
         } else {
@@ -520,7 +520,7 @@ public class AuditionFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         Params.save2Pref(ZqEngineKit.getInstance().getParams());
         Activity activity = getActivity();
         if (activity != null) {

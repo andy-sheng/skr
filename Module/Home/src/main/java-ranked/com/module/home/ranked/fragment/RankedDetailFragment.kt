@@ -16,10 +16,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.log.MyLog
-import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.orhanobut.dialogplus.DialogPlus
@@ -29,7 +27,6 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.ranked.view.RankedDetailView
 import com.zq.person.event.ShowPersonCenterEvent
-import com.zq.person.fragment.OtherPersonFragment4
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -54,12 +51,12 @@ class RankedDetailFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mContainer = mRootView.findViewById<View>(R.id.container) as ConstraintLayout
-        mTopImage = mRootView.findViewById<View>(R.id.top_image) as ImageView
-        mIvBack = mRootView.findViewById<View>(R.id.iv_back) as ImageView
-        mIvRule = mRootView.findViewById<View>(R.id.iv_rule) as ImageView
-        mTitleStl = mRootView.findViewById<View>(R.id.title_stl) as SlidingTabLayout
-        mRankedVp = mRootView.findViewById<View>(R.id.ranked_vp) as NestViewPager
+        mContainer = rootView.findViewById<View>(R.id.container) as ConstraintLayout
+        mTopImage = rootView.findViewById<View>(R.id.top_image) as ImageView
+        mIvBack = rootView.findViewById<View>(R.id.iv_back) as ImageView
+        mIvRule = rootView.findViewById<View>(R.id.iv_rule) as ImageView
+        mTitleStl = rootView.findViewById<View>(R.id.title_stl) as SlidingTabLayout
+        mRankedVp = rootView.findViewById<View>(R.id.ranked_vp) as NestViewPager
 
 
         when (mModel?.rankType) {

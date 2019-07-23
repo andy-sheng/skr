@@ -58,9 +58,9 @@ public class LastFollowFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mContentRv = (RecyclerView) mRootView.findViewById(R.id.content_rv);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
+        mContentRv = (RecyclerView) getRootView().findViewById(R.id.content_rv);
 
         mRefreshLayout.setEnableRefresh(true);
         mRefreshLayout.setEnableLoadMore(false);
@@ -145,7 +145,7 @@ public class LastFollowFragment extends BaseFragment {
             mLastFollowAdapter.setDataList(list);
         } else {
             mLoadService.showCallback(LastFollowEmptyCallback.class);
-            MyLog.w(TAG, "showLastRelation" + " list=" + list);
+            MyLog.w(getTAG(), "showLastRelation" + " list=" + list);
         }
 
     }
@@ -156,7 +156,7 @@ public class LastFollowFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         finish();
         return true;
     }
@@ -188,7 +188,7 @@ public class LastFollowFragment extends BaseFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(getTAG(), "onEvent" + " event=" + event);
         // TODO: 2019/4/24 可以再优化，暂时这么写
         getLastRelations();
     }
@@ -200,7 +200,7 @@ public class LastFollowFragment extends BaseFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
+        MyLog.d(getTAG(), "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
         // TODO: 2019/4/24 可以再优化，暂时这么写
         getLastRelations();
     }

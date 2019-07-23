@@ -73,11 +73,11 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mHistoryBack = (ExImageView) mRootView.findViewById(R.id.history_back);
-        mSelectSelect = (ExImageView) mRootView.findViewById(R.id.select_select);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mHistoryRecycle = (RecyclerView) mRootView.findViewById(R.id.history_recycle);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mHistoryBack = (ExImageView) getRootView().findViewById(R.id.history_back);
+        mSelectSelect = (ExImageView) getRootView().findViewById(R.id.select_select);
+        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
+        mHistoryRecycle = (RecyclerView) getRootView().findViewById(R.id.history_recycle);
 
         mHistoryRecycle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
@@ -146,7 +146,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     void jump(SongModel songModel) {
@@ -203,7 +203,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 
     @Override

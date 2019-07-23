@@ -45,8 +45,8 @@ public class EditInfoNameFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mNicknameEt = (NoLeakEditText) mRootView.findViewById(R.id.nickname_et);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mNicknameEt = (NoLeakEditText) getRootView().findViewById(R.id.nickname_et);
 
         mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
 

@@ -66,10 +66,10 @@ class FriendMoreRoomFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mTitlebar = mRootView.findViewById(R.id.titlebar)
-        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout)
-        mClassicsHeader = mRootView.findViewById(R.id.classics_header)
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view)
+        mTitlebar = rootView.findViewById(R.id.titlebar)
+        mRefreshLayout = rootView.findViewById(R.id.refreshLayout)
+        mClassicsHeader = rootView.findViewById(R.id.classics_header)
+        mRecyclerView = rootView.findViewById(R.id.recycler_view)
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {

@@ -89,13 +89,13 @@ public class FeedbackFragment extends BaseFragment {
 
         @Override
         public void onStart(PhotoModel pm, FeedbackFragment personFragment2) {
-            MyLog.d(TAG, "onStart" + "开始上传 PhotoModel=" + pm + " 队列还有 mPlayControlTemplate.getSize()=" + mPlayControlTemplate.getSize());
+            MyLog.d(getTAG(), "onStart" + "开始上传 PhotoModel=" + pm + " 队列还有 mPlayControlTemplate.getSize()=" + mPlayControlTemplate.getSize());
             execUploadPhoto(pm);
         }
 
         @Override
         protected void onEnd(PhotoModel pm) {
-            MyLog.d(TAG, "onEnd" + " 上传结束 PhotoModel=" + pm);
+            MyLog.d(getTAG(), "onEnd" + " 上传结束 PhotoModel=" + pm);
         }
     };
 
@@ -106,10 +106,10 @@ public class FeedbackFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mFeedBackView = (FeedbackView) mRootView.findViewById(R.id.feed_back_view);
-        mUploadProgressBar = (ProgressBar) mRootView.findViewById(R.id.upload_progress_bar);
-        mPlaceView = (View) mRootView.findViewById(R.id.place_view);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mFeedBackView = (FeedbackView) getRootView().findViewById(R.id.feed_back_view);
+        mUploadProgressBar = (ProgressBar) getRootView().findViewById(R.id.upload_progress_bar);
+        mPlaceView = (View) getRootView().findViewById(R.id.place_view);
         mFeedBackView.setActionType(mActionType);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
@@ -170,7 +170,7 @@ public class FeedbackFragment extends BaseFragment {
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     private void tryUploadPic(List<Integer> typeList, String content, List<ImageItem> imageItemList, String logUrl) {
@@ -207,7 +207,7 @@ public class FeedbackFragment extends BaseFragment {
     }
 
     void execUploadPhoto(final PhotoModel photoModel) {
-        MyLog.d(TAG, "execUploadPhoto" + " photoModel=" + photoModel);
+        MyLog.d(getTAG(), "execUploadPhoto" + " photoModel=" + photoModel);
         UploadTask uploadTask = UploadParams.newBuilder(photoModel.getLocalPath())
                 .setNeedCompress(true)
                 .setNeedMonitor(true)
@@ -220,7 +220,7 @@ public class FeedbackFragment extends BaseFragment {
 
                     @Override
                     public void onSuccessNotInUiThread(String url) {
-                        MyLog.d(TAG, "上传成功" + " url=" + url);
+                        MyLog.d(getTAG(), "上传成功" + " url=" + url);
                         photoModel.setStatus(STATUS_SUCCESS);
                         photoModel.setPicPath(url);
                         checkUploadState(mPhotoModelList);
@@ -230,7 +230,7 @@ public class FeedbackFragment extends BaseFragment {
 
                     @Override
                     public void onFailureNotInUiThread(String msg) {
-                        MyLog.d(TAG, "上传失败" + " msg=" + msg);
+                        MyLog.d(getTAG(), "上传失败" + " msg=" + msg);
                         photoModel.setStatus(STATUS_FAILED);
                         checkUploadState(mPhotoModelList);
                         mUploading = false;
@@ -266,7 +266,7 @@ public class FeedbackFragment extends BaseFragment {
     }
 
     private void feedback(List<Integer> typeList, String content, String logUrl, List<String> picUrls) {
-        MyLog.d(TAG, "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
+        MyLog.d(getTAG(), "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
         if (mActionType == FEED_BACK) {
             summitFeedback(typeList, content, logUrl, picUrls);
         } else {
@@ -275,7 +275,7 @@ public class FeedbackFragment extends BaseFragment {
     }
 
     private void summitFeedback(List<Integer> typeList, String content, String logUrl, List<String> picUrls) {
-        MyLog.d(TAG, "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
+        MyLog.d(getTAG(), "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
         HashMap<String, Object> map = new HashMap<>();
         map.put("createdAt", System.currentTimeMillis());
         map.put("appVer", U.getAppInfoUtils().getVersionName());
@@ -291,7 +291,7 @@ public class FeedbackFragment extends BaseFragment {
         ApiMethods.subscribe(feedbackServerApi.feedback(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result);
+                MyLog.d(getTAG(), "process" + " result=" + result);
                 if (result.getErrno() == 0) {
                     mPlaceView.setVisibility(View.GONE);
                     mUploadProgressBar.setVisibility(View.GONE);
@@ -361,7 +361,7 @@ public class FeedbackFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
         mHandler.removeCallbacksAndMessages(null);
     }
 

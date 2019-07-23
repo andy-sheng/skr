@@ -121,10 +121,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function1;
-
 import static android.view.View.GONE;
 
 public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
@@ -313,7 +309,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         }
 
         // 请保证从下面的view往上面的view开始初始化
-        mGrabRootView = mRootView.findViewById(R.id.grab_root_view);
+        mGrabRootView = getRootView().findViewById(R.id.grab_root_view);
 //        mGrabRootView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -344,7 +340,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         initGiftPanelView();
         initVideoView();
         if (MyLog.isDebugLogOpen()) {
-            ViewStub viewStub = mRootView.findViewById(R.id.debug_log_view_stub);
+            ViewStub viewStub = getRootView().findViewById(R.id.debug_log_view_stub);
             DebugLogView debugLogView = new DebugLogView(viewStub);
             debugLogView.tryInflate();
         }
@@ -603,7 +599,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //    }
 
     private void initBgView() {
-        mGrabRoomBgFlag = mRootView.findViewById(R.id.grab_room_bg_flag);
+        mGrabRoomBgFlag = getRootView().findViewById(R.id.grab_room_bg_flag);
         if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_SECRET) {
             mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_simi);
         } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND) {
@@ -616,9 +612,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initGiftPanelView() {
-        mGiftPanelView = (GiftPanelView) mRootView.findViewById(R.id.gift_panel_view);
+        mGiftPanelView = (GiftPanelView) getRootView().findViewById(R.id.gift_panel_view);
         mGiftPanelView.setGrabRoomData(mRoomData);
-        mContinueSendView = (ContinueSendView) mRootView.findViewById(R.id.continue_send_view);
+        mContinueSendView = (ContinueSendView) getRootView().findViewById(R.id.continue_send_view);
         mContinueSendView.setBaseRoomData(mRoomData);
         mContinueSendView.setObserver(new ContinueSendView.OnVisibleStateListener() {
             @Override
@@ -638,7 +634,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void initVideoView() {
         {
-            ViewStub viewStub = mRootView.findViewById(R.id.grab_video_display_view_stub);
+            ViewStub viewStub = getRootView().findViewById(R.id.grab_video_display_view_stub);
             mGrabVideoDisplayView = new GrabVideoDisplayView(viewStub, mRoomData);
             mGrabVideoDisplayView.setSelfSingCardListener(new SelfSingCardView.Listener() {
                 @Override
@@ -655,33 +651,33 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 }
             });
         }
-        mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(mRootView, mRoomData);
+        mGrabVideoSelfSingCardView = new GrabVideoSelfSingCardView(getRootView(), mRoomData);
 
         {
-            ViewStub viewStub = mRootView.findViewById(R.id.grab_beauty_control_panel_view_stub);
+            ViewStub viewStub = getRootView().findViewById(R.id.grab_beauty_control_panel_view_stub);
             mBeautyControlPanelView = new BeautyControlPanelView(viewStub);
         }
     }
 
     private void initInputView() {
-        mInputContainerView = mRootView.findViewById(R.id.input_container_view);
+        mInputContainerView = getRootView().findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
     }
 
     private void initBottomView() {
         {
-            ViewStub viewStub = mRootView.findViewById(R.id.grab_voice_record_tip_view_stub);
+            ViewStub viewStub = getRootView().findViewById(R.id.grab_voice_record_tip_view_stub);
             mVoiceRecordTipsView = new VoiceRecordTipsView(viewStub);
         }
 
-        mBottomBgVp = mRootView.findViewById(R.id.bottom_bg_vp);
+        mBottomBgVp = getRootView().findViewById(R.id.bottom_bg_vp);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mBottomBgVp.getLayoutParams();
         /**
          * 按比例适配手机
          */
         lp.height = U.getDisplayUtils().getScreenHeight() * 284 / 667;
 
-        mBottomContainerView = (GrabBottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
+        mBottomContainerView = (GrabBottomContainerView) getRootView().findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
@@ -733,7 +729,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initCommentView() {
-        mCommentView = mRootView.findViewById(R.id.comment_view);
+        mCommentView = getRootView().findViewById(R.id.comment_view);
         mCommentView.setListener(new CommentViewItemListener() {
             @Override
             public void clickAvatar(int userId) {
@@ -747,7 +743,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initChangeRoomTransitionView() {
-        mGrabChangeRoomTransitionView = mRootView.findViewById(R.id.change_room_transition_view);
+        mGrabChangeRoomTransitionView = getRootView().findViewById(R.id.change_room_transition_view);
         mGrabChangeRoomTransitionView.setVisibility(GONE);
     }
 
@@ -923,9 +919,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initTopView() {
-        mGrabTopOpView = mRootView.findViewById(R.id.grab_top_op_view);
+        mGrabTopOpView = getRootView().findViewById(R.id.grab_top_op_view);
         mGrabTopOpView.setRoomData(mRoomData);
-        mGrabTopContentView = mRootView.findViewById(R.id.grab_top_content_view);
+        mGrabTopContentView = getRootView().findViewById(R.id.grab_top_content_view);
         mGrabTopContentView.setRoomData(mRoomData);
         mGrabTopOpView.setListener(new GrabTopOpView.Listener() {
             @Override
@@ -1045,7 +1041,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 }
             }
         });
-        mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
+        mPracticeFlagIv = getRootView().findViewById(R.id.practice_flag_iv);
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
 
@@ -1068,37 +1064,37 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
      * 转场动画相关初始化
      */
     private void initTurnChangeView() {
-        mTurnInfoCardView = mRootView.findViewById(R.id.turn_info_iv);
-        mSongInfoCardView = mRootView.findViewById(R.id.turn_change_song_info_card_view);
+        mTurnInfoCardView = getRootView().findViewById(R.id.turn_info_iv);
+        mSongInfoCardView = getRootView().findViewById(R.id.turn_change_song_info_card_view);
         {
-            ViewStub viewStub = mRootView.findViewById(R.id.grab_sing_begin_tips_card_stub);
+            ViewStub viewStub = getRootView().findViewById(R.id.grab_sing_begin_tips_card_stub);
             mSingBeginTipsCardView = new SingBeginTipsCardView(viewStub, mRoomData);
         }
-        mRoundOverCardView = new RoundOverCardView(mRootView, mRoomData);
-        mGrabGameOverView = mRootView.findViewById(R.id.grab_game_over_view);
+        mRoundOverCardView = new RoundOverCardView(getRootView(), mRoomData);
+        mGrabGameOverView = getRootView().findViewById(R.id.grab_game_over_view);
     }
 
     private void initGiftDisplayView() {
-        mGiftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
+        mGiftContinueViewGroup = getRootView().findViewById(R.id.gift_continue_vg);
         mGiftContinueViewGroup.setRoomData(mRoomData);
-        GiftOverlayAnimationViewGroup giftOverlayAnimationViewGroup = mRootView.findViewById(R.id.gift_overlay_animation_vg);
+        GiftOverlayAnimationViewGroup giftOverlayAnimationViewGroup = getRootView().findViewById(R.id.gift_overlay_animation_vg);
         giftOverlayAnimationViewGroup.setRoomData(mRoomData);
-        GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        GiftBigAnimationViewGroup giftBigAnimationViewGroup = getRootView().findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
-        GiftBigContinuousView giftBigContinueView = mRootView.findViewById(R.id.gift_big_continue_view);
+        GiftBigContinuousView giftBigContinueView = getRootView().findViewById(R.id.gift_big_continue_view);
         giftBigAnimationViewGroup.setGiftBigContinuousView(giftBigContinueView);
 
-        mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
+        mDengBigAnimation = (GrabDengBigAnimationView) getRootView().findViewById(R.id.deng_big_animation);
     }
 
     private void initScoreView() {
-        mGrabScoreTipsView = mRootView.findViewById(R.id.grab_score_tips_view);
+        mGrabScoreTipsView = getRootView().findViewById(R.id.grab_score_tips_view);
         mGrabScoreTipsView.setRoomData(mRoomData);
     }
 
     private void initGrabOpView() {
-        mGrabOpBtn = mRootView.findViewById(R.id.grab_op_btn);
+        mGrabOpBtn = getRootView().findViewById(R.id.grab_op_btn);
         mGrabOpBtn.setGrabRoomData(mRoomData);
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
@@ -1176,7 +1172,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         mGrabOpBtn.hide("initGrabOpView");
 
-        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_giveup_view);
+        mGrabGiveupView = (GrabGiveupView) getRootView().findViewById(R.id.grab_giveup_view);
         mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
             public void giveUp(boolean ownerControl) {
@@ -1192,7 +1188,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         });
         mGrabGiveupView.hideWithAnimation(false);
 
-        mMiniOwnerMicIv = mRootView.findViewById(R.id.mini_owner_mic_iv);
+        mMiniOwnerMicIv = getRootView().findViewById(R.id.mini_owner_mic_iv);
         mMiniOwnerMicIv.setOnClickListener(new DebounceViewClickListener() {
             boolean mute = true;
 
@@ -1210,7 +1206,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     private void initSingStageView() {
-        mSelfSingCardView = new SelfSingCardView(mRootView, mRoomData);
+        mSelfSingCardView = new SelfSingCardView(getRootView(), mRoomData);
         mSelfSingCardView.setListener(new SelfSingCardView.Listener() {
             @Override
             public void onSelfSingOver() {
@@ -1225,7 +1221,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 mCorePresenter.sendMyGrabOver("onSelfSingOver");
             }
         });
-        mOthersSingCardView = new OthersSingCardView(mRootView, mRoomData);
+        mOthersSingCardView = new OthersSingCardView(getRootView(), mRoomData);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1599,7 +1595,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }

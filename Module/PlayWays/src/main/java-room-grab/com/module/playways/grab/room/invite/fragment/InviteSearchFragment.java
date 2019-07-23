@@ -28,7 +28,6 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
@@ -76,10 +75,10 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSearchArea = (RelativeLayout) mRootView.findViewById(R.id.search_area);
-        mCancleTv = (TextView) mRootView.findViewById(R.id.cancle_tv);
-        mSearchContent = (EditText) mRootView.findViewById(R.id.search_content);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mSearchArea = (RelativeLayout) getRootView().findViewById(R.id.search_area);
+        mCancleTv = (TextView) getRootView().findViewById(R.id.cancle_tv);
+        mSearchContent = (EditText) getRootView().findViewById(R.id.search_content);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
 
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         Bundle bundle = getArguments();

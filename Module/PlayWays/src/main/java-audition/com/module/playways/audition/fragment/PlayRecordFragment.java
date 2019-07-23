@@ -90,15 +90,15 @@ public class PlayRecordFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTvName = (TextView) mRootView.findViewById(R.id.tv_name);
-        mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
-        mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
-        mOptArea = (RelativeLayout) mRootView.findViewById(R.id.opt_area);
-        mOptTv = (ExTextView) mRootView.findViewById(R.id.opt_tv);
-        mResetArea = (RelativeLayout) mRootView.findViewById(R.id.reset_area);
-        mSaveShareArea = (RelativeLayout) mRootView.findViewById(R.id.save_share_area);
-        mSaveShareTv = (ExTextView) mRootView.findViewById(R.id.save_share_tv);
-        mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
+        mTvName = (TextView) getRootView().findViewById(R.id.tv_name);
+        mBottomContainer = (LinearLayout) getRootView().findViewById(R.id.bottom_container);
+        mBackArea = (RelativeLayout) getRootView().findViewById(R.id.back_area);
+        mOptArea = (RelativeLayout) getRootView().findViewById(R.id.opt_area);
+        mOptTv = (ExTextView) getRootView().findViewById(R.id.opt_tv);
+        mResetArea = (RelativeLayout) getRootView().findViewById(R.id.reset_area);
+        mSaveShareArea = (RelativeLayout) getRootView().findViewById(R.id.save_share_area);
+        mSaveShareTv = (ExTextView) getRootView().findViewById(R.id.save_share_tv);
+        mManyLyricsView = (ManyLyricsView) getRootView().findViewById(R.id.many_lyrics_view);
 
         mTvName.setText("《" + mSongModel.getItemName() + "》");
         mUiHanlder = new Handler();
@@ -120,8 +120,8 @@ public class PlayRecordFragment extends BaseFragment {
         mResetArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mFragmentDataListener != null) {
-                    mFragmentDataListener.onFragmentResult(0, 0, null, null);
+                if (getMFragmentDataListener() != null) {
+                    getMFragmentDataListener().onFragmentResult(0, 0, null, null);
                 }
                 U.getFragmentUtils().popFragment(PlayRecordFragment.this);
             }
@@ -197,26 +197,26 @@ public class PlayRecordFragment extends BaseFragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(bindUntilEvent(FragmentEvent.DESTROY))
                     .subscribe(lyricsReader -> {
-                        MyLog.d(TAG, "playMusic, start play lyric");
+                        MyLog.d(getTAG(), "playMusic, start play lyric");
                         mManyLyricsView.resetData();
                         mManyLyricsView.initLrcData();
                         lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
-                        MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
+                        MyLog.d(getTAG(), "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
                         mManyLyricsView.setLyricsReader(lyricsReader);
                         mLyricsReader = lyricsReader;
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                             mManyLyricsView.play(songModel.getBeginMs());
-                            MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
+                            MyLog.d(getTAG(), "songModel.getBeginMs() : " + songModel.getBeginMs());
                         }
                     }, throwable -> MyLog.e(throwable));
         } else {
-            MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
+            MyLog.e(getTAG(), "没有歌词文件，不应该，进界面前已经下载好了");
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
-        MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
+        MyLog.w(getTAG(), event.foreground ? "切换到前台" : "切换到后台");
         if (!event.foreground && mIsPlay) {
             // 暂停
             if (mPlayer != null) {
@@ -315,7 +315,7 @@ public class PlayRecordFragment extends BaseFragment {
 
                     @Override
                     public void onSuccessNotInUiThread(String url) {
-                        MyLog.d(TAG, "onSuccess" + " url=" + url);
+                        MyLog.d(getTAG(), "onSuccess" + " url=" + url);
                         mUrl = url;
                         saveWorksStep2();
                     }
@@ -390,7 +390,7 @@ public class PlayRecordFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         return true;
     }
 }

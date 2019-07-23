@@ -60,19 +60,19 @@ class BeautyPreviewFragment : BaseFragment() {
 
     override fun initData(savedInstanceState: Bundle?) {
         MyLog.d(TAG, "mFrom=${mFrom}")
-        mTitleBar = mRootView.findViewById<CommonTitleBar>(R.id.titlebar)
+        mTitleBar = rootView.findViewById<CommonTitleBar>(R.id.titlebar)
         mTitleBar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 onBackPressed()
             }
         })
-        mVideoTexture = mRootView.findViewById<View>(R.id.video_texture) as TextureView
+        mVideoTexture = rootView.findViewById<View>(R.id.video_texture) as TextureView
         var lp = mVideoTexture.layoutParams as ConstraintLayout.LayoutParams
         lp.height = U.getDisplayUtils().screenWidth * 16 / 9
-        var viewStub = mRootView.findViewById<ViewStub>(R.id.beauty_control_panel_view_stub);
+        var viewStub = rootView.findViewById<ViewStub>(R.id.beauty_control_panel_view_stub);
         mBeautyControlView = BeautyControlPanelView(viewStub)
-        mEnterRoomTv = mRootView.findViewById<View>(R.id.enter_room_tv) as ExTextView
-        mBeautyOpenBtn = mRootView.findViewById<View>(R.id.beauty_open_btn)
+        mEnterRoomTv = rootView.findViewById<View>(R.id.enter_room_tv) as ExTextView
+        mBeautyOpenBtn = rootView.findViewById<View>(R.id.beauty_open_btn)
 
         mBeautyOpenBtn.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
