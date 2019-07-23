@@ -17,8 +17,9 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
-import com.zq.lyrics.widget.ManyLyricsView
+import com.module.feeds.detail.view.RadioView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -35,7 +36,6 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
     var mBtnBack: ImageView? = null
     var mSongNameTv: ExTextView? = null
     var mMoreTv: ExImageView? = null
-    var mManyLyricView: ManyLyricsView? = null
     var mControlTv: ExImageView? = null
     var mPassTimeTv: ExTextView? = null
     var mLastTimeTv: ExTextView? = null
@@ -50,6 +50,8 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
     var mShareNumTv: ExTextView? = null
     var mToolbar: Toolbar? = null
     var mToolbarLayout: ConstraintLayout? = null
+    var mFeedsCommonLyricView: FeedsCommonLyricView? = null
+    var mRadioView: RadioView? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
@@ -68,7 +70,6 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
         mBtnBack = mRootView.findViewById(com.module.feeds.R.id.btn_back) as ImageView
         mSongNameTv = mRootView.findViewById(com.module.feeds.R.id.song_name_tv)
         mMoreTv = mRootView.findViewById(com.module.feeds.R.id.more_iv)
-        mManyLyricView = mRootView.findViewById(com.module.feeds.R.id.many_lyric_view)
         mControlTv = mRootView.findViewById(com.module.feeds.R.id.control_tv)
         mPassTimeTv = mRootView.findViewById(com.module.feeds.R.id.pass_time_tv)
         mLastTimeTv = mRootView.findViewById(com.module.feeds.R.id.last_time_tv)
@@ -86,6 +87,9 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
         mShareIv = mRootView.findViewById(com.module.feeds.R.id.share_iv)
         mShareNumTv = mRootView.findViewById(com.module.feeds.R.id.share_num_tv)
         mFeedsInputContainerView = mRootView.findViewById(com.module.feeds.R.id.feeds_input_container_view)
+        mRadioView = mRootView.findViewById(com.module.feeds.R.id.radio_view)
+        mFeedsCommonLyricView = FeedsCommonLyricView(mRootView)
+
 
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(55f)
@@ -142,12 +146,27 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
             mFeedsInputContainerView?.showSoftInput()
         }
 
+        mXinIv?.setDebounceViewClickListener {
+
+        }
+
+        mFollowTv?.setDebounceViewClickListener {
+
+        }
+
         launch(Dispatchers.Main) {
             repeat(100) {
                 delay(1000)
                 mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong() * 1000, "mm:ss")
                 mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate((100 - it.toLong()) * 1000, "mm:ss")
             }
+        }
+
+        launch {
+            delay(2000)
+            mRadioView?.play()
+            delay(2000)
+            mRadioView?.pause()
         }
     }
 

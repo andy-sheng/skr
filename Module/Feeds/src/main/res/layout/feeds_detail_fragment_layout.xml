@@ -81,12 +81,35 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/song_name_tv" />
 
-                    <com.zq.lyrics.widget.ManyLyricsView
-                        android:id="@+id/many_lyric_view"
+                    <com.module.feeds.detail.view.RadioView
+                        android:id="@+id/radio_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/view_74_dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:panelDrawable="@drawable/radio_panel"
+                        app:panelMarginTop="@dimen/view_30_dp"
+                        app:panelWidth="@dimen/view_125_dp"
+                        app:rockerDrawable="@drawable/gequxiangqing_caokonggan"
+                        app:rockerHeight="@dimen/view_58_dp"
+                        app:rockerWidth="@dimen/view_16_dp"
+                        app:rockerXP="0.5"
+                        app:rockerYP="0.1" />
+
+                    <ViewStub
+                        android:id="@+id/auto_scroll_lyric_view_layout_viewstub"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_74_dp"
-                        android:layout_marginBottom="@dimen/view_153_dp"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        android:layout="@layout/auto_scroll_lyric_view_layout" />
+
+
+                    <ViewStub
+                        android:id="@+id/feeds_many_lyric_layout_viewstub"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_74_dp"
+                        android:layout="@layout/feeds_many_lyric_layout" />
 
                     <com.common.view.ex.ExImageView
                         android:id="@+id/control_tv"

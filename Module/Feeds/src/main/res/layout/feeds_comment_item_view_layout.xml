@@ -37,6 +37,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
         app:layout_constraintLeft_toRightOf="@+id/commenter_avater_iv" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/xin_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:bl_selected_drawable="@drawable/xin_shi"
+        app:bl_unSelected_drawable="@drawable/xin_kong"
+        app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/like_num"
         android:layout_width="wrap_content"
@@ -47,7 +58,7 @@
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/xin_iv"
         app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
 
     <com.common.view.ex.ExTextView
@@ -55,14 +66,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_7_dp"
-        android:layout_marginRight="@dimen/view_27_dp"
-        android:text="小时候有个女同学，总是跟老师告状说我偷她铅 笔。现在，这个女同学正在给我孩子削铅笔。"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:text="小时候有个女同学，总是跟老师告状说我偷她铅 。现在，这个女同学正在给我孩子削铅笔。"
         android:textColor="@color/black_trans_50"
         app:layout_constraintLeft_toLeftOf="@+id/name_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commenter_avater_iv" />
 
     <com.common.view.ex.ExTextView
+        android:visibility="gone"
         android:id="@+id/reply_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
