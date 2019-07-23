@@ -29,6 +29,9 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
     private YUVLoader mYUVLoader;
 
     public ImgTexSrcPin(GLRender glRender) {
+        if (glRender == null) {
+            throw new IllegalArgumentException("glRender should not be null!");
+        }
         mTexMatrix = new float[16];
 
         // keep eye on if glcontext recreated

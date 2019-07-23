@@ -1,19 +1,38 @@
 package com.module.feeds.watch.adapter
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.common.utils.U
+import com.module.feeds.R
+import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.viewholder.FeedsLikeViewHolder
 
-class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>(){
+class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>() {
+
+    var mDataList = ArrayList<FeedsLikeModel>()
+    var mCurrentPlayModel: FeedsLikeModel? = null
+
+    var onClickPlayListener: ((model: FeedsLikeModel?, position: Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsLikeViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_like_item_holder_layout, parent, false)
+        return FeedsLikeViewHolder(view, onClickPlayListener)
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mDataList.size
     }
 
     override fun onBindViewHolder(holder: FeedsLikeViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.bindData(position, mDataList[position])
+        if (mDataList[position] == mCurrentPlayModel) {
+            holder.mSongPlayIv.isSelected = true
+            holder.mSongNameTv.setTextColor(Color.parseColor("#FFC15B"))
+        } else {
+            holder.mSongNameTv.setTextColor(U.getColor(R.color.black_trans_80))
+            holder.mSongPlayIv.isSelected = false
+        }
     }
 }

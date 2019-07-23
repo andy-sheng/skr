@@ -131,7 +131,7 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_16_dp"
-        android:drawableLeft="@drawable/feed_like_icon"
+        android:drawableLeft="@drawable/feed_like_normal_icon"
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center_vertical"
         android:text="37463"

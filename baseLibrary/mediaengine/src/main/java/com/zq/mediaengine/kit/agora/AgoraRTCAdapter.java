@@ -79,7 +79,7 @@ public class AgoraRTCAdapter {
     // 声网SDK内采集的视频数据无法进行自定义处理，可用来自定义渲染和编码
     // 要修改视频数据，需要通过注册声网的C++接口来实现
     private AgoraImgTexSrcPin mLocalVideoSrcPin;
-    private Map<Integer, AgoraImgTexSrcPin> mRemoteVideoSrcPins;
+    private Map<Integer, AgoraImgBufToTexSrcPin> mRemoteVideoSrcPins;
     private AudioSinkPin mAudioSinkPin;
     private ImgTexSinkPin mVideoSinkPin;
 
@@ -735,7 +735,7 @@ public class AgoraRTCAdapter {
      * @param uid uid
      */
     public void addRemoteVideo(int uid) {
-        AgoraImgTexSrcPin srcPin = new AgoraImgTexSrcPin(mGLRender);
+        AgoraImgBufToTexSrcPin srcPin = new AgoraImgBufToTexSrcPin(mGLRender);
         if (mRtcEngine != null) {
             mRtcEngine.setRemoteVideoRenderer(uid, srcPin);
         }
