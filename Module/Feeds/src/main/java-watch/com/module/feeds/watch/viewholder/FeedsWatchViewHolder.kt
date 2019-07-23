@@ -33,7 +33,7 @@ class FeedsWatchViewHolder(item: View,
     val mTagArea: ExConstraintLayout = itemView.findViewById(R.id.tag_area)
     val mTagIv: ImageView = itemView.findViewById(R.id.tag_iv)
     val mTagTv: TextView = itemView.findViewById(R.id.tag_tv)
-    val mTagSongTv: ExTextView = itemView.findViewById(R.id.tag_song_tv)
+    val mClassifySongTv: ExTextView = itemView.findViewById(R.id.classify_song_tv)
     val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
     val mRecordView: RecordAnimationView = itemView.findViewById(R.id.record_view)
     val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
@@ -109,23 +109,23 @@ class FeedsWatchViewHolder(item: View,
                     it.rankType == 1 -> {
                         mTagArea.visibility = View.VISIBLE
                         mTagTv.text = it.rankDesc
-                        mSongAreaBg.visibility = View.VISIBLE
+                        mClassifySongTv.visibility = View.VISIBLE
                     }
                     it.rankType == 2 -> {
                         mTagArea.visibility = View.VISIBLE
                         mTagTv.text = it.rankDesc
-                        mSongAreaBg.visibility = View.GONE
+                        mClassifySongTv.visibility = View.GONE
                         // 展示分类
                     }
                     else -> {
                         mTagArea.visibility = View.GONE
-                        mSongAreaBg.visibility = View.GONE
+                        mClassifySongTv.visibility = View.GONE
                     }
                 }
             }
         } else {
             mTagArea.visibility = View.GONE
-            mSongAreaBg.visibility = View.GONE
+            mClassifySongTv.visibility = View.GONE
         }
     }
 

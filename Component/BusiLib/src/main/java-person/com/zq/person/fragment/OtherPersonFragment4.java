@@ -506,8 +506,8 @@ public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonVi
         mPersonVp = (NestViewPager) mRootView.findViewById(R.id.person_vp);
 
         mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
-        mPersonTab.setSelectedIndicatorColors(U.getColor(com.component.busilib.R.color.black_trans_20));
-        mPersonTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
+        mPersonTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
+        mPersonTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
         mPersonTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
         mPersonTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
         mPersonTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(12));
