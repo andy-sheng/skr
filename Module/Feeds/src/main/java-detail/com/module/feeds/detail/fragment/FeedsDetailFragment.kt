@@ -1,4 +1,4 @@
-package com.module.feeds.detail
+package com.module.feeds.detail.fragment
 
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -98,7 +98,7 @@ class FeedsDetailFragment : AbsCoroutineFragment() {
                 .build())
 
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(55f)
+            var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(95f)
             if (U.getDeviceUtils().hasNotch(U.app())) {
                 srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app())
             }

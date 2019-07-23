@@ -7,6 +7,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.detail.fragment.FeedsDetailFragment
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : AbsCoroutineActivity() {

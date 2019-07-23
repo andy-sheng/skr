@@ -326,7 +326,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                        .build(RouterConstants.ACTIVITY_SETTING)
                         .navigation();
             }
         });

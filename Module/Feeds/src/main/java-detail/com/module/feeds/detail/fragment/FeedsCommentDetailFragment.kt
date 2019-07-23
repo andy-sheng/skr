@@ -1,4 +1,4 @@
-package com.module.feeds.detail
+package com.module.feeds.detail.fragment
 
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
