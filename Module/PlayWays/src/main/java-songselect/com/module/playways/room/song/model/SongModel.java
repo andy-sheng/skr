@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
-import com.zq.live.proto.Common.MiniGameInfo;
 import com.zq.live.proto.Common.StandPlayType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;

@@ -4,7 +4,6 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.common.base.BaseFragment
-import com.common.log.MyLog
 import com.module.feeds.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -23,7 +22,6 @@ import com.common.view.DebounceViewClickListener
 import com.module.feeds.watch.adapter.FeedsLikeViewAdapter
 import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.presenter.FeedLikeViewPresenter
-import java.util.*
 import kotlin.collections.ArrayList
 
 class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedLikeView {
@@ -86,7 +84,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRefreshLayout.setEnableRefresh(false)
         mRefreshLayout.setEnableLoadMore(true)
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
-        mRefreshLayout.setEnableOverScrollDrag(true)
+        mRefreshLayout.setEnableOverScrollDrag(false)
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
 
