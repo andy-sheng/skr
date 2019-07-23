@@ -13,7 +13,7 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
     fun getFeedsLikeList() {
         var list = ArrayList<FeedsLikeModel>()
         var i = 0
-        while (i < 10) {
+        while (i < 5) {
             i++
             list.add(FeedsLikeModel(i))
         }

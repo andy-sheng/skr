@@ -23,6 +23,8 @@ import com.common.view.DebounceViewClickListener
 import com.module.feeds.watch.adapter.FeedsLikeViewAdapter
 import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.presenter.FeedLikeViewPresenter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedLikeView {
 
@@ -33,6 +35,9 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     var mCurrentType = ALL_REPEAT_PLAY_TYPE  //当前播放类型
     var isPlaying = false
     var mTopModel: FeedsLikeModel? = null
+    var mTopPosition: Int = 0      // 顶部在播放队列中的位置
+    var isFirstRandom = true      // 是否第一次随机clear
+    var mRandomList = ArrayList<FeedsLikeModel>()  // 随机播放队列
 
     private val mTopAreaBg: SimpleDraweeView
     private val mPlayDescTv: TextView
@@ -131,7 +136,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRecordFilm.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mTopModel?.let {
-                    playOrPause(it)
+                    playOrPause(it, mTopPosition, false)
                 }
             }
 
@@ -140,39 +145,105 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mPlayLastIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 上一首
+                playWithType(false)
             }
         })
 
         mPlayNextIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 下一首
+                playWithType(true)
             }
         })
 
-        mAdapter.onClickPlayListener = { model ->
+        mAdapter.onClickPlayListener = { model, position ->
             model?.let {
-                playOrPause(it)
+                playOrPause(it, position, false)
             }
         }
     }
 
-    fun playOrPause(model: FeedsLikeModel) {
-        if (mAdapter.mCurrentPlayModel == model) {
-            // 暂停播放
-            isPlaying = false
-            bindTopData(model, false)
-            mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
-            mAdapter.mCurrentPlayModel = null
-            mAdapter.notifyDataSetChanged()
-        } else {
-            // 开始播放
-            isPlaying = true
-            bindTopData(model, true)
-            mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_pause_icon)
-            mAdapter.mCurrentPlayModel = mTopModel
-            mAdapter.notifyDataSetChanged()
+    private fun playWithType(isNext: Boolean) {
+        when (mCurrentType) {
+            SINGLE_REPEAT_PLAY_TYPE -> {
+                mTopModel?.let {
+                    playOrPause(it, mTopPosition, true)
+                }
+            }
+            ALL_REPEAT_PLAY_TYPE -> {
+                allRepeatPlay(isNext)
+            }
+            RANDOM_PLAY_TYPE -> {
+                randomPlay()
+            }
         }
     }
+
+    private fun allRepeatPlay(isNext: Boolean) {
+        if (isNext) {
+            if ((mTopPosition + 1) >= mAdapter.mDataList.size) {
+                playOrPause(mAdapter.mDataList[0], 0, true)
+            } else {
+                playOrPause(mAdapter.mDataList[mTopPosition + 1], mTopPosition + 1, true)
+            }
+        } else {
+            if ((mTopPosition - 1) < 0) {
+                playOrPause(mAdapter.mDataList[mAdapter.mDataList.size - 1], mAdapter.mDataList.size - 1, true)
+            } else {
+                playOrPause(mAdapter.mDataList[mTopPosition - 1], mTopPosition - 1, true)
+            }
+        }
+
+    }
+
+    private fun randomPlay() {
+        // 对于随机播放，下一首和上一首，都是在队列里面播下一首
+        if (isFirstRandom) {
+            isFirstRandom = false
+            mRandomList.clear()
+            mRandomList.addAll(mAdapter.mDataList)
+            mRandomList.shuffle()
+        }
+
+        if ((mTopPosition + 1) >= mRandomList.size) {
+            playOrPause(mRandomList[0], 0, true)
+            isFirstRandom = true
+        } else {
+            playOrPause(mRandomList[mTopPosition + 1], mTopPosition + 1, true)
+        }
+    }
+
+    fun playOrPause(model: FeedsLikeModel, position: Int, isMust: Boolean) {
+        if (isMust) {
+            // 开始播放
+            play(model, position)
+        } else {
+            if (mAdapter.mCurrentPlayModel == model) {
+                // 暂停播放
+                pause(model, position)
+            } else {
+                // 开始播放
+                play(model, position)
+            }
+        }
+    }
+
+    private fun play(model: FeedsLikeModel, position: Int) {
+        isPlaying = true
+        bindTopData(position, model, true)
+        mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_pause_icon)
+        mAdapter.mCurrentPlayModel = mTopModel
+        mAdapter.notifyDataSetChanged()
+    }
+
+    private fun pause(model: FeedsLikeModel, position: Int) {
+        isPlaying = false
+        bindTopData(position, model, false)
+        mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
+        mAdapter.mCurrentPlayModel = null
+        mAdapter.notifyDataSetChanged()
+    }
+
 
     fun initData(flag: Boolean) {
         mPersenter.getFeedsLikeList()
@@ -185,7 +256,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
         mAdapter.mDataList.addAll(list)
         if (mAdapter.mDataList.isNotEmpty() && isClear) {
-            bindTopData(mAdapter.mDataList[0], false)
+            bindTopData(0, mAdapter.mDataList[0], false)
         }
         mAdapter.notifyDataSetChanged()
     }
@@ -194,7 +265,8 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     }
 
-    private fun bindTopData(model: FeedsLikeModel?, isPlay: Boolean) {
+    private fun bindTopData(position: Int, model: FeedsLikeModel?, isPlay: Boolean) {
+        this.mTopPosition = position
         if (this.mTopModel != model) {
             this.mTopModel = model
             AvatarUtils.loadAvatarByUrl(mTopAreaBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)

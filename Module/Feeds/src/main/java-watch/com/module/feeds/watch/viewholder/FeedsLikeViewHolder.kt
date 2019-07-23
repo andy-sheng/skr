@@ -12,7 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 import com.module.feeds.watch.model.FeedsLikeModel
 
-class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLikeModel?) -> Unit)?) : RecyclerView.ViewHolder(item) {
+class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLikeModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
 
     val mSongCoverSdv: SimpleDraweeView = item.findViewById(R.id.song_cover_sdv);
     val mSongNameTv: TextView = item.findViewById(R.id.song_name_tv)
@@ -25,7 +25,7 @@ class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLik
     init {
         mSongPlayIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                onClickPlayListener?.invoke(mModel)
+                onClickPlayListener?.invoke(mModel, mPosition)
             }
         })
     }

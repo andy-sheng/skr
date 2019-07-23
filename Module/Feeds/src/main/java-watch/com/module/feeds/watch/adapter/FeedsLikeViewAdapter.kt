@@ -14,7 +14,7 @@ class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>() {
     var mDataList = ArrayList<FeedsLikeModel>()
     var mCurrentPlayModel: FeedsLikeModel? = null
 
-    var onClickPlayListener: ((model: FeedsLikeModel?) -> Unit)? = null
+    var onClickPlayListener: ((model: FeedsLikeModel?, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsLikeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_like_item_holder_layout, parent, false)
