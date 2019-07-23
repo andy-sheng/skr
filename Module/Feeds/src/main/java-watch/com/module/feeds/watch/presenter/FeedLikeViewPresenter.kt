@@ -16,7 +16,7 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
 
     var mOffset = 0   //偏移量
     private val mCNT = 20  // 默认拉去的个数
-    private var mLastUpdatListTime = 0L    //上次拉去推荐房间剩余次数的时间
+    private var mLastUpdatListTime = 0L    // 上次拉取请求数据时间戳
 
     init {
         addToLifeCycle()

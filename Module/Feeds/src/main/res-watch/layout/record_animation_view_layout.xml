@@ -5,15 +5,6 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/record_point"
-        android:layout_width="@dimen/view_48_dp"
-        android:layout_height="@dimen/view_10_dp"
-        android:layout_marginLeft="@dimen/view_46_dp"
-        android:background="@drawable/record_pointer_icon"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
         android:id="@+id/record_film"
         android:layout_width="@dimen/view_92_dp"
         android:layout_height="@dimen/view_92_dp"
@@ -23,12 +14,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/avatar_iv"
+        android:id="@+id/record_cover"
         android:layout_width="@dimen/view_62_dp"
         android:layout_height="@dimen/view_62_dp"
         app:layout_constraintBottom_toBottomOf="@id/record_film"
         app:layout_constraintLeft_toLeftOf="@id/record_film"
         app:layout_constraintRight_toRightOf="@id/record_film"
         app:layout_constraintTop_toTopOf="@id/record_film" />
+
+    <ImageView
+        android:id="@+id/record_point"
+        android:layout_width="@dimen/view_48_dp"
+        android:layout_height="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_46_dp"
+        android:background="@drawable/record_pointer_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -14,6 +14,7 @@ import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.module.feeds.R
 
 class RadioView : ConstraintLayout {
     var panelDrawable: Drawable? = null
@@ -43,29 +44,29 @@ class RadioView : ConstraintLayout {
     }
 
     private fun init(attrs: AttributeSet?) {
-        View.inflate(context, com.module.feeds.R.layout.radio_view_layout, this)
-        mRockerIv = findViewById(com.module.feeds.R.id.rocker_iv)
-        mPanelIv = findViewById(com.module.feeds.R.id.panel_iv)
-        avator = findViewById(com.module.feeds.R.id.avatar_iv)
-        avatarContainer = findViewById(com.module.feeds.R.id.avatar_container)
+        View.inflate(context, R.layout.radio_view_layout, this)
+        mRockerIv = findViewById(R.id.rocker_iv)
+        mPanelIv = findViewById(R.id.panel_iv)
+        avator = findViewById(R.id.avatar_iv)
+        avatarContainer = findViewById(R.id.avatar_container)
 
-        val typedArray = context.obtainStyledAttributes(attrs, com.module.feeds.R.styleable.RadioView)
-        typedArray.getDrawable(com.module.feeds.R.styleable.RadioView_panelDrawable)?.let {
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RadioView)
+        typedArray.getDrawable(R.styleable.RadioView_panelDrawable)?.let {
             panelDrawable = it
         }
 
-        panelWidth = typedArray.getDimension(com.module.feeds.R.styleable.RadioView_panelWidth, 0f)
-        panelMarginTop = typedArray.getDimension(com.module.feeds.R.styleable.RadioView_panelMarginTop, 0f)
+        panelWidth = typedArray.getDimension(R.styleable.RadioView_panelWidth, 0f)
+        panelMarginTop = typedArray.getDimension(R.styleable.RadioView_panelMarginTop, 0f)
 
-        typedArray.getDrawable(com.module.feeds.R.styleable.RadioView_rockerDrawable)?.let {
+        typedArray.getDrawable(R.styleable.RadioView_rockerDrawable)?.let {
             rockerDrawable = it
         }
 
-        avatorMargin = typedArray.getDimension(com.module.feeds.R.styleable.RadioView_userIconMargin, 0f)
-        rockerWidth = typedArray.getDimension(com.module.feeds.R.styleable.RadioView_rockerWidth, 0f)
-        rockerHeight = typedArray.getDimension(com.module.feeds.R.styleable.RadioView_rockerHeight, 0f)
-        rockerXP = typedArray.getFloat(com.module.feeds.R.styleable.RadioView_rockerXP, 0.5f)
-        rockerYP = typedArray.getFloat(com.module.feeds.R.styleable.RadioView_rockerYP, 0.5f)
+        avatorMargin = typedArray.getDimension(R.styleable.RadioView_userIconMargin, 0f)
+        rockerWidth = typedArray.getDimension(R.styleable.RadioView_rockerWidth, 0f)
+        rockerHeight = typedArray.getDimension(R.styleable.RadioView_rockerHeight, 0f)
+        rockerXP = typedArray.getFloat(R.styleable.RadioView_rockerXP, 0.5f)
+        rockerYP = typedArray.getFloat(R.styleable.RadioView_rockerYP, 0.5f)
 
         mPanelIv?.background = panelDrawable
         mRockerIv?.background = rockerDrawable

@@ -1,16 +1,19 @@
 package com.module.feeds.watch.viewholder
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.module.feeds.watch.view.RecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.common.view.ex.ExConstraintLayout
+import com.common.view.ex.ExTextView
 import com.component.busilib.view.BitmapTextView
 import com.module.feeds.R
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -30,6 +33,7 @@ class FeedsWatchViewHolder(item: View,
     val mTagArea: ExConstraintLayout = itemView.findViewById(R.id.tag_area)
     val mTagIv: ImageView = itemView.findViewById(R.id.tag_iv)
     val mTagTv: TextView = itemView.findViewById(R.id.tag_tv)
+    val mTagSongTv: ExTextView = itemView.findViewById(R.id.tag_song_tv)
     val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
     val mRecordView: RecordAnimationView = itemView.findViewById(R.id.record_view)
     val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
@@ -77,17 +81,59 @@ class FeedsWatchViewHolder(item: View,
         this.mPosition = position
         this.model = watchModel
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCircle(true)
-                .build())
-        mNicknameTv.text = MyUserInfoManager.getInstance().nickName
+        model?.user?.let {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
+                    .setCircle(true)
+                    .build())
+            mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
 
-        AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                .setBlur(true)
-                .build())
-        mRecordView.bindData(MyUserInfoManager.getInstance().avatar)
-        mPeopleNumTv.setText("2019")
+            AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                    .setBlur(true)
+                    .build())
+            mRecordView.bindData(it.avatar)
+        }
+        mPeopleNumTv.setText(watchModel.challengeCnt.toString())
+        mLikeNumTv.text = watchModel.starCnt.toString()
+        mCommentNumTv.text = watchModel.commentCnt.toString()
+        if (!TextUtils.isEmpty(watchModel.song?.title)) {
+            mContentTv.text = watchModel.song?.title
+            mContentTv.visibility = View.VISIBLE
+        } else {
+            mContentTv.visibility = View.GONE
+        }
 
+        if (model?.rank != null) {
+            model?.rank?.let {
+                when {
+                    it.rankType == 1 -> {
+                        mTagArea.visibility = View.VISIBLE
+                        mTagTv.text = it.rankDesc
+                        mSongAreaBg.visibility = View.VISIBLE
+                    }
+                    it.rankType == 2 -> {
+                        mTagArea.visibility = View.VISIBLE
+                        mTagTv.text = it.rankDesc
+                        mSongAreaBg.visibility = View.GONE
+                        // 展示分类
+                    }
+                    else -> {
+                        mTagArea.visibility = View.GONE
+                        mSongAreaBg.visibility = View.GONE
+                    }
+                }
+            }
+        } else {
+            mTagArea.visibility = View.GONE
+            mSongAreaBg.visibility = View.GONE
+        }
+    }
+
+    fun startPlay() {
+        mRecordView.startAnimation()
+    }
+
+    fun stopPlay() {
+        mRecordView.stopAnimation()
     }
 }

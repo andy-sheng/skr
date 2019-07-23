@@ -18,8 +18,6 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 
 class FeedsWatchView(var fragment: BaseFragment, var type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView {
-
-
     companion object {
         const val TYPE_RECOMMEND = 1
         const val TYPE_FOLLOW = 2
@@ -40,19 +38,19 @@ class FeedsWatchView(var fragment: BaseFragment, var type: Int) : ConstraintLayo
         mRecyclerView = findViewById(R.id.recycler_view)
 
         mAdapter = FeedsWatchViewAdapter()
-        mPersenter = FeedWatchViewPresenter(this)
+        mPersenter = FeedWatchViewPresenter(this, type)
 
-        mRefreshLayout.setEnableRefresh(false)
-        mRefreshLayout.setEnableLoadMore(false)
+        mRefreshLayout.setEnableRefresh(true)
+        mRefreshLayout.setEnableLoadMore(true)
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setEnableOverScrollDrag(true)
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                MyLog.d("FeedsWatchView", "onLoadMore")
+                mPersenter.initWatchList(true)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                MyLog.d("FeedsWatchView", "onRefresh")
+                mPersenter.loadMoreWatchList()
             }
         })
 
@@ -87,10 +85,12 @@ class FeedsWatchView(var fragment: BaseFragment, var type: Int) : ConstraintLayo
     }
 
     fun initData(flag: Boolean) {
-        mPersenter.getWatchList(flag)
+        mPersenter.initWatchList(flag)
     }
 
-    override fun addWatchList(list: List<FeedsWatchModel>, offset: Int, isClear: Boolean) {
+    override fun addWatchList(list: List<FeedsWatchModel>, isClear: Boolean) {
+        mRefreshLayout.finishRefresh()
+        mRefreshLayout.finishLoadMore()
         if (isClear) {
             mAdapter.mDataList.clear()
         }
@@ -98,7 +98,11 @@ class FeedsWatchView(var fragment: BaseFragment, var type: Int) : ConstraintLayo
         mAdapter.notifyDataSetChanged()
     }
 
-    fun destory() {
+    override fun requestError() {
 
+    }
+
+    fun destory() {
+        mPersenter.destroy()
     }
 }

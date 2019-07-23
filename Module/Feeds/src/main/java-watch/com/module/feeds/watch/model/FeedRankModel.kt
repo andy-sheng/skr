@@ -5,17 +5,11 @@ import java.io.Serializable
 
 class FeedRankModel : Serializable {
     /**
-     * rankCnt : 0
+     * rankDesc : ""
      * rankType : FRT_UNKNOWN
-     * tagID : 0
-     * tagName : string
      */
-    @JSONField(name = "rankCnt")
-    var rankCnt: Int? = null
+    @JSONField(name = "rankDesc")
+    var rankDesc: String? = null
     @JSONField(name = "rankType")
-    var rankType: String? = null
-    @JSONField(name = "tagID")
-    var tagID: Int? = null
-    @JSONField(name = "tagName")
-    var tagName: String? = null
+    var rankType: Int = 0  //0 未知  1全部排名  2tag排名
 }

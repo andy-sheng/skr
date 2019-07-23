@@ -65,6 +65,17 @@
         app:layout_constraintRight_toRightOf="@id/record_film"
         app:layout_constraintTop_toTopOf="@id/record_film" />
 
+    <com.common.view.ex.ExImageView
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:bl_corners_radius="@dimen/view_17_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@id/record_cover"
+        app:layout_constraintLeft_toLeftOf="@id/record_cover"
+        app:layout_constraintRight_toRightOf="@id/record_cover"
+        app:layout_constraintTop_toTopOf="@id/record_cover" />
+
     <ImageView
         android:id="@+id/record_play_iv"
         android:layout_width="wrap_content"

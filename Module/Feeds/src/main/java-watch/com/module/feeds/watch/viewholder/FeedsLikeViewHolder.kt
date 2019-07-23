@@ -35,7 +35,7 @@ class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLik
         this.mPosition = position
         this.mModel = likeModel
 
-        mSongNameTv.text = likeModel.song?.title
+        mSongNameTv.text = likeModel.song?.songTpl?.songName
         mModel?.user?.let {
             AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
