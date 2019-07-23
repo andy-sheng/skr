@@ -4,8 +4,10 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.log.MyLog
+import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -68,10 +70,18 @@ class FeedsWatchView(var fragment: BaseFragment, var type: Int) : ConstraintLayo
 
         mAdapter.onClickCommentListener = {
             // 评论
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                    .navigation()
         }
 
         mAdapter.onClickHitListener = {
             // 打榜
+        }
+
+        mAdapter.onClickDetailListener = {
+            // 详情
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                    .navigation()
         }
 
     }

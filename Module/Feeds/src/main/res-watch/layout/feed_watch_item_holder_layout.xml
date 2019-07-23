@@ -116,6 +116,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tag_area" />
 
+    <com.common.view.ex.ExImageView
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_30"
+        app:layout_constraintBottom_toBottomOf="@id/song_area_bg"
+        app:layout_constraintLeft_toLeftOf="@id/song_area_bg"
+        app:layout_constraintRight_toRightOf="@id/song_area_bg"
+        app:layout_constraintTop_toTopOf="@id/song_area_bg" />
+
     <com.module.feeds.watch.view.RecordAnimationView
         android:id="@+id/record_view"
         android:layout_width="wrap_content"

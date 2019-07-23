@@ -19,7 +19,8 @@ class FeedsWatchViewHolder(item: View,
                            var onClickMoreListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
                            var onClickLikeListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
                            var onClickCommentListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
-                           var onClickHitListener: ((watchModel: FeedsWatchModel?) -> Unit)?) : RecyclerView.ViewHolder(item) {
+                           var onClickHitListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
+                           var onClickDetailListener: ((watchModel: FeedsWatchModel?) -> Unit)?) : RecyclerView.ViewHolder(item) {
 
     val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
     val mNicknameTv: TextView = itemView.findViewById(R.id.nickname_tv)
@@ -62,6 +63,12 @@ class FeedsWatchViewHolder(item: View,
         mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 onClickHitListener?.invoke(model)
+            }
+        })
+
+        itemView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                onClickDetailListener?.invoke(model)
             }
         })
     }
