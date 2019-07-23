@@ -14,9 +14,17 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.common.view.ex.ExImageView
 import android.support.constraint.Group
 import android.support.v7.widget.LinearLayoutManager
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.player.IPlayer
+import com.common.player.MyMediaPlayer
+import com.common.player.VideoPlayerAdapter
+import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.module.feeds.watch.adapter.FeedsLikeViewAdapter
@@ -36,6 +44,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
     var isFirstRandom = true      // 是否第一次随机clear
     var mRandomList = ArrayList<FeedsLikeModel>()  // 随机播放队列
+    var mMediaPlayer: IPlayer? = null  // 播放器
 
     private val mTopAreaBg: SimpleDraweeView
     private val mPlayDescTv: TextView
@@ -55,6 +64,10 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     private val mPersenter: FeedLikeViewPresenter
     private val mAdapter: FeedsLikeViewAdapter
+
+    var mCDRotateAnimation: RotateAnimation? = null
+    var mCoverRotateAnimation: RotateAnimation? = null
+
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
@@ -174,6 +187,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
             mAdapter.mCurrentPlayModel = null
             mAdapter.notifyDataSetChanged()
+            mMediaPlayer?.reset()
         }
     }
 
@@ -248,6 +262,19 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_pause_icon)
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MyMediaPlayer()
+        }
+        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                // 自动播放下一首
+                playWithType(true)
+            }
+        })
+        model?.song?.playURL?.let {
+            mMediaPlayer?.startPlay(it)
+        }
     }
 
     private fun pause(model: FeedsLikeModel, position: Int) {
@@ -256,6 +283,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
+        mMediaPlayer?.reset()
     }
 
     override fun addLikeList(list: List<FeedsLikeModel>, isClear: Boolean) {
@@ -288,9 +316,36 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
 
         // 开启和关闭动画
+        if (isPlay) {
+            if (mCDRotateAnimation == null) {
+                mCDRotateAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+                mCDRotateAnimation?.duration = 3000
+                mCDRotateAnimation?.repeatCount = Animation.INFINITE
+                mCDRotateAnimation?.fillAfter = true
+                mCDRotateAnimation?.interpolator = LinearInterpolator()
+            }
+            if (mCoverRotateAnimation == null) {
+                mCoverRotateAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+                mCoverRotateAnimation?.duration = 3000
+                mCoverRotateAnimation?.repeatCount = Animation.INFINITE
+                mCoverRotateAnimation?.fillAfter = true
+                mCoverRotateAnimation?.interpolator = LinearInterpolator()
+            }
+            mRecordFilm.startAnimation(mCDRotateAnimation)
+            mRecordCover.startAnimation(mCoverRotateAnimation)
+        } else {
+            mCDRotateAnimation?.setAnimationListener(null)
+            mCDRotateAnimation?.cancel()
+            mCoverRotateAnimation?.setAnimationListener(null)
+            mCoverRotateAnimation?.cancel()
+        }
     }
 
     fun destory() {
+        mCDRotateAnimation?.setAnimationListener(null)
+        mCDRotateAnimation?.cancel()
+        mCoverRotateAnimation?.setAnimationListener(null)
+        mCoverRotateAnimation?.cancel()
         mPersenter.destroy()
     }
 }
