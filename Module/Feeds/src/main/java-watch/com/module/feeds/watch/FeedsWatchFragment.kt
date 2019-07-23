@@ -107,14 +107,18 @@ class FeedsWatchFragment : BaseFragment() {
                 mFeedTab.notifyDataChange()
                 when (position) {
                     0 -> {
+                        mFollowFeesView.stopPlay()
                         mFeedsCollectView.stopPlay()
                         mRecommendFeedsView.initData(false)
                     }
                     1 -> {
+                        mRecommendFeedsView.stopPlay()
                         mFeedsCollectView.stopPlay()
                         mFollowFeesView.initData(false)
                     }
                     2 -> {
+                        mFollowFeesView.stopPlay()
+                        mRecommendFeedsView.stopPlay()
                         mFeedsCollectView.initData(false)
                     }
                 }
@@ -136,14 +140,18 @@ class FeedsWatchFragment : BaseFragment() {
         super.onFragmentVisible()
         when (mFeedVp.currentItem) {
             0 -> {
+                mFollowFeesView.stopPlay()
                 mFeedsCollectView.stopPlay()
                 mRecommendFeedsView.initData(false)
             }
             1 -> {
+                mRecommendFeedsView.stopPlay()
                 mFeedsCollectView.stopPlay()
                 mFollowFeesView.initData(false)
             }
             2 -> {
+                mFollowFeesView.stopPlay()
+                mRecommendFeedsView.stopPlay()
                 mFeedsCollectView.initData(false)
             }
         }
@@ -151,6 +159,8 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentInvisible() {
         super.onFragmentInvisible()
+        mFollowFeesView.stopPlay()
+        mRecommendFeedsView.stopPlay()
         mFeedsCollectView.stopPlay()
     }
 

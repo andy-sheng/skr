@@ -1,5 +1,6 @@
 package com.module.feeds.watch.presenter
 
+import android.content.SyncContext
 import com.alibaba.fastjson.JSON
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
@@ -28,6 +29,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             // 10秒切页面才刷一下
             val now = System.currentTimeMillis()
             if (now - mLastUpdatListTime < 10 * 1000) {
+                view.requestTimeShort()
                 return
             }
         }
@@ -40,9 +42,9 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 
     private fun getWatchList(offset: Int) {
         if (type == FeedsWatchView.TYPE_FOLLOW) {
-            getRecommendFeedList(offset)
-        } else {
             getFollowFeedList(offset)
+        } else {
+            getRecommendFeedList(offset)
         }
     }
 
@@ -50,6 +52,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         ApiMethods.subscribe(mFeedServerApi.getFeedRecommendList(offset, mCNT), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
+                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
                     mOffset = obj.data.getIntValue("offset")
                     view.addWatchList(list, offset == 0)
@@ -63,6 +66,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         ApiMethods.subscribe(mFeedServerApi.getFeedFollowList(offset, mCNT), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
+                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("follows"), FeedsWatchModel::class.java)
                     mOffset == obj.data.getIntValue("offset")
                     view.addWatchList(list, offset == 0)
