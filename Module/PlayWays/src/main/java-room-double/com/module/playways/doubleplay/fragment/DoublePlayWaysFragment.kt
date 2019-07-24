@@ -29,6 +29,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -517,7 +518,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     fun selfLockState() {
         AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData!!.getSelfAvatar())
                 .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+//                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                .setBorderWidth(2f.dp().toFloat())
                 .setBorderColor(Color.WHITE)
                 .build())
 
