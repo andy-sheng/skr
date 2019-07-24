@@ -5,7 +5,7 @@ import java.io.Serializable
 
 class FeedSongModel : Serializable {
     @JSONField(name = "createdAt")
-    var createdAt: String? = null
+    var createdAt: Long = 0L
     @JSONField(name = "feedID")
     var feedID: Int? = null
     @JSONField(name = "needChallenge")

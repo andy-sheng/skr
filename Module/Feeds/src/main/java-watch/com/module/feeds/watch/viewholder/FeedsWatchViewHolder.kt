@@ -90,6 +90,7 @@ class FeedsWatchViewHolder(item: View,
         if (watchModel != model) {
             this.model = watchModel
 
+            mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model?.song?.createdAt!!, System.currentTimeMillis())
             model?.user?.let {
                 AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
                         .setCircle(true)
