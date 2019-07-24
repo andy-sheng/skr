@@ -22,6 +22,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.titlebar.CommonTitleBar
 import com.component.feeds.model.FeedsWatchModel
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
@@ -59,6 +60,7 @@ class FeedsDetailFragment : BaseFragment() {
     var mFeedsCommonLyricView: FeedsCommonLyricView? = null
     var mFeedsCommentView: FeedsCommentView? = null
     var mRadioView: RadioView? = null
+    var mCommonTitleBar: CommonTitleBar? = null
 
     var mIsSongStart = false
 
@@ -123,6 +125,7 @@ class FeedsDetailFragment : BaseFragment() {
         }
 
         mContainer = rootView.findViewById(com.module.feeds.R.id.container)
+        mCommonTitleBar = rootView.findViewById(com.module.feeds.R.id.titlebar)
         mAppbar = rootView.findViewById(com.module.feeds.R.id.appbar)
         mContentLayout = rootView.findViewById(com.module.feeds.R.id.content_layout)
         mBlurBg = rootView.findViewById(com.module.feeds.R.id.blur_bg)
@@ -151,6 +154,10 @@ class FeedsDetailFragment : BaseFragment() {
         mFeedsCommentView = rootView.findViewById(com.module.feeds.R.id.feedsCommentView)
 
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!.feedID!!)
+        mFeedsWatchModel?.song?.songTpl?.songName?.let {
+            mSongNameTv?.text = it
+            mCommonTitleBar?.centerTextView?.text = "正在播放《${it}》"
+        }
 
         AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
                 .setCircle(false)
