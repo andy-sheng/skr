@@ -411,7 +411,7 @@ public class HttpUtils {
         io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                downloadFileSync(urlStr, outputFile, needTempFile,progress);
+                downloadFileSync(urlStr, outputFile, needTempFile, progress);
                 emitter.onComplete();
             }
         })
@@ -421,18 +421,21 @@ public class HttpUtils {
 
     public long getFileLength(String urlStr) {
         long length = 0;
+        HttpURLConnection conn = null;
         try {
             URL url = new URL(urlStr);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(10 * 1000);
-            conn.setReadTimeout(15 * 1000);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5 * 1000);
+            conn.setReadTimeout(5 * 1000);
             HttpURLConnection.setFollowRedirects(true);
             conn.connect();
             length = conn.getContentLength();
         } catch (Exception e) {
             MyLog.e(TAG, "getFileLength error:" + e);
         } finally {
-
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
 
         return length;
@@ -449,7 +452,7 @@ public class HttpUtils {
      */
     public boolean downloadFileSync(String urlStr, final File outputFile,
                                     boolean needTempFile, OnDownloadProgress progress) {
-        MyLog.d(TAG,"downloadFileSync" + " urlStr="+urlStr+" out="+outputFile.getAbsolutePath());
+        MyLog.d(TAG, "downloadFileSync" + " urlStr=" + urlStr + " out=" + outputFile.getAbsolutePath());
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
         }
@@ -512,7 +515,7 @@ public class HttpUtils {
             }
             if (needTempFile) {
                 if (outputFile2.renameTo(outputFile)) {
-                    MyLog.w(TAG, urlStr+" 下载成功");
+                    MyLog.w(TAG, urlStr + " 下载成功");
                 } else {
                     MyLog.w(TAG, "重命名失败");
                 }
