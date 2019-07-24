@@ -23,6 +23,7 @@ class FeedsWatchViewHolder(item: View,
                            var onClickLikeListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
                            var onClickCommentListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
                            var onClickHitListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
+                           var onClickCDListener: ((watchModel: FeedsWatchModel?) -> Unit)?,
                            var onClickDetailListener: ((watchModel: FeedsWatchModel?) -> Unit)?) : RecyclerView.ViewHolder(item) {
 
     val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
@@ -44,6 +45,7 @@ class FeedsWatchViewHolder(item: View,
 
     var mPosition: Int = 0
     var model: FeedsWatchModel? = null
+    var mIsPlaying = false
 
     init {
         mMoreIv.setOnClickListener(object : DebounceViewClickListener() {
@@ -70,6 +72,12 @@ class FeedsWatchViewHolder(item: View,
             }
         })
 
+        mRecordView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                onClickCDListener?.invoke(model)
+            }
+        })
+
         itemView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 onClickDetailListener?.invoke(model)
@@ -79,61 +87,67 @@ class FeedsWatchViewHolder(item: View,
 
     fun bindData(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
-        this.model = watchModel
+        if (watchModel != model) {
+            this.model = watchModel
 
-        model?.user?.let {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
-                    .setCircle(true)
-                    .build())
-            mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+            model?.user?.let {
+                AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
+                        .setCircle(true)
+                        .build())
+                mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
 
-            AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                    .setBlur(true)
-                    .build())
-            mRecordView.bindData(it.avatar)
-        }
-        mPeopleNumTv.setText(watchModel.challengeCnt.toString())
-        mLikeNumTv.text = watchModel.starCnt.toString()
-        mCommentNumTv.text = watchModel.commentCnt.toString()
-        if (!TextUtils.isEmpty(watchModel.song?.title)) {
-            mContentTv.text = watchModel.song?.title
-            mContentTv.visibility = View.VISIBLE
-        } else {
-            mContentTv.visibility = View.GONE
-        }
+                AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
+                        .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                        .setBlur(true)
+                        .build())
+                mRecordView.bindData(it.avatar)
+            }
+            mPeopleNumTv.setText(watchModel.challengeCnt.toString())
+            mLikeNumTv.text = watchModel.starCnt.toString()
+            mCommentNumTv.text = watchModel.commentCnt.toString()
+            if (!TextUtils.isEmpty(watchModel.song?.title)) {
+                mContentTv.text = watchModel.song?.title
+                mContentTv.visibility = View.VISIBLE
+            } else {
+                mContentTv.visibility = View.GONE
+            }
 
-        if (model?.rank != null) {
-            model?.rank?.let {
-                when {
-                    it.rankType == 1 -> {
-                        mTagArea.visibility = View.VISIBLE
-                        mTagTv.text = it.rankDesc
-                        mClassifySongTv.visibility = View.VISIBLE
-                    }
-                    it.rankType == 2 -> {
-                        mTagArea.visibility = View.VISIBLE
-                        mTagTv.text = it.rankDesc
-                        mClassifySongTv.visibility = View.GONE
-                        // 展示分类
-                    }
-                    else -> {
-                        mTagArea.visibility = View.GONE
-                        mClassifySongTv.visibility = View.GONE
+            if (model?.rank != null) {
+                model?.rank?.let {
+                    when {
+                        it.rankType == 1 -> {
+                            mTagArea.visibility = View.VISIBLE
+                            mTagTv.text = it.rankDesc
+                            mClassifySongTv.visibility = View.VISIBLE
+                        }
+                        it.rankType == 2 -> {
+                            mTagArea.visibility = View.VISIBLE
+                            mTagTv.text = it.rankDesc
+                            mClassifySongTv.visibility = View.GONE
+                            // 展示分类
+                        }
+                        else -> {
+                            mTagArea.visibility = View.GONE
+                            mClassifySongTv.visibility = View.GONE
+                        }
                     }
                 }
+            } else {
+                mTagArea.visibility = View.GONE
+                mClassifySongTv.visibility = View.GONE
             }
         } else {
-            mTagArea.visibility = View.GONE
-            mClassifySongTv.visibility = View.GONE
+            // do noting
         }
     }
 
     fun startPlay() {
+        mIsPlaying = true
         mRecordView.startAnimation()
     }
 
     fun stopPlay() {
-        mRecordView.stopAnimation()
+        mRecordView.stopAnimation(mIsPlaying)
+        mIsPlaying = false
     }
 }

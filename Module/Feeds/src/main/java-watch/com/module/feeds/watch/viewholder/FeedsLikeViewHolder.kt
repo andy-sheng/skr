@@ -33,14 +33,18 @@ class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLik
 
     fun bindData(position: Int, likeModel: FeedsLikeModel) {
         this.mPosition = position
-        this.mModel = likeModel
+        if (likeModel != mModel) {
+            this.mModel = likeModel
 
-        mSongNameTv.text = likeModel.song?.songTpl?.songName
-        mModel?.user?.let {
-            AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                    .build())
-            mSongWriterTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+            mSongNameTv.text = likeModel.song?.songTpl?.songName
+            mModel?.user?.let {
+                AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
+                        .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                        .build())
+                mSongWriterTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+            }
+        } else {
+            // do nothing
         }
 
     }

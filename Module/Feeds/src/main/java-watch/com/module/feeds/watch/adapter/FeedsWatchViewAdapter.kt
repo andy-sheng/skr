@@ -16,12 +16,13 @@ class FeedsWatchViewAdapter : RecyclerView.Adapter<FeedsWatchViewHolder>() {
     var onClickCommentListener: ((watchModel: FeedsWatchModel?) -> Unit)? = null
     var onClickHitListener: ((watchModel: FeedsWatchModel?) -> Unit)? = null
     var onClickDetailListener: ((watchModel: FeedsWatchModel?) -> Unit)? = null
+    var onClickCDListener: ((watchModel: FeedsWatchModel?) -> Unit)? = null
 
     var mCurrentModel: FeedsWatchModel? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsWatchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
-        return FeedsWatchViewHolder(view, onClickMoreListener, onClickLikeListener, onClickCommentListener, onClickHitListener, onClickDetailListener)
+        return FeedsWatchViewHolder(view, onClickMoreListener, onClickLikeListener, onClickCommentListener, onClickHitListener,onClickCDListener, onClickDetailListener)
     }
 
     override fun getItemCount(): Int {

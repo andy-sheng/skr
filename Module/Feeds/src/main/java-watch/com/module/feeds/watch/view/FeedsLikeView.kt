@@ -341,6 +341,11 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        destory()
+    }
+
     fun destory() {
         mCDRotateAnimation?.setAnimationListener(null)
         mCDRotateAnimation?.cancel()

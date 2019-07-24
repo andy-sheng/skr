@@ -3,12 +3,14 @@ package com.module.feeds.watch.view
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING
-import android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING
+import android.support.v7.widget.RecyclerView.*
 import android.view.View
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.player.IPlayer
+import com.common.player.MyMediaPlayer
+import com.common.player.VideoPlayerAdapter
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
@@ -36,6 +38,8 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     private val mPersenter: FeedWatchViewPresenter
 
     private var mCurrentModel: FeedsWatchModel? = null  // 保存
+
+    private var mMediaPlayer: IPlayer? = null
 
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)
@@ -82,46 +86,55 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     SCROLL_STATE_IDLE -> {
-                        var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
-                        var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
-                        val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
-                        var i = firstVisibleItem
-                        isFound = false
-                        maxPercent = 0f
-                        model = null
-                        while (i <= lastVisibleItem && !isFound) {
-                            val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
-                            val location1 = IntArray(2)
-                            val location2 = IntArray(2)
-                            itemView.getLocationOnScreen(location1)
-                            mRecyclerView.getLocationOnScreen(location2)
-                            val top = location1[1] - location2[1]
-                            when {
-                                top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
-                                (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
-                                else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
-                            }
-                            if (percents[i - firstVisibleItem] == 100f) {
-                                isFound = true
-                                maxPercent = 100f
-                                model = mAdapter.mDataList[i]
-                            } else {
-                                if (percents[i - firstVisibleItem] > maxPercent) {
-                                    maxPercent = percents[i - firstVisibleItem]
-                                    model = mAdapter.mDataList[i]
+                        var firstCompleteItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
+                        if (firstCompleteItem != NO_POSITION) {
+                            // 找到了
+                            model = mAdapter.mDataList[firstCompleteItem]
+                        } else {
+                            // 找不到位置，取其中百分比最大的
+                            var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+                            var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+                            val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
+                            var i = firstVisibleItem
+                            isFound = false
+                            maxPercent = 0f
+                            model = null
+                            while (i <= lastVisibleItem && !isFound) {
+                                val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
+                                val location1 = IntArray(2)
+                                val location2 = IntArray(2)
+                                itemView.getLocationOnScreen(location1)
+                                mRecyclerView.getLocationOnScreen(location2)
+                                val top = location1[1] - location2[1]
+                                when {
+                                    top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
+                                    (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
+                                    else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
                                 }
+                                if (percents[i - firstVisibleItem] == 100f) {
+                                    isFound = true
+                                    maxPercent = 100f
+                                    model = mAdapter.mDataList[i]
+                                } else {
+                                    if (percents[i - firstVisibleItem] > maxPercent) {
+                                        maxPercent = percents[i - firstVisibleItem]
+                                        model = mAdapter.mDataList[i]
+                                    }
+                                }
+                                i++
                             }
-                            i++
                         }
 
                         model?.let {
                             isFound = true
-                            play(it)
+                            play(it, true)
                         }
                     }
                     SCROLL_STATE_DRAGGING -> {
+
                     }
                     SCROLL_STATE_SETTLING -> {
+
                     }
                 }
             }
@@ -152,6 +165,11 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
         }
 
+        mAdapter.onClickCDListener = {
+            // 播放
+            it?.let { model -> play(model, false) }
+        }
+
         mAdapter.onClickDetailListener = {
             // 详情
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
@@ -161,9 +179,19 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
     }
 
-    fun stopPlay() {
-        mAdapter.mCurrentModel = null
-        mAdapter.notifyDataSetChanged()
+    private fun play(model: FeedsWatchModel, isMustPlay: Boolean) {
+        if (isMustPlay) {
+            // 播放
+            play(model)
+        } else {
+            if (mAdapter.mCurrentModel == model) {
+                // 停止播放
+                stop()
+            } else {
+                // 播放
+                play(model)
+            }
+        }
     }
 
     private fun play(model: FeedsWatchModel) {
@@ -172,10 +200,40 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
             mAdapter.notifyDataSetChanged()
         }
         mCurrentModel = model
+
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MyMediaPlayer()
+        }
+        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                // 重复播放
+                model?.song?.playURL?.let {
+                    mMediaPlayer?.startPlay(it)
+                }
+            }
+        })
+        model?.song?.playURL?.let {
+            mMediaPlayer?.startPlay(it)
+        }
+    }
+
+    private fun stop() {
+        mAdapter.mCurrentModel = null
+        mAdapter.notifyDataSetChanged()
+        mCurrentModel = null
+        mMediaPlayer?.reset()
     }
 
     fun initData(flag: Boolean) {
         mPersenter.initWatchList(flag)
+    }
+
+    fun stopPlay() {
+        // 保留mCurrentModel 可以用来恢复页面播放
+        mAdapter.mCurrentModel = null
+        mAdapter.notifyDataSetChanged()
+        mMediaPlayer?.reset()
     }
 
     override fun addWatchList(list: List<FeedsWatchModel>, isClear: Boolean) {
@@ -186,7 +244,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         }
         mAdapter.mDataList.addAll(list)
         if (isClear) {
-            play(mAdapter.mDataList[0])
+            play(mAdapter.mDataList[0], true)
         }
         mAdapter.notifyDataSetChanged()
     }
@@ -194,7 +252,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     // 请求时间太短，不向服务器请求，只需要恢复上次播放
     override fun requestTimeShort() {
         mCurrentModel?.let {
-            play(it)
+            play(it, true)
         }
     }
 
@@ -203,7 +261,13 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mRefreshLayout.finishLoadMore()
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        destory()
+    }
+
     fun destory() {
         mPersenter.destroy()
+        mMediaPlayer?.release()
     }
 }
