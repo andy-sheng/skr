@@ -1,9 +1,9 @@
 package com.module.feeds.make
 
 import com.common.utils.U
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.feeds.model.FeedSongModel
 
-class FeedsMakeModel(var songModel:FeedSongModel){
+class FeedsMakeModel(var songModel: FeedSongModel){
 
     var recording: Boolean = false
     var beginRecordTs: Long = Long.MAX_VALUE

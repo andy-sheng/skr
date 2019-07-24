@@ -1,6 +1,6 @@
 package com.module.feeds.detail.view.inter
 
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.feeds.model.FeedSongModel
 
 interface BaseFeedsLyricView {
     fun setSongModel(mFeedSongModel: FeedSongModel)

@@ -6,7 +6,7 @@ import android.view.ViewStub
 
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.feeds.model.FeedSongModel
 
 class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     val mTag = "FeedsCommonLyricView"

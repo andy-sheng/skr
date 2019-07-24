@@ -1,6 +1,6 @@
 package com.module.feeds.detail.model;
 
-import com.module.feeds.watch.model.FeedUserInfo;
+import com.component.feeds.model.FeedUserInfo;
 
 import java.io.Serializable;
 

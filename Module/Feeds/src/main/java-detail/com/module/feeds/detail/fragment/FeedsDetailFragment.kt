@@ -26,7 +26,7 @@ import com.common.view.ex.ExTextView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.detail.view.RadioView
-import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.feeds.model.FeedsWatchModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 

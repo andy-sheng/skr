@@ -14,13 +14,12 @@ import com.common.player.VideoPlayerAdapter
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
-import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.feeds.model.FeedsWatchModel
 import com.module.feeds.watch.presenter.FeedWatchViewPresenter
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import kotlin.math.max
 
 class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView {
 

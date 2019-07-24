@@ -23,7 +23,7 @@ import com.component.lyrics.utils.SongResUtils
 import com.component.toast.NoImageCommonToastView
 import com.engine.Params
 import com.module.feeds.R
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.feeds.model.FeedSongModel
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.agora.rtc.Constants
 import kotlinx.coroutines.Dispatchers

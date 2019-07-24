@@ -8,7 +8,7 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsDetailFragment
-import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.feeds.model.FeedsWatchModel
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {

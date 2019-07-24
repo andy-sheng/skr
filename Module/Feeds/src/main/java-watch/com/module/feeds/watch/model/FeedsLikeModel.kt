@@ -1,6 +1,8 @@
 package com.module.feeds.watch.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import com.component.feeds.model.FeedSongModel
+import com.component.feeds.model.FeedUserInfo
 import java.io.Serializable
 
 class FeedsLikeModel : Serializable {

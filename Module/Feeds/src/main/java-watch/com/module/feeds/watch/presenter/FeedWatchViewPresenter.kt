@@ -1,6 +1,5 @@
 package com.module.feeds.watch.presenter
 
-import android.content.SyncContext
 import com.alibaba.fastjson.JSON
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
@@ -8,7 +7,7 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.module.feeds.watch.FeedsWatchServerApi
-import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.feeds.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.feeds.watch.view.IFeedsWatchView
 

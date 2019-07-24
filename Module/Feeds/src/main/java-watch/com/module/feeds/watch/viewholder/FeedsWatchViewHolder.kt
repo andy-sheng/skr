@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -16,7 +15,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.BitmapTextView
 import com.module.feeds.R
-import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.feeds.model.FeedsWatchModel
 
 class FeedsWatchViewHolder(item: View,
                            var onClickMoreListener: ((watchModel: FeedsWatchModel?) -> Unit)?,

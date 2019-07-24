@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.module.feeds.R
-import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.feeds.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.FeedsWatchViewHolder
 
 class FeedsWatchViewAdapter : RecyclerView.Adapter<FeedsWatchViewHolder>() {
