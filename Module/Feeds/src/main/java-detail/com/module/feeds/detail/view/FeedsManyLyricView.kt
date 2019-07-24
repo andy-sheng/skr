@@ -9,10 +9,9 @@ import com.common.view.ExViewStub
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
+import com.component.lyrics.widget.ManyLyricsView
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.component.lyrics.widget.ManyLyricsView
-
 import com.module.feeds.watch.model.FeedSongModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -98,6 +97,11 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
     override fun onViewDetachedFromWindow(v: View) {
         super.onViewDetachedFromWindow(v)
 
+    }
+
+    override fun destroy() {
+        mManyLyricsView.release()
+        mIsStart = false
     }
 
     override fun setVisibility(visibility: Int) {

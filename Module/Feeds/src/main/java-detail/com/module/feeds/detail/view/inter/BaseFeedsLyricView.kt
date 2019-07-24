@@ -10,4 +10,5 @@ interface BaseFeedsLyricView {
     fun resume()
     fun stop()
     fun isStart(): Boolean
+    fun destroy()
 }

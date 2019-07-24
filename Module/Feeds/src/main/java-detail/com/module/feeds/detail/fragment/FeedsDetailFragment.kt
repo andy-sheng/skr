@@ -317,5 +317,6 @@ class FeedsDetailFragment : BaseFragment() {
         super.destroy()
         mRadioView?.destroy()
         mMyMediaPlayer.release()
+        mFeedsCommonLyricView?.destroy()
     }
 }

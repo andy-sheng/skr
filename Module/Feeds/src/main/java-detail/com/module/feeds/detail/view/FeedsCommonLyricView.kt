@@ -62,4 +62,8 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     override fun stop() {
         mBaseFeedsLyricView?.stop()
     }
+
+    override fun destroy() {
+        mBaseFeedsLyricView?.destroy()
+    }
 }

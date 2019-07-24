@@ -147,6 +147,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                 })
     }
 
+    override fun destroy() {
+        mHandlerTaskTimer?.dispose()
+    }
+
     override fun pause() {
         mHandlerTaskTimer?.dispose()
     }
