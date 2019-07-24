@@ -9,12 +9,12 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.module.playways.room.prepare.view.IPrepareResView;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.model.LyricsLineInfo;
-import com.zq.lyrics.model.UrlRes;
-import com.zq.lyrics.utils.SongResUtils;
-import com.zq.lyrics.utils.ZipUrlResourceManager;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.LyricsReader;
+import com.component.lyrics.model.LyricsLineInfo;
+import com.component.lyrics.model.UrlRes;
+import com.component.lyrics.utils.SongResUtils;
+import com.component.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.greendao.annotation.NotNull;
 

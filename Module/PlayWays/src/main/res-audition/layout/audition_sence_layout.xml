@@ -126,7 +126,7 @@
             android:visibility="gone" />
 
         <!--正在唱的人的歌词-->
-        <com.zq.lyrics.widget.ManyLyricsView
+        <com.component.lyrics.widget.ManyLyricsView
             android:id="@+id/many_lyrics_view"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -152,7 +152,7 @@
             android:layout_marginBottom="-2dp"
             android:visibility="visible" />
 
-        <com.zq.lyrics.widget.VoiceScaleView
+        <com.component.lyrics.widget.VoiceScaleView
             android:id="@+id/voice_scale_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_61_dp"

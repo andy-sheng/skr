@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.zq.lyrics.widget.ManyLyricsView
+    <com.component.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_170_dp"

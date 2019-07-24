@@ -6,7 +6,7 @@ import android.view.ViewStub
 import com.common.view.ExViewStub
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.zq.lyrics.widget.ManyLyricsView
+import com.component.lyrics.widget.ManyLyricsView
 
 class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
     val TAG = "SelfSingLyricView"

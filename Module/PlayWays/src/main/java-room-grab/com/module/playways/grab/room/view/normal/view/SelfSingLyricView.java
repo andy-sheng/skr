@@ -17,13 +17,13 @@ import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.others.LyricAndAccMatchManager;
+import com.component.lyrics.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
 import java.util.List;
