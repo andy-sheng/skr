@@ -6,12 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.log.MyLog;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 import com.module.playways.grab.room.model.WorksUploadModel;
-import com.zq.person.holder.ProducationHolder;
-import com.zq.person.model.ProducationModel;
 
 public class ResultProducationAdapter extends DiffAdapter<WorksUploadModel, ResultProducationViewHolder> {
 

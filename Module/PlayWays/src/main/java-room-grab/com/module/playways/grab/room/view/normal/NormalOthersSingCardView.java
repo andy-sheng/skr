@@ -20,14 +20,14 @@ import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.zq.person.event.ShowPersonCardEvent;
+import com.component.person.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.common.view.ExViewStub;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.live.proto.Room.EQRoundStatus;
+import com.component.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 

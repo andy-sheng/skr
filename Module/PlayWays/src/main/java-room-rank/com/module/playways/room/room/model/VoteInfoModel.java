@@ -1,7 +1,7 @@
 package com.module.playways.room.room.model;
 
 import com.common.log.MyLog;
-import com.zq.live.proto.Room.VoteInfo;
+import com.component.live.proto.Room.VoteInfo;
 
 import java.io.Serializable;
 import java.util.List;

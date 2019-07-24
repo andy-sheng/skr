@@ -3,8 +3,8 @@ package com.module.playways.doubleplay.pbLocalModel;
 import com.common.core.userinfo.model.LocalCombineRoomConfig;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.notification.BaseNotiInfo;
-import com.zq.live.proto.Common.AgoraTokenInfo;
-import com.zq.live.proto.Notification.CombineRoomEnterMsg;
+import com.component.live.proto.Common.AgoraTokenInfo;
+import com.component.live.proto.Notification.CombineRoomEnterMsg;
 
 import java.io.Serializable;
 import java.util.HashMap;

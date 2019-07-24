@@ -1,7 +1,6 @@
 package com.module.playways.songmanager.view
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -28,7 +27,7 @@ import com.module.playways.room.song.model.SongModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.zq.live.proto.Common.StandPlayType
+import com.component.live.proto.Common.StandPlayType
 
 import org.greenrobot.eventbus.EventBus
 

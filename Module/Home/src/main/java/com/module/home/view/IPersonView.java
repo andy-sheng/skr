@@ -1,14 +1,11 @@
 package com.module.home.view;
 
 import com.common.core.userinfo.model.GameStatisModel;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 
 import model.RelationNumModel;
 
 import com.common.core.userinfo.model.UserLevelModel;
-import com.common.rxretrofit.ApiResult;
-import com.zq.person.model.PhotoModel;
 
 import java.util.List;
 

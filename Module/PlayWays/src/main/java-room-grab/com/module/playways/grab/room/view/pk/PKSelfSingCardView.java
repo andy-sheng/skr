@@ -17,7 +17,7 @@ import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
-import com.zq.live.proto.Room.EQRoundStatus;
+import com.component.live.proto.Room.EQRoundStatus;
 
 import java.util.List;
 

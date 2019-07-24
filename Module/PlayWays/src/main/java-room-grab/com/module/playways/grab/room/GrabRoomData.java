@@ -18,7 +18,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WorksUploadModel;
 import com.module.playways.room.gift.event.UpdateHZEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
-import com.zq.live.proto.Room.EQRoundStatus;
+import com.component.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 

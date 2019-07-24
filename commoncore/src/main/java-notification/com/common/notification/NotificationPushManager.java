@@ -10,17 +10,17 @@ import com.common.notification.event.CRSyncInviteUserNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
-import com.zq.live.proto.Notification.CombineRoomEnterMsg;
-import com.zq.live.proto.Notification.CombineRoomInviteMsg;
-import com.zq.live.proto.Notification.CombineRoomInviteV2Msg;
-import com.zq.live.proto.Notification.CombineRoomRefuseMsg;
-import com.zq.live.proto.Notification.ECombineRoomEnterType;
-import com.zq.live.proto.Notification.EInviteType;
-import com.zq.live.proto.Notification.ENotificationMsgType;
-import com.zq.live.proto.Notification.FollowMsg;
-import com.zq.live.proto.Notification.InviteStandMsg;
-import com.zq.live.proto.Notification.NotificationMsg;
-import com.zq.live.proto.Notification.SysWarningMsg;
+import com.component.live.proto.Notification.CombineRoomEnterMsg;
+import com.component.live.proto.Notification.CombineRoomInviteMsg;
+import com.component.live.proto.Notification.CombineRoomInviteV2Msg;
+import com.component.live.proto.Notification.CombineRoomRefuseMsg;
+import com.component.live.proto.Notification.ECombineRoomEnterType;
+import com.component.live.proto.Notification.EInviteType;
+import com.component.live.proto.Notification.ENotificationMsgType;
+import com.component.live.proto.Notification.FollowMsg;
+import com.component.live.proto.Notification.InviteStandMsg;
+import com.component.live.proto.Notification.NotificationMsg;
+import com.component.live.proto.Notification.SysWarningMsg;
 
 import org.greenrobot.eventbus.EventBus;
 

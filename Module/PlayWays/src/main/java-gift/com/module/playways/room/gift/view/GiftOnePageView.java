@@ -9,13 +9,9 @@ import com.common.utils.U;
 import com.common.view.ex.ExFrameLayout;
 import com.module.playways.R;
 import com.module.playways.room.gift.adapter.GiftDisplayAdapter;
-import com.module.playways.room.gift.event.CancelGiftCountDownEvent;
 import com.module.playways.room.gift.event.GIftNotifyEvent;
-import com.module.playways.room.gift.event.StartGiftCountDownEvent;
-import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent;
 import com.module.playways.room.gift.model.BaseGift;
 import com.respicker.view.GridSpacingItemDecoration;
-import com.zq.live.proto.Common.EGiftType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -12,14 +12,14 @@ import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.arccloud.SongInfo;
 import com.engine.score.Score2Callback;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.event.LyricEventLauncher;
-import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.mediaengine.kit.ZqEngineKit;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.LyricsReader;
+import com.component.lyrics.event.LrcEvent;
+import com.component.lyrics.event.LyricEventLauncher;
+import com.component.lyrics.widget.AbstractLrcView;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
+import com.component.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,7 +34,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
+import static com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 /**
  * 这个类的职责是负责

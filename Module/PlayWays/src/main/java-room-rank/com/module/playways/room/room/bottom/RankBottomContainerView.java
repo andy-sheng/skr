@@ -7,19 +7,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
 
-import com.common.core.account.UserAccountManager;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.component.busilib.constans.GameModeType;
 import com.module.playways.room.room.quickmsg.QuickMsgView;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.R;
-import com.zq.live.proto.Room.SpecialEmojiMsgType;
-
-import java.util.HashMap;
+import com.component.live.proto.Room.SpecialEmojiMsgType;
 
 public class RankBottomContainerView extends BottomContainerView {
 

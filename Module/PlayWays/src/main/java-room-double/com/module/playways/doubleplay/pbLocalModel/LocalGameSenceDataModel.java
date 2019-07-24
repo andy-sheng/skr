@@ -1,7 +1,7 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
-import com.zq.live.proto.CombineRoom.EGameStage;
-import com.zq.live.proto.CombineRoom.SceneGameSyncStatusMsg;
+import com.component.live.proto.CombineRoom.EGameStage;
+import com.component.live.proto.CombineRoom.SceneGameSyncStatusMsg;
 
 import java.io.Serializable;
 

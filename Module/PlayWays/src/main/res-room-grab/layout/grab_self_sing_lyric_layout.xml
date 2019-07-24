@@ -43,7 +43,7 @@
             android:textSize="@dimen/textsize_18_dp" />
     </ScrollView>
 
-    <com.zq.lyrics.widget.ManyLyricsView
+    <com.component.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_170_dp"
@@ -85,7 +85,7 @@
     </LinearLayout>
 
 
-    <com.zq.lyrics.widget.VoiceScaleView
+    <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_56_dp"

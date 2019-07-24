@@ -15,7 +15,7 @@ import com.common.core.userinfo.model.UserRankModel;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
-import com.zq.level.utils.LevelConfigUtils;
+import com.component.level.utils.LevelConfigUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

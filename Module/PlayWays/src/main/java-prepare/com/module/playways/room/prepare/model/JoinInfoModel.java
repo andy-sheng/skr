@@ -1,6 +1,6 @@
 package com.module.playways.room.prepare.model;
 import com.common.log.MyLog;
-import com.zq.live.proto.Room.JoinInfo;
+import com.component.live.proto.Room.JoinInfo;
 
 import java.io.Serializable;
 

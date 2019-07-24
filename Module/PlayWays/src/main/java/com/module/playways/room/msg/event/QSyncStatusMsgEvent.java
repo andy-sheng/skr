@@ -4,7 +4,7 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.zq.live.proto.Room.QSyncStatusMsg;
+import com.component.live.proto.Room.QSyncStatusMsg;
 
 public final class QSyncStatusMsgEvent {
   public BasePushInfo info;

@@ -51,7 +51,7 @@
                 android:layout_marginRight="@dimen/view_16_dp"
                 android:background="@drawable/duanwei">
 
-                <com.zq.level.view.NormalLevelView2
+                <com.component.level.view.NormalLevelView2
                     android:id="@+id/level_view"
                     android:layout_width="@dimen/view_125_dp"
                     android:layout_height="@dimen/view_109_dp"

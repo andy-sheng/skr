@@ -60,11 +60,11 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.PersonInfoDialog;
-import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.report.fragment.QuickFeedbackFragment;
+import com.component.dialog.PersonInfoDialog;
+import com.component.lyrics.widget.AbstractLrcView;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
+import com.component.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

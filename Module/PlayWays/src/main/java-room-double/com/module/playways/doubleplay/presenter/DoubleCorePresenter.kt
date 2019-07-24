@@ -32,10 +32,10 @@ import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel
 import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
 import com.module.playways.doubleplay.pbLocalModel.LocalSingSenceDataModel
 import com.module.playways.doubleplay.pushEvent.*
-import com.zq.live.proto.CombineRoom.ECombineStatus
-import com.zq.live.proto.CombineRoom.EGameStage
-import com.zq.live.proto.Common.ESceneType
-import com.zq.mediaengine.kit.ZqEngineKit
+import com.component.live.proto.CombineRoom.ECombineStatus
+import com.component.live.proto.CombineRoom.EGameStage
+import com.component.live.proto.Common.ESceneType
+import com.component.mediaengine.kit.ZqEngineKit
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody

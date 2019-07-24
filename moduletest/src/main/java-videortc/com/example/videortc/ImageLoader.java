@@ -2,12 +2,11 @@ package com.example.videortc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.opengl.Matrix;
 import android.util.Log;
 
-import com.zq.mediaengine.util.BitmapLoader;
-import com.zq.mediaengine.util.gles.GlUtil;
-import com.zq.mediaengine.util.gles.TexTransformUtil;
+import com.component.mediaengine.util.BitmapLoader;
+import com.component.mediaengine.util.gles.GlUtil;
+import com.component.mediaengine.util.gles.TexTransformUtil;
 
 public class ImageLoader {
     private static final String TAG = "ImageLoader";

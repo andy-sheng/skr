@@ -18,7 +18,7 @@ import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
-import com.zq.live.proto.Common.EGameType
+import com.component.live.proto.Common.EGameType
 
 
 class DoubleSingCardView : ConstraintLayout {

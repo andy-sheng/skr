@@ -24,9 +24,9 @@ import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
-import com.zq.live.proto.Common.EGameType;
-import com.zq.live.proto.Common.EMiniGamePlayType;
-import com.zq.lyrics.LyricsManager;
+import com.component.live.proto.Common.EGameType;
+import com.component.live.proto.Common.EMiniGamePlayType;
+import com.component.lyrics.LyricsManager;
 
 import io.reactivex.functions.Consumer;
 

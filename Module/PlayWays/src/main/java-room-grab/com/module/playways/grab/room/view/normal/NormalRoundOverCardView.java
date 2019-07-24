@@ -16,8 +16,8 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
+import com.component.live.proto.Room.EQRoundOverReason;
+import com.component.live.proto.Room.EQRoundResultType;
 
 /**
  * 轮次结束 合唱和正常结束都用此板

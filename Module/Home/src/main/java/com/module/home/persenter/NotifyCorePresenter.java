@@ -53,12 +53,12 @@ import com.module.home.view.INotifyView;
 import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.ConfirmDialog;
-import com.zq.dialog.NotifyDialogView;
-import com.zq.live.proto.Common.EMsgRoomMediaType;
-import com.zq.notification.DoubleInviteNotifyView;
-import com.zq.notification.FollowNotifyView;
-import com.zq.notification.GrabInviteNotifyView;
+import com.component.dialog.ConfirmDialog;
+import com.component.dialog.NotifyDialogView;
+import com.component.live.proto.Common.EMsgRoomMediaType;
+import com.component.notification.DoubleInviteNotifyView;
+import com.component.notification.FollowNotifyView;
+import com.component.notification.GrabInviteNotifyView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

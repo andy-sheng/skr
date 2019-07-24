@@ -20,8 +20,8 @@ import com.module.playways.room.room.model.AudienceScoreModel;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.room.model.UserGameResultModel;
 import com.module.playways.R;
-import com.zq.live.proto.Room.ELightType;
-import com.zq.live.proto.Room.EWinType;
+import com.component.live.proto.Room.ELightType;
+import com.component.live.proto.Room.EWinType;
 
 /**
  * 某个人的战绩

@@ -24,8 +24,8 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
 import com.module.playways.doubleplay.pbLocalModel.LocalGamePanelInfo
 import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel
-import com.zq.live.proto.CombineRoom.EGameStage
-import com.zq.mediaengine.kit.ZqEngineKit
+import com.component.live.proto.CombineRoom.EGameStage
+import com.component.mediaengine.kit.ZqEngineKit
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.double_game_sence_layout.view.*
 import okhttp3.MediaType

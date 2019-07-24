@@ -3,7 +3,7 @@ package com.common.notification;
 import com.common.log.MyLog;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IPushMsgProcess;
-import com.zq.live.proto.Notification.NotificationMsg;
+import com.component.live.proto.Notification.NotificationMsg;
 
 import java.io.IOException;
 

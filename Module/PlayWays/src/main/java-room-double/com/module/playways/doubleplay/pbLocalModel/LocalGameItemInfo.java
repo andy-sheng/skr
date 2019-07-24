@@ -1,6 +1,6 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
-import com.zq.live.proto.Common.GameItemInfo;
+import com.component.live.proto.Common.GameItemInfo;
 
 import java.io.Serializable;
 

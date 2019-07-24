@@ -36,10 +36,10 @@ import com.module.home.R;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
-import com.zq.person.model.PhotoModel;
-import com.zq.report.FeedbackServerApi;
-import com.zq.report.view.FeedbackView;
-import com.zq.toast.CommonToastView;
+import com.component.person.model.PhotoModel;
+import com.component.report.FeedbackServerApi;
+import com.component.report.view.FeedbackView;
+import com.component.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -52,9 +52,9 @@ import io.agora.rtc.RtcEngine;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.zq.person.model.PhotoModel.STATUS_FAILED;
-import static com.zq.person.model.PhotoModel.STATUS_SUCCESS;
-import static com.zq.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
+import static com.component.person.model.PhotoModel.STATUS_FAILED;
+import static com.component.person.model.PhotoModel.STATUS_SUCCESS;
+import static com.component.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
 
 public class FeedbackFragment extends BaseFragment {
     //反馈

@@ -19,12 +19,12 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.live.proto.Room.EWantSingType;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.mediaengine.kit.ZqEngineKit;
+import com.component.live.proto.Room.EQRoundStatus;
+import com.component.live.proto.Room.EWantSingType;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
+import com.component.mediaengine.kit.ZqEngineKit;
 
 import java.util.List;
 

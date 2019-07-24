@@ -40,8 +40,8 @@ import com.module.home.setting.InviteServerApi;
 import com.module.home.setting.Model.TuiGuangConfig;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.relation.fragment.BlackListFragment;
-import com.zq.toast.CommonToastView;
+import com.component.relation.fragment.BlackListFragment;
+import com.component.toast.CommonToastView;
 
 import java.util.List;
 

@@ -26,7 +26,7 @@ import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.ranked.view.RankedDetailView
-import com.zq.person.event.ShowPersonCenterEvent
+import com.component.person.event.ShowPersonCenterEvent
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 

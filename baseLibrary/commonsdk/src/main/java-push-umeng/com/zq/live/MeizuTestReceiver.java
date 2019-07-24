@@ -1,4 +1,4 @@
-package com.zq.live;
+package com.component.live;
 
 import org.android.agoo.mezu.MeizuPushReceiver;
 

@@ -25,11 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.bytedance.labcv.effectsdk.BytedEffectConstants;
-import com.module.RouterConstants;
 import com.wali.live.moduletest.R;
-import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

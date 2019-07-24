@@ -12,7 +12,6 @@ import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.component.busilib.recommend.RA;
 import com.module.playways.room.gift.GiftServerApi;
@@ -26,7 +25,7 @@ import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.GiftPresentEvent;
-import com.zq.live.proto.Common.EGiftType;
+import com.component.live.proto.Common.EGiftType;
 
 import org.greenrobot.eventbus.EventBus;
 

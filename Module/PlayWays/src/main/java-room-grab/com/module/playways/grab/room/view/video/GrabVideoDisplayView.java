@@ -34,8 +34,8 @@ import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.moudule.playways.beauty.BeautyPreviewActivity;
 import com.moudule.playways.beauty.event.ReturnFromBeautyActivityEvent;
-import com.zq.mediaengine.capture.CameraCapture;
-import com.zq.mediaengine.kit.ZqEngineKit;
+import com.component.mediaengine.capture.CameraCapture;
+import com.component.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

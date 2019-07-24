@@ -5,9 +5,9 @@ import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.room.model.RankGameConfigModel;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.live.proto.Common.MusicInfo;
-import com.zq.live.proto.Room.AgoraTokenInfo;
-import com.zq.live.proto.Room.JoinActionMsg;
+import com.component.live.proto.Common.MusicInfo;
+import com.component.live.proto.Room.AgoraTokenInfo;
+import com.component.live.proto.Room.JoinActionMsg;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class JoinActionEvent {
 
     public JoinActionEvent(BasePushInfo info, JoinActionMsg joinActionMsg) {
         List<RankPlayerInfoModel> playerInfos = new ArrayList<>();
-        for (com.zq.live.proto.Room.PlayerInfo player : joinActionMsg.getPlayersList()) {
+        for (com.component.live.proto.Room.PlayerInfo player : joinActionMsg.getPlayersList()) {
             RankPlayerInfoModel playerInfo = new RankPlayerInfoModel();
             playerInfo.parse(player);
             playerInfos.add(playerInfo);

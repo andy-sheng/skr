@@ -22,7 +22,7 @@ import com.module.home.musictest.model.Question;
 import com.module.home.musictest.presenter.MusicQuestionPresenter;
 import com.module.home.musictest.view.IQuestionView;
 import com.module.home.musictest.view.QuestionView;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

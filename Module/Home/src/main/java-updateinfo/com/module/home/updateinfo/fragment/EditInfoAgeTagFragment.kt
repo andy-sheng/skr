@@ -10,7 +10,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.home.R
-import com.zq.person.view.AgeTagView
+import com.component.person.view.AgeTagView
 
 class EditInfoAgeTagFragment : BaseFragment() {
     val FROM_HOME = 0

@@ -11,7 +11,7 @@ import android.widget.SeekBar;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.engine.Params;
 import com.module.playways.R;
-import com.zq.mediaengine.kit.ZqEngineKit;
+import com.component.mediaengine.kit.ZqEngineKit;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.model;
 
-import com.zq.live.proto.Common.ResourceInfo;
+import com.component.live.proto.Common.ResourceInfo;
 
 import java.io.Serializable;
 

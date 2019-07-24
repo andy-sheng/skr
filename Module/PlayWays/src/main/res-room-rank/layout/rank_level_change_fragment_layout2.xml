@@ -41,7 +41,7 @@
             android:textColor="@color/white_trans_50"
             android:textSize="@dimen/textsize_14_dp" />
 
-        <com.zq.level.view.LevelStarProgressBar
+        <com.component.level.view.LevelStarProgressBar
             android:id="@+id/level_progress"
             android:layout_width="@dimen/view_140_dp"
             android:layout_height="@dimen/view_34_dp"

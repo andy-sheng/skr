@@ -1,8 +1,6 @@
 package com.module.home.game.view
 
-import android.app.PendingIntent.getActivity
 import android.graphics.Color
-import android.graphics.PaintFlagsDrawFilter
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -16,7 +14,6 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.GameStatisModel
 import com.common.core.userinfo.model.UserLevelModel
 import com.common.core.userinfo.model.UserRankModel
-import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.SpanUtils
@@ -26,7 +23,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExRelativeLayout
 import com.common.view.ex.ExTextView
-import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.constans.GameModeType
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.module.RouterConstants
@@ -39,7 +35,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.zq.level.view.NormalLevelView2
+import com.component.level.view.NormalLevelView2
 import java.util.regex.Pattern
 
 // 排位赛

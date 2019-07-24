@@ -13,11 +13,9 @@ import com.common.view.DebounceViewClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 import com.module.home.ranked.model.RankDataModel;
-import com.zq.person.event.ShowPersonCenterEvent;
+import com.component.person.event.ShowPersonCenterEvent;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.security.spec.ECField;
 
 import static com.module.home.ranked.model.RankDataModel.BLUE_ZUAN;
 import static com.module.home.ranked.model.RankDataModel.MEILI;

@@ -1,7 +1,7 @@
 package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.CombineRoom.ChoiceGameItemMsg;
+import com.component.live.proto.CombineRoom.ChoiceGameItemMsg;
 
 import java.util.ArrayList;
 import java.util.List;

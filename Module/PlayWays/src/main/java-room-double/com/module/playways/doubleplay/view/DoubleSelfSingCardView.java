@@ -10,7 +10,7 @@ import com.module.playways.doubleplay.DoubleRoomData;
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.live.proto.Common.StandPlayType;
+import com.component.live.proto.Common.StandPlayType;
 
 public class DoubleSelfSingCardView {
     public final String TAG = "DoubleSelfSingCardView";

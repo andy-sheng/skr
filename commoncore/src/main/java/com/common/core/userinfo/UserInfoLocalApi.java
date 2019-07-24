@@ -6,10 +6,8 @@ import com.common.core.userinfo.event.UserInfoDBChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
-import com.zq.live.proto.Common.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

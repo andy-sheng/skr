@@ -17,15 +17,15 @@ public class ResourceInfoModel implements Serializable {
         this.midiURL = midiURL;
     }
 
-    public static ResourceInfoModel parse(com.zq.live.proto.Common.ResourceInfo resourceInfo){
+    public static ResourceInfoModel parse(com.component.live.proto.Common.ResourceInfo resourceInfo){
 
         return new ResourceInfoModel(resourceInfo.getResourceID(), resourceInfo.getItemID(), resourceInfo.getAudioURL(), resourceInfo.getMidiURL());
     }
 
-    public static List<ResourceInfoModel> parse(List<com.zq.live.proto.Common.ResourceInfo> resourceInfoList){
+    public static List<ResourceInfoModel> parse(List<com.component.live.proto.Common.ResourceInfo> resourceInfoList){
         ArrayList<ResourceInfoModel> resourceInfos = new ArrayList<>(resourceInfoList.size());
 
-        for (com.zq.live.proto.Common.ResourceInfo res :
+        for (com.component.live.proto.Common.ResourceInfo res :
                 resourceInfoList) {
             resourceInfos.add(parse(res));
         }

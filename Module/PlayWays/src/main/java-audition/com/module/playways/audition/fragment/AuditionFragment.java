@@ -30,6 +30,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.component.voice.control.VoiceControlPanelView;
 import com.engine.EngineEvent;
 //import com.engine.EngineManager;
 import com.engine.Params;
@@ -41,13 +42,12 @@ import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.song.model.SongModel;
-import com.component.voice.control.VoiceControlPanelView;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.utils.SongResUtils;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.mediaengine.kit.ZqEngineKit;
-import com.zq.toast.NoImageCommonToastView;
+import com.component.lyrics.LyricsReader;
+import com.component.lyrics.utils.SongResUtils;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
+import com.component.mediaengine.kit.ZqEngineKit;
+import com.component.toast.NoImageCommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -59,7 +59,7 @@ import java.util.List;
 import io.agora.rtc.Constants;
 
 import static com.engine.EngineEvent.TYPE_MUSIC_PLAY_FINISH;
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
+import static com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";

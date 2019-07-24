@@ -1,7 +1,7 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
 import com.module.playways.room.song.model.SongModel;
-import com.zq.live.proto.CombineRoom.CombineRoomMusic;
+import com.component.live.proto.CombineRoom.CombineRoomMusic;
 
 import java.io.Serializable;
 

@@ -7,52 +7,29 @@ import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
-import com.common.core.crash.IgnoreException;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
-import com.common.rx.RxRetryAssist;
-import com.common.utils.ImageUtils;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.room.song.model.MiniGameInfoModel;
-import com.zq.live.proto.Common.EMiniGamePlayType;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.utils.SongResUtils;
+import com.component.lyrics.LyricsManager;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 
 import com.component.busilib.view.BitmapTextView;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.zq.live.proto.Common.StandPlayType;
+import com.component.live.proto.Common.StandPlayType;
 
-import java.io.File;
-import java.io.IOException;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSource;
-import okio.Okio;
 
 
 /**

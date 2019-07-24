@@ -26,7 +26,7 @@ import com.module.playways.room.room.view.RankResultView2;
 import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Room.EWinType;
+import com.component.live.proto.Room.EWinType;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

@@ -2,7 +2,7 @@ package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.doubleplay.model.DoubleSyncModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.CombineRoom.CombineRoomSyncStatusV2Msg;
+import com.component.live.proto.CombineRoom.CombineRoomSyncStatusV2Msg;
 
 public class DoubleSyncStatusV2Event {
     public BasePushInfo mBasePushInfo;

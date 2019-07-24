@@ -13,11 +13,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -30,7 +27,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.live.proto.Common.StandPlayType;
+import com.component.live.proto.Common.StandPlayType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -22,8 +22,8 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
 import com.module.playways.room.room.RankRoomServerApi
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
-import com.zq.live.proto.Room.EQRoundStatus
-import com.zq.mediaengine.kit.ZqEngineKit
+import com.component.live.proto.Room.EQRoundStatus
+import com.component.mediaengine.kit.ZqEngineKit
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus

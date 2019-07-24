@@ -49,10 +49,10 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.level.utils.LevelConfigUtils;
-import com.zq.level.view.LevelStarProgressBar;
-import com.zq.live.proto.Room.EExpWhy;
-import com.zq.live.proto.Room.EWinType;
+import com.component.level.utils.LevelConfigUtils;
+import com.component.level.view.LevelStarProgressBar;
+import com.component.live.proto.Room.EExpWhy;
+import com.component.live.proto.Room.EWinType;
 
 
 import java.io.File;

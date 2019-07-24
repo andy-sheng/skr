@@ -4,13 +4,12 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoDB;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
-import com.zq.live.proto.Common.ESex;
-import com.zq.live.proto.Common.UserInfo;
+import com.component.live.proto.Common.ESex;
+import com.component.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

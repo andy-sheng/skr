@@ -2,8 +2,7 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Room.QCHOGiveUpMsg;
-import com.zq.live.proto.Room.QSPKInnerRoundOverMsg;
+import com.component.live.proto.Room.QSPKInnerRoundOverMsg;
 
 public class QPkInnerRoundOverEvent {
     public BasePushInfo info;

@@ -1,7 +1,7 @@
 package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Room.QJoinActionMsg;
+import com.component.live.proto.Room.QJoinActionMsg;
 
 public class QJoinActionEvent {
     public BasePushInfo info;

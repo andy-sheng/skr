@@ -2,7 +2,7 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Room.GPrensentGiftMsg;
+import com.component.live.proto.Room.GPrensentGiftMsg;
 
 public class GiftPresentEvent {
     public BasePushInfo info;

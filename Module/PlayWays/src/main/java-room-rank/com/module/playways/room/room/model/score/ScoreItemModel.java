@@ -1,7 +1,7 @@
 package com.module.playways.room.room.model.score;
 
 import com.common.log.MyLog;
-import com.zq.live.proto.Room.ScoreItem;
+import com.component.live.proto.Room.ScoreItem;
 
 import java.io.Serializable;
 

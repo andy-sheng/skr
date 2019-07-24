@@ -14,7 +14,7 @@ import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.UserStatus;
 import com.module.playways.R;
-import com.zq.mediaengine.kit.ZqEngineKit;
+import com.component.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

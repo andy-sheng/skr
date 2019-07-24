@@ -29,7 +29,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.zq.live.proto.Common.ESex;
+import com.component.live.proto.Common.ESex;
 
 import java.util.concurrent.TimeUnit;
 

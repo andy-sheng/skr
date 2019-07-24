@@ -15,9 +15,9 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.SingCountDownView2;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
-import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.lyrics.LyricsManager;
-import com.zq.mediaengine.kit.ZqEngineKit;
+import com.component.live.proto.Room.EQRoundStatus;
+import com.component.lyrics.LyricsManager;
+import com.component.mediaengine.kit.ZqEngineKit;
 
 import io.reactivex.functions.Consumer;
 

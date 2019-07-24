@@ -30,7 +30,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 // 昵称编辑
 public class EditInfoNameFragment extends BaseFragment {

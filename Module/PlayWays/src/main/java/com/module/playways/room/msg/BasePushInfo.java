@@ -1,9 +1,9 @@
 package com.module.playways.room.msg;
 
-import com.zq.live.proto.CombineRoom.CombineRoomMsg;
-import com.zq.live.proto.Common.UserInfo;
-import com.zq.live.proto.Room.EMsgPosType;
-import com.zq.live.proto.Room.RoomMsg;
+import com.component.live.proto.CombineRoom.CombineRoomMsg;
+import com.component.live.proto.Common.UserInfo;
+import com.component.live.proto.Room.EMsgPosType;
+import com.component.live.proto.Room.RoomMsg;
 
 /**
  * 除了具体业务数据和业务数据类型后 push中基本数据

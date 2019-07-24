@@ -35,14 +35,14 @@ import com.engine.Params;
 import com.module.playways.R;
 import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.zq.dialog.ShareWorksDialog;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.utils.SongResUtils;
-import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.mediaengine.kit.ZqEngineKit;
-import com.zq.person.model.ProducationModel;
+import com.component.dialog.ShareWorksDialog;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.LyricsReader;
+import com.component.lyrics.utils.SongResUtils;
+import com.component.lyrics.widget.AbstractLrcView;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.mediaengine.kit.ZqEngineKit;
+import com.component.person.model.ProducationModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -54,7 +54,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
+import static com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class PlayRecordFragment extends BaseFragment {
 

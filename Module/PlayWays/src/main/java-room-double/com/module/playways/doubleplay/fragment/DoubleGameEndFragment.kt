@@ -31,7 +31,7 @@ import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleEndRoomModel
 import com.trello.rxlifecycle2.android.FragmentEvent
-import com.zq.report.fragment.QuickFeedbackFragment
+import com.component.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

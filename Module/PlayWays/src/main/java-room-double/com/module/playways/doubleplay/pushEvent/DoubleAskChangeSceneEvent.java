@@ -1,7 +1,7 @@
 package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.CombineRoom.ReqChangeSceneMsg;
+import com.component.live.proto.CombineRoom.ReqChangeSceneMsg;
 
 public class DoubleAskChangeSceneEvent {
     public BasePushInfo mBasePushInfo;

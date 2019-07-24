@@ -29,7 +29,7 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.live.proto.Common.ESex;
+import com.component.live.proto.Common.ESex;
 
 
 import java.io.File;

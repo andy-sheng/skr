@@ -10,7 +10,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.R
-import com.zq.mediaengine.kit.ZqEngineKit
+import com.component.mediaengine.kit.ZqEngineKit
 
 class DoubleChatSenceView : ConstraintLayout {
     val mMicIv: ExImageView

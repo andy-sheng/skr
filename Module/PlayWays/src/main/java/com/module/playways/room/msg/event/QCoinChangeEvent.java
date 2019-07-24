@@ -1,8 +1,8 @@
 package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Room.EQCoinChangeReason;
-import com.zq.live.proto.Room.QCoinChangeMsg;
+import com.component.live.proto.Room.EQCoinChangeReason;
+import com.component.live.proto.Room.QCoinChangeMsg;
 
 public class QCoinChangeEvent {
 

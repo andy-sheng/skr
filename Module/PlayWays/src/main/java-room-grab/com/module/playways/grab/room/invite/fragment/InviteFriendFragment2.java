@@ -30,7 +30,7 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.zq.dialog.InviteFriendDialog;
+import com.component.dialog.InviteFriendDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

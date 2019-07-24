@@ -21,7 +21,7 @@ import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.grab.room.view.chorus.BaseChorusSelfCardView;
 import com.module.playways.grab.room.view.chorus.ChorusSelfLyricAdapter;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.lyrics.LyricsManager;
+import com.component.lyrics.LyricsManager;
 
 import java.util.ArrayList;
 import java.util.List;

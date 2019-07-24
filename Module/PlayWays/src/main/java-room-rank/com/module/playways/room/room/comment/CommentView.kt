@@ -1,7 +1,6 @@
 package com.module.playways.room.room.comment
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.os.Handler
 import android.os.Message
 import android.support.v7.widget.LinearLayoutManager
@@ -18,9 +17,7 @@ import com.common.player.IPlayer
 import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.utils.U
-import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.msg.event.AudioMsgEvent
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent
 import com.module.playways.room.room.comment.adapter.CommentAdapter
@@ -36,7 +33,7 @@ import com.module.playways.voice.activity.VoiceRoomActivity
 import com.module.playways.R
 import com.module.playways.room.msg.event.CommentMsgEvent
 import com.module.playways.BaseRoomData
-import com.zq.mediaengine.kit.ZqEngineKit
+import com.component.mediaengine.kit.ZqEngineKit
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

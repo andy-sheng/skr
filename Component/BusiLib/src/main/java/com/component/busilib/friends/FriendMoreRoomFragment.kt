@@ -23,7 +23,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.R
 import com.component.busilib.verify.SkrVerifyUtils
 import com.kingja.loadsir.core.LoadService
-import com.zq.dialog.InviteFriendDialog
+import com.component.dialog.InviteFriendDialog
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.common.view.titlebar.CommonTitleBar
