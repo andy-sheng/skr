@@ -15,6 +15,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.image.fresco.BaseImageView
+import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.player.event.PlayerEvent
 import com.common.utils.U
@@ -66,31 +67,31 @@ class FeedsDetailFragment : BaseFragment() {
     val mMyMediaPlayer: MyMediaPlayer by lazy {
         MyMediaPlayer().also {
             it.setMonitorProgress(true)
-//            it.setCallback(object : IPlayerCallback {
-//                override fun onPrepared() {
-//
-//                }
-//
-//                override fun onCompletion() {
-//                    stopSong()
-//                }
-//
-//                override fun onSeekComplete() {
-//
-//                }
-//
-//                override fun onVideoSizeChanged(width: Int, height: Int) {
-//
-//                }
-//
-//                override fun onError(what: Int, extra: Int) {
-//
-//                }
-//
-//                override fun onInfo(what: Int, extra: Int) {
-//
-//                }
-//            })
+            it.setCallback(object : IPlayerCallback {
+                override fun onPrepared() {
+
+                }
+
+                override fun onCompletion() {
+                    stopSong()
+                }
+
+                override fun onSeekComplete() {
+
+                }
+
+                override fun onVideoSizeChanged(width: Int, height: Int) {
+
+                }
+
+                override fun onError(what: Int, extra: Int) {
+
+                }
+
+                override fun onInfo(what: Int, extra: Int) {
+
+                }
+            })
         }
     }
 
@@ -234,6 +235,7 @@ class FeedsDetailFragment : BaseFragment() {
     }
 
     private fun playSong() {
+        mMyMediaPlayer.reset()
         mControlTv?.isSelected = true
         mIsSongStart = true
         mRadioView?.play()
@@ -246,7 +248,7 @@ class FeedsDetailFragment : BaseFragment() {
         if (mIsSongStart) {
             mMyMediaPlayer.resume()
         } else {
-            mMyMediaPlayer.startPlay(mFeedsWatchModel?.song?.playURL)
+            playSong()
         }
     }
 
@@ -256,10 +258,6 @@ class FeedsDetailFragment : BaseFragment() {
         mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.totalDuration - event.curPostion, "mm:ss")
         mSeekBar!!.max = event.totalDuration.toInt()
         mSeekBar!!.progress = event.curPostion.toInt()
-
-        if (event.totalDuration.toInt() == event.curPostion.toInt()) {
-            stopSong()
-        }
     }
 
     private fun pauseSong() {
@@ -274,6 +272,8 @@ class FeedsDetailFragment : BaseFragment() {
         mControlTv!!.isSelected = false
         mRadioView?.pause()
         mSeekBar!!.progress = 0
+        mPassTimeTv?.text = "00:00"
+        mLastTimeTv?.text = "00:00"
     }
 
     override fun setData(type: Int, data: Any?) {
