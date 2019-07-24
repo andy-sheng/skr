@@ -1,35 +1,13 @@
 package com.module.feeds.make.editor
 
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
-
 import com.common.base.BaseActivity
-import com.module.RouterConstants
-import com.component.voice.control.VoiceControlPanelView
-import com.component.lyrics.widget.ManyLyricsView
-import com.component.lyrics.widget.VoiceScaleView
-import android.widget.TextView
-import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.permission.SkrAudioPermission
-import com.common.utils.U
-import com.common.view.DebounceViewClickListener
-import com.common.view.ex.ExTextView
-import com.common.view.countdown.CircleCountDownView
-import com.common.view.titlebar.CommonTitleBar
-import com.component.lyrics.LyricAndAccMatchManager
-import com.component.lyrics.utils.SongResUtils
-import com.component.toast.NoImageCommonToastView
 import com.engine.EngineEvent
 import com.engine.Params
+import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.watch.model.FeedSongModel
 import com.zq.mediaengine.kit.ZqEngineKit
-import io.agora.rtc.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
