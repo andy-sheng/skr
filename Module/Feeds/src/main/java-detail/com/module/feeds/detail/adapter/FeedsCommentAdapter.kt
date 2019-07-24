@@ -51,7 +51,7 @@ class FeedsCommentAdapter : DiffAdapter<FirstLevelCommentModel, FeedsCommentAdap
                     .setCircle(true)
                     .build())
 
-            mNameTv.text = model.user.nickname
+            mNameTv.text = model.user?.nickname
             mCommentTimeTv.text = model.comment.createdAt
             mLikeNum.text = model.comment.starCnt.toString()
             mContentTv.text = model.comment.content

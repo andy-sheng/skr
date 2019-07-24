@@ -12,8 +12,10 @@ class FeedSongTpl : Serializable {
     var cover: String? = null
     @JSONField(name = "createdAt")
     var createdAt: String? = null
-    @JSONField(name = "lrc")
-    var lrc: String? = null
+    @JSONField(name = "lrcTs")
+    var lrcTs: String? = null
+    @JSONField(name = "lrcTxt")
+    var lrcTxt: String? = null
     @JSONField(name = "lyricist")
     var lyricist: String? = null
     @JSONField(name = "songName")

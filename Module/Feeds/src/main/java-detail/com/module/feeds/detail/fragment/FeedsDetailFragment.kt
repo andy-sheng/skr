@@ -1,5 +1,6 @@
 package com.module.feeds.detail.fragment
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
@@ -69,7 +70,11 @@ class FeedsDetailFragment : BaseFragment() {
             it.setMonitorProgress(true)
             it.setCallback(object : IPlayerCallback {
                 override fun onPrepared() {
-
+                    if (!mFeedsCommonLyricView!!.isStart()) {
+                        mFeedsCommonLyricView!!.playLyric()
+                    } else {
+                        mFeedsCommonLyricView!!.resume()
+                    }
                 }
 
                 override fun onCompletion() {
@@ -85,11 +90,19 @@ class FeedsDetailFragment : BaseFragment() {
                 }
 
                 override fun onError(what: Int, extra: Int) {
-
+                    mFeedsCommonLyricView!!.pause()
                 }
 
                 override fun onInfo(what: Int, extra: Int) {
 
+                }
+
+                override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
+                    if (percent == 100) {
+                        mMyMediaPlayer.resume()
+                    } else {
+                        mMyMediaPlayer.pause()
+                    }
                 }
             })
         }
@@ -207,6 +220,7 @@ class FeedsDetailFragment : BaseFragment() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if(fromUser){
                     mMyMediaPlayer.seekTo(progress.toLong())
+                    mFeedsCommonLyricView?.seekTo(progress)
                 }
             }
 
@@ -223,6 +237,7 @@ class FeedsDetailFragment : BaseFragment() {
             mControlTv?.callOnClick()
         }
 
+        mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!)
         playSong()
 
         mControlTv?.setDebounceViewClickListener {
@@ -247,6 +262,7 @@ class FeedsDetailFragment : BaseFragment() {
         mRadioView?.play()
         if (mIsSongStart) {
             mMyMediaPlayer.resume()
+            mFeedsCommonLyricView?.resume()
         } else {
             playSong()
         }
@@ -258,12 +274,14 @@ class FeedsDetailFragment : BaseFragment() {
         mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.totalDuration - event.curPostion, "mm:ss")
         mSeekBar!!.max = event.totalDuration.toInt()
         mSeekBar!!.progress = event.curPostion.toInt()
+        mFeedsCommonLyricView?.seekTo(event.curPostion.toInt())
     }
 
     private fun pauseSong() {
         mControlTv!!.isSelected = false
         mRadioView?.pause()
         mMyMediaPlayer.pause()
+        mFeedsCommonLyricView?.pause()
     }
 
     private fun stopSong() {
@@ -274,6 +292,7 @@ class FeedsDetailFragment : BaseFragment() {
         mSeekBar!!.progress = 0
         mPassTimeTv?.text = "00:00"
         mLastTimeTv?.text = "00:00"
+        mFeedsCommonLyricView?.stop()
     }
 
     override fun setData(type: Int, data: Any?) {

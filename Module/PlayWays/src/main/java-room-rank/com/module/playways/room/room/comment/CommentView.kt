@@ -1,6 +1,7 @@
 package com.module.playways.room.room.comment
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Message
 import android.support.v7.widget.LinearLayoutManager
@@ -10,15 +11,18 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.AbsListView
 import android.widget.RelativeLayout
-
 import com.common.core.account.UserAccountManager
 import com.common.log.MyLog
 import com.common.player.IPlayer
 import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.utils.U
+import com.component.mediaengine.kit.ZqEngineKit
+import com.module.playways.BaseRoomData
+import com.module.playways.R
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent
 import com.module.playways.room.msg.event.AudioMsgEvent
+import com.module.playways.room.msg.event.CommentMsgEvent
 import com.module.playways.room.msg.event.DynamicEmojiMsgEvent
 import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
@@ -30,14 +34,10 @@ import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.module.playways.voice.activity.VoiceRoomActivity
-import com.module.playways.R
-import com.module.playways.room.msg.event.CommentMsgEvent
-import com.module.playways.BaseRoomData
-import com.component.mediaengine.kit.ZqEngineKit
-
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+
 
 class CommentView : RelativeLayout {
 
@@ -215,6 +215,10 @@ class CommentView : RelativeLayout {
                             }
 
                             override fun onInfo(what: Int, extra: Int) {
+
+                            }
+
+                            override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
 
                             }
                         })

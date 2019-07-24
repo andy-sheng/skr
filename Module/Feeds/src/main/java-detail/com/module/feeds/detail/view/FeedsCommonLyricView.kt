@@ -5,11 +5,14 @@ import android.view.ViewStub
 
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
+import com.module.feeds.watch.model.FeedSongModel
 
 class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     val mTag = "FeedsCommonLyricView"
     var mAutoScrollLyricView: AutoScrollLyricView? = null
     var mFeedsManyLyricView: FeedsManyLyricView? = null
+    var mFeedSongModel: FeedSongModel? = null
+    var mBaseFeedsLyricView: BaseFeedsLyricView? = null
 
     init {
         run {
@@ -23,19 +26,34 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
         }
     }
 
-    override fun seekTo() {
+    override fun setSongModel(feedSongModel: FeedSongModel) {
+        mFeedSongModel = feedSongModel
 
+        mBaseFeedsLyricView = mFeedsManyLyricView
+        mBaseFeedsLyricView?.setSongModel(feedSongModel)
+    }
+
+    override fun isStart(): Boolean {
+        return mBaseFeedsLyricView!!.isStart()
+    }
+
+    override fun playLyric() {
+        mBaseFeedsLyricView?.playLyric()
+    }
+
+    override fun seekTo(duration: Int) {
+        mBaseFeedsLyricView?.seekTo(duration)
     }
 
     override fun pause() {
-
+        mBaseFeedsLyricView?.pause()
     }
 
     override fun resume() {
-
+        mBaseFeedsLyricView?.resume()
     }
 
     override fun stop() {
-
+        mBaseFeedsLyricView?.stop()
     }
 }

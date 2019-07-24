@@ -2,6 +2,7 @@ package com.component.busilib.manager;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.view.animation.LinearInterpolator;
 
@@ -111,6 +112,11 @@ public class BgMusicManager {
 
             @Override
             public void onInfo(int what, int extra) {
+
+            }
+
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
 
             }
         });

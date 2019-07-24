@@ -7,12 +7,14 @@ import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
+import com.module.feeds.watch.model.FeedSongModel
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
     var lyricTv: ExTextView? = null
     var passTime: Long? = null
     var delayTime: Long? = null
     var scrollTime: Long? = null
+    var mFeedSongModel: FeedSongModel? = null
 
     var mHandlerTaskTimer: HandlerTaskTimer? = null
 
@@ -24,8 +26,20 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         return R.layout.auto_scroll_lyric_view_layout
     }
 
-    override fun seekTo() {
+    override fun setSongModel(feedSongModel: FeedSongModel) {
+        mFeedSongModel = feedSongModel
+    }
 
+    override fun playLyric() {
+
+    }
+
+    override fun seekTo(duration: Int) {
+
+    }
+
+    override fun isStart(): Boolean {
+        return false
     }
 
     override fun stop() {

@@ -1,6 +1,7 @@
 package com.common.player;
 
 import android.graphics.SurfaceTexture;
+import android.media.MediaPlayer;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -253,6 +254,10 @@ public class VideoPlayerAdapter {
             }
         }
 
+        @Override
+        public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+        }
     };
 
     /**
@@ -488,5 +493,9 @@ public class VideoPlayerAdapter {
 
         }
 
+        @Override
+        public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+        }
     }
 }
