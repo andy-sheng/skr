@@ -3,7 +3,7 @@ package com.module.home.view;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserRankModel;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
 import com.common.core.userinfo.model.UserLevelModel;
 

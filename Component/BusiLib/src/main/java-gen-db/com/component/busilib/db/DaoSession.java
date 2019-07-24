@@ -8,7 +8,7 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.component.person.photo.PhotoModelDB;
+import com.component.person.photo.manager.PhotoModelDB;
 
 import com.component.busilib.db.PhotoModelDBDao;
 

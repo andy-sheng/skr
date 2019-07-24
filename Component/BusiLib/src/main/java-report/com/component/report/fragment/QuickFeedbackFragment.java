@@ -38,7 +38,7 @@ import com.component.busilib.R;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
-import com.component.person.model.PhotoModel;
+import com.component.person.photo.model.PhotoModel;
 import com.component.report.FeedbackServerApi;
 import com.component.report.view.FeedbackView;
 import com.component.toast.CommonToastView;
@@ -53,10 +53,6 @@ import java.util.List;
 import io.agora.rtc.RtcEngine;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-
-import static com.component.person.model.PhotoModel.STATUS_FAILED;
-import static com.component.person.model.PhotoModel.STATUS_SUCCESS;
-import static com.component.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
 
 /**
  * 快速一键反馈
@@ -94,7 +90,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, QuickFeedbackFragment>() {
         @Override
         protected QuickFeedbackFragment accept(PhotoModel cur) {
-            if(mUploading){
+            if (mUploading) {
                 return null;
             }
             mUploading = true;
@@ -191,7 +187,7 @@ public class QuickFeedbackFragment extends BaseFragment {
             for (ImageItem imageItem : imageItemList) {
                 PhotoModel photoModel = new PhotoModel();
                 photoModel.setLocalPath(imageItem.getPath());
-                photoModel.setStatus(STATUS_WAIT_UPLOAD);
+                photoModel.setStatus(PhotoModel.Companion.getSTATUS_WAIT_UPLOAD());
                 list.add(photoModel);
                 mPlayControlTemplate.add(photoModel, true);
             }
@@ -234,19 +230,19 @@ public class QuickFeedbackFragment extends BaseFragment {
                     @Override
                     public void onSuccessNotInUiThread(String url) {
                         MyLog.d(TAG, "上传成功" + " url=" + url);
-                        photoModel.setStatus(STATUS_SUCCESS);
+                        photoModel.setStatus(PhotoModel.Companion.getSTATUS_SUCCESS());
                         photoModel.setPicPath(url);
                         checkUploadState(mPhotoModelList);
-                        mUploading =false;
+                        mUploading = false;
                         mPlayControlTemplate.endCurrent(photoModel);
                     }
 
                     @Override
                     public void onFailureNotInUiThread(String msg) {
                         MyLog.d(TAG, "上传失败" + " msg=" + msg);
-                        photoModel.setStatus(STATUS_FAILED);
+                        photoModel.setStatus(PhotoModel.Companion.getSTATUS_FAILED());
                         checkUploadState(mPhotoModelList);
-                        mUploading =false;
+                        mUploading = false;
                         mPlayControlTemplate.endCurrent(photoModel);
                     }
                 });
@@ -254,7 +250,7 @@ public class QuickFeedbackFragment extends BaseFragment {
 
     private void checkUploadState(final List<PhotoModel> imageItemList) {
         for (PhotoModel photoModel : imageItemList) {
-            if (photoModel.getStatus() == STATUS_WAIT_UPLOAD) {
+            if (photoModel.getStatus() == PhotoModel.Companion.getSTATUS_WAIT_UPLOAD()) {
                 return;
             }
         }

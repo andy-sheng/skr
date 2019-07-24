@@ -15,7 +15,7 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.R
 import com.component.live.proto.Common.ESex
-import com.component.person.StringFromatUtils
+import com.component.person.utils.StringFromatUtils
 import com.component.person.model.TagModel
 import kotlinx.android.synthetic.main.business_card_dialog_view.view.*
 import java.util.ArrayList

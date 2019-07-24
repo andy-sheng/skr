@@ -47,6 +47,7 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
+
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.big.BigImageBrowseFragment;
@@ -63,14 +64,14 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.component.dialog.BusinessCardDialogView;
 import com.component.level.view.NormalLevelView2;
 import com.component.live.proto.Common.ESex;
-import com.component.person.StringFromatUtils;
+import com.component.person.utils.StringFromatUtils;
 import com.component.person.model.TagModel;
 import com.component.person.presenter.OtherPersonPresenter;
 import com.component.person.view.EditRemarkView;
 import com.component.person.view.IOtherPersonView;
-import com.component.person.view.OtherPhotoWallView;
+import com.component.person.photo.view.OtherPhotoWallView;
 import com.component.person.view.PersonMoreOpView;
-import com.component.person.view.ProducationWallView;
+import com.component.person.producation.view.ProducationWallView;
 import com.component.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -80,9 +81,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
-import static com.component.person.activity.OtherPersonActivity.BUNDLE_USER_ID;
+import static com.component.person.OtherPersonActivity.BUNDLE_USER_ID;
 
 public class OtherPersonFragment4 extends BaseFragment implements IOtherPersonView, RequestCallBack {
 

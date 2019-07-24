@@ -18,7 +18,7 @@ import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.component.person.model.PhotoModel;
+import com.component.person.photo.model.PhotoModel;
 import com.component.person.view.EditRemarkView;
 import com.component.report.fragment.QuickFeedbackFragment;
 
@@ -162,8 +162,8 @@ public class PersonInfoDialog {
 
     public void dismiss() {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
-        if (personInfoDialogView != null && personInfoDialogView.mPersonMoreOpView != null) {
-            personInfoDialogView.mPersonMoreOpView.dismiss();
+        if (personInfoDialogView != null && personInfoDialogView.getMPersonMoreOpView() != null) {
+            personInfoDialogView.getMPersonMoreOpView().dismiss();
         }
         mKickListener = null;
         mInviteDoubleListener = null;
@@ -175,8 +175,8 @@ public class PersonInfoDialog {
 
     public void dismiss(boolean useAnimation) {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(mActivity);
-        if (personInfoDialogView != null && personInfoDialogView.mPersonMoreOpView != null) {
-            personInfoDialogView.mPersonMoreOpView.dismiss();
+        if (personInfoDialogView != null && personInfoDialogView.getMPersonMoreOpView() != null) {
+            personInfoDialogView.getMPersonMoreOpView().dismiss();
         }
         mKickListener = null;
         mInviteDoubleListener = null;

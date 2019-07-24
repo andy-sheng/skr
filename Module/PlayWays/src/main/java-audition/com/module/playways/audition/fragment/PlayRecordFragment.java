@@ -42,7 +42,7 @@ import com.component.lyrics.utils.SongResUtils;
 import com.component.lyrics.widget.AbstractLrcView;
 import com.component.lyrics.widget.ManyLyricsView;
 import com.component.mediaengine.kit.ZqEngineKit;
-import com.component.person.model.ProducationModel;
+import com.component.person.producation.model.ProducationModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

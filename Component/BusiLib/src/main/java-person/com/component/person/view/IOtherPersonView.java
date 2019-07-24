@@ -6,7 +6,7 @@ import com.common.core.userinfo.model.UserRankModel;
 
 import java.util.List;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
 import com.common.core.userinfo.model.UserLevelModel;
 

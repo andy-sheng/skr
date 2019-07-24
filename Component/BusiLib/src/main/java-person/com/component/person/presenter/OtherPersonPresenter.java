@@ -15,7 +15,7 @@ import com.component.person.view.IOtherPersonView;
 
 import java.util.List;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
 import com.common.core.userinfo.model.UserLevelModel;
 

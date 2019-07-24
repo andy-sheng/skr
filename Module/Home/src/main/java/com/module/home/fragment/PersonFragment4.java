@@ -61,10 +61,10 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.component.dialog.BusinessCardDialogView;
 import com.component.level.view.NormalLevelView2;
 import com.component.live.proto.Common.ESex;
-import com.component.person.StringFromatUtils;
+import com.component.person.utils.StringFromatUtils;
 import com.component.person.fragment.OtherPersonFragment4;
-import com.component.person.view.PhotoWallView;
-import com.component.person.view.ProducationWallView;
+import com.component.person.photo.view.PhotoWallView;
+import com.component.person.producation.view.ProducationWallView;
 import com.component.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -72,7 +72,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
 /**
  * 自己
