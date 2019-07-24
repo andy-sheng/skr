@@ -9,6 +9,7 @@ import android.view.ViewGroup
 
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
+import com.common.base.FragmentDataListener
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
@@ -94,13 +95,15 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_DOUBLE)
                         .addDataBeforeAdd(1, false)
-                        .setFragmentDataListener { requestCode, resultCode, bundle, obj ->
-                            if (requestCode == 0 && resultCode == 0 && obj != null) {
-                                val model = obj as SongModel
-                                MyLog.d(TAG, "onFragmentResult model=$model")
-                                EventBus.getDefault().post(AddSongEvent(model))
+                        .setFragmentDataListener(object :FragmentDataListener{
+                            override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                                if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                    val model = obj as SongModel
+                                    MyLog.d(TAG, "onFragmentResult model=$model")
+                                    EventBus.getDefault().post(AddSongEvent(model))
+                                }
                             }
-                        }
+                        })
                         .build())
             }
         })

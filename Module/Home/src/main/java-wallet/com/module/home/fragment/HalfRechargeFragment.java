@@ -130,8 +130,8 @@ public class HalfRechargeFragment extends BallanceFragment {
             mWaitingDialogPlus.dismiss();
         }
 
-        if (getMFragmentDataListener() != null) {
-            getMFragmentDataListener().onFragmentResult(100, 0, null, null);
+        if (getFragmentDataListener() != null) {
+            getFragmentDataListener().onFragmentResult(100, 0, null, null);
         }
 
         mUiHanlder.postDelayed(new Runnable() {

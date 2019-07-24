@@ -120,8 +120,8 @@ public class PlayRecordFragment extends BaseFragment {
         mResetArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (getMFragmentDataListener() != null) {
-                    getMFragmentDataListener().onFragmentResult(0, 0, null, null);
+                if (getFragmentDataListener() != null) {
+                    getFragmentDataListener().onFragmentResult(0, 0, null, null);
                 }
                 U.getFragmentUtils().popFragment(PlayRecordFragment.this);
             }

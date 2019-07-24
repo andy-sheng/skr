@@ -134,8 +134,8 @@ public class SmsAuthFragment extends BaseFragment {
                                             }
                                         }, 300);
 
-                                        if (getMFragmentDataListener() != null) {
-                                            getMFragmentDataListener().onFragmentResult(0, 0, null, null);
+                                        if (getFragmentDataListener() != null) {
+                                            getFragmentDataListener().onFragmentResult(0, 0, null, null);
                                         }
 
                                         EventBus.getDefault().post(new PhoneAuthSuccessEvent());

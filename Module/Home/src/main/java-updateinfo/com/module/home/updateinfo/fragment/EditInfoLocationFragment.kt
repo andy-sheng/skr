@@ -125,7 +125,7 @@ class EditInfoLocationFragment : BaseFragment() {
                 .setLocation(l)
                 .build(), true)
 
-        mFragmentDataListener?.onFragmentResult(0, 1, null, null)
+        fragmentDataListener?.onFragmentResult(0, 1, null, null)
     }
 
     inner class LocationHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

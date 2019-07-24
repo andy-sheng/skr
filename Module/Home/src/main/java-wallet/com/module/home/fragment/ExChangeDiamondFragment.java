@@ -163,8 +163,8 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                 .setText("兑换成功")
                 .build());
         mExChangeDiamondPresenter.getDQBalance();
-        if (getMFragmentDataListener() != null) {
-            getMFragmentDataListener().onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
+        if (getFragmentDataListener() != null) {
+            getFragmentDataListener().onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
         }
         finish();
     }

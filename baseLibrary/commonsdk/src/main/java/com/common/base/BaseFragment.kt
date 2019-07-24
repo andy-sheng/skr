@@ -82,7 +82,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
      * Fragment A 启动 Fragment B 处理业务后想拿到结果
      * 会通过 B 的 mFragmentDataListener 返回结果
      */
-    protected var mFragmentDataListener: FragmentDataListener? = null
+    var fragmentDataListener: FragmentDataListener? = null
 
     open fun isInViewPager() = false
 
@@ -409,7 +409,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
      * 是否要消费掉onActivityResult
      * 返回true 代表要消费掉
      */
-    open fun onActivityResultReal(requestCode: Int, resultCode: Int, data: Intent): Boolean {
+    open fun onActivityResultReal(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         return false
     }
 
@@ -419,14 +419,6 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
     override fun setData(type: Int, data: Any?) {
         MyLog.d(TAG, "setData type=$type data=$data")
         mNeedSaveWhenLowMemory[type] = data
-    }
-
-    /**
-     * Fragment A 启动 Fragment B 处理业务后想拿到结果
-     * 会通过 B 的 mFragmentDataListener 返回结果
-     */
-    fun setFragmentDataListener(fragmentDataListener: FragmentDataListener?) {
-        mFragmentDataListener = fragmentDataListener
     }
 
     /**

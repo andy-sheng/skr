@@ -310,7 +310,6 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView, IRankMatchingVie
                 .setNotifyHideFragment(NewGrabMatchFragment::class.java)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData)
-                .setFragmentDataListener { requestCode, resultCode, bundle, obj -> }
                 .build())
 
         //匹配成功直接先把自己pop掉

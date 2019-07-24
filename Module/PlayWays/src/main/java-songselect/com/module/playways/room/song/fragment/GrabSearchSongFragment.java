@@ -90,8 +90,8 @@ public class GrabSearchSongFragment extends BaseFragment {
                     return;
                 }
                 SongModel songModel = (SongModel) model;
-                if (getMFragmentDataListener() != null) {
-                    getMFragmentDataListener().onFragmentResult(0, 0, null, songModel);
+                if (getFragmentDataListener() != null) {
+                    getFragmentDataListener().onFragmentResult(0, 0, null, songModel);
                 }
             }
         }, true, selectMode, isOwner);

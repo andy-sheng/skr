@@ -393,7 +393,7 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
         return false
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         /**
          * 先看看有没有顶层的 fragment 要处理这个事件的
          * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作

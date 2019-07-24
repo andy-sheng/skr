@@ -194,8 +194,8 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 .setText("兑换成功")
                 .build());
         mExChangeCashPresenter.getDQBalance();
-        if (getMFragmentDataListener() != null) {
-            getMFragmentDataListener().onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
+        if (getFragmentDataListener() != null) {
+            getFragmentDataListener().onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
         }
         finish();
     }

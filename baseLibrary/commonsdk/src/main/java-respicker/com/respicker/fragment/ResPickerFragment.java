@@ -417,9 +417,9 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
      */
     private void deliverResult(int requestCode, int resultCode, Bundle bundle) {
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
-        if (getMFragmentDataListener() != null) {
+        if (getFragmentDataListener() != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            getMFragmentDataListener().onFragmentResult(requestCode, resultCode, bundle, null);
+            getFragmentDataListener().onFragmentResult(requestCode, resultCode, bundle, null);
         }
         if (!mSelfActivity) {
             U.getFragmentUtils().popFragment(ResPickerFragment.this);
