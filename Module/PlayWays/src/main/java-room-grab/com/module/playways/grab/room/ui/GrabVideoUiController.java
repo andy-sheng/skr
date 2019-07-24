@@ -3,13 +3,10 @@ package com.module.playways.grab.room.ui;
 import android.util.Pair;
 import android.view.View;
 
-import com.common.callback.Callback;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.zq.live.proto.Room.EQRoundStatus;
-
-import static android.view.View.GONE;
 
 public class GrabVideoUiController extends GrabBaseUiController {
     public GrabVideoUiController(GrabRoomFragment f) {

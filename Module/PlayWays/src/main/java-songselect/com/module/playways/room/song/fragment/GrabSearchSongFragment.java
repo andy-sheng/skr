@@ -30,7 +30,7 @@ import com.module.playways.songmanager.SongManagerActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

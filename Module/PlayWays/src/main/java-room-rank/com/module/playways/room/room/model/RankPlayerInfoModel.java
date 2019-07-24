@@ -5,6 +5,7 @@ import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.playways.room.prepare.model.ResourceInfoModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
+import com.zq.live.proto.Room.PlayerInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class RankPlayerInfoModel extends PlayerInfoModel {
         this.resourceInfoList = resourceInfoList;
     }
 
-    public void parse(com.zq.live.proto.Room.PlayerInfo playerInfo) {
+    public void parse(PlayerInfo playerInfo) {
         if (playerInfo == null) {
             return;
         }

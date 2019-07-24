@@ -1,7 +1,6 @@
 package com.module.playways.songmanager.view
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View

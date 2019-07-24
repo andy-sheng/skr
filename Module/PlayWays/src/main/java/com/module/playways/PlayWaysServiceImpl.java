@@ -33,7 +33,7 @@ import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 

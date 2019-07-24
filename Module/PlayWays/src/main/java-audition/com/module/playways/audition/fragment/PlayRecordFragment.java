@@ -35,14 +35,18 @@ import com.engine.Params;
 import com.module.playways.R;
 import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.FragmentEvent;
+<<<<<<< HEAD
 import com.zq.dialog.ShareWorksDialog;
+=======
+import com.component.dialog.ShareWorksDialog;
+>>>>>>> 14dd8d72c8ae28841d04e927f2f9de54567715fb
 import com.component.lyrics.LyricsManager;
 import com.component.lyrics.LyricsReader;
 import com.component.lyrics.utils.SongResUtils;
 import com.component.lyrics.widget.AbstractLrcView;
 import com.component.lyrics.widget.ManyLyricsView;
 import com.zq.mediaengine.kit.ZqEngineKit;
-import com.zq.person.model.ProducationModel;
+import com.component.person.producation.model.ProducationModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

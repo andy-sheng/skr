@@ -14,7 +14,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
-import com.zq.level.utils.LevelConfigUtils;
+import com.component.level.utils.LevelConfigUtils;
 
 public class UserInfoTitleView extends RelativeLayout {
 

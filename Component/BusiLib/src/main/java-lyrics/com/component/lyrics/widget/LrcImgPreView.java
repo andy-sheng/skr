@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.common.utils.U;
 import com.component.busilib.R;
-import com.common.utils.ColorUtils;
 
 /**
  * 歌词图片预览视图

@@ -6,7 +6,6 @@ import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.gift.model.NormalGift;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
-import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
 public class GiftPlayModel {

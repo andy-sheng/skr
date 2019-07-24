@@ -21,7 +21,6 @@ import com.zq.mediaengine.util.audio.AudioUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
 
 /**
  * Capture audio data from microphone.

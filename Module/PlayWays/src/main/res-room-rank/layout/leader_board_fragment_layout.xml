@@ -84,7 +84,7 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.zq.level.view.NormalLevelView2
+            <com.component.level.view.NormalLevelView2
                 android:id="@+id/right_chanpain_level_view"
                 android:layout_width="@dimen/view_60_dp"
                 android:layout_height="@dimen/view_53_dp"
@@ -94,7 +94,7 @@
                 levelView2:mainWidth2="@dimen/view_60_dp"
                 levelView2:subBottom2="@dimen/view_3_dp"
                 levelView2:subHeight2="@dimen/view_6_dp"
-                levelView2:subWidth2="@dimen/view_11_dp"></com.zq.level.view.NormalLevelView2>
+                levelView2:subWidth2="@dimen/view_11_dp"></com.component.level.view.NormalLevelView2>
 
 
             <com.common.view.ex.ExTextView
@@ -151,7 +151,7 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.zq.level.view.NormalLevelView2
+            <com.component.level.view.NormalLevelView2
                 android:id="@+id/left_chanpain_level_view"
                 android:layout_width="@dimen/view_60_dp"
                 android:layout_height="@dimen/view_53_dp"
@@ -161,7 +161,7 @@
                 levelView2:mainWidth2="@dimen/view_60_dp"
                 levelView2:subBottom2="@dimen/view_3_dp"
                 levelView2:subHeight2="@dimen/view_6_dp"
-                levelView2:subWidth2="@dimen/view_11_dp"></com.zq.level.view.NormalLevelView2>
+                levelView2:subWidth2="@dimen/view_11_dp"></com.component.level.view.NormalLevelView2>
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_chanpain_level_tv"
@@ -223,7 +223,7 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.zq.level.view.NormalLevelView2
+            <com.component.level.view.NormalLevelView2
                 android:id="@+id/chanpain_level_view"
                 android:layout_width="@dimen/view_60_dp"
                 android:layout_height="@dimen/view_53_dp"
@@ -233,7 +233,7 @@
                 levelView2:mainWidth2="@dimen/view_60_dp"
                 levelView2:subBottom2="@dimen/view_3_dp"
                 levelView2:subHeight2="@dimen/view_6_dp"
-                levelView2:subWidth2="@dimen/view_11_dp"></com.zq.level.view.NormalLevelView2>
+                levelView2:subWidth2="@dimen/view_11_dp"></com.component.level.view.NormalLevelView2>
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/chanpain_level_tv"

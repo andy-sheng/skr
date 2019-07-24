@@ -54,11 +54,11 @@ import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.dialog.PersonInfoDialog
+import com.component.dialog.PersonInfoDialog
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
-import com.zq.report.fragment.QuickFeedbackFragment
+import com.component.report.fragment.QuickFeedbackFragment
 import kotlin.properties.Delegates
 
 

@@ -36,10 +36,10 @@ import com.module.home.R;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
-import com.zq.person.model.PhotoModel;
-import com.zq.report.FeedbackServerApi;
-import com.zq.report.view.FeedbackView;
-import com.zq.toast.CommonToastView;
+import com.component.person.photo.model.PhotoModel;
+import com.component.report.FeedbackServerApi;
+import com.component.report.view.FeedbackView;
+import com.component.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -51,10 +51,6 @@ import java.util.List;
 import io.agora.rtc.RtcEngine;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-
-import static com.zq.person.model.PhotoModel.STATUS_FAILED;
-import static com.zq.person.model.PhotoModel.STATUS_SUCCESS;
-import static com.zq.person.model.PhotoModel.STATUS_WAIT_UPLOAD;
 
 public class FeedbackFragment extends BaseFragment {
     //反馈
@@ -183,7 +179,7 @@ public class FeedbackFragment extends BaseFragment {
             for (ImageItem imageItem : imageItemList) {
                 PhotoModel photoModel = new PhotoModel();
                 photoModel.setLocalPath(imageItem.getPath());
-                photoModel.setStatus(STATUS_WAIT_UPLOAD);
+                photoModel.setStatus(PhotoModel.Companion.getSTATUS_WAIT_UPLOAD());
                 list.add(photoModel);
                 mPlayControlTemplate.add(photoModel, true);
             }
@@ -221,7 +217,7 @@ public class FeedbackFragment extends BaseFragment {
                     @Override
                     public void onSuccessNotInUiThread(String url) {
                         MyLog.d(getTAG(), "上传成功" + " url=" + url);
-                        photoModel.setStatus(STATUS_SUCCESS);
+                        photoModel.setStatus(PhotoModel.Companion.getSTATUS_SUCCESS());
                         photoModel.setPicPath(url);
                         checkUploadState(mPhotoModelList);
                         mUploading = false;
@@ -231,7 +227,7 @@ public class FeedbackFragment extends BaseFragment {
                     @Override
                     public void onFailureNotInUiThread(String msg) {
                         MyLog.d(getTAG(), "上传失败" + " msg=" + msg);
-                        photoModel.setStatus(STATUS_FAILED);
+                        photoModel.setStatus(PhotoModel.Companion.getSTATUS_FAILED());
                         checkUploadState(mPhotoModelList);
                         mUploading = false;
                         mPlayControlTemplate.endCurrent(photoModel);
@@ -241,7 +237,7 @@ public class FeedbackFragment extends BaseFragment {
 
     private void checkUploadState(final List<PhotoModel> imageItemList) {
         for (PhotoModel photoModel : imageItemList) {
-            if (photoModel.getStatus() == STATUS_WAIT_UPLOAD) {
+            if (photoModel.getStatus() == PhotoModel.Companion.getSTATUS_WAIT_UPLOAD()) {
                 return;
             }
         }

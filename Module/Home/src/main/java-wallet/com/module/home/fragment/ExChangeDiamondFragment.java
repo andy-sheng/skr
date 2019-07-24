@@ -23,7 +23,7 @@ import com.module.home.R;
 import com.module.home.inter.IExchangeDiamomdView;
 import com.module.home.model.ExChangeInfoModel;
 import com.module.home.presenter.ExChangeDiamondPresenter;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 import static com.module.home.fragment.InComeFragment.DQ_EXCHANGE_REQ;
 

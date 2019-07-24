@@ -42,7 +42,7 @@ import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
 import com.respicker.view.CropImageView;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

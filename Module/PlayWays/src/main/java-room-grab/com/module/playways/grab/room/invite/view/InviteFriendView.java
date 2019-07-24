@@ -14,7 +14,6 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
-import com.dialog.view.StrokeTextView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -27,8 +26,8 @@ import com.module.playways.grab.room.invite.presenter.GrabInvitePresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.relation.callback.FansEmptyCallback;
-import com.zq.relation.callback.FriendsEmptyCallback;
+import com.component.relation.callback.FansEmptyCallback;
+import com.component.relation.callback.FriendsEmptyCallback;
 
 import java.util.List;
 

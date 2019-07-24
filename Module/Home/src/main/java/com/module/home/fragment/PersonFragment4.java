@@ -58,21 +58,21 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
-import com.zq.dialog.BusinessCardDialogView;
-import com.zq.level.view.NormalLevelView2;
+import com.component.dialog.BusinessCardDialogView;
+import com.component.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.StringFromatUtils;
-import com.zq.person.fragment.OtherPersonFragment4;
-import com.zq.person.view.PhotoWallView;
-import com.zq.person.view.ProducationWallView;
-import com.zq.person.view.RequestCallBack;
+import com.component.person.utils.StringFromatUtils;
+import com.component.person.fragment.OtherPersonFragment4;
+import com.component.person.photo.view.PhotoWallView;
+import com.component.person.producation.view.ProducationWallView;
+import com.component.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
 /**
  * 自己

@@ -31,8 +31,8 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.module.RouterConstants;
 import com.module.msg.IMessageFragment;
 import com.module.msg.follow.LastFollowModel;
-import com.zq.dialog.InviteFriendDialog;
-import com.zq.relation.fragment.SearchUserFragment;
+import com.component.dialog.InviteFriendDialog;
+import com.component.relation.fragment.SearchUserFragment;
 
 import java.util.List;
 

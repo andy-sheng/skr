@@ -141,6 +141,12 @@ public class AndroidMediaPlayer extends BasePlayer {
                 }
             }
         });
+        mPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                mCallback.onBufferingUpdate(mp, percent);
+            }
+        });
     }
 
     @Override

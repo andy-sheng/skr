@@ -5,8 +5,6 @@ import com.zq.mediaengine.util.LibraryLoader;
 
 import java.nio.ByteBuffer;
 
-import static com.zq.mediaengine.framework.AVConst.getBytesPerSample;
-
 /**
  * @hide
  */

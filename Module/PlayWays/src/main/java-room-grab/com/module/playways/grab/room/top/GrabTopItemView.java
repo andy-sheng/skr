@@ -19,7 +19,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.R;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
-import com.zq.person.event.ShowPersonCardEvent;
+import com.component.person.event.ShowPersonCardEvent;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.zq.live.proto.Room.EWantSingType;
 

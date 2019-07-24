@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.zq.live">
+    package="com.component.live">
 
     <application
         android:name="com.common.base.BaseApplication"
@@ -14,7 +14,7 @@
 
         <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
         <meta-data
-            android:name="com.zq.live.MainConfiguration"
+            android:name="com.component.live.MainConfiguration"
             android:value="ConfigModule" />
 
         <activity
@@ -35,7 +35,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.zq.live.FileProvider"
+            android:authorities="com.component.live.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

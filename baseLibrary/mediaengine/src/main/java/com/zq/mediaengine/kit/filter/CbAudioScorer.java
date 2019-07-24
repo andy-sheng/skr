@@ -1,7 +1,5 @@
 package com.zq.mediaengine.kit.filter;
 
-import android.util.Log;
-
 import com.engine.Params;
 import com.engine.score.ICbScoreProcessor;
 import com.engine.score.Score2Callback;

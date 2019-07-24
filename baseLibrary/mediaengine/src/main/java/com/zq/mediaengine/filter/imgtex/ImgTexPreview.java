@@ -15,8 +15,6 @@ import com.zq.mediaengine.util.gles.GLRender;
 import com.zq.mediaengine.util.gles.GlUtil;
 import com.zq.mediaengine.util.gles.TexTransformUtil;
 
-import javax.microedition.khronos.egl.EGLContext;
-
 /**
  * Texture frame previewer.
  */

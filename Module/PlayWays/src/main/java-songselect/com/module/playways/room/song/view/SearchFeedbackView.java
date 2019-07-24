@@ -1,8 +1,6 @@
 package com.module.playways.room.song.view;
 
-import android.content.Context;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -13,7 +11,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.NoLeakEditText;
 import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 public class SearchFeedbackView extends RelativeLayout {
 
