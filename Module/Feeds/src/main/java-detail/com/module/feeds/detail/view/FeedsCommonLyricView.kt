@@ -1,12 +1,10 @@
 package com.module.feeds.detail.view
 
-import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
-
+import com.component.feeds.model.FeedSongModel
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.component.feeds.model.FeedSongModel
 
 class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     val mTag = "FeedsCommonLyricView"
@@ -30,7 +28,7 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     override fun setSongModel(feedSongModel: FeedSongModel) {
         mFeedSongModel = feedSongModel
 
-        if (TextUtils.isEmpty(feedSongModel.songTpl?.bgm)) {
+        if (feedSongModel.songTpl?.lrcType == 2) {
             mBaseFeedsLyricView = mAutoScrollLyricView
         } else {
             mBaseFeedsLyricView = mFeedsManyLyricView

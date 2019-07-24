@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.image.fresco.BaseImageView
@@ -23,10 +22,11 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.detail.view.RadioView
-import com.component.feeds.model.FeedsWatchModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -57,6 +57,7 @@ class FeedsDetailFragment : BaseFragment() {
     var mToolbar: Toolbar? = null
     var mToolbarLayout: ConstraintLayout? = null
     var mFeedsCommonLyricView: FeedsCommonLyricView? = null
+    var mFeedsCommentView: FeedsCommentView? = null
     var mRadioView: RadioView? = null
 
     var mIsSongStart = false
@@ -147,8 +148,11 @@ class FeedsDetailFragment : BaseFragment() {
         mFeedsInputContainerView = rootView.findViewById(com.module.feeds.R.id.feeds_input_container_view)
         mRadioView = rootView.findViewById(com.module.feeds.R.id.radio_view)
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
+        mFeedsCommentView = rootView.findViewById(com.module.feeds.R.id.feedsCommentView)
 
-        AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+        mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!.feedID!!)
+
+        AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
                 .setCircle(false)
                 .setBlur(true)
                 .build())
@@ -204,6 +208,16 @@ class FeedsDetailFragment : BaseFragment() {
             }
         }
 
+        AvatarUtils.loadAvatarByUrl(mSingerIv, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
+                .setCircle(true)
+                .build())
+
+        mNameTv?.text = mFeedsWatchModel?.user?.nickname
+        mFeedsWatchModel?.song?.createdAt?.let {
+            mCommentTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it, "MM-dd HH:mm")
+        }
+        mMainCommentTv?.text = mFeedsWatchModel?.song?.title
+
         mCommentTv?.setDebounceViewClickListener {
             mFeedsInputContainerView?.showSoftInput()
         }
@@ -232,6 +246,10 @@ class FeedsDetailFragment : BaseFragment() {
 
             }
         })
+
+        mFeedsWatchModel?.user?.avatar?.let {
+            mRadioView?.setAvator(it)
+        }
 
         mRadioView?.avatarContainer?.setDebounceViewClickListener {
             mControlTv?.callOnClick()

@@ -100,7 +100,6 @@ class RadioView : ConstraintLayout {
     }
 
     fun play() {
-        setAvator(MyUserInfoManager.getInstance().avatar)
         mRockerIv?.clearAnimation()
         val rotateAnimation = RotateAnimation(-55f, -25f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
         rotateAnimation.setDuration(800)

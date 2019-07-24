@@ -19,6 +19,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <com.module.feeds.detail.view.FeedsCommentView
+                android:id="@+id/feedsCommentView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

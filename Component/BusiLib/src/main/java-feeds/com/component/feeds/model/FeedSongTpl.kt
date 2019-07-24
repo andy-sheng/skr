@@ -18,6 +18,8 @@ class FeedSongTpl : Serializable {
     var lrcTs: String? = null
     @JSONField(name = "lrcTxt")// 纯文本歌词
     var lrcTxt: String? = null
+    @JSONField(name = "lrcType")// 纯文本歌词
+    var lrcType: Int? = null
     @JSONField(name = "lyricist")
     var lyricist: String? = null
     @JSONField(name = "songName")

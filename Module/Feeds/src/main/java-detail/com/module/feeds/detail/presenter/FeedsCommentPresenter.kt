@@ -7,9 +7,10 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.module.feeds.detail.FeedsDetailServerApi
+import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.FirstLevelCommentModel
 
-class FeedsCommentPresenter(val mFeedId: Int) : AbsCoroutinePresenter() {
+class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : AbsCoroutinePresenter() {
     val mFeedsDetailServerApi = ApiManager.getInstance().createService(FeedsDetailServerApi::class.java)
     val mCount = 30
     var mOffset = 0
@@ -19,18 +20,21 @@ class FeedsCommentPresenter(val mFeedId: Int) : AbsCoroutinePresenter() {
         addToLifeCycle()
     }
 
-    fun getFirstLevelCommentList(callBack: (List<FirstLevelCommentModel>?) -> Unit) {
+    fun getFirstLevelCommentList() {
         ApiMethods.subscribe(mFeedsDetailServerApi.getFirstLevelCommentList(mOffset, mCount, mFeedId), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     val list: List<FirstLevelCommentModel>? = JSON.parseArray(obj.data.getString("comments"), FirstLevelCommentModel::class.java)
-                    list?.let {
-                        mModelList.addAll(it)
-                        callBack(mModelList)
+                    if (list == null) {
+                        mIFirstLevelCommentView.noMore()
+                    } else {
+                        mModelList.addAll(list)
+                        mIFirstLevelCommentView.updateList(mModelList)
                     }
+
                     mOffset = obj.data.getIntValue("offset")
                 }
             }
-        }, this)
+        }, this, ApiMethods.RequestControl("getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
     }
 }
