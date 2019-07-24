@@ -107,6 +107,7 @@ public class AndroidMediaPlayer extends BasePlayer {
                     mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME,5000);
                 }
                 startTs = System.currentTimeMillis();
+                startMusicPlayTimeListener();
 
             }
         });
