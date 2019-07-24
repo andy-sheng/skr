@@ -125,5 +125,12 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
         app:ly_show_author="true" />
 
+    <com.component.voice.control.VoiceControlPanelView
+        android:id="@+id/voice_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

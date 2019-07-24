@@ -12,6 +12,7 @@ import com.component.lyrics.formats.krc.KrcLyricsFileReader;
 import com.component.lyrics.formats.lrc.LrcLyricsFileReader;
 import com.component.lyrics.formats.lrc.LrcLyricsFileWriter;
 import com.component.lyrics.formats.zrce.ZrceLyricsFileReader;
+import com.component.lyrics.formats.zrce.ZrceLyricsFileReader2;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class LyricsIOUtils {
 		readers.add(new KrcLyricsFileReader());
 		readers.add(new LrcLyricsFileReader());
 		readers.add(new ZrceLyricsFileReader());
-
+		readers.add(new ZrceLyricsFileReader2());
 		//
 		writers = new ArrayList<LyricsFileWriter>();
 		writers.add(new HrcLyricsFileWriter());

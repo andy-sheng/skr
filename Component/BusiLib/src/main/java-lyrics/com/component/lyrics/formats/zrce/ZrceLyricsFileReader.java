@@ -235,7 +235,7 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
         }
     }
 
-    public static String decodeLrc(InputStream in) {
+    public String decodeLrc(InputStream in) {
         BufferedSource bufferedSource = null;
         byte[] bytes;
         try {
