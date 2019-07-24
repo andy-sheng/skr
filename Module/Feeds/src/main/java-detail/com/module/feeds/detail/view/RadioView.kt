@@ -111,8 +111,8 @@ class RadioView : ConstraintLayout {
             if (it.isStarted) {
                 it.resume()
             } else {
-                avatarContainer?.pivotX = avatarContainer!!.width.toFloat() / 2
-                avatarContainer?.pivotY = avatarContainer!!.height.toFloat() / 2 + panelMarginTop!! / 2
+                avatarContainer?.pivotX = panelWidth!! / 2f
+                avatarContainer?.pivotY = panelWidth!! / 2f + panelMarginTop!!
                 it.start()
             }
         }

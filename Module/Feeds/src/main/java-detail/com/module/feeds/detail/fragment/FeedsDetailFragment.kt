@@ -15,6 +15,8 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.image.fresco.BaseImageView
+import com.common.player.MyMediaPlayer
+import com.common.player.event.PlayerEvent
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -22,9 +24,9 @@ import com.common.view.ex.ExTextView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.detail.view.RadioView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.module.feeds.watch.model.FeedsWatchModel
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class FeedsDetailFragment : BaseFragment() {
@@ -55,7 +57,42 @@ class FeedsDetailFragment : BaseFragment() {
     var mFeedsCommonLyricView: FeedsCommonLyricView? = null
     var mRadioView: RadioView? = null
 
+    var mIsSongStart = false
+
     var mFeedsInputContainerView: FeedsInputContainerView? = null
+
+    var mFeedsWatchModel: FeedsWatchModel? = null
+
+    val mMyMediaPlayer: MyMediaPlayer by lazy {
+        MyMediaPlayer().also {
+            it.setMonitorProgress(true)
+//            it.setCallback(object : IPlayerCallback {
+//                override fun onPrepared() {
+//
+//                }
+//
+//                override fun onCompletion() {
+//                    stopSong()
+//                }
+//
+//                override fun onSeekComplete() {
+//
+//                }
+//
+//                override fun onVideoSizeChanged(width: Int, height: Int) {
+//
+//                }
+//
+//                override fun onError(what: Int, extra: Int) {
+//
+//                }
+//
+//                override fun onInfo(what: Int, extra: Int) {
+//
+//                }
+//            })
+        }
+    }
 
     internal var isInitToolbar = false
     internal var mIsPlaying = false
@@ -65,6 +102,11 @@ class FeedsDetailFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        if (mFeedsWatchModel == null) {
+            activity?.finish()
+            return
+        }
+
         mContainer = rootView.findViewById(com.module.feeds.R.id.container)
         mAppbar = rootView.findViewById(com.module.feeds.R.id.appbar)
         mContentLayout = rootView.findViewById(com.module.feeds.R.id.content_layout)
@@ -90,7 +132,7 @@ class FeedsDetailFragment : BaseFragment() {
         mShareNumTv = rootView.findViewById(com.module.feeds.R.id.share_num_tv)
         mFeedsInputContainerView = rootView.findViewById(com.module.feeds.R.id.feeds_input_container_view)
         mRadioView = rootView.findViewById(com.module.feeds.R.id.radio_view)
-        mFeedsCommonLyricView = FeedsCommonLyricView(rootView!!)
+        mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
 
         AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
                 .setCircle(false)
@@ -160,30 +202,84 @@ class FeedsDetailFragment : BaseFragment() {
 
         }
 
-        launch(Dispatchers.Main) {
-            repeat(100) {
-                delay(1000)
-                mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong() * 1000, "mm:ss")
-                mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate((100 - it.toLong()) * 1000, "mm:ss")
+        mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if(fromUser){
+                    mMyMediaPlayer.seekTo(progress.toLong())
+                }
             }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+
+        mRadioView?.avatarContainer?.setDebounceViewClickListener {
+            mControlTv?.callOnClick()
         }
 
-        launch {
-            delay(2000)
-            mRadioView?.play()
-            delay(2000)
-            mRadioView?.pause()
-            delay(2000)
-            mRadioView?.play()
+        playSong()
+
+        mControlTv?.setDebounceViewClickListener {
+            if (it!!.isSelected) {
+                pauseSong()
+            } else {
+                resumeSong()
+            }
         }
     }
 
     private fun playSong() {
+        mControlTv?.isSelected = true
+        mIsSongStart = true
+        mRadioView?.play()
+        mMyMediaPlayer.startPlay(mFeedsWatchModel?.song?.playURL)
+    }
 
+    private fun resumeSong() {
+        mControlTv!!.isSelected = true
+        mRadioView?.play()
+        if (mIsSongStart) {
+            mMyMediaPlayer.resume()
+        } else {
+            mMyMediaPlayer.startPlay(mFeedsWatchModel?.song?.playURL)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayerEvent.TimeFly) {
+        mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.curPostion, "mm:ss")
+        mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.totalDuration - event.curPostion, "mm:ss")
+        mSeekBar!!.max = event.totalDuration.toInt()
+        mSeekBar!!.progress = event.curPostion.toInt()
+
+        if (event.totalDuration.toInt() == event.curPostion.toInt()) {
+            stopSong()
+        }
     }
 
     private fun pauseSong() {
+        mControlTv!!.isSelected = false
+        mRadioView?.pause()
+        mMyMediaPlayer.pause()
+    }
 
+    private fun stopSong() {
+        mIsSongStart = false
+        mMyMediaPlayer.stop()
+        mControlTv!!.isSelected = false
+        mRadioView?.pause()
+        mSeekBar!!.progress = 0
+    }
+
+    override fun setData(type: Int, data: Any?) {
+        if (type == 0) {
+            mFeedsWatchModel = data as FeedsWatchModel
+        }
     }
 
     fun View.setDebounceViewClickListener(click: (view: View?) -> Unit) {
@@ -195,11 +291,12 @@ class FeedsDetailFragment : BaseFragment() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun destroy() {
         super.destroy()
         mRadioView?.destroy()
+        mMyMediaPlayer.release()
     }
 }

@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
-import com.common.log.MyLog
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
@@ -137,6 +136,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mAdapter.onClickCommentListener = {
             // 评论
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                    .withSerializable("feed_model", it)
                     .navigation()
         }
 
@@ -147,6 +147,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mAdapter.onClickDetailListener = {
             // 详情
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                    .withSerializable("feed_model", it)
                     .navigation()
         }
 
