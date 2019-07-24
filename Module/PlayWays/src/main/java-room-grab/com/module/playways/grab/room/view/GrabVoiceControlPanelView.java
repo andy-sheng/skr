@@ -9,7 +9,7 @@ import com.common.utils.U;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.view.VoiceControlPanelView;
+import com.component.voice.control.VoiceControlPanelView;
 import com.module.playways.R;
 
 public class GrabVoiceControlPanelView extends VoiceControlPanelView {
@@ -17,6 +17,7 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
 
     LinearLayout mLlSwitchContainer;
 
+    // 清唱与伴奏
     SwitchButton mSbAcc;
 
     GrabRoomData mGrabRoomData;

@@ -51,6 +51,9 @@ android {
 
             java.srcDirs += 'src/main/java-notification'
             res.srcDirs += 'src/main/res-notification'
+
+            java.srcDirs += 'src/main/java-voice'
+            res.srcDirs += 'src/main/res-voice'
         }
     }
 }

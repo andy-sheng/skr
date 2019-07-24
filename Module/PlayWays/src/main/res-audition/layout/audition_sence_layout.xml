@@ -144,7 +144,7 @@
             app:ly_paint_color_to="@color/white_trans_50"
             app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
-        <com.module.playways.view.VoiceControlPanelView
+        <com.component.voice.control.VoiceControlPanelView
             android:id="@+id/voice_control_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

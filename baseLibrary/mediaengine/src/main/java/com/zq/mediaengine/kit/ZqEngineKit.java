@@ -989,7 +989,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         filters.add(new TbAudioAgcFilter(mConfig));
 
-        mAudioFilterMgt.setFilter(filters);
+        if (mAudioFilterMgt != null) {
+            mAudioFilterMgt.setFilter(filters);
+        }
     }
 
     public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {

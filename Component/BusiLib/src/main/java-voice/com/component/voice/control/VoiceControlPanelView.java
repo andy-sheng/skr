@@ -1,4 +1,4 @@
-package com.module.playways.view;
+package com.component.voice.control;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,9 +11,9 @@ import android.widget.SeekBar;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.R;
 import com.engine.EngineEvent;
 import com.engine.Params;
-import com.module.playways.R;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
