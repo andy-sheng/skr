@@ -2,7 +2,7 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.Room.QJoinNoticeMsg;
+import com.zq.live.proto.Room.QJoinNoticeMsg;
 
 public class QJoinNoticeEvent {
     public BasePushInfo info;

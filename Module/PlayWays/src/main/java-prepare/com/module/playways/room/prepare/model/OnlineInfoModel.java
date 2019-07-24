@@ -2,7 +2,7 @@ package com.module.playways.room.prepare.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.component.live.proto.Room.OnlineInfo;
+import com.zq.live.proto.Room.OnlineInfo;
 
 import java.io.Serializable;
 

@@ -2,7 +2,7 @@ package com.module.playways.songmanager.model
 
 import android.text.TextUtils
 
-import com.component.live.proto.Common.StandPlayType
+import com.zq.live.proto.Common.StandPlayType
 
 import java.io.Serializable
 

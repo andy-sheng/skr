@@ -1,10 +1,10 @@
 package com.module.playways.room.room.model.score;
 
 import com.common.log.MyLog;
-import com.component.live.proto.Room.EFightForceWhy;
-import com.component.live.proto.Room.ScoreItem;
-import com.component.live.proto.Room.ScoreState;
-import com.component.live.proto.Room.UserScoreResult;
+import com.zq.live.proto.Room.EFightForceWhy;
+import com.zq.live.proto.Room.ScoreItem;
+import com.zq.live.proto.Room.ScoreState;
+import com.zq.live.proto.Room.UserScoreResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;

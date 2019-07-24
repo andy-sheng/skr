@@ -1,7 +1,7 @@
 package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.CombineRoom.DelMusicInfoMsg;
+import com.zq.live.proto.CombineRoom.DelMusicInfoMsg;
 
 public class DoubleDelMusicEvent {
 

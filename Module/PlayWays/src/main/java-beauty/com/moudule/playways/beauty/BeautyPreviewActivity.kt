@@ -14,7 +14,7 @@ import com.engine.Params
 import com.module.RouterConstants
 import com.module.playways.R
 import com.moudule.playways.beauty.fragment.BeautyPreviewFragment
-import com.component.mediaengine.kit.ZqEngineKit
+import com.zq.mediaengine.kit.ZqEngineKit
 
 @Route(path = RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
 class BeautyPreviewActivity : BaseActivity() {

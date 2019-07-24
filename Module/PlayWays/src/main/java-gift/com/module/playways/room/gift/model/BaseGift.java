@@ -2,8 +2,8 @@ package com.module.playways.room.gift.model;
 
 import com.alibaba.fastjson.JSON;
 import com.module.playways.room.gift.GiftDB;
-import com.component.live.proto.Common.GiftExtraInfo;
-import com.component.live.proto.Common.GiftInfo;
+import com.zq.live.proto.Common.GiftExtraInfo;
+import com.zq.live.proto.Common.GiftInfo;
 
 public abstract class BaseGift {
 

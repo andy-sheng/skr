@@ -2,8 +2,8 @@ package com.module.playways.doubleplay.pbLocalModel;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.component.live.proto.Common.GameItemInfo;
-import com.component.live.proto.Common.GamePanelInfo;
+import com.zq.live.proto.Common.GameItemInfo;
+import com.zq.live.proto.Common.GamePanelInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

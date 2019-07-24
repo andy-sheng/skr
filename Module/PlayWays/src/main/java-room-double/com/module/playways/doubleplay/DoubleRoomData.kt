@@ -9,8 +9,8 @@ import com.common.log.MyLog
 import com.module.playways.doubleplay.event.*
 import com.module.playways.doubleplay.model.DoubleSyncModel
 import com.module.playways.doubleplay.pbLocalModel.*
-import com.component.live.proto.CombineRoom.EGameStage
-import com.component.live.proto.Common.ESceneType
+import com.zq.live.proto.CombineRoom.EGameStage
+import com.zq.live.proto.Common.ESceneType
 import org.greenrobot.eventbus.EventBus
 import java.io.Serializable
 import java.util.*

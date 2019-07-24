@@ -33,10 +33,10 @@ import com.engine.EngineEvent;
 import com.engine.Params;
 import com.module.RouterConstants;
 import com.wali.live.moduletest.R;
-import com.component.mediaengine.capture.CameraCapture;
-import com.component.mediaengine.kit.ZqEngineKit;
-import com.component.mediaengine.kit.bytedance.BytedEffectFilter;
-import com.component.mediaengine.util.gles.GLRender;
+import com.zq.mediaengine.capture.CameraCapture;
+import com.zq.mediaengine.kit.ZqEngineKit;
+import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
+import com.zq.mediaengine.util.gles.GLRender;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

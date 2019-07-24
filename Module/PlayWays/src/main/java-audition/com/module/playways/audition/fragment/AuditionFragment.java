@@ -46,7 +46,7 @@ import com.component.lyrics.LyricsReader;
 import com.component.lyrics.utils.SongResUtils;
 import com.component.lyrics.widget.ManyLyricsView;
 import com.component.lyrics.widget.VoiceScaleView;
-import com.component.mediaengine.kit.ZqEngineKit;
+import com.zq.mediaengine.kit.ZqEngineKit;
 import com.component.toast.NoImageCommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;

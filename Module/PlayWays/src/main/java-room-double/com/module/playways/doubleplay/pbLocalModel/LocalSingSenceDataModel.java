@@ -1,6 +1,6 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
-import com.component.live.proto.CombineRoom.SceneSingSyncStatusMsg;
+import com.zq.live.proto.CombineRoom.SceneSingSyncStatusMsg;
 
 import java.io.Serializable;
 

@@ -5,10 +5,10 @@ import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.room.model.UserGameResultModel;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.VoteInfoModel;
-import com.component.live.proto.Room.UserGameResult;
-import com.component.live.proto.Room.UserScoreResult;
-import com.component.live.proto.Room.VoteInfo;
-import com.component.live.proto.Room.VoteResultMsg;
+import com.zq.live.proto.Room.UserGameResult;
+import com.zq.live.proto.Room.UserScoreResult;
+import com.zq.live.proto.Room.VoteInfo;
+import com.zq.live.proto.Room.VoteResultMsg;
 
 import java.util.ArrayList;
 import java.util.List;

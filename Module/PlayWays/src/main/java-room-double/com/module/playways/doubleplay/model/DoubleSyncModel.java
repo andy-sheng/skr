@@ -4,7 +4,7 @@ import com.module.playways.doubleplay.pbLocalModel.LocalChatSenceDataModel;
 import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel;
 import com.module.playways.doubleplay.pbLocalModel.LocalSingSenceDataModel;
 import com.module.playways.doubleplay.pbLocalModel.LocalUserLockInfo;
-import com.component.live.proto.CombineRoom.CombineRoomSyncStatusV2Msg;
+import com.zq.live.proto.CombineRoom.CombineRoomSyncStatusV2Msg;
 
 import java.io.Serializable;
 import java.util.List;

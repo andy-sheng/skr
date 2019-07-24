@@ -1,5 +1,7 @@
 package com.module.playways.room.prepare.model;
 
+import com.zq.live.proto.Common.ResourceInfo;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +19,15 @@ public class ResourceInfoModel implements Serializable {
         this.midiURL = midiURL;
     }
 
-    public static ResourceInfoModel parse(com.component.live.proto.Common.ResourceInfo resourceInfo){
+    public static ResourceInfoModel parse(ResourceInfo resourceInfo){
 
         return new ResourceInfoModel(resourceInfo.getResourceID(), resourceInfo.getItemID(), resourceInfo.getAudioURL(), resourceInfo.getMidiURL());
     }
 
-    public static List<ResourceInfoModel> parse(List<com.component.live.proto.Common.ResourceInfo> resourceInfoList){
+    public static List<ResourceInfoModel> parse(List<ResourceInfo> resourceInfoList){
         ArrayList<ResourceInfoModel> resourceInfos = new ArrayList<>(resourceInfoList.size());
 
-        for (com.component.live.proto.Common.ResourceInfo res :
+        for (ResourceInfo res :
                 resourceInfoList) {
             resourceInfos.add(parse(res));
         }

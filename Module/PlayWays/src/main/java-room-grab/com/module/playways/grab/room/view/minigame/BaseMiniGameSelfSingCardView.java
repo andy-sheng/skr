@@ -20,7 +20,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.NewChorusLyricModel;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.MiniGameInfoModel;
-import com.component.live.proto.Common.EMiniGamePlayType;
+import com.zq.live.proto.Common.EMiniGamePlayType;
 import com.component.lyrics.LyricsManager;
 
 import io.reactivex.disposables.Disposable;

@@ -26,7 +26,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
-import com.component.live.proto.Common.StandPlayType;
+import com.zq.live.proto.Common.StandPlayType;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;

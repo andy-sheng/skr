@@ -1,7 +1,7 @@
 package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.CombineRoom.PickMsg;
+import com.zq.live.proto.CombineRoom.PickMsg;
 
 public class DoublePickPushEvent {
     BasePushInfo basePushInfo;

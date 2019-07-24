@@ -1,7 +1,7 @@
 package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.CombineRoom.EndCombineRoomMsg;
+import com.zq.live.proto.CombineRoom.EndCombineRoomMsg;
 
 public class DoubleEndCombineRoomPushEvent {
     BasePushInfo basePushInfo;

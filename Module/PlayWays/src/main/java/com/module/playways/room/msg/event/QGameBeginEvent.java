@@ -3,7 +3,7 @@ package com.module.playways.room.msg.event;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.Room.QGameBeginMsg;
+import com.zq.live.proto.Room.QGameBeginMsg;
 
 public class QGameBeginEvent {
 

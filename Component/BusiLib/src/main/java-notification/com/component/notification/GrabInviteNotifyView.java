@@ -12,7 +12,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 
 /**
  * 一唱到底邀请ui

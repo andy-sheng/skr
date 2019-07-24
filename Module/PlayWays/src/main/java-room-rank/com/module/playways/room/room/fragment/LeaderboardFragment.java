@@ -34,7 +34,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.component.level.view.NormalLevelView2;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 import com.component.person.utils.StringFromatUtils;
 
 import org.greenrobot.eventbus.Subscribe;

@@ -20,7 +20,7 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 
 import io.rong.imkit.R;
 

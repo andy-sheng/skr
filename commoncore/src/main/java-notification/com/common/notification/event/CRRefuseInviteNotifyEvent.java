@@ -2,7 +2,7 @@ package com.common.notification.event;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.notification.BaseNotiInfo;
-import com.component.live.proto.Notification.CombineRoomRefuseMsg;
+import com.zq.live.proto.Notification.CombineRoomRefuseMsg;
 
 public class CRRefuseInviteNotifyEvent {
 

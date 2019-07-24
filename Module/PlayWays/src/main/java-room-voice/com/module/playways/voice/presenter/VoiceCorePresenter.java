@@ -26,8 +26,8 @@ import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.voice.inter.IVoiceView;
-import com.component.live.proto.Room.RoomMsg;
-import com.component.mediaengine.kit.ZqEngineKit;
+import com.zq.live.proto.Room.RoomMsg;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

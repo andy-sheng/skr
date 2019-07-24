@@ -11,7 +11,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.home.R;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 
 //编辑性别
 public class EditInfoSexFragment extends BaseFragment {

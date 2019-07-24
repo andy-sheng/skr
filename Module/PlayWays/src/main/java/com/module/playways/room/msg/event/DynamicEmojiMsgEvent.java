@@ -2,7 +2,7 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.grab.room.dynamicmsg.DynamicModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.Room.DynamicEmojiMsg;
+import com.zq.live.proto.Room.DynamicEmojiMsg;
 
 public class DynamicEmojiMsgEvent {
     public final static int MSG_TYPE_SEND = 0;

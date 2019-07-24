@@ -4,7 +4,7 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.Room.QGetSingChanceMsg;
+import com.zq.live.proto.Room.QGetSingChanceMsg;
 
 public final class QGetSingChanceMsgEvent  {
   public BasePushInfo info;

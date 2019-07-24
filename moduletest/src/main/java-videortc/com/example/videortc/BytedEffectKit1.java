@@ -10,9 +10,9 @@ import android.util.Log;
 
 import com.bytedance.labcv.effectsdk.BytedEffectConstants;
 import com.bytedance.labcv.effectsdk.RenderManager;
-import com.component.mediaengine.util.gles.GLProgramLoadException;
-import com.component.mediaengine.util.gles.GlUtil;
-import com.component.mediaengine.util.gles.TexTransformUtil;
+import com.zq.mediaengine.util.gles.GLProgramLoadException;
+import com.zq.mediaengine.util.gles.GlUtil;
+import com.zq.mediaengine.util.gles.TexTransformUtil;
 
 import java.nio.FloatBuffer;
 

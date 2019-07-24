@@ -31,7 +31,7 @@ import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 import com.module.playways.grab.room.ui.GrabRoomFragment;
-import com.component.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

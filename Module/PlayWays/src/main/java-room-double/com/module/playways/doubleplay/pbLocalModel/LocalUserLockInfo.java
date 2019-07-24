@@ -1,6 +1,6 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
-import com.component.live.proto.CombineRoom.UserLockInfo;
+import com.zq.live.proto.CombineRoom.UserLockInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

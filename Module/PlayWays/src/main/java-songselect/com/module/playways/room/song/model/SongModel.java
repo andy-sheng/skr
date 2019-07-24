@@ -4,9 +4,9 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
-import com.component.live.proto.Common.StandPlayType;
+import com.zq.live.proto.Common.StandPlayType;
 import com.component.lyrics.utils.SongResUtils;
-import com.component.live.proto.Common.MusicInfo;
+import com.zq.live.proto.Common.MusicInfo;
 
 import java.io.File;
 import java.io.Serializable;

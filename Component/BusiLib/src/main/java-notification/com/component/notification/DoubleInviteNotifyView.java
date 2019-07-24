@@ -14,7 +14,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 
 public class DoubleInviteNotifyView extends ConstraintLayout {
     BaseImageView mAvatarIv;

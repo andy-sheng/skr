@@ -4,9 +4,9 @@ import com.common.log.MyLog;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.room.room.event.PkSomeOneLightOffEvent;
-import com.component.live.proto.Room.BLightInfo;
-import com.component.live.proto.Room.MLightInfo;
-import com.component.live.proto.Room.RoundInfo;
+import com.zq.live.proto.Room.BLightInfo;
+import com.zq.live.proto.Room.MLightInfo;
+import com.zq.live.proto.Room.RoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
 

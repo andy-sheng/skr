@@ -5,8 +5,8 @@ package com.module.playways.room.msg.event;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.component.live.proto.Room.QRoundOverMsg;
-import com.component.live.proto.Room.QUserCoin;
+import com.zq.live.proto.Room.QRoundOverMsg;
+import com.zq.live.proto.Room.QUserCoin;
 
 public final class QRoundOverMsgEvent {
     public BasePushInfo info;

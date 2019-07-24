@@ -19,7 +19,7 @@ import com.component.lyrics.event.LyricEventLauncher;
 import com.component.lyrics.widget.AbstractLrcView;
 import com.component.lyrics.widget.ManyLyricsView;
 import com.component.lyrics.widget.VoiceScaleView;
-import com.component.mediaengine.kit.ZqEngineKit;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

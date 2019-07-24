@@ -16,7 +16,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.recyclerview.DiffAdapter
 import com.module.playways.R
 import com.module.playways.songmanager.model.GrabWishSongModel
-import com.component.live.proto.Common.StandPlayType
+import com.zq.live.proto.Common.StandPlayType
 
 class WishSongAdapter : DiffAdapter<GrabWishSongModel, RecyclerView.ViewHolder>() {
 

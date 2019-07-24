@@ -11,7 +11,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
-import com.component.live.proto.Common.StandPlayType;
+import com.zq.live.proto.Common.StandPlayType;
 
 public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
     SongModel mSongModel;

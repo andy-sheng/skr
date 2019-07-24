@@ -19,7 +19,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.playways.R;
 import com.component.level.view.NormalLevelView2;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 
 public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.ViewHolder> {
 

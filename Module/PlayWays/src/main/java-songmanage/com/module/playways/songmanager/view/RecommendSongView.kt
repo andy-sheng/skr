@@ -27,7 +27,7 @@ import com.module.playways.room.song.model.SongModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.component.live.proto.Common.StandPlayType
+import com.zq.live.proto.Common.StandPlayType
 
 import org.greenrobot.eventbus.EventBus
 

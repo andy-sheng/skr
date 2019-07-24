@@ -1,9 +1,9 @@
 package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.Room.ExitGameAfterPlayMsg;
-import com.component.live.proto.Room.ExitGameBeforePlayMsg;
-import com.component.live.proto.Room.ExitGameOutRoundMsg;
+import com.zq.live.proto.Room.ExitGameAfterPlayMsg;
+import com.zq.live.proto.Room.ExitGameBeforePlayMsg;
+import com.zq.live.proto.Room.ExitGameOutRoundMsg;
 
 public class ExitGameEvent {
 

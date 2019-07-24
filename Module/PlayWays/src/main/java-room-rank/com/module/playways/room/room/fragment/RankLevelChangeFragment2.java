@@ -51,8 +51,8 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.component.level.utils.LevelConfigUtils;
 import com.component.level.view.LevelStarProgressBar;
-import com.component.live.proto.Room.EExpWhy;
-import com.component.live.proto.Room.EWinType;
+import com.zq.live.proto.Room.EExpWhy;
+import com.zq.live.proto.Room.EWinType;
 
 
 import java.io.File;

@@ -14,7 +14,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.engine.EngineEvent;
 import com.engine.Params;
-import com.component.mediaengine.kit.ZqEngineKit;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

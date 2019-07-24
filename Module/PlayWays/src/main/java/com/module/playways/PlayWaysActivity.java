@@ -13,7 +13,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.room.song.fragment.SongSelectFragment;
-import com.component.mediaengine.kit.ZqEngineKit;
+import com.zq.mediaengine.kit.ZqEngineKit;
 
 @Route(path = RouterConstants.ACTIVITY_PLAY_WAYS)
 public class PlayWaysActivity extends BaseActivity {

@@ -1,6 +1,6 @@
 package com.module.playways.room.song.model;
 
-import com.component.live.proto.Common.MiniGameSongInfo;
+import com.zq.live.proto.Common.MiniGameSongInfo;
 
 import java.io.Serializable;
 

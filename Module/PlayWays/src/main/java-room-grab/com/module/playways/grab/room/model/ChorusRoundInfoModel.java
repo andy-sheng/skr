@@ -1,7 +1,7 @@
 package com.module.playways.grab.room.model;
 
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
-import com.component.live.proto.Room.QCHOInnerRoundInfo;
+import com.zq.live.proto.Room.QCHOInnerRoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
 

@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.model;
 
-import com.component.live.proto.Room.QLightActionMsg;
+import com.zq.live.proto.Room.QLightActionMsg;
 import java.io.Serializable;
 
 public class QLightActionMsgModel implements Serializable {

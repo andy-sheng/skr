@@ -19,7 +19,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 
 /**
  * 关注弹窗通知

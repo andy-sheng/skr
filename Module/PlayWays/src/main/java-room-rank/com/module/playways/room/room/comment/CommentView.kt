@@ -17,7 +17,7 @@ import com.common.player.IPlayer
 import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.utils.U
-import com.component.mediaengine.kit.ZqEngineKit
+import com.zq.mediaengine.kit.ZqEngineKit
 import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent

@@ -23,7 +23,7 @@ import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleCurSongInfoEvent
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.songmanager.SongManagerActivity
-import com.component.mediaengine.kit.ZqEngineKit
+import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.android.synthetic.main.double_sing_sence_layout.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody

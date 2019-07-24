@@ -33,7 +33,7 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.msg.event.EventHelper;
 import com.module.playways.room.room.RankRoomServerApi;
 import com.module.playways.room.room.view.InputContainerView;
-import com.component.live.proto.Common.UserInfo;
+import com.zq.live.proto.Common.UserInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

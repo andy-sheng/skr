@@ -1,7 +1,7 @@
 package com.module.playways.grab.room.model;
 
-import com.component.live.proto.Room.QGameConfig;
-import com.component.live.proto.Room.QScoreTipMsg;
+import com.zq.live.proto.Room.QGameConfig;
+import com.zq.live.proto.Room.QScoreTipMsg;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package com.common.notification.event;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.notification.BaseNotiInfo;
-import com.component.live.proto.Notification.FollowMsg;
+import com.zq.live.proto.Notification.FollowMsg;
 
 // 关注提醒
 public class FollowNotifyEvent {

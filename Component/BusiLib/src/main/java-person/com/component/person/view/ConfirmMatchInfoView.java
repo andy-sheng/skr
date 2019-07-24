@@ -20,7 +20,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.R;
 import com.contrarywind.wheelview.interfaces.IPickerViewData;
-import com.component.live.proto.Common.ESex;
+import com.zq.live.proto.Common.ESex;
 
 import java.util.ArrayList;
 import java.util.List;

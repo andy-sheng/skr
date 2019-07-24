@@ -18,8 +18,8 @@ import com.common.view.ExViewStub;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.engine.Params;
 import com.module.playways.R;
-import com.component.mediaengine.kit.ZqEngineKit;
-import com.component.mediaengine.kit.bytedance.BytedEffectFilter;
+import com.zq.mediaengine.kit.ZqEngineKit;
+import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 
 import java.util.ArrayList;
 import java.util.List;

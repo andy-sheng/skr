@@ -32,8 +32,8 @@ import com.module.playways.IPlaywaysModeService
 import com.module.playways.grab.room.GrabRoomServerApi
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.moudule.playways.beauty.event.ReturnFromBeautyActivityEvent
-import com.component.mediaengine.capture.CameraCapture
-import com.component.mediaengine.kit.ZqEngineKit
+import com.zq.mediaengine.capture.CameraCapture
+import com.zq.mediaengine.kit.ZqEngineKit
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus

@@ -27,7 +27,7 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.component.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 

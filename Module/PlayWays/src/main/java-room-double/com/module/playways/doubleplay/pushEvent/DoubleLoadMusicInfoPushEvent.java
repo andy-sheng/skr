@@ -2,7 +2,7 @@ package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic;
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.CombineRoom.LoadMusicInfoMsg;
+import com.zq.live.proto.CombineRoom.LoadMusicInfoMsg;
 
 public class DoubleLoadMusicInfoPushEvent {
     BasePushInfo basePushInfo;

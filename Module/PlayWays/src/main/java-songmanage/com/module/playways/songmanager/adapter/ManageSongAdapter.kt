@@ -19,7 +19,7 @@ import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.model.GrabRoomSongModel
-import com.component.live.proto.Common.StandPlayType
+import com.zq.live.proto.Common.StandPlayType
 
 class ManageSongAdapter(internal var mType: Int) : DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder>() {
     private var mRoomData: GrabRoomData? = null

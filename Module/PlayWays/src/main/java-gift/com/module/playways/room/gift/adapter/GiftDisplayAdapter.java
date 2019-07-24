@@ -19,7 +19,7 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.R;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.view.GiftDisplayView;
-import com.component.live.proto.Common.EGiftType;
+import com.zq.live.proto.Common.EGiftType;
 
 public class GiftDisplayAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> {
     public static final int UNKNOWN = 0;

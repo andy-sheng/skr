@@ -16,17 +16,17 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
-import com.component.live.proto.Common.StandPlayType;
-import com.component.live.proto.Room.EQRoundStatus;
-import com.component.live.proto.Room.EWantSingType;
-import com.component.live.proto.Room.OnlineInfo;
-import com.component.live.proto.Room.QBLightMsg;
-import com.component.live.proto.Room.QCHOInnerRoundInfo;
-import com.component.live.proto.Room.QMINIGameInnerRoundInfo;
-import com.component.live.proto.Room.QMLightMsg;
-import com.component.live.proto.Room.QRoundInfo;
-import com.component.live.proto.Room.QSPKInnerRoundInfo;
-import com.component.live.proto.Room.WantSingInfo;
+import com.zq.live.proto.Common.StandPlayType;
+import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EWantSingType;
+import com.zq.live.proto.Room.OnlineInfo;
+import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.Room.QCHOInnerRoundInfo;
+import com.zq.live.proto.Room.QMINIGameInnerRoundInfo;
+import com.zq.live.proto.Room.QMLightMsg;
+import com.zq.live.proto.Room.QRoundInfo;
+import com.zq.live.proto.Room.QSPKInnerRoundInfo;
+import com.zq.live.proto.Room.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
 

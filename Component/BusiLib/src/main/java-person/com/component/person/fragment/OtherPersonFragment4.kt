@@ -1,7 +1,6 @@
 package com.component.person.fragment
 
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
@@ -54,7 +53,6 @@ import com.module.ModuleServiceManager
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.OnDismissListener
 import com.orhanobut.dialogplus.ViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
@@ -62,7 +60,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import com.component.dialog.BusinessCardDialogView
 import com.component.level.view.NormalLevelView2
-import com.component.live.proto.Common.ESex
+import com.zq.live.proto.Common.ESex
 import com.component.person.utils.StringFromatUtils
 import com.component.person.model.TagModel
 import com.component.person.presenter.OtherPersonPresenter

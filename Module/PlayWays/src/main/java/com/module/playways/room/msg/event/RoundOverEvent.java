@@ -2,7 +2,7 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.room.model.RankRoundInfoModel;
-import com.component.live.proto.Room.RoundOverMsg;
+import com.zq.live.proto.Room.RoundOverMsg;
 
 public class RoundOverEvent {
     public BasePushInfo info;

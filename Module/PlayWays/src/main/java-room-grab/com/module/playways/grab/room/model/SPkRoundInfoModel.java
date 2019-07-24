@@ -4,9 +4,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
-import com.component.live.proto.Room.QBLightMsg;
-import com.component.live.proto.Room.QMLightMsg;
-import com.component.live.proto.Room.QSPKInnerRoundInfo;
+import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.Room.QMLightMsg;
+import com.zq.live.proto.Room.QSPKInnerRoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
 

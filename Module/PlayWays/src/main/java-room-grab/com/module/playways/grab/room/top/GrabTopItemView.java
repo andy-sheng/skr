@@ -21,7 +21,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.component.person.event.ShowPersonCardEvent;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
-import com.component.live.proto.Room.EWantSingType;
+import com.zq.live.proto.Room.EWantSingType;
 
 import org.greenrobot.eventbus.EventBus;
 

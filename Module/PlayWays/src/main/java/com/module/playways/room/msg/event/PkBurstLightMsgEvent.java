@@ -1,7 +1,7 @@
 package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.Room.PKBLightMsg;
+import com.zq.live.proto.Room.PKBLightMsg;
 
 public class PkBurstLightMsgEvent {
     BasePushInfo info;

@@ -4,7 +4,7 @@ import com.common.log.MyLog;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IPushMsgProcess;
 import com.module.playways.room.msg.manager.ChatRoomMsgManager;
-import com.component.live.proto.Room.RoomMsg;
+import com.zq.live.proto.Room.RoomMsg;
 
 import java.io.IOException;
 

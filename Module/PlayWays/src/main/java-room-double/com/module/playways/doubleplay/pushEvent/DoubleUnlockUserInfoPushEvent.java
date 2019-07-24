@@ -2,7 +2,7 @@ package com.module.playways.doubleplay.pushEvent;
 
 import com.module.playways.doubleplay.pbLocalModel.LocalUserLockInfo;
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.CombineRoom.UnlockUserInfoMsg;
+import com.zq.live.proto.CombineRoom.UnlockUserInfoMsg;
 
 import java.util.List;
 

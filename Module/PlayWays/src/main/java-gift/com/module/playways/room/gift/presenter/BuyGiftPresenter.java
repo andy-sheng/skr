@@ -25,7 +25,7 @@ import com.module.playways.room.gift.model.GPrensentGiftMsgModel;
 import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.GiftPresentEvent;
-import com.component.live.proto.Common.EGiftType;
+import com.zq.live.proto.Common.EGiftType;
 
 import org.greenrobot.eventbus.EventBus;
 

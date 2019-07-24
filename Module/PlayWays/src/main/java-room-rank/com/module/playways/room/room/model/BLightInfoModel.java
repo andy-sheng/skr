@@ -1,6 +1,6 @@
 package com.module.playways.room.room.model;
 
-import com.component.live.proto.Room.BLightInfo;
+import com.zq.live.proto.Room.BLightInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

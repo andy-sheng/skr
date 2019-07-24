@@ -1,6 +1,6 @@
 package com.common.core.userinfo.model;
 
-import com.component.live.proto.Common.CombineRoomConfig;
+import com.zq.live.proto.Common.CombineRoomConfig;
 
 import java.io.Serializable;
 

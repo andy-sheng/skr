@@ -6,8 +6,8 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.grab.room.dynamicmsg.DynamicModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.component.live.proto.Common.ESex;
-import com.component.live.proto.Common.UserInfo;
+import com.zq.live.proto.Common.ESex;
+import com.zq.live.proto.Common.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
 

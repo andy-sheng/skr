@@ -1,8 +1,8 @@
 package com.common.notification;
 
-import com.component.live.proto.Common.UserInfo;
-import com.component.live.proto.Notification.EMsgPosType;
-import com.component.live.proto.Notification.NotificationMsg;
+import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Notification.EMsgPosType;
+import com.zq.live.proto.Notification.NotificationMsg;
 
 import java.io.Serializable;
 

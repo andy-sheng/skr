@@ -17,7 +17,7 @@ import com.common.view.recyclerview.DiffAdapter
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.module.playways.R
 import com.module.playways.room.song.model.SongModel
-import com.component.live.proto.Common.StandPlayType
+import com.zq.live.proto.Common.StandPlayType
 
 class RecommendSongAdapter(internal var isOwner: Boolean, internal var mListener: RecyclerOnItemClickListener<SongModel>?) : DiffAdapter<SongModel, RecyclerView.ViewHolder>() {
 

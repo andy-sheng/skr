@@ -34,7 +34,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
-import com.component.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

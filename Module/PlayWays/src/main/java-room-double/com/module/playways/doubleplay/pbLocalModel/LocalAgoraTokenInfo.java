@@ -1,6 +1,6 @@
 package com.module.playways.doubleplay.pbLocalModel;
 
-import com.component.live.proto.Common.AgoraTokenInfo;
+import com.zq.live.proto.Common.AgoraTokenInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

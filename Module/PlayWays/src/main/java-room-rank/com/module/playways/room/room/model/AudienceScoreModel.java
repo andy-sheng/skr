@@ -1,6 +1,6 @@
 package com.module.playways.room.room.model;
 
-import com.component.live.proto.Room.AudienceScore;
+import com.zq.live.proto.Room.AudienceScore;
 
 import java.io.Serializable;
 

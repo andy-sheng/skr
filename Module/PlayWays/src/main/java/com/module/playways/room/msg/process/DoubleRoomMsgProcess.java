@@ -4,7 +4,7 @@ import com.common.log.MyLog;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IPushMsgProcess;
 import com.module.playways.room.msg.manager.DoubleRoomMsgManager;
-import com.component.live.proto.CombineRoom.CombineRoomMsg;
+import com.zq.live.proto.CombineRoom.CombineRoomMsg;
 
 import java.io.IOException;
 

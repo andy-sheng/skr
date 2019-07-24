@@ -9,12 +9,12 @@ import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
-import com.component.live.proto.Room.AudioMsg;
-import com.component.live.proto.Room.CommentMsg;
-import com.component.live.proto.Room.DynamicEmojiMsg;
-import com.component.live.proto.Room.ERoomMsgType;
-import com.component.live.proto.Room.RoomMsg;
-import com.component.live.proto.Room.SpecialEmojiMsg;
+import com.zq.live.proto.Room.AudioMsg;
+import com.zq.live.proto.Room.CommentMsg;
+import com.zq.live.proto.Room.DynamicEmojiMsg;
+import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.RoomMsg;
+import com.zq.live.proto.Room.SpecialEmojiMsg;
 
 import org.greenrobot.eventbus.EventBus;
 

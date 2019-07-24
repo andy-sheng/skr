@@ -2,7 +2,6 @@ package com.component.dialog
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
@@ -15,7 +14,6 @@ import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 
@@ -46,7 +44,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
-import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.R
 import com.component.busilib.view.MarqueeTextView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -55,12 +52,11 @@ import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
-import com.module.msg.IMsgService
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.component.level.view.NormalLevelView2
-import com.component.live.proto.Common.ESex
+import com.zq.live.proto.Common.ESex
 import com.component.person.utils.StringFromatUtils
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel

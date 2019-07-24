@@ -11,7 +11,7 @@ import com.module.playways.grab.room.view.minigame.MiniGameRoundOverCardView;
 import com.module.playways.grab.room.view.normal.NormalRoundOverCardView;
 import com.module.playways.grab.room.view.pk.PKRoundOverCardView;
 import com.module.playways.R;
-import com.component.live.proto.Common.StandPlayType;
+import com.zq.live.proto.Common.StandPlayType;
 
 import java.util.ArrayList;
 import java.util.List;
