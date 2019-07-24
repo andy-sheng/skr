@@ -1,5 +1,6 @@
 package com.module.feeds.detail.view
 
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 
@@ -29,7 +30,12 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     override fun setSongModel(feedSongModel: FeedSongModel) {
         mFeedSongModel = feedSongModel
 
-        mBaseFeedsLyricView = mFeedsManyLyricView
+        if (TextUtils.isEmpty(feedSongModel.songTpl?.bgm)) {
+            mBaseFeedsLyricView = mAutoScrollLyricView
+        } else {
+            mBaseFeedsLyricView = mFeedsManyLyricView
+        }
+
         mBaseFeedsLyricView?.setSongModel(feedSongModel)
     }
 

@@ -100,6 +100,10 @@
                         app:rockerYP="0.1" />
 
                     <ViewStub
+                        android:layout_marginTop="@dimen/view_20_dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radio_view"
                         android:id="@+id/auto_scroll_lyric_view_layout_viewstub"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_74_dp"

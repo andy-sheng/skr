@@ -12,6 +12,8 @@ class FeedSongModel : Serializable {
     var needChallenge: Boolean? = null
     @JSONField(name = "needRecommentTag")
     var needRecommentTag: Boolean? = null
+    @JSONField(name = "playDurMs")
+    var playDurMs: Int? = null
     @JSONField(name = "playURL")
     var playURL: String? = null
     @JSONField(name = "songID")
