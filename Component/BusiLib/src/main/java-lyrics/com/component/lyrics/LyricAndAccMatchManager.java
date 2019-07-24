@@ -12,8 +12,6 @@ import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.arccloud.SongInfo;
 import com.engine.score.Score2Callback;
-import com.component.lyrics.LyricsManager;
-import com.component.lyrics.LyricsReader;
 import com.component.lyrics.event.LrcEvent;
 import com.component.lyrics.event.LyricEventLauncher;
 import com.component.lyrics.widget.AbstractLrcView;
@@ -152,7 +150,7 @@ public class LyricAndAccMatchManager {
             mDisposable.dispose();
         }
         mDisposable = LyricsManager.getLyricsManager(U.app())
-                .fetchAndLoadLyrics(mLyricUrl)
+                .loadStandardLyric(mLyricUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RxRetryAssist(3, ""))

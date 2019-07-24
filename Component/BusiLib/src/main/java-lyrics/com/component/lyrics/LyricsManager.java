@@ -26,17 +26,10 @@ import okio.Okio;
 
 public class LyricsManager {
     public static final String TAG = "LyricsManager";
-    /**
-     *
-     */
-    private static Context mContext;
-    /**
-     *
-     */
+
     private static LyricsManager _LyricsManager;
 
     private LyricsManager(Context context) {
-        mContext = context;
     }
 
     public static LyricsManager getLyricsManager(Context context) {
@@ -46,82 +39,54 @@ public class LyricsManager {
         return _LyricsManager;
     }
 
-
-    /**
-     * 加载标准歌词 文件名
-     *
-     * @param fileName
-     * @param hash
-     * @return
-     */
-    public Observable<LyricsReader> loadLyricsObserable(final String fileName, final String hash) {
-        return Observable.create(new ObservableOnSubscribe<LyricsReader>() {
-
-            @Override
-            public void subscribe(ObservableEmitter<LyricsReader> emitter) {
-                MyLog.d(TAG, "loadLyricsUtil 1");
-                LyricsReader lyricsReader = null;
-                File lrcFile = LyricsUtils.getLrcFile(fileName, SongResUtils.getLyricDir());
-                MyLog.d(TAG, "loadLyricsUtil 2 " + lrcFile);
-                if (lrcFile != null) {
-                    lyricsReader = new LyricsReader();
-                    try {
-                        lyricsReader.loadLrc(lrcFile);
-                    } catch (Exception e) {
-                        Log.e("LyricsManager", "" + e.toString());
-                        emitter.onError(e);
-                        return;
-                    }
-                }
-                emitter.onNext(lyricsReader);
-                emitter.onComplete();
-            }
-        });
-    }
-
     /**
      * 加载标准歌词 url
      *
      * @param url
      * @return
      */
-    public Observable<LyricsReader> fetchAndLoadLyrics(final String url) {
-        return fetchLyricTask(url)
-                .flatMap(new Function<File, ObservableSource<LyricsReader>>() {
-                    @Override
-                    public ObservableSource<LyricsReader> apply(File lyricsReader) throws Exception {
-                        String fileName = SongResUtils.getFileNameWithMD5(url);
-                        return loadLyricsObserable(fileName, lyricsReader.hashCode() + "");
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Observable<File> fetchLyricTask(final String url) {
-        MyLog.w(TAG, "fetchLyricTask" + " url =" + url);
+    public Observable<LyricsReader> loadStandardLyric(final String url) {
         return Observable.create(new ObservableOnSubscribe<File>() {
             @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
+            public void subscribe(ObservableEmitter<File> emitter) throws Exception {
                 File newName = new File(SongResUtils.createLyricFileName(url));
                 if (newName.exists() && newName.isFile()) {
                     emitter.onNext(newName);
                     emitter.onComplete();
                     return;
                 }
-
                 boolean isSuccess = U.getHttpUtils().downloadFileSync(url, newName, true, null);
-
                 if (isSuccess) {
                     emitter.onNext(newName);
                     emitter.onComplete();
                 } else {
+                    if (MyLog.isDebugLogOpen()) {
+                        U.getToastUtil().showShort("歌词文件下载失败 url=" + url);
+                    }
                     emitter.onError(new Throwable("fetchLyricTask"));
                 }
             }
-        }).subscribeOn(Schedulers.io())
+        }).map(new Function<File, LyricsReader>() {
+            @Override
+            public LyricsReader apply(File file) throws Exception {
+                LyricsReader lyricsReader = new LyricsReader();
+                try {
+                    lyricsReader.loadLrc(file);
+                    if (MyLog.isDebugLogOpen()) {
+                        if (lyricsReader.getLrcLineInfos().isEmpty()) {
+                            U.getToastUtil().showShort("歌词文件解析后内容为空 url=" + url);
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("LyricsManager", "" + e.toString());
+                }
+                return lyricsReader;
+            }
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
 
     /**
      * 加载一唱到底普通文本歌词

@@ -104,7 +104,7 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
 
         if (!TextUtils.isEmpty(mSongModel.getLyric())) {
             LyricsManager.getLyricsManager(U.app())
-                    .fetchAndLoadLyrics(mSongModel.getLyric())
+                    .loadStandardLyric(mSongModel.getLyric())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .retryWhen(new RxRetryAssist(5, ""))

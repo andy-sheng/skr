@@ -187,31 +187,22 @@ public class PlayRecordFragment extends BaseFragment {
     LyricsReader mLyricsReader;
 
     private void playLyrics(SongModel songModel) {
-        final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-
-        if (lyricFile != null) {
-            LyricsManager.getLyricsManager(U.app())
-                    .loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
-                    .subscribeOn(Schedulers.io())
-                    .retry(10)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                    .subscribe(lyricsReader -> {
-                        MyLog.d(getTAG(), "playMusic, start play lyric");
-                        mManyLyricsView.resetData();
-                        mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
-                        MyLog.d(getTAG(), "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
-                        mManyLyricsView.setLyricsReader(lyricsReader);
-                        mLyricsReader = lyricsReader;
-                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(songModel.getBeginMs());
-                            MyLog.d(getTAG(), "songModel.getBeginMs() : " + songModel.getBeginMs());
-                        }
-                    }, throwable -> MyLog.e(throwable));
-        } else {
-            MyLog.e(getTAG(), "没有歌词文件，不应该，进界面前已经下载好了");
-        }
+        LyricsManager.getLyricsManager(U.app())
+                .loadStandardLyric(songModel.getLyric())
+                .compose(bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(lyricsReader -> {
+                    MyLog.d(getTAG(), "playMusic, start play lyric");
+                    mManyLyricsView.resetData();
+                    mManyLyricsView.initLrcData();
+                    lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
+                    MyLog.d(getTAG(), "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
+                    mManyLyricsView.setLyricsReader(lyricsReader);
+                    mLyricsReader = lyricsReader;
+                    if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                        mManyLyricsView.play(songModel.getBeginMs());
+                        MyLog.d(getTAG(), "songModel.getBeginMs() : " + songModel.getBeginMs());
+                    }
+                }, throwable -> MyLog.e(throwable));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -49,7 +49,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
         mFeedSongModel?.songTpl?.lrcTs?.let {
             mDisposable?.dispose()
             mDisposable = LyricsManager.getLyricsManager(U.app())
-                    .fetchAndLoadLyrics(mFeedSongModel!!.songTpl!!.lrcTs)
+                    .loadStandardLyric(mFeedSongModel!!.songTpl!!.lrcTs)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .retryWhen(RxRetryAssist(3, ""))

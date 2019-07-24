@@ -18,7 +18,6 @@ import com.component.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.greendao.annotation.NotNull;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
@@ -72,40 +71,12 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
 
         mSongResourceZhang = new ZipUrlResourceManager(songResList, mOnDownloadProgress);
         mSongResourceZhang.go();
-
-        fetchLyric();
-    }
-
-    private void fetchLyric() {
-        File lyricFile = SongResUtils.getLyricFileByUrl(mSongModel.getLyric());
-        if (lyricFile == null || !lyricFile.exists()) {
-            LyricsManager.getLyricsManager(U.app())
-                    .fetchLyricTask(mSongModel.getLyric())
-                    .retry(10)
-                    .compose(bindUntilEvent(PresenterEvent.DESTROY))
-                    .subscribe(new Consumer<File>() {
-                        @Override
-                        public void accept(File file) throws Exception {
-                            showLyric();
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            MyLog.e(TAG, throwable);
-                        }
-                    });
-        } else {
-            showLyric();
-        }
+        showLyric();
     }
 
     private void showLyric() {
-        final String fileName = SongResUtils.getFileNameWithMD5(mSongModel.getLyric());
         LyricsManager.getLyricsManager(U.app())
-                .loadLyricsObserable(fileName, fileName.hashCode() + "")
-                .subscribeOn(Schedulers.computation())
-                .retry(10)
-                .observeOn(AndroidSchedulers.mainThread())
+                .loadStandardLyric(mSongModel.getLyric())
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Consumer<LyricsReader>() {
                     @Override
