@@ -56,6 +56,9 @@ android {
 
             java.srcDirs += 'src/main/java-voice'
             res.srcDirs += 'src/main/res-voice'
+
+            java.srcDirs += 'src/main/java-feeds'
+            res.srcDirs += 'src/main/res-feeds'
         }
     }
 }

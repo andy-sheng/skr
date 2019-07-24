@@ -1,4 +1,4 @@
-package com.component.person.feeds
+package com.component.feeds.view
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView

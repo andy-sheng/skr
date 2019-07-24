@@ -1,4 +1,4 @@
-package com.component.live
+package com.zq.live
 
 import android.os.Handler
 import android.os.Looper
