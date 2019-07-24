@@ -9,6 +9,7 @@ import android.widget.ImageView
 import com.common.base.BaseFragment
 import com.common.log.MyLog
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.module.feeds.R
 import com.module.feeds.watch.view.FeedsLikeView
@@ -45,15 +46,17 @@ class FeedsWatchFragment : BaseFragment() {
             }
         })
 
-        mFeedTab.setCustomTabView(R.layout.feed_tab_view_layout, R.id.tab_tv)
-        mFeedTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
-        mFeedTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
-        mFeedTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
-        mFeedTab.setTitleSize(14f)
-        mFeedTab.setSelectedTitleSize(24f)
-        mFeedTab.setIndicatorWidth(U.getDisplayUtils().dip2px(16f))
-        mFeedTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4f).toFloat())
-        mFeedTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2f).toFloat())
+        mFeedTab.apply {
+            setCustomTabView(R.layout.feed_tab_view_layout, R.id.tab_tv)
+            setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
+            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
+            setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
+            setTitleSize(14f)
+            setSelectedTitleSize(24f)
+            setIndicatorWidth(16f.dp())
+            setSelectedIndicatorThickness(4f.dp().toFloat())
+            setIndicatorCornorRadius(2f.dp().toFloat())
+        }
 
         mTabPagerAdapter = object : PagerAdapter() {
 
@@ -105,23 +108,7 @@ class FeedsWatchFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 mFeedTab.notifyDataChange()
-                when (position) {
-                    0 -> {
-                        mFollowFeesView.stopPlay()
-                        mFeedsCollectView.stopPlay()
-                        mRecommendFeedsView.initData(false)
-                    }
-                    1 -> {
-                        mRecommendFeedsView.stopPlay()
-                        mFeedsCollectView.stopPlay()
-                        mFollowFeesView.initData(false)
-                    }
-                    2 -> {
-                        mFollowFeesView.stopPlay()
-                        mRecommendFeedsView.stopPlay()
-                        mFeedsCollectView.initData(false)
-                    }
-                }
+                onViewSelected(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -138,7 +125,11 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
-        when (mFeedVp.currentItem) {
+        onViewSelected(mFeedVp.currentItem)
+    }
+
+    fun onViewSelected(pos:Int){
+        when (pos) {
             0 -> {
                 mFollowFeesView.stopPlay()
                 mFeedsCollectView.stopPlay()
@@ -156,7 +147,6 @@ class FeedsWatchFragment : BaseFragment() {
             }
         }
     }
-
     override fun onFragmentInvisible() {
         super.onFragmentInvisible()
         mFollowFeesView.stopPlay()

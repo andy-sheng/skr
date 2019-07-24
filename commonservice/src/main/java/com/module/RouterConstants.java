@@ -66,6 +66,7 @@ public interface RouterConstants {
     String ACTIVITY_DOUBLE_END = "/rankingmode/DoubleEndActivity";
 
     String ACTIVITY_FEEDS_DETAIL = "/feeds/FeedsDetailActivity";
+    String ACTIVITY_FEEDS_MAKE = "/feeds/FeedsMakeActivity";
 
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";

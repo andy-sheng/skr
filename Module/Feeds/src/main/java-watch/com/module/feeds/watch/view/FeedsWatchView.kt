@@ -47,19 +47,21 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mAdapter = FeedsWatchViewAdapter()
         mPersenter = FeedWatchViewPresenter(this, type)
 
-        mRefreshLayout.setEnableRefresh(true)
-        mRefreshLayout.setEnableLoadMore(true)
-        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
-        mRefreshLayout.setEnableOverScrollDrag(true)
-        mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
-            override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mPersenter.initWatchList(true)
-            }
+        mRefreshLayout.apply {
+            setEnableRefresh(true)
+            setEnableLoadMore(true)
+            setEnableLoadMoreWhenContentNotFull(false)
+            setEnableOverScrollDrag(true)
+            setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+                override fun onLoadMore(refreshLayout: RefreshLayout) {
+                    mPersenter.initWatchList(true)
+                }
 
-            override fun onRefresh(refreshLayout: RefreshLayout) {
-                mPersenter.loadMoreWatchList()
-            }
-        })
+                override fun onRefresh(refreshLayout: RefreshLayout) {
+                    mPersenter.loadMoreWatchList()
+                }
+            })
+        }
 
         mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.layoutManager = mLayoutManager
@@ -142,6 +144,12 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
         mAdapter.onClickHitListener = {
             // 打榜
+            it?.song?.let {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+                        .withSerializable("song_model", it)
+                        .navigation()
+            }
+
         }
 
         mAdapter.onClickDetailListener = {
