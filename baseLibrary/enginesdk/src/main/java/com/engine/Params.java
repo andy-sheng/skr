@@ -857,13 +857,11 @@ public class Params implements Serializable {
         Params params;
         if (!TextUtils.isEmpty(s)) {
             params = JSON.parseObject(s, Params.class);
-            params.setUseExternalAudio(true);
-            params.setAudioChannels(2);
         } else {
             params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(true)
                     .setEnableAudio(true)
-                    .setUseExternalAudio(true)
+                    .setUseExternalAudio(false)
                     .setUseExternalVideo(true)
                     .setUseExternalAudioRecord(true)
                     .setStyleEnum(AudioEffect.none)

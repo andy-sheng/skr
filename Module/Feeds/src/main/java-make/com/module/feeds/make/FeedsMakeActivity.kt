@@ -300,7 +300,7 @@ class FeedsMakeActivity : BaseActivity() {
 
             override fun onLyricEventPost(lineNum: Int) {
                 // 开始录音
-                ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, false)
+                ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
                 mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
                 mFeedsMakeModel?.recording = true
                 mCircleCountDownView?.go(0, mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
