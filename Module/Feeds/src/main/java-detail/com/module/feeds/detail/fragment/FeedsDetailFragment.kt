@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v7.widget.Toolbar
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -227,7 +228,13 @@ class FeedsDetailFragment : BaseFragment() {
         mFeedsWatchModel?.song?.createdAt?.let {
             mCommentTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it, "MM-dd HH:mm")
         }
-        mMainCommentTv?.text = mFeedsWatchModel?.song?.title
+
+        if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.title)) {
+            mMainCommentTv?.text = mFeedsWatchModel?.song?.title
+            mMainCommentTv?.visibility = View.VISIBLE
+        } else {
+            mMainCommentTv?.visibility = View.GONE
+        }
 
         mCommentTv?.setDebounceViewClickListener {
             mFeedsInputContainerView?.showSoftInput()
